@@ -18,39 +18,30 @@ extern crate rustc_span;
 
 use std::{path, process, str};
 
-use rustc_ast_pretty::pprust::item_to_string;
+use pretty::RcDoc;
 use rustc_errors::registry;
 use rustc_session::config::{self, CheckCfg};
 use rustc_span::source_map;
 
-#[derive(Debug)]
 struct Path {
     segments: Vec<String>,
 }
 
-#[derive(Debug)]
 enum Pat {
     Wild,
-    // Binding(BindingAnnotation, HirId, Ident, Option<&'hir Pat<'hir>>),
-    // Struct(QPath<'hir>, &'hir [PatField<'hir>], bool),
-    // TupleStruct(QPath<'hir>, &'hir [Pat<'hir>], DotDotPos),
+    Struct(Path, Vec<(String, Pat)>),
+    TupleStruct(Path, Vec<Pat>),
     Or(Vec<Pat>),
     Path(Path),
     Tuple(Vec<Pat>),
-    // Box(&'hir Pat<'hir>),
-    // Ref(&'hir Pat<'hir>, Mutability),
     Lit(rustc_ast::LitKind),
-    // Range(Option<&'hir Expr<'hir>>, Option<&'hir Expr<'hir>>, RangeEnd),
-    // Slice(&'hir [Pat<'hir>], Option<&'hir Pat<'hir>>, &'hir [Pat<'hir>]),
 }
 
-#[derive(Debug)]
 struct MatchArm {
     pat: Pat,
     body: Expr,
 }
 
-#[derive(Debug)]
 enum Expr {
     LocalVar(String),
     Var(Path),
@@ -85,7 +76,7 @@ enum Expr {
     If {
         condition: Box<Expr>,
         success: Box<Expr>,
-        failure: Option<Box<Expr>>,
+        failure: Box<Expr>,
     },
     Loop {
         body: Box<Expr>,
@@ -119,93 +110,20 @@ enum Expr {
     },
 }
 
-#[derive(Debug)]
 enum TopLevelItem {
     Definition {
         name: String,
         args: Vec<String>,
         body: Expr,
     },
+    Module {
+        name: String,
+        body: TopLevel,
+    },
+    Error(String),
 }
 
-#[derive(Debug)]
-struct TopLevel {
-    items: Vec<TopLevelItem>,
-}
-/*
-impl fmt::Display for Expr {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Expr::LocalVar(name) => write!(f, "{}", name),
-            Expr::Literal(lit) => write!(f, "{:?}", lit),
-            Expr::App { func, args } => {
-                write!(f, "{}(", func)?;
-                for (i, arg) in args.iter().enumerate() {
-                    if i > 0 {
-                        write!(f, ", ")?;
-                    }
-                    write!(f, "{}", arg)?;
-                }
-                write!(f, ")")
-            }
-            Expr::Let { name, value, body } => {
-                write!(f, "let {} = {} in {}", name, value, body)
-            }
-            Expr::Lambda { name, body } => write!(f, "fun {} => {}", name, body),
-            Expr::Seq { first, second } => write!(f, "{}; {}", first, second),
-            Expr::Array { elements } => {
-                write!(f, "[")?;
-                for (i, element) in elements.iter().enumerate() {
-                    if i > 0 {
-                        write!(f, ", ")?;
-                    }
-                    write!(f, "{}", element)?;
-                }
-                write!(f, "]")
-            }
-            Expr::Tuple { elements } => {
-                write!(f, "(")?;
-                for (i, element) in elements.iter().enumerate() {
-                    if i > 0 {
-                        write!(f, ", ")?;
-                    }
-                    write!(f, "{}", element)?;
-                }
-                write!(f, ")")
-            }
-            Expr::LetIf { pat, value } => write!(f, "let {} = {} in ()", pat, value),
-        }
-    }
-}
-
-impl fmt::Display for TopLevelItem {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            TopLevelItem::Definition { name, args, body } => {
-                write!(f, "def {}(", name)?;
-                for (i, arg) in args.iter().enumerate() {
-                    if i > 0 {
-                        write!(f, ", ")?;
-                    }
-                    write!(f, "{}", arg)?;
-                }
-                write!(f, ") = {}", body)
-            }
-        }
-    }
-}
-
-impl fmt::Display for TopLevel {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        for (i, item) in self.items.iter().enumerate() {
-            if i > 0 {
-                write!(f, "\n")?;
-            }
-            write!(f, "{}", item)?;
-        }
-        Ok(())
-    }
-}*/
+struct TopLevel(Vec<TopLevelItem>);
 
 fn compile_error<A>(value: A, message: String) -> A {
     eprintln!("{}", message);
@@ -237,13 +155,39 @@ fn compile_qpath(qpath: &rustc_hir::QPath) -> Path {
 fn compile_pat(pat: &rustc_hir::Pat) -> Pat {
     match &pat.kind {
         rustc_hir::PatKind::Wild => Pat::Wild,
-        // rustc_hir::PatKind::Lit(lit) => Pat::Lit(lit.node.clone()),
+        rustc_hir::PatKind::Binding(_, _, ident, _) => Pat::Path(Path {
+            segments: vec![ident.name.to_string()],
+        }),
+        rustc_hir::PatKind::Struct(qpath, pats, _) => {
+            let path = compile_qpath(qpath);
+            let pats = pats
+                .iter()
+                .map(|pat| (pat.ident.name.to_string(), compile_pat(pat.pat)))
+                .collect();
+            Pat::Struct(path, pats)
+        }
+        rustc_hir::PatKind::TupleStruct(qpath, pats, _) => {
+            let path = compile_qpath(qpath);
+            let pats = pats.iter().map(|pat| compile_pat(pat)).collect();
+            Pat::TupleStruct(path, pats)
+        }
         rustc_hir::PatKind::Or(pats) => Pat::Or(pats.iter().map(|pat| compile_pat(pat)).collect()),
         rustc_hir::PatKind::Path(qpath) => Pat::Path(compile_qpath(qpath)),
         rustc_hir::PatKind::Tuple(pats, _) => {
             Pat::Tuple(pats.iter().map(|pat| compile_pat(pat)).collect())
         }
-        _ => compile_error(Pat::Wild, "Pattern not supported".to_string()),
+        rustc_hir::PatKind::Box(pat) => compile_pat(pat),
+        rustc_hir::PatKind::Ref(pat, _) => compile_pat(pat),
+        rustc_hir::PatKind::Lit(expr) => match expr.kind {
+            rustc_hir::ExprKind::Lit(ref lit) => Pat::Lit(lit.node.clone()),
+            _ => compile_error(Pat::Wild, "Expected a literal".to_string()),
+        },
+        rustc_hir::PatKind::Range(_, _, _) => {
+            compile_error(Pat::Wild, "Pattern range not supported".to_string())
+        }
+        rustc_hir::PatKind::Slice(_, _, _) => {
+            compile_error(Pat::Wild, "Pattern slice not supported".to_string())
+        }
     }
 }
 
@@ -330,7 +274,10 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
         rustc_hir::ExprKind::If(condition, success, failure) => {
             let condition = Box::new(compile_expr(hir, condition));
             let success = Box::new(compile_expr(hir, success));
-            let failure = failure.map(|expr| Box::new(compile_expr(hir, expr)));
+            let failure = match failure {
+                Some(expr) => Box::new(compile_expr(hir, expr)),
+                None => Box::new(tt()),
+            };
             Expr::If {
                 condition,
                 success,
@@ -454,7 +401,6 @@ fn compile_stmts(
     stmts: &[rustc_hir::Stmt],
     expr: Option<&rustc_hir::Expr>,
 ) -> Expr {
-    // stmts.iter().map(|stmt| compile_stmt(stmt)).collect()
     match stmts {
         [stmt, stmts @ ..] => match stmt.kind {
             rustc_hir::StmtKind::Local(rustc_hir::Local { pat, init, .. }) => {
@@ -490,40 +436,366 @@ fn compile_block(hir: rustc_middle::hir::map::Map, block: &rustc_hir::Block) -> 
 fn compile_top_level_item(
     hir: rustc_middle::hir::map::Map,
     item: &rustc_hir::Item,
-) -> TopLevelItem {
+) -> Option<TopLevelItem> {
     match &item.kind {
-        rustc_hir::ItemKind::Fn(_fn_sig, _, body_id) => {
+        rustc_hir::ItemKind::ExternCrate(_) => None,
+        rustc_hir::ItemKind::Use(_, _) => None,
+        rustc_hir::ItemKind::Static(_, _, body_id) => {
             let expr = hir.body(*body_id).value;
-
-            TopLevelItem::Definition {
+            Some(TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
                 args: vec![],
                 body: compile_expr(hir, expr),
-            }
+            })
         }
-        _ => compile_error(
-            TopLevelItem::Definition {
+        rustc_hir::ItemKind::Const(_, body_id) => {
+            let expr = hir.body(*body_id).value;
+            Some(TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
                 args: vec![],
-                body: Expr::LocalVar("TODO".to_string()),
-            },
-            format!("Unsupported item kind"),
-        ),
+                body: compile_expr(hir, expr),
+            })
+        }
+        rustc_hir::ItemKind::Fn(_fn_sig, _, body_id) => {
+            let expr = hir.body(*body_id).value;
+            Some(TopLevelItem::Definition {
+                name: item.ident.name.to_string(),
+                args: vec![],
+                body: compile_expr(hir, expr),
+            })
+        }
+        rustc_hir::ItemKind::Macro(_, _) => None,
+        rustc_hir::ItemKind::Mod(module) => {
+            let items = module
+                .item_ids
+                .iter()
+                .filter_map(|item_id| {
+                    let item = hir.item(*item_id);
+                    compile_top_level_item(hir, item)
+                })
+                .collect();
+            Some(TopLevelItem::Module {
+                name: item.ident.name.to_string(),
+                body: TopLevel(items),
+            })
+        }
+        rustc_hir::ItemKind::ForeignMod { .. } => {
+            Some(TopLevelItem::Error("ForeignMod".to_string()))
+        }
+        rustc_hir::ItemKind::GlobalAsm(_) => Some(TopLevelItem::Error("GlobalAsm".to_string())),
+        rustc_hir::ItemKind::TyAlias(_, _) => Some(TopLevelItem::Error("TyAlias".to_string())),
+        rustc_hir::ItemKind::OpaqueTy(_) => Some(TopLevelItem::Error("OpaqueTy".to_string())),
+        rustc_hir::ItemKind::Enum(_, _) => Some(TopLevelItem::Error("Enum".to_string())),
+        rustc_hir::ItemKind::Struct(_, _) => Some(TopLevelItem::Error("Struct".to_string())),
+        rustc_hir::ItemKind::Union(_, _) => Some(TopLevelItem::Error("Union".to_string())),
+        rustc_hir::ItemKind::Trait(_, _, _, _, _) => Some(TopLevelItem::Error("Trait".to_string())),
+        rustc_hir::ItemKind::TraitAlias(_, _) => {
+            Some(TopLevelItem::Error("TraitAlias".to_string()))
+        }
+        rustc_hir::ItemKind::Impl(_) => Some(TopLevelItem::Error("Impl".to_string())),
     }
 }
 
 fn compile_top_level(tcx: rustc_middle::ty::TyCtxt) -> TopLevel {
     let hir = tcx.hir();
-
-    TopLevel {
-        items: hir
-            .items()
-            .map(|item_id| {
+    TopLevel(
+        hir.items()
+            .filter_map(|item_id| {
                 let item = hir.item(item_id);
-
                 compile_top_level_item(hir, item)
             })
             .collect(),
+    )
+}
+
+fn paren(with_paren: bool, doc: RcDoc<()>) -> RcDoc<()> {
+    if with_paren {
+        RcDoc::text("(").append(doc).append(RcDoc::text(")"))
+    } else {
+        doc
+    }
+}
+
+fn bracket(doc: RcDoc<()>) -> RcDoc<()> {
+    RcDoc::text("[").append(doc).append(RcDoc::text("]"))
+}
+
+fn literal_to_doc(literal: &rustc_ast::LitKind) -> RcDoc<()> {
+    match literal {
+        rustc_ast::LitKind::Str(s, _) => RcDoc::text(format!("{:?}", s)),
+        rustc_ast::LitKind::Int(i, _) => RcDoc::text(format!("{}", i)),
+        rustc_ast::LitKind::Float(f, _) => RcDoc::text(format!("{}", f)),
+        rustc_ast::LitKind::Bool(b) => RcDoc::text(format!("{}", b)),
+        rustc_ast::LitKind::Char(c) => RcDoc::text(format!("{}", c)),
+        rustc_ast::LitKind::Byte(b) => RcDoc::text(format!("{}", b)),
+        rustc_ast::LitKind::ByteStr(b, _) => RcDoc::text(format!("{:?}", b)),
+        rustc_ast::LitKind::Err => RcDoc::text("Err"),
+    }
+}
+
+impl Path {
+    fn to_doc(&self) -> RcDoc<()> {
+        RcDoc::intersperse(
+            self.segments.iter().map(|segment| RcDoc::text(segment)),
+            RcDoc::text("."),
+        )
+    }
+}
+
+impl Pat {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            Pat::Wild => RcDoc::text("_"),
+            Pat::Struct(path, fields) => {
+                path.to_doc()
+                    .append(RcDoc::space())
+                    .append(bracket(RcDoc::intersperse(
+                        fields.iter().map(|(name, expr)| {
+                            RcDoc::text(name)
+                                .append(RcDoc::space())
+                                .append(RcDoc::text(":"))
+                                .append(RcDoc::space())
+                                .append(expr.to_doc())
+                        }),
+                        RcDoc::text(","),
+                    )))
+            }
+            Pat::TupleStruct(path, fields) => path.to_doc().append(RcDoc::space()).append(paren(
+                true,
+                RcDoc::intersperse(fields.iter().map(|field| field.to_doc()), RcDoc::text(",")),
+            )),
+            Pat::Or(pats) => paren(
+                true,
+                RcDoc::intersperse(pats.iter().map(|pat| pat.to_doc()), RcDoc::text("|")),
+            ),
+            Pat::Path(path) => path.to_doc(),
+            Pat::Tuple(pats) => paren(
+                true,
+                RcDoc::intersperse(pats.iter().map(|pat| pat.to_doc()), RcDoc::text(",")),
+            ),
+            Pat::Lit(literal) => RcDoc::text(format!("{:?}", literal)),
+        }
+    }
+}
+
+impl MatchArm {
+    fn to_doc(&self) -> RcDoc<()> {
+        self.pat
+            .to_doc()
+            .append(RcDoc::space())
+            .append(RcDoc::text("=>"))
+            .append(RcDoc::space())
+            .append(self.body.to_doc(false))
+    }
+}
+
+impl Expr {
+    fn to_doc(&self, with_paren: bool) -> RcDoc<()> {
+        match self {
+            Expr::LocalVar(ref name) => RcDoc::text(name),
+            Expr::Var(path) => path.to_doc(),
+            Expr::Literal(literal) => literal_to_doc(literal),
+            Expr::App { func, args } => paren(
+                with_paren,
+                func.to_doc(true)
+                    .append(RcDoc::space())
+                    .append(RcDoc::intersperse(
+                        args.iter().map(|arg| arg.to_doc(true)),
+                        RcDoc::space(),
+                    )),
+            ),
+            Expr::Let { pat, init, body } => RcDoc::text("let")
+                .append(RcDoc::space())
+                .append(pat.to_doc())
+                .append(RcDoc::space())
+                .append(RcDoc::text(":="))
+                .append(RcDoc::space())
+                .append(init.to_doc(false))
+                .append(RcDoc::space())
+                .append(RcDoc::text("in"))
+                .append(RcDoc::hardline())
+                .append(body.to_doc(false)),
+            Expr::Lambda { args, body } => paren(
+                with_paren,
+                RcDoc::text("fun")
+                    .append(RcDoc::space())
+                    .append(RcDoc::intersperse(
+                        args.iter().map(|arg| arg.to_doc()),
+                        RcDoc::space(),
+                    ))
+                    .append(RcDoc::space())
+                    .append(RcDoc::text("=>"))
+                    .append(RcDoc::space())
+                    .append(body.to_doc(false)),
+            ),
+            Expr::Seq { first, second } => first
+                .to_doc(false)
+                .append(RcDoc::space())
+                .append(RcDoc::text(";;"))
+                .append(RcDoc::hardline())
+                .append(second.to_doc(false)),
+            Expr::Array { elements } => bracket(RcDoc::intersperse(
+                elements.iter().map(|element| element.to_doc(false)),
+                RcDoc::text(";"),
+            )),
+            Expr::Tuple { elements } => paren(
+                true,
+                RcDoc::intersperse(
+                    elements.iter().map(|element| element.to_doc(false)),
+                    RcDoc::text(","),
+                ),
+            ),
+            Expr::LetIf { pat, init } => RcDoc::text("let_if")
+                .append(RcDoc::space())
+                .append(pat.to_doc())
+                .append(RcDoc::space())
+                .append(RcDoc::text(":="))
+                .append(RcDoc::space())
+                .append(init.to_doc(false)),
+            Expr::If {
+                condition,
+                success,
+                failure,
+            } => paren(
+                with_paren,
+                RcDoc::text("if")
+                    .append(RcDoc::space())
+                    .append(condition.to_doc(false))
+                    .append(RcDoc::space())
+                    .append(RcDoc::text("then"))
+                    .append(RcDoc::space())
+                    .append(success.to_doc(false))
+                    .append(RcDoc::space())
+                    .append(RcDoc::text("else"))
+                    .append(RcDoc::space())
+                    .append(failure.to_doc(false)),
+            ),
+            Expr::Loop { body, loop_source } => paren(
+                with_paren,
+                RcDoc::text("loop")
+                    .append(RcDoc::space())
+                    .append(body.to_doc(true))
+                    .append(RcDoc::space())
+                    .append(RcDoc::text("from"))
+                    .append(RcDoc::space())
+                    .append(RcDoc::text(loop_source)),
+            ),
+            Expr::Match { scrutinee, arms } => RcDoc::text("match")
+                .append(RcDoc::space())
+                .append(scrutinee.to_doc(false))
+                .append(RcDoc::space())
+                .append(RcDoc::text("with"))
+                .append(RcDoc::space())
+                .append(RcDoc::intersperse(
+                    arms.iter().map(|arm| arm.to_doc()),
+                    RcDoc::space(),
+                ))
+                .append(RcDoc::space())
+                .append(RcDoc::text("end")),
+            Expr::Assign { left, right } => paren(
+                with_paren,
+                RcDoc::text("assign")
+                    .append(RcDoc::space())
+                    .append(left.to_doc(false))
+                    .append(RcDoc::space())
+                    .append(RcDoc::text(":="))
+                    .append(RcDoc::space())
+                    .append(right.to_doc(false)),
+            ),
+            Expr::AssignOp {
+                bin_op,
+                left,
+                right,
+            } => paren(
+                with_paren,
+                RcDoc::text("assign")
+                    .append(RcDoc::space())
+                    .append(left.to_doc(false))
+                    .append(RcDoc::space())
+                    .append(RcDoc::text(":="))
+                    .append(RcDoc::space())
+                    .append(left.to_doc(false))
+                    .append(RcDoc::space())
+                    .append(RcDoc::text(bin_op))
+                    .append(RcDoc::space())
+                    .append(right.to_doc(false)),
+            ),
+            Expr::Field { base, field } => base
+                .to_doc(true)
+                .append(RcDoc::text("."))
+                .append(RcDoc::text(field)),
+            Expr::Index { base, index } => base.to_doc(true).append(bracket(index.to_doc(false))),
+            Expr::Struct { path, fields, base } => paren(
+                with_paren,
+                RcDoc::text("struct")
+                    .append(RcDoc::space())
+                    .append(path.to_doc())
+                    .append(RcDoc::space())
+                    .append(RcDoc::text("{"))
+                    .append(RcDoc::intersperse(
+                        fields.iter().map(|(name, expr)| {
+                            RcDoc::text(name)
+                                .append(RcDoc::space())
+                                .append(RcDoc::text(":="))
+                                .append(RcDoc::space())
+                                .append(expr.to_doc(false))
+                        }),
+                        RcDoc::text(";"),
+                    ))
+                    .append(RcDoc::text("}"))
+                    .append(RcDoc::space())
+                    .append(match base {
+                        Some(base) => RcDoc::text("with")
+                            .append(RcDoc::space())
+                            .append(base.to_doc(false)),
+                        None => RcDoc::nil(),
+                    }),
+            ),
+        }
+    }
+}
+
+impl TopLevelItem {
+    fn to_doc(&self) -> RcDoc {
+        match self {
+            TopLevelItem::Definition { name, args, body } => RcDoc::text("Definition")
+                .append(RcDoc::space())
+                .append(RcDoc::text(name))
+                .append(RcDoc::intersperse(
+                    args.iter().map(|arg| RcDoc::text(arg)),
+                    RcDoc::space(),
+                ))
+                .append(RcDoc::space())
+                .append(RcDoc::text(":="))
+                .append((RcDoc::hardline().append(body.to_doc(false))).nest(2))
+                .append(RcDoc::text(".")),
+            TopLevelItem::Module { name, body } => RcDoc::text("Module")
+                .append(RcDoc::space())
+                .append(RcDoc::text(name))
+                .append(RcDoc::space())
+                .append(RcDoc::text(":="))
+                .append((RcDoc::hardline().append(body.to_doc())).nest(2))
+                .append(RcDoc::text(".")),
+            TopLevelItem::Error(message) => RcDoc::text("Error")
+                .append(RcDoc::space())
+                .append(RcDoc::text(message))
+                .append(RcDoc::text(".")),
+        }
+    }
+}
+
+impl TopLevel {
+    fn to_doc(&self) -> RcDoc {
+        RcDoc::intersperse(
+            self.0.iter().map(|item| item.to_doc()),
+            RcDoc::hardline().append(RcDoc::hardline()),
+        )
+    }
+
+    fn to_pretty(&self, width: usize) -> String {
+        let mut w = Vec::new();
+        self.to_doc().render(width, &mut w).unwrap();
+        String::from_utf8(w).unwrap()
     }
 }
 
@@ -599,71 +871,10 @@ fn main() {
     };
     rustc_interface::run_compiler(config, |compiler| {
         compiler.enter(|queries| {
-            // TODO: add this to -Z unpretty
-            let ast_krate = queries.parse().unwrap().take();
-            for item in ast_krate.items {
-                println!("item {}", item_to_string(&item));
-            }
-
-            // Analyze the crate and inspect the types under the cursor.
             queries.global_ctxt().unwrap().take().enter(|tcx| {
-                // Every compilation contains a single crate.
-                let hir_krate = tcx.hir();
-
                 let top_level = compile_top_level(tcx);
-                println!("Coq AST: {:#?}", top_level);
-                // println!("Printed Coq:\n```coq\n{}\n```", top_level);
-
-                // Iterate over the top-level items in the crate, looking for the main function.
-                for id in hir_krate.items() {
-                    let item = hir_krate.item(id);
-                    // Use pattern-matching to find a specific node inside the main function.
-                    if let rustc_hir::ItemKind::Fn(_, _, body_id) = item.kind {
-                        print!("in function id {body_id:?}:");
-                        let expr = &tcx.hir().body(body_id).value;
-                        if let rustc_hir::ExprKind::Block(block, _) = expr.kind {
-                            if let rustc_hir::StmtKind::Local(local) = block.stmts[0].kind {
-                                if let Some(expr) = local.init {
-                                    let hir_id = expr.hir_id; // hir_id identifies the string "Hello, world!"
-                                    let def_id = tcx.hir().local_def_id(item.hir_id()); // def_id identifies the main function
-                                    let ty = tcx.typeck(def_id).node_type(hir_id);
-                                    println!("type {expr:#?}: {ty:?}");
-                                }
-                            }
-                        }
-                    }
-                }
+                println!("{}", top_level.to_pretty(80));
             })
         });
     });
 }
-
-// #[derive(Debug)]
-// struct WithMut {
-//     first: i32,
-//     second: i32,
-// }
-
-// fn increment(n: &mut i32) -> &mut i32 {
-//     *n = *n + 1;
-//     n
-// }
-
-// fn increment_in_mut(s: &WithMut) -> WithMut {
-//     WithMut {
-//         first: s.first + 1,
-//         ..*s
-//     }
-// }
-
-// fn main() {
-//     println!("Hello, world!");
-//     let mut n = 12;
-//     let n = increment(&mut n);
-//     // println!("increment: {}", );
-//     println!("n: {}", n);
-//     let s = WithMut {first: 10, second: 11};
-//     println!("s: {:?}", s);
-//     let s = increment_in_mut(&s);
-//     println!("s: {:?}", s);
-// }
