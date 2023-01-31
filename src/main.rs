@@ -27,6 +27,7 @@ struct Path {
     segments: Vec<String>,
 }
 
+/// The enum [Pat] represents the patterns which can be matched
 enum Pat {
     Wild,
     Struct(Path, Vec<(String, Pat)>),
@@ -37,11 +38,14 @@ enum Pat {
     Lit(rustc_ast::LitKind),
 }
 
+/// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
+/// matched pattern and [body] the expression on which it is mapped
 struct MatchArm {
     pat: Pat,
     body: Expr,
 }
 
+/// Enum [Expr] represents the AST of rust terms.
 enum Expr {
     LocalVar(String),
     Var(Path),
@@ -110,6 +114,8 @@ enum Expr {
     },
 }
 
+/// Representation of top-level hir [Item]s in coq-of-rust
+/// See https://doc.rust-lang.org/reference/items.html
 enum TopLevelItem {
     Definition {
         name: String,
@@ -125,6 +131,7 @@ enum TopLevelItem {
 
 struct TopLevel(Vec<TopLevelItem>);
 
+/// [compile_error] prints a message to stderr and outputs a value
 fn compile_error<A>(value: A, message: String) -> A {
     eprintln!("{}", message);
     value
@@ -152,6 +159,7 @@ fn compile_qpath(qpath: &rustc_hir::QPath) -> Path {
     }
 }
 
+/// The function [compile_pat] translates a hir pattern to a coq-of-rust pattern.
 fn compile_pat(pat: &rustc_hir::Pat) -> Pat {
     match &pat.kind {
         rustc_hir::PatKind::Wild => Pat::Wild,
@@ -191,6 +199,8 @@ fn compile_pat(pat: &rustc_hir::Pat) -> Pat {
     }
 }
 
+/// The function [compile_bin_op] converts a hir binary operator to a
+/// string
 fn compile_bin_op(bin_op: &rustc_hir::BinOp) -> String {
     match bin_op.node {
         rustc_hir::BinOpKind::Add => "add".to_string(),
@@ -202,6 +212,8 @@ fn compile_bin_op(bin_op: &rustc_hir::BinOp) -> String {
     }
 }
 
+/// The function [compile_loop_source] converts a hir loop instruction to a
+/// string
 fn compile_loop_source(loop_source: &rustc_hir::LoopSource) -> String {
     match loop_source {
         rustc_hir::LoopSource::Loop => "loop".to_string(),
@@ -210,6 +222,8 @@ fn compile_loop_source(loop_source: &rustc_hir::LoopSource) -> String {
     }
 }
 
+/// The Coq value [tt] (the inhabitant of the [unit] type) is used as default
+/// value
 fn tt() -> Expr {
     Expr::LocalVar("tt".to_string())
 }
@@ -396,6 +410,13 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
     }
 }
 
+
+/// The function [compile_stmts] compiles rust *lists* of statements (such as
+/// they are found in *blocks*) into coq-of-rust. See:
+/// - https://doc.rust-lang.org/reference/expressions/block-expr.html and
+///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Block.html
+/// - https://doc.rust-lang.org/reference/statements.html and
+///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Stmt.html
 fn compile_stmts(
     hir: rustc_middle::hir::map::Map,
     stmts: &[rustc_hir::Stmt],
@@ -429,10 +450,19 @@ fn compile_stmts(
     }
 }
 
+/// [compile_block] compiles hir blocks into coq-of-rust
+/// See the doc for [compile_stmts]
 fn compile_block(hir: rustc_middle::hir::map::Map, block: &rustc_hir::Block) -> Expr {
     compile_stmts(hir, block.stmts, block.expr)
 }
 
+/// [compile_top_level_item] compiles hir [Item]s into coq-of-rust (optional)
+/// items.
+/// - See https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/struct.Item.html
+///   and the doc for [TopLevelItem]
+/// - [rustc_middle::hir::map::Map] is intuitively the type for hir environments
+/// - Method [body] allows retrievient the body of an identifier [body_id] in an
+///   hir environment [hir]
 fn compile_top_level_item(
     hir: rustc_middle::hir::map::Map,
     item: &rustc_hir::Item,
