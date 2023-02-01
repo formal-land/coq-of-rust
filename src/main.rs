@@ -846,6 +846,9 @@ fn main() {
 
             let new_stem = path.file_stem().unwrap().to_str().unwrap();
             let new_path = path.with_file_name(new_stem.to_string() + ".v");
+            // The line below producing test files with the .snapshot extension
+            // can uncommented when needed.
+            // let new_path = path.with_file_name(new_stem.to_string() + ".snapshot");
             let mut new_file = fs::File::create(&new_path).unwrap();
 
             let out = process::Command::new("rustc")
@@ -886,15 +889,89 @@ fn main() {
             });
         }
     }
+    // gen_snap_tests(); // REMOVE
 }
 
+#[cfg(test)]
+mod tests {
+    use std::fs;
+    use std::path::Path;
+    use std::io::{Read, Write};
 
-use crate::fs::File;
+    #[test]
+    fn gen_snap_tests() -> () {
+        let dir = std::path::Path::new("tests");
 
-#[test]
-fn test_try<R,E>() -> Result<T,E> {
-    let mut file0 = File::open("tests/0_test0.rs");
-    let mut contents = String::new();
-    file0.read_to_string(&mut contents)?;
-    insta::assert_snapshot!("hllo", @"");
-} 
+        for entry in fs::read_dir(dir).unwrap() {
+            let entry = entry.unwrap();
+            let path = entry.path();
+
+            let file_parent = path.parent().unwrap();
+            let file_stem = path.file_stem().unwrap();
+            // let file_ext = path.extension().unwrap();
+            // let b = file_ext == "v";
+            // print!("parent: {:?}\nstem: {:?}\nextension: {:?}\nboolean: {}\n",file_parent,file_stem,file_ext,b);
+            if path.is_file() && path.extension().unwrap() == "v" {
+                print!("I enter in the \"if\"");
+                let snap_path = file_parent.to_str().unwrap().to_string() + "/" + file_stem.to_str().unwrap() + ".snapshot";
+                let mut snap_file = fs::File::open(snap_path).unwrap();
+                let mut snap_contents = String::new();
+                snap_file.read_to_string(&mut snap_contents).unwrap();
+                let mut file = fs::File::open(&path).unwrap();
+                let mut contents = String::new();
+                file.read_to_string(&mut contents).unwrap();
+                assert_eq!(contents,snap_contents);
+                // print!("-------------------> the assert is the boolean: {}\n", contents == snap_contents);
+                //insta::assert_snapshot!(contents, @"");
+            }
+        }
+    }
+}
+
+//     #[test]
+//     fn test_try() -> () {
+//         let mut file0 = fs::File::open("tests/0_test0.rs").unwrap();
+//         let mut contents = String::new();
+//         file0.read_to_string(&mut contents).unwrap();
+//         insta::assert_snapshot!(contents, @r###"
+//         const message: &str = "Hello, World!";
+
+//         fn main() {
+//             println!("{message}");
+
+//             // All have type `Option<i32>`
+//             let number = Some(7);
+//             let letter: Option<i32> = None;
+//             let emoticon: Option<i32> = None;
+
+//             // The `if let` construct reads: "if `let` destructures `number` into
+//             // `Some(i)`, evaluate the block (`{}`).
+//             if let Some(i) = number {
+//                 println!("Matched {:?}!", i);
+//             }
+
+//             // If you need to specify a failure, use an else:
+//             if let Some(j) = letter {
+//                 println!("Matched {:?}!", j);
+//             } else {
+//                 // Destructure failed. Change to the failure case.
+//                 println!("Didn't match a number. Let's go with a letter!");
+//             }
+
+//             // Provide an altered failing condition.
+//             let i_like_letters = false;
+
+//             if let Some(i) = emoticon {
+//                 println!("Matched {:?}!", i);
+//             // Destructure failed. Evaluate an `else if` condition to see if the
+//             // alternate failure branch should be taken:
+//             } else if i_like_letters {
+//                 println!("Didn't match a number. Let's go with a letter!");
+//             } else {
+//                 // The condition evaluated false. This branch is the default:
+//                 println!("I don't like letters. Let's go with an emoticon :)!");
+//             }
+//         }
+//         "###);
+//     }
+// }

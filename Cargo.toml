@@ -5,6 +5,10 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+# the profile [snapshot] should be customized so that snapshot files are automatically generated
+[profile.snapshot]
+inherits = "dev"
+
 [dependencies]
 cargo-insta = "1.26.0"
 insta = "1.26.0"
