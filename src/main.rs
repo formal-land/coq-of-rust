@@ -833,7 +833,7 @@ impl TopLevel {
 }
 
 fn main() {
-    let dir = std::path::Path::new("tests");
+    let dir = std::path::Path::new("examples-from-rust-book");
 
     for entry in fs::read_dir(dir).unwrap() {
         let entry = entry.unwrap();
@@ -889,30 +889,33 @@ fn main() {
             });
         }
     }
-    // gen_snap_tests(); // REMOVE
 }
 
 #[cfg(test)]
 mod tests {
     use std::fs;
-    use std::path::Path;
-    use std::io::{Read, Write};
+    // use std::path::Path;
+    use std::io::{Read};
 
+    //use insta;
+
+    // Look above (search string ".snapshot") to see how .snapshot files are generated
     #[test]
     fn gen_snap_tests() -> () {
-        let dir = std::path::Path::new("tests");
+        //  let mut settings = insta::Settings::new();
 
+        let dir = std::path::Path::new("examples-from-rust-book");
+
+        let mut n_tests  = 0;
         for entry in fs::read_dir(dir).unwrap() {
             let entry = entry.unwrap();
             let path = entry.path();
 
             let file_parent = path.parent().unwrap();
             let file_stem = path.file_stem().unwrap();
-            // let file_ext = path.extension().unwrap();
-            // let b = file_ext == "v";
-            // print!("parent: {:?}\nstem: {:?}\nextension: {:?}\nboolean: {}\n",file_parent,file_stem,file_ext,b);
             if path.is_file() && path.extension().unwrap() == "v" {
-                print!("I enter in the \"if\"");
+                print!("Scanning file {}\n",file_stem.to_str().unwrap()); // ignored during tests
+                n_tests += 1;
                 let snap_path = file_parent.to_str().unwrap().to_string() + "/" + file_stem.to_str().unwrap() + ".snapshot";
                 let mut snap_file = fs::File::open(snap_path).unwrap();
                 let mut snap_contents = String::new();
@@ -920,11 +923,16 @@ mod tests {
                 let mut file = fs::File::open(&path).unwrap();
                 let mut contents = String::new();
                 file.read_to_string(&mut contents).unwrap();
-                assert_eq!(contents,snap_contents);
-                // print!("-------------------> the assert is the boolean: {}\n", contents == snap_contents);
-                //insta::assert_snapshot!(contents, @"");
+                assert_eq!(contents,snap_contents,"The test failed on {}\n",file_stem.to_str().unwrap());
+                // print!("boolean number {} is: {}\n",n_tests, contents == snap_contents);
+                // settings.set_description(file_stem.to_str().unwrap());
+                // settings.bind(|| {
+                //     insta::assert_snapshot!(file_stem.to_str().unwrap(), contents);
+                //     }
+                // )
             }
         }
+        print!("We performed {} tests\n",n_tests);
     }
 }
 
