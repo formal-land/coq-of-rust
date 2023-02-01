@@ -16,8 +16,11 @@ extern crate rustc_middle;
 extern crate rustc_session;
 extern crate rustc_span;
 
+extern crate insta;
+
 use std::{fs, io::{Read, Write}, path, process, str};
 
+use insta::assert_debug_snapshot;
 use pretty::RcDoc;
 use rustc_errors::registry;
 use rustc_session::config::{self, CheckCfg};
@@ -884,3 +887,14 @@ fn main() {
         }
     }
 }
+
+
+use crate::fs::File;
+
+#[test]
+fn test_try<R,E>() -> Result<T,E> {
+    let mut file0 = File::open("tests/0_test0.rs");
+    let mut contents = String::new();
+    file0.read_to_string(&mut contents)?;
+    insta::assert_snapshot!("hllo", @"");
+} 
