@@ -16,18 +16,29 @@ extern crate rustc_middle;
 extern crate rustc_session;
 extern crate rustc_span;
 
-use std::{path, process, str};
+use std::{fmt, io, path, process};
 
 use pretty::RcDoc;
+
+mod render;
 use rustc_errors::registry;
 use rustc_session::config::{self, CheckCfg};
 use rustc_span::source_map;
 
+#[derive(Debug)]
+
 struct Path {
     segments: Vec<String>,
 }
+impl fmt::Display for Path {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let segments = self.segments.join("/");
+        write!(f, "{}", segments)
+    }
+}
 
 /// The enum [Pat] represents the patterns which can be matched
+#[derive(Debug)]
 enum Pat {
     Wild,
     Struct(Path, Vec<(String, Pat)>),
@@ -40,12 +51,14 @@ enum Pat {
 
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
+#[derive(Debug)]
 struct MatchArm {
     pat: Pat,
     body: Expr,
 }
 
 /// Enum [Expr] represents the AST of rust terms.
+#[derive(Debug)]
 enum Expr {
     LocalVar(String),
     Var(Path),
@@ -130,6 +143,9 @@ enum TopLevelItem {
 }
 
 struct TopLevel(Vec<TopLevelItem>);
+
+pub const INDENT_SPACE_OFFSET: isize = 2;
+pub const LINE_WIDTH: usize = 80;
 
 /// [compile_error] prints a message to stderr and outputs a value
 fn compile_error<A>(value: A, message: String) -> A {
@@ -410,7 +426,6 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
     }
 }
 
-
 /// The function [compile_stmts] compiles rust *lists* of statements (such as
 /// they are found in *blocks*) into coq-of-rust. See:
 /// - https://doc.rust-lang.org/reference/expressions/block-expr.html and
@@ -538,31 +553,6 @@ fn compile_top_level(tcx: rustc_middle::ty::TyCtxt) -> TopLevel {
     )
 }
 
-fn paren(with_paren: bool, doc: RcDoc<()>) -> RcDoc<()> {
-    if with_paren {
-        RcDoc::text("(").append(doc).append(RcDoc::text(")"))
-    } else {
-        doc
-    }
-}
-
-fn bracket(doc: RcDoc<()>) -> RcDoc<()> {
-    RcDoc::text("[").append(doc).append(RcDoc::text("]"))
-}
-
-fn literal_to_doc(literal: &rustc_ast::LitKind) -> RcDoc<()> {
-    match literal {
-        rustc_ast::LitKind::Str(s, _) => RcDoc::text(format!("{:?}", s)),
-        rustc_ast::LitKind::Int(i, _) => RcDoc::text(format!("{}", i)),
-        rustc_ast::LitKind::Float(f, _) => RcDoc::text(format!("{}", f)),
-        rustc_ast::LitKind::Bool(b) => RcDoc::text(format!("{}", b)),
-        rustc_ast::LitKind::Char(c) => RcDoc::text(format!("{}", c)),
-        rustc_ast::LitKind::Byte(b) => RcDoc::text(format!("{}", b)),
-        rustc_ast::LitKind::ByteStr(b, _) => RcDoc::text(format!("{:?}", b)),
-        rustc_ast::LitKind::Err => RcDoc::text("Err"),
-    }
-}
-
 impl Path {
     fn to_doc(&self) -> RcDoc<()> {
         RcDoc::intersperse(
@@ -579,7 +569,7 @@ impl Pat {
             Pat::Struct(path, fields) => {
                 path.to_doc()
                     .append(RcDoc::space())
-                    .append(bracket(RcDoc::intersperse(
+                    .append(render::bracket(RcDoc::intersperse(
                         fields.iter().map(|(name, expr)| {
                             RcDoc::text(name)
                                 .append(RcDoc::space())
@@ -590,16 +580,18 @@ impl Pat {
                         RcDoc::text(","),
                     )))
             }
-            Pat::TupleStruct(path, fields) => path.to_doc().append(RcDoc::space()).append(paren(
-                true,
-                RcDoc::intersperse(fields.iter().map(|field| field.to_doc()), RcDoc::text(",")),
-            )),
-            Pat::Or(pats) => paren(
+            Pat::TupleStruct(path, fields) => {
+                path.to_doc().append(RcDoc::space()).append(render::paren(
+                    true,
+                    RcDoc::intersperse(fields.iter().map(|field| field.to_doc()), RcDoc::text(",")),
+                ))
+            }
+            Pat::Or(pats) => render::paren(
                 true,
                 RcDoc::intersperse(pats.iter().map(|pat| pat.to_doc()), RcDoc::text("|")),
             ),
             Pat::Path(path) => path.to_doc(),
-            Pat::Tuple(pats) => paren(
+            Pat::Tuple(pats) => render::paren(
                 true,
                 RcDoc::intersperse(pats.iter().map(|pat| pat.to_doc()), RcDoc::text(",")),
             ),
@@ -623,9 +615,11 @@ impl Expr {
     fn to_doc(&self, with_paren: bool) -> RcDoc<()> {
         match self {
             Expr::LocalVar(ref name) => RcDoc::text(name),
+
             Expr::Var(path) => path.to_doc(),
-            Expr::Literal(literal) => literal_to_doc(literal),
-            Expr::App { func, args } => paren(
+
+            Expr::Literal(literal) => render::literal_to_doc(literal),
+            Expr::App { func, args } => render::paren(
                 with_paren,
                 func.to_doc(true)
                     .append(RcDoc::space())
@@ -645,7 +639,7 @@ impl Expr {
                 .append(RcDoc::text("in"))
                 .append(RcDoc::hardline())
                 .append(body.to_doc(false)),
-            Expr::Lambda { args, body } => paren(
+            Expr::Lambda { args, body } => render::paren(
                 with_paren,
                 RcDoc::text("fun")
                     .append(RcDoc::space())
@@ -664,11 +658,12 @@ impl Expr {
                 .append(RcDoc::text(";;"))
                 .append(RcDoc::hardline())
                 .append(second.to_doc(false)),
-            Expr::Array { elements } => bracket(RcDoc::intersperse(
+
+            Expr::Array { elements } => render::bracket(RcDoc::intersperse(
                 elements.iter().map(|element| element.to_doc(false)),
                 RcDoc::text(";"),
             )),
-            Expr::Tuple { elements } => paren(
+            Expr::Tuple { elements } => render::paren(
                 true,
                 RcDoc::intersperse(
                     elements.iter().map(|element| element.to_doc(false)),
@@ -686,21 +681,26 @@ impl Expr {
                 condition,
                 success,
                 failure,
-            } => paren(
+            } => render::paren(
                 with_paren,
-                RcDoc::text("if")
+                (RcDoc::text("if")
                     .append(RcDoc::space())
                     .append(condition.to_doc(false))
                     .append(RcDoc::space())
-                    .append(RcDoc::text("then"))
-                    .append(RcDoc::space())
-                    .append(success.to_doc(false))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text("else"))
-                    .append(RcDoc::space())
-                    .append(failure.to_doc(false)),
+                    .append(RcDoc::text("then").append(RcDoc::hardline()))
+                    .append(success.to_doc(false).group()))
+                .nest(INDENT_SPACE_OFFSET)
+                .group()
+                .append(RcDoc::hardline())
+                .append(
+                    RcDoc::text("else")
+                        .append(RcDoc::hardline())
+                        .append(failure.to_doc(false).group())
+                        .nest(INDENT_SPACE_OFFSET)
+                        .group(),
+                ),
             ),
-            Expr::Loop { body, loop_source } => paren(
+            Expr::Loop { body, loop_source } => render::paren(
                 with_paren,
                 RcDoc::text("loop")
                     .append(RcDoc::space())
@@ -722,7 +722,7 @@ impl Expr {
                 ))
                 .append(RcDoc::space())
                 .append(RcDoc::text("end")),
-            Expr::Assign { left, right } => paren(
+            Expr::Assign { left, right } => render::paren(
                 with_paren,
                 RcDoc::text("assign")
                     .append(RcDoc::space())
@@ -736,7 +736,7 @@ impl Expr {
                 bin_op,
                 left,
                 right,
-            } => paren(
+            } => render::paren(
                 with_paren,
                 RcDoc::text("assign")
                     .append(RcDoc::space())
@@ -754,8 +754,10 @@ impl Expr {
                 .to_doc(true)
                 .append(RcDoc::text("."))
                 .append(RcDoc::text(field)),
-            Expr::Index { base, index } => base.to_doc(true).append(bracket(index.to_doc(false))),
-            Expr::Struct { path, fields, base } => paren(
+            Expr::Index { base, index } => base
+                .to_doc(true)
+                .append(render::bracket(index.to_doc(false))),
+            Expr::Struct { path, fields, base } => render::paren(
                 with_paren,
                 RcDoc::text("struct")
                     .append(RcDoc::space())
@@ -797,19 +799,23 @@ impl TopLevelItem {
                 ))
                 .append(RcDoc::space())
                 .append(RcDoc::text(":="))
-                .append((RcDoc::hardline().append(body.to_doc(false))).nest(2))
-                .append(RcDoc::text(".")),
+                .append((RcDoc::hardline().append(body.to_doc(false))).nest(INDENT_SPACE_OFFSET))
+                .append(RcDoc::text("."))
+                .group(),
             TopLevelItem::Module { name, body } => RcDoc::text("Module")
                 .append(RcDoc::space())
                 .append(RcDoc::text(name))
                 .append(RcDoc::space())
                 .append(RcDoc::text(":="))
-                .append((RcDoc::hardline().append(body.to_doc())).nest(2))
-                .append(RcDoc::text(".")),
+                .append((RcDoc::hardline().append(body.to_doc())).nest(INDENT_SPACE_OFFSET))
+                .append(RcDoc::text("."))
+                .group(),
+
             TopLevelItem::Error(message) => RcDoc::text("Error")
                 .append(RcDoc::space())
                 .append(RcDoc::text(message))
-                .append(RcDoc::text(".")),
+                .append(RcDoc::text("."))
+                .group(),
         }
     }
 }
@@ -835,7 +841,8 @@ fn main() {
         .current_dir(".")
         .output()
         .unwrap();
-    let sysroot = str::from_utf8(&out.stdout).unwrap().trim();
+
+    let sysroot = std::str::from_utf8(&out.stdout).unwrap().trim();
     let config = rustc_interface::Config {
         opts: config::Options {
             maybe_sysroot: Some(path::PathBuf::from(sysroot)),
@@ -844,45 +851,77 @@ fn main() {
         input: config::Input::Str {
             name: source_map::FileName::Custom("main.rs".to_string()),
             input: r#"
-const message: &str = "Hello, World!";
+    const message: &str = "Hello, World!";
 
-fn main() {
-    println!("{message}");
+    fn main() {
+        println!("{message}");
 
-    // All have type `Option<i32>`
-    let number = Some(7);
-    let letter: Option<i32> = None;
-    let emoticon: Option<i32> = None;
+        // All have type `Option<i32>`
+        let number = Some(7);
+        let letter: Option<i32> = None;
+        let emoticon: Option<i32> = None;
 
-    // The `if let` construct reads: "if `let` destructures `number` into
-    // `Some(i)`, evaluate the block (`{}`).
-    if let Some(i) = number {
-        println!("Matched {:?}!", i);
+        // The `if let` construct reads: "if `let` destructures `number` into
+        // `Some(i)`, evaluate the block (`{}`).
+        if let Some(i) = number {
+            println!("Matched {:?}!", i);
+        }
+
+        // If you need to specify a failure, use an else:
+        if let Some(i) = letter {
+            println!("Matched {:?}!", i);
+        } else {
+            // Destructure failed. Change to the failure case.
+            println!("Didn't match a number. Let's go with a letter!");
+        }
+
+        // Provide an altered failing condition.
+        let i_like_letters = false;
+
+        if let Some(i) = emoticon {
+            println!("Matched {:?}!", i);
+        // Destructure failed. Evaluate an `else if` condition to see if the
+        // alternate failure branch should be taken:
+        } else if i_like_letters {
+            println!("Didn't match a number. Let's go with a letter!");
+        } else {
+            // The condition evaluated false. This branch is the default:
+            println!("I don't like letters. Let's go with an emoticon :)!");
+        }
     }
 
-    // If you need to specify a failure, use an else:
-    if let Some(i) = letter {
-        println!("Matched {:?}!", i);
-    } else {
-        // Destructure failed. Change to the failure case.
-        println!("Didn't match a number. Let's go with a letter!");
+    struct DauntlesslyDestroyingTheGreenField {
+        field: Option<String>,
     }
-
-    // Provide an altered failing condition.
-    let i_like_letters = false;
-
-    if let Some(i) = emoticon {
-        println!("Matched {:?}!", i);
-    // Destructure failed. Evaluate an `else if` condition to see if the
-    // alternate failure branch should be taken:
-    } else if i_like_letters {
-        println!("Didn't match a number. Let's go with a letter!");
-    } else {
-        // The condition evaluated false. This branch is the default:
-        println!("I don't like letters. Let's go with an emoticon :)!");
+    
+    struct CarvedInConcrete {
+        d: Option<DauntlesslyDestroyingTheGreenField>,
     }
-}
-"#
+    
+    struct BuildersBuildAPyramid {
+        c: Option<CarvedInConcrete>,
+    }
+    
+    struct ALongLongTimeAgo {
+        b: Option<BuildersBuildAPyramid>,
+    }
+    
+    fn pyramid_of_doom(a: ALongLongTimeAgo) {
+        if let Some(b) = a.b {
+            if let Some(c) = b.c {
+                if let Some(d) = c.d {
+                    if let Some(f) = d.field {
+                        println!("Field is here: {}", f);
+                        println!("Field is here: {}", f);
+                        println!("Field is here: {}", f);
+                    } else {
+                        println!("Field was destroyed")
+                    }
+                }
+            }
+        }
+    }
+    "#
             .to_string(),
         },
         // diagnostic_output: rustc_session::DiagnosticOutput::Default,
@@ -903,7 +942,7 @@ fn main() {
         compiler.enter(|queries| {
             queries.global_ctxt().unwrap().take().enter(|tcx| {
                 let top_level = compile_top_level(tcx);
-                println!("{}", top_level.to_pretty(80));
+                println!("{}", top_level.to_pretty(LINE_WIDTH));
             })
         });
     });
