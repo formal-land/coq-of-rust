@@ -10,8 +10,6 @@ edition = "2021"
 inherits = "dev"
 
 [dependencies]
-cargo-insta = "1.26.0"
-insta = "1.26.0"
 pretty = "0.11.3"
 
 [package.metadata.rust-analyzer]

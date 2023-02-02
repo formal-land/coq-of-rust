@@ -16,11 +16,8 @@ extern crate rustc_middle;
 extern crate rustc_session;
 extern crate rustc_span;
 
-extern crate insta;
-
 use std::{fs, io::{Read, Write}, path, process, str};
 
-use insta::assert_debug_snapshot;
 use pretty::RcDoc;
 use rustc_errors::registry;
 use rustc_session::config::{self, CheckCfg};
@@ -896,19 +893,14 @@ mod tests {
     use std::fs;
     use std::io::{Read};
 
-    //use insta;
-
     /// Look above (search string ".snapshot") to see how .snapshot files are generated
     /// Note that the function [gen_snap_tests] tests all the files of the directory
     /// examples-from-rust-book, but however, it is regarded by [cargo test] as
     /// a *unique* unitary test
     #[test]
     fn gen_snap_tests() -> () {
-        //  let mut settings = insta::Settings::new();
-
         let dir = std::path::Path::new("examples-from-rust-book");
 
-        let mut n_tests  = 0;
         for entry in fs::read_dir(dir).unwrap() {
             let entry = entry.unwrap();
             let path = entry.path();
@@ -917,7 +909,6 @@ mod tests {
             let file_stem = path.file_stem().unwrap();
             if path.is_file() && path.extension().unwrap() == "v" {
                 print!("Scanning file {}\n",file_stem.to_str().unwrap()); // ignored during tests
-                n_tests += 1;
                 let snap_path = file_parent.to_str().unwrap().to_string() + "/" + file_stem.to_str().unwrap() + ".snapshot";
                 let mut snap_file = fs::File::open(snap_path).unwrap();
                 let mut snap_contents = String::new();
@@ -926,14 +917,7 @@ mod tests {
                 let mut contents = String::new();
                 file.read_to_string(&mut contents).unwrap();
                 assert_eq!(contents,snap_contents,"The test failed on {}\n",file_stem.to_str().unwrap());
-                // Some dead code using unsucessfully the insta crate
-                // settings.set_description(file_stem.to_str().unwrap());
-                // settings.bind(|| {
-                //     insta::assert_snapshot!(file_stem.to_str().unwrap(), contents);
-                //     }
-                // )
             }
         }
-        print!("We performed {} tests\n",n_tests);
     }
 }
