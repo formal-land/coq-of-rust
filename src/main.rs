@@ -894,12 +894,14 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use std::fs;
-    // use std::path::Path;
     use std::io::{Read};
 
     //use insta;
 
-    // Look above (search string ".snapshot") to see how .snapshot files are generated
+    /// Look above (search string ".snapshot") to see how .snapshot files are generated
+    /// Note that the function [gen_snap_tests] tests all the files of the directory
+    /// examples-from-rust-book, but however, it is regarded by [cargo test] as
+    /// a *unique* unitary test
     #[test]
     fn gen_snap_tests() -> () {
         //  let mut settings = insta::Settings::new();
@@ -924,7 +926,7 @@ mod tests {
                 let mut contents = String::new();
                 file.read_to_string(&mut contents).unwrap();
                 assert_eq!(contents,snap_contents,"The test failed on {}\n",file_stem.to_str().unwrap());
-                // print!("boolean number {} is: {}\n",n_tests, contents == snap_contents);
+                // Some dead code using unsucessfully the insta crate
                 // settings.set_description(file_stem.to_str().unwrap());
                 // settings.bind(|| {
                 //     insta::assert_snapshot!(file_stem.to_str().unwrap(), contents);
@@ -935,51 +937,3 @@ mod tests {
         print!("We performed {} tests\n",n_tests);
     }
 }
-
-//     #[test]
-//     fn test_try() -> () {
-//         let mut file0 = fs::File::open("tests/0_test0.rs").unwrap();
-//         let mut contents = String::new();
-//         file0.read_to_string(&mut contents).unwrap();
-//         insta::assert_snapshot!(contents, @r###"
-//         const message: &str = "Hello, World!";
-
-//         fn main() {
-//             println!("{message}");
-
-//             // All have type `Option<i32>`
-//             let number = Some(7);
-//             let letter: Option<i32> = None;
-//             let emoticon: Option<i32> = None;
-
-//             // The `if let` construct reads: "if `let` destructures `number` into
-//             // `Some(i)`, evaluate the block (`{}`).
-//             if let Some(i) = number {
-//                 println!("Matched {:?}!", i);
-//             }
-
-//             // If you need to specify a failure, use an else:
-//             if let Some(j) = letter {
-//                 println!("Matched {:?}!", j);
-//             } else {
-//                 // Destructure failed. Change to the failure case.
-//                 println!("Didn't match a number. Let's go with a letter!");
-//             }
-
-//             // Provide an altered failing condition.
-//             let i_like_letters = false;
-
-//             if let Some(i) = emoticon {
-//                 println!("Matched {:?}!", i);
-//             // Destructure failed. Evaluate an `else if` condition to see if the
-//             // alternate failure branch should be taken:
-//             } else if i_like_letters {
-//                 println!("Didn't match a number. Let's go with a letter!");
-//             } else {
-//                 // The condition evaluated false. This branch is the default:
-//                 println!("I don't like letters. Let's go with an emoticon :)!");
-//             }
-//         }
-//         "###);
-//     }
-// }
