@@ -16,7 +16,11 @@ extern crate rustc_middle;
 extern crate rustc_session;
 extern crate rustc_span;
 
-use std::{path, process, str};
+use std::{
+    fs,
+    io::{Read, Write},
+    path, process, str,
+};
 
 use pretty::RcDoc;
 use rustc_errors::registry;
@@ -409,7 +413,6 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
         ),
     }
 }
-
 
 /// The function [compile_stmts] compiles rust *lists* of statements (such as
 /// they are found in *blocks*) into coq-of-rust. See:
@@ -830,81 +833,104 @@ impl TopLevel {
 }
 
 fn main() {
-    let out = process::Command::new("rustc")
-        .arg("--print=sysroot")
-        .current_dir(".")
-        .output()
-        .unwrap();
-    let sysroot = str::from_utf8(&out.stdout).unwrap().trim();
-    let config = rustc_interface::Config {
-        opts: config::Options {
-            maybe_sysroot: Some(path::PathBuf::from(sysroot)),
-            ..config::Options::default()
-        },
-        input: config::Input::Str {
-            name: source_map::FileName::Custom("main.rs".to_string()),
-            input: r#"
-const message: &str = "Hello, World!";
+    let dir = std::path::Path::new("examples-from-rust-book");
 
-fn main() {
-    println!("{message}");
+    for entry in fs::read_dir(dir).unwrap() {
+        let entry = entry.unwrap();
+        let path = entry.path();
 
-    // All have type `Option<i32>`
-    let number = Some(7);
-    let letter: Option<i32> = None;
-    let emoticon: Option<i32> = None;
+        if path.is_file() && path.extension().unwrap() == "rs" {
+            let mut file = fs::File::open(&path).unwrap();
+            let mut contents = String::new();
+            file.read_to_string(&mut contents).unwrap();
 
-    // The `if let` construct reads: "if `let` destructures `number` into
-    // `Some(i)`, evaluate the block (`{}`).
-    if let Some(i) = number {
-        println!("Matched {:?}!", i);
-    }
+            let new_stem = path.file_stem().unwrap().to_str().unwrap();
+            let new_path = path.with_file_name(new_stem.to_string() + ".v");
+            // The line below producing test files with the .snapshot extension
+            // can uncommented when needed.
+            // let new_path = path.with_file_name(new_stem.to_string() + ".snapshot");
+            let mut new_file = fs::File::create(&new_path).unwrap();
 
-    // If you need to specify a failure, use an else:
-    if let Some(i) = letter {
-        println!("Matched {:?}!", i);
-    } else {
-        // Destructure failed. Change to the failure case.
-        println!("Didn't match a number. Let's go with a letter!");
-    }
-
-    // Provide an altered failing condition.
-    let i_like_letters = false;
-
-    if let Some(i) = emoticon {
-        println!("Matched {:?}!", i);
-    // Destructure failed. Evaluate an `else if` condition to see if the
-    // alternate failure branch should be taken:
-    } else if i_like_letters {
-        println!("Didn't match a number. Let's go with a letter!");
-    } else {
-        // The condition evaluated false. This branch is the default:
-        println!("I don't like letters. Let's go with an emoticon :)!");
+            let out = process::Command::new("rustc")
+                .arg("--print=sysroot")
+                .current_dir(".")
+                .output()
+                .unwrap();
+            let sysroot = str::from_utf8(&out.stdout).unwrap().trim();
+            let config = rustc_interface::Config {
+                opts: config::Options {
+                    maybe_sysroot: Some(path::PathBuf::from(sysroot)),
+                    ..config::Options::default()
+                },
+                input: config::Input::Str {
+                    name: source_map::FileName::Custom("main.rs".to_string()),
+                    input: contents.to_string(),
+                },
+                crate_cfg: rustc_hash::FxHashSet::default(),
+                crate_check_cfg: CheckCfg::default(),
+                input_path: None,
+                output_dir: Some(dir.to_path_buf()),
+                output_file: Some(new_path),
+                file_loader: None,
+                lint_caps: rustc_hash::FxHashMap::default(),
+                parse_sess_created: None,
+                register_lints: None,
+                override_queries: None,
+                make_codegen_backend: None,
+                registry: registry::Registry::new(&rustc_error_codes::DIAGNOSTICS),
+            };
+            rustc_interface::run_compiler(config, |compiler| {
+                compiler.enter(|queries| {
+                    queries.global_ctxt().unwrap().take().enter(|tcx| {
+                        let top_level = compile_top_level(tcx);
+                        new_file
+                            .write_all(top_level.to_pretty(80).as_bytes())
+                            .unwrap();
+                    })
+                });
+            });
+        }
     }
 }
-"#
-            .to_string(),
-        },
-        // diagnostic_output: rustc_session::DiagnosticOutput::Default,
-        crate_cfg: rustc_hash::FxHashSet::default(),
-        crate_check_cfg: CheckCfg::default(),
-        input_path: None,
-        output_dir: None,
-        output_file: None,
-        file_loader: None,
-        lint_caps: rustc_hash::FxHashMap::default(),
-        parse_sess_created: None,
-        register_lints: None,
-        override_queries: None,
-        make_codegen_backend: None,
-        registry: registry::Registry::new(&rustc_error_codes::DIAGNOSTICS),
-    };
-    rustc_interface::run_compiler(config, |compiler| {
-        compiler.enter(|queries| {
-            queries.global_ctxt().unwrap().take().enter(|tcx| {
-                let top_level = compile_top_level(tcx);
-                println!("{}", top_level.to_pretty(80));
-            })
-        });
-    });
+
+#[cfg(test)]
+mod tests {
+    use std::fs;
+    use std::io::Read;
+
+    /// Look above (search string ".snapshot") to see how .snapshot files are generated
+    /// Note that the function [gen_snap_tests] tests all the files of the directory
+    /// examples-from-rust-book, but however, it is regarded by [cargo test] as
+    /// a *unique* unitary test
+    #[test]
+    fn gen_snap_tests() -> () {
+        let dir = std::path::Path::new("examples-from-rust-book");
+
+        for entry in fs::read_dir(dir).unwrap() {
+            let entry = entry.unwrap();
+            let path = entry.path();
+
+            let file_parent = path.parent().unwrap();
+            let file_stem = path.file_stem().unwrap();
+            if path.is_file() && path.extension().unwrap() == "v" {
+                print!("Scanning file {}\n", file_stem.to_str().unwrap()); // ignored during tests
+                let snap_path = file_parent.to_str().unwrap().to_string()
+                    + "/"
+                    + file_stem.to_str().unwrap()
+                    + ".snapshot";
+                let mut snap_file = fs::File::open(snap_path).unwrap();
+                let mut snap_contents = String::new();
+                snap_file.read_to_string(&mut snap_contents).unwrap();
+                let mut file = fs::File::open(&path).unwrap();
+                let mut contents = String::new();
+                file.read_to_string(&mut contents).unwrap();
+                assert_eq!(
+                    contents,
+                    snap_contents,
+                    "The test failed on {}\n",
+                    file_stem.to_str().unwrap()
+                );
+            }
+        }
+    }
 }

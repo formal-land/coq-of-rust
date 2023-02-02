@@ -13,3 +13,7 @@ Cargo.lock
 # Added by cargo
 
 /target
+
+# we ignore Coq files, which should be automatically generated
+
+*.v

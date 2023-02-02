@@ -5,8 +5,16 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+# the profile [snapshot] should be customized so that snapshot files are automatically generated
+[profile.snapshot]
+inherits = "dev"
+
 [dependencies]
 pretty = "0.11.3"
+
+# [dev-dependencies]
+# rustfmt = "1.5.1-nightly"
+# rustfmt-nightly = "1.4.21"
 
 [package.metadata.rust-analyzer]
 rustc_private=true
