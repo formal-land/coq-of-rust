@@ -842,13 +842,18 @@ impl TopLevelItem {
                 .append(RcDoc::text(".")),
             TopLevelItem::Type { name, kind } => RcDoc::text("Type")
                 .append(RcDoc::space())
+                .append(RcDoc::text("{"))
+                .append(RcDoc::space())
+                .append(RcDoc::text("name:"))
+                .append(RcDoc::space())
                 .append(RcDoc::text(name))
                 .append(RcDoc::text(","))
                 .append(RcDoc::space())
                 .append(RcDoc::text("kind:"))
                 .append(RcDoc::space())
                 .append(kind.to_doc())
-                .append(RcDoc::text(".")),
+                .append(RcDoc::space())
+                .append(RcDoc::text("}.")),
             TopLevelItem::Error(message) => RcDoc::text("Error")
                 .append(RcDoc::space())
                 .append(RcDoc::text(message))
