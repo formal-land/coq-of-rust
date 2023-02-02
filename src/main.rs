@@ -16,7 +16,11 @@ extern crate rustc_middle;
 extern crate rustc_session;
 extern crate rustc_span;
 
-use std::{fs, io::{Read, Write}, path, process, str};
+use std::{
+    fs,
+    io::{Read, Write},
+    path, process, str,
+};
 
 use pretty::RcDoc;
 use rustc_errors::registry;
@@ -409,7 +413,6 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
         ),
     }
 }
-
 
 /// The function [compile_stmts] compiles rust *lists* of statements (such as
 /// they are found in *blocks*) into coq-of-rust. See:
@@ -880,7 +883,9 @@ fn main() {
                 compiler.enter(|queries| {
                     queries.global_ctxt().unwrap().take().enter(|tcx| {
                         let top_level = compile_top_level(tcx);
-                        new_file.write_all(top_level.to_pretty(80).as_bytes()).unwrap();
+                        new_file
+                            .write_all(top_level.to_pretty(80).as_bytes())
+                            .unwrap();
                     })
                 });
             });
@@ -891,7 +896,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use std::fs;
-    use std::io::{Read};
+    use std::io::Read;
 
     /// Look above (search string ".snapshot") to see how .snapshot files are generated
     /// Note that the function [gen_snap_tests] tests all the files of the directory
@@ -908,15 +913,23 @@ mod tests {
             let file_parent = path.parent().unwrap();
             let file_stem = path.file_stem().unwrap();
             if path.is_file() && path.extension().unwrap() == "v" {
-                print!("Scanning file {}\n",file_stem.to_str().unwrap()); // ignored during tests
-                let snap_path = file_parent.to_str().unwrap().to_string() + "/" + file_stem.to_str().unwrap() + ".snapshot";
+                print!("Scanning file {}\n", file_stem.to_str().unwrap()); // ignored during tests
+                let snap_path = file_parent.to_str().unwrap().to_string()
+                    + "/"
+                    + file_stem.to_str().unwrap()
+                    + ".snapshot";
                 let mut snap_file = fs::File::open(snap_path).unwrap();
                 let mut snap_contents = String::new();
                 snap_file.read_to_string(&mut snap_contents).unwrap();
                 let mut file = fs::File::open(&path).unwrap();
                 let mut contents = String::new();
                 file.read_to_string(&mut contents).unwrap();
-                assert_eq!(contents,snap_contents,"The test failed on {}\n",file_stem.to_str().unwrap());
+                assert_eq!(
+                    contents,
+                    snap_contents,
+                    "The test failed on {}\n",
+                    file_stem.to_str().unwrap()
+                );
             }
         }
     }
