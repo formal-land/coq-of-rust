@@ -118,6 +118,14 @@ enum Expr {
     },
 }
 
+/// [RustTypeKind] represents the different kinds of rust types: [struct]s,
+/// [enum]s, aliases...
+enum RustTypeKind {
+    RustStruct,
+    RustEnum,
+    RustAlias,
+}
+
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
 enum TopLevelItem {
@@ -129,6 +137,10 @@ enum TopLevelItem {
     Module {
         name: String,
         body: TopLevel,
+    },
+    Type {
+        name: String,
+        kind: RustTypeKind,
     },
     Error(String),
 }
@@ -516,10 +528,19 @@ fn compile_top_level_item(
             Some(TopLevelItem::Error("ForeignMod".to_string()))
         }
         rustc_hir::ItemKind::GlobalAsm(_) => Some(TopLevelItem::Error("GlobalAsm".to_string())),
-        rustc_hir::ItemKind::TyAlias(_, _) => Some(TopLevelItem::Error("TyAlias".to_string())),
+        rustc_hir::ItemKind::TyAlias(_, _) => Some(TopLevelItem::Type {
+            name: item.ident.name.to_string(),
+            kind: RustTypeKind::RustAlias,
+        }),
         rustc_hir::ItemKind::OpaqueTy(_) => Some(TopLevelItem::Error("OpaqueTy".to_string())),
-        rustc_hir::ItemKind::Enum(_, _) => Some(TopLevelItem::Error("Enum".to_string())),
-        rustc_hir::ItemKind::Struct(_, _) => Some(TopLevelItem::Error("Struct".to_string())),
+        rustc_hir::ItemKind::Enum(_, _) => Some(TopLevelItem::Type {
+            name: item.ident.name.to_string(),
+            kind: RustTypeKind::RustEnum,
+        }),
+        rustc_hir::ItemKind::Struct(_, _) => Some(TopLevelItem::Type {
+            name: item.ident.name.to_string(),
+            kind: RustTypeKind::RustStruct,
+        }),
         rustc_hir::ItemKind::Union(_, _) => Some(TopLevelItem::Error("Union".to_string())),
         rustc_hir::ItemKind::Trait(_, _, _, _, _) => Some(TopLevelItem::Error("Trait".to_string())),
         rustc_hir::ItemKind::TraitAlias(_, _) => {
@@ -788,6 +809,16 @@ impl Expr {
     }
 }
 
+impl RustTypeKind {
+    fn to_doc(&self) -> RcDoc {
+        match self {
+            RustTypeKind::RustStruct => RcDoc::text("struct"),
+            RustTypeKind::RustEnum => RcDoc::text("enum"),
+            RustTypeKind::RustAlias => RcDoc::text("alias"),
+        }
+    }
+}
+
 impl TopLevelItem {
     fn to_doc(&self) -> RcDoc {
         match self {
@@ -808,6 +839,15 @@ impl TopLevelItem {
                 .append(RcDoc::space())
                 .append(RcDoc::text(":="))
                 .append((RcDoc::hardline().append(body.to_doc())).nest(2))
+                .append(RcDoc::text(".")),
+            TopLevelItem::Type { name, kind } => RcDoc::text("Type")
+                .append(RcDoc::space())
+                .append(RcDoc::text(name))
+                .append(RcDoc::text(","))
+                .append(RcDoc::space())
+                .append(RcDoc::text("kind:"))
+                .append(RcDoc::space())
+                .append(kind.to_doc())
                 .append(RcDoc::text(".")),
             TopLevelItem::Error(message) => RcDoc::text("Error")
                 .append(RcDoc::space())
