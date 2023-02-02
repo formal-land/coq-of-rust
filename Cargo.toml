@@ -12,5 +12,8 @@ inherits = "dev"
 [dependencies]
 pretty = "0.11.3"
 
+[dev-dependencies]
+rustfmt = "1.5.1-nightly" 
+
 [package.metadata.rust-analyzer]
 rustc_private=true
