@@ -16,7 +16,7 @@ extern crate rustc_middle;
 extern crate rustc_session;
 extern crate rustc_span;
 
-use std::{fmt, io, path, process};
+use std::{fmt, path, process};
 
 use pretty::RcDoc;
 
@@ -26,14 +26,13 @@ use rustc_session::config::{self, CheckCfg};
 use rustc_span::source_map;
 
 #[derive(Debug)]
-
 struct Path {
     segments: Vec<String>,
 }
 impl fmt::Display for Path {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let segments = self.segments.join("/");
-        write!(f, "{}", segments)
+        write!(f, "{segments}")
     }
 }
 
@@ -149,7 +148,7 @@ pub const LINE_WIDTH: usize = 80;
 
 /// [compile_error] prints a message to stderr and outputs a value
 fn compile_error<A>(value: A, message: String) -> A {
-    eprintln!("{}", message);
+    eprintln!("{message}");
     value
 }
 
@@ -192,14 +191,12 @@ fn compile_pat(pat: &rustc_hir::Pat) -> Pat {
         }
         rustc_hir::PatKind::TupleStruct(qpath, pats, _) => {
             let path = compile_qpath(qpath);
-            let pats = pats.iter().map(|pat| compile_pat(pat)).collect();
+            let pats = pats.iter().map(compile_pat).collect();
             Pat::TupleStruct(path, pats)
         }
-        rustc_hir::PatKind::Or(pats) => Pat::Or(pats.iter().map(|pat| compile_pat(pat)).collect()),
+        rustc_hir::PatKind::Or(pats) => Pat::Or(pats.iter().map(compile_pat).collect()),
         rustc_hir::PatKind::Path(qpath) => Pat::Path(compile_qpath(qpath)),
-        rustc_hir::PatKind::Tuple(pats, _) => {
-            Pat::Tuple(pats.iter().map(|pat| compile_pat(pat)).collect())
-        }
+        rustc_hir::PatKind::Tuple(pats, _) => Pat::Tuple(pats.iter().map(compile_pat).collect()),
         rustc_hir::PatKind::Box(pat) => compile_pat(pat),
         rustc_hir::PatKind::Ref(pat, _) => compile_pat(pat),
         rustc_hir::PatKind::Lit(expr) => match expr.kind {
@@ -278,7 +275,7 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
         rustc_hir::ExprKind::Binary(bin_op, expr_left, expr_right) => {
             let expr_left = Box::new(compile_expr(hir, expr_left));
             let expr_right = Box::new(compile_expr(hir, expr_right));
-            let func = Box::new(Expr::LocalVar(compile_bin_op(&bin_op)));
+            let func = Box::new(Expr::LocalVar(compile_bin_op(bin_op)));
             Expr::App {
                 func,
                 args: vec![*expr_left, *expr_right],
@@ -324,8 +321,8 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
             let arms = arms
                 .iter()
                 .map(|arm| {
-                    let pat = compile_pat(&arm.pat);
-                    let body = compile_expr(hir, &arm.body);
+                    let pat = compile_pat(arm.pat);
+                    let body = compile_expr(hir, arm.body);
                     MatchArm { pat, body }
                 })
                 .collect();
@@ -374,11 +371,11 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
         rustc_hir::ExprKind::AddrOf(_, _, expr) => compile_expr(hir, expr),
         rustc_hir::ExprKind::Break(_, _) => compile_error(
             Expr::LocalVar("Break".to_string()),
-            format!("Unsupported break"),
+            "Unsupported break".to_string(),
         ),
         rustc_hir::ExprKind::Continue(_) => compile_error(
             Expr::LocalVar("Continue".to_string()),
-            format!("Unsupported continue"),
+            "Unsupported continue".to_string(),
         ),
         rustc_hir::ExprKind::Ret(expr) => {
             let func = Box::new(Expr::LocalVar("Return".to_string()));
@@ -390,7 +387,7 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
         }
         rustc_hir::ExprKind::InlineAsm(_) => compile_error(
             Expr::LocalVar("InlineAsm".to_string()),
-            format!("Unsupported inline asm"),
+            "Unsupported inline asm".to_string(),
         ),
         rustc_hir::ExprKind::Struct(qpath, fields, base) => {
             let path = compile_qpath(qpath);
@@ -421,7 +418,7 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
         }
         rustc_hir::ExprKind::Err => compile_error(
             Expr::LocalVar("Err".to_string()),
-            format!("Unsupported error"),
+            "Unsupported error".to_string(),
         ),
     }
 }
@@ -450,7 +447,7 @@ fn compile_stmts(
             }
             rustc_hir::StmtKind::Item(_) => compile_error(
                 Expr::LocalVar("Stmt_item".to_string()),
-                format!("Unsupported stmt kind"),
+                "Unsupported stmt kind".to_string(),
             ),
             rustc_hir::StmtKind::Expr(current_expr) | rustc_hir::StmtKind::Semi(current_expr) => {
                 let first = Box::new(compile_expr(hir, current_expr));
@@ -555,10 +552,7 @@ fn compile_top_level(tcx: rustc_middle::ty::TyCtxt) -> TopLevel {
 
 impl Path {
     fn to_doc(&self) -> RcDoc<()> {
-        RcDoc::intersperse(
-            self.segments.iter().map(|segment| RcDoc::text(segment)),
-            RcDoc::text("."),
-        )
+        RcDoc::intersperse(self.segments.iter().map(RcDoc::text), RcDoc::text("."))
     }
 }
 
@@ -595,7 +589,7 @@ impl Pat {
                 true,
                 RcDoc::intersperse(pats.iter().map(|pat| pat.to_doc()), RcDoc::text(",")),
             ),
-            Pat::Lit(literal) => RcDoc::text(format!("{:?}", literal)),
+            Pat::Lit(literal) => RcDoc::text(format!("{literal:?}")),
         }
     }
 }
@@ -794,7 +788,7 @@ impl TopLevelItem {
                 .append(RcDoc::space())
                 .append(RcDoc::text(name))
                 .append(RcDoc::intersperse(
-                    args.iter().map(|arg| RcDoc::text(arg)),
+                    args.iter().map(RcDoc::text),
                     RcDoc::space(),
                 ))
                 .append(RcDoc::space())
@@ -843,6 +837,7 @@ fn main() {
         .unwrap();
 
     let sysroot = std::str::from_utf8(&out.stdout).unwrap().trim();
+
     let config = rustc_interface::Config {
         opts: config::Options {
             maybe_sysroot: Some(path::PathBuf::from(sysroot)),
@@ -936,7 +931,7 @@ fn main() {
         register_lints: None,
         override_queries: None,
         make_codegen_backend: None,
-        registry: registry::Registry::new(&rustc_error_codes::DIAGNOSTICS),
+        registry: registry::Registry::new(rustc_error_codes::DIAGNOSTICS),
     };
     rustc_interface::run_compiler(config, |compiler| {
         compiler.enter(|queries| {

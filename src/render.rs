@@ -14,18 +14,13 @@ pub(crate) fn bracket(doc: RcDoc<()>) -> RcDoc<()> {
 
 pub(crate) fn literal_to_doc(literal: &rustc_ast::LitKind) -> RcDoc<()> {
     match literal {
-        rustc_ast::LitKind::Str(s, _) => {
-            // println!("simple {}", s);
-            // println!("with :? {:?}", s);
-            let data = format!("{:?}", s);
-            return RcDoc::text(data);
-        }
-        rustc_ast::LitKind::Int(i, _) => RcDoc::text(format!("{}", i)),
-        rustc_ast::LitKind::Float(f, _) => RcDoc::text(format!("{}", f)),
-        rustc_ast::LitKind::Bool(b) => RcDoc::text(format!("{}", b)),
-        rustc_ast::LitKind::Char(c) => RcDoc::text(format!("{}", c)),
-        rustc_ast::LitKind::Byte(b) => RcDoc::text(format!("{}", b)),
-        rustc_ast::LitKind::ByteStr(b, _) => RcDoc::text(format!("{:?}", b)),
+        rustc_ast::LitKind::Str(s, _) => RcDoc::text(format!("{s:?}")),
+        rustc_ast::LitKind::Int(i, _) => RcDoc::text(format!("{i}")),
+        rustc_ast::LitKind::Float(f, _) => RcDoc::text(format!("{f}")),
+        rustc_ast::LitKind::Bool(b) => RcDoc::text(format!("{b}")),
+        rustc_ast::LitKind::Char(c) => RcDoc::text(format!("{c}")),
+        rustc_ast::LitKind::Byte(b) => RcDoc::text(format!("{b}")),
+        rustc_ast::LitKind::ByteStr(b, _) => RcDoc::text(format!("{b:?}")),
         rustc_ast::LitKind::Err => RcDoc::text("Err"),
     }
 }
