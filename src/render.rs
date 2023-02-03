@@ -2,14 +2,14 @@ use pretty::RcDoc;
 
 pub(crate) fn paren(with_paren: bool, doc: RcDoc<()>) -> RcDoc<()> {
     if with_paren {
-        RcDoc::text("(").append(doc).append(RcDoc::text(")"))
+        RcDoc::concat([RcDoc::text("("), doc, RcDoc::text(")")])
     } else {
         doc
     }
 }
 
 pub(crate) fn bracket(doc: RcDoc<()>) -> RcDoc<()> {
-    RcDoc::text("[").append(doc).append(RcDoc::text("]"))
+    return RcDoc::concat([RcDoc::text("["), doc, RcDoc::text("]")]);
 }
 
 pub(crate) fn literal_to_doc(literal: &rustc_ast::LitKind) -> RcDoc<()> {

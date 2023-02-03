@@ -561,24 +561,30 @@ impl Pat {
         match self {
             Pat::Wild => RcDoc::text("_"),
             Pat::Struct(path, fields) => {
-                path.to_doc()
-                    .append(RcDoc::space())
-                    .append(render::bracket(RcDoc::intersperse(
-                        fields.iter().map(|(name, expr)| {
-                            RcDoc::text(name)
-                                .append(RcDoc::space())
-                                .append(RcDoc::text(":"))
-                                .append(RcDoc::space())
-                                .append(expr.to_doc())
-                        }),
-                        RcDoc::text(","),
-                    )))
+                let in_brackets_doc = render::bracket(RcDoc::intersperse(
+                    fields.iter().map(|(name, expr)| {
+                        RcDoc::concat([
+                            RcDoc::text(name),
+                            RcDoc::space(),
+                            RcDoc::text(":"),
+                            RcDoc::space(),
+                            expr.to_doc(),
+                        ])
+                    }),
+                    RcDoc::text(","),
+                ));
+                return RcDoc::concat([path.to_doc(), RcDoc::space(), in_brackets_doc]);
             }
             Pat::TupleStruct(path, fields) => {
-                path.to_doc().append(RcDoc::space()).append(render::paren(
+                let signature_in_parentheses_doc = render::paren(
                     true,
                     RcDoc::intersperse(fields.iter().map(|field| field.to_doc()), RcDoc::text(",")),
-                ))
+                );
+                return RcDoc::concat([
+                    path.to_doc(),
+                    RcDoc::space(),
+                    signature_in_parentheses_doc,
+                ]);
             }
             Pat::Or(pats) => render::paren(
                 true,
@@ -596,12 +602,13 @@ impl Pat {
 
 impl MatchArm {
     fn to_doc(&self) -> RcDoc<()> {
-        self.pat
-            .to_doc()
-            .append(RcDoc::space())
-            .append(RcDoc::text("=>"))
-            .append(RcDoc::space())
-            .append(self.body.to_doc(false))
+        return RcDoc::concat([
+            self.pat.to_doc(),
+            RcDoc::space(),
+            RcDoc::text("=>"),
+            RcDoc::space(),
+            self.body.to_doc(false),
+        ]);
     }
 }
 
@@ -615,43 +622,44 @@ impl Expr {
             Expr::Literal(literal) => render::literal_to_doc(literal),
             Expr::App { func, args } => render::paren(
                 with_paren,
-                func.to_doc(true)
-                    .append(RcDoc::space())
-                    .append(RcDoc::intersperse(
-                        args.iter().map(|arg| arg.to_doc(true)),
-                        RcDoc::space(),
-                    )),
+                RcDoc::concat([
+                    func.to_doc(true),
+                    RcDoc::space(),
+                    RcDoc::intersperse(args.iter().map(|arg| arg.to_doc(true)), RcDoc::space()),
+                ]),
             ),
-            Expr::Let { pat, init, body } => RcDoc::text("let")
-                .append(RcDoc::space())
-                .append(pat.to_doc())
-                .append(RcDoc::space())
-                .append(RcDoc::text(":="))
-                .append(RcDoc::space())
-                .append(init.to_doc(false))
-                .append(RcDoc::space())
-                .append(RcDoc::text("in"))
-                .append(RcDoc::hardline())
-                .append(body.to_doc(false)),
+            Expr::Let { pat, init, body } => RcDoc::concat([
+                RcDoc::text("let"),
+                RcDoc::space(),
+                pat.to_doc(),
+                RcDoc::space(),
+                RcDoc::text(":="),
+                RcDoc::space(),
+                init.to_doc(false),
+                RcDoc::space(),
+                RcDoc::text("in"),
+                RcDoc::hardline(),
+                body.to_doc(false),
+            ]),
             Expr::Lambda { args, body } => render::paren(
                 with_paren,
-                RcDoc::text("fun")
-                    .append(RcDoc::space())
-                    .append(RcDoc::intersperse(
-                        args.iter().map(|arg| arg.to_doc()),
-                        RcDoc::space(),
-                    ))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text("=>"))
-                    .append(RcDoc::space())
-                    .append(body.to_doc(false)),
+                RcDoc::concat([
+                    RcDoc::text("fun"),
+                    RcDoc::space(),
+                    RcDoc::intersperse(args.iter().map(|arg| arg.to_doc()), RcDoc::space()),
+                    RcDoc::space(),
+                    RcDoc::text("=>"),
+                    RcDoc::space(),
+                    body.to_doc(false),
+                ]),
             ),
-            Expr::Seq { first, second } => first
-                .to_doc(false)
-                .append(RcDoc::space())
-                .append(RcDoc::text(";;"))
-                .append(RcDoc::hardline())
-                .append(second.to_doc(false)),
+            Expr::Seq { first, second } => RcDoc::concat([
+                first.to_doc(false),
+                RcDoc::space(),
+                RcDoc::text(";;"),
+                RcDoc::hardline(),
+                second.to_doc(false),
+            ]),
 
             Expr::Array { elements } => render::bracket(RcDoc::intersperse(
                 elements.iter().map(|element| element.to_doc(false)),
@@ -664,67 +672,77 @@ impl Expr {
                     RcDoc::text(","),
                 ),
             ),
-            Expr::LetIf { pat, init } => RcDoc::text("let_if")
-                .append(RcDoc::space())
-                .append(pat.to_doc())
-                .append(RcDoc::space())
-                .append(RcDoc::text(":="))
-                .append(RcDoc::space())
-                .append(init.to_doc(false)),
+            Expr::LetIf { pat, init } => RcDoc::concat([
+                RcDoc::text("let_if"),
+                RcDoc::space(),
+                pat.to_doc(),
+                RcDoc::space(),
+                RcDoc::text(":="),
+                RcDoc::space(),
+                init.to_doc(false),
+            ]),
+
             Expr::If {
                 condition,
                 success,
                 failure,
             } => render::paren(
                 with_paren,
-                (RcDoc::text("if")
-                    .append(RcDoc::space())
-                    .append(condition.to_doc(false))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text("then").append(RcDoc::hardline()))
-                    .append(success.to_doc(false).group()))
-                .nest(INDENT_SPACE_OFFSET)
-                .group()
-                .append(RcDoc::hardline())
-                .append(
-                    RcDoc::text("else")
-                        .append(RcDoc::hardline())
-                        .append(failure.to_doc(false).group())
-                        .nest(INDENT_SPACE_OFFSET)
-                        .group(),
-                ),
+                RcDoc::concat([
+                    (RcDoc::concat([
+                        RcDoc::text("if"),
+                        RcDoc::space(),
+                        condition.to_doc(false),
+                        RcDoc::space(),
+                        RcDoc::text("then").append(RcDoc::hardline()),
+                        success.to_doc(false).group(),
+                    ]))
+                    .nest(INDENT_SPACE_OFFSET)
+                    .group(),
+                    RcDoc::hardline(),
+                    RcDoc::concat([
+                        RcDoc::text("else"),
+                        RcDoc::hardline(),
+                        failure.to_doc(false).group(),
+                    ])
+                    .nest(INDENT_SPACE_OFFSET)
+                    .group(),
+                ]),
             ),
             Expr::Loop { body, loop_source } => render::paren(
                 with_paren,
-                RcDoc::text("loop")
-                    .append(RcDoc::space())
-                    .append(body.to_doc(true))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text("from"))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text(loop_source)),
-            ),
-            Expr::Match { scrutinee, arms } => RcDoc::text("match")
-                .append(RcDoc::space())
-                .append(scrutinee.to_doc(false))
-                .append(RcDoc::space())
-                .append(RcDoc::text("with"))
-                .append(RcDoc::space())
-                .append(RcDoc::intersperse(
-                    arms.iter().map(|arm| arm.to_doc()),
+                RcDoc::concat([
+                    RcDoc::text("loop"),
                     RcDoc::space(),
-                ))
-                .append(RcDoc::space())
-                .append(RcDoc::text("end")),
+                    body.to_doc(true),
+                    RcDoc::space(),
+                    RcDoc::text("from"),
+                    RcDoc::space(),
+                    RcDoc::text(loop_source),
+                ]),
+            ),
+            Expr::Match { scrutinee, arms } => RcDoc::concat([
+                RcDoc::text("match"),
+                RcDoc::space(),
+                scrutinee.to_doc(false),
+                RcDoc::space(),
+                RcDoc::text("with"),
+                RcDoc::space(),
+                RcDoc::intersperse(arms.iter().map(|arm| arm.to_doc()), RcDoc::space()),
+                RcDoc::space(),
+                RcDoc::text("end"),
+            ]),
             Expr::Assign { left, right } => render::paren(
                 with_paren,
-                RcDoc::text("assign")
-                    .append(RcDoc::space())
-                    .append(left.to_doc(false))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text(":="))
-                    .append(RcDoc::space())
-                    .append(right.to_doc(false)),
+                RcDoc::concat([
+                    RcDoc::text("assign"),
+                    RcDoc::space(),
+                    left.to_doc(false),
+                    RcDoc::space(),
+                    RcDoc::text(":="),
+                    RcDoc::space(),
+                    right.to_doc(false),
+                ]),
             ),
             Expr::AssignOp {
                 bin_op,
@@ -732,51 +750,58 @@ impl Expr {
                 right,
             } => render::paren(
                 with_paren,
-                RcDoc::text("assign")
-                    .append(RcDoc::space())
-                    .append(left.to_doc(false))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text(":="))
-                    .append(RcDoc::space())
-                    .append(left.to_doc(false))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text(bin_op))
-                    .append(RcDoc::space())
-                    .append(right.to_doc(false)),
+                RcDoc::concat([
+                    RcDoc::text("assign"),
+                    RcDoc::space(),
+                    left.to_doc(false),
+                    RcDoc::space(),
+                    RcDoc::text(":="),
+                    RcDoc::space(),
+                    left.to_doc(false),
+                    RcDoc::space(),
+                    RcDoc::text(bin_op),
+                    RcDoc::space(),
+                    right.to_doc(false),
+                ]),
             ),
-            Expr::Field { base, field } => base
-                .to_doc(true)
-                .append(RcDoc::text("."))
-                .append(RcDoc::text(field)),
+            Expr::Field { base, field } => {
+                RcDoc::concat([base.to_doc(true), RcDoc::text("."), RcDoc::text(field)])
+            }
+
             Expr::Index { base, index } => base
                 .to_doc(true)
                 .append(render::bracket(index.to_doc(false))),
-            Expr::Struct { path, fields, base } => render::paren(
-                with_paren,
-                RcDoc::text("struct")
-                    .append(RcDoc::space())
-                    .append(path.to_doc())
-                    .append(RcDoc::space())
-                    .append(RcDoc::text("{"))
-                    .append(RcDoc::intersperse(
+            Expr::Struct { path, fields, base } => {
+                let struct_signature_doc = RcDoc::concat([
+                    RcDoc::text("struct"),
+                    RcDoc::space(),
+                    path.to_doc(),
+                    RcDoc::space(),
+                    RcDoc::text("{"),
+                    RcDoc::intersperse(
                         fields.iter().map(|(name, expr)| {
-                            RcDoc::text(name)
-                                .append(RcDoc::space())
-                                .append(RcDoc::text(":="))
-                                .append(RcDoc::space())
-                                .append(expr.to_doc(false))
+                            RcDoc::concat([
+                                RcDoc::text(name),
+                                RcDoc::space(),
+                                RcDoc::text(":="),
+                                RcDoc::space(),
+                                expr.to_doc(false),
+                            ])
                         }),
                         RcDoc::text(";"),
-                    ))
-                    .append(RcDoc::text("}"))
-                    .append(RcDoc::space())
-                    .append(match base {
-                        Some(base) => RcDoc::text("with")
-                            .append(RcDoc::space())
-                            .append(base.to_doc(false)),
+                    ),
+                    RcDoc::text("}"),
+                    RcDoc::space(),
+                    match base {
+                        Some(base) => {
+                            RcDoc::concat([RcDoc::text("with"), RcDoc::space(), base.to_doc(false)])
+                        }
                         None => RcDoc::nil(),
-                    }),
-            ),
+                    },
+                ]);
+
+                return render::paren(with_paren, struct_signature_doc);
+            }
         }
     }
 }
@@ -784,32 +809,41 @@ impl Expr {
 impl TopLevelItem {
     fn to_doc(&self) -> RcDoc {
         match self {
-            TopLevelItem::Definition { name, args, body } => RcDoc::text("Definition")
-                .append(RcDoc::space())
-                .append(RcDoc::text(name))
-                .append(RcDoc::intersperse(
-                    args.iter().map(RcDoc::text),
-                    RcDoc::space(),
-                ))
-                .append(RcDoc::space())
-                .append(RcDoc::text(":="))
-                .append((RcDoc::hardline().append(body.to_doc(false))).nest(INDENT_SPACE_OFFSET))
-                .append(RcDoc::text("."))
-                .group(),
-            TopLevelItem::Module { name, body } => RcDoc::text("Module")
-                .append(RcDoc::space())
-                .append(RcDoc::text(name))
-                .append(RcDoc::space())
-                .append(RcDoc::text(":="))
-                .append((RcDoc::hardline().append(body.to_doc())).nest(INDENT_SPACE_OFFSET))
-                .append(RcDoc::text("."))
-                .group(),
+            TopLevelItem::Definition { name, args, body } => RcDoc::concat([
+                RcDoc::text("Definition"),
+                RcDoc::space(),
+                RcDoc::text(name),
+                RcDoc::intersperse(args.iter().map(RcDoc::text), RcDoc::space()),
+                RcDoc::space(),
+                RcDoc::text(":="),
+                RcDoc::hardline()
+                    .append(body.to_doc(false))
+                    .nest(INDENT_SPACE_OFFSET)
+                    .group(),
+                RcDoc::text("."),
+            ])
+            .group(),
+            TopLevelItem::Module { name, body } => RcDoc::concat([
+                RcDoc::text("Module"),
+                RcDoc::space(),
+                RcDoc::text(name),
+                RcDoc::space(),
+                RcDoc::text(":="),
+                RcDoc::hardline()
+                    .append(body.to_doc())
+                    .nest(INDENT_SPACE_OFFSET)
+                    .group(),
+                RcDoc::text("."),
+            ])
+            .group(),
 
-            TopLevelItem::Error(message) => RcDoc::text("Error")
-                .append(RcDoc::space())
-                .append(RcDoc::text(message))
-                .append(RcDoc::text("."))
-                .group(),
+            TopLevelItem::Error(message) => RcDoc::concat([
+                RcDoc::text("Error"),
+                RcDoc::space(),
+                RcDoc::text(message),
+                RcDoc::text("."),
+            ])
+            .group(),
         }
     }
 }
