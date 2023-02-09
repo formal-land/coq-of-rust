@@ -16,26 +16,21 @@ extern crate rustc_middle;
 extern crate rustc_session;
 extern crate rustc_span;
 
-
-use std::{
-    fs,
-    io::{Read, Write},
-    path, process, str,
-};
-
-
 use pretty::RcDoc;
 
+use std::path::{Path, PathBuf};
+use std::{fmt, fs, path, process, str};
+use walkdir::WalkDir;
 mod render;
 use rustc_errors::registry;
 use rustc_session::config::{self, CheckCfg};
 use rustc_span::source_map;
 
 #[derive(Debug)]
-struct Path {
+struct FLPath {
     segments: Vec<String>,
 }
-impl fmt::Display for Path {
+impl fmt::Display for FLPath {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let segments = self.segments.join("/");
         write!(f, "{segments}")
@@ -46,10 +41,10 @@ impl fmt::Display for Path {
 #[derive(Debug)]
 enum Pat {
     Wild,
-    Struct(Path, Vec<(String, Pat)>),
-    TupleStruct(Path, Vec<Pat>),
+    Struct(FLPath, Vec<(String, Pat)>),
+    TupleStruct(FLPath, Vec<Pat>),
     Or(Vec<Pat>),
-    Path(Path),
+    Path(FLPath),
     Tuple(Vec<Pat>),
     Lit(rustc_ast::LitKind),
 }
@@ -66,7 +61,7 @@ struct MatchArm {
 #[derive(Debug)]
 enum Expr {
     LocalVar(String),
-    Var(Path),
+    Var(FLPath),
     Literal(rustc_ast::LitKind),
     App {
         func: Box<Expr>,
@@ -126,7 +121,7 @@ enum Expr {
         index: Box<Expr>,
     },
     Struct {
-        path: Path,
+        path: FLPath,
         fields: Vec<(String, Expr)>,
         base: Option<Box<Expr>>,
     },
@@ -134,6 +129,7 @@ enum Expr {
 
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
+#[derive(Debug)]
 enum TopLevelItem {
     Definition {
         name: String,
@@ -147,6 +143,7 @@ enum TopLevelItem {
     Error(String),
 }
 
+#[derive(Debug)]
 struct TopLevel(Vec<TopLevelItem>);
 
 pub const INDENT_SPACE_OFFSET: isize = 2;
@@ -158,8 +155,8 @@ fn compile_error<A>(value: A, message: String) -> A {
     value
 }
 
-fn compile_path(path: &rustc_hir::Path) -> Path {
-    Path {
+fn compile_path(path: &rustc_hir::Path) -> FLPath {
+    FLPath {
         segments: path
             .segments
             .iter()
@@ -168,13 +165,13 @@ fn compile_path(path: &rustc_hir::Path) -> Path {
     }
 }
 
-fn compile_qpath(qpath: &rustc_hir::QPath) -> Path {
+fn compile_qpath(qpath: &rustc_hir::QPath) -> FLPath {
     match qpath {
         rustc_hir::QPath::Resolved(_, path) => compile_path(path),
-        rustc_hir::QPath::TypeRelative(_, segment) => Path {
+        rustc_hir::QPath::TypeRelative(_, segment) => FLPath {
             segments: vec![segment.ident.name.to_string()],
         },
-        rustc_hir::QPath::LangItem(lang_item, _, _) => Path {
+        rustc_hir::QPath::LangItem(lang_item, _, _) => FLPath {
             segments: vec![lang_item.name().to_string()],
         },
     }
@@ -184,7 +181,7 @@ fn compile_qpath(qpath: &rustc_hir::QPath) -> Path {
 fn compile_pat(pat: &rustc_hir::Pat) -> Pat {
     match &pat.kind {
         rustc_hir::PatKind::Wild => Pat::Wild,
-        rustc_hir::PatKind::Binding(_, _, ident, _) => Pat::Path(Path {
+        rustc_hir::PatKind::Binding(_, _, ident, _) => Pat::Path(FLPath {
             segments: vec![ident.name.to_string()],
         }),
         rustc_hir::PatKind::Struct(qpath, pats, _) => {
@@ -556,7 +553,7 @@ fn compile_top_level(tcx: rustc_middle::ty::TyCtxt) -> TopLevel {
     )
 }
 
-impl Path {
+impl FLPath {
     fn to_doc(&self) -> RcDoc<()> {
         RcDoc::intersperse(self.segments.iter().map(RcDoc::text), RcDoc::text("."))
     }
@@ -870,65 +867,88 @@ impl TopLevel {
 }
 
 fn main() {
-    let dir = std::path::Path::new("examples-from-rust-book");
+    let src_folder = Path::new("examples-from-rust-book");
+    let dst_folder = Path::new("coq_translation");
 
-    for entry in fs::read_dir(dir).unwrap() {
+    for entry in WalkDir::new(src_folder) {
         let entry = entry.unwrap();
-        let path = entry.path();
+        let src_path = entry.path();
 
-        if path.is_file() && path.extension().unwrap() == "rs" {
-            let mut file = fs::File::open(&path).unwrap();
-            let mut contents = String::new();
-            file.read_to_string(&mut contents).unwrap();
+        // calculate the relative path from the source to the destination directory
+        let relative_path = src_path.strip_prefix(src_folder).unwrap();
+        let dst_path = dst_folder.join(relative_path);
 
-            let new_stem = path.file_stem().unwrap().to_str().unwrap();
-            let new_path = path.with_file_name(new_stem.to_string() + ".v");
-            // The line below producing test files with the .snapshot extension
-            // can uncommented when needed.
-            // let new_path = path.with_file_name(new_stem.to_string() + ".snapshot");
-            let mut new_file = fs::File::create(&new_path).unwrap();
-
-            let out = process::Command::new("rustc")
-                .arg("--print=sysroot")
-                .current_dir(".")
-                .output()
-                .unwrap();
-            let sysroot = str::from_utf8(&out.stdout).unwrap().trim();
-            let config = rustc_interface::Config {
-                opts: config::Options {
-                    maybe_sysroot: Some(path::PathBuf::from(sysroot)),
-                    ..config::Options::default()
-                },
-                input: config::Input::Str {
-                    name: source_map::FileName::Custom("main.rs".to_string()),
-                    input: contents.to_string(),
-                },
-                crate_cfg: rustc_hash::FxHashSet::default(),
-                crate_check_cfg: CheckCfg::default(),
-                input_path: None,
-                output_dir: Some(dir.to_path_buf()),
-                output_file: Some(new_path),
-                file_loader: None,
-                lint_caps: rustc_hash::FxHashMap::default(),
-                parse_sess_created: None,
-                register_lints: None,
-                override_queries: None,
-                make_codegen_backend: None,
-                registry: registry::Registry::new(&rustc_error_codes::DIAGNOSTICS),
-            };
-            rustc_interface::run_compiler(config, |compiler| {
-                compiler.enter(|queries| {
-                    queries.global_ctxt().unwrap().take().enter(|tcx| {
-                        let top_level = compile_top_level(tcx);
-                        new_file
-                            .write_all(top_level.to_pretty(80).as_bytes())
-                            .unwrap();
-                    })
-                });
-            });
-
+        // if the entry is a directory, create it in the destination directory
+        if src_path.is_dir() {
+            fs::create_dir_all(&dst_path).unwrap();
+        } else {
+            // if the entry is a file, create a Coq version of it and write it to the destination directory
+            let contents = fs::read_to_string(src_path).unwrap();
+            let translation = create_translation_to_coq(
+                src_path.file_name().unwrap().to_str().unwrap().to_string(),
+                contents,
+            );
+            fs::write(
+                dst_folder.join(change_to_coq_extension(relative_path)),
+                translation,
+            )
+            .unwrap();
         }
     }
+}
+
+fn change_to_coq_extension(path: &Path) -> PathBuf {
+    let mut new_path = path.to_path_buf();
+    new_path.set_extension("v");
+    return new_path;
+}
+
+fn create_translation_to_coq(input_file_name: String, contents: String) -> String {
+    let filename = input_file_name.clone();
+    let out = process::Command::new("rustc")
+        .arg("--print=sysroot")
+        .current_dir(".")
+        .output()
+        .unwrap();
+    let sysroot = str::from_utf8(&out.stdout).unwrap().trim();
+    let config = rustc_interface::Config {
+        opts: config::Options {
+            maybe_sysroot: Some(path::PathBuf::from(sysroot)),
+            ..config::Options::default()
+        },
+        input: config::Input::Str {
+            name: source_map::FileName::Custom(input_file_name),
+            input: contents.to_string(),
+        },
+        crate_cfg: rustc_hash::FxHashSet::default(),
+        crate_check_cfg: CheckCfg::default(),
+        input_path: None,
+        output_dir: None,
+        output_file: None,
+        file_loader: None,
+        lint_caps: rustc_hash::FxHashMap::default(),
+        parse_sess_created: None,
+        register_lints: None,
+        override_queries: None,
+        make_codegen_backend: None,
+        registry: registry::Registry::new(rustc_error_codes::DIAGNOSTICS),
+    };
+    let now = std::time::Instant::now();
+    let result = rustc_interface::run_compiler(config, |compiler| {
+        compiler.enter(|queries| {
+            queries.global_ctxt().unwrap().take().enter(|tcx| {
+                let top_level = compile_top_level(tcx);
+                let top_level_str = top_level.to_pretty(LINE_WIDTH).to_string();
+                top_level_str
+            })
+        })
+    });
+    println!(
+        "{} ms have passed to translate: {}",
+        now.elapsed().as_millis(),
+        filename
+    );
+    return result;
 }
 
 #[cfg(test)]
