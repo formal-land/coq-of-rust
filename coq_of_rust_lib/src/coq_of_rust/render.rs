@@ -1,3 +1,4 @@
+extern crate rustc_ast;
 use pretty::RcDoc;
 
 pub(crate) fn paren(with_paren: bool, doc: RcDoc<()>) -> RcDoc<()> {

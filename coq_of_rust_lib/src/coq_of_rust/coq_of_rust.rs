@@ -1,5 +1,3 @@
-#![feature(rustc_private)]
-
 // NOTE: For the example to compile, you will need to first run the following:
 //   rustup component add rustc-dev llvm-tools-preview
 
@@ -21,7 +19,9 @@ use pretty::RcDoc;
 use std::path::{Path, PathBuf};
 use std::{fmt, fs, path, process, str};
 use walkdir::WalkDir;
-mod render;
+
+use crate::coq_of_rust::render::{bracket, literal_to_doc, paren};
+
 use rustc_errors::registry;
 use rustc_session::config::{self, CheckCfg};
 use rustc_span::source_map;
@@ -564,7 +564,7 @@ impl Pat {
         match self {
             Pat::Wild => RcDoc::text("_"),
             Pat::Struct(path, fields) => {
-                let in_brackets_doc = render::bracket(RcDoc::intersperse(
+                let in_brackets_doc = bracket(RcDoc::intersperse(
                     fields.iter().map(|(name, expr)| {
                         RcDoc::concat([
                             RcDoc::text(name),
@@ -579,7 +579,7 @@ impl Pat {
                 return RcDoc::concat([path.to_doc(), RcDoc::space(), in_brackets_doc]);
             }
             Pat::TupleStruct(path, fields) => {
-                let signature_in_parentheses_doc = render::paren(
+                let signature_in_parentheses_doc = paren(
                     true,
                     RcDoc::intersperse(fields.iter().map(|field| field.to_doc()), RcDoc::text(",")),
                 );
@@ -589,12 +589,12 @@ impl Pat {
                     signature_in_parentheses_doc,
                 ]);
             }
-            Pat::Or(pats) => render::paren(
+            Pat::Or(pats) => paren(
                 true,
                 RcDoc::intersperse(pats.iter().map(|pat| pat.to_doc()), RcDoc::text("|")),
             ),
             Pat::Path(path) => path.to_doc(),
-            Pat::Tuple(pats) => render::paren(
+            Pat::Tuple(pats) => paren(
                 true,
                 RcDoc::intersperse(pats.iter().map(|pat| pat.to_doc()), RcDoc::text(",")),
             ),
@@ -622,8 +622,8 @@ impl Expr {
 
             Expr::Var(path) => path.to_doc(),
 
-            Expr::Literal(literal) => render::literal_to_doc(literal),
-            Expr::App { func, args } => render::paren(
+            Expr::Literal(literal) => literal_to_doc(literal),
+            Expr::App { func, args } => paren(
                 with_paren,
                 RcDoc::concat([
                     func.to_doc(true),
@@ -644,7 +644,7 @@ impl Expr {
                 RcDoc::hardline(),
                 body.to_doc(false),
             ]),
-            Expr::Lambda { args, body } => render::paren(
+            Expr::Lambda { args, body } => paren(
                 with_paren,
                 RcDoc::concat([
                     RcDoc::text("fun"),
@@ -664,11 +664,11 @@ impl Expr {
                 second.to_doc(false),
             ]),
 
-            Expr::Array { elements } => render::bracket(RcDoc::intersperse(
+            Expr::Array { elements } => bracket(RcDoc::intersperse(
                 elements.iter().map(|element| element.to_doc(false)),
                 RcDoc::text(";"),
             )),
-            Expr::Tuple { elements } => render::paren(
+            Expr::Tuple { elements } => paren(
                 true,
                 RcDoc::intersperse(
                     elements.iter().map(|element| element.to_doc(false)),
@@ -689,7 +689,7 @@ impl Expr {
                 condition,
                 success,
                 failure,
-            } => render::paren(
+            } => paren(
                 with_paren,
                 RcDoc::concat([
                     (RcDoc::concat([
@@ -712,7 +712,7 @@ impl Expr {
                     .group(),
                 ]),
             ),
-            Expr::Loop { body, loop_source } => render::paren(
+            Expr::Loop { body, loop_source } => paren(
                 with_paren,
                 RcDoc::concat([
                     RcDoc::text("loop"),
@@ -735,7 +735,7 @@ impl Expr {
                 RcDoc::space(),
                 RcDoc::text("end"),
             ]),
-            Expr::Assign { left, right } => render::paren(
+            Expr::Assign { left, right } => paren(
                 with_paren,
                 RcDoc::concat([
                     RcDoc::text("assign"),
@@ -751,7 +751,7 @@ impl Expr {
                 bin_op,
                 left,
                 right,
-            } => render::paren(
+            } => paren(
                 with_paren,
                 RcDoc::concat([
                     RcDoc::text("assign"),
@@ -771,9 +771,7 @@ impl Expr {
                 RcDoc::concat([base.to_doc(true), RcDoc::text("."), RcDoc::text(field)])
             }
 
-            Expr::Index { base, index } => base
-                .to_doc(true)
-                .append(render::bracket(index.to_doc(false))),
+            Expr::Index { base, index } => base.to_doc(true).append(bracket(index.to_doc(false))),
             Expr::Struct { path, fields, base } => {
                 let struct_signature_doc = RcDoc::concat([
                     RcDoc::text("struct"),
@@ -803,7 +801,7 @@ impl Expr {
                     },
                 ]);
 
-                return render::paren(with_paren, struct_signature_doc);
+                return paren(with_paren, struct_signature_doc);
             }
         }
     }
@@ -866,8 +864,12 @@ impl TopLevel {
     }
 }
 
-fn main() {
-    let src_folder = Path::new("examples-from-rust-book");
+fn change_to_coq_extension(path: &Path) -> PathBuf {
+    let mut new_path = path.to_path_buf();
+    new_path.set_extension("v");
+    return new_path;
+}
+pub fn run(src_folder: &Path) {
     let dst_folder = Path::new("coq_translation");
 
     for entry in WalkDir::new(src_folder) {
@@ -895,12 +897,6 @@ fn main() {
             .unwrap();
         }
     }
-}
-
-fn change_to_coq_extension(path: &Path) -> PathBuf {
-    let mut new_path = path.to_path_buf();
-    new_path.set_extension("v");
-    return new_path;
 }
 
 fn create_translation_to_coq(input_file_name: String, contents: String) -> String {
