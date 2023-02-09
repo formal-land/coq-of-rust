@@ -16,43 +16,52 @@ extern crate rustc_middle;
 extern crate rustc_session;
 extern crate rustc_span;
 
-use std::{
-    fs,
-    io::{Read, Write},
-    path, process, str,
-};
-
 use pretty::RcDoc;
+
+use std::path::{Path, PathBuf};
+use std::{fmt, fs, path, process, str};
+use walkdir::WalkDir;
+mod render;
 use rustc_errors::registry;
 use rustc_session::config::{self, CheckCfg};
 use rustc_span::source_map;
 
-struct Path {
+#[derive(Debug)]
+struct FLPath {
     segments: Vec<String>,
+}
+impl fmt::Display for FLPath {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let segments = self.segments.join("/");
+        write!(f, "{segments}")
+    }
 }
 
 /// The enum [Pat] represents the patterns which can be matched
+#[derive(Debug)]
 enum Pat {
     Wild,
-    Struct(Path, Vec<(String, Pat)>),
-    TupleStruct(Path, Vec<Pat>),
+    Struct(FLPath, Vec<(String, Pat)>),
+    TupleStruct(FLPath, Vec<Pat>),
     Or(Vec<Pat>),
-    Path(Path),
+    Path(FLPath),
     Tuple(Vec<Pat>),
     Lit(rustc_ast::LitKind),
 }
 
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
+#[derive(Debug)]
 struct MatchArm {
     pat: Pat,
     body: Expr,
 }
 
 /// Enum [Expr] represents the AST of rust terms.
+#[derive(Debug)]
 enum Expr {
     LocalVar(String),
-    Var(Path),
+    Var(FLPath),
     Literal(rustc_ast::LitKind),
     App {
         func: Box<Expr>,
@@ -112,7 +121,7 @@ enum Expr {
         index: Box<Expr>,
     },
     Struct {
-        path: Path,
+        path: FLPath,
         fields: Vec<(String, Expr)>,
         base: Option<Box<Expr>>,
     },
@@ -120,6 +129,7 @@ enum Expr {
 
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
+#[derive(Debug)]
 enum TopLevelItem {
     Definition {
         name: String,
@@ -133,16 +143,20 @@ enum TopLevelItem {
     Error(String),
 }
 
+#[derive(Debug)]
 struct TopLevel(Vec<TopLevelItem>);
+
+pub const INDENT_SPACE_OFFSET: isize = 2;
+pub const LINE_WIDTH: usize = 80;
 
 /// [compile_error] prints a message to stderr and outputs a value
 fn compile_error<A>(value: A, message: String) -> A {
-    eprintln!("{}", message);
+    eprintln!("{message}");
     value
 }
 
-fn compile_path(path: &rustc_hir::Path) -> Path {
-    Path {
+fn compile_path(path: &rustc_hir::Path) -> FLPath {
+    FLPath {
         segments: path
             .segments
             .iter()
@@ -151,13 +165,13 @@ fn compile_path(path: &rustc_hir::Path) -> Path {
     }
 }
 
-fn compile_qpath(qpath: &rustc_hir::QPath) -> Path {
+fn compile_qpath(qpath: &rustc_hir::QPath) -> FLPath {
     match qpath {
         rustc_hir::QPath::Resolved(_, path) => compile_path(path),
-        rustc_hir::QPath::TypeRelative(_, segment) => Path {
+        rustc_hir::QPath::TypeRelative(_, segment) => FLPath {
             segments: vec![segment.ident.name.to_string()],
         },
-        rustc_hir::QPath::LangItem(lang_item, _, _) => Path {
+        rustc_hir::QPath::LangItem(lang_item, _, _) => FLPath {
             segments: vec![lang_item.name().to_string()],
         },
     }
@@ -167,7 +181,7 @@ fn compile_qpath(qpath: &rustc_hir::QPath) -> Path {
 fn compile_pat(pat: &rustc_hir::Pat) -> Pat {
     match &pat.kind {
         rustc_hir::PatKind::Wild => Pat::Wild,
-        rustc_hir::PatKind::Binding(_, _, ident, _) => Pat::Path(Path {
+        rustc_hir::PatKind::Binding(_, _, ident, _) => Pat::Path(FLPath {
             segments: vec![ident.name.to_string()],
         }),
         rustc_hir::PatKind::Struct(qpath, pats, _) => {
@@ -180,14 +194,12 @@ fn compile_pat(pat: &rustc_hir::Pat) -> Pat {
         }
         rustc_hir::PatKind::TupleStruct(qpath, pats, _) => {
             let path = compile_qpath(qpath);
-            let pats = pats.iter().map(|pat| compile_pat(pat)).collect();
+            let pats = pats.iter().map(compile_pat).collect();
             Pat::TupleStruct(path, pats)
         }
-        rustc_hir::PatKind::Or(pats) => Pat::Or(pats.iter().map(|pat| compile_pat(pat)).collect()),
+        rustc_hir::PatKind::Or(pats) => Pat::Or(pats.iter().map(compile_pat).collect()),
         rustc_hir::PatKind::Path(qpath) => Pat::Path(compile_qpath(qpath)),
-        rustc_hir::PatKind::Tuple(pats, _) => {
-            Pat::Tuple(pats.iter().map(|pat| compile_pat(pat)).collect())
-        }
+        rustc_hir::PatKind::Tuple(pats, _) => Pat::Tuple(pats.iter().map(compile_pat).collect()),
         rustc_hir::PatKind::Box(pat) => compile_pat(pat),
         rustc_hir::PatKind::Ref(pat, _) => compile_pat(pat),
         rustc_hir::PatKind::Lit(expr) => match expr.kind {
@@ -266,7 +278,7 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
         rustc_hir::ExprKind::Binary(bin_op, expr_left, expr_right) => {
             let expr_left = Box::new(compile_expr(hir, expr_left));
             let expr_right = Box::new(compile_expr(hir, expr_right));
-            let func = Box::new(Expr::LocalVar(compile_bin_op(&bin_op)));
+            let func = Box::new(Expr::LocalVar(compile_bin_op(bin_op)));
             Expr::App {
                 func,
                 args: vec![*expr_left, *expr_right],
@@ -312,8 +324,8 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
             let arms = arms
                 .iter()
                 .map(|arm| {
-                    let pat = compile_pat(&arm.pat);
-                    let body = compile_expr(hir, &arm.body);
+                    let pat = compile_pat(arm.pat);
+                    let body = compile_expr(hir, arm.body);
                     MatchArm { pat, body }
                 })
                 .collect();
@@ -362,11 +374,11 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
         rustc_hir::ExprKind::AddrOf(_, _, expr) => compile_expr(hir, expr),
         rustc_hir::ExprKind::Break(_, _) => compile_error(
             Expr::LocalVar("Break".to_string()),
-            format!("Unsupported break"),
+            "Unsupported break".to_string(),
         ),
         rustc_hir::ExprKind::Continue(_) => compile_error(
             Expr::LocalVar("Continue".to_string()),
-            format!("Unsupported continue"),
+            "Unsupported continue".to_string(),
         ),
         rustc_hir::ExprKind::Ret(expr) => {
             let func = Box::new(Expr::LocalVar("Return".to_string()));
@@ -378,7 +390,7 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
         }
         rustc_hir::ExprKind::InlineAsm(_) => compile_error(
             Expr::LocalVar("InlineAsm".to_string()),
-            format!("Unsupported inline asm"),
+            "Unsupported inline asm".to_string(),
         ),
         rustc_hir::ExprKind::Struct(qpath, fields, base) => {
             let path = compile_qpath(qpath);
@@ -409,7 +421,7 @@ fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Exp
         }
         rustc_hir::ExprKind::Err => compile_error(
             Expr::LocalVar("Err".to_string()),
-            format!("Unsupported error"),
+            "Unsupported error".to_string(),
         ),
     }
 }
@@ -438,7 +450,7 @@ fn compile_stmts(
             }
             rustc_hir::StmtKind::Item(_) => compile_error(
                 Expr::LocalVar("Stmt_item".to_string()),
-                format!("Unsupported stmt kind"),
+                "Unsupported stmt kind".to_string(),
             ),
             rustc_hir::StmtKind::Expr(current_expr) | rustc_hir::StmtKind::Semi(current_expr) => {
                 let first = Box::new(compile_expr(hir, current_expr));
@@ -541,37 +553,9 @@ fn compile_top_level(tcx: rustc_middle::ty::TyCtxt) -> TopLevel {
     )
 }
 
-fn paren(with_paren: bool, doc: RcDoc<()>) -> RcDoc<()> {
-    if with_paren {
-        RcDoc::text("(").append(doc).append(RcDoc::text(")"))
-    } else {
-        doc
-    }
-}
-
-fn bracket(doc: RcDoc<()>) -> RcDoc<()> {
-    RcDoc::text("[").append(doc).append(RcDoc::text("]"))
-}
-
-fn literal_to_doc(literal: &rustc_ast::LitKind) -> RcDoc<()> {
-    match literal {
-        rustc_ast::LitKind::Str(s, _) => RcDoc::text(format!("{:?}", s)),
-        rustc_ast::LitKind::Int(i, _) => RcDoc::text(format!("{}", i)),
-        rustc_ast::LitKind::Float(f, _) => RcDoc::text(format!("{}", f)),
-        rustc_ast::LitKind::Bool(b) => RcDoc::text(format!("{}", b)),
-        rustc_ast::LitKind::Char(c) => RcDoc::text(format!("{}", c)),
-        rustc_ast::LitKind::Byte(b) => RcDoc::text(format!("{}", b)),
-        rustc_ast::LitKind::ByteStr(b, _) => RcDoc::text(format!("{:?}", b)),
-        rustc_ast::LitKind::Err => RcDoc::text("Err"),
-    }
-}
-
-impl Path {
+impl FLPath {
     fn to_doc(&self) -> RcDoc<()> {
-        RcDoc::intersperse(
-            self.segments.iter().map(|segment| RcDoc::text(segment)),
-            RcDoc::text("."),
-        )
+        RcDoc::intersperse(self.segments.iter().map(RcDoc::text), RcDoc::text("."))
     }
 }
 
@@ -580,45 +564,54 @@ impl Pat {
         match self {
             Pat::Wild => RcDoc::text("_"),
             Pat::Struct(path, fields) => {
-                path.to_doc()
-                    .append(RcDoc::space())
-                    .append(bracket(RcDoc::intersperse(
-                        fields.iter().map(|(name, expr)| {
-                            RcDoc::text(name)
-                                .append(RcDoc::space())
-                                .append(RcDoc::text(":"))
-                                .append(RcDoc::space())
-                                .append(expr.to_doc())
-                        }),
-                        RcDoc::text(","),
-                    )))
+                let in_brackets_doc = render::bracket(RcDoc::intersperse(
+                    fields.iter().map(|(name, expr)| {
+                        RcDoc::concat([
+                            RcDoc::text(name),
+                            RcDoc::space(),
+                            RcDoc::text(":"),
+                            RcDoc::space(),
+                            expr.to_doc(),
+                        ])
+                    }),
+                    RcDoc::text(","),
+                ));
+                return RcDoc::concat([path.to_doc(), RcDoc::space(), in_brackets_doc]);
             }
-            Pat::TupleStruct(path, fields) => path.to_doc().append(RcDoc::space()).append(paren(
-                true,
-                RcDoc::intersperse(fields.iter().map(|field| field.to_doc()), RcDoc::text(",")),
-            )),
-            Pat::Or(pats) => paren(
+            Pat::TupleStruct(path, fields) => {
+                let signature_in_parentheses_doc = render::paren(
+                    true,
+                    RcDoc::intersperse(fields.iter().map(|field| field.to_doc()), RcDoc::text(",")),
+                );
+                return RcDoc::concat([
+                    path.to_doc(),
+                    RcDoc::space(),
+                    signature_in_parentheses_doc,
+                ]);
+            }
+            Pat::Or(pats) => render::paren(
                 true,
                 RcDoc::intersperse(pats.iter().map(|pat| pat.to_doc()), RcDoc::text("|")),
             ),
             Pat::Path(path) => path.to_doc(),
-            Pat::Tuple(pats) => paren(
+            Pat::Tuple(pats) => render::paren(
                 true,
                 RcDoc::intersperse(pats.iter().map(|pat| pat.to_doc()), RcDoc::text(",")),
             ),
-            Pat::Lit(literal) => RcDoc::text(format!("{:?}", literal)),
+            Pat::Lit(literal) => RcDoc::text(format!("{literal:?}")),
         }
     }
 }
 
 impl MatchArm {
     fn to_doc(&self) -> RcDoc<()> {
-        self.pat
-            .to_doc()
-            .append(RcDoc::space())
-            .append(RcDoc::text("=>"))
-            .append(RcDoc::space())
-            .append(self.body.to_doc(false))
+        return RcDoc::concat([
+            self.pat.to_doc(),
+            RcDoc::space(),
+            RcDoc::text("=>"),
+            RcDoc::space(),
+            self.body.to_doc(false),
+        ]);
     }
 }
 
@@ -626,164 +619,192 @@ impl Expr {
     fn to_doc(&self, with_paren: bool) -> RcDoc<()> {
         match self {
             Expr::LocalVar(ref name) => RcDoc::text(name),
+
             Expr::Var(path) => path.to_doc(),
-            Expr::Literal(literal) => literal_to_doc(literal),
-            Expr::App { func, args } => paren(
+
+            Expr::Literal(literal) => render::literal_to_doc(literal),
+            Expr::App { func, args } => render::paren(
                 with_paren,
-                func.to_doc(true)
-                    .append(RcDoc::space())
-                    .append(RcDoc::intersperse(
-                        args.iter().map(|arg| arg.to_doc(true)),
-                        RcDoc::space(),
-                    )),
+                RcDoc::concat([
+                    func.to_doc(true),
+                    RcDoc::space(),
+                    RcDoc::intersperse(args.iter().map(|arg| arg.to_doc(true)), RcDoc::space()),
+                ]),
             ),
-            Expr::Let { pat, init, body } => RcDoc::text("let")
-                .append(RcDoc::space())
-                .append(pat.to_doc())
-                .append(RcDoc::space())
-                .append(RcDoc::text(":="))
-                .append(RcDoc::space())
-                .append(init.to_doc(false))
-                .append(RcDoc::space())
-                .append(RcDoc::text("in"))
-                .append(RcDoc::hardline())
-                .append(body.to_doc(false)),
-            Expr::Lambda { args, body } => paren(
+            Expr::Let { pat, init, body } => RcDoc::concat([
+                RcDoc::text("let"),
+                RcDoc::space(),
+                pat.to_doc(),
+                RcDoc::space(),
+                RcDoc::text(":="),
+                RcDoc::space(),
+                init.to_doc(false),
+                RcDoc::space(),
+                RcDoc::text("in"),
+                RcDoc::hardline(),
+                body.to_doc(false),
+            ]),
+            Expr::Lambda { args, body } => render::paren(
                 with_paren,
-                RcDoc::text("fun")
-                    .append(RcDoc::space())
-                    .append(RcDoc::intersperse(
-                        args.iter().map(|arg| arg.to_doc()),
-                        RcDoc::space(),
-                    ))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text("=>"))
-                    .append(RcDoc::space())
-                    .append(body.to_doc(false)),
+                RcDoc::concat([
+                    RcDoc::text("fun"),
+                    RcDoc::space(),
+                    RcDoc::intersperse(args.iter().map(|arg| arg.to_doc()), RcDoc::space()),
+                    RcDoc::space(),
+                    RcDoc::text("=>"),
+                    RcDoc::space(),
+                    body.to_doc(false),
+                ]),
             ),
-            Expr::Seq { first, second } => first
-                .to_doc(false)
-                .append(RcDoc::space())
-                .append(RcDoc::text(";;"))
-                .append(RcDoc::hardline())
-                .append(second.to_doc(false)),
-            Expr::Array { elements } => bracket(RcDoc::intersperse(
+            Expr::Seq { first, second } => RcDoc::concat([
+                first.to_doc(false),
+                RcDoc::space(),
+                RcDoc::text(";;"),
+                RcDoc::hardline(),
+                second.to_doc(false),
+            ]),
+
+            Expr::Array { elements } => render::bracket(RcDoc::intersperse(
                 elements.iter().map(|element| element.to_doc(false)),
                 RcDoc::text(";"),
             )),
-            Expr::Tuple { elements } => paren(
+            Expr::Tuple { elements } => render::paren(
                 true,
                 RcDoc::intersperse(
                     elements.iter().map(|element| element.to_doc(false)),
                     RcDoc::text(","),
                 ),
             ),
-            Expr::LetIf { pat, init } => RcDoc::text("let_if")
-                .append(RcDoc::space())
-                .append(pat.to_doc())
-                .append(RcDoc::space())
-                .append(RcDoc::text(":="))
-                .append(RcDoc::space())
-                .append(init.to_doc(false)),
+            Expr::LetIf { pat, init } => RcDoc::concat([
+                RcDoc::text("let_if"),
+                RcDoc::space(),
+                pat.to_doc(),
+                RcDoc::space(),
+                RcDoc::text(":="),
+                RcDoc::space(),
+                init.to_doc(false),
+            ]),
+
             Expr::If {
                 condition,
                 success,
                 failure,
-            } => paren(
+            } => render::paren(
                 with_paren,
-                RcDoc::text("if")
-                    .append(RcDoc::space())
-                    .append(condition.to_doc(false))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text("then"))
-                    .append(RcDoc::space())
-                    .append(success.to_doc(false))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text("else"))
-                    .append(RcDoc::space())
-                    .append(failure.to_doc(false)),
+                RcDoc::concat([
+                    (RcDoc::concat([
+                        RcDoc::text("if"),
+                        RcDoc::space(),
+                        condition.to_doc(false),
+                        RcDoc::space(),
+                        RcDoc::text("then").append(RcDoc::hardline()),
+                        success.to_doc(false).group(),
+                    ]))
+                    .nest(INDENT_SPACE_OFFSET)
+                    .group(),
+                    RcDoc::hardline(),
+                    RcDoc::concat([
+                        RcDoc::text("else"),
+                        RcDoc::hardline(),
+                        failure.to_doc(false).group(),
+                    ])
+                    .nest(INDENT_SPACE_OFFSET)
+                    .group(),
+                ]),
             ),
-            Expr::Loop { body, loop_source } => paren(
+            Expr::Loop { body, loop_source } => render::paren(
                 with_paren,
-                RcDoc::text("loop")
-                    .append(RcDoc::space())
-                    .append(body.to_doc(true))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text("from"))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text(loop_source)),
-            ),
-            Expr::Match { scrutinee, arms } => RcDoc::text("match")
-                .append(RcDoc::space())
-                .append(scrutinee.to_doc(false))
-                .append(RcDoc::space())
-                .append(RcDoc::text("with"))
-                .append(RcDoc::space())
-                .append(RcDoc::intersperse(
-                    arms.iter().map(|arm| arm.to_doc()),
+                RcDoc::concat([
+                    RcDoc::text("loop"),
                     RcDoc::space(),
-                ))
-                .append(RcDoc::space())
-                .append(RcDoc::text("end")),
-            Expr::Assign { left, right } => paren(
+                    body.to_doc(true),
+                    RcDoc::space(),
+                    RcDoc::text("from"),
+                    RcDoc::space(),
+                    RcDoc::text(loop_source),
+                ]),
+            ),
+            Expr::Match { scrutinee, arms } => RcDoc::concat([
+                RcDoc::text("match"),
+                RcDoc::space(),
+                scrutinee.to_doc(false),
+                RcDoc::space(),
+                RcDoc::text("with"),
+                RcDoc::space(),
+                RcDoc::intersperse(arms.iter().map(|arm| arm.to_doc()), RcDoc::space()),
+                RcDoc::space(),
+                RcDoc::text("end"),
+            ]),
+            Expr::Assign { left, right } => render::paren(
                 with_paren,
-                RcDoc::text("assign")
-                    .append(RcDoc::space())
-                    .append(left.to_doc(false))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text(":="))
-                    .append(RcDoc::space())
-                    .append(right.to_doc(false)),
+                RcDoc::concat([
+                    RcDoc::text("assign"),
+                    RcDoc::space(),
+                    left.to_doc(false),
+                    RcDoc::space(),
+                    RcDoc::text(":="),
+                    RcDoc::space(),
+                    right.to_doc(false),
+                ]),
             ),
             Expr::AssignOp {
                 bin_op,
                 left,
                 right,
-            } => paren(
+            } => render::paren(
                 with_paren,
-                RcDoc::text("assign")
-                    .append(RcDoc::space())
-                    .append(left.to_doc(false))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text(":="))
-                    .append(RcDoc::space())
-                    .append(left.to_doc(false))
-                    .append(RcDoc::space())
-                    .append(RcDoc::text(bin_op))
-                    .append(RcDoc::space())
-                    .append(right.to_doc(false)),
+                RcDoc::concat([
+                    RcDoc::text("assign"),
+                    RcDoc::space(),
+                    left.to_doc(false),
+                    RcDoc::space(),
+                    RcDoc::text(":="),
+                    RcDoc::space(),
+                    left.to_doc(false),
+                    RcDoc::space(),
+                    RcDoc::text(bin_op),
+                    RcDoc::space(),
+                    right.to_doc(false),
+                ]),
             ),
-            Expr::Field { base, field } => base
+            Expr::Field { base, field } => {
+                RcDoc::concat([base.to_doc(true), RcDoc::text("."), RcDoc::text(field)])
+            }
+
+            Expr::Index { base, index } => base
                 .to_doc(true)
-                .append(RcDoc::text("."))
-                .append(RcDoc::text(field)),
-            Expr::Index { base, index } => base.to_doc(true).append(bracket(index.to_doc(false))),
-            Expr::Struct { path, fields, base } => paren(
-                with_paren,
-                RcDoc::text("struct")
-                    .append(RcDoc::space())
-                    .append(path.to_doc())
-                    .append(RcDoc::space())
-                    .append(RcDoc::text("{"))
-                    .append(RcDoc::intersperse(
+                .append(render::bracket(index.to_doc(false))),
+            Expr::Struct { path, fields, base } => {
+                let struct_signature_doc = RcDoc::concat([
+                    RcDoc::text("struct"),
+                    RcDoc::space(),
+                    path.to_doc(),
+                    RcDoc::space(),
+                    RcDoc::text("{"),
+                    RcDoc::intersperse(
                         fields.iter().map(|(name, expr)| {
-                            RcDoc::text(name)
-                                .append(RcDoc::space())
-                                .append(RcDoc::text(":="))
-                                .append(RcDoc::space())
-                                .append(expr.to_doc(false))
+                            RcDoc::concat([
+                                RcDoc::text(name),
+                                RcDoc::space(),
+                                RcDoc::text(":="),
+                                RcDoc::space(),
+                                expr.to_doc(false),
+                            ])
                         }),
                         RcDoc::text(";"),
-                    ))
-                    .append(RcDoc::text("}"))
-                    .append(RcDoc::space())
-                    .append(match base {
-                        Some(base) => RcDoc::text("with")
-                            .append(RcDoc::space())
-                            .append(base.to_doc(false)),
+                    ),
+                    RcDoc::text("}"),
+                    RcDoc::space(),
+                    match base {
+                        Some(base) => {
+                            RcDoc::concat([RcDoc::text("with"), RcDoc::space(), base.to_doc(false)])
+                        }
                         None => RcDoc::nil(),
-                    }),
-            ),
+                    },
+                ]);
+
+                return render::paren(with_paren, struct_signature_doc);
+            }
         }
     }
 }
@@ -791,28 +812,41 @@ impl Expr {
 impl TopLevelItem {
     fn to_doc(&self) -> RcDoc {
         match self {
-            TopLevelItem::Definition { name, args, body } => RcDoc::text("Definition")
-                .append(RcDoc::space())
-                .append(RcDoc::text(name))
-                .append(RcDoc::intersperse(
-                    args.iter().map(|arg| RcDoc::text(arg)),
-                    RcDoc::space(),
-                ))
-                .append(RcDoc::space())
-                .append(RcDoc::text(":="))
-                .append((RcDoc::hardline().append(body.to_doc(false))).nest(2))
-                .append(RcDoc::text(".")),
-            TopLevelItem::Module { name, body } => RcDoc::text("Module")
-                .append(RcDoc::space())
-                .append(RcDoc::text(name))
-                .append(RcDoc::space())
-                .append(RcDoc::text(":="))
-                .append((RcDoc::hardline().append(body.to_doc())).nest(2))
-                .append(RcDoc::text(".")),
-            TopLevelItem::Error(message) => RcDoc::text("Error")
-                .append(RcDoc::space())
-                .append(RcDoc::text(message))
-                .append(RcDoc::text(".")),
+            TopLevelItem::Definition { name, args, body } => RcDoc::concat([
+                RcDoc::text("Definition"),
+                RcDoc::space(),
+                RcDoc::text(name),
+                RcDoc::intersperse(args.iter().map(RcDoc::text), RcDoc::space()),
+                RcDoc::space(),
+                RcDoc::text(":="),
+                RcDoc::hardline()
+                    .append(body.to_doc(false))
+                    .nest(INDENT_SPACE_OFFSET)
+                    .group(),
+                RcDoc::text("."),
+            ])
+            .group(),
+            TopLevelItem::Module { name, body } => RcDoc::concat([
+                RcDoc::text("Module"),
+                RcDoc::space(),
+                RcDoc::text(name),
+                RcDoc::space(),
+                RcDoc::text(":="),
+                RcDoc::hardline()
+                    .append(body.to_doc())
+                    .nest(INDENT_SPACE_OFFSET)
+                    .group(),
+                RcDoc::text("."),
+            ])
+            .group(),
+
+            TopLevelItem::Error(message) => RcDoc::concat([
+                RcDoc::text("Error"),
+                RcDoc::space(),
+                RcDoc::text(message),
+                RcDoc::text("."),
+            ])
+            .group(),
         }
     }
 }
@@ -833,64 +867,88 @@ impl TopLevel {
 }
 
 fn main() {
-    let dir = std::path::Path::new("examples-from-rust-book");
+    let src_folder = Path::new("examples-from-rust-book");
+    let dst_folder = Path::new("coq_translation");
 
-    for entry in fs::read_dir(dir).unwrap() {
+    for entry in WalkDir::new(src_folder) {
         let entry = entry.unwrap();
-        let path = entry.path();
+        let src_path = entry.path();
 
-        if path.is_file() && path.extension().unwrap() == "rs" {
-            let mut file = fs::File::open(&path).unwrap();
-            let mut contents = String::new();
-            file.read_to_string(&mut contents).unwrap();
+        // calculate the relative path from the source to the destination directory
+        let relative_path = src_path.strip_prefix(src_folder).unwrap();
+        let dst_path = dst_folder.join(relative_path);
 
-            let new_stem = path.file_stem().unwrap().to_str().unwrap();
-            let new_path = path.with_file_name(new_stem.to_string() + ".v");
-            // The line below producing test files with the .snapshot extension
-            // can uncommented when needed.
-            // let new_path = path.with_file_name(new_stem.to_string() + ".snapshot");
-            let mut new_file = fs::File::create(&new_path).unwrap();
-
-            let out = process::Command::new("rustc")
-                .arg("--print=sysroot")
-                .current_dir(".")
-                .output()
-                .unwrap();
-            let sysroot = str::from_utf8(&out.stdout).unwrap().trim();
-            let config = rustc_interface::Config {
-                opts: config::Options {
-                    maybe_sysroot: Some(path::PathBuf::from(sysroot)),
-                    ..config::Options::default()
-                },
-                input: config::Input::Str {
-                    name: source_map::FileName::Custom("main.rs".to_string()),
-                    input: contents.to_string(),
-                },
-                crate_cfg: rustc_hash::FxHashSet::default(),
-                crate_check_cfg: CheckCfg::default(),
-                input_path: None,
-                output_dir: Some(dir.to_path_buf()),
-                output_file: Some(new_path),
-                file_loader: None,
-                lint_caps: rustc_hash::FxHashMap::default(),
-                parse_sess_created: None,
-                register_lints: None,
-                override_queries: None,
-                make_codegen_backend: None,
-                registry: registry::Registry::new(&rustc_error_codes::DIAGNOSTICS),
-            };
-            rustc_interface::run_compiler(config, |compiler| {
-                compiler.enter(|queries| {
-                    queries.global_ctxt().unwrap().take().enter(|tcx| {
-                        let top_level = compile_top_level(tcx);
-                        new_file
-                            .write_all(top_level.to_pretty(80).as_bytes())
-                            .unwrap();
-                    })
-                });
-            });
+        // if the entry is a directory, create it in the destination directory
+        if src_path.is_dir() {
+            fs::create_dir_all(&dst_path).unwrap();
+        } else {
+            // if the entry is a file, create a Coq version of it and write it to the destination directory
+            let contents = fs::read_to_string(src_path).unwrap();
+            let translation = create_translation_to_coq(
+                src_path.file_name().unwrap().to_str().unwrap().to_string(),
+                contents,
+            );
+            fs::write(
+                dst_folder.join(change_to_coq_extension(relative_path)),
+                translation,
+            )
+            .unwrap();
         }
     }
+}
+
+fn change_to_coq_extension(path: &Path) -> PathBuf {
+    let mut new_path = path.to_path_buf();
+    new_path.set_extension("v");
+    return new_path;
+}
+
+fn create_translation_to_coq(input_file_name: String, contents: String) -> String {
+    let filename = input_file_name.clone();
+    let out = process::Command::new("rustc")
+        .arg("--print=sysroot")
+        .current_dir(".")
+        .output()
+        .unwrap();
+    let sysroot = str::from_utf8(&out.stdout).unwrap().trim();
+    let config = rustc_interface::Config {
+        opts: config::Options {
+            maybe_sysroot: Some(path::PathBuf::from(sysroot)),
+            ..config::Options::default()
+        },
+        input: config::Input::Str {
+            name: source_map::FileName::Custom(input_file_name),
+            input: contents.to_string(),
+        },
+        crate_cfg: rustc_hash::FxHashSet::default(),
+        crate_check_cfg: CheckCfg::default(),
+        input_path: None,
+        output_dir: None,
+        output_file: None,
+        file_loader: None,
+        lint_caps: rustc_hash::FxHashMap::default(),
+        parse_sess_created: None,
+        register_lints: None,
+        override_queries: None,
+        make_codegen_backend: None,
+        registry: registry::Registry::new(rustc_error_codes::DIAGNOSTICS),
+    };
+    let now = std::time::Instant::now();
+    let result = rustc_interface::run_compiler(config, |compiler| {
+        compiler.enter(|queries| {
+            queries.global_ctxt().unwrap().take().enter(|tcx| {
+                let top_level = compile_top_level(tcx);
+                let top_level_str = top_level.to_pretty(LINE_WIDTH).to_string();
+                top_level_str
+            })
+        })
+    });
+    println!(
+        "{} ms have passed to translate: {}",
+        now.elapsed().as_millis(),
+        filename
+    );
+    return result;
 }
 
 #[cfg(test)]
