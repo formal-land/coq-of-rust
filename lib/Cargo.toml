@@ -11,6 +11,7 @@ inherits = "dev"
 clap = { version = "4.1.4", features = ["derive"] }
 pretty = "0.11.3"
 walkdir = "2.3.2"
+chrono = "0.4.23"
 
 
 [dev-dependencies]

@@ -7,19 +7,19 @@ edition = "2021"
 
 
 [[bin]]
-name = "coq_of_rust"
+name = "coq-of-rust"
 path = "src/main.rs"
 
 [dependencies]
-coq_of_rust_lib = { path = "../coq_of_rust_lib" } 
+coq_of_rust_lib = { path = "../lib" } 
+clap = { version = "4.1.4", features = ["derive"] }
 
 # # the profile [snapshot] should be customized so that snapshot files are automatically generated
 # [profile.snapshot]
 # inherits = "dev"
 
 
-# [dependencies]
-# clap = { version = "4.1.4", features = ["derive"] }
+
 # pretty = "0.11.3"
 # walkdir = "2.3.2"
 

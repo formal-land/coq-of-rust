@@ -1,2 +1,2 @@
 [workspace]
-members = ["coq_of_rust_lib", "coq_of_rust_cli"]
+members = ["lib", "cli"]

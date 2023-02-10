@@ -870,31 +870,62 @@ fn change_to_coq_extension(path: &Path) -> PathBuf {
     return new_path;
 }
 pub fn run(src_folder: &Path) {
-    let dst_folder = Path::new("coq_translation");
+    let basic_folder_name = "coq_translation";
+    let unique_folder_name = format!(
+        "{}/{}/",
+        basic_folder_name,
+        src_folder.file_name().unwrap().to_str().unwrap(),
+    );
+    let dst_folder = Path::new(&unique_folder_name);
+    if src_folder.is_file() {
+        let contents = fs::read_to_string(src_folder).unwrap();
+        let translation = create_translation_to_coq(
+            src_folder
+                .file_name()
+                .unwrap()
+                .to_str()
+                .unwrap()
+                .to_string(),
+            contents,
+        );
 
-    for entry in WalkDir::new(src_folder) {
-        let entry = entry.unwrap();
-        let src_path = entry.path();
+        let write_to_path = dst_folder.join(
+            change_to_coq_extension(src_folder)
+                .file_name()
+                .unwrap()
+                .to_str()
+                .unwrap()
+                .to_string(),
+        );
+        if !write_to_path.exists() {
+            fs::create_dir_all(&dst_folder).unwrap();
+        }
+        fs::write(write_to_path, translation).unwrap();
+    } else {
+        for entry in WalkDir::new(src_folder) {
+            let entry = entry.unwrap();
+            let src_path = entry.path();
 
-        // calculate the relative path from the source to the destination directory
-        let relative_path = src_path.strip_prefix(src_folder).unwrap();
-        let dst_path = dst_folder.join(relative_path);
+            // calculate the relative path from the source to the destination directory
+            let relative_path = src_path.strip_prefix(src_folder).unwrap();
+            let dst_path = dst_folder.join(relative_path);
 
-        // if the entry is a directory, create it in the destination directory
-        if src_path.is_dir() {
-            fs::create_dir_all(&dst_path).unwrap();
-        } else {
-            // if the entry is a file, create a Coq version of it and write it to the destination directory
-            let contents = fs::read_to_string(src_path).unwrap();
-            let translation = create_translation_to_coq(
-                src_path.file_name().unwrap().to_str().unwrap().to_string(),
-                contents,
-            );
-            fs::write(
-                dst_folder.join(change_to_coq_extension(relative_path)),
-                translation,
-            )
-            .unwrap();
+            // if the entry is a directory, create it in the destination directory
+            if src_path.is_dir() {
+                fs::create_dir_all(&dst_path).unwrap();
+            } else {
+                // if the entry is a file, create a Coq version of it and write it to the destination directory
+                let contents = fs::read_to_string(src_path).unwrap();
+                let translation = create_translation_to_coq(
+                    src_path.file_name().unwrap().to_str().unwrap().to_string(),
+                    contents,
+                );
+                fs::write(
+                    dst_folder.join(change_to_coq_extension(relative_path)),
+                    translation,
+                )
+                .unwrap();
+            }
         }
     }
 }

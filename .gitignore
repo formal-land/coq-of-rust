@@ -15,4 +15,4 @@ Cargo.lock
 /target
 
 # we ignore Coq files, which should be automatically generated
-coq_translation/
+/coq_translation*
