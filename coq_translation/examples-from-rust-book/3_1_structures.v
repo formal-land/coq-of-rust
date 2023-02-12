@@ -1,10 +1,12 @@
 Error Struct.
 
-Definition fmt
-  (self : ref Self)
-  (f : ref $crate.fmt.Formatter)
-  : $crate.fmt.Result :=
-  debug_struct_field2_finish f "Person" "name" self.name "age" self.age.
+(* Impl [Person] *)
+  Definition fmt
+    (self : ref Self)
+    (f : ref $crate.fmt.Formatter)
+    : $crate.fmt.Result :=
+    debug_struct_field2_finish f "Person" "name" self.name "age" self.age.
+(* End impl [Person] *)
 
 Error Struct.
 

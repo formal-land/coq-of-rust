@@ -5,11 +5,13 @@ Definition reverse :=
 Definition Matrix : Set :=
   f32 * f32 * f32 * f32.
 
-Definition fmt
-  (self : ref Self)
-  (f : ref $crate.fmt.Formatter)
-  : $crate.fmt.Result :=
-  debug_tuple_field4_finish f "Matrix" self.0 self.1 self.2 self.3.
+(* Impl [Matrix] *)
+  Definition fmt
+    (self : ref Self)
+    (f : ref $crate.fmt.Formatter)
+    : $crate.fmt.Result :=
+    debug_tuple_field4_finish f "Matrix" self.0 self.1 self.2 self.3.
+(* End impl [Matrix] *)
 
 Definition main :=
   let long_tuple := (1, 2, 3, 4, neg 1, neg 2, neg 3, neg 4, 0.1, 0.2, a, true) in

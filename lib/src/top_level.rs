@@ -24,6 +24,10 @@ enum TopLevelItem {
         name: String,
         body: TopLevel,
     },
+    Impl {
+        self_ty: Type,
+        body: TopLevel,
+    },
     Error(String),
 }
 
@@ -110,50 +114,57 @@ fn compile_top_level_item(
         rustc_hir::ItemKind::TraitAlias(_, _) => {
             vec![TopLevelItem::Error("TraitAlias".to_string())]
         }
-        rustc_hir::ItemKind::Impl(rustc_hir::Impl { items, .. }) => items
-            .iter()
-            .flat_map(|item| {
-                let item = hir.impl_item(item.id);
-                match &item.kind {
-                    rustc_hir::ImplItemKind::Const(_, body_id) => {
-                        let expr = hir.body(*body_id).value;
-                        vec![TopLevelItem::Definition {
-                            name: item.ident.name.to_string(),
-                            args: vec![],
-                            ret_ty: None,
-                            body: compile_expr(hir, expr),
-                        }]
-                    }
-                    rustc_hir::ImplItemKind::Fn(fn_sig, body_id) => {
-                        let arg_names =
-                            hir.body(*body_id)
-                                .params
-                                .iter()
-                                .map(|param| match param.pat.kind {
-                                    rustc_hir::PatKind::Binding(_, _, ident, _) => {
-                                        ident.name.to_string()
+        rustc_hir::ItemKind::Impl(rustc_hir::Impl { items, self_ty, .. }) => {
+            let items = items
+                .iter()
+                .flat_map(|item| {
+                    let item = hir.impl_item(item.id);
+                    match &item.kind {
+                        rustc_hir::ImplItemKind::Const(_, body_id) => {
+                            let expr = hir.body(*body_id).value;
+                            vec![TopLevelItem::Definition {
+                                name: item.ident.name.to_string(),
+                                args: vec![],
+                                ret_ty: None,
+                                body: compile_expr(hir, expr),
+                            }]
+                        }
+                        rustc_hir::ImplItemKind::Fn(fn_sig, body_id) => {
+                            let arg_names =
+                                hir.body(*body_id).params.iter().map(|param| {
+                                    match param.pat.kind {
+                                        rustc_hir::PatKind::Binding(_, _, ident, _) => {
+                                            ident.name.to_string()
+                                        }
+                                        _ => "Pattern".to_string(),
                                     }
-                                    _ => "Pattern".to_string(),
                                 });
-                        let arg_tys = fn_sig.decl.inputs.iter().map(compile_type);
-                        let ret_ty = match &fn_sig.decl.output {
-                            rustc_hir::FnRetTy::DefaultReturn(_) => None,
-                            rustc_hir::FnRetTy::Return(ty) => Some(compile_type(ty)),
-                        };
-                        let expr = hir.body(*body_id).value;
-                        vec![TopLevelItem::Definition {
+                            let arg_tys = fn_sig.decl.inputs.iter().map(compile_type);
+                            let ret_ty = match &fn_sig.decl.output {
+                                rustc_hir::FnRetTy::DefaultReturn(_) => None,
+                                rustc_hir::FnRetTy::Return(ty) => Some(compile_type(ty)),
+                            };
+                            let expr = hir.body(*body_id).value;
+                            vec![TopLevelItem::Definition {
+                                name: item.ident.name.to_string(),
+                                args: arg_names.zip(arg_tys).collect(),
+                                ret_ty,
+                                body: compile_expr(hir, expr),
+                            }]
+                        }
+                        rustc_hir::ImplItemKind::Type(ty) => vec![TopLevelItem::TypeAlias {
                             name: item.ident.name.to_string(),
-                            args: arg_names.zip(arg_tys).collect(),
-                            ret_ty,
-                            body: compile_expr(hir, expr),
-                        }]
+                            ty: Box::new(compile_type(ty)),
+                        }],
                     }
-                    rustc_hir::ImplItemKind::Type(_) => {
-                        vec![TopLevelItem::Error("ImplItemKind::Type".to_string())]
-                    }
-                }
-            })
-            .collect(),
+                })
+                .collect();
+            let self_ty = compile_type(self_ty);
+            vec![TopLevelItem::Impl {
+                self_ty,
+                body: TopLevel(items),
+            }]
+        }
     }
 }
 
@@ -228,8 +239,7 @@ impl TopLevelItem {
                 RcDoc::text(":="),
                 RcDoc::hardline().append(body.to_doc()).group(),
                 RcDoc::text("."),
-            ]))
-            .group(),
+            ])),
             TopLevelItem::TypeAlias { name, ty } => indent(RcDoc::concat([
                 RcDoc::concat([
                     RcDoc::text("Definition"),
@@ -247,13 +257,25 @@ impl TopLevelItem {
                 ty.to_doc(),
                 RcDoc::text("."),
             ])),
+            TopLevelItem::Impl { self_ty, body } => RcDoc::concat([
+                indent(RcDoc::concat([
+                    RcDoc::text("(* Impl ["),
+                    self_ty.to_doc(),
+                    RcDoc::text("] *)"),
+                    RcDoc::hardline(),
+                    body.to_doc(),
+                ])),
+                RcDoc::hardline(),
+                RcDoc::text("(* End impl ["),
+                self_ty.to_doc(),
+                RcDoc::text("] *)"),
+            ]),
             TopLevelItem::Error(message) => RcDoc::concat([
                 RcDoc::text("Error"),
                 RcDoc::space(),
                 RcDoc::text(message),
                 RcDoc::text("."),
-            ])
-            .group(),
+            ]),
         }
     }
 }
