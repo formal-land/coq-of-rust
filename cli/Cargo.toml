@@ -1,0 +1,35 @@
+[package]
+name = "coq_of_rust_cli"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+
+[[bin]]
+name = "coq-of-rust"
+path = "src/main.rs"
+
+[dependencies]
+coq_of_rust_lib = { path = "../lib" } 
+clap = { version = "4.1.4", features = ["derive"] }
+
+# # the profile [snapshot] should be customized so that snapshot files are automatically generated
+# [profile.snapshot]
+# inherits = "dev"
+
+
+
+# pretty = "0.11.3"
+# walkdir = "2.3.2"
+
+# [dev-dependencies]
+# insta = { version = "1.26.0", features = ["yaml","redactions", "glob"] }
+
+# # [dev-dependencies]
+# # rustfmt = "1.5.1-nightly"
+# # rustfmt-nightly = "1.4.21"
+
+# [package.metadata.rust-analyzer]
+# rustc_private=true
+

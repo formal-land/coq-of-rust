@@ -1,45 +1,41 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'coq_of_rust'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=coq_of_rust",
-                    "--package=coq-of-rust"
-                ],
-                "filter": {
-                    "name": "coq_of_rust",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'coq_of_rust'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=coq_of_rust",
-                    "--package=coq-of-rust"
-                ],
-                "filter": {
-                    "name": "coq_of_rust",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug executable 'coq-of-rust'",
+      "cargo": {
+        "args": ["build", "--bin=coq-of-rust"],
+        "filter": {
+          "name": "coq-of-rust",
+          "kind": "bin"
         }
-    ]
+      },
+      "args": ["translate", "--path", "examples-from-rust-book/0_test0.rs"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in executable 'coq-of-rust'",
+      "cargo": {
+        "args": [
+          "test",
+          "--no-run",
+          "--bin=coq-of-rust",
+          "--package=coq-of-rust"
+        ],
+        "filter": {
+          "name": "coq-of-rust",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
 }
