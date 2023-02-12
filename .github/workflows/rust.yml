@@ -20,6 +20,8 @@ jobs:
       run: cargo fmt --check
     - name: Build
       run: cargo build --verbose
+    - name: Linting
+      run: cargo clippy
     - name: Run tests
       run: |
         cargo run -- translate --path examples-from-rust-book
