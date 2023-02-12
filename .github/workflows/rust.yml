@@ -21,4 +21,6 @@ jobs:
     - name: Build
       run: cargo build --verbose
     - name: Run tests
-      run: cargo test --verbose
+      run: |
+        cargo run -- translate --path examples-from-rust-book
+        git -c color.ui=always diff --exit-code
