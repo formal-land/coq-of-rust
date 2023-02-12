@@ -27,7 +27,7 @@ pub const LINE_WIDTH: usize = 80;
 fn change_to_coq_extension(path: &path::Path) -> PathBuf {
     let mut new_path = path.to_path_buf();
     new_path.set_extension("v");
-    return new_path;
+    new_path
 }
 pub fn run(src_folder: &path::Path) {
     let basic_folder_name = "coq_translation";
@@ -54,11 +54,10 @@ pub fn run(src_folder: &path::Path) {
                 .file_name()
                 .unwrap()
                 .to_str()
-                .unwrap()
-                .to_string(),
+                .unwrap(),
         );
         if !write_to_path.exists() {
-            fs::create_dir_all(&dst_folder).unwrap();
+            fs::create_dir_all(dst_folder).unwrap();
         }
         fs::write(write_to_path, translation).unwrap();
     } else {
@@ -105,7 +104,7 @@ fn create_translation_to_coq(input_file_name: String, contents: String) -> Strin
         },
         input: config::Input::Str {
             name: source_map::FileName::Custom(input_file_name),
-            input: contents.to_string(),
+            input: contents,
         },
         crate_cfg: rustc_hash::FxHashSet::default(),
         crate_check_cfg: CheckCfg::default(),
@@ -125,8 +124,7 @@ fn create_translation_to_coq(input_file_name: String, contents: String) -> Strin
         compiler.enter(|queries| {
             queries.global_ctxt().unwrap().take().enter(|tcx| {
                 let top_level = compile_top_level(tcx);
-                let top_level_str = top_level.to_pretty(LINE_WIDTH).to_string();
-                top_level_str
+                top_level.to_pretty(LINE_WIDTH)
             })
         })
     });
@@ -135,5 +133,5 @@ fn create_translation_to_coq(input_file_name: String, contents: String) -> Strin
         now.elapsed().as_millis(),
         filename
     );
-    return result;
+    result
 }

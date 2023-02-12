@@ -96,10 +96,7 @@ fn compile_top_level_item(
         rustc_hir::ItemKind::Struct(body, _) => match body {
             rustc_hir::VariantData::Tuple(fields, _, _) => {
                 let ty = Box::new(Type::Tuple(
-                    fields
-                        .iter()
-                        .map(|field| compile_type(hir, &field.ty))
-                        .collect(),
+                    fields.iter().map(|field| compile_type(field.ty)).collect(),
                 ));
                 vec![TopLevelItem::TypeAlias {
                     name: item.ident.name.to_string(),
@@ -138,10 +135,10 @@ fn compile_top_level_item(
                                     }
                                     _ => "Pattern".to_string(),
                                 });
-                        let arg_tys = fn_sig.decl.inputs.iter().map(|ty| compile_type(hir, ty));
+                        let arg_tys = fn_sig.decl.inputs.iter().map(compile_type);
                         let ret_ty = match &fn_sig.decl.output {
                             rustc_hir::FnRetTy::DefaultReturn(_) => None,
-                            rustc_hir::FnRetTy::Return(ty) => Some(compile_type(hir, ty)),
+                            rustc_hir::FnRetTy::Return(ty) => Some(compile_type(ty)),
                         };
                         let expr = hir.body(*body_id).value;
                         vec![TopLevelItem::Definition {

@@ -19,17 +19,15 @@ impl Type {
     }
 }
 
-pub fn compile_type(hir: rustc_middle::hir::map::Map, ty: &rustc_hir::Ty) -> Type {
+pub fn compile_type(ty: &rustc_hir::Ty) -> Type {
     match &ty.kind {
         rustc_hir::TyKind::Slice(_) => Type::Var(Path::local("Slice".to_string())),
-        rustc_hir::TyKind::Array(ty, _) => Type::Array(Box::new(compile_type(hir, ty))),
-        rustc_hir::TyKind::Ptr(ty) => Type::Ref(Box::new(compile_type(hir, ty.ty))),
-        rustc_hir::TyKind::Ref(_, ty) => Type::Ref(Box::new(compile_type(hir, ty.ty))),
+        rustc_hir::TyKind::Array(ty, _) => Type::Array(Box::new(compile_type(ty))),
+        rustc_hir::TyKind::Ptr(ty) => Type::Ref(Box::new(compile_type(ty.ty))),
+        rustc_hir::TyKind::Ref(_, ty) => Type::Ref(Box::new(compile_type(ty.ty))),
         rustc_hir::TyKind::BareFn(_) => Type::Var(Path::local("BareFn".to_string())),
         rustc_hir::TyKind::Never => Type::Var(Path::local("Empty_set".to_string())),
-        rustc_hir::TyKind::Tup(tys) => {
-            Type::Tuple(tys.iter().map(|ty| compile_type(hir, ty)).collect())
-        }
+        rustc_hir::TyKind::Tup(tys) => Type::Tuple(tys.iter().map(compile_type).collect()),
         rustc_hir::TyKind::Path(qpath) => {
             let path = compile_qpath(qpath);
             Type::Var(path)
