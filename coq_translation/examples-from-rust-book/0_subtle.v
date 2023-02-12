@@ -1,17 +1,20 @@
 Definition Choice : Set :=
   u8.
 
-Definition clone :=
+Definition clone (self : ref Self) : Choice :=
   let _ := tt in
   deref self.
 
-Definition fmt :=
+Definition fmt
+  (self : ref Self)
+  (f : ref $crate.fmt.Formatter)
+  : $crate.fmt.Result :=
   debug_tuple_field1_finish f "Choice" self.0.
 
-Definition unwrap_u8 :=
+Definition unwrap_u8 (self : ref Self) : u8 :=
   self.0.
 
-Definition from :=
+Definition from (source : Choice) : bool :=
   if true then
     if not (bit_and (eq source.0 0) (eq source.0 1)) then
       $crate.panicking.panic "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
@@ -24,34 +27,34 @@ Definition from :=
 
 Error ImplItemKind::Type.
 
-Definition bitand :=
+Definition bitand (self : Self) (rhs : Choice) : Choice :=
   (bit_and self.0 rhs.0) .
 
-Definition bitand_assign :=
+Definition bitand_assign (self : ref Self) (rhs : Choice) :=
   assign deref self := bit_and (deref self) rhs ;;
   tt.
 
 Error ImplItemKind::Type.
 
-Definition bitor :=
+Definition bitor (self : Self) (rhs : Choice) : Choice :=
   (bit_and self.0 rhs.0) .
 
-Definition bitor_assign :=
+Definition bitor_assign (self : ref Self) (rhs : Choice) :=
   assign deref self := bit_and (deref self) rhs ;;
   tt.
 
 Error ImplItemKind::Type.
 
-Definition bitxor :=
+Definition bitxor (self : Self) (rhs : Choice) : Choice :=
   (bit_xor self.0 rhs.0) .
 
-Definition bitxor_assign :=
+Definition bitxor_assign (self : ref Self) (rhs : Choice) :=
   assign deref self := bit_xor (deref self) rhs ;;
   tt.
 
 Error ImplItemKind::Type.
 
-Definition not :=
+Definition not (self : Self) : Choice :=
   (bit_and 1 (not self.0)) .
 
 Definition black_box :=
@@ -65,12 +68,12 @@ Definition black_box :=
     tt ;;
   core.ptr.read_volatile input.
 
-Definition from :=
+Definition from (input : u8) : Choice :=
   Choice (black_box input).
 
 Error Trait.
 
-Definition ct_eq :=
+Definition ct_eq (self : ref Self) (_rhs : ref Slice) : Choice :=
   let len := self  in
   if ne len (_rhs ) then
     Return (from 0) ;;
@@ -90,207 +93,270 @@ Definition ct_eq :=
   end ;;
   x .
 
-Definition ct_eq :=
+Definition ct_eq (self : ref Self) (rhs : ref Choice) : Choice :=
   not (bit_xor (deref self) (deref rhs)).
 
-Definition ct_eq :=
+Definition ct_eq (self : ref Self) (other : ref u8) : Choice :=
   let x := bit_xor self other in
   let y := shr (bit_and x (x )) (sub 8 1) in
   (bit_xor y 1) .
 
-Definition ct_eq :=
+Definition ct_eq (self : ref Self) (other : ref i8) : Choice :=
   (deref self) (deref other).
 
-Definition ct_eq :=
+Definition ct_eq (self : ref Self) (other : ref u16) : Choice :=
   let x := bit_xor self other in
   let y := shr (bit_and x (x )) (sub 16 1) in
   (bit_xor y 1) .
 
-Definition ct_eq :=
+Definition ct_eq (self : ref Self) (other : ref i16) : Choice :=
   (deref self) (deref other).
 
-Definition ct_eq :=
+Definition ct_eq (self : ref Self) (other : ref u32) : Choice :=
   let x := bit_xor self other in
   let y := shr (bit_and x (x )) (sub 32 1) in
   (bit_xor y 1) .
 
-Definition ct_eq :=
+Definition ct_eq (self : ref Self) (other : ref i32) : Choice :=
   (deref self) (deref other).
 
-Definition ct_eq :=
+Definition ct_eq (self : ref Self) (other : ref u64) : Choice :=
   let x := bit_xor self other in
   let y := shr (bit_and x (x )) (sub 64 1) in
   (bit_xor y 1) .
 
-Definition ct_eq :=
+Definition ct_eq (self : ref Self) (other : ref i64) : Choice :=
   (deref self) (deref other).
 
-Definition ct_eq :=
+Definition ct_eq (self : ref Self) (other : ref usize) : Choice :=
   let x := bit_xor self other in
   let y := shr (bit_and x (x )) (sub (mul ({{root}}.core.mem.size_of ) 8) 1) in
   (bit_xor y 1) .
 
-Definition ct_eq :=
+Definition ct_eq (self : ref Self) (other : ref isize) : Choice :=
   (deref self) (deref other).
 
 Error Trait.
 
-Definition conditional_select :=
+Definition conditional_select
+  (a : ref Self)
+  (b : ref Self)
+  (choice : Choice)
+  : Self :=
   let mask := neg (choice ) in
   bit_xor a (bit_and mask (bit_xor a b)).
 
-Definition conditional_assign :=
+Definition conditional_assign
+  (self : ref Self)
+  (other : ref Self)
+  (choice : Choice) :=
   let mask := neg (choice ) in
   assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
   tt.
 
-Definition conditional_swap :=
+Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
   let mask := neg (choice ) in
   let t := bit_and mask (bit_xor (deref a) (deref b)) in
   assign deref a := deref a bit_xor t ;;
   assign deref b := deref b bit_xor t ;;
   tt.
 
-Definition conditional_select :=
+Definition conditional_select
+  (a : ref Self)
+  (b : ref Self)
+  (choice : Choice)
+  : Self :=
   let mask := neg (choice ) in
   bit_xor a (bit_and mask (bit_xor a b)).
 
-Definition conditional_assign :=
+Definition conditional_assign
+  (self : ref Self)
+  (other : ref Self)
+  (choice : Choice) :=
   let mask := neg (choice ) in
   assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
   tt.
 
-Definition conditional_swap :=
+Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
   let mask := neg (choice ) in
   let t := bit_and mask (bit_xor (deref a) (deref b)) in
   assign deref a := deref a bit_xor t ;;
   assign deref b := deref b bit_xor t ;;
   tt.
 
-Definition conditional_select :=
+Definition conditional_select
+  (a : ref Self)
+  (b : ref Self)
+  (choice : Choice)
+  : Self :=
   let mask := neg (choice ) in
   bit_xor a (bit_and mask (bit_xor a b)).
 
-Definition conditional_assign :=
+Definition conditional_assign
+  (self : ref Self)
+  (other : ref Self)
+  (choice : Choice) :=
   let mask := neg (choice ) in
   assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
   tt.
 
-Definition conditional_swap :=
+Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
   let mask := neg (choice ) in
   let t := bit_and mask (bit_xor (deref a) (deref b)) in
   assign deref a := deref a bit_xor t ;;
   assign deref b := deref b bit_xor t ;;
   tt.
 
-Definition conditional_select :=
+Definition conditional_select
+  (a : ref Self)
+  (b : ref Self)
+  (choice : Choice)
+  : Self :=
   let mask := neg (choice ) in
   bit_xor a (bit_and mask (bit_xor a b)).
 
-Definition conditional_assign :=
+Definition conditional_assign
+  (self : ref Self)
+  (other : ref Self)
+  (choice : Choice) :=
   let mask := neg (choice ) in
   assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
   tt.
 
-Definition conditional_swap :=
+Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
   let mask := neg (choice ) in
   let t := bit_and mask (bit_xor (deref a) (deref b)) in
   assign deref a := deref a bit_xor t ;;
   assign deref b := deref b bit_xor t ;;
   tt.
 
-Definition conditional_select :=
+Definition conditional_select
+  (a : ref Self)
+  (b : ref Self)
+  (choice : Choice)
+  : Self :=
   let mask := neg (choice ) in
   bit_xor a (bit_and mask (bit_xor a b)).
 
-Definition conditional_assign :=
+Definition conditional_assign
+  (self : ref Self)
+  (other : ref Self)
+  (choice : Choice) :=
   let mask := neg (choice ) in
   assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
   tt.
 
-Definition conditional_swap :=
+Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
   let mask := neg (choice ) in
   let t := bit_and mask (bit_xor (deref a) (deref b)) in
   assign deref a := deref a bit_xor t ;;
   assign deref b := deref b bit_xor t ;;
   tt.
 
-Definition conditional_select :=
+Definition conditional_select
+  (a : ref Self)
+  (b : ref Self)
+  (choice : Choice)
+  : Self :=
   let mask := neg (choice ) in
   bit_xor a (bit_and mask (bit_xor a b)).
 
-Definition conditional_assign :=
+Definition conditional_assign
+  (self : ref Self)
+  (other : ref Self)
+  (choice : Choice) :=
   let mask := neg (choice ) in
   assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
   tt.
 
-Definition conditional_swap :=
+Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
   let mask := neg (choice ) in
   let t := bit_and mask (bit_xor (deref a) (deref b)) in
   assign deref a := deref a bit_xor t ;;
   assign deref b := deref b bit_xor t ;;
   tt.
 
-Definition conditional_select :=
+Definition conditional_select
+  (a : ref Self)
+  (b : ref Self)
+  (choice : Choice)
+  : Self :=
   let mask := neg (choice ) in
   bit_xor a (bit_and mask (bit_xor a b)).
 
-Definition conditional_assign :=
+Definition conditional_assign
+  (self : ref Self)
+  (other : ref Self)
+  (choice : Choice) :=
   let mask := neg (choice ) in
   assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
   tt.
 
-Definition conditional_swap :=
+Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
   let mask := neg (choice ) in
   let t := bit_and mask (bit_xor (deref a) (deref b)) in
   assign deref a := deref a bit_xor t ;;
   assign deref b := deref b bit_xor t ;;
   tt.
 
-Definition conditional_select :=
+Definition conditional_select
+  (a : ref Self)
+  (b : ref Self)
+  (choice : Choice)
+  : Self :=
   let mask := neg (choice ) in
   bit_xor a (bit_and mask (bit_xor a b)).
 
-Definition conditional_assign :=
+Definition conditional_assign
+  (self : ref Self)
+  (other : ref Self)
+  (choice : Choice) :=
   let mask := neg (choice ) in
   assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
   tt.
 
-Definition conditional_swap :=
+Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
   let mask := neg (choice ) in
   let t := bit_and mask (bit_xor (deref a) (deref b)) in
   assign deref a := deref a bit_xor t ;;
   assign deref b := deref b bit_xor t ;;
   tt.
 
-Definition conditional_select :=
+Definition conditional_select
+  (a : ref Self)
+  (b : ref Self)
+  (choice : Choice)
+  : Self :=
   Choice (conditional_select a.0 b.0 choice).
 
 Error Trait.
 
-Definition conditional_negate :=
+Definition conditional_negate (self : ref Self) (choice : Choice) :=
   let self_neg := neg self in
   self self_neg choice ;;
   tt.
 
 Error Struct.
 
-Definition clone :=
+Definition clone (self : ref Self) : CtOption :=
   struct CtOption {value := $crate.clone.Clone.clone self.value;is_some := $crate.clone.Clone.clone self.is_some} .
 
-Definition fmt :=
+Definition fmt
+  (self : ref Self)
+  (f : ref $crate.fmt.Formatter)
+  : $crate.fmt.Result :=
   debug_struct_field2_finish f "CtOption" "value" self.value "is_some" self.is_some.
 
-Definition from :=
+Definition from (source : CtOption) : Option :=
   if eq ((source ) ) 1 then
     Option.Some source.value
   else
     None.
 
-Definition new :=
+Definition new (value : T) (is_some : Choice) : CtOption :=
   struct CtOption {value := value;is_some := is_some} .
 
-Definition expect :=
+Definition expect (self : Self) (msg : ref str) : T :=
   match (self.is_some , 1) with
   | (left_val, right_val) =>
     if not (eq (deref left_val) (deref right_val)) then
@@ -302,7 +368,7 @@ Definition expect :=
   end ;;
   self.value.
 
-Definition unwrap :=
+Definition unwrap (self : Self) : T :=
   match (self.is_some , 1) with
   | (left_val, right_val) =>
     if not (eq (deref left_val) (deref right_val)) then
@@ -314,42 +380,46 @@ Definition unwrap :=
   end ;;
   self.value.
 
-Definition unwrap_or :=
+Definition unwrap_or (self : Self) (def : T) : T :=
   conditional_select def self.value self.is_some.
 
-Definition unwrap_or_else :=
+Definition unwrap_or_else (self : Self) (f : F) : T :=
   conditional_select (f ) self.value self.is_some.
 
-Definition is_some :=
+Definition is_some (self : ref Self) : Choice :=
   self.is_some.
 
-Definition is_none :=
+Definition is_none (self : ref Self) : Choice :=
   not self.is_some.
 
-Definition map :=
+Definition map (self : Self) (f : F) : CtOption :=
   new (f (conditional_select (default ) self.value self.is_some)) self.is_some.
 
-Definition and_then :=
+Definition and_then (self : Self) (f : F) : CtOption :=
   let tmp := f (conditional_select (default ) self.value self.is_some) in
   assign tmp.is_some := tmp.is_some bit_and self.is_some ;;
   tmp.
 
-Definition or_else :=
+Definition or_else (self : Self) (f : F) : CtOption :=
   let is_none := self  in
   let f := f  in
   conditional_select self f is_none.
 
-Definition conditional_select :=
+Definition conditional_select
+  (a : ref Self)
+  (b : ref Self)
+  (choice : Choice)
+  : Self :=
   new (conditional_select a.value b.value choice) (conditional_select a.is_some b.is_some choice).
 
-Definition ct_eq :=
+Definition ct_eq (self : ref Self) (rhs : ref CtOption) : Choice :=
   let a := self  in
   let b := rhs  in
   bit_and (bit_and (bit_and a b) (self.value rhs.value)) (bit_and (not a) (not b)).
 
 Error Trait.
 
-Definition ct_gt :=
+Definition ct_gt (self : ref Self) (other : ref u8) : Choice :=
   let gtb := bit_and self (not other) in
   let ltb := bit_and (not self) other in
   let pow := 1 in
@@ -371,7 +441,7 @@ Definition ct_gt :=
     tt) from while ;;
   from (bit_and bit 1).
 
-Definition ct_gt :=
+Definition ct_gt (self : ref Self) (other : ref u16) : Choice :=
   let gtb := bit_and self (not other) in
   let ltb := bit_and (not self) other in
   let pow := 1 in
@@ -393,7 +463,7 @@ Definition ct_gt :=
     tt) from while ;;
   from (bit_and bit 1).
 
-Definition ct_gt :=
+Definition ct_gt (self : ref Self) (other : ref u32) : Choice :=
   let gtb := bit_and self (not other) in
   let ltb := bit_and (not self) other in
   let pow := 1 in
@@ -415,7 +485,7 @@ Definition ct_gt :=
     tt) from while ;;
   from (bit_and bit 1).
 
-Definition ct_gt :=
+Definition ct_gt (self : ref Self) (other : ref u64) : Choice :=
   let gtb := bit_and self (not other) in
   let ltb := bit_and (not self) other in
   let pow := 1 in

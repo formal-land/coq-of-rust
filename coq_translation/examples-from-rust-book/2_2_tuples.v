@@ -5,7 +5,10 @@ Definition reverse :=
 Definition Matrix : Set :=
   f32 * f32 * f32 * f32.
 
-Definition fmt :=
+Definition fmt
+  (self : ref Self)
+  (f : ref $crate.fmt.Formatter)
+  : $crate.fmt.Result :=
   debug_tuple_field4_finish f "Matrix" self.0 self.1 self.2 self.3.
 
 Definition main :=

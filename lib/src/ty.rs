@@ -13,6 +13,12 @@ pub enum Type {
     Ref(Box<Type>),
 }
 
+impl Type {
+    pub fn unit() -> Type {
+        Type::Tuple(vec![])
+    }
+}
+
 pub fn compile_type(hir: rustc_middle::hir::map::Map, ty: &rustc_hir::Ty) -> Type {
     match &ty.kind {
         rustc_hir::TyKind::Slice(_) => Type::Var(Path::local("Slice".to_string())),

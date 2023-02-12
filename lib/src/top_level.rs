@@ -12,7 +12,8 @@ use pretty::RcDoc;
 enum TopLevelItem {
     Definition {
         name: String,
-        args: Vec<String>,
+        args: Vec<(String, Type)>,
+        ret_ty: Option<Type>,
         body: Expr,
     },
     TypeAlias {
@@ -48,6 +49,7 @@ fn compile_top_level_item(
             vec![TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
                 args: vec![],
+                ret_ty: None,
                 body: compile_expr(hir, expr),
             }]
         }
@@ -56,6 +58,7 @@ fn compile_top_level_item(
             vec![TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
                 args: vec![],
+                ret_ty: None,
                 body: compile_expr(hir, expr),
             }]
         }
@@ -64,6 +67,7 @@ fn compile_top_level_item(
             vec![TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
                 args: vec![],
+                ret_ty: None,
                 body: compile_expr(hir, expr),
             }]
         }
@@ -113,20 +117,37 @@ fn compile_top_level_item(
             .iter()
             .flat_map(|item| {
                 let item = hir.impl_item(item.id);
-                match item.kind {
+                match &item.kind {
                     rustc_hir::ImplItemKind::Const(_, body_id) => {
-                        let expr = hir.body(body_id).value;
+                        let expr = hir.body(*body_id).value;
                         vec![TopLevelItem::Definition {
                             name: item.ident.name.to_string(),
                             args: vec![],
+                            ret_ty: None,
                             body: compile_expr(hir, expr),
                         }]
                     }
-                    rustc_hir::ImplItemKind::Fn(_, body_id) => {
-                        let expr = hir.body(body_id).value;
+                    rustc_hir::ImplItemKind::Fn(fn_sig, body_id) => {
+                        let arg_names =
+                            hir.body(*body_id)
+                                .params
+                                .iter()
+                                .map(|param| match param.pat.kind {
+                                    rustc_hir::PatKind::Binding(_, _, ident, _) => {
+                                        ident.name.to_string()
+                                    }
+                                    _ => "Pattern".to_string(),
+                                });
+                        let arg_tys = fn_sig.decl.inputs.iter().map(|ty| compile_type(hir, ty));
+                        let ret_ty = match &fn_sig.decl.output {
+                            rustc_hir::FnRetTy::DefaultReturn(_) => None,
+                            rustc_hir::FnRetTy::Return(ty) => Some(compile_type(hir, ty)),
+                        };
+                        let expr = hir.body(*body_id).value;
                         vec![TopLevelItem::Definition {
                             name: item.ident.name.to_string(),
-                            args: vec![],
+                            args: arg_names.zip(arg_tys).collect(),
+                            ret_ty,
                             body: compile_expr(hir, expr),
                         }]
                     }
@@ -154,17 +175,54 @@ pub fn compile_top_level(tcx: rustc_middle::ty::TyCtxt) -> TopLevel {
 impl TopLevelItem {
     fn to_doc(&self) -> RcDoc {
         match self {
-            TopLevelItem::Definition { name, args, body } => indent(RcDoc::concat([
-                RcDoc::text("Definition"),
-                RcDoc::space(),
-                RcDoc::text(name),
-                RcDoc::intersperse(args.iter().map(RcDoc::text), RcDoc::space()),
-                RcDoc::space(),
-                RcDoc::text(":="),
-                RcDoc::hardline().append(body.to_doc(false)).group(),
-                RcDoc::text("."),
-            ]))
-            .group(),
+            TopLevelItem::Definition {
+                name,
+                args,
+                ret_ty,
+                body,
+            } => indent(RcDoc::concat([
+                RcDoc::concat([
+                    RcDoc::text("Definition"),
+                    RcDoc::space(),
+                    RcDoc::text(name),
+                    RcDoc::intersperse(
+                        args.iter().map(|(name, ty)| {
+                            RcDoc::concat([
+                                RcDoc::line(),
+                                indent(
+                                    RcDoc::concat([
+                                        RcDoc::text("("),
+                                        RcDoc::text(name),
+                                        RcDoc::space(),
+                                        RcDoc::text(":"),
+                                        RcDoc::space(),
+                                        ty.to_doc(),
+                                        RcDoc::text(")"),
+                                    ])
+                                    .group(),
+                                ),
+                            ])
+                        }),
+                        RcDoc::nil(),
+                    ),
+                    match ret_ty {
+                        Some(ty) => RcDoc::concat([
+                            RcDoc::line(),
+                            RcDoc::text(":"),
+                            RcDoc::space(),
+                            ty.to_doc(),
+                        ]),
+                        None => RcDoc::nil(),
+                    },
+                    RcDoc::space(),
+                    RcDoc::text(":="),
+                ])
+                .group(),
+                RcDoc::concat([
+                    RcDoc::hardline().append(body.to_doc(false)),
+                    RcDoc::text("."),
+                ]),
+            ])),
             TopLevelItem::Module { name, body } => indent(RcDoc::concat([
                 RcDoc::text("Module"),
                 RcDoc::space(),
