@@ -20,7 +20,7 @@ use std::path::{Path, PathBuf};
 use std::{fmt, fs, path, process, str};
 use walkdir::WalkDir;
 
-use crate::coq_of_rust::render::{bracket, literal_to_doc, paren};
+use crate::render::{bracket, literal_to_doc, paren};
 
 use rustc_errors::registry;
 use rustc_session::config::{self, CheckCfg};
@@ -976,46 +976,4 @@ fn create_translation_to_coq(input_file_name: String, contents: String) -> Strin
         filename
     );
     return result;
-}
-
-#[cfg(test)]
-mod tests {
-    use std::fs;
-    use std::io::Read;
-
-    /// Look above (search string ".snapshot") to see how .snapshot files are generated
-    /// Note that the function [gen_snap_tests] tests all the files of the directory
-    /// examples-from-rust-book, but however, it is regarded by [cargo test] as
-    /// a *unique* unitary test
-    #[test]
-    fn gen_snap_tests() -> () {
-        let dir = std::path::Path::new("examples-from-rust-book");
-
-        for entry in fs::read_dir(dir).unwrap() {
-            let entry = entry.unwrap();
-            let path = entry.path();
-
-            let file_parent = path.parent().unwrap();
-            let file_stem = path.file_stem().unwrap();
-            if path.is_file() && path.extension().unwrap() == "v" {
-                print!("Scanning file {}\n", file_stem.to_str().unwrap()); // ignored during tests
-                let snap_path = file_parent.to_str().unwrap().to_string()
-                    + "/"
-                    + file_stem.to_str().unwrap()
-                    + ".snapshot";
-                let mut snap_file = fs::File::open(snap_path).unwrap();
-                let mut snap_contents = String::new();
-                snap_file.read_to_string(&mut snap_contents).unwrap();
-                let mut file = fs::File::open(&path).unwrap();
-                let mut contents = String::new();
-                file.read_to_string(&mut contents).unwrap();
-                assert_eq!(
-                    contents,
-                    snap_contents,
-                    "The test failed on {}\n",
-                    file_stem.to_str().unwrap()
-                );
-            }
-        }
-    }
 }

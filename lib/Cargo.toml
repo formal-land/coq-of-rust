@@ -8,16 +8,10 @@ edition = "2021"
 inherits = "dev"
 
 [dependencies]
+chrono = "0.4.23"
 clap = { version = "4.1.4", features = ["derive"] }
 pretty = "0.11.3"
 walkdir = "2.3.2"
-chrono = "0.4.23"
-
-
-[dev-dependencies]
-insta = { version = "1.26.0", features = ["yaml","redactions", "glob"] }
-
 
 [package.metadata.rust-analyzer]
 rustc_private=true
-

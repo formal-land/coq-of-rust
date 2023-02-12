@@ -51,7 +51,7 @@ fn main() {
     match &cli.command {
         Commands::Translate(path) => {
             println!("Translating: {}", &path.path.display());
-            coq_of_rust_lib::coq_of_rust::coq_of_rust::run(&path.path);
+            coq_of_rust_lib::core::run(&path.path);
             println!("Finished.");
         }
     }
