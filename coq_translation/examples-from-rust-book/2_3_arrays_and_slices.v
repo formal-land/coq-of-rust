@@ -23,13 +23,13 @@ Definition main :=
   tt ;;
   analyze_slice ys[struct Range {start := 1;end := 4} ] ;;
   let empty_array := [] in
-  match (empty_array,[]) with (left_val,right_val) => if unary (Binary (unary left_val) (unary right_val)) then
+  match (empty_array,[]) with (left_val,right_val) => if unary (eq (unary left_val) (unary right_val)) then
     let kind := $crate.panicking.AssertKind.Eq in
     $crate.panicking.assert_failed kind (unary left_val) (unary right_val) $crate.option.Option.None ;;
     tt
   else
     tt end ;;
-  match (empty_array,[][struct RangeFull {} ]) with (left_val,right_val) => if unary (Binary (unary left_val) (unary right_val)) then
+  match (empty_array,[][struct RangeFull {} ]) with (left_val,right_val) => if unary (eq (unary left_val) (unary right_val)) then
     let kind := $crate.panicking.AssertKind.Eq in
     $crate.panicking.assert_failed kind (unary left_val) (unary right_val) $crate.option.Option.None ;;
     tt

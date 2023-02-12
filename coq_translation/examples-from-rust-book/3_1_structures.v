@@ -5,7 +5,8 @@ Definition fmt :=
 
 Error Struct.
 
-Definition Pair (i32,f32).
+Definition Pair : Set :=
+  i32 * f32.
 
 Error Struct.
 

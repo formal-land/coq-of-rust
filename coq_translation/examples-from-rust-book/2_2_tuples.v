@@ -2,7 +2,8 @@ Definition reverse :=
   let (int_param,bool_param) := pair in
   (bool_param,int_param).
 
-Definition Matrix (f32,f32,f32,f32).
+Definition Matrix : Set :=
+  f32 * f32 * f32 * f32.
 
 Definition fmt :=
   debug_tuple_field4_finish f "Matrix" self.0 self.1 self.2 self.3.
