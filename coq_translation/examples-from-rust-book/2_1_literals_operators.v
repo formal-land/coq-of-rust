@@ -7,7 +7,7 @@ Definition main :=
   tt ;;
   $crate.io._print (new_v1 ["true OR false is ";"\n"] [new_display (or true false)]) ;;
   tt ;;
-  $crate.io._print (new_v1 ["NOT true is ";"\n"] [new_display (unary true)]) ;;
+  $crate.io._print (new_v1 ["NOT true is ";"\n"] [new_display (not true)]) ;;
   tt ;;
   $crate.io._print (new_v1_formatted ["0011 AND 0101 is ";"\n"] [new_binary (bit_and 3 5)] [struct $crate.fmt.rt.v1.Argument {position := 0;format := struct $crate.fmt.rt.v1.FormatSpec {fill :=  ;align := $crate.fmt.rt.v1.Alignment.Unknown;flags := 8;precision := $crate.fmt.rt.v1.Count.Implied;width := $crate.fmt.rt.v1.Count.Is 4} } ] (new )) ;;
   tt ;;

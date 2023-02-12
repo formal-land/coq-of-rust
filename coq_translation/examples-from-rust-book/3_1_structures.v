@@ -30,7 +30,7 @@ Definition main :=
   let pair := Pair 1 0.1 in
   $crate.io._print (new_v1 ["pair contains ";" and ";"\n"] [new_debug pair.0;new_debug pair.1]) ;;
   tt ;;
-  let Pair (integer,decimal) := pair in
+  let Pair (integer, decimal) := pair in
   $crate.io._print (new_v1 ["pair contains ";" and ";"\n"] [new_debug integer;new_debug decimal]) ;;
   tt ;;
   tt.

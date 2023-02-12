@@ -75,7 +75,10 @@ impl Pattern {
             Pattern::TupleStruct(path, fields) => {
                 let signature_in_parentheses_doc = paren(
                     true,
-                    RcDoc::intersperse(fields.iter().map(|field| field.to_doc()), RcDoc::text(",")),
+                    RcDoc::intersperse(
+                        fields.iter().map(|field| field.to_doc()),
+                        RcDoc::concat([RcDoc::text(","), RcDoc::space()]),
+                    ),
                 );
                 return RcDoc::concat([
                     path.to_doc(),
@@ -90,7 +93,10 @@ impl Pattern {
             Pattern::Path(path) => path.to_doc(),
             Pattern::Tuple(pats) => paren(
                 true,
-                RcDoc::intersperse(pats.iter().map(|pat| pat.to_doc()), RcDoc::text(",")),
+                RcDoc::intersperse(
+                    pats.iter().map(|pat| pat.to_doc()),
+                    RcDoc::concat([RcDoc::text(","), RcDoc::space()]),
+                ),
             ),
             Pattern::Lit(literal) => RcDoc::text(format!("{literal:?}")),
         }

@@ -110,6 +110,14 @@ fn compile_bin_op(bin_op: &rustc_hir::BinOp) -> String {
     }
 }
 
+fn compile_un_op(un_op: &rustc_hir::UnOp) -> String {
+    match un_op {
+        rustc_hir::UnOp::Deref => "deref".to_string(),
+        rustc_hir::UnOp::Not => "not".to_string(),
+        rustc_hir::UnOp::Neg => "neg".to_string(),
+    }
+}
+
 /// The function [compile_loop_source] converts a hir loop instruction to a
 /// string
 fn compile_loop_source(loop_source: &rustc_hir::LoopSource) -> String {
@@ -163,9 +171,9 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
                 args: vec![*expr_left, *expr_right],
             }
         }
-        rustc_hir::ExprKind::Unary(_un_op, expr) => {
+        rustc_hir::ExprKind::Unary(un_op, expr) => {
             let expr = Box::new(compile_expr(hir, expr));
-            let func = Box::new(Expr::LocalVar("unary".to_string()));
+            let func = Box::new(Expr::LocalVar(compile_un_op(un_op)));
             Expr::App {
                 func,
                 args: vec![*expr],
@@ -337,13 +345,19 @@ fn compile_block(hir: rustc_middle::hir::map::Map, block: &rustc_hir::Block) -> 
 
 impl MatchArm {
     fn to_doc(&self) -> RcDoc<()> {
-        return RcDoc::concat([
-            self.pat.to_doc(),
-            RcDoc::space(),
-            RcDoc::text("=>"),
-            RcDoc::space(),
+        return indent(RcDoc::concat([
+            RcDoc::concat([
+                RcDoc::text("|"),
+                RcDoc::space(),
+                self.pat.to_doc(),
+                RcDoc::space(),
+                RcDoc::text("=>"),
+            ])
+            .group(),
+            RcDoc::line(),
             self.body.to_doc(false),
-        ]);
+        ]))
+        .group();
     }
 }
 
@@ -404,7 +418,7 @@ impl Expr {
                 true,
                 RcDoc::intersperse(
                     elements.iter().map(|element| element.to_doc(false)),
-                    RcDoc::text(","),
+                    RcDoc::concat([RcDoc::text(","), RcDoc::space()]),
                 ),
             ),
             Expr::LetIf { pat, init } => RcDoc::concat([
@@ -441,7 +455,8 @@ impl Expr {
                     ]))
                     .group(),
                 ]),
-            ),
+            )
+            .group(),
             Expr::Loop { body, loop_source } => paren(
                 with_paren,
                 RcDoc::concat([
@@ -460,11 +475,12 @@ impl Expr {
                 scrutinee.to_doc(false),
                 RcDoc::space(),
                 RcDoc::text("with"),
-                RcDoc::space(),
-                RcDoc::intersperse(arms.iter().map(|arm| arm.to_doc()), RcDoc::space()),
-                RcDoc::space(),
+                RcDoc::hardline(),
+                RcDoc::intersperse(arms.iter().map(|arm| arm.to_doc()), RcDoc::hardline()),
+                RcDoc::hardline(),
                 RcDoc::text("end"),
-            ]),
+            ])
+            .group(),
             Expr::Assign { left, right } => paren(
                 with_paren,
                 RcDoc::concat([
