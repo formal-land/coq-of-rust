@@ -16,7 +16,7 @@ extern crate rustc_span;
 
 use pretty::RcDoc;
 
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::{fmt, fs, path, process, str};
 use walkdir::WalkDir;
 
@@ -27,13 +27,22 @@ use rustc_session::config::{self, CheckCfg};
 use rustc_span::source_map;
 
 #[derive(Debug)]
-struct FLPath {
+struct Path {
     segments: Vec<String>,
 }
-impl fmt::Display for FLPath {
+
+impl fmt::Display for Path {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let segments = self.segments.join("/");
+        let segments = self.segments.join("::");
         write!(f, "{segments}")
+    }
+}
+
+impl Path {
+    fn local(name: String) -> Path {
+        Path {
+            segments: vec![name],
+        }
     }
 }
 
@@ -41,10 +50,10 @@ impl fmt::Display for FLPath {
 #[derive(Debug)]
 enum Pat {
     Wild,
-    Struct(FLPath, Vec<(String, Pat)>),
-    TupleStruct(FLPath, Vec<Pat>),
+    Struct(Path, Vec<(String, Pat)>),
+    TupleStruct(Path, Vec<Pat>),
     Or(Vec<Pat>),
-    Path(FLPath),
+    Path(Path),
     Tuple(Vec<Pat>),
     Lit(rustc_ast::LitKind),
 }
@@ -61,7 +70,7 @@ struct MatchArm {
 #[derive(Debug)]
 enum Expr {
     LocalVar(String),
-    Var(FLPath),
+    Var(Path),
     Literal(rustc_ast::LitKind),
     App {
         func: Box<Expr>,
@@ -121,10 +130,19 @@ enum Expr {
         index: Box<Expr>,
     },
     Struct {
-        path: FLPath,
+        path: Path,
         fields: Vec<(String, Expr)>,
         base: Option<Box<Expr>>,
     },
+}
+
+#[derive(Debug)]
+enum Type {
+    Var(Path),
+    Application { func: Box<Type>, args: Vec<Type> },
+    Tuple(Vec<Type>),
+    Array(Box<Type>),
+    Ref(Box<Type>),
 }
 
 /// Representation of top-level hir [Item]s in coq-of-rust
@@ -135,6 +153,10 @@ enum TopLevelItem {
         name: String,
         args: Vec<String>,
         body: Expr,
+    },
+    TypeAlias {
+        name: String,
+        ty: Box<Type>,
     },
     Module {
         name: String,
@@ -155,8 +177,8 @@ fn compile_error<A>(value: A, message: String) -> A {
     value
 }
 
-fn compile_path(path: &rustc_hir::Path) -> FLPath {
-    FLPath {
+fn compile_path(path: &rustc_hir::Path) -> Path {
+    Path {
         segments: path
             .segments
             .iter()
@@ -165,13 +187,13 @@ fn compile_path(path: &rustc_hir::Path) -> FLPath {
     }
 }
 
-fn compile_qpath(qpath: &rustc_hir::QPath) -> FLPath {
+fn compile_qpath(qpath: &rustc_hir::QPath) -> Path {
     match qpath {
         rustc_hir::QPath::Resolved(_, path) => compile_path(path),
-        rustc_hir::QPath::TypeRelative(_, segment) => FLPath {
+        rustc_hir::QPath::TypeRelative(_, segment) => Path {
             segments: vec![segment.ident.name.to_string()],
         },
-        rustc_hir::QPath::LangItem(lang_item, _, _) => FLPath {
+        rustc_hir::QPath::LangItem(lang_item, _, _) => Path {
             segments: vec![lang_item.name().to_string()],
         },
     }
@@ -181,7 +203,7 @@ fn compile_qpath(qpath: &rustc_hir::QPath) -> FLPath {
 fn compile_pat(pat: &rustc_hir::Pat) -> Pat {
     match &pat.kind {
         rustc_hir::PatKind::Wild => Pat::Wild,
-        rustc_hir::PatKind::Binding(_, _, ident, _) => Pat::Path(FLPath {
+        rustc_hir::PatKind::Binding(_, _, ident, _) => Pat::Path(Path {
             segments: vec![ident.name.to_string()],
         }),
         rustc_hir::PatKind::Struct(qpath, pats, _) => {
@@ -471,6 +493,31 @@ fn compile_block(hir: rustc_middle::hir::map::Map, block: &rustc_hir::Block) -> 
     compile_stmts(hir, block.stmts, block.expr)
 }
 
+fn compile_type(hir: rustc_middle::hir::map::Map, ty: &rustc_hir::Ty) -> Type {
+    match &ty.kind {
+        rustc_hir::TyKind::Slice(_) => Type::Var(Path::local("Slice".to_string())),
+        rustc_hir::TyKind::Array(ty, _) => Type::Array(Box::new(compile_type(hir, ty))),
+        rustc_hir::TyKind::Ptr(ty) => Type::Ref(Box::new(compile_type(hir, ty.ty))),
+        rustc_hir::TyKind::Ref(_, ty) => Type::Ref(Box::new(compile_type(hir, ty.ty))),
+        rustc_hir::TyKind::BareFn(_) => Type::Var(Path::local("BareFn".to_string())),
+        rustc_hir::TyKind::Never => Type::Var(Path::local("Empty_set".to_string())),
+        rustc_hir::TyKind::Tup(tys) => {
+            Type::Tuple(tys.iter().map(|ty| compile_type(hir, ty)).collect())
+        }
+        rustc_hir::TyKind::Path(qpath) => {
+            let path = compile_qpath(qpath);
+            Type::Var(path)
+        }
+        rustc_hir::TyKind::OpaqueDef(_, _, _) => Type::Var(Path::local("OpaqueDef".to_string())),
+        rustc_hir::TyKind::TraitObject(_, _, _) => {
+            Type::Var(Path::local("TraitObject".to_string()))
+        }
+        rustc_hir::TyKind::Typeof(_) => Type::Var(Path::local("Typeof".to_string())),
+        rustc_hir::TyKind::Infer => Type::Var(Path::local("_".to_string())),
+        rustc_hir::TyKind::Err => Type::Var(Path::local("Error_type".to_string())),
+    }
+}
+
 /// [compile_top_level_item] compiles hir [Item]s into coq-of-rust (optional)
 /// items.
 /// - See https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/struct.Item.html
@@ -481,63 +528,103 @@ fn compile_block(hir: rustc_middle::hir::map::Map, block: &rustc_hir::Block) -> 
 fn compile_top_level_item(
     hir: rustc_middle::hir::map::Map,
     item: &rustc_hir::Item,
-) -> Option<TopLevelItem> {
+) -> Vec<TopLevelItem> {
     match &item.kind {
-        rustc_hir::ItemKind::ExternCrate(_) => None,
-        rustc_hir::ItemKind::Use(_, _) => None,
+        rustc_hir::ItemKind::ExternCrate(_) => vec![],
+        rustc_hir::ItemKind::Use(_, _) => vec![],
         rustc_hir::ItemKind::Static(_, _, body_id) => {
             let expr = hir.body(*body_id).value;
-            Some(TopLevelItem::Definition {
+            vec![TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
                 args: vec![],
                 body: compile_expr(hir, expr),
-            })
+            }]
         }
         rustc_hir::ItemKind::Const(_, body_id) => {
             let expr = hir.body(*body_id).value;
-            Some(TopLevelItem::Definition {
+            vec![TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
                 args: vec![],
                 body: compile_expr(hir, expr),
-            })
+            }]
         }
         rustc_hir::ItemKind::Fn(_fn_sig, _, body_id) => {
             let expr = hir.body(*body_id).value;
-            Some(TopLevelItem::Definition {
+            vec![TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
                 args: vec![],
                 body: compile_expr(hir, expr),
-            })
+            }]
         }
-        rustc_hir::ItemKind::Macro(_, _) => None,
+        rustc_hir::ItemKind::Macro(_, _) => vec![],
         rustc_hir::ItemKind::Mod(module) => {
             let items = module
                 .item_ids
                 .iter()
-                .filter_map(|item_id| {
+                .flat_map(|item_id| {
                     let item = hir.item(*item_id);
                     compile_top_level_item(hir, item)
                 })
                 .collect();
-            Some(TopLevelItem::Module {
+            vec![TopLevelItem::Module {
                 name: item.ident.name.to_string(),
                 body: TopLevel(items),
-            })
+            }]
         }
         rustc_hir::ItemKind::ForeignMod { .. } => {
-            Some(TopLevelItem::Error("ForeignMod".to_string()))
+            vec![TopLevelItem::Error("ForeignMod".to_string())]
         }
-        rustc_hir::ItemKind::GlobalAsm(_) => Some(TopLevelItem::Error("GlobalAsm".to_string())),
-        rustc_hir::ItemKind::TyAlias(_, _) => Some(TopLevelItem::Error("TyAlias".to_string())),
-        rustc_hir::ItemKind::OpaqueTy(_) => Some(TopLevelItem::Error("OpaqueTy".to_string())),
-        rustc_hir::ItemKind::Enum(_, _) => Some(TopLevelItem::Error("Enum".to_string())),
-        rustc_hir::ItemKind::Struct(_, _) => Some(TopLevelItem::Error("Struct".to_string())),
-        rustc_hir::ItemKind::Union(_, _) => Some(TopLevelItem::Error("Union".to_string())),
-        rustc_hir::ItemKind::Trait(_, _, _, _, _) => Some(TopLevelItem::Error("Trait".to_string())),
+        rustc_hir::ItemKind::GlobalAsm(_) => vec![TopLevelItem::Error("GlobalAsm".to_string())],
+        rustc_hir::ItemKind::TyAlias(_, _) => vec![TopLevelItem::Error("TyAlias".to_string())],
+        rustc_hir::ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
+        rustc_hir::ItemKind::Enum(_, _) => vec![TopLevelItem::Error("Enum".to_string())],
+        rustc_hir::ItemKind::Struct(body, _) => match body {
+            rustc_hir::VariantData::Tuple(fields, _, _) => {
+                let ty = Box::new(Type::Tuple(
+                    fields
+                        .iter()
+                        .map(|field| compile_type(hir, &field.ty))
+                        .collect(),
+                ));
+                vec![TopLevelItem::TypeAlias {
+                    name: item.ident.name.to_string(),
+                    ty,
+                }]
+            }
+            _ => vec![TopLevelItem::Error("Struct".to_string())],
+        },
+        rustc_hir::ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
+        rustc_hir::ItemKind::Trait(_, _, _, _, _) => vec![TopLevelItem::Error("Trait".to_string())],
         rustc_hir::ItemKind::TraitAlias(_, _) => {
-            Some(TopLevelItem::Error("TraitAlias".to_string()))
+            vec![TopLevelItem::Error("TraitAlias".to_string())]
         }
-        rustc_hir::ItemKind::Impl(_) => Some(TopLevelItem::Error("Impl".to_string())),
+        rustc_hir::ItemKind::Impl(rustc_hir::Impl { items, .. }) => items
+            .iter()
+            .flat_map(|item| {
+                let item = hir.impl_item(item.id);
+                match item.kind {
+                    rustc_hir::ImplItemKind::Const(_, body_id) => {
+                        let expr = hir.body(body_id).value;
+                        vec![TopLevelItem::Definition {
+                            name: item.ident.name.to_string(),
+                            args: vec![],
+                            body: compile_expr(hir, expr),
+                        }]
+                    }
+                    rustc_hir::ImplItemKind::Fn(_, body_id) => {
+                        let expr = hir.body(body_id).value;
+                        vec![TopLevelItem::Definition {
+                            name: item.ident.name.to_string(),
+                            args: vec![],
+                            body: compile_expr(hir, expr),
+                        }]
+                    }
+                    rustc_hir::ImplItemKind::Type(_) => {
+                        vec![TopLevelItem::Error("ImplItemKind::Type".to_string())]
+                    }
+                }
+            })
+            .collect(),
     }
 }
 
@@ -545,7 +632,7 @@ fn compile_top_level(tcx: rustc_middle::ty::TyCtxt) -> TopLevel {
     let hir = tcx.hir();
     TopLevel(
         hir.items()
-            .filter_map(|item_id| {
+            .flat_map(|item_id| {
                 let item = hir.item(item_id);
                 compile_top_level_item(hir, item)
             })
@@ -553,7 +640,7 @@ fn compile_top_level(tcx: rustc_middle::ty::TyCtxt) -> TopLevel {
     )
 }
 
-impl FLPath {
+impl Path {
     fn to_doc(&self) -> RcDoc<()> {
         RcDoc::intersperse(self.segments.iter().map(RcDoc::text), RcDoc::text("."))
     }
@@ -807,6 +894,26 @@ impl Expr {
     }
 }
 
+impl Type {
+    fn to_doc(&self) -> RcDoc {
+        match self {
+            Type::Var(path) => path.to_doc(),
+            Type::Application { func, args } => RcDoc::concat([
+                func.to_doc(),
+                RcDoc::space(),
+                RcDoc::intersperse(args.iter().map(|arg| arg.to_doc()), RcDoc::space()),
+            ]),
+            Type::Tuple(tys) => RcDoc::concat([
+                RcDoc::text("("),
+                RcDoc::intersperse(tys.iter().map(|ty| ty.to_doc()), RcDoc::text(",")),
+                RcDoc::text(")"),
+            ]),
+            Type::Array(ty) => RcDoc::concat([RcDoc::text("list"), RcDoc::space(), ty.to_doc()]),
+            Type::Ref(ty) => RcDoc::concat([RcDoc::text("ref"), RcDoc::space(), ty.to_doc()]),
+        }
+    }
+}
+
 impl TopLevelItem {
     fn to_doc(&self) -> RcDoc {
         match self {
@@ -837,7 +944,14 @@ impl TopLevelItem {
                 RcDoc::text("."),
             ])
             .group(),
-
+            TopLevelItem::TypeAlias { name, ty } => RcDoc::concat([
+                RcDoc::text("Definition"),
+                RcDoc::space(),
+                RcDoc::text(name),
+                RcDoc::space(),
+                ty.to_doc(),
+                RcDoc::text("."),
+            ]),
             TopLevelItem::Error(message) => RcDoc::concat([
                 RcDoc::text("Error"),
                 RcDoc::space(),
@@ -864,19 +978,19 @@ impl TopLevel {
     }
 }
 
-fn change_to_coq_extension(path: &Path) -> PathBuf {
+fn change_to_coq_extension(path: &path::Path) -> PathBuf {
     let mut new_path = path.to_path_buf();
     new_path.set_extension("v");
     return new_path;
 }
-pub fn run(src_folder: &Path) {
+pub fn run(src_folder: &path::Path) {
     let basic_folder_name = "coq_translation";
     let unique_folder_name = format!(
         "{}/{}/",
         basic_folder_name,
         src_folder.file_name().unwrap().to_str().unwrap(),
     );
-    let dst_folder = Path::new(&unique_folder_name);
+    let dst_folder = path::Path::new(&unique_folder_name);
     if src_folder.is_file() {
         let contents = fs::read_to_string(src_folder).unwrap();
         let translation = create_translation_to_coq(

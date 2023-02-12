@@ -1,10 +1,11 @@
 Error Struct.
 
-Error Impl.
+Definition fmt :=
+  debug_struct_field2_finish f "Person" "name" self.name "age" self.age.
 
 Error Struct.
 
-Error Struct.
+Definition Pair (i32,f32).
 
 Error Struct.
 

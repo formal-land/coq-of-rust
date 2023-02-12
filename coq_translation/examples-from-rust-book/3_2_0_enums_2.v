@@ -1,6 +1,7 @@
 Error Enum.
 
-Error Impl.
+Definition run :=
+  match self with Add => add x y Subtract => sub x y end.
 
 Error TyAlias.
 

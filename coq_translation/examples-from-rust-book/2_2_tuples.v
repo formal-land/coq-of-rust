@@ -2,9 +2,10 @@ Definition reverse :=
   let (int_param,bool_param) := pair in
   (bool_param,int_param).
 
-Error Struct.
+Definition Matrix (f32,f32,f32,f32).
 
-Error Impl.
+Definition fmt :=
+  debug_tuple_field4_finish f "Matrix" self.0 self.1 self.2 self.3.
 
 Definition main :=
   let long_tuple := (1,2,3,4,unary 1,unary 2,unary 3,unary 4,0.1,0.2,a,true) in
