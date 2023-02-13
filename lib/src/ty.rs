@@ -2,12 +2,14 @@ extern crate rustc_hir;
 extern crate rustc_middle;
 
 use crate::path::*;
+use crate::render::*;
 use pretty::RcDoc;
 
 #[derive(Debug)]
 pub enum Type {
     Var(Path),
     Application { func: Box<Type>, args: Vec<Type> },
+    Function { func: Box<Type>, arg: Box<Type> },
     Tuple(Vec<Type>),
     Array(Box<Type>),
     Ref(Box<Type>),
@@ -42,6 +44,27 @@ pub fn compile_type(ty: &rustc_hir::Ty) -> Type {
     }
 }
 
+pub fn compile_fn_ret_ty(fn_ret_ty: &rustc_hir::FnRetTy) -> Option<Type> {
+    match fn_ret_ty {
+        rustc_hir::FnRetTy::DefaultReturn(_) => None,
+        rustc_hir::FnRetTy::Return(ty) => Some(compile_type(ty)),
+    }
+}
+
+pub fn compile_fn_decl(fn_decl: &rustc_hir::FnDecl) -> Type {
+    let ret_ty = match compile_fn_ret_ty(&fn_decl.output) {
+        Some(ret_ty) => ret_ty,
+        None => Type::Var(Path::local("_".to_string())),
+    };
+    fn_decl
+        .inputs
+        .iter()
+        .rfold(ret_ty, |acc, arg| Type::Function {
+            func: Box::new(compile_type(arg)),
+            arg: Box::new(acc),
+        })
+}
+
 impl Type {
     pub fn to_doc(&self) -> RcDoc {
         match self {
@@ -51,6 +74,14 @@ impl Type {
                 RcDoc::space(),
                 RcDoc::intersperse(args.iter().map(|arg| arg.to_doc()), RcDoc::space()),
             ]),
+            Type::Function { func, arg } => indent(RcDoc::concat([
+                func.to_doc(),
+                RcDoc::line(),
+                RcDoc::text("->"),
+                RcDoc::line(),
+                arg.to_doc(),
+            ]))
+            .group(),
             Type::Tuple(tys) => RcDoc::concat([RcDoc::intersperse(
                 tys.iter().map(|ty| ty.to_doc()),
                 RcDoc::concat([RcDoc::space(), RcDoc::text("*"), RcDoc::space()]),

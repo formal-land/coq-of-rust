@@ -103,7 +103,10 @@ Definition black_box :=
     Choice (black_box input).
 (* End impl [Choice] *)
 
-Error Trait.
+Class ConstantTimeEq : Set := {
+  ct_eq : ref Self -> ref Self -> Choice;
+  ct_ne : ref Self -> ref Self -> Choice;
+}.
 
 (* Impl [Slice] *)
   Definition ct_eq (self : ref Self) (_rhs : ref Slice) : Choice :=
@@ -192,7 +195,11 @@ Error Trait.
     (deref self) (deref other).
 (* End impl [isize] *)
 
-Error Trait.
+Class ConditionallySelectable : Set := {
+  conditional_select : ref Self -> ref Self -> Choice -> Self;
+  conditional_assign : ref Self -> ref Self -> Choice -> _;
+  conditional_swap : ref Self -> ref Self -> Choice -> _;
+}.
 
 (* Impl [u8] *)
   Definition conditional_select
@@ -403,7 +410,9 @@ Error Trait.
     Choice (conditional_select a.0 b.0 choice).
 (* End impl [Choice] *)
 
-Error Trait.
+Class ConditionallyNegatable : Set := {
+  conditional_negate : ref Self -> Choice -> _;
+}.
 
 (* Impl [T] *)
   Definition conditional_negate (self : ref Self) (choice : Choice) :=
@@ -509,7 +518,9 @@ Error Struct.
     bit_and (bit_and (bit_and a b) (self.value rhs.value)) (bit_and (not a) (not b)).
 (* End impl [CtOption] *)
 
-Error Trait.
+Class ConstantTimeGreater : Set := {
+  ct_gt : ref Self -> ref Self -> Choice;
+}.
 
 (* Impl [u8] *)
   Definition ct_gt (self : ref Self) (other : ref u8) : Choice :=
@@ -607,7 +618,9 @@ Error Trait.
     from (bit_and bit 1).
 (* End impl [u64] *)
 
-Error Trait.
+Class ConstantTimeLess : Set := {
+  ct_lt : ref Self -> ref Self -> Choice;
+}.
 
 (* Impl [u8] *)
   

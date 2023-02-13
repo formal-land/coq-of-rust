@@ -6,6 +6,12 @@ use crate::render::*;
 use crate::ty::*;
 use pretty::RcDoc;
 
+#[derive(Debug)]
+enum TraitItem {
+    Definition { ty: Type },
+    Type,
+}
+
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
 #[derive(Debug)]
@@ -27,6 +33,10 @@ enum TopLevelItem {
     Impl {
         self_ty: Type,
         body: TopLevel,
+    },
+    Trait {
+        name: String,
+        body: Vec<(String, TraitItem)>,
     },
     Error(String),
 }
@@ -110,7 +120,27 @@ fn compile_top_level_item(
             _ => vec![TopLevelItem::Error("Struct".to_string())],
         },
         rustc_hir::ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
-        rustc_hir::ItemKind::Trait(_, _, _, _, _) => vec![TopLevelItem::Error("Trait".to_string())],
+        rustc_hir::ItemKind::Trait(_, _, _, _, items) => {
+            vec![TopLevelItem::Trait {
+                name: item.ident.name.to_string(),
+                body: items
+                    .iter()
+                    .map(|item| {
+                        let item = hir.trait_item(item.id);
+                        let body = match &item.kind {
+                            rustc_hir::TraitItemKind::Const(ty, _) => TraitItem::Definition {
+                                ty: compile_type(ty),
+                            },
+                            rustc_hir::TraitItemKind::Fn(fn_sig, _) => TraitItem::Definition {
+                                ty: compile_fn_decl(fn_sig.decl),
+                            },
+                            rustc_hir::TraitItemKind::Type(_, _) => TraitItem::Type,
+                        };
+                        (item.ident.name.to_string(), body)
+                    })
+                    .collect(),
+            }]
+        }
         rustc_hir::ItemKind::TraitAlias(_, _) => {
             vec![TopLevelItem::Error("TraitAlias".to_string())]
         }
@@ -140,10 +170,7 @@ fn compile_top_level_item(
                                     }
                                 });
                             let arg_tys = fn_sig.decl.inputs.iter().map(compile_type);
-                            let ret_ty = match &fn_sig.decl.output {
-                                rustc_hir::FnRetTy::DefaultReturn(_) => None,
-                                rustc_hir::FnRetTy::Return(ty) => Some(compile_type(ty)),
-                            };
+                            let ret_ty = compile_fn_ret_ty(&fn_sig.decl.output);
                             let expr = hir.body(*body_id).value;
                             vec![TopLevelItem::Definition {
                                 name: item.ident.name.to_string(),
@@ -178,6 +205,15 @@ pub fn compile_top_level(tcx: rustc_middle::ty::TyCtxt) -> TopLevel {
             })
             .collect(),
     )
+}
+
+impl TraitItem {
+    fn to_doc(&self) -> RcDoc {
+        match self {
+            TraitItem::Definition { ty } => ty.to_doc(),
+            TraitItem::Type => RcDoc::text("Set"),
+        }
+    }
 }
 
 impl TopLevelItem {
@@ -269,6 +305,40 @@ impl TopLevelItem {
                 RcDoc::text("(* End impl ["),
                 self_ty.to_doc(),
                 RcDoc::text("] *)"),
+            ]),
+            TopLevelItem::Trait { name, body } => RcDoc::concat([
+                indent(RcDoc::concat([
+                    RcDoc::concat([
+                        RcDoc::text("Class"),
+                        RcDoc::line(),
+                        RcDoc::text(name),
+                        RcDoc::line(),
+                        RcDoc::text(":"),
+                        RcDoc::line(),
+                        RcDoc::text("Set"),
+                        RcDoc::line(),
+                        RcDoc::text(":="),
+                        RcDoc::line(),
+                        RcDoc::text("{"),
+                    ])
+                    .group(),
+                    RcDoc::concat(body.iter().map(|(name, item)| {
+                        RcDoc::concat([
+                            RcDoc::hardline(),
+                            indent(RcDoc::concat([
+                                RcDoc::text(name),
+                                RcDoc::line(),
+                                RcDoc::text(":"),
+                                RcDoc::line(),
+                                item.to_doc(),
+                                RcDoc::text(";"),
+                            ]))
+                            .group(),
+                        ])
+                    })),
+                ])),
+                RcDoc::hardline(),
+                RcDoc::text("}."),
             ]),
             TopLevelItem::Error(message) => RcDoc::concat([
                 RcDoc::text("Error"),
