@@ -1,6 +1,6 @@
 Error Struct.
 
-(* Impl [Person] *)
+(* Impl [Person] of trait [$crate.fmt.Debug]*)
   Definition fmt
     (self : ref Self)
     (f : ref $crate.fmt.Formatter)

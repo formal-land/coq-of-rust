@@ -2,6 +2,7 @@ extern crate rustc_hir;
 extern crate rustc_middle;
 
 use crate::expression::*;
+use crate::path::*;
 use crate::render::*;
 use crate::ty::*;
 use pretty::RcDoc;
@@ -32,6 +33,7 @@ enum TopLevelItem {
     },
     Impl {
         self_ty: Type,
+        of_trait: Option<Path>,
         body: TopLevel,
     },
     Trait {
@@ -144,7 +146,12 @@ fn compile_top_level_item(
         rustc_hir::ItemKind::TraitAlias(_, _) => {
             vec![TopLevelItem::Error("TraitAlias".to_string())]
         }
-        rustc_hir::ItemKind::Impl(rustc_hir::Impl { items, self_ty, .. }) => {
+        rustc_hir::ItemKind::Impl(rustc_hir::Impl {
+            items,
+            self_ty,
+            of_trait,
+            ..
+        }) => {
             let items = items
                 .iter()
                 .flat_map(|item| {
@@ -189,6 +196,9 @@ fn compile_top_level_item(
             let self_ty = compile_type(self_ty);
             vec![TopLevelItem::Impl {
                 self_ty,
+                of_trait: of_trait
+                    .as_ref()
+                    .map(|trait_ref| compile_path(trait_ref.path)),
                 body: TopLevel(items),
             }]
         }
@@ -293,11 +303,24 @@ impl TopLevelItem {
                 ty.to_doc(),
                 RcDoc::text("."),
             ])),
-            TopLevelItem::Impl { self_ty, body } => RcDoc::concat([
+            TopLevelItem::Impl {
+                self_ty,
+                of_trait,
+                body,
+            } => RcDoc::concat([
                 indent(RcDoc::concat([
                     RcDoc::text("(* Impl ["),
                     self_ty.to_doc(),
-                    RcDoc::text("] *)"),
+                    RcDoc::text("] "),
+                    match of_trait {
+                        Some(trait_ty) => RcDoc::concat([
+                            RcDoc::text("of trait ["),
+                            trait_ty.to_doc(),
+                            RcDoc::text("]"),
+                        ]),
+                        None => RcDoc::nil(),
+                    },
+                    RcDoc::text("*)"),
                     RcDoc::hardline(),
                     body.to_doc(),
                 ])),

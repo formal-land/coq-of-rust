@@ -1,17 +1,17 @@
 Definition Choice : Set :=
   u8.
 
-(* Impl [Choice] *)
+(* Impl [Choice] of trait [$crate.marker.Copy]*)
   
 (* End impl [Choice] *)
 
-(* Impl [Choice] *)
+(* Impl [Choice] of trait [$crate.clone.Clone]*)
   Definition clone (self : ref Self) : Choice :=
     let _ := tt in
     deref self.
 (* End impl [Choice] *)
 
-(* Impl [Choice] *)
+(* Impl [Choice] of trait [$crate.fmt.Debug]*)
   Definition fmt
     (self : ref Self)
     (f : ref $crate.fmt.Formatter)
@@ -24,7 +24,7 @@ Definition Choice : Set :=
     self.0.
 (* End impl [Choice] *)
 
-(* Impl [bool] *)
+(* Impl [bool] of trait [From]*)
   Definition from (source : Choice) : bool :=
     if true then
       if not (bit_and (eq source.0 0) (eq source.0 1)) then
@@ -37,7 +37,7 @@ Definition Choice : Set :=
     ne source.0 0.
 (* End impl [bool] *)
 
-(* Impl [Choice] *)
+(* Impl [Choice] of trait [BitAnd]*)
   Definition Output : Set :=
     Choice.
   
@@ -45,13 +45,13 @@ Definition Choice : Set :=
     (bit_and self.0 rhs.0) .
 (* End impl [Choice] *)
 
-(* Impl [Choice] *)
+(* Impl [Choice] of trait [BitAndAssign]*)
   Definition bitand_assign (self : ref Self) (rhs : Choice) :=
     assign deref self := bit_and (deref self) rhs ;;
     tt.
 (* End impl [Choice] *)
 
-(* Impl [Choice] *)
+(* Impl [Choice] of trait [BitOr]*)
   Definition Output : Set :=
     Choice.
   
@@ -59,13 +59,13 @@ Definition Choice : Set :=
     (bit_and self.0 rhs.0) .
 (* End impl [Choice] *)
 
-(* Impl [Choice] *)
+(* Impl [Choice] of trait [BitOrAssign]*)
   Definition bitor_assign (self : ref Self) (rhs : Choice) :=
     assign deref self := bit_and (deref self) rhs ;;
     tt.
 (* End impl [Choice] *)
 
-(* Impl [Choice] *)
+(* Impl [Choice] of trait [BitXor]*)
   Definition Output : Set :=
     Choice.
   
@@ -73,13 +73,13 @@ Definition Choice : Set :=
     (bit_xor self.0 rhs.0) .
 (* End impl [Choice] *)
 
-(* Impl [Choice] *)
+(* Impl [Choice] of trait [BitXorAssign]*)
   Definition bitxor_assign (self : ref Self) (rhs : Choice) :=
     assign deref self := bit_xor (deref self) rhs ;;
     tt.
 (* End impl [Choice] *)
 
-(* Impl [Choice] *)
+(* Impl [Choice] of trait [Not]*)
   Definition Output : Set :=
     Choice.
   
@@ -98,7 +98,7 @@ Definition black_box :=
     tt ;;
   core.ptr.read_volatile input.
 
-(* Impl [Choice] *)
+(* Impl [Choice] of trait [From]*)
   Definition from (input : u8) : Choice :=
     Choice (black_box input).
 (* End impl [Choice] *)
@@ -108,7 +108,7 @@ Class ConstantTimeEq : Set := {
   ct_ne : ref Self -> ref Self -> Choice;
 }.
 
-(* Impl [Slice] *)
+(* Impl [Slice] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (_rhs : ref Slice) : Choice :=
     let len := self  in
     if ne len (_rhs ) then
@@ -130,67 +130,67 @@ Class ConstantTimeEq : Set := {
     x .
 (* End impl [Slice] *)
 
-(* Impl [Choice] *)
+(* Impl [Choice] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (rhs : ref Choice) : Choice :=
     not (bit_xor (deref self) (deref rhs)).
 (* End impl [Choice] *)
 
-(* Impl [u8] *)
+(* Impl [u8] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref u8) : Choice :=
     let x := bit_xor self other in
     let y := shr (bit_and x (x )) (sub 8 1) in
     (bit_xor y 1) .
 (* End impl [u8] *)
 
-(* Impl [i8] *)
+(* Impl [i8] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref i8) : Choice :=
     (deref self) (deref other).
 (* End impl [i8] *)
 
-(* Impl [u16] *)
+(* Impl [u16] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref u16) : Choice :=
     let x := bit_xor self other in
     let y := shr (bit_and x (x )) (sub 16 1) in
     (bit_xor y 1) .
 (* End impl [u16] *)
 
-(* Impl [i16] *)
+(* Impl [i16] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref i16) : Choice :=
     (deref self) (deref other).
 (* End impl [i16] *)
 
-(* Impl [u32] *)
+(* Impl [u32] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref u32) : Choice :=
     let x := bit_xor self other in
     let y := shr (bit_and x (x )) (sub 32 1) in
     (bit_xor y 1) .
 (* End impl [u32] *)
 
-(* Impl [i32] *)
+(* Impl [i32] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref i32) : Choice :=
     (deref self) (deref other).
 (* End impl [i32] *)
 
-(* Impl [u64] *)
+(* Impl [u64] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref u64) : Choice :=
     let x := bit_xor self other in
     let y := shr (bit_and x (x )) (sub 64 1) in
     (bit_xor y 1) .
 (* End impl [u64] *)
 
-(* Impl [i64] *)
+(* Impl [i64] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref i64) : Choice :=
     (deref self) (deref other).
 (* End impl [i64] *)
 
-(* Impl [usize] *)
+(* Impl [usize] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref usize) : Choice :=
     let x := bit_xor self other in
     let y := shr (bit_and x (x )) (sub (mul ({{root}}.core.mem.size_of ) 8) 1) in
     (bit_xor y 1) .
 (* End impl [usize] *)
 
-(* Impl [isize] *)
+(* Impl [isize] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref isize) : Choice :=
     (deref self) (deref other).
 (* End impl [isize] *)
@@ -201,7 +201,7 @@ Class ConditionallySelectable : Set := {
   conditional_swap : ref Self -> ref Self -> Choice -> _;
 }.
 
-(* Impl [u8] *)
+(* Impl [u8] of trait [ConditionallySelectable]*)
   Definition conditional_select
     (a : ref Self)
     (b : ref Self)
@@ -226,7 +226,7 @@ Class ConditionallySelectable : Set := {
     tt.
 (* End impl [u8] *)
 
-(* Impl [i8] *)
+(* Impl [i8] of trait [ConditionallySelectable]*)
   Definition conditional_select
     (a : ref Self)
     (b : ref Self)
@@ -251,7 +251,7 @@ Class ConditionallySelectable : Set := {
     tt.
 (* End impl [i8] *)
 
-(* Impl [u16] *)
+(* Impl [u16] of trait [ConditionallySelectable]*)
   Definition conditional_select
     (a : ref Self)
     (b : ref Self)
@@ -276,7 +276,7 @@ Class ConditionallySelectable : Set := {
     tt.
 (* End impl [u16] *)
 
-(* Impl [i16] *)
+(* Impl [i16] of trait [ConditionallySelectable]*)
   Definition conditional_select
     (a : ref Self)
     (b : ref Self)
@@ -301,7 +301,7 @@ Class ConditionallySelectable : Set := {
     tt.
 (* End impl [i16] *)
 
-(* Impl [u32] *)
+(* Impl [u32] of trait [ConditionallySelectable]*)
   Definition conditional_select
     (a : ref Self)
     (b : ref Self)
@@ -326,7 +326,7 @@ Class ConditionallySelectable : Set := {
     tt.
 (* End impl [u32] *)
 
-(* Impl [i32] *)
+(* Impl [i32] of trait [ConditionallySelectable]*)
   Definition conditional_select
     (a : ref Self)
     (b : ref Self)
@@ -351,7 +351,7 @@ Class ConditionallySelectable : Set := {
     tt.
 (* End impl [i32] *)
 
-(* Impl [u64] *)
+(* Impl [u64] of trait [ConditionallySelectable]*)
   Definition conditional_select
     (a : ref Self)
     (b : ref Self)
@@ -376,7 +376,7 @@ Class ConditionallySelectable : Set := {
     tt.
 (* End impl [u64] *)
 
-(* Impl [i64] *)
+(* Impl [i64] of trait [ConditionallySelectable]*)
   Definition conditional_select
     (a : ref Self)
     (b : ref Self)
@@ -401,7 +401,7 @@ Class ConditionallySelectable : Set := {
     tt.
 (* End impl [i64] *)
 
-(* Impl [Choice] *)
+(* Impl [Choice] of trait [ConditionallySelectable]*)
   Definition conditional_select
     (a : ref Self)
     (b : ref Self)
@@ -414,7 +414,7 @@ Class ConditionallyNegatable : Set := {
   conditional_negate : ref Self -> Choice -> _;
 }.
 
-(* Impl [T] *)
+(* Impl [T] of trait [ConditionallyNegatable]*)
   Definition conditional_negate (self : ref Self) (choice : Choice) :=
     let self_neg := neg self in
     self self_neg choice ;;
@@ -423,16 +423,16 @@ Class ConditionallyNegatable : Set := {
 
 Error Struct.
 
-(* Impl [CtOption] *)
+(* Impl [CtOption] of trait [$crate.clone.Clone]*)
   Definition clone (self : ref Self) : CtOption :=
     struct CtOption {value := $crate.clone.Clone.clone self.value;is_some := $crate.clone.Clone.clone self.is_some} .
 (* End impl [CtOption] *)
 
-(* Impl [CtOption] *)
+(* Impl [CtOption] of trait [$crate.marker.Copy]*)
   
 (* End impl [CtOption] *)
 
-(* Impl [CtOption] *)
+(* Impl [CtOption] of trait [$crate.fmt.Debug]*)
   Definition fmt
     (self : ref Self)
     (f : ref $crate.fmt.Formatter)
@@ -440,7 +440,7 @@ Error Struct.
     debug_struct_field2_finish f "CtOption" "value" self.value "is_some" self.is_some.
 (* End impl [CtOption] *)
 
-(* Impl [Option] *)
+(* Impl [Option] of trait [From]*)
   Definition from (source : CtOption) : Option :=
     if eq ((source ) ) 1 then
       Option.Some source.value
@@ -502,7 +502,7 @@ Error Struct.
     conditional_select self f is_none.
 (* End impl [CtOption] *)
 
-(* Impl [CtOption] *)
+(* Impl [CtOption] of trait [ConditionallySelectable]*)
   Definition conditional_select
     (a : ref Self)
     (b : ref Self)
@@ -511,7 +511,7 @@ Error Struct.
     new (conditional_select a.value b.value choice) (conditional_select a.is_some b.is_some choice).
 (* End impl [CtOption] *)
 
-(* Impl [CtOption] *)
+(* Impl [CtOption] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (rhs : ref CtOption) : Choice :=
     let a := self  in
     let b := rhs  in
@@ -522,7 +522,7 @@ Class ConstantTimeGreater : Set := {
   ct_gt : ref Self -> ref Self -> Choice;
 }.
 
-(* Impl [u8] *)
+(* Impl [u8] of trait [ConstantTimeGreater]*)
   Definition ct_gt (self : ref Self) (other : ref u8) : Choice :=
     let gtb := bit_and self (not other) in
     let ltb := bit_and (not self) other in
@@ -546,7 +546,7 @@ Class ConstantTimeGreater : Set := {
     from (bit_and bit 1).
 (* End impl [u8] *)
 
-(* Impl [u16] *)
+(* Impl [u16] of trait [ConstantTimeGreater]*)
   Definition ct_gt (self : ref Self) (other : ref u16) : Choice :=
     let gtb := bit_and self (not other) in
     let ltb := bit_and (not self) other in
@@ -570,7 +570,7 @@ Class ConstantTimeGreater : Set := {
     from (bit_and bit 1).
 (* End impl [u16] *)
 
-(* Impl [u32] *)
+(* Impl [u32] of trait [ConstantTimeGreater]*)
   Definition ct_gt (self : ref Self) (other : ref u32) : Choice :=
     let gtb := bit_and self (not other) in
     let ltb := bit_and (not self) other in
@@ -594,7 +594,7 @@ Class ConstantTimeGreater : Set := {
     from (bit_and bit 1).
 (* End impl [u32] *)
 
-(* Impl [u64] *)
+(* Impl [u64] of trait [ConstantTimeGreater]*)
   Definition ct_gt (self : ref Self) (other : ref u64) : Choice :=
     let gtb := bit_and self (not other) in
     let ltb := bit_and (not self) other in
@@ -622,18 +622,18 @@ Class ConstantTimeLess : Set := {
   ct_lt : ref Self -> ref Self -> Choice;
 }.
 
-(* Impl [u8] *)
+(* Impl [u8] of trait [ConstantTimeLess]*)
   
 (* End impl [u8] *)
 
-(* Impl [u16] *)
+(* Impl [u16] of trait [ConstantTimeLess]*)
   
 (* End impl [u16] *)
 
-(* Impl [u32] *)
+(* Impl [u32] of trait [ConstantTimeLess]*)
   
 (* End impl [u32] *)
 
-(* Impl [u64] *)
+(* Impl [u64] of trait [ConstantTimeLess]*)
   
 (* End impl [u64] *)

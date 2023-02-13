@@ -5,7 +5,7 @@ Definition reverse :=
 Definition Matrix : Set :=
   f32 * f32 * f32 * f32.
 
-(* Impl [Matrix] *)
+(* Impl [Matrix] of trait [$crate.fmt.Debug]*)
   Definition fmt
     (self : ref Self)
     (f : ref $crate.fmt.Formatter)
