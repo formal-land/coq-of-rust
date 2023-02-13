@@ -1,4 +1,5 @@
 extern crate rustc_ast;
+
 use pretty::RcDoc;
 
 pub(crate) fn paren(with_paren: bool, doc: RcDoc<()>) -> RcDoc<()> {
@@ -24,4 +25,9 @@ pub(crate) fn literal_to_doc(literal: &rustc_ast::LitKind) -> RcDoc<()> {
         rustc_ast::LitKind::ByteStr(b, _) => RcDoc::text(format!("{b:?}")),
         rustc_ast::LitKind::Err => RcDoc::text("Err"),
     }
+}
+
+pub(crate) fn indent(doc: RcDoc<()>) -> RcDoc<()> {
+    let indent_space_offset = 2;
+    doc.nest(indent_space_offset)
 }

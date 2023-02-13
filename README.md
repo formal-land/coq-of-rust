@@ -9,3 +9,9 @@ The translation works at the level of the [HIR](https://rustc-dev-guide.rust-lan
 ```sh
 cargo run
 ```
+
+To run the tests (regenerate the Coq files that are acting as a reference):
+
+```sh
+cargo run -- translate --path examples-from-rust-book
+```
