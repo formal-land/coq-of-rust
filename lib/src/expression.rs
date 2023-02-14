@@ -150,10 +150,15 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
             let args = args.iter().map(|expr| compile_expr(hir, expr)).collect();
             Expr::App { func, args }
         }
-        rustc_hir::ExprKind::MethodCall(_path_segment, func, args, _span) => {
-            let func = Box::new(compile_expr(hir, func));
-            let args = args.iter().map(|expr| compile_expr(hir, expr)).collect();
-            Expr::App { func, args }
+        rustc_hir::ExprKind::MethodCall(path_segment, object, args, _) => {
+            let func = Box::new(Expr::Var(Path::local(path_segment.ident.to_string())));
+            let mut object_with_args = vec![compile_expr(hir, object)];
+            let args: Vec<_> = args.iter().map(|expr| compile_expr(hir, expr)).collect();
+            object_with_args.extend(args);
+            Expr::App {
+                func,
+                args: object_with_args,
+            }
         }
         rustc_hir::ExprKind::Tup(elements) => {
             let elements = elements
@@ -163,20 +168,20 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
             Expr::Tuple { elements }
         }
         rustc_hir::ExprKind::Binary(bin_op, expr_left, expr_right) => {
-            let expr_left = Box::new(compile_expr(hir, expr_left));
-            let expr_right = Box::new(compile_expr(hir, expr_right));
+            let expr_left = compile_expr(hir, expr_left);
+            let expr_right = compile_expr(hir, expr_right);
             let func = Box::new(Expr::LocalVar(compile_bin_op(bin_op)));
             Expr::App {
                 func,
-                args: vec![*expr_left, *expr_right],
+                args: vec![expr_left, expr_right],
             }
         }
         rustc_hir::ExprKind::Unary(un_op, expr) => {
-            let expr = Box::new(compile_expr(hir, expr));
+            let expr = compile_expr(hir, expr);
             let func = Box::new(Expr::LocalVar(compile_un_op(un_op)));
             Expr::App {
                 func,
-                args: vec![*expr],
+                args: vec![expr],
             }
         }
         rustc_hir::ExprKind::Lit(lit) => Expr::Literal(lit.node.clone()),
@@ -235,13 +240,17 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
             Expr::Assign { left, right }
         }
         rustc_hir::ExprKind::AssignOp(bin_op, left, right) => {
-            let bin_op = compile_bin_op(bin_op);
-            let left = Box::new(compile_expr(hir, left));
-            let right = Box::new(compile_expr(hir, right));
-            Expr::AssignOp {
-                bin_op,
-                left,
-                right,
+            let func = Box::new(Expr::LocalVar(compile_bin_op(bin_op)));
+            // We have to duplicate the code here for memory allocations
+            let left_left = compile_expr(hir, left);
+            let left_right = compile_expr(hir, left);
+            let right = compile_expr(hir, right);
+            Expr::Assign {
+                left: Box::new(left_left),
+                right: Box::new(Expr::App {
+                    func,
+                    args: vec![left_right, right],
+                }),
             }
         }
         rustc_hir::ExprKind::Field(base, ident) => {
@@ -365,18 +374,21 @@ impl Expr {
     pub fn to_doc(&self, with_paren: bool) -> RcDoc<()> {
         match self {
             Expr::LocalVar(ref name) => RcDoc::text(name),
-
             Expr::Var(path) => path.to_doc(),
-
             Expr::Literal(literal) => literal_to_doc(literal),
-            Expr::App { func, args } => paren(
+            Expr::App { func, args } => indent(paren(
                 with_paren,
                 RcDoc::concat([
                     func.to_doc(true),
-                    RcDoc::space(),
-                    RcDoc::intersperse(args.iter().map(|arg| arg.to_doc(true)), RcDoc::space()),
+                    RcDoc::line(),
+                    if args.is_empty() {
+                        RcDoc::text("tt")
+                    } else {
+                        RcDoc::intersperse(args.iter().map(|arg| arg.to_doc(true)), RcDoc::line())
+                    },
                 ]),
-            ),
+            ))
+            .group(),
             Expr::Let { pat, init, body } => RcDoc::concat([
                 RcDoc::text("let"),
                 RcDoc::space(),

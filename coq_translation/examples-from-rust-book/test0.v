@@ -18,7 +18,8 @@ Definition main :=
     tt ;;
     tt
   else
-    _crate.io._print (new_v1 ["Didn't match a number. Let's go with a letter!\n"] []) ;;
+    _crate.io._print
+      (new_v1 ["Didn't match a number. Let's go with a letter!\n"] []) ;;
     tt ;;
     tt ;;
   let i_like_letters := false in
@@ -28,10 +29,12 @@ Definition main :=
     tt
   else
     if i_like_letters then
-      _crate.io._print (new_v1 ["Didn't match a number. Let's go with a letter!\n"] []) ;;
+      _crate.io._print
+        (new_v1 ["Didn't match a number. Let's go with a letter!\n"] []) ;;
       tt ;;
       tt
     else
-      _crate.io._print (new_v1 ["I don't like letters. Let's go with an emoticon :)!\n"] []) ;;
+      _crate.io._print
+        (new_v1 ["I don't like letters. Let's go with an emoticon :)!\n"] []) ;;
       tt ;;
       tt.

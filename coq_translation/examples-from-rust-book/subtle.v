@@ -28,7 +28,8 @@ Definition Choice : Set :=
   Definition from (source : Choice) : bool :=
     if true then
       if not (bit_and (eq source.0 0) (eq source.0 1)) then
-        _crate.panicking.panic "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
+        _crate.panicking.panic
+          "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
       else
         tt ;;
       tt
@@ -42,7 +43,7 @@ Definition Choice : Set :=
     Choice.
   
   Definition bitand (self : Self) (rhs : Choice) : Choice :=
-    (bit_and self.0 rhs.0) .
+    into (bit_and self.0 rhs.0).
 (* End impl [Choice] *)
 
 (* Impl [Choice] of trait [BitAndAssign]*)
@@ -56,7 +57,7 @@ Definition Choice : Set :=
     Choice.
   
   Definition bitor (self : Self) (rhs : Choice) : Choice :=
-    (bit_and self.0 rhs.0) .
+    into (bit_and self.0 rhs.0).
 (* End impl [Choice] *)
 
 (* Impl [Choice] of trait [BitOrAssign]*)
@@ -70,7 +71,7 @@ Definition Choice : Set :=
     Choice.
   
   Definition bitxor (self : Self) (rhs : Choice) : Choice :=
-    (bit_xor self.0 rhs.0) .
+    into (bit_xor self.0 rhs.0).
 (* End impl [Choice] *)
 
 (* Impl [Choice] of trait [BitXorAssign]*)
@@ -84,7 +85,7 @@ Definition Choice : Set :=
     Choice.
   
   Definition not (self : Self) : Choice :=
-    (bit_and 1 (not self.0)) .
+    into (bit_and 1 (not self.0)).
 (* End impl [Choice] *)
 
 Definition black_box :=
@@ -110,24 +111,24 @@ Class ConstantTimeEq : Set := {
 
 (* Impl [Slice] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (_rhs : ref Slice) : Choice :=
-    let len := self  in
-    if ne len (_rhs ) then
+    let len := len self in
+    if ne len (len _rhs) then
       Return (from 0) ;;
       tt
     else
       tt ;;
     let x := 1 in
-    match into_iter ((self ) (_rhs )) with
+    match into_iter (zip (iter self) (iter _rhs)) with
     | iter =>
       loop match next iter with
       | None [] => Break
       | Some [0 : (ai, bi)] =>
-        assign x := x bit_and (ai bi)  ;;
+        assign x := bit_and x (unwrap_u8 (ct_eq ai bi)) ;;
         tt
       end ;;
       tt from for
     end ;;
-    x .
+    into x.
 (* End impl [Slice] *)
 
 (* Impl [Choice] of trait [ConstantTimeEq]*)
@@ -138,61 +139,63 @@ Class ConstantTimeEq : Set := {
 (* Impl [u8] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref u8) : Choice :=
     let x := bit_xor self other in
-    let y := shr (bit_and x (x )) (sub 8 1) in
-    (bit_xor y 1) .
+    let y := shr (bit_and x (wrapping_neg x)) (sub 8 1) in
+    into (bit_xor y 1).
 (* End impl [u8] *)
 
 (* Impl [i8] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref i8) : Choice :=
-    (deref self) (deref other).
+    ct_eq (deref self) (deref other).
 (* End impl [i8] *)
 
 (* Impl [u16] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref u16) : Choice :=
     let x := bit_xor self other in
-    let y := shr (bit_and x (x )) (sub 16 1) in
-    (bit_xor y 1) .
+    let y := shr (bit_and x (wrapping_neg x)) (sub 16 1) in
+    into (bit_xor y 1).
 (* End impl [u16] *)
 
 (* Impl [i16] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref i16) : Choice :=
-    (deref self) (deref other).
+    ct_eq (deref self) (deref other).
 (* End impl [i16] *)
 
 (* Impl [u32] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref u32) : Choice :=
     let x := bit_xor self other in
-    let y := shr (bit_and x (x )) (sub 32 1) in
-    (bit_xor y 1) .
+    let y := shr (bit_and x (wrapping_neg x)) (sub 32 1) in
+    into (bit_xor y 1).
 (* End impl [u32] *)
 
 (* Impl [i32] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref i32) : Choice :=
-    (deref self) (deref other).
+    ct_eq (deref self) (deref other).
 (* End impl [i32] *)
 
 (* Impl [u64] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref u64) : Choice :=
     let x := bit_xor self other in
-    let y := shr (bit_and x (x )) (sub 64 1) in
-    (bit_xor y 1) .
+    let y := shr (bit_and x (wrapping_neg x)) (sub 64 1) in
+    into (bit_xor y 1).
 (* End impl [u64] *)
 
 (* Impl [i64] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref i64) : Choice :=
-    (deref self) (deref other).
+    ct_eq (deref self) (deref other).
 (* End impl [i64] *)
 
 (* Impl [usize] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref usize) : Choice :=
     let x := bit_xor self other in
-    let y := shr (bit_and x (x )) (sub (mul ({{root}}.core.mem.size_of ) 8) 1) in
-    (bit_xor y 1) .
+    let y := shr
+      (bit_and x (wrapping_neg x))
+      (sub (mul ({{root}}.core.mem.size_of tt) 8) 1) in
+    into (bit_xor y 1).
 (* End impl [usize] *)
 
 (* Impl [isize] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (other : ref isize) : Choice :=
-    (deref self) (deref other).
+    ct_eq (deref self) (deref other).
 (* End impl [isize] *)
 
 Class ConditionallySelectable : Set := {
@@ -207,22 +210,24 @@ Class ConditionallySelectable : Set := {
     (b : ref Self)
     (choice : Choice)
     : Self :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition conditional_assign
     (self : ref Self)
     (other : ref Self)
     (choice : Choice) :=
-    let mask := neg (choice ) in
-    assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
+    let mask := neg (unwrap_u8 choice) in
+    assign deref self := bit_xor
+      (deref self)
+      (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
   Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign deref a := deref a bit_xor t ;;
-    assign deref b := deref b bit_xor t ;;
+    assign deref a := bit_xor (deref a) t ;;
+    assign deref b := bit_xor (deref b) t ;;
     tt.
 (* End impl [u8] *)
 
@@ -232,22 +237,24 @@ Class ConditionallySelectable : Set := {
     (b : ref Self)
     (choice : Choice)
     : Self :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition conditional_assign
     (self : ref Self)
     (other : ref Self)
     (choice : Choice) :=
-    let mask := neg (choice ) in
-    assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
+    let mask := neg (unwrap_u8 choice) in
+    assign deref self := bit_xor
+      (deref self)
+      (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
   Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign deref a := deref a bit_xor t ;;
-    assign deref b := deref b bit_xor t ;;
+    assign deref a := bit_xor (deref a) t ;;
+    assign deref b := bit_xor (deref b) t ;;
     tt.
 (* End impl [i8] *)
 
@@ -257,22 +264,24 @@ Class ConditionallySelectable : Set := {
     (b : ref Self)
     (choice : Choice)
     : Self :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition conditional_assign
     (self : ref Self)
     (other : ref Self)
     (choice : Choice) :=
-    let mask := neg (choice ) in
-    assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
+    let mask := neg (unwrap_u8 choice) in
+    assign deref self := bit_xor
+      (deref self)
+      (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
   Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign deref a := deref a bit_xor t ;;
-    assign deref b := deref b bit_xor t ;;
+    assign deref a := bit_xor (deref a) t ;;
+    assign deref b := bit_xor (deref b) t ;;
     tt.
 (* End impl [u16] *)
 
@@ -282,22 +291,24 @@ Class ConditionallySelectable : Set := {
     (b : ref Self)
     (choice : Choice)
     : Self :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition conditional_assign
     (self : ref Self)
     (other : ref Self)
     (choice : Choice) :=
-    let mask := neg (choice ) in
-    assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
+    let mask := neg (unwrap_u8 choice) in
+    assign deref self := bit_xor
+      (deref self)
+      (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
   Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign deref a := deref a bit_xor t ;;
-    assign deref b := deref b bit_xor t ;;
+    assign deref a := bit_xor (deref a) t ;;
+    assign deref b := bit_xor (deref b) t ;;
     tt.
 (* End impl [i16] *)
 
@@ -307,22 +318,24 @@ Class ConditionallySelectable : Set := {
     (b : ref Self)
     (choice : Choice)
     : Self :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition conditional_assign
     (self : ref Self)
     (other : ref Self)
     (choice : Choice) :=
-    let mask := neg (choice ) in
-    assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
+    let mask := neg (unwrap_u8 choice) in
+    assign deref self := bit_xor
+      (deref self)
+      (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
   Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign deref a := deref a bit_xor t ;;
-    assign deref b := deref b bit_xor t ;;
+    assign deref a := bit_xor (deref a) t ;;
+    assign deref b := bit_xor (deref b) t ;;
     tt.
 (* End impl [u32] *)
 
@@ -332,22 +345,24 @@ Class ConditionallySelectable : Set := {
     (b : ref Self)
     (choice : Choice)
     : Self :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition conditional_assign
     (self : ref Self)
     (other : ref Self)
     (choice : Choice) :=
-    let mask := neg (choice ) in
-    assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
+    let mask := neg (unwrap_u8 choice) in
+    assign deref self := bit_xor
+      (deref self)
+      (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
   Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign deref a := deref a bit_xor t ;;
-    assign deref b := deref b bit_xor t ;;
+    assign deref a := bit_xor (deref a) t ;;
+    assign deref b := bit_xor (deref b) t ;;
     tt.
 (* End impl [i32] *)
 
@@ -357,22 +372,24 @@ Class ConditionallySelectable : Set := {
     (b : ref Self)
     (choice : Choice)
     : Self :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition conditional_assign
     (self : ref Self)
     (other : ref Self)
     (choice : Choice) :=
-    let mask := neg (choice ) in
-    assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
+    let mask := neg (unwrap_u8 choice) in
+    assign deref self := bit_xor
+      (deref self)
+      (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
   Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign deref a := deref a bit_xor t ;;
-    assign deref b := deref b bit_xor t ;;
+    assign deref a := bit_xor (deref a) t ;;
+    assign deref b := bit_xor (deref b) t ;;
     tt.
 (* End impl [u64] *)
 
@@ -382,22 +399,24 @@ Class ConditionallySelectable : Set := {
     (b : ref Self)
     (choice : Choice)
     : Self :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition conditional_assign
     (self : ref Self)
     (other : ref Self)
     (choice : Choice) :=
-    let mask := neg (choice ) in
-    assign deref self := deref self bit_xor bit_and mask (bit_xor (deref self) (deref other)) ;;
+    let mask := neg (unwrap_u8 choice) in
+    assign deref self := bit_xor
+      (deref self)
+      (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
   Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
-    let mask := neg (choice ) in
+    let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign deref a := deref a bit_xor t ;;
-    assign deref b := deref b bit_xor t ;;
+    assign deref a := bit_xor (deref a) t ;;
+    assign deref b := bit_xor (deref b) t ;;
     tt.
 (* End impl [i64] *)
 
@@ -417,7 +436,7 @@ Class ConditionallyNegatable : Set := {
 (* Impl [T] of trait [ConditionallyNegatable]*)
   Definition conditional_negate (self : ref Self) (choice : Choice) :=
     let self_neg := neg self in
-    self self_neg choice ;;
+    conditional_assign self self_neg choice ;;
     tt.
 (* End impl [T] *)
 
@@ -425,7 +444,8 @@ Error Struct.
 
 (* Impl [CtOption] of trait [_crate.clone.Clone]*)
   Definition clone (self : ref Self) : CtOption :=
-    struct CtOption {value := _crate.clone.Clone.clone self.value;is_some := _crate.clone.Clone.clone self.is_some} .
+    struct CtOption {value := _crate.clone.Clone.clone
+      self.value;is_some := _crate.clone.Clone.clone self.is_some} .
 (* End impl [CtOption] *)
 
 (* Impl [CtOption] of trait [_crate.marker.Copy]*)
@@ -437,12 +457,18 @@ Error Struct.
     (self : ref Self)
     (f : ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
-    debug_struct_field2_finish f "CtOption" "value" self.value "is_some" self.is_some.
+    debug_struct_field2_finish
+      f
+      "CtOption"
+      "value"
+      self.value
+      "is_some"
+      self.is_some.
 (* End impl [CtOption] *)
 
 (* Impl [Option] of trait [From]*)
   Definition from (source : CtOption) : Option :=
-    if eq ((source ) ) 1 then
+    if eq (unwrap_u8 (is_some source)) 1 then
       Option.Some source.value
     else
       None.
@@ -453,11 +479,15 @@ Error Struct.
     struct CtOption {value := value;is_some := is_some} .
   
   Definition expect (self : Self) (msg : ref str) : T :=
-    match (self.is_some , 1) with
+    match (unwrap_u8 self.is_some, 1) with
     | (left_val, right_val) =>
       if not (eq (deref left_val) (deref right_val)) then
         let kind := _crate.panicking.AssertKind.Eq in
-        _crate.panicking.assert_failed kind (deref left_val) (deref right_val) (_crate.option.Option.Some (new_v1 [""] [new_display msg])) ;;
+        _crate.panicking.assert_failed
+          kind
+          (deref left_val)
+          (deref right_val)
+          (_crate.option.Option.Some (new_v1 [""] [new_display msg])) ;;
         tt
       else
         tt
@@ -465,11 +495,15 @@ Error Struct.
     self.value.
   
   Definition unwrap (self : Self) : T :=
-    match (self.is_some , 1) with
+    match (unwrap_u8 self.is_some, 1) with
     | (left_val, right_val) =>
       if not (eq (deref left_val) (deref right_val)) then
         let kind := _crate.panicking.AssertKind.Eq in
-        _crate.panicking.assert_failed kind (deref left_val) (deref right_val) _crate.option.Option.None ;;
+        _crate.panicking.assert_failed
+          kind
+          (deref left_val)
+          (deref right_val)
+          _crate.option.Option.None ;;
         tt
       else
         tt
@@ -480,7 +514,7 @@ Error Struct.
     conditional_select def self.value self.is_some.
   
   Definition unwrap_or_else (self : Self) (f : F) : T :=
-    conditional_select (f ) self.value self.is_some.
+    conditional_select (f tt) self.value self.is_some.
   
   Definition is_some (self : ref Self) : Choice :=
     self.is_some.
@@ -489,16 +523,18 @@ Error Struct.
     not self.is_some.
   
   Definition map (self : Self) (f : F) : CtOption :=
-    new (f (conditional_select (default ) self.value self.is_some)) self.is_some.
+    new
+      (f (conditional_select (default tt) self.value self.is_some))
+      self.is_some.
   
   Definition and_then (self : Self) (f : F) : CtOption :=
-    let tmp := f (conditional_select (default ) self.value self.is_some) in
-    assign tmp.is_some := tmp.is_some bit_and self.is_some ;;
+    let tmp := f (conditional_select (default tt) self.value self.is_some) in
+    assign tmp.is_some := bit_and tmp.is_some self.is_some ;;
     tmp.
   
   Definition or_else (self : Self) (f : F) : CtOption :=
-    let is_none := self  in
-    let f := f  in
+    let is_none := is_none self in
+    let f := f tt in
     conditional_select self f is_none.
 (* End impl [CtOption] *)
 
@@ -508,14 +544,18 @@ Error Struct.
     (b : ref Self)
     (choice : Choice)
     : Self :=
-    new (conditional_select a.value b.value choice) (conditional_select a.is_some b.is_some choice).
+    new
+      (conditional_select a.value b.value choice)
+      (conditional_select a.is_some b.is_some choice).
 (* End impl [CtOption] *)
 
 (* Impl [CtOption] of trait [ConstantTimeEq]*)
   Definition ct_eq (self : ref Self) (rhs : ref CtOption) : Choice :=
-    let a := self  in
-    let b := rhs  in
-    bit_and (bit_and (bit_and a b) (self.value rhs.value)) (bit_and (not a) (not b)).
+    let a := is_some self in
+    let b := is_some rhs in
+    bit_and
+      (bit_and (bit_and a b) (ct_eq self.value rhs.value))
+      (bit_and (not a) (not b)).
 (* End impl [CtOption] *)
 
 Class ConstantTimeGreater : Set := {
@@ -528,8 +568,8 @@ Class ConstantTimeGreater : Set := {
     let ltb := bit_and (not self) other in
     let pow := 1 in
     loop (if lt pow 8 then
-      assign ltb := ltb bit_and shr ltb pow ;;
-      assign pow := pow add pow ;;
+      assign ltb := bit_and ltb (shr ltb pow) ;;
+      assign pow := add pow pow ;;
       tt
     else
       Break ;;
@@ -537,8 +577,8 @@ Class ConstantTimeGreater : Set := {
     let bit := bit_and gtb (not ltb) in
     let pow := 1 in
     loop (if lt pow 8 then
-      assign bit := bit bit_and shr bit pow ;;
-      assign pow := pow add pow ;;
+      assign bit := bit_and bit (shr bit pow) ;;
+      assign pow := add pow pow ;;
       tt
     else
       Break ;;
@@ -552,8 +592,8 @@ Class ConstantTimeGreater : Set := {
     let ltb := bit_and (not self) other in
     let pow := 1 in
     loop (if lt pow 16 then
-      assign ltb := ltb bit_and shr ltb pow ;;
-      assign pow := pow add pow ;;
+      assign ltb := bit_and ltb (shr ltb pow) ;;
+      assign pow := add pow pow ;;
       tt
     else
       Break ;;
@@ -561,8 +601,8 @@ Class ConstantTimeGreater : Set := {
     let bit := bit_and gtb (not ltb) in
     let pow := 1 in
     loop (if lt pow 16 then
-      assign bit := bit bit_and shr bit pow ;;
-      assign pow := pow add pow ;;
+      assign bit := bit_and bit (shr bit pow) ;;
+      assign pow := add pow pow ;;
       tt
     else
       Break ;;
@@ -576,8 +616,8 @@ Class ConstantTimeGreater : Set := {
     let ltb := bit_and (not self) other in
     let pow := 1 in
     loop (if lt pow 32 then
-      assign ltb := ltb bit_and shr ltb pow ;;
-      assign pow := pow add pow ;;
+      assign ltb := bit_and ltb (shr ltb pow) ;;
+      assign pow := add pow pow ;;
       tt
     else
       Break ;;
@@ -585,8 +625,8 @@ Class ConstantTimeGreater : Set := {
     let bit := bit_and gtb (not ltb) in
     let pow := 1 in
     loop (if lt pow 32 then
-      assign bit := bit bit_and shr bit pow ;;
-      assign pow := pow add pow ;;
+      assign bit := bit_and bit (shr bit pow) ;;
+      assign pow := add pow pow ;;
       tt
     else
       Break ;;
@@ -600,8 +640,8 @@ Class ConstantTimeGreater : Set := {
     let ltb := bit_and (not self) other in
     let pow := 1 in
     loop (if lt pow 64 then
-      assign ltb := ltb bit_and shr ltb pow ;;
-      assign pow := pow add pow ;;
+      assign ltb := bit_and ltb (shr ltb pow) ;;
+      assign pow := add pow pow ;;
       tt
     else
       Break ;;
@@ -609,8 +649,8 @@ Class ConstantTimeGreater : Set := {
     let bit := bit_and gtb (not ltb) in
     let pow := 1 in
     loop (if lt pow 64 then
-      assign bit := bit bit_and shr bit pow ;;
-      assign pow := pow add pow ;;
+      assign bit := bit_and bit (shr bit pow) ;;
+      assign pow := add pow pow ;;
       tt
     else
       Break ;;

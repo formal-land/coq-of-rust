@@ -14,18 +14,23 @@ Definition Matrix : Set :=
 (* End impl [Matrix] *)
 
 Definition main :=
-  let long_tuple := (1, 2, 3, 4, neg 1, neg 2, neg 3, neg 4, 0.1, 0.2, a, true) in
-  _crate.io._print (new_v1 ["long tuple first value: ";"\n"] [new_display long_tuple.0]) ;;
+  let long_tuple := (1, 2, 3, 4, neg 1, neg 2, neg 3, neg
+    4, 0.1, 0.2, a, true) in
+  _crate.io._print
+    (new_v1 ["long tuple first value: ";"\n"] [new_display long_tuple.0]) ;;
   tt ;;
-  _crate.io._print (new_v1 ["long tuple second value: ";"\n"] [new_display long_tuple.1]) ;;
+  _crate.io._print
+    (new_v1 ["long tuple second value: ";"\n"] [new_display long_tuple.1]) ;;
   tt ;;
   let tuple_of_tuples := ((1, 2, 2), (4, neg 1), neg 2) in
-  _crate.io._print (new_v1 ["tuple of tuples: ";"\n"] [new_debug tuple_of_tuples]) ;;
+  _crate.io._print
+    (new_v1 ["tuple of tuples: ";"\n"] [new_debug tuple_of_tuples]) ;;
   tt ;;
   let pair := (1, true) in
   _crate.io._print (new_v1 ["pair is ";"\n"] [new_debug pair]) ;;
   tt ;;
-  _crate.io._print (new_v1 ["the reversed pair is ";"\n"] [new_debug (reverse pair)]) ;;
+  _crate.io._print
+    (new_v1 ["the reversed pair is ";"\n"] [new_debug (reverse pair)]) ;;
   tt ;;
   _crate.io._print (new_v1 ["one element tuple: ";"\n"] [new_debug (5)]) ;;
   tt ;;
@@ -33,7 +38,10 @@ Definition main :=
   tt ;;
   let tuple := (1, "hello", 4.5, true) in
   let (a, b, c, d) := tuple in
-  _crate.io._print (new_v1 ["";", ";", ";", ";"\n"] [new_debug a;new_debug b;new_debug c;new_debug d]) ;;
+  _crate.io._print
+    (new_v1
+      ["";", ";", ";", ";"\n"]
+      [new_debug a;new_debug b;new_debug c;new_debug d]) ;;
   tt ;;
   let matrix := Matrix 1.1 1.2 2.1 2.2 in
   _crate.io._print (new_v1 ["";"\n"] [new_debug matrix]) ;;
