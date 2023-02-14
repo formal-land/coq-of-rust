@@ -28,7 +28,7 @@ pub fn compile_path(path: &rustc_hir::Path) -> Path {
         segments: path
             .segments
             .iter()
-            .map(|segment| segment.ident.name.to_string())
+            .map(|segment| to_valid_coq_name(segment.ident.name.to_string()))
             .collect(),
     }
 }
@@ -43,6 +43,12 @@ pub fn compile_qpath(qpath: &rustc_hir::QPath) -> Path {
             segments: vec![lang_item.name().to_string()],
         },
     }
+}
+
+fn to_valid_coq_name(str: String) -> String {
+    str.chars()
+        .map(|char| if char == '$' { '_' } else { char })
+        .collect()
 }
 
 impl Path {

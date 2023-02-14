@@ -15,7 +15,7 @@
           "kind": "bin"
         }
       },
-      "args": ["translate", "--path", "examples-from-rust-book/0_test0.rs"],
+      "args": ["translate", "--path", "examples-from-rust-book/subtle.rs"],
       "cwd": "${workspaceFolder}"
     },
     {

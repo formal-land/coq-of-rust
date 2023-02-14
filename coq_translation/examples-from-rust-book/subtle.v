@@ -1,21 +1,21 @@
 Definition Choice : Set :=
   u8.
 
-(* Impl [Choice] of trait [$crate.marker.Copy]*)
+(* Impl [Choice] of trait [_crate.marker.Copy]*)
   
 (* End impl [Choice] *)
 
-(* Impl [Choice] of trait [$crate.clone.Clone]*)
+(* Impl [Choice] of trait [_crate.clone.Clone]*)
   Definition clone (self : ref Self) : Choice :=
     let _ := tt in
     deref self.
 (* End impl [Choice] *)
 
-(* Impl [Choice] of trait [$crate.fmt.Debug]*)
+(* Impl [Choice] of trait [_crate.fmt.Debug]*)
   Definition fmt
     (self : ref Self)
-    (f : ref $crate.fmt.Formatter)
-    : $crate.fmt.Result :=
+    (f : ref _crate.fmt.Formatter)
+    : _crate.fmt.Result :=
     debug_tuple_field1_finish f "Choice" self.0.
 (* End impl [Choice] *)
 
@@ -28,7 +28,7 @@ Definition Choice : Set :=
   Definition from (source : Choice) : bool :=
     if true then
       if not (bit_and (eq source.0 0) (eq source.0 1)) then
-        $crate.panicking.panic "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
+        _crate.panicking.panic "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
       else
         tt ;;
       tt
@@ -90,7 +90,7 @@ Definition Choice : Set :=
 Definition black_box :=
   if true then
     if not (bit_and (eq input 0) (eq input 1)) then
-      $crate.panicking.panic "assertion failed: (input == 0u8) | (input == 1u8)"
+      _crate.panicking.panic "assertion failed: (input == 0u8) | (input == 1u8)"
     else
       tt ;;
     tt
@@ -423,20 +423,20 @@ Class ConditionallyNegatable : Set := {
 
 Error Struct.
 
-(* Impl [CtOption] of trait [$crate.clone.Clone]*)
+(* Impl [CtOption] of trait [_crate.clone.Clone]*)
   Definition clone (self : ref Self) : CtOption :=
-    struct CtOption {value := $crate.clone.Clone.clone self.value;is_some := $crate.clone.Clone.clone self.is_some} .
+    struct CtOption {value := _crate.clone.Clone.clone self.value;is_some := _crate.clone.Clone.clone self.is_some} .
 (* End impl [CtOption] *)
 
-(* Impl [CtOption] of trait [$crate.marker.Copy]*)
+(* Impl [CtOption] of trait [_crate.marker.Copy]*)
   
 (* End impl [CtOption] *)
 
-(* Impl [CtOption] of trait [$crate.fmt.Debug]*)
+(* Impl [CtOption] of trait [_crate.fmt.Debug]*)
   Definition fmt
     (self : ref Self)
-    (f : ref $crate.fmt.Formatter)
-    : $crate.fmt.Result :=
+    (f : ref _crate.fmt.Formatter)
+    : _crate.fmt.Result :=
     debug_struct_field2_finish f "CtOption" "value" self.value "is_some" self.is_some.
 (* End impl [CtOption] *)
 
@@ -456,8 +456,8 @@ Error Struct.
     match (self.is_some , 1) with
     | (left_val, right_val) =>
       if not (eq (deref left_val) (deref right_val)) then
-        let kind := $crate.panicking.AssertKind.Eq in
-        $crate.panicking.assert_failed kind (deref left_val) (deref right_val) ($crate.option.Option.Some (new_v1 [""] [new_display msg])) ;;
+        let kind := _crate.panicking.AssertKind.Eq in
+        _crate.panicking.assert_failed kind (deref left_val) (deref right_val) (_crate.option.Option.Some (new_v1 [""] [new_display msg])) ;;
         tt
       else
         tt
@@ -468,8 +468,8 @@ Error Struct.
     match (self.is_some , 1) with
     | (left_val, right_val) =>
       if not (eq (deref left_val) (deref right_val)) then
-        let kind := $crate.panicking.AssertKind.Eq in
-        $crate.panicking.assert_failed kind (deref left_val) (deref right_val) $crate.option.Option.None ;;
+        let kind := _crate.panicking.AssertKind.Eq in
+        _crate.panicking.assert_failed kind (deref left_val) (deref right_val) _crate.option.Option.None ;;
         tt
       else
         tt
