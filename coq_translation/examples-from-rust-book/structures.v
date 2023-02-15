@@ -56,13 +56,13 @@ Definition Rectangle : Set := Rectangle.t.
 Definition main (_ : unit) :=
   let name := ImplString.from "Peter" in
   let age := 27 in
-  let peter := {| Person.name := name; Person.age := age; |}  in
+  let peter := {| Person.name := name; Person.age := age; |} in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["";"\n"]
       [_crate::fmt::ImplArgumentV1.new_debug peter]) ;;
   tt ;;
-  let point := {| Point.x := 10 (* 10.3 *); Point.y := 0 (* 0.4 *); |}  in
+  let point := {| Point.x := 10 (* 10.3 *); Point.y := 0 (* 0.4 *); |} in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["point coordinates: (";", ";")\n"]
@@ -77,12 +77,11 @@ Definition main (_ : unit) :=
         bottom_right.x;_crate::fmt::ImplArgumentV1.new_display
         bottom_right.y]) ;;
   tt ;;
-  let Point [x : left_edge,y : top_edge] := point in
+  let {| Point.x := left_edge; Point.y := top_edge; |} := point in
   let _rectangle := {|
-    Rectangle.top_left := {| Point.x := left_edge; Point.y := top_edge; |} ;
+    Rectangle.top_left := {| Point.x := left_edge; Point.y := top_edge; |};
     Rectangle.bottom_right := bottom_right;
-    |}
-     in
+  |} in
   let _unit := Unit in
   let pair := Pair 1 0 (* 0.1 *) in
   _crate.io._print

@@ -51,10 +51,8 @@ Definition main (_ : unit) :=
               :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Is 4;
-            |}
-            ;
-        |}
-        ]
+          |};
+      |}]
       (_crate::fmt::ImplUnsafeArg.new tt)) ;;
   tt ;;
   _crate.io._print
@@ -75,10 +73,8 @@ Definition main (_ : unit) :=
               :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Is 4;
-            |}
-            ;
-        |}
-        ]
+          |};
+      |}]
       (_crate::fmt::ImplUnsafeArg.new tt)) ;;
   tt ;;
   _crate.io._print
@@ -99,10 +95,8 @@ Definition main (_ : unit) :=
               :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Is 4;
-            |}
-            ;
-        |}
-        ]
+          |};
+      |}]
       (_crate::fmt::ImplUnsafeArg.new tt)) ;;
   tt ;;
   _crate.io._print

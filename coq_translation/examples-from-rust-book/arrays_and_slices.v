@@ -54,7 +54,7 @@ Definition main (_ : unit) :=
       ["borrow a section of the array as a slice\n"]
       []) ;;
   tt ;;
-  analyze_slice ys[{| Range.start := 1; Range.end := 4; |} ] ;;
+  analyze_slice ys[{| Range.start := 1; Range.end := 4; |}] ;;
   let empty_array := [] in
   match (empty_array, []) with
   | (left_val, right_val) =>
@@ -69,7 +69,7 @@ Definition main (_ : unit) :=
     else
       tt
   end ;;
-  match (empty_array, [][{|  |} ]) with
+  match (empty_array, [][{|  |}]) with
   | (left_val, right_val) =>
     if not (eq (deref left_val) (deref right_val)) then
       let kind := _crate.panicking.AssertKind.Eq in
@@ -82,11 +82,11 @@ Definition main (_ : unit) :=
     else
       tt
   end ;;
-  match into_iter ({| Range.start := 0; Range.end := add (len xs) 1; |} ) with
+  match into_iter {| Range.start := 0; Range.end := add (len xs) 1; |} with
   | iter =>
     loop match next iter with
-    | None [] => Break
-    | Some [0 : i] =>
+    | {|  |} => Break
+    | {| Some.0 := i; |} =>
       match get xs i with
       | Some (xval) =>
         _crate.io._print

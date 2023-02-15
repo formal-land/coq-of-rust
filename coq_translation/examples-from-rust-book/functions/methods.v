@@ -18,10 +18,10 @@ Definition Point : Set := Point.t.
 (* Impl [Point] *)
 Module ImplPoint.
   Definition origin (_ : unit) : Point :=
-    {| Point.y := 0 (* 0.0 *); Point.x := 1 (* 1.0 *); |} .
+    {| Point.y := 0 (* 0.0 *); Point.x := 1 (* 1.0 *); |}.
   
   Definition new (x : f64) (y : f64) : Point :=
-    {| Point.x := x; Point.y := y; |} .
+    {| Point.x := x; Point.y := y; |}.
 End ImplPoint.
 (* End impl [Point] *)
 
@@ -39,13 +39,13 @@ Module ImplRectangle.
     self.p1.
   
   Definition area (self : ref Self) : f64 :=
-    let Point [x : x1,y : y1] := self.p1 in
-    let Point [x : x2,y : y2] := self.p2 in
+    let {| Point.x := x1; Point.y := y1; |} := self.p1 in
+    let {| Point.x := x2; Point.y := y2; |} := self.p2 in
     abs (mul (sub x1 x2) (sub y1 y2)).
   
   Definition perimeter (self : ref Self) : f64 :=
-    let Point [x : x1,y : y1] := self.p1 in
-    let Point [x : x2,y : y2] := self.p2 in
+    let {| Point.x := x1; Point.y := y1; |} := self.p1 in
+    let {| Point.x := x2; Point.y := y2; |} := self.p2 in
     mul 2 (* 2.0 *) (add (abs (sub x1 x2)) (abs (sub y1 y2))).
   
   Definition translate (self : ref Self) (x : f64) (y : f64) :=
@@ -78,8 +78,7 @@ Definition main (_ : unit) :=
   let rectangle := {|
     Rectangle.p1 := ImplPoint.origin tt;
     Rectangle.p2 := ImplPoint.new 3 (* 3.0 *) 4 (* 4.0 *);
-    |}
-     in
+  |} in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Rectangle perimeter: ";"\n"]
@@ -93,8 +92,7 @@ Definition main (_ : unit) :=
   let square := {|
     Rectangle.p1 := ImplPoint.origin tt;
     Rectangle.p2 := ImplPoint.new 1 (* 1.0 *) 1 (* 1.0 *);
-    |}
-     in
+  |} in
   translate square 1 (* 1.0 *) 1 (* 1.0 *) ;;
   let pair := Pair (ImplBox.new 1) (ImplBox.new 2) in
   destroy pair ;;

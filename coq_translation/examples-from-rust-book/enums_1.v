@@ -30,7 +30,7 @@ Definition inspect (_ : unit) :=
         ["pasted \"";"\".\n"]
         [_crate::fmt::ImplArgumentV1.new_display s]) ;;
     tt
-  | WebEvent.Click [x : x,y : y] =>
+  | {| WebEvent.Click.x := x; WebEvent.Click.y := y; |} =>
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1
         ["clicked at x=";", y=";".\n"]
@@ -43,7 +43,7 @@ Definition inspect (_ : unit) :=
 Definition main (_ : unit) :=
   let pressed := WebEvent.KeyPress x in
   let pasted := WebEvent.Paste (to_owned "my text") in
-  let click := {| WebEvent.Click.x := 20; WebEvent.Click.y := 80; |}  in
+  let click := {| WebEvent.Click.x := 20; WebEvent.Click.y := 80; |} in
   let load := WebEvent.PageLoad in
   let unload := WebEvent.PageUnload in
   inspect pressed ;;

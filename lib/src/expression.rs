@@ -528,41 +528,44 @@ impl Expr {
             Expr::Field { base, field } => {
                 RcDoc::concat([base.to_doc(true), RcDoc::text("."), RcDoc::text(field)])
             }
-
             Expr::Index { base, index } => base.to_doc(true).append(bracket(index.to_doc(false))),
-            Expr::Struct { path, fields, base } => paren(
-                with_paren,
-                indent(RcDoc::concat([
-                    RcDoc::text("{|"),
-                    RcDoc::line(),
-                    RcDoc::intersperse(
-                        fields.iter().map(|(name, expr)| {
-                            indent(RcDoc::concat([
-                                path.to_doc(),
-                                RcDoc::text("."),
-                                RcDoc::text(name),
-                                RcDoc::line(),
-                                RcDoc::text(":="),
-                                RcDoc::line(),
-                                expr.to_doc(false),
-                                RcDoc::text(";"),
-                            ]))
-                            .group()
-                        }),
+            Expr::Struct { path, fields, base } => RcDoc::concat([
+                RcDoc::concat([
+                    indent(RcDoc::concat([
+                        RcDoc::text("{|"),
                         RcDoc::line(),
-                    ),
+                        RcDoc::intersperse(
+                            fields.iter().map(|(name, expr)| {
+                                indent(RcDoc::concat([
+                                    path.to_doc(),
+                                    RcDoc::text("."),
+                                    RcDoc::text(name),
+                                    RcDoc::line(),
+                                    RcDoc::text(":="),
+                                    RcDoc::line(),
+                                    expr.to_doc(false),
+                                    RcDoc::text(";"),
+                                ]))
+                                .group()
+                            }),
+                            RcDoc::line(),
+                        ),
+                    ])),
                     RcDoc::line(),
                     RcDoc::text("|}"),
-                    RcDoc::line(),
-                    match base {
-                        Some(base) => {
-                            RcDoc::concat([RcDoc::text("with"), RcDoc::line(), base.to_doc(false)])
-                        }
-                        None => RcDoc::nil(),
-                    },
-                ]))
+                ])
                 .group(),
-            ),
+                match base {
+                    Some(base) => RcDoc::concat([
+                        RcDoc::line(),
+                        RcDoc::text("with"),
+                        RcDoc::line(),
+                        base.to_doc(false),
+                    ]),
+                    None => RcDoc::nil(),
+                },
+            ])
+            .group(),
         }
     }
 }

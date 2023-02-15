@@ -57,21 +57,31 @@ impl Pattern {
     pub fn to_doc(&self) -> RcDoc<()> {
         match self {
             Pattern::Wild => RcDoc::text("_"),
-            Pattern::Struct(path, fields) => {
-                let in_brackets_doc = bracket(RcDoc::intersperse(
-                    fields.iter().map(|(name, expr)| {
-                        RcDoc::concat([
-                            RcDoc::text(name),
-                            RcDoc::space(),
-                            RcDoc::text(":"),
-                            RcDoc::space(),
-                            expr.to_doc(),
-                        ])
-                    }),
-                    RcDoc::text(","),
-                ));
-                return RcDoc::concat([path.to_doc(), RcDoc::space(), in_brackets_doc]);
-            }
+            Pattern::Struct(path, fields) => RcDoc::concat([
+                indent(RcDoc::concat([
+                    RcDoc::text("{|"),
+                    RcDoc::line(),
+                    RcDoc::intersperse(
+                        fields.iter().map(|(name, pattern)| {
+                            indent(RcDoc::concat([
+                                path.to_doc(),
+                                RcDoc::text("."),
+                                RcDoc::text(name),
+                                RcDoc::line(),
+                                RcDoc::text(":="),
+                                RcDoc::line(),
+                                pattern.to_doc(),
+                                RcDoc::text(";"),
+                            ]))
+                            .group()
+                        }),
+                        RcDoc::line(),
+                    ),
+                ])),
+                RcDoc::line(),
+                RcDoc::text("|}"),
+            ])
+            .group(),
             Pattern::TupleStruct(path, fields) => {
                 let signature_in_parentheses_doc = paren(
                     true,

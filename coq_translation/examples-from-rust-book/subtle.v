@@ -158,8 +158,8 @@ Module ImplSlice.
     match into_iter (zip (iter self) (iter _rhs)) with
     | iter =>
       loop match next iter with
-      | None [] => Break
-      | Some [0 : (ai, bi)] =>
+      | {|  |} => Break
+      | {| Some.0 := (ai, bi); |} =>
         assign x := bit_and x (unwrap_u8 (ct_eq ai bi)) ;;
         tt
       end ;;
@@ -559,8 +559,7 @@ Module ImplCtOption.
     {|
       CtOption.value := _crate.clone.Clone.clone self.value;
       CtOption.is_some := _crate.clone.Clone.clone self.is_some;
-      |}
-      .
+    |}.
 End ImplCtOption.
 (* End impl [CtOption] *)
 
@@ -600,7 +599,7 @@ End ImplOption.
 (* Impl [CtOption] *)
 Module ImplCtOption.
   Definition new (value : T) (is_some : Choice) : CtOption :=
-    {| CtOption.value := value; CtOption.is_some := is_some; |} .
+    {| CtOption.value := value; CtOption.is_some := is_some; |}.
   
   Definition expect (self : Self) (msg : ref str) : T :=
     match (unwrap_u8 self.is_some, 1) with
