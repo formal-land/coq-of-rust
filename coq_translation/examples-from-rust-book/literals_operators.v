@@ -58,7 +58,7 @@ Definition main (_ : unit) :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1_formatted
       ["0011 OR 0101 is ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_binary (bit_and 3 5)]
+      [_crate::fmt::ImplArgumentV1.new_binary (bit_or 3 5)]
       [{|
         _crate.fmt.rt.v1.Argument.position := 0;
         _crate.fmt.rt.v1.Argument.format

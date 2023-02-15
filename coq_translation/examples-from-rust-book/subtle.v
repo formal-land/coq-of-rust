@@ -46,7 +46,7 @@ End ImplChoice.
 Module Implbool.
   Definition from (source : Choice) : bool :=
     if true then
-      if not (bit_and (eq source.0 0) (eq source.0 1)) then
+      if not (bit_or (eq source.0 0) (eq source.0 1)) then
         _crate.panicking.panic
           "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
       else
@@ -82,14 +82,14 @@ Module ImplChoice.
     Choice.
   
   Definition bitor (self : Self) (rhs : Choice) : Choice :=
-    into (bit_and self.0 rhs.0).
+    into (bit_or self.0 rhs.0).
 End ImplChoice.
 (* End impl [Choice] *)
 
 (* Impl [Choice] of trait [BitOrAssign]*)
 Module ImplChoice.
   Definition bitor_assign (self : ref Self) (rhs : Choice) :=
-    assign deref self := bit_and (deref self) rhs ;;
+    assign deref self := bit_or (deref self) rhs ;;
     tt.
 End ImplChoice.
 (* End impl [Choice] *)
@@ -124,7 +124,7 @@ End ImplChoice.
 
 Definition black_box (_ : unit) :=
   if true then
-    if not (bit_and (eq input 0) (eq input 1)) then
+    if not (bit_or (eq input 0) (eq input 1)) then
       _crate.panicking.panic "assertion failed: (input == 0u8) | (input == 1u8)"
     else
       tt ;;
@@ -180,7 +180,7 @@ End ImplChoice.
 Module Implu8.
   Definition ct_eq (self : ref Self) (other : ref u8) : Choice :=
     let x := bit_xor self other in
-    let y := shr (bit_and x (wrapping_neg x)) (sub 8 1) in
+    let y := shr (bit_or x (wrapping_neg x)) (sub 8 1) in
     into (bit_xor y 1).
 End Implu8.
 (* End impl [u8] *)
@@ -196,7 +196,7 @@ End Impli8.
 Module Implu16.
   Definition ct_eq (self : ref Self) (other : ref u16) : Choice :=
     let x := bit_xor self other in
-    let y := shr (bit_and x (wrapping_neg x)) (sub 16 1) in
+    let y := shr (bit_or x (wrapping_neg x)) (sub 16 1) in
     into (bit_xor y 1).
 End Implu16.
 (* End impl [u16] *)
@@ -212,7 +212,7 @@ End Impli16.
 Module Implu32.
   Definition ct_eq (self : ref Self) (other : ref u32) : Choice :=
     let x := bit_xor self other in
-    let y := shr (bit_and x (wrapping_neg x)) (sub 32 1) in
+    let y := shr (bit_or x (wrapping_neg x)) (sub 32 1) in
     into (bit_xor y 1).
 End Implu32.
 (* End impl [u32] *)
@@ -228,7 +228,7 @@ End Impli32.
 Module Implu64.
   Definition ct_eq (self : ref Self) (other : ref u64) : Choice :=
     let x := bit_xor self other in
-    let y := shr (bit_and x (wrapping_neg x)) (sub 64 1) in
+    let y := shr (bit_or x (wrapping_neg x)) (sub 64 1) in
     into (bit_xor y 1).
 End Implu64.
 (* End impl [u64] *)
@@ -245,7 +245,7 @@ Module Implusize.
   Definition ct_eq (self : ref Self) (other : ref usize) : Choice :=
     let x := bit_xor self other in
     let y := shr
-      (bit_and x (wrapping_neg x))
+      (bit_or x (wrapping_neg x))
       (sub (mul ({{root}}.core.mem.size_of tt) 8) 1) in
     into (bit_xor y 1).
 End Implusize.
@@ -685,7 +685,7 @@ Module ImplCtOption.
   Definition ct_eq (self : ref Self) (rhs : ref CtOption) : Choice :=
     let a := is_some self in
     let b := is_some rhs in
-    bit_and
+    bit_or
       (bit_and (bit_and a b) (ct_eq self.value rhs.value))
       (bit_and (not a) (not b)).
 End ImplCtOption.
@@ -702,7 +702,7 @@ Module Implu8.
     let ltb := bit_and (not self) other in
     let pow := 1 in
     loop (if lt pow 8 then
-      assign ltb := bit_and ltb (shr ltb pow) ;;
+      assign ltb := bit_or ltb (shr ltb pow) ;;
       assign pow := add pow pow ;;
       tt
     else
@@ -711,7 +711,7 @@ Module Implu8.
     let bit := bit_and gtb (not ltb) in
     let pow := 1 in
     loop (if lt pow 8 then
-      assign bit := bit_and bit (shr bit pow) ;;
+      assign bit := bit_or bit (shr bit pow) ;;
       assign pow := add pow pow ;;
       tt
     else
@@ -728,7 +728,7 @@ Module Implu16.
     let ltb := bit_and (not self) other in
     let pow := 1 in
     loop (if lt pow 16 then
-      assign ltb := bit_and ltb (shr ltb pow) ;;
+      assign ltb := bit_or ltb (shr ltb pow) ;;
       assign pow := add pow pow ;;
       tt
     else
@@ -737,7 +737,7 @@ Module Implu16.
     let bit := bit_and gtb (not ltb) in
     let pow := 1 in
     loop (if lt pow 16 then
-      assign bit := bit_and bit (shr bit pow) ;;
+      assign bit := bit_or bit (shr bit pow) ;;
       assign pow := add pow pow ;;
       tt
     else
@@ -754,7 +754,7 @@ Module Implu32.
     let ltb := bit_and (not self) other in
     let pow := 1 in
     loop (if lt pow 32 then
-      assign ltb := bit_and ltb (shr ltb pow) ;;
+      assign ltb := bit_or ltb (shr ltb pow) ;;
       assign pow := add pow pow ;;
       tt
     else
@@ -763,7 +763,7 @@ Module Implu32.
     let bit := bit_and gtb (not ltb) in
     let pow := 1 in
     loop (if lt pow 32 then
-      assign bit := bit_and bit (shr bit pow) ;;
+      assign bit := bit_or bit (shr bit pow) ;;
       assign pow := add pow pow ;;
       tt
     else
@@ -780,7 +780,7 @@ Module Implu64.
     let ltb := bit_and (not self) other in
     let pow := 1 in
     loop (if lt pow 64 then
-      assign ltb := bit_and ltb (shr ltb pow) ;;
+      assign ltb := bit_or ltb (shr ltb pow) ;;
       assign pow := add pow pow ;;
       tt
     else
@@ -789,7 +789,7 @@ Module Implu64.
     let bit := bit_and gtb (not ltb) in
     let pow := 1 in
     loop (if lt pow 64 then
-      assign bit := bit_and bit (shr bit pow) ;;
+      assign bit := bit_or bit (shr bit pow) ;;
       assign pow := add pow pow ;;
       tt
     else
