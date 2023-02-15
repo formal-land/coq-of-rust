@@ -533,7 +533,7 @@ impl Expr {
             Expr::Struct { path, fields, base } => paren(
                 with_paren,
                 indent(RcDoc::concat([
-                    RcDoc::text("{"),
+                    RcDoc::text("{|"),
                     RcDoc::line(),
                     RcDoc::intersperse(
                         fields.iter().map(|(name, expr)| {
@@ -552,7 +552,7 @@ impl Expr {
                         RcDoc::line(),
                     ),
                     RcDoc::line(),
-                    RcDoc::text("}"),
+                    RcDoc::text("|}"),
                     RcDoc::line(),
                     match base {
                         Some(base) => {

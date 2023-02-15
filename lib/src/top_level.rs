@@ -2,6 +2,7 @@ extern crate rustc_hir;
 extern crate rustc_middle;
 
 use crate::expression::*;
+use crate::header::*;
 use crate::path::*;
 use crate::render::*;
 use crate::ty::*;
@@ -339,25 +340,61 @@ impl TopLevelItem {
                 });
                 RcDoc::concat([
                     indent(RcDoc::concat([
-                        RcDoc::text("Record"),
+                        RcDoc::text("Module"),
+                        RcDoc::line(),
+                        RcDoc::text(name),
+                        RcDoc::text("."),
+                    ]))
+                    .group(),
+                    indent(RcDoc::concat([
+                        RcDoc::hardline(),
+                        indent(RcDoc::concat([
+                            RcDoc::text("Record"),
+                            RcDoc::line(),
+                            RcDoc::text("t"),
+                            RcDoc::line(),
+                            indent(RcDoc::concat([
+                                RcDoc::text(":"),
+                                RcDoc::line(),
+                                RcDoc::text("Set"),
+                                RcDoc::line(),
+                                RcDoc::text(":="),
+                                RcDoc::line(),
+                                RcDoc::text("{"),
+                            ]))
+                            .group(),
+                        ]))
+                        .group(),
+                        indent(RcDoc::concat([RcDoc::intersperse(fields, RcDoc::nil())])),
+                        RcDoc::hardline(),
+                        RcDoc::text("}."),
+                    ])),
+                    RcDoc::hardline(),
+                    indent(RcDoc::concat([
+                        RcDoc::text("End"),
+                        RcDoc::line(),
+                        RcDoc::text(name),
+                        RcDoc::text("."),
+                    ]))
+                    .group(),
+                    RcDoc::hardline(),
+                    indent(RcDoc::concat([
+                        RcDoc::text("Definition"),
                         RcDoc::line(),
                         RcDoc::text(name),
                         RcDoc::line(),
-                        indent(RcDoc::concat([
-                            RcDoc::text(":"),
-                            RcDoc::line(),
-                            RcDoc::text("Set"),
-                            RcDoc::line(),
-                            RcDoc::text(":="),
-                            RcDoc::line(),
-                            RcDoc::text("{"),
-                        ]))
-                        .group(),
+                        RcDoc::text(":"),
+                        RcDoc::line(),
+                        RcDoc::text("Set"),
+                        RcDoc::line(),
+                        RcDoc::text(":="),
+                        RcDoc::line(),
+                        RcDoc::text(name),
+                        RcDoc::text("."),
+                        RcDoc::text("t"),
+                        RcDoc::text("."),
                     ]))
                     .group(),
-                    indent(RcDoc::concat([RcDoc::intersperse(fields, RcDoc::nil())])),
-                    RcDoc::hardline(),
-                    RcDoc::text("}."),
                 ])
             }
             TopLevelItem::Impl {
@@ -381,6 +418,7 @@ impl TopLevelItem {
                 indent(RcDoc::concat([
                     RcDoc::text("Module"),
                     RcDoc::line(),
+                    RcDoc::text("Impl"),
                     self_ty.to_doc(),
                     RcDoc::text("."),
                 ]))
@@ -390,6 +428,7 @@ impl TopLevelItem {
                 indent(RcDoc::concat([
                     RcDoc::text("End"),
                     RcDoc::line(),
+                    RcDoc::text("Impl"),
                     self_ty.to_doc(),
                     RcDoc::text("."),
                 ]))
@@ -454,6 +493,6 @@ impl TopLevel {
     pub fn to_pretty(&self, width: usize) -> String {
         let mut w = Vec::new();
         self.to_doc().render(width, &mut w).unwrap();
-        String::from_utf8(w).unwrap()
+        format!("{}\n{}", HEADER, String::from_utf8(w).unwrap())
     }
 }
