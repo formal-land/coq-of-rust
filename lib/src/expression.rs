@@ -98,7 +98,7 @@ fn compile_bin_op(bin_op: &rustc_hir::BinOp) -> String {
         rustc_hir::BinOpKind::Or => "or".to_string(),
         rustc_hir::BinOpKind::BitXor => "bit_xor".to_string(),
         rustc_hir::BinOpKind::BitAnd => "bit_and".to_string(),
-        rustc_hir::BinOpKind::BitOr => "bit_and".to_string(),
+        rustc_hir::BinOpKind::BitOr => "bit_or".to_string(),
         rustc_hir::BinOpKind::Shl => "shl".to_string(),
         rustc_hir::BinOpKind::Shr => "shr".to_string(),
         rustc_hir::BinOpKind::Eq => "eq".to_string(),
