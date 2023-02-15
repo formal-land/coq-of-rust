@@ -19,9 +19,3 @@ Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
     end.
 End ImplVeryVerboseEnumOfThingsToDoWithNumbers.
 (* End impl [VeryVerboseEnumOfThingsToDoWithNumbers] *)
-
-Error TyAlias.
-
-Definition main (_ : unit) :=
-  let x := ImplOperations.Add in
-  tt.
