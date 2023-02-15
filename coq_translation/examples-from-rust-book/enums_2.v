@@ -1,15 +1,17 @@
 Error Enum.
 
 (* Impl [VeryVerboseEnumOfThingsToDoWithNumbers] *)
+Module VeryVerboseEnumOfThingsToDoWithNumbers.
   Definition run (self : ref Self) (x : i32) (y : i32) : i32 :=
     match self with
-    | Add => add x y
-    | Subtract => sub x y
+    | Self.Add => add x y
+    | Self.Subtract => sub x y
     end.
+End VeryVerboseEnumOfThingsToDoWithNumbers.
 (* End impl [VeryVerboseEnumOfThingsToDoWithNumbers] *)
 
 Error TyAlias.
 
-Definition main :=
-  let x := Add in
+Definition main (_ : unit) :=
+  let x := Operations.Add in
   tt.

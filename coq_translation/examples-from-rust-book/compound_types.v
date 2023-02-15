@@ -1,4 +1,4 @@
-Definition main :=
+Definition main (_ : unit) :=
   let logical := true in
   let a_float := 1.0 in
   let an_integer := 5 in

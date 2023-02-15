@@ -21,7 +21,7 @@ pub enum Expr {
     LocalVar(String),
     Var(Path),
     Literal(rustc_ast::LitKind),
-    App {
+    Call {
         func: Box<Expr>,
         args: Vec<Expr>,
     },
@@ -148,14 +148,14 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
         rustc_hir::ExprKind::Call(func, args) => {
             let func = Box::new(compile_expr(hir, func));
             let args = args.iter().map(|expr| compile_expr(hir, expr)).collect();
-            Expr::App { func, args }
+            Expr::Call { func, args }
         }
         rustc_hir::ExprKind::MethodCall(path_segment, object, args, _) => {
             let func = Box::new(Expr::Var(Path::local(path_segment.ident.to_string())));
             let mut object_with_args = vec![compile_expr(hir, object)];
             let args: Vec<_> = args.iter().map(|expr| compile_expr(hir, expr)).collect();
             object_with_args.extend(args);
-            Expr::App {
+            Expr::Call {
                 func,
                 args: object_with_args,
             }
@@ -171,7 +171,7 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
             let expr_left = compile_expr(hir, expr_left);
             let expr_right = compile_expr(hir, expr_right);
             let func = Box::new(Expr::LocalVar(compile_bin_op(bin_op)));
-            Expr::App {
+            Expr::Call {
                 func,
                 args: vec![expr_left, expr_right],
             }
@@ -179,7 +179,7 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
         rustc_hir::ExprKind::Unary(un_op, expr) => {
             let expr = compile_expr(hir, expr);
             let func = Box::new(Expr::LocalVar(compile_un_op(un_op)));
-            Expr::App {
+            Expr::Call {
                 func,
                 args: vec![expr],
             }
@@ -247,7 +247,7 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
             let right = compile_expr(hir, right);
             Expr::Assign {
                 left: Box::new(left_left),
-                right: Box::new(Expr::App {
+                right: Box::new(Expr::Call {
                     func,
                     args: vec![left_right, right],
                 }),
@@ -276,7 +276,7 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
                 Some(expr) => vec![compile_expr(hir, expr)],
                 None => vec![],
             };
-            Expr::App { func, args }
+            Expr::Call { func, args }
         }
         rustc_hir::ExprKind::InlineAsm(_) => Expr::LocalVar("InlineAsm".to_string()),
         rustc_hir::ExprKind::Struct(qpath, fields, base) => {
@@ -294,14 +294,14 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
         }
         rustc_hir::ExprKind::Repeat(expr, _) => {
             let expr = compile_expr(hir, expr);
-            Expr::App {
+            Expr::Call {
                 func: Box::new(Expr::LocalVar("repeat".to_string())),
                 args: vec![expr],
             }
         }
         rustc_hir::ExprKind::Yield(expr, _) => {
             let expr = compile_expr(hir, expr);
-            Expr::App {
+            Expr::Call {
                 func: Box::new(Expr::LocalVar("yield".to_string())),
                 args: vec![expr],
             }
@@ -376,7 +376,7 @@ impl Expr {
             Expr::LocalVar(ref name) => RcDoc::text(name),
             Expr::Var(path) => path.to_doc(),
             Expr::Literal(literal) => literal_to_doc(literal),
-            Expr::App { func, args } => indent(paren(
+            Expr::Call { func, args } => indent(paren(
                 with_paren,
                 RcDoc::concat([
                     func.to_doc(true),
@@ -530,37 +530,39 @@ impl Expr {
             }
 
             Expr::Index { base, index } => base.to_doc(true).append(bracket(index.to_doc(false))),
-            Expr::Struct { path, fields, base } => {
-                let struct_signature_doc = RcDoc::concat([
-                    RcDoc::text("struct"),
-                    RcDoc::space(),
-                    path.to_doc(),
-                    RcDoc::space(),
+            Expr::Struct { path, fields, base } => paren(
+                with_paren,
+                indent(RcDoc::concat([
                     RcDoc::text("{"),
+                    RcDoc::line(),
                     RcDoc::intersperse(
                         fields.iter().map(|(name, expr)| {
-                            RcDoc::concat([
+                            indent(RcDoc::concat([
+                                path.to_doc(),
+                                RcDoc::text("."),
                                 RcDoc::text(name),
-                                RcDoc::space(),
+                                RcDoc::line(),
                                 RcDoc::text(":="),
-                                RcDoc::space(),
+                                RcDoc::line(),
                                 expr.to_doc(false),
-                            ])
+                                RcDoc::text(";"),
+                            ]))
+                            .group()
                         }),
-                        RcDoc::text(";"),
+                        RcDoc::line(),
                     ),
+                    RcDoc::line(),
                     RcDoc::text("}"),
-                    RcDoc::space(),
+                    RcDoc::line(),
                     match base {
                         Some(base) => {
-                            RcDoc::concat([RcDoc::text("with"), RcDoc::space(), base.to_doc(false)])
+                            RcDoc::concat([RcDoc::text("with"), RcDoc::line(), base.to_doc(false)])
                         }
                         None => RcDoc::nil(),
                     },
-                ]);
-
-                return paren(with_paren, struct_signature_doc);
-            }
+                ]))
+                .group(),
+            ),
         }
     }
 }

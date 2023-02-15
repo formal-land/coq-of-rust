@@ -1,16 +1,25 @@
-Error Struct.
+Record Point : Set := {
+  x : f64;
+  y : f64;
+}.
 
 (* Impl [Point] *)
-  Definition origin : Point :=
-    struct Point {x := 0.0;y := 0.0} .
+Module Point.
+  Definition origin (_ : unit) : Point :=
+    { Point.y := 0.0; Point.x := 1.0; } .
   
   Definition new (x : f64) (y : f64) : Point :=
-    struct Point {x := x;y := y} .
+    { Point.x := x; Point.y := y; } .
+End Point.
 (* End impl [Point] *)
 
-Error Struct.
+Record Rectangle : Set := {
+  p1 : Point;
+  p2 : Point;
+}.
 
 (* Impl [Rectangle] *)
+Module Rectangle.
   Definition area (self : ref Self) : f64 :=
     let Point [x : x1,y : y1] := self.p1 in
     let Point [x : x2,y : y2] := self.p2 in
@@ -27,34 +36,48 @@ Error Struct.
     assign self.p1.y := add self.p1.y y ;;
     assign self.p2.y := add self.p2.y y ;;
     tt.
+End Rectangle.
 (* End impl [Rectangle] *)
 
 Definition Pair : Set :=
   Box * Box.
 
 (* Impl [Pair] *)
+Module Pair.
   Definition destroy (self : Self) :=
     let Pair (first, second) := self in
     _crate.io._print
-      (new_v1
+      (_crate::fmt::Arguments.new_v1
         ["Destroying Pair(";", ";")\n"]
-        [new_display first;new_display second]) ;;
+        [_crate::fmt::ArgumentV1.new_display
+          first;_crate::fmt::ArgumentV1.new_display second]) ;;
     tt ;;
     tt.
+End Pair.
 (* End impl [Pair] *)
 
-Definition main :=
-  let rectangle := struct Rectangle {p1 := origin tt;p2 := new 3.0 4.0}  in
+Definition main (_ : unit) :=
+  let rectangle := {
+    Rectangle.p1 := Point.origin tt;
+    Rectangle.p2 := Point.new 3.0 4.0;
+    }
+     in
   _crate.io._print
-    (new_v1
+    (_crate::fmt::Arguments.new_v1
       ["Rectangle perimeter: ";"\n"]
-      [new_display (perimeter rectangle)]) ;;
+      [_crate::fmt::ArgumentV1.new_display (perimeter rectangle)]) ;;
   tt ;;
   _crate.io._print
-    (new_v1 ["Rectangle area: ";"\n"] [new_display (area rectangle)]) ;;
+    (_crate::fmt::Arguments.new_v1
+      ["Rectangle area: ";"\n"]
+      [_crate::fmt::ArgumentV1.new_display (area rectangle)]) ;;
   tt ;;
-  let square := struct Rectangle {p1 := origin tt;p2 := new 1.0 1.0}  in
+  let square := {
+    Rectangle.p1 := Point.origin tt;
+    Rectangle.p2 := Point.new 1.0 1.0;
+    }
+     in
   translate square 1.0 1.0 ;;
-  let pair := Pair (new 1) (new 2) in
+  let pair := Pair (Box.new 1) (Box.new 2) in
   destroy pair ;;
   tt.
