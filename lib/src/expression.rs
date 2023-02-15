@@ -134,26 +134,26 @@ fn tt() -> Expr {
     Expr::LocalVar("tt".to_string())
 }
 
-pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) -> Expr {
+pub fn compile_expr(tcx: rustc_middle::ty::TyCtxt, expr: &rustc_hir::Expr) -> Expr {
     match &expr.kind {
-        rustc_hir::ExprKind::Box(expr) => compile_expr(hir, expr),
+        rustc_hir::ExprKind::Box(expr) => compile_expr(tcx, expr),
         rustc_hir::ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
         rustc_hir::ExprKind::Array(elements) => {
             let elements = elements
                 .iter()
-                .map(|expr| compile_expr(hir, expr))
+                .map(|expr| compile_expr(tcx, expr))
                 .collect();
             Expr::Array { elements }
         }
         rustc_hir::ExprKind::Call(func, args) => {
-            let func = Box::new(compile_expr(hir, func));
-            let args = args.iter().map(|expr| compile_expr(hir, expr)).collect();
+            let func = Box::new(compile_expr(tcx, func));
+            let args = args.iter().map(|expr| compile_expr(tcx, expr)).collect();
             Expr::Call { func, args }
         }
         rustc_hir::ExprKind::MethodCall(path_segment, object, args, _) => {
             let func = Box::new(Expr::Var(Path::local(path_segment.ident.to_string())));
-            let mut object_with_args = vec![compile_expr(hir, object)];
-            let args: Vec<_> = args.iter().map(|expr| compile_expr(hir, expr)).collect();
+            let mut object_with_args = vec![compile_expr(tcx, object)];
+            let args: Vec<_> = args.iter().map(|expr| compile_expr(tcx, expr)).collect();
             object_with_args.extend(args);
             Expr::Call {
                 func,
@@ -163,13 +163,13 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
         rustc_hir::ExprKind::Tup(elements) => {
             let elements = elements
                 .iter()
-                .map(|expr| compile_expr(hir, expr))
+                .map(|expr| compile_expr(tcx, expr))
                 .collect();
             Expr::Tuple { elements }
         }
         rustc_hir::ExprKind::Binary(bin_op, expr_left, expr_right) => {
-            let expr_left = compile_expr(hir, expr_left);
-            let expr_right = compile_expr(hir, expr_right);
+            let expr_left = compile_expr(tcx, expr_left);
+            let expr_right = compile_expr(tcx, expr_right);
             let func = Box::new(Expr::LocalVar(compile_bin_op(bin_op)));
             Expr::Call {
                 func,
@@ -177,7 +177,7 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
             }
         }
         rustc_hir::ExprKind::Unary(un_op, expr) => {
-            let expr = compile_expr(hir, expr);
+            let expr = compile_expr(tcx, expr);
             let func = Box::new(Expr::LocalVar(compile_un_op(un_op)));
             Expr::Call {
                 func,
@@ -185,19 +185,19 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
             }
         }
         rustc_hir::ExprKind::Lit(lit) => Expr::Literal(lit.node.clone()),
-        rustc_hir::ExprKind::Cast(expr, _ty) => compile_expr(hir, expr),
-        rustc_hir::ExprKind::Type(expr, _ty) => compile_expr(hir, expr),
-        rustc_hir::ExprKind::DropTemps(expr) => compile_expr(hir, expr),
+        rustc_hir::ExprKind::Cast(expr, _ty) => compile_expr(tcx, expr),
+        rustc_hir::ExprKind::Type(expr, _ty) => compile_expr(tcx, expr),
+        rustc_hir::ExprKind::DropTemps(expr) => compile_expr(tcx, expr),
         rustc_hir::ExprKind::Let(rustc_hir::Let { pat, init, .. }) => {
             let pat = compile_pattern(pat);
-            let init = Box::new(compile_expr(hir, init));
+            let init = Box::new(compile_expr(tcx, init));
             Expr::LetIf { pat, init }
         }
         rustc_hir::ExprKind::If(condition, success, failure) => {
-            let condition = Box::new(compile_expr(hir, condition));
-            let success = Box::new(compile_expr(hir, success));
+            let condition = Box::new(compile_expr(tcx, condition));
+            let success = Box::new(compile_expr(tcx, success));
             let failure = match failure {
-                Some(expr) => Box::new(compile_expr(hir, expr)),
+                Some(expr) => Box::new(compile_expr(tcx, expr)),
                 None => Box::new(tt()),
             };
             Expr::If {
@@ -207,44 +207,44 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
             }
         }
         rustc_hir::ExprKind::Loop(block, _, loop_source, _) => {
-            let body = Box::new(compile_block(hir, block));
+            let body = Box::new(compile_block(tcx, block));
             let loop_source = compile_loop_source(loop_source);
             Expr::Loop { body, loop_source }
         }
         rustc_hir::ExprKind::Match(scrutinee, arms, _) => {
-            let scrutinee = Box::new(compile_expr(hir, scrutinee));
+            let scrutinee = Box::new(compile_expr(tcx, scrutinee));
             let arms = arms
                 .iter()
                 .map(|arm| {
                     let pat = compile_pattern(arm.pat);
-                    let body = compile_expr(hir, arm.body);
+                    let body = compile_expr(tcx, arm.body);
                     MatchArm { pat, body }
                 })
                 .collect();
             Expr::Match { scrutinee, arms }
         }
         rustc_hir::ExprKind::Closure(rustc_hir::Closure { body, .. }) => {
-            let body = hir.body(*body);
+            let body = tcx.hir().body(*body);
             let args = body
                 .params
                 .iter()
                 .map(|rustc_hir::Param { pat, .. }| compile_pattern(pat))
                 .collect();
-            let body = Box::new(compile_expr(hir, body.value));
+            let body = Box::new(compile_expr(tcx, body.value));
             Expr::Lambda { args, body }
         }
-        rustc_hir::ExprKind::Block(block, _) => compile_block(hir, block),
+        rustc_hir::ExprKind::Block(block, _) => compile_block(tcx, block),
         rustc_hir::ExprKind::Assign(left, right, _) => {
-            let left = Box::new(compile_expr(hir, left));
-            let right = Box::new(compile_expr(hir, right));
+            let left = Box::new(compile_expr(tcx, left));
+            let right = Box::new(compile_expr(tcx, right));
             Expr::Assign { left, right }
         }
         rustc_hir::ExprKind::AssignOp(bin_op, left, right) => {
             let func = Box::new(Expr::LocalVar(compile_bin_op(bin_op)));
             // We have to duplicate the code here for memory allocations
-            let left_left = compile_expr(hir, left);
-            let left_right = compile_expr(hir, left);
-            let right = compile_expr(hir, right);
+            let left_left = compile_expr(tcx, left);
+            let left_right = compile_expr(tcx, left);
+            let right = compile_expr(tcx, right);
             Expr::Assign {
                 left: Box::new(left_left),
                 right: Box::new(Expr::Call {
@@ -254,26 +254,26 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
             }
         }
         rustc_hir::ExprKind::Field(base, ident) => {
-            let base = Box::new(compile_expr(hir, base));
+            let base = Box::new(compile_expr(tcx, base));
             let field = ident.name.to_string();
             Expr::Field { base, field }
         }
         rustc_hir::ExprKind::Index(base, index) => {
-            let base = Box::new(compile_expr(hir, base));
-            let index = Box::new(compile_expr(hir, index));
+            let base = Box::new(compile_expr(tcx, base));
+            let index = Box::new(compile_expr(tcx, index));
             Expr::Index { base, index }
         }
         rustc_hir::ExprKind::Path(qpath) => {
             let path = compile_qpath(qpath);
             Expr::Var(path)
         }
-        rustc_hir::ExprKind::AddrOf(_, _, expr) => compile_expr(hir, expr),
+        rustc_hir::ExprKind::AddrOf(_, _, expr) => compile_expr(tcx, expr),
         rustc_hir::ExprKind::Break(_, _) => Expr::LocalVar("Break".to_string()),
         rustc_hir::ExprKind::Continue(_) => Expr::LocalVar("Continue".to_string()),
         rustc_hir::ExprKind::Ret(expr) => {
             let func = Box::new(Expr::LocalVar("Return".to_string()));
             let args = match expr {
-                Some(expr) => vec![compile_expr(hir, expr)],
+                Some(expr) => vec![compile_expr(tcx, expr)],
                 None => vec![],
             };
             Expr::Call { func, args }
@@ -285,22 +285,22 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
                 .iter()
                 .map(|rustc_hir::ExprField { ident, expr, .. }| {
                     let field = ident.name.to_string();
-                    let expr = compile_expr(hir, expr);
+                    let expr = compile_expr(tcx, expr);
                     (field, expr)
                 })
                 .collect();
-            let base = base.map(|expr| Box::new(compile_expr(hir, expr)));
+            let base = base.map(|expr| Box::new(compile_expr(tcx, expr)));
             Expr::Struct { path, fields, base }
         }
         rustc_hir::ExprKind::Repeat(expr, _) => {
-            let expr = compile_expr(hir, expr);
+            let expr = compile_expr(tcx, expr);
             Expr::Call {
                 func: Box::new(Expr::LocalVar("repeat".to_string())),
                 args: vec![expr],
             }
         }
         rustc_hir::ExprKind::Yield(expr, _) => {
-            let expr = compile_expr(hir, expr);
+            let expr = compile_expr(tcx, expr);
             Expr::Call {
                 func: Box::new(Expr::LocalVar("yield".to_string())),
                 args: vec![expr],
@@ -317,7 +317,7 @@ pub fn compile_expr(hir: rustc_middle::hir::map::Map, expr: &rustc_hir::Expr) ->
 /// - https://doc.rust-lang.org/reference/statements.html and
 ///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Stmt.html
 fn compile_stmts(
-    hir: rustc_middle::hir::map::Map,
+    tcx: rustc_middle::ty::TyCtxt,
     stmts: &[rustc_hir::Stmt],
     expr: Option<&rustc_hir::Expr>,
 ) -> Expr {
@@ -326,21 +326,21 @@ fn compile_stmts(
             rustc_hir::StmtKind::Local(rustc_hir::Local { pat, init, .. }) => {
                 let pat = compile_pattern(pat);
                 let init = match init {
-                    Some(init) => Box::new(compile_expr(hir, init)),
+                    Some(init) => Box::new(compile_expr(tcx, init)),
                     None => Box::new(tt()),
                 };
-                let body = Box::new(compile_stmts(hir, stmts, expr));
+                let body = Box::new(compile_stmts(tcx, stmts, expr));
                 Expr::Let { pat, init, body }
             }
             rustc_hir::StmtKind::Item(_) => Expr::LocalVar("Stmt_item".to_string()),
             rustc_hir::StmtKind::Expr(current_expr) | rustc_hir::StmtKind::Semi(current_expr) => {
-                let first = Box::new(compile_expr(hir, current_expr));
-                let second = Box::new(compile_stmts(hir, stmts, expr));
+                let first = Box::new(compile_expr(tcx, current_expr));
+                let second = Box::new(compile_stmts(tcx, stmts, expr));
                 Expr::Seq { first, second }
             }
         },
         [] => match expr {
-            Some(expr) => compile_expr(hir, expr),
+            Some(expr) => compile_expr(tcx, expr),
             None => tt(),
         },
     }
@@ -348,8 +348,8 @@ fn compile_stmts(
 
 /// [compile_block] compiles hir blocks into coq-of-rust
 /// See the doc for [compile_stmts]
-fn compile_block(hir: rustc_middle::hir::map::Map, block: &rustc_hir::Block) -> Expr {
-    compile_stmts(hir, block.stmts, block.expr)
+fn compile_block(tcx: rustc_middle::ty::TyCtxt, block: &rustc_hir::Block) -> Expr {
+    compile_stmts(tcx, block.stmts, block.expr)
 }
 
 impl MatchArm {
