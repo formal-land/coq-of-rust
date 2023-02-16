@@ -8,5 +8,5 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition setup (_ : unit) :=
-  tt.
+Definition main (_ : unit) :=
+  Stmt_item.
