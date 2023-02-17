@@ -24,7 +24,7 @@ Definition Job : Set := Job.t.
 
 (* Impl [Job] of trait [_crate.clone.Clone]*)
 Module ImplJob.
-  Definition clone (self : ref Self) : Job :=
+  Definition clone (self : static_ref Self) : Job :=
     let _ := tt in
     deref self.
 End ImplJob.
@@ -46,7 +46,7 @@ Definition PhoneNumber : Set := PhoneNumber.t.
 
 (* Impl [PhoneNumber] of trait [_crate.clone.Clone]*)
 Module ImplPhoneNumber.
-  Definition clone (self : ref Self) : PhoneNumber :=
+  Definition clone (self : static_ref Self) : PhoneNumber :=
     let _ := tt in
     let _ := tt in
     deref self.
@@ -61,7 +61,7 @@ End ImplPhoneNumber.
 
 (* Impl [Person] *)
 Module ImplPerson.
-  Definition work_phone_area_code (self : ref Self) : Option :=
+  Definition work_phone_area_code (self : static_ref Self) : Option :=
     match branch
       match branch self.job with
       | {| Break.0 := residual; |} => Return (from_residual residual)

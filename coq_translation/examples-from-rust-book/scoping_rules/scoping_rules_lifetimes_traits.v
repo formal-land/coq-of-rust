@@ -10,7 +10,7 @@ Definition f64 : Set := Z.
 
 Module Borrowed.
   Record t : Set := {
-    x : ref i32;
+    x : static_ref i32;
   }.
 End Borrowed.
 Definition Borrowed : Set := Borrowed.t.
@@ -19,8 +19,8 @@ Definition Borrowed : Set := Borrowed.t.
 Module ImplBorrowed.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_struct_field1_finish
       f

@@ -12,7 +12,7 @@ Error Struct.
 
 (* Impl [ToDrop] of trait [Drop]*)
 Module ImplToDrop.
-  Definition drop (self : ref Self) :=
+  Definition drop (self : mut_ref Self) :=
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1 ["ToDrop is being dropped\n"] []) ;;
     tt ;;

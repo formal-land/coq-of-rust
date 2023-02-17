@@ -9,14 +9,14 @@ Definition u8 : Set := Z.
 Definition f64 : Set := Z.
 
 Definition Borrowed : Set :=
-  ref i32.
+  static_ref i32.
 
 (* Impl [Borrowed] of trait [_crate.fmt.Debug]*)
 Module ImplBorrowed.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Borrowed" self.0.
 End ImplBorrowed.
@@ -24,8 +24,8 @@ End ImplBorrowed.
 
 Module NamedBorrowed.
   Record t : Set := {
-    x : ref i32;
-    y : ref i32;
+    x : static_ref i32;
+    y : static_ref i32;
   }.
 End NamedBorrowed.
 Definition NamedBorrowed : Set := NamedBorrowed.t.
@@ -34,8 +34,8 @@ Definition NamedBorrowed : Set := NamedBorrowed.t.
 Module ImplNamedBorrowed.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_struct_field2_finish
       f
@@ -53,8 +53,8 @@ Error Enum.
 Module ImplEither.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     match self with
     | Either.Num (__self_0) =>

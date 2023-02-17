@@ -24,14 +24,14 @@ Definition GenVal : Set := GenVal.t.
 
 (* Impl [Val] *)
 Module ImplVal.
-  Definition value (self : ref Self) : ref f64 :=
+  Definition value (self : static_ref Self) : static_ref f64 :=
     self.val.
 End ImplVal.
 (* End impl [Val] *)
 
 (* Impl [GenVal] *)
 Module ImplGenVal.
-  Definition value (self : ref Self) : ref T :=
+  Definition value (self : static_ref Self) : static_ref T :=
     self.gen_val.
 End ImplGenVal.
 (* End impl [GenVal] *)

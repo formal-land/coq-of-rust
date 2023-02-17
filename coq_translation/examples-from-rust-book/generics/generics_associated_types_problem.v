@@ -12,25 +12,25 @@ Definition Container : Set :=
   i32 * i32.
 
 Class Contains : Set := {
-  contains : ref Self -> ref A -> ref B -> bool;
-  first : ref Self -> i32;
-  last : ref Self -> i32;
+  contains : static_ref Self -> static_ref A -> static_ref B -> bool;
+  first : static_ref Self -> i32;
+  last : static_ref Self -> i32;
 }.
 
 (* Impl [Container] of trait [Contains]*)
 Module ImplContainer.
   Definition
     contains
-    (self : ref Self)
-    (number_1 : ref i32)
-    (number_2 : ref i32)
+    (self : static_ref Self)
+    (number_1 : static_ref i32)
+    (number_2 : static_ref i32)
     : bool :=
     and (eq self.0 number_1) (eq self.1 number_2).
   
-  Definition first (self : ref Self) : i32 :=
+  Definition first (self : static_ref Self) : i32 :=
     self.0.
   
-  Definition last (self : ref Self) : i32 :=
+  Definition last (self : static_ref Self) : i32 :=
     self.1.
 End ImplContainer.
 (* End impl [Container] *)

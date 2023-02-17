@@ -14,8 +14,8 @@ Error Enum.
 Module ImplFood.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     match self with
     | Food.CordonBleu => _crate::fmt::ImplFormatter.write_str f "CordonBleu"
@@ -31,8 +31,8 @@ Error Enum.
 Module ImplDay.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     match self with
     | Day.Monday => _crate::fmt::ImplFormatter.write_str f "Monday"

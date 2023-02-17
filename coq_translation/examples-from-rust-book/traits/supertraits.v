@@ -9,19 +9,19 @@ Definition u8 : Set := Z.
 Definition f64 : Set := Z.
 
 Class Person : Set := {
-  name : ref Self -> String;
+  name : static_ref Self -> String;
 }.
 
 Class Student : Set := {
-  university : ref Self -> String;
+  university : static_ref Self -> String;
 }.
 
 Class Programmer : Set := {
-  fav_language : ref Self -> String;
+  fav_language : static_ref Self -> String;
 }.
 
 Class CompSciStudent : Set := {
-  git_username : ref Self -> String;
+  git_username : static_ref Self -> String;
 }.
 
 Definition comp_sci_student_greeting (_ : unit) :=

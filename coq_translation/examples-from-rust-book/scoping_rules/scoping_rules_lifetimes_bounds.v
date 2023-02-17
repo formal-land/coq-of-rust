@@ -9,14 +9,14 @@ Definition u8 : Set := Z.
 Definition f64 : Set := Z.
 
 Definition Ref : Set :=
-  ref T.
+  static_ref T.
 
 (* Impl [Ref] of trait [_crate.fmt.Debug]*)
 Module ImplRef.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Ref" self.0.
 End ImplRef.

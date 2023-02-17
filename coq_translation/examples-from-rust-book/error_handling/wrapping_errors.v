@@ -16,8 +16,8 @@ Error Enum.
 Module ImplDoubleError.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     match self with
     | DoubleError.EmptyVec => _crate::fmt::ImplFormatter.write_str f "EmptyVec"
@@ -29,7 +29,11 @@ End ImplDoubleError.
 
 (* Impl [DoubleError] of trait [fmt.Display]*)
 Module ImplDoubleError.
-  Definition fmt (self : ref Self) (f : ref fmt.Formatter) : fmt.Result :=
+  Definition
+    fmt
+    (self : static_ref Self)
+    (f : mut_ref fmt.Formatter)
+    : fmt.Result :=
     match deref self with
     | DoubleError.EmptyVec =>
       write_fmt
@@ -49,7 +53,7 @@ End ImplDoubleError.
 
 (* Impl [DoubleError] of trait [error.Error]*)
 Module ImplDoubleError.
-  Definition source (self : ref Self) : Option :=
+  Definition source (self : static_ref Self) : Option :=
     match deref self with
     | DoubleError.EmptyVec => None
     | DoubleError.Parse (e) => Some e

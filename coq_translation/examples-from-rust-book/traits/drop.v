@@ -10,14 +10,14 @@ Definition f64 : Set := Z.
 
 Module Droppable.
   Record t : Set := {
-    name : ref str;
+    name : static_ref str;
   }.
 End Droppable.
 Definition Droppable : Set := Droppable.t.
 
 (* Impl [Droppable] of trait [Drop]*)
 Module ImplDroppable.
-  Definition drop (self : ref Self) :=
+  Definition drop (self : mut_ref Self) :=
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1
         ["> Dropping ";"\n"]

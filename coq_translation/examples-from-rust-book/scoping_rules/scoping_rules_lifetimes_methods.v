@@ -13,11 +13,11 @@ Definition Owner : Set :=
 
 (* Impl [Owner] *)
 Module ImplOwner.
-  Definition add_one (self : ref Self) :=
+  Definition add_one (self : mut_ref Self) :=
     assign self.0 := add self.0 1 ;;
     tt.
   
-  Definition print (self : ref Self) :=
+  Definition print (self : static_ref Self) :=
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1
         ["`print`: ";"\n"]

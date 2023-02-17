@@ -20,8 +20,8 @@ Definition Point : Set := Point.t.
 Module ImplPoint.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_struct_field2_finish
       f
@@ -35,7 +35,7 @@ End ImplPoint.
 
 (* Impl [Point] of trait [_crate.clone.Clone]*)
 Module ImplPoint.
-  Definition clone (self : ref Self) : Point :=
+  Definition clone (self : static_ref Self) : Point :=
     let _ := tt in
     deref self.
 End ImplPoint.

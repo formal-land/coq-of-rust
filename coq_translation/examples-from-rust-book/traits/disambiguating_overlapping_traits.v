@@ -9,11 +9,11 @@ Definition u8 : Set := Z.
 Definition f64 : Set := Z.
 
 Class UsernameWidget : Set := {
-  get : ref Self -> String;
+  get : static_ref Self -> String;
 }.
 
 Class AgeWidget : Set := {
-  get : ref Self -> u8;
+  get : static_ref Self -> u8;
 }.
 
 Module Form.
@@ -26,14 +26,14 @@ Definition Form : Set := Form.t.
 
 (* Impl [Form] of trait [UsernameWidget]*)
 Module ImplForm.
-  Definition get (self : ref Self) : String :=
+  Definition get (self : static_ref Self) : String :=
     clone self.username.
 End ImplForm.
 (* End impl [Form] *)
 
 (* Impl [Form] of trait [AgeWidget]*)
 Module ImplForm.
-  Definition get (self : ref Self) : u8 :=
+  Definition get (self : static_ref Self) : u8 :=
     self.age.
 End ImplForm.
 (* End impl [Form] *)

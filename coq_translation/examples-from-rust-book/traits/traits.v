@@ -11,24 +11,24 @@ Definition f64 : Set := Z.
 Module Sheep.
   Record t : Set := {
     naked : bool;
-    name : ref str;
+    name : static_ref str;
   }.
 End Sheep.
 Definition Sheep : Set := Sheep.t.
 
 Class Animal : Set := {
-  new : ref str -> Self;
-  name : ref Self -> ref str;
-  noise : ref Self -> ref str;
-  talk : ref Self -> _;
+  new : static_ref str -> Self;
+  name : static_ref Self -> static_ref str;
+  noise : static_ref Self -> static_ref str;
+  talk : static_ref Self -> _;
 }.
 
 (* Impl [Sheep] *)
 Module ImplSheep.
-  Definition is_naked (self : ref Self) : bool :=
+  Definition is_naked (self : static_ref Self) : bool :=
     self.naked.
   
-  Definition shear (self : ref Self) :=
+  Definition shear (self : mut_ref Self) :=
     if is_naked self then
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1
@@ -49,19 +49,19 @@ End ImplSheep.
 
 (* Impl [Sheep] of trait [Animal]*)
 Module ImplSheep.
-  Definition new (name : ref str) : Sheep :=
+  Definition new (name : static_ref str) : Sheep :=
     {| Sheep.name := name; Sheep.naked := false; |}.
   
-  Definition name (self : ref Self) : ref str :=
+  Definition name (self : static_ref Self) : static_ref str :=
     self.name.
   
-  Definition noise (self : ref Self) : ref str :=
+  Definition noise (self : static_ref Self) : static_ref str :=
     if is_naked self then
       "baaaaah?"
     else
       "baaaaah!".
   
-  Definition talk (self : ref Self) :=
+  Definition talk (self : static_ref Self) :=
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1
         ["";" pauses briefly... ";"\n"]

@@ -17,7 +17,11 @@ Definition Circle : Set := Circle.t.
 
 (* Impl [Circle] of trait [fmt.Display]*)
 Module ImplCircle.
-  Definition fmt (self : ref Self) (f : ref fmt.Formatter) : fmt.Result :=
+  Definition
+    fmt
+    (self : static_ref Self)
+    (f : mut_ref fmt.Formatter)
+    : fmt.Result :=
     write_fmt
       f
       (_crate::fmt::ImplArguments.new_v1

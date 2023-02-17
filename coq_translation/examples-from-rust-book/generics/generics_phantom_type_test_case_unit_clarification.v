@@ -14,8 +14,8 @@ Error Enum.
 Module ImplInch.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate.intrinsics.unreachable tt.
 End ImplInch.
@@ -23,7 +23,7 @@ End ImplInch.
 
 (* Impl [Inch] of trait [_crate.clone.Clone]*)
 Module ImplInch.
-  Definition clone (self : ref Self) : Inch :=
+  Definition clone (self : static_ref Self) : Inch :=
     deref self.
 End ImplInch.
 (* End impl [Inch] *)
@@ -40,8 +40,8 @@ Error Enum.
 Module ImplMm.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate.intrinsics.unreachable tt.
 End ImplMm.
@@ -49,7 +49,7 @@ End ImplMm.
 
 (* Impl [Mm] of trait [_crate.clone.Clone]*)
 Module ImplMm.
-  Definition clone (self : ref Self) : Mm :=
+  Definition clone (self : static_ref Self) : Mm :=
     deref self.
 End ImplMm.
 (* End impl [Mm] *)
@@ -67,8 +67,8 @@ Definition Length : Set :=
 Module ImplLength.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_tuple_field2_finish
       f
@@ -80,7 +80,7 @@ End ImplLength.
 
 (* Impl [Length] of trait [_crate.clone.Clone]*)
 Module ImplLength.
-  Definition clone (self : ref Self) : Length :=
+  Definition clone (self : static_ref Self) : Length :=
     Length (_crate.clone.Clone.clone self.0) (_crate.clone.Clone.clone self.1).
 End ImplLength.
 (* End impl [Length] *)

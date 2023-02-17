@@ -15,8 +15,8 @@ Module checked :=
   Module ImplMathError.
     Definition
       fmt
-      (self : ref Self)
-      (f : ref _crate.fmt.Formatter)
+      (self : static_ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
       match self with
       | MathError.DivisionByZero =>
@@ -55,8 +55,8 @@ Error Enum.
 Module ImplMathError.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     match self with
     | MathError.DivisionByZero =>

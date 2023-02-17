@@ -36,20 +36,20 @@ Definition Rectangle : Set := Rectangle.t.
 
 (* Impl [Rectangle] *)
 Module ImplRectangle.
-  Definition get_p1 (self : ref Self) : Point :=
+  Definition get_p1 (self : static_ref Self) : Point :=
     self.p1.
   
-  Definition area (self : ref Self) : f64 :=
+  Definition area (self : static_ref Self) : f64 :=
     let {| Point.x := x1; Point.y := y1; |} := self.p1 in
     let {| Point.x := x2; Point.y := y2; |} := self.p2 in
     abs (mul (sub x1 x2) (sub y1 y2)).
   
-  Definition perimeter (self : ref Self) : f64 :=
+  Definition perimeter (self : static_ref Self) : f64 :=
     let {| Point.x := x1; Point.y := y1; |} := self.p1 in
     let {| Point.x := x2; Point.y := y2; |} := self.p2 in
     mul 2 (* 2.0 *) (add (abs (sub x1 x2)) (abs (sub y1 y2))).
   
-  Definition translate (self : ref Self) (x : f64) (y : f64) :=
+  Definition translate (self : mut_ref Self) (x : f64) (y : f64) :=
     assign self.p1.x := add self.p1.x x ;;
     assign self.p2.x := add self.p2.x x ;;
     assign self.p1.y := add self.p1.y y ;;

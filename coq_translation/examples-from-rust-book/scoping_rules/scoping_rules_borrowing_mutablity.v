@@ -10,8 +10,8 @@ Definition f64 : Set := Z.
 
 Module Book.
   Record t : Set := {
-    author : ref str;
-    title : ref str;
+    author : static_ref str;
+    title : static_ref str;
     year : u32;
   }.
 End Book.
@@ -19,7 +19,7 @@ Definition Book : Set := Book.t.
 
 (* Impl [Book] of trait [_crate.clone.Clone]*)
 Module ImplBook.
-  Definition clone (self : ref Self) : Book :=
+  Definition clone (self : static_ref Self) : Book :=
     let _ := tt in
     let _ := tt in
     let _ := tt in

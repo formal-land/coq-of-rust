@@ -18,7 +18,7 @@ Definition Point : Set := Point.t.
 
 (* Impl [Point] of trait [_crate.clone.Clone]*)
 Module ImplPoint.
-  Definition clone (self : ref Self) : Point :=
+  Definition clone (self : static_ref Self) : Point :=
     let _ := tt in
     deref self.
 End ImplPoint.

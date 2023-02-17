@@ -18,13 +18,13 @@ Module ImplList.
   Definition prepend (self : Self) (elem : u32) : List :=
     Cons elem (ImplBox.new self).
   
-  Definition len (self : ref Self) : u32 :=
+  Definition len (self : static_ref Self) : u32 :=
     match deref self with
     | Cons (_, tail) => add 1 (len tail)
     | Nil => 0
     end.
   
-  Definition stringify (self : ref Self) : String :=
+  Definition stringify (self : static_ref Self) : String :=
     match deref self with
     | Cons (head, tail) =>
       let res := _crate.fmt.format

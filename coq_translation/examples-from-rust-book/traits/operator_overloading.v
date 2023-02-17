@@ -18,8 +18,8 @@ Error Struct.
 Module ImplFooBar.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.write_str f "FooBar".
 End ImplFooBar.
@@ -31,8 +31,8 @@ Error Struct.
 Module ImplBarFoo.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.write_str f "BarFoo".
 End ImplBarFoo.

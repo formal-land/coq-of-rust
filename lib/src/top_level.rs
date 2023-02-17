@@ -5,7 +5,9 @@ use crate::render::*;
 use crate::rust_to_coq::*;
 use pretty::RcDoc;
 
-use rustc_hir::{Item, ItemKind, VariantData};
+use rustc_hir::{
+    Impl, ImplItemKind, ImplicitSelfKind, Item, ItemKind, PatKind, TraitItemKind, VariantData,
+};
 use rustc_middle::ty::TyCtxt;
 
 #[derive(Debug)]
@@ -142,13 +144,13 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                     .map(|item| {
                         let item = tcx.hir().trait_item(item.id);
                         let body = match &item.kind {
-                            rustc_hir::TraitItemKind::Const(ty, _) => TraitItem::Definition {
+                            TraitItemKind::Const(ty, _) => TraitItem::Definition {
                                 ty: compile_type(ty),
                             },
-                            rustc_hir::TraitItemKind::Fn(fn_sig, _) => TraitItem::Definition {
+                            TraitItemKind::Fn(fn_sig, _) => TraitItem::Definition {
                                 ty: compile_fn_decl(fn_sig.decl),
                             },
-                            rustc_hir::TraitItemKind::Type(_, _) => TraitItem::Type,
+                            TraitItemKind::Type(_, _) => TraitItem::Type,
                         };
                         (item.ident.name.to_string(), body)
                     })
@@ -158,7 +160,7 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
         ItemKind::TraitAlias(_, _) => {
             vec![TopLevelItem::Error("TraitAlias".to_string())]
         }
-        ItemKind::Impl(rustc_hir::Impl {
+        ItemKind::Impl(Impl {
             items,
             self_ty,
             of_trait,
@@ -169,7 +171,7 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                 .flat_map(|item| {
                     let item = tcx.hir().impl_item(item.id);
                     match &item.kind {
-                        rustc_hir::ImplItemKind::Const(_, body_id) => {
+                        ImplItemKind::Const(_, body_id) => {
                             let expr = tcx.hir().body(*body_id).value;
                             vec![TopLevelItem::Definition {
                                 name: item.ident.name.to_string(),
@@ -178,18 +180,43 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                                 body: compile_expr(tcx, expr),
                             }]
                         }
-                        rustc_hir::ImplItemKind::Fn(fn_sig, body_id) => {
+                        ImplItemKind::Fn(
+                            rustc_hir::FnSig {
+                                decl:
+                                    rustc_hir::FnDecl {
+                                        inputs,
+                                        output,
+                                        implicit_self,
+                                        ..
+                                    },
+                                ..
+                            },
+                            body_id,
+                        ) => {
                             let arg_names = tcx.hir().body(*body_id).params.iter().map(|param| {
                                 match param.pat.kind {
-                                    rustc_hir::PatKind::Binding(_, _, ident, _) => {
-                                        ident.name.to_string()
-                                    }
+                                    PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
                                     _ => "Pattern".to_string(),
                                 }
                             });
-                            let arg_tys = fn_sig.decl.inputs.iter().map(compile_type);
-                            let ret_ty = compile_fn_ret_ty(&fn_sig.decl.output);
+
+                            // println!(
+                            //     "function: {} has implicit_self: {implicit_self:?}",
+                            //     item.ident.name.to_string()
+                            // );
+
+                            // let linked_to_self = match &implicit_self {
+                            //     ImplicitSelfKind::None => false,
+                            //     ImplicitSelfKind::Imm
+                            //     | ImplicitSelfKind::Mut
+                            //     | ImplicitSelfKind::ImmRef
+                            //     | ImplicitSelfKind::MutRef => true,
+                            // };
+
+                            let arg_tys = inputs.iter().map(compile_type);
+                            let ret_ty = compile_fn_ret_ty(&output);
                             let expr = tcx.hir().body(*body_id).value;
+
                             vec![TopLevelItem::Definition {
                                 name: item.ident.name.to_string(),
                                 args: arg_names.zip(arg_tys).collect(),
@@ -197,7 +224,7 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                                 body: compile_expr(tcx, expr),
                             }]
                         }
-                        rustc_hir::ImplItemKind::Type(ty) => vec![TopLevelItem::TypeAlias {
+                        ImplItemKind::Type(ty) => vec![TopLevelItem::TypeAlias {
                             name: item.ident.name.to_string(),
                             ty: Box::new(compile_type(ty)),
                         }],

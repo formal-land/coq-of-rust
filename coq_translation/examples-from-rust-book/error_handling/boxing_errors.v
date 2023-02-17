@@ -16,8 +16,8 @@ Error Struct.
 Module ImplEmptyVec.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.write_str f "EmptyVec".
 End ImplEmptyVec.
@@ -25,14 +25,18 @@ End ImplEmptyVec.
 
 (* Impl [EmptyVec] of trait [_crate.clone.Clone]*)
 Module ImplEmptyVec.
-  Definition clone (self : ref Self) : EmptyVec :=
+  Definition clone (self : static_ref Self) : EmptyVec :=
     EmptyVec.
 End ImplEmptyVec.
 (* End impl [EmptyVec] *)
 
 (* Impl [EmptyVec] of trait [fmt.Display]*)
 Module ImplEmptyVec.
-  Definition fmt (self : ref Self) (f : ref fmt.Formatter) : fmt.Result :=
+  Definition
+    fmt
+    (self : static_ref Self)
+    (f : mut_ref fmt.Formatter)
+    : fmt.Result :=
     write_fmt
       f
       (_crate::fmt::ImplArguments.new_v1 ["invalid first item to double"] []).

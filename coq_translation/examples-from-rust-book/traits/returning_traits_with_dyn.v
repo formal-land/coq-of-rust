@@ -21,19 +21,19 @@ End Cow.
 Definition Cow : Set := Cow.t.
 
 Class Animal : Set := {
-  noise : ref Self -> ref str;
+  noise : static_ref Self -> static_ref str;
 }.
 
 (* Impl [Sheep] of trait [Animal]*)
 Module ImplSheep.
-  Definition noise (self : ref Self) : ref str :=
+  Definition noise (self : static_ref Self) : static_ref str :=
     "baaaaah!".
 End ImplSheep.
 (* End impl [Sheep] *)
 
 (* Impl [Cow] of trait [Animal]*)
 Module ImplCow.
-  Definition noise (self : ref Self) : ref str :=
+  Definition noise (self : static_ref Self) : static_ref str :=
     "moooooo!".
 End ImplCow.
 (* End impl [Cow] *)

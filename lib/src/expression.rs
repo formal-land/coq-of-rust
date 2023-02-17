@@ -4,6 +4,7 @@ use crate::render::*;
 use pretty::RcDoc;
 use rustc_ast::LitKind;
 use rustc_hir::{BinOp, BinOpKind};
+use rustc_middle::ty::TyCtxt;
 
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
@@ -132,7 +133,7 @@ fn tt() -> Expr {
     Expr::LocalVar("tt".to_string())
 }
 
-pub fn compile_expr(tcx: rustc_middle::ty::TyCtxt, expr: &rustc_hir::Expr) -> Expr {
+pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
     match &expr.kind {
         rustc_hir::ExprKind::Box(expr) => compile_expr(tcx, expr),
         rustc_hir::ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
@@ -314,11 +315,7 @@ pub fn compile_expr(tcx: rustc_middle::ty::TyCtxt, expr: &rustc_hir::Expr) -> Ex
 ///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Block.html
 /// - https://doc.rust-lang.org/reference/statements.html and
 ///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Stmt.html
-fn compile_stmts(
-    tcx: rustc_middle::ty::TyCtxt,
-    stmts: &[rustc_hir::Stmt],
-    expr: Option<&rustc_hir::Expr>,
-) -> Expr {
+fn compile_stmts(tcx: TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir::Expr>) -> Expr {
     match stmts {
         [stmt, stmts @ ..] => match stmt.kind {
             rustc_hir::StmtKind::Local(rustc_hir::Local { pat, init, .. }) => {
@@ -346,7 +343,7 @@ fn compile_stmts(
 
 /// [compile_block] compiles hir blocks into coq-of-rust
 /// See the doc for [compile_stmts]
-fn compile_block(tcx: rustc_middle::ty::TyCtxt, block: &rustc_hir::Block) -> Expr {
+fn compile_block(tcx: TyCtxt, block: &rustc_hir::Block) -> Expr {
     compile_stmts(tcx, block.stmts, block.expr)
 }
 

@@ -14,8 +14,8 @@ Error Enum.
 Module ImplFruit.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     match self with
     | Fruit.Apple => _crate::fmt::ImplFormatter.write_str f "Apple"

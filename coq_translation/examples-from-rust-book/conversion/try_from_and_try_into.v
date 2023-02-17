@@ -15,8 +15,8 @@ Definition EvenNumber : Set :=
 Module ImplEvenNumber.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "EvenNumber" self.0.
 End ImplEvenNumber.
@@ -30,7 +30,11 @@ End ImplEvenNumber.
 
 (* Impl [EvenNumber] of trait [_crate.cmp.PartialEq]*)
 Module ImplEvenNumber.
-  Definition eq (self : ref Self) (other : ref EvenNumber) : bool :=
+  Definition
+    eq
+    (self : static_ref Self)
+    (other : static_ref EvenNumber)
+    : bool :=
     eq self.0 other.0.
 End ImplEvenNumber.
 (* End impl [EvenNumber] *)

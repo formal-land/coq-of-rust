@@ -14,8 +14,8 @@ Error Enum.
 Module ImplFood.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     match self with
     | Food.Apple => _crate::fmt::ImplFormatter.write_str f "Apple"
@@ -32,8 +32,8 @@ Definition Peeled : Set :=
 Module ImplPeeled.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Peeled" self.0.
 End ImplPeeled.
@@ -46,8 +46,8 @@ Definition Chopped : Set :=
 Module ImplChopped.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Chopped" self.0.
 End ImplChopped.
@@ -60,8 +60,8 @@ Definition Cooked : Set :=
 Module ImplCooked.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Cooked" self.0.
 End ImplCooked.

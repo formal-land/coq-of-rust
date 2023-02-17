@@ -14,8 +14,8 @@ Error Struct.
 Module ImplUnit.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.write_str f "Unit".
 End ImplUnit.
@@ -23,7 +23,7 @@ End ImplUnit.
 
 (* Impl [Unit] of trait [_crate.clone.Clone]*)
 Module ImplUnit.
-  Definition clone (self : ref Self) : Unit :=
+  Definition clone (self : static_ref Self) : Unit :=
     deref self.
 End ImplUnit.
 (* End impl [Unit] *)
@@ -39,7 +39,7 @@ Definition Pair : Set :=
 
 (* Impl [Pair] of trait [_crate.clone.Clone]*)
 Module ImplPair.
-  Definition clone (self : ref Self) : Pair :=
+  Definition clone (self : static_ref Self) : Pair :=
     Pair (_crate.clone.Clone.clone self.0) (_crate.clone.Clone.clone self.1).
 End ImplPair.
 (* End impl [Pair] *)
@@ -48,8 +48,8 @@ End ImplPair.
 Module ImplPair.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_tuple_field2_finish f "Pair" self.0 self.1.
 End ImplPair.

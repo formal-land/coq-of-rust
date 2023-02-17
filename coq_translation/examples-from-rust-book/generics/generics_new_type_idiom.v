@@ -16,14 +16,14 @@ Definition Days : Set :=
 
 (* Impl [Years] *)
 Module ImplYears.
-  Definition to_days (self : ref Self) : Days :=
+  Definition to_days (self : static_ref Self) : Days :=
     Days (mul self.0 365).
 End ImplYears.
 (* End impl [Years] *)
 
 (* Impl [Days] *)
 Module ImplDays.
-  Definition to_years (self : ref Self) : Years :=
+  Definition to_years (self : static_ref Self) : Years :=
     Years (div self.0 365).
 End ImplDays.
 (* End impl [Days] *)

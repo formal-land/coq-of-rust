@@ -9,12 +9,12 @@ Definition u8 : Set := Z.
 Definition f64 : Set := Z.
 
 Class HasArea : Set := {
-  area : ref Self -> f64;
+  area : static_ref Self -> f64;
 }.
 
 (* Impl [Rectangle] of trait [HasArea]*)
 Module ImplRectangle.
-  Definition area (self : ref Self) : f64 :=
+  Definition area (self : static_ref Self) : f64 :=
     mul self.length self.height.
 End ImplRectangle.
 (* End impl [Rectangle] *)
@@ -31,8 +31,8 @@ Definition Rectangle : Set := Rectangle.t.
 Module ImplRectangle.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Self)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_struct_field2_finish
       f

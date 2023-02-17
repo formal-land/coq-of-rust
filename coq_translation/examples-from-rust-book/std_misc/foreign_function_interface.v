@@ -40,7 +40,7 @@ Definition Complex : Set := Complex.t.
 
 (* Impl [Complex] of trait [_crate.clone.Clone]*)
 Module ImplComplex.
-  Definition clone (self : ref Self) : Complex :=
+  Definition clone (self : static_ref Self) : Complex :=
     let _ := tt in
     deref self.
 End ImplComplex.
@@ -54,7 +54,11 @@ End ImplComplex.
 
 (* Impl [Complex] of trait [fmt.Debug]*)
 Module ImplComplex.
-  Definition fmt (self : ref Self) (f : ref fmt.Formatter) : fmt.Result :=
+  Definition
+    fmt
+    (self : static_ref Self)
+    (f : mut_ref fmt.Formatter)
+    : fmt.Result :=
     if lt self.im 0 (* 0. *) then
       write_fmt
         f
