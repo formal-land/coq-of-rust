@@ -11,7 +11,3 @@ Definition f64 : Set := Z.
 Error Enum.
 
 Error TyAlias.
-
-Definition main (_ : unit) :=
-  let x := ImplOperations.Add in
-  tt.

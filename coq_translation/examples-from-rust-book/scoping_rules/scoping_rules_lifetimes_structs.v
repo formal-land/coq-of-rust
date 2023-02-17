@@ -18,7 +18,10 @@ Module ImplBorrowed.
     (self : ref Self)
     (f : ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Borrowed" self.0.
+    _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+      f
+      "Borrowed"
+      self.(Borrowed<'_>.0).
 End ImplBorrowed.
 (* End impl [Borrowed] *)
 
@@ -41,9 +44,9 @@ Module ImplNamedBorrowed.
       f
       "NamedBorrowed"
       "x"
-      self.x
+      self.(NamedBorrowed<'_>.x)
       "y"
-      self.y.
+      self.(NamedBorrowed<'_>.y).
 End ImplNamedBorrowed.
 (* End impl [NamedBorrowed] *)
 
@@ -64,32 +67,3 @@ Module ImplEither.
     end.
 End ImplEither.
 (* End impl [Either] *)
-
-Definition main (_ : unit) :=
-  let x := 18 in
-  let y := 15 in
-  let single := Borrowed x in
-  let double := {| NamedBorrowed.x := x; NamedBorrowed.y := y; |} in
-  let reference := Either.Ref x in
-  let number := Either.Num y in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["x is borrowed in ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug single]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["x and y are borrowed in ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug double]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["x is borrowed in ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug reference]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["y is *not* borrowed in ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug number]) ;;
-  tt ;;
-  tt.

@@ -23,8 +23,3 @@ Module ImplT.
     tt.
 End ImplT.
 (* End impl [T] *)
-
-Definition main (_ : unit) :=
-  let vec := ComplexTypePath.into_vec [1;2;3] in
-  print_in_option vec ;;
-  tt.

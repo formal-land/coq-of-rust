@@ -8,12 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition apply (_ : unit) :=
-  f tt ;;
-  tt.
-
-Definition apply_to_3 (_ : unit) :=
-  f 3.
-
-Definition main (_ : unit) :=
-  Stmt_item.

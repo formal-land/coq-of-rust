@@ -8,29 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition eat_box_i32 (_ : unit) :=
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Destroying box that contains ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display boxed_i32]) ;;
-  tt ;;
-  tt.
-
-Definition borrow_i32 (_ : unit) :=
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["This int is: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display borrowed_i32]) ;;
-  tt ;;
-  tt.
-
-Definition main (_ : unit) :=
-  let boxed_i32 := ImplBox.new 5 in
-  let stacked_i32 := 6 in
-  borrow_i32 boxed_i32 ;;
-  borrow_i32 stacked_i32 ;;
-  let _ref_to_i32 := boxed_i32 in
-  borrow_i32 _ref_to_i32 ;;
-  tt ;;
-  eat_box_i32 boxed_i32 ;;
-  tt.

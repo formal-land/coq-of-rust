@@ -23,17 +23,3 @@ Class Programmer : Set := {
 Class CompSciStudent : Set := {
   git_username : ref Self -> String;
 }.
-
-Definition comp_sci_student_greeting (_ : unit) :=
-  let res := _crate.fmt.format
-    (_crate::fmt::ImplArguments.new_v1
-      ["My name is ";" and I attend ";". My favorite language is ";". My Git username is "]
-      [_crate::fmt::ImplArgumentV1.new_display
-        (name student);_crate::fmt::ImplArgumentV1.new_display
-        (university student);_crate::fmt::ImplArgumentV1.new_display
-        (fav_language student);_crate::fmt::ImplArgumentV1.new_display
-        (git_username student)]) in
-  res.
-
-Definition main (_ : unit) :=
-  tt.

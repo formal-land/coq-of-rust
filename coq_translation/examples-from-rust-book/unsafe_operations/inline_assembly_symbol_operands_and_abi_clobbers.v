@@ -8,18 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition main (_ : unit) :=
-  Stmt_item.
-
-Definition foo (_ : unit) :=
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["arg = ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display arg]) ;;
-  tt ;;
-  mul arg 2.
-
-Definition call_foo (_ : unit) :=
-  let result := tt in
-  InlineAsm ;;
-  result.

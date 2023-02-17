@@ -40,7 +40,9 @@ Definition Pair : Set :=
 (* Impl [Pair] of trait [_crate.clone.Clone]*)
 Module ImplPair.
   Definition clone (self : ref Self) : Pair :=
-    Pair (_crate.clone.Clone.clone self.0) (_crate.clone.Clone.clone self.1).
+    Pair
+      (_crate.clone.Clone.clone self.(Pair.0))
+      (_crate.clone.Clone.clone self.(Pair.1)).
 End ImplPair.
 (* End impl [Pair] *)
 
@@ -51,40 +53,10 @@ Module ImplPair.
     (self : ref Self)
     (f : ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field2_finish f "Pair" self.0 self.1.
+    _crate::fmt::ImplFormatter.debug_tuple_field2_finish
+      f
+      "Pair"
+      self.(Pair.0)
+      self.(Pair.1).
 End ImplPair.
 (* End impl [Pair] *)
-
-Definition main (_ : unit) :=
-  let unit := Unit in
-  let copied_unit := unit in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["original: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug unit]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["copy: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug copied_unit]) ;;
-  tt ;;
-  let pair := Pair (ImplBox.new 1) (ImplBox.new 2) in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["original: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug pair]) ;;
-  tt ;;
-  let moved_pair := pair in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["moved: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug moved_pair]) ;;
-  tt ;;
-  let cloned_pair := clone moved_pair in
-  drop moved_pair ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["clone: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug cloned_pair]) ;;
-  tt ;;
-  tt.

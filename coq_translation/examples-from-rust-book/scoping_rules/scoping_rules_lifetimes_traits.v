@@ -26,7 +26,7 @@ Module ImplBorrowed.
       f
       "Borrowed"
       "x"
-      self.x.
+      self.(Borrowed<'_>.x).
 End ImplBorrowed.
 (* End impl [Borrowed] *)
 
@@ -36,12 +36,3 @@ Module ImplBorrowed.
     {| Self.x := 10; |}.
 End ImplBorrowed.
 (* End impl [Borrowed] *)
-
-Definition main (_ : unit) :=
-  let b := Default.default tt in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["b is ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug b]) ;;
-  tt ;;
-  tt.

@@ -10,26 +10,6 @@ Definition f64 : Set := Z.
 
 Error ForeignMod.
 
-Definition cos (_ : unit) :=
-  ccosf z.
-
-Definition main (_ : unit) :=
-  let z := {| Complex.re := neg 1 (* 1. *); Complex.im := 0 (* 0. *); |} in
-  let z_sqrt := csqrtf z in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["the square root of ";" is ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug
-        z;_crate::fmt::ImplArgumentV1.new_debug z_sqrt]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["cos(";") = ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug
-        z;_crate::fmt::ImplArgumentV1.new_debug (cos z)]) ;;
-  tt ;;
-  tt.
-
 Module Complex.
   Record t : Set := {
     re : f32;
@@ -55,19 +35,21 @@ End ImplComplex.
 (* Impl [Complex] of trait [fmt.Debug]*)
 Module ImplComplex.
   Definition fmt (self : ref Self) (f : ref fmt.Formatter) : fmt.Result :=
-    if lt self.im 0 (* 0. *) then
+    if lt self.(Complex.im) 0 (* 0. *) then
       write_fmt
         f
         (_crate::fmt::ImplArguments.new_v1
           ["";"-";"i"]
           [_crate::fmt::ImplArgumentV1.new_display
-            self.re;_crate::fmt::ImplArgumentV1.new_display (neg self.im)])
+            self.(Complex.re);_crate::fmt::ImplArgumentV1.new_display
+            (neg self.(Complex.im))])
     else
       write_fmt
         f
         (_crate::fmt::ImplArguments.new_v1
           ["";"+";"i"]
           [_crate::fmt::ImplArgumentV1.new_display
-            self.re;_crate::fmt::ImplArgumentV1.new_display self.im]).
+            self.(Complex.re);_crate::fmt::ImplArgumentV1.new_display
+            self.(Complex.im)]).
 End ImplComplex.
 (* End impl [Complex] *)

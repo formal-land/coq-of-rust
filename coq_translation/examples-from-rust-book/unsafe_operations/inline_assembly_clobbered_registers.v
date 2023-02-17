@@ -8,14 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition main (_ : unit) :=
-  let name_buf := repeat 0 in
-  InlineAsm ;;
-  tt ;;
-  let name := unwrap (core.str.from_utf8 name_buf) in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["CPU Manufacturer ID: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display name]) ;;
-  tt ;;
-  tt.

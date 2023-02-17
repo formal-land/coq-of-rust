@@ -8,17 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition division (_ : unit) :=
-  if eq divisor 0 then
-    _crate.rt.begin_panic "division by zero" ;;
-    tt
-  else
-    div dividend divisor.
-
-Definition main (_ : unit) :=
-  let _x := ImplBox.new 0 in
-  division 3 0 ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["This point won't be reached!\n"] []) ;;
-  tt ;;
-  tt.

@@ -14,21 +14,15 @@ Definition Owner : Set :=
 (* Impl [Owner] *)
 Module ImplOwner.
   Definition add_one (self : ref Self) :=
-    assign self.0 := add self.0 1 ;;
+    assign self.(Owner.0) := add self.(Owner.0) 1 ;;
     tt.
   
   Definition print (self : ref Self) :=
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1
         ["`print`: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display self.0]) ;;
+        [_crate::fmt::ImplArgumentV1.new_display self.(Owner.0)]) ;;
     tt ;;
     tt.
 End ImplOwner.
 (* End impl [Owner] *)
-
-Definition main (_ : unit) :=
-  let owner := Owner 18 in
-  add_one owner ;;
-  print owner ;;
-  tt.

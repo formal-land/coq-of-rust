@@ -20,7 +20,7 @@ End ImplCentimeters.
 (* Impl [Centimeters] of trait [_crate.cmp.PartialEq]*)
 Module ImplCentimeters.
   Definition eq (self : ref Self) (other : ref Centimeters) : bool :=
-    eq self.0 other.0.
+    eq self.(Centimeters.0) other.(Centimeters.0).
 End ImplCentimeters.
 (* End impl [Centimeters] *)
 
@@ -31,7 +31,9 @@ Module ImplCentimeters.
     (self : ref Self)
     (other : ref Centimeters)
     : _crate.option.Option :=
-    _crate.cmp.PartialOrd.partial_cmp self.0 other.0.
+    _crate.cmp.PartialOrd.partial_cmp
+      self.(Centimeters.0)
+      other.(Centimeters.0).
 End ImplCentimeters.
 (* End impl [Centimeters] *)
 
@@ -45,7 +47,10 @@ Module ImplInches.
     (self : ref Self)
     (f : ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Inches" self.0.
+    _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+      f
+      "Inches"
+      self.(Inches.0).
 End ImplInches.
 (* End impl [Inches] *)
 
@@ -59,23 +64,3 @@ End ImplInches.
 
 Definition Seconds : Set :=
   i32.
-
-Definition main (_ : unit) :=
-  let _one_second := Seconds 1 in
-  let foot := Inches 12 in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["One foot equals ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug foot]) ;;
-  tt ;;
-  let meter := Centimeters 100 (* 100.0 *) in
-  let cmp := if lt (to_centimeters foot) meter then
-    "smaller"
-  else
-    "bigger" in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["One foot is ";" than one meter.\n"]
-      [_crate::fmt::ImplArgumentV1.new_display cmp]) ;;
-  tt ;;
-  tt.

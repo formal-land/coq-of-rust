@@ -26,10 +26,6 @@ struct Rectangle {
 }
 
 impl Rectangle {
-    fn get_p1(&self) -> Point {
-        self.p1
-    }
-
     // This is a method
     // `&self` is sugar for `self: &Self`, where `Self` is the type of the
     // caller object. In this case `Self` = `Rectangle`

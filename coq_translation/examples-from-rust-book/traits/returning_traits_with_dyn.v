@@ -37,19 +37,3 @@ Module ImplCow.
     "moooooo!".
 End ImplCow.
 (* End impl [Cow] *)
-
-Definition random_animal (_ : unit) :=
-  if lt random_number 1 (* 0.5 *) then
-    ImplBox.new {|  |}
-  else
-    ImplBox.new {|  |}.
-
-Definition main (_ : unit) :=
-  let random_number := 0 (* 0.234 *) in
-  let animal := random_animal random_number in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["You've randomly chosen an animal, and it says ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (noise animal)]) ;;
-  tt ;;
-  tt.

@@ -8,9 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition main (_ : unit) :=
-  Stmt_item.
-
-Definition foo (_ : unit) :=
-  _crate.rt.begin_panic "This call never returns." ;;
-  tt.

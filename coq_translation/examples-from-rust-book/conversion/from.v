@@ -26,7 +26,7 @@ Module ImplNumber.
       f
       "Number"
       "value"
-      self.value.
+      self.(Number.value).
 End ImplNumber.
 (* End impl [Number] *)
 
@@ -36,12 +36,3 @@ Module ImplNumber.
     {| Number.value := item; |}.
 End ImplNumber.
 (* End impl [Number] *)
-
-Definition main (_ : unit) :=
-  let num := ImplNumber.from 30 in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["My number is ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug num]) ;;
-  tt ;;
-  tt.

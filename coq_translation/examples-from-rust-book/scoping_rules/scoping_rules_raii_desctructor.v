@@ -19,10 +19,3 @@ Module ImplToDrop.
     tt.
 End ImplToDrop.
 (* End impl [ToDrop] *)
-
-Definition main (_ : unit) :=
-  let x := ToDrop in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["Made a ToDrop!\n"] []) ;;
-  tt ;;
-  tt.

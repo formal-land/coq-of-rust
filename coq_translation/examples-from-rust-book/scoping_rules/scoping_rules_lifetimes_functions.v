@@ -8,38 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition print_one (_ : unit) :=
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["`print_one`: x is ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display x]) ;;
-  tt ;;
-  tt.
-
-Definition add_one (_ : unit) :=
-  assign deref x := add (deref x) 1 ;;
-  tt.
-
-Definition print_multi (_ : unit) :=
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["`print_multi`: x is ";", y is ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        x;_crate::fmt::ImplArgumentV1.new_display y]) ;;
-  tt ;;
-  tt.
-
-Definition pass_x (_ : unit) :=
-  x.
-
-Definition main (_ : unit) :=
-  let x := 7 in
-  let y := 9 in
-  print_one x ;;
-  print_multi x y ;;
-  let z := pass_x x y in
-  print_one z ;;
-  let t := 3 in
-  add_one t ;;
-  print_one t ;;
-  tt.

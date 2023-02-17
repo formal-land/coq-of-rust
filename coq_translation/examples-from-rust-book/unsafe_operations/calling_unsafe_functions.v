@@ -8,22 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition main (_ : unit) :=
-  let some_vector := ComplexTypePath.into_vec [1;2;3;4] in
-  let pointer := as_ptr some_vector in
-  let length := len some_vector in
-  let my_slice := slice.from_raw_parts pointer length in
-  match (as_slice some_vector, my_slice) with
-  | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        (deref left_val)
-        (deref right_val)
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  tt.

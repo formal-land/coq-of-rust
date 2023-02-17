@@ -15,11 +15,3 @@ Definition Single : Set :=
 
 Definition SingleGen : Set :=
   T.
-
-Definition main (_ : unit) :=
-  let _s := Single A in
-  let _char := SingleGen a in
-  let _t := SingleGen A in
-  let _i32 := SingleGen 6 in
-  let _char := SingleGen a in
-  tt.

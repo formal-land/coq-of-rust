@@ -20,7 +20,9 @@ End ImplPhantomTuple.
 (* Impl [PhantomTuple] of trait [_crate.cmp.PartialEq]*)
 Module ImplPhantomTuple.
   Definition eq (self : ref Self) (other : ref PhantomTuple) : bool :=
-    and (eq self.0 other.0) (eq self.1 other.1).
+    and
+      (eq self.(PhantomTuple<A, B>.0) other.(PhantomTuple<A, B>.0))
+      (eq self.(PhantomTuple<A, B>.1) other.(PhantomTuple<A, B>.1)).
 End ImplPhantomTuple.
 (* End impl [PhantomTuple] *)
 
@@ -41,19 +43,10 @@ End ImplPhantomStruct.
 (* Impl [PhantomStruct] of trait [_crate.cmp.PartialEq]*)
 Module ImplPhantomStruct.
   Definition eq (self : ref Self) (other : ref PhantomStruct) : bool :=
-    and (eq self.first other.first) (eq self.phantom other.phantom).
+    and
+      (eq self.(PhantomStruct<A, B>.first) other.(PhantomStruct<A, B>.first))
+      (eq
+        self.(PhantomStruct<A, B>.phantom)
+        other.(PhantomStruct<A, B>.phantom)).
 End ImplPhantomStruct.
 (* End impl [PhantomStruct] *)
-
-Definition main (_ : unit) :=
-  let _tuple1 := PhantomTuple Q PhantomData in
-  let _tuple2 := PhantomTuple Q PhantomData in
-  let _struct1 := {|
-    PhantomStruct.first := Q;
-    PhantomStruct.phantom := PhantomData;
-  |} in
-  let _struct2 := {|
-    PhantomStruct.first := Q;
-    PhantomStruct.phantom := PhantomData;
-  |} in
-  tt.

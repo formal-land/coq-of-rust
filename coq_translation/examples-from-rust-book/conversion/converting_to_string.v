@@ -22,15 +22,6 @@ Module ImplCircle.
       f
       (_crate::fmt::ImplArguments.new_v1
         ["Circle of radius "]
-        [_crate::fmt::ImplArgumentV1.new_display self.radius]).
+        [_crate::fmt::ImplArgumentV1.new_display self.(Circle.radius)]).
 End ImplCircle.
 (* End impl [Circle] *)
-
-Definition main (_ : unit) :=
-  let circle := {| Circle.radius := 6; |} in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (to_string circle)]) ;;
-  tt ;;
-  tt.

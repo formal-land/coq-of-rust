@@ -40,20 +40,3 @@ Module ImplList.
     end.
 End ImplList.
 (* End impl [List] *)
-
-Definition main (_ : unit) :=
-  let list := ImplList.new tt in
-  assign list := prepend list 1 ;;
-  assign list := prepend list 2 ;;
-  assign list := prepend list 3 ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["linked list has length: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (len list)]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (stringify list)]) ;;
-  tt ;;
-  tt.

@@ -63,16 +63,3 @@ Module ImplBar.
     BarFoo.
 End ImplBar.
 (* End impl [Bar] *)
-
-Definition main (_ : unit) :=
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Foo + Bar = ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug (add Foo Bar)]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Bar + Foo = ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug (add Bar Foo)]) ;;
-  tt ;;
-  tt.

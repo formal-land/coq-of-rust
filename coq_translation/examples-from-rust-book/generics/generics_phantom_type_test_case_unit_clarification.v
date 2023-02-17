@@ -73,15 +73,17 @@ Module ImplLength.
     _crate::fmt::ImplFormatter.debug_tuple_field2_finish
       f
       "Length"
-      self.0
-      self.1.
+      self.(Length<Unit>.0)
+      self.(Length<Unit>.1).
 End ImplLength.
 (* End impl [Length] *)
 
 (* Impl [Length] of trait [_crate.clone.Clone]*)
 Module ImplLength.
   Definition clone (self : ref Self) : Length :=
-    Length (_crate.clone.Clone.clone self.0) (_crate.clone.Clone.clone self.1).
+    Length
+      (_crate.clone.Clone.clone self.(Length<Unit>.0))
+      (_crate.clone.Clone.clone self.(Length<Unit>.1)).
 End ImplLength.
 (* End impl [Length] *)
 
@@ -97,23 +99,6 @@ Module ImplLength.
     Length.
   
   Definition add (self : Self) (rhs : Length) : Length :=
-    Length (add self.0 rhs.0) PhantomData.
+    Length (add self.(Length<Unit>.0) rhs.(Length<Unit>.0)) PhantomData.
 End ImplLength.
 (* End impl [Length] *)
-
-Definition main (_ : unit) :=
-  let one_foot := Length 12 (* 12.0 *) PhantomData in
-  let one_meter := Length 1000 (* 1000.0 *) PhantomData in
-  let two_feet := add one_foot one_foot in
-  let two_meters := add one_meter one_meter in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["one foot + one_foot = ";" in\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug two_feet.0]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["one meter + one_meter = ";" mm\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug two_meters.0]) ;;
-  tt ;;
-  tt.

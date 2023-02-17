@@ -32,14 +32,17 @@ Module ImplChoice.
     (self : ref Self)
     (f : ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Choice" self.0.
+    _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+      f
+      "Choice"
+      self.(Choice.0).
 End ImplChoice.
 (* End impl [Choice] *)
 
 (* Impl [Choice] *)
 Module ImplChoice.
   Definition unwrap_u8 (self : ref Self) : u8 :=
-    self.0.
+    self.(Choice.0).
 End ImplChoice.
 (* End impl [Choice] *)
 
@@ -47,7 +50,7 @@ End ImplChoice.
 Module Implbool.
   Definition from (source : Choice) : bool :=
     if true then
-      if not (bit_or (eq source.0 0) (eq source.0 1)) then
+      if not (bit_or (eq source.(Choice.0) 0) (eq source.(Choice.0) 1)) then
         _crate.panicking.panic
           "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
       else
@@ -55,7 +58,7 @@ Module Implbool.
       tt
     else
       tt ;;
-    ne source.0 0.
+    ne source.(Choice.0) 0.
 End Implbool.
 (* End impl [bool] *)
 
@@ -65,7 +68,7 @@ Module ImplChoice.
     Choice.
   
   Definition bitand (self : Self) (rhs : Choice) : Choice :=
-    into (bit_and self.0 rhs.0).
+    into (bit_and self.(Choice.0) rhs.(Choice.0)).
 End ImplChoice.
 (* End impl [Choice] *)
 
@@ -83,7 +86,7 @@ Module ImplChoice.
     Choice.
   
   Definition bitor (self : Self) (rhs : Choice) : Choice :=
-    into (bit_or self.0 rhs.0).
+    into (bit_or self.(Choice.0) rhs.(Choice.0)).
 End ImplChoice.
 (* End impl [Choice] *)
 
@@ -101,7 +104,7 @@ Module ImplChoice.
     Choice.
   
   Definition bitxor (self : Self) (rhs : Choice) : Choice :=
-    into (bit_xor self.0 rhs.0).
+    into (bit_xor self.(Choice.0) rhs.(Choice.0)).
 End ImplChoice.
 (* End impl [Choice] *)
 
@@ -119,20 +122,9 @@ Module ImplChoice.
     Choice.
   
   Definition not (self : Self) : Choice :=
-    into (bit_and 1 (not self.0)).
+    into (bit_and 1 (not self.(Choice.0))).
 End ImplChoice.
 (* End impl [Choice] *)
-
-Definition black_box (_ : unit) :=
-  if true then
-    if not (bit_or (eq input 0) (eq input 1)) then
-      _crate.panicking.panic "assertion failed: (input == 0u8) | (input == 1u8)"
-    else
-      tt ;;
-    tt
-  else
-    tt ;;
-  core.ptr.read_volatile input.
 
 (* Impl [Choice] of trait [From]*)
 Module ImplChoice.
@@ -529,7 +521,7 @@ Module ImplChoice.
     (b : ref Self)
     (choice : Choice)
     : Self :=
-    Choice (Implu8.conditional_select a.0 b.0 choice).
+    Choice (Implu8.conditional_select a.(Choice.0) b.(Choice.0) choice).
 End ImplChoice.
 (* End impl [Choice] *)
 
@@ -558,8 +550,8 @@ Definition CtOption : Set := CtOption.t.
 Module ImplCtOption.
   Definition clone (self : ref Self) : CtOption :=
     {|
-      CtOption.value := _crate.clone.Clone.clone self.value;
-      CtOption.is_some := _crate.clone.Clone.clone self.is_some;
+      CtOption.value := _crate.clone.Clone.clone self.(CtOption<T>.value);
+      CtOption.is_some := _crate.clone.Clone.clone self.(CtOption<T>.is_some);
     |}.
 End ImplCtOption.
 (* End impl [CtOption] *)
@@ -581,9 +573,9 @@ Module ImplCtOption.
       f
       "CtOption"
       "value"
-      self.value
+      self.(CtOption<T>.value)
       "is_some"
-      self.is_some.
+      self.(CtOption<T>.is_some).
 End ImplCtOption.
 (* End impl [CtOption] *)
 
@@ -591,7 +583,7 @@ End ImplCtOption.
 Module ImplOption.
   Definition from (source : CtOption) : Option :=
     if eq (unwrap_u8 (is_some source)) 1 then
-      Option.Some source.value
+      Option.Some source.(CtOption<T>.value)
     else
       None.
 End ImplOption.
@@ -603,7 +595,7 @@ Module ImplCtOption.
     {| CtOption.value := value; CtOption.is_some := is_some; |}.
   
   Definition expect (self : Self) (msg : ref str) : T :=
-    match (unwrap_u8 self.is_some, 1) with
+    match (unwrap_u8 self.(CtOption<T>.is_some), 1) with
     | (left_val, right_val) =>
       if not (eq (deref left_val) (deref right_val)) then
         let kind := _crate.panicking.AssertKind.Eq in
@@ -619,10 +611,10 @@ Module ImplCtOption.
       else
         tt
     end ;;
-    self.value.
+    self.(CtOption<T>.value).
   
   Definition unwrap (self : Self) : T :=
-    match (unwrap_u8 self.is_some, 1) with
+    match (unwrap_u8 self.(CtOption<T>.is_some), 1) with
     | (left_val, right_val) =>
       if not (eq (deref left_val) (deref right_val)) then
         let kind := _crate.panicking.AssertKind.Eq in
@@ -635,29 +627,44 @@ Module ImplCtOption.
       else
         tt
     end ;;
-    self.value.
+    self.(CtOption<T>.value).
   
   Definition unwrap_or (self : Self) (def : T) : T :=
-    ImplT.conditional_select def self.value self.is_some.
+    ImplT.conditional_select
+      def
+      self.(CtOption<T>.value)
+      self.(CtOption<T>.is_some).
   
   Definition unwrap_or_else (self : Self) (f : F) : T :=
-    ImplT.conditional_select (f tt) self.value self.is_some.
+    ImplT.conditional_select
+      (f tt)
+      self.(CtOption<T>.value)
+      self.(CtOption<T>.is_some).
   
   Definition is_some (self : ref Self) : Choice :=
-    self.is_some.
+    self.(CtOption<T>.is_some).
   
   Definition is_none (self : ref Self) : Choice :=
-    not self.is_some.
+    not self.(CtOption<T>.is_some).
   
   Definition map (self : Self) (f : F) : CtOption :=
     ImplCtOption.new
-      (f (ImplT.conditional_select (ImplT.default tt) self.value self.is_some))
-      self.is_some.
+      (f
+        (ImplT.conditional_select
+          (ImplT.default tt)
+          self.(CtOption<T>.value)
+          self.(CtOption<T>.is_some)))
+      self.(CtOption<T>.is_some).
   
   Definition and_then (self : Self) (f : F) : CtOption :=
     let tmp := f
-      (ImplT.conditional_select (ImplT.default tt) self.value self.is_some) in
-    assign tmp.is_some := bit_and tmp.is_some self.is_some ;;
+      (ImplT.conditional_select
+        (ImplT.default tt)
+        self.(CtOption<T>.value)
+        self.(CtOption<T>.is_some)) in
+    assign tmp.(CtOption<U>.is_some) := bit_and
+      tmp.(CtOption<U>.is_some)
+      self.(CtOption<T>.is_some) ;;
     tmp.
   
   Definition or_else (self : Self) (f : F) : CtOption :=
@@ -676,8 +683,14 @@ Module ImplCtOption.
     (choice : Choice)
     : Self :=
     ImplCtOption.new
-      (ImplT.conditional_select a.value b.value choice)
-      (ImplChoice.conditional_select a.is_some b.is_some choice).
+      (ImplT.conditional_select
+        a.(CtOption<T>.value)
+        b.(CtOption<T>.value)
+        choice)
+      (ImplChoice.conditional_select
+        a.(CtOption<T>.is_some)
+        b.(CtOption<T>.is_some)
+        choice).
 End ImplCtOption.
 (* End impl [CtOption] *)
 
@@ -687,7 +700,9 @@ Module ImplCtOption.
     let a := is_some self in
     let b := is_some rhs in
     bit_or
-      (bit_and (bit_and a b) (ct_eq self.value rhs.value))
+      (bit_and
+        (bit_and a b)
+        (ct_eq self.(CtOption<T>.value) rhs.(CtOption<T>.value)))
       (bit_and (not a) (not b)).
 End ImplCtOption.
 (* End impl [CtOption] *)

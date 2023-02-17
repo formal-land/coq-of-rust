@@ -8,24 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition read_lines (_ : unit) :=
-  let file := unwrap (ImplFile.open filename) in
-  Return (lines (io::ImplBufReader.new file)) ;;
-  tt.
-
-Definition main (_ : unit) :=
-  let lines := read_lines (to_string "./hosts") in
-  match into_iter lines with
-  | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := line; |} =>
-      _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_display (unwrap line)]) ;;
-      tt ;;
-      tt
-    end ;;
-    tt from for
-  end.

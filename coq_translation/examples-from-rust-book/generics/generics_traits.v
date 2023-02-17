@@ -22,9 +22,3 @@ Module ImplU.
     tt.
 End ImplU.
 (* End impl [U] *)
-
-Definition main (_ : unit) :=
-  let empty := Empty in
-  let null := Null in
-  double_drop empty null ;;
-  tt.
