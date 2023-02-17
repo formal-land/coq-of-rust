@@ -8,6 +8,7 @@
       "type": "lldb",
       "request": "launch",
       "name": "Debug executable 'coq-of-rust'",
+      "sourceLanguages": ["rust"],
       "cargo": {
         "args": ["build", "--bin=coq-of-rust"],
         "filter": {
@@ -15,7 +16,11 @@
           "kind": "bin"
         }
       },
-      "args": ["translate", "--path", "examples-from-rust-book/subtle.rs"],
+      "args": [
+        "translate",
+        "--path",
+        "examples-from-rust-book/traits/traits.rs"
+      ],
       "cwd": "${workspaceFolder}"
     },
     {

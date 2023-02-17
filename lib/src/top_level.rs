@@ -1,16 +1,16 @@
-extern crate rustc_hir;
-extern crate rustc_middle;
-
 use crate::expression::*;
 use crate::header::*;
 use crate::path::*;
 use crate::render::*;
-use crate::ty::*;
+use crate::rust_to_coq::*;
 use pretty::RcDoc;
+
+use rustc_hir::{Item, ItemKind, VariantData};
+use rustc_middle::ty::TyCtxt;
 
 #[derive(Debug)]
 enum TraitItem {
-    Definition { ty: Type },
+    Definition { ty: CoqType },
     Type,
 }
 
@@ -20,24 +20,24 @@ enum TraitItem {
 enum TopLevelItem {
     Definition {
         name: String,
-        args: Vec<(String, Type)>,
-        ret_ty: Option<Type>,
+        args: Vec<(String, CoqType)>,
+        ret_ty: Option<CoqType>,
         body: Expr,
     },
     TypeAlias {
         name: String,
-        ty: Box<Type>,
+        ty: Box<CoqType>,
     },
     TypeRecord {
         name: String,
-        fields: Vec<(String, Type)>,
+        fields: Vec<(String, CoqType)>,
     },
     Module {
         name: String,
         body: TopLevel,
     },
     Impl {
-        self_ty: Type,
+        self_ty: CoqType,
         of_trait: Option<Path>,
         body: TopLevel,
     },
@@ -58,14 +58,11 @@ pub struct TopLevel(Vec<TopLevelItem>);
 /// - [rustc_middle::hir::map::Map] is intuitively the type for hir environments
 /// - Method [body] allows retrievient the body of an identifier [body_id] in an
 ///   hir environment [hir]
-fn compile_top_level_item(
-    tcx: rustc_middle::ty::TyCtxt,
-    item: &rustc_hir::Item,
-) -> Vec<TopLevelItem> {
+fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
     match &item.kind {
-        rustc_hir::ItemKind::ExternCrate(_) => vec![],
-        rustc_hir::ItemKind::Use(_, _) => vec![],
-        rustc_hir::ItemKind::Static(_, _, body_id) => {
+        ItemKind::ExternCrate(_) => vec![],
+        ItemKind::Use(_, _) => vec![],
+        ItemKind::Static(_, _, body_id) => {
             let expr = tcx.hir().body(*body_id).value;
             vec![TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
@@ -74,7 +71,7 @@ fn compile_top_level_item(
                 body: compile_expr(tcx, expr),
             }]
         }
-        rustc_hir::ItemKind::Const(_, body_id) => {
+        ItemKind::Const(_, body_id) => {
             let expr = tcx.hir().body(*body_id).value;
             vec![TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
@@ -83,7 +80,7 @@ fn compile_top_level_item(
                 body: compile_expr(tcx, expr),
             }]
         }
-        rustc_hir::ItemKind::Fn(_fn_sig, _, body_id) => {
+        ItemKind::Fn(_fn_sig, _, body_id) => {
             let expr = tcx.hir().body(*body_id).value;
             vec![TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
@@ -92,8 +89,8 @@ fn compile_top_level_item(
                 body: compile_expr(tcx, expr),
             }]
         }
-        rustc_hir::ItemKind::Macro(_, _) => vec![],
-        rustc_hir::ItemKind::Mod(module) => {
+        ItemKind::Macro(_, _) => vec![],
+        ItemKind::Mod(module) => {
             let items = module
                 .item_ids
                 .iter()
@@ -107,15 +104,15 @@ fn compile_top_level_item(
                 body: TopLevel(items),
             }]
         }
-        rustc_hir::ItemKind::ForeignMod { .. } => {
+        ItemKind::ForeignMod { .. } => {
             vec![TopLevelItem::Error("ForeignMod".to_string())]
         }
-        rustc_hir::ItemKind::GlobalAsm(_) => vec![TopLevelItem::Error("GlobalAsm".to_string())],
-        rustc_hir::ItemKind::TyAlias(_, _) => vec![TopLevelItem::Error("TyAlias".to_string())],
-        rustc_hir::ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
-        rustc_hir::ItemKind::Enum(_, _) => vec![TopLevelItem::Error("Enum".to_string())],
-        rustc_hir::ItemKind::Struct(body, _) => match body {
-            rustc_hir::VariantData::Struct(fields, _) => {
+        ItemKind::GlobalAsm(_) => vec![TopLevelItem::Error("GlobalAsm".to_string())],
+        ItemKind::TyAlias(_, _) => vec![TopLevelItem::Error("TyAlias".to_string())],
+        ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
+        ItemKind::Enum(_, _) => vec![TopLevelItem::Error("Enum".to_string())],
+        ItemKind::Struct(body, _) => match body {
+            VariantData::Struct(fields, _) => {
                 let fields = fields
                     .iter()
                     .map(|field| (field.ident.name.to_string(), compile_type(field.ty)))
@@ -125,8 +122,8 @@ fn compile_top_level_item(
                     fields,
                 }]
             }
-            rustc_hir::VariantData::Tuple(fields, _, _) => {
-                let ty = Box::new(Type::Tuple(
+            VariantData::Tuple(fields, _, _) => {
+                let ty = Box::new(CoqType::Tuple(
                     fields.iter().map(|field| compile_type(field.ty)).collect(),
                 ));
                 vec![TopLevelItem::TypeAlias {
@@ -134,10 +131,10 @@ fn compile_top_level_item(
                     ty,
                 }]
             }
-            rustc_hir::VariantData::Unit(_, _) => vec![TopLevelItem::Error("Struct".to_string())],
+            VariantData::Unit(_, _) => vec![TopLevelItem::Error("Struct".to_string())],
         },
-        rustc_hir::ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
-        rustc_hir::ItemKind::Trait(_, _, _, _, items) => {
+        ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
+        ItemKind::Trait(_, _, _, _, items) => {
             vec![TopLevelItem::Trait {
                 name: item.ident.name.to_string(),
                 body: items
@@ -158,10 +155,10 @@ fn compile_top_level_item(
                     .collect(),
             }]
         }
-        rustc_hir::ItemKind::TraitAlias(_, _) => {
+        ItemKind::TraitAlias(_, _) => {
             vec![TopLevelItem::Error("TraitAlias".to_string())]
         }
-        rustc_hir::ItemKind::Impl(rustc_hir::Impl {
+        ItemKind::Impl(rustc_hir::Impl {
             items,
             self_ty,
             of_trait,
@@ -219,7 +216,7 @@ fn compile_top_level_item(
     }
 }
 
-pub fn compile_top_level(tcx: rustc_middle::ty::TyCtxt) -> TopLevel {
+pub fn compile_top_level(tcx: TyCtxt) -> TopLevel {
     TopLevel(
         tcx.hir()
             .items()

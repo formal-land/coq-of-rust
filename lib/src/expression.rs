@@ -1,11 +1,9 @@
-extern crate rustc_ast;
-extern crate rustc_hir;
-extern crate rustc_middle;
-
 use crate::path::*;
 use crate::pattern::*;
 use crate::render::*;
 use pretty::RcDoc;
+use rustc_ast::LitKind;
+use rustc_hir::{BinOp, BinOpKind};
 
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
@@ -20,7 +18,7 @@ pub struct MatchArm {
 pub enum Expr {
     LocalVar(String),
     Var(Path),
-    Literal(rustc_ast::LitKind),
+    Literal(LitKind),
     Call {
         func: Box<Expr>,
         args: Vec<Expr>,
@@ -87,26 +85,26 @@ pub enum Expr {
 
 /// The function [compile_bin_op] converts a hir binary operator to a
 /// string
-fn compile_bin_op(bin_op: &rustc_hir::BinOp) -> String {
+fn compile_bin_op(bin_op: &BinOp) -> String {
     match bin_op.node {
-        rustc_hir::BinOpKind::Add => "add".to_string(),
-        rustc_hir::BinOpKind::Sub => "sub".to_string(),
-        rustc_hir::BinOpKind::Mul => "mul".to_string(),
-        rustc_hir::BinOpKind::Div => "div".to_string(),
-        rustc_hir::BinOpKind::Rem => "rem".to_string(),
-        rustc_hir::BinOpKind::And => "and".to_string(),
-        rustc_hir::BinOpKind::Or => "or".to_string(),
-        rustc_hir::BinOpKind::BitXor => "bit_xor".to_string(),
-        rustc_hir::BinOpKind::BitAnd => "bit_and".to_string(),
-        rustc_hir::BinOpKind::BitOr => "bit_or".to_string(),
-        rustc_hir::BinOpKind::Shl => "shl".to_string(),
-        rustc_hir::BinOpKind::Shr => "shr".to_string(),
-        rustc_hir::BinOpKind::Eq => "eq".to_string(),
-        rustc_hir::BinOpKind::Lt => "lt".to_string(),
-        rustc_hir::BinOpKind::Le => "le".to_string(),
-        rustc_hir::BinOpKind::Ne => "ne".to_string(),
-        rustc_hir::BinOpKind::Ge => "ge".to_string(),
-        rustc_hir::BinOpKind::Gt => "gt".to_string(),
+        BinOpKind::Add => "add".to_string(),
+        BinOpKind::Sub => "sub".to_string(),
+        BinOpKind::Mul => "mul".to_string(),
+        BinOpKind::Div => "div".to_string(),
+        BinOpKind::Rem => "rem".to_string(),
+        BinOpKind::And => "and".to_string(),
+        BinOpKind::Or => "or".to_string(),
+        BinOpKind::BitXor => "bit_xor".to_string(),
+        BinOpKind::BitAnd => "bit_and".to_string(),
+        BinOpKind::BitOr => "bit_or".to_string(),
+        BinOpKind::Shl => "shl".to_string(),
+        BinOpKind::Shr => "shr".to_string(),
+        BinOpKind::Eq => "eq".to_string(),
+        BinOpKind::Lt => "lt".to_string(),
+        BinOpKind::Le => "le".to_string(),
+        BinOpKind::Ne => "ne".to_string(),
+        BinOpKind::Ge => "ge".to_string(),
+        BinOpKind::Gt => "gt".to_string(),
     }
 }
 
