@@ -8,13 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition main (_ : unit) :=
-  let strings := ComplexTypePath.into_vec ["tofu";"93";"18"] in
-  let numbers := collect
-    (filter_map (into_iter strings) (fun s => ok (parse s))) in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Results: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug numbers]) ;;
-  tt ;;
-  tt.

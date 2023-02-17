@@ -8,10 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition main (_ : unit) :=
-  let raw_p := 10 in
-  if not (eq (deref raw_p) 10) then
-    _crate.panicking.panic "assertion failed: *raw_p == 10"
-  else
-    tt ;;
-  tt.

@@ -27,9 +27,9 @@ Module ImplPoint.
       f
       "Point"
       "x"
-      self.x
+      self.(Point.x)
       "y"
-      self.y.
+      self.(Point.y).
 End ImplPoint.
 (* End impl [Point] *)
 
@@ -54,63 +54,3 @@ Module Rectangle.
   }.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
-
-Definition origin (_ : unit) :=
-  {| Point.x := 0 (* 0.0 *); Point.y := 0 (* 0.0 *); |}.
-
-Definition boxed_origin (_ : unit) :=
-  ImplBox.new {| Point.x := 0 (* 0.0 *); Point.y := 0 (* 0.0 *); |}.
-
-Definition main (_ : unit) :=
-  let point := origin tt in
-  let rectangle := {|
-    Rectangle.top_left := origin tt;
-    Rectangle.bottom_right
-      :=
-      {| Point.x := 3 (* 3.0 *); Point.y := neg 4 (* 4.0 *); |};
-  |} in
-  let boxed_rectangle := ImplBox.new
-    {|
-      Rectangle.top_left := origin tt;
-      Rectangle.bottom_right
-        :=
-        {| Point.x := 3 (* 3.0 *); Point.y := neg 4 (* 4.0 *); |};
-    |} in
-  let boxed_point := ImplBox.new (origin tt) in
-  let box_in_a_box := ImplBox.new (boxed_origin tt) in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Point occupies ";" bytes on the stack\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (mem.size_of_val point)]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Rectangle occupies ";" bytes on the stack\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (mem.size_of_val rectangle)]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Boxed point occupies ";" bytes on the stack\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        (mem.size_of_val boxed_point)]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Boxed rectangle occupies ";" bytes on the stack\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        (mem.size_of_val boxed_rectangle)]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Boxed box occupies ";" bytes on the stack\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        (mem.size_of_val box_in_a_box)]) ;;
-  tt ;;
-  let unboxed_point := deref boxed_point in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Unboxed point occupies ";" bytes on the stack\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        (mem.size_of_val unboxed_point)]) ;;
-  tt ;;
-  tt.

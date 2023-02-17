@@ -8,21 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition create_box (_ : unit) :=
-  let _box1 := ImplBox.new 3 in
-  tt.
-
-Definition main (_ : unit) :=
-  let _box2 := ImplBox.new 5 in
-  let _box3 := ImplBox.new 4 in
-  tt ;;
-  match into_iter {| Range.start := 0; Range.end := 1000; |} with
-  | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := _; |} =>
-      create_box tt ;;
-      tt
-    end ;;
-    tt from for
-  end.

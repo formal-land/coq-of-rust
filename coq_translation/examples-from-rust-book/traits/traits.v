@@ -26,7 +26,7 @@ Class Animal : Set := {
 (* Impl [Sheep] *)
 Module ImplSheep.
   Definition is_naked (self : ref Self) : bool :=
-    self.naked.
+    self.(Sheep.naked).
   
   Definition shear (self : ref Self) :=
     if is_naked self then
@@ -40,9 +40,9 @@ Module ImplSheep.
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1
           ["";" gets a haircut!\n"]
-          [_crate::fmt::ImplArgumentV1.new_display self.name]) ;;
+          [_crate::fmt::ImplArgumentV1.new_display self.(Sheep.name)]) ;;
       tt ;;
-      assign self.naked := true ;;
+      assign self.(Sheep.naked) := true ;;
       tt.
 End ImplSheep.
 (* End impl [Sheep] *)
@@ -53,7 +53,7 @@ Module ImplSheep.
     {| Sheep.name := name; Sheep.naked := false; |}.
   
   Definition name (self : ref Self) : ref str :=
-    self.name.
+    self.(Sheep.name).
   
   Definition noise (self : ref Self) : ref str :=
     if is_naked self then
@@ -66,15 +66,9 @@ Module ImplSheep.
       (_crate::fmt::ImplArguments.new_v1
         ["";" pauses briefly... ";"\n"]
         [_crate::fmt::ImplArgumentV1.new_display
-          self.name;_crate::fmt::ImplArgumentV1.new_display (noise self)]) ;;
+          self.(Sheep.name);_crate::fmt::ImplArgumentV1.new_display
+          (noise self)]) ;;
     tt ;;
     tt.
 End ImplSheep.
 (* End impl [Sheep] *)
-
-Definition main (_ : unit) :=
-  let dolly := Animal.new "Dolly" in
-  talk dolly ;;
-  shear dolly ;;
-  talk dolly ;;
-  tt.

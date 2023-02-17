@@ -8,35 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition multiply (_ : unit) :=
-  match parse first_number_str with
-  | Ok (first_number) =>
-    match parse second_number_str with
-    | Ok (second_number) => Ok (mul first_number second_number)
-    | Err (e) => Err e
-    end
-  | Err (e) => Err e
-  end.
-
-Definition print (_ : unit) :=
-  match result with
-  | Ok (n) =>
-    _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["n is ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display n]) ;;
-    tt
-  | Err (e) =>
-    _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Error: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display e]) ;;
-    tt
-  end.
-
-Definition main (_ : unit) :=
-  let twenty := multiply "10" "2" in
-  print twenty ;;
-  let tt := multiply "t" "2" in
-  print tt ;;
-  tt.

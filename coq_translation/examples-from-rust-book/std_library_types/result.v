@@ -29,25 +29,7 @@ Module checked :=
   End ImplMathError.
   (* End impl [MathError] *)
   
-  Error TyAlias.
-  
-  Definition div (_ : unit) :=
-    if eq y 0 (* 0.0 *) then
-      Err MathError.DivisionByZero
-    else
-      Ok (div x y).
-  
-  Definition sqrt (_ : unit) :=
-    if lt x 0 (* 0.0 *) then
-      Err MathError.NegativeSquareRoot
-    else
-      Ok (sqrt x).
-  
-  Definition ln (_ : unit) :=
-    if le x 0 (* 0.0 *) then
-      Err MathError.NonPositiveLogarithm
-    else
-      Ok (ln x)..
+  Error TyAlias..
 
 Error Enum.
 
@@ -70,56 +52,3 @@ End ImplMathError.
 (* End impl [MathError] *)
 
 Error TyAlias.
-
-Definition div (_ : unit) :=
-  if eq y 0 (* 0.0 *) then
-    Err MathError.DivisionByZero
-  else
-    Ok (div x y).
-
-Definition sqrt (_ : unit) :=
-  if lt x 0 (* 0.0 *) then
-    Err MathError.NegativeSquareRoot
-  else
-    Ok (sqrt x).
-
-Definition ln (_ : unit) :=
-  if le x 0 (* 0.0 *) then
-    Err MathError.NonPositiveLogarithm
-  else
-    Ok (ln x).
-
-Definition op (_ : unit) :=
-  match checked.div x y with
-  | Err (why) =>
-    _crate.rt.panic_fmt
-      (_crate::fmt::ImplArguments.new_v1
-        [""]
-        [_crate::fmt::ImplArgumentV1.new_debug why])
-  | Ok (ratio) =>
-    match checked.ln ratio with
-    | Err (why) =>
-      _crate.rt.panic_fmt
-        (_crate::fmt::ImplArguments.new_v1
-          [""]
-          [_crate::fmt::ImplArgumentV1.new_debug why])
-    | Ok (ln) =>
-      match checked.sqrt ln with
-      | Err (why) =>
-        _crate.rt.panic_fmt
-          (_crate::fmt::ImplArguments.new_v1
-            [""]
-            [_crate::fmt::ImplArgumentV1.new_debug why])
-      | Ok (sqrt) => sqrt
-      end
-    end
-  end.
-
-Definition main (_ : unit) :=
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        (op 1 (* 1.0 *) 10 (* 10.0 *))]) ;;
-  tt ;;
-  tt.

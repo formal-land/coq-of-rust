@@ -18,7 +18,10 @@ Module ImplEvenNumber.
     (self : ref Self)
     (f : ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "EvenNumber" self.0.
+    _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+      f
+      "EvenNumber"
+      self.(EvenNumber.0).
 End ImplEvenNumber.
 (* End impl [EvenNumber] *)
 
@@ -31,7 +34,7 @@ End ImplEvenNumber.
 (* Impl [EvenNumber] of trait [_crate.cmp.PartialEq]*)
 Module ImplEvenNumber.
   Definition eq (self : ref Self) (other : ref EvenNumber) : bool :=
-    eq self.0 other.0.
+    eq self.(EvenNumber.0) other.(EvenNumber.0).
 End ImplEvenNumber.
 (* End impl [EvenNumber] *)
 
@@ -47,60 +50,3 @@ Module ImplEvenNumber.
       Err ().
 End ImplEvenNumber.
 (* End impl [EvenNumber] *)
-
-Definition main (_ : unit) :=
-  match (ImplEvenNumber.try_from 8, Ok (EvenNumber 8)) with
-  | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        (deref left_val)
-        (deref right_val)
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  match (ImplEvenNumber.try_from 5, Err ()) with
-  | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        (deref left_val)
-        (deref right_val)
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  let result := try_into 8 in
-  match (result, Ok (EvenNumber 8)) with
-  | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        (deref left_val)
-        (deref right_val)
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  let result := try_into 5 in
-  match (result, Err ()) with
-  | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        (deref left_val)
-        (deref right_val)
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  tt.

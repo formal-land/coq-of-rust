@@ -32,34 +32,3 @@ Module ImplBook.
   
 End ImplBook.
 (* End impl [Book] *)
-
-Definition borrow_book (_ : unit) :=
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["I immutably borrowed ";" - ";" edition\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        book.title;_crate::fmt::ImplArgumentV1.new_display book.year]) ;;
-  tt ;;
-  tt.
-
-Definition new_edition (_ : unit) :=
-  assign book.year := 2014 ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["I mutably borrowed ";" - ";" edition\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        book.title;_crate::fmt::ImplArgumentV1.new_display book.year]) ;;
-  tt ;;
-  tt.
-
-Definition main (_ : unit) :=
-  let immutabook := {|
-    Book.author := "Douglas Hofstadter";
-    Book.title := "Gödel, Escher, Bach";
-    Book.year := 1979;
-  |} in
-  let mutabook := immutabook in
-  borrow_book immutabook ;;
-  borrow_book mutabook ;;
-  new_edition mutabook ;;
-  tt.

@@ -8,10 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition main (_ : unit) :=
-  let child := unwrap (spawn (arg (ImplCommand.new "sleep") "5")) in
-  let _result := unwrap (wait child) in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["reached end of main\n"] []) ;;
-  tt ;;
-  tt.

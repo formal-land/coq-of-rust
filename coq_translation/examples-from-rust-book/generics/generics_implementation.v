@@ -25,24 +25,13 @@ Definition GenVal : Set := GenVal.t.
 (* Impl [Val] *)
 Module ImplVal.
   Definition value (self : ref Self) : ref f64 :=
-    self.val.
+    self.(Val.val).
 End ImplVal.
 (* End impl [Val] *)
 
 (* Impl [GenVal] *)
 Module ImplGenVal.
   Definition value (self : ref Self) : ref T :=
-    self.gen_val.
+    self.(GenVal<T>.gen_val).
 End ImplGenVal.
 (* End impl [GenVal] *)
-
-Definition main (_ : unit) :=
-  let x := {| Val.val := 3 (* 3.0 *); |} in
-  let y := {| GenVal.gen_val := 3; |} in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";", ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        (value x);_crate::fmt::ImplArgumentV1.new_display (value y)]) ;;
-  tt ;;
-  tt.

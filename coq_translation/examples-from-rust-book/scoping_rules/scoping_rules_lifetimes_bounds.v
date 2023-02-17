@@ -18,29 +18,9 @@ Module ImplRef.
     (self : ref Self)
     (f : ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Ref" self.0.
+    _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+      f
+      "Ref"
+      self.(Ref<'_, T>.0).
 End ImplRef.
 (* End impl [Ref] *)
-
-Definition print (_ : unit) :=
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["`print`: t is ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug t]) ;;
-  tt ;;
-  tt.
-
-Definition print_ref (_ : unit) :=
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["`print_ref`: t is ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug t]) ;;
-  tt ;;
-  tt.
-
-Definition main (_ : unit) :=
-  let x := 7 in
-  let ref_x := Ref x in
-  print_ref ref_x ;;
-  print ref_x ;;
-  tt.

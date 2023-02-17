@@ -35,7 +35,10 @@ Module ImplPeeled.
     (self : ref Self)
     (f : ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Peeled" self.0.
+    _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+      f
+      "Peeled"
+      self.(Peeled.0).
 End ImplPeeled.
 (* End impl [Peeled] *)
 
@@ -49,7 +52,10 @@ Module ImplChopped.
     (self : ref Self)
     (f : ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Chopped" self.0.
+    _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+      f
+      "Chopped"
+      self.(Chopped.0).
 End ImplChopped.
 (* End impl [Chopped] *)
 
@@ -63,52 +69,9 @@ Module ImplCooked.
     (self : ref Self)
     (f : ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Cooked" self.0.
+    _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+      f
+      "Cooked"
+      self.(Cooked.0).
 End ImplCooked.
 (* End impl [Cooked] *)
-
-Definition peel (_ : unit) :=
-  match food with
-  | Some (food) => Some (Peeled food)
-  | None => None
-  end.
-
-Definition chop (_ : unit) :=
-  match peeled with
-  | Some (Peeled (food)) => Some (Chopped food)
-  | None => None
-  end.
-
-Definition cook (_ : unit) :=
-  map chopped (fun Chopped (food) => Cooked food).
-
-Definition process (_ : unit) :=
-  map
-    (map (map food (fun f => Peeled f)) (fun Peeled (f) => Chopped f))
-    (fun Chopped (f) => Cooked f).
-
-Definition eat (_ : unit) :=
-  match food with
-  | Some (food) =>
-    _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Mmm. I love ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug food]) ;;
-    tt
-  | None =>
-    _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1 ["Oh no! It wasn't edible.\n"] []) ;;
-    tt
-  end.
-
-Definition main (_ : unit) :=
-  let apple := Some Food.Apple in
-  let carrot := Some Food.Carrot in
-  let potato := None in
-  let cooked_apple := cook (chop (peel apple)) in
-  let cooked_carrot := cook (chop (peel carrot)) in
-  let cooked_potato := process potato in
-  eat cooked_apple ;;
-  eat cooked_carrot ;;
-  eat cooked_potato ;;
-  tt.

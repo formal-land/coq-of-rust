@@ -50,13 +50,3 @@ Module ImplClosedBox.
     {| ClosedBox.contents := contents; |}.
 End ImplClosedBox.
 (* End impl [ClosedBox] *)
-
-Definition main (_ : unit) :=
-  let open_box := {| my.OpenBox.contents := "public information"; |} in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["The open box contains: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display open_box.contents]) ;;
-  tt ;;
-  let _closed_box := my::ImplClosedBox.new "classified information" in
-  tt.

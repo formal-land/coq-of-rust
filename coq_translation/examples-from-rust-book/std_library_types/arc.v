@@ -8,24 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition main (_ : unit) :=
-  let apple := ImplArc.new "the same apple" in
-  match into_iter {| Range.start := 0; Range.end := 10; |} with
-  | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := _; |} =>
-      let apple := ImplArc.clone apple in
-      thread.spawn
-        (fun  => _crate.io._print
-          (_crate::fmt::ImplArguments.new_v1
-            ["";"\n"]
-            [_crate::fmt::ImplArgumentV1.new_debug apple]) ;;
-        tt ;;
-        tt) ;;
-      tt
-    end ;;
-    tt from for
-  end ;;
-  thread.sleep (ImplDuration.from_secs 1) ;;
-  tt.

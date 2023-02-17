@@ -8,16 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition apply (_ : unit) :=
-  f tt ;;
-  tt.
-
-Definition main (_ : unit) :=
-  let x := 7 in
-  let print := fun  => _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display x]) ;;
-  tt in
-  apply print ;;
-  tt.

@@ -25,44 +25,12 @@ Module ImplContainer.
     (number_1 : ref i32)
     (number_2 : ref i32)
     : bool :=
-    and (eq self.0 number_1) (eq self.1 number_2).
+    and (eq self.(Container.0) number_1) (eq self.(Container.1) number_2).
   
   Definition first (self : ref Self) : i32 :=
-    self.0.
+    self.(Container.0).
   
   Definition last (self : ref Self) : i32 :=
-    self.1.
+    self.(Container.1).
 End ImplContainer.
 (* End impl [Container] *)
-
-Definition difference (_ : unit) :=
-  sub (last container) (first container).
-
-Definition main (_ : unit) :=
-  let number_1 := 3 in
-  let number_2 := 10 in
-  let container := Container number_1 number_2 in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Does container contain ";" and ";": ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        number_1;_crate::fmt::ImplArgumentV1.new_display
-        number_2;_crate::fmt::ImplArgumentV1.new_display
-        (contains container number_1 number_2)]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["First number: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (first container)]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Last number: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (last container)]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["The difference is: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (difference container)]) ;;
-  tt ;;
-  tt.

@@ -65,33 +65,33 @@ fn compile_top_level_item(
     match &item.kind {
         rustc_hir::ItemKind::ExternCrate(_) => vec![],
         rustc_hir::ItemKind::Use(_, _) => vec![],
-        rustc_hir::ItemKind::Static(_, _, body_id) => {
-            let expr = tcx.hir().body(*body_id).value;
-            vec![TopLevelItem::Definition {
-                name: item.ident.name.to_string(),
-                args: vec![],
-                ret_ty: None,
-                body: compile_expr(tcx, expr),
-            }]
-        }
-        rustc_hir::ItemKind::Const(_, body_id) => {
-            let expr = tcx.hir().body(*body_id).value;
-            vec![TopLevelItem::Definition {
-                name: item.ident.name.to_string(),
-                args: vec![],
-                ret_ty: None,
-                body: compile_expr(tcx, expr),
-            }]
-        }
-        rustc_hir::ItemKind::Fn(_fn_sig, _, body_id) => {
-            let expr = tcx.hir().body(*body_id).value;
-            vec![TopLevelItem::Definition {
-                name: item.ident.name.to_string(),
-                args: vec![],
-                ret_ty: None,
-                body: compile_expr(tcx, expr),
-            }]
-        }
+        // rustc_hir::ItemKind::Static(_, _, body_id) => {
+        //     let expr = tcx.hir().body(*body_id).value;
+        //     vec![TopLevelItem::Definition {
+        //         name: item.ident.name.to_string(),
+        //         args: vec![],
+        //         ret_ty: None,
+        //         body: compile_expr(tcx, expr),
+        //     }]
+        // }
+        // rustc_hir::ItemKind::Const(_, body_id) => {
+        //     let expr = tcx.hir().body(*body_id).value;
+        //     vec![TopLevelItem::Definition {
+        //         name: item.ident.name.to_string(),
+        //         args: vec![],
+        //         ret_ty: None,
+        //         body: compile_expr(tcx, expr),
+        //     }]
+        // }
+        // rustc_hir::ItemKind::Fn(_fn_sig, _, body_id) => {
+        //     let expr = tcx.hir().body(*body_id).value;
+        //     vec![TopLevelItem::Definition {
+        //         name: item.ident.name.to_string(),
+        //         args: vec![],
+        //         ret_ty: None,
+        //         body: compile_expr(tcx, expr),
+        //     }]
+        // }
         rustc_hir::ItemKind::Macro(_, _) => vec![],
         rustc_hir::ItemKind::Mod(module) => {
             let items = module
@@ -172,16 +172,20 @@ fn compile_top_level_item(
                 .flat_map(|item| {
                     let item = tcx.hir().impl_item(item.id);
                     match &item.kind {
-                        rustc_hir::ImplItemKind::Const(_, body_id) => {
-                            let expr = tcx.hir().body(*body_id).value;
-                            vec![TopLevelItem::Definition {
-                                name: item.ident.name.to_string(),
-                                args: vec![],
-                                ret_ty: None,
-                                body: compile_expr(tcx, expr),
-                            }]
-                        }
+                        // rustc_hir::ImplItemKind::Const(_, body_id) => {
+                        //     let expr = tcx.hir().body(*body_id).value;
+                        //     vec![TopLevelItem::Definition {
+                        //         name: item.ident.name.to_string(),
+                        //         args: vec![],
+                        //         ret_ty: None,
+                        //         body: compile_expr(tcx, expr),
+                        //     }]
+                        // }
                         rustc_hir::ImplItemKind::Fn(fn_sig, body_id) => {
+                            let cr = tcx.typeck_body(*body_id);
+                            // println!();
+                            // println!("cr: {:?}", cr);
+                            // println!();
                             let arg_names = tcx.hir().body(*body_id).params.iter().map(|param| {
                                 match param.pat.kind {
                                     rustc_hir::PatKind::Binding(_, _, ident, _) => {
@@ -197,13 +201,14 @@ fn compile_top_level_item(
                                 name: item.ident.name.to_string(),
                                 args: arg_names.zip(arg_tys).collect(),
                                 ret_ty,
-                                body: compile_expr(tcx, expr),
+                                body: compile_expr(tcx, cr, expr),
                             }]
                         }
                         rustc_hir::ImplItemKind::Type(ty) => vec![TopLevelItem::TypeAlias {
                             name: item.ident.name.to_string(),
                             ty: Box::new(compile_type(ty)),
                         }],
+                        _ => vec![],
                     }
                 })
                 .collect();
@@ -216,6 +221,7 @@ fn compile_top_level_item(
                 body: TopLevel(items),
             }]
         }
+        _ => vec![],
     }
 }
 

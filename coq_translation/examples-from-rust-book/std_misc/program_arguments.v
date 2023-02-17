@@ -8,18 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition main (_ : unit) :=
-  let args := collect (env.args tt) in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["My path is ";".\n"]
-      [_crate::fmt::ImplArgumentV1.new_display args[0]]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["I got ";" arguments: ";".\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug
-        (sub (len args) 1);_crate::fmt::ImplArgumentV1.new_debug
-        args[{| RangeFrom.start := 1; |}]]) ;;
-  tt ;;
-  tt.

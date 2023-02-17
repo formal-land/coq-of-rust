@@ -8,15 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition main (_ : unit) :=
-  let number := 4 in
-  match number with
-  | i =>
-    _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["Zero\n"] []) ;;
-    tt
-  | i =>
-    _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1 ["Greater than zero\n"] []) ;;
-    tt
-  | _ => _crate.panicking.unreachable_display "Should never happen."
-  end.

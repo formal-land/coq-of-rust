@@ -8,9 +8,6 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition main (_ : unit) :=
-  Stmt_item.
-
 Module Person.
   Record t : Set := {
     name : String;
@@ -30,8 +27,8 @@ Module ImplPerson.
       f
       "Person"
       "name"
-      self.name
+      self.(main::Person.name)
       "age"
-      self.age.
+      self.(main::Person.age).
 End ImplPerson.
 (* End impl [Person] *)

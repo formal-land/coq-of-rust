@@ -13,16 +13,3 @@ Error TyAlias.
 Error TyAlias.
 
 Error TyAlias.
-
-Definition main (_ : unit) :=
-  let nanoseconds := 5 in
-  let inches := 2 in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";" nanoseconds + ";" inches = ";" unit?\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        nanoseconds;_crate::fmt::ImplArgumentV1.new_display
-        inches;_crate::fmt::ImplArgumentV1.new_display
-        (add nanoseconds inches)]) ;;
-  tt ;;
-  tt.

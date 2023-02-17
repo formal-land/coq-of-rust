@@ -11,6 +11,3 @@ Definition f64 : Set := Z.
 Error Enum.
 
 Error Enum.
-
-Definition main (_ : unit) :=
-  Stmt_item.

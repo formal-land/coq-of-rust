@@ -8,24 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition main (_ : unit) :=
-  let outer_var := 42 in
-  let closure_annotated := fun i => add i outer_var in
-  let closure_inferred := fun i => add i outer_var in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["closure_annotated: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (closure_annotated 1)]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["closure_inferred: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (closure_inferred 1)]) ;;
-  tt ;;
-  let one := fun  => 1 in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["closure returning one: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (one tt)]) ;;
-  tt ;;
-  tt.

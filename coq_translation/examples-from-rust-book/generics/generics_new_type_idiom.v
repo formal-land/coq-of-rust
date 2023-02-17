@@ -17,32 +17,13 @@ Definition Days : Set :=
 (* Impl [Years] *)
 Module ImplYears.
   Definition to_days (self : ref Self) : Days :=
-    Days (mul self.0 365).
+    Days (mul self.(Years.0) 365).
 End ImplYears.
 (* End impl [Years] *)
 
 (* Impl [Days] *)
 Module ImplDays.
   Definition to_years (self : ref Self) : Years :=
-    Years (div self.0 365).
+    Years (div self.(Days.0) 365).
 End ImplDays.
 (* End impl [Days] *)
-
-Definition old_enough (_ : unit) :=
-  ge age.0 18.
-
-Definition main (_ : unit) :=
-  let age := Years 5 in
-  let age_days := to_days age in
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Old enough ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (old_enough age)]) ;;
-  tt ;;
-  _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Old enough ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        (old_enough (to_years age_days))]) ;;
-  tt ;;
-  tt.

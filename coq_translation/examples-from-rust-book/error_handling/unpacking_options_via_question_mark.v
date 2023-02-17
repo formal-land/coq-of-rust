@@ -63,42 +63,12 @@ End ImplPhoneNumber.
 Module ImplPerson.
   Definition work_phone_area_code (self : ref Self) : Option :=
     match branch
-      match branch self.job with
+      match branch self.(Person.job) with
       | {| Break.0 := residual; |} => Return (from_residual residual)
       | {| Continue.0 := val; |} => val
-      end.phone_number with
+      end.(Job.phone_number) with
     | {| Break.0 := residual; |} => Return (from_residual residual)
     | {| Continue.0 := val; |} => val
-    end.area_code.
+    end.(PhoneNumber.area_code).
 End ImplPerson.
 (* End impl [Person] *)
-
-Definition main (_ : unit) :=
-  let p := {|
-    Person.job
-      :=
-      Some
-        {|
-          Job.phone_number
-            :=
-            Some
-              {|
-                PhoneNumber.area_code := Some 61;
-                PhoneNumber.number := 439222222;
-              |};
-        |};
-  |} in
-  match (work_phone_area_code p, Some 61) with
-  | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        (deref left_val)
-        (deref right_val)
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  tt.

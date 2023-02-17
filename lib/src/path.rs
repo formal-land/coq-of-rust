@@ -33,6 +33,17 @@ pub fn compile_path(path: &rustc_hir::Path) -> Path {
     }
 }
 
+pub fn compile_path_from_type(ty: &rustc_hir::Ty) -> Path {
+    match ty.kind {
+        rustc_hir::TyKind::Path(rustc_hir::QPath::Resolved(_, path)) => {
+            let mut path = compile_path(path);
+            prefix_last_by_impl(&mut path);
+            path
+        }
+        _ => Path::local("ComplexTypePath".to_string()),
+    }
+}
+
 fn prefix_last_by_impl(path: &mut Path) {
     let last = path.segments.pop().unwrap();
     path.segments.push(format!("Impl{last}"));
@@ -42,14 +53,7 @@ pub fn compile_qpath(qpath: &rustc_hir::QPath) -> Path {
     match qpath {
         rustc_hir::QPath::Resolved(_, path) => compile_path(path),
         rustc_hir::QPath::TypeRelative(ty, segment) => {
-            let ty = match ty.kind {
-                rustc_hir::TyKind::Path(rustc_hir::QPath::Resolved(_, path)) => {
-                    let mut path = compile_path(path);
-                    prefix_last_by_impl(&mut path);
-                    path
-                }
-                _ => Path::local("ComplexTypePath".to_string()),
-            };
+            let ty = compile_path_from_type(ty);
             Path {
                 segments: vec![ty.to_string(), segment.ident.name.to_string()],
             }

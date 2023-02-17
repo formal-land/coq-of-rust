@@ -37,39 +37,3 @@ Module ImplEmptyVec.
   
 End ImplEmptyVec.
 (* End impl [EmptyVec] *)
-
-Definition double_first (_ : unit) :=
-  let first := match branch (ok_or (first vec) EmptyVec) with
-  | {| Break.0 := residual; |} => Return (from_residual residual)
-  | {| Continue.0 := val; |} => val
-  end in
-  let parsed := match branch (parse first) with
-  | {| Break.0 := residual; |} => Return (from_residual residual)
-  | {| Continue.0 := val; |} => val
-  end in
-  Ok (mul 2 parsed).
-
-Definition print (_ : unit) :=
-  match result with
-  | Ok (n) =>
-    _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["The first doubled is ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display n]) ;;
-    tt
-  | Err (e) =>
-    _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Error: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display e]) ;;
-    tt
-  end.
-
-Definition main (_ : unit) :=
-  let numbers := ComplexTypePath.into_vec ["42";"93";"18"] in
-  let empty := _crate::vec::ImplVec.new tt in
-  let strings := ComplexTypePath.into_vec ["tofu";"93";"18"] in
-  print (double_first numbers) ;;
-  print (double_first empty) ;;
-  print (double_first strings) ;;
-  tt.

@@ -8,9 +8,6 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition main (_ : unit) :=
-  Stmt_item.
-
 Module Foo.
   Record t : Set := {
     x : u32 * u32;

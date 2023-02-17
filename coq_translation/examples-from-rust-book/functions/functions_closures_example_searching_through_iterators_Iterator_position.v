@@ -8,38 +8,3 @@ Definition u8 : Set := Z.
 (* Approximation *)
 Definition f64 : Set := Z.
 
-Definition main (_ : unit) :=
-  let vec := ComplexTypePath.into_vec [1;9;3;3;13;2] in
-  let index_of_first_even_number := position
-    (iter vec)
-    (fun x => eq (rem x 2) 0) in
-  match (index_of_first_even_number, Some 5) with
-  | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        (deref left_val)
-        (deref right_val)
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  let index_of_first_negative_number := position
-    (into_iter vec)
-    (fun x => lt x 0) in
-  match (index_of_first_negative_number, None) with
-  | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        (deref left_val)
-        (deref right_val)
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  tt.
