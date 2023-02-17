@@ -3,9 +3,21 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Error Struct.
@@ -18,7 +30,7 @@ Error Struct.
 Module ImplFooBar.
   Definition
     fmt
-    (self : static_ref Self)
+    (self : static_ref FooBar)
     (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.write_str f "FooBar".
@@ -31,7 +43,7 @@ Error Struct.
 Module ImplBarFoo.
   Definition
     fmt
-    (self : static_ref Self)
+    (self : static_ref BarFoo)
     (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.write_str f "BarFoo".
@@ -43,7 +55,7 @@ Module ImplFoo.
   Definition Output : Set :=
     FooBar.
   
-  Definition add (self : Self) (_rhs : Bar) : FooBar :=
+  Definition add (self : Foo) (_rhs : Bar) : FooBar :=
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1 ["> Foo.add(Bar) was called\n"] []) ;;
     tt ;;
@@ -56,7 +68,7 @@ Module ImplBar.
   Definition Output : Set :=
     BarFoo.
   
-  Definition add (self : Self) (_rhs : Foo) : BarFoo :=
+  Definition add (self : Bar) (_rhs : Foo) : BarFoo :=
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1 ["> Bar.add(Foo) was called\n"] []) ;;
     tt ;;

@@ -3,9 +3,21 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Error Enum.
@@ -15,16 +27,16 @@ Module ImplList.
   Definition new (_ : unit) : List :=
     Nil.
   
-  Definition prepend (self : Self) (elem : u32) : List :=
+  Definition prepend (self : List) (elem : u32) : List :=
     Cons elem (ImplBox.new self).
   
-  Definition len (self : static_ref Self) : u32 :=
+  Definition len (self : static_ref List) : u32 :=
     match deref self with
     | Cons (_, tail) => add 1 (len tail)
     | Nil => 0
     end.
   
-  Definition stringify (self : static_ref Self) : String :=
+  Definition stringify (self : static_ref List) : String :=
     match deref self with
     | Cons (head, tail) =>
       let res := _crate.fmt.format

@@ -3,9 +3,21 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Module Sheep.
@@ -26,14 +38,14 @@ Class Animal : Set := {
 
 (* Impl [Sheep] of trait [Animal]*)
 Module ImplSheep.
-  Definition noise (self : static_ref Self) : static_ref str :=
+  Definition noise (self : static_ref Sheep) : static_ref str :=
     "baaaaah!".
 End ImplSheep.
 (* End impl [Sheep] *)
 
 (* Impl [Cow] of trait [Animal]*)
 Module ImplCow.
-  Definition noise (self : static_ref Self) : static_ref str :=
+  Definition noise (self : static_ref Cow) : static_ref str :=
     "moooooo!".
 End ImplCow.
 (* End impl [Cow] *)

@@ -3,9 +3,21 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Module Point.
@@ -36,20 +48,20 @@ Definition Rectangle : Set := Rectangle.t.
 
 (* Impl [Rectangle] *)
 Module ImplRectangle.
-  Definition get_p1 (self : static_ref Self) : Point :=
+  Definition get_p1 (self : static_ref Rectangle) : Point :=
     self.p1.
   
-  Definition area (self : static_ref Self) : f64 :=
+  Definition area (self : static_ref Rectangle) : f64 :=
     let {| Point.x := x1; Point.y := y1; |} := self.p1 in
     let {| Point.x := x2; Point.y := y2; |} := self.p2 in
     abs (mul (sub x1 x2) (sub y1 y2)).
   
-  Definition perimeter (self : static_ref Self) : f64 :=
+  Definition perimeter (self : static_ref Rectangle) : f64 :=
     let {| Point.x := x1; Point.y := y1; |} := self.p1 in
     let {| Point.x := x2; Point.y := y2; |} := self.p2 in
     mul 2 (* 2.0 *) (add (abs (sub x1 x2)) (abs (sub y1 y2))).
   
-  Definition translate (self : mut_ref Self) (x : f64) (y : f64) :=
+  Definition translate (self : mut_ref Rectangle) (x : f64) (y : f64) :=
     assign self.p1.x := add self.p1.x x ;;
     assign self.p2.x := add self.p2.x x ;;
     assign self.p1.y := add self.p1.y y ;;
@@ -63,7 +75,7 @@ Definition Pair : Set :=
 
 (* Impl [Pair] *)
 Module ImplPair.
-  Definition destroy (self : Self) :=
+  Definition destroy (self : Pair) :=
     let Pair (first, second) := self in
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1

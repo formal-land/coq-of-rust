@@ -117,7 +117,7 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
             VariantData::Struct(fields, _) => {
                 let fields = fields
                     .iter()
-                    .map(|field| (field.ident.name.to_string(), compile_type(field.ty)))
+                    .map(|field| (field.ident.name.to_string(), compile_type(&tcx, field.ty)))
                     .collect();
                 vec![TopLevelItem::TypeRecord {
                     name: item.ident.name.to_string(),
@@ -126,7 +126,10 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
             }
             VariantData::Tuple(fields, _, _) => {
                 let ty = Box::new(CoqType::Tuple(
-                    fields.iter().map(|field| compile_type(field.ty)).collect(),
+                    fields
+                        .iter()
+                        .map(|field| compile_type(&tcx, field.ty))
+                        .collect(),
                 ));
                 vec![TopLevelItem::TypeAlias {
                     name: item.ident.name.to_string(),
@@ -145,10 +148,10 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                         let item = tcx.hir().trait_item(item.id);
                         let body = match &item.kind {
                             TraitItemKind::Const(ty, _) => TraitItem::Definition {
-                                ty: compile_type(ty),
+                                ty: compile_type(&tcx, ty),
                             },
                             TraitItemKind::Fn(fn_sig, _) => TraitItem::Definition {
-                                ty: compile_fn_decl(fn_sig.decl),
+                                ty: compile_fn_decl(&tcx, fn_sig.decl),
                             },
                             TraitItemKind::Type(_, _) => TraitItem::Type,
                         };
@@ -213,8 +216,8 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                             //     | ImplicitSelfKind::MutRef => true,
                             // };
 
-                            let arg_tys = inputs.iter().map(compile_type);
-                            let ret_ty = compile_fn_ret_ty(&output);
+                            let arg_tys = inputs.iter().map(|ty| compile_type(&tcx, ty));
+                            let ret_ty = compile_fn_ret_ty(&tcx, &output);
                             let expr = tcx.hir().body(*body_id).value;
 
                             vec![TopLevelItem::Definition {
@@ -226,12 +229,12 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                         }
                         ImplItemKind::Type(ty) => vec![TopLevelItem::TypeAlias {
                             name: item.ident.name.to_string(),
-                            ty: Box::new(compile_type(ty)),
+                            ty: Box::new(compile_type(&tcx, ty)),
                         }],
                     }
                 })
                 .collect();
-            let self_ty = compile_type(self_ty);
+            let self_ty = compile_type(&tcx, self_ty);
             vec![TopLevelItem::Impl {
                 self_ty,
                 of_trait: of_trait
