@@ -38,7 +38,7 @@ pub fn compile_type(tcx: &TyCtxt, ty: &Ty) -> CoqType {
         TyKind::Never => CoqType::Var(Path::local("Empty_set".to_string())),
         TyKind::Tup(tys) => CoqType::Tuple(tys.iter().map(|ty| compile_type(tcx, ty)).collect()),
         TyKind::Path(qpath) => match qpath {
-            rustc_hir::QPath::Resolved(ty, path) => match path.res {
+            rustc_hir::QPath::Resolved(_, path) => match path.res {
                 rustc_hir::def::Res::SelfTyAlias {
                     alias_to,
                     forbid_generic: _,

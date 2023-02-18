@@ -5,9 +5,7 @@ use crate::render::*;
 use crate::rust_to_coq::*;
 use pretty::RcDoc;
 
-use rustc_hir::{
-    Impl, ImplItemKind, ImplicitSelfKind, Item, ItemKind, PatKind, TraitItemKind, VariantData,
-};
+use rustc_hir::{Impl, ImplItemKind, Item, ItemKind, PatKind, TraitItemKind, VariantData};
 use rustc_middle::ty::TyCtxt;
 
 #[derive(Debug)]
@@ -185,13 +183,7 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                         }
                         ImplItemKind::Fn(
                             rustc_hir::FnSig {
-                                decl:
-                                    rustc_hir::FnDecl {
-                                        inputs,
-                                        output,
-                                        implicit_self,
-                                        ..
-                                    },
+                                decl: rustc_hir::FnDecl { inputs, output, .. },
                                 ..
                             },
                             body_id,
@@ -202,24 +194,9 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                                     _ => "Pattern".to_string(),
                                 }
                             });
-
-                            // println!(
-                            //     "function: {} has implicit_self: {implicit_self:?}",
-                            //     item.ident.name.to_string()
-                            // );
-
-                            // let linked_to_self = match &implicit_self {
-                            //     ImplicitSelfKind::None => false,
-                            //     ImplicitSelfKind::Imm
-                            //     | ImplicitSelfKind::Mut
-                            //     | ImplicitSelfKind::ImmRef
-                            //     | ImplicitSelfKind::MutRef => true,
-                            // };
-
                             let arg_tys = inputs.iter().map(|ty| compile_type(&tcx, ty));
-                            let ret_ty = compile_fn_ret_ty(&tcx, &output);
+                            let ret_ty = compile_fn_ret_ty(&tcx, output);
                             let expr = tcx.hir().body(*body_id).value;
-
                             vec![TopLevelItem::Definition {
                                 name: item.ident.name.to_string(),
                                 args: arg_names.zip(arg_tys).collect(),
