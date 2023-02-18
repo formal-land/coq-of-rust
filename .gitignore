@@ -13,3 +13,10 @@ Cargo.lock
 # Added by cargo
 
 /target
+
+# Coq compilation files
+*.aux
+*.glob
+*.vo
+*.vok
+*.vos
