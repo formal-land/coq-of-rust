@@ -16,13 +16,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Install Coq
+      run: sudo apt-get install coq
     - name: Format check
       run: cargo fmt --check
     - name: Build
       run: cargo build --verbose
     - name: Linting
       run: cargo clippy --all-targets --all-features -- -D warnings
-    - name: Run tests
+    - name: Translate Rust examples
       run: |
         cargo run -- translate --path examples-from-rust-book
         git -c color.ui=always diff --exit-code
