@@ -18,5 +18,5 @@ pub mod header;
 pub mod path;
 pub mod pattern;
 pub mod render;
-pub mod rust_to_coq;
 pub mod top_level;
+pub mod ty;

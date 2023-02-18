@@ -39,11 +39,7 @@ pub fn compile_type(tcx: &TyCtxt, ty: &Ty) -> CoqType {
         TyKind::Tup(tys) => CoqType::Tuple(tys.iter().map(|ty| compile_type(tcx, ty)).collect()),
         TyKind::Path(qpath) => match qpath {
             rustc_hir::QPath::Resolved(_, path) => match path.res {
-                rustc_hir::def::Res::SelfTyAlias {
-                    alias_to,
-                    forbid_generic: _,
-                    is_trait_impl: _,
-                } => {
+                rustc_hir::def::Res::SelfTyAlias { alias_to, .. } => {
                     let self_ty_alias_name = tcx.type_of(alias_to).to_string();
                     CoqType::Var(Path::local(self_ty_alias_name))
                 }

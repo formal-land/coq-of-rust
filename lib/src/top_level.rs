@@ -2,7 +2,7 @@ use crate::expression::*;
 use crate::header::*;
 use crate::path::*;
 use crate::render::*;
-use crate::rust_to_coq::*;
+use crate::ty::*;
 use pretty::RcDoc;
 
 use rustc_hir::{Impl, ImplItemKind, Item, ItemKind, PatKind, TraitItemKind, VariantData};
