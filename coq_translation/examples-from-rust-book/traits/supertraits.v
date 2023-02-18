@@ -3,25 +3,37 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Class Person : Set := {
-  name : ref Self -> String;
+  name : static_ref Self -> String;
 }.
 
 Class Student : Set := {
-  university : ref Self -> String;
+  university : static_ref Self -> String;
 }.
 
 Class Programmer : Set := {
-  fav_language : ref Self -> String;
+  fav_language : static_ref Self -> String;
 }.
 
 Class CompSciStudent : Set := {
-  git_username : ref Self -> String;
+  git_username : static_ref Self -> String;
 }.
 
 Definition comp_sci_student_greeting (_ : unit) :=

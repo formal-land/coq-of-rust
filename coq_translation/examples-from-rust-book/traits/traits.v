@@ -3,32 +3,44 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Module Sheep.
   Record t : Set := {
     naked : bool;
-    name : ref str;
+    name : static_ref str;
   }.
 End Sheep.
 Definition Sheep : Set := Sheep.t.
 
 Class Animal : Set := {
-  new : ref str -> Self;
-  name : ref Self -> ref str;
-  noise : ref Self -> ref str;
-  talk : ref Self -> _;
+  new : static_ref str -> Self;
+  name : static_ref Self -> static_ref str;
+  noise : static_ref Self -> static_ref str;
+  talk : static_ref Self -> _;
 }.
 
 (* Impl [Sheep] *)
 Module ImplSheep.
-  Definition is_naked (self : ref Self) : bool :=
+  Definition is_naked (self : static_ref Sheep) : bool :=
     self.naked.
   
-  Definition shear (self : ref Self) :=
+  Definition shear (self : mut_ref Sheep) :=
     if is_naked self then
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1
@@ -49,19 +61,19 @@ End ImplSheep.
 
 (* Impl [Sheep] of trait [Animal]*)
 Module ImplSheep.
-  Definition new (name : ref str) : Sheep :=
+  Definition new (name : static_ref str) : Sheep :=
     {| Sheep.name := name; Sheep.naked := false; |}.
   
-  Definition name (self : ref Self) : ref str :=
+  Definition name (self : static_ref Sheep) : static_ref str :=
     self.name.
   
-  Definition noise (self : ref Self) : ref str :=
+  Definition noise (self : static_ref Sheep) : static_ref str :=
     if is_naked self then
       "baaaaah?"
     else
       "baaaaah!".
   
-  Definition talk (self : ref Self) :=
+  Definition talk (self : static_ref Sheep) :=
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1
         ["";" pauses briefly... ";"\n"]

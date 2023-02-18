@@ -3,9 +3,21 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Module Number.
@@ -19,8 +31,8 @@ Definition Number : Set := Number.t.
 Module ImplNumber.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Number)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_struct_field1_finish
       f
@@ -32,7 +44,7 @@ End ImplNumber.
 
 (* Impl [Number] of trait [From]*)
 Module ImplNumber.
-  Definition from (item : i32) : Self :=
+  Definition from (item : i32) : Number :=
     {| Number.value := item; |}.
 End ImplNumber.
 (* End impl [Number] *)

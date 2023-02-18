@@ -3,9 +3,21 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Module Fibonacci.
@@ -21,7 +33,7 @@ Module ImplFibonacci.
   Definition Item : Set :=
     u32.
   
-  Definition next (self : ref Self) : Option :=
+  Definition next (self : mut_ref Fibonacci) : Option :=
     let current := self.curr in
     assign self.curr := self.next ;;
     assign self.next := add current self.next ;;

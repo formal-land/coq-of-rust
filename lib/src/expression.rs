@@ -1,11 +1,10 @@
-extern crate rustc_ast;
-extern crate rustc_hir;
-extern crate rustc_middle;
-
 use crate::path::*;
 use crate::pattern::*;
 use crate::render::*;
 use pretty::RcDoc;
+use rustc_ast::LitKind;
+use rustc_hir::{BinOp, BinOpKind};
+use rustc_middle::ty::TyCtxt;
 
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
@@ -20,7 +19,7 @@ pub struct MatchArm {
 pub enum Expr {
     LocalVar(String),
     Var(Path),
-    Literal(rustc_ast::LitKind),
+    Literal(LitKind),
     Call {
         func: Box<Expr>,
         args: Vec<Expr>,
@@ -87,26 +86,26 @@ pub enum Expr {
 
 /// The function [compile_bin_op] converts a hir binary operator to a
 /// string
-fn compile_bin_op(bin_op: &rustc_hir::BinOp) -> String {
+fn compile_bin_op(bin_op: &BinOp) -> String {
     match bin_op.node {
-        rustc_hir::BinOpKind::Add => "add".to_string(),
-        rustc_hir::BinOpKind::Sub => "sub".to_string(),
-        rustc_hir::BinOpKind::Mul => "mul".to_string(),
-        rustc_hir::BinOpKind::Div => "div".to_string(),
-        rustc_hir::BinOpKind::Rem => "rem".to_string(),
-        rustc_hir::BinOpKind::And => "and".to_string(),
-        rustc_hir::BinOpKind::Or => "or".to_string(),
-        rustc_hir::BinOpKind::BitXor => "bit_xor".to_string(),
-        rustc_hir::BinOpKind::BitAnd => "bit_and".to_string(),
-        rustc_hir::BinOpKind::BitOr => "bit_or".to_string(),
-        rustc_hir::BinOpKind::Shl => "shl".to_string(),
-        rustc_hir::BinOpKind::Shr => "shr".to_string(),
-        rustc_hir::BinOpKind::Eq => "eq".to_string(),
-        rustc_hir::BinOpKind::Lt => "lt".to_string(),
-        rustc_hir::BinOpKind::Le => "le".to_string(),
-        rustc_hir::BinOpKind::Ne => "ne".to_string(),
-        rustc_hir::BinOpKind::Ge => "ge".to_string(),
-        rustc_hir::BinOpKind::Gt => "gt".to_string(),
+        BinOpKind::Add => "add".to_string(),
+        BinOpKind::Sub => "sub".to_string(),
+        BinOpKind::Mul => "mul".to_string(),
+        BinOpKind::Div => "div".to_string(),
+        BinOpKind::Rem => "rem".to_string(),
+        BinOpKind::And => "and".to_string(),
+        BinOpKind::Or => "or".to_string(),
+        BinOpKind::BitXor => "bit_xor".to_string(),
+        BinOpKind::BitAnd => "bit_and".to_string(),
+        BinOpKind::BitOr => "bit_or".to_string(),
+        BinOpKind::Shl => "shl".to_string(),
+        BinOpKind::Shr => "shr".to_string(),
+        BinOpKind::Eq => "eq".to_string(),
+        BinOpKind::Lt => "lt".to_string(),
+        BinOpKind::Le => "le".to_string(),
+        BinOpKind::Ne => "ne".to_string(),
+        BinOpKind::Ge => "ge".to_string(),
+        BinOpKind::Gt => "gt".to_string(),
     }
 }
 
@@ -134,7 +133,7 @@ fn tt() -> Expr {
     Expr::LocalVar("tt".to_string())
 }
 
-pub fn compile_expr(tcx: rustc_middle::ty::TyCtxt, expr: &rustc_hir::Expr) -> Expr {
+pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
     match &expr.kind {
         rustc_hir::ExprKind::Box(expr) => compile_expr(tcx, expr),
         rustc_hir::ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
@@ -316,11 +315,7 @@ pub fn compile_expr(tcx: rustc_middle::ty::TyCtxt, expr: &rustc_hir::Expr) -> Ex
 ///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Block.html
 /// - https://doc.rust-lang.org/reference/statements.html and
 ///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Stmt.html
-fn compile_stmts(
-    tcx: rustc_middle::ty::TyCtxt,
-    stmts: &[rustc_hir::Stmt],
-    expr: Option<&rustc_hir::Expr>,
-) -> Expr {
+fn compile_stmts(tcx: TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir::Expr>) -> Expr {
     match stmts {
         [stmt, stmts @ ..] => match stmt.kind {
             rustc_hir::StmtKind::Local(rustc_hir::Local { pat, init, .. }) => {
@@ -348,7 +343,7 @@ fn compile_stmts(
 
 /// [compile_block] compiles hir blocks into coq-of-rust
 /// See the doc for [compile_stmts]
-fn compile_block(tcx: rustc_middle::ty::TyCtxt, block: &rustc_hir::Block) -> Expr {
+fn compile_block(tcx: TyCtxt, block: &rustc_hir::Block) -> Expr {
     compile_stmts(tcx, block.stmts, block.expr)
 }
 

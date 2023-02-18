@@ -3,15 +3,27 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Module Book.
   Record t : Set := {
-    author : ref str;
-    title : ref str;
+    author : static_ref str;
+    title : static_ref str;
     year : u32;
   }.
 End Book.
@@ -19,7 +31,7 @@ Definition Book : Set := Book.t.
 
 (* Impl [Book] of trait [_crate.clone.Clone]*)
 Module ImplBook.
-  Definition clone (self : ref Self) : Book :=
+  Definition clone (self : static_ref Book) : Book :=
     let _ := tt in
     let _ := tt in
     let _ := tt in

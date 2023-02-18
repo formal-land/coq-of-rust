@@ -3,9 +3,21 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Error Enum.
@@ -14,8 +26,8 @@ Error Enum.
 Module ImplInch.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Inch)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate.intrinsics.unreachable tt.
 End ImplInch.
@@ -23,7 +35,7 @@ End ImplInch.
 
 (* Impl [Inch] of trait [_crate.clone.Clone]*)
 Module ImplInch.
-  Definition clone (self : ref Self) : Inch :=
+  Definition clone (self : static_ref Inch) : Inch :=
     deref self.
 End ImplInch.
 (* End impl [Inch] *)
@@ -40,8 +52,8 @@ Error Enum.
 Module ImplMm.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Mm)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate.intrinsics.unreachable tt.
 End ImplMm.
@@ -49,7 +61,7 @@ End ImplMm.
 
 (* Impl [Mm] of trait [_crate.clone.Clone]*)
 Module ImplMm.
-  Definition clone (self : ref Self) : Mm :=
+  Definition clone (self : static_ref Mm) : Mm :=
     deref self.
 End ImplMm.
 (* End impl [Mm] *)
@@ -67,8 +79,8 @@ Definition Length : Set :=
 Module ImplLength.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Length<Unit>)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_tuple_field2_finish
       f
@@ -80,7 +92,7 @@ End ImplLength.
 
 (* Impl [Length] of trait [_crate.clone.Clone]*)
 Module ImplLength.
-  Definition clone (self : ref Self) : Length :=
+  Definition clone (self : static_ref Length<Unit>) : Length :=
     Length (_crate.clone.Clone.clone self.0) (_crate.clone.Clone.clone self.1).
 End ImplLength.
 (* End impl [Length] *)
@@ -96,7 +108,7 @@ Module ImplLength.
   Definition Output : Set :=
     Length.
   
-  Definition add (self : Self) (rhs : Length) : Length :=
+  Definition add (self : Length<Unit>) (rhs : Length) : Length :=
     Length (add self.0 rhs.0) PhantomData.
 End ImplLength.
 (* End impl [Length] *)

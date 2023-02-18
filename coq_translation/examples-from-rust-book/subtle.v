@@ -3,9 +3,21 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Definition Choice : Set :=
@@ -19,7 +31,7 @@ End ImplChoice.
 
 (* Impl [Choice] of trait [_crate.clone.Clone]*)
 Module ImplChoice.
-  Definition clone (self : ref Self) : Choice :=
+  Definition clone (self : static_ref Choice) : Choice :=
     let _ := tt in
     deref self.
 End ImplChoice.
@@ -29,8 +41,8 @@ End ImplChoice.
 Module ImplChoice.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref Choice)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Choice" self.0.
 End ImplChoice.
@@ -38,7 +50,7 @@ End ImplChoice.
 
 (* Impl [Choice] *)
 Module ImplChoice.
-  Definition unwrap_u8 (self : ref Self) : u8 :=
+  Definition unwrap_u8 (self : static_ref Choice) : u8 :=
     self.0.
 End ImplChoice.
 (* End impl [Choice] *)
@@ -64,14 +76,14 @@ Module ImplChoice.
   Definition Output : Set :=
     Choice.
   
-  Definition bitand (self : Self) (rhs : Choice) : Choice :=
+  Definition bitand (self : Choice) (rhs : Choice) : Choice :=
     into (bit_and self.0 rhs.0).
 End ImplChoice.
 (* End impl [Choice] *)
 
 (* Impl [Choice] of trait [BitAndAssign]*)
 Module ImplChoice.
-  Definition bitand_assign (self : ref Self) (rhs : Choice) :=
+  Definition bitand_assign (self : mut_ref Choice) (rhs : Choice) :=
     assign deref self := bit_and (deref self) rhs ;;
     tt.
 End ImplChoice.
@@ -82,14 +94,14 @@ Module ImplChoice.
   Definition Output : Set :=
     Choice.
   
-  Definition bitor (self : Self) (rhs : Choice) : Choice :=
+  Definition bitor (self : Choice) (rhs : Choice) : Choice :=
     into (bit_or self.0 rhs.0).
 End ImplChoice.
 (* End impl [Choice] *)
 
 (* Impl [Choice] of trait [BitOrAssign]*)
 Module ImplChoice.
-  Definition bitor_assign (self : ref Self) (rhs : Choice) :=
+  Definition bitor_assign (self : mut_ref Choice) (rhs : Choice) :=
     assign deref self := bit_or (deref self) rhs ;;
     tt.
 End ImplChoice.
@@ -100,14 +112,14 @@ Module ImplChoice.
   Definition Output : Set :=
     Choice.
   
-  Definition bitxor (self : Self) (rhs : Choice) : Choice :=
+  Definition bitxor (self : Choice) (rhs : Choice) : Choice :=
     into (bit_xor self.0 rhs.0).
 End ImplChoice.
 (* End impl [Choice] *)
 
 (* Impl [Choice] of trait [BitXorAssign]*)
 Module ImplChoice.
-  Definition bitxor_assign (self : ref Self) (rhs : Choice) :=
+  Definition bitxor_assign (self : mut_ref Choice) (rhs : Choice) :=
     assign deref self := bit_xor (deref self) rhs ;;
     tt.
 End ImplChoice.
@@ -118,7 +130,7 @@ Module ImplChoice.
   Definition Output : Set :=
     Choice.
   
-  Definition not (self : Self) : Choice :=
+  Definition not (self : Choice) : Choice :=
     into (bit_and 1 (not self.0)).
 End ImplChoice.
 (* End impl [Choice] *)
@@ -142,13 +154,13 @@ End ImplChoice.
 (* End impl [Choice] *)
 
 Class ConstantTimeEq : Set := {
-  ct_eq : ref Self -> ref Self -> Choice;
-  ct_ne : ref Self -> ref Self -> Choice;
+  ct_eq : static_ref Self -> static_ref Self -> Choice;
+  ct_ne : static_ref Self -> static_ref Self -> Choice;
 }.
 
 (* Impl [Slice] of trait [ConstantTimeEq]*)
 Module ImplSlice.
-  Definition ct_eq (self : ref Self) (_rhs : ref Slice) : Choice :=
+  Definition ct_eq (self : static_ref [T]) (_rhs : static_ref Slice) : Choice :=
     let len := len self in
     if ne len (len _rhs) then
       Return (ImplChoice.from 0) ;;
@@ -172,14 +184,18 @@ End ImplSlice.
 
 (* Impl [Choice] of trait [ConstantTimeEq]*)
 Module ImplChoice.
-  Definition ct_eq (self : ref Self) (rhs : ref Choice) : Choice :=
+  Definition
+    ct_eq
+    (self : static_ref Choice)
+    (rhs : static_ref Choice)
+    : Choice :=
     not (bit_xor (deref self) (deref rhs)).
 End ImplChoice.
 (* End impl [Choice] *)
 
 (* Impl [u8] of trait [ConstantTimeEq]*)
 Module Implu8.
-  Definition ct_eq (self : ref Self) (other : ref u8) : Choice :=
+  Definition ct_eq (self : static_ref u8) (other : static_ref u8) : Choice :=
     let x := bit_xor self other in
     let y := shr (bit_or x (wrapping_neg x)) (sub 8 1) in
     into (bit_xor y 1).
@@ -188,14 +204,14 @@ End Implu8.
 
 (* Impl [i8] of trait [ConstantTimeEq]*)
 Module Impli8.
-  Definition ct_eq (self : ref Self) (other : ref i8) : Choice :=
+  Definition ct_eq (self : static_ref i8) (other : static_ref i8) : Choice :=
     ct_eq (deref self) (deref other).
 End Impli8.
 (* End impl [i8] *)
 
 (* Impl [u16] of trait [ConstantTimeEq]*)
 Module Implu16.
-  Definition ct_eq (self : ref Self) (other : ref u16) : Choice :=
+  Definition ct_eq (self : static_ref u16) (other : static_ref u16) : Choice :=
     let x := bit_xor self other in
     let y := shr (bit_or x (wrapping_neg x)) (sub 16 1) in
     into (bit_xor y 1).
@@ -204,14 +220,14 @@ End Implu16.
 
 (* Impl [i16] of trait [ConstantTimeEq]*)
 Module Impli16.
-  Definition ct_eq (self : ref Self) (other : ref i16) : Choice :=
+  Definition ct_eq (self : static_ref i16) (other : static_ref i16) : Choice :=
     ct_eq (deref self) (deref other).
 End Impli16.
 (* End impl [i16] *)
 
 (* Impl [u32] of trait [ConstantTimeEq]*)
 Module Implu32.
-  Definition ct_eq (self : ref Self) (other : ref u32) : Choice :=
+  Definition ct_eq (self : static_ref u32) (other : static_ref u32) : Choice :=
     let x := bit_xor self other in
     let y := shr (bit_or x (wrapping_neg x)) (sub 32 1) in
     into (bit_xor y 1).
@@ -220,14 +236,14 @@ End Implu32.
 
 (* Impl [i32] of trait [ConstantTimeEq]*)
 Module Impli32.
-  Definition ct_eq (self : ref Self) (other : ref i32) : Choice :=
+  Definition ct_eq (self : static_ref i32) (other : static_ref i32) : Choice :=
     ct_eq (deref self) (deref other).
 End Impli32.
 (* End impl [i32] *)
 
 (* Impl [u64] of trait [ConstantTimeEq]*)
 Module Implu64.
-  Definition ct_eq (self : ref Self) (other : ref u64) : Choice :=
+  Definition ct_eq (self : static_ref u64) (other : static_ref u64) : Choice :=
     let x := bit_xor self other in
     let y := shr (bit_or x (wrapping_neg x)) (sub 64 1) in
     into (bit_xor y 1).
@@ -236,14 +252,18 @@ End Implu64.
 
 (* Impl [i64] of trait [ConstantTimeEq]*)
 Module Impli64.
-  Definition ct_eq (self : ref Self) (other : ref i64) : Choice :=
+  Definition ct_eq (self : static_ref i64) (other : static_ref i64) : Choice :=
     ct_eq (deref self) (deref other).
 End Impli64.
 (* End impl [i64] *)
 
 (* Impl [usize] of trait [ConstantTimeEq]*)
 Module Implusize.
-  Definition ct_eq (self : ref Self) (other : ref usize) : Choice :=
+  Definition
+    ct_eq
+    (self : static_ref usize)
+    (other : static_ref usize)
+    : Choice :=
     let x := bit_xor self other in
     let y := shr
       (bit_or x (wrapping_neg x))
@@ -254,32 +274,36 @@ End Implusize.
 
 (* Impl [isize] of trait [ConstantTimeEq]*)
 Module Implisize.
-  Definition ct_eq (self : ref Self) (other : ref isize) : Choice :=
+  Definition
+    ct_eq
+    (self : static_ref isize)
+    (other : static_ref isize)
+    : Choice :=
     ct_eq (deref self) (deref other).
 End Implisize.
 (* End impl [isize] *)
 
 Class ConditionallySelectable : Set := {
-  conditional_select : ref Self -> ref Self -> Choice -> Self;
-  conditional_assign : ref Self -> ref Self -> Choice -> _;
-  conditional_swap : ref Self -> ref Self -> Choice -> _;
+  conditional_select : static_ref Self -> static_ref Self -> Choice -> Self;
+  conditional_assign : mut_ref Self -> static_ref Self -> Choice -> _;
+  conditional_swap : mut_ref Self -> mut_ref Self -> Choice -> _;
 }.
 
 (* Impl [u8] of trait [ConditionallySelectable]*)
 Module Implu8.
   Definition
     conditional_select
-    (a : ref Self)
-    (b : ref Self)
+    (a : static_ref u8)
+    (b : static_ref u8)
     (choice : Choice)
-    : Self :=
+    : u8 :=
     let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition
     conditional_assign
-    (self : ref Self)
-    (other : ref Self)
+    (self : mut_ref u8)
+    (other : static_ref u8)
     (choice : Choice)
     :=
     let mask := neg (unwrap_u8 choice) in
@@ -288,7 +312,12 @@ Module Implu8.
       (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
-  Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
+  Definition
+    conditional_swap
+    (a : mut_ref u8)
+    (b : mut_ref u8)
+    (choice : Choice)
+    :=
     let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
     assign deref a := bit_xor (deref a) t ;;
@@ -301,17 +330,17 @@ End Implu8.
 Module Impli8.
   Definition
     conditional_select
-    (a : ref Self)
-    (b : ref Self)
+    (a : static_ref i8)
+    (b : static_ref i8)
     (choice : Choice)
-    : Self :=
+    : i8 :=
     let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition
     conditional_assign
-    (self : ref Self)
-    (other : ref Self)
+    (self : mut_ref i8)
+    (other : static_ref i8)
     (choice : Choice)
     :=
     let mask := neg (unwrap_u8 choice) in
@@ -320,7 +349,12 @@ Module Impli8.
       (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
-  Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
+  Definition
+    conditional_swap
+    (a : mut_ref i8)
+    (b : mut_ref i8)
+    (choice : Choice)
+    :=
     let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
     assign deref a := bit_xor (deref a) t ;;
@@ -333,17 +367,17 @@ End Impli8.
 Module Implu16.
   Definition
     conditional_select
-    (a : ref Self)
-    (b : ref Self)
+    (a : static_ref u16)
+    (b : static_ref u16)
     (choice : Choice)
-    : Self :=
+    : u16 :=
     let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition
     conditional_assign
-    (self : ref Self)
-    (other : ref Self)
+    (self : mut_ref u16)
+    (other : static_ref u16)
     (choice : Choice)
     :=
     let mask := neg (unwrap_u8 choice) in
@@ -352,7 +386,12 @@ Module Implu16.
       (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
-  Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
+  Definition
+    conditional_swap
+    (a : mut_ref u16)
+    (b : mut_ref u16)
+    (choice : Choice)
+    :=
     let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
     assign deref a := bit_xor (deref a) t ;;
@@ -365,17 +404,17 @@ End Implu16.
 Module Impli16.
   Definition
     conditional_select
-    (a : ref Self)
-    (b : ref Self)
+    (a : static_ref i16)
+    (b : static_ref i16)
     (choice : Choice)
-    : Self :=
+    : i16 :=
     let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition
     conditional_assign
-    (self : ref Self)
-    (other : ref Self)
+    (self : mut_ref i16)
+    (other : static_ref i16)
     (choice : Choice)
     :=
     let mask := neg (unwrap_u8 choice) in
@@ -384,7 +423,12 @@ Module Impli16.
       (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
-  Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
+  Definition
+    conditional_swap
+    (a : mut_ref i16)
+    (b : mut_ref i16)
+    (choice : Choice)
+    :=
     let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
     assign deref a := bit_xor (deref a) t ;;
@@ -397,17 +441,17 @@ End Impli16.
 Module Implu32.
   Definition
     conditional_select
-    (a : ref Self)
-    (b : ref Self)
+    (a : static_ref u32)
+    (b : static_ref u32)
     (choice : Choice)
-    : Self :=
+    : u32 :=
     let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition
     conditional_assign
-    (self : ref Self)
-    (other : ref Self)
+    (self : mut_ref u32)
+    (other : static_ref u32)
     (choice : Choice)
     :=
     let mask := neg (unwrap_u8 choice) in
@@ -416,7 +460,12 @@ Module Implu32.
       (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
-  Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
+  Definition
+    conditional_swap
+    (a : mut_ref u32)
+    (b : mut_ref u32)
+    (choice : Choice)
+    :=
     let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
     assign deref a := bit_xor (deref a) t ;;
@@ -429,17 +478,17 @@ End Implu32.
 Module Impli32.
   Definition
     conditional_select
-    (a : ref Self)
-    (b : ref Self)
+    (a : static_ref i32)
+    (b : static_ref i32)
     (choice : Choice)
-    : Self :=
+    : i32 :=
     let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition
     conditional_assign
-    (self : ref Self)
-    (other : ref Self)
+    (self : mut_ref i32)
+    (other : static_ref i32)
     (choice : Choice)
     :=
     let mask := neg (unwrap_u8 choice) in
@@ -448,7 +497,12 @@ Module Impli32.
       (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
-  Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
+  Definition
+    conditional_swap
+    (a : mut_ref i32)
+    (b : mut_ref i32)
+    (choice : Choice)
+    :=
     let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
     assign deref a := bit_xor (deref a) t ;;
@@ -461,17 +515,17 @@ End Impli32.
 Module Implu64.
   Definition
     conditional_select
-    (a : ref Self)
-    (b : ref Self)
+    (a : static_ref u64)
+    (b : static_ref u64)
     (choice : Choice)
-    : Self :=
+    : u64 :=
     let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition
     conditional_assign
-    (self : ref Self)
-    (other : ref Self)
+    (self : mut_ref u64)
+    (other : static_ref u64)
     (choice : Choice)
     :=
     let mask := neg (unwrap_u8 choice) in
@@ -480,7 +534,12 @@ Module Implu64.
       (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
-  Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
+  Definition
+    conditional_swap
+    (a : mut_ref u64)
+    (b : mut_ref u64)
+    (choice : Choice)
+    :=
     let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
     assign deref a := bit_xor (deref a) t ;;
@@ -493,17 +552,17 @@ End Implu64.
 Module Impli64.
   Definition
     conditional_select
-    (a : ref Self)
-    (b : ref Self)
+    (a : static_ref i64)
+    (b : static_ref i64)
     (choice : Choice)
-    : Self :=
+    : i64 :=
     let mask := neg (unwrap_u8 choice) in
     bit_xor a (bit_and mask (bit_xor a b)).
   
   Definition
     conditional_assign
-    (self : ref Self)
-    (other : ref Self)
+    (self : mut_ref i64)
+    (other : static_ref i64)
     (choice : Choice)
     :=
     let mask := neg (unwrap_u8 choice) in
@@ -512,7 +571,12 @@ Module Impli64.
       (bit_and mask (bit_xor (deref self) (deref other))) ;;
     tt.
   
-  Definition conditional_swap (a : ref Self) (b : ref Self) (choice : Choice) :=
+  Definition
+    conditional_swap
+    (a : mut_ref i64)
+    (b : mut_ref i64)
+    (choice : Choice)
+    :=
     let mask := neg (unwrap_u8 choice) in
     let t := bit_and mask (bit_xor (deref a) (deref b)) in
     assign deref a := bit_xor (deref a) t ;;
@@ -525,21 +589,21 @@ End Impli64.
 Module ImplChoice.
   Definition
     conditional_select
-    (a : ref Self)
-    (b : ref Self)
+    (a : static_ref Choice)
+    (b : static_ref Choice)
     (choice : Choice)
-    : Self :=
+    : Choice :=
     Choice (Implu8.conditional_select a.0 b.0 choice).
 End ImplChoice.
 (* End impl [Choice] *)
 
 Class ConditionallyNegatable : Set := {
-  conditional_negate : ref Self -> Choice -> _;
+  conditional_negate : mut_ref Self -> Choice -> _;
 }.
 
 (* Impl [T] of trait [ConditionallyNegatable]*)
 Module ImplT.
-  Definition conditional_negate (self : ref Self) (choice : Choice) :=
+  Definition conditional_negate (self : mut_ref T) (choice : Choice) :=
     let self_neg := neg self in
     conditional_assign self self_neg choice ;;
     tt.
@@ -556,7 +620,7 @@ Definition CtOption : Set := CtOption.t.
 
 (* Impl [CtOption] of trait [_crate.clone.Clone]*)
 Module ImplCtOption.
-  Definition clone (self : ref Self) : CtOption :=
+  Definition clone (self : static_ref CtOption<T>) : CtOption :=
     {|
       CtOption.value := _crate.clone.Clone.clone self.value;
       CtOption.is_some := _crate.clone.Clone.clone self.is_some;
@@ -574,8 +638,8 @@ End ImplCtOption.
 Module ImplCtOption.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref CtOption<T>)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_struct_field2_finish
       f
@@ -602,7 +666,7 @@ Module ImplCtOption.
   Definition new (value : T) (is_some : Choice) : CtOption :=
     {| CtOption.value := value; CtOption.is_some := is_some; |}.
   
-  Definition expect (self : Self) (msg : ref str) : T :=
+  Definition expect (self : CtOption<T>) (msg : static_ref str) : T :=
     match (unwrap_u8 self.is_some, 1) with
     | (left_val, right_val) =>
       if not (eq (deref left_val) (deref right_val)) then
@@ -621,7 +685,7 @@ Module ImplCtOption.
     end ;;
     self.value.
   
-  Definition unwrap (self : Self) : T :=
+  Definition unwrap (self : CtOption<T>) : T :=
     match (unwrap_u8 self.is_some, 1) with
     | (left_val, right_val) =>
       if not (eq (deref left_val) (deref right_val)) then
@@ -637,30 +701,30 @@ Module ImplCtOption.
     end ;;
     self.value.
   
-  Definition unwrap_or (self : Self) (def : T) : T :=
+  Definition unwrap_or (self : CtOption<T>) (def : T) : T :=
     ImplT.conditional_select def self.value self.is_some.
   
-  Definition unwrap_or_else (self : Self) (f : F) : T :=
+  Definition unwrap_or_else (self : CtOption<T>) (f : F) : T :=
     ImplT.conditional_select (f tt) self.value self.is_some.
   
-  Definition is_some (self : ref Self) : Choice :=
+  Definition is_some (self : static_ref CtOption<T>) : Choice :=
     self.is_some.
   
-  Definition is_none (self : ref Self) : Choice :=
+  Definition is_none (self : static_ref CtOption<T>) : Choice :=
     not self.is_some.
   
-  Definition map (self : Self) (f : F) : CtOption :=
+  Definition map (self : CtOption<T>) (f : F) : CtOption :=
     ImplCtOption.new
       (f (ImplT.conditional_select (ImplT.default tt) self.value self.is_some))
       self.is_some.
   
-  Definition and_then (self : Self) (f : F) : CtOption :=
+  Definition and_then (self : CtOption<T>) (f : F) : CtOption :=
     let tmp := f
       (ImplT.conditional_select (ImplT.default tt) self.value self.is_some) in
     assign tmp.is_some := bit_and tmp.is_some self.is_some ;;
     tmp.
   
-  Definition or_else (self : Self) (f : F) : CtOption :=
+  Definition or_else (self : CtOption<T>) (f : F) : CtOption :=
     let is_none := is_none self in
     let f := f tt in
     ImplSelf.conditional_select self f is_none.
@@ -671,10 +735,10 @@ End ImplCtOption.
 Module ImplCtOption.
   Definition
     conditional_select
-    (a : ref Self)
-    (b : ref Self)
+    (a : static_ref CtOption<T>)
+    (b : static_ref CtOption<T>)
     (choice : Choice)
-    : Self :=
+    : CtOption<T> :=
     ImplCtOption.new
       (ImplT.conditional_select a.value b.value choice)
       (ImplChoice.conditional_select a.is_some b.is_some choice).
@@ -683,7 +747,11 @@ End ImplCtOption.
 
 (* Impl [CtOption] of trait [ConstantTimeEq]*)
 Module ImplCtOption.
-  Definition ct_eq (self : ref Self) (rhs : ref CtOption) : Choice :=
+  Definition
+    ct_eq
+    (self : static_ref CtOption<T>)
+    (rhs : static_ref CtOption)
+    : Choice :=
     let a := is_some self in
     let b := is_some rhs in
     bit_or
@@ -693,12 +761,12 @@ End ImplCtOption.
 (* End impl [CtOption] *)
 
 Class ConstantTimeGreater : Set := {
-  ct_gt : ref Self -> ref Self -> Choice;
+  ct_gt : static_ref Self -> static_ref Self -> Choice;
 }.
 
 (* Impl [u8] of trait [ConstantTimeGreater]*)
 Module Implu8.
-  Definition ct_gt (self : ref Self) (other : ref u8) : Choice :=
+  Definition ct_gt (self : static_ref u8) (other : static_ref u8) : Choice :=
     let gtb := bit_and self (not other) in
     let ltb := bit_and (not self) other in
     let pow := 1 in
@@ -724,7 +792,7 @@ End Implu8.
 
 (* Impl [u16] of trait [ConstantTimeGreater]*)
 Module Implu16.
-  Definition ct_gt (self : ref Self) (other : ref u16) : Choice :=
+  Definition ct_gt (self : static_ref u16) (other : static_ref u16) : Choice :=
     let gtb := bit_and self (not other) in
     let ltb := bit_and (not self) other in
     let pow := 1 in
@@ -750,7 +818,7 @@ End Implu16.
 
 (* Impl [u32] of trait [ConstantTimeGreater]*)
 Module Implu32.
-  Definition ct_gt (self : ref Self) (other : ref u32) : Choice :=
+  Definition ct_gt (self : static_ref u32) (other : static_ref u32) : Choice :=
     let gtb := bit_and self (not other) in
     let ltb := bit_and (not self) other in
     let pow := 1 in
@@ -776,7 +844,7 @@ End Implu32.
 
 (* Impl [u64] of trait [ConstantTimeGreater]*)
 Module Implu64.
-  Definition ct_gt (self : ref Self) (other : ref u64) : Choice :=
+  Definition ct_gt (self : static_ref u64) (other : static_ref u64) : Choice :=
     let gtb := bit_and self (not other) in
     let ltb := bit_and (not self) other in
     let pow := 1 in
@@ -801,7 +869,7 @@ End Implu64.
 (* End impl [u64] *)
 
 Class ConstantTimeLess : Set := {
-  ct_lt : ref Self -> ref Self -> Choice;
+  ct_lt : static_ref Self -> static_ref Self -> Choice;
 }.
 
 (* Impl [u8] of trait [ConstantTimeLess]*)

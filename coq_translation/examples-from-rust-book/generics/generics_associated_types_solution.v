@@ -3,9 +3,21 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Definition Container : Set :=
@@ -14,9 +26,11 @@ Definition Container : Set :=
 Class Contains : Set := {
   A : Set;
   B : Set;
-  contains : ref Self -> ref ImplSelf.A -> ref ImplSelf.B -> bool;
-  first : ref Self -> i32;
-  last : ref Self -> i32;
+  contains
+    :
+    static_ref Self -> static_ref ImplSelf.A -> static_ref ImplSelf.B -> bool;
+  first : static_ref Self -> i32;
+  last : static_ref Self -> i32;
 }.
 
 (* Impl [Container] of trait [Contains]*)
@@ -29,16 +43,16 @@ Module ImplContainer.
   
   Definition
     contains
-    (self : ref Self)
-    (number_1 : ref i32)
-    (number_2 : ref i32)
+    (self : static_ref Container)
+    (number_1 : static_ref i32)
+    (number_2 : static_ref i32)
     : bool :=
     and (eq self.0 number_1) (eq self.1 number_2).
   
-  Definition first (self : ref Self) : i32 :=
+  Definition first (self : static_ref Container) : i32 :=
     self.0.
   
-  Definition last (self : ref Self) : i32 :=
+  Definition last (self : static_ref Container) : i32 :=
     self.1.
 End ImplContainer.
 (* End impl [Container] *)

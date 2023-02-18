@@ -3,9 +3,21 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Module Val.
@@ -24,14 +36,14 @@ Definition GenVal : Set := GenVal.t.
 
 (* Impl [Val] *)
 Module ImplVal.
-  Definition value (self : ref Self) : ref f64 :=
+  Definition value (self : static_ref Val) : static_ref f64 :=
     self.val.
 End ImplVal.
 (* End impl [Val] *)
 
 (* Impl [GenVal] *)
 Module ImplGenVal.
-  Definition value (self : ref Self) : ref T :=
+  Definition value (self : static_ref GenVal<T>) : static_ref T :=
     self.gen_val.
 End ImplGenVal.
 (* End impl [GenVal] *)

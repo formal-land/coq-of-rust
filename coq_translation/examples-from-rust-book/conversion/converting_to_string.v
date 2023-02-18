@@ -3,9 +3,21 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Module Circle.
@@ -17,7 +29,11 @@ Definition Circle : Set := Circle.t.
 
 (* Impl [Circle] of trait [fmt.Display]*)
 Module ImplCircle.
-  Definition fmt (self : ref Self) (f : ref fmt.Formatter) : fmt.Result :=
+  Definition
+    fmt
+    (self : static_ref Circle)
+    (f : mut_ref fmt.Formatter)
+    : fmt.Result :=
     write_fmt
       f
       (_crate::fmt::ImplArguments.new_v1

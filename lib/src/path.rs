@@ -1,6 +1,5 @@
-extern crate rustc_hir;
-
 use pretty::RcDoc;
+use rustc_hir::QPath;
 use std::fmt;
 
 #[derive(Debug)]
@@ -38,12 +37,12 @@ fn prefix_last_by_impl(path: &mut Path) {
     path.segments.push(format!("Impl{last}"));
 }
 
-pub fn compile_qpath(qpath: &rustc_hir::QPath) -> Path {
+pub fn compile_qpath(qpath: &QPath) -> Path {
     match qpath {
-        rustc_hir::QPath::Resolved(_, path) => compile_path(path),
-        rustc_hir::QPath::TypeRelative(ty, segment) => {
+        QPath::Resolved(_, path) => compile_path(path),
+        QPath::TypeRelative(ty, segment) => {
             let ty = match ty.kind {
-                rustc_hir::TyKind::Path(rustc_hir::QPath::Resolved(_, path)) => {
+                rustc_hir::TyKind::Path(QPath::Resolved(_, path)) => {
                     let mut path = compile_path(path);
                     prefix_last_by_impl(&mut path);
                     path
@@ -54,7 +53,7 @@ pub fn compile_qpath(qpath: &rustc_hir::QPath) -> Path {
                 segments: vec![ty.to_string(), segment.ident.name.to_string()],
             }
         }
-        rustc_hir::QPath::LangItem(lang_item, _, _) => Path {
+        QPath::LangItem(lang_item, _, _) => Path {
             segments: vec![lang_item.name().to_string()],
         },
     }

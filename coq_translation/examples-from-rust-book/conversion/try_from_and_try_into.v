@@ -3,9 +3,21 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Definition EvenNumber : Set :=
@@ -15,8 +27,8 @@ Definition EvenNumber : Set :=
 Module ImplEvenNumber.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref EvenNumber)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "EvenNumber" self.0.
 End ImplEvenNumber.
@@ -30,7 +42,11 @@ End ImplEvenNumber.
 
 (* Impl [EvenNumber] of trait [_crate.cmp.PartialEq]*)
 Module ImplEvenNumber.
-  Definition eq (self : ref Self) (other : ref EvenNumber) : bool :=
+  Definition
+    eq
+    (self : static_ref EvenNumber)
+    (other : static_ref EvenNumber)
+    : bool :=
     eq self.0 other.0.
 End ImplEvenNumber.
 (* End impl [EvenNumber] *)

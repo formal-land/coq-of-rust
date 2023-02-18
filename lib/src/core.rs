@@ -1,19 +1,3 @@
-// NOTE: For the example to compile, you will need to first run the following:
-//   rustup component add rustc-dev llvm-tools-preview
-
-// version: 1.62.0-nightly (7c4b47696 2022-04-30)
-
-extern crate rustc_ast;
-extern crate rustc_ast_pretty;
-extern crate rustc_error_codes;
-extern crate rustc_errors;
-extern crate rustc_hash;
-extern crate rustc_hir;
-extern crate rustc_interface;
-extern crate rustc_middle;
-extern crate rustc_session;
-extern crate rustc_span;
-
 use crate::top_level::*;
 use rustc_errors::registry;
 use rustc_session::config::{self, CheckCfg};

@@ -3,9 +3,21 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Error TyAlias.
@@ -16,8 +28,8 @@ Error Struct.
 Module ImplDoubleError.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref DoubleError)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     _crate::fmt::ImplFormatter.write_str f "DoubleError".
 End ImplDoubleError.
@@ -25,14 +37,18 @@ End ImplDoubleError.
 
 (* Impl [DoubleError] of trait [_crate.clone.Clone]*)
 Module ImplDoubleError.
-  Definition clone (self : ref Self) : DoubleError :=
+  Definition clone (self : static_ref DoubleError) : DoubleError :=
     DoubleError.
 End ImplDoubleError.
 (* End impl [DoubleError] *)
 
 (* Impl [DoubleError] of trait [fmt.Display]*)
 Module ImplDoubleError.
-  Definition fmt (self : ref Self) (f : ref fmt.Formatter) : fmt.Result :=
+  Definition
+    fmt
+    (self : static_ref DoubleError)
+    (f : mut_ref fmt.Formatter)
+    : fmt.Result :=
     write_fmt
       f
       (_crate::fmt::ImplArguments.new_v1 ["invalid first item to double"] []).

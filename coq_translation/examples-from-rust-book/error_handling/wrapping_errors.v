@@ -3,9 +3,21 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Error TyAlias.
@@ -16,8 +28,8 @@ Error Enum.
 Module ImplDoubleError.
   Definition
     fmt
-    (self : ref Self)
-    (f : ref _crate.fmt.Formatter)
+    (self : static_ref DoubleError)
+    (f : mut_ref _crate.fmt.Formatter)
     : _crate.fmt.Result :=
     match self with
     | DoubleError.EmptyVec => _crate::fmt::ImplFormatter.write_str f "EmptyVec"
@@ -29,7 +41,11 @@ End ImplDoubleError.
 
 (* Impl [DoubleError] of trait [fmt.Display]*)
 Module ImplDoubleError.
-  Definition fmt (self : ref Self) (f : ref fmt.Formatter) : fmt.Result :=
+  Definition
+    fmt
+    (self : static_ref DoubleError)
+    (f : mut_ref fmt.Formatter)
+    : fmt.Result :=
     match deref self with
     | DoubleError.EmptyVec =>
       write_fmt
@@ -49,7 +65,7 @@ End ImplDoubleError.
 
 (* Impl [DoubleError] of trait [error.Error]*)
 Module ImplDoubleError.
-  Definition source (self : ref Self) : Option :=
+  Definition source (self : static_ref DoubleError) : Option :=
     match deref self with
     | DoubleError.EmptyVec => None
     | DoubleError.Parse (e) => Some e

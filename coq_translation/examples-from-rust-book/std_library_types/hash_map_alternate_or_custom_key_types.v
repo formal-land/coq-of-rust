@@ -3,15 +3,27 @@ Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 Local Open Scope Z.
 
-Definition u8 : Set := Z.
-
 (* Approximation *)
+
+Definition u8 : Set := Z.
+Definition u16 : Set := Z.
+Definition u32 : Set := Z.
+Definition u64 : Set := Z.
+Definition u128 : Set := Z.
+
+Definition i8 : Set := Z.
+Definition i16 : Set := Z.
+Definition i32 : Set := Z.
+Definition i64 : Set := Z.
+Definition i128 : Set := Z.
+
+Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Module Account.
   Record t : Set := {
-    username : ref str;
-    password : ref str;
+    username : static_ref str;
+    password : static_ref str;
   }.
 End Account.
 Definition Account : Set := Account.t.
@@ -24,7 +36,11 @@ End ImplAccount.
 
 (* Impl [Account] of trait [_crate.cmp.PartialEq]*)
 Module ImplAccount.
-  Definition eq (self : ref Self) (other : ref Account) : bool :=
+  Definition
+    eq
+    (self : static_ref Account<'a>)
+    (other : static_ref Account)
+    : bool :=
     and (eq self.username other.username) (eq self.password other.password).
 End ImplAccount.
 (* End impl [Account] *)
@@ -37,7 +53,7 @@ End ImplAccount.
 
 (* Impl [Account] of trait [_crate.cmp.Eq]*)
 Module ImplAccount.
-  Definition assert_receiver_is_total_eq (self : ref Self) :  :=
+  Definition assert_receiver_is_total_eq (self : static_ref Account<'a>) :  :=
     let _ := tt in
     let _ := tt in
     tt.
@@ -46,7 +62,7 @@ End ImplAccount.
 
 (* Impl [Account] of trait [_crate.hash.Hash]*)
 Module ImplAccount.
-  Definition hash (self : ref Self) (state : ref __H) :  :=
+  Definition hash (self : static_ref Account<'a>) (state : mut_ref __H) :  :=
     _crate.hash.Hash.hash self.username state ;;
     _crate.hash.Hash.hash self.password state.
 End ImplAccount.
@@ -54,8 +70,8 @@ End ImplAccount.
 
 Module AccountInfo.
   Record t : Set := {
-    name : ref str;
-    email : ref str;
+    name : static_ref str;
+    email : static_ref str;
   }.
 End AccountInfo.
 Definition AccountInfo : Set := AccountInfo.t.
