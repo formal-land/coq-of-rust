@@ -496,6 +496,8 @@ impl TopLevel {
     pub fn to_pretty(&self, width: usize) -> String {
         let mut w = Vec::new();
         self.to_doc().render(width, &mut w).unwrap();
-        format!("{}\n{}", HEADER, String::from_utf8(w).unwrap())
+        let mut header = HEADER.to_owned();
+        header.push_str(&String::from_utf8(w).unwrap());
+        header
     }
 }

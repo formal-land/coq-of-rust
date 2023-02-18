@@ -19,7 +19,13 @@ jobs:
     - name: Install Coq
       run: sudo apt-get install coq
     - name: Compile Coq examples
-      run: find . -name "*.v" |sort |xargs -n 1 coqc
+      run: |
+        cd coq_translation/examples-from-rust-book ;
+        coqc -R . CoqOfRust CoqOfRust.v ;
+        for f in `find . -name "*.v" |sort` ; do
+          coqc -R . CoqOfRust $f ;
+        done ;
+        cd ../..
     - name: Format check
       run: cargo fmt --check
     - name: Build
