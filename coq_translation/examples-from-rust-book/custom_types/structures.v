@@ -12,11 +12,10 @@ Definition Person : Set := Person.t.
 Module Impl__crate_fmt_Debug_for_Person.
   Definition Self := Person.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref Person)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt
+        (self : ref Person)
+        (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_struct_field2_finish
         f
         "Person"
@@ -27,10 +26,19 @@ Module Impl__crate_fmt_Debug_for_Person.
   |}.
 Module ImplPerson.
 
-Error Struct.
+Error StructUnit.
 
-Definition Pair : Set :=
-  i32 * f32.
+Module Pair.
+  Inductive t : Set := Build (_ : i32 * f32).
+  
+  Global Instance Get_0 : IndexedField.Class t 0 i32 := {|
+    IndexedField.get '(Build x0 _) := x0;
+  |}.
+  Global Instance Get_1 : IndexedField.Class t 1 f32 := {|
+    IndexedField.get '(Build _ x1) := x1;
+  |}.
+End Pair.
+Definition Pair := Pair.t.
 
 Module Point.
   Record t : Set := {
@@ -73,17 +81,21 @@ Definition main (_ : unit) :=
         bottom_right.y]) ;;
   tt ;;
   let {| Point.x := left_edge; Point.y := top_edge; |} := point in
-  let _rectangle := {|
-    Rectangle.top_left := {| Point.x := left_edge; Point.y := top_edge; |};
-    Rectangle.bottom_right := bottom_right;
-  |} in
+  let _rectangle :=
+    {|
+      Rectangle.top_left := {| Point.x := left_edge; Point.y := top_edge; |};
+      Rectangle.bottom_right := bottom_right;
+    |} in
   let _unit := Unit in
   let pair := Pair 1 0 (* 0.1 *) in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["pair contains ";" and ";"\n"]
       [_crate::fmt::ImplArgumentV1.new_debug
-        pair.0;_crate::fmt::ImplArgumentV1.new_debug pair.1]) ;;
+        (IndexedField.get
+          (index := 0)
+          pair);_crate::fmt::ImplArgumentV1.new_debug
+        (IndexedField.get (index := 1) pair)]) ;;
   tt ;;
   let Pair (integer, decimal) := pair in
   _crate.io._print

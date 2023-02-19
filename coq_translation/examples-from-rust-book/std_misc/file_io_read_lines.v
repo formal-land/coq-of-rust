@@ -10,15 +10,18 @@ Definition main (_ : unit) :=
   let lines := read_lines (to_string "./hosts") in
   match into_iter lines with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := line; |} =>
-      _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_display (unwrap line)]) ;;
-      tt ;;
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := line; |} =>
+        _crate.io._print
+          (_crate::fmt::ImplArguments.new_v1
+            ["";"\n"]
+            [_crate::fmt::ImplArgumentV1.new_display (unwrap line)]) ;;
+        tt ;;
+        tt
+      end ;;
       tt
-    end ;;
-    tt from for
+      from
+      for
   end.

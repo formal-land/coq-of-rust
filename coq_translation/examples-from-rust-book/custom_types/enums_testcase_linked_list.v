@@ -5,30 +5,30 @@ Error Enum.
 
 (* Impl [List] *)
 Module ImplList.
-  Definition new (_ : unit) : List :=
-    Nil.
+  Definition new (_ : unit) : List := Nil.
   
   Definition prepend (self : List) (elem : u32) : List :=
     Cons elem (ImplBox.new self).
   
-  Definition len (self : static_ref List) : u32 :=
+  Definition len (self : ref List) : u32 :=
     match deref self with
     | Cons (_, tail) => add 1 (len tail)
     | Nil => 0
     end.
   
-  Definition stringify (self : static_ref List) : String :=
+  Definition stringify (self : ref List) : String :=
     match deref self with
     | Cons (head, tail) =>
-      let res := _crate.fmt.format
-        (_crate::fmt::ImplArguments.new_v1
-          ["";", "]
-          [_crate::fmt::ImplArgumentV1.new_display
-            head;_crate::fmt::ImplArgumentV1.new_display (stringify tail)]) in
+      let res :=
+        _crate.fmt.format
+          (_crate::fmt::ImplArguments.new_v1
+            ["";", "]
+            [_crate::fmt::ImplArgumentV1.new_display
+              head;_crate::fmt::ImplArgumentV1.new_display (stringify tail)]) in
       res
     | Nil =>
-      let res := _crate.fmt.format
-        (_crate::fmt::ImplArguments.new_v1 ["Nil"] []) in
+      let res :=
+        _crate.fmt.format (_crate::fmt::ImplArguments.new_v1 ["Nil"] []) in
       res
     end.
 End ImplList.

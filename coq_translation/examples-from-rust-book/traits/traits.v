@@ -4,22 +4,23 @@ Require Import CoqOfRust.CoqOfRust.
 Module Sheep.
   Record t : Set := {
     naked : bool;
-    name : static_ref str;
+    name : ref str;
   }.
 End Sheep.
 Definition Sheep : Set := Sheep.t.
 
-Class Animal : Set := {
-  new : static_ref str -> Self;
-  name : static_ref Self -> static_ref str;
-  noise : static_ref Self -> static_ref str;
-  talk : static_ref Self -> _;
-}.
+Module Animal.
+  Class Class (Self : Set) : Set := {
+    new : ref str -> Self;
+    name : ref Self -> ref str;
+    noise : ref Self -> ref str;
+    talk : ref Self -> _;
+  }.
+End Animal.
 
 (* Impl [Sheep] *)
 Module ImplSheep.
-  Definition is_naked (self : static_ref Sheep) : bool :=
-    self.naked.
+  Definition is_naked (self : ref Sheep) : bool := self.naked.
   
   Definition shear (self : mut_ref Sheep) :=
     if is_naked self then
@@ -43,22 +44,16 @@ End ImplSheep.
 Module Impl_Animal_for_Sheep.
   Definition Self := Sheep.
   
-  #[global] Instance I : Animal.Class Self := {|
-    new
-      (name : static_ref str)
-      :=
+  Global Instance I : Animal.Class Self := {|
+    Animal.new (name : ref str) :=
       {| Sheep.name := name; Sheep.naked := false; |};
-    name (self : static_ref Sheep) := self.name;
-    noise
-      (self : static_ref Sheep)
-      :=
+    Animal.name (self : ref Sheep) := self.name;
+    Animal.noise (self : ref Sheep) :=
       if is_naked self then
         "baaaaah?"
       else
         "baaaaah!";
-    talk
-      (self : static_ref Sheep)
-      :=
+    Animal.talk (self : ref Sheep) :=
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1
           ["";" pauses briefly... ";"\n"]

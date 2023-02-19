@@ -11,11 +11,8 @@ Definition Circle : Set := Circle.t.
 Module Impl_fmt_Display_for_Circle.
   Definition Self := Circle.
   
-  #[global] Instance I : fmt.Display.Class Self := {|
-    fmt
-      (self : static_ref Circle)
-      (f : mut_ref fmt.Formatter)
-      :=
+  Global Instance I : fmt.Display.Class Self := {|
+    fmt.Display.fmt (self : ref Circle) (f : mut_ref fmt.Formatter) :=
       write_fmt
         f
         (_crate::fmt::ImplArguments.new_v1

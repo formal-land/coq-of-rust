@@ -2,14 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply (_ : unit) :=
-  let first_number := match branch (parse first_number_str) with
-  | {| Break.0 := residual; |} => Return (from_residual residual)
-  | {| Continue.0 := val; |} => val
-  end in
-  let second_number := match branch (parse second_number_str) with
-  | {| Break.0 := residual; |} => Return (from_residual residual)
-  | {| Continue.0 := val; |} => val
-  end in
+  let first_number :=
+    match branch (parse first_number_str) with
+    | {| Break.0 := residual; |} => Return (from_residual residual)
+    | {| Continue.0 := val; |} => val
+    end in
+  let second_number :=
+    match branch (parse second_number_str) with
+    | {| Break.0 := residual; |} => Return (from_residual residual)
+    | {| Continue.0 := val; |} => val
+    end in
   Ok (mul first_number second_number).
 
 Definition print (_ : unit) :=

@@ -32,7 +32,49 @@ pub(crate) fn literal_to_doc(literal: &LitKind) -> RcDoc<()> {
     }
 }
 
-pub(crate) fn indent(doc: RcDoc<()>) -> RcDoc<()> {
+pub type Doc<'a> = RcDoc<'a, ()>;
+
+pub(crate) fn nest<'a, I>(docs: I) -> Doc<'a>
+where
+    I: IntoIterator,
+    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+{
     let indent_space_offset = 2;
-    doc.nest(indent_space_offset)
+    RcDoc::concat(docs).nest(indent_space_offset).group()
+}
+
+pub(crate) fn group<'a, I>(docs: I) -> Doc<'a>
+where
+    I: IntoIterator,
+    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+{
+    RcDoc::concat(docs).group()
+}
+
+pub(crate) fn text<'a, U>(message: U) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>>,
+{
+    RcDoc::text(message)
+}
+
+pub(crate) fn nil<'a>() -> Doc<'a> {
+    RcDoc::nil()
+}
+
+pub(crate) fn line<'a>() -> Doc<'a> {
+    RcDoc::line()
+}
+
+pub(crate) fn hardline<'a>() -> Doc<'a> {
+    RcDoc::hardline()
+}
+
+pub(crate) fn intersperse<'a, I, S>(docs: I, separator: S) -> Doc<'a>
+where
+    I: IntoIterator,
+    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+    S: pretty::Pretty<'a, pretty::RcAllocator, ()> + Clone,
+{
+    RcDoc::intersperse(docs, separator)
 }

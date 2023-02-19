@@ -78,24 +78,27 @@ Definition main (_ : unit) :=
   end ;;
   match into_iter {| Range.start := 0; Range.end := add (len xs) 1; |} with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := i; |} =>
-      match get xs i with
-      | Some (xval) =>
-        _crate.io._print
-          (_crate::fmt::ImplArguments.new_v1
-            ["";": ";"\n"]
-            [_crate::fmt::ImplArgumentV1.new_display
-              i;_crate::fmt::ImplArgumentV1.new_display xval]) ;;
-        tt
-      | None =>
-        _crate.io._print
-          (_crate::fmt::ImplArguments.new_v1
-            ["Slow down! ";" is too far!\n"]
-            [_crate::fmt::ImplArgumentV1.new_display i]) ;;
-        tt
-      end
-    end ;;
-    tt from for
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := i; |} =>
+        match get xs i with
+        | Some (xval) =>
+          _crate.io._print
+            (_crate::fmt::ImplArguments.new_v1
+              ["";": ";"\n"]
+              [_crate::fmt::ImplArgumentV1.new_display
+                i;_crate::fmt::ImplArgumentV1.new_display xval]) ;;
+          tt
+        | None =>
+          _crate.io._print
+            (_crate::fmt::ImplArguments.new_v1
+              ["Slow down! ";" is too far!\n"]
+              [_crate::fmt::ImplArgumentV1.new_display i]) ;;
+          tt
+        end
+      end ;;
+      tt
+      from
+      for
   end.

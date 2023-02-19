@@ -22,16 +22,13 @@ Definition main (_ : unit) :=
       [_crate::fmt::ImplArgumentV1.new_lower_hex Color.Red]
       [{|
         _crate.fmt.rt.v1.Argument.position := 0;
-        _crate.fmt.rt.v1.Argument.format
-          :=
+        _crate.fmt.rt.v1.Argument.format :=
           {|
             _crate.fmt.rt.v1.FormatSpec.fill :=  ;
-            _crate.fmt.rt.v1.FormatSpec.align
-              :=
+            _crate.fmt.rt.v1.FormatSpec.align :=
               _crate.fmt.rt.v1.Alignment.Unknown;
             _crate.fmt.rt.v1.FormatSpec.flags := 8;
-            _crate.fmt.rt.v1.FormatSpec.precision
-              :=
+            _crate.fmt.rt.v1.FormatSpec.precision :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Is 6;
           |};
@@ -44,16 +41,13 @@ Definition main (_ : unit) :=
       [_crate::fmt::ImplArgumentV1.new_lower_hex Color.Blue]
       [{|
         _crate.fmt.rt.v1.Argument.position := 0;
-        _crate.fmt.rt.v1.Argument.format
-          :=
+        _crate.fmt.rt.v1.Argument.format :=
           {|
             _crate.fmt.rt.v1.FormatSpec.fill :=  ;
-            _crate.fmt.rt.v1.FormatSpec.align
-              :=
+            _crate.fmt.rt.v1.FormatSpec.align :=
               _crate.fmt.rt.v1.Alignment.Unknown;
             _crate.fmt.rt.v1.FormatSpec.flags := 8;
-            _crate.fmt.rt.v1.FormatSpec.precision
-              :=
+            _crate.fmt.rt.v1.FormatSpec.precision :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Is 6;
           |};

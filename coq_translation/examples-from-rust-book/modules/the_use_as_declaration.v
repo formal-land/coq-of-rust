@@ -7,8 +7,12 @@ Definition function (_ : unit) :=
   tt ;;
   tt.
 
-Module deeply :=
-  Module nested :=
+Module
+  deeply
+  :=
+  Module
+    nested
+    :=
     Definition function (_ : unit) :=
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1
@@ -17,7 +21,9 @@ Module deeply :=
       tt ;;
       tt...
 
-Module nested :=
+Module
+  nested
+  :=
   Definition function (_ : unit) :=
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1

@@ -17,11 +17,9 @@ Definition annotated_input (_ : unit) :=
   tt ;;
   tt.
 
-Definition elided_pass (_ : unit) :=
-  x.
+Definition elided_pass (_ : unit) := x.
 
-Definition annotated_pass (_ : unit) :=
-  x.
+Definition annotated_pass (_ : unit) := x.
 
 Definition main (_ : unit) :=
   let x := 3 in

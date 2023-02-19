@@ -13,23 +13,25 @@ Module Cow.
 End Cow.
 Definition Cow : Set := Cow.t.
 
-Class Animal : Set := {
-  noise : static_ref Self -> static_ref str;
-}.
+Module Animal.
+  Class Class (Self : Set) : Set := {
+    noise : ref Self -> ref str;
+  }.
+End Animal.
 
 Module Impl_Animal_for_Sheep.
   Definition Self := Sheep.
   
-  #[global] Instance I : Animal.Class Self := {|
-    noise (self : static_ref Sheep) := "baaaaah!";
+  Global Instance I : Animal.Class Self := {|
+    Animal.noise (self : ref Sheep) := "baaaaah!";
   |}.
 Module ImplSheep.
 
 Module Impl_Animal_for_Cow.
   Definition Self := Cow.
   
-  #[global] Instance I : Animal.Class Self := {|
-    noise (self : static_ref Cow) := "moooooo!";
+  Global Instance I : Animal.Class Self := {|
+    Animal.noise (self : ref Cow) := "moooooo!";
   |}.
 Module ImplCow.
 

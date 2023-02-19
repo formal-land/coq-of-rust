@@ -11,11 +11,10 @@ Definition Number : Set := Number.t.
 Module Impl__crate_fmt_Debug_for_Number.
   Definition Self := Number.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref Number)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt
+        (self : ref Number)
+        (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_struct_field1_finish
         f
         "Number"
@@ -27,8 +26,8 @@ Module ImplNumber.
 Module Impl_From_for_Number.
   Definition Self := Number.
   
-  #[global] Instance I : From.Class Self := {|
-    from (item : i32) := {| Number.value := item; |};
+  Global Instance I : From.Class Self := {|
+    From.from (item : i32) := {| Number.value := item; |};
   |}.
 Module ImplNumber.
 

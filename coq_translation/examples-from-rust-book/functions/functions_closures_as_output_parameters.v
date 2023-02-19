@@ -3,31 +3,34 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition create_fn (_ : unit) :=
   let text := to_owned "Fn" in
-  fun  => _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["This is a: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display text]) ;;
-  tt.
+  fun  =>
+    _crate.io._print
+      (_crate::fmt::ImplArguments.new_v1
+        ["This is a: ";"\n"]
+        [_crate::fmt::ImplArgumentV1.new_display text]) ;;
+    tt.
 
 Error OpaqueTy.
 
 Definition create_fnmut (_ : unit) :=
   let text := to_owned "FnMut" in
-  fun  => _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["This is a: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display text]) ;;
-  tt.
+  fun  =>
+    _crate.io._print
+      (_crate::fmt::ImplArguments.new_v1
+        ["This is a: ";"\n"]
+        [_crate::fmt::ImplArgumentV1.new_display text]) ;;
+    tt.
 
 Error OpaqueTy.
 
 Definition create_fnonce (_ : unit) :=
   let text := to_owned "FnOnce" in
-  fun  => _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["This is a: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display text]) ;;
-  tt.
+  fun  =>
+    _crate.io._print
+      (_crate::fmt::ImplArguments.new_v1
+        ["This is a: ";"\n"]
+        [_crate::fmt::ImplArgumentV1.new_display text]) ;;
+    tt.
 
 Error OpaqueTy.
 

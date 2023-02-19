@@ -3,12 +3,16 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition main (_ : unit) :=
   let counter := 0 in
-  let result := loop assign counter := add counter 1 ;;
-  if eq counter 10 then
-    Break ;;
-    tt
-  else
-    tt from loop in
+  let result :=
+    loop
+      assign counter := add counter 1 ;;
+      if eq counter 10 then
+        Break ;;
+        tt
+      else
+        tt
+      from
+      loop in
   match (result, 20) with
   | (left_val, right_val) =>
     if not (eq (deref left_val) (deref right_val)) then

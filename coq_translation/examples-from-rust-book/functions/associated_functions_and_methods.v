@@ -29,15 +29,14 @@ Definition Rectangle : Set := Rectangle.t.
 
 (* Impl [Rectangle] *)
 Module ImplRectangle.
-  Definition get_p1 (self : static_ref Rectangle) : Point :=
-    self.p1.
+  Definition get_p1 (self : ref Rectangle) : Point := self.p1.
   
-  Definition area (self : static_ref Rectangle) : f64 :=
+  Definition area (self : ref Rectangle) : f64 :=
     let {| Point.x := x1; Point.y := y1; |} := self.p1 in
     let {| Point.x := x2; Point.y := y2; |} := self.p2 in
     abs (mul (sub x1 x2) (sub y1 y2)).
   
-  Definition perimeter (self : static_ref Rectangle) : f64 :=
+  Definition perimeter (self : ref Rectangle) : f64 :=
     let {| Point.x := x1; Point.y := y1; |} := self.p1 in
     let {| Point.x := x2; Point.y := y2; |} := self.p2 in
     mul 2 (* 2.0 *) (add (abs (sub x1 x2)) (abs (sub y1 y2))).
@@ -51,8 +50,17 @@ Module ImplRectangle.
 End ImplRectangle.
 (* End impl [Rectangle] *)
 
-Definition Pair : Set :=
-  Box * Box.
+Module Pair.
+  Inductive t : Set := Build (_ : Box * Box).
+  
+  Global Instance Get_0 : IndexedField.Class t 0 Box := {|
+    IndexedField.get '(Build x0 _) := x0;
+  |}.
+  Global Instance Get_1 : IndexedField.Class t 1 Box := {|
+    IndexedField.get '(Build _ x1) := x1;
+  |}.
+End Pair.
+Definition Pair := Pair.t.
 
 (* Impl [Pair] *)
 Module ImplPair.
@@ -69,10 +77,11 @@ End ImplPair.
 (* End impl [Pair] *)
 
 Definition main (_ : unit) :=
-  let rectangle := {|
-    Rectangle.p1 := ImplPoint.origin tt;
-    Rectangle.p2 := ImplPoint.new 3 (* 3.0 *) 4 (* 4.0 *);
-  |} in
+  let rectangle :=
+    {|
+      Rectangle.p1 := ImplPoint.origin tt;
+      Rectangle.p2 := ImplPoint.new 3 (* 3.0 *) 4 (* 4.0 *);
+    |} in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Rectangle perimeter: ";"\n"]
@@ -83,10 +92,11 @@ Definition main (_ : unit) :=
       ["Rectangle area: ";"\n"]
       [_crate::fmt::ImplArgumentV1.new_display (area rectangle)]) ;;
   tt ;;
-  let square := {|
-    Rectangle.p1 := ImplPoint.origin tt;
-    Rectangle.p2 := ImplPoint.new 1 (* 1.0 *) 1 (* 1.0 *);
-  |} in
+  let square :=
+    {|
+      Rectangle.p1 := ImplPoint.origin tt;
+      Rectangle.p2 := ImplPoint.new 1 (* 1.0 *) 1 (* 1.0 *);
+    |} in
   translate square 1 (* 1.0 *) 1 (* 1.0 *) ;;
   let pair := Pair (ImplBox.new 1) (ImplBox.new 2) in
   destroy pair ;;

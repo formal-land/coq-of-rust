@@ -7,7 +7,9 @@ Definition function (_ : unit) :=
   tt ;;
   tt.
 
-Module cool :=
+Module
+  cool
+  :=
   Definition function (_ : unit) :=
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1 ["called `cool::function()`\n"] []) ;;
@@ -20,14 +22,18 @@ Definition function (_ : unit) :=
   tt ;;
   tt.
 
-Module my :=
+Module
+  my
+  :=
   Definition function (_ : unit) :=
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1 ["called `my::function()`\n"] []) ;;
     tt ;;
     tt.
   
-  Module cool :=
+  Module
+    cool
+    :=
     Definition function (_ : unit) :=
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1
@@ -54,7 +60,9 @@ Definition function (_ : unit) :=
   tt ;;
   tt.
 
-Module cool :=
+Module
+  cool
+  :=
   Definition function (_ : unit) :=
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1

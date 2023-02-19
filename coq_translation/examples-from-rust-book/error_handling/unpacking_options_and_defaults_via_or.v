@@ -6,11 +6,10 @@ Error Enum.
 Module Impl__crate_fmt_Debug_for_Fruit.
   Definition Self := Fruit.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref Fruit)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt
+        (self : ref Fruit)
+        (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Fruit.Apple => _crate::fmt::ImplFormatter.write_str f "Apple"
       | Fruit.Orange => _crate::fmt::ImplFormatter.write_str f "Orange"

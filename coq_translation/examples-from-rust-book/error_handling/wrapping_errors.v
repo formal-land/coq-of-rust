@@ -8,11 +8,10 @@ Error Enum.
 Module Impl__crate_fmt_Debug_for_DoubleError.
   Definition Self := DoubleError.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref DoubleError)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt
+        (self : ref DoubleError)
+        (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | DoubleError.EmptyVec =>
         _crate::fmt::ImplFormatter.write_str f "EmptyVec"
@@ -25,11 +24,8 @@ Module ImplDoubleError.
 Module Impl_fmt_Display_for_DoubleError.
   Definition Self := DoubleError.
   
-  #[global] Instance I : fmt.Display.Class Self := {|
-    fmt
-      (self : static_ref DoubleError)
-      (f : mut_ref fmt.Formatter)
-      :=
+  Global Instance I : fmt.Display.Class Self := {|
+    fmt.Display.fmt (self : ref DoubleError) (f : mut_ref fmt.Formatter) :=
       match deref self with
       | DoubleError.EmptyVec =>
         write_fmt
@@ -50,10 +46,8 @@ Module ImplDoubleError.
 Module Impl_error_Error_for_DoubleError.
   Definition Self := DoubleError.
   
-  #[global] Instance I : error.Error.Class Self := {|
-    source
-      (self : static_ref DoubleError)
-      :=
+  Global Instance I : error.Error.Class Self := {|
+    error.Error.source (self : ref DoubleError) :=
       match deref self with
       | DoubleError.EmptyVec => None
       | DoubleError.Parse (e) => Some e
@@ -64,20 +58,22 @@ Module ImplDoubleError.
 Module Impl_From_for_DoubleError.
   Definition Self := DoubleError.
   
-  #[global] Instance I : From.Class Self := {|
-    from (err : ParseIntError) := DoubleError.Parse err;
+  Global Instance I : From.Class Self := {|
+    From.from (err : ParseIntError) := DoubleError.Parse err;
   |}.
 Module ImplDoubleError.
 
 Definition double_first (_ : unit) :=
-  let first := match branch (ok_or (first vec) DoubleError.EmptyVec) with
-  | {| Break.0 := residual; |} => Return (from_residual residual)
-  | {| Continue.0 := val; |} => val
-  end in
-  let parsed := match branch (parse first) with
-  | {| Break.0 := residual; |} => Return (from_residual residual)
-  | {| Continue.0 := val; |} => val
-  end in
+  let first :=
+    match branch (ok_or (first vec) DoubleError.EmptyVec) with
+    | {| Break.0 := residual; |} => Return (from_residual residual)
+    | {| Continue.0 := val; |} => val
+    end in
+  let parsed :=
+    match branch (parse first) with
+    | {| Break.0 := residual; |} => Return (from_residual residual)
+    | {| Continue.0 := val; |} => val
+    end in
   Ok (mul 2 parsed).
 
 Definition print (_ : unit) :=

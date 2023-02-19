@@ -12,9 +12,11 @@ Definition function (_ : unit) :=
   tt.
 
 Definition main (_ : unit) :=
-  let closure := fun  => _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["I'm a closure!\n"] []) ;;
-  tt in
+  let closure :=
+    fun  =>
+      _crate.io._print
+        (_crate::fmt::ImplArguments.new_v1 ["I'm a closure!\n"] []) ;;
+      tt in
   call_me closure ;;
   call_me function ;;
   tt.

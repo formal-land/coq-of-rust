@@ -25,20 +25,21 @@ Definition main (_ : unit) :=
           [_crate::fmt::ImplArgumentV1.new_display n]) ;;
       tt ;;
       tt ;;
-  let big_n := if and (lt n 10) (gt n (neg 10)) then
-    _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        [", and is a small number, increase ten-fold\n"]
-        []) ;;
-    tt ;;
-    mul 10 n
-  else
-    _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        [", and is a big number, halve the number\n"]
-        []) ;;
-    tt ;;
-    div n 2 in
+  let big_n :=
+    if and (lt n 10) (gt n (neg 10)) then
+      _crate.io._print
+        (_crate::fmt::ImplArguments.new_v1
+          [", and is a small number, increase ten-fold\n"]
+          []) ;;
+      tt ;;
+      mul 10 n
+    else
+      _crate.io._print
+        (_crate::fmt::ImplArguments.new_v1
+          [", and is a big number, halve the number\n"]
+          []) ;;
+      tt ;;
+      div n 2 in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["";" -> ";"\n"]

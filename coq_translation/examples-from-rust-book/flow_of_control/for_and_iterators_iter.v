@@ -5,25 +5,28 @@ Definition main (_ : unit) :=
   let names := ComplexTypePath.into_vec ["Bob";"Frank";"Ferris"] in
   match into_iter (iter names) with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := name; |} =>
-      match name with
-      | Str("Ferris", Cooked) =>
-        _crate.io._print
-          (_crate::fmt::ImplArguments.new_v1
-            ["There is a rustacean among us!\n"]
-            []) ;;
-        tt
-      | _ =>
-        _crate.io._print
-          (_crate::fmt::ImplArguments.new_v1
-            ["Hello ";"\n"]
-            [_crate::fmt::ImplArgumentV1.new_display name]) ;;
-        tt
-      end
-    end ;;
-    tt from for
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := name; |} =>
+        match name with
+        | Str("Ferris", Cooked) =>
+          _crate.io._print
+            (_crate::fmt::ImplArguments.new_v1
+              ["There is a rustacean among us!\n"]
+              []) ;;
+          tt
+        | _ =>
+          _crate.io._print
+            (_crate::fmt::ImplArguments.new_v1
+              ["Hello ";"\n"]
+              [_crate::fmt::ImplArgumentV1.new_display name]) ;;
+          tt
+        end
+      end ;;
+      tt
+      from
+      for
   end ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1

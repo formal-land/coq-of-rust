@@ -17,15 +17,13 @@ Definition GenVal : Set := GenVal.t.
 
 (* Impl [Val] *)
 Module ImplVal.
-  Definition value (self : static_ref Val) : static_ref f64 :=
-    self.val.
+  Definition value (self : ref Val) : ref f64 := self.val.
 End ImplVal.
 (* End impl [Val] *)
 
 (* Impl [GenVal] *)
 Module ImplGenVal.
-  Definition value (self : static_ref GenVal<T>) : static_ref T :=
-    self.gen_val.
+  Definition value (self : ref GenVal<T>) : ref T := self.gen_val.
 End ImplGenVal.
 (* End impl [GenVal] *)
 

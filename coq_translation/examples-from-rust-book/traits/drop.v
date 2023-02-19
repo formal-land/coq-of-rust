@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Droppable.
   Record t : Set := {
-    name : static_ref str;
+    name : ref str;
   }.
 End Droppable.
 Definition Droppable : Set := Droppable.t.
@@ -11,10 +11,8 @@ Definition Droppable : Set := Droppable.t.
 Module Impl_Drop_for_Droppable.
   Definition Self := Droppable.
   
-  #[global] Instance I : Drop.Class Self := {|
-    drop
-      (self : mut_ref Droppable)
-      :=
+  Global Instance I : Drop.Class Self := {|
+    Drop.drop (self : mut_ref Droppable) :=
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1
           ["> Dropping ";"\n"]
