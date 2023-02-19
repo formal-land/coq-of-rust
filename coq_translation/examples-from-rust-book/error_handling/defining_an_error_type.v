@@ -3,15 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error TyAlias.
 
-Error Struct.
+Error StructUnit.
 
 Module Impl__crate_fmt_Debug_for_DoubleError.
   Definition Self := DoubleError.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref DoubleError)
-      (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt
+        (self : ref DoubleError)
+        (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.write_str f "DoubleError";
   |}.
 Module ImplDoubleError.
@@ -19,18 +19,16 @@ Module ImplDoubleError.
 Module Impl__crate_clone_Clone_for_DoubleError.
   Definition Self := DoubleError.
   
-  #[global] Instance I : _crate.clone.Clone.Class Self := {|
-    clone (self : static_ref DoubleError) := DoubleError;
+  Global Instance I : _crate.clone.Clone.Class Self := {|
+    _crate.clone.Clone.clone (self : ref DoubleError) := DoubleError;
   |}.
 Module ImplDoubleError.
 
 Module Impl_fmt_Display_for_DoubleError.
   Definition Self := DoubleError.
   
-  #[global] Instance I : fmt.Display.Class Self := {|
-    fmt
-      (self : static_ref DoubleError)
-      (f : mut_ref fmt.Formatter) :=
+  Global Instance I : fmt.Display.Class Self := {|
+    fmt.Display.fmt (self : ref DoubleError) (f : mut_ref fmt.Formatter) :=
       write_fmt
         f
         (_crate::fmt::ImplArguments.new_v1 ["invalid first item to double"] []);

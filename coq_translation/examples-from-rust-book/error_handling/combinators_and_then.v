@@ -6,10 +6,8 @@ Error Enum.
 Module Impl__crate_fmt_Debug_for_Food.
   Definition Self := Food.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref Food)
-      (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt (self : ref Food) (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Food.CordonBleu => _crate::fmt::ImplFormatter.write_str f "CordonBleu"
       | Food.Steak => _crate::fmt::ImplFormatter.write_str f "Steak"
@@ -23,10 +21,8 @@ Error Enum.
 Module Impl__crate_fmt_Debug_for_Day.
   Definition Self := Day.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref Day)
-      (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt (self : ref Day) (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Day.Monday => _crate::fmt::ImplFormatter.write_str f "Monday"
       | Day.Tuesday => _crate::fmt::ImplFormatter.write_str f "Tuesday"

@@ -6,10 +6,8 @@ Error Enum.
 Module Impl__crate_fmt_Debug_for_Food.
   Definition Self := Food.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref Food)
-      (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt (self : ref Food) (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Food.Apple => _crate::fmt::ImplFormatter.write_str f "Apple"
       | Food.Carrot => _crate::fmt::ImplFormatter.write_str f "Carrot"
@@ -18,45 +16,72 @@ Module Impl__crate_fmt_Debug_for_Food.
   |}.
 Module ImplFood.
 
-Definition Peeled : Set :=
-  Food.
+Module Peeled.
+  Inductive t : Set := Build (_ : Food).
+  
+  Global Instance Get_0 : IndexedField.Class t 0 Food := {|
+    IndexedField.get '(Build x0) := x0;
+  |}.
+End Peeled.
+Definition Peeled := Peeled.t.
 
 Module Impl__crate_fmt_Debug_for_Peeled.
   Definition Self := Peeled.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref Peeled)
-      (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Peeled" self.0;
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt
+        (self : ref Peeled)
+        (f : mut_ref _crate.fmt.Formatter) :=
+      _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+        f
+        "Peeled"
+        (IndexedField.get (index := 0) self);
   |}.
 Module ImplPeeled.
 
-Definition Chopped : Set :=
-  Food.
+Module Chopped.
+  Inductive t : Set := Build (_ : Food).
+  
+  Global Instance Get_0 : IndexedField.Class t 0 Food := {|
+    IndexedField.get '(Build x0) := x0;
+  |}.
+End Chopped.
+Definition Chopped := Chopped.t.
 
 Module Impl__crate_fmt_Debug_for_Chopped.
   Definition Self := Chopped.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref Chopped)
-      (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Chopped" self.0;
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt
+        (self : ref Chopped)
+        (f : mut_ref _crate.fmt.Formatter) :=
+      _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+        f
+        "Chopped"
+        (IndexedField.get (index := 0) self);
   |}.
 Module ImplChopped.
 
-Definition Cooked : Set :=
-  Food.
+Module Cooked.
+  Inductive t : Set := Build (_ : Food).
+  
+  Global Instance Get_0 : IndexedField.Class t 0 Food := {|
+    IndexedField.get '(Build x0) := x0;
+  |}.
+End Cooked.
+Definition Cooked := Cooked.t.
 
 Module Impl__crate_fmt_Debug_for_Cooked.
   Definition Self := Cooked.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref Cooked)
-      (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Cooked" self.0;
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt
+        (self : ref Cooked)
+        (f : mut_ref _crate.fmt.Formatter) :=
+      _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+        f
+        "Cooked"
+        (IndexedField.get (index := 0) self);
   |}.
 Module ImplCooked.
 

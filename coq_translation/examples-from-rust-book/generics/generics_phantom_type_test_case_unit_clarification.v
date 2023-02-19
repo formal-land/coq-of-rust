@@ -6,10 +6,8 @@ Error Enum.
 Module Impl__crate_fmt_Debug_for_Inch.
   Definition Self := Inch.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref Inch)
-      (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt (self : ref Inch) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.intrinsics.unreachable tt;
   |}.
 Module ImplInch.
@@ -17,16 +15,16 @@ Module ImplInch.
 Module Impl__crate_clone_Clone_for_Inch.
   Definition Self := Inch.
   
-  #[global] Instance I : _crate.clone.Clone.Class Self := {|
-    clone (self : static_ref Inch) := deref self;
+  Global Instance I : _crate.clone.Clone.Class Self := {|
+    _crate.clone.Clone.clone (self : ref Inch) := deref self;
   |}.
 Module ImplInch.
 
 Module Impl__crate_marker_Copy_for_Inch.
   Definition Self := Inch.
   
-  #[global] Instance I : _crate.marker.Copy.Class Self := {|
-  |}.
+  Global Instance I : _crate.marker.Copy.Class Self :=
+      _crate.marker.Copy.Build_Class _.
 Module ImplInch.
 
 Error Enum.
@@ -34,10 +32,8 @@ Error Enum.
 Module Impl__crate_fmt_Debug_for_Mm.
   Definition Self := Mm.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref Mm)
-      (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt (self : ref Mm) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.intrinsics.unreachable tt;
   |}.
 Module ImplMm.
@@ -45,64 +41,74 @@ Module ImplMm.
 Module Impl__crate_clone_Clone_for_Mm.
   Definition Self := Mm.
   
-  #[global] Instance I : _crate.clone.Clone.Class Self := {|
-    clone (self : static_ref Mm) := deref self;
+  Global Instance I : _crate.clone.Clone.Class Self := {|
+    _crate.clone.Clone.clone (self : ref Mm) := deref self;
   |}.
 Module ImplMm.
 
 Module Impl__crate_marker_Copy_for_Mm.
   Definition Self := Mm.
   
-  #[global] Instance I : _crate.marker.Copy.Class Self := {|
-  |}.
+  Global Instance I : _crate.marker.Copy.Class Self :=
+      _crate.marker.Copy.Build_Class _.
 Module ImplMm.
 
-Definition Length : Set :=
-  f64 * PhantomData.
+Module Length.
+  Inductive t : Set := Build (_ : f64 * PhantomData).
+  
+  Global Instance Get_0 : IndexedField.Class t 0 f64 := {|
+    IndexedField.get '(Build x0 _) := x0;
+  |}.
+  Global Instance Get_1 : IndexedField.Class t 1 PhantomData := {|
+    IndexedField.get '(Build _ x1) := x1;
+  |}.
+End Length.
+Definition Length := Length.t.
 
 Module Impl__crate_fmt_Debug_for_Length.
   Definition Self := Length.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref Length<Unit>)
-      (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt
+        (self : ref Length<Unit>)
+        (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_tuple_field2_finish
         f
         "Length"
-        self.0
-        self.1;
+        (IndexedField.get (index := 0) self)
+        (IndexedField.get (index := 1) self);
   |}.
 Module ImplLength.
 
 Module Impl__crate_clone_Clone_for_Length.
   Definition Self := Length.
   
-  #[global] Instance I : _crate.clone.Clone.Class Self := {|
-    clone
-      (self : static_ref Length<Unit>) :=
+  Global Instance I : _crate.clone.Clone.Class Self := {|
+    _crate.clone.Clone.clone (self : ref Length<Unit>) :=
       Length
-        (_crate.clone.Clone.clone self.0)
-        (_crate.clone.Clone.clone self.1);
+        (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
+        (_crate.clone.Clone.clone (IndexedField.get (index := 1) self));
   |}.
 Module ImplLength.
 
 Module Impl__crate_marker_Copy_for_Length.
   Definition Self := Length.
   
-  #[global] Instance I : _crate.marker.Copy.Class Self := {|
-  |}.
+  Global Instance I : _crate.marker.Copy.Class Self :=
+      _crate.marker.Copy.Build_Class _.
 Module ImplLength.
 
 Module Impl_Add_for_Length.
   Definition Self := Length.
   
-  #[global] Instance I : Add.Class Self := {|
-    Output := Length;
-    add
-      (self : Length<Unit>)
-      (rhs : Length) :=
-      Length (add self.0 rhs.0) PhantomData;
+  Global Instance I : Add.Class Self := {|
+    Add.Output := Length;
+    Add.add (self : Length<Unit>) (rhs : Length) :=
+      Length
+        (add
+          (IndexedField.get (index := 0) self)
+          (IndexedField.get (index := 0) rhs))
+        PhantomData;
   |}.
 Module ImplLength.
 
@@ -114,11 +120,13 @@ Definition main (_ : unit) :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["one foot + one_foot = ";" in\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug two_feet.0]) ;;
+      [_crate::fmt::ImplArgumentV1.new_debug
+        (IndexedField.get (index := 0) two_feet)]) ;;
   tt ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["one meter + one_meter = ";" mm\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug two_meters.0]) ;;
+      [_crate::fmt::ImplArgumentV1.new_debug
+        (IndexedField.get (index := 0) two_meters)]) ;;
   tt ;;
   tt.

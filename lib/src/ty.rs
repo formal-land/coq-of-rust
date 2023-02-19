@@ -100,7 +100,7 @@ impl CoqType {
             CoqType::Array(ty) => nest([text("list"), line(), ty.to_doc()]),
             CoqType::Ref(ty, mutbl) => match mutbl {
                 rustc_hir::Mutability::Mut => nest([text("mut_ref"), line(), ty.to_doc()]),
-                rustc_hir::Mutability::Not => nest([text("static_ref"), line(), ty.to_doc()]),
+                rustc_hir::Mutability::Not => nest([text("ref"), line(), ty.to_doc()]),
             },
         }
     }

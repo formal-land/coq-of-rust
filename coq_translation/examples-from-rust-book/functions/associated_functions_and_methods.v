@@ -29,14 +29,14 @@ Definition Rectangle : Set := Rectangle.t.
 
 (* Impl [Rectangle] *)
 Module ImplRectangle.
-  Definition get_p1 (self : static_ref Rectangle) : Point := self.p1.
+  Definition get_p1 (self : ref Rectangle) : Point := self.p1.
   
-  Definition area (self : static_ref Rectangle) : f64 :=
+  Definition area (self : ref Rectangle) : f64 :=
     let {| Point.x := x1; Point.y := y1; |} := self.p1 in
     let {| Point.x := x2; Point.y := y2; |} := self.p2 in
     abs (mul (sub x1 x2) (sub y1 y2)).
   
-  Definition perimeter (self : static_ref Rectangle) : f64 :=
+  Definition perimeter (self : ref Rectangle) : f64 :=
     let {| Point.x := x1; Point.y := y1; |} := self.p1 in
     let {| Point.x := x2; Point.y := y2; |} := self.p2 in
     mul 2 (* 2.0 *) (add (abs (sub x1 x2)) (abs (sub y1 y2))).
@@ -50,8 +50,17 @@ Module ImplRectangle.
 End ImplRectangle.
 (* End impl [Rectangle] *)
 
-Definition Pair : Set :=
-  Box * Box.
+Module Pair.
+  Inductive t : Set := Build (_ : Box * Box).
+  
+  Global Instance Get_0 : IndexedField.Class t 0 Box := {|
+    IndexedField.get '(Build x0 _) := x0;
+  |}.
+  Global Instance Get_1 : IndexedField.Class t 1 Box := {|
+    IndexedField.get '(Build _ x1) := x1;
+  |}.
+End Pair.
+Definition Pair := Pair.t.
 
 (* Impl [Pair] *)
 Module ImplPair.

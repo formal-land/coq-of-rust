@@ -18,9 +18,8 @@ Definition Job : Set := Job.t.
 Module Impl__crate_clone_Clone_for_Job.
   Definition Self := Job.
   
-  #[global] Instance I : _crate.clone.Clone.Class Self := {|
-    clone
-      (self : static_ref Job) :=
+  Global Instance I : _crate.clone.Clone.Class Self := {|
+    _crate.clone.Clone.clone (self : ref Job) :=
       let _ := tt in
       deref self;
   |}.
@@ -29,8 +28,8 @@ Module ImplJob.
 Module Impl__crate_marker_Copy_for_Job.
   Definition Self := Job.
   
-  #[global] Instance I : _crate.marker.Copy.Class Self := {|
-  |}.
+  Global Instance I : _crate.marker.Copy.Class Self :=
+      _crate.marker.Copy.Build_Class _.
 Module ImplJob.
 
 Module PhoneNumber.
@@ -44,9 +43,8 @@ Definition PhoneNumber : Set := PhoneNumber.t.
 Module Impl__crate_clone_Clone_for_PhoneNumber.
   Definition Self := PhoneNumber.
   
-  #[global] Instance I : _crate.clone.Clone.Class Self := {|
-    clone
-      (self : static_ref PhoneNumber) :=
+  Global Instance I : _crate.clone.Clone.Class Self := {|
+    _crate.clone.Clone.clone (self : ref PhoneNumber) :=
       let _ := tt in
       let _ := tt in
       deref self;
@@ -56,13 +54,13 @@ Module ImplPhoneNumber.
 Module Impl__crate_marker_Copy_for_PhoneNumber.
   Definition Self := PhoneNumber.
   
-  #[global] Instance I : _crate.marker.Copy.Class Self := {|
-  |}.
+  Global Instance I : _crate.marker.Copy.Class Self :=
+      _crate.marker.Copy.Build_Class _.
 Module ImplPhoneNumber.
 
 (* Impl [Person] *)
 Module ImplPerson.
-  Definition work_phone_area_code (self : static_ref Person) : Option :=
+  Definition work_phone_area_code (self : ref Person) : Option :=
     match
         branch
           match branch self.job with

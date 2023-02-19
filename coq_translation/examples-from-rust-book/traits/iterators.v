@@ -12,10 +12,9 @@ Definition Fibonacci : Set := Fibonacci.t.
 Module Impl_Iterator_for_Fibonacci.
   Definition Self := Fibonacci.
   
-  #[global] Instance I : Iterator.Class Self := {|
-    Item := u32;
-    next
-      (self : mut_ref Fibonacci) :=
+  Global Instance I : Iterator.Class Self := {|
+    Iterator.Item := u32;
+    Iterator.next (self : mut_ref Fibonacci) :=
       let current := self.curr in
       assign self.curr := self.next ;;
       assign self.next := add current self.next ;;

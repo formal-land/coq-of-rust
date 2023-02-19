@@ -9,10 +9,10 @@ Module
   Module Impl__crate_fmt_Debug_for_MathError.
     Definition Self := MathError.
     
-    #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-      fmt
-        (self : static_ref checked::MathError)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    Global Instance I : _crate.fmt.Debug.Class Self := {|
+      _crate.fmt.Debug.fmt
+          (self : ref checked::MathError)
+          (f : mut_ref _crate.fmt.Formatter) :=
         match self with
         | MathError.DivisionByZero =>
           _crate::fmt::ImplFormatter.write_str f "DivisionByZero"
@@ -49,10 +49,10 @@ Error Enum.
 Module Impl__crate_fmt_Debug_for_MathError.
   Definition Self := MathError.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref checked::MathError)
-      (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt
+        (self : ref checked::MathError)
+        (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | MathError.DivisionByZero =>
         _crate::fmt::ImplFormatter.write_str f "DivisionByZero"

@@ -12,8 +12,13 @@ Definition main (_ : unit) :=
       with
       | args =>
         [_crate::fmt::ImplArgumentV1.new_debug
-          args.0;_crate::fmt::ImplArgumentV1.new_debug
-          args.1;_crate::fmt::ImplArgumentV1.new_debug args.2]
+          (IndexedField.get
+            (index := 0)
+            args);_crate::fmt::ImplArgumentV1.new_debug
+          (IndexedField.get
+            (index := 1)
+            args);_crate::fmt::ImplArgumentV1.new_debug
+          (IndexedField.get (index := 2) args)]
       end) ;;
   tt ;;
   _crate.io._print
@@ -22,8 +27,13 @@ Definition main (_ : unit) :=
       match ("true", "false", or true false) with
       | args =>
         [_crate::fmt::ImplArgumentV1.new_debug
-          args.0;_crate::fmt::ImplArgumentV1.new_debug
-          args.1;_crate::fmt::ImplArgumentV1.new_debug args.2]
+          (IndexedField.get
+            (index := 0)
+            args);_crate::fmt::ImplArgumentV1.new_debug
+          (IndexedField.get
+            (index := 1)
+            args);_crate::fmt::ImplArgumentV1.new_debug
+          (IndexedField.get (index := 2) args)]
       end) ;;
   tt ;;
   tt.

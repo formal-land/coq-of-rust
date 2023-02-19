@@ -69,8 +69,13 @@ Definition main (_ : unit) :=
       match ("the lazy dog", "the quick brown fox", "jumps over") with
       | args =>
         [_crate::fmt::ImplArgumentV1.new_display
-          args.1;_crate::fmt::ImplArgumentV1.new_display
-          args.2;_crate::fmt::ImplArgumentV1.new_display args.0]
+          (IndexedField.get
+            (index := 1)
+            args);_crate::fmt::ImplArgumentV1.new_display
+          (IndexedField.get
+            (index := 2)
+            args);_crate::fmt::ImplArgumentV1.new_display
+          (IndexedField.get (index := 0) args)]
       end) ;;
   tt ;;
   _crate.io._print
@@ -202,5 +207,11 @@ Definition main (_ : unit) :=
   tt ;;
   Stmt_item.
 
-Definition Structure : Set :=
-  i32.
+Module Structure.
+  Inductive t : Set := Build (_ : i32).
+  
+  Global Instance Get_0 : IndexedField.Class t 0 i32 := {|
+    IndexedField.get '(Build x0) := x0;
+  |}.
+End Structure.
+Definition Structure := Structure.t.

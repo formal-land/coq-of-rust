@@ -12,10 +12,10 @@ Definition Point : Set := Point.t.
 Module Impl__crate_fmt_Debug_for_Point.
   Definition Self := Point.
   
-  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref Point)
-      (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt
+        (self : ref Point)
+        (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_struct_field2_finish
         f
         "Point"
@@ -29,9 +29,8 @@ Module ImplPoint.
 Module Impl__crate_clone_Clone_for_Point.
   Definition Self := Point.
   
-  #[global] Instance I : _crate.clone.Clone.Class Self := {|
-    clone
-      (self : static_ref Point) :=
+  Global Instance I : _crate.clone.Clone.Class Self := {|
+    _crate.clone.Clone.clone (self : ref Point) :=
       let _ := tt in
       deref self;
   |}.
@@ -40,8 +39,8 @@ Module ImplPoint.
 Module Impl__crate_marker_Copy_for_Point.
   Definition Self := Point.
   
-  #[global] Instance I : _crate.marker.Copy.Class Self := {|
-  |}.
+  Global Instance I : _crate.marker.Copy.Class Self :=
+      _crate.marker.Copy.Build_Class _.
 Module ImplPoint.
 
 Module Rectangle.

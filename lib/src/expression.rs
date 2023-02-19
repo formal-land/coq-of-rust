@@ -68,6 +68,10 @@ pub enum Expr {
         left: Box<Expr>,
         right: Box<Expr>,
     },
+    IndexedField {
+        base: Box<Expr>,
+        index: u32,
+    },
     Field {
         base: Box<Expr>,
         field: String,
@@ -253,8 +257,14 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         }
         rustc_hir::ExprKind::Field(base, ident) => {
             let base = Box::new(compile_expr(tcx, base));
-            let field = ident.name.to_string();
-            Expr::Field { base, field }
+            let index = ident.name.to_string().parse::<u32>();
+            match index {
+                Ok(index) => Expr::IndexedField { base, index },
+                Err(_) => {
+                    let field = ident.name.to_string();
+                    Expr::Field { base, field }
+                }
+            }
         }
         rustc_hir::ExprKind::Index(base, index) => {
             let base = Box::new(compile_expr(tcx, base));
@@ -434,15 +444,12 @@ impl Expr {
             } => paren(
                 with_paren,
                 group([
-                    (nest([
-                        group([
-                            nest([text("if"), line(), condition.to_doc(false)]),
-                            line(),
-                            text("then"),
-                        ]),
-                        hardline(),
-                        success.to_doc(false),
-                    ])),
+                    group([
+                        nest([text("if"), line(), condition.to_doc(false)]),
+                        line(),
+                        text("then"),
+                    ]),
+                    nest([hardline(), success.to_doc(false)]),
                     hardline(),
                     nest([text("else"), hardline(), failure.to_doc(false)]),
                 ]),
@@ -503,6 +510,23 @@ impl Expr {
                 ]),
             ),
             Expr::Field { base, field } => nest([base.to_doc(true), text("."), text(field)]),
+            Expr::IndexedField { base, index } => paren(
+                with_paren,
+                nest([
+                    text("IndexedField.get"),
+                    line(),
+                    nest([
+                        text("(index"),
+                        line(),
+                        text(":="),
+                        line(),
+                        text(index.to_string()),
+                        text(")"),
+                    ]),
+                    line(),
+                    base.to_doc(true),
+                ]),
+            ),
             Expr::Index { base, index } => nest([base.to_doc(true), bracket(index.to_doc(false))]),
             Expr::Struct { path, fields, base } => group([
                 group([

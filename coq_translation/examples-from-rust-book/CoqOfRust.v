@@ -11,6 +11,44 @@ Global Open Scope type_scope.
 
 Export List.ListNotations.
 
+Module ExperimentsAroundMethods.
+  (** A generic class to represent methods by name. *)
+  Class Method (name : string) (T : Set) : Set := {
+    method : T;
+  }.
+  Arguments method name {T Method}.
+
+  Module Ty.
+    Parameter t : Set.
+
+    (** A class to the represent the associated functions of a given type. *)
+    Class AssociatedFunction (name : string) (T : Set) : Set := {
+      associated_function : T;
+    }.
+    Arguments associated_function name {T AssociatedFunction}.
+  End Ty.
+
+  Parameter foo : Ty.t -> bool.
+  Parameter arg : Ty.t -> string.
+
+  Global Instance Ty_foo : Ty.AssociatedFunction "foo" (Ty.t -> bool) := {|
+    Ty.associated_function := foo;
+  |}.
+
+  Global Instance Ty_arg : Ty.AssociatedFunction "arg" (Ty.t -> string) := {|
+    Ty.associated_function := arg;
+  |}.
+
+  Definition gre : Ty.t -> string := Ty.associated_function "arg".
+
+  Global Instance Ty_explain : Method "explain" (Ty.t -> string) := {|
+    method self := "hello";
+  |}.
+
+  Definition gre2 (ty : Ty.t) : string :=
+    method "explain" ty ++ " world".
+End ExperimentsAroundMethods.
+
 Parameter axiom : forall {A : Set}, A.
 
 Notation "e1 ;; e2" := (let '_ := e1 in e2)
@@ -32,8 +70,21 @@ Definition i128 : Set := Z.
 Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
-Definition static_ref (A : Set) : Set := A.
-Definition mut_ref (A : Set) : Set := A.
+Definition ref (A : Set) : Set := A.
+Definition mut_ref : Set -> Set := ref.
+
+Definition deref {A : Set} (r : ref A) : A := r.
+
+Module IndexedField.
+  Class Class (Self : Set) (index : Z) (T : Set) : Set := {
+    get : Self -> T;
+  }.
+
+  Global Instance TupleOfSingleElement (T : Set)
+    : IndexedField.Class T 0 T := {|
+    get self := self;
+  |}.
+End IndexedField.
 
 Module std.
   Module result.
@@ -60,3 +111,23 @@ Module std.
     End Display.
   End fmt.
 End std.
+
+Module _crate.
+  Module marker.
+    Module Copy.
+      Unset Primitive Projections.
+      Class Class (Self : Set) : Set := {
+      }.
+      Global Set Primitive Projections.
+    End Copy.
+  End marker.
+
+  Module clone.
+    Module Clone.
+      Class Class (Self : Set) : Set := {
+        clone : ref Self -> Self;
+      }.
+    End Clone.
+  End clone.
+End _crate.
+

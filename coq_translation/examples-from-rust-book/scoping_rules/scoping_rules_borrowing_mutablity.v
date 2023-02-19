@@ -3,8 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Book.
   Record t : Set := {
-    author : static_ref str;
-    title : static_ref str;
+    author : ref str;
+    title : ref str;
     year : u32;
   }.
 End Book.
@@ -13,9 +13,8 @@ Definition Book : Set := Book.t.
 Module Impl__crate_clone_Clone_for_Book.
   Definition Self := Book.
   
-  #[global] Instance I : _crate.clone.Clone.Class Self := {|
-    clone
-      (self : static_ref Book) :=
+  Global Instance I : _crate.clone.Clone.Class Self := {|
+    _crate.clone.Clone.clone (self : ref Book) :=
       let _ := tt in
       let _ := tt in
       let _ := tt in
@@ -26,8 +25,8 @@ Module ImplBook.
 Module Impl__crate_marker_Copy_for_Book.
   Definition Self := Book.
   
-  #[global] Instance I : _crate.marker.Copy.Class Self := {|
-  |}.
+  Global Instance I : _crate.marker.Copy.Class Self :=
+      _crate.marker.Copy.Build_Class _.
 Module ImplBook.
 
 Definition borrow_book (_ : unit) :=

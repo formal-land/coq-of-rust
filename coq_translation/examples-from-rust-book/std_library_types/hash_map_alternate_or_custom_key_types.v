@@ -3,8 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Account.
   Record t : Set := {
-    username : static_ref str;
-    password : static_ref str;
+    username : ref str;
+    password : ref str;
   }.
 End Account.
 Definition Account : Set := Account.t.
@@ -12,17 +12,15 @@ Definition Account : Set := Account.t.
 Module Impl__crate_marker_StructuralPartialEq_for_Account.
   Definition Self := Account.
   
-  #[global] Instance I : _crate.marker.StructuralPartialEq.Class Self := {|
-  |}.
+  Global Instance I : _crate.marker.StructuralPartialEq.Class Self :=
+      _crate.marker.StructuralPartialEq.Build_Class _.
 Module ImplAccount.
 
 Module Impl__crate_cmp_PartialEq_for_Account.
   Definition Self := Account.
   
-  #[global] Instance I : _crate.cmp.PartialEq.Class Self := {|
-    eq
-      (self : static_ref Account<'a>)
-      (other : static_ref Account) :=
+  Global Instance I : _crate.cmp.PartialEq.Class Self := {|
+    _crate.cmp.PartialEq.eq (self : ref Account<'a>) (other : ref Account) :=
       and (eq self.username other.username) (eq self.password other.password);
   |}.
 Module ImplAccount.
@@ -30,16 +28,15 @@ Module ImplAccount.
 Module Impl__crate_marker_StructuralEq_for_Account.
   Definition Self := Account.
   
-  #[global] Instance I : _crate.marker.StructuralEq.Class Self := {|
-  |}.
+  Global Instance I : _crate.marker.StructuralEq.Class Self :=
+      _crate.marker.StructuralEq.Build_Class _.
 Module ImplAccount.
 
 Module Impl__crate_cmp_Eq_for_Account.
   Definition Self := Account.
   
-  #[global] Instance I : _crate.cmp.Eq.Class Self := {|
-    assert_receiver_is_total_eq
-      (self : static_ref Account<'a>) :=
+  Global Instance I : _crate.cmp.Eq.Class Self := {|
+    _crate.cmp.Eq.assert_receiver_is_total_eq (self : ref Account<'a>) :=
       let _ := tt in
       let _ := tt in
       tt;
@@ -49,10 +46,8 @@ Module ImplAccount.
 Module Impl__crate_hash_Hash_for_Account.
   Definition Self := Account.
   
-  #[global] Instance I : _crate.hash.Hash.Class Self := {|
-    hash
-      (self : static_ref Account<'a>)
-      (state : mut_ref __H) :=
+  Global Instance I : _crate.hash.Hash.Class Self := {|
+    _crate.hash.Hash.hash (self : ref Account<'a>) (state : mut_ref __H) :=
       _crate.hash.Hash.hash self.username state ;;
       _crate.hash.Hash.hash self.password state;
   |}.
@@ -60,8 +55,8 @@ Module ImplAccount.
 
 Module AccountInfo.
   Record t : Set := {
-    name : static_ref str;
-    email : static_ref str;
+    name : ref str;
+    email : ref str;
   }.
 End AccountInfo.
 Definition AccountInfo : Set := AccountInfo.t.

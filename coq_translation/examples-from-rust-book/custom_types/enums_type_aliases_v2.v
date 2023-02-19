@@ -6,7 +6,7 @@ Error Enum.
 (* Impl [VeryVerboseEnumOfThingsToDoWithNumbers] *)
 Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
   Definition run
-      (self : static_ref VeryVerboseEnumOfThingsToDoWithNumbers)
+      (self : ref VeryVerboseEnumOfThingsToDoWithNumbers)
       (x : i32)
       (y : i32)
       : i32 :=

@@ -33,9 +33,8 @@ Definition Complex : Set := Complex.t.
 Module Impl__crate_clone_Clone_for_Complex.
   Definition Self := Complex.
   
-  #[global] Instance I : _crate.clone.Clone.Class Self := {|
-    clone
-      (self : static_ref Complex) :=
+  Global Instance I : _crate.clone.Clone.Class Self := {|
+    _crate.clone.Clone.clone (self : ref Complex) :=
       let _ := tt in
       deref self;
   |}.
@@ -44,17 +43,15 @@ Module ImplComplex.
 Module Impl__crate_marker_Copy_for_Complex.
   Definition Self := Complex.
   
-  #[global] Instance I : _crate.marker.Copy.Class Self := {|
-  |}.
+  Global Instance I : _crate.marker.Copy.Class Self :=
+      _crate.marker.Copy.Build_Class _.
 Module ImplComplex.
 
 Module Impl_fmt_Debug_for_Complex.
   Definition Self := Complex.
   
-  #[global] Instance I : fmt.Debug.Class Self := {|
-    fmt
-      (self : static_ref Complex)
-      (f : mut_ref fmt.Formatter) :=
+  Global Instance I : fmt.Debug.Class Self := {|
+    fmt.Debug.fmt (self : ref Complex) (f : mut_ref fmt.Formatter) :=
       if lt self.im 0 (* 0. *) then
         write_fmt
           f
