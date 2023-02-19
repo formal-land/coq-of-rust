@@ -103,6 +103,7 @@ fn create_translation_to_coq(input_file_name: String, contents: String) -> Strin
         make_codegen_backend: None,
         registry: registry::Registry::new(rustc_error_codes::DIAGNOSTICS),
     };
+    println!("Starting to translate {filename}...");
     let now = std::time::Instant::now();
     let result = rustc_interface::run_compiler(config, |compiler| {
         compiler.enter(|queries| {

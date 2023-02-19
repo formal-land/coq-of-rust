@@ -38,12 +38,16 @@ enum TopLevelItem {
     },
     Impl {
         self_ty: CoqType,
-        of_trait: Option<Path>,
         body: TopLevel,
     },
     Trait {
         name: String,
         body: Vec<(String, TraitItem)>,
+    },
+    TraitImpl {
+        self_ty: CoqType,
+        of_trait: Path,
+        body: TopLevel,
     },
     Error(String),
 }
@@ -212,13 +216,17 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                 })
                 .collect();
             let self_ty = compile_type(&tcx, self_ty);
-            vec![TopLevelItem::Impl {
-                self_ty,
-                of_trait: of_trait
-                    .as_ref()
-                    .map(|trait_ref| compile_path(trait_ref.path)),
-                body: TopLevel(items),
-            }]
+            match of_trait {
+                Some(trait_ref) => vec![TopLevelItem::TraitImpl {
+                    self_ty,
+                    of_trait: compile_path(trait_ref.path),
+                    body: TopLevel(items),
+                }],
+                None => vec![TopLevelItem::Impl {
+                    self_ty,
+                    body: TopLevel(items),
+                }],
+            }
         }
     }
 }
@@ -400,22 +408,10 @@ impl TopLevelItem {
                     .group(),
                 ])
             }
-            TopLevelItem::Impl {
-                self_ty,
-                of_trait,
-                body,
-            } => RcDoc::concat([
+            TopLevelItem::Impl { self_ty, body } => RcDoc::concat([
                 RcDoc::text("(* Impl ["),
                 self_ty.to_doc(),
                 RcDoc::text("] "),
-                match of_trait {
-                    Some(trait_ty) => RcDoc::concat([
-                        RcDoc::text("of trait ["),
-                        trait_ty.to_doc(),
-                        RcDoc::text("]"),
-                    ]),
-                    None => RcDoc::nil(),
-                },
                 RcDoc::text("*)"),
                 RcDoc::hardline(),
                 indent(RcDoc::concat([
@@ -475,6 +471,128 @@ impl TopLevelItem {
                 RcDoc::hardline(),
                 RcDoc::text("}."),
             ]),
+            TopLevelItem::TraitImpl {
+                self_ty,
+                of_trait,
+                body,
+            } => RcDoc::concat([
+                indent(RcDoc::concat([
+                    indent(RcDoc::concat([
+                        RcDoc::text("Module"),
+                        RcDoc::line(),
+                        RcDoc::text("Impl_"),
+                        RcDoc::text(of_trait.to_name()),
+                        RcDoc::text("_for_"),
+                        RcDoc::text(self_ty.to_name()),
+                        RcDoc::text("."),
+                    ]))
+                    .group(),
+                    RcDoc::hardline(),
+                    indent(RcDoc::concat([
+                        RcDoc::text("Definition"),
+                        RcDoc::line(),
+                        RcDoc::text("Self"),
+                        RcDoc::line(),
+                        RcDoc::text(":="),
+                        RcDoc::line(),
+                        self_ty.to_doc(),
+                        RcDoc::text("."),
+                    ]))
+                    .group(),
+                    RcDoc::hardline(),
+                    RcDoc::hardline(),
+                    indent(RcDoc::concat([
+                        indent(RcDoc::concat([
+                            indent(RcDoc::concat([
+                                RcDoc::text("#[global]"),
+                                RcDoc::line(),
+                                RcDoc::text("Instance"),
+                                RcDoc::line(),
+                                RcDoc::text("I"),
+                            ]))
+                            .group(),
+                            RcDoc::line(),
+                            indent(RcDoc::concat([
+                                RcDoc::text(":"),
+                                RcDoc::line(),
+                                of_trait.to_doc(),
+                                RcDoc::text(".Class"),
+                                RcDoc::line(),
+                                RcDoc::text("Self"),
+                                RcDoc::line(),
+                                RcDoc::text(":="),
+                                RcDoc::line(),
+                                RcDoc::text("{|"),
+                            ]))
+                            .group(),
+                        ]))
+                        .group(),
+                        RcDoc::concat(body.0.iter().map(|item| {
+                            match item {
+                                TopLevelItem::Definition {
+                                    name,
+                                    args,
+                                    ret_ty: _,
+                                    body,
+                                } => RcDoc::concat([
+                                    RcDoc::hardline(),
+                                    indent(RcDoc::concat([
+                                        RcDoc::text(name),
+                                        RcDoc::line(),
+                                        RcDoc::intersperse(
+                                            args.iter().map(|(name, ty)| {
+                                                indent(RcDoc::concat([
+                                                    RcDoc::text("("),
+                                                    RcDoc::text(name),
+                                                    RcDoc::line(),
+                                                    RcDoc::text(":"),
+                                                    RcDoc::line(),
+                                                    ty.to_doc(),
+                                                    RcDoc::text(")"),
+                                                ]))
+                                                .group()
+                                            }),
+                                            RcDoc::line(),
+                                        ),
+                                        RcDoc::line(),
+                                        RcDoc::text(":="),
+                                        RcDoc::line(),
+                                        body.to_doc(false),
+                                        RcDoc::text(";"),
+                                    ]))
+                                    .group(),
+                                ]),
+                                TopLevelItem::TypeAlias { name, ty } => RcDoc::concat([
+                                    RcDoc::hardline(),
+                                    indent(RcDoc::concat([
+                                        RcDoc::text(name),
+                                        RcDoc::line(),
+                                        RcDoc::text(":="),
+                                        RcDoc::line(),
+                                        ty.to_doc(),
+                                        RcDoc::text(";"),
+                                    ]))
+                                    .group(),
+                                ]),
+                                _ => todo!("trait impl item"),
+                            }
+                        })),
+                    ]))
+                    .group(),
+                    RcDoc::hardline(),
+                    RcDoc::text("|}."),
+                ]))
+                .group(),
+                RcDoc::hardline(),
+                indent(RcDoc::concat([
+                    RcDoc::text("Module"),
+                    RcDoc::line(),
+                    RcDoc::text("Impl"),
+                    RcDoc::text(self_ty.to_name()),
+                    RcDoc::text("."),
+                ]))
+                .group(),
+            ]),
             TopLevelItem::Error(message) => RcDoc::concat([
                 RcDoc::text("Error"),
                 RcDoc::space(),
@@ -496,6 +614,6 @@ impl TopLevel {
     pub fn to_pretty(&self, width: usize) -> String {
         let mut w = Vec::new();
         self.to_doc().render(width, &mut w).unwrap();
-        format!("{}\n{}", HEADER, String::from_utf8(w).unwrap())
+        format!("{}{}\n", HEADER, String::from_utf8(w).unwrap())
     }
 }
