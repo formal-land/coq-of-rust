@@ -15,7 +15,7 @@ Module Impl__crate_fmt_Debug_for_Matrix.
     fmt
       (self : static_ref Matrix)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       _crate::fmt::ImplFormatter.debug_tuple_field4_finish
         f
         "Matrix"

@@ -21,7 +21,7 @@ Module Impl_Animal_for_Sheep.
   Definition Self := Sheep.
   
   #[global] Instance I : Animal.Class Self := {|
-    noise (self : static_ref Sheep) : static_ref str := "baaaaah!";
+    noise (self : static_ref Sheep) := "baaaaah!";
   |}.
 Module ImplSheep.
 
@@ -29,7 +29,7 @@ Module Impl_Animal_for_Cow.
   Definition Self := Cow.
   
   #[global] Instance I : Animal.Class Self := {|
-    noise (self : static_ref Cow) : static_ref str := "moooooo!";
+    noise (self : static_ref Cow) := "moooooo!";
   |}.
 Module ImplCow.
 

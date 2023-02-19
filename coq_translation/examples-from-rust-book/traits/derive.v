@@ -18,7 +18,7 @@ Module Impl__crate_cmp_PartialEq_for_Centimeters.
     eq
       (self : static_ref Centimeters)
       (other : static_ref Centimeters)
-      : bool :=
+      :=
       eq self.0 other.0;
   |}.
 Module ImplCentimeters.
@@ -30,7 +30,7 @@ Module Impl__crate_cmp_PartialOrd_for_Centimeters.
     partial_cmp
       (self : static_ref Centimeters)
       (other : static_ref Centimeters)
-      : _crate.option.Option :=
+      :=
       _crate.cmp.PartialOrd.partial_cmp self.0 other.0;
   |}.
 Module ImplCentimeters.
@@ -45,7 +45,7 @@ Module Impl__crate_fmt_Debug_for_Inches.
     fmt
       (self : static_ref Inches)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Inches" self.0;
   |}.
 Module ImplInches.

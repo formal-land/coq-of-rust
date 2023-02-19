@@ -21,7 +21,7 @@ Module Impl__crate_clone_Clone_for_Job.
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
     clone
       (self : static_ref Job)
-      : Job :=
+      :=
       let _ := tt in
       deref self;
   |}.
@@ -48,7 +48,7 @@ Module Impl__crate_clone_Clone_for_PhoneNumber.
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
     clone
       (self : static_ref PhoneNumber)
-      : PhoneNumber :=
+      :=
       let _ := tt in
       let _ := tt in
       deref self;

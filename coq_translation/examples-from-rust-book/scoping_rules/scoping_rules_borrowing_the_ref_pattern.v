@@ -15,7 +15,7 @@ Module Impl__crate_clone_Clone_for_Point.
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
     clone
       (self : static_ref Point)
-      : Point :=
+      :=
       let _ := tt in
       deref self;
   |}.

@@ -9,7 +9,7 @@ Module Impl_HasArea_for_Rectangle.
   Definition Self := Rectangle.
   
   #[global] Instance I : HasArea.Class Self := {|
-    area (self : static_ref Rectangle) : f64 := mul self.length self.height;
+    area (self : static_ref Rectangle) := mul self.length self.height;
   |}.
 Module ImplRectangle.
 
@@ -28,7 +28,7 @@ Module Impl__crate_fmt_Debug_for_Rectangle.
     fmt
       (self : static_ref Rectangle)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       _crate::fmt::ImplFormatter.debug_struct_field2_finish
         f
         "Rectangle"

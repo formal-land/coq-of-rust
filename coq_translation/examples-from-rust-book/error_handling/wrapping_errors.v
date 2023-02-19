@@ -12,7 +12,7 @@ Module Impl__crate_fmt_Debug_for_DoubleError.
     fmt
       (self : static_ref DoubleError)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       match self with
       | DoubleError.EmptyVec =>
         _crate::fmt::ImplFormatter.write_str f "EmptyVec"
@@ -29,7 +29,7 @@ Module Impl_fmt_Display_for_DoubleError.
     fmt
       (self : static_ref DoubleError)
       (f : mut_ref fmt.Formatter)
-      : fmt.Result :=
+      :=
       match deref self with
       | DoubleError.EmptyVec =>
         write_fmt
@@ -53,7 +53,7 @@ Module Impl_error_Error_for_DoubleError.
   #[global] Instance I : error.Error.Class Self := {|
     source
       (self : static_ref DoubleError)
-      : Option :=
+      :=
       match deref self with
       | DoubleError.EmptyVec => None
       | DoubleError.Parse (e) => Some e
@@ -65,7 +65,7 @@ Module Impl_From_for_DoubleError.
   Definition Self := DoubleError.
   
   #[global] Instance I : From.Class Self := {|
-    from (err : ParseIntError) : DoubleError := DoubleError.Parse err;
+    from (err : ParseIntError) := DoubleError.Parse err;
   |}.
 Module ImplDoubleError.
 

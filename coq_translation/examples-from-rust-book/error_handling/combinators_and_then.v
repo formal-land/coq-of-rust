@@ -10,7 +10,7 @@ Module Impl__crate_fmt_Debug_for_Food.
     fmt
       (self : static_ref Food)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       match self with
       | Food.CordonBleu => _crate::fmt::ImplFormatter.write_str f "CordonBleu"
       | Food.Steak => _crate::fmt::ImplFormatter.write_str f "Steak"
@@ -28,7 +28,7 @@ Module Impl__crate_fmt_Debug_for_Day.
     fmt
       (self : static_ref Day)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       match self with
       | Day.Monday => _crate::fmt::ImplFormatter.write_str f "Monday"
       | Day.Tuesday => _crate::fmt::ImplFormatter.write_str f "Tuesday"

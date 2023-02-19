@@ -15,7 +15,7 @@ Module Impl_fmt_Display_for_Circle.
     fmt
       (self : static_ref Circle)
       (f : mut_ref fmt.Formatter)
-      : fmt.Result :=
+      :=
       write_fmt
         f
         (_crate::fmt::ImplArguments.new_v1

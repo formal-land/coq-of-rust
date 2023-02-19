@@ -10,7 +10,7 @@ Module Impl__crate_fmt_Debug_for_Fruit.
     fmt
       (self : static_ref Fruit)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       match self with
       | Fruit.Apple => _crate::fmt::ImplFormatter.write_str f "Apple"
       | Fruit.Orange => _crate::fmt::ImplFormatter.write_str f "Orange"

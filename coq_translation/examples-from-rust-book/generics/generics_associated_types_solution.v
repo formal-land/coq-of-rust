@@ -24,10 +24,10 @@ Module Impl_Contains_for_Container.
       (self : static_ref Container)
       (number_1 : static_ref i32)
       (number_2 : static_ref i32)
-      : bool :=
+      :=
       and (eq self.0 number_1) (eq self.1 number_2);
-    first (self : static_ref Container) : i32 := self.0;
-    last (self : static_ref Container) : i32 := self.1;
+    first (self : static_ref Container) := self.0;
+    last (self : static_ref Container) := self.1;
   |}.
 Module ImplContainer.
 

@@ -11,7 +11,7 @@ Module checked :=
       fmt
         (self : static_ref checked::MathError)
         (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
+        :=
         match self with
         | MathError.DivisionByZero =>
           _crate::fmt::ImplFormatter.write_str f "DivisionByZero"
@@ -52,7 +52,7 @@ Module Impl__crate_fmt_Debug_for_MathError.
     fmt
       (self : static_ref checked::MathError)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       match self with
       | MathError.DivisionByZero =>
         _crate::fmt::ImplFormatter.write_str f "DivisionByZero"

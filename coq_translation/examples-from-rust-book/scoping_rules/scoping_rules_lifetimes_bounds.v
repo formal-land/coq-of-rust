@@ -11,7 +11,7 @@ Module Impl__crate_fmt_Debug_for_Ref.
     fmt
       (self : static_ref Ref<'a, T>)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Ref" self.0;
   |}.
 Module ImplRef.

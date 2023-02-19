@@ -16,7 +16,7 @@ Module Impl__crate_fmt_Debug_for_Point.
     fmt
       (self : static_ref Point)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       _crate::fmt::ImplFormatter.debug_struct_field2_finish
         f
         "Point"
@@ -33,7 +33,7 @@ Module Impl__crate_clone_Clone_for_Point.
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
     clone
       (self : static_ref Point)
-      : Point :=
+      :=
       let _ := tt in
       deref self;
   |}.

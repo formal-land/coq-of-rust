@@ -15,7 +15,7 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
     fmt
       (self : static_ref Borrowed<'a>)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       _crate::fmt::ImplFormatter.debug_struct_field1_finish
         f
         "Borrowed"
@@ -28,7 +28,7 @@ Module Impl_Default_for_Borrowed.
   Definition Self := Borrowed.
   
   #[global] Instance I : Default.Class Self := {|
-    default  : Borrowed<'a> := {| Self.x := 10; |};
+    default  := {| Self.x := 10; |};
   |}.
 Module ImplBorrowed.
 

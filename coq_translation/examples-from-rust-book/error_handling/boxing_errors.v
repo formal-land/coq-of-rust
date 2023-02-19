@@ -12,7 +12,7 @@ Module Impl__crate_fmt_Debug_for_EmptyVec.
     fmt
       (self : static_ref EmptyVec)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       _crate::fmt::ImplFormatter.write_str f "EmptyVec";
   |}.
 Module ImplEmptyVec.
@@ -21,7 +21,7 @@ Module Impl__crate_clone_Clone_for_EmptyVec.
   Definition Self := EmptyVec.
   
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
-    clone (self : static_ref EmptyVec) : EmptyVec := EmptyVec;
+    clone (self : static_ref EmptyVec) := EmptyVec;
   |}.
 Module ImplEmptyVec.
 
@@ -32,7 +32,7 @@ Module Impl_fmt_Display_for_EmptyVec.
     fmt
       (self : static_ref EmptyVec)
       (f : mut_ref fmt.Formatter)
-      : fmt.Result :=
+      :=
       write_fmt
         f
         (_crate::fmt::ImplArguments.new_v1 ["invalid first item to double"] []);

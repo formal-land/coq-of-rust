@@ -16,7 +16,7 @@ Module Impl__crate_clone_Clone_for_Book.
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
     clone
       (self : static_ref Book)
-      : Book :=
+      :=
       let _ := tt in
       let _ := tt in
       let _ := tt in

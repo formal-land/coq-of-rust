@@ -21,7 +21,7 @@ Module Impl_UsernameWidget_for_Form.
   Definition Self := Form.
   
   #[global] Instance I : UsernameWidget.Class Self := {|
-    get (self : static_ref Form) : String := clone self.username;
+    get (self : static_ref Form) := clone self.username;
   |}.
 Module ImplForm.
 
@@ -29,7 +29,7 @@ Module Impl_AgeWidget_for_Form.
   Definition Self := Form.
   
   #[global] Instance I : AgeWidget.Class Self := {|
-    get (self : static_ref Form) : u8 := self.age;
+    get (self : static_ref Form) := self.age;
   |}.
 Module ImplForm.
 

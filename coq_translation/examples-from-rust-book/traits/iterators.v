@@ -16,7 +16,7 @@ Module Impl_Iterator_for_Fibonacci.
     Item := u32;
     next
       (self : mut_ref Fibonacci)
-      : Option :=
+      :=
       let current := self.curr in
       assign self.curr := self.next ;;
       assign self.next := add current self.next ;;

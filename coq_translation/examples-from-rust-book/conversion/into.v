@@ -15,7 +15,7 @@ Module Impl__crate_fmt_Debug_for_Number.
     fmt
       (self : static_ref Number)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       _crate::fmt::ImplFormatter.debug_struct_field1_finish
         f
         "Number"
@@ -28,7 +28,7 @@ Module Impl_From_for_Number.
   Definition Self := Number.
   
   #[global] Instance I : From.Class Self := {|
-    from (item : i32) : Number := {| Number.value := item; |};
+    from (item : i32) := {| Number.value := item; |};
   |}.
 Module ImplNumber.
 

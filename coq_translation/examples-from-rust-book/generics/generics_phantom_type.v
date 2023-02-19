@@ -18,7 +18,7 @@ Module Impl__crate_cmp_PartialEq_for_PhantomTuple.
     eq
       (self : static_ref PhantomTuple<A, B>)
       (other : static_ref PhantomTuple)
-      : bool :=
+      :=
       and (eq self.0 other.0) (eq self.1 other.1);
   |}.
 Module ImplPhantomTuple.
@@ -45,7 +45,7 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct.
     eq
       (self : static_ref PhantomStruct<A, B>)
       (other : static_ref PhantomStruct)
-      : bool :=
+      :=
       and (eq self.first other.first) (eq self.phantom other.phantom);
   |}.
 Module ImplPhantomStruct.

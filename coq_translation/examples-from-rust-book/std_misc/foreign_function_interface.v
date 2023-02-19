@@ -37,7 +37,7 @@ Module Impl__crate_clone_Clone_for_Complex.
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
     clone
       (self : static_ref Complex)
-      : Complex :=
+      :=
       let _ := tt in
       deref self;
   |}.
@@ -57,7 +57,7 @@ Module Impl_fmt_Debug_for_Complex.
     fmt
       (self : static_ref Complex)
       (f : mut_ref fmt.Formatter)
-      : fmt.Result :=
+      :=
       if lt self.im 0 (* 0. *) then
         write_fmt
           f

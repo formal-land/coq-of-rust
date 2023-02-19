@@ -10,7 +10,7 @@ Module Impl__crate_fmt_Debug_for_Food.
     fmt
       (self : static_ref Food)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       match self with
       | Food.Apple => _crate::fmt::ImplFormatter.write_str f "Apple"
       | Food.Carrot => _crate::fmt::ImplFormatter.write_str f "Carrot"
@@ -29,7 +29,7 @@ Module Impl__crate_fmt_Debug_for_Peeled.
     fmt
       (self : static_ref Peeled)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Peeled" self.0;
   |}.
 Module ImplPeeled.
@@ -44,7 +44,7 @@ Module Impl__crate_fmt_Debug_for_Chopped.
     fmt
       (self : static_ref Chopped)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Chopped" self.0;
   |}.
 Module ImplChopped.
@@ -59,7 +59,7 @@ Module Impl__crate_fmt_Debug_for_Cooked.
     fmt
       (self : static_ref Cooked)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      :=
       _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Cooked" self.0;
   |}.
 Module ImplCooked.

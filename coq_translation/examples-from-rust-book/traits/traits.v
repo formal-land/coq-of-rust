@@ -46,12 +46,12 @@ Module Impl_Animal_for_Sheep.
   #[global] Instance I : Animal.Class Self := {|
     new
       (name : static_ref str)
-      : Sheep :=
+      :=
       {| Sheep.name := name; Sheep.naked := false; |};
-    name (self : static_ref Sheep) : static_ref str := self.name;
+    name (self : static_ref Sheep) := self.name;
     noise
       (self : static_ref Sheep)
-      : static_ref str :=
+      :=
       if is_naked self then
         "baaaaah?"
       else

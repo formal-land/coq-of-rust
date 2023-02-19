@@ -532,7 +532,7 @@ impl TopLevelItem {
                                 TopLevelItem::Definition {
                                     name,
                                     args,
-                                    ret_ty,
+                                    ret_ty: _,
                                     body,
                                 } => RcDoc::concat([
                                     RcDoc::hardline(),
@@ -555,17 +555,7 @@ impl TopLevelItem {
                                             RcDoc::line(),
                                         ),
                                         RcDoc::line(),
-                                        match ret_ty {
-                                            Some(ty) => RcDoc::concat([indent(RcDoc::concat([
-                                                RcDoc::text(":"),
-                                                RcDoc::line(),
-                                                ty.to_doc(),
-                                                RcDoc::line(),
-                                                RcDoc::text(":="),
-                                            ]))
-                                            .group()]),
-                                            None => RcDoc::text(":="),
-                                        },
+                                        RcDoc::text(":="),
                                         RcDoc::line(),
                                         body.to_doc(false),
                                         RcDoc::text(";"),

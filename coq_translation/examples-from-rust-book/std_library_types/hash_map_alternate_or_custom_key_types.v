@@ -23,7 +23,7 @@ Module Impl__crate_cmp_PartialEq_for_Account.
     eq
       (self : static_ref Account<'a>)
       (other : static_ref Account)
-      : bool :=
+      :=
       and (eq self.username other.username) (eq self.password other.password);
   |}.
 Module ImplAccount.
@@ -41,7 +41,7 @@ Module Impl__crate_cmp_Eq_for_Account.
   #[global] Instance I : _crate.cmp.Eq.Class Self := {|
     assert_receiver_is_total_eq
       (self : static_ref Account<'a>)
-      :  :=
+      :=
       let _ := tt in
       let _ := tt in
       tt;
@@ -55,7 +55,7 @@ Module Impl__crate_hash_Hash_for_Account.
     hash
       (self : static_ref Account<'a>)
       (state : mut_ref __H)
-      :  :=
+      :=
       _crate.hash.Hash.hash self.username state ;;
       _crate.hash.Hash.hash self.password state;
   |}.
