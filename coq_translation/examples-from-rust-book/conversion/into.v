@@ -8,27 +8,29 @@ Module Number.
 End Number.
 Definition Number : Set := Number.t.
 
-(* Impl [Number] of trait [_crate.fmt.Debug]*)
-Module ImplNumber.
-  Definition
+Module Impl__crate_fmt_Debug_for_Number.
+  Definition Self := Number.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref Number)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_struct_field1_finish
-      f
-      "Number"
-      "value"
-      self.value.
-End ImplNumber.
-(* End impl [Number] *)
-
-(* Impl [Number] of trait [From]*)
+      (self : static_ref Number)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      _crate::fmt::ImplFormatter.debug_struct_field1_finish
+        f
+        "Number"
+        "value"
+        self.value;
+  |}.
 Module ImplNumber.
-  Definition from (item : i32) : Number :=
-    {| Number.value := item; |}.
-End ImplNumber.
-(* End impl [Number] *)
+
+Module Impl_From_for_Number.
+  Definition Self := Number.
+  
+  #[global] Instance I : From.Class Self := {|
+    from (item : i32) : Number := {| Number.value := item; |};
+  |}.
+Module ImplNumber.
 
 Definition main (_ : unit) :=
   let int := 5 in

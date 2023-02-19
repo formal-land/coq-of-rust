@@ -9,12 +9,13 @@ Class DoubleDrop : Set := {
   double_drop : Self -> T -> _;
 }.
 
-(* Impl [U] of trait [DoubleDrop]*)
+Module Impl_DoubleDrop_for_U.
+  Definition Self := U.
+  
+  #[global] Instance I : DoubleDrop.Class Self := {|
+    double_drop (self : U) (Pattern : T) := tt;
+  |}.
 Module ImplU.
-  Definition double_drop (self : U) (Pattern : T) :=
-    tt.
-End ImplU.
-(* End impl [U] *)
 
 Definition main (_ : unit) :=
   let empty := Empty in

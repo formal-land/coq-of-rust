@@ -5,42 +5,46 @@ Error TyAlias.
 
 Error Struct.
 
-(* Impl [EmptyVec] of trait [_crate.fmt.Debug]*)
-Module ImplEmptyVec.
-  Definition
-    fmt
-    (self : static_ref EmptyVec)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.write_str f "EmptyVec".
-End ImplEmptyVec.
-(* End impl [EmptyVec] *)
-
-(* Impl [EmptyVec] of trait [_crate.clone.Clone]*)
-Module ImplEmptyVec.
-  Definition clone (self : static_ref EmptyVec) : EmptyVec :=
-    EmptyVec.
-End ImplEmptyVec.
-(* End impl [EmptyVec] *)
-
-(* Impl [EmptyVec] of trait [fmt.Display]*)
-Module ImplEmptyVec.
-  Definition
-    fmt
-    (self : static_ref EmptyVec)
-    (f : mut_ref fmt.Formatter)
-    : fmt.Result :=
-    write_fmt
-      f
-      (_crate::fmt::ImplArguments.new_v1 ["invalid first item to double"] []).
-End ImplEmptyVec.
-(* End impl [EmptyVec] *)
-
-(* Impl [EmptyVec] of trait [error.Error]*)
-Module ImplEmptyVec.
+Module Impl__crate_fmt_Debug_for_EmptyVec.
+  Definition Self := EmptyVec.
   
-End ImplEmptyVec.
-(* End impl [EmptyVec] *)
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
+    fmt
+      (self : static_ref EmptyVec)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      _crate::fmt::ImplFormatter.write_str f "EmptyVec";
+  |}.
+Module ImplEmptyVec.
+
+Module Impl__crate_clone_Clone_for_EmptyVec.
+  Definition Self := EmptyVec.
+  
+  #[global] Instance I : _crate.clone.Clone.Class Self := {|
+    clone (self : static_ref EmptyVec) : EmptyVec := EmptyVec;
+  |}.
+Module ImplEmptyVec.
+
+Module Impl_fmt_Display_for_EmptyVec.
+  Definition Self := EmptyVec.
+  
+  #[global] Instance I : fmt.Display.Class Self := {|
+    fmt
+      (self : static_ref EmptyVec)
+      (f : mut_ref fmt.Formatter)
+      : fmt.Result :=
+      write_fmt
+        f
+        (_crate::fmt::ImplArguments.new_v1 ["invalid first item to double"] []);
+  |}.
+Module ImplEmptyVec.
+
+Module Impl_error_Error_for_EmptyVec.
+  Definition Self := EmptyVec.
+  
+  #[global] Instance I : error.Error.Class Self := {|
+  |}.
+Module ImplEmptyVec.
 
 Definition double_first (_ : unit) :=
   and_then

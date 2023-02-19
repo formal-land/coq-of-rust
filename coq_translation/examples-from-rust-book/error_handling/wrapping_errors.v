@@ -5,61 +5,69 @@ Error TyAlias.
 
 Error Enum.
 
-(* Impl [DoubleError] of trait [_crate.fmt.Debug]*)
-Module ImplDoubleError.
-  Definition
+Module Impl__crate_fmt_Debug_for_DoubleError.
+  Definition Self := DoubleError.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref DoubleError)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    match self with
-    | DoubleError.EmptyVec => _crate::fmt::ImplFormatter.write_str f "EmptyVec"
-    | DoubleError.Parse (__self_0) =>
-      _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Parse" __self_0
-    end.
-End ImplDoubleError.
-(* End impl [DoubleError] *)
-
-(* Impl [DoubleError] of trait [fmt.Display]*)
+      (self : static_ref DoubleError)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      match self with
+      | DoubleError.EmptyVec =>
+        _crate::fmt::ImplFormatter.write_str f "EmptyVec"
+      | DoubleError.Parse (__self_0) =>
+        _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Parse" __self_0
+      end;
+  |}.
 Module ImplDoubleError.
-  Definition
+
+Module Impl_fmt_Display_for_DoubleError.
+  Definition Self := DoubleError.
+  
+  #[global] Instance I : fmt.Display.Class Self := {|
     fmt
-    (self : static_ref DoubleError)
-    (f : mut_ref fmt.Formatter)
-    : fmt.Result :=
-    match deref self with
-    | DoubleError.EmptyVec =>
-      write_fmt
-        f
-        (_crate::fmt::ImplArguments.new_v1
-          ["please use a vector with at least one element"]
-          [])
-    | DoubleError.Parse () =>
-      write_fmt
-        f
-        (_crate::fmt::ImplArguments.new_v1
-          ["the provided string could not be parsed as int"]
-          [])
-    end.
-End ImplDoubleError.
-(* End impl [DoubleError] *)
-
-(* Impl [DoubleError] of trait [error.Error]*)
+      (self : static_ref DoubleError)
+      (f : mut_ref fmt.Formatter)
+      : fmt.Result :=
+      match deref self with
+      | DoubleError.EmptyVec =>
+        write_fmt
+          f
+          (_crate::fmt::ImplArguments.new_v1
+            ["please use a vector with at least one element"]
+            [])
+      | DoubleError.Parse () =>
+        write_fmt
+          f
+          (_crate::fmt::ImplArguments.new_v1
+            ["the provided string could not be parsed as int"]
+            [])
+      end;
+  |}.
 Module ImplDoubleError.
-  Definition source (self : static_ref DoubleError) : Option :=
-    match deref self with
-    | DoubleError.EmptyVec => None
-    | DoubleError.Parse (e) => Some e
-    end.
-End ImplDoubleError.
-(* End impl [DoubleError] *)
 
-(* Impl [DoubleError] of trait [From]*)
+Module Impl_error_Error_for_DoubleError.
+  Definition Self := DoubleError.
+  
+  #[global] Instance I : error.Error.Class Self := {|
+    source
+      (self : static_ref DoubleError)
+      : Option :=
+      match deref self with
+      | DoubleError.EmptyVec => None
+      | DoubleError.Parse (e) => Some e
+      end;
+  |}.
 Module ImplDoubleError.
-  Definition from (err : ParseIntError) : DoubleError :=
-    DoubleError.Parse err.
-End ImplDoubleError.
-(* End impl [DoubleError] *)
+
+Module Impl_From_for_DoubleError.
+  Definition Self := DoubleError.
+  
+  #[global] Instance I : From.Class Self := {|
+    from (err : ParseIntError) : DoubleError := DoubleError.Parse err;
+  |}.
+Module ImplDoubleError.
 
 Definition double_first (_ : unit) :=
   let first := match branch (ok_or (first vec) DoubleError.EmptyVec) with

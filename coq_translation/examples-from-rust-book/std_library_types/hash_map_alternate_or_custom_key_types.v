@@ -9,45 +9,57 @@ Module Account.
 End Account.
 Definition Account : Set := Account.t.
 
-(* Impl [Account] of trait [_crate.marker.StructuralPartialEq]*)
-Module ImplAccount.
+Module Impl__crate_marker_StructuralPartialEq_for_Account.
+  Definition Self := Account.
   
-End ImplAccount.
-(* End impl [Account] *)
-
-(* Impl [Account] of trait [_crate.cmp.PartialEq]*)
+  #[global] Instance I : _crate.marker.StructuralPartialEq.Class Self := {|
+  |}.
 Module ImplAccount.
-  Definition
+
+Module Impl__crate_cmp_PartialEq_for_Account.
+  Definition Self := Account.
+  
+  #[global] Instance I : _crate.cmp.PartialEq.Class Self := {|
     eq
-    (self : static_ref Account<'a>)
-    (other : static_ref Account)
-    : bool :=
-    and (eq self.username other.username) (eq self.password other.password).
-End ImplAccount.
-(* End impl [Account] *)
-
-(* Impl [Account] of trait [_crate.marker.StructuralEq]*)
+      (self : static_ref Account<'a>)
+      (other : static_ref Account)
+      : bool :=
+      and (eq self.username other.username) (eq self.password other.password);
+  |}.
 Module ImplAccount.
+
+Module Impl__crate_marker_StructuralEq_for_Account.
+  Definition Self := Account.
   
-End ImplAccount.
-(* End impl [Account] *)
-
-(* Impl [Account] of trait [_crate.cmp.Eq]*)
+  #[global] Instance I : _crate.marker.StructuralEq.Class Self := {|
+  |}.
 Module ImplAccount.
-  Definition assert_receiver_is_total_eq (self : static_ref Account<'a>) :  :=
-    let _ := tt in
-    let _ := tt in
-    tt.
-End ImplAccount.
-(* End impl [Account] *)
 
-(* Impl [Account] of trait [_crate.hash.Hash]*)
+Module Impl__crate_cmp_Eq_for_Account.
+  Definition Self := Account.
+  
+  #[global] Instance I : _crate.cmp.Eq.Class Self := {|
+    assert_receiver_is_total_eq
+      (self : static_ref Account<'a>)
+      :  :=
+      let _ := tt in
+      let _ := tt in
+      tt;
+  |}.
 Module ImplAccount.
-  Definition hash (self : static_ref Account<'a>) (state : mut_ref __H) :  :=
-    _crate.hash.Hash.hash self.username state ;;
-    _crate.hash.Hash.hash self.password state.
-End ImplAccount.
-(* End impl [Account] *)
+
+Module Impl__crate_hash_Hash_for_Account.
+  Definition Self := Account.
+  
+  #[global] Instance I : _crate.hash.Hash.Class Self := {|
+    hash
+      (self : static_ref Account<'a>)
+      (state : mut_ref __H)
+      :  :=
+      _crate.hash.Hash.hash self.username state ;;
+      _crate.hash.Hash.hash self.password state;
+  |}.
+Module ImplAccount.
 
 Module AccountInfo.
   Record t : Set := {

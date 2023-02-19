@@ -13,17 +13,19 @@ Class Red : Set := {
 Class Blue : Set := {
 }.
 
-(* Impl [Cardinal] of trait [Red]*)
+Module Impl_Red_for_Cardinal.
+  Definition Self := Cardinal.
+  
+  #[global] Instance I : Red.Class Self := {|
+  |}.
 Module ImplCardinal.
-  
-End ImplCardinal.
-(* End impl [Cardinal] *)
 
-(* Impl [BlueJay] of trait [Blue]*)
-Module ImplBlueJay.
+Module Impl_Blue_for_BlueJay.
+  Definition Self := BlueJay.
   
-End ImplBlueJay.
-(* End impl [BlueJay] *)
+  #[global] Instance I : Blue.Class Self := {|
+  |}.
+Module ImplBlueJay.
 
 Definition red (_ : unit) :=
   "red".

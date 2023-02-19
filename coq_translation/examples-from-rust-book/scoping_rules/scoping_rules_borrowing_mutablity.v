@@ -10,21 +10,26 @@ Module Book.
 End Book.
 Definition Book : Set := Book.t.
 
-(* Impl [Book] of trait [_crate.clone.Clone]*)
-Module ImplBook.
-  Definition clone (self : static_ref Book) : Book :=
-    let _ := tt in
-    let _ := tt in
-    let _ := tt in
-    deref self.
-End ImplBook.
-(* End impl [Book] *)
-
-(* Impl [Book] of trait [_crate.marker.Copy]*)
-Module ImplBook.
+Module Impl__crate_clone_Clone_for_Book.
+  Definition Self := Book.
   
-End ImplBook.
-(* End impl [Book] *)
+  #[global] Instance I : _crate.clone.Clone.Class Self := {|
+    clone
+      (self : static_ref Book)
+      : Book :=
+      let _ := tt in
+      let _ := tt in
+      let _ := tt in
+      deref self;
+  |}.
+Module ImplBook.
+
+Module Impl__crate_marker_Copy_for_Book.
+  Definition Self := Book.
+  
+  #[global] Instance I : _crate.marker.Copy.Class Self := {|
+  |}.
+Module ImplBook.
 
 Definition borrow_book (_ : unit) :=
   _crate.io._print

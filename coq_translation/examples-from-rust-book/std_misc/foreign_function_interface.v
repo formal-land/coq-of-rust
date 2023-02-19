@@ -31,40 +31,46 @@ Module Complex.
 End Complex.
 Definition Complex : Set := Complex.t.
 
-(* Impl [Complex] of trait [_crate.clone.Clone]*)
-Module ImplComplex.
-  Definition clone (self : static_ref Complex) : Complex :=
-    let _ := tt in
-    deref self.
-End ImplComplex.
-(* End impl [Complex] *)
-
-(* Impl [Complex] of trait [_crate.marker.Copy]*)
-Module ImplComplex.
+Module Impl__crate_clone_Clone_for_Complex.
+  Definition Self := Complex.
   
-End ImplComplex.
-(* End impl [Complex] *)
-
-(* Impl [Complex] of trait [fmt.Debug]*)
+  #[global] Instance I : _crate.clone.Clone.Class Self := {|
+    clone
+      (self : static_ref Complex)
+      : Complex :=
+      let _ := tt in
+      deref self;
+  |}.
 Module ImplComplex.
-  Definition
+
+Module Impl__crate_marker_Copy_for_Complex.
+  Definition Self := Complex.
+  
+  #[global] Instance I : _crate.marker.Copy.Class Self := {|
+  |}.
+Module ImplComplex.
+
+Module Impl_fmt_Debug_for_Complex.
+  Definition Self := Complex.
+  
+  #[global] Instance I : fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref Complex)
-    (f : mut_ref fmt.Formatter)
-    : fmt.Result :=
-    if lt self.im 0 (* 0. *) then
-      write_fmt
-        f
-        (_crate::fmt::ImplArguments.new_v1
-          ["";"-";"i"]
-          [_crate::fmt::ImplArgumentV1.new_display
-            self.re;_crate::fmt::ImplArgumentV1.new_display (neg self.im)])
-    else
-      write_fmt
-        f
-        (_crate::fmt::ImplArguments.new_v1
-          ["";"+";"i"]
-          [_crate::fmt::ImplArgumentV1.new_display
-            self.re;_crate::fmt::ImplArgumentV1.new_display self.im]).
-End ImplComplex.
-(* End impl [Complex] *)
+      (self : static_ref Complex)
+      (f : mut_ref fmt.Formatter)
+      : fmt.Result :=
+      if lt self.im 0 (* 0. *) then
+        write_fmt
+          f
+          (_crate::fmt::ImplArguments.new_v1
+            ["";"-";"i"]
+            [_crate::fmt::ImplArgumentV1.new_display
+              self.re;_crate::fmt::ImplArgumentV1.new_display (neg self.im)])
+      else
+        write_fmt
+          f
+          (_crate::fmt::ImplArguments.new_v1
+            ["";"+";"i"]
+            [_crate::fmt::ImplArgumentV1.new_display
+              self.re;_crate::fmt::ImplArgumentV1.new_display self.im]);
+  |}.
+Module ImplComplex.

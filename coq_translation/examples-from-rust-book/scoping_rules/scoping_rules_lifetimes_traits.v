@@ -8,27 +8,29 @@ Module Borrowed.
 End Borrowed.
 Definition Borrowed : Set := Borrowed.t.
 
-(* Impl [Borrowed] of trait [_crate.fmt.Debug]*)
-Module ImplBorrowed.
-  Definition
+Module Impl__crate_fmt_Debug_for_Borrowed.
+  Definition Self := Borrowed.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref Borrowed<'a>)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_struct_field1_finish
-      f
-      "Borrowed"
-      "x"
-      self.x.
-End ImplBorrowed.
-(* End impl [Borrowed] *)
-
-(* Impl [Borrowed] of trait [Default]*)
+      (self : static_ref Borrowed<'a>)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      _crate::fmt::ImplFormatter.debug_struct_field1_finish
+        f
+        "Borrowed"
+        "x"
+        self.x;
+  |}.
 Module ImplBorrowed.
-  Definition default (_ : unit) : Borrowed<'a> :=
-    {| Self.x := 10; |}.
-End ImplBorrowed.
-(* End impl [Borrowed] *)
+
+Module Impl_Default_for_Borrowed.
+  Definition Self := Borrowed.
+  
+  #[global] Instance I : Default.Class Self := {|
+    default  : Borrowed<'a> := {| Self.x := 10; |};
+  |}.
+Module ImplBorrowed.
 
 Definition main (_ : unit) :=
   let b := Default.default tt in

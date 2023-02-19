@@ -9,18 +9,20 @@ Module Fibonacci.
 End Fibonacci.
 Definition Fibonacci : Set := Fibonacci.t.
 
-(* Impl [Fibonacci] of trait [Iterator]*)
-Module ImplFibonacci.
-  Definition Item : Set :=
-    u32.
+Module Impl_Iterator_for_Fibonacci.
+  Definition Self := Fibonacci.
   
-  Definition next (self : mut_ref Fibonacci) : Option :=
-    let current := self.curr in
-    assign self.curr := self.next ;;
-    assign self.next := add current self.next ;;
-    Some current.
-End ImplFibonacci.
-(* End impl [Fibonacci] *)
+  #[global] Instance I : Iterator.Class Self := {|
+    Item := u32;
+    next
+      (self : mut_ref Fibonacci)
+      : Option :=
+      let current := self.curr in
+      assign self.curr := self.next ;;
+      assign self.next := add current self.next ;;
+      Some current;
+  |}.
+Module ImplFibonacci.
 
 Definition fibonacci (_ : unit) :=
   {| Fibonacci.curr := 0; Fibonacci.next := 1; |}.

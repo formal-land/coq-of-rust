@@ -10,23 +10,20 @@ Class Contains : Set := {
   last : static_ref Self -> i32;
 }.
 
-(* Impl [Container] of trait [Contains]*)
-Module ImplContainer.
-  Definition
+Module Impl_Contains_for_Container.
+  Definition Self := Container.
+  
+  #[global] Instance I : Contains.Class Self := {|
     contains
-    (self : static_ref Container)
-    (number_1 : static_ref i32)
-    (number_2 : static_ref i32)
-    : bool :=
-    and (eq self.0 number_1) (eq self.1 number_2).
-  
-  Definition first (self : static_ref Container) : i32 :=
-    self.0.
-  
-  Definition last (self : static_ref Container) : i32 :=
-    self.1.
-End ImplContainer.
-(* End impl [Container] *)
+      (self : static_ref Container)
+      (number_1 : static_ref i32)
+      (number_2 : static_ref i32)
+      : bool :=
+      and (eq self.0 number_1) (eq self.1 number_2);
+    first (self : static_ref Container) : i32 := self.0;
+    last (self : static_ref Container) : i32 := self.1;
+  |}.
+Module ImplContainer.
 
 Definition difference (_ : unit) :=
   sub (last container) (first container).

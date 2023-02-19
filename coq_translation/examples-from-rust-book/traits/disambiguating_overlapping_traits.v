@@ -17,19 +17,21 @@ Module Form.
 End Form.
 Definition Form : Set := Form.t.
 
-(* Impl [Form] of trait [UsernameWidget]*)
+Module Impl_UsernameWidget_for_Form.
+  Definition Self := Form.
+  
+  #[global] Instance I : UsernameWidget.Class Self := {|
+    get (self : static_ref Form) : String := clone self.username;
+  |}.
 Module ImplForm.
-  Definition get (self : static_ref Form) : String :=
-    clone self.username.
-End ImplForm.
-(* End impl [Form] *)
 
-(* Impl [Form] of trait [AgeWidget]*)
+Module Impl_AgeWidget_for_Form.
+  Definition Self := Form.
+  
+  #[global] Instance I : AgeWidget.Class Self := {|
+    get (self : static_ref Form) : u8 := self.age;
+  |}.
 Module ImplForm.
-  Definition get (self : static_ref Form) : u8 :=
-    self.age.
-End ImplForm.
-(* End impl [Form] *)
 
 Definition main (_ : unit) :=
   let form := {| Form.username := to_owned "rustacean"; Form.age := 28; |} in

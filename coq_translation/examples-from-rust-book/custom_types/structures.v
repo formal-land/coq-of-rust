@@ -9,22 +9,23 @@ Module Person.
 End Person.
 Definition Person : Set := Person.t.
 
-(* Impl [Person] of trait [_crate.fmt.Debug]*)
-Module ImplPerson.
-  Definition
+Module Impl__crate_fmt_Debug_for_Person.
+  Definition Self := Person.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref Person)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_struct_field2_finish
-      f
-      "Person"
-      "name"
-      self.name
-      "age"
-      self.age.
-End ImplPerson.
-(* End impl [Person] *)
+      (self : static_ref Person)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      _crate::fmt::ImplFormatter.debug_struct_field2_finish
+        f
+        "Person"
+        "name"
+        self.name
+        "age"
+        self.age;
+  |}.
+Module ImplPerson.
 
 Error Struct.
 

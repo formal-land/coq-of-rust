@@ -3,50 +3,62 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error Struct.
 
-(* Impl [Unit] of trait [_crate.fmt.Debug]*)
-Module ImplUnit.
-  Definition
-    fmt
-    (self : static_ref Unit)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.write_str f "Unit".
-End ImplUnit.
-(* End impl [Unit] *)
-
-(* Impl [Unit] of trait [_crate.clone.Clone]*)
-Module ImplUnit.
-  Definition clone (self : static_ref Unit) : Unit :=
-    deref self.
-End ImplUnit.
-(* End impl [Unit] *)
-
-(* Impl [Unit] of trait [_crate.marker.Copy]*)
-Module ImplUnit.
+Module Impl__crate_fmt_Debug_for_Unit.
+  Definition Self := Unit.
   
-End ImplUnit.
-(* End impl [Unit] *)
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
+    fmt
+      (self : static_ref Unit)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      _crate::fmt::ImplFormatter.write_str f "Unit";
+  |}.
+Module ImplUnit.
+
+Module Impl__crate_clone_Clone_for_Unit.
+  Definition Self := Unit.
+  
+  #[global] Instance I : _crate.clone.Clone.Class Self := {|
+    clone (self : static_ref Unit) : Unit := deref self;
+  |}.
+Module ImplUnit.
+
+Module Impl__crate_marker_Copy_for_Unit.
+  Definition Self := Unit.
+  
+  #[global] Instance I : _crate.marker.Copy.Class Self := {|
+  |}.
+Module ImplUnit.
 
 Definition Pair : Set :=
   Box * Box.
 
-(* Impl [Pair] of trait [_crate.clone.Clone]*)
+Module Impl__crate_clone_Clone_for_Pair.
+  Definition Self := Pair.
+  
+  #[global] Instance I : _crate.clone.Clone.Class Self := {|
+    clone
+      (self : static_ref Pair)
+      : Pair :=
+      Pair (_crate.clone.Clone.clone self.0) (_crate.clone.Clone.clone self.1);
+  |}.
 Module ImplPair.
-  Definition clone (self : static_ref Pair) : Pair :=
-    Pair (_crate.clone.Clone.clone self.0) (_crate.clone.Clone.clone self.1).
-End ImplPair.
-(* End impl [Pair] *)
 
-(* Impl [Pair] of trait [_crate.fmt.Debug]*)
-Module ImplPair.
-  Definition
+Module Impl__crate_fmt_Debug_for_Pair.
+  Definition Self := Pair.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref Pair)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field2_finish f "Pair" self.0 self.1.
-End ImplPair.
-(* End impl [Pair] *)
+      (self : static_ref Pair)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      _crate::fmt::ImplFormatter.debug_tuple_field2_finish
+        f
+        "Pair"
+        self.0
+        self.1;
+  |}.
+Module ImplPair.
 
 Definition main (_ : unit) :=
   let unit := Unit in

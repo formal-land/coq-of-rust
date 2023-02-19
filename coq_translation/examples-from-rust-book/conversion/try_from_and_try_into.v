@@ -4,46 +4,54 @@ Require Import CoqOfRust.CoqOfRust.
 Definition EvenNumber : Set :=
   i32.
 
-(* Impl [EvenNumber] of trait [_crate.fmt.Debug]*)
-Module ImplEvenNumber.
-  Definition
+Module Impl__crate_fmt_Debug_for_EvenNumber.
+  Definition Self := EvenNumber.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref EvenNumber)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "EvenNumber" self.0.
-End ImplEvenNumber.
-(* End impl [EvenNumber] *)
-
-(* Impl [EvenNumber] of trait [_crate.marker.StructuralPartialEq]*)
+      (self : static_ref EvenNumber)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+        f
+        "EvenNumber"
+        self.0;
+  |}.
 Module ImplEvenNumber.
+
+Module Impl__crate_marker_StructuralPartialEq_for_EvenNumber.
+  Definition Self := EvenNumber.
   
-End ImplEvenNumber.
-(* End impl [EvenNumber] *)
-
-(* Impl [EvenNumber] of trait [_crate.cmp.PartialEq]*)
+  #[global] Instance I : _crate.marker.StructuralPartialEq.Class Self := {|
+  |}.
 Module ImplEvenNumber.
-  Definition
+
+Module Impl__crate_cmp_PartialEq_for_EvenNumber.
+  Definition Self := EvenNumber.
+  
+  #[global] Instance I : _crate.cmp.PartialEq.Class Self := {|
     eq
-    (self : static_ref EvenNumber)
-    (other : static_ref EvenNumber)
-    : bool :=
-    eq self.0 other.0.
-End ImplEvenNumber.
-(* End impl [EvenNumber] *)
-
-(* Impl [EvenNumber] of trait [TryFrom]*)
+      (self : static_ref EvenNumber)
+      (other : static_ref EvenNumber)
+      : bool :=
+      eq self.0 other.0;
+  |}.
 Module ImplEvenNumber.
-  Definition Error : Set :=
-    .
+
+Module Impl_TryFrom_for_EvenNumber.
+  Definition Self := EvenNumber.
   
-  Definition try_from (value : i32) : Result :=
-    if eq (rem value 2) 0 then
-      Ok (EvenNumber value)
-    else
-      Err ().
-End ImplEvenNumber.
-(* End impl [EvenNumber] *)
+  #[global] Instance I : TryFrom.Class Self := {|
+    Error := ;
+    try_from
+      (value : i32)
+      : Result :=
+      if eq (rem value 2) 0 then
+        Ok (EvenNumber value)
+      else
+        Err ();
+  |}.
+Module ImplEvenNumber.
 
 Definition main (_ : unit) :=
   match (ImplEvenNumber.try_from 8, Ok (EvenNumber 8)) with

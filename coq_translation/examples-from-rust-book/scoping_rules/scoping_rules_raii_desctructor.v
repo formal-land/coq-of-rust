@@ -3,15 +3,19 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error Struct.
 
-(* Impl [ToDrop] of trait [Drop]*)
+Module Impl_Drop_for_ToDrop.
+  Definition Self := ToDrop.
+  
+  #[global] Instance I : Drop.Class Self := {|
+    drop
+      (self : mut_ref ToDrop)
+      :=
+      _crate.io._print
+        (_crate::fmt::ImplArguments.new_v1 ["ToDrop is being dropped\n"] []) ;;
+      tt ;;
+      tt;
+  |}.
 Module ImplToDrop.
-  Definition drop (self : mut_ref ToDrop) :=
-    _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1 ["ToDrop is being dropped\n"] []) ;;
-    tt ;;
-    tt.
-End ImplToDrop.
-(* End impl [ToDrop] *)
 
 Definition main (_ : unit) :=
   let x := ToDrop in

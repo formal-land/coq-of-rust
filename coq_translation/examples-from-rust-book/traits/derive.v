@@ -4,47 +4,51 @@ Require Import CoqOfRust.CoqOfRust.
 Definition Centimeters : Set :=
   f64.
 
-(* Impl [Centimeters] of trait [_crate.marker.StructuralPartialEq]*)
-Module ImplCentimeters.
+Module Impl__crate_marker_StructuralPartialEq_for_Centimeters.
+  Definition Self := Centimeters.
   
-End ImplCentimeters.
-(* End impl [Centimeters] *)
-
-(* Impl [Centimeters] of trait [_crate.cmp.PartialEq]*)
+  #[global] Instance I : _crate.marker.StructuralPartialEq.Class Self := {|
+  |}.
 Module ImplCentimeters.
-  Definition
+
+Module Impl__crate_cmp_PartialEq_for_Centimeters.
+  Definition Self := Centimeters.
+  
+  #[global] Instance I : _crate.cmp.PartialEq.Class Self := {|
     eq
-    (self : static_ref Centimeters)
-    (other : static_ref Centimeters)
-    : bool :=
-    eq self.0 other.0.
-End ImplCentimeters.
-(* End impl [Centimeters] *)
-
-(* Impl [Centimeters] of trait [_crate.cmp.PartialOrd]*)
+      (self : static_ref Centimeters)
+      (other : static_ref Centimeters)
+      : bool :=
+      eq self.0 other.0;
+  |}.
 Module ImplCentimeters.
-  Definition
+
+Module Impl__crate_cmp_PartialOrd_for_Centimeters.
+  Definition Self := Centimeters.
+  
+  #[global] Instance I : _crate.cmp.PartialOrd.Class Self := {|
     partial_cmp
-    (self : static_ref Centimeters)
-    (other : static_ref Centimeters)
-    : _crate.option.Option :=
-    _crate.cmp.PartialOrd.partial_cmp self.0 other.0.
-End ImplCentimeters.
-(* End impl [Centimeters] *)
+      (self : static_ref Centimeters)
+      (other : static_ref Centimeters)
+      : _crate.option.Option :=
+      _crate.cmp.PartialOrd.partial_cmp self.0 other.0;
+  |}.
+Module ImplCentimeters.
 
 Definition Inches : Set :=
   i32.
 
-(* Impl [Inches] of trait [_crate.fmt.Debug]*)
-Module ImplInches.
-  Definition
+Module Impl__crate_fmt_Debug_for_Inches.
+  Definition Self := Inches.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref Inches)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Inches" self.0.
-End ImplInches.
-(* End impl [Inches] *)
+      (self : static_ref Inches)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Inches" self.0;
+  |}.
+Module ImplInches.
 
 (* Impl [Inches] *)
 Module ImplInches.

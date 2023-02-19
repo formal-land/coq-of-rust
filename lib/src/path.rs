@@ -69,4 +69,8 @@ impl Path {
     pub fn to_doc(&self) -> RcDoc<()> {
         RcDoc::intersperse(self.segments.iter().map(RcDoc::text), RcDoc::text("."))
     }
+
+    pub fn to_name(&self) -> String {
+        self.segments.join("_")
+    }
 }

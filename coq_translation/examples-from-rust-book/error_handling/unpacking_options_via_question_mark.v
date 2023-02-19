@@ -15,19 +15,24 @@ Module Job.
 End Job.
 Definition Job : Set := Job.t.
 
-(* Impl [Job] of trait [_crate.clone.Clone]*)
-Module ImplJob.
-  Definition clone (self : static_ref Job) : Job :=
-    let _ := tt in
-    deref self.
-End ImplJob.
-(* End impl [Job] *)
-
-(* Impl [Job] of trait [_crate.marker.Copy]*)
-Module ImplJob.
+Module Impl__crate_clone_Clone_for_Job.
+  Definition Self := Job.
   
-End ImplJob.
-(* End impl [Job] *)
+  #[global] Instance I : _crate.clone.Clone.Class Self := {|
+    clone
+      (self : static_ref Job)
+      : Job :=
+      let _ := tt in
+      deref self;
+  |}.
+Module ImplJob.
+
+Module Impl__crate_marker_Copy_for_Job.
+  Definition Self := Job.
+  
+  #[global] Instance I : _crate.marker.Copy.Class Self := {|
+  |}.
+Module ImplJob.
 
 Module PhoneNumber.
   Record t : Set := {
@@ -37,20 +42,25 @@ Module PhoneNumber.
 End PhoneNumber.
 Definition PhoneNumber : Set := PhoneNumber.t.
 
-(* Impl [PhoneNumber] of trait [_crate.clone.Clone]*)
-Module ImplPhoneNumber.
-  Definition clone (self : static_ref PhoneNumber) : PhoneNumber :=
-    let _ := tt in
-    let _ := tt in
-    deref self.
-End ImplPhoneNumber.
-(* End impl [PhoneNumber] *)
-
-(* Impl [PhoneNumber] of trait [_crate.marker.Copy]*)
-Module ImplPhoneNumber.
+Module Impl__crate_clone_Clone_for_PhoneNumber.
+  Definition Self := PhoneNumber.
   
-End ImplPhoneNumber.
-(* End impl [PhoneNumber] *)
+  #[global] Instance I : _crate.clone.Clone.Class Self := {|
+    clone
+      (self : static_ref PhoneNumber)
+      : PhoneNumber :=
+      let _ := tt in
+      let _ := tt in
+      deref self;
+  |}.
+Module ImplPhoneNumber.
+
+Module Impl__crate_marker_Copy_for_PhoneNumber.
+  Definition Self := PhoneNumber.
+  
+  #[global] Instance I : _crate.marker.Copy.Class Self := {|
+  |}.
+Module ImplPhoneNumber.
 
 (* Impl [Person] *)
 Module ImplPerson.

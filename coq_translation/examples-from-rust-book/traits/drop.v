@@ -8,17 +8,21 @@ Module Droppable.
 End Droppable.
 Definition Droppable : Set := Droppable.t.
 
-(* Impl [Droppable] of trait [Drop]*)
+Module Impl_Drop_for_Droppable.
+  Definition Self := Droppable.
+  
+  #[global] Instance I : Drop.Class Self := {|
+    drop
+      (self : mut_ref Droppable)
+      :=
+      _crate.io._print
+        (_crate::fmt::ImplArguments.new_v1
+          ["> Dropping ";"\n"]
+          [_crate::fmt::ImplArgumentV1.new_display self.name]) ;;
+      tt ;;
+      tt;
+  |}.
 Module ImplDroppable.
-  Definition drop (self : mut_ref Droppable) :=
-    _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["> Dropping ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display self.name]) ;;
-    tt ;;
-    tt.
-End ImplDroppable.
-(* End impl [Droppable] *)
 
 Definition main (_ : unit) :=
   let _a := {| Droppable.name := "a"; |} in

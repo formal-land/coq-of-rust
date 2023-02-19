@@ -12,8 +12,8 @@ pub enum CoqType {
         args: Vec<CoqType>,
     },
     Function {
-        func: Box<CoqType>,
         arg: Box<CoqType>,
+        ret: Box<CoqType>,
     },
     Tuple(Vec<CoqType>),
     Array(Box<CoqType>),
@@ -77,8 +77,8 @@ pub fn compile_fn_decl(tcx: &TyCtxt, fn_decl: &FnDecl) -> CoqType {
         .inputs
         .iter()
         .rfold(ret_ty, |acc, arg| CoqType::Function {
-            func: Box::new(compile_type(tcx, arg)),
-            arg: Box::new(acc),
+            arg: Box::new(compile_type(tcx, arg)),
+            ret: Box::new(acc),
         })
 }
 
@@ -91,12 +91,12 @@ impl CoqType {
                 RcDoc::space(),
                 RcDoc::intersperse(args.iter().map(|arg| arg.to_doc()), RcDoc::space()),
             ]),
-            CoqType::Function { func, arg } => indent(RcDoc::concat([
-                func.to_doc(),
+            CoqType::Function { arg, ret } => indent(RcDoc::concat([
+                arg.to_doc(),
                 RcDoc::line(),
                 RcDoc::text("->"),
                 RcDoc::line(),
-                arg.to_doc(),
+                ret.to_doc(),
             ]))
             .group(),
             CoqType::Tuple(tys) => RcDoc::concat([RcDoc::intersperse(
@@ -113,6 +113,48 @@ impl CoqType {
                     RcDoc::concat([RcDoc::text("static_ref"), RcDoc::space(), ty.to_doc()])
                 }
             },
+        }
+    }
+
+    // We use this function when we need a quick and recognizable name for a type
+    pub fn to_name(&self) -> String {
+        match self {
+            CoqType::Var(path) => path.to_name(),
+            CoqType::Application { func, args } => {
+                let mut name = func.to_name();
+                for arg in args {
+                    name.push('_');
+                    name.push_str(&arg.to_name());
+                }
+                name
+            }
+            CoqType::Function { arg, ret } => {
+                let mut name = arg.to_name();
+                name.push_str("To");
+                name.push_str(&ret.to_name());
+                name
+            }
+            CoqType::Tuple(tys) => {
+                let mut name = "Tuple_".to_string();
+                for ty in tys {
+                    name.push_str(&ty.to_name());
+                    name.push('_')
+                }
+                name
+            }
+            CoqType::Array(ty) => {
+                let mut name = "Array_".to_string();
+                name.push_str(&ty.to_name());
+                name
+            }
+            CoqType::Ref(ty, mutbl) => {
+                let mut name = match mutbl {
+                    rustc_hir::Mutability::Mut => "MutRef_".to_string(),
+                    rustc_hir::Mutability::Not => "StaticRef_".to_string(),
+                };
+                name.push_str(&ty.to_name());
+                name
+            }
         }
     }
 }

@@ -5,36 +5,39 @@ Error TyAlias.
 
 Error Struct.
 
-(* Impl [DoubleError] of trait [_crate.fmt.Debug]*)
-Module ImplDoubleError.
-  Definition
+Module Impl__crate_fmt_Debug_for_DoubleError.
+  Definition Self := DoubleError.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref DoubleError)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.write_str f "DoubleError".
-End ImplDoubleError.
-(* End impl [DoubleError] *)
-
-(* Impl [DoubleError] of trait [_crate.clone.Clone]*)
+      (self : static_ref DoubleError)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      _crate::fmt::ImplFormatter.write_str f "DoubleError";
+  |}.
 Module ImplDoubleError.
-  Definition clone (self : static_ref DoubleError) : DoubleError :=
-    DoubleError.
-End ImplDoubleError.
-(* End impl [DoubleError] *)
 
-(* Impl [DoubleError] of trait [fmt.Display]*)
+Module Impl__crate_clone_Clone_for_DoubleError.
+  Definition Self := DoubleError.
+  
+  #[global] Instance I : _crate.clone.Clone.Class Self := {|
+    clone (self : static_ref DoubleError) : DoubleError := DoubleError;
+  |}.
 Module ImplDoubleError.
-  Definition
+
+Module Impl_fmt_Display_for_DoubleError.
+  Definition Self := DoubleError.
+  
+  #[global] Instance I : fmt.Display.Class Self := {|
     fmt
-    (self : static_ref DoubleError)
-    (f : mut_ref fmt.Formatter)
-    : fmt.Result :=
-    write_fmt
-      f
-      (_crate::fmt::ImplArguments.new_v1 ["invalid first item to double"] []).
-End ImplDoubleError.
-(* End impl [DoubleError] *)
+      (self : static_ref DoubleError)
+      (f : mut_ref fmt.Formatter)
+      : fmt.Result :=
+      write_fmt
+        f
+        (_crate::fmt::ImplArguments.new_v1 ["invalid first item to double"] []);
+  |}.
+Module ImplDoubleError.
 
 Definition double_first (_ : unit) :=
   and_then

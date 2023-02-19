@@ -5,12 +5,13 @@ Class HasArea : Set := {
   area : static_ref Self -> f64;
 }.
 
-(* Impl [Rectangle] of trait [HasArea]*)
+Module Impl_HasArea_for_Rectangle.
+  Definition Self := Rectangle.
+  
+  #[global] Instance I : HasArea.Class Self := {|
+    area (self : static_ref Rectangle) : f64 := mul self.length self.height;
+  |}.
 Module ImplRectangle.
-  Definition area (self : static_ref Rectangle) : f64 :=
-    mul self.length self.height.
-End ImplRectangle.
-(* End impl [Rectangle] *)
 
 Module Rectangle.
   Record t : Set := {
@@ -20,22 +21,23 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
-(* Impl [Rectangle] of trait [_crate.fmt.Debug]*)
-Module ImplRectangle.
-  Definition
+Module Impl__crate_fmt_Debug_for_Rectangle.
+  Definition Self := Rectangle.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref Rectangle)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_struct_field2_finish
-      f
-      "Rectangle"
-      "length"
-      self.length
-      "height"
-      self.height.
-End ImplRectangle.
-(* End impl [Rectangle] *)
+      (self : static_ref Rectangle)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      _crate::fmt::ImplFormatter.debug_struct_field2_finish
+        f
+        "Rectangle"
+        "length"
+        self.length
+        "height"
+        self.height;
+  |}.
+Module ImplRectangle.
 
 Module Triangle.
   Record t : Set := {

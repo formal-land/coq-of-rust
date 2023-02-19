@@ -8,22 +8,23 @@ Definition reverse (_ : unit) :=
 Definition Matrix : Set :=
   f32 * f32 * f32 * f32.
 
-(* Impl [Matrix] of trait [_crate.fmt.Debug]*)
-Module ImplMatrix.
-  Definition
+Module Impl__crate_fmt_Debug_for_Matrix.
+  Definition Self := Matrix.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref Matrix)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field4_finish
-      f
-      "Matrix"
-      self.0
-      self.1
-      self.2
-      self.3.
-End ImplMatrix.
-(* End impl [Matrix] *)
+      (self : static_ref Matrix)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      _crate::fmt::ImplFormatter.debug_tuple_field4_finish
+        f
+        "Matrix"
+        self.0
+        self.1
+        self.2
+        self.3;
+  |}.
+Module ImplMatrix.
 
 Definition main (_ : unit) :=
   let long_tuple := (1, 2, 3, 4, neg 1, neg 2, neg 3, neg

@@ -17,19 +17,21 @@ Class Animal : Set := {
   noise : static_ref Self -> static_ref str;
 }.
 
-(* Impl [Sheep] of trait [Animal]*)
+Module Impl_Animal_for_Sheep.
+  Definition Self := Sheep.
+  
+  #[global] Instance I : Animal.Class Self := {|
+    noise (self : static_ref Sheep) : static_ref str := "baaaaah!";
+  |}.
 Module ImplSheep.
-  Definition noise (self : static_ref Sheep) : static_ref str :=
-    "baaaaah!".
-End ImplSheep.
-(* End impl [Sheep] *)
 
-(* Impl [Cow] of trait [Animal]*)
+Module Impl_Animal_for_Cow.
+  Definition Self := Cow.
+  
+  #[global] Instance I : Animal.Class Self := {|
+    noise (self : static_ref Cow) : static_ref str := "moooooo!";
+  |}.
 Module ImplCow.
-  Definition noise (self : static_ref Cow) : static_ref str :=
-    "moooooo!".
-End ImplCow.
-(* End impl [Cow] *)
 
 Definition random_animal (_ : unit) :=
   if lt random_number 1 (* 0.5 *) then

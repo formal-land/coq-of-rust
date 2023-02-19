@@ -4,16 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 Definition Borrowed : Set :=
   static_ref i32.
 
-(* Impl [Borrowed] of trait [_crate.fmt.Debug]*)
-Module ImplBorrowed.
-  Definition
+Module Impl__crate_fmt_Debug_for_Borrowed.
+  Definition Self := Borrowed.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref Borrowed<'a>)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Borrowed" self.0.
-End ImplBorrowed.
-(* End impl [Borrowed] *)
+      (self : static_ref Borrowed<'a>)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Borrowed" self.0;
+  |}.
+Module ImplBorrowed.
 
 Module NamedBorrowed.
   Record t : Set := {
@@ -23,40 +24,42 @@ Module NamedBorrowed.
 End NamedBorrowed.
 Definition NamedBorrowed : Set := NamedBorrowed.t.
 
-(* Impl [NamedBorrowed] of trait [_crate.fmt.Debug]*)
-Module ImplNamedBorrowed.
-  Definition
+Module Impl__crate_fmt_Debug_for_NamedBorrowed.
+  Definition Self := NamedBorrowed.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref NamedBorrowed<'a>)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_struct_field2_finish
-      f
-      "NamedBorrowed"
-      "x"
-      self.x
-      "y"
-      self.y.
-End ImplNamedBorrowed.
-(* End impl [NamedBorrowed] *)
+      (self : static_ref NamedBorrowed<'a>)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      _crate::fmt::ImplFormatter.debug_struct_field2_finish
+        f
+        "NamedBorrowed"
+        "x"
+        self.x
+        "y"
+        self.y;
+  |}.
+Module ImplNamedBorrowed.
 
 Error Enum.
 
-(* Impl [Either] of trait [_crate.fmt.Debug]*)
-Module ImplEither.
-  Definition
+Module Impl__crate_fmt_Debug_for_Either.
+  Definition Self := Either.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref Either<'a>)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    match self with
-    | Either.Num (__self_0) =>
-      _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Num" __self_0
-    | Either.Ref (__self_0) =>
-      _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Ref" __self_0
-    end.
-End ImplEither.
-(* End impl [Either] *)
+      (self : static_ref Either<'a>)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      match self with
+      | Either.Num (__self_0) =>
+        _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Num" __self_0
+      | Either.Ref (__self_0) =>
+        _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Ref" __self_0
+      end;
+  |}.
+Module ImplEither.
 
 Definition main (_ : unit) :=
   let x := 18 in

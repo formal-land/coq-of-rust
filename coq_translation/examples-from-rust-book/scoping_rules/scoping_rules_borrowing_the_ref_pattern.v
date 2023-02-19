@@ -9,19 +9,24 @@ Module Point.
 End Point.
 Definition Point : Set := Point.t.
 
-(* Impl [Point] of trait [_crate.clone.Clone]*)
-Module ImplPoint.
-  Definition clone (self : static_ref Point) : Point :=
-    let _ := tt in
-    deref self.
-End ImplPoint.
-(* End impl [Point] *)
-
-(* Impl [Point] of trait [_crate.marker.Copy]*)
-Module ImplPoint.
+Module Impl__crate_clone_Clone_for_Point.
+  Definition Self := Point.
   
-End ImplPoint.
-(* End impl [Point] *)
+  #[global] Instance I : _crate.clone.Clone.Class Self := {|
+    clone
+      (self : static_ref Point)
+      : Point :=
+      let _ := tt in
+      deref self;
+  |}.
+Module ImplPoint.
+
+Module Impl__crate_marker_Copy_for_Point.
+  Definition Self := Point.
+  
+  #[global] Instance I : _crate.marker.Copy.Class Self := {|
+  |}.
+Module ImplPoint.
 
 Definition main (_ : unit) :=
   let c := Q in

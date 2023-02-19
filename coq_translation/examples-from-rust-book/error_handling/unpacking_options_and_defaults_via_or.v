@@ -3,22 +3,23 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error Enum.
 
-(* Impl [Fruit] of trait [_crate.fmt.Debug]*)
-Module ImplFruit.
-  Definition
+Module Impl__crate_fmt_Debug_for_Fruit.
+  Definition Self := Fruit.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref Fruit)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    match self with
-    | Fruit.Apple => _crate::fmt::ImplFormatter.write_str f "Apple"
-    | Fruit.Orange => _crate::fmt::ImplFormatter.write_str f "Orange"
-    | Fruit.Banana => _crate::fmt::ImplFormatter.write_str f "Banana"
-    | Fruit.Kiwi => _crate::fmt::ImplFormatter.write_str f "Kiwi"
-    | Fruit.Lemon => _crate::fmt::ImplFormatter.write_str f "Lemon"
-    end.
-End ImplFruit.
-(* End impl [Fruit] *)
+      (self : static_ref Fruit)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      match self with
+      | Fruit.Apple => _crate::fmt::ImplFormatter.write_str f "Apple"
+      | Fruit.Orange => _crate::fmt::ImplFormatter.write_str f "Orange"
+      | Fruit.Banana => _crate::fmt::ImplFormatter.write_str f "Banana"
+      | Fruit.Kiwi => _crate::fmt::ImplFormatter.write_str f "Kiwi"
+      | Fruit.Lemon => _crate::fmt::ImplFormatter.write_str f "Lemon"
+      end;
+  |}.
+Module ImplFruit.
 
 Definition main (_ : unit) :=
   let apple := Some Fruit.Apple in

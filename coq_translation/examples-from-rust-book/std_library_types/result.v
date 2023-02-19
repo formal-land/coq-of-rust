@@ -4,23 +4,24 @@ Require Import CoqOfRust.CoqOfRust.
 Module checked :=
   Error Enum.
   
-  (* Impl [MathError] of trait [_crate.fmt.Debug]*)
-  Module ImplMathError.
-    Definition
+  Module Impl__crate_fmt_Debug_for_MathError.
+    Definition Self := MathError.
+    
+    #[global] Instance I : _crate.fmt.Debug.Class Self := {|
       fmt
-      (self : static_ref checked::MathError)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-      match self with
-      | MathError.DivisionByZero =>
-        _crate::fmt::ImplFormatter.write_str f "DivisionByZero"
-      | MathError.NonPositiveLogarithm =>
-        _crate::fmt::ImplFormatter.write_str f "NonPositiveLogarithm"
-      | MathError.NegativeSquareRoot =>
-        _crate::fmt::ImplFormatter.write_str f "NegativeSquareRoot"
-      end.
-  End ImplMathError.
-  (* End impl [MathError] *)
+        (self : static_ref checked::MathError)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
+        match self with
+        | MathError.DivisionByZero =>
+          _crate::fmt::ImplFormatter.write_str f "DivisionByZero"
+        | MathError.NonPositiveLogarithm =>
+          _crate::fmt::ImplFormatter.write_str f "NonPositiveLogarithm"
+        | MathError.NegativeSquareRoot =>
+          _crate::fmt::ImplFormatter.write_str f "NegativeSquareRoot"
+        end;
+    |}.
+  Module ImplMathError.
   
   Error TyAlias.
   
@@ -44,23 +45,24 @@ Module checked :=
 
 Error Enum.
 
-(* Impl [MathError] of trait [_crate.fmt.Debug]*)
-Module ImplMathError.
-  Definition
+Module Impl__crate_fmt_Debug_for_MathError.
+  Definition Self := MathError.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref checked::MathError)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    match self with
-    | MathError.DivisionByZero =>
-      _crate::fmt::ImplFormatter.write_str f "DivisionByZero"
-    | MathError.NonPositiveLogarithm =>
-      _crate::fmt::ImplFormatter.write_str f "NonPositiveLogarithm"
-    | MathError.NegativeSquareRoot =>
-      _crate::fmt::ImplFormatter.write_str f "NegativeSquareRoot"
-    end.
-End ImplMathError.
-(* End impl [MathError] *)
+      (self : static_ref checked::MathError)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      match self with
+      | MathError.DivisionByZero =>
+        _crate::fmt::ImplFormatter.write_str f "DivisionByZero"
+      | MathError.NonPositiveLogarithm =>
+        _crate::fmt::ImplFormatter.write_str f "NonPositiveLogarithm"
+      | MathError.NegativeSquareRoot =>
+        _crate::fmt::ImplFormatter.write_str f "NegativeSquareRoot"
+      end;
+  |}.
+Module ImplMathError.
 
 Error TyAlias.
 

@@ -4,16 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 Definition Ref : Set :=
   static_ref T.
 
-(* Impl [Ref] of trait [_crate.fmt.Debug]*)
-Module ImplRef.
-  Definition
+Module Impl__crate_fmt_Debug_for_Ref.
+  Definition Self := Ref.
+  
+  #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
-    (self : static_ref Ref<'a, T>)
-    (f : mut_ref _crate.fmt.Formatter)
-    : _crate.fmt.Result :=
-    _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Ref" self.0.
-End ImplRef.
-(* End impl [Ref] *)
+      (self : static_ref Ref<'a, T>)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+      _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Ref" self.0;
+  |}.
+Module ImplRef.
 
 Definition print (_ : unit) :=
   _crate.io._print
