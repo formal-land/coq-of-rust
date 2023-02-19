@@ -15,8 +15,7 @@ Module Impl_Iterator_for_Fibonacci.
   #[global] Instance I : Iterator.Class Self := {|
     Item := u32;
     next
-      (self : mut_ref Fibonacci)
-      :=
+      (self : mut_ref Fibonacci) :=
       let current := self.curr in
       assign self.curr := self.next ;;
       assign self.next := add current self.next ;;
@@ -61,17 +60,20 @@ Definition main (_ : unit) :=
   tt ;;
   match into_iter {| Range.start := 0; Range.end := 3; |} with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := i; |} =>
-      _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["> ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_display i]) ;;
-      tt ;;
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := i; |} =>
+        _crate.io._print
+          (_crate::fmt::ImplArguments.new_v1
+            ["> ";"\n"]
+            [_crate::fmt::ImplArgumentV1.new_display i]) ;;
+        tt ;;
+        tt
+      end ;;
       tt
-    end ;;
-    tt from for
+      from
+      for
   end ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
@@ -80,17 +82,20 @@ Definition main (_ : unit) :=
   tt ;;
   match into_iter (take (fibonacci tt) 4) with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := i; |} =>
-      _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["> ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_display i]) ;;
-      tt ;;
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := i; |} =>
+        _crate.io._print
+          (_crate::fmt::ImplArguments.new_v1
+            ["> ";"\n"]
+            [_crate::fmt::ImplArgumentV1.new_display i]) ;;
+        tt ;;
+        tt
+      end ;;
       tt
-    end ;;
-    tt from for
+      from
+      for
   end ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
@@ -99,17 +104,20 @@ Definition main (_ : unit) :=
   tt ;;
   match into_iter (take (skip (fibonacci tt) 4) 4) with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := i; |} =>
-      _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["> ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_display i]) ;;
-      tt ;;
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := i; |} =>
+        _crate.io._print
+          (_crate::fmt::ImplArguments.new_v1
+            ["> ";"\n"]
+            [_crate::fmt::ImplArgumentV1.new_display i]) ;;
+        tt ;;
+        tt
+      end ;;
       tt
-    end ;;
-    tt from for
+      from
+      for
   end ;;
   let array := [1;3;3;7] in
   _crate.io._print
@@ -119,15 +127,18 @@ Definition main (_ : unit) :=
   tt ;;
   match into_iter (iter array) with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := i; |} =>
-      _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["> ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_display i]) ;;
-      tt ;;
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := i; |} =>
+        _crate.io._print
+          (_crate::fmt::ImplArguments.new_v1
+            ["> ";"\n"]
+            [_crate::fmt::ImplArgumentV1.new_display i]) ;;
+        tt ;;
+        tt
+      end ;;
       tt
-    end ;;
-    tt from for
+      from
+      for
   end.

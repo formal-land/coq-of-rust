@@ -1,6 +1,5 @@
 use crate::path::*;
 use crate::render::*;
-use pretty::RcDoc;
 use rustc_hir::{FnDecl, FnRetTy, Ty, TyKind};
 use rustc_middle::ty::TyCtxt;
 
@@ -83,35 +82,25 @@ pub fn compile_fn_decl(tcx: &TyCtxt, fn_decl: &FnDecl) -> CoqType {
 }
 
 impl CoqType {
-    pub fn to_doc(&self) -> RcDoc {
+    pub fn to_doc(&self) -> Doc {
         match self {
             CoqType::Var(path) => path.to_doc(),
-            CoqType::Application { func, args } => RcDoc::concat([
+            CoqType::Application { func, args } => nest([
                 func.to_doc(),
-                RcDoc::space(),
-                RcDoc::intersperse(args.iter().map(|arg| arg.to_doc()), RcDoc::space()),
+                line(),
+                intersperse(args.iter().map(|arg| arg.to_doc()), line()),
             ]),
-            CoqType::Function { arg, ret } => indent(RcDoc::concat([
-                arg.to_doc(),
-                RcDoc::line(),
-                RcDoc::text("->"),
-                RcDoc::line(),
-                ret.to_doc(),
-            ]))
-            .group(),
-            CoqType::Tuple(tys) => RcDoc::concat([RcDoc::intersperse(
+            CoqType::Function { arg, ret } => {
+                nest([arg.to_doc(), line(), text("->"), line(), ret.to_doc()])
+            }
+            CoqType::Tuple(tys) => nest([intersperse(
                 tys.iter().map(|ty| ty.to_doc()),
-                RcDoc::concat([RcDoc::space(), RcDoc::text("*"), RcDoc::space()]),
-            )])
-            .group(),
-            CoqType::Array(ty) => RcDoc::concat([RcDoc::text("list"), RcDoc::space(), ty.to_doc()]),
+                group([line(), text("*"), line()]),
+            )]),
+            CoqType::Array(ty) => nest([text("list"), line(), ty.to_doc()]),
             CoqType::Ref(ty, mutbl) => match mutbl {
-                rustc_hir::Mutability::Mut => {
-                    RcDoc::concat([RcDoc::text("mut_ref"), RcDoc::space(), ty.to_doc()])
-                }
-                rustc_hir::Mutability::Not => {
-                    RcDoc::concat([RcDoc::text("static_ref"), RcDoc::space(), ty.to_doc()])
-                }
+                rustc_hir::Mutability::Mut => nest([text("mut_ref"), line(), ty.to_doc()]),
+                rustc_hir::Mutability::Not => nest([text("static_ref"), line(), ty.to_doc()]),
             },
         }
     }

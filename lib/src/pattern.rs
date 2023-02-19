@@ -1,6 +1,5 @@
 use crate::path::*;
 use crate::render::*;
-use pretty::RcDoc;
 
 use rustc_ast::LitKind;
 use rustc_hir::{Pat, PatKind};
@@ -50,61 +49,55 @@ pub fn compile_pattern(pat: &Pat) -> Pattern {
 }
 
 impl Pattern {
-    pub fn to_doc(&self) -> RcDoc<()> {
+    pub fn to_doc(&self) -> Doc {
         match self {
-            Pattern::Wild => RcDoc::text("_"),
-            Pattern::Struct(path, fields) => RcDoc::concat([
-                indent(RcDoc::concat([
-                    RcDoc::text("{|"),
-                    RcDoc::line(),
-                    RcDoc::intersperse(
+            Pattern::Wild => text("_"),
+            Pattern::Struct(path, fields) => group([
+                nest([
+                    text("{|"),
+                    line(),
+                    intersperse(
                         fields.iter().map(|(name, pattern)| {
-                            indent(RcDoc::concat([
+                            nest([
                                 path.to_doc(),
-                                RcDoc::text("."),
-                                RcDoc::text(name),
-                                RcDoc::line(),
-                                RcDoc::text(":="),
-                                RcDoc::line(),
+                                text("."),
+                                text(name),
+                                line(),
+                                text(":="),
+                                line(),
                                 pattern.to_doc(),
-                                RcDoc::text(";"),
-                            ]))
-                            .group()
+                                text(";"),
+                            ])
                         }),
-                        RcDoc::line(),
+                        line(),
                     ),
-                ])),
-                RcDoc::line(),
-                RcDoc::text("|}"),
-            ])
-            .group(),
+                ]),
+                line(),
+                text("|}"),
+            ]),
             Pattern::TupleStruct(path, fields) => {
                 let signature_in_parentheses_doc = paren(
                     true,
-                    RcDoc::intersperse(
+                    intersperse(
                         fields.iter().map(|field| field.to_doc()),
-                        RcDoc::concat([RcDoc::text(","), RcDoc::space()]),
+                        group([text(","), line()]),
                     ),
                 );
-                return RcDoc::concat([
-                    path.to_doc(),
-                    RcDoc::space(),
-                    signature_in_parentheses_doc,
-                ]);
+                return nest([path.to_doc(), line(), signature_in_parentheses_doc]);
             }
             Pattern::Or(pats) => paren(
                 true,
-                RcDoc::intersperse(pats.iter().map(|pat| pat.to_doc()), RcDoc::text("|")),
+                intersperse(pats.iter().map(|pat| pat.to_doc()), text("|")),
             ),
             Pattern::Path(path) => path.to_doc(),
             Pattern::Tuple(pats) => paren(
                 true,
-                RcDoc::intersperse(
+                intersperse(
                     pats.iter().map(|pat| pat.to_doc()),
-                    RcDoc::concat([RcDoc::text(","), RcDoc::space()]),
+                    group([text(","), line()]),
                 ),
             ),
-            Pattern::Lit(literal) => RcDoc::text(format!("{literal:?}")),
+            Pattern::Lit(literal) => text(format!("{literal:?}")),
         }
     }
 }

@@ -15,8 +15,7 @@ Module Impl__crate_clone_Clone_for_Book.
   
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
     clone
-      (self : static_ref Book)
-      :=
+      (self : static_ref Book) :=
       let _ := tt in
       let _ := tt in
       let _ := tt in
@@ -51,11 +50,12 @@ Definition new_edition (_ : unit) :=
   tt.
 
 Definition main (_ : unit) :=
-  let immutabook := {|
-    Book.author := "Douglas Hofstadter";
-    Book.title := "Gödel, Escher, Bach";
-    Book.year := 1979;
-  |} in
+  let immutabook :=
+    {|
+      Book.author := "Douglas Hofstadter";
+      Book.title := "Gödel, Escher, Bach";
+      Book.year := 1979;
+    |} in
   let mutabook := immutabook in
   borrow_book immutabook ;;
   borrow_book mutabook ;;

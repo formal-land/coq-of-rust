@@ -11,11 +11,14 @@ Definition main (_ : unit) :=
   tt ;;
   match into_iter {| Range.start := 0; Range.end := 1000; |} with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := _; |} =>
-      create_box tt ;;
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := _; |} =>
+        create_box tt ;;
+        tt
+      end ;;
       tt
-    end ;;
-    tt from for
+      from
+      for
   end.

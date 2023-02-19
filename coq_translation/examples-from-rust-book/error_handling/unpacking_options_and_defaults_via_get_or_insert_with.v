@@ -9,8 +9,7 @@ Module Impl__crate_fmt_Debug_for_Fruit.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Fruit)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Fruit.Apple => _crate::fmt::ImplFormatter.write_str f "Apple"
       | Fruit.Orange => _crate::fmt::ImplFormatter.write_str f "Orange"
@@ -23,13 +22,16 @@ Module ImplFruit.
 
 Definition main (_ : unit) :=
   let my_fruit := None in
-  let get_lemon_as_fallback := fun  => _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["Providing lemon as fallback\n"] []) ;;
-  tt ;;
-  Fruit.Lemon in
-  let first_available_fruit := get_or_insert_with
-    my_fruit
-    get_lemon_as_fallback in
+  let get_lemon_as_fallback :=
+    fun  =>
+      _crate.io._print
+        (_crate::fmt::ImplArguments.new_v1
+          ["Providing lemon as fallback\n"]
+          []) ;;
+      tt ;;
+      Fruit.Lemon in
+  let first_available_fruit :=
+    get_or_insert_with my_fruit get_lemon_as_fallback in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["my_fruit is: ";"\n"]

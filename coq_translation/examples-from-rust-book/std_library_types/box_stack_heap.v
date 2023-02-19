@@ -15,8 +15,7 @@ Module Impl__crate_fmt_Debug_for_Point.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Point)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_struct_field2_finish
         f
         "Point"
@@ -32,8 +31,7 @@ Module Impl__crate_clone_Clone_for_Point.
   
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
     clone
-      (self : static_ref Point)
-      :=
+      (self : static_ref Point) :=
       let _ := tt in
       deref self;
   |}.
@@ -62,19 +60,19 @@ Definition boxed_origin (_ : unit) :=
 
 Definition main (_ : unit) :=
   let point := origin tt in
-  let rectangle := {|
-    Rectangle.top_left := origin tt;
-    Rectangle.bottom_right
-      :=
-      {| Point.x := 3 (* 3.0 *); Point.y := neg 4 (* 4.0 *); |};
-  |} in
-  let boxed_rectangle := ImplBox.new
+  let rectangle :=
     {|
       Rectangle.top_left := origin tt;
-      Rectangle.bottom_right
-        :=
+      Rectangle.bottom_right :=
         {| Point.x := 3 (* 3.0 *); Point.y := neg 4 (* 4.0 *); |};
     |} in
+  let boxed_rectangle :=
+    ImplBox.new
+      {|
+        Rectangle.top_left := origin tt;
+        Rectangle.bottom_right :=
+          {| Point.x := 3 (* 3.0 *); Point.y := neg 4 (* 4.0 *); |};
+      |} in
   let boxed_point := ImplBox.new (origin tt) in
   let box_in_a_box := ImplBox.new (boxed_origin tt) in
   _crate.io._print

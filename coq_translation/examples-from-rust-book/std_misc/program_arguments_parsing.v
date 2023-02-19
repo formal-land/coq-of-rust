@@ -49,18 +49,19 @@ Definition main (_ : unit) :=
   | Int(3, Unsuffixed) =>
     let cmd := args[1] in
     let num := args[2] in
-    let number := match parse num with
-    | Ok (n) => n
-    | Err (_) =>
-      _crate.io._eprint
-        (_crate::fmt::ImplArguments.new_v1
-          ["error: second argument not an integer\n"]
-          []) ;;
-      tt ;;
-      help tt ;;
-      Return tt ;;
-      tt
-    end in
+    let number :=
+      match parse num with
+      | Ok (n) => n
+      | Err (_) =>
+        _crate.io._eprint
+          (_crate::fmt::ImplArguments.new_v1
+            ["error: second argument not an integer\n"]
+            []) ;;
+        tt ;;
+        help tt ;;
+        Return tt ;;
+        tt
+      end in
     match cmd[{|  |}] with
     | Str("increase", Cooked) => increase number
     | Str("decrease", Cooked) => decrease number

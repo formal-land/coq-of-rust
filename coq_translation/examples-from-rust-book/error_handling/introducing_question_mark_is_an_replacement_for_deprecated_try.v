@@ -2,18 +2,20 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply (_ : unit) :=
-  let first_number := match parse first_number_str with
-  | _crate.result.Result.Ok (val) => val
-  | _crate.result.Result.Err (err) =>
-    Return (_crate.result.Result.Err (_crate.convert.From.from err)) ;;
-    tt
-  end in
-  let second_number := match parse second_number_str with
-  | _crate.result.Result.Ok (val) => val
-  | _crate.result.Result.Err (err) =>
-    Return (_crate.result.Result.Err (_crate.convert.From.from err)) ;;
-    tt
-  end in
+  let first_number :=
+    match parse first_number_str with
+    | _crate.result.Result.Ok (val) => val
+    | _crate.result.Result.Err (err) =>
+      Return (_crate.result.Result.Err (_crate.convert.From.from err)) ;;
+      tt
+    end in
+  let second_number :=
+    match parse second_number_str with
+    | _crate.result.Result.Ok (val) => val
+    | _crate.result.Result.Err (err) =>
+      Return (_crate.result.Result.Err (_crate.convert.From.from err)) ;;
+      tt
+    end in
   Ok (mul first_number second_number).
 
 Definition print (_ : unit) :=

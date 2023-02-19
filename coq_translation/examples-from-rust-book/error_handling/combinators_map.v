@@ -9,8 +9,7 @@ Module Impl__crate_fmt_Debug_for_Food.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Food)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Food.Apple => _crate::fmt::ImplFormatter.write_str f "Apple"
       | Food.Carrot => _crate::fmt::ImplFormatter.write_str f "Carrot"
@@ -28,8 +27,7 @@ Module Impl__crate_fmt_Debug_for_Peeled.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Peeled)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Peeled" self.0;
   |}.
 Module ImplPeeled.
@@ -43,8 +41,7 @@ Module Impl__crate_fmt_Debug_for_Chopped.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Chopped)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Chopped" self.0;
   |}.
 Module ImplChopped.
@@ -58,8 +55,7 @@ Module Impl__crate_fmt_Debug_for_Cooked.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Cooked)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Cooked" self.0;
   |}.
 Module ImplCooked.
@@ -76,8 +72,7 @@ Definition chop (_ : unit) :=
   | None => None
   end.
 
-Definition cook (_ : unit) :=
-  map chopped (fun Chopped (food) => Cooked food).
+Definition cook (_ : unit) := map chopped (fun Chopped (food) => Cooked food).
 
 Definition process (_ : unit) :=
   map

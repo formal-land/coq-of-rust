@@ -6,9 +6,10 @@ Error TyAlias.
 Definition multiply (_ : unit) :=
   and_then
     (parse first_number_str)
-    (fun first_number => map
-      (parse second_number_str)
-      (fun second_number => mul first_number second_number)).
+    (fun first_number =>
+      map
+        (parse second_number_str)
+        (fun second_number => mul first_number second_number)).
 
 Definition print (_ : unit) :=
   match result with

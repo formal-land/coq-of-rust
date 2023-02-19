@@ -5,12 +5,11 @@ Error Enum.
 
 (* Impl [VeryVerboseEnumOfThingsToDoWithNumbers] *)
 Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
-  Definition
-    run
-    (self : static_ref VeryVerboseEnumOfThingsToDoWithNumbers)
-    (x : i32)
-    (y : i32)
-    : i32 :=
+  Definition run
+      (self : static_ref VeryVerboseEnumOfThingsToDoWithNumbers)
+      (x : i32)
+      (y : i32)
+      : i32 :=
     match self with
     | ImplSelf.Add => add x y
     | ImplSelf.Subtract => sub x y

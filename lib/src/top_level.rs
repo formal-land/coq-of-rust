@@ -3,7 +3,6 @@ use crate::header::*;
 use crate::path::*;
 use crate::render::*;
 use crate::ty::*;
-use pretty::RcDoc;
 
 use rustc_hir::{Impl, ImplItemKind, Item, ItemKind, PatKind, TraitItemKind, VariantData};
 use rustc_middle::ty::TyCtxt;
@@ -244,370 +243,322 @@ pub fn compile_top_level(tcx: TyCtxt) -> TopLevel {
 }
 
 impl TraitItem {
-    fn to_doc(&self) -> RcDoc {
+    fn to_doc(&self) -> Doc {
         match self {
             TraitItem::Definition { ty } => ty.to_doc(),
-            TraitItem::Type => RcDoc::text("Set"),
+            TraitItem::Type => text("Set"),
         }
     }
 }
 
 impl TopLevelItem {
-    fn to_doc(&self) -> RcDoc {
+    fn to_doc(&self) -> Doc {
         match self {
             TopLevelItem::Definition {
                 name,
                 args,
                 ret_ty,
                 body,
-            } => indent(RcDoc::concat([
-                RcDoc::concat([
-                    RcDoc::text("Definition"),
-                    RcDoc::line(),
-                    RcDoc::text(name),
-                    RcDoc::line(),
+            } => nest([
+                nest([
+                    nest([text("Definition"), line(), text(name)]),
+                    line(),
                     if args.is_empty() {
-                        RcDoc::text("(_ : unit)")
+                        text("(_ : unit)")
                     } else {
-                        RcDoc::intersperse(
+                        intersperse(
                             args.iter().map(|(name, ty)| {
-                                RcDoc::concat([indent(
-                                    RcDoc::concat([
-                                        RcDoc::text("("),
-                                        RcDoc::text(name),
-                                        RcDoc::line(),
-                                        RcDoc::text(":"),
-                                        RcDoc::line(),
-                                        ty.to_doc(),
-                                        RcDoc::text(")"),
-                                    ])
-                                    .group(),
-                                )])
+                                nest([
+                                    text("("),
+                                    text(name),
+                                    line(),
+                                    text(":"),
+                                    line(),
+                                    ty.to_doc(),
+                                    text(")"),
+                                ])
                             }),
-                            RcDoc::line(),
+                            line(),
                         )
                     },
-                    RcDoc::line(),
-                    indent(RcDoc::concat([
-                        match ret_ty {
-                            Some(ty) => RcDoc::concat([
-                                RcDoc::text(":"),
-                                RcDoc::line(),
-                                ty.to_doc(),
-                                RcDoc::line(),
-                            ]),
-                            None => RcDoc::nil(),
-                        },
-                        RcDoc::text(":="),
-                    ]))
-                    .group(),
-                ])
-                .group(),
-                RcDoc::concat([
-                    RcDoc::hardline().append(body.to_doc(false)),
-                    RcDoc::text("."),
+                    match ret_ty {
+                        Some(_) => line(),
+                        None => nil(),
+                    },
+                    match ret_ty {
+                        Some(ty) => nest([text(":"), line(), ty.to_doc(), text(" :=")]),
+                        None => text(" :="),
+                    },
                 ]),
-            ])),
-            TopLevelItem::Module { name, body } => indent(RcDoc::concat([
-                RcDoc::text("Module"),
-                RcDoc::space(),
-                RcDoc::text(name),
-                RcDoc::space(),
-                RcDoc::text(":="),
-                RcDoc::hardline().append(body.to_doc()).group(),
-                RcDoc::text("."),
-            ])),
-            TopLevelItem::TypeAlias { name, ty } => indent(RcDoc::concat([
-                RcDoc::concat([
-                    RcDoc::text("Definition"),
-                    RcDoc::space(),
-                    RcDoc::text(name),
-                    RcDoc::space(),
-                    RcDoc::text(":"),
-                    RcDoc::space(),
-                    RcDoc::text("Set"),
-                    RcDoc::space(),
-                    RcDoc::text(":="),
-                ])
-                .group(),
-                RcDoc::hardline(),
+                line(),
+                body.to_doc(false),
+                text("."),
+            ]),
+            TopLevelItem::Module { name, body } => nest([
+                text("Module"),
+                line(),
+                text(name),
+                line(),
+                text(":="),
+                hardline(),
+                body.to_doc(),
+                text("."),
+            ]),
+            TopLevelItem::TypeAlias { name, ty } => nest([
+                nest([
+                    text("Definition"),
+                    line(),
+                    text(name),
+                    line(),
+                    text(":"),
+                    line(),
+                    text("Set"),
+                    line(),
+                    text(":="),
+                ]),
+                hardline(),
                 ty.to_doc(),
-                RcDoc::text("."),
-            ])),
+                text("."),
+            ]),
             TopLevelItem::TypeRecord { name, fields } => {
                 let fields = fields.iter().map(|(name, ty)| {
-                    RcDoc::concat([
-                        RcDoc::hardline(),
-                        indent(RcDoc::concat([
-                            RcDoc::text(name),
-                            RcDoc::line(),
-                            RcDoc::text(":"),
-                            RcDoc::line(),
+                    group([
+                        hardline(),
+                        nest([
+                            text(name),
+                            line(),
+                            text(":"),
+                            line(),
                             ty.to_doc(),
-                            RcDoc::text(";"),
-                        ]))
-                        .group(),
+                            text(";"),
+                        ]),
                     ])
                 });
-                RcDoc::concat([
-                    indent(RcDoc::concat([
-                        RcDoc::text("Module"),
-                        RcDoc::line(),
-                        RcDoc::text(name),
-                        RcDoc::text("."),
-                    ]))
-                    .group(),
-                    indent(RcDoc::concat([
-                        RcDoc::hardline(),
-                        indent(RcDoc::concat([
-                            RcDoc::text("Record"),
-                            RcDoc::line(),
-                            RcDoc::text("t"),
-                            RcDoc::line(),
-                            indent(RcDoc::concat([
-                                RcDoc::text(":"),
-                                RcDoc::line(),
-                                RcDoc::text("Set"),
-                                RcDoc::line(),
-                                RcDoc::text(":="),
-                                RcDoc::line(),
-                                RcDoc::text("{"),
-                            ]))
-                            .group(),
-                        ]))
-                        .group(),
-                        indent(RcDoc::concat([RcDoc::intersperse(fields, RcDoc::nil())])),
-                        RcDoc::hardline(),
-                        RcDoc::text("}."),
-                    ])),
-                    RcDoc::hardline(),
-                    indent(RcDoc::concat([
-                        RcDoc::text("End"),
-                        RcDoc::line(),
-                        RcDoc::text(name),
-                        RcDoc::text("."),
-                    ]))
-                    .group(),
-                    RcDoc::hardline(),
-                    indent(RcDoc::concat([
-                        RcDoc::text("Definition"),
-                        RcDoc::line(),
-                        RcDoc::text(name),
-                        RcDoc::line(),
-                        RcDoc::text(":"),
-                        RcDoc::line(),
-                        RcDoc::text("Set"),
-                        RcDoc::line(),
-                        RcDoc::text(":="),
-                        RcDoc::line(),
-                        RcDoc::text(name),
-                        RcDoc::text("."),
-                        RcDoc::text("t"),
-                        RcDoc::text("."),
-                    ]))
-                    .group(),
+                group([
+                    nest([text("Module"), line(), text(name), text(".")]),
+                    nest([
+                        hardline(),
+                        nest([
+                            text("Record"),
+                            line(),
+                            text("t"),
+                            line(),
+                            nest([
+                                text(":"),
+                                line(),
+                                text("Set"),
+                                line(),
+                                text(":="),
+                                line(),
+                                text("{"),
+                            ]),
+                        ]),
+                        nest([intersperse(fields, nil())]),
+                        hardline(),
+                        text("}."),
+                    ]),
+                    hardline(),
+                    nest([text("End"), line(), text(name), text(".")]),
+                    hardline(),
+                    nest([
+                        text("Definition"),
+                        line(),
+                        text(name),
+                        line(),
+                        text(":"),
+                        line(),
+                        text("Set"),
+                        line(),
+                        text(":="),
+                        line(),
+                        text(name),
+                        text("."),
+                        text("t"),
+                        text("."),
+                    ]),
                 ])
             }
-            TopLevelItem::Impl { self_ty, body } => RcDoc::concat([
-                RcDoc::text("(* Impl ["),
+            TopLevelItem::Impl { self_ty, body } => group([
+                text("(* Impl ["),
                 self_ty.to_doc(),
-                RcDoc::text("] "),
-                RcDoc::text("*)"),
-                RcDoc::hardline(),
-                indent(RcDoc::concat([
-                    RcDoc::text("Module"),
-                    RcDoc::line(),
-                    RcDoc::text("Impl"),
+                text("] "),
+                text("*)"),
+                hardline(),
+                nest([
+                    text("Module"),
+                    line(),
+                    text("Impl"),
                     self_ty.to_doc(),
-                    RcDoc::text("."),
-                ]))
-                .group(),
-                indent(RcDoc::concat([RcDoc::hardline(), body.to_doc()])),
-                RcDoc::hardline(),
-                indent(RcDoc::concat([
-                    RcDoc::text("End"),
-                    RcDoc::line(),
-                    RcDoc::text("Impl"),
+                    text("."),
+                ]),
+                nest([hardline(), body.to_doc()]),
+                hardline(),
+                nest([
+                    text("End"),
+                    line(),
+                    text("Impl"),
                     self_ty.to_doc(),
-                    RcDoc::text("."),
-                ]))
-                .group(),
-                RcDoc::hardline(),
-                RcDoc::text("(* End impl ["),
+                    text("."),
+                ]),
+                hardline(),
+                text("(* End impl ["),
                 self_ty.to_doc(),
-                RcDoc::text("] *)"),
+                text("] *)"),
             ]),
-            TopLevelItem::Trait { name, body } => RcDoc::concat([
-                indent(RcDoc::concat([
-                    RcDoc::concat([
-                        RcDoc::text("Class"),
-                        RcDoc::line(),
-                        RcDoc::text(name),
-                        RcDoc::line(),
-                        RcDoc::text(":"),
-                        RcDoc::line(),
-                        RcDoc::text("Set"),
-                        RcDoc::line(),
-                        RcDoc::text(":="),
-                        RcDoc::line(),
-                        RcDoc::text("{"),
-                    ])
-                    .group(),
-                    RcDoc::concat(body.iter().map(|(name, item)| {
-                        RcDoc::concat([
-                            RcDoc::hardline(),
-                            indent(RcDoc::concat([
-                                RcDoc::text(name),
-                                RcDoc::line(),
-                                RcDoc::text(":"),
-                                RcDoc::line(),
-                                item.to_doc(),
-                                RcDoc::text(";"),
-                            ]))
-                            .group(),
-                        ])
-                    })),
-                ])),
-                RcDoc::hardline(),
-                RcDoc::text("}."),
+            TopLevelItem::Trait { name, body } => group([
+                nest([
+                    nest([
+                        text("Class"),
+                        line(),
+                        text(name),
+                        line(),
+                        text(":"),
+                        line(),
+                        text("Set"),
+                        line(),
+                        text(":="),
+                        line(),
+                        text("{"),
+                    ]),
+                    intersperse(
+                        body.iter().map(|(name, item)| {
+                            group([
+                                hardline(),
+                                nest([
+                                    text(name),
+                                    line(),
+                                    text(":"),
+                                    line(),
+                                    item.to_doc(),
+                                    text(";"),
+                                ]),
+                            ])
+                        }),
+                        nil(),
+                    ),
+                ]),
+                hardline(),
+                text("}."),
             ]),
             TopLevelItem::TraitImpl {
                 self_ty,
                 of_trait,
                 body,
-            } => RcDoc::concat([
-                indent(RcDoc::concat([
-                    indent(RcDoc::concat([
-                        RcDoc::text("Module"),
-                        RcDoc::line(),
-                        RcDoc::text("Impl_"),
-                        RcDoc::text(of_trait.to_name()),
-                        RcDoc::text("_for_"),
-                        RcDoc::text(self_ty.to_name()),
-                        RcDoc::text("."),
-                    ]))
-                    .group(),
-                    RcDoc::hardline(),
-                    indent(RcDoc::concat([
-                        RcDoc::text("Definition"),
-                        RcDoc::line(),
-                        RcDoc::text("Self"),
-                        RcDoc::line(),
-                        RcDoc::text(":="),
-                        RcDoc::line(),
+            } => group([
+                nest([
+                    nest([
+                        text("Module"),
+                        line(),
+                        text("Impl_"),
+                        text(of_trait.to_name()),
+                        text("_for_"),
+                        text(self_ty.to_name()),
+                        text("."),
+                    ]),
+                    hardline(),
+                    nest([
+                        text("Definition"),
+                        line(),
+                        text("Self"),
+                        line(),
+                        text(":="),
+                        line(),
                         self_ty.to_doc(),
-                        RcDoc::text("."),
-                    ]))
-                    .group(),
-                    RcDoc::hardline(),
-                    RcDoc::hardline(),
-                    indent(RcDoc::concat([
-                        indent(RcDoc::concat([
-                            indent(RcDoc::concat([
-                                RcDoc::text("#[global]"),
-                                RcDoc::line(),
-                                RcDoc::text("Instance"),
-                                RcDoc::line(),
-                                RcDoc::text("I"),
-                            ]))
-                            .group(),
-                            RcDoc::line(),
-                            indent(RcDoc::concat([
-                                RcDoc::text(":"),
-                                RcDoc::line(),
+                        text("."),
+                    ]),
+                    hardline(),
+                    hardline(),
+                    nest([
+                        nest([
+                            nest([
+                                text("#[global]"),
+                                line(),
+                                text("Instance"),
+                                line(),
+                                text("I"),
+                            ]),
+                            line(),
+                            nest([
+                                text(":"),
+                                line(),
                                 of_trait.to_doc(),
-                                RcDoc::text(".Class"),
-                                RcDoc::line(),
-                                RcDoc::text("Self"),
-                                RcDoc::line(),
-                                RcDoc::text(":="),
-                                RcDoc::line(),
-                                RcDoc::text("{|"),
-                            ]))
-                            .group(),
-                        ]))
-                        .group(),
-                        RcDoc::concat(body.0.iter().map(|item| {
-                            match item {
-                                TopLevelItem::Definition {
-                                    name,
-                                    args,
-                                    ret_ty: _,
-                                    body,
-                                } => RcDoc::concat([
-                                    RcDoc::hardline(),
-                                    indent(RcDoc::concat([
-                                        RcDoc::text(name),
-                                        RcDoc::line(),
-                                        RcDoc::intersperse(
-                                            args.iter().map(|(name, ty)| {
-                                                indent(RcDoc::concat([
-                                                    RcDoc::text("("),
-                                                    RcDoc::text(name),
-                                                    RcDoc::line(),
-                                                    RcDoc::text(":"),
-                                                    RcDoc::line(),
-                                                    ty.to_doc(),
-                                                    RcDoc::text(")"),
-                                                ]))
-                                                .group()
-                                            }),
-                                            RcDoc::line(),
-                                        ),
-                                        RcDoc::line(),
-                                        RcDoc::text(":="),
-                                        RcDoc::line(),
-                                        body.to_doc(false),
-                                        RcDoc::text(";"),
-                                    ]))
-                                    .group(),
+                                text(".Class"),
+                                line(),
+                                text("Self"),
+                                line(),
+                                text(":="),
+                                line(),
+                                text("{|"),
+                            ]),
+                        ]),
+                        group(body.0.iter().map(|item| match item {
+                            TopLevelItem::Definition {
+                                name,
+                                args,
+                                ret_ty: _,
+                                body,
+                            } => group([
+                                hardline(),
+                                nest([
+                                    text(name),
+                                    line(),
+                                    intersperse(
+                                        args.iter().map(|(name, ty)| {
+                                            nest([
+                                                text("("),
+                                                text(name),
+                                                line(),
+                                                text(":"),
+                                                line(),
+                                                ty.to_doc(),
+                                                text(")"),
+                                            ])
+                                            .group()
+                                        }),
+                                        line(),
+                                    ),
+                                    text(" :="),
+                                    line(),
+                                    body.to_doc(false),
+                                    text(";"),
                                 ]),
-                                TopLevelItem::TypeAlias { name, ty } => RcDoc::concat([
-                                    RcDoc::hardline(),
-                                    indent(RcDoc::concat([
-                                        RcDoc::text(name),
-                                        RcDoc::line(),
-                                        RcDoc::text(":="),
-                                        RcDoc::line(),
-                                        ty.to_doc(),
-                                        RcDoc::text(";"),
-                                    ]))
-                                    .group(),
+                            ]),
+                            TopLevelItem::TypeAlias { name, ty } => group([
+                                hardline(),
+                                nest([
+                                    text(name),
+                                    line(),
+                                    text(":="),
+                                    line(),
+                                    ty.to_doc(),
+                                    text(";"),
                                 ]),
-                                _ => todo!("trait impl item"),
-                            }
+                            ]),
+                            _ => todo!("trait impl item"),
                         })),
-                    ]))
-                    .group(),
-                    RcDoc::hardline(),
-                    RcDoc::text("|}."),
-                ]))
-                .group(),
-                RcDoc::hardline(),
-                indent(RcDoc::concat([
-                    RcDoc::text("Module"),
-                    RcDoc::line(),
-                    RcDoc::text("Impl"),
-                    RcDoc::text(self_ty.to_name()),
-                    RcDoc::text("."),
-                ]))
-                .group(),
+                    ]),
+                    hardline(),
+                    text("|}."),
+                ]),
+                hardline(),
+                nest([
+                    text("Module"),
+                    line(),
+                    text("Impl"),
+                    text(self_ty.to_name()),
+                    text("."),
+                ]),
             ]),
-            TopLevelItem::Error(message) => RcDoc::concat([
-                RcDoc::text("Error"),
-                RcDoc::space(),
-                RcDoc::text(message),
-                RcDoc::text("."),
-            ]),
+            TopLevelItem::Error(message) => nest([text("Error"), line(), text(message), text(".")]),
         }
     }
 }
 
 impl TopLevel {
-    fn to_doc(&self) -> RcDoc {
-        RcDoc::intersperse(
+    fn to_doc(&self) -> Doc {
+        intersperse(
             self.0.iter().map(|item| item.to_doc()),
-            RcDoc::hardline().append(RcDoc::hardline()),
+            group([hardline(), hardline()]),
         )
     }
 

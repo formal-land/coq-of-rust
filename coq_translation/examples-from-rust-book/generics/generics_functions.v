@@ -9,17 +9,13 @@ Definition S : Set :=
 Definition SGen : Set :=
   T.
 
-Definition reg_fn (_ : unit) :=
-  tt.
+Definition reg_fn (_ : unit) := tt.
 
-Definition gen_spec_t (_ : unit) :=
-  tt.
+Definition gen_spec_t (_ : unit) := tt.
 
-Definition gen_spec_i32 (_ : unit) :=
-  tt.
+Definition gen_spec_i32 (_ : unit) := tt.
 
-Definition generic (_ : unit) :=
-  tt.
+Definition generic (_ : unit) := tt.
 
 Definition main (_ : unit) :=
   reg_fn (S A) ;;

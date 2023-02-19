@@ -10,8 +10,7 @@ Module Impl__crate_fmt_Debug_for_EvenNumber.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref EvenNumber)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_tuple_field1_finish
         f
         "EvenNumber"
@@ -32,8 +31,7 @@ Module Impl__crate_cmp_PartialEq_for_EvenNumber.
   #[global] Instance I : _crate.cmp.PartialEq.Class Self := {|
     eq
       (self : static_ref EvenNumber)
-      (other : static_ref EvenNumber)
-      :=
+      (other : static_ref EvenNumber) :=
       eq self.0 other.0;
   |}.
 Module ImplEvenNumber.
@@ -44,8 +42,7 @@ Module Impl_TryFrom_for_EvenNumber.
   #[global] Instance I : TryFrom.Class Self := {|
     Error := ;
     try_from
-      (value : i32)
-      :=
+      (value : i32) :=
       if eq (rem value 2) 0 then
         Ok (EvenNumber value)
       else

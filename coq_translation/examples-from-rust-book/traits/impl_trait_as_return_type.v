@@ -4,8 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition combine_vecs_explicit_return_type (_ : unit) :=
   cycle (chain (into_iter v) (into_iter u)).
 
-Definition combine_vecs (_ : unit) :=
-  cycle (chain (into_iter v) (into_iter u)).
+Definition combine_vecs (_ : unit) := cycle (chain (into_iter v) (into_iter u)).
 
 Error OpaqueTy.
 

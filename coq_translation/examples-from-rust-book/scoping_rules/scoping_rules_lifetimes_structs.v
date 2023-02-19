@@ -10,8 +10,7 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Borrowed<'a>)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Borrowed" self.0;
   |}.
 Module ImplBorrowed.
@@ -30,8 +29,7 @@ Module Impl__crate_fmt_Debug_for_NamedBorrowed.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref NamedBorrowed<'a>)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_struct_field2_finish
         f
         "NamedBorrowed"
@@ -50,8 +48,7 @@ Module Impl__crate_fmt_Debug_for_Either.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Either<'a>)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Either.Num (__self_0) =>
         _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Num" __self_0

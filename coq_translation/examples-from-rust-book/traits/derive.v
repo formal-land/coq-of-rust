@@ -17,8 +17,7 @@ Module Impl__crate_cmp_PartialEq_for_Centimeters.
   #[global] Instance I : _crate.cmp.PartialEq.Class Self := {|
     eq
       (self : static_ref Centimeters)
-      (other : static_ref Centimeters)
-      :=
+      (other : static_ref Centimeters) :=
       eq self.0 other.0;
   |}.
 Module ImplCentimeters.
@@ -29,8 +28,7 @@ Module Impl__crate_cmp_PartialOrd_for_Centimeters.
   #[global] Instance I : _crate.cmp.PartialOrd.Class Self := {|
     partial_cmp
       (self : static_ref Centimeters)
-      (other : static_ref Centimeters)
-      :=
+      (other : static_ref Centimeters) :=
       _crate.cmp.PartialOrd.partial_cmp self.0 other.0;
   |}.
 Module ImplCentimeters.
@@ -44,8 +42,7 @@ Module Impl__crate_fmt_Debug_for_Inches.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Inches)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Inches" self.0;
   |}.
 Module ImplInches.
@@ -70,10 +67,11 @@ Definition main (_ : unit) :=
       [_crate::fmt::ImplArgumentV1.new_debug foot]) ;;
   tt ;;
   let meter := Centimeters 100 (* 100.0 *) in
-  let cmp := if lt (to_centimeters foot) meter then
-    "smaller"
-  else
-    "bigger" in
+  let cmp :=
+    if lt (to_centimeters foot) meter then
+      "smaller"
+    else
+      "bigger" in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["One foot is ";" than one meter.\n"]

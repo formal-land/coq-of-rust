@@ -22,8 +22,7 @@ Module Impl__crate_cmp_PartialEq_for_Account.
   #[global] Instance I : _crate.cmp.PartialEq.Class Self := {|
     eq
       (self : static_ref Account<'a>)
-      (other : static_ref Account)
-      :=
+      (other : static_ref Account) :=
       and (eq self.username other.username) (eq self.password other.password);
   |}.
 Module ImplAccount.
@@ -40,8 +39,7 @@ Module Impl__crate_cmp_Eq_for_Account.
   
   #[global] Instance I : _crate.cmp.Eq.Class Self := {|
     assert_receiver_is_total_eq
-      (self : static_ref Account<'a>)
-      :=
+      (self : static_ref Account<'a>) :=
       let _ := tt in
       let _ := tt in
       tt;
@@ -54,8 +52,7 @@ Module Impl__crate_hash_Hash_for_Account.
   #[global] Instance I : _crate.hash.Hash.Class Self := {|
     hash
       (self : static_ref Account<'a>)
-      (state : mut_ref __H)
-      :=
+      (state : mut_ref __H) :=
       _crate.hash.Hash.hash self.username state ;;
       _crate.hash.Hash.hash self.password state;
   |}.
@@ -85,10 +82,8 @@ Definition try_logon (_ : unit) :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1 ["Attempting logon...\n"] []) ;;
   tt ;;
-  let logon := {|
-    Account.username := username;
-    Account.password := password;
-  |} in
+  let logon :=
+    {| Account.username := username; Account.password := password; |} in
   match get accounts logon with
   | Some (account_info) =>
     _crate.io._print
@@ -113,14 +108,14 @@ Definition try_logon (_ : unit) :=
 
 Definition main (_ : unit) :=
   let accounts := ImplHashMap.new tt in
-  let account := {|
-    Account.username := "j.everyman";
-    Account.password := "password123";
-  |} in
-  let account_info := {|
-    AccountInfo.name := "John Everyman";
-    AccountInfo.email := "j.everyman@email.com";
-  |} in
+  let account :=
+    {| Account.username := "j.everyman"; Account.password := "password123";
+    |} in
+  let account_info :=
+    {|
+      AccountInfo.name := "John Everyman";
+      AccountInfo.email := "j.everyman@email.com";
+    |} in
   insert accounts account account_info ;;
   try_logon accounts "j.everyman" "psasword123" ;;
   try_logon accounts "j.everyman" "password123" ;;

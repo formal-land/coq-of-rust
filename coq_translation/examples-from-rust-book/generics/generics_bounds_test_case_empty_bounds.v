@@ -27,11 +27,9 @@ Module Impl_Blue_for_BlueJay.
   |}.
 Module ImplBlueJay.
 
-Definition red (_ : unit) :=
-  "red".
+Definition red (_ : unit) := "red".
 
-Definition blue (_ : unit) :=
-  "blue".
+Definition blue (_ : unit) := "blue".
 
 Definition main (_ : unit) :=
   let cardinal := Cardinal in

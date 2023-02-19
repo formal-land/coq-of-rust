@@ -10,8 +10,7 @@ Module Impl_PrintInOption_for_T.
   
   #[global] Instance I : PrintInOption.Class Self := {|
     print_in_option
-      (self : T)
-      :=
+      (self : T) :=
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1
           ["";"\n"]

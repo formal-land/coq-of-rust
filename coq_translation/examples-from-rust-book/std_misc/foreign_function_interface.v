@@ -3,8 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error ForeignMod.
 
-Definition cos (_ : unit) :=
-  ccosf z.
+Definition cos (_ : unit) := ccosf z.
 
 Definition main (_ : unit) :=
   let z := {| Complex.re := neg 1 (* 1. *); Complex.im := 0 (* 0. *); |} in
@@ -36,8 +35,7 @@ Module Impl__crate_clone_Clone_for_Complex.
   
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
     clone
-      (self : static_ref Complex)
-      :=
+      (self : static_ref Complex) :=
       let _ := tt in
       deref self;
   |}.
@@ -56,8 +54,7 @@ Module Impl_fmt_Debug_for_Complex.
   #[global] Instance I : fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Complex)
-      (f : mut_ref fmt.Formatter)
-      :=
+      (f : mut_ref fmt.Formatter) :=
       if lt self.im 0 (* 0. *) then
         write_fmt
           f

@@ -5,17 +5,20 @@ Definition PANGRAM (_ : unit) :=
   "the quick brown fox jumped over the lazy dog\n".
 
 Definition main (_ : unit) :=
-  let process := match spawn
-    (stdout
-      (stdin (ImplCommand.new "wc") (ImplStdio.piped tt))
-      (ImplStdio.piped tt)) with
-  | Err (why) =>
-    _crate.rt.panic_fmt
-      (_crate::fmt::ImplArguments.new_v1
-        ["couldn't spawn wc: "]
-        [_crate::fmt::ImplArgumentV1.new_display why])
-  | Ok (process) => process
-  end in
+  let process :=
+    match
+      spawn
+        (stdout
+          (stdin (ImplCommand.new "wc") (ImplStdio.piped tt))
+          (ImplStdio.piped tt))
+    with
+    | Err (why) =>
+      _crate.rt.panic_fmt
+        (_crate::fmt::ImplArguments.new_v1
+          ["couldn't spawn wc: "]
+          [_crate::fmt::ImplArgumentV1.new_display why])
+    | Ok (process) => process
+    end in
   match write_all (unwrap process.stdin) (as_bytes PANGRAM) with
   | Err (why) =>
     _crate.rt.panic_fmt

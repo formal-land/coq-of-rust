@@ -13,8 +13,7 @@ Module Impl_Drop_for_Droppable.
   
   #[global] Instance I : Drop.Class Self := {|
     drop
-      (self : mut_ref Droppable)
-      :=
+      (self : mut_ref Droppable) :=
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1
           ["> Dropping ";"\n"]

@@ -3,30 +3,35 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition main (_ : unit) :=
   let n := 1 in
-  loop (if lt n 101 then
-    if eq (rem n 15) 0 then
-      _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["fizzbuzz\n"] []) ;;
-      tt ;;
-      tt
-    else
-      if eq (rem n 3) 0 then
-        _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["fizz\n"] []) ;;
+  loop
+    (if lt n 101 then
+      if eq (rem n 15) 0 then
+        _crate.io._print
+          (_crate::fmt::ImplArguments.new_v1 ["fizzbuzz\n"] []) ;;
         tt ;;
         tt
       else
-        if eq (rem n 5) 0 then
-          _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["buzz\n"] []) ;;
+        if eq (rem n 3) 0 then
+          _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["fizz\n"] []) ;;
           tt ;;
           tt
         else
-          _crate.io._print
-            (_crate::fmt::ImplArguments.new_v1
-              ["";"\n"]
-              [_crate::fmt::ImplArgumentV1.new_display n]) ;;
-          tt ;;
-          tt ;;
-    assign n := add n 1 ;;
-    tt
-  else
-    Break ;;
-    tt) from while.
+          if eq (rem n 5) 0 then
+            _crate.io._print
+              (_crate::fmt::ImplArguments.new_v1 ["buzz\n"] []) ;;
+            tt ;;
+            tt
+          else
+            _crate.io._print
+              (_crate::fmt::ImplArguments.new_v1
+                ["";"\n"]
+                [_crate::fmt::ImplArgumentV1.new_display n]) ;;
+            tt ;;
+            tt ;;
+      assign n := add n 1 ;;
+      tt
+    else
+      Break ;;
+      tt)
+    from
+    while.

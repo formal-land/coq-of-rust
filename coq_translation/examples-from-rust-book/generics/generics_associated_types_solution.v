@@ -23,16 +23,14 @@ Module Impl_Contains_for_Container.
     contains
       (self : static_ref Container)
       (number_1 : static_ref i32)
-      (number_2 : static_ref i32)
-      :=
+      (number_2 : static_ref i32) :=
       and (eq self.0 number_1) (eq self.1 number_2);
     first (self : static_ref Container) := self.0;
     last (self : static_ref Container) := self.1;
   |}.
 Module ImplContainer.
 
-Definition difference (_ : unit) :=
-  sub (last container) (first container).
+Definition difference (_ : unit) := sub (last container) (first container).
 
 Definition main (_ : unit) :=
   let number_1 := 3 in

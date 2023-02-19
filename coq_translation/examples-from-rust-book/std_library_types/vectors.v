@@ -43,42 +43,51 @@ Definition main (_ : unit) :=
   tt ;;
   match into_iter (iter xs) with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := x; |} =>
-      _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["> ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_display x]) ;;
-      tt ;;
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := x; |} =>
+        _crate.io._print
+          (_crate::fmt::ImplArguments.new_v1
+            ["> ";"\n"]
+            [_crate::fmt::ImplArgumentV1.new_display x]) ;;
+        tt ;;
+        tt
+      end ;;
       tt
-    end ;;
-    tt from for
+      from
+      for
   end ;;
   match into_iter (enumerate (iter xs)) with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := (i, x); |} =>
-      _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["In position ";" we have value ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_display
-            i;_crate::fmt::ImplArgumentV1.new_display x]) ;;
-      tt ;;
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := (i, x); |} =>
+        _crate.io._print
+          (_crate::fmt::ImplArguments.new_v1
+            ["In position ";" we have value ";"\n"]
+            [_crate::fmt::ImplArgumentV1.new_display
+              i;_crate::fmt::ImplArgumentV1.new_display x]) ;;
+        tt ;;
+        tt
+      end ;;
       tt
-    end ;;
-    tt from for
+      from
+      for
   end ;;
   match into_iter (iter_mut xs) with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := x; |} =>
-      assign deref x := mul (deref x) 3 ;;
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := x; |} =>
+        assign deref x := mul (deref x) 3 ;;
+        tt
+      end ;;
       tt
-    end ;;
-    tt from for
+      from
+      for
   end ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1

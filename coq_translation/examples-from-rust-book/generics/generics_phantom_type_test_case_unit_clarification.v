@@ -9,8 +9,7 @@ Module Impl__crate_fmt_Debug_for_Inch.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Inch)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate.intrinsics.unreachable tt;
   |}.
 Module ImplInch.
@@ -38,8 +37,7 @@ Module Impl__crate_fmt_Debug_for_Mm.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Mm)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate.intrinsics.unreachable tt;
   |}.
 Module ImplMm.
@@ -68,8 +66,7 @@ Module Impl__crate_fmt_Debug_for_Length.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Length<Unit>)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_tuple_field2_finish
         f
         "Length"
@@ -83,8 +80,7 @@ Module Impl__crate_clone_Clone_for_Length.
   
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
     clone
-      (self : static_ref Length<Unit>)
-      :=
+      (self : static_ref Length<Unit>) :=
       Length
         (_crate.clone.Clone.clone self.0)
         (_crate.clone.Clone.clone self.1);
@@ -105,8 +101,7 @@ Module Impl_Add_for_Length.
     Output := Length;
     add
       (self : Length<Unit>)
-      (rhs : Length)
-      :=
+      (rhs : Length) :=
       Length (add self.0 rhs.0) PhantomData;
   |}.
 Module ImplLength.

@@ -29,8 +29,7 @@ Definition Rectangle : Set := Rectangle.t.
 
 (* Impl [Rectangle] *)
 Module ImplRectangle.
-  Definition get_p1 (self : static_ref Rectangle) : Point :=
-    self.p1.
+  Definition get_p1 (self : static_ref Rectangle) : Point := self.p1.
   
   Definition area (self : static_ref Rectangle) : f64 :=
     let {| Point.x := x1; Point.y := y1; |} := self.p1 in
@@ -69,10 +68,11 @@ End ImplPair.
 (* End impl [Pair] *)
 
 Definition main (_ : unit) :=
-  let rectangle := {|
-    Rectangle.p1 := ImplPoint.origin tt;
-    Rectangle.p2 := ImplPoint.new 3 (* 3.0 *) 4 (* 4.0 *);
-  |} in
+  let rectangle :=
+    {|
+      Rectangle.p1 := ImplPoint.origin tt;
+      Rectangle.p2 := ImplPoint.new 3 (* 3.0 *) 4 (* 4.0 *);
+    |} in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Rectangle perimeter: ";"\n"]
@@ -83,10 +83,11 @@ Definition main (_ : unit) :=
       ["Rectangle area: ";"\n"]
       [_crate::fmt::ImplArgumentV1.new_display (area rectangle)]) ;;
   tt ;;
-  let square := {|
-    Rectangle.p1 := ImplPoint.origin tt;
-    Rectangle.p2 := ImplPoint.new 1 (* 1.0 *) 1 (* 1.0 *);
-  |} in
+  let square :=
+    {|
+      Rectangle.p1 := ImplPoint.origin tt;
+      Rectangle.p2 := ImplPoint.new 1 (* 1.0 *) 1 (* 1.0 *);
+    |} in
   translate square 1 (* 1.0 *) 1 (* 1.0 *) ;;
   let pair := Pair (ImplBox.new 1) (ImplBox.new 2) in
   destroy pair ;;

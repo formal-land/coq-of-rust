@@ -1,7 +1,6 @@
 use crate::path::*;
 use crate::pattern::*;
 use crate::render::*;
-use pretty::RcDoc;
 use rustc_ast::LitKind;
 use rustc_hir::{BinOp, BinOpKind};
 use rustc_middle::ty::TyCtxt;
@@ -348,93 +347,83 @@ fn compile_block(tcx: TyCtxt, block: &rustc_hir::Block) -> Expr {
 }
 
 impl MatchArm {
-    fn to_doc(&self) -> RcDoc<()> {
-        return indent(RcDoc::concat([
-            RcDoc::concat([
-                RcDoc::text("|"),
-                RcDoc::space(),
-                self.pat.to_doc(),
-                RcDoc::space(),
-                RcDoc::text("=>"),
-            ])
-            .group(),
-            RcDoc::line(),
+    fn to_doc(&self) -> Doc {
+        return nest([
+            nest([text("|"), line(), self.pat.to_doc(), line(), text("=>")]),
+            line(),
             self.body.to_doc(false),
-        ]))
-        .group();
+        ]);
     }
 }
 
 impl Expr {
-    pub fn to_doc(&self, with_paren: bool) -> RcDoc<()> {
+    pub fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
-            Expr::LocalVar(ref name) => RcDoc::text(name),
+            Expr::LocalVar(ref name) => text(name),
             Expr::Var(path) => path.to_doc(),
             Expr::Literal(literal) => literal_to_doc(literal),
-            Expr::Call { func, args } => indent(paren(
+            Expr::Call { func, args } => paren(
                 with_paren,
-                RcDoc::concat([
+                nest([
                     func.to_doc(true),
-                    RcDoc::line(),
+                    line(),
                     if args.is_empty() {
-                        RcDoc::text("tt")
+                        text("tt")
                     } else {
-                        RcDoc::intersperse(args.iter().map(|arg| arg.to_doc(true)), RcDoc::line())
+                        intersperse(args.iter().map(|arg| arg.to_doc(true)), line())
                     },
                 ]),
-            ))
-            .group(),
-            Expr::Let { pat, init, body } => RcDoc::concat([
-                RcDoc::text("let"),
-                RcDoc::space(),
-                pat.to_doc(),
-                RcDoc::space(),
-                RcDoc::text(":="),
-                RcDoc::space(),
-                init.to_doc(false),
-                RcDoc::space(),
-                RcDoc::text("in"),
-                RcDoc::hardline(),
+            ),
+            Expr::Let { pat, init, body } => group([
+                nest([
+                    nest([
+                        text("let"),
+                        line(),
+                        group([pat.to_doc(), line(), text(":=")]),
+                    ]),
+                    line(),
+                    group([init.to_doc(false), text(" in")]),
+                ]),
+                hardline(),
                 body.to_doc(false),
             ]),
             Expr::Lambda { args, body } => paren(
                 with_paren,
-                RcDoc::concat([
-                    RcDoc::text("fun"),
-                    RcDoc::space(),
-                    RcDoc::intersperse(args.iter().map(|arg| arg.to_doc()), RcDoc::space()),
-                    RcDoc::space(),
-                    RcDoc::text("=>"),
-                    RcDoc::space(),
+                nest([
+                    nest([
+                        text("fun"),
+                        line(),
+                        intersperse(args.iter().map(|arg| arg.to_doc()), line()),
+                        text(" =>"),
+                    ]),
+                    line(),
                     body.to_doc(false),
                 ]),
             ),
-            Expr::Seq { first, second } => RcDoc::concat([
-                first.to_doc(false),
-                RcDoc::space(),
-                RcDoc::text(";;"),
-                RcDoc::hardline(),
+            Expr::Seq { first, second } => group([
+                group([first.to_doc(false), text(" ;;")]),
+                hardline(),
                 second.to_doc(false),
             ]),
 
-            Expr::Array { elements } => bracket(RcDoc::intersperse(
+            Expr::Array { elements } => bracket(intersperse(
                 elements.iter().map(|element| element.to_doc(false)),
-                RcDoc::text(";"),
+                text(";"),
             )),
             Expr::Tuple { elements } => paren(
                 true,
-                RcDoc::intersperse(
+                intersperse(
                     elements.iter().map(|element| element.to_doc(false)),
-                    RcDoc::concat([RcDoc::text(","), RcDoc::space()]),
+                    group([text(","), line()]),
                 ),
             ),
-            Expr::LetIf { pat, init } => RcDoc::concat([
-                RcDoc::text("let_if"),
-                RcDoc::space(),
+            Expr::LetIf { pat, init } => group([
+                text("let_if"),
+                line(),
                 pat.to_doc(),
-                RcDoc::space(),
-                RcDoc::text(":="),
-                RcDoc::space(),
+                line(),
+                text(":="),
+                line(),
                 init.to_doc(false),
             ]),
 
@@ -444,59 +433,52 @@ impl Expr {
                 failure,
             } => paren(
                 with_paren,
-                RcDoc::concat([
-                    (indent(RcDoc::concat([
-                        RcDoc::text("if"),
-                        RcDoc::space(),
-                        condition.to_doc(false),
-                        RcDoc::space(),
-                        RcDoc::text("then").append(RcDoc::hardline()),
-                        success.to_doc(false).group(),
-                    ])))
-                    .group(),
-                    RcDoc::hardline(),
-                    indent(RcDoc::concat([
-                        RcDoc::text("else"),
-                        RcDoc::hardline(),
-                        failure.to_doc(false).group(),
-                    ]))
-                    .group(),
-                ]),
-            )
-            .group(),
-            Expr::Loop { body, loop_source } => paren(
-                with_paren,
-                RcDoc::concat([
-                    RcDoc::text("loop"),
-                    RcDoc::space(),
-                    body.to_doc(true),
-                    RcDoc::space(),
-                    RcDoc::text("from"),
-                    RcDoc::space(),
-                    RcDoc::text(loop_source),
+                group([
+                    (nest([
+                        group([
+                            nest([text("if"), line(), condition.to_doc(false)]),
+                            line(),
+                            text("then"),
+                        ]),
+                        hardline(),
+                        success.to_doc(false),
+                    ])),
+                    hardline(),
+                    nest([text("else"), hardline(), failure.to_doc(false)]),
                 ]),
             ),
-            Expr::Match { scrutinee, arms } => RcDoc::concat([
-                RcDoc::text("match"),
-                RcDoc::space(),
-                scrutinee.to_doc(false),
-                RcDoc::space(),
-                RcDoc::text("with"),
-                RcDoc::hardline(),
-                RcDoc::intersperse(arms.iter().map(|arm| arm.to_doc()), RcDoc::hardline()),
-                RcDoc::hardline(),
-                RcDoc::text("end"),
-            ])
-            .group(),
+            Expr::Loop { body, loop_source } => paren(
+                with_paren,
+                nest([
+                    text("loop"),
+                    line(),
+                    body.to_doc(true),
+                    line(),
+                    text("from"),
+                    line(),
+                    text(loop_source),
+                ]),
+            ),
+            Expr::Match { scrutinee, arms } => group([
+                group([
+                    nest([text("match"), line(), scrutinee.to_doc(false)]),
+                    line(),
+                    text("with"),
+                ]),
+                hardline(),
+                intersperse(arms.iter().map(|arm| arm.to_doc()), hardline()),
+                hardline(),
+                text("end"),
+            ]),
             Expr::Assign { left, right } => paren(
                 with_paren,
-                RcDoc::concat([
-                    RcDoc::text("assign"),
-                    RcDoc::space(),
+                nest([
+                    text("assign"),
+                    line(),
                     left.to_doc(false),
-                    RcDoc::space(),
-                    RcDoc::text(":="),
-                    RcDoc::space(),
+                    line(),
+                    text(":="),
+                    line(),
                     right.to_doc(false),
                 ]),
             ),
@@ -506,61 +488,50 @@ impl Expr {
                 right,
             } => paren(
                 with_paren,
-                RcDoc::concat([
-                    RcDoc::text("assign"),
-                    RcDoc::space(),
+                nest([
+                    text("assign"),
+                    line(),
                     left.to_doc(false),
-                    RcDoc::space(),
-                    RcDoc::text(":="),
-                    RcDoc::space(),
+                    line(),
+                    text(":="),
+                    line(),
                     left.to_doc(false),
-                    RcDoc::space(),
-                    RcDoc::text(bin_op),
-                    RcDoc::space(),
+                    line(),
+                    text(bin_op),
+                    line(),
                     right.to_doc(false),
                 ]),
             ),
-            Expr::Field { base, field } => {
-                RcDoc::concat([base.to_doc(true), RcDoc::text("."), RcDoc::text(field)])
-            }
-            Expr::Index { base, index } => base.to_doc(true).append(bracket(index.to_doc(false))),
-            Expr::Struct { path, fields, base } => RcDoc::concat([
-                RcDoc::concat([
-                    indent(RcDoc::concat([
-                        RcDoc::text("{|"),
-                        RcDoc::line(),
-                        RcDoc::intersperse(
+            Expr::Field { base, field } => nest([base.to_doc(true), text("."), text(field)]),
+            Expr::Index { base, index } => nest([base.to_doc(true), bracket(index.to_doc(false))]),
+            Expr::Struct { path, fields, base } => group([
+                group([
+                    nest([
+                        text("{|"),
+                        line(),
+                        intersperse(
                             fields.iter().map(|(name, expr)| {
-                                indent(RcDoc::concat([
+                                nest([
                                     path.to_doc(),
-                                    RcDoc::text("."),
-                                    RcDoc::text(name),
-                                    RcDoc::line(),
-                                    RcDoc::text(":="),
-                                    RcDoc::line(),
+                                    text("."),
+                                    text(name),
+                                    text(" :="),
+                                    line(),
                                     expr.to_doc(false),
-                                    RcDoc::text(";"),
-                                ]))
-                                .group()
+                                    text(";"),
+                                ])
                             }),
-                            RcDoc::line(),
+                            line(),
                         ),
-                    ])),
-                    RcDoc::line(),
-                    RcDoc::text("|}"),
-                ])
-                .group(),
-                match base {
-                    Some(base) => RcDoc::concat([
-                        RcDoc::line(),
-                        RcDoc::text("with"),
-                        RcDoc::line(),
-                        base.to_doc(false),
                     ]),
-                    None => RcDoc::nil(),
+                    line(),
+                    text("|}"),
+                ]),
+                match base {
+                    Some(base) => nest([line(), text("with"), line(), base.to_doc(false)]),
+                    None => nil(),
                 },
-            ])
-            .group(),
+            ]),
         }
     }
 }

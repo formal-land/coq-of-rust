@@ -10,8 +10,7 @@ Module Impl__crate_fmt_Debug_for_Ref.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Ref<'a, T>)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Ref" self.0;
   |}.
 Module ImplRef.

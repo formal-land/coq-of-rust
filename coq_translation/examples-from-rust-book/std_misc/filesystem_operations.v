@@ -2,10 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition cat (_ : unit) :=
-  let f := match branch (ImplFile.open path) with
-  | {| Break.0 := residual; |} => Return (from_residual residual)
-  | {| Continue.0 := val; |} => val
-  end in
+  let f :=
+    match branch (ImplFile.open path) with
+    | {| Break.0 := residual; |} => Return (from_residual residual)
+    | {| Continue.0 := val; |} => val
+    end in
   let s := ImplString.new tt in
   match read_to_string f s with
   | Ok (_) => Ok s
@@ -13,10 +14,11 @@ Definition cat (_ : unit) :=
   end.
 
 Definition echo (_ : unit) :=
-  let f := match branch (ImplFile.create path) with
-  | {| Break.0 := residual; |} => Return (from_residual residual)
-  | {| Continue.0 := val; |} => val
-  end in
+  let f :=
+    match branch (ImplFile.create path) with
+    | {| Break.0 := residual; |} => Return (from_residual residual)
+    | {| Continue.0 := val; |} => val
+    end in
   write_all f (as_bytes s).
 
 Definition touch (_ : unit) :=
@@ -42,46 +44,50 @@ Definition main (_ : unit) :=
   tt ;;
   unwrap_or_else
     (echo "hello" (ImplPath.new "a/b.txt"))
-    (fun why => _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["! ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug (kind why)]) ;;
-    tt ;;
-    tt) ;;
+    (fun why =>
+      _crate.io._print
+        (_crate::fmt::ImplArguments.new_v1
+          ["! ";"\n"]
+          [_crate::fmt::ImplArgumentV1.new_debug (kind why)]) ;;
+      tt ;;
+      tt) ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1 ["`mkdir -p a/c/d`\n"] []) ;;
   tt ;;
   unwrap_or_else
     (fs.create_dir_all "a/c/d")
-    (fun why => _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["! ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug (kind why)]) ;;
-    tt ;;
-    tt) ;;
+    (fun why =>
+      _crate.io._print
+        (_crate::fmt::ImplArguments.new_v1
+          ["! ";"\n"]
+          [_crate::fmt::ImplArgumentV1.new_debug (kind why)]) ;;
+      tt ;;
+      tt) ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1 ["`touch a/c/e.txt`\n"] []) ;;
   tt ;;
   unwrap_or_else
     (touch (ImplPath.new "a/c/e.txt"))
-    (fun why => _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["! ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug (kind why)]) ;;
-    tt ;;
-    tt) ;;
+    (fun why =>
+      _crate.io._print
+        (_crate::fmt::ImplArguments.new_v1
+          ["! ";"\n"]
+          [_crate::fmt::ImplArgumentV1.new_debug (kind why)]) ;;
+      tt ;;
+      tt) ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1 ["`ln -s ../b.txt a/c/b.txt`\n"] []) ;;
   tt ;;
   if true then
     unwrap_or_else
       (unix.fs.symlink "../b.txt" "a/c/b.txt")
-      (fun why => _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["! ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_debug (kind why)]) ;;
-      tt ;;
-      tt) ;;
+      (fun why =>
+        _crate.io._print
+          (_crate::fmt::ImplArguments.new_v1
+            ["! ";"\n"]
+            [_crate::fmt::ImplArgumentV1.new_debug (kind why)]) ;;
+        tt ;;
+        tt) ;;
     tt
   else
     tt ;;
@@ -114,17 +120,20 @@ Definition main (_ : unit) :=
   | Ok (paths) =>
     match into_iter paths with
     | iter =>
-      loop match next iter with
-      | {|  |} => Break
-      | {| Some.0 := path; |} =>
-        _crate.io._print
-          (_crate::fmt::ImplArguments.new_v1
-            ["> ";"\n"]
-            [_crate::fmt::ImplArgumentV1.new_debug (path (unwrap path))]) ;;
-        tt ;;
+      loop
+        match next iter with
+        | {|  |} => Break
+        | {| Some.0 := path; |} =>
+          _crate.io._print
+            (_crate::fmt::ImplArguments.new_v1
+              ["> ";"\n"]
+              [_crate::fmt::ImplArgumentV1.new_debug (path (unwrap path))]) ;;
+          tt ;;
+          tt
+        end ;;
         tt
-      end ;;
-      tt from for
+        from
+        for
     end
   end ;;
   _crate.io._print
@@ -132,20 +141,22 @@ Definition main (_ : unit) :=
   tt ;;
   unwrap_or_else
     (fs.remove_file "a/c/e.txt")
-    (fun why => _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["! ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug (kind why)]) ;;
-    tt ;;
-    tt) ;;
+    (fun why =>
+      _crate.io._print
+        (_crate::fmt::ImplArguments.new_v1
+          ["! ";"\n"]
+          [_crate::fmt::ImplArgumentV1.new_debug (kind why)]) ;;
+      tt ;;
+      tt) ;;
   _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["`rmdir a/c/d`\n"] []) ;;
   tt ;;
   unwrap_or_else
     (fs.remove_dir "a/c/d")
-    (fun why => _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["! ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug (kind why)]) ;;
-    tt ;;
-    tt) ;;
+    (fun why =>
+      _crate.io._print
+        (_crate::fmt::ImplArguments.new_v1
+          ["! ";"\n"]
+          [_crate::fmt::ImplArgumentV1.new_debug (kind why)]) ;;
+      tt ;;
+      tt) ;;
   tt.

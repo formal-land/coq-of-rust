@@ -2,14 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply (_ : unit) :=
-  let first_number := match parse first_number_str with
-  | Ok (first_number) => first_number
-  | Err (e) => Return (Err e)
-  end in
-  let second_number := match parse second_number_str with
-  | Ok (second_number) => second_number
-  | Err (e) => Return (Err e)
-  end in
+  let first_number :=
+    match parse first_number_str with
+    | Ok (first_number) => first_number
+    | Err (e) => Return (Err e)
+    end in
+  let second_number :=
+    match parse second_number_str with
+    | Ok (second_number) => second_number
+    | Err (e) => Return (Err e)
+    end in
   Ok (mul first_number second_number).
 
 Definition print (_ : unit) :=

@@ -27,8 +27,7 @@ Module Impl__crate_fmt_Debug_for_Rectangle.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Rectangle)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_struct_field2_finish
         f
         "Rectangle"
@@ -55,18 +54,13 @@ Definition print_debug (_ : unit) :=
   tt ;;
   tt.
 
-Definition area (_ : unit) :=
-  area t.
+Definition area (_ : unit) := area t.
 
 Definition main (_ : unit) :=
-  let rectangle := {|
-    Rectangle.length := 3 (* 3.0 *);
-    Rectangle.height := 4 (* 4.0 *);
-  |} in
-  let _triangle := {|
-    Triangle.length := 3 (* 3.0 *);
-    Triangle.height := 4 (* 4.0 *);
-  |} in
+  let rectangle :=
+    {| Rectangle.length := 3 (* 3.0 *); Rectangle.height := 4 (* 4.0 *); |} in
+  let _triangle :=
+    {| Triangle.length := 3 (* 3.0 *); Triangle.height := 4 (* 4.0 *); |} in
   print_debug rectangle ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1

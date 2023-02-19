@@ -14,8 +14,7 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Borrowed<'a>)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_struct_field1_finish
         f
         "Borrowed"

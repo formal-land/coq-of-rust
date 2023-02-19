@@ -22,8 +22,7 @@ Definition print_multi (_ : unit) :=
   tt ;;
   tt.
 
-Definition pass_x (_ : unit) :=
-  x.
+Definition pass_x (_ : unit) := x.
 
 Definition main (_ : unit) :=
   let x := 7 in

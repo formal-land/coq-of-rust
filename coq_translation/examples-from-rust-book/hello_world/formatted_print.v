@@ -14,61 +14,49 @@ Definition main (_ : unit) :=
         "Alice";_crate::fmt::ImplArgumentV1.new_display "Bob"]
       [{|
         _crate.fmt.rt.v1.Argument.position := 0;
-        _crate.fmt.rt.v1.Argument.format
-          :=
+        _crate.fmt.rt.v1.Argument.format :=
           {|
             _crate.fmt.rt.v1.FormatSpec.fill :=  ;
-            _crate.fmt.rt.v1.FormatSpec.align
-              :=
+            _crate.fmt.rt.v1.FormatSpec.align :=
               _crate.fmt.rt.v1.Alignment.Unknown;
             _crate.fmt.rt.v1.FormatSpec.flags := 0;
-            _crate.fmt.rt.v1.FormatSpec.precision
-              :=
+            _crate.fmt.rt.v1.FormatSpec.precision :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Implied;
           |};
       |};{|
         _crate.fmt.rt.v1.Argument.position := 1;
-        _crate.fmt.rt.v1.Argument.format
-          :=
+        _crate.fmt.rt.v1.Argument.format :=
           {|
             _crate.fmt.rt.v1.FormatSpec.fill :=  ;
-            _crate.fmt.rt.v1.FormatSpec.align
-              :=
+            _crate.fmt.rt.v1.FormatSpec.align :=
               _crate.fmt.rt.v1.Alignment.Unknown;
             _crate.fmt.rt.v1.FormatSpec.flags := 0;
-            _crate.fmt.rt.v1.FormatSpec.precision
-              :=
+            _crate.fmt.rt.v1.FormatSpec.precision :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Implied;
           |};
       |};{|
         _crate.fmt.rt.v1.Argument.position := 1;
-        _crate.fmt.rt.v1.Argument.format
-          :=
+        _crate.fmt.rt.v1.Argument.format :=
           {|
             _crate.fmt.rt.v1.FormatSpec.fill :=  ;
-            _crate.fmt.rt.v1.FormatSpec.align
-              :=
+            _crate.fmt.rt.v1.FormatSpec.align :=
               _crate.fmt.rt.v1.Alignment.Unknown;
             _crate.fmt.rt.v1.FormatSpec.flags := 0;
-            _crate.fmt.rt.v1.FormatSpec.precision
-              :=
+            _crate.fmt.rt.v1.FormatSpec.precision :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Implied;
           |};
       |};{|
         _crate.fmt.rt.v1.Argument.position := 0;
-        _crate.fmt.rt.v1.Argument.format
-          :=
+        _crate.fmt.rt.v1.Argument.format :=
           {|
             _crate.fmt.rt.v1.FormatSpec.fill :=  ;
-            _crate.fmt.rt.v1.FormatSpec.align
-              :=
+            _crate.fmt.rt.v1.FormatSpec.align :=
               _crate.fmt.rt.v1.Alignment.Unknown;
             _crate.fmt.rt.v1.FormatSpec.flags := 0;
-            _crate.fmt.rt.v1.FormatSpec.precision
-              :=
+            _crate.fmt.rt.v1.FormatSpec.precision :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Implied;
           |};
@@ -116,16 +104,13 @@ Definition main (_ : unit) :=
       [_crate::fmt::ImplArgumentV1.new_display 1]
       [{|
         _crate.fmt.rt.v1.Argument.position := 0;
-        _crate.fmt.rt.v1.Argument.format
-          :=
+        _crate.fmt.rt.v1.Argument.format :=
           {|
             _crate.fmt.rt.v1.FormatSpec.fill :=  ;
-            _crate.fmt.rt.v1.FormatSpec.align
-              :=
+            _crate.fmt.rt.v1.FormatSpec.align :=
               _crate.fmt.rt.v1.Alignment.Right;
             _crate.fmt.rt.v1.FormatSpec.flags := 0;
-            _crate.fmt.rt.v1.FormatSpec.precision
-              :=
+            _crate.fmt.rt.v1.FormatSpec.precision :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Is 5;
           |};
@@ -138,16 +123,13 @@ Definition main (_ : unit) :=
       [_crate::fmt::ImplArgumentV1.new_display 1]
       [{|
         _crate.fmt.rt.v1.Argument.position := 0;
-        _crate.fmt.rt.v1.Argument.format
-          :=
+        _crate.fmt.rt.v1.Argument.format :=
           {|
             _crate.fmt.rt.v1.FormatSpec.fill := 0;
-            _crate.fmt.rt.v1.FormatSpec.align
-              :=
+            _crate.fmt.rt.v1.FormatSpec.align :=
               _crate.fmt.rt.v1.Alignment.Left;
             _crate.fmt.rt.v1.FormatSpec.flags := 0;
-            _crate.fmt.rt.v1.FormatSpec.precision
-              :=
+            _crate.fmt.rt.v1.FormatSpec.precision :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Is 5;
           |};
@@ -161,16 +143,13 @@ Definition main (_ : unit) :=
         1;_crate::fmt::ImplArgumentV1.from_usize 5]
       [{|
         _crate.fmt.rt.v1.Argument.position := 0;
-        _crate.fmt.rt.v1.Argument.format
-          :=
+        _crate.fmt.rt.v1.Argument.format :=
           {|
             _crate.fmt.rt.v1.FormatSpec.fill := 0;
-            _crate.fmt.rt.v1.FormatSpec.align
-              :=
+            _crate.fmt.rt.v1.FormatSpec.align :=
               _crate.fmt.rt.v1.Alignment.Right;
             _crate.fmt.rt.v1.FormatSpec.flags := 0;
-            _crate.fmt.rt.v1.FormatSpec.precision
-              :=
+            _crate.fmt.rt.v1.FormatSpec.precision :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Param 1;
           |};
@@ -184,46 +163,37 @@ Definition main (_ : unit) :=
         "Bond";_crate::fmt::ImplArgumentV1.new_display "James"]
       [{|
         _crate.fmt.rt.v1.Argument.position := 0;
-        _crate.fmt.rt.v1.Argument.format
-          :=
+        _crate.fmt.rt.v1.Argument.format :=
           {|
             _crate.fmt.rt.v1.FormatSpec.fill :=  ;
-            _crate.fmt.rt.v1.FormatSpec.align
-              :=
+            _crate.fmt.rt.v1.FormatSpec.align :=
               _crate.fmt.rt.v1.Alignment.Unknown;
             _crate.fmt.rt.v1.FormatSpec.flags := 0;
-            _crate.fmt.rt.v1.FormatSpec.precision
-              :=
+            _crate.fmt.rt.v1.FormatSpec.precision :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Implied;
           |};
       |};{|
         _crate.fmt.rt.v1.Argument.position := 1;
-        _crate.fmt.rt.v1.Argument.format
-          :=
+        _crate.fmt.rt.v1.Argument.format :=
           {|
             _crate.fmt.rt.v1.FormatSpec.fill :=  ;
-            _crate.fmt.rt.v1.FormatSpec.align
-              :=
+            _crate.fmt.rt.v1.FormatSpec.align :=
               _crate.fmt.rt.v1.Alignment.Unknown;
             _crate.fmt.rt.v1.FormatSpec.flags := 0;
-            _crate.fmt.rt.v1.FormatSpec.precision
-              :=
+            _crate.fmt.rt.v1.FormatSpec.precision :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Implied;
           |};
       |};{|
         _crate.fmt.rt.v1.Argument.position := 0;
-        _crate.fmt.rt.v1.Argument.format
-          :=
+        _crate.fmt.rt.v1.Argument.format :=
           {|
             _crate.fmt.rt.v1.FormatSpec.fill :=  ;
-            _crate.fmt.rt.v1.FormatSpec.align
-              :=
+            _crate.fmt.rt.v1.FormatSpec.align :=
               _crate.fmt.rt.v1.Alignment.Unknown;
             _crate.fmt.rt.v1.FormatSpec.flags := 0;
-            _crate.fmt.rt.v1.FormatSpec.precision
-              :=
+            _crate.fmt.rt.v1.FormatSpec.precision :=
               _crate.fmt.rt.v1.Count.Implied;
             _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Implied;
           |};

@@ -17,7 +17,8 @@ Definition main (_ : unit) :=
         unicode_codepoint;_crate::fmt::ImplArgumentV1.new_display
         character_name]) ;;
   tt ;;
-  let long_string := "String literals\n                        can span multiple lines.\n                        The linebreak and indentation here -><- can be escaped too!" in
+  let long_string :=
+    "String literals\n                        can span multiple lines.\n                        The linebreak and indentation here -><- can be escaped too!" in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["";"\n"]

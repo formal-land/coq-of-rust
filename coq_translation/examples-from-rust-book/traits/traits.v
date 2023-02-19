@@ -18,8 +18,7 @@ Class Animal : Set := {
 
 (* Impl [Sheep] *)
 Module ImplSheep.
-  Definition is_naked (self : static_ref Sheep) : bool :=
-    self.naked.
+  Definition is_naked (self : static_ref Sheep) : bool := self.naked.
   
   Definition shear (self : mut_ref Sheep) :=
     if is_naked self then
@@ -45,20 +44,17 @@ Module Impl_Animal_for_Sheep.
   
   #[global] Instance I : Animal.Class Self := {|
     new
-      (name : static_ref str)
-      :=
+      (name : static_ref str) :=
       {| Sheep.name := name; Sheep.naked := false; |};
     name (self : static_ref Sheep) := self.name;
     noise
-      (self : static_ref Sheep)
-      :=
+      (self : static_ref Sheep) :=
       if is_naked self then
         "baaaaah?"
       else
         "baaaaah!";
     talk
-      (self : static_ref Sheep)
-      :=
+      (self : static_ref Sheep) :=
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1
           ["";" pauses briefly... ";"\n"]

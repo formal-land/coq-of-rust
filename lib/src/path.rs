@@ -1,4 +1,4 @@
-use pretty::RcDoc;
+use crate::render::*;
 use rustc_hir::QPath;
 use std::fmt;
 
@@ -66,8 +66,8 @@ fn to_valid_coq_name(str: String) -> String {
 }
 
 impl Path {
-    pub fn to_doc(&self) -> RcDoc<()> {
-        RcDoc::intersperse(self.segments.iter().map(RcDoc::text), RcDoc::text("."))
+    pub fn to_doc(&self) -> Doc {
+        intersperse(self.segments.iter().map(text), text("."))
     }
 
     pub fn to_name(&self) -> String {

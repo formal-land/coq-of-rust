@@ -15,8 +15,7 @@ Module Impl__crate_fmt_Debug_for_Person.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Person)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_struct_field2_finish
         f
         "Person"
@@ -73,10 +72,11 @@ Definition main (_ : unit) :=
         bottom_right.y]) ;;
   tt ;;
   let {| Point.x := left_edge; Point.y := top_edge; |} := point in
-  let _rectangle := {|
-    Rectangle.top_left := {| Point.x := left_edge; Point.y := top_edge; |};
-    Rectangle.bottom_right := bottom_right;
-  |} in
+  let _rectangle :=
+    {|
+      Rectangle.top_left := {| Point.x := left_edge; Point.y := top_edge; |};
+      Rectangle.bottom_right := bottom_right;
+    |} in
   let _unit := Unit in
   let pair := Pair 1 0 (* 0.1 *) in
   _crate.io._print

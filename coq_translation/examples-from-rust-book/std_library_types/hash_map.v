@@ -48,16 +48,19 @@ Definition main (_ : unit) :=
   remove contacts "Ashley" ;;
   match into_iter (iter contacts) with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := (contact, number); |} =>
-      _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["Calling ";": ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_display
-            contact;_crate::fmt::ImplArgumentV1.new_display (call number)]) ;;
-      tt ;;
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := (contact, number); |} =>
+        _crate.io._print
+          (_crate::fmt::ImplArguments.new_v1
+            ["Calling ";": ";"\n"]
+            [_crate::fmt::ImplArgumentV1.new_display
+              contact;_crate::fmt::ImplArgumentV1.new_display (call number)]) ;;
+        tt ;;
+        tt
+      end ;;
       tt
-    end ;;
-    tt from for
+      from
+      for
   end.

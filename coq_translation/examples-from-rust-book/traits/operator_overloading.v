@@ -13,8 +13,7 @@ Module Impl__crate_fmt_Debug_for_FooBar.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref FooBar)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.write_str f "FooBar";
   |}.
 Module ImplFooBar.
@@ -27,8 +26,7 @@ Module Impl__crate_fmt_Debug_for_BarFoo.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref BarFoo)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.write_str f "BarFoo";
   |}.
 Module ImplBarFoo.
@@ -40,8 +38,7 @@ Module Impl_ops_Add_for_Foo.
     Output := FooBar;
     add
       (self : Foo)
-      (_rhs : Bar)
-      :=
+      (_rhs : Bar) :=
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1
           ["> Foo.add(Bar) was called\n"]
@@ -58,8 +55,7 @@ Module Impl_ops_Add_for_Bar.
     Output := BarFoo;
     add
       (self : Bar)
-      (_rhs : Foo)
-      :=
+      (_rhs : Foo) :=
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1
           ["> Bar.add(Foo) was called\n"]

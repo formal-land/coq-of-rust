@@ -14,8 +14,7 @@ Module Impl__crate_fmt_Debug_for_Matrix.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Matrix)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_tuple_field4_finish
         f
         "Matrix"
@@ -27,8 +26,9 @@ Module Impl__crate_fmt_Debug_for_Matrix.
 Module ImplMatrix.
 
 Definition main (_ : unit) :=
-  let long_tuple := (1, 2, 3, 4, neg 1, neg 2, neg 3, neg
-    4, 0 (* 0.1 *), 0 (* 0.2 *), a, true) in
+  let long_tuple :=
+    (1, 2, 3, 4, neg 1, neg 2, neg 3, neg 4, 0 (* 0.1 *), 0 (* 0.2 *), a,
+    true) in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["long tuple first value: ";"\n"]

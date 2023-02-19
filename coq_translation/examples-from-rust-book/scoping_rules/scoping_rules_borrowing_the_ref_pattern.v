@@ -14,8 +14,7 @@ Module Impl__crate_clone_Clone_for_Point.
   
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
     clone
-      (self : static_ref Point)
-      :=
+      (self : static_ref Point) :=
       let _ := tt in
       deref self;
   |}.
@@ -39,8 +38,9 @@ Definition main (_ : unit) :=
         (eq (deref ref_c1) (deref ref_c2))]) ;;
   tt ;;
   let point := {| Point.x := 0; Point.y := 0; |} in
-  let _copy_of_x := let {| Point.x := ref_to_x; Point.y := _; |} := point in
-  deref ref_to_x in
+  let _copy_of_x :=
+    let {| Point.x := ref_to_x; Point.y := _; |} := point in
+    deref ref_to_x in
   let mutable_point := point in
   let {| Point.x := _; Point.y := mut_ref_to_y; |} := mutable_point in
   assign deref mut_ref_to_y := 1 ;;

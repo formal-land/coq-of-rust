@@ -9,8 +9,7 @@ Module Impl__crate_fmt_Debug_for_Food.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Food)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Food.CordonBleu => _crate::fmt::ImplFormatter.write_str f "CordonBleu"
       | Food.Steak => _crate::fmt::ImplFormatter.write_str f "Steak"
@@ -27,8 +26,7 @@ Module Impl__crate_fmt_Debug_for_Day.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Day)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Day.Monday => _crate::fmt::ImplFormatter.write_str f "Monday"
       | Day.Tuesday => _crate::fmt::ImplFormatter.write_str f "Tuesday"
@@ -80,7 +78,8 @@ Definition eat (_ : unit) :=
   end.
 
 Definition main (_ : unit) :=
-  let (cordon_bleu, steak, sushi) := (Food.CordonBleu, Food.Steak, Food.Sushi) in
+  let (cordon_bleu, steak, sushi) :=
+    (Food.CordonBleu, Food.Steak, Food.Sushi) in
   eat cordon_bleu Day.Monday ;;
   eat steak Day.Tuesday ;;
   eat sushi Day.Wednesday ;;

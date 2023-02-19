@@ -20,8 +20,7 @@ Module Impl__crate_clone_Clone_for_Job.
   
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
     clone
-      (self : static_ref Job)
-      :=
+      (self : static_ref Job) :=
       let _ := tt in
       deref self;
   |}.
@@ -47,8 +46,7 @@ Module Impl__crate_clone_Clone_for_PhoneNumber.
   
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
     clone
-      (self : static_ref PhoneNumber)
-      :=
+      (self : static_ref PhoneNumber) :=
       let _ := tt in
       let _ := tt in
       deref self;
@@ -65,32 +63,33 @@ Module ImplPhoneNumber.
 (* Impl [Person] *)
 Module ImplPerson.
   Definition work_phone_area_code (self : static_ref Person) : Option :=
-    match branch
-      match branch self.job with
+    match
+        branch
+          match branch self.job with
+            | {| Break.0 := residual; |} => Return (from_residual residual)
+            | {| Continue.0 := val; |} => val
+            end.phone_number
+      with
       | {| Break.0 := residual; |} => Return (from_residual residual)
       | {| Continue.0 := val; |} => val
-      end.phone_number with
-    | {| Break.0 := residual; |} => Return (from_residual residual)
-    | {| Continue.0 := val; |} => val
-    end.area_code.
+      end.area_code.
 End ImplPerson.
 (* End impl [Person] *)
 
 Definition main (_ : unit) :=
-  let p := {|
-    Person.job
-      :=
-      Some
-        {|
-          Job.phone_number
-            :=
-            Some
-              {|
-                PhoneNumber.area_code := Some 61;
-                PhoneNumber.number := 439222222;
-              |};
-        |};
-  |} in
+  let p :=
+    {|
+      Person.job :=
+        Some
+          {|
+            Job.phone_number :=
+              Some
+                {|
+                  PhoneNumber.area_code := Some 61;
+                  PhoneNumber.number := 439222222;
+                |};
+          |};
+    |} in
   match (work_phone_area_code p, Some 61) with
   | (left_val, right_val) =>
     if not (eq (deref left_val) (deref right_val)) then

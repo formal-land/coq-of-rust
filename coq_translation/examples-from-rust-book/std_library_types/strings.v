@@ -13,17 +13,20 @@ Definition main (_ : unit) :=
   tt ;;
   match into_iter (rev (split_whitespace pangram)) with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := word; |} =>
-      _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["> ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_display word]) ;;
-      tt ;;
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := word; |} =>
+        _crate.io._print
+          (_crate::fmt::ImplArguments.new_v1
+            ["> ";"\n"]
+            [_crate::fmt::ImplArgumentV1.new_display word]) ;;
+        tt ;;
+        tt
+      end ;;
       tt
-    end ;;
-    tt from for
+      from
+      for
   end ;;
   let chars := collect (chars pangram) in
   sort chars ;;
@@ -31,14 +34,17 @@ Definition main (_ : unit) :=
   let string := ImplString.new tt in
   match into_iter chars with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := c; |} =>
-      push string c ;;
-      push_str string ", " ;;
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := c; |} =>
+        push string c ;;
+        push_str string ", " ;;
+        tt
+      end ;;
       tt
-    end ;;
-    tt from for
+      from
+      for
   end ;;
   let chars_to_trim := [ ;,] in
   let trimmed_str := trim_matches string chars_to_trim in

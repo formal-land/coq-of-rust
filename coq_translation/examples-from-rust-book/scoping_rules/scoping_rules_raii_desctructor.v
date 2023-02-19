@@ -8,8 +8,7 @@ Module Impl_Drop_for_ToDrop.
   
   #[global] Instance I : Drop.Class Self := {|
     drop
-      (self : mut_ref ToDrop)
-      :=
+      (self : mut_ref ToDrop) :=
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1 ["ToDrop is being dropped\n"] []) ;;
       tt ;;

@@ -5,8 +5,6 @@ Definition apply (_ : unit) :=
   f tt ;;
   tt.
 
-Definition apply_to_3 (_ : unit) :=
-  f 3.
+Definition apply_to_3 (_ : unit) := f 3.
 
-Definition main (_ : unit) :=
-  Stmt_item.
+Definition main (_ : unit) := Stmt_item.

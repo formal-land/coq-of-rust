@@ -39,11 +39,14 @@ Definition fizzbuzz (_ : unit) :=
 Definition fizzbuzz_to (_ : unit) :=
   match into_iter (range_inclusive_new 1 n) with
   | iter =>
-    loop match next iter with
-    | {|  |} => Break
-    | {| Some.0 := n; |} =>
-      fizzbuzz n ;;
+    loop
+      match next iter with
+      | {|  |} => Break
+      | {| Some.0 := n; |} =>
+        fizzbuzz n ;;
+        tt
+      end ;;
       tt
-    end ;;
-    tt from for
+      from
+      for
   end.

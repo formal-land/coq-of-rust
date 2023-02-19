@@ -9,8 +9,7 @@ Module Impl__crate_fmt_Debug_for_Unit.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Unit)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.write_str f "Unit";
   |}.
 Module ImplUnit.
@@ -38,8 +37,7 @@ Module Impl__crate_clone_Clone_for_Pair.
   
   #[global] Instance I : _crate.clone.Clone.Class Self := {|
     clone
-      (self : static_ref Pair)
-      :=
+      (self : static_ref Pair) :=
       Pair (_crate.clone.Clone.clone self.0) (_crate.clone.Clone.clone self.1);
   |}.
 Module ImplPair.
@@ -50,8 +48,7 @@ Module Impl__crate_fmt_Debug_for_Pair.
   #[global] Instance I : _crate.fmt.Debug.Class Self := {|
     fmt
       (self : static_ref Pair)
-      (f : mut_ref _crate.fmt.Formatter)
-      :=
+      (f : mut_ref _crate.fmt.Formatter) :=
       _crate::fmt::ImplFormatter.debug_tuple_field2_finish
         f
         "Pair"

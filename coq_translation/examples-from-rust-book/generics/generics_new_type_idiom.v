@@ -9,8 +9,7 @@ Definition Days : Set :=
 
 (* Impl [Years] *)
 Module ImplYears.
-  Definition to_days (self : static_ref Years) : Days :=
-    Days (mul self.0 365).
+  Definition to_days (self : static_ref Years) : Days := Days (mul self.0 365).
 End ImplYears.
 (* End impl [Years] *)
 
@@ -21,8 +20,7 @@ Module ImplDays.
 End ImplDays.
 (* End impl [Days] *)
 
-Definition old_enough (_ : unit) :=
-  ge age.0 18.
+Definition old_enough (_ : unit) := ge age.0 18.
 
 Definition main (_ : unit) :=
   let age := Years 5 in

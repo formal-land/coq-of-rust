@@ -17,8 +17,7 @@ Module Impl__crate_cmp_PartialEq_for_PhantomTuple.
   #[global] Instance I : _crate.cmp.PartialEq.Class Self := {|
     eq
       (self : static_ref PhantomTuple<A, B>)
-      (other : static_ref PhantomTuple)
-      :=
+      (other : static_ref PhantomTuple) :=
       and (eq self.0 other.0) (eq self.1 other.1);
   |}.
 Module ImplPhantomTuple.
@@ -44,8 +43,7 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct.
   #[global] Instance I : _crate.cmp.PartialEq.Class Self := {|
     eq
       (self : static_ref PhantomStruct<A, B>)
-      (other : static_ref PhantomStruct)
-      :=
+      (other : static_ref PhantomStruct) :=
       and (eq self.first other.first) (eq self.phantom other.phantom);
   |}.
 Module ImplPhantomStruct.
@@ -53,12 +51,8 @@ Module ImplPhantomStruct.
 Definition main (_ : unit) :=
   let _tuple1 := PhantomTuple Q PhantomData in
   let _tuple2 := PhantomTuple Q PhantomData in
-  let _struct1 := {|
-    PhantomStruct.first := Q;
-    PhantomStruct.phantom := PhantomData;
-  |} in
-  let _struct2 := {|
-    PhantomStruct.first := Q;
-    PhantomStruct.phantom := PhantomData;
-  |} in
+  let _struct1 :=
+    {| PhantomStruct.first := Q; PhantomStruct.phantom := PhantomData; |} in
+  let _struct2 :=
+    {| PhantomStruct.first := Q; PhantomStruct.phantom := PhantomData; |} in
   tt.
