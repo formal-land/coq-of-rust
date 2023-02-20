@@ -6,9 +6,9 @@ Definition main (_ : unit) :=
     (_crate::fmt::ImplArguments.new_v1
       ["";" and ";" is ";"\n"]
       match
-        ("1i32 + 1 == 2i32", "2i32 * 2 == 4i32", and
-          (eq (add 1 1) 2)
-          (eq (mul 2 2) 4))
+        ("1i32 + 1 == 2i32",
+          "2i32 * 2 == 4i32",
+          and (eq (add 1 1) 2) (eq (mul 2 2) 4))
       with
       | args =>
         [_crate::fmt::ImplArgumentV1.new_debug

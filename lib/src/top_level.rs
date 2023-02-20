@@ -279,7 +279,7 @@ impl TopLevelItem {
                                     text(")"),
                                 ])
                             }),
-                            line(),
+                            [line()],
                         )
                     },
                     match ret_ty {
@@ -354,7 +354,7 @@ impl TopLevelItem {
                                 text("{"),
                             ]),
                         ]),
-                        nest([intersperse(fields, nil())]),
+                        nest(fields),
                         hardline(),
                         text("}."),
                     ]),
@@ -400,7 +400,7 @@ impl TopLevelItem {
                                 line(),
                                 intersperse(
                                     fields.iter().map(|ty| ty.to_doc()),
-                                    group([line(), text("*"), line()]),
+                                    [text(" *"), line()],
                                 ),
                                 text(")"),
                             ]),
@@ -449,7 +449,7 @@ impl TopLevelItem {
                                                         text("_")
                                                     }
                                                 }),
-                                                line(),
+                                                [line()],
                                             ),
                                             text(")"),
                                         ]),
@@ -464,7 +464,7 @@ impl TopLevelItem {
                                 text("|}."),
                             ])
                         }),
-                        nil(),
+                        [nil()],
                     ),
                 ]),
                 hardline(),
@@ -555,7 +555,7 @@ impl TopLevelItem {
                                     ]),
                                 ])
                             }),
-                            nil(),
+                            [nil()],
                         ),
                     ]),
                     hardline(),
@@ -644,7 +644,7 @@ impl TopLevelItem {
                                                 ])
                                                 .group()
                                             }),
-                                            line(),
+                                            [line()],
                                         ),
                                         text(" :="),
                                     ]),
@@ -692,7 +692,7 @@ impl TopLevel {
     fn to_doc(&self) -> Doc {
         intersperse(
             self.0.iter().map(|item| item.to_doc()),
-            group([hardline(), hardline()]),
+            [hardline(), hardline()],
         )
     }
 

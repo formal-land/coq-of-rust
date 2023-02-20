@@ -380,7 +380,7 @@ impl Expr {
                     if args.is_empty() {
                         text("tt")
                     } else {
-                        intersperse(args.iter().map(|arg| arg.to_doc(true)), line())
+                        intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()])
                     },
                 ]),
             ),
@@ -403,7 +403,7 @@ impl Expr {
                     nest([
                         text("fun"),
                         line(),
-                        intersperse(args.iter().map(|arg| arg.to_doc()), line()),
+                        intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
                         text(" =>"),
                     ]),
                     line(),
@@ -418,14 +418,14 @@ impl Expr {
 
             Expr::Array { elements } => bracket(intersperse(
                 elements.iter().map(|element| element.to_doc(false)),
-                text(";"),
+                [text(";")],
             )),
             Expr::Tuple { elements } => paren(
                 true,
-                intersperse(
+                nest([intersperse(
                     elements.iter().map(|element| element.to_doc(false)),
-                    group([text(","), line()]),
-                ),
+                    [text(","), line()],
+                )]),
             ),
             Expr::LetIf { pat, init } => group([
                 text("let_if"),
@@ -473,7 +473,7 @@ impl Expr {
                     text("with"),
                 ]),
                 hardline(),
-                intersperse(arms.iter().map(|arm| arm.to_doc()), hardline()),
+                intersperse(arms.iter().map(|arm| arm.to_doc()), [hardline()]),
                 hardline(),
                 text("end"),
             ]),
@@ -545,7 +545,7 @@ impl Expr {
                                     text(";"),
                                 ])
                             }),
-                            line(),
+                            [line()],
                         ),
                     ]),
                     line(),

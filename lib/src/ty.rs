@@ -88,14 +88,14 @@ impl CoqType {
             CoqType::Application { func, args } => nest([
                 func.to_doc(),
                 line(),
-                intersperse(args.iter().map(|arg| arg.to_doc()), line()),
+                intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
             ]),
             CoqType::Function { arg, ret } => {
                 nest([arg.to_doc(), line(), text("->"), line(), ret.to_doc()])
             }
             CoqType::Tuple(tys) => nest([intersperse(
                 tys.iter().map(|ty| ty.to_doc()),
-                group([line(), text("*"), line()]),
+                [text(" *"), line()],
             )]),
             CoqType::Array(ty) => nest([text("list"), line(), ty.to_doc()]),
             CoqType::Ref(ty, mutbl) => match mutbl {

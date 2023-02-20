@@ -34,6 +34,7 @@ pub(crate) fn literal_to_doc(literal: &LitKind) -> RcDoc<()> {
 
 pub type Doc<'a> = RcDoc<'a, ()>;
 
+// Concat several documents and indent when splitting the line
 pub(crate) fn nest<'a, I>(docs: I) -> Doc<'a>
 where
     I: IntoIterator,
@@ -43,6 +44,7 @@ where
     RcDoc::concat(docs).nest(indent_space_offset).group()
 }
 
+// Concat several documents and do *not* indent when splitting the line
 pub(crate) fn group<'a, I>(docs: I) -> Doc<'a>
 where
     I: IntoIterator,
@@ -70,11 +72,12 @@ pub(crate) fn hardline<'a>() -> Doc<'a> {
     RcDoc::hardline()
 }
 
-pub(crate) fn intersperse<'a, I, S>(docs: I, separator: S) -> Doc<'a>
+pub(crate) fn intersperse<'a, I, J>(docs: I, separator: J) -> Doc<'a>
 where
     I: IntoIterator,
     I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
-    S: pretty::Pretty<'a, pretty::RcAllocator, ()> + Clone,
+    J: IntoIterator,
+    J::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
 {
-    RcDoc::intersperse(docs, separator)
+    RcDoc::intersperse(docs, RcDoc::concat(separator))
 }

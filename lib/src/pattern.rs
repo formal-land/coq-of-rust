@@ -69,7 +69,7 @@ impl Pattern {
                                 text(";"),
                             ])
                         }),
-                        line(),
+                        [line()],
                     ),
                 ]),
                 line(),
@@ -78,24 +78,24 @@ impl Pattern {
             Pattern::TupleStruct(path, fields) => {
                 let signature_in_parentheses_doc = paren(
                     true,
-                    intersperse(
+                    nest([intersperse(
                         fields.iter().map(|field| field.to_doc()),
-                        group([text(","), line()]),
-                    ),
+                        [text(","), line()],
+                    )]),
                 );
                 return nest([path.to_doc(), line(), signature_in_parentheses_doc]);
             }
             Pattern::Or(pats) => paren(
                 true,
-                intersperse(pats.iter().map(|pat| pat.to_doc()), text("|")),
+                intersperse(pats.iter().map(|pat| pat.to_doc()), [text("|")]),
             ),
             Pattern::Path(path) => path.to_doc(),
             Pattern::Tuple(pats) => paren(
                 true,
-                intersperse(
+                nest([intersperse(
                     pats.iter().map(|pat| pat.to_doc()),
-                    group([text(","), line()]),
-                ),
+                    [text(","), line()],
+                )]),
             ),
             Pattern::Lit(literal) => text(format!("{literal:?}")),
         }
