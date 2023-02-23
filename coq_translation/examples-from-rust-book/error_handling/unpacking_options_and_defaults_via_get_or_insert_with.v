@@ -20,7 +20,7 @@ Module Impl__crate_fmt_Debug_for_Fruit.
   |}.
 Module ImplFruit.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let my_fruit := None in
   let get_lemon_as_fallback :=
     fun  =>
@@ -31,7 +31,7 @@ Definition main (_ : unit) :=
       tt ;;
       Fruit.Lemon in
   let first_available_fruit :=
-    get_or_insert_with my_fruit get_lemon_as_fallback in
+    method "get_or_insert_with" my_fruit get_lemon_as_fallback in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["my_fruit is: ";"\n"]
@@ -43,7 +43,8 @@ Definition main (_ : unit) :=
       [_crate::fmt::ImplArgumentV1.new_debug first_available_fruit]) ;;
   tt ;;
   let my_apple := Some Fruit.Apple in
-  let should_be_apple := get_or_insert_with my_apple get_lemon_as_fallback in
+  let should_be_apple :=
+    method "get_or_insert_with" my_apple get_lemon_as_fallback in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["should_be_apple is: ";"\n"]

@@ -24,7 +24,7 @@ Module Impl__crate_cmp_PartialEq_for_Centimeters.
     _crate.cmp.PartialEq.eq
         (self : ref Centimeters)
         (other : ref Centimeters) :=
-      eq
+      eqb
         (IndexedField.get (index := 0) self)
         (IndexedField.get (index := 0) other);
   |}.
@@ -83,7 +83,7 @@ Module Seconds.
 End Seconds.
 Definition Seconds := Seconds.t.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let _one_second := Seconds 1 in
   let foot := Inches 12 in
   _crate.io._print
@@ -93,7 +93,7 @@ Definition main (_ : unit) :=
   tt ;;
   let meter := Centimeters 100 (* 100.0 *) in
   let cmp :=
-    if lt (to_centimeters foot) meter then
+    if lt (method "to_centimeters" foot) meter then
       "smaller"
     else
       "bigger" in

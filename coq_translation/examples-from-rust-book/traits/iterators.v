@@ -22,10 +22,10 @@ Module Impl_Iterator_for_Fibonacci.
   |}.
 Module ImplFibonacci.
 
-Definition fibonacci (_ : unit) :=
+Definition fibonacci (_ : unit) : Fibonacci :=
   {| Fibonacci.curr := 0; Fibonacci.next := 1; |}.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let sequence := {| Range.start := 0; Range.end := 3; |} in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
@@ -35,22 +35,22 @@ Definition main (_ : unit) :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["> ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug (next sequence)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_debug (method "next" sequence)]) ;;
   tt ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["> ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug (next sequence)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_debug (method "next" sequence)]) ;;
   tt ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["> ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug (next sequence)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_debug (method "next" sequence)]) ;;
   tt ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["> ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug (next sequence)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_debug (method "next" sequence)]) ;;
   tt ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
@@ -79,7 +79,7 @@ Definition main (_ : unit) :=
       ["The first four terms of the Fibonacci sequence are: \n"]
       []) ;;
   tt ;;
-  match into_iter (take (fibonacci tt) 4) with
+  match into_iter (method "take" (fibonacci tt) 4) with
   | iter =>
     loop
       match next iter with
@@ -101,7 +101,7 @@ Definition main (_ : unit) :=
       ["The next four terms of the Fibonacci sequence are: \n"]
       []) ;;
   tt ;;
-  match into_iter (take (skip (fibonacci tt) 4) 4) with
+  match into_iter (method "take" (method "skip" (fibonacci tt) 4) 4) with
   | iter =>
     loop
       match next iter with
@@ -124,7 +124,7 @@ Definition main (_ : unit) :=
       ["Iterate the following array ";"\n"]
       [_crate::fmt::ImplArgumentV1.new_debug array]) ;;
   tt ;;
-  match into_iter (iter array) with
+  match into_iter (method "iter" array) with
   | iter =>
     loop
       match next iter with

@@ -4,9 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 Definition LOREM_IPSUM (_ : unit) :=
   "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n".
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let path := ImplPath.new "lorem_ipsum.txt" in
-  let display := display path in
+  let display := method "display" path in
   let file :=
     match ImplFile.create path with
     | Err (why) =>
@@ -17,7 +17,7 @@ Definition main (_ : unit) :=
             display;_crate::fmt::ImplArgumentV1.new_display why])
     | Ok (file) => file
     end in
-  match write_all file (as_bytes LOREM_IPSUM) with
+  match method "write_all" file (method "as_bytes" LOREM_IPSUM) with
   | Err (why) =>
     _crate.rt.panic_fmt
       (_crate::fmt::ImplArguments.new_v1

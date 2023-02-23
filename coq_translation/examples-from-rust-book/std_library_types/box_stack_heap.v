@@ -51,13 +51,13 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
-Definition origin (_ : unit) :=
+Definition origin (_ : unit) : Point :=
   {| Point.x := 0 (* 0.0 *); Point.y := 0 (* 0.0 *); |}.
 
-Definition boxed_origin (_ : unit) :=
+Definition boxed_origin (_ : unit) : Box :=
   ImplBox.new {| Point.x := 0 (* 0.0 *); Point.y := 0 (* 0.0 *); |}.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let point := origin tt in
   let rectangle :=
     {|

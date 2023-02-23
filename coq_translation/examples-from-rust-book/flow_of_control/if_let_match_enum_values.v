@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error Enum.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let a := Foo.Bar in
   let b := Foo.Baz in
   let c := Foo.Qux 100 in

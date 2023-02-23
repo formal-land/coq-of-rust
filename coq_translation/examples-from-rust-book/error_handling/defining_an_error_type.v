@@ -29,19 +29,24 @@ Module Impl_fmt_Display_for_DoubleError.
   
   Global Instance I : fmt.Display.Class Self := {|
     fmt.Display.fmt (self : ref DoubleError) (f : mut_ref fmt.Formatter) :=
-      write_fmt
+      method
+        "write_fmt"
         f
         (_crate::fmt::ImplArguments.new_v1 ["invalid first item to double"] []);
   |}.
 Module ImplDoubleError.
 
-Definition double_first (_ : unit) :=
-  and_then
-    (ok_or (first vec) DoubleError)
+Definition double_first (vec : Vec) : Result :=
+  method
+    "and_then"
+    (method "ok_or" (method "first" vec) DoubleError)
     (fun s =>
-      map (map_err (parse s) (fun _ => DoubleError)) (fun i => mul 2 i)).
+      method
+        "map"
+        (method "map_err" (method "parse" s) (fun _ => DoubleError))
+        (fun i => mul 2 i)).
 
-Definition print (_ : unit) :=
+Definition print (result : Result) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print
@@ -57,7 +62,7 @@ Definition print (_ : unit) :=
     tt
   end.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let numbers := ComplexTypePath.into_vec ["42";"93";"18"] in
   let empty := _crate::vec::ImplVec.new tt in
   let strings := ComplexTypePath.into_vec ["tofu";"93";"18"] in

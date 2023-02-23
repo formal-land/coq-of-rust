@@ -3,14 +3,22 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module UsernameWidget.
   Class Class (Self : Set) : Set := {
-    get : ref Self -> String;
+    get : (ref Self) -> String;
   }.
+  
+  Global Instance Method_get `(Class) : Method "get" _ := {|
+    method := get;
+  |}.
 End UsernameWidget.
 
 Module AgeWidget.
   Class Class (Self : Set) : Set := {
-    get : ref Self -> u8;
+    get : (ref Self) -> u8;
   }.
+  
+  Global Instance Method_get `(Class) : Method "get" _ := {|
+    method := get;
+  |}.
 End AgeWidget.
 
 Module Form.
@@ -25,7 +33,7 @@ Module Impl_UsernameWidget_for_Form.
   Definition Self := Form.
   
   Global Instance I : UsernameWidget.Class Self := {|
-    UsernameWidget.get (self : ref Form) := clone self.username;
+    UsernameWidget.get (self : ref Form) := method "clone" self.username;
   |}.
 Module ImplForm.
 
@@ -37,12 +45,13 @@ Module Impl_AgeWidget_for_Form.
   |}.
 Module ImplForm.
 
-Definition main (_ : unit) :=
-  let form := {| Form.username := to_owned "rustacean"; Form.age := 28; |} in
+Definition main (_ : unit) : unit :=
+  let form :=
+    {| Form.username := method "to_owned" "rustacean"; Form.age := 28; |} in
   let username := UsernameWidget.get form in
-  match (to_owned "rustacean", username) with
+  match (method "to_owned" "rustacean", username) with
   | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
+    if not (eqb (deref left_val) (deref right_val)) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -56,7 +65,7 @@ Definition main (_ : unit) :=
   let age := AgeWidget.get form in
   match (28, age) with
   | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
+    if not (eqb (deref left_val) (deref right_val)) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

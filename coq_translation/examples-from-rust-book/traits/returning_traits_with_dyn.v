@@ -15,8 +15,12 @@ Definition Cow : Set := Cow.t.
 
 Module Animal.
   Class Class (Self : Set) : Set := {
-    noise : ref Self -> ref str;
+    noise : (ref Self) -> (ref str);
   }.
+  
+  Global Instance Method_noise `(Class) : Method "noise" _ := {|
+    method := noise;
+  |}.
 End Animal.
 
 Module Impl_Animal_for_Sheep.
@@ -35,18 +39,18 @@ Module Impl_Animal_for_Cow.
   |}.
 Module ImplCow.
 
-Definition random_animal (_ : unit) :=
+Definition random_animal (random_number : f64) : Box :=
   if lt random_number 1 (* 0.5 *) then
     ImplBox.new {|  |}
   else
     ImplBox.new {|  |}.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let random_number := 0 (* 0.234 *) in
   let animal := random_animal random_number in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["You've randomly chosen an animal, and it says ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (noise animal)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_display (method "noise" animal)]) ;;
   tt ;;
   tt.

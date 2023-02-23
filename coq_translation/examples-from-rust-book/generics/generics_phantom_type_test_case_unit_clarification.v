@@ -54,7 +54,7 @@ Module Impl__crate_marker_Copy_for_Mm.
 Module ImplMm.
 
 Module Length.
-  Inductive t : Set := Build (_ : f64 * PhantomData).
+  Inductive t : Set := Build (_ : f64) (_ : PhantomData).
   
   Global Instance Get_0 : IndexedField.Class t 0 f64 := {|
     IndexedField.get '(Build x0 _) := x0;
@@ -112,7 +112,7 @@ Module Impl_Add_for_Length.
   |}.
 Module ImplLength.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let one_foot := Length 12 (* 12.0 *) PhantomData in
   let one_meter := Length 1000 (* 1000.0 *) PhantomData in
   let two_feet := add one_foot one_foot in

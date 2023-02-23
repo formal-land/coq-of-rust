@@ -13,7 +13,8 @@ Module Impl_fmt_Display_for_Circle.
   
   Global Instance I : fmt.Display.Class Self := {|
     fmt.Display.fmt (self : ref Circle) (f : mut_ref fmt.Formatter) :=
-      write_fmt
+      method
+        "write_fmt"
         f
         (_crate::fmt::ImplArguments.new_v1
           ["Circle of radius "]
@@ -21,11 +22,11 @@ Module Impl_fmt_Display_for_Circle.
   |}.
 Module ImplCircle.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let circle := {| Circle.radius := 6; |} in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (to_string circle)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_display (method "to_string" circle)]) ;;
   tt ;;
   tt.

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error Enum.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let a := Foo.Bar in
   if let_if Foo.Bar := a then
     _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["a is foobar\n"] []) ;;

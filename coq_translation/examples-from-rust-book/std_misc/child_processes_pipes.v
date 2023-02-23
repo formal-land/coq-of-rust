@@ -4,12 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 Definition PANGRAM (_ : unit) :=
   "the quick brown fox jumped over the lazy dog\n".
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let process :=
     match
-      spawn
-        (stdout
-          (stdin (ImplCommand.new "wc") (ImplStdio.piped tt))
+      method
+        "spawn"
+        (method
+          "stdout"
+          (method "stdin" (ImplCommand.new "wc") (ImplStdio.piped tt))
           (ImplStdio.piped tt))
     with
     | Err (why) =>
@@ -19,7 +21,12 @@ Definition main (_ : unit) :=
           [_crate::fmt::ImplArgumentV1.new_display why])
     | Ok (process) => process
     end in
-  match write_all (unwrap process.stdin) (as_bytes PANGRAM) with
+  match
+    method
+      "write_all"
+      (method "unwrap" process.stdin)
+      (method "as_bytes" PANGRAM)
+  with
   | Err (why) =>
     _crate.rt.panic_fmt
       (_crate::fmt::ImplArguments.new_v1
@@ -31,7 +38,7 @@ Definition main (_ : unit) :=
     tt
   end ;;
   let s := ImplString.new tt in
-  match read_to_string (unwrap process.stdout) s with
+  match method "read_to_string" (method "unwrap" process.stdout) s with
   | Err (why) =>
     _crate.rt.panic_fmt
       (_crate::fmt::ImplArguments.new_v1

@@ -5,6 +5,11 @@ Module PrintInOption.
   Class Class (Self : Set) : Set := {
     print_in_option : Self -> _;
   }.
+  
+  Global Instance Method_print_in_option `(Class)
+    : Method "print_in_option" _ := {|
+    method := print_in_option;
+  |}.
 End PrintInOption.
 
 Module Impl_PrintInOption_for_T.
@@ -21,7 +26,7 @@ Module Impl_PrintInOption_for_T.
   |}.
 Module ImplT.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let vec := ComplexTypePath.into_vec [1;2;3] in
-  print_in_option vec ;;
+  method "print_in_option" vec ;;
   tt.

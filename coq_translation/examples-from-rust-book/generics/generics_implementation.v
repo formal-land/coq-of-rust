@@ -27,13 +27,14 @@ Module ImplGenVal.
 End ImplGenVal.
 (* End impl [GenVal] *)
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let x := {| Val.val := 3 (* 3.0 *); |} in
   let y := {| GenVal.gen_val := 3; |} in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["";", ";"\n"]
       [_crate::fmt::ImplArgumentV1.new_display
-        (value x);_crate::fmt::ImplArgumentV1.new_display (value y)]) ;;
+        (method "value" x);_crate::fmt::ImplArgumentV1.new_display
+        (method "value" y)]) ;;
   tt ;;
   tt.

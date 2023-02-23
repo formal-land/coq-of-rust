@@ -24,7 +24,7 @@ Module Impl__crate_fmt_Debug_for_Ref.
   |}.
 Module ImplRef.
 
-Definition print (_ : unit) :=
+Definition print {T : Set} `{Debug.Class T} (t : T) : unit :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["`print`: t is ";"\n"]
@@ -32,7 +32,7 @@ Definition print (_ : unit) :=
   tt ;;
   tt.
 
-Definition print_ref (_ : unit) :=
+Definition print_ref {T : Set} `{Debug.Class T} (t : ref T) : unit :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["`print_ref`: t is ";"\n"]
@@ -40,7 +40,7 @@ Definition print_ref (_ : unit) :=
   tt ;;
   tt.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let x := 7 in
   let ref_x := Ref x in
   print_ref ref_x ;;

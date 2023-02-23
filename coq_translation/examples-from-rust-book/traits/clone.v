@@ -28,7 +28,7 @@ Module Impl__crate_marker_Copy_for_Unit.
 Module ImplUnit.
 
 Module Pair.
-  Inductive t : Set := Build (_ : Box * Box).
+  Inductive t : Set := Build (_ : Box) (_ : Box).
   
   Global Instance Get_0 : IndexedField.Class t 0 Box := {|
     IndexedField.get '(Build x0 _) := x0;
@@ -63,7 +63,7 @@ Module Impl__crate_fmt_Debug_for_Pair.
   |}.
 Module ImplPair.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let unit := Unit in
   let copied_unit := unit in
   _crate.io._print
@@ -88,7 +88,7 @@ Definition main (_ : unit) :=
       ["moved: ";"\n"]
       [_crate::fmt::ImplArgumentV1.new_debug moved_pair]) ;;
   tt ;;
-  let cloned_pair := clone moved_pair in
+  let cloned_pair := method "clone" moved_pair in
   drop moved_pair ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1

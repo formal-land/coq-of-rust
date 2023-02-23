@@ -5,6 +5,6 @@ Error Enum.
 
 Error TyAlias.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let x := ImplOperations.Add in
   tt.

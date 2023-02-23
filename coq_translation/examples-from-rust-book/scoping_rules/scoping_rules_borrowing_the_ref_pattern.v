@@ -26,7 +26,7 @@ Module Impl__crate_marker_Copy_for_Point.
       _crate.marker.Copy.Build_Class _.
 Module ImplPoint.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let c := Q in
   let ref_c1 := c in
   let ref_c2 := c in
@@ -34,7 +34,7 @@ Definition main (_ : unit) :=
     (_crate::fmt::ImplArguments.new_v1
       ["ref_c1 equals ref_c2: ";"\n"]
       [_crate::fmt::ImplArgumentV1.new_display
-        (eq (deref ref_c1) (deref ref_c2))]) ;;
+        (eqb (deref ref_c1) (deref ref_c2))]) ;;
   tt ;;
   let point := {| Point.x := 0; Point.y := 0; |} in
   let _copy_of_x :=

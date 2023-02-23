@@ -21,15 +21,15 @@ Module SGen.
 End SGen.
 Definition SGen := SGen.t.
 
-Definition reg_fn (_ : unit) := tt.
+Definition reg_fn (_s : S) : unit := tt.
 
-Definition gen_spec_t (_ : unit) := tt.
+Definition gen_spec_t (_s : SGen) : unit := tt.
 
-Definition gen_spec_i32 (_ : unit) := tt.
+Definition gen_spec_i32 (_s : SGen) : unit := tt.
 
-Definition generic (_ : unit) := tt.
+Definition generic {T : Set} (_s : SGen) : unit := tt.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   reg_fn (S A) ;;
   gen_spec_t (SGen A) ;;
   gen_spec_i32 (SGen 6) ;;

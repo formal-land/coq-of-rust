@@ -11,13 +11,13 @@ Global Open Scope type_scope.
 
 Export List.ListNotations.
 
-Module ExperimentsAroundMethods.
-  (** A generic class to represent methods by name. *)
-  Class Method (name : string) (T : Set) : Set := {
-    method : T;
-  }.
-  Arguments method name {T Method}.
+(** A generic class to represent methods by name. *)
+Class Method (name : string) (T : Set) : Set := {
+  method : T;
+}.
+Arguments method name {T Method}.
 
+Module ExperimentsAroundMethods.
   Module Ty.
     Parameter t : Set.
 
@@ -41,7 +41,7 @@ Module ExperimentsAroundMethods.
 
   Definition gre : Ty.t -> string := Ty.associated_function "arg".
 
-  Global Instance Ty_explain : Method "explain" (Ty.t -> string) := {|
+  Global Instance explain : Method "explain" (Ty.t -> string) := {|
     method self := "hello";
   |}.
 
@@ -74,6 +74,10 @@ Definition ref (A : Set) : Set := A.
 Definition mut_ref : Set -> Set := ref.
 
 Definition deref {A : Set} (r : ref A) : A := r.
+
+Parameter eqb : forall {A : Set}, A -> A -> bool.
+
+Parameter sub : Z -> Z -> Z.
 
 Module IndexedField.
   Class Class (Self : Set) (index : Z) (T : Set) : Set := {

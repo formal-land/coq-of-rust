@@ -3,9 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition NUM (_ : unit) := 18.
 
-Definition coerce_static (_ : unit) := NUM.
+Definition coerce_static (arg : ref i32) : ref i32 := NUM.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let static_string := "I'm in read-only memory" in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1

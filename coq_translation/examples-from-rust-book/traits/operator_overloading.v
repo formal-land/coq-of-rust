@@ -34,7 +34,7 @@ Module ImplBarFoo.
 Module Impl_ops_Add_for_Foo.
   Definition Self := Foo.
   
-  Global Instance I : ops.Add.Class Self := {|
+  Global Instance I : ops.Add.Class Bar Self := {|
     ops.Add.Output := FooBar;
     ops.Add.add (self : Foo) (_rhs : Bar) :=
       _crate.io._print
@@ -49,7 +49,7 @@ Module ImplFoo.
 Module Impl_ops_Add_for_Bar.
   Definition Self := Bar.
   
-  Global Instance I : ops.Add.Class Self := {|
+  Global Instance I : ops.Add.Class Foo Self := {|
     ops.Add.Output := BarFoo;
     ops.Add.add (self : Bar) (_rhs : Foo) :=
       _crate.io._print
@@ -61,7 +61,7 @@ Module Impl_ops_Add_for_Bar.
   |}.
 Module ImplBar.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Foo + Bar = ";"\n"]

@@ -21,7 +21,7 @@ pub enum CoqType {
 
 impl CoqType {
     pub fn unit() -> CoqType {
-        CoqType::Tuple(vec![])
+        CoqType::Var(Path::local("unit".to_string()))
     }
 }
 
@@ -67,6 +67,7 @@ pub fn compile_fn_ret_ty(tcx: &TyCtxt, fn_ret_ty: &FnRetTy) -> Option<CoqType> {
     }
 }
 
+// The type of a function declaration
 pub fn compile_fn_decl(tcx: &TyCtxt, fn_decl: &FnDecl) -> CoqType {
     let ret_ty = match compile_fn_ret_ty(tcx, &fn_decl.output) {
         Some(ret_ty) => ret_ty,
@@ -81,27 +82,58 @@ pub fn compile_fn_decl(tcx: &TyCtxt, fn_decl: &FnDecl) -> CoqType {
         })
 }
 
+// Returns the type parameters on a path
+pub fn compile_path_ty_params(tcx: &TyCtxt, path: &rustc_hir::Path) -> Vec<CoqType> {
+    match path.segments.last().unwrap().args {
+        Some(args) => args
+            .args
+            .iter()
+            .filter_map(|arg| match arg {
+                rustc_hir::GenericArg::Type(ty) => Some(compile_type(tcx, ty)),
+                _ => None,
+            })
+            .collect(),
+        None => vec![],
+    }
+}
+
 impl CoqType {
-    pub fn to_doc(&self) -> Doc {
+    pub fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
             CoqType::Var(path) => path.to_doc(),
-            CoqType::Application { func, args } => nest([
-                func.to_doc(),
-                line(),
-                intersperse(args.iter().map(|arg| arg.to_doc()), line()),
-            ]),
-            CoqType::Function { arg, ret } => {
-                nest([arg.to_doc(), line(), text("->"), line(), ret.to_doc()])
-            }
-            CoqType::Tuple(tys) => nest([intersperse(
-                tys.iter().map(|ty| ty.to_doc()),
-                group([line(), text("*"), line()]),
-            )]),
-            CoqType::Array(ty) => nest([text("list"), line(), ty.to_doc()]),
-            CoqType::Ref(ty, mutbl) => match mutbl {
-                rustc_hir::Mutability::Mut => nest([text("mut_ref"), line(), ty.to_doc()]),
-                rustc_hir::Mutability::Not => nest([text("ref"), line(), ty.to_doc()]),
-            },
+            CoqType::Application { func, args } => paren(
+                with_paren,
+                nest([
+                    func.to_doc(true),
+                    line(),
+                    intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()]),
+                ]),
+            ),
+            CoqType::Function { arg, ret } => paren(
+                with_paren,
+                nest([
+                    arg.to_doc(true),
+                    line(),
+                    text("->"),
+                    line(),
+                    ret.to_doc(true),
+                ]),
+            ),
+            CoqType::Tuple(tys) => paren(
+                with_paren,
+                nest([intersperse(
+                    tys.iter().map(|ty| ty.to_doc(true)),
+                    [text(" *"), line()],
+                )]),
+            ),
+            CoqType::Array(ty) => nest([text("list"), line(), ty.to_doc(true)]),
+            CoqType::Ref(ty, mutbl) => paren(
+                with_paren,
+                match mutbl {
+                    rustc_hir::Mutability::Mut => nest([text("mut_ref"), line(), ty.to_doc(true)]),
+                    rustc_hir::Mutability::Not => nest([text("ref"), line(), ty.to_doc(true)]),
+                },
+            ),
         }
     }
 

@@ -29,7 +29,8 @@ Module Impl_fmt_Display_for_EmptyVec.
   
   Global Instance I : fmt.Display.Class Self := {|
     fmt.Display.fmt (self : ref EmptyVec) (f : mut_ref fmt.Formatter) :=
-      write_fmt
+      method
+        "write_fmt"
         f
         (_crate::fmt::ImplArguments.new_v1 ["invalid first item to double"] []);
   |}.
@@ -41,12 +42,17 @@ Module Impl_error_Error_for_EmptyVec.
   Global Instance I : error.Error.Class Self := error.Error.Build_Class _.
 Module ImplEmptyVec.
 
-Definition double_first (_ : unit) :=
-  and_then
-    (ok_or_else (first vec) (fun  => into EmptyVec))
-    (fun s => map (map_err (parse s) (fun e => into e)) (fun i => mul 2 i)).
+Definition double_first (vec : Vec) : Result :=
+  method
+    "and_then"
+    (method "ok_or_else" (method "first" vec) (fun  => method "into" EmptyVec))
+    (fun s =>
+      method
+        "map"
+        (method "map_err" (method "parse" s) (fun e => method "into" e))
+        (fun i => mul 2 i)).
 
-Definition print (_ : unit) :=
+Definition print (result : Result) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print
@@ -62,7 +68,7 @@ Definition print (_ : unit) :=
     tt
   end.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let numbers := ComplexTypePath.into_vec ["42";"93";"18"] in
   let empty := _crate::vec::ImplVec.new tt in
   let strings := ComplexTypePath.into_vec ["tofu";"93";"18"] in

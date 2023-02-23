@@ -33,11 +33,11 @@ Module Impl_Blue_for_BlueJay.
   Global Instance I : Blue.Class Self := Blue.Build_Class _.
 Module ImplBlueJay.
 
-Definition red (_ : unit) := "red".
+Definition red {T : Set} `{Red.Class T} (arg : ref T) : ref str := "red".
 
-Definition blue (_ : unit) := "blue".
+Definition blue {T : Set} `{Blue.Class T} (arg : ref T) : ref str := "blue".
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let cardinal := Cardinal in
   let blue_jay := BlueJay in
   let _turkey := Turkey in

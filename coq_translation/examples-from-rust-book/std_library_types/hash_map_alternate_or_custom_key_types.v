@@ -21,7 +21,9 @@ Module Impl__crate_cmp_PartialEq_for_Account.
   
   Global Instance I : _crate.cmp.PartialEq.Class Self := {|
     _crate.cmp.PartialEq.eq (self : ref Account<'a>) (other : ref Account) :=
-      and (eq self.username other.username) (eq self.password other.password);
+      andb
+        (eqb self.username other.username)
+        (eqb self.password other.password);
   |}.
 Module ImplAccount.
 
@@ -63,7 +65,11 @@ Definition AccountInfo : Set := AccountInfo.t.
 
 Error TyAlias.
 
-Definition try_logon (_ : unit) :=
+Definition try_logon
+    (accounts : ref Accounts)
+    (username : ref str)
+    (password : ref str)
+    : unit :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Username: ";"\n"]
@@ -79,7 +85,7 @@ Definition try_logon (_ : unit) :=
   tt ;;
   let logon :=
     {| Account.username := username; Account.password := password; |} in
-  match get accounts logon with
+  match method "get" accounts logon with
   | Some (account_info) =>
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1 ["Successful logon!\n"] []) ;;
@@ -101,7 +107,7 @@ Definition try_logon (_ : unit) :=
     tt
   end.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let accounts := ImplHashMap.new tt in
   let account :=
     {| Account.username := "j.everyman"; Account.password := "password123";
@@ -111,7 +117,7 @@ Definition main (_ : unit) :=
       AccountInfo.name := "John Everyman";
       AccountInfo.email := "j.everyman@email.com";
     |} in
-  insert accounts account account_info ;;
+  method "insert" accounts account account_info ;;
   try_logon accounts "j.everyman" "psasword123" ;;
   try_logon accounts "j.everyman" "password123" ;;
   tt.

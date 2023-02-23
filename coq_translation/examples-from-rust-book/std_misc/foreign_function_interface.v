@@ -3,9 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error ForeignMod.
 
-Definition cos (_ : unit) := ccosf z.
+Definition cos (z : Complex) : Complex := ccosf z.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let z := {| Complex.re := neg 1 (* 1. *); Complex.im := 0 (* 0. *); |} in
   let z_sqrt := csqrtf z in
   _crate.io._print
@@ -53,14 +53,16 @@ Module Impl_fmt_Debug_for_Complex.
   Global Instance I : fmt.Debug.Class Self := {|
     fmt.Debug.fmt (self : ref Complex) (f : mut_ref fmt.Formatter) :=
       if lt self.im 0 (* 0. *) then
-        write_fmt
+        method
+          "write_fmt"
           f
           (_crate::fmt::ImplArguments.new_v1
             ["";"-";"i"]
             [_crate::fmt::ImplArgumentV1.new_display
               self.re;_crate::fmt::ImplArgumentV1.new_display (neg self.im)])
       else
-        write_fmt
+        method
+          "write_fmt"
           f
           (_crate::fmt::ImplArguments.new_v1
             ["";"+";"i"]

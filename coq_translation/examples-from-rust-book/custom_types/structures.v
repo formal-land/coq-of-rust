@@ -29,7 +29,7 @@ Module ImplPerson.
 Error StructUnit.
 
 Module Pair.
-  Inductive t : Set := Build (_ : i32 * f32).
+  Inductive t : Set := Build (_ : i32) (_ : f32).
   
   Global Instance Get_0 : IndexedField.Class t 0 i32 := {|
     IndexedField.get '(Build x0 _) := x0;
@@ -56,7 +56,7 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let name := ImplString.from "Peter" in
   let age := 27 in
   let peter := {| Person.name := name; Person.age := age; |} in

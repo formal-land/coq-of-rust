@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error Enum.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let color := Color.RGB 122 17 40 in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1 ["What color is it?\n"] []) ;;
