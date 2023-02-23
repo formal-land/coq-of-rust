@@ -7,8 +7,8 @@ Definition main (_ : unit) : unit :=
   tt ;;
   let name := method "unwrap" (core.str.from_utf8 name_buf) in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["CPU Manufacturer ID: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display name]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "CPU Manufacturer ID: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display name ]) ;;
   tt ;;
   tt.

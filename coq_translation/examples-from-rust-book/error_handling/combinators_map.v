@@ -9,9 +9,9 @@ Module Impl__crate_fmt_Debug_for_Food.
   Global Instance I : _crate.fmt.Debug.Class Self := {|
     _crate.fmt.Debug.fmt (self : ref Food) (f : mut_ref _crate.fmt.Formatter) :=
       match self with
-      | Food.Apple => _crate::fmt::ImplFormatter.write_str f "Apple"
-      | Food.Carrot => _crate::fmt::ImplFormatter.write_str f "Carrot"
-      | Food.Potato => _crate::fmt::ImplFormatter.write_str f "Potato"
+      | Food.Apple => _crate.fmt.ImplFormatter.write_str f "Apple"
+      | Food.Carrot => _crate.fmt.ImplFormatter.write_str f "Carrot"
+      | Food.Potato => _crate.fmt.ImplFormatter.write_str f "Potato"
       end;
   |}.
 Module ImplFood.
@@ -32,7 +32,7 @@ Module Impl__crate_fmt_Debug_for_Peeled.
     _crate.fmt.Debug.fmt
         (self : ref Peeled)
         (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+      _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Peeled"
         (IndexedField.get (index := 0) self);
@@ -55,7 +55,7 @@ Module Impl__crate_fmt_Debug_for_Chopped.
     _crate.fmt.Debug.fmt
         (self : ref Chopped)
         (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+      _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Chopped"
         (IndexedField.get (index := 0) self);
@@ -78,7 +78,7 @@ Module Impl__crate_fmt_Debug_for_Cooked.
     _crate.fmt.Debug.fmt
         (self : ref Cooked)
         (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+      _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Cooked"
         (IndexedField.get (index := 0) self);
@@ -87,39 +87,39 @@ Module ImplCooked.
 
 Definition peel (food : Option) : Option :=
   match food with
-  | Some (food) => Some (Peeled food)
+  | Some (food) => Some (Peeled.Build food)
   | None => None
   end.
 
 Definition chop (peeled : Option) : Option :=
   match peeled with
-  | Some (Peeled (food)) => Some (Chopped food)
+  | Some (Peeled (food)) => Some (Chopped.Build food)
   | None => None
   end.
 
 Definition cook (chopped : Option) : Option :=
-  method "map" chopped (fun Chopped (food) => Cooked food).
+  method "map" chopped (fun Chopped (food) => Cooked.Build food).
 
 Definition process (food : Option) : Option :=
   method
     "map"
     (method
       "map"
-      (method "map" food (fun f => Peeled f))
-      (fun Peeled (f) => Chopped f))
-    (fun Chopped (f) => Cooked f).
+      (method "map" food (fun f => Peeled.Build f))
+      (fun Peeled (f) => Chopped.Build f))
+    (fun Chopped (f) => Cooked.Build f).
 
 Definition eat (food : Option) : unit :=
   match food with
   | Some (food) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Mmm. I love ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug food]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "Mmm. I love "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_debug food ]) ;;
     tt
   | None =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1 ["Oh no! It wasn't edible.\n"] []) ;;
+      (_crate.fmt.ImplArguments.new_v1 [ "Oh no! It wasn't edible.\n" ] [  ]) ;;
     tt
   end.
 

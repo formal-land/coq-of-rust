@@ -42,13 +42,13 @@ Definition main (_ : unit) : unit :=
   let blue_jay := BlueJay in
   let _turkey := Turkey in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["A cardinal is ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (red cardinal)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "A cardinal is "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (red cardinal) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["A blue jay is ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (blue blue_jay)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "A blue jay is "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (blue blue_jay) ]) ;;
   tt ;;
   tt.

@@ -8,7 +8,7 @@ Module Impl__crate_fmt_Debug_for_Unit.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
     _crate.fmt.Debug.fmt (self : ref Unit) (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.write_str f "Unit";
+      _crate.fmt.ImplFormatter.write_str f "Unit";
   |}.
 Module ImplUnit.
 
@@ -44,7 +44,7 @@ Module Impl__crate_clone_Clone_for_Pair.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
     _crate.clone.Clone.clone (self : ref Pair) :=
-      Pair
+      Pair.Build
         (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
         (_crate.clone.Clone.clone (IndexedField.get (index := 1) self));
   |}.
@@ -55,7 +55,7 @@ Module Impl__crate_fmt_Debug_for_Pair.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
     _crate.fmt.Debug.fmt (self : ref Pair) (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_tuple_field2_finish
+      _crate.fmt.ImplFormatter.debug_tuple_field2_finish
         f
         "Pair"
         (IndexedField.get (index := 0) self)
@@ -67,32 +67,32 @@ Definition main (_ : unit) : unit :=
   let unit := Unit in
   let copied_unit := unit in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["original: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug unit]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "original: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug unit ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["copy: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug copied_unit]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "copy: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug copied_unit ]) ;;
   tt ;;
-  let pair := Pair (ImplBox.new 1) (ImplBox.new 2) in
+  let pair := Pair.Build (ImplBox.new 1) (ImplBox.new 2) in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["original: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug pair]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "original: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug pair ]) ;;
   tt ;;
   let moved_pair := pair in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["moved: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug moved_pair]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "moved: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug moved_pair ]) ;;
   tt ;;
   let cloned_pair := method "clone" moved_pair in
   drop moved_pair ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["clone: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug cloned_pair]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "clone: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug cloned_pair ]) ;;
   tt ;;
   tt.

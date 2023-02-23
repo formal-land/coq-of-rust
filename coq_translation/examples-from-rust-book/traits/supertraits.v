@@ -44,15 +44,19 @@ End CompSciStudent.
 Definition comp_sci_student_greeting (student : ref TraitObject) : String :=
   let res :=
     _crate.fmt.format
-      (_crate::fmt::ImplArguments.new_v1
-        ["My name is ";" and I attend ";". My favorite language is ";". My Git username is "]
-        [_crate::fmt::ImplArgumentV1.new_display
-          (method "name" student);_crate::fmt::ImplArgumentV1.new_display
-          (method "university" student);_crate::fmt::ImplArgumentV1.new_display
-          (method
-            "fav_language"
-            student);_crate::fmt::ImplArgumentV1.new_display
-          (method "git_username" student)]) in
+      (_crate.fmt.ImplArguments.new_v1
+        [
+          "My name is ";
+          " and I attend ";
+          ". My favorite language is ";
+          ". My Git username is "
+        ]
+        [
+          _crate.fmt.ImplArgumentV1.new_display (method "name" student);
+          _crate.fmt.ImplArgumentV1.new_display (method "university" student);
+          _crate.fmt.ImplArgumentV1.new_display (method "fav_language" student);
+          _crate.fmt.ImplArgumentV1.new_display (method "git_username" student)
+        ]) in
   res.
 
 Definition main (_ : unit) : unit := tt.

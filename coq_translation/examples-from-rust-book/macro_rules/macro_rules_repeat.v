@@ -3,19 +3,21 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display 1]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ ""; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display 1 ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (std.cmp.min (add 1 2) 2)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ ""; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (std.cmp.min (add 1 2) 2) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        (std.cmp.min 5 (std.cmp.min (mul 2 3) 4))]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ ""; "\n" ]
+      [
+        _crate.fmt.ImplArgumentV1.new_display
+          (std.cmp.min 5 (std.cmp.min (mul 2 3) 4))
+      ]) ;;
   tt ;;
   tt.

@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition main (_ : unit) : unit :=
-  let strings := ComplexTypePath.into_vec ["tofu";"93";"18"] in
+  let strings := ComplexTypePath.into_vec [ "tofu"; "93"; "18" ] in
   let numbers :=
     method
       "collect"
@@ -11,8 +11,8 @@ Definition main (_ : unit) : unit :=
         (method "into_iter" strings)
         (fun s => method "ok" (method "parse" s))) in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Results: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug numbers]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "Results: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug numbers ]) ;;
   tt ;;
   tt.

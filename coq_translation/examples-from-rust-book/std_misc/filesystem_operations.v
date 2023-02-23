@@ -33,58 +33,58 @@ Definition touch (path : ref Path) : io.Result :=
   end.
 
 Definition main (_ : unit) : unit :=
-  _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["`mkdir a`\n"] []) ;;
+  _crate.io._print (_crate.fmt.ImplArguments.new_v1 [ "`mkdir a`\n" ] [  ]) ;;
   tt ;;
   match fs.create_dir "a" with
   | Err (why) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["! ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug (method "kind" why)]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "! "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
     tt
   | Ok (_) => tt
   end ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["`echo hello > a/b.txt`\n"] []) ;;
+    (_crate.fmt.ImplArguments.new_v1 [ "`echo hello > a/b.txt`\n" ] [  ]) ;;
   tt ;;
   method
     "unwrap_or_else"
     (echo "hello" (ImplPath.new "a/b.txt"))
     (fun why =>
       _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["! ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_debug (method "kind" why)]) ;;
+        (_crate.fmt.ImplArguments.new_v1
+          [ "! "; "\n" ]
+          [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
       tt ;;
       tt) ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["`mkdir -p a/c/d`\n"] []) ;;
+    (_crate.fmt.ImplArguments.new_v1 [ "`mkdir -p a/c/d`\n" ] [  ]) ;;
   tt ;;
   method
     "unwrap_or_else"
     (fs.create_dir_all "a/c/d")
     (fun why =>
       _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["! ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_debug (method "kind" why)]) ;;
+        (_crate.fmt.ImplArguments.new_v1
+          [ "! "; "\n" ]
+          [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
       tt ;;
       tt) ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["`touch a/c/e.txt`\n"] []) ;;
+    (_crate.fmt.ImplArguments.new_v1 [ "`touch a/c/e.txt`\n" ] [  ]) ;;
   tt ;;
   method
     "unwrap_or_else"
     (touch (ImplPath.new "a/c/e.txt"))
     (fun why =>
       _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["! ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_debug (method "kind" why)]) ;;
+        (_crate.fmt.ImplArguments.new_v1
+          [ "! "; "\n" ]
+          [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
       tt ;;
       tt) ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["`ln -s ../b.txt a/c/b.txt`\n"] []) ;;
+    (_crate.fmt.ImplArguments.new_v1 [ "`ln -s ../b.txt a/c/b.txt`\n" ] [  ]) ;;
   tt ;;
   if true then
     method
@@ -92,39 +92,39 @@ Definition main (_ : unit) : unit :=
       (unix.fs.symlink "../b.txt" "a/c/b.txt")
       (fun why =>
         _crate.io._print
-          (_crate::fmt::ImplArguments.new_v1
-            ["! ";"\n"]
-            [_crate::fmt::ImplArgumentV1.new_debug (method "kind" why)]) ;;
+          (_crate.fmt.ImplArguments.new_v1
+            [ "! "; "\n" ]
+            [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
         tt ;;
         tt) ;;
     tt
   else
     tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["`cat a/c/b.txt`\n"] []) ;;
+    (_crate.fmt.ImplArguments.new_v1 [ "`cat a/c/b.txt`\n" ] [  ]) ;;
   tt ;;
   match cat (ImplPath.new "a/c/b.txt") with
   | Err (why) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["! ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug (method "kind" why)]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "! "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
     tt
   | Ok (s) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["> ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display s]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "> "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display s ]) ;;
     tt
   end ;;
-  _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["`ls a`\n"] []) ;;
+  _crate.io._print (_crate.fmt.ImplArguments.new_v1 [ "`ls a`\n" ] [  ]) ;;
   tt ;;
   match fs.read_dir "a" with
   | Err (why) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["! ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug (method "kind" why)]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "! "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
     tt
   | Ok (paths) =>
     match into_iter paths with
@@ -134,10 +134,12 @@ Definition main (_ : unit) : unit :=
         | {|  |} => Break
         | {| Some.0 := path; |} =>
           _crate.io._print
-            (_crate::fmt::ImplArguments.new_v1
-              ["> ";"\n"]
-              [_crate::fmt::ImplArgumentV1.new_debug
-                (method "path" (method "unwrap" path))]) ;;
+            (_crate.fmt.ImplArguments.new_v1
+              [ "> "; "\n" ]
+              [
+                _crate.fmt.ImplArgumentV1.new_debug
+                  (method "path" (method "unwrap" path))
+              ]) ;;
           tt ;;
           tt
         end ;;
@@ -147,28 +149,29 @@ Definition main (_ : unit) : unit :=
     end
   end ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["`rm a/c/e.txt`\n"] []) ;;
+    (_crate.fmt.ImplArguments.new_v1 [ "`rm a/c/e.txt`\n" ] [  ]) ;;
   tt ;;
   method
     "unwrap_or_else"
     (fs.remove_file "a/c/e.txt")
     (fun why =>
       _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["! ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_debug (method "kind" why)]) ;;
+        (_crate.fmt.ImplArguments.new_v1
+          [ "! "; "\n" ]
+          [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
       tt ;;
       tt) ;;
-  _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["`rmdir a/c/d`\n"] []) ;;
+  _crate.io._print
+    (_crate.fmt.ImplArguments.new_v1 [ "`rmdir a/c/d`\n" ] [  ]) ;;
   tt ;;
   method
     "unwrap_or_else"
     (fs.remove_dir "a/c/d")
     (fun why =>
       _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["! ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_debug (method "kind" why)]) ;;
+        (_crate.fmt.ImplArguments.new_v1
+          [ "! "; "\n" ]
+          [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
       tt ;;
       tt) ;;
   tt.

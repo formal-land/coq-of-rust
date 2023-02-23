@@ -12,6 +12,8 @@ Definition main (_ : unit) : unit :=
   let _x := ImplBox.new 0 in
   division 3 0 ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["This point won't be reached!\n"] []) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "This point won't be reached!\n" ]
+      [  ]) ;;
   tt ;;
   tt.

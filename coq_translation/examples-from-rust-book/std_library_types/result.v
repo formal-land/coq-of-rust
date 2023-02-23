@@ -11,15 +11,15 @@ Module
     
     Global Instance I : _crate.fmt.Debug.Class Self := {|
       _crate.fmt.Debug.fmt
-          (self : ref checked::MathError)
+          (self : ref checked.MathError)
           (f : mut_ref _crate.fmt.Formatter) :=
         match self with
         | MathError.DivisionByZero =>
-          _crate::fmt::ImplFormatter.write_str f "DivisionByZero"
+          _crate.fmt.ImplFormatter.write_str f "DivisionByZero"
         | MathError.NonPositiveLogarithm =>
-          _crate::fmt::ImplFormatter.write_str f "NonPositiveLogarithm"
+          _crate.fmt.ImplFormatter.write_str f "NonPositiveLogarithm"
         | MathError.NegativeSquareRoot =>
-          _crate::fmt::ImplFormatter.write_str f "NegativeSquareRoot"
+          _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
         end;
     |}.
   Module ImplMathError.
@@ -51,15 +51,15 @@ Module Impl__crate_fmt_Debug_for_MathError.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
     _crate.fmt.Debug.fmt
-        (self : ref checked::MathError)
+        (self : ref checked.MathError)
         (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | MathError.DivisionByZero =>
-        _crate::fmt::ImplFormatter.write_str f "DivisionByZero"
+        _crate.fmt.ImplFormatter.write_str f "DivisionByZero"
       | MathError.NonPositiveLogarithm =>
-        _crate::fmt::ImplFormatter.write_str f "NonPositiveLogarithm"
+        _crate.fmt.ImplFormatter.write_str f "NonPositiveLogarithm"
       | MathError.NegativeSquareRoot =>
-        _crate::fmt::ImplFormatter.write_str f "NegativeSquareRoot"
+        _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
       end;
   |}.
 Module ImplMathError.
@@ -88,23 +88,23 @@ Definition op (x : f64) (y : f64) : f64 :=
   match checked.div x y with
   | Err (why) =>
     _crate.rt.panic_fmt
-      (_crate::fmt::ImplArguments.new_v1
-        [""]
-        [_crate::fmt::ImplArgumentV1.new_debug why])
+      (_crate.fmt.ImplArguments.new_v1
+        [ "" ]
+        [ _crate.fmt.ImplArgumentV1.new_debug why ])
   | Ok (ratio) =>
     match checked.ln ratio with
     | Err (why) =>
       _crate.rt.panic_fmt
-        (_crate::fmt::ImplArguments.new_v1
-          [""]
-          [_crate::fmt::ImplArgumentV1.new_debug why])
+        (_crate.fmt.ImplArguments.new_v1
+          [ "" ]
+          [ _crate.fmt.ImplArgumentV1.new_debug why ])
     | Ok (ln) =>
       match checked.sqrt ln with
       | Err (why) =>
         _crate.rt.panic_fmt
-          (_crate::fmt::ImplArguments.new_v1
-            [""]
-            [_crate::fmt::ImplArgumentV1.new_debug why])
+          (_crate.fmt.ImplArguments.new_v1
+            [ "" ]
+            [ _crate.fmt.ImplArgumentV1.new_debug why ])
       | Ok (sqrt) => sqrt
       end
     end
@@ -112,9 +112,9 @@ Definition op (x : f64) (y : f64) : f64 :=
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        (op 1 (* 1.0 *) 10 (* 10.0 *))]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ ""; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (op 1 (* 1.0 *) 10 (* 10.0 *))
+      ]) ;;
   tt ;;
   tt.

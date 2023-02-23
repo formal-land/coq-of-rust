@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition main (_ : unit) : unit :=
-  let vec := ComplexTypePath.into_vec [1;9;3;3;13;2] in
+  let vec := ComplexTypePath.into_vec [ 1; 9; 3; 3; 13; 2 ] in
   let index_of_first_even_number :=
     method "position" (method "iter" vec) (fun x => eqb (rem x 2) 0) in
   match (index_of_first_even_number, Some 5) with

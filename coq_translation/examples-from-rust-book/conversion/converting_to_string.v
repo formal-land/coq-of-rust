@@ -16,17 +16,17 @@ Module Impl_fmt_Display_for_Circle.
       method
         "write_fmt"
         f
-        (_crate::fmt::ImplArguments.new_v1
-          ["Circle of radius "]
-          [_crate::fmt::ImplArgumentV1.new_display self.radius]);
+        (_crate.fmt.ImplArguments.new_v1
+          [ "Circle of radius " ]
+          [ _crate.fmt.ImplArgumentV1.new_display self.radius ]);
   |}.
 Module ImplCircle.
 
 Definition main (_ : unit) : unit :=
   let circle := {| Circle.radius := 6; |} in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (method "to_string" circle)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ ""; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (method "to_string" circle) ]) ;;
   tt ;;
   tt.

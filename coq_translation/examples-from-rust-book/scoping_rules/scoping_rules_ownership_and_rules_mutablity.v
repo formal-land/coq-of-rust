@@ -4,20 +4,20 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main (_ : unit) : unit :=
   let immutable_box := ImplBox.new 5 in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["immutable_box contains ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display immutable_box]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "immutable_box contains "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display immutable_box ]) ;;
   tt ;;
   let mutable_box := immutable_box in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["mutable_box contains ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display mutable_box]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "mutable_box contains "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display mutable_box ]) ;;
   tt ;;
   assign deref mutable_box := 4 ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["mutable_box now contains ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display mutable_box]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "mutable_box now contains "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display mutable_box ]) ;;
   tt ;;
   tt.

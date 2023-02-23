@@ -25,15 +25,15 @@ Definition print (result : Result) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["n is ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display n]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "n is "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display n ]) ;;
     tt
   | Err (e) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Error: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display e]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "Error: "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display e ]) ;;
     tt
   end.
 

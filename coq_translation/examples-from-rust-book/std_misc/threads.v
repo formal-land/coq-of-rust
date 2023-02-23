@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition NTHREADS (_ : unit) := 10.
 
 Definition main (_ : unit) : unit :=
-  let children := _crate::vec::ImplVec.new tt in
+  let children := _crate.vec.ImplVec.new tt in
   match into_iter {| Range.start := 0; Range.end := NTHREADS; |} with
   | iter =>
     loop
@@ -17,9 +17,9 @@ Definition main (_ : unit) : unit :=
           (thread.spawn
             (fun  =>
               _crate.io._print
-                (_crate::fmt::ImplArguments.new_v1
-                  ["this is thread number ";"\n"]
-                  [_crate::fmt::ImplArgumentV1.new_display i]) ;;
+                (_crate.fmt.ImplArguments.new_v1
+                  [ "this is thread number "; "\n" ]
+                  [ _crate.fmt.ImplArgumentV1.new_display i ]) ;;
               tt ;;
               tt)) ;;
         tt

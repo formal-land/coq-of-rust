@@ -16,7 +16,7 @@ Module Impl__crate_fmt_Debug_for_Person.
     _crate.fmt.Debug.fmt
         (self : ref Person)
         (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_struct_field2_finish
+      _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "Person"
         "name"
@@ -61,24 +61,27 @@ Definition main (_ : unit) : unit :=
   let age := 27 in
   let peter := {| Person.name := name; Person.age := age; |} in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug peter]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ ""; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug peter ]) ;;
   tt ;;
   let point := {| Point.x := 10 (* 10.3 *); Point.y := 0 (* 0.4 *); |} in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["point coordinates: (";", ";")\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        point.x;_crate::fmt::ImplArgumentV1.new_display point.y]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "point coordinates: ("; ", "; ")\n" ]
+      [
+        _crate.fmt.ImplArgumentV1.new_display point.x;
+        _crate.fmt.ImplArgumentV1.new_display point.y
+      ]) ;;
   tt ;;
   let bottom_right := {| Point.x := 5 (* 5.2 *); |} with point in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["second point: (";", ";")\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        bottom_right.x;_crate::fmt::ImplArgumentV1.new_display
-        bottom_right.y]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "second point: ("; ", "; ")\n" ]
+      [
+        _crate.fmt.ImplArgumentV1.new_display bottom_right.x;
+        _crate.fmt.ImplArgumentV1.new_display bottom_right.y
+      ]) ;;
   tt ;;
   let {| Point.x := left_edge; Point.y := top_edge; |} := point in
   let _rectangle :=
@@ -87,21 +90,23 @@ Definition main (_ : unit) : unit :=
       Rectangle.bottom_right := bottom_right;
     |} in
   let _unit := Unit in
-  let pair := Pair 1 0 (* 0.1 *) in
+  let pair := Pair.Build 1 0 (* 0.1 *) in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["pair contains ";" and ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug
-        (IndexedField.get
-          (index := 0)
-          pair);_crate::fmt::ImplArgumentV1.new_debug
-        (IndexedField.get (index := 1) pair)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "pair contains "; " and "; "\n" ]
+      [
+        _crate.fmt.ImplArgumentV1.new_debug
+          (IndexedField.get (index := 0) pair);
+        _crate.fmt.ImplArgumentV1.new_debug (IndexedField.get (index := 1) pair)
+      ]) ;;
   tt ;;
   let Pair (integer, decimal) := pair in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["pair contains ";" and ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug
-        integer;_crate::fmt::ImplArgumentV1.new_debug decimal]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "pair contains "; " and "; "\n" ]
+      [
+        _crate.fmt.ImplArgumentV1.new_debug integer;
+        _crate.fmt.ImplArgumentV1.new_debug decimal
+      ]) ;;
   tt ;;
   tt.

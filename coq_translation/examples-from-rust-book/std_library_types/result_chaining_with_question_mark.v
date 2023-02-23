@@ -11,15 +11,15 @@ Module
     
     Global Instance I : _crate.fmt.Debug.Class Self := {|
       _crate.fmt.Debug.fmt
-          (self : ref checked::MathError)
+          (self : ref checked.MathError)
           (f : mut_ref _crate.fmt.Formatter) :=
         match self with
         | MathError.DivisionByZero =>
-          _crate::fmt::ImplFormatter.write_str f "DivisionByZero"
+          _crate.fmt.ImplFormatter.write_str f "DivisionByZero"
         | MathError.NonPositiveLogarithm =>
-          _crate::fmt::ImplFormatter.write_str f "NonPositiveLogarithm"
+          _crate.fmt.ImplFormatter.write_str f "NonPositiveLogarithm"
         | MathError.NegativeSquareRoot =>
-          _crate::fmt::ImplFormatter.write_str f "NegativeSquareRoot"
+          _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
         end;
     |}.
   Module ImplMathError.
@@ -68,9 +68,9 @@ Module
         end
     | Ok (value) =>
       _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_display value]) ;;
+        (_crate.fmt.ImplArguments.new_v1
+          [ ""; "\n" ]
+          [ _crate.fmt.ImplArgumentV1.new_display value ]) ;;
       tt
     end..
 
@@ -81,15 +81,15 @@ Module Impl__crate_fmt_Debug_for_MathError.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
     _crate.fmt.Debug.fmt
-        (self : ref checked::MathError)
+        (self : ref checked.MathError)
         (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | MathError.DivisionByZero =>
-        _crate::fmt::ImplFormatter.write_str f "DivisionByZero"
+        _crate.fmt.ImplFormatter.write_str f "DivisionByZero"
       | MathError.NonPositiveLogarithm =>
-        _crate::fmt::ImplFormatter.write_str f "NonPositiveLogarithm"
+        _crate.fmt.ImplFormatter.write_str f "NonPositiveLogarithm"
       | MathError.NegativeSquareRoot =>
-        _crate::fmt::ImplFormatter.write_str f "NegativeSquareRoot"
+        _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
       end;
   |}.
 Module ImplMathError.
@@ -138,9 +138,9 @@ Definition op (x : f64) (y : f64) : unit :=
       end
   | Ok (value) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display value]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ ""; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display value ]) ;;
     tt
   end.
 

@@ -15,7 +15,7 @@ Module Impl__crate_fmt_Debug_for_Number.
     _crate.fmt.Debug.fmt
         (self : ref Number)
         (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_struct_field1_finish
+      _crate.fmt.ImplFormatter.debug_struct_field1_finish
         f
         "Number"
         "value"
@@ -35,8 +35,8 @@ Definition main (_ : unit) : unit :=
   let int := 5 in
   let num := method "into" int in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["My number is ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug num]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "My number is "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug num ]) ;;
   tt ;;
   tt.

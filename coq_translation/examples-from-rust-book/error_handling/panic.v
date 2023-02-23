@@ -8,9 +8,9 @@ Definition drink (beverage : ref str) : unit :=
   else
     tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Some refreshing ";" is all I need.\n"]
-      [_crate::fmt::ImplArgumentV1.new_display beverage]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "Some refreshing "; " is all I need.\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display beverage ]) ;;
   tt ;;
   tt.
 

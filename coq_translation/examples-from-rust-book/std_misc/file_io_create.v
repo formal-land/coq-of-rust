@@ -11,23 +11,27 @@ Definition main (_ : unit) : unit :=
     match ImplFile.create path with
     | Err (why) =>
       _crate.rt.panic_fmt
-        (_crate::fmt::ImplArguments.new_v1
-          ["couldn't create ";": "]
-          [_crate::fmt::ImplArgumentV1.new_display
-            display;_crate::fmt::ImplArgumentV1.new_display why])
+        (_crate.fmt.ImplArguments.new_v1
+          [ "couldn't create "; ": " ]
+          [
+            _crate.fmt.ImplArgumentV1.new_display display;
+            _crate.fmt.ImplArgumentV1.new_display why
+          ])
     | Ok (file) => file
     end in
   match method "write_all" file (method "as_bytes" LOREM_IPSUM) with
   | Err (why) =>
     _crate.rt.panic_fmt
-      (_crate::fmt::ImplArguments.new_v1
-        ["couldn't write to ";": "]
-        [_crate::fmt::ImplArgumentV1.new_display
-          display;_crate::fmt::ImplArgumentV1.new_display why])
+      (_crate.fmt.ImplArguments.new_v1
+        [ "couldn't write to "; ": " ]
+        [
+          _crate.fmt.ImplArgumentV1.new_display display;
+          _crate.fmt.ImplArgumentV1.new_display why
+        ])
   | Ok (_) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["successfully wrote to ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display display]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "successfully wrote to "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display display ]) ;;
     tt
   end.

@@ -7,25 +7,26 @@ Definition main (_ : unit) : unit :=
     (if lt n 101 then
       if eqb (rem n 15) 0 then
         _crate.io._print
-          (_crate::fmt::ImplArguments.new_v1 ["fizzbuzz\n"] []) ;;
+          (_crate.fmt.ImplArguments.new_v1 [ "fizzbuzz\n" ] [  ]) ;;
         tt ;;
         tt
       else
         if eqb (rem n 3) 0 then
-          _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["fizz\n"] []) ;;
+          _crate.io._print
+            (_crate.fmt.ImplArguments.new_v1 [ "fizz\n" ] [  ]) ;;
           tt ;;
           tt
         else
           if eqb (rem n 5) 0 then
             _crate.io._print
-              (_crate::fmt::ImplArguments.new_v1 ["buzz\n"] []) ;;
+              (_crate.fmt.ImplArguments.new_v1 [ "buzz\n" ] [  ]) ;;
             tt ;;
             tt
           else
             _crate.io._print
-              (_crate::fmt::ImplArguments.new_v1
-                ["";"\n"]
-                [_crate::fmt::ImplArgumentV1.new_display n]) ;;
+              (_crate.fmt.ImplArguments.new_v1
+                [ ""; "\n" ]
+                [ _crate.fmt.ImplArgumentV1.new_display n ]) ;;
             tt ;;
             tt ;;
       assign n := add n 1 ;;

@@ -5,9 +5,9 @@ Definition main (_ : unit) : unit := Stmt_item.
 
 Definition foo (arg : i32) : i32 :=
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["arg = ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display arg]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "arg = "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display arg ]) ;;
   tt ;;
   mul arg 2.
 

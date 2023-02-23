@@ -19,30 +19,30 @@ Definition main (_ : unit) : unit :=
   match method "get" contacts "Daniel" with
   | Some (number) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Calling Daniel: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display (call number)]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "Calling Daniel: "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display (call number) ]) ;;
     tt
   | _ =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Don't have Daniel's number.\n"]
-        []) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "Don't have Daniel's number.\n" ]
+        [  ]) ;;
     tt
   end ;;
   method "insert" contacts "Daniel" "164-6743" ;;
   match method "get" contacts "Ashley" with
   | Some (number) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Calling Ashley: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display (call number)]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "Calling Ashley: "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display (call number) ]) ;;
     tt
   | _ =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Don't have Ashley's number.\n"]
-        []) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "Don't have Ashley's number.\n" ]
+        [  ]) ;;
     tt
   end ;;
   method "remove" contacts "Ashley" ;;
@@ -53,10 +53,12 @@ Definition main (_ : unit) : unit :=
       | {|  |} => Break
       | {| Some.0 := (contact, number); |} =>
         _crate.io._print
-          (_crate::fmt::ImplArguments.new_v1
-            ["Calling ";": ";"\n"]
-            [_crate::fmt::ImplArgumentV1.new_display
-              contact;_crate::fmt::ImplArgumentV1.new_display (call number)]) ;;
+          (_crate.fmt.ImplArguments.new_v1
+            [ "Calling "; ": "; "\n" ]
+            [
+              _crate.fmt.ImplArgumentV1.new_display contact;
+              _crate.fmt.ImplArgumentV1.new_display (call number)
+            ]) ;;
         tt ;;
         tt
       end ;;

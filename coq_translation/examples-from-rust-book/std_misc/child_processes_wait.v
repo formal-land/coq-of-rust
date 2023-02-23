@@ -8,6 +8,6 @@ Definition main (_ : unit) : unit :=
       (method "spawn" (method "arg" (ImplCommand.new "sleep") "5")) in
   let _result := method "unwrap" (method "wait" child) in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["reached end of main\n"] []) ;;
+    (_crate.fmt.ImplArguments.new_v1 [ "reached end of main\n" ] [  ]) ;;
   tt ;;
   tt.

@@ -3,17 +3,17 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition eat_box_i32 (boxed_i32 : Box) : unit :=
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Destroying box that contains ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display boxed_i32]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "Destroying box that contains "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display boxed_i32 ]) ;;
   tt ;;
   tt.
 
 Definition borrow_i32 (borrowed_i32 : ref i32) : unit :=
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["This int is: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display borrowed_i32]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "This int is: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display borrowed_i32 ]) ;;
   tt ;;
   tt.
 

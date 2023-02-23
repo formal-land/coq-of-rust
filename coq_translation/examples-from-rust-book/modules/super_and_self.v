@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["called `function()`\n"] []) ;;
+    (_crate.fmt.ImplArguments.new_v1 [ "called `function()`\n" ] [  ]) ;;
   tt ;;
   tt.
 
@@ -12,13 +12,15 @@ Module
   :=
   Definition function (_ : unit) : unit :=
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1 ["called `cool::function()`\n"] []) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "called `cool::function()`\n" ]
+        [  ]) ;;
     tt ;;
     tt..
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["called `cool::function()`\n"] []) ;;
+    (_crate.fmt.ImplArguments.new_v1 [ "called `cool::function()`\n" ] [  ]) ;;
   tt ;;
   tt.
 
@@ -27,7 +29,7 @@ Module
   :=
   Definition function (_ : unit) : unit :=
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1 ["called `my::function()`\n"] []) ;;
+      (_crate.fmt.ImplArguments.new_v1 [ "called `my::function()`\n" ] [  ]) ;;
     tt ;;
     tt.
   
@@ -36,17 +38,17 @@ Module
     :=
     Definition function (_ : unit) : unit :=
       _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["called `my::cool::function()`\n"]
-          []) ;;
+        (_crate.fmt.ImplArguments.new_v1
+          [ "called `my::cool::function()`\n" ]
+          [  ]) ;;
       tt ;;
       tt..
   
   Definition indirect_call (_ : unit) : unit :=
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["called `my::indirect_call()`, that\n> "]
-        []) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "called `my::indirect_call()`, that\n> " ]
+        [  ]) ;;
     tt ;;
     self.function tt ;;
     function tt ;;
@@ -56,7 +58,7 @@ Module
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["called `my::function()`\n"] []) ;;
+    (_crate.fmt.ImplArguments.new_v1 [ "called `my::function()`\n" ] [  ]) ;;
   tt ;;
   tt.
 
@@ -65,25 +67,25 @@ Module
   :=
   Definition function (_ : unit) : unit :=
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["called `my::cool::function()`\n"]
-        []) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "called `my::cool::function()`\n" ]
+        [  ]) ;;
     tt ;;
     tt..
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["called `my::cool::function()`\n"]
-      []) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "called `my::cool::function()`\n" ]
+      [  ]) ;;
   tt ;;
   tt.
 
 Definition indirect_call (_ : unit) : unit :=
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["called `my::indirect_call()`, that\n> "]
-      []) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "called `my::indirect_call()`, that\n> " ]
+      [  ]) ;;
   tt ;;
   self.function tt ;;
   function tt ;;
