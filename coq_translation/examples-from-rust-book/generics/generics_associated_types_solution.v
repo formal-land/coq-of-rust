@@ -22,21 +22,19 @@ Module Contains.
     last : (ref Self) -> i32;
   }.
   
-  Global Instance Method_A {Self : Set} `{Class Self} : Method "A" _ := {|
+  Global Instance Method_A `(Class) : Method "A" _ := {|
     method := A;
   |}.
-  Global Instance Method_B {Self : Set} `{Class Self} : Method "B" _ := {|
+  Global Instance Method_B `(Class) : Method "B" _ := {|
     method := B;
   |}.
-  Global Instance Method_contains {Self : Set} `{Class Self}
-    : Method "contains" _ := {|
+  Global Instance Method_contains `(Class) : Method "contains" _ := {|
     method := contains;
   |}.
-  Global Instance Method_first {Self : Set} `{Class Self}
-    : Method "first" _ := {|
+  Global Instance Method_first `(Class) : Method "first" _ := {|
     method := first;
   |}.
-  Global Instance Method_last {Self : Set} `{Class Self} : Method "last" _ := {|
+  Global Instance Method_last `(Class) : Method "last" _ := {|
     method := last;
   |}.
 End Contains.

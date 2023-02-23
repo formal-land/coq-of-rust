@@ -18,8 +18,7 @@ Module Animal.
     noise : (ref Self) -> (ref str);
   }.
   
-  Global Instance Method_noise {Self : Set} `{Class Self}
-    : Method "noise" _ := {|
+  Global Instance Method_noise `(Class) : Method "noise" _ := {|
     method := noise;
   |}.
 End Animal.

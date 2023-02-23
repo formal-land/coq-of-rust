@@ -89,7 +89,7 @@ pub fn compile_path_ty_params(tcx: &TyCtxt, path: &rustc_hir::Path) -> Vec<CoqTy
             .args
             .iter()
             .filter_map(|arg| match arg {
-                rustc_hir::GenericArg::Type(ty) => Some(compile_type(tcx, &ty)),
+                rustc_hir::GenericArg::Type(ty) => Some(compile_type(tcx, ty)),
                 _ => None,
             })
             .collect(),

@@ -178,12 +178,10 @@ Module ConstantTimeEq.
     ct_ne : (ref Self) -> ((ref Self) -> Choice);
   }.
   
-  Global Instance Method_ct_eq {Self : Set} `{Class Self}
-    : Method "ct_eq" _ := {|
+  Global Instance Method_ct_eq `(Class) : Method "ct_eq" _ := {|
     method := ct_eq;
   |}.
-  Global Instance Method_ct_ne {Self : Set} `{Class Self}
-    : Method "ct_ne" _ := {|
+  Global Instance Method_ct_ne `(Class) : Method "ct_ne" _ := {|
     method := ct_ne;
   |}.
 End ConstantTimeEq.
@@ -337,15 +335,15 @@ Module ConditionallySelectable.
     conditional_swap : (mut_ref Self) -> ((mut_ref Self) -> (Choice -> _));
   }.
   
-  Global Instance Method_conditional_select {Self : Set} `{Class Self}
+  Global Instance Method_conditional_select `(Class)
     : Method "conditional_select" _ := {|
     method := conditional_select;
   |}.
-  Global Instance Method_conditional_assign {Self : Set} `{Class Self}
+  Global Instance Method_conditional_assign `(Class)
     : Method "conditional_assign" _ := {|
     method := conditional_assign;
   |}.
-  Global Instance Method_conditional_swap {Self : Set} `{Class Self}
+  Global Instance Method_conditional_swap `(Class)
     : Method "conditional_swap" _ := {|
     method := conditional_swap;
   |}.
@@ -644,7 +642,7 @@ Module ConditionallyNegatable.
     conditional_negate : (mut_ref Self) -> (Choice -> _);
   }.
   
-  Global Instance Method_conditional_negate {Self : Set} `{Class Self}
+  Global Instance Method_conditional_negate `(Class)
     : Method "conditional_negate" _ := {|
     method := conditional_negate;
   |}.
@@ -819,8 +817,7 @@ Module ConstantTimeGreater.
     ct_gt : (ref Self) -> ((ref Self) -> Choice);
   }.
   
-  Global Instance Method_ct_gt {Self : Set} `{Class Self}
-    : Method "ct_gt" _ := {|
+  Global Instance Method_ct_gt `(Class) : Method "ct_gt" _ := {|
     method := ct_gt;
   |}.
 End ConstantTimeGreater.
@@ -966,8 +963,7 @@ Module ConstantTimeLess.
     ct_lt : (ref Self) -> ((ref Self) -> Choice);
   }.
   
-  Global Instance Method_ct_lt {Self : Set} `{Class Self}
-    : Method "ct_lt" _ := {|
+  Global Instance Method_ct_lt `(Class) : Method "ct_lt" _ := {|
     method := ct_lt;
   |}.
 End ConstantTimeLess.

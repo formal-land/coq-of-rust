@@ -10,8 +10,7 @@ Module DoubleDrop.
     double_drop : Self -> (T -> _);
   }.
   
-  Global Instance Method_double_drop {T Self : Set} `{Class T Self}
-    : Method "double_drop" _ := {|
+  Global Instance Method_double_drop `(Class) : Method "double_drop" _ := {|
     method := double_drop;
   |}.
 End DoubleDrop.

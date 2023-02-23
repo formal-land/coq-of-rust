@@ -6,7 +6,7 @@ Module HasArea.
     area : (ref Self) -> f64;
   }.
   
-  Global Instance Method_area {Self : Set} `{Class Self} : Method "area" _ := {|
+  Global Instance Method_area `(Class) : Method "area" _ := {|
     method := area;
   |}.
 End HasArea.

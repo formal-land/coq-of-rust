@@ -575,7 +575,7 @@ impl TopLevelItem {
                     } else {
                         hardline()
                     },
-                    concat(body.iter().map(|(name, item)| {
+                    concat(body.iter().map(|(name, _)| {
                         concat([
                             hardline(),
                             nest([
@@ -584,24 +584,7 @@ impl TopLevelItem {
                                     line(),
                                     text(format!("Method_{name}")),
                                     line(),
-                                    nest([
-                                        text("{"),
-                                        concat(
-                                            ty_params.iter().map(|ty| concat([text(ty), line()])),
-                                        ),
-                                        text("Self"),
-                                        line(),
-                                        text(": Set}"),
-                                    ]),
-                                    line(),
-                                    nest([
-                                        text("`{Class"),
-                                        line(),
-                                        concat(
-                                            ty_params.iter().map(|ty| concat([text(ty), line()])),
-                                        ),
-                                        text("Self}"),
-                                    ]),
+                                    text("`(Class)"),
                                 ]),
                                 line(),
                                 nest([

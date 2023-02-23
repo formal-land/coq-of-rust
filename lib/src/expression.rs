@@ -393,7 +393,7 @@ impl Expr {
                 nest([
                     text("method"),
                     line(),
-                    text(format!("\"{}\"", func.to_string())),
+                    text(format!("\"{func}\"")),
                     concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                 ]),
             ),

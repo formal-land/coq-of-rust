@@ -6,7 +6,7 @@ Module Person.
     name : (ref Self) -> String;
   }.
   
-  Global Instance Method_name {Self : Set} `{Class Self} : Method "name" _ := {|
+  Global Instance Method_name `(Class) : Method "name" _ := {|
     method := name;
   |}.
 End Person.
@@ -16,8 +16,7 @@ Module Student.
     university : (ref Self) -> String;
   }.
   
-  Global Instance Method_university {Self : Set} `{Class Self}
-    : Method "university" _ := {|
+  Global Instance Method_university `(Class) : Method "university" _ := {|
     method := university;
   |}.
 End Student.
@@ -27,8 +26,7 @@ Module Programmer.
     fav_language : (ref Self) -> String;
   }.
   
-  Global Instance Method_fav_language {Self : Set} `{Class Self}
-    : Method "fav_language" _ := {|
+  Global Instance Method_fav_language `(Class) : Method "fav_language" _ := {|
     method := fav_language;
   |}.
 End Programmer.
@@ -38,8 +36,7 @@ Module CompSciStudent.
     git_username : (ref Self) -> String;
   }.
   
-  Global Instance Method_git_username {Self : Set} `{Class Self}
-    : Method "git_username" _ := {|
+  Global Instance Method_git_username `(Class) : Method "git_username" _ := {|
     method := git_username;
   |}.
 End CompSciStudent.

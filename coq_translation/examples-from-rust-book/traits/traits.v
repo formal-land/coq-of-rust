@@ -17,17 +17,16 @@ Module Animal.
     talk : (ref Self) -> _;
   }.
   
-  Global Instance Method_new {Self : Set} `{Class Self} : Method "new" _ := {|
+  Global Instance Method_new `(Class) : Method "new" _ := {|
     method := new;
   |}.
-  Global Instance Method_name {Self : Set} `{Class Self} : Method "name" _ := {|
+  Global Instance Method_name `(Class) : Method "name" _ := {|
     method := name;
   |}.
-  Global Instance Method_noise {Self : Set} `{Class Self}
-    : Method "noise" _ := {|
+  Global Instance Method_noise `(Class) : Method "noise" _ := {|
     method := noise;
   |}.
-  Global Instance Method_talk {Self : Set} `{Class Self} : Method "talk" _ := {|
+  Global Instance Method_talk `(Class) : Method "talk" _ := {|
     method := talk;
   |}.
 End Animal.
