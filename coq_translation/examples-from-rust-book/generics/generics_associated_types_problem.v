@@ -57,28 +57,30 @@ Definition difference
 Definition main (_ : unit) : unit :=
   let number_1 := 3 in
   let number_2 := 10 in
-  let container := Container number_1 number_2 in
+  let container := Container.Build number_1 number_2 in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Does container contain ";" and ";": ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        number_1;_crate::fmt::ImplArgumentV1.new_display
-        number_2;_crate::fmt::ImplArgumentV1.new_display
-        (method "contains" container number_1 number_2)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "Does container contain "; " and "; ": "; "\n" ]
+      [
+        _crate.fmt.ImplArgumentV1.new_display number_1;
+        _crate.fmt.ImplArgumentV1.new_display number_2;
+        _crate.fmt.ImplArgumentV1.new_display
+          (method "contains" container number_1 number_2)
+      ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["First number: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (method "first" container)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "First number: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (method "first" container) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Last number: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (method "last" container)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "Last number: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (method "last" container) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["The difference is: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (difference container)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "The difference is: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (difference container) ]) ;;
   tt ;;
   tt.

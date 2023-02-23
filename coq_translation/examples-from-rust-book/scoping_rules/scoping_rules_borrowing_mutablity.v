@@ -31,20 +31,24 @@ Module ImplBook.
 
 Definition borrow_book (book : ref Book) : unit :=
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["I immutably borrowed ";" - ";" edition\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        book.title;_crate::fmt::ImplArgumentV1.new_display book.year]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "I immutably borrowed "; " - "; " edition\n" ]
+      [
+        _crate.fmt.ImplArgumentV1.new_display book.title;
+        _crate.fmt.ImplArgumentV1.new_display book.year
+      ]) ;;
   tt ;;
   tt.
 
 Definition new_edition (book : mut_ref Book) : unit :=
   assign book.year := 2014 ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["I mutably borrowed ";" - ";" edition\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        book.title;_crate::fmt::ImplArgumentV1.new_display book.year]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "I mutably borrowed "; " - "; " edition\n" ]
+      [
+        _crate.fmt.ImplArgumentV1.new_display book.title;
+        _crate.fmt.ImplArgumentV1.new_display book.year
+      ]) ;;
   tt ;;
   tt.
 

@@ -34,7 +34,7 @@ Module Impl__crate_fmt_Debug_for_Choice.
     _crate.fmt.Debug.fmt
         (self : ref Choice)
         (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+      _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Choice"
         (IndexedField.get (index := 0) self);
@@ -168,7 +168,7 @@ Module Impl_From_for_Choice.
   Definition Self := Choice.
   
   Global Instance I : From.Class u8 Self := {|
-    From.from (input : u8) := Choice (black_box input);
+    From.from (input : u8) := Choice.Build (black_box input);
   |}.
 Module ImplChoice.
 
@@ -629,7 +629,7 @@ Module Impl_ConditionallySelectable_for_Choice.
         (a : ref Choice)
         (b : ref Choice)
         (choice : Choice) :=
-      Choice
+      Choice.Build
         (Implu8.conditional_select
           (IndexedField.get (index := 0) a)
           (IndexedField.get (index := 0) b)
@@ -695,7 +695,7 @@ Module Impl__crate_fmt_Debug_for_CtOption.
     _crate.fmt.Debug.fmt
         (self : ref CtOption<T>)
         (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_struct_field2_finish
+      _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "CtOption"
         "value"
@@ -732,9 +732,9 @@ Module ImplCtOption.
           (deref left_val)
           (deref right_val)
           (_crate.option.Option.Some
-            (_crate::fmt::ImplArguments.new_v1
-              [""]
-              [_crate::fmt::ImplArgumentV1.new_display msg])) ;;
+            (_crate.fmt.ImplArguments.new_v1
+              [ "" ]
+              [ _crate.fmt.ImplArgumentV1.new_display msg ])) ;;
         tt
       else
         tt

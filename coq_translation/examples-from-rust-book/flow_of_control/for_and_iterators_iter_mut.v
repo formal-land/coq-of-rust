@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition main (_ : unit) : unit :=
-  let names := ComplexTypePath.into_vec ["Bob";"Frank";"Ferris"] in
+  let names := ComplexTypePath.into_vec [ "Bob"; "Frank"; "Ferris" ] in
   match into_iter (method "iter_mut" names) with
   | iter =>
     loop
@@ -22,8 +22,8 @@ Definition main (_ : unit) : unit :=
       for
   end ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["names: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug names]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "names: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug names ]) ;;
   tt ;;
   tt.

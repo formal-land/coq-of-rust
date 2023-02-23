@@ -15,7 +15,7 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
     _crate.fmt.Debug.fmt
         (self : ref Borrowed<'a>)
         (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_struct_field1_finish
+      _crate.fmt.ImplFormatter.debug_struct_field1_finish
         f
         "Borrowed"
         "x"
@@ -34,8 +34,8 @@ Module ImplBorrowed.
 Definition main (_ : unit) : unit :=
   let b := Default.default tt in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["b is ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug b]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "b is "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug b ]) ;;
   tt ;;
   tt.

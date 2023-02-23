@@ -4,25 +4,27 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main (_ : unit) : unit :=
   let count := 0 in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["Let's count until infinity!\n"] []) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "Let's count until infinity!\n" ]
+      [  ]) ;;
   tt ;;
   loop
     assign count := add count 1 ;;
     if eqb count 3 then
-      _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["three\n"] []) ;;
+      _crate.io._print (_crate.fmt.ImplArguments.new_v1 [ "three\n" ] [  ]) ;;
       tt ;;
       Continue ;;
       tt
     else
       tt ;;
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display count]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ ""; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display count ]) ;;
     tt ;;
     if eqb count 5 then
       _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1 ["OK, that's enough\n"] []) ;;
+        (_crate.fmt.ImplArguments.new_v1 [ "OK, that's enough\n" ] [  ]) ;;
       tt ;;
       Break ;;
       tt

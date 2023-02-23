@@ -21,15 +21,16 @@ Module ImplList.
     | Cons (head, tail) =>
       let res :=
         _crate.fmt.format
-          (_crate::fmt::ImplArguments.new_v1
-            ["";", "]
-            [_crate::fmt::ImplArgumentV1.new_display
-              head;_crate::fmt::ImplArgumentV1.new_display
-              (method "stringify" tail)]) in
+          (_crate.fmt.ImplArguments.new_v1
+            [ ""; ", " ]
+            [
+              _crate.fmt.ImplArgumentV1.new_display head;
+              _crate.fmt.ImplArgumentV1.new_display (method "stringify" tail)
+            ]) in
       res
     | Nil =>
       let res :=
-        _crate.fmt.format (_crate::fmt::ImplArguments.new_v1 ["Nil"] []) in
+        _crate.fmt.format (_crate.fmt.ImplArguments.new_v1 [ "Nil" ] [  ]) in
       res
     end.
 End ImplList.
@@ -41,13 +42,13 @@ Definition main (_ : unit) : unit :=
   assign list := method "prepend" list 2 ;;
   assign list := method "prepend" list 3 ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["linked list has length: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (method "len" list)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "linked list has length: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (method "len" list) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (method "stringify" list)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ ""; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (method "stringify" list) ]) ;;
   tt ;;
   tt.

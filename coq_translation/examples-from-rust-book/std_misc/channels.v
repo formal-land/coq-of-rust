@@ -18,9 +18,9 @@ Definition main (_ : unit) : unit :=
             (fun  =>
               method "unwrap" (method "send" thread_tx id) ;;
               _crate.io._print
-                (_crate::fmt::ImplArguments.new_v1
-                  ["thread ";" finished\n"]
-                  [_crate::fmt::ImplArgumentV1.new_display id]) ;;
+                (_crate.fmt.ImplArguments.new_v1
+                  [ "thread "; " finished\n" ]
+                  [ _crate.fmt.ImplArgumentV1.new_display id ]) ;;
               tt ;;
               tt) in
         method "push" children child ;;
@@ -61,8 +61,8 @@ Definition main (_ : unit) : unit :=
       for
   end ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug ids]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ ""; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug ids ]) ;;
   tt ;;
   tt.

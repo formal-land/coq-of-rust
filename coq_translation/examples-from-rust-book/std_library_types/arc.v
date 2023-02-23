@@ -13,9 +13,9 @@ Definition main (_ : unit) : unit :=
         thread.spawn
           (fun  =>
             _crate.io._print
-              (_crate::fmt::ImplArguments.new_v1
-                ["";"\n"]
-                [_crate::fmt::ImplArgumentV1.new_debug apple]) ;;
+              (_crate.fmt.ImplArguments.new_v1
+                [ ""; "\n" ]
+                [ _crate.fmt.ImplArgumentV1.new_debug apple ]) ;;
             tt ;;
             tt) ;;
         tt

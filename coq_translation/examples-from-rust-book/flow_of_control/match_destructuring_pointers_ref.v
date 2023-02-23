@@ -6,17 +6,17 @@ Definition main (_ : unit) : unit :=
   match reference with
   | val =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Got a value via destructuring: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug val]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "Got a value via destructuring: "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_debug val ]) ;;
     tt
   end ;;
   match deref reference with
   | val =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Got a value via dereferencing: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug val]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "Got a value via dereferencing: "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_debug val ]) ;;
     tt
   end ;;
   let _not_a_reference := 3 in
@@ -26,18 +26,18 @@ Definition main (_ : unit) : unit :=
   match value with
   | r =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Got a reference to a value: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug r]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "Got a reference to a value: "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_debug r ]) ;;
     tt
   end ;;
   match mut_value with
   | m =>
     assign deref m := add (deref m) 10 ;;
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["We added 10. `mut_value`: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug m]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "We added 10. `mut_value`: "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_debug m ]) ;;
     tt ;;
     tt
   end.

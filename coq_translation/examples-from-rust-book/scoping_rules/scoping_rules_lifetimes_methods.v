@@ -21,17 +21,19 @@ Module ImplOwner.
   
   Definition print (self : ref Owner) :=
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["`print`: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display
-          (IndexedField.get (index := 0) self)]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "`print`: "; "\n" ]
+        [
+          _crate.fmt.ImplArgumentV1.new_display
+            (IndexedField.get (index := 0) self)
+        ]) ;;
     tt ;;
     tt.
 End ImplOwner.
 (* End impl [Owner] *)
 
 Definition main (_ : unit) : unit :=
-  let owner := Owner 18 in
+  let owner := Owner.Build 18 in
   method "add_one" owner ;;
   method "print" owner ;;
   tt.

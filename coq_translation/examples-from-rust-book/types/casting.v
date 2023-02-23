@@ -8,83 +8,91 @@ Definition main (_ : unit) : unit :=
   let character := integer in
   let character := decimal in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Casting: ";" -> ";" -> ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        decimal;_crate::fmt::ImplArgumentV1.new_display
-        integer;_crate::fmt::ImplArgumentV1.new_display character]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "Casting: "; " -> "; " -> "; "\n" ]
+      [
+        _crate.fmt.ImplArgumentV1.new_display decimal;
+        _crate.fmt.ImplArgumentV1.new_display integer;
+        _crate.fmt.ImplArgumentV1.new_display character
+      ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["1000 as a u16 is: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display 1000]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "1000 as a u16 is: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display 1000 ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["1000 as a u8 is : ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display 1000]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "1000 as a u8 is : "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display 1000 ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["  -1 as a u8 is : ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (neg 1)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "  -1 as a u8 is : "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (neg 1) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["1000 mod 256 is : ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (rem 1000 256)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "1000 mod 256 is : "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (rem 1000 256) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      [" 128 as a i16 is: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display 128]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ " 128 as a i16 is: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display 128 ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      [" 128 as a i8 is : ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display 128]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ " 128 as a i8 is : "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display 128 ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["1000 as a u8 is : ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display 1000]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "1000 as a u8 is : "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display 1000 ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      [" 232 as a i8 is : ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display 232]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ " 232 as a i8 is : "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display 232 ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      [" 300.0 as u8 is : ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display 300 (* 300.0 *)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ " 300.0 as u8 is : "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display 300 (* 300.0 *) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["-100.0 as u8 is : ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (neg 100 (* 100.0 *))]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "-100.0 as u8 is : "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (neg 100 (* 100.0 *)) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["   nan as u8 is : ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display Implf32.NAN]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "   nan as u8 is : "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display Implf32.NAN ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      [" 300.0 as u8 is : ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        (method "to_int_unchecked" 300 (* 300.0 *))]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ " 300.0 as u8 is : "; "\n" ]
+      [
+        _crate.fmt.ImplArgumentV1.new_display
+          (method "to_int_unchecked" 300 (* 300.0 *))
+      ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["-100.0 as u8 is : ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        (method "to_int_unchecked" (neg 100 (* 100.0 *)))]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "-100.0 as u8 is : "; "\n" ]
+      [
+        _crate.fmt.ImplArgumentV1.new_display
+          (method "to_int_unchecked" (neg 100 (* 100.0 *)))
+      ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["   nan as u8 is : ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        (method "to_int_unchecked" Implf32.NAN)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "   nan as u8 is : "; "\n" ]
+      [
+        _crate.fmt.ImplArgumentV1.new_display
+          (method "to_int_unchecked" Implf32.NAN)
+      ]) ;;
   tt ;;
   tt.

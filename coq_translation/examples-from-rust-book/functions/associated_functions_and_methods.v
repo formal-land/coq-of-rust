@@ -67,10 +67,12 @@ Module ImplPair.
   Definition destroy (self : Pair) :=
     let Pair (first, second) := self in
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Destroying Pair(";", ";")\n"]
-        [_crate::fmt::ImplArgumentV1.new_display
-          first;_crate::fmt::ImplArgumentV1.new_display second]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "Destroying Pair("; ", "; ")\n" ]
+        [
+          _crate.fmt.ImplArgumentV1.new_display first;
+          _crate.fmt.ImplArgumentV1.new_display second
+        ]) ;;
     tt ;;
     tt.
 End ImplPair.
@@ -83,15 +85,15 @@ Definition main (_ : unit) : unit :=
       Rectangle.p2 := ImplPoint.new 3 (* 3.0 *) 4 (* 4.0 *);
     |} in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Rectangle perimeter: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display
-        (method "perimeter" rectangle)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "Rectangle perimeter: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (method "perimeter" rectangle)
+      ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Rectangle area: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (method "area" rectangle)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "Rectangle area: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display (method "area" rectangle) ]) ;;
   tt ;;
   let square :=
     {|
@@ -99,6 +101,6 @@ Definition main (_ : unit) : unit :=
       Rectangle.p2 := ImplPoint.new 1 (* 1.0 *) 1 (* 1.0 *);
     |} in
   method "translate" square 1 (* 1.0 *) 1 (* 1.0 *) ;;
-  let pair := Pair (ImplBox.new 1) (ImplBox.new 2) in
+  let pair := Pair.Build (ImplBox.new 1) (ImplBox.new 2) in
   method "destroy" pair ;;
   tt.

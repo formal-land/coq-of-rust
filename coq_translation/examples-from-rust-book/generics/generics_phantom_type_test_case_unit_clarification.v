@@ -72,7 +72,7 @@ Module Impl__crate_fmt_Debug_for_Length.
     _crate.fmt.Debug.fmt
         (self : ref Length<Unit>)
         (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_tuple_field2_finish
+      _crate.fmt.ImplFormatter.debug_tuple_field2_finish
         f
         "Length"
         (IndexedField.get (index := 0) self)
@@ -85,7 +85,7 @@ Module Impl__crate_clone_Clone_for_Length.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
     _crate.clone.Clone.clone (self : ref Length<Unit>) :=
-      Length
+      Length.Build
         (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
         (_crate.clone.Clone.clone (IndexedField.get (index := 1) self));
   |}.
@@ -104,7 +104,7 @@ Module Impl_Add_for_Length.
   Global Instance I : Add.Class Self := {|
     Add.Output := Length;
     Add.add (self : Length<Unit>) (rhs : Length) :=
-      Length
+      Length.Build
         (add
           (IndexedField.get (index := 0) self)
           (IndexedField.get (index := 0) rhs))
@@ -113,20 +113,24 @@ Module Impl_Add_for_Length.
 Module ImplLength.
 
 Definition main (_ : unit) : unit :=
-  let one_foot := Length 12 (* 12.0 *) PhantomData in
-  let one_meter := Length 1000 (* 1000.0 *) PhantomData in
+  let one_foot := Length.Build 12 (* 12.0 *) PhantomData in
+  let one_meter := Length.Build 1000 (* 1000.0 *) PhantomData in
   let two_feet := add one_foot one_foot in
   let two_meters := add one_meter one_meter in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["one foot + one_foot = ";" in\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug
-        (IndexedField.get (index := 0) two_feet)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "one foot + one_foot = "; " in\n" ]
+      [
+        _crate.fmt.ImplArgumentV1.new_debug
+          (IndexedField.get (index := 0) two_feet)
+      ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["one meter + one_meter = ";" mm\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug
-        (IndexedField.get (index := 0) two_meters)]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "one meter + one_meter = "; " mm\n" ]
+      [
+        _crate.fmt.ImplArgumentV1.new_debug
+          (IndexedField.get (index := 0) two_meters)
+      ]) ;;
   tt ;;
   tt.

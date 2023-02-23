@@ -17,7 +17,7 @@ impl fmt::Display for Path {
 impl Path {
     pub fn local(name: String) -> Path {
         Path {
-            segments: vec![name],
+            segments: vec![to_valid_coq_name(name)],
         }
     }
 }
@@ -50,19 +50,21 @@ pub fn compile_qpath(qpath: &QPath) -> Path {
                 _ => Path::local("ComplexTypePath".to_string()),
             };
             Path {
-                segments: vec![ty.to_string(), segment.ident.name.to_string()],
+                segments: vec![ty.to_string(), segment.ident.name.to_string()]
+                    .iter()
+                    .map(|segment| to_valid_coq_name(segment.to_string()))
+                    .collect(),
             }
         }
         QPath::LangItem(lang_item, _, _) => Path {
-            segments: vec![lang_item.name().to_string()],
+            segments: vec![to_valid_coq_name(lang_item.name().to_string())],
         },
     }
 }
 
-fn to_valid_coq_name(str: String) -> String {
-    str.chars()
-        .map(|char| if char == '$' { '_' } else { char })
-        .collect()
+pub fn to_valid_coq_name(str: String) -> String {
+    let str = str::replace(&str, "$", "_");
+    str::replace(&str, "::", ".")
 }
 
 impl Path {

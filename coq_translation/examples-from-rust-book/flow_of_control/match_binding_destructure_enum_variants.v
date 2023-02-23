@@ -7,15 +7,15 @@ Definition main (_ : unit) : unit :=
   match some_number tt with
   | Some (n) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["The Answer: ";"!\n"]
-        [_crate::fmt::ImplArgumentV1.new_display n]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "The Answer: "; "!\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display n ]) ;;
     tt
   | Some (n) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Not interesting... ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display n]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "Not interesting... "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display n ]) ;;
     tt
   | _ => ()
   end.

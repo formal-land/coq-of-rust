@@ -17,7 +17,7 @@ Module Impl__crate_fmt_Debug_for_EvenNumber.
     _crate.fmt.Debug.fmt
         (self : ref EvenNumber)
         (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+      _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "EvenNumber"
         (IndexedField.get (index := 0) self);
@@ -49,14 +49,14 @@ Module Impl_TryFrom_for_EvenNumber.
     TryFrom.Error := ;
     TryFrom.try_from (value : i32) :=
       if eqb (rem value 2) 0 then
-        Ok (EvenNumber value)
+        Ok (EvenNumber.Build value)
       else
         Err ();
   |}.
 Module ImplEvenNumber.
 
 Definition main (_ : unit) : unit :=
-  match (ImplEvenNumber.try_from 8, Ok (EvenNumber 8)) with
+  match (ImplEvenNumber.try_from 8, Ok (EvenNumber.Build 8)) with
   | (left_val, right_val) =>
     if not (eqb (deref left_val) (deref right_val)) then
       let kind := _crate.panicking.AssertKind.Eq in
@@ -83,7 +83,7 @@ Definition main (_ : unit) : unit :=
       tt
   end ;;
   let result := method "try_into" 8 in
-  match (result, Ok (EvenNumber 8)) with
+  match (result, Ok (EvenNumber.Build 8)) with
   | (left_val, right_val) =>
     if not (eqb (deref left_val) (deref right_val)) then
       let kind := _crate.panicking.AssertKind.Eq in

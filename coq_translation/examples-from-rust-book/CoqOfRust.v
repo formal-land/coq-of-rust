@@ -133,5 +133,22 @@ Module _crate.
       }.
     End Clone.
   End clone.
-End _crate.
 
+  Module io.
+    Parameter _print : forall {A : Set}, A -> unit.
+  End io.
+
+  Module fmt.
+    Module ImplArguments.
+      Parameter new_v1 : forall {A B : Set}, A -> B -> unit.
+      Parameter new_v1_formatted : forall {A B C : Set}, A -> B -> C -> unit.
+    End ImplArguments.
+
+    Module ImplArgumentV1.
+      Parameter new_display : forall {A : Set}, A -> unit.
+      Parameter new_binary : forall {A : Set}, A -> unit.
+      Parameter new_octal : forall {A : Set}, A -> unit.
+      Parameter new_lower_hex : forall {A : Set}, A -> unit.
+    End ImplArgumentV1.
+  End fmt.
+End _crate.

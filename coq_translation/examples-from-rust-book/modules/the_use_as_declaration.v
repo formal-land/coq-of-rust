@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["called `function()`\n"] []) ;;
+    (_crate.fmt.ImplArguments.new_v1 [ "called `function()`\n" ] [  ]) ;;
   tt ;;
   tt.
 
@@ -15,9 +15,9 @@ Module
     :=
     Definition function (_ : unit) : unit :=
       _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["called `deeply::nested::function()`\n"]
-          []) ;;
+        (_crate.fmt.ImplArguments.new_v1
+          [ "called `deeply::nested::function()`\n" ]
+          [  ]) ;;
       tt ;;
       tt...
 
@@ -26,24 +26,24 @@ Module
   :=
   Definition function (_ : unit) : unit :=
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["called `deeply::nested::function()`\n"]
-        []) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "called `deeply::nested::function()`\n" ]
+        [  ]) ;;
     tt ;;
     tt..
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["called `deeply::nested::function()`\n"]
-      []) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "called `deeply::nested::function()`\n" ]
+      [  ]) ;;
   tt ;;
   tt.
 
 Definition main (_ : unit) : unit :=
   other_function tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1 ["Entering block\n"] []) ;;
+    (_crate.fmt.ImplArguments.new_v1 [ "Entering block\n" ] [  ]) ;;
   tt ;;
   Stmt_item ;;
   function tt ;;

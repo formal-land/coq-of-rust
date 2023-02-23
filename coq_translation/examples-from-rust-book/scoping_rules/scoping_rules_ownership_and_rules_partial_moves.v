@@ -16,9 +16,9 @@ Module Impl__crate_fmt_Debug_for_Person.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
     _crate.fmt.Debug.fmt
-        (self : ref main::Person)
+        (self : ref main.Person)
         (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_struct_field2_finish
+      _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "Person"
         "name"

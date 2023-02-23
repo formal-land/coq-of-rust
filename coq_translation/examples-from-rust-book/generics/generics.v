@@ -22,9 +22,9 @@ End SingleGen.
 Definition SingleGen := SingleGen.t.
 
 Definition main (_ : unit) : unit :=
-  let _s := Single A in
-  let _char := SingleGen a in
-  let _t := SingleGen A in
-  let _i32 := SingleGen 6 in
-  let _char := SingleGen a in
+  let _s := Single.Build A in
+  let _char := SingleGen.Build a in
+  let _t := SingleGen.Build A in
+  let _i32 := SingleGen.Build 6 in
+  let _char := SingleGen.Build a in
   tt.

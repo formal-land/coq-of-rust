@@ -5,28 +5,28 @@ Definition main (_ : unit) : unit :=
   let bytestring :=
     [116, 104, 105, 115, 32, 105, 115, 32, 97, 32, 98, 121, 116, 101, 32, 115, 116, 114, 105, 110, 103] in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["A byte string: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug bytestring]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "A byte string: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug bytestring ]) ;;
   tt ;;
   let escaped := [82, 117, 115, 116, 32, 97, 115, 32, 98, 121, 116, 101, 115] in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Some escaped bytes: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug escaped]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "Some escaped bytes: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug escaped ]) ;;
   tt ;;
   let raw_bytestring :=
     [92, 117, 123, 50, 49, 49, 68, 125, 32, 105, 115, 32, 110, 111, 116, 32, 101, 115, 99, 97, 112, 101, 100, 32, 104, 101, 114, 101] in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug raw_bytestring]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ ""; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug raw_bytestring ]) ;;
   tt ;;
   if let_if Ok (my_str) := str.from_utf8 raw_bytestring then
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["And the same as text: '";"'\n"]
-        [_crate::fmt::ImplArgumentV1.new_display my_str]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "And the same as text: '"; "'\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display my_str ]) ;;
     tt ;;
     tt
   else
@@ -37,15 +37,15 @@ Definition main (_ : unit) : unit :=
   match str.from_utf8 shift_jis with
   | Ok (my_str) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Conversion successful: '";"'\n"]
-        [_crate::fmt::ImplArgumentV1.new_display my_str]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "Conversion successful: '"; "'\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display my_str ]) ;;
     tt
   | Err (e) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["Conversion failed: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_debug e]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "Conversion failed: "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_debug e ]) ;;
     tt
   end ;;
   tt.

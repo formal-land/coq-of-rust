@@ -6,30 +6,33 @@ Error Enum.
 Definition inspect (event : WebEvent) : unit :=
   match event with
   | WebEvent.PageLoad =>
-    _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["page loaded\n"] []) ;;
+    _crate.io._print
+      (_crate.fmt.ImplArguments.new_v1 [ "page loaded\n" ] [  ]) ;;
     tt
   | WebEvent.PageUnload =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1 ["page unloaded\n"] []) ;;
+      (_crate.fmt.ImplArguments.new_v1 [ "page unloaded\n" ] [  ]) ;;
     tt
   | WebEvent.KeyPress (c) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["pressed '";"'.\n"]
-        [_crate::fmt::ImplArgumentV1.new_display c]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "pressed '"; "'.\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display c ]) ;;
     tt
   | WebEvent.Paste (s) =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["pasted \"";"\".\n"]
-        [_crate::fmt::ImplArgumentV1.new_display s]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "pasted \""; "\".\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display s ]) ;;
     tt
   | {| WebEvent.Click.x := x; WebEvent.Click.y := y; |} =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["clicked at x=";", y=";".\n"]
-        [_crate::fmt::ImplArgumentV1.new_display
-          x;_crate::fmt::ImplArgumentV1.new_display y]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "clicked at x="; ", y="; ".\n" ]
+        [
+          _crate.fmt.ImplArgumentV1.new_display x;
+          _crate.fmt.ImplArgumentV1.new_display y
+        ]) ;;
     tt ;;
     tt
   end.

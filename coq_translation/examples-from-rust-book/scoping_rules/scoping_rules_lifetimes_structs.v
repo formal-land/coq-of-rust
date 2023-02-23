@@ -17,7 +17,7 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
     _crate.fmt.Debug.fmt
         (self : ref Borrowed<'a>)
         (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_tuple_field1_finish
+      _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Borrowed"
         (IndexedField.get (index := 0) self);
@@ -39,7 +39,7 @@ Module Impl__crate_fmt_Debug_for_NamedBorrowed.
     _crate.fmt.Debug.fmt
         (self : ref NamedBorrowed<'a>)
         (f : mut_ref _crate.fmt.Formatter) :=
-      _crate::fmt::ImplFormatter.debug_struct_field2_finish
+      _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "NamedBorrowed"
         "x"
@@ -60,9 +60,9 @@ Module Impl__crate_fmt_Debug_for_Either.
         (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Either.Num (__self_0) =>
-        _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Num" __self_0
+        _crate.fmt.ImplFormatter.debug_tuple_field1_finish f "Num" __self_0
       | Either.Ref (__self_0) =>
-        _crate::fmt::ImplFormatter.debug_tuple_field1_finish f "Ref" __self_0
+        _crate.fmt.ImplFormatter.debug_tuple_field1_finish f "Ref" __self_0
       end;
   |}.
 Module ImplEither.
@@ -70,28 +70,28 @@ Module ImplEither.
 Definition main (_ : unit) : unit :=
   let x := 18 in
   let y := 15 in
-  let single := Borrowed x in
+  let single := Borrowed.Build x in
   let double := {| NamedBorrowed.x := x; NamedBorrowed.y := y; |} in
   let reference := Either.Ref x in
   let number := Either.Num y in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["x is borrowed in ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug single]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "x is borrowed in "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug single ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["x and y are borrowed in ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug double]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "x and y are borrowed in "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug double ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["x is borrowed in ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug reference]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "x is borrowed in "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug reference ]) ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["y is *not* borrowed in ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug number]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "y is *not* borrowed in "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_debug number ]) ;;
   tt ;;
   tt.

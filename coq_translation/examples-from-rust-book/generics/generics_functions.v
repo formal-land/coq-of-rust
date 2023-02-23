@@ -30,9 +30,9 @@ Definition gen_spec_i32 (_s : SGen) : unit := tt.
 Definition generic {T : Set} (_s : SGen) : unit := tt.
 
 Definition main (_ : unit) : unit :=
-  reg_fn (S A) ;;
-  gen_spec_t (SGen A) ;;
-  gen_spec_i32 (SGen 6) ;;
-  generic (SGen a) ;;
-  generic (SGen c) ;;
+  reg_fn (S.Build A) ;;
+  gen_spec_t (SGen.Build A) ;;
+  gen_spec_i32 (SGen.Build 6) ;;
+  generic (SGen.Build a) ;;
+  generic (SGen.Build c) ;;
   tt.

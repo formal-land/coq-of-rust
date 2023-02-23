@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition main (_ : unit) : unit :=
-  let some_vector := ComplexTypePath.into_vec [1;2;3;4] in
+  let some_vector := ComplexTypePath.into_vec [ 1; 2; 3; 4 ] in
   let pointer := method "as_ptr" some_vector in
   let length := method "len" some_vector in
   let my_slice := slice.from_raw_parts pointer length in

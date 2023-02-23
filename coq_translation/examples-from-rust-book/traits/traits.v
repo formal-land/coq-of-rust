@@ -38,16 +38,16 @@ Module ImplSheep.
   Definition shear (self : mut_ref Sheep) :=
     if method "is_naked" self then
       _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["";" is already naked...\n"]
-          [_crate::fmt::ImplArgumentV1.new_display (method "name" self)]) ;;
+        (_crate.fmt.ImplArguments.new_v1
+          [ ""; " is already naked...\n" ]
+          [ _crate.fmt.ImplArgumentV1.new_display (method "name" self) ]) ;;
       tt ;;
       tt
     else
       _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["";" gets a haircut!\n"]
-          [_crate::fmt::ImplArgumentV1.new_display self.name]) ;;
+        (_crate.fmt.ImplArguments.new_v1
+          [ ""; " gets a haircut!\n" ]
+          [ _crate.fmt.ImplArgumentV1.new_display self.name ]) ;;
       tt ;;
       assign self.naked := true ;;
       tt.
@@ -68,11 +68,12 @@ Module Impl_Animal_for_Sheep.
         "baaaaah!";
     Animal.talk (self : ref Sheep) :=
       _crate.io._print
-        (_crate::fmt::ImplArguments.new_v1
-          ["";" pauses briefly... ";"\n"]
-          [_crate::fmt::ImplArgumentV1.new_display
-            self.name;_crate::fmt::ImplArgumentV1.new_display
-            (method "noise" self)]) ;;
+        (_crate.fmt.ImplArguments.new_v1
+          [ ""; " pauses briefly... "; "\n" ]
+          [
+            _crate.fmt.ImplArgumentV1.new_display self.name;
+            _crate.fmt.ImplArgumentV1.new_display (method "noise" self)
+          ]) ;;
       tt ;;
       tt;
   |}.

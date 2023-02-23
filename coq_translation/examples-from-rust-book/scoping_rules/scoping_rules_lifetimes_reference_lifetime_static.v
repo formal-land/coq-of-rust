@@ -8,22 +8,22 @@ Definition coerce_static (arg : ref i32) : ref i32 := NUM.
 Definition main (_ : unit) : unit :=
   let static_string := "I'm in read-only memory" in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["static_string: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display static_string]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "static_string: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display static_string ]) ;;
   tt ;;
   tt ;;
   let lifetime_num := 9 in
   let coerced_static := coerce_static lifetime_num in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["coerced_static: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display coerced_static]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "coerced_static: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display coerced_static ]) ;;
   tt ;;
   tt ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["NUM: ";" stays accessible!\n"]
-      [_crate::fmt::ImplArgumentV1.new_display NUM]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "NUM: "; " stays accessible!\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display NUM ]) ;;
   tt ;;
   tt.

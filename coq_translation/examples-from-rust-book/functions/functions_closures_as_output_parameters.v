@@ -5,9 +5,9 @@ Definition create_fn (_ : unit) : OpaqueDef :=
   let text := method "to_owned" "Fn" in
   fun  =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["This is a: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display text]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "This is a: "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display text ]) ;;
     tt.
 
 Error OpaqueTy.
@@ -16,9 +16,9 @@ Definition create_fnmut (_ : unit) : OpaqueDef :=
   let text := method "to_owned" "FnMut" in
   fun  =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["This is a: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display text]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "This is a: "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display text ]) ;;
     tt.
 
 Error OpaqueTy.
@@ -27,9 +27,9 @@ Definition create_fnonce (_ : unit) : OpaqueDef :=
   let text := method "to_owned" "FnOnce" in
   fun  =>
     _crate.io._print
-      (_crate::fmt::ImplArguments.new_v1
-        ["This is a: ";"\n"]
-        [_crate::fmt::ImplArgumentV1.new_display text]) ;;
+      (_crate.fmt.ImplArguments.new_v1
+        [ "This is a: "; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_display text ]) ;;
     tt.
 
 Error OpaqueTy.

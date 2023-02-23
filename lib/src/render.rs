@@ -10,10 +10,6 @@ pub(crate) fn paren(with_paren: bool, doc: RcDoc<()>) -> RcDoc<()> {
     }
 }
 
-pub(crate) fn bracket(doc: RcDoc<()>) -> RcDoc<()> {
-    return RcDoc::concat([RcDoc::text("["), doc, RcDoc::text("]")]);
-}
-
 fn round_symbol(symbol: &Symbol) -> i32 {
     let s = symbol.as_str();
     s.parse::<f64>().unwrap().round() as i32

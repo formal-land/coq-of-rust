@@ -5,9 +5,9 @@ Definition is_odd (n : u32) : bool := eqb (rem n 2) 1.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["Find the sum of all the squared odd numbers under 1000\n"]
-      []) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "Find the sum of all the squared odd numbers under 1000\n" ]
+      [  ]) ;;
   tt ;;
   let upper := 1000 in
   let acc := 0 in
@@ -33,9 +33,9 @@ Definition main (_ : unit) : unit :=
       for
   end ;;
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["imperative style: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display acc]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "imperative style: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display acc ]) ;;
   tt ;;
   let sum_of_squared_odd_numbers :=
     method
@@ -48,8 +48,8 @@ Definition main (_ : unit) : unit :=
           (fun n_squared => lt n_squared upper))
         (fun n_squared => is_odd n_squared)) in
   _crate.io._print
-    (_crate::fmt::ImplArguments.new_v1
-      ["functional style: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display sum_of_squared_odd_numbers]) ;;
+    (_crate.fmt.ImplArguments.new_v1
+      [ "functional style: "; "\n" ]
+      [ _crate.fmt.ImplArgumentV1.new_display sum_of_squared_odd_numbers ]) ;;
   tt ;;
   tt.

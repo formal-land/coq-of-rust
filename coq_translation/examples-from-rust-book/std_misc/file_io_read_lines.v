@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition read_lines (filename : String) : io.Lines :=
   let file := method "unwrap" (ImplFile.open filename) in
-  Return (method "lines" (io::ImplBufReader.new file)) ;;
+  Return (method "lines" (io.ImplBufReader.new file)) ;;
   tt.
 
 Definition main (_ : unit) : unit :=
@@ -15,9 +15,9 @@ Definition main (_ : unit) : unit :=
       | {|  |} => Break
       | {| Some.0 := line; |} =>
         _crate.io._print
-          (_crate::fmt::ImplArguments.new_v1
-            ["";"\n"]
-            [_crate::fmt::ImplArgumentV1.new_display (method "unwrap" line)]) ;;
+          (_crate.fmt.ImplArguments.new_v1
+            [ ""; "\n" ]
+            [ _crate.fmt.ImplArgumentV1.new_display (method "unwrap" line) ]) ;;
         tt ;;
         tt
       end ;;
