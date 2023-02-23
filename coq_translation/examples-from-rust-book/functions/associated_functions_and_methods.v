@@ -34,12 +34,12 @@ Module ImplRectangle.
   Definition area (self : ref Rectangle) : f64 :=
     let {| Point.x := x1; Point.y := y1; |} := self.p1 in
     let {| Point.x := x2; Point.y := y2; |} := self.p2 in
-    abs (mul (sub x1 x2) (sub y1 y2)).
+    method "abs" (mul (sub x1 x2) (sub y1 y2)).
   
   Definition perimeter (self : ref Rectangle) : f64 :=
     let {| Point.x := x1; Point.y := y1; |} := self.p1 in
     let {| Point.x := x2; Point.y := y2; |} := self.p2 in
-    mul 2 (* 2.0 *) (add (abs (sub x1 x2)) (abs (sub y1 y2))).
+    mul 2 (* 2.0 *) (add (method "abs" (sub x1 x2)) (method "abs" (sub y1 y2))).
   
   Definition translate (self : mut_ref Rectangle) (x : f64) (y : f64) :=
     assign self.p1.x := add self.p1.x x ;;
@@ -51,7 +51,7 @@ End ImplRectangle.
 (* End impl [Rectangle] *)
 
 Module Pair.
-  Inductive t : Set := Build (_ : Box * Box).
+  Inductive t : Set := Build (_ : Box) (_ : Box).
   
   Global Instance Get_0 : IndexedField.Class t 0 Box := {|
     IndexedField.get '(Build x0 _) := x0;
@@ -85,19 +85,20 @@ Definition main (_ : unit) :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Rectangle perimeter: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (perimeter rectangle)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_display
+        (method "perimeter" rectangle)]) ;;
   tt ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Rectangle area: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (area rectangle)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_display (method "area" rectangle)]) ;;
   tt ;;
   let square :=
     {|
       Rectangle.p1 := ImplPoint.origin tt;
       Rectangle.p2 := ImplPoint.new 1 (* 1.0 *) 1 (* 1.0 *);
     |} in
-  translate square 1 (* 1.0 *) 1 (* 1.0 *) ;;
+  method "translate" square 1 (* 1.0 *) 1 (* 1.0 *) ;;
   let pair := Pair (ImplBox.new 1) (ImplBox.new 2) in
-  destroy pair ;;
+  method "destroy" pair ;;
   tt.

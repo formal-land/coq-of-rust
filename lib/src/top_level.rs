@@ -45,9 +45,11 @@ enum TopLevelItem {
     },
     Trait {
         name: String,
+        ty_params: Vec<String>,
         body: Vec<(String, TraitItem)>,
     },
     TraitImpl {
+        ty_params: Vec<CoqType>,
         self_ty: CoqType,
         of_trait: Path,
         body: TopLevel,
@@ -141,9 +143,14 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
             VariantData::Unit(_, _) => vec![TopLevelItem::Error("StructUnit".to_string())],
         },
         ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
-        ItemKind::Trait(_, _, _, _, items) => {
+        ItemKind::Trait(_, _, generics, _, items) => {
             vec![TopLevelItem::Trait {
                 name: item.ident.name.to_string(),
+                ty_params: generics
+                    .params
+                    .iter()
+                    .map(|param| param.name.ident().to_string())
+                    .collect(),
                 body: items
                     .iter()
                     .map(|item| {
@@ -218,6 +225,7 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
             let self_ty = compile_type(&tcx, self_ty);
             match of_trait {
                 Some(trait_ref) => vec![TopLevelItem::TraitImpl {
+                    ty_params: compile_path_ty_params(&tcx, trait_ref.path),
                     self_ty,
                     of_trait: compile_path(trait_ref.path),
                     body: TopLevel(items),
@@ -246,7 +254,7 @@ pub fn compile_top_level(tcx: TyCtxt) -> TopLevel {
 impl TraitItem {
     fn to_doc(&self) -> Doc {
         match self {
-            TraitItem::Definition { ty } => ty.to_doc(),
+            TraitItem::Definition { ty } => ty.to_doc(false),
             TraitItem::Type => text("Set"),
         }
     }
@@ -275,7 +283,7 @@ impl TopLevelItem {
                                     line(),
                                     text(":"),
                                     line(),
-                                    ty.to_doc(),
+                                    ty.to_doc(false),
                                     text(")"),
                                 ])
                             }),
@@ -287,7 +295,7 @@ impl TopLevelItem {
                         None => nil(),
                     },
                     match ret_ty {
-                        Some(ty) => nest([text(":"), line(), ty.to_doc(), text(" :=")]),
+                        Some(ty) => nest([text(":"), line(), ty.to_doc(false), text(" :=")]),
                         None => text(" :="),
                     },
                 ]),
@@ -318,7 +326,7 @@ impl TopLevelItem {
                     text(":="),
                 ]),
                 line(),
-                ty.to_doc(),
+                ty.to_doc(false),
                 text("."),
             ]),
             TopLevelItem::TypeStructStruct { name, fields } => {
@@ -330,7 +338,7 @@ impl TopLevelItem {
                             line(),
                             text(":"),
                             line(),
-                            ty.to_doc(),
+                            ty.to_doc(false),
                             text(";"),
                         ]),
                     ])
@@ -395,15 +403,12 @@ impl TopLevelItem {
                         nest([
                             text("Build"),
                             line(),
-                            nest([
-                                text("(_ :"),
-                                line(),
-                                intersperse(
-                                    fields.iter().map(|ty| ty.to_doc()),
-                                    [text(" *"), line()],
-                                ),
-                                text(")"),
-                            ]),
+                            intersperse(
+                                fields.iter().map(|ty| {
+                                    nest([text("(_ :"), line(), ty.to_doc(false), text(")")])
+                                }),
+                                [line()],
+                            ),
                         ]),
                         text("."),
                     ]),
@@ -430,7 +435,7 @@ impl TopLevelItem {
                                             line(),
                                             text(i.to_string()),
                                             line(),
-                                            ty.to_doc(),
+                                            ty.to_doc(false),
                                             text(" := {|"),
                                         ]),
                                     ]),
@@ -483,7 +488,7 @@ impl TopLevelItem {
             ]),
             TopLevelItem::Impl { self_ty, body } => group([
                 text("(* Impl ["),
-                self_ty.to_doc(),
+                self_ty.to_doc(false),
                 text("] "),
                 text("*)"),
                 hardline(),
@@ -491,7 +496,7 @@ impl TopLevelItem {
                     text("Module"),
                     line(),
                     text("Impl"),
-                    self_ty.to_doc(),
+                    self_ty.to_doc(false),
                     text("."),
                 ]),
                 nest([hardline(), body.to_doc()]),
@@ -500,15 +505,19 @@ impl TopLevelItem {
                     text("End"),
                     line(),
                     text("Impl"),
-                    self_ty.to_doc(),
+                    self_ty.to_doc(false),
                     text("."),
                 ]),
                 hardline(),
                 text("(* End impl ["),
-                self_ty.to_doc(),
+                self_ty.to_doc(false),
                 text("] *)"),
             ]),
-            TopLevelItem::Trait { name, body } => group([
+            TopLevelItem::Trait {
+                name,
+                ty_params,
+                body,
+            } => group([
                 nest([text("Module"), line(), text(name), text(".")]),
                 nest([
                     hardline(),
@@ -525,6 +534,7 @@ impl TopLevelItem {
                             line(),
                             nest([
                                 text("("),
+                                concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
                                 text("Self"),
                                 line(),
                                 text(":"),
@@ -563,13 +573,68 @@ impl TopLevelItem {
                     if body.is_empty() {
                         group([hardline(), text("Global Set Primitive Projections.")])
                     } else {
-                        nil()
+                        hardline()
                     },
+                    concat(body.iter().map(|(name, item)| {
+                        concat([
+                            hardline(),
+                            nest([
+                                nest([
+                                    text("Global Instance"),
+                                    line(),
+                                    text(format!("Method_{name}")),
+                                    line(),
+                                    nest([
+                                        text("{"),
+                                        concat(
+                                            ty_params.iter().map(|ty| concat([text(ty), line()])),
+                                        ),
+                                        text("Self"),
+                                        line(),
+                                        text(": Set}"),
+                                    ]),
+                                    line(),
+                                    nest([
+                                        text("`{Class"),
+                                        line(),
+                                        concat(
+                                            ty_params.iter().map(|ty| concat([text(ty), line()])),
+                                        ),
+                                        text("Self}"),
+                                    ]),
+                                ]),
+                                line(),
+                                nest([
+                                    text(": Method"),
+                                    line(),
+                                    text(format!("\"{name}\"")),
+                                    line(),
+                                    text("_"),
+                                    line(),
+                                    text(":= {|"),
+                                ]),
+                            ]),
+                            nest([
+                                hardline(),
+                                nest([
+                                    text("method"),
+                                    line(),
+                                    text(":="),
+                                    line(),
+                                    text(name),
+                                    text(";"),
+                                ]),
+                            ]),
+                            hardline(),
+                            text("|}."),
+                        ])
+                    })),
                 ]),
                 hardline(),
                 nest([text("End"), line(), text(name), text(".")]),
             ]),
             TopLevelItem::TraitImpl {
+                ty_params,
                 self_ty,
                 of_trait,
                 body,
@@ -592,7 +657,7 @@ impl TopLevelItem {
                         line(),
                         text(":="),
                         line(),
-                        self_ty.to_doc(),
+                        self_ty.to_doc(false),
                         text("."),
                     ]),
                     hardline(),
@@ -606,6 +671,11 @@ impl TopLevelItem {
                                 line(),
                                 of_trait.to_doc(),
                                 text(".Class"),
+                                concat(
+                                    ty_params
+                                        .iter()
+                                        .map(|ty_param| concat([line(), ty_param.to_doc(false)])),
+                                ),
                                 line(),
                                 text("Self"),
                             ]),
@@ -639,7 +709,7 @@ impl TopLevelItem {
                                                     line(),
                                                     text(":"),
                                                     line(),
-                                                    ty.to_doc(),
+                                                    ty.to_doc(false),
                                                     text(")"),
                                                 ])
                                                 .group()
@@ -661,7 +731,7 @@ impl TopLevelItem {
                                     text(name),
                                     text(" :="),
                                     line(),
-                                    ty.to_doc(),
+                                    ty.to_doc(false),
                                     text(";"),
                                 ]),
                             ]),

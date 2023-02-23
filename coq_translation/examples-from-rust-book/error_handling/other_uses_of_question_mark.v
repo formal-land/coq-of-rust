@@ -21,7 +21,8 @@ Module Impl_fmt_Display_for_EmptyVec.
   
   Global Instance I : fmt.Display.Class Self := {|
     fmt.Display.fmt (self : ref EmptyVec) (f : mut_ref fmt.Formatter) :=
-      write_fmt
+      method
+        "write_fmt"
         f
         (_crate::fmt::ImplArguments.new_v1 ["invalid first item to double"] []);
   |}.
@@ -35,12 +36,12 @@ Module ImplEmptyVec.
 
 Definition double_first (_ : unit) :=
   let first :=
-    match branch (ok_or (first vec) EmptyVec) with
+    match branch (method "ok_or" (method "first" vec) EmptyVec) with
     | {| Break.0 := residual; |} => Return (from_residual residual)
     | {| Continue.0 := val; |} => val
     end in
   let parsed :=
-    match branch (parse first) with
+    match branch (method "parse" first) with
     | {| Break.0 := residual; |} => Return (from_residual residual)
     | {| Continue.0 := val; |} => val
     end in

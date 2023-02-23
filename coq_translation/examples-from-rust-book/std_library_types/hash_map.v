@@ -12,11 +12,11 @@ Definition call (_ : unit) :=
 
 Definition main (_ : unit) :=
   let contacts := ImplHashMap.new tt in
-  insert contacts "Daniel" "798-1364" ;;
-  insert contacts "Ashley" "645-7689" ;;
-  insert contacts "Katie" "435-8291" ;;
-  insert contacts "Robert" "956-1745" ;;
-  match get contacts "Daniel" with
+  method "insert" contacts "Daniel" "798-1364" ;;
+  method "insert" contacts "Ashley" "645-7689" ;;
+  method "insert" contacts "Katie" "435-8291" ;;
+  method "insert" contacts "Robert" "956-1745" ;;
+  match method "get" contacts "Daniel" with
   | Some (number) =>
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1
@@ -30,8 +30,8 @@ Definition main (_ : unit) :=
         []) ;;
     tt
   end ;;
-  insert contacts "Daniel" "164-6743" ;;
-  match get contacts "Ashley" with
+  method "insert" contacts "Daniel" "164-6743" ;;
+  match method "get" contacts "Ashley" with
   | Some (number) =>
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1
@@ -45,8 +45,8 @@ Definition main (_ : unit) :=
         []) ;;
     tt
   end ;;
-  remove contacts "Ashley" ;;
-  match into_iter (iter contacts) with
+  method "remove" contacts "Ashley" ;;
+  match into_iter (method "iter" contacts) with
   | iter =>
     loop
       match next iter with

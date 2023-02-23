@@ -12,7 +12,7 @@ Definition sum_odd_numbers (_ : unit) :=
       | {|  |} => Break
       | {| Some.0 := i; |} =>
         let addition :=
-          match eq (rem i 2) 1 with
+          match eqb (rem i 2) 1 with
           | Bool(true) => i
           | Bool(false) => Continue
           end in

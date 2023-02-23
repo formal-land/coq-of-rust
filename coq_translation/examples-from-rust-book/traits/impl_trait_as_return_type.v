@@ -2,9 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition combine_vecs_explicit_return_type (_ : unit) :=
-  cycle (chain (into_iter v) (into_iter u)).
+  method "cycle" (method "chain" (method "into_iter" v) (method "into_iter" u)).
 
-Definition combine_vecs (_ : unit) := cycle (chain (into_iter v) (into_iter u)).
+Definition combine_vecs (_ : unit) :=
+  method "cycle" (method "chain" (method "into_iter" v) (method "into_iter" u)).
 
 Error OpaqueTy.
 
@@ -12,9 +13,9 @@ Definition main (_ : unit) :=
   let v1 := ComplexTypePath.into_vec [1;2;3] in
   let v2 := ComplexTypePath.into_vec [4;5] in
   let v3 := combine_vecs v1 v2 in
-  match (Some 1, next v3) with
+  match (Some 1, method "next" v3) with
   | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
+    if not (eqb (deref left_val) (deref right_val)) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -25,9 +26,9 @@ Definition main (_ : unit) :=
     else
       tt
   end ;;
-  match (Some 2, next v3) with
+  match (Some 2, method "next" v3) with
   | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
+    if not (eqb (deref left_val) (deref right_val)) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -38,9 +39,9 @@ Definition main (_ : unit) :=
     else
       tt
   end ;;
-  match (Some 3, next v3) with
+  match (Some 3, method "next" v3) with
   | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
+    if not (eqb (deref left_val) (deref right_val)) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -51,9 +52,9 @@ Definition main (_ : unit) :=
     else
       tt
   end ;;
-  match (Some 4, next v3) with
+  match (Some 4, method "next" v3) with
   | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
+    if not (eqb (deref left_val) (deref right_val)) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -64,9 +65,9 @@ Definition main (_ : unit) :=
     else
       tt
   end ;;
-  match (Some 5, next v3) with
+  match (Some 5, method "next" v3) with
   | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
+    if not (eqb (deref left_val) (deref right_val)) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

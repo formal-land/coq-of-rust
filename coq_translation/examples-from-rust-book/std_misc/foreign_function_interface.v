@@ -53,14 +53,16 @@ Module Impl_fmt_Debug_for_Complex.
   Global Instance I : fmt.Debug.Class Self := {|
     fmt.Debug.fmt (self : ref Complex) (f : mut_ref fmt.Formatter) :=
       if lt self.im 0 (* 0. *) then
-        write_fmt
+        method
+          "write_fmt"
           f
           (_crate::fmt::ImplArguments.new_v1
             ["";"-";"i"]
             [_crate::fmt::ImplArgumentV1.new_display
               self.re;_crate::fmt::ImplArgumentV1.new_display (neg self.im)])
       else
-        write_fmt
+        method
+          "write_fmt"
           f
           (_crate::fmt::ImplArguments.new_v1
             ["";"+";"i"]

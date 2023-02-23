@@ -32,4 +32,4 @@ Definition read_lines (_ : unit) :=
     | {| Break.0 := residual; |} => Return (from_residual residual)
     | {| Continue.0 := val; |} => val
     end in
-  Ok (lines (io::ImplBufReader.new file)).
+  Ok (method "lines" (io::ImplBufReader.new file)).

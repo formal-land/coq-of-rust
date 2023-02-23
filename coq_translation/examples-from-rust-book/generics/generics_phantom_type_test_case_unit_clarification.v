@@ -54,7 +54,7 @@ Module Impl__crate_marker_Copy_for_Mm.
 Module ImplMm.
 
 Module Length.
-  Inductive t : Set := Build (_ : f64 * PhantomData).
+  Inductive t : Set := Build (_ : f64) (_ : PhantomData).
   
   Global Instance Get_0 : IndexedField.Class t 0 f64 := {|
     IndexedField.get '(Build x0 _) := x0;

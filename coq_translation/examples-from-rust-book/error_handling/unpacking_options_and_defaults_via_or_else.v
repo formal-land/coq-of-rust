@@ -40,7 +40,10 @@ Definition main (_ : unit) :=
       tt ;;
       Some Fruit.Lemon in
   let first_available_fruit :=
-    or_else (or_else no_fruit get_kiwi_as_fallback) get_lemon_as_fallback in
+    method
+      "or_else"
+      (method "or_else" no_fruit get_kiwi_as_fallback)
+      get_lemon_as_fallback in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["first_available_fruit: ";"\n"]

@@ -8,7 +8,7 @@ Definition main (_ : unit) :=
   tt ;;
   loop
     assign count := add count 1 ;;
-    if eq count 3 then
+    if eqb count 3 then
       _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["three\n"] []) ;;
       tt ;;
       Continue ;;
@@ -20,7 +20,7 @@ Definition main (_ : unit) :=
         ["";"\n"]
         [_crate::fmt::ImplArgumentV1.new_display count]) ;;
     tt ;;
-    if eq count 5 then
+    if eqb count 5 then
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1 ["OK, that's enough\n"] []) ;;
       tt ;;

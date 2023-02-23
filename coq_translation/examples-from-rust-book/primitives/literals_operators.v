@@ -15,7 +15,7 @@ Definition main (_ : unit) :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["true AND false is ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (and true false)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_display (andb true false)]) ;;
   tt ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1

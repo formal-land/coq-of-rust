@@ -97,11 +97,16 @@ Definition chop (_ : unit) :=
   | None => None
   end.
 
-Definition cook (_ : unit) := map chopped (fun Chopped (food) => Cooked food).
+Definition cook (_ : unit) :=
+  method "map" chopped (fun Chopped (food) => Cooked food).
 
 Definition process (_ : unit) :=
-  map
-    (map (map food (fun f => Peeled f)) (fun Peeled (f) => Chopped f))
+  method
+    "map"
+    (method
+      "map"
+      (method "map" food (fun f => Peeled f))
+      (fun Peeled (f) => Chopped f))
     (fun Chopped (f) => Cooked f).
 
 Definition eat (_ : unit) :=

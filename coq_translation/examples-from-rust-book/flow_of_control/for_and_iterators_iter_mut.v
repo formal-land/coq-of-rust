@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition main (_ : unit) :=
   let names := ComplexTypePath.into_vec ["Bob";"Frank";"Ferris"] in
-  match into_iter (iter_mut names) with
+  match into_iter (method "iter_mut" names) with
   | iter =>
     loop
       match next iter with

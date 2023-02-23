@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module PhantomTuple.
-  Inductive t : Set := Build (_ : A * PhantomData).
+  Inductive t : Set := Build (_ : A) (_ : PhantomData).
   
   Global Instance Get_0 : IndexedField.Class t 0 A := {|
     IndexedField.get '(Build x0 _) := x0;
@@ -27,11 +27,11 @@ Module Impl__crate_cmp_PartialEq_for_PhantomTuple.
     _crate.cmp.PartialEq.eq
         (self : ref PhantomTuple<A, B>)
         (other : ref PhantomTuple) :=
-      and
-        (eq
+      andb
+        (eqb
           (IndexedField.get (index := 0) self)
           (IndexedField.get (index := 0) other))
-        (eq
+        (eqb
           (IndexedField.get (index := 1) self)
           (IndexedField.get (index := 1) other));
   |}.
@@ -59,7 +59,7 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct.
     _crate.cmp.PartialEq.eq
         (self : ref PhantomStruct<A, B>)
         (other : ref PhantomStruct) :=
-      and (eq self.first other.first) (eq self.phantom other.phantom);
+      andb (eqb self.first other.first) (eqb self.phantom other.phantom);
   |}.
 Module ImplPhantomStruct.
 

@@ -6,7 +6,7 @@ Definition main (_ : unit) :=
   let result :=
     loop
       assign counter := add counter 1 ;;
-      if eq counter 10 then
+      if eqb counter 10 then
         Break ;;
         tt
       else
@@ -15,7 +15,7 @@ Definition main (_ : unit) :=
       loop in
   match (result, 20) with
   | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
+    if not (eqb (deref left_val) (deref right_val)) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

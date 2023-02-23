@@ -10,7 +10,7 @@ Definition analyze_slice (_ : unit) :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["the slice has ";" elements\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (len slice)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_display (method "len" slice)]) ;;
   tt ;;
   tt.
 
@@ -30,7 +30,7 @@ Definition main (_ : unit) :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["number of elements in array: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (len xs)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_display (method "len" xs)]) ;;
   tt ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
@@ -52,7 +52,7 @@ Definition main (_ : unit) :=
   let empty_array := [] in
   match (empty_array, []) with
   | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
+    if not (eqb (deref left_val) (deref right_val)) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -65,7 +65,7 @@ Definition main (_ : unit) :=
   end ;;
   match (empty_array, [][{|  |}]) with
   | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
+    if not (eqb (deref left_val) (deref right_val)) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -76,13 +76,14 @@ Definition main (_ : unit) :=
     else
       tt
   end ;;
-  match into_iter {| Range.start := 0; Range.end := add (len xs) 1; |} with
+  match into_iter {| Range.start := 0; Range.end := add (method "len" xs) 1; |}
+  with
   | iter =>
     loop
       match next iter with
       | {|  |} => Break
       | {| Some.0 := i; |} =>
-        match get xs i with
+        match method "get" xs i with
         | Some (xval) =>
           _crate.io._print
             (_crate::fmt::ImplArguments.new_v1

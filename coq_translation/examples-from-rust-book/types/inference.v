@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main (_ : unit) :=
   let elem := 5 in
   let vec := ImplVec.new tt in
-  push vec elem ;;
+  method "push" vec elem ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["";"\n"]

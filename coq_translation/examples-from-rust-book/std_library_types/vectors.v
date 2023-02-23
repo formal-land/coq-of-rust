@@ -2,7 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition main (_ : unit) :=
-  let collected_iterator := collect {| Range.start := 0; Range.end := 10; |} in
+  let collected_iterator :=
+    method "collect" {| Range.start := 0; Range.end := 10; |} in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Collected (0..10) into: ";"\n"]
@@ -17,7 +18,7 @@ Definition main (_ : unit) :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1 ["Push 4 into the vector\n"] []) ;;
   tt ;;
-  push xs 4 ;;
+  method "push" xs 4 ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Vector: ";"\n"]
@@ -26,7 +27,7 @@ Definition main (_ : unit) :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Vector length: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (len xs)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_display (method "len" xs)]) ;;
   tt ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
@@ -36,12 +37,12 @@ Definition main (_ : unit) :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Pop last element: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_debug (pop xs)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_debug (method "pop" xs)]) ;;
   tt ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1 ["Contents of xs:\n"] []) ;;
   tt ;;
-  match into_iter (iter xs) with
+  match into_iter (method "iter" xs) with
   | iter =>
     loop
       match next iter with
@@ -58,7 +59,7 @@ Definition main (_ : unit) :=
       from
       for
   end ;;
-  match into_iter (enumerate (iter xs)) with
+  match into_iter (method "enumerate" (method "iter" xs)) with
   | iter =>
     loop
       match next iter with
@@ -76,7 +77,7 @@ Definition main (_ : unit) :=
       from
       for
   end ;;
-  match into_iter (iter_mut xs) with
+  match into_iter (method "iter_mut" xs) with
   | iter =>
     loop
       match next iter with

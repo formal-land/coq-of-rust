@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition create_fn (_ : unit) :=
-  let text := to_owned "Fn" in
+  let text := method "to_owned" "Fn" in
   fun  =>
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1
@@ -13,7 +13,7 @@ Definition create_fn (_ : unit) :=
 Error OpaqueTy.
 
 Definition create_fnmut (_ : unit) :=
-  let text := to_owned "FnMut" in
+  let text := method "to_owned" "FnMut" in
   fun  =>
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1
@@ -24,7 +24,7 @@ Definition create_fnmut (_ : unit) :=
 Error OpaqueTy.
 
 Definition create_fnonce (_ : unit) :=
-  let text := to_owned "FnOnce" in
+  let text := method "to_owned" "FnOnce" in
   fun  =>
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1

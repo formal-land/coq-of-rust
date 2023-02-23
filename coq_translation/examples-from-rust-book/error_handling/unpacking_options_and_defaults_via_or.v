@@ -24,7 +24,8 @@ Definition main (_ : unit) :=
   let apple := Some Fruit.Apple in
   let orange := Some Fruit.Orange in
   let no_fruit := None in
-  let first_available_fruit := or (or no_fruit orange) apple in
+  let first_available_fruit :=
+    method "or" (method "or" no_fruit orange) apple in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["first_available_fruit: ";"\n"]

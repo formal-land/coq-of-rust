@@ -6,7 +6,7 @@ Definition LOREM_IPSUM (_ : unit) :=
 
 Definition main (_ : unit) :=
   let path := ImplPath.new "lorem_ipsum.txt" in
-  let display := display path in
+  let display := method "display" path in
   let file :=
     match ImplFile.create path with
     | Err (why) =>
@@ -17,7 +17,7 @@ Definition main (_ : unit) :=
             display;_crate::fmt::ImplArgumentV1.new_display why])
     | Ok (file) => file
     end in
-  match write_all file (as_bytes LOREM_IPSUM) with
+  match method "write_all" file (method "as_bytes" LOREM_IPSUM) with
   | Err (why) =>
     _crate.rt.panic_fmt
       (_crate::fmt::ImplArguments.new_v1

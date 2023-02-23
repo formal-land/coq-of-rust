@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition drink (_ : unit) :=
-  if eq beverage "lemonade" then
+  if eqb beverage "lemonade" then
     _crate.rt.begin_panic "AAAaaaaa!!!!" ;;
     tt
   else

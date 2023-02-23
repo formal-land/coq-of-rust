@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition main (_ : unit) :=
-  let args := collect (env.args tt) in
+  let args := method "collect" (env.args tt) in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["My path is ";".\n"]
@@ -12,7 +12,7 @@ Definition main (_ : unit) :=
     (_crate::fmt::ImplArguments.new_v1
       ["I got ";" arguments: ";".\n"]
       [_crate::fmt::ImplArgumentV1.new_debug
-        (sub (len args) 1);_crate::fmt::ImplArgumentV1.new_debug
+        (sub (method "len" args) 1);_crate::fmt::ImplArgumentV1.new_debug
         args[{| RangeFrom.start := 1; |}]]) ;;
   tt ;;
   tt.

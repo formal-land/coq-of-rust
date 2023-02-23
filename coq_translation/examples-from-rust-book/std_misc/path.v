@@ -3,12 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition main (_ : unit) :=
   let path := ImplPath.new "." in
-  let _display := display path in
-  let new_path := join (join path "a") "b" in
-  push new_path "c" ;;
-  push new_path "myfile.tar.gz" ;;
-  set_file_name new_path "package.tgz" ;;
-  match to_str new_path with
+  let _display := method "display" path in
+  let new_path := method "join" (method "join" path "a") "b" in
+  method "push" new_path "c" ;;
+  method "push" new_path "myfile.tar.gz" ;;
+  method "set_file_name" new_path "package.tgz" ;;
+  match method "to_str" new_path with
   | None => _crate.rt.begin_panic "new path is not a valid UTF-8 sequence"
   | Some (s) =>
     _crate.io._print

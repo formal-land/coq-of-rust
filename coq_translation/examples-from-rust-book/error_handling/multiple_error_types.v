@@ -2,8 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition double_first (_ : unit) :=
-  let first := unwrap (first vec) in
-  mul 2 (unwrap (parse first)).
+  let first := method "unwrap" (method "first" vec) in
+  mul 2 (method "unwrap" (method "parse" first)).
 
 Definition main (_ : unit) :=
   let numbers := ComplexTypePath.into_vec ["42";"93";"18"] in

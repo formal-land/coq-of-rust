@@ -3,14 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition main (_ : unit) :=
   let output :=
-    unwrap_or_else
-      (output (arg (ImplCommand.new "rustc") "--version"))
+    method
+      "unwrap_or_else"
+      (method "output" (method "arg" (ImplCommand.new "rustc") "--version"))
       (fun e =>
         _crate.rt.panic_fmt
           (_crate::fmt::ImplArguments.new_v1
             ["failed to execute process: "]
             [_crate::fmt::ImplArgumentV1.new_display e])) in
-  if success output.status then
+  if method "success" output.status then
     let s := ImplString.from_utf8_lossy output.stdout in
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1

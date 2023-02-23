@@ -2,12 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition read_lines (_ : unit) :=
-  let file := unwrap (ImplFile.open filename) in
-  Return (lines (io::ImplBufReader.new file)) ;;
+  let file := method "unwrap" (ImplFile.open filename) in
+  Return (method "lines" (io::ImplBufReader.new file)) ;;
   tt.
 
 Definition main (_ : unit) :=
-  let lines := read_lines (to_string "./hosts") in
+  let lines := read_lines (method "to_string" "./hosts") in
   match into_iter lines with
   | iter =>
     loop
@@ -17,7 +17,7 @@ Definition main (_ : unit) :=
         _crate.io._print
           (_crate::fmt::ImplArguments.new_v1
             ["";"\n"]
-            [_crate::fmt::ImplArgumentV1.new_display (unwrap line)]) ;;
+            [_crate::fmt::ImplArgumentV1.new_display (method "unwrap" line)]) ;;
         tt ;;
         tt
       end ;;

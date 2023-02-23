@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main (_ : unit) :=
   let number_str := "10" in
   let number :=
-    match parse number_str with
+    match method "parse" number_str with
     | Ok (number) => number
     | Err (e) => Return (Err e)
     end in

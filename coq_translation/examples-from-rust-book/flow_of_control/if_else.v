@@ -26,7 +26,7 @@ Definition main (_ : unit) :=
       tt ;;
       tt ;;
   let big_n :=
-    if and (lt n 10) (gt n (neg 10)) then
+    if andb (lt n 10) (gt n (neg 10)) then
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1
           [", and is a small number, increase ten-fold\n"]

@@ -27,7 +27,7 @@ Module
   Error TyAlias.
   
   Definition div (_ : unit) :=
-    if eq y 0 (* 0.0 *) then
+    if eqb y 0 (* 0.0 *) then
       Err MathError.DivisionByZero
     else
       Ok (div x y).
@@ -36,13 +36,13 @@ Module
     if lt x 0 (* 0.0 *) then
       Err MathError.NegativeSquareRoot
     else
-      Ok (sqrt x).
+      Ok (method "sqrt" x).
   
   Definition ln (_ : unit) :=
     if le x 0 (* 0.0 *) then
       Err MathError.NonPositiveLogarithm
     else
-      Ok (ln x).
+      Ok (method "ln" x).
   
   Definition op_ (_ : unit) :=
     let ratio :=
@@ -97,7 +97,7 @@ Module ImplMathError.
 Error TyAlias.
 
 Definition div (_ : unit) :=
-  if eq y 0 (* 0.0 *) then
+  if eqb y 0 (* 0.0 *) then
     Err MathError.DivisionByZero
   else
     Ok (div x y).
@@ -106,13 +106,13 @@ Definition sqrt (_ : unit) :=
   if lt x 0 (* 0.0 *) then
     Err MathError.NegativeSquareRoot
   else
-    Ok (sqrt x).
+    Ok (method "sqrt" x).
 
 Definition ln (_ : unit) :=
   if le x 0 (* 0.0 *) then
     Err MathError.NonPositiveLogarithm
   else
-    Ok (ln x).
+    Ok (method "ln" x).
 
 Definition op_ (_ : unit) :=
   let ratio :=

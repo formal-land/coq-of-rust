@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply (_ : unit) :=
-  match parse first_number_str with
+  match method "parse" first_number_str with
   | Ok (first_number) =>
-    match parse second_number_str with
+    match method "parse" second_number_str with
     | Ok (second_number) => Ok (mul first_number second_number)
     | Err (e) => Err e
     end

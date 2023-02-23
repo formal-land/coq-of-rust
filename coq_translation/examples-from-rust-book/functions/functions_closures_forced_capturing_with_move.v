@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition main (_ : unit) :=
   let haystack := ComplexTypePath.into_vec [1;2;3] in
-  let contains := fun needle => contains haystack needle in
+  let contains := fun needle => method "contains" haystack needle in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["";"\n"]

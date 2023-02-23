@@ -29,7 +29,8 @@ Module Impl_fmt_Display_for_EmptyVec.
   
   Global Instance I : fmt.Display.Class Self := {|
     fmt.Display.fmt (self : ref EmptyVec) (f : mut_ref fmt.Formatter) :=
-      write_fmt
+      method
+        "write_fmt"
         f
         (_crate::fmt::ImplArguments.new_v1 ["invalid first item to double"] []);
   |}.
@@ -42,9 +43,14 @@ Module Impl_error_Error_for_EmptyVec.
 Module ImplEmptyVec.
 
 Definition double_first (_ : unit) :=
-  and_then
-    (ok_or_else (first vec) (fun  => into EmptyVec))
-    (fun s => map (map_err (parse s) (fun e => into e)) (fun i => mul 2 i)).
+  method
+    "and_then"
+    (method "ok_or_else" (method "first" vec) (fun  => method "into" EmptyVec))
+    (fun s =>
+      method
+        "map"
+        (method "map_err" (method "parse" s) (fun e => method "into" e))
+        (fun i => mul 2 i)).
 
 Definition print (_ : unit) :=
   match result with

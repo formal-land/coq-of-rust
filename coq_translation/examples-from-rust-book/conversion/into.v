@@ -26,14 +26,14 @@ Module ImplNumber.
 Module Impl_From_for_Number.
   Definition Self := Number.
   
-  Global Instance I : From.Class Self := {|
+  Global Instance I : From.Class i32 Self := {|
     From.from (item : i32) := {| Number.value := item; |};
   |}.
 Module ImplNumber.
 
 Definition main (_ : unit) :=
   let int := 5 in
-  let num := into int in
+  let num := method "into" int in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["My number is ";"\n"]

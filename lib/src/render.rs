@@ -53,6 +53,16 @@ where
     RcDoc::concat(docs).group()
 }
 
+// Concat several documents and do nothing for the splitting (using nest or
+// group is more frequent)
+pub(crate) fn concat<'a, I>(docs: I) -> Doc<'a>
+where
+    I: IntoIterator,
+    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+{
+    RcDoc::concat(docs)
+}
+
 pub(crate) fn text<'a, U>(message: U) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>>,

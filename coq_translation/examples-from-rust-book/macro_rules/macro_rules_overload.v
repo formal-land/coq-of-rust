@@ -8,7 +8,7 @@ Definition main (_ : unit) :=
       match
         ("1i32 + 1 == 2i32",
           "2i32 * 2 == 4i32",
-          and (eq (add 1 1) 2) (eq (mul 2 2) 4))
+          andb (eqb (add 1 1) 2) (eqb (mul 2 2) 4))
       with
       | args =>
         [_crate::fmt::ImplArgumentV1.new_debug

@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition division (_ : unit) :=
-  if eq divisor 0 then
+  if eqb divisor 0 then
     _crate.rt.begin_panic "division by zero" ;;
     tt
   else

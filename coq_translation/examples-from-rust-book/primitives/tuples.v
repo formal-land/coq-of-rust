@@ -6,7 +6,7 @@ Definition reverse (_ : unit) :=
   (bool_param, int_param).
 
 Module Matrix.
-  Inductive t : Set := Build (_ : f32 * f32 * f32 * f32).
+  Inductive t : Set := Build (_ : f32) (_ : f32) (_ : f32) (_ : f32).
   
   Global Instance Get_0 : IndexedField.Class t 0 f32 := {|
     IndexedField.get '(Build x0 _ _ _) := x0;

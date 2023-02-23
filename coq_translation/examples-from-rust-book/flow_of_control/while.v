@@ -5,18 +5,18 @@ Definition main (_ : unit) :=
   let n := 1 in
   loop
     (if lt n 101 then
-      if eq (rem n 15) 0 then
+      if eqb (rem n 15) 0 then
         _crate.io._print
           (_crate::fmt::ImplArguments.new_v1 ["fizzbuzz\n"] []) ;;
         tt ;;
         tt
       else
-        if eq (rem n 3) 0 then
+        if eqb (rem n 3) 0 then
           _crate.io._print (_crate::fmt::ImplArguments.new_v1 ["fizz\n"] []) ;;
           tt ;;
           tt
         else
-          if eq (rem n 5) 0 then
+          if eqb (rem n 5) 0 then
             _crate.io._print
               (_crate::fmt::ImplArguments.new_v1 ["buzz\n"] []) ;;
             tt ;;

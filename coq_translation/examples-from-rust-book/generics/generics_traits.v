@@ -6,15 +6,20 @@ Error StructUnit.
 Error StructUnit.
 
 Module DoubleDrop.
-  Class Class (Self : Set) : Set := {
-    double_drop : Self -> T -> _;
+  Class Class (T Self : Set) : Set := {
+    double_drop : Self -> (T -> _);
   }.
+  
+  Global Instance Method_double_drop {T Self : Set} `{Class T Self}
+    : Method "double_drop" _ := {|
+    method := double_drop;
+  |}.
 End DoubleDrop.
 
 Module Impl_DoubleDrop_for_U.
   Definition Self := U.
   
-  Global Instance I : DoubleDrop.Class Self := {|
+  Global Instance I : DoubleDrop.Class T Self := {|
     DoubleDrop.double_drop (self : U) (Pattern : T) := tt;
   |}.
 Module ImplU.
@@ -22,5 +27,5 @@ Module ImplU.
 Definition main (_ : unit) :=
   let empty := Empty in
   let null := Null in
-  double_drop empty null ;;
+  method "double_drop" empty null ;;
   tt.

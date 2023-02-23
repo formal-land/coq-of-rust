@@ -4,7 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main (_ : unit) :=
   let strings := ComplexTypePath.into_vec ["tofu";"93";"18"] in
   let (numbers, errors) :=
-    partition (map (into_iter strings) (fun s => parse s)) ImplResult.is_ok in
+    method
+      "partition"
+      (method "map" (method "into_iter" strings) (fun s => method "parse" s))
+      ImplResult.is_ok in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Numbers: ";"\n"]

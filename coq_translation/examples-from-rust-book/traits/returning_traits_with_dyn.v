@@ -15,8 +15,13 @@ Definition Cow : Set := Cow.t.
 
 Module Animal.
   Class Class (Self : Set) : Set := {
-    noise : ref Self -> ref str;
+    noise : (ref Self) -> (ref str);
   }.
+  
+  Global Instance Method_noise {Self : Set} `{Class Self}
+    : Method "noise" _ := {|
+    method := noise;
+  |}.
 End Animal.
 
 Module Impl_Animal_for_Sheep.
@@ -47,6 +52,6 @@ Definition main (_ : unit) :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["You've randomly chosen an animal, and it says ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (noise animal)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_display (method "noise" animal)]) ;;
   tt ;;
   tt.

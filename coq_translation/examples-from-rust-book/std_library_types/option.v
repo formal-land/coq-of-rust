@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition checked_division (_ : unit) :=
-  if eq divisor 0 then
+  if eqb divisor 0 then
     None
   else
     Some (div dividend divisor).
@@ -37,12 +37,12 @@ Definition main (_ : unit) :=
       ["";" unwraps to ";"\n"]
       [_crate::fmt::ImplArgumentV1.new_debug
         optional_float;_crate::fmt::ImplArgumentV1.new_debug
-        (unwrap optional_float)]) ;;
+        (method "unwrap" optional_float)]) ;;
   tt ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["";" unwraps to ";"\n"]
       [_crate::fmt::ImplArgumentV1.new_debug
-        none;_crate::fmt::ImplArgumentV1.new_debug (unwrap none)]) ;;
+        none;_crate::fmt::ImplArgumentV1.new_debug (method "unwrap" none)]) ;;
   tt ;;
   tt.

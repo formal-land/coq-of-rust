@@ -23,7 +23,7 @@ Module ImplFruit.
 Definition main (_ : unit) :=
   let my_fruit := None in
   let apple := Fruit.Apple in
-  let first_available_fruit := get_or_insert my_fruit apple in
+  let first_available_fruit := method "get_or_insert" my_fruit apple in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["my_fruit is: ";"\n"]

@@ -23,6 +23,10 @@ pub enum Expr {
         func: Box<Expr>,
         args: Vec<Expr>,
     },
+    MethodCall {
+        func: String,
+        args: Vec<Expr>,
+    },
     Let {
         pat: Pattern,
         init: Box<Expr>,
@@ -96,14 +100,14 @@ fn compile_bin_op(bin_op: &BinOp) -> String {
         BinOpKind::Mul => "mul".to_string(),
         BinOpKind::Div => "div".to_string(),
         BinOpKind::Rem => "rem".to_string(),
-        BinOpKind::And => "and".to_string(),
+        BinOpKind::And => "andb".to_string(),
         BinOpKind::Or => "or".to_string(),
         BinOpKind::BitXor => "bit_xor".to_string(),
         BinOpKind::BitAnd => "bit_and".to_string(),
         BinOpKind::BitOr => "bit_or".to_string(),
         BinOpKind::Shl => "shl".to_string(),
         BinOpKind::Shr => "shr".to_string(),
-        BinOpKind::Eq => "eq".to_string(),
+        BinOpKind::Eq => "eqb".to_string(),
         BinOpKind::Lt => "lt".to_string(),
         BinOpKind::Le => "le".to_string(),
         BinOpKind::Ne => "ne".to_string(),
@@ -153,11 +157,11 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             Expr::Call { func, args }
         }
         rustc_hir::ExprKind::MethodCall(path_segment, object, args, _) => {
-            let func = Box::new(Expr::Var(Path::local(path_segment.ident.to_string())));
+            let func = path_segment.ident.to_string();
             let mut object_with_args = vec![compile_expr(tcx, object)];
             let args: Vec<_> = args.iter().map(|expr| compile_expr(tcx, expr)).collect();
             object_with_args.extend(args);
-            Expr::Call {
+            Expr::MethodCall {
                 func,
                 args: object_with_args,
             }
@@ -382,6 +386,15 @@ impl Expr {
                     } else {
                         intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()])
                     },
+                ]),
+            ),
+            Expr::MethodCall { func, args } => paren(
+                with_paren,
+                nest([
+                    text("method"),
+                    line(),
+                    text(format!("\"{}\"", func.to_string())),
+                    concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                 ]),
             ),
             Expr::Let { pat, init, body } => group([

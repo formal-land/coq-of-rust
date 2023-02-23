@@ -3,8 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module HasArea.
   Class Class (Self : Set) : Set := {
-    area : ref Self -> f64;
+    area : (ref Self) -> f64;
   }.
+  
+  Global Instance Method_area {Self : Set} `{Class Self} : Method "area" _ := {|
+    method := area;
+  |}.
 End HasArea.
 
 Module Impl_HasArea_for_Rectangle.
@@ -56,7 +60,7 @@ Definition print_debug (_ : unit) :=
   tt ;;
   tt.
 
-Definition area (_ : unit) := area t.
+Definition area (_ : unit) := method "area" t.
 
 Definition main (_ : unit) :=
   let rectangle :=
@@ -67,6 +71,6 @@ Definition main (_ : unit) :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Area: ";"\n"]
-      [_crate::fmt::ImplArgumentV1.new_display (area rectangle)]) ;;
+      [_crate::fmt::ImplArgumentV1.new_display (method "area" rectangle)]) ;;
   tt ;;
   tt.

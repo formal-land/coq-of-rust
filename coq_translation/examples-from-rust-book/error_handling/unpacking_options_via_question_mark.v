@@ -88,9 +88,9 @@ Definition main (_ : unit) :=
                 |};
           |};
     |} in
-  match (work_phone_area_code p, Some 61) with
+  match (method "work_phone_area_code" p, Some 61) with
   | (left_val, right_val) =>
-    if not (eq (deref left_val) (deref right_val)) then
+    if not (eqb (deref left_val) (deref right_val)) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

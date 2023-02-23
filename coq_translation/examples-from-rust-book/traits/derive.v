@@ -24,7 +24,7 @@ Module Impl__crate_cmp_PartialEq_for_Centimeters.
     _crate.cmp.PartialEq.eq
         (self : ref Centimeters)
         (other : ref Centimeters) :=
-      eq
+      eqb
         (IndexedField.get (index := 0) self)
         (IndexedField.get (index := 0) other);
   |}.
@@ -93,7 +93,7 @@ Definition main (_ : unit) :=
   tt ;;
   let meter := Centimeters 100 (* 100.0 *) in
   let cmp :=
-    if lt (to_centimeters foot) meter then
+    if lt (method "to_centimeters" foot) meter then
       "smaller"
     else
       "bigger" in

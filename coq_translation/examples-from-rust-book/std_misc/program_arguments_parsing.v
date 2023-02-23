@@ -26,8 +26,8 @@ Definition help (_ : unit) :=
   tt.
 
 Definition main (_ : unit) :=
-  let args := collect (env.args tt) in
-  match len args with
+  let args := method "collect" (env.args tt) in
+  match method "len" args with
   | Int(1, Unsuffixed) =>
     _crate.io._print
       (_crate::fmt::ImplArguments.new_v1
@@ -36,7 +36,7 @@ Definition main (_ : unit) :=
     tt ;;
     tt
   | Int(2, Unsuffixed) =>
-    match parse args[1] with
+    match method "parse" args[1] with
     | Ok (Int(42, Unsuffixed)) =>
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1 ["This is the answer!\n"] []) ;;
@@ -50,7 +50,7 @@ Definition main (_ : unit) :=
     let cmd := args[1] in
     let num := args[2] in
     let number :=
-      match parse num with
+      match method "parse" num with
       | Ok (n) => n
       | Err (_) =>
         _crate.io._eprint

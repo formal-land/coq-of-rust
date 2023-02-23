@@ -2,7 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition double_first (_ : unit) :=
-  map (first vec) (fun first => map (parse first) (fun n => mul 2 n)).
+  method
+    "map"
+    (method "first" vec)
+    (fun first => method "map" (method "parse" first) (fun n => mul 2 n)).
 
 Definition main (_ : unit) :=
   let numbers := ComplexTypePath.into_vec ["42";"93";"18"] in

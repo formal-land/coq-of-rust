@@ -20,8 +20,8 @@ Definition give_adult (_ : unit) :=
   end.
 
 Definition drink (_ : unit) :=
-  let inside := unwrap drink in
-  if eq inside "lemonade" then
+  let inside := method "unwrap" drink in
+  if eqb inside "lemonade" then
     _crate.rt.begin_panic "AAAaaaaa!!!!" ;;
     tt
   else

@@ -32,6 +32,6 @@ End ImplOwner.
 
 Definition main (_ : unit) :=
   let owner := Owner 18 in
-  add_one owner ;;
-  print owner ;;
+  method "add_one" owner ;;
+  method "print" owner ;;
   tt.

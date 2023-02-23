@@ -54,7 +54,7 @@ Definition cookable_v1 (_ : unit) :=
   end.
 
 Definition cookable_v2 (_ : unit) :=
-  and_then (have_recipe food) have_ingredients.
+  method "and_then" (have_recipe food) have_ingredients.
 
 Definition eat (_ : unit) :=
   match cookable_v2 food with

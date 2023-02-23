@@ -29,7 +29,7 @@ Module ImplPerson.
 Error StructUnit.
 
 Module Pair.
-  Inductive t : Set := Build (_ : i32 * f32).
+  Inductive t : Set := Build (_ : i32) (_ : f32).
   
   Global Instance Get_0 : IndexedField.Class t 0 i32 := {|
     IndexedField.get '(Build x0 _) := x0;

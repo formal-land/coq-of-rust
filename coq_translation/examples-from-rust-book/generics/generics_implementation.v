@@ -34,6 +34,7 @@ Definition main (_ : unit) :=
     (_crate::fmt::ImplArguments.new_v1
       ["";", ";"\n"]
       [_crate::fmt::ImplArgumentV1.new_display
-        (value x);_crate::fmt::ImplArgumentV1.new_display (value y)]) ;;
+        (method "value" x);_crate::fmt::ImplArgumentV1.new_display
+        (method "value" y)]) ;;
   tt ;;
   tt.

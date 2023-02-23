@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition main (_ : unit) :=
   let raw_p := 10 in
-  if not (eq (deref raw_p) 10) then
+  if not (eqb (deref raw_p) 10) then
     _crate.panicking.panic "assertion failed: *raw_p == 10"
   else
     tt ;;

@@ -29,17 +29,22 @@ Module Impl_fmt_Display_for_DoubleError.
   
   Global Instance I : fmt.Display.Class Self := {|
     fmt.Display.fmt (self : ref DoubleError) (f : mut_ref fmt.Formatter) :=
-      write_fmt
+      method
+        "write_fmt"
         f
         (_crate::fmt::ImplArguments.new_v1 ["invalid first item to double"] []);
   |}.
 Module ImplDoubleError.
 
 Definition double_first (_ : unit) :=
-  and_then
-    (ok_or (first vec) DoubleError)
+  method
+    "and_then"
+    (method "ok_or" (method "first" vec) DoubleError)
     (fun s =>
-      map (map_err (parse s) (fun _ => DoubleError)) (fun i => mul 2 i)).
+      method
+        "map"
+        (method "map_err" (method "parse" s) (fun _ => DoubleError))
+        (fun i => mul 2 i)).
 
 Definition print (_ : unit) :=
   match result with

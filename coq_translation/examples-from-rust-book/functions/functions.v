@@ -6,12 +6,12 @@ Definition main (_ : unit) :=
   tt.
 
 Definition is_divisible_by (_ : unit) :=
-  if eq rhs 0 then
+  if eqb rhs 0 then
     Return false ;;
     tt
   else
     tt ;;
-  eq (rem lhs rhs) 0.
+  eqb (rem lhs rhs) 0.
 
 Definition fizzbuzz (_ : unit) :=
   if is_divisible_by n 15 then

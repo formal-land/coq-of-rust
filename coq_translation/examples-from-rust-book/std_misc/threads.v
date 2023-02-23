@@ -11,7 +11,8 @@ Definition main (_ : unit) :=
       match next iter with
       | {|  |} => Break
       | {| Some.0 := i; |} =>
-        push
+        method
+          "push"
           children
           (thread.spawn
             (fun  =>
@@ -33,7 +34,7 @@ Definition main (_ : unit) :=
       match next iter with
       | {|  |} => Break
       | {| Some.0 := child; |} =>
-        let _ := join child in
+        let _ := method "join" child in
         tt
       end ;;
       tt

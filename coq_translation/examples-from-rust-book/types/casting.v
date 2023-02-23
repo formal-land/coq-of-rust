@@ -73,18 +73,18 @@ Definition main (_ : unit) :=
     (_crate::fmt::ImplArguments.new_v1
       [" 300.0 as u8 is : ";"\n"]
       [_crate::fmt::ImplArgumentV1.new_display
-        (to_int_unchecked 300 (* 300.0 *))]) ;;
+        (method "to_int_unchecked" 300 (* 300.0 *))]) ;;
   tt ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["-100.0 as u8 is : ";"\n"]
       [_crate::fmt::ImplArgumentV1.new_display
-        (to_int_unchecked (neg 100 (* 100.0 *)))]) ;;
+        (method "to_int_unchecked" (neg 100 (* 100.0 *)))]) ;;
   tt ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["   nan as u8 is : ";"\n"]
       [_crate::fmt::ImplArgumentV1.new_display
-        (to_int_unchecked Implf32.NAN)]) ;;
+        (method "to_int_unchecked" Implf32.NAN)]) ;;
   tt ;;
   tt.

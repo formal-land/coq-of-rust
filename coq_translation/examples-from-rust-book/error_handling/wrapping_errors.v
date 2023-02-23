@@ -28,13 +28,15 @@ Module Impl_fmt_Display_for_DoubleError.
     fmt.Display.fmt (self : ref DoubleError) (f : mut_ref fmt.Formatter) :=
       match deref self with
       | DoubleError.EmptyVec =>
-        write_fmt
+        method
+          "write_fmt"
           f
           (_crate::fmt::ImplArguments.new_v1
             ["please use a vector with at least one element"]
             [])
       | DoubleError.Parse () =>
-        write_fmt
+        method
+          "write_fmt"
           f
           (_crate::fmt::ImplArguments.new_v1
             ["the provided string could not be parsed as int"]
@@ -58,19 +60,19 @@ Module ImplDoubleError.
 Module Impl_From_for_DoubleError.
   Definition Self := DoubleError.
   
-  Global Instance I : From.Class Self := {|
+  Global Instance I : From.Class ParseIntError Self := {|
     From.from (err : ParseIntError) := DoubleError.Parse err;
   |}.
 Module ImplDoubleError.
 
 Definition double_first (_ : unit) :=
   let first :=
-    match branch (ok_or (first vec) DoubleError.EmptyVec) with
+    match branch (method "ok_or" (method "first" vec) DoubleError.EmptyVec) with
     | {| Break.0 := residual; |} => Return (from_residual residual)
     | {| Continue.0 := val; |} => val
     end in
   let parsed :=
-    match branch (parse first) with
+    match branch (method "parse" first) with
     | {| Break.0 := residual; |} => Return (from_residual residual)
     | {| Continue.0 := val; |} => val
     end in
@@ -90,7 +92,7 @@ Definition print (_ : unit) :=
         ["Error: ";"\n"]
         [_crate::fmt::ImplArgumentV1.new_display e]) ;;
     tt ;;
-    if let_if Some (source) := source e then
+    if let_if Some (source) := method "source" e then
       _crate.io._print
         (_crate::fmt::ImplArguments.new_v1
           ["  Caused by: ";"\n"]

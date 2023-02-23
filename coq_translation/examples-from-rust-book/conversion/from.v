@@ -26,7 +26,7 @@ Module ImplNumber.
 Module Impl_From_for_Number.
   Definition Self := Number.
   
-  Global Instance I : From.Class Self := {|
+  Global Instance I : From.Class i32 Self := {|
     From.from (item : i32) := {| Number.value := item; |};
   |}.
 Module ImplNumber.
