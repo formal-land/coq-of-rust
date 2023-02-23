@@ -85,22 +85,22 @@ Module Impl__crate_fmt_Debug_for_Cooked.
   |}.
 Module ImplCooked.
 
-Definition peel (_ : unit) :=
+Definition peel (food : Option) : Option :=
   match food with
   | Some (food) => Some (Peeled food)
   | None => None
   end.
 
-Definition chop (_ : unit) :=
+Definition chop (peeled : Option) : Option :=
   match peeled with
   | Some (Peeled (food)) => Some (Chopped food)
   | None => None
   end.
 
-Definition cook (_ : unit) :=
+Definition cook (chopped : Option) : Option :=
   method "map" chopped (fun Chopped (food) => Cooked food).
 
-Definition process (_ : unit) :=
+Definition process (food : Option) : Option :=
   method
     "map"
     (method
@@ -109,7 +109,7 @@ Definition process (_ : unit) :=
       (fun Peeled (f) => Chopped f))
     (fun Chopped (f) => Cooked f).
 
-Definition eat (_ : unit) :=
+Definition eat (food : Option) : unit :=
   match food with
   | Some (food) =>
     _crate.io._print
@@ -123,7 +123,7 @@ Definition eat (_ : unit) :=
     tt
   end.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let apple := Some Food.Apple in
   let carrot := Some Food.Carrot in
   let potato := None in

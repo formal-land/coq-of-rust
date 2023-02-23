@@ -83,7 +83,7 @@ Module Seconds.
 End Seconds.
 Definition Seconds := Seconds.t.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let _one_second := Seconds 1 in
   let foot := Inches 12 in
   _crate.io._print

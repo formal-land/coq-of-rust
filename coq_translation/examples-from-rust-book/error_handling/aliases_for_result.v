@@ -3,7 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error TyAlias.
 
-Definition multiply (_ : unit) :=
+Definition multiply
+    (first_number_str : ref str)
+    (second_number_str : ref str)
+    : AliasedResult :=
   method
     "and_then"
     (method "parse" first_number_str)
@@ -13,7 +16,7 @@ Definition multiply (_ : unit) :=
         (method "parse" second_number_str)
         (fun second_number => mul first_number second_number)).
 
-Definition print (_ : unit) :=
+Definition print (result : AliasedResult) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print
@@ -29,7 +32,7 @@ Definition print (_ : unit) :=
     tt
   end.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   print (multiply "10" "2") ;;
   print (multiply "t" "2") ;;
   tt.

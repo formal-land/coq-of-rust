@@ -63,7 +63,7 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct.
   |}.
 Module ImplPhantomStruct.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let _tuple1 := PhantomTuple Q PhantomData in
   let _tuple2 := PhantomTuple Q PhantomData in
   let _struct1 :=

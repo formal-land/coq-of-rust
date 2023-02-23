@@ -42,7 +42,7 @@ Module Impl_error_Error_for_EmptyVec.
   Global Instance I : error.Error.Class Self := error.Error.Build_Class _.
 Module ImplEmptyVec.
 
-Definition double_first (_ : unit) :=
+Definition double_first (vec : Vec) : Result :=
   method
     "and_then"
     (method "ok_or_else" (method "first" vec) (fun  => method "into" EmptyVec))
@@ -52,7 +52,7 @@ Definition double_first (_ : unit) :=
         (method "map_err" (method "parse" s) (fun e => method "into" e))
         (fun i => mul 2 i)).
 
-Definition print (_ : unit) :=
+Definition print (result : Result) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print
@@ -68,7 +68,7 @@ Definition print (_ : unit) :=
     tt
   end.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let numbers := ComplexTypePath.into_vec ["42";"93";"18"] in
   let empty := _crate::vec::ImplVec.new tt in
   let strings := ComplexTypePath.into_vec ["tofu";"93";"18"] in

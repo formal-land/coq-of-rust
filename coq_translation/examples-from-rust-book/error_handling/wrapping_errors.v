@@ -65,7 +65,7 @@ Module Impl_From_for_DoubleError.
   |}.
 Module ImplDoubleError.
 
-Definition double_first (_ : unit) :=
+Definition double_first (vec : Vec) : Result :=
   let first :=
     match branch (method "ok_or" (method "first" vec) DoubleError.EmptyVec) with
     | {| Break.0 := residual; |} => Return (from_residual residual)
@@ -78,7 +78,7 @@ Definition double_first (_ : unit) :=
     end in
   Ok (mul 2 parsed).
 
-Definition print (_ : unit) :=
+Definition print (result : Result) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print
@@ -103,7 +103,7 @@ Definition print (_ : unit) :=
       tt
   end.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let numbers := ComplexTypePath.into_vec ["42";"93";"18"] in
   let empty := _crate::vec::ImplVec.new tt in
   let strings := ComplexTypePath.into_vec ["tofu";"93";"18"] in

@@ -52,7 +52,7 @@ Module Triangle.
 End Triangle.
 Definition Triangle : Set := Triangle.t.
 
-Definition print_debug (_ : unit) :=
+Definition print_debug {T : Set} `{Debug.Class T} (t : ref T) : unit :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["";"\n"]
@@ -60,9 +60,10 @@ Definition print_debug (_ : unit) :=
   tt ;;
   tt.
 
-Definition area (_ : unit) := method "area" t.
+Definition area {T : Set} `{HasArea.Class T} (t : ref T) : f64 :=
+  method "area" t.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let rectangle :=
     {| Rectangle.length := 3 (* 3.0 *); Rectangle.height := 4 (* 4.0 *); |} in
   let _triangle :=

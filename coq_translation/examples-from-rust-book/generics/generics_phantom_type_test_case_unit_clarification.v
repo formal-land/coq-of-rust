@@ -112,7 +112,7 @@ Module Impl_Add_for_Length.
   |}.
 Module ImplLength.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let one_foot := Length 12 (* 12.0 *) PhantomData in
   let one_meter := Length 1000 (* 1000.0 *) PhantomData in
   let two_feet := add one_foot one_foot in

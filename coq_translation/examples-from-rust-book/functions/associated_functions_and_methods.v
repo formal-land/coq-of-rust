@@ -76,7 +76,7 @@ Module ImplPair.
 End ImplPair.
 (* End impl [Pair] *)
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let rectangle :=
     {|
       Rectangle.p1 := ImplPoint.origin tt;

@@ -67,7 +67,7 @@ Module Impl__crate_fmt_Debug_for_Either.
   |}.
 Module ImplEither.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let x := 18 in
   let y := 15 in
   let single := Borrowed x in

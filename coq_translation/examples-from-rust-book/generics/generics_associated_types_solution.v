@@ -57,10 +57,10 @@ Module Impl_Contains_for_Container.
   |}.
 Module ImplContainer.
 
-Definition difference (_ : unit) :=
+Definition difference {C : Set} `{Contains.Class C} (container : ref C) : i32 :=
   sub (method "last" container) (method "first" container).
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let number_1 := 3 in
   let number_2 := 10 in
   let container := Container number_1 number_2 in

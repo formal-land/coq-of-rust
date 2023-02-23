@@ -15,7 +15,7 @@ Module Impl_Drop_for_ToDrop.
   |}.
 Module ImplToDrop.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let x := ToDrop in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1 ["Made a ToDrop!\n"] []) ;;

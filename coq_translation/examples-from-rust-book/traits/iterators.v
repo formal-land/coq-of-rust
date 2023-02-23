@@ -22,10 +22,10 @@ Module Impl_Iterator_for_Fibonacci.
   |}.
 Module ImplFibonacci.
 
-Definition fibonacci (_ : unit) :=
+Definition fibonacci (_ : unit) : Fibonacci :=
   {| Fibonacci.curr := 0; Fibonacci.next := 1; |}.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let sequence := {| Range.start := 0; Range.end := 3; |} in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1

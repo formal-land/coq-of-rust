@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition PANGRAM (_ : unit) :=
   "the quick brown fox jumped over the lazy dog\n".
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let process :=
     match
       method

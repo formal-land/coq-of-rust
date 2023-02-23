@@ -35,7 +35,7 @@ Module ImplList.
 End ImplList.
 (* End impl [List] *)
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let list := ImplList.new tt in
   assign list := method "prepend" list 1 ;;
   assign list := method "prepend" list 2 ;;

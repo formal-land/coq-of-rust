@@ -22,7 +22,7 @@ Module Impl_Drop_for_Droppable.
   |}.
 Module ImplDroppable.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let _a := {| Droppable.name := "a"; |} in
   let _b := {| Droppable.name := "b"; |} in
   let _c := {| Droppable.name := "c"; |} in

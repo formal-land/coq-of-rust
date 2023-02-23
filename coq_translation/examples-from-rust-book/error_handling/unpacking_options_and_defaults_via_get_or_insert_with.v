@@ -20,7 +20,7 @@ Module Impl__crate_fmt_Debug_for_Fruit.
   |}.
 Module ImplFruit.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let my_fruit := None in
   let get_lemon_as_fallback :=
     fun  =>

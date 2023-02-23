@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition NTHREADS (_ : unit) := 10.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let children := _crate::vec::ImplVec.new tt in
   match into_iter {| Range.start := 0; Range.end := NTHREADS; |} with
   | iter =>

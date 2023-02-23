@@ -31,7 +31,7 @@ Module Impl_Default_for_Borrowed.
   |}.
 Module ImplBorrowed.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let b := Default.default tt in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1

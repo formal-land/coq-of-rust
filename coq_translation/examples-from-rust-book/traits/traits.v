@@ -78,7 +78,7 @@ Module Impl_Animal_for_Sheep.
   |}.
 Module ImplSheep.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let dolly := Animal.new "Dolly" in
   method "talk" dolly ;;
   method "shear" dolly ;;

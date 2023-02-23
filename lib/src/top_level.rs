@@ -13,12 +13,21 @@ enum TraitItem {
     Type,
 }
 
+#[derive(Debug)]
+struct WherePredicate {
+    name: Path,
+    ty_params: Vec<CoqType>,
+    ty: CoqType,
+}
+
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
 #[derive(Debug)]
 enum TopLevelItem {
     Definition {
         name: String,
+        ty_params: Vec<String>,
+        where_predicates: Vec<WherePredicate>,
         args: Vec<(String, CoqType)>,
         ret_ty: Option<CoqType>,
         body: Expr,
@@ -75,6 +84,8 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
             let expr = tcx.hir().body(*body_id).value;
             vec![TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
+                ty_params: vec![],
+                where_predicates: vec![],
                 args: vec![],
                 ret_ty: None,
                 body: compile_expr(tcx, expr),
@@ -84,17 +95,71 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
             let expr = tcx.hir().body(*body_id).value;
             vec![TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
+                ty_params: vec![],
+                where_predicates: vec![],
                 args: vec![],
                 ret_ty: None,
                 body: compile_expr(tcx, expr),
             }]
         }
-        ItemKind::Fn(_fn_sig, _, body_id) => {
-            let expr = tcx.hir().body(*body_id).value;
+        ItemKind::Fn(fn_sig, generics, body_id) => {
+            let body = tcx.hir().body(*body_id);
+            let expr = body.value;
             vec![TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
-                args: vec![],
-                ret_ty: None,
+                ty_params: generics
+                    .params
+                    .iter()
+                    .filter_map(|param| match param.kind {
+                        rustc_hir::GenericParamKind::Type { .. } => {
+                            Some(param.name.ident().to_string())
+                        }
+                        _ => None,
+                    })
+                    .collect(),
+                where_predicates: generics
+                    .predicates
+                    .iter()
+                    .flat_map(|predicate| match predicate {
+                        rustc_hir::WherePredicate::BoundPredicate(predicate) => {
+                            let names_and_ty_params =
+                                predicate.bounds.iter().filter_map(|bound| match bound {
+                                    rustc_hir::GenericBound::Trait(ref trait_ref, _) => {
+                                        let path = trait_ref.trait_ref.path;
+                                        Some((
+                                            compile_path(path),
+                                            compile_path_ty_params(&tcx, path),
+                                        ))
+                                    }
+                                    _ => None,
+                                });
+                            names_and_ty_params
+                                .map(|(name, ty_params)| WherePredicate {
+                                    name,
+                                    ty_params,
+                                    ty: compile_type(&tcx, predicate.bounded_ty),
+                                })
+                                .collect()
+                        }
+                        _ => vec![],
+                    })
+                    .collect(),
+                args: body
+                    .params
+                    .iter()
+                    .zip(fn_sig.decl.inputs.iter())
+                    .map(|(param, ty)| {
+                        let name = match &param.pat.kind {
+                            PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
+                            _ => "arg".to_string(),
+                        };
+                        (name, compile_type(&tcx, ty))
+                    })
+                    .collect(),
+                ret_ty: match fn_sig.decl.output {
+                    rustc_hir::FnRetTy::DefaultReturn(_) => Some(CoqType::unit()),
+                    rustc_hir::FnRetTy::Return(ty) => Some(compile_type(&tcx, ty)),
+                },
                 body: compile_expr(tcx, expr),
             }]
         }
@@ -187,6 +252,8 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                             let expr = tcx.hir().body(*body_id).value;
                             vec![TopLevelItem::Definition {
                                 name: item.ident.name.to_string(),
+                                ty_params: vec![],
+                                where_predicates: vec![],
                                 args: vec![],
                                 ret_ty: None,
                                 body: compile_expr(tcx, expr),
@@ -209,6 +276,8 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                             let ret_ty = compile_fn_ret_ty(&tcx, output);
                             let expr = tcx.hir().body(*body_id).value;
                             vec![TopLevelItem::Definition {
+                                ty_params: vec![],
+                                where_predicates: vec![],
                                 name: item.ident.name.to_string(),
                                 args: arg_names.zip(arg_tys).collect(),
                                 ret_ty,
@@ -265,13 +334,51 @@ impl TopLevelItem {
         match self {
             TopLevelItem::Definition {
                 name,
+                ty_params,
+                where_predicates,
                 args,
                 ret_ty,
                 body,
             } => nest([
                 nest([
                     nest([text("Definition"), line(), text(name)]),
+                    match ty_params.is_empty() {
+                        true => nil(),
+                        false => concat([
+                            line(),
+                            nest([
+                                text("{"),
+                                intersperse(ty_params.iter().map(text), [line()]),
+                                line(),
+                                text(": Set}"),
+                            ]),
+                        ]),
+                    },
                     line(),
+                    concat(where_predicates.iter().map(
+                        |WherePredicate {
+                             name,
+                             ty_params,
+                             ty,
+                         }| {
+                            concat([
+                                nest([
+                                    text("`{"),
+                                    name.to_doc(),
+                                    text(".Class"),
+                                    line(),
+                                    concat(
+                                        ty_params
+                                            .iter()
+                                            .map(|param| concat([param.to_doc(true), line()])),
+                                    ),
+                                    ty.to_doc(true),
+                                    text("}"),
+                                ]),
+                                line(),
+                            ])
+                        },
+                    )),
                     if args.is_empty() {
                         text("(_ : unit)")
                     } else {
@@ -673,6 +780,8 @@ impl TopLevelItem {
                         group(body.0.iter().map(|item| match item {
                             TopLevelItem::Definition {
                                 name,
+                                ty_params: _,
+                                where_predicates: _,
                                 args,
                                 ret_ty: _,
                                 body,

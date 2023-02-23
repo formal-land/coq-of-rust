@@ -74,7 +74,7 @@ Module ImplPerson.
 End ImplPerson.
 (* End impl [Person] *)
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let p :=
     {|
       Person.job :=

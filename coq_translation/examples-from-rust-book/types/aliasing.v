@@ -7,7 +7,7 @@ Error TyAlias.
 
 Error TyAlias.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let nanoseconds := 5 in
   let inches := 2 in
   _crate.io._print

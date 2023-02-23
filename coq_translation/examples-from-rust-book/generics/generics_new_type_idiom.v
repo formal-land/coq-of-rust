@@ -33,9 +33,10 @@ Module ImplDays.
 End ImplDays.
 (* End impl [Days] *)
 
-Definition old_enough (_ : unit) := ge (IndexedField.get (index := 0) age) 18.
+Definition old_enough (age : ref Years) : bool :=
+  ge (IndexedField.get (index := 0) age) 18.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let age := Years 5 in
   let age_days := method "to_days" age in
   _crate.io._print

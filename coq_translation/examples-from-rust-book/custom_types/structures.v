@@ -56,7 +56,7 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let name := ImplString.from "Peter" in
   let age := 27 in
   let peter := {| Person.name := name; Person.age := age; |} in

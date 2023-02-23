@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error Enum.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let temperature := Temperature.Celsius 35 in
   match temperature with
   | Temperature.Celsius (t) =>

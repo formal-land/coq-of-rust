@@ -63,7 +63,7 @@ Module Impl__crate_fmt_Debug_for_Pair.
   |}.
 Module ImplPair.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let unit := Unit in
   let copied_unit := unit in
   _crate.io._print

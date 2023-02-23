@@ -65,7 +65,11 @@ Definition AccountInfo : Set := AccountInfo.t.
 
 Error TyAlias.
 
-Definition try_logon (_ : unit) :=
+Definition try_logon
+    (accounts : ref Accounts)
+    (username : ref str)
+    (password : ref str)
+    : unit :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Username: ";"\n"]
@@ -103,7 +107,7 @@ Definition try_logon (_ : unit) :=
     tt
   end.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let accounts := ImplHashMap.new tt in
   let account :=
     {| Account.username := "j.everyman"; Account.password := "password123";

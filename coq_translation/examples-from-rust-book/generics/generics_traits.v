@@ -23,7 +23,7 @@ Module Impl_DoubleDrop_for_U.
   |}.
 Module ImplU.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let empty := Empty in
   let null := Null in
   method "double_drop" empty null ;;

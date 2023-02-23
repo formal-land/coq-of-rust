@@ -27,7 +27,7 @@ Module ImplGenVal.
 End ImplGenVal.
 (* End impl [GenVal] *)
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let x := {| Val.val := 3 (* 3.0 *); |} in
   let y := {| GenVal.gen_val := 3; |} in
   _crate.io._print

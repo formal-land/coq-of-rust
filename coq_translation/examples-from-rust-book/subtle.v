@@ -153,7 +153,7 @@ Module Impl_Not_for_Choice.
   |}.
 Module ImplChoice.
 
-Definition black_box (_ : unit) :=
+Definition black_box (input : u8) : u8 :=
   if true then
     if not (bit_or (eqb input 0) (eqb input 1)) then
       _crate.panicking.panic "assertion failed: (input == 0u8) | (input == 1u8)"

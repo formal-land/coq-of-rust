@@ -26,7 +26,7 @@ Module Impl_PrintInOption_for_T.
   |}.
 Module ImplT.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let vec := ComplexTypePath.into_vec [1;2;3] in
   method "print_in_option" vec ;;
   tt.

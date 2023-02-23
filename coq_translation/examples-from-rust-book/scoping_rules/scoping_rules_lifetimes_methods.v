@@ -30,7 +30,7 @@ Module ImplOwner.
 End ImplOwner.
 (* End impl [Owner] *)
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let owner := Owner 18 in
   method "add_one" owner ;;
   method "print" owner ;;

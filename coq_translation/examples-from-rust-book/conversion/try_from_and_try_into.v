@@ -55,7 +55,7 @@ Module Impl_TryFrom_for_EvenNumber.
   |}.
 Module ImplEvenNumber.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   match (ImplEvenNumber.try_from 8, Ok (EvenNumber 8)) with
   | (left_val, right_val) =>
     if not (eqb (deref left_val) (deref right_val)) then

@@ -5,9 +5,9 @@ Definition LANGUAGE (_ : unit) := "Rust".
 
 Definition THRESHOLD (_ : unit) := 10.
 
-Definition is_big (_ : unit) := gt n THRESHOLD.
+Definition is_big (n : i32) : bool := gt n THRESHOLD.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let n := 16 in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1

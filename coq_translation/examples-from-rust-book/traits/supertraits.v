@@ -41,7 +41,7 @@ Module CompSciStudent.
   |}.
 End CompSciStudent.
 
-Definition comp_sci_student_greeting (_ : unit) :=
+Definition comp_sci_student_greeting (student : ref TraitObject) : String :=
   let res :=
     _crate.fmt.format
       (_crate::fmt::ImplArguments.new_v1
@@ -55,4 +55,4 @@ Definition comp_sci_student_greeting (_ : unit) :=
           (method "git_username" student)]) in
   res.
 
-Definition main (_ : unit) := tt.
+Definition main (_ : unit) : unit := tt.

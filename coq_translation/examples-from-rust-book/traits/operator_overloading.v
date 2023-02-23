@@ -61,7 +61,7 @@ Module Impl_ops_Add_for_Bar.
   |}.
 Module ImplBar.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["Foo + Bar = ";"\n"]

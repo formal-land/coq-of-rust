@@ -10,7 +10,7 @@ Module Point.
 End Point.
 Definition Point : Set := Point.t.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let point := {| Point.x := 0; Point.y := 0; Point.z := 0; |} in
   let borrowed_point := point in
   let another_borrow := point in

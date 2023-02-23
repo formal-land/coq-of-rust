@@ -26,7 +26,7 @@ Module Impl__crate_marker_Copy_for_Point.
       _crate.marker.Copy.Build_Class _.
 Module ImplPoint.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let c := Q in
   let ref_c1 := c in
   let ref_c2 := c in

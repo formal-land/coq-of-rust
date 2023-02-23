@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition NTHREADS (_ : unit) := 3.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let (tx, rx) := mpsc.channel tt in
   let children := ImplVec.new tt in
   match into_iter {| Range.start := 0; Range.end := NTHREADS; |} with

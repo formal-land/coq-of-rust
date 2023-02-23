@@ -29,7 +29,7 @@ Module Impl__crate_marker_Copy_for_Book.
       _crate.marker.Copy.Build_Class _.
 Module ImplBook.
 
-Definition borrow_book (_ : unit) :=
+Definition borrow_book (book : ref Book) : unit :=
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
       ["I immutably borrowed ";" - ";" edition\n"]
@@ -38,7 +38,7 @@ Definition borrow_book (_ : unit) :=
   tt ;;
   tt.
 
-Definition new_edition (_ : unit) :=
+Definition new_edition (book : mut_ref Book) : unit :=
   assign book.year := 2014 ;;
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1
@@ -48,7 +48,7 @@ Definition new_edition (_ : unit) :=
   tt ;;
   tt.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let immutabook :=
     {|
       Book.author := "Douglas Hofstadter";

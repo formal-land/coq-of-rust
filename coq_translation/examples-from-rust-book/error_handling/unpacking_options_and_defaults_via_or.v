@@ -20,7 +20,7 @@ Module Impl__crate_fmt_Debug_for_Fruit.
   |}.
 Module ImplFruit.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let apple := Some Fruit.Apple in
   let orange := Some Fruit.Orange in
   let no_fruit := None in

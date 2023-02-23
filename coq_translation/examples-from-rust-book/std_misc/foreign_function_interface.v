@@ -3,9 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error ForeignMod.
 
-Definition cos (_ : unit) := ccosf z.
+Definition cos (z : Complex) : Complex := ccosf z.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let z := {| Complex.re := neg 1 (* 1. *); Complex.im := 0 (* 0. *); |} in
   let z_sqrt := csqrtf z in
   _crate.io._print

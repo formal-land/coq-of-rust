@@ -31,7 +31,7 @@ Module Impl_From_for_Number.
   |}.
 Module ImplNumber.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let num := ImplNumber.from 30 in
   _crate.io._print
     (_crate::fmt::ImplArguments.new_v1

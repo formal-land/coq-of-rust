@@ -31,7 +31,7 @@ Module Impl_From_for_Number.
   |}.
 Module ImplNumber.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let int := 5 in
   let num := method "into" int in
   _crate.io._print

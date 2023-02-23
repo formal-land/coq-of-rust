@@ -45,7 +45,7 @@ Module Impl_AgeWidget_for_Form.
   |}.
 Module ImplForm.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   let form :=
     {| Form.username := method "to_owned" "rustacean"; Form.age := 28; |} in
   let username := UsernameWidget.get form in

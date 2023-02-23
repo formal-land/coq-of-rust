@@ -26,25 +26,25 @@ Module
   
   Error TyAlias.
   
-  Definition div (_ : unit) :=
+  Definition div (x : f64) (y : f64) : MathResult :=
     if eqb y 0 (* 0.0 *) then
       Err MathError.DivisionByZero
     else
       Ok (div x y).
   
-  Definition sqrt (_ : unit) :=
+  Definition sqrt (x : f64) : MathResult :=
     if lt x 0 (* 0.0 *) then
       Err MathError.NegativeSquareRoot
     else
       Ok (method "sqrt" x).
   
-  Definition ln (_ : unit) :=
+  Definition ln (x : f64) : MathResult :=
     if le x 0 (* 0.0 *) then
       Err MathError.NonPositiveLogarithm
     else
       Ok (method "ln" x).
   
-  Definition op_ (_ : unit) :=
+  Definition op_ (x : f64) (y : f64) : MathResult :=
     let ratio :=
       match branch (div x y) with
       | {| Break.0 := residual; |} => Return (from_residual residual)
@@ -57,7 +57,7 @@ Module
       end in
     sqrt ln.
   
-  Definition op (_ : unit) :=
+  Definition op (x : f64) (y : f64) : unit :=
     match op_ x y with
     | Err (why) =>
       _crate.rt.panic_display
@@ -96,25 +96,25 @@ Module ImplMathError.
 
 Error TyAlias.
 
-Definition div (_ : unit) :=
+Definition div (x : f64) (y : f64) : MathResult :=
   if eqb y 0 (* 0.0 *) then
     Err MathError.DivisionByZero
   else
     Ok (div x y).
 
-Definition sqrt (_ : unit) :=
+Definition sqrt (x : f64) : MathResult :=
   if lt x 0 (* 0.0 *) then
     Err MathError.NegativeSquareRoot
   else
     Ok (method "sqrt" x).
 
-Definition ln (_ : unit) :=
+Definition ln (x : f64) : MathResult :=
   if le x 0 (* 0.0 *) then
     Err MathError.NonPositiveLogarithm
   else
     Ok (method "ln" x).
 
-Definition op_ (_ : unit) :=
+Definition op_ (x : f64) (y : f64) : MathResult :=
   let ratio :=
     match branch (div x y) with
     | {| Break.0 := residual; |} => Return (from_residual residual)
@@ -127,7 +127,7 @@ Definition op_ (_ : unit) :=
     end in
   sqrt ln.
 
-Definition op (_ : unit) :=
+Definition op (x : f64) (y : f64) : unit :=
   match op_ x y with
   | Err (why) =>
     _crate.rt.panic_display
@@ -144,6 +144,6 @@ Definition op (_ : unit) :=
     tt
   end.
 
-Definition main (_ : unit) :=
+Definition main (_ : unit) : unit :=
   checked.op 1 (* 1.0 *) 10 (* 10.0 *) ;;
   tt.

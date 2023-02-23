@@ -21,7 +21,7 @@ pub enum CoqType {
 
 impl CoqType {
     pub fn unit() -> CoqType {
-        CoqType::Tuple(vec![])
+        CoqType::Var(Path::local("unit".to_string()))
     }
 }
 
@@ -67,6 +67,7 @@ pub fn compile_fn_ret_ty(tcx: &TyCtxt, fn_ret_ty: &FnRetTy) -> Option<CoqType> {
     }
 }
 
+// The type of a function declaration
 pub fn compile_fn_decl(tcx: &TyCtxt, fn_decl: &FnDecl) -> CoqType {
     let ret_ty = match compile_fn_ret_ty(tcx, &fn_decl.output) {
         Some(ret_ty) => ret_ty,
@@ -81,9 +82,8 @@ pub fn compile_fn_decl(tcx: &TyCtxt, fn_decl: &FnDecl) -> CoqType {
         })
 }
 
+// Returns the type parameters on a path
 pub fn compile_path_ty_params(tcx: &TyCtxt, path: &rustc_hir::Path) -> Vec<CoqType> {
-    // println!("path: {:?}", path);
-    // todo!()
     match path.segments.last().unwrap().args {
         Some(args) => args
             .args

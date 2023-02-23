@@ -5,4 +5,4 @@ Error Enum.
 
 Error Enum.
 
-Definition main (_ : unit) := Stmt_item.
+Definition main (_ : unit) : unit := Stmt_item.
