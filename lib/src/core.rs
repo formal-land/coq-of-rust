@@ -1,7 +1,6 @@
 use crate::top_level::*;
 use rustc_errors::registry;
 use rustc_session::config::{self, CheckCfg};
-use rustc_span::source_map;
 use std::path::PathBuf;
 use std::{fs, path, process, str};
 use walkdir::WalkDir;
@@ -22,16 +21,7 @@ pub fn run(src_folder: &path::Path) {
     );
     let dst_folder = path::Path::new(&unique_folder_name);
     if src_folder.is_file() {
-        let contents = fs::read_to_string(src_folder).unwrap();
-        let translation = create_translation_to_coq(
-            src_folder
-                .file_name()
-                .unwrap()
-                .to_str()
-                .unwrap()
-                .to_string(),
-            contents,
-        );
+        let translation = create_translation_to_coq(PathBuf::from(src_folder));
 
         let write_to_path = dst_folder.join(
             change_to_coq_extension(src_folder)
@@ -58,11 +48,7 @@ pub fn run(src_folder: &path::Path) {
                 fs::create_dir_all(&dst_path).unwrap();
             } else {
                 // if the entry is a file, create a Coq version of it and write it to the destination directory
-                let contents = fs::read_to_string(src_path).unwrap();
-                let translation = create_translation_to_coq(
-                    src_path.file_name().unwrap().to_str().unwrap().to_string(),
-                    contents,
-                );
+                let translation = create_translation_to_coq(PathBuf::from(src_path));
                 fs::write(
                     dst_folder.join(change_to_coq_extension(relative_path)),
                     translation,
@@ -73,7 +59,7 @@ pub fn run(src_folder: &path::Path) {
     }
 }
 
-fn create_translation_to_coq(input_file_name: String, contents: String) -> String {
+fn create_translation_to_coq(input_file_name: PathBuf) -> String {
     let filename = input_file_name.clone();
     let out = process::Command::new("rustc")
         .arg("--print=sysroot")
@@ -86,10 +72,7 @@ fn create_translation_to_coq(input_file_name: String, contents: String) -> Strin
             maybe_sysroot: Some(path::PathBuf::from(sysroot)),
             ..config::Options::default()
         },
-        input: config::Input::Str {
-            name: source_map::FileName::Custom(input_file_name),
-            input: contents,
-        },
+        input: config::Input::File(input_file_name),
         crate_cfg: rustc_hash::FxHashSet::default(),
         crate_check_cfg: CheckCfg::default(),
         input_path: None,
@@ -103,7 +86,7 @@ fn create_translation_to_coq(input_file_name: String, contents: String) -> Strin
         make_codegen_backend: None,
         registry: registry::Registry::new(rustc_error_codes::DIAGNOSTICS),
     };
-    println!("Starting to translate {filename}...");
+    println!("Starting to translate {filename:?}...");
     let now = std::time::Instant::now();
     let result = rustc_interface::run_compiler(config, |compiler| {
         compiler.enter(|queries| {
@@ -114,7 +97,7 @@ fn create_translation_to_coq(input_file_name: String, contents: String) -> Strin
         })
     });
     println!(
-        "{} ms have passed to translate: {}",
+        "{} ms have passed to translate: {:?}",
         now.elapsed().as_millis(),
         filename
     );
