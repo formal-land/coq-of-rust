@@ -5,9 +5,10 @@ Require Export Coq.ZArith.ZArith.
 (* Global settings for files importing this file *)
 Global Set Primitive Projections.
 Global Set Printing Projections.
+Global Open Scope list_scope.
 Global Open Scope string_scope.
-Global Open Scope Z_scope.
 Global Open Scope type_scope.
+Global Open Scope Z_scope.
 
 Export List.ListNotations.
 
@@ -89,6 +90,15 @@ Module IndexedField.
     get self := self;
   |}.
 End IndexedField.
+
+Module Root.
+  Module std.
+    Module prelude.
+      Module rust_2015.
+      End rust_2015.
+    End prelude.
+  End std.
+End Root.
 
 Module std.
   Module result.

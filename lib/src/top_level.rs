@@ -63,6 +63,11 @@ enum TopLevelItem {
         of_trait: Path,
         body: TopLevel,
     },
+    Use {
+        name: String,
+        path: Path,
+        is_glob: bool,
+    },
     Error(String),
 }
 
@@ -79,7 +84,17 @@ pub struct TopLevel(Vec<TopLevelItem>);
 fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
     match &item.kind {
         ItemKind::ExternCrate(_) => vec![],
-        ItemKind::Use(_, _) => vec![],
+        ItemKind::Use(path, use_kind) => {
+            if matches!(use_kind, rustc_hir::UseKind::ListStem) {
+                vec![]
+            } else {
+                vec![TopLevelItem::Use {
+                    name: item.ident.name.to_string(),
+                    path: compile_path(path),
+                    is_glob: matches!(use_kind, rustc_hir::UseKind::Glob),
+                }]
+            }
+        }
         ItemKind::Static(_, _, body_id) => {
             let expr = tcx.hir().body(*body_id).value;
             vec![TopLevelItem::Definition {
@@ -845,6 +860,26 @@ impl TopLevelItem {
                     text("."),
                 ]),
             ]),
+            TopLevelItem::Use {
+                name,
+                path,
+                is_glob,
+            } => {
+                if *is_glob {
+                    nest([text("Import"), line(), path.to_doc(), text(".")])
+                } else {
+                    nest([
+                        text("Module"),
+                        line(),
+                        text(name),
+                        line(),
+                        text(":="),
+                        line(),
+                        path.to_doc(),
+                        text("."),
+                    ])
+                }
+            }
             TopLevelItem::Error(message) => nest([text("Error"), line(), text(message), text(".")]),
         }
     }
