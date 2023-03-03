@@ -84,15 +84,19 @@ pub enum Expr {
         base: Box<Expr>,
         index: Box<Expr>,
     },
-    Struct {
+    StructStruct {
         path: Path,
         fields: Vec<(String, Expr)>,
         base: Option<Box<Expr>>,
     },
+    StructTuple {
+        path: Path,
+        fields: Vec<Expr>,
+    },
 }
 
 /// The function [compile_bin_op] converts a hir binary operator to a
-/// string
+/// stringfields
 fn compile_bin_op(bin_op: &BinOp) -> String {
     match bin_op.node {
         BinOpKind::Add => "add".to_string(),
@@ -152,9 +156,35 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             Expr::Array { elements }
         }
         rustc_hir::ExprKind::Call(func, args) => {
-            let func = Box::new(compile_expr(tcx, func));
             let args = args.iter().map(|expr| compile_expr(tcx, expr)).collect();
-            Expr::Call { func, args }
+            // We check if we are actually calling a constructor
+            match func {
+                rustc_hir::Expr {
+                    kind:
+                        rustc_hir::ExprKind::Path(rustc_hir::QPath::Resolved(
+                            _,
+                            path @ rustc_hir::Path {
+                                res:
+                                    rustc_hir::def::Res::Def(
+                                        rustc_hir::def::DefKind::Ctor(
+                                            rustc_hir::def::CtorOf::Struct,
+                                            _,
+                                        ),
+                                        _,
+                                    ),
+                                ..
+                            },
+                        )),
+                    ..
+                } => Expr::StructTuple {
+                    path: compile_path(path),
+                    fields: args,
+                },
+                _ => {
+                    let func = Box::new(compile_expr(tcx, func));
+                    Expr::Call { func, args }
+                }
+            }
         }
         rustc_hir::ExprKind::MethodCall(path_segment, object, args, _) => {
             let func = path_segment.ident.to_string();
@@ -302,7 +332,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
                 })
                 .collect();
             let base = base.map(|expr| Box::new(compile_expr(tcx, expr)));
-            Expr::Struct { path, fields, base }
+            Expr::StructStruct { path, fields, base }
         }
         rustc_hir::ExprKind::Repeat(expr, _) => {
             let expr = compile_expr(tcx, expr);
@@ -429,10 +459,18 @@ impl Expr {
                 second.to_doc(false),
             ]),
 
-            Expr::Array { elements } => bracket(intersperse(
-                elements.iter().map(|element| element.to_doc(false)),
-                [text(";")],
-            )),
+            Expr::Array { elements } => group([
+                nest([
+                    text("["),
+                    line(),
+                    intersperse(
+                        elements.iter().map(|element| element.to_doc(false)),
+                        [text(";"), line()],
+                    ),
+                ]),
+                line(),
+                text("]"),
+            ]),
             Expr::Tuple { elements } => paren(
                 true,
                 nest([intersperse(
@@ -540,8 +578,10 @@ impl Expr {
                     base.to_doc(true),
                 ]),
             ),
-            Expr::Index { base, index } => nest([base.to_doc(true), bracket(index.to_doc(false))]),
-            Expr::Struct { path, fields, base } => group([
+            Expr::Index { base, index } => {
+                nest([base.to_doc(true), text("["), index.to_doc(false), text("]")])
+            }
+            Expr::StructStruct { path, fields, base } => group([
                 group([
                     nest([
                         text("{|"),
@@ -569,6 +609,19 @@ impl Expr {
                     None => nil(),
                 },
             ]),
+            Expr::StructTuple { path, fields } => paren(
+                with_paren,
+                nest([
+                    path.to_doc(),
+                    text(".Build"),
+                    line(),
+                    if fields.is_empty() {
+                        text("tt")
+                    } else {
+                        intersperse(fields.iter().map(|arg| arg.to_doc(true)), [line()])
+                    },
+                ]),
+            ),
         }
     }
 }

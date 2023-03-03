@@ -17,12 +17,21 @@ impl fmt::Display for Path {
 impl Path {
     pub fn local(name: String) -> Path {
         Path {
-            segments: vec![name],
+            segments: vec![to_valid_coq_name(name)],
         }
+    }
+
+    pub fn last(&self) -> &String {
+        self.segments.last().unwrap()
+    }
+
+    fn prefix_last_by_impl(&mut self) {
+        let last = self.segments.pop().unwrap();
+        self.segments.push(format!("Impl{last}"));
     }
 }
 
-pub fn compile_path(path: &rustc_hir::Path) -> Path {
+pub fn compile_path<Res>(path: &rustc_hir::Path<Res>) -> Path {
     Path {
         segments: path
             .segments
@@ -32,11 +41,6 @@ pub fn compile_path(path: &rustc_hir::Path) -> Path {
     }
 }
 
-fn prefix_last_by_impl(path: &mut Path) {
-    let last = path.segments.pop().unwrap();
-    path.segments.push(format!("Impl{last}"));
-}
-
 pub fn compile_qpath(qpath: &QPath) -> Path {
     match qpath {
         QPath::Resolved(_, path) => compile_path(path),
@@ -44,25 +48,28 @@ pub fn compile_qpath(qpath: &QPath) -> Path {
             let ty = match ty.kind {
                 rustc_hir::TyKind::Path(QPath::Resolved(_, path)) => {
                     let mut path = compile_path(path);
-                    prefix_last_by_impl(&mut path);
+                    path.prefix_last_by_impl();
                     path
                 }
                 _ => Path::local("ComplexTypePath".to_string()),
             };
             Path {
-                segments: vec![ty.to_string(), segment.ident.name.to_string()],
+                segments: vec![ty.to_string(), segment.ident.name.to_string()]
+                    .iter()
+                    .map(|segment| to_valid_coq_name(segment.to_string()))
+                    .collect(),
             }
         }
         QPath::LangItem(lang_item, _, _) => Path {
-            segments: vec![lang_item.name().to_string()],
+            segments: vec![to_valid_coq_name(lang_item.name().to_string())],
         },
     }
 }
 
-fn to_valid_coq_name(str: String) -> String {
-    str.chars()
-        .map(|char| if char == '$' { '_' } else { char })
-        .collect()
+pub fn to_valid_coq_name(str: String) -> String {
+    let str = str::replace(&str, "$", "_");
+    let str = str::replace(&str, "{{root}}", "Root");
+    str::replace(&str, "::", ".")
 }
 
 impl Path {

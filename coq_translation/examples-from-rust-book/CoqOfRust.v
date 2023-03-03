@@ -5,9 +5,10 @@ Require Export Coq.ZArith.ZArith.
 (* Global settings for files importing this file *)
 Global Set Primitive Projections.
 Global Set Printing Projections.
+Global Open Scope list_scope.
 Global Open Scope string_scope.
-Global Open Scope Z_scope.
 Global Open Scope type_scope.
+Global Open Scope Z_scope.
 
 Export List.ListNotations.
 
@@ -90,6 +91,15 @@ Module IndexedField.
   |}.
 End IndexedField.
 
+Module Root.
+  Module std.
+    Module prelude.
+      Module rust_2015.
+      End rust_2015.
+    End prelude.
+  End std.
+End Root.
+
 Module std.
   Module result.
     Module Result.
@@ -133,5 +143,22 @@ Module _crate.
       }.
     End Clone.
   End clone.
-End _crate.
 
+  Module io.
+    Parameter _print : forall {A : Set}, A -> unit.
+  End io.
+
+  Module fmt.
+    Module ImplArguments.
+      Parameter new_v1 : forall {A B : Set}, A -> B -> unit.
+      Parameter new_v1_formatted : forall {A B C : Set}, A -> B -> C -> unit.
+    End ImplArguments.
+
+    Module ImplArgumentV1.
+      Parameter new_display : forall {A : Set}, A -> unit.
+      Parameter new_binary : forall {A : Set}, A -> unit.
+      Parameter new_octal : forall {A : Set}, A -> unit.
+      Parameter new_lower_hex : forall {A : Set}, A -> unit.
+    End ImplArgumentV1.
+  End fmt.
+End _crate.
