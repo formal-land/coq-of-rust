@@ -17,8 +17,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := n; |} =>
+      | None => Break
+      | Some {| Some.0 := n; |} =>
         let n_squared := mul n n in
         if ge n_squared upper then
           Break ;;

@@ -10,8 +10,8 @@ Error TyAlias.
 Error TyAlias.
 
 Definition main (_ : unit) : unit :=
-  let nanoseconds := 5 in
-  let inches := 2 in
+  let nanoseconds := cast 5 U64 in
+  let inches := cast 2 U64 in
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ ""; " nanoseconds + "; " inches = "; " unit?\n" ]

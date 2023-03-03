@@ -11,30 +11,27 @@ Definition function (_ : unit) : unit :=
   tt ;;
   tt.
 
-Module
-  deeply
-  :=
-  Module
-    nested
-    :=
+Module deeply.
+  Module nested.
     Definition function (_ : unit) : unit :=
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ "called `deeply::nested::function()`\n" ]
           [  ]) ;;
       tt ;;
-      tt...
+      tt.
+  End nested.
+End deeply.
 
-Module
-  nested
-  :=
+Module nested.
   Definition function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
         [ "called `deeply::nested::function()`\n" ]
         [  ]) ;;
     tt ;;
-    tt..
+    tt.
+End nested.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
@@ -49,7 +46,7 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1 [ "Entering block\n" ] [  ]) ;;
   tt ;;
-  Stmt_item ;;
+  function ;;
   function tt ;;
   tt.
 

@@ -23,14 +23,14 @@ Definition Days := Days.t.
 
 (* Impl [Years] *)
 Module ImplYears.
-  Definition to_days (self : ref Years) : Days :=
+  Definition to_days (self : ref Self) : Days :=
     Days.Build (mul (IndexedField.get (index := 0) self) 365).
 End ImplYears.
 (* End impl [Years] *)
 
 (* Impl [Days] *)
 Module ImplDays.
-  Definition to_years (self : ref Days) : Years :=
+  Definition to_years (self : ref Self) : Years :=
     Years.Build (div (IndexedField.get (index := 0) self) 365).
 End ImplDays.
 (* End impl [Days] *)

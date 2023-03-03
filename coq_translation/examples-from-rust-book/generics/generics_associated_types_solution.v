@@ -48,16 +48,16 @@ Module Impl_Contains_for_Container.
     Contains.A := i32;
     Contains.B := i32;
     Contains.contains
-        (self : ref Container)
+        (self : ref Self)
         (number_1 : ref i32)
         (number_2 : ref i32) :=
       andb
         (eqb (IndexedField.get (index := 0) self) number_1)
         (eqb (IndexedField.get (index := 1) self) number_2);
-    Contains.first (self : ref Container) := IndexedField.get (index := 0) self;
-    Contains.last (self : ref Container) := IndexedField.get (index := 1) self;
+    Contains.first (self : ref Self) := IndexedField.get (index := 0) self;
+    Contains.last (self : ref Self) := IndexedField.get (index := 1) self;
   |}.
-Module ImplContainer.
+End Impl_Contains_for_Container.
 
 Definition difference {C : Set} `{Contains.Class C} (container : ref C) : i32 :=
   sub (method "last" container) (method "first" container).

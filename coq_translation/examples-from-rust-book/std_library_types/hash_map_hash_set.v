@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module HashSet := std.collections.HashSet.
+Definition HashSet := HashSet.t.
 
 Definition main (_ : unit) : unit :=
   let a :=

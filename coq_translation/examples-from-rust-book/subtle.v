@@ -20,6 +20,7 @@ Module Neg := core.ops.Neg.
 Module Not := core.ops.Not.
 
 Module Option := core.option.Option.
+Definition Option := Option.t.
 
 Module Choice.
   Inductive t : Set := Build (_ : u8).
@@ -35,35 +36,33 @@ Module Impl__crate_marker_Copy_for_Choice.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
       _crate.marker.Copy.Build_Class _.
-Module ImplChoice.
+End Impl__crate_marker_Copy_for_Choice.
 
 Module Impl__crate_clone_Clone_for_Choice.
   Definition Self := Choice.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Choice) :=
+    _crate.clone.Clone.clone (self : ref Self) :=
       let _ := tt in
       deref self;
   |}.
-Module ImplChoice.
+End Impl__crate_clone_Clone_for_Choice.
 
 Module Impl__crate_fmt_Debug_for_Choice.
   Definition Self := Choice.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref Choice)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Choice"
         (IndexedField.get (index := 0) self);
   |}.
-Module ImplChoice.
+End Impl__crate_fmt_Debug_for_Choice.
 
 (* Impl [Choice] *)
 Module ImplChoice.
-  Definition unwrap_u8 (self : ref Choice) : u8 :=
+  Definition unwrap_u8 (self : ref Self) : u8 :=
     IndexedField.get (index := 0) self.
 End ImplChoice.
 (* End impl [Choice] *)
@@ -89,89 +88,89 @@ Module Impl_From_for_bool.
         tt ;;
       ne (IndexedField.get (index := 0) source) 0;
   |}.
-Module Implbool.
+End Impl_From_for_bool.
 
 Module Impl_BitAnd_for_Choice.
   Definition Self := Choice.
   
   Global Instance I : BitAnd.Class Self := {|
     BitAnd.Output := Choice;
-    BitAnd.bitand (self : Choice) (rhs : Choice) :=
+    BitAnd.bitand (self : Self) (rhs : Choice) :=
       method
         "into"
         (bit_and
           (IndexedField.get (index := 0) self)
           (IndexedField.get (index := 0) rhs));
   |}.
-Module ImplChoice.
+End Impl_BitAnd_for_Choice.
 
 Module Impl_BitAndAssign_for_Choice.
   Definition Self := Choice.
   
   Global Instance I : BitAndAssign.Class Self := {|
-    BitAndAssign.bitand_assign (self : mut_ref Choice) (rhs : Choice) :=
+    BitAndAssign.bitand_assign (self : mut_ref Self) (rhs : Choice) :=
       assign deref self := bit_and (deref self) rhs ;;
       tt;
   |}.
-Module ImplChoice.
+End Impl_BitAndAssign_for_Choice.
 
 Module Impl_BitOr_for_Choice.
   Definition Self := Choice.
   
   Global Instance I : BitOr.Class Self := {|
     BitOr.Output := Choice;
-    BitOr.bitor (self : Choice) (rhs : Choice) :=
+    BitOr.bitor (self : Self) (rhs : Choice) :=
       method
         "into"
         (bit_or
           (IndexedField.get (index := 0) self)
           (IndexedField.get (index := 0) rhs));
   |}.
-Module ImplChoice.
+End Impl_BitOr_for_Choice.
 
 Module Impl_BitOrAssign_for_Choice.
   Definition Self := Choice.
   
   Global Instance I : BitOrAssign.Class Self := {|
-    BitOrAssign.bitor_assign (self : mut_ref Choice) (rhs : Choice) :=
+    BitOrAssign.bitor_assign (self : mut_ref Self) (rhs : Choice) :=
       assign deref self := bit_or (deref self) rhs ;;
       tt;
   |}.
-Module ImplChoice.
+End Impl_BitOrAssign_for_Choice.
 
 Module Impl_BitXor_for_Choice.
   Definition Self := Choice.
   
   Global Instance I : BitXor.Class Self := {|
     BitXor.Output := Choice;
-    BitXor.bitxor (self : Choice) (rhs : Choice) :=
+    BitXor.bitxor (self : Self) (rhs : Choice) :=
       method
         "into"
         (bit_xor
           (IndexedField.get (index := 0) self)
           (IndexedField.get (index := 0) rhs));
   |}.
-Module ImplChoice.
+End Impl_BitXor_for_Choice.
 
 Module Impl_BitXorAssign_for_Choice.
   Definition Self := Choice.
   
   Global Instance I : BitXorAssign.Class Self := {|
-    BitXorAssign.bitxor_assign (self : mut_ref Choice) (rhs : Choice) :=
+    BitXorAssign.bitxor_assign (self : mut_ref Self) (rhs : Choice) :=
       assign deref self := bit_xor (deref self) rhs ;;
       tt;
   |}.
-Module ImplChoice.
+End Impl_BitXorAssign_for_Choice.
 
 Module Impl_Not_for_Choice.
   Definition Self := Choice.
   
   Global Instance I : Not.Class Self := {|
     Not.Output := Choice;
-    Not.not (self : Choice) :=
+    Not.not (self : Self) :=
       method "into" (bit_and 1 (not (IndexedField.get (index := 0) self)));
   |}.
-Module ImplChoice.
+End Impl_Not_for_Choice.
 
 Definition black_box (input : u8) : u8 :=
   if true then
@@ -182,7 +181,7 @@ Definition black_box (input : u8) : u8 :=
     tt
   else
     tt ;;
-  core.ptr.read_volatile input.
+  core.ptr.read_volatile (cast input (ref u8)).
 
 Module Impl_From_for_Choice.
   Definition Self := Choice.
@@ -190,7 +189,7 @@ Module Impl_From_for_Choice.
   Global Instance I : From.Class u8 Self := {|
     From.from (input : u8) := Choice.Build (black_box input);
   |}.
-Module ImplChoice.
+End Impl_From_for_Choice.
 
 Module ConstantTimeEq.
   Class Class (Self : Set) : Set := {
@@ -209,8 +208,8 @@ End ConstantTimeEq.
 Module Impl_ConstantTimeEq_for_Slice.
   Definition Self := Slice.
   
-  Global Instance I : ConstantTimeEq.Class Self := {|
-    ConstantTimeEq.ct_eq (self : ref [T]) (_rhs : ref Slice) :=
+  Global Instance I T : ConstantTimeEq.Class Self := {|
+    ConstantTimeEq.ct_eq (self : ref Self) (_rhs : ref Slice) :=
       let len := method "len" self in
       if ne len (method "len" _rhs) then
         Return (ImplChoice.from 0) ;;
@@ -223,8 +222,8 @@ Module Impl_ConstantTimeEq_for_Slice.
       | iter =>
         loop
           match next iter with
-          | {|  |} => Break
-          | {| Some.0 := (ai, bi); |} =>
+          | None => Break
+          | Some {| Some.0 := (ai, bi); |} =>
             assign x := bit_and x (method "unwrap_u8" (method "ct_eq" ai bi)) ;;
             tt
           end ;;
@@ -234,119 +233,119 @@ Module Impl_ConstantTimeEq_for_Slice.
       end ;;
       method "into" x;
   |}.
-Module ImplSlice.
+End Impl_ConstantTimeEq_for_Slice.
 
 Module Impl_ConstantTimeEq_for_Choice.
   Definition Self := Choice.
   
   Global Instance I : ConstantTimeEq.Class Self := {|
-    ConstantTimeEq.ct_eq (self : ref Choice) (rhs : ref Choice) :=
+    ConstantTimeEq.ct_eq (self : ref Self) (rhs : ref Choice) :=
       not (bit_xor (deref self) (deref rhs));
   |}.
-Module ImplChoice.
+End Impl_ConstantTimeEq_for_Choice.
 
 Module Impl_ConstantTimeEq_for_u8.
   Definition Self := u8.
   
   Global Instance I : ConstantTimeEq.Class Self := {|
-    ConstantTimeEq.ct_eq (self : ref u8) (other : ref u8) :=
+    ConstantTimeEq.ct_eq (self : ref Self) (other : ref u8) :=
       let x := bit_xor self other in
       let y := shr (bit_or x (method "wrapping_neg" x)) (sub 8 1) in
-      method "into" (bit_xor y 1);
+      method "into" (cast (bit_xor y (cast 1 u8)) u8);
   |}.
-Module Implu8.
+End Impl_ConstantTimeEq_for_u8.
 
 Module Impl_ConstantTimeEq_for_i8.
   Definition Self := i8.
   
   Global Instance I : ConstantTimeEq.Class Self := {|
-    ConstantTimeEq.ct_eq (self : ref i8) (other : ref i8) :=
-      method "ct_eq" (deref self) (deref other);
+    ConstantTimeEq.ct_eq (self : ref Self) (other : ref i8) :=
+      method "ct_eq" (cast (deref self) u8) (cast (deref other) u8);
   |}.
-Module Impli8.
+End Impl_ConstantTimeEq_for_i8.
 
 Module Impl_ConstantTimeEq_for_u16.
   Definition Self := u16.
   
   Global Instance I : ConstantTimeEq.Class Self := {|
-    ConstantTimeEq.ct_eq (self : ref u16) (other : ref u16) :=
+    ConstantTimeEq.ct_eq (self : ref Self) (other : ref u16) :=
       let x := bit_xor self other in
       let y := shr (bit_or x (method "wrapping_neg" x)) (sub 16 1) in
-      method "into" (bit_xor y 1);
+      method "into" (cast (bit_xor y (cast 1 u16)) u8);
   |}.
-Module Implu16.
+End Impl_ConstantTimeEq_for_u16.
 
 Module Impl_ConstantTimeEq_for_i16.
   Definition Self := i16.
   
   Global Instance I : ConstantTimeEq.Class Self := {|
-    ConstantTimeEq.ct_eq (self : ref i16) (other : ref i16) :=
-      method "ct_eq" (deref self) (deref other);
+    ConstantTimeEq.ct_eq (self : ref Self) (other : ref i16) :=
+      method "ct_eq" (cast (deref self) u16) (cast (deref other) u16);
   |}.
-Module Impli16.
+End Impl_ConstantTimeEq_for_i16.
 
 Module Impl_ConstantTimeEq_for_u32.
   Definition Self := u32.
   
   Global Instance I : ConstantTimeEq.Class Self := {|
-    ConstantTimeEq.ct_eq (self : ref u32) (other : ref u32) :=
+    ConstantTimeEq.ct_eq (self : ref Self) (other : ref u32) :=
       let x := bit_xor self other in
       let y := shr (bit_or x (method "wrapping_neg" x)) (sub 32 1) in
-      method "into" (bit_xor y 1);
+      method "into" (cast (bit_xor y (cast 1 u32)) u8);
   |}.
-Module Implu32.
+End Impl_ConstantTimeEq_for_u32.
 
 Module Impl_ConstantTimeEq_for_i32.
   Definition Self := i32.
   
   Global Instance I : ConstantTimeEq.Class Self := {|
-    ConstantTimeEq.ct_eq (self : ref i32) (other : ref i32) :=
-      method "ct_eq" (deref self) (deref other);
+    ConstantTimeEq.ct_eq (self : ref Self) (other : ref i32) :=
+      method "ct_eq" (cast (deref self) u32) (cast (deref other) u32);
   |}.
-Module Impli32.
+End Impl_ConstantTimeEq_for_i32.
 
 Module Impl_ConstantTimeEq_for_u64.
   Definition Self := u64.
   
   Global Instance I : ConstantTimeEq.Class Self := {|
-    ConstantTimeEq.ct_eq (self : ref u64) (other : ref u64) :=
+    ConstantTimeEq.ct_eq (self : ref Self) (other : ref u64) :=
       let x := bit_xor self other in
       let y := shr (bit_or x (method "wrapping_neg" x)) (sub 64 1) in
-      method "into" (bit_xor y 1);
+      method "into" (cast (bit_xor y (cast 1 u64)) u8);
   |}.
-Module Implu64.
+End Impl_ConstantTimeEq_for_u64.
 
 Module Impl_ConstantTimeEq_for_i64.
   Definition Self := i64.
   
   Global Instance I : ConstantTimeEq.Class Self := {|
-    ConstantTimeEq.ct_eq (self : ref i64) (other : ref i64) :=
-      method "ct_eq" (deref self) (deref other);
+    ConstantTimeEq.ct_eq (self : ref Self) (other : ref i64) :=
+      method "ct_eq" (cast (deref self) u64) (cast (deref other) u64);
   |}.
-Module Impli64.
+End Impl_ConstantTimeEq_for_i64.
 
 Module Impl_ConstantTimeEq_for_usize.
   Definition Self := usize.
   
   Global Instance I : ConstantTimeEq.Class Self := {|
-    ConstantTimeEq.ct_eq (self : ref usize) (other : ref usize) :=
+    ConstantTimeEq.ct_eq (self : ref Self) (other : ref usize) :=
       let x := bit_xor self other in
       let y :=
         shr
           (bit_or x (method "wrapping_neg" x))
           (sub (mul (Root.core.mem.size_of tt) 8) 1) in
-      method "into" (bit_xor y 1);
+      method "into" (cast (bit_xor y (cast 1 usize)) u8);
   |}.
-Module Implusize.
+End Impl_ConstantTimeEq_for_usize.
 
 Module Impl_ConstantTimeEq_for_isize.
   Definition Self := isize.
   
   Global Instance I : ConstantTimeEq.Class Self := {|
-    ConstantTimeEq.ct_eq (self : ref isize) (other : ref isize) :=
-      method "ct_eq" (deref self) (deref other);
+    ConstantTimeEq.ct_eq (self : ref Self) (other : ref isize) :=
+      method "ct_eq" (cast (deref self) usize) (cast (deref other) usize);
   |}.
-Module Implisize.
+End Impl_ConstantTimeEq_for_isize.
 
 Module ConditionallySelectable.
   Class Class (Self : Set) : Set := {
@@ -374,16 +373,16 @@ Module Impl_ConditionallySelectable_for_u8.
   
   Global Instance I : ConditionallySelectable.Class Self := {|
     ConditionallySelectable.conditional_select
-        (a : ref u8)
-        (b : ref u8)
+        (a : ref Self)
+        (b : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) u8 in
       bit_xor a (bit_and mask (bit_xor a b));
     ConditionallySelectable.conditional_assign
-        (self : mut_ref u8)
-        (other : ref u8)
+        (self : mut_ref Self)
+        (other : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) u8 in
       assign
         deref self
         :=
@@ -392,32 +391,32 @@ Module Impl_ConditionallySelectable_for_u8.
           (bit_and mask (bit_xor (deref self) (deref other))) ;;
       tt;
     ConditionallySelectable.conditional_swap
-        (a : mut_ref u8)
-        (b : mut_ref u8)
+        (a : mut_ref Self)
+        (b : mut_ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) u8 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
       assign deref a := bit_xor (deref a) t ;;
       assign deref b := bit_xor (deref b) t ;;
       tt;
   |}.
-Module Implu8.
+End Impl_ConditionallySelectable_for_u8.
 
 Module Impl_ConditionallySelectable_for_i8.
   Definition Self := i8.
   
   Global Instance I : ConditionallySelectable.Class Self := {|
     ConditionallySelectable.conditional_select
-        (a : ref i8)
-        (b : ref i8)
+        (a : ref Self)
+        (b : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) i8 in
       bit_xor a (bit_and mask (bit_xor a b));
     ConditionallySelectable.conditional_assign
-        (self : mut_ref i8)
-        (other : ref i8)
+        (self : mut_ref Self)
+        (other : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) i8 in
       assign
         deref self
         :=
@@ -426,32 +425,32 @@ Module Impl_ConditionallySelectable_for_i8.
           (bit_and mask (bit_xor (deref self) (deref other))) ;;
       tt;
     ConditionallySelectable.conditional_swap
-        (a : mut_ref i8)
-        (b : mut_ref i8)
+        (a : mut_ref Self)
+        (b : mut_ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) i8 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
       assign deref a := bit_xor (deref a) t ;;
       assign deref b := bit_xor (deref b) t ;;
       tt;
   |}.
-Module Impli8.
+End Impl_ConditionallySelectable_for_i8.
 
 Module Impl_ConditionallySelectable_for_u16.
   Definition Self := u16.
   
   Global Instance I : ConditionallySelectable.Class Self := {|
     ConditionallySelectable.conditional_select
-        (a : ref u16)
-        (b : ref u16)
+        (a : ref Self)
+        (b : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) u16 in
       bit_xor a (bit_and mask (bit_xor a b));
     ConditionallySelectable.conditional_assign
-        (self : mut_ref u16)
-        (other : ref u16)
+        (self : mut_ref Self)
+        (other : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) u16 in
       assign
         deref self
         :=
@@ -460,32 +459,32 @@ Module Impl_ConditionallySelectable_for_u16.
           (bit_and mask (bit_xor (deref self) (deref other))) ;;
       tt;
     ConditionallySelectable.conditional_swap
-        (a : mut_ref u16)
-        (b : mut_ref u16)
+        (a : mut_ref Self)
+        (b : mut_ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) u16 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
       assign deref a := bit_xor (deref a) t ;;
       assign deref b := bit_xor (deref b) t ;;
       tt;
   |}.
-Module Implu16.
+End Impl_ConditionallySelectable_for_u16.
 
 Module Impl_ConditionallySelectable_for_i16.
   Definition Self := i16.
   
   Global Instance I : ConditionallySelectable.Class Self := {|
     ConditionallySelectable.conditional_select
-        (a : ref i16)
-        (b : ref i16)
+        (a : ref Self)
+        (b : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) i16 in
       bit_xor a (bit_and mask (bit_xor a b));
     ConditionallySelectable.conditional_assign
-        (self : mut_ref i16)
-        (other : ref i16)
+        (self : mut_ref Self)
+        (other : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) i16 in
       assign
         deref self
         :=
@@ -494,32 +493,32 @@ Module Impl_ConditionallySelectable_for_i16.
           (bit_and mask (bit_xor (deref self) (deref other))) ;;
       tt;
     ConditionallySelectable.conditional_swap
-        (a : mut_ref i16)
-        (b : mut_ref i16)
+        (a : mut_ref Self)
+        (b : mut_ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) i16 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
       assign deref a := bit_xor (deref a) t ;;
       assign deref b := bit_xor (deref b) t ;;
       tt;
   |}.
-Module Impli16.
+End Impl_ConditionallySelectable_for_i16.
 
 Module Impl_ConditionallySelectable_for_u32.
   Definition Self := u32.
   
   Global Instance I : ConditionallySelectable.Class Self := {|
     ConditionallySelectable.conditional_select
-        (a : ref u32)
-        (b : ref u32)
+        (a : ref Self)
+        (b : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) u32 in
       bit_xor a (bit_and mask (bit_xor a b));
     ConditionallySelectable.conditional_assign
-        (self : mut_ref u32)
-        (other : ref u32)
+        (self : mut_ref Self)
+        (other : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) u32 in
       assign
         deref self
         :=
@@ -528,32 +527,32 @@ Module Impl_ConditionallySelectable_for_u32.
           (bit_and mask (bit_xor (deref self) (deref other))) ;;
       tt;
     ConditionallySelectable.conditional_swap
-        (a : mut_ref u32)
-        (b : mut_ref u32)
+        (a : mut_ref Self)
+        (b : mut_ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) u32 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
       assign deref a := bit_xor (deref a) t ;;
       assign deref b := bit_xor (deref b) t ;;
       tt;
   |}.
-Module Implu32.
+End Impl_ConditionallySelectable_for_u32.
 
 Module Impl_ConditionallySelectable_for_i32.
   Definition Self := i32.
   
   Global Instance I : ConditionallySelectable.Class Self := {|
     ConditionallySelectable.conditional_select
-        (a : ref i32)
-        (b : ref i32)
+        (a : ref Self)
+        (b : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) i32 in
       bit_xor a (bit_and mask (bit_xor a b));
     ConditionallySelectable.conditional_assign
-        (self : mut_ref i32)
-        (other : ref i32)
+        (self : mut_ref Self)
+        (other : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) i32 in
       assign
         deref self
         :=
@@ -562,32 +561,32 @@ Module Impl_ConditionallySelectable_for_i32.
           (bit_and mask (bit_xor (deref self) (deref other))) ;;
       tt;
     ConditionallySelectable.conditional_swap
-        (a : mut_ref i32)
-        (b : mut_ref i32)
+        (a : mut_ref Self)
+        (b : mut_ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) i32 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
       assign deref a := bit_xor (deref a) t ;;
       assign deref b := bit_xor (deref b) t ;;
       tt;
   |}.
-Module Impli32.
+End Impl_ConditionallySelectable_for_i32.
 
 Module Impl_ConditionallySelectable_for_u64.
   Definition Self := u64.
   
   Global Instance I : ConditionallySelectable.Class Self := {|
     ConditionallySelectable.conditional_select
-        (a : ref u64)
-        (b : ref u64)
+        (a : ref Self)
+        (b : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) u64 in
       bit_xor a (bit_and mask (bit_xor a b));
     ConditionallySelectable.conditional_assign
-        (self : mut_ref u64)
-        (other : ref u64)
+        (self : mut_ref Self)
+        (other : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) u64 in
       assign
         deref self
         :=
@@ -596,32 +595,32 @@ Module Impl_ConditionallySelectable_for_u64.
           (bit_and mask (bit_xor (deref self) (deref other))) ;;
       tt;
     ConditionallySelectable.conditional_swap
-        (a : mut_ref u64)
-        (b : mut_ref u64)
+        (a : mut_ref Self)
+        (b : mut_ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) u64 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
       assign deref a := bit_xor (deref a) t ;;
       assign deref b := bit_xor (deref b) t ;;
       tt;
   |}.
-Module Implu64.
+End Impl_ConditionallySelectable_for_u64.
 
 Module Impl_ConditionallySelectable_for_i64.
   Definition Self := i64.
   
   Global Instance I : ConditionallySelectable.Class Self := {|
     ConditionallySelectable.conditional_select
-        (a : ref i64)
-        (b : ref i64)
+        (a : ref Self)
+        (b : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) i64 in
       bit_xor a (bit_and mask (bit_xor a b));
     ConditionallySelectable.conditional_assign
-        (self : mut_ref i64)
-        (other : ref i64)
+        (self : mut_ref Self)
+        (other : ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) i64 in
       assign
         deref self
         :=
@@ -630,24 +629,24 @@ Module Impl_ConditionallySelectable_for_i64.
           (bit_and mask (bit_xor (deref self) (deref other))) ;;
       tt;
     ConditionallySelectable.conditional_swap
-        (a : mut_ref i64)
-        (b : mut_ref i64)
+        (a : mut_ref Self)
+        (b : mut_ref Self)
         (choice : Choice) :=
-      let mask := neg (method "unwrap_u8" choice) in
+      let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) i64 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
       assign deref a := bit_xor (deref a) t ;;
       assign deref b := bit_xor (deref b) t ;;
       tt;
   |}.
-Module Impli64.
+End Impl_ConditionallySelectable_for_i64.
 
 Module Impl_ConditionallySelectable_for_Choice.
   Definition Self := Choice.
   
   Global Instance I : ConditionallySelectable.Class Self := {|
     ConditionallySelectable.conditional_select
-        (a : ref Choice)
-        (b : ref Choice)
+        (a : ref Self)
+        (b : ref Self)
         (choice : Choice) :=
       Choice.Build
         (Implu8.conditional_select
@@ -655,7 +654,7 @@ Module Impl_ConditionallySelectable_for_Choice.
           (IndexedField.get (index := 0) b)
           choice);
   |}.
-Module ImplChoice.
+End Impl_ConditionallySelectable_for_Choice.
 
 Module ConditionallyNegatable.
   Class Class (Self : Set) : Set := {
@@ -671,15 +670,15 @@ End ConditionallyNegatable.
 Module Impl_ConditionallyNegatable_for_T.
   Definition Self := T.
   
-  Global Instance I : ConditionallyNegatable.Class Self := {|
+  Global Instance I T : ConditionallyNegatable.Class Self := {|
     ConditionallyNegatable.conditional_negate
-        (self : mut_ref T)
+        (self : mut_ref Self)
         (choice : Choice) :=
-      let self_neg := neg self in
+      let self_neg := neg (cast self (ref T)) in
       method "conditional_assign" self self_neg choice ;;
       tt;
   |}.
-Module ImplT.
+End Impl_ConditionallyNegatable_for_T.
 
 Module CtOption.
   Record t : Set := {
@@ -692,29 +691,27 @@ Definition CtOption : Set := CtOption.t.
 Module Impl__crate_clone_Clone_for_CtOption.
   Definition Self := CtOption.
   
-  Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref CtOption<T>) :=
+  Global Instance I T : _crate.clone.Clone.Class Self := {|
+    _crate.clone.Clone.clone (self : ref Self) :=
       {|
         CtOption.value := _crate.clone.Clone.clone self.value;
         CtOption.is_some := _crate.clone.Clone.clone self.is_some;
       |};
   |}.
-Module ImplCtOption.
+End Impl__crate_clone_Clone_for_CtOption.
 
 Module Impl__crate_marker_Copy_for_CtOption.
   Definition Self := CtOption.
   
-  Global Instance I : _crate.marker.Copy.Class Self :=
+  Global Instance I T : _crate.marker.Copy.Class Self :=
       _crate.marker.Copy.Build_Class _.
-Module ImplCtOption.
+End Impl__crate_marker_Copy_for_CtOption.
 
 Module Impl__crate_fmt_Debug_for_CtOption.
   Definition Self := CtOption.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref CtOption<T>)
-        (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I T : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "CtOption"
@@ -723,26 +720,26 @@ Module Impl__crate_fmt_Debug_for_CtOption.
         "is_some"
         self.is_some;
   |}.
-Module ImplCtOption.
+End Impl__crate_fmt_Debug_for_CtOption.
 
 Module Impl_From_for_Option.
   Definition Self := Option.
   
-  Global Instance I : From.Class CtOption Self := {|
+  Global Instance I T : From.Class CtOption Self := {|
     From.from (source : CtOption) :=
       if eqb (method "unwrap_u8" (method "is_some" source)) 1 then
         Option.Some source.value
       else
         None;
   |}.
-Module ImplOption.
+End Impl_From_for_Option.
 
 (* Impl [CtOption] *)
 Module ImplCtOption.
   Definition new (value : T) (is_some : Choice) : CtOption :=
     {| CtOption.value := value; CtOption.is_some := is_some; |}.
   
-  Definition expect (self : CtOption<T>) (msg : ref str) : T :=
+  Definition expect (self : Self) (msg : ref str) : T :=
     match (method "unwrap_u8" self.is_some, 1) with
     | (left_val, right_val) =>
       if not (eqb (deref left_val) (deref right_val)) then
@@ -761,7 +758,7 @@ Module ImplCtOption.
     end ;;
     self.value.
   
-  Definition unwrap (self : CtOption<T>) : T :=
+  Definition unwrap (self : Self) : T :=
     match (method "unwrap_u8" self.is_some, 1) with
     | (left_val, right_val) =>
       if not (eqb (deref left_val) (deref right_val)) then
@@ -777,28 +774,28 @@ Module ImplCtOption.
     end ;;
     self.value.
   
-  Definition unwrap_or (self : CtOption<T>) (def : T) : T :=
+  Definition unwrap_or (self : Self) (def : T) : T :=
     ImplT.conditional_select def self.value self.is_some.
   
-  Definition unwrap_or_else (self : CtOption<T>) (f : F) : T :=
+  Definition unwrap_or_else (self : Self) (f : F) : T :=
     ImplT.conditional_select (f tt) self.value self.is_some.
   
-  Definition is_some (self : ref CtOption<T>) : Choice := self.is_some.
+  Definition is_some (self : ref Self) : Choice := self.is_some.
   
-  Definition is_none (self : ref CtOption<T>) : Choice := not self.is_some.
+  Definition is_none (self : ref Self) : Choice := not self.is_some.
   
-  Definition map (self : CtOption<T>) (f : F) : CtOption :=
+  Definition map (self : Self) (f : F) : CtOption :=
     ImplCtOption.new
       (f (ImplT.conditional_select (ImplT.default tt) self.value self.is_some))
       self.is_some.
   
-  Definition and_then (self : CtOption<T>) (f : F) : CtOption :=
+  Definition and_then (self : Self) (f : F) : CtOption :=
     let tmp :=
       f (ImplT.conditional_select (ImplT.default tt) self.value self.is_some) in
     assign tmp.is_some := bit_and tmp.is_some self.is_some ;;
     tmp.
   
-  Definition or_else (self : CtOption<T>) (f : F) : CtOption :=
+  Definition or_else (self : Self) (f : F) : CtOption :=
     let is_none := method "is_none" self in
     let f := f tt in
     ImplSelf.conditional_select self f is_none.
@@ -808,29 +805,29 @@ End ImplCtOption.
 Module Impl_ConditionallySelectable_for_CtOption.
   Definition Self := CtOption.
   
-  Global Instance I : ConditionallySelectable.Class Self := {|
+  Global Instance I T : ConditionallySelectable.Class Self := {|
     ConditionallySelectable.conditional_select
-        (a : ref CtOption<T>)
-        (b : ref CtOption<T>)
+        (a : ref Self)
+        (b : ref Self)
         (choice : Choice) :=
       ImplCtOption.new
         (ImplT.conditional_select a.value b.value choice)
         (ImplChoice.conditional_select a.is_some b.is_some choice);
   |}.
-Module ImplCtOption.
+End Impl_ConditionallySelectable_for_CtOption.
 
 Module Impl_ConstantTimeEq_for_CtOption.
   Definition Self := CtOption.
   
-  Global Instance I : ConstantTimeEq.Class Self := {|
-    ConstantTimeEq.ct_eq (self : ref CtOption<T>) (rhs : ref CtOption) :=
+  Global Instance I T : ConstantTimeEq.Class Self := {|
+    ConstantTimeEq.ct_eq (self : ref Self) (rhs : ref CtOption) :=
       let a := method "is_some" self in
       let b := method "is_some" rhs in
       bit_or
         (bit_and (bit_and a b) (method "ct_eq" self.value rhs.value))
         (bit_and (not a) (not b));
   |}.
-Module ImplCtOption.
+End Impl_ConstantTimeEq_for_CtOption.
 
 Module ConstantTimeGreater.
   Class Class (Self : Set) : Set := {
@@ -846,7 +843,7 @@ Module Impl_ConstantTimeGreater_for_u8.
   Definition Self := u8.
   
   Global Instance I : ConstantTimeGreater.Class Self := {|
-    ConstantTimeGreater.ct_gt (self : ref u8) (other : ref u8) :=
+    ConstantTimeGreater.ct_gt (self : ref Self) (other : ref u8) :=
       let gtb := bit_and self (not other) in
       let ltb := bit_and (not self) other in
       let pow := 1 in
@@ -872,15 +869,15 @@ Module Impl_ConstantTimeGreater_for_u8.
           tt)
         from
         while ;;
-      ImplChoice.from (bit_and bit 1);
+      ImplChoice.from (cast (bit_and bit 1) u8);
   |}.
-Module Implu8.
+End Impl_ConstantTimeGreater_for_u8.
 
 Module Impl_ConstantTimeGreater_for_u16.
   Definition Self := u16.
   
   Global Instance I : ConstantTimeGreater.Class Self := {|
-    ConstantTimeGreater.ct_gt (self : ref u16) (other : ref u16) :=
+    ConstantTimeGreater.ct_gt (self : ref Self) (other : ref u16) :=
       let gtb := bit_and self (not other) in
       let ltb := bit_and (not self) other in
       let pow := 1 in
@@ -906,15 +903,15 @@ Module Impl_ConstantTimeGreater_for_u16.
           tt)
         from
         while ;;
-      ImplChoice.from (bit_and bit 1);
+      ImplChoice.from (cast (bit_and bit 1) u8);
   |}.
-Module Implu16.
+End Impl_ConstantTimeGreater_for_u16.
 
 Module Impl_ConstantTimeGreater_for_u32.
   Definition Self := u32.
   
   Global Instance I : ConstantTimeGreater.Class Self := {|
-    ConstantTimeGreater.ct_gt (self : ref u32) (other : ref u32) :=
+    ConstantTimeGreater.ct_gt (self : ref Self) (other : ref u32) :=
       let gtb := bit_and self (not other) in
       let ltb := bit_and (not self) other in
       let pow := 1 in
@@ -940,15 +937,15 @@ Module Impl_ConstantTimeGreater_for_u32.
           tt)
         from
         while ;;
-      ImplChoice.from (bit_and bit 1);
+      ImplChoice.from (cast (bit_and bit 1) u8);
   |}.
-Module Implu32.
+End Impl_ConstantTimeGreater_for_u32.
 
 Module Impl_ConstantTimeGreater_for_u64.
   Definition Self := u64.
   
   Global Instance I : ConstantTimeGreater.Class Self := {|
-    ConstantTimeGreater.ct_gt (self : ref u64) (other : ref u64) :=
+    ConstantTimeGreater.ct_gt (self : ref Self) (other : ref u64) :=
       let gtb := bit_and self (not other) in
       let ltb := bit_and (not self) other in
       let pow := 1 in
@@ -974,9 +971,9 @@ Module Impl_ConstantTimeGreater_for_u64.
           tt)
         from
         while ;;
-      ImplChoice.from (bit_and bit 1);
+      ImplChoice.from (cast (bit_and bit 1) u8);
   |}.
-Module Implu64.
+End Impl_ConstantTimeGreater_for_u64.
 
 Module ConstantTimeLess.
   Class Class (Self : Set) : Set := {
@@ -993,25 +990,25 @@ Module Impl_ConstantTimeLess_for_u8.
   
   Global Instance I : ConstantTimeLess.Class Self :=
       ConstantTimeLess.Build_Class _.
-Module Implu8.
+End Impl_ConstantTimeLess_for_u8.
 
 Module Impl_ConstantTimeLess_for_u16.
   Definition Self := u16.
   
   Global Instance I : ConstantTimeLess.Class Self :=
       ConstantTimeLess.Build_Class _.
-Module Implu16.
+End Impl_ConstantTimeLess_for_u16.
 
 Module Impl_ConstantTimeLess_for_u32.
   Definition Self := u32.
   
   Global Instance I : ConstantTimeLess.Class Self :=
       ConstantTimeLess.Build_Class _.
-Module Implu32.
+End Impl_ConstantTimeLess_for_u32.
 
 Module Impl_ConstantTimeLess_for_u64.
   Definition Self := u64.
   
   Global Instance I : ConstantTimeLess.Class Self :=
       ConstantTimeLess.Build_Class _.
-Module Implu64.
+End Impl_ConstantTimeLess_for_u64.

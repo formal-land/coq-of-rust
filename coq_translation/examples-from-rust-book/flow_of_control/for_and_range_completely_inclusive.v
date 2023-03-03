@@ -8,8 +8,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := n; |} =>
+      | None => Break
+      | Some {| Some.0 := n; |} =>
         if eqb (rem n 15) 0 then
           _crate.io._print
             (_crate.fmt.ImplArguments.new_v1 [ "fizzbuzz\n" ] [  ]) ;;

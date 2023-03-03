@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module HashMap := std.collections.HashMap.
+Definition HashMap := HashMap.t.
 
 Module Account.
   Record t : Set := {
@@ -16,48 +17,48 @@ Definition Account : Set := Account.t.
 Module Impl__crate_marker_StructuralPartialEq_for_Account.
   Definition Self := Account.
   
-  Global Instance I : _crate.marker.StructuralPartialEq.Class Self :=
+  Global Instance I 'a : _crate.marker.StructuralPartialEq.Class Self :=
       _crate.marker.StructuralPartialEq.Build_Class _.
-Module ImplAccount.
+End Impl__crate_marker_StructuralPartialEq_for_Account.
 
 Module Impl__crate_cmp_PartialEq_for_Account.
   Definition Self := Account.
   
-  Global Instance I : _crate.cmp.PartialEq.Class Self := {|
-    _crate.cmp.PartialEq.eq (self : ref Account<'a>) (other : ref Account) :=
+  Global Instance I 'a : _crate.cmp.PartialEq.Class Self := {|
+    _crate.cmp.PartialEq.eq (self : ref Self) (other : ref Account) :=
       andb
         (eqb self.username other.username)
         (eqb self.password other.password);
   |}.
-Module ImplAccount.
+End Impl__crate_cmp_PartialEq_for_Account.
 
 Module Impl__crate_marker_StructuralEq_for_Account.
   Definition Self := Account.
   
-  Global Instance I : _crate.marker.StructuralEq.Class Self :=
+  Global Instance I 'a : _crate.marker.StructuralEq.Class Self :=
       _crate.marker.StructuralEq.Build_Class _.
-Module ImplAccount.
+End Impl__crate_marker_StructuralEq_for_Account.
 
 Module Impl__crate_cmp_Eq_for_Account.
   Definition Self := Account.
   
-  Global Instance I : _crate.cmp.Eq.Class Self := {|
-    _crate.cmp.Eq.assert_receiver_is_total_eq (self : ref Account<'a>) :=
+  Global Instance I 'a : _crate.cmp.Eq.Class Self := {|
+    _crate.cmp.Eq.assert_receiver_is_total_eq (self : ref Self) :=
       let _ := tt in
       let _ := tt in
       tt;
   |}.
-Module ImplAccount.
+End Impl__crate_cmp_Eq_for_Account.
 
 Module Impl__crate_hash_Hash_for_Account.
   Definition Self := Account.
   
-  Global Instance I : _crate.hash.Hash.Class Self := {|
-    _crate.hash.Hash.hash (self : ref Account<'a>) (state : mut_ref __H) :=
+  Global Instance I 'a : _crate.hash.Hash.Class Self := {|
+    _crate.hash.Hash.hash (self : ref Self) (state : mut_ref __H) :=
       _crate.hash.Hash.hash self.username state ;;
       _crate.hash.Hash.hash self.password state;
   |}.
-Module ImplAccount.
+End Impl__crate_hash_Hash_for_Account.
 
 Module AccountInfo.
   Record t : Set := {

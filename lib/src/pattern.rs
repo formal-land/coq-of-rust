@@ -53,27 +53,35 @@ impl Pattern {
         match self {
             Pattern::Wild => text("_"),
             Pattern::Struct(path, fields) => group([
-                nest([
-                    text("{|"),
-                    line(),
-                    intersperse(
-                        fields.iter().map(|(name, pattern)| {
-                            nest([
-                                path.to_doc(),
-                                text("."),
-                                text(name),
-                                line(),
-                                text(":="),
-                                line(),
-                                pattern.to_doc(),
-                                text(";"),
-                            ])
-                        }),
-                        [line()],
-                    ),
-                ]),
-                line(),
-                text("|}"),
+                path.to_doc(),
+                if fields.is_empty() {
+                    nil()
+                } else {
+                    concat([
+                        line(),
+                        nest([
+                            text("{|"),
+                            line(),
+                            intersperse(
+                                fields.iter().map(|(name, pattern)| {
+                                    nest([
+                                        path.to_doc(),
+                                        text("."),
+                                        text(name),
+                                        line(),
+                                        text(":="),
+                                        line(),
+                                        pattern.to_doc(),
+                                        text(";"),
+                                    ])
+                                }),
+                                [line()],
+                            ),
+                        ]),
+                        line(),
+                        text("|}"),
+                    ])
+                },
             ]),
             Pattern::TupleStruct(path, fields) => {
                 let signature_in_parentheses_doc = paren(

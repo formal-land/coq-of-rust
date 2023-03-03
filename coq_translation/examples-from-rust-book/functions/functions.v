@@ -43,8 +43,8 @@ Definition fizzbuzz_to (n : u32) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := n; |} =>
+      | None => Break
+      | Some {| Some.0 := n; |} =>
         fizzbuzz n ;;
         tt
       end ;;

@@ -20,10 +20,10 @@ End DoubleDrop.
 Module Impl_DoubleDrop_for_U.
   Definition Self := U.
   
-  Global Instance I : DoubleDrop.Class T Self := {|
-    DoubleDrop.double_drop (self : U) (Pattern : T) := tt;
+  Global Instance I T U : DoubleDrop.Class T Self := {|
+    DoubleDrop.double_drop (self : Self) (Pattern : T) := tt;
   |}.
-Module ImplU.
+End Impl_DoubleDrop_for_U.
 
 Definition main (_ : unit) : unit :=
   let empty := Empty in

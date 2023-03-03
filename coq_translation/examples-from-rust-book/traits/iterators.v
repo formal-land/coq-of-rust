@@ -16,13 +16,13 @@ Module Impl_Iterator_for_Fibonacci.
   
   Global Instance I : Iterator.Class Self := {|
     Iterator.Item := u32;
-    Iterator.next (self : mut_ref Fibonacci) :=
+    Iterator.next (self : mut_ref Self) :=
       let current := self.curr in
       assign self.curr := self.next ;;
       assign self.next := add current self.next ;;
       Some current;
   |}.
-Module ImplFibonacci.
+End Impl_Iterator_for_Fibonacci.
 
 Definition fibonacci (_ : unit) : Fibonacci :=
   {| Fibonacci.curr := 0; Fibonacci.next := 1; |}.
@@ -63,8 +63,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := i; |} =>
+      | None => Break
+      | Some {| Some.0 := i; |} =>
         _crate.io._print
           (_crate.fmt.ImplArguments.new_v1
             [ "> "; "\n" ]
@@ -85,8 +85,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := i; |} =>
+      | None => Break
+      | Some {| Some.0 := i; |} =>
         _crate.io._print
           (_crate.fmt.ImplArguments.new_v1
             [ "> "; "\n" ]
@@ -107,8 +107,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := i; |} =>
+      | None => Break
+      | Some {| Some.0 := i; |} =>
         _crate.io._print
           (_crate.fmt.ImplArguments.new_v1
             [ "> "; "\n" ]
@@ -130,8 +130,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := i; |} =>
+      | None => Break
+      | Some {| Some.0 := i; |} =>
         _crate.io._print
           (_crate.fmt.ImplArguments.new_v1
             [ "> "; "\n" ]

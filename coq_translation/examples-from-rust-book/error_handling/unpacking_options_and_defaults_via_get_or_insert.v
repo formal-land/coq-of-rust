@@ -3,15 +3,21 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Error Enum.
+Module Fruit.
+  Inductive t : Set :=
+  | Apple
+  | Orange
+  | Banana
+  | Kiwi
+  | Lemon.
+End Fruit.
+Definition Fruit := Fruit.t.
 
 Module Impl__crate_fmt_Debug_for_Fruit.
   Definition Self := Fruit.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref Fruit)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Fruit.Apple => _crate.fmt.ImplFormatter.write_str f "Apple"
       | Fruit.Orange => _crate.fmt.ImplFormatter.write_str f "Orange"
@@ -20,7 +26,7 @@ Module Impl__crate_fmt_Debug_for_Fruit.
       | Fruit.Lemon => _crate.fmt.ImplFormatter.write_str f "Lemon"
       end;
   |}.
-Module ImplFruit.
+End Impl__crate_fmt_Debug_for_Fruit.
 
 Definition main (_ : unit) : unit :=
   let my_fruit := None in

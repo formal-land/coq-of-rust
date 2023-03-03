@@ -13,26 +13,24 @@ Module Impl__crate_fmt_Debug_for_DoubleError.
   Definition Self := DoubleError.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref DoubleError)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.write_str f "DoubleError";
   |}.
-Module ImplDoubleError.
+End Impl__crate_fmt_Debug_for_DoubleError.
 
 Module Impl__crate_clone_Clone_for_DoubleError.
   Definition Self := DoubleError.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref DoubleError) := DoubleError;
+    _crate.clone.Clone.clone (self : ref Self) := DoubleError;
   |}.
-Module ImplDoubleError.
+End Impl__crate_clone_Clone_for_DoubleError.
 
 Module Impl_fmt_Display_for_DoubleError.
   Definition Self := DoubleError.
   
   Global Instance I : fmt.Display.Class Self := {|
-    fmt.Display.fmt (self : ref DoubleError) (f : mut_ref fmt.Formatter) :=
+    fmt.Display.fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
       method
         "write_fmt"
         f
@@ -40,7 +38,7 @@ Module Impl_fmt_Display_for_DoubleError.
           [ "invalid first item to double" ]
           [  ]);
   |}.
-Module ImplDoubleError.
+End Impl_fmt_Display_for_DoubleError.
 
 Definition double_first (vec : Vec) : Result :=
   method

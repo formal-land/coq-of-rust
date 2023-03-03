@@ -9,6 +9,6 @@ Definition apply {F : Set} `{FnOnce.Class () F} (f : F) : unit :=
 
 Definition apply_to_3 {F : Set} `{Fn.Class (i32) F} (f : F) : i32 := f 3.
 
-Definition main (_ : unit) : unit := Stmt_item.
+Definition main (_ : unit) : unit := mem.
 
 Module mem := std.mem.

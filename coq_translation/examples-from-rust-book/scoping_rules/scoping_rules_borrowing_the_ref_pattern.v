@@ -15,18 +15,18 @@ Module Impl__crate_clone_Clone_for_Point.
   Definition Self := Point.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Point) :=
+    _crate.clone.Clone.clone (self : ref Self) :=
       let _ := tt in
       deref self;
   |}.
-Module ImplPoint.
+End Impl__crate_clone_Clone_for_Point.
 
 Module Impl__crate_marker_Copy_for_Point.
   Definition Self := Point.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
       _crate.marker.Copy.Build_Class _.
-Module ImplPoint.
+End Impl__crate_marker_Copy_for_Point.
 
 Definition main (_ : unit) : unit :=
   let c := Q in
@@ -42,10 +42,10 @@ Definition main (_ : unit) : unit :=
   tt ;;
   let point := {| Point.x := 0; Point.y := 0; |} in
   let _copy_of_x :=
-    let {| Point.x := ref_to_x; Point.y := _; |} := point in
+    let Point {| Point.x := ref_to_x; Point.y := _; |} := point in
     deref ref_to_x in
   let mutable_point := point in
-  let {| Point.x := _; Point.y := mut_ref_to_y; |} := mutable_point in
+  let Point {| Point.x := _; Point.y := mut_ref_to_y; |} := mutable_point in
   assign deref mut_ref_to_y := 1 ;;
   tt ;;
   _crate.io._print

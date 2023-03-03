@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module ParseIntError := std.num.ParseIntError.
+Definition ParseIntError := ParseIntError.t.
 
 Definition multiply
     (first_number_str : ref str)
@@ -11,13 +12,13 @@ Definition multiply
     : Result :=
   let first_number :=
     match branch (method "parse" first_number_str) with
-    | {| Break.0 := residual; |} => Return (from_residual residual)
-    | {| Continue.0 := val; |} => val
+    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    | Continue {| Continue.0 := val; |} => val
     end in
   let second_number :=
     match branch (method "parse" second_number_str) with
-    | {| Break.0 := residual; |} => Return (from_residual residual)
-    | {| Continue.0 := val; |} => val
+    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    | Continue {| Continue.0 := val; |} => val
     end in
   Ok (mul first_number second_number).
 

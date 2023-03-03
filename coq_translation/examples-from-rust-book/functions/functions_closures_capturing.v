@@ -3,6 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := Stmt_item.
+Definition main (_ : unit) : unit := mem.
 
 Module mem := std.mem.

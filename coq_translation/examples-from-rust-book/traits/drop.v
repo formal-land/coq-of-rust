@@ -14,7 +14,7 @@ Module Impl_Drop_for_Droppable.
   Definition Self := Droppable.
   
   Global Instance I : Drop.Class Self := {|
-    Drop.drop (self : mut_ref Droppable) :=
+    Drop.drop (self : mut_ref Self) :=
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ "> Dropping "; "\n" ]
@@ -22,7 +22,7 @@ Module Impl_Drop_for_Droppable.
       tt ;;
       tt;
   |}.
-Module ImplDroppable.
+End Impl_Drop_for_Droppable.
 
 Definition main (_ : unit) : unit :=
   let _a := {| Droppable.name := "a"; |} in

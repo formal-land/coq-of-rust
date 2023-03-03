@@ -6,8 +6,10 @@ Import Root.std.prelude.rust_2015.
 Module mpsc := std.sync.mpsc.
 
 Module Receiver := std.sync.mpsc.Receiver.
+Definition Receiver := Receiver.t.
 
 Module Sender := std.sync.mpsc.Sender.
+Definition Sender := Sender.t.
 
 Module thread := std.thread.
 
@@ -20,8 +22,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := id; |} =>
+      | None => Break
+      | Some {| Some.0 := id; |} =>
         let thread_tx := method "clone" tx in
         let child :=
           thread.spawn
@@ -40,13 +42,13 @@ Definition main (_ : unit) : unit :=
       from
       for
   end ;;
-  let ids := ImplVec.with_capacity NTHREADS in
+  let ids := ImplVec.with_capacity (cast NTHREADS usize) in
   match into_iter {| Range.start := 0; Range.end := NTHREADS; |} with
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := _; |} =>
+      | None => Break
+      | Some {| Some.0 := _; |} =>
         method "push" ids (method "recv" rx) ;;
         tt
       end ;;
@@ -58,8 +60,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := child; |} =>
+      | None => Break
+      | Some {| Some.0 := child; |} =>
         method
           "expect"
           (method "join" child)

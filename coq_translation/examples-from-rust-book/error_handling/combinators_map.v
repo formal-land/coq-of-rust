@@ -3,20 +3,26 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Error Enum.
+Module Food.
+  Inductive t : Set :=
+  | Apple
+  | Carrot
+  | Potato.
+End Food.
+Definition Food := Food.t.
 
 Module Impl__crate_fmt_Debug_for_Food.
   Definition Self := Food.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Food) (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Food.Apple => _crate.fmt.ImplFormatter.write_str f "Apple"
       | Food.Carrot => _crate.fmt.ImplFormatter.write_str f "Carrot"
       | Food.Potato => _crate.fmt.ImplFormatter.write_str f "Potato"
       end;
   |}.
-Module ImplFood.
+End Impl__crate_fmt_Debug_for_Food.
 
 Module Peeled.
   Inductive t : Set := Build (_ : Food).
@@ -31,15 +37,13 @@ Module Impl__crate_fmt_Debug_for_Peeled.
   Definition Self := Peeled.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref Peeled)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Peeled"
         (IndexedField.get (index := 0) self);
   |}.
-Module ImplPeeled.
+End Impl__crate_fmt_Debug_for_Peeled.
 
 Module Chopped.
   Inductive t : Set := Build (_ : Food).
@@ -54,15 +58,13 @@ Module Impl__crate_fmt_Debug_for_Chopped.
   Definition Self := Chopped.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref Chopped)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Chopped"
         (IndexedField.get (index := 0) self);
   |}.
-Module ImplChopped.
+End Impl__crate_fmt_Debug_for_Chopped.
 
 Module Cooked.
   Inductive t : Set := Build (_ : Food).
@@ -77,15 +79,13 @@ Module Impl__crate_fmt_Debug_for_Cooked.
   Definition Self := Cooked.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref Cooked)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Cooked"
         (IndexedField.get (index := 0) self);
   |}.
-Module ImplCooked.
+End Impl__crate_fmt_Debug_for_Cooked.
 
 Definition peel (food : Option) : Option :=
   match food with

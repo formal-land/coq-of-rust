@@ -52,6 +52,8 @@ End ExperimentsAroundMethods.
 
 Parameter axiom : forall {A : Set}, A.
 
+Parameter cast : forall {A : Set}, A -> forall (B : Set), B.
+
 Notation "e1 ;; e2" := (let '_ := e1 in e2)
   (at level 61, right associativity).
 
@@ -70,6 +72,10 @@ Definition i128 : Set := Z.
 (* We approximate floating point numbers with integers *)
 Definition f32 : Set := Z.
 Definition f64 : Set := Z.
+
+Definition str : Set := string.
+Definition char : Set := string.
+Parameter String : Set.
 
 Definition ref (A : Set) : Set := A.
 Definition mut_ref : Set -> Set := ref.
@@ -123,10 +129,56 @@ Module std.
         fmt : Self -> mut_ref Formatter -> Result;
       }.
     End Display.
+
+    Parameter Arguments : Set.
+
+    Module Write.
+      Class Class (Self : Set) : Set := {
+        write_str : mut_ref Self -> ref str -> Result;
+        write_char : mut_ref Self -> char -> Result;
+        write_fmt : mut_ref Self -> Arguments -> Result;
+      }.
+
+      Global Instance Method_write_str `(Class) : Method "write_str" _ := {|
+        method := write_str;
+      |}.
+      Global Instance Method_write_char `(Class) : Method "write_char" _ := {|
+        method := write_char;
+      |}.
+      Global Instance Method_write_fmt `(Class) : Method "write_fmt" _ := {|
+        method := write_fmt;
+      |}.
+    End Write.
+
+    Global Instance Write_for_Formatter  : Write.Class Formatter.
+    Admitted.
   End fmt.
+
+  Module prelude.
+    Module rust_2021.
+      Module From.
+        Class Class (T : Set) (Self : Set) : Set := {
+          from : T -> Self;
+        }.
+      End From.
+    End rust_2021.
+  End prelude.
+
+  Module error.
+    Module Error.
+      Unset Primitive Projections.
+      Class Class (Self : Set) : Set := {
+      }.
+      Global Set Primitive Projections.
+    End Error.
+  End error.
 End std.
 
 Module _crate.
+  Module intrinsics.
+    Parameter discriminant_value : forall {A : Set}, ref A -> u128.
+  End intrinsics.
+
   Module marker.
     Module Copy.
       Unset Primitive Projections.
@@ -134,6 +186,20 @@ Module _crate.
       }.
       Global Set Primitive Projections.
     End Copy.
+
+    Module StructuralEq.
+      Unset Primitive Projections.
+      Class Class (Self : Set) : Set := {
+      }.
+      Global Set Primitive Projections.
+    End StructuralEq.
+
+    Module StructuralPartialEq.
+      Unset Primitive Projections.
+      Class Class (Self : Set) : Set := {
+      }.
+      Global Set Primitive Projections.
+    End StructuralPartialEq.
   End marker.
 
   Module clone.
@@ -144,13 +210,33 @@ Module _crate.
     End Clone.
   End clone.
 
+  Module cmp.
+    Module Eq.
+      Class Class (Self : Set) : Set := {
+        assert_receiver_is_total_eq : ref Self -> unit;
+      }.
+    End Eq.
+
+    Module PartialEq.
+      Class Class (Self : Set) : Set := {
+        eq : ref Self -> ref Self -> bool;
+      }.
+    End PartialEq.
+  End cmp.
+
   Module io.
     Parameter _print : forall {A : Set}, A -> unit.
   End io.
 
   Module fmt.
+    Parameter Formatter : Set.
+
+    Parameter Error : Set.
+
+    Definition Result : Set := std.result.Result unit Error.
+
     Module ImplArguments.
-      Parameter new_v1 : forall {A B : Set}, A -> B -> unit.
+      Parameter new_v1 : forall {A : Set}, A -> list str -> std.fmt.Arguments.
       Parameter new_v1_formatted : forall {A B C : Set}, A -> B -> C -> unit.
     End ImplArguments.
 
@@ -160,5 +246,89 @@ Module _crate.
       Parameter new_octal : forall {A : Set}, A -> unit.
       Parameter new_lower_hex : forall {A : Set}, A -> unit.
     End ImplArgumentV1.
+
+    Module ImplFormatter.
+      Parameter write_str : Formatter -> string -> Result.
+    End ImplFormatter.
+
+    Module Debug.
+      Class Class (Self : Set) : Set := {
+        fmt : ref Self -> mut_ref Formatter -> Result;
+      }.
+    End Debug.
   End fmt.
+
+  Module log.
+    Parameter sol_log : str -> unit.
+  End log.
 End _crate.
+
+Module num_derive.
+  Module FromPrimitive.
+  End FromPrimitive.
+End num_derive.
+
+Module solana_program.
+  Module decode_error.
+    Module DecodeError.
+      Class Class (E : Set) (Self : Set) : Set := {
+        type_of : unit -> ref str;
+      }.
+    End DecodeError.
+  End decode_error.
+
+  Module msg.
+  End msg.
+
+  Module program_error.
+    Module PrintProgramError.
+      Class Class (Self : Set) : Set := {
+        print : ref Self -> unit;
+      }.
+    End PrintProgramError.
+
+    Module ProgramError.
+      Inductive t : Set :=
+      | Custom (_ : u32)
+      | InvalidArgument
+      | InvalidInstructionData
+      | InvalidAccountData
+      | AccountDataTooSmall
+      | InsufficientFunds
+      | IncorrectProgramId
+      | MissingRequiredSignature
+      | AccountAlreadyInitialized
+      | UninitializedAccount
+      | NotEnoughAccountKeys
+      | AccountBorrowFailed
+      | MaxSeedLengthExceeded
+      | InvalidSeeds
+      | BorshIoError (_ : String)
+      | AccountNotRentExempt
+      | UnsupportedSysvar
+      | IllegalOwner
+      | MaxAccountsDataSizeExceeded
+      | InvalidRealloc.
+    End ProgramError.
+    Definition ProgramError := ProgramError.t.
+  End program_error.
+End solana_program.
+
+Module thiserror.
+  Module Error.
+  End Error.
+End thiserror.
+
+Parameter _num_traits : Set.
+Module _num_traits.
+  Module FromPrimitive.
+    Class Class (Self : Set) : Set := {
+      from_i64 : i64 -> option Self;
+      from_u64 : u64 -> option Self;
+    }.
+  End FromPrimitive.
+End _num_traits.
+
+Module crate.
+  Parameter check_program_account : unit -> unit.
+End crate.

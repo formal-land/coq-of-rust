@@ -3,7 +3,18 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Error Enum.
+Module Color.
+  Inductive t : Set :=
+  | Red
+  | Blue
+  | Green
+  | RGB (_ : u32) (_ : u32) (_ : u32)
+  | HSV (_ : u32) (_ : u32) (_ : u32)
+  | HSL (_ : u32) (_ : u32) (_ : u32)
+  | CMY (_ : u32) (_ : u32) (_ : u32)
+  | CMYK (_ : u32) (_ : u32) (_ : u32) (_ : u32).
+End Color.
+Definition Color := Color.t.
 
 Definition main (_ : unit) : unit :=
   let color := Color.RGB 122 17 40 in

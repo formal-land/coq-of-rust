@@ -35,9 +35,9 @@ End Animal.
 
 (* Impl [Sheep] *)
 Module ImplSheep.
-  Definition is_naked (self : ref Sheep) : bool := self.naked.
+  Definition is_naked (self : ref Self) : bool := self.naked.
   
-  Definition shear (self : mut_ref Sheep) :=
+  Definition shear (self : mut_ref Self) :=
     if method "is_naked" self then
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
@@ -62,13 +62,13 @@ Module Impl_Animal_for_Sheep.
   Global Instance I : Animal.Class Self := {|
     Animal.new (name : ref str) :=
       {| Sheep.name := name; Sheep.naked := false; |};
-    Animal.name (self : ref Sheep) := self.name;
-    Animal.noise (self : ref Sheep) :=
+    Animal.name (self : ref Self) := self.name;
+    Animal.noise (self : ref Self) :=
       if method "is_naked" self then
         "baaaaah?"
       else
         "baaaaah!";
-    Animal.talk (self : ref Sheep) :=
+    Animal.talk (self : ref Self) :=
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ ""; " pauses briefly... "; "\n" ]
@@ -79,7 +79,7 @@ Module Impl_Animal_for_Sheep.
       tt ;;
       tt;
   |}.
-Module ImplSheep.
+End Impl_Animal_for_Sheep.
 
 Definition main (_ : unit) : unit :=
   let dolly := Animal.new "Dolly" in

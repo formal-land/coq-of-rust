@@ -3,35 +3,47 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Error Enum.
+Module Food.
+  Inductive t : Set :=
+  | CordonBleu
+  | Steak
+  | Sushi.
+End Food.
+Definition Food := Food.t.
 
 Module Impl__crate_fmt_Debug_for_Food.
   Definition Self := Food.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Food) (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Food.CordonBleu => _crate.fmt.ImplFormatter.write_str f "CordonBleu"
       | Food.Steak => _crate.fmt.ImplFormatter.write_str f "Steak"
       | Food.Sushi => _crate.fmt.ImplFormatter.write_str f "Sushi"
       end;
   |}.
-Module ImplFood.
+End Impl__crate_fmt_Debug_for_Food.
 
-Error Enum.
+Module Day.
+  Inductive t : Set :=
+  | Monday
+  | Tuesday
+  | Wednesday.
+End Day.
+Definition Day := Day.t.
 
 Module Impl__crate_fmt_Debug_for_Day.
   Definition Self := Day.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Day) (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Day.Monday => _crate.fmt.ImplFormatter.write_str f "Monday"
       | Day.Tuesday => _crate.fmt.ImplFormatter.write_str f "Tuesday"
       | Day.Wednesday => _crate.fmt.ImplFormatter.write_str f "Wednesday"
       end;
   |}.
-Module ImplDay.
+End Impl__crate_fmt_Debug_for_Day.
 
 Definition have_ingredients (food : Food) : Option :=
   match food with

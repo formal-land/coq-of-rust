@@ -4,12 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module File := std.fs.File.
+Definition File := File.t.
 
 Module io := std.io.
 
 Module BufRead := std.io.BufRead.
 
 Module BufReader := std.io.BufReader.
+Definition BufReader := BufReader.t.
 
 Definition read_lines (filename : String) : io.Lines :=
   let file := method "unwrap" (ImplFile.open filename) in
@@ -22,8 +24,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := line; |} =>
+      | None => Break
+      | Some {| Some.0 := line; |} =>
         _crate.io._print
           (_crate.fmt.ImplArguments.new_v1
             [ ""; "\n" ]

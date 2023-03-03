@@ -6,8 +6,10 @@ Import Root.std.prelude.rust_2015.
 Import std.io.prelude.
 
 Module Command := std.process.Command.
+Definition Command := Command.t.
 
 Module Stdio := std.process.Stdio.
+Definition Stdio := Stdio.t.
 
 Definition PANGRAM (_ : unit) :=
   "the quick brown fox jumped over the lazy dog\n".

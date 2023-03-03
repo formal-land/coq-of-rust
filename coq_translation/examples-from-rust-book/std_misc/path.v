@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module Path := std.path.Path.
+Definition Path := Path.t.
 
 Definition main (_ : unit) : unit :=
   let path := ImplPath.new "." in

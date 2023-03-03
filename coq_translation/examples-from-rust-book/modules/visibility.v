@@ -3,9 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module
-  my_mod
-  :=
+Module my_mod.
   Definition private_function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
@@ -31,9 +29,7 @@ Module
     private_function tt ;;
     tt.
   
-  Module
-    nested
-    :=
+  Module nested.
     Definition function (_ : unit) : unit :=
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
@@ -73,7 +69,8 @@ Module
           [ "called `my_mod::nested::public_function_in_super_mod()`\n" ]
           [  ]) ;;
       tt ;;
-      tt..
+      tt.
+  End nested.
   
   Definition call_public_function_in_my_mod (_ : unit) : unit :=
     _crate.io._print
@@ -95,9 +92,7 @@ Module
     tt ;;
     tt.
   
-  Module
-    private_nested
-    :=
+  Module private_nested.
     Definition function (_ : unit) : unit :=
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
@@ -112,7 +107,9 @@ Module
           [ "called `my_mod::private_nested::restricted_function()`\n" ]
           [  ]) ;;
       tt ;;
-      tt...
+      tt.
+  End private_nested.
+End my_mod.
 
 Definition private_function (_ : unit) : unit :=
   _crate.io._print
@@ -139,9 +136,7 @@ Definition indirect_access (_ : unit) : unit :=
   private_function tt ;;
   tt.
 
-Module
-  nested
-  :=
+Module nested.
   Definition function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
@@ -181,7 +176,8 @@ Module
         [ "called `my_mod::nested::public_function_in_super_mod()`\n" ]
         [  ]) ;;
     tt ;;
-    tt..
+    tt.
+End nested.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
@@ -244,9 +240,7 @@ Definition public_function_in_crate (_ : unit) : unit :=
   tt ;;
   tt.
 
-Module
-  private_nested
-  :=
+Module private_nested.
   Definition function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
@@ -261,7 +255,8 @@ Module
         [ "called `my_mod::private_nested::restricted_function()`\n" ]
         [  ]) ;;
     tt ;;
-    tt..
+    tt.
+End private_nested.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print

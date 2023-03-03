@@ -85,8 +85,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := i; |} =>
+      | None => Break
+      | Some {| Some.0 := i; |} =>
         match method "get" xs i with
         | Some (xval) =>
           _crate.io._print

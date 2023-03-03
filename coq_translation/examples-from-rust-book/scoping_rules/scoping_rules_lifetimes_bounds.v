@@ -17,16 +17,14 @@ Definition Ref := Ref.t.
 Module Impl__crate_fmt_Debug_for_Ref.
   Definition Self := Ref.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref Ref<'a, T>)
-        (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I 'a T : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Ref"
         (IndexedField.get (index := 0) self);
   |}.
-Module ImplRef.
+End Impl__crate_fmt_Debug_for_Ref.
 
 Definition print {T : Set} `{Debug.Class T} (t : T) : unit :=
   _crate.io._print
