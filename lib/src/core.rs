@@ -12,6 +12,7 @@ fn change_to_coq_extension(path: &path::Path) -> PathBuf {
     new_path.set_extension("v");
     new_path
 }
+
 pub fn run(src_folder: &path::Path) {
     let basic_folder_name = "coq_translation";
     let unique_folder_name = format!(
@@ -90,7 +91,7 @@ fn create_translation_to_coq(input_file_name: PathBuf) -> String {
     let now = std::time::Instant::now();
     let result = rustc_interface::run_compiler(config, |compiler| {
         compiler.enter(|queries| {
-            queries.global_ctxt().unwrap().take().enter(|tcx| {
+            queries.global_ctxt().unwrap().enter(|tcx| {
                 let top_level = compile_top_level(tcx);
                 top_level.to_pretty(LINE_WIDTH)
             })
