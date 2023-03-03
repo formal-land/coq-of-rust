@@ -15,16 +15,14 @@ Definition Borrowed := Borrowed.t.
 Module Impl__crate_fmt_Debug_for_Borrowed.
   Definition Self := Borrowed.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref Borrowed<'a>)
-        (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I 'a : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Borrowed"
         (IndexedField.get (index := 0) self);
   |}.
-Module ImplBorrowed.
+End Impl__crate_fmt_Debug_for_Borrowed.
 
 Module NamedBorrowed.
   Record t : Set := {
@@ -37,10 +35,8 @@ Definition NamedBorrowed : Set := NamedBorrowed.t.
 Module Impl__crate_fmt_Debug_for_NamedBorrowed.
   Definition Self := NamedBorrowed.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref NamedBorrowed<'a>)
-        (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I 'a : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "NamedBorrowed"
@@ -49,17 +45,20 @@ Module Impl__crate_fmt_Debug_for_NamedBorrowed.
         "y"
         self.y;
   |}.
-Module ImplNamedBorrowed.
+End Impl__crate_fmt_Debug_for_NamedBorrowed.
 
-Error Enum.
+Module Either.
+  Inductive t : Set :=
+  | Num (_ : i32)
+  | Ref (_ : ref i32).
+End Either.
+Definition Either := Either.t.
 
 Module Impl__crate_fmt_Debug_for_Either.
   Definition Self := Either.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref Either<'a>)
-        (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I 'a : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | Either.Num (__self_0) =>
         _crate.fmt.ImplFormatter.debug_tuple_field1_finish f "Num" __self_0
@@ -67,7 +66,7 @@ Module Impl__crate_fmt_Debug_for_Either.
         _crate.fmt.ImplFormatter.debug_tuple_field1_finish f "Ref" __self_0
       end;
   |}.
-Module ImplEither.
+End Impl__crate_fmt_Debug_for_Either.
 
 Definition main (_ : unit) : unit :=
   let x := 18 in

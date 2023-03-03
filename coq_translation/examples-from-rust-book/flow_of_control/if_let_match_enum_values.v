@@ -3,7 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Error Enum.
+Module Foo.
+  Inductive t : Set :=
+  | Bar
+  | Baz
+  | Qux (_ : u32).
+End Foo.
+Definition Foo := Foo.t.
 
 Definition main (_ : unit) : unit :=
   let a := Foo.Bar in

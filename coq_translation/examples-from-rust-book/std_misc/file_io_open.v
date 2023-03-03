@@ -4,10 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module File := std.fs.File.
+Definition File := File.t.
 
 Import std.io.prelude.
 
 Module Path := std.path.Path.
+Definition Path := Path.t.
 
 Definition main (_ : unit) : unit :=
   let path := ImplPath.new "hello.txt" in

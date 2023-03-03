@@ -9,7 +9,7 @@ Module Impl_Drop_for_ToDrop.
   Definition Self := ToDrop.
   
   Global Instance I : Drop.Class Self := {|
-    Drop.drop (self : mut_ref ToDrop) :=
+    Drop.drop (self : mut_ref Self) :=
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ "ToDrop is being dropped\n" ]
@@ -17,7 +17,7 @@ Module Impl_Drop_for_ToDrop.
       tt ;;
       tt;
   |}.
-Module ImplToDrop.
+End Impl_Drop_for_ToDrop.
 
 Definition main (_ : unit) : unit :=
   let x := ToDrop in

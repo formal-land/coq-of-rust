@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module Rc := std.rc.Rc.
+Definition Rc := Rc.t.
 
 Definition main (_ : unit) : unit :=
   let rc_examples := method "to_string" "Rc examples" in

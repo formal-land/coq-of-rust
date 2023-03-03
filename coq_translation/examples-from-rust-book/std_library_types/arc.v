@@ -4,10 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module Arc := std.sync.Arc.
+Definition Arc := Arc.t.
 
 Module thread := std.thread.
 
 Module Duration := std.time.Duration.
+Definition Duration := Duration.t.
 
 Definition main (_ : unit) : unit :=
   let apple := ImplArc.new "the same apple" in
@@ -15,8 +17,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := _; |} =>
+      | None => Break
+      | Some {| Some.0 := _; |} =>
         let apple := ImplArc.clone apple in
         thread.spawn
           (fun  =>

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := Stmt_item.
+Definition main (_ : unit) : unit := foo.
 
 Definition foo (_ : unit) : Empty_set :=
   _crate.rt.begin_panic "This call never returns." ;;

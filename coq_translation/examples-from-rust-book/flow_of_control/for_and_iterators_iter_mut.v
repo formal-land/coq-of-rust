@@ -9,8 +9,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := name; |} =>
+      | None => Break
+      | Some {| Some.0 := name; |} =>
         assign
           deref name
           :=

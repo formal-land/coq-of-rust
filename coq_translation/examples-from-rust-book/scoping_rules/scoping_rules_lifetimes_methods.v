@@ -14,14 +14,14 @@ Definition Owner := Owner.t.
 
 (* Impl [Owner] *)
 Module ImplOwner.
-  Definition add_one (self : mut_ref Owner) :=
+  Definition add_one (self : mut_ref Self) :=
     assign
       IndexedField.get (index := 0) self
       :=
       add (IndexedField.get (index := 0) self) 1 ;;
     tt.
   
-  Definition print (self : ref Owner) :=
+  Definition print (self : ref Self) :=
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
         [ "`print`: "; "\n" ]

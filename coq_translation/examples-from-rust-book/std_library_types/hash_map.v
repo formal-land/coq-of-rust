@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module HashMap := std.collections.HashMap.
+Definition HashMap := HashMap.t.
 
 Definition call (number : ref str) : ref str :=
   match number with
@@ -54,8 +55,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := (contact, number); |} =>
+      | None => Break
+      | Some {| Some.0 := (contact, number); |} =>
         _crate.io._print
           (_crate.fmt.ImplArguments.new_v1
             [ "Calling "; ": "; "\n" ]

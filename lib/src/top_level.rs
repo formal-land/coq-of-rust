@@ -36,6 +36,10 @@ enum TopLevelItem {
         name: String,
         ty: Box<CoqType>,
     },
+    TypeEnum {
+        name: String,
+        variants: Vec<(String, Vec<CoqType>)>,
+    },
     TypeStructStruct {
         name: String,
         fields: Vec<(String, CoqType)>,
@@ -58,6 +62,7 @@ enum TopLevelItem {
         body: Vec<(String, TraitItem)>,
     },
     TraitImpl {
+        generic_tys: Vec<String>,
         ty_params: Vec<CoqType>,
         self_ty: CoqType,
         of_trait: Path,
@@ -67,6 +72,7 @@ enum TopLevelItem {
         name: String,
         path: Path,
         is_glob: bool,
+        is_type: bool,
     },
     Error(String),
 }
@@ -92,6 +98,16 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                     name: item.ident.name.to_string(),
                     path: compile_path(path),
                     is_glob: matches!(use_kind, rustc_hir::UseKind::Glob),
+                    is_type: path.res.iter().any(|res| match res {
+                        rustc_hir::def::Res::Def(def, _) => matches!(
+                            def,
+                            rustc_hir::def::DefKind::TyAlias
+                                | rustc_hir::def::DefKind::Enum
+                                | rustc_hir::def::DefKind::Struct
+                                | rustc_hir::def::DefKind::Union
+                        ),
+                        _ => false,
+                    }),
                 }]
             }
         }
@@ -199,7 +215,28 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
         ItemKind::GlobalAsm(_) => vec![TopLevelItem::Error("GlobalAsm".to_string())],
         ItemKind::TyAlias(_, _) => vec![TopLevelItem::Error("TyAlias".to_string())],
         ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
-        ItemKind::Enum(_, _) => vec![TopLevelItem::Error("Enum".to_string())],
+        ItemKind::Enum(enum_def, _) => vec![TopLevelItem::TypeEnum {
+            name: item.ident.name.to_string(),
+            variants: enum_def
+                .variants
+                .iter()
+                .map(|variant| {
+                    let name = variant.ident.name.to_string();
+                    let fields = match &variant.data {
+                        VariantData::Struct(fields, _) => fields
+                            .iter()
+                            .map(|field| compile_type(&tcx, field.ty))
+                            .collect(),
+                        VariantData::Tuple(fields, _, _) => fields
+                            .iter()
+                            .map(|field| compile_type(&tcx, field.ty))
+                            .collect(),
+                        VariantData::Unit(_, _) => vec![],
+                    };
+                    (name, fields)
+                })
+                .collect(),
+        }],
         ItemKind::Struct(body, _) => match body {
             VariantData::Struct(fields, _) => {
                 let fields = fields
@@ -253,11 +290,17 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
             vec![TopLevelItem::Error("TraitAlias".to_string())]
         }
         ItemKind::Impl(Impl {
-            items,
-            self_ty,
+            generics,
             of_trait,
+            self_ty,
+            items,
             ..
         }) => {
+            let generic_tys = generics
+                .params
+                .iter()
+                .map(|param| param.name.ident().to_string())
+                .collect();
             let items = items
                 .iter()
                 .flat_map(|item| {
@@ -309,6 +352,7 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
             let self_ty = compile_type(&tcx, self_ty);
             match of_trait {
                 Some(trait_ref) => vec![TopLevelItem::TraitImpl {
+                    generic_tys,
                     ty_params: compile_path_ty_params(&tcx, trait_ref.path),
                     self_ty,
                     of_trait: compile_path(trait_ref.path),
@@ -425,15 +469,11 @@ impl TopLevelItem {
                 body.to_doc(false),
                 text("."),
             ]),
-            TopLevelItem::Module { name, body } => nest([
-                text("Module"),
-                line(),
-                text(name),
-                line(),
-                text(":="),
+            TopLevelItem::Module { name, body } => group([
+                nest([text("Module"), line(), text(name), text(".")]),
+                nest([hardline(), body.to_doc()]),
                 hardline(),
-                body.to_doc(),
-                text("."),
+                nest([text("End"), line(), text(name), text(".")]),
             ]),
             TopLevelItem::TypeAlias { name, ty } => nest([
                 nest([
@@ -450,6 +490,61 @@ impl TopLevelItem {
                 line(),
                 ty.to_doc(false),
                 text("."),
+            ]),
+            TopLevelItem::TypeEnum { name, variants } => group([
+                nest([text("Module"), line(), text(name), text(".")]),
+                nest([
+                    hardline(),
+                    nest([
+                        text("Inductive"),
+                        line(),
+                        text("t"),
+                        line(),
+                        text(":"),
+                        line(),
+                        text("Set"),
+                        line(),
+                        text(":="),
+                    ]),
+                    hardline(),
+                    intersperse(
+                        variants.iter().map(|(name, tys)| {
+                            nest([
+                                text("|"),
+                                line(),
+                                text(name),
+                                concat(tys.iter().map(|ty| {
+                                    concat([
+                                        line(),
+                                        nest([
+                                            text("(_"),
+                                            line(),
+                                            text(":"),
+                                            line(),
+                                            ty.to_doc(false),
+                                            text(")"),
+                                        ]),
+                                    ])
+                                })),
+                            ])
+                        }),
+                        [line()],
+                    ),
+                    text("."),
+                ]),
+                hardline(),
+                nest([text("End"), line(), text(name), text(".")]),
+                hardline(),
+                nest([
+                    text("Definition"),
+                    line(),
+                    text(name),
+                    line(),
+                    text(":="),
+                    line(),
+                    text(name),
+                    text(".t."),
+                ]),
             ]),
             TopLevelItem::TypeStructStruct { name, fields } => {
                 let fields = fields.iter().map(|(name, ty)| {
@@ -739,6 +834,7 @@ impl TopLevelItem {
                 nest([text("End"), line(), text(name), text(".")]),
             ]),
             TopLevelItem::TraitImpl {
+                generic_tys,
                 ty_params,
                 self_ty,
                 of_trait,
@@ -772,6 +868,11 @@ impl TopLevelItem {
                             nest([
                                 nest([text("Global"), line(), text("Instance"), line(), text("I")]),
                                 line(),
+                                concat(
+                                    generic_tys
+                                        .iter()
+                                        .map(|generic_ty| concat([text(generic_ty), line()])),
+                                ),
                                 text(":"),
                                 line(),
                                 of_trait.to_doc(),
@@ -808,21 +909,25 @@ impl TopLevelItem {
                                         text("."),
                                         text(name),
                                         line(),
-                                        intersperse(
-                                            args.iter().map(|(name, ty)| {
-                                                nest([
-                                                    text("("),
-                                                    text(name),
-                                                    line(),
-                                                    text(":"),
-                                                    line(),
-                                                    ty.to_doc(false),
-                                                    text(")"),
-                                                ])
-                                                .group()
-                                            }),
-                                            [line()],
-                                        ),
+                                        if args.is_empty() {
+                                            text("tt")
+                                        } else {
+                                            intersperse(
+                                                args.iter().map(|(name, ty)| {
+                                                    nest([
+                                                        text("("),
+                                                        text(name),
+                                                        line(),
+                                                        text(":"),
+                                                        line(),
+                                                        ty.to_doc(false),
+                                                        text(")"),
+                                                    ])
+                                                    .group()
+                                                }),
+                                                [line()],
+                                            )
+                                        },
                                         text(" :="),
                                     ]),
                                     line(),
@@ -853,9 +958,11 @@ impl TopLevelItem {
                 ]),
                 hardline(),
                 nest([
-                    text("Module"),
+                    text("End"),
                     line(),
-                    text("Impl"),
+                    text("Impl_"),
+                    text(of_trait.to_name()),
+                    text("_for_"),
                     text(self_ty.to_name()),
                     text("."),
                 ]),
@@ -864,19 +971,39 @@ impl TopLevelItem {
                 name,
                 path,
                 is_glob,
+                is_type,
             } => {
                 if *is_glob {
                     nest([text("Import"), line(), path.to_doc(), text(".")])
                 } else {
-                    nest([
-                        text("Module"),
-                        line(),
-                        text(name),
-                        line(),
-                        text(":="),
-                        line(),
-                        path.to_doc(),
-                        text("."),
+                    group([
+                        nest([
+                            text("Module"),
+                            line(),
+                            text(name),
+                            line(),
+                            text(":="),
+                            line(),
+                            path.to_doc(),
+                            text("."),
+                        ]),
+                        if *is_type {
+                            concat([
+                                hardline(),
+                                nest([
+                                    text("Definition"),
+                                    line(),
+                                    text(name),
+                                    line(),
+                                    text(":="),
+                                    line(),
+                                    text(name),
+                                    text(".t."),
+                                ]),
+                            ])
+                        } else {
+                            nil()
+                        },
                     ])
                 }
             }

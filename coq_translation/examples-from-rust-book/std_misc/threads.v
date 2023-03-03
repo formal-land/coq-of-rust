@@ -13,8 +13,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := i; |} =>
+      | None => Break
+      | Some {| Some.0 := i; |} =>
         method
           "push"
           children
@@ -36,8 +36,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := child; |} =>
+      | None => Break
+      | Some {| Some.0 := child; |} =>
         let _ := method "join" child in
         tt
       end ;;

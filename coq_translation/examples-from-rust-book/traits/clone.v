@@ -9,25 +9,25 @@ Module Impl__crate_fmt_Debug_for_Unit.
   Definition Self := Unit.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Unit) (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.write_str f "Unit";
   |}.
-Module ImplUnit.
+End Impl__crate_fmt_Debug_for_Unit.
 
 Module Impl__crate_clone_Clone_for_Unit.
   Definition Self := Unit.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Unit) := deref self;
+    _crate.clone.Clone.clone (self : ref Self) := deref self;
   |}.
-Module ImplUnit.
+End Impl__crate_clone_Clone_for_Unit.
 
 Module Impl__crate_marker_Copy_for_Unit.
   Definition Self := Unit.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
       _crate.marker.Copy.Build_Class _.
-Module ImplUnit.
+End Impl__crate_marker_Copy_for_Unit.
 
 Module Pair.
   Inductive t : Set := Build (_ : Box) (_ : Box).
@@ -45,25 +45,25 @@ Module Impl__crate_clone_Clone_for_Pair.
   Definition Self := Pair.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Pair) :=
+    _crate.clone.Clone.clone (self : ref Self) :=
       Pair.Build
         (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
         (_crate.clone.Clone.clone (IndexedField.get (index := 1) self));
   |}.
-Module ImplPair.
+End Impl__crate_clone_Clone_for_Pair.
 
 Module Impl__crate_fmt_Debug_for_Pair.
   Definition Self := Pair.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Pair) (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_tuple_field2_finish
         f
         "Pair"
         (IndexedField.get (index := 0) self)
         (IndexedField.get (index := 1) self);
   |}.
-Module ImplPair.
+End Impl__crate_fmt_Debug_for_Pair.
 
 Definition main (_ : unit) : unit :=
   let unit := Unit in

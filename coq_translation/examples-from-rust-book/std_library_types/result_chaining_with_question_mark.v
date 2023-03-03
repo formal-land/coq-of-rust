@@ -3,17 +3,21 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module
-  checked
-  :=
-  Error Enum.
+Module checked.
+  Module MathError.
+    Inductive t : Set :=
+    | DivisionByZero
+    | NonPositiveLogarithm
+    | NegativeSquareRoot.
+  End MathError.
+  Definition MathError := MathError.t.
   
   Module Impl__crate_fmt_Debug_for_MathError.
     Definition Self := MathError.
     
     Global Instance I : _crate.fmt.Debug.Class Self := {|
       _crate.fmt.Debug.fmt
-          (self : ref checked.MathError)
+          (self : ref Self)
           (f : mut_ref _crate.fmt.Formatter) :=
         match self with
         | MathError.DivisionByZero =>
@@ -24,7 +28,7 @@ Module
           _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
         end;
     |}.
-  Module ImplMathError.
+  End Impl__crate_fmt_Debug_for_MathError.
   
   Error TyAlias.
   
@@ -49,13 +53,13 @@ Module
   Definition op_ (x : f64) (y : f64) : MathResult :=
     let ratio :=
       match branch (div x y) with
-      | {| Break.0 := residual; |} => Return (from_residual residual)
-      | {| Continue.0 := val; |} => val
+      | Break {| Break.0 := residual; |} => Return (from_residual residual)
+      | Continue {| Continue.0 := val; |} => val
       end in
     let ln :=
       match branch (ln ratio) with
-      | {| Break.0 := residual; |} => Return (from_residual residual)
-      | {| Continue.0 := val; |} => val
+      | Break {| Break.0 := residual; |} => Return (from_residual residual)
+      | Continue {| Continue.0 := val; |} => val
       end in
     sqrt ln.
   
@@ -74,17 +78,22 @@ Module
           [ ""; "\n" ]
           [ _crate.fmt.ImplArgumentV1.new_display value ]) ;;
       tt
-    end..
+    end.
+End checked.
 
-Error Enum.
+Module MathError.
+  Inductive t : Set :=
+  | DivisionByZero
+  | NonPositiveLogarithm
+  | NegativeSquareRoot.
+End MathError.
+Definition MathError := MathError.t.
 
 Module Impl__crate_fmt_Debug_for_MathError.
   Definition Self := MathError.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref checked.MathError)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | MathError.DivisionByZero =>
         _crate.fmt.ImplFormatter.write_str f "DivisionByZero"
@@ -94,7 +103,7 @@ Module Impl__crate_fmt_Debug_for_MathError.
         _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
       end;
   |}.
-Module ImplMathError.
+End Impl__crate_fmt_Debug_for_MathError.
 
 Error TyAlias.
 
@@ -119,13 +128,13 @@ Definition ln (x : f64) : MathResult :=
 Definition op_ (x : f64) (y : f64) : MathResult :=
   let ratio :=
     match branch (div x y) with
-    | {| Break.0 := residual; |} => Return (from_residual residual)
-    | {| Continue.0 := val; |} => val
+    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    | Continue {| Continue.0 := val; |} => val
     end in
   let ln :=
     match branch (ln ratio) with
-    | {| Break.0 := residual; |} => Return (from_residual residual)
-    | {| Continue.0 := val; |} => val
+    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    | Continue {| Continue.0 := val; |} => val
     end in
   sqrt ln.
 

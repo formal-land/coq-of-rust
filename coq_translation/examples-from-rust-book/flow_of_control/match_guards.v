@@ -3,7 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Error Enum.
+Module Temperature.
+  Inductive t : Set :=
+  | Celsius (_ : i32)
+  | Fahrenheit (_ : i32).
+End Temperature.
+Definition Temperature := Temperature.t.
 
 Definition main (_ : unit) : unit :=
   let temperature := Temperature.Celsius 35 in

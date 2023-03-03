@@ -17,9 +17,7 @@ Module Impl__crate_fmt_Debug_for_Point.
   Definition Self := Point.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref Point)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "Point"
@@ -28,24 +26,24 @@ Module Impl__crate_fmt_Debug_for_Point.
         "y"
         self.y;
   |}.
-Module ImplPoint.
+End Impl__crate_fmt_Debug_for_Point.
 
 Module Impl__crate_clone_Clone_for_Point.
   Definition Self := Point.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Point) :=
+    _crate.clone.Clone.clone (self : ref Self) :=
       let _ := tt in
       deref self;
   |}.
-Module ImplPoint.
+End Impl__crate_clone_Clone_for_Point.
 
 Module Impl__crate_marker_Copy_for_Point.
   Definition Self := Point.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
       _crate.marker.Copy.Build_Class _.
-Module ImplPoint.
+End Impl__crate_marker_Copy_for_Point.
 
 Module Rectangle.
   Record t : Set := {

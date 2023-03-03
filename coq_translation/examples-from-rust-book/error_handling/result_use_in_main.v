@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module ParseIntError := std.num.ParseIntError.
+Definition ParseIntError := ParseIntError.t.
 
 Definition main (_ : unit) : Result :=
   let number_str := "10" in

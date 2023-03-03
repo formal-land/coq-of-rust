@@ -16,20 +16,20 @@ Module Impl__crate_clone_Clone_for_Book.
   Definition Self := Book.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Book) :=
+    _crate.clone.Clone.clone (self : ref Self) :=
       let _ := tt in
       let _ := tt in
       let _ := tt in
       deref self;
   |}.
-Module ImplBook.
+End Impl__crate_clone_Clone_for_Book.
 
 Module Impl__crate_marker_Copy_for_Book.
   Definition Self := Book.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
       _crate.marker.Copy.Build_Class _.
-Module ImplBook.
+End Impl__crate_marker_Copy_for_Book.
 
 Definition borrow_book (book : ref Book) : unit :=
   _crate.io._print

@@ -16,7 +16,7 @@ Module Impl_fmt_Display_for_Circle.
   Definition Self := Circle.
   
   Global Instance I : fmt.Display.Class Self := {|
-    fmt.Display.fmt (self : ref Circle) (f : mut_ref fmt.Formatter) :=
+    fmt.Display.fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
       method
         "write_fmt"
         f
@@ -24,7 +24,7 @@ Module Impl_fmt_Display_for_Circle.
           [ "Circle of radius " ]
           [ _crate.fmt.ImplArgumentV1.new_display self.radius ]);
   |}.
-Module ImplCircle.
+End Impl_fmt_Display_for_Circle.
 
 Definition main (_ : unit) : unit :=
   let circle := {| Circle.radius := 6; |} in

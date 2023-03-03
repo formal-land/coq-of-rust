@@ -1,6 +1,7 @@
 use crate::path::*;
 use crate::pattern::*;
 use crate::render::*;
+use crate::ty::*;
 use rustc_ast::LitKind;
 use rustc_hir::{BinOp, BinOpKind};
 use rustc_middle::ty::TyCtxt;
@@ -39,6 +40,10 @@ pub enum Expr {
     Seq {
         first: Box<Expr>,
         second: Box<Expr>,
+    },
+    Cast {
+        expr: Box<Expr>,
+        ty: Box<CoqType>,
     },
     Array {
         elements: Vec<Expr>,
@@ -221,7 +226,10 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             }
         }
         rustc_hir::ExprKind::Lit(lit) => Expr::Literal(lit.node.clone()),
-        rustc_hir::ExprKind::Cast(expr, _ty) => compile_expr(tcx, expr),
+        rustc_hir::ExprKind::Cast(expr, ty) => Expr::Cast {
+            expr: Box::new(compile_expr(tcx, expr)),
+            ty: Box::new(compile_type(&tcx, ty)),
+        },
         rustc_hir::ExprKind::Type(expr, _ty) => compile_expr(tcx, expr),
         rustc_hir::ExprKind::DropTemps(expr) => compile_expr(tcx, expr),
         rustc_hir::ExprKind::Let(rustc_hir::Let { pat, init, .. }) => {
@@ -370,7 +378,9 @@ fn compile_stmts(tcx: TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir
                 let body = Box::new(compile_stmts(tcx, stmts, expr));
                 Expr::Let { pat, init, body }
             }
-            rustc_hir::StmtKind::Item(_) => Expr::LocalVar("Stmt_item".to_string()),
+            rustc_hir::StmtKind::Item(item_id) => {
+                Expr::LocalVar(tcx.hir().item(item_id).ident.to_string())
+            }
             rustc_hir::StmtKind::Expr(current_expr) | rustc_hir::StmtKind::Semi(current_expr) => {
                 let first = Box::new(compile_expr(tcx, current_expr));
                 let second = Box::new(compile_stmts(tcx, stmts, expr));
@@ -458,7 +468,16 @@ impl Expr {
                 hardline(),
                 second.to_doc(false),
             ]),
-
+            Expr::Cast { expr, ty } => paren(
+                with_paren,
+                nest([
+                    text("cast"),
+                    line(),
+                    expr.to_doc(true),
+                    line(),
+                    ty.to_doc(true),
+                ]),
+            ),
             Expr::Array { elements } => group([
                 nest([
                     text("["),

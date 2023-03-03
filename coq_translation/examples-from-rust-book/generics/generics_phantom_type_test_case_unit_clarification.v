@@ -4,60 +4,69 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module PhantomData := std.marker.PhantomData.
+Definition PhantomData := PhantomData.t.
 
 Module Add := std.ops.Add.
 
-Error Enum.
+Module Inch.
+  Inductive t : Set :=
+  .
+End Inch.
+Definition Inch := Inch.t.
 
 Module Impl__crate_fmt_Debug_for_Inch.
   Definition Self := Inch.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Inch) (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.intrinsics.unreachable tt;
   |}.
-Module ImplInch.
+End Impl__crate_fmt_Debug_for_Inch.
 
 Module Impl__crate_clone_Clone_for_Inch.
   Definition Self := Inch.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Inch) := deref self;
+    _crate.clone.Clone.clone (self : ref Self) := deref self;
   |}.
-Module ImplInch.
+End Impl__crate_clone_Clone_for_Inch.
 
 Module Impl__crate_marker_Copy_for_Inch.
   Definition Self := Inch.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
       _crate.marker.Copy.Build_Class _.
-Module ImplInch.
+End Impl__crate_marker_Copy_for_Inch.
 
-Error Enum.
+Module Mm.
+  Inductive t : Set :=
+  .
+End Mm.
+Definition Mm := Mm.t.
 
 Module Impl__crate_fmt_Debug_for_Mm.
   Definition Self := Mm.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Mm) (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.intrinsics.unreachable tt;
   |}.
-Module ImplMm.
+End Impl__crate_fmt_Debug_for_Mm.
 
 Module Impl__crate_clone_Clone_for_Mm.
   Definition Self := Mm.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Mm) := deref self;
+    _crate.clone.Clone.clone (self : ref Self) := deref self;
   |}.
-Module ImplMm.
+End Impl__crate_clone_Clone_for_Mm.
 
 Module Impl__crate_marker_Copy_for_Mm.
   Definition Self := Mm.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
       _crate.marker.Copy.Build_Class _.
-Module ImplMm.
+End Impl__crate_marker_Copy_for_Mm.
 
 Module Length.
   Inductive t : Set := Build (_ : f64) (_ : PhantomData).
@@ -74,49 +83,47 @@ Definition Length := Length.t.
 Module Impl__crate_fmt_Debug_for_Length.
   Definition Self := Length.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref Length<Unit>)
-        (f : mut_ref _crate.fmt.Formatter) :=
+  Global Instance I Unit : _crate.fmt.Debug.Class Self := {|
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_tuple_field2_finish
         f
         "Length"
         (IndexedField.get (index := 0) self)
         (IndexedField.get (index := 1) self);
   |}.
-Module ImplLength.
+End Impl__crate_fmt_Debug_for_Length.
 
 Module Impl__crate_clone_Clone_for_Length.
   Definition Self := Length.
   
-  Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Length<Unit>) :=
+  Global Instance I Unit : _crate.clone.Clone.Class Self := {|
+    _crate.clone.Clone.clone (self : ref Self) :=
       Length.Build
         (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
         (_crate.clone.Clone.clone (IndexedField.get (index := 1) self));
   |}.
-Module ImplLength.
+End Impl__crate_clone_Clone_for_Length.
 
 Module Impl__crate_marker_Copy_for_Length.
   Definition Self := Length.
   
-  Global Instance I : _crate.marker.Copy.Class Self :=
+  Global Instance I Unit : _crate.marker.Copy.Class Self :=
       _crate.marker.Copy.Build_Class _.
-Module ImplLength.
+End Impl__crate_marker_Copy_for_Length.
 
 Module Impl_Add_for_Length.
   Definition Self := Length.
   
-  Global Instance I : Add.Class Self := {|
+  Global Instance I Unit : Add.Class Self := {|
     Add.Output := Length;
-    Add.add (self : Length<Unit>) (rhs : Length) :=
+    Add.add (self : Self) (rhs : Length) :=
       Length.Build
         (add
           (IndexedField.get (index := 0) self)
           (IndexedField.get (index := 0) rhs))
         PhantomData;
   |}.
-Module ImplLength.
+End Impl_Add_for_Length.
 
 Definition main (_ : unit) : unit :=
   let one_foot := Length.Build 12 (* 12.0 *) PhantomData in

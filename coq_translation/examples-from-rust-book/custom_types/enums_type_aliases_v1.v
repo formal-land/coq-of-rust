@@ -3,7 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Error Enum.
+Module VeryVerboseEnumOfThingsToDoWithNumbers.
+  Inductive t : Set :=
+  | Add
+  | Subtract.
+End VeryVerboseEnumOfThingsToDoWithNumbers.
+Definition
+  VeryVerboseEnumOfThingsToDoWithNumbers
+  :=
+  VeryVerboseEnumOfThingsToDoWithNumbers.t.
 
 Error TyAlias.
 

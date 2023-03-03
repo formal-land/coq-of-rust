@@ -15,12 +15,10 @@ Module Impl__crate_fmt_Debug_for_FooBar.
   Definition Self := FooBar.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref FooBar)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.write_str f "FooBar";
   |}.
-Module ImplFooBar.
+End Impl__crate_fmt_Debug_for_FooBar.
 
 Error StructUnit.
 
@@ -28,19 +26,17 @@ Module Impl__crate_fmt_Debug_for_BarFoo.
   Definition Self := BarFoo.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref BarFoo)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.write_str f "BarFoo";
   |}.
-Module ImplBarFoo.
+End Impl__crate_fmt_Debug_for_BarFoo.
 
 Module Impl_ops_Add_for_Foo.
   Definition Self := Foo.
   
   Global Instance I : ops.Add.Class Bar Self := {|
     ops.Add.Output := FooBar;
-    ops.Add.add (self : Foo) (_rhs : Bar) :=
+    ops.Add.add (self : Self) (_rhs : Bar) :=
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ "> Foo.add(Bar) was called\n" ]
@@ -48,14 +44,14 @@ Module Impl_ops_Add_for_Foo.
       tt ;;
       FooBar;
   |}.
-Module ImplFoo.
+End Impl_ops_Add_for_Foo.
 
 Module Impl_ops_Add_for_Bar.
   Definition Self := Bar.
   
   Global Instance I : ops.Add.Class Foo Self := {|
     ops.Add.Output := BarFoo;
-    ops.Add.add (self : Bar) (_rhs : Foo) :=
+    ops.Add.add (self : Self) (_rhs : Foo) :=
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ "> Bar.add(Foo) was called\n" ]
@@ -63,7 +59,7 @@ Module Impl_ops_Add_for_Bar.
       tt ;;
       BarFoo;
   |}.
-Module ImplBar.
+End Impl_ops_Add_for_Bar.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print

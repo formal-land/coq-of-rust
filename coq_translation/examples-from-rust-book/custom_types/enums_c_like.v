@@ -3,25 +3,37 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Error Enum.
+Module Number.
+  Inductive t : Set :=
+  | Zero
+  | One
+  | Two.
+End Number.
+Definition Number := Number.t.
 
-Error Enum.
+Module Color.
+  Inductive t : Set :=
+  | Red
+  | Green
+  | Blue.
+End Color.
+Definition Color := Color.t.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "zero is "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display Number.Zero ]) ;;
+      [ _crate.fmt.ImplArgumentV1.new_display (cast Number.Zero i32) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "one is "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display Number.One ]) ;;
+      [ _crate.fmt.ImplArgumentV1.new_display (cast Number.One i32) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1_formatted
       [ "roses are #"; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_lower_hex Color.Red ]
+      [ _crate.fmt.ImplArgumentV1.new_lower_hex (cast Color.Red i32) ]
       [
         {|
           _crate.fmt.rt.v1.Argument.position := 0;
@@ -42,7 +54,7 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1_formatted
       [ "violets are #"; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_lower_hex Color.Blue ]
+      [ _crate.fmt.ImplArgumentV1.new_lower_hex (cast Color.Blue i32) ]
       [
         {|
           _crate.fmt.rt.v1.Argument.position := 0;

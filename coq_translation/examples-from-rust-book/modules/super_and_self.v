@@ -9,16 +9,15 @@ Definition function (_ : unit) : unit :=
   tt ;;
   tt.
 
-Module
-  cool
-  :=
+Module cool.
   Definition function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
         [ "called `cool::function()`\n" ]
         [  ]) ;;
     tt ;;
-    tt..
+    tt.
+End cool.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
@@ -26,25 +25,22 @@ Definition function (_ : unit) : unit :=
   tt ;;
   tt.
 
-Module
-  my
-  :=
+Module my.
   Definition function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1 [ "called `my::function()`\n" ] [  ]) ;;
     tt ;;
     tt.
   
-  Module
-    cool
-    :=
+  Module cool.
     Definition function (_ : unit) : unit :=
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ "called `my::cool::function()`\n" ]
           [  ]) ;;
       tt ;;
-      tt..
+      tt.
+  End cool.
   
   Definition indirect_call (_ : unit) : unit :=
     _crate.io._print
@@ -56,7 +52,8 @@ Module
     function tt ;;
     self.cool.function tt ;;
     super.function tt ;;
-    Stmt_item..
+    root_function.
+End my.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
@@ -64,16 +61,15 @@ Definition function (_ : unit) : unit :=
   tt ;;
   tt.
 
-Module
-  cool
-  :=
+Module cool.
   Definition function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
         [ "called `my::cool::function()`\n" ]
         [  ]) ;;
     tt ;;
-    tt..
+    tt.
+End cool.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
@@ -93,7 +89,7 @@ Definition indirect_call (_ : unit) : unit :=
   function tt ;;
   self.cool.function tt ;;
   super.function tt ;;
-  Stmt_item.
+  root_function.
 
 Module root_function := crate.cool.function.
 

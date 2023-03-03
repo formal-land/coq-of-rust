@@ -6,8 +6,10 @@ Import Root.std.prelude.rust_2015.
 Module fs := std.fs.
 
 Module File := std.fs.File.
+Definition File := File.t.
 
 Module OpenOptions := std.fs.OpenOptions.
+Definition OpenOptions := OpenOptions.t.
 
 Module io := std.io.
 
@@ -16,12 +18,13 @@ Import std.io.prelude.
 Module unix := std.os.unix.
 
 Module Path := std.path.Path.
+Definition Path := Path.t.
 
 Definition cat (path : ref Path) : io.Result :=
   let f :=
     match branch (ImplFile.open path) with
-    | {| Break.0 := residual; |} => Return (from_residual residual)
-    | {| Continue.0 := val; |} => val
+    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    | Continue {| Continue.0 := val; |} => val
     end in
   let s := ImplString.new tt in
   match method "read_to_string" f s with
@@ -32,8 +35,8 @@ Definition cat (path : ref Path) : io.Result :=
 Definition echo (s : ref str) (path : ref Path) : io.Result :=
   let f :=
     match branch (ImplFile.create path) with
-    | {| Break.0 := residual; |} => Return (from_residual residual)
-    | {| Continue.0 := val; |} => val
+    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    | Continue {| Continue.0 := val; |} => val
     end in
   method "write_all" f (method "as_bytes" s).
 
@@ -147,8 +150,8 @@ Definition main (_ : unit) : unit :=
     | iter =>
       loop
         match next iter with
-        | {|  |} => Break
-        | {| Some.0 := path; |} =>
+        | None => Break
+        | Some {| Some.0 := path; |} =>
           _crate.io._print
             (_crate.fmt.ImplArguments.new_v1
               [ "> "; "\n" ]

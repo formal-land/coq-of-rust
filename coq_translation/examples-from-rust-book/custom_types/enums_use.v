@@ -3,11 +3,21 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Error Enum.
+Module Status.
+  Inductive t : Set :=
+  | Rich
+  | Poor.
+End Status.
+Definition Status := Status.t.
 
-Error Enum.
+Module Work.
+  Inductive t : Set :=
+  | Civilian
+  | Soldier.
+End Work.
+Definition Work := Work.t.
 
-Definition main (_ : unit) : unit := Stmt_item.
+Definition main (_ : unit) : unit := .
 
 Module Poor := crate.Status.Poor.
 

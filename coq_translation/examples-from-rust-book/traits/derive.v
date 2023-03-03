@@ -17,33 +17,31 @@ Module Impl__crate_marker_StructuralPartialEq_for_Centimeters.
   
   Global Instance I : _crate.marker.StructuralPartialEq.Class Self :=
       _crate.marker.StructuralPartialEq.Build_Class _.
-Module ImplCentimeters.
+End Impl__crate_marker_StructuralPartialEq_for_Centimeters.
 
 Module Impl__crate_cmp_PartialEq_for_Centimeters.
   Definition Self := Centimeters.
   
   Global Instance I : _crate.cmp.PartialEq.Class Self := {|
-    _crate.cmp.PartialEq.eq
-        (self : ref Centimeters)
-        (other : ref Centimeters) :=
+    _crate.cmp.PartialEq.eq (self : ref Self) (other : ref Centimeters) :=
       eqb
         (IndexedField.get (index := 0) self)
         (IndexedField.get (index := 0) other);
   |}.
-Module ImplCentimeters.
+End Impl__crate_cmp_PartialEq_for_Centimeters.
 
 Module Impl__crate_cmp_PartialOrd_for_Centimeters.
   Definition Self := Centimeters.
   
   Global Instance I : _crate.cmp.PartialOrd.Class Self := {|
     _crate.cmp.PartialOrd.partial_cmp
-        (self : ref Centimeters)
+        (self : ref Self)
         (other : ref Centimeters) :=
       _crate.cmp.PartialOrd.partial_cmp
         (IndexedField.get (index := 0) self)
         (IndexedField.get (index := 0) other);
   |}.
-Module ImplCentimeters.
+End Impl__crate_cmp_PartialOrd_for_Centimeters.
 
 Module Inches.
   Inductive t : Set := Build (_ : i32).
@@ -58,21 +56,19 @@ Module Impl__crate_fmt_Debug_for_Inches.
   Definition Self := Inches.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref Inches)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Inches"
         (IndexedField.get (index := 0) self);
   |}.
-Module ImplInches.
+End Impl__crate_fmt_Debug_for_Inches.
 
 (* Impl [Inches] *)
 Module ImplInches.
-  Definition to_centimeters (self : ref Inches) : Centimeters :=
+  Definition to_centimeters (self : ref Self) : Centimeters :=
     let Inches (inches) := self in
-    Centimeters.Build (mul inches 3 (* 2.54 *)).
+    Centimeters.Build (mul (cast inches f64) 3 (* 2.54 *)).
 End ImplInches.
 (* End impl [Inches] *)
 

@@ -48,8 +48,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := x; |} =>
+      | None => Break
+      | Some {| Some.0 := x; |} =>
         _crate.io._print
           (_crate.fmt.ImplArguments.new_v1
             [ "> "; "\n" ]
@@ -65,8 +65,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := (i, x); |} =>
+      | None => Break
+      | Some {| Some.0 := (i, x); |} =>
         _crate.io._print
           (_crate.fmt.ImplArguments.new_v1
             [ "In position "; " we have value "; "\n" ]
@@ -85,8 +85,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := x; |} =>
+      | None => Break
+      | Some {| Some.0 := x; |} =>
         assign deref x := mul (deref x) 3 ;;
         tt
       end ;;

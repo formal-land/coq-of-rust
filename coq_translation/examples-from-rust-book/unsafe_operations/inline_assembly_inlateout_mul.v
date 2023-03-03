@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := Stmt_item.
+Definition main (_ : unit) : unit := asm.
 
 Module asm := std.arch.asm.
 
@@ -12,4 +12,4 @@ Definition mul (a : u64) (b : u64) : u128 :=
   let hi := tt in
   InlineAsm ;;
   tt ;;
-  add (shl hi 64) lo.
+  add (shl (cast hi u128) 64) (cast lo u128).

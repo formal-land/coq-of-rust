@@ -3,9 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module
-  my
-  :=
+Module my.
   Module OpenBox.
     Record t : Set := {
       contents : T;
@@ -25,7 +23,8 @@ Module
     Definition new (contents : T) : ClosedBox :=
       {| ClosedBox.contents := contents; |}.
   End ImplClosedBox.
-  (* End impl [ClosedBox] *).
+  (* End impl [ClosedBox] *)
+End my.
 
 Module OpenBox.
   Record t : Set := {

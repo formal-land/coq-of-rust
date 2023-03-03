@@ -25,33 +25,21 @@ impl CoqType {
     }
 }
 
-pub fn compile_type(tcx: &TyCtxt, ty: &Ty) -> CoqType {
+pub fn compile_type(_tcx: &TyCtxt, ty: &Ty) -> CoqType {
     match &ty.kind {
         TyKind::Slice(_) => CoqType::Var(Path::local("Slice".to_string())),
-        TyKind::Array(ty, _) => CoqType::Array(Box::new(compile_type(tcx, ty))),
-        TyKind::Ptr(mut_ty) => CoqType::Ref(Box::new(compile_type(tcx, mut_ty.ty)), mut_ty.mutbl),
+        TyKind::Array(ty, _) => CoqType::Array(Box::new(compile_type(_tcx, ty))),
+        TyKind::Ptr(mut_ty) => CoqType::Ref(Box::new(compile_type(_tcx, mut_ty.ty)), mut_ty.mutbl),
         TyKind::Ref(_, mut_ty) => {
-            CoqType::Ref(Box::new(compile_type(tcx, mut_ty.ty)), mut_ty.mutbl)
+            CoqType::Ref(Box::new(compile_type(_tcx, mut_ty.ty)), mut_ty.mutbl)
         }
         TyKind::BareFn(_) => CoqType::Var(Path::local("BareFn".to_string())),
         TyKind::Never => CoqType::Var(Path::local("Empty_set".to_string())),
-        TyKind::Tup(tys) => CoqType::Tuple(tys.iter().map(|ty| compile_type(tcx, ty)).collect()),
-        TyKind::Path(qpath) => match qpath {
-            rustc_hir::QPath::Resolved(_, path) => match path.res {
-                rustc_hir::def::Res::SelfTyAlias { alias_to, .. } => {
-                    let self_ty_alias_name = tcx.type_of(alias_to).to_string();
-                    CoqType::Var(Path::local(self_ty_alias_name))
-                }
-                _ => {
-                    let path = compile_qpath(qpath);
-                    CoqType::Var(path)
-                }
-            },
-            _ => {
-                let path = compile_qpath(qpath);
-                CoqType::Var(path)
-            }
-        },
+        TyKind::Tup(tys) => CoqType::Tuple(tys.iter().map(|ty| compile_type(_tcx, ty)).collect()),
+        TyKind::Path(qpath) => {
+            let path = compile_qpath(qpath);
+            CoqType::Var(path)
+        }
         TyKind::OpaqueDef(_, _, _) => CoqType::Var(Path::local("OpaqueDef".to_string())),
         TyKind::TraitObject(_, _, _) => CoqType::Var(Path::local("TraitObject".to_string())),
         TyKind::Typeof(_) => CoqType::Var(Path::local("Typeof".to_string())),

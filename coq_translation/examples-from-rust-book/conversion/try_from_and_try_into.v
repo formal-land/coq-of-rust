@@ -20,33 +20,31 @@ Module Impl__crate_fmt_Debug_for_EvenNumber.
   Definition Self := EvenNumber.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref EvenNumber)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "EvenNumber"
         (IndexedField.get (index := 0) self);
   |}.
-Module ImplEvenNumber.
+End Impl__crate_fmt_Debug_for_EvenNumber.
 
 Module Impl__crate_marker_StructuralPartialEq_for_EvenNumber.
   Definition Self := EvenNumber.
   
   Global Instance I : _crate.marker.StructuralPartialEq.Class Self :=
       _crate.marker.StructuralPartialEq.Build_Class _.
-Module ImplEvenNumber.
+End Impl__crate_marker_StructuralPartialEq_for_EvenNumber.
 
 Module Impl__crate_cmp_PartialEq_for_EvenNumber.
   Definition Self := EvenNumber.
   
   Global Instance I : _crate.cmp.PartialEq.Class Self := {|
-    _crate.cmp.PartialEq.eq (self : ref EvenNumber) (other : ref EvenNumber) :=
+    _crate.cmp.PartialEq.eq (self : ref Self) (other : ref EvenNumber) :=
       eqb
         (IndexedField.get (index := 0) self)
         (IndexedField.get (index := 0) other);
   |}.
-Module ImplEvenNumber.
+End Impl__crate_cmp_PartialEq_for_EvenNumber.
 
 Module Impl_TryFrom_for_EvenNumber.
   Definition Self := EvenNumber.
@@ -59,7 +57,7 @@ Module Impl_TryFrom_for_EvenNumber.
       else
         Err ();
   |}.
-Module ImplEvenNumber.
+End Impl_TryFrom_for_EvenNumber.
 
 Definition main (_ : unit) : unit :=
   match (ImplEvenNumber.try_from 8, Ok (EvenNumber.Build 8)) with

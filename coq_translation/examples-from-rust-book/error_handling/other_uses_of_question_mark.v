@@ -15,18 +15,16 @@ Module Impl__crate_fmt_Debug_for_EmptyVec.
   Definition Self := EmptyVec.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref EmptyVec)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.write_str f "EmptyVec";
   |}.
-Module ImplEmptyVec.
+End Impl__crate_fmt_Debug_for_EmptyVec.
 
 Module Impl_fmt_Display_for_EmptyVec.
   Definition Self := EmptyVec.
   
   Global Instance I : fmt.Display.Class Self := {|
-    fmt.Display.fmt (self : ref EmptyVec) (f : mut_ref fmt.Formatter) :=
+    fmt.Display.fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
       method
         "write_fmt"
         f
@@ -34,24 +32,24 @@ Module Impl_fmt_Display_for_EmptyVec.
           [ "invalid first item to double" ]
           [  ]);
   |}.
-Module ImplEmptyVec.
+End Impl_fmt_Display_for_EmptyVec.
 
 Module Impl_error_Error_for_EmptyVec.
   Definition Self := EmptyVec.
   
   Global Instance I : error.Error.Class Self := error.Error.Build_Class _.
-Module ImplEmptyVec.
+End Impl_error_Error_for_EmptyVec.
 
 Definition double_first (vec : Vec) : Result :=
   let first :=
     match branch (method "ok_or" (method "first" vec) EmptyVec) with
-    | {| Break.0 := residual; |} => Return (from_residual residual)
-    | {| Continue.0 := val; |} => val
+    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    | Continue {| Continue.0 := val; |} => val
     end in
   let parsed :=
     match branch (method "parse" first) with
-    | {| Break.0 := residual; |} => Return (from_residual residual)
-    | {| Continue.0 := val; |} => val
+    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    | Continue {| Continue.0 := val; |} => val
     end in
   Ok (mul 2 parsed).
 

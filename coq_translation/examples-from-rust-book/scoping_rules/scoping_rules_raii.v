@@ -15,8 +15,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := _; |} =>
+      | None => Break
+      | Some {| Some.0 := _; |} =>
         create_box tt ;;
         tt
       end ;;

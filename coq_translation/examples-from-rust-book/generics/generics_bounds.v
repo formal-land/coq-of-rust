@@ -19,9 +19,9 @@ Module Impl_HasArea_for_Rectangle.
   Definition Self := Rectangle.
   
   Global Instance I : HasArea.Class Self := {|
-    HasArea.area (self : ref Rectangle) := mul self.length self.height;
+    HasArea.area (self : ref Self) := mul self.length self.height;
   |}.
-Module ImplRectangle.
+End Impl_HasArea_for_Rectangle.
 
 Module Rectangle.
   Record t : Set := {
@@ -35,9 +35,7 @@ Module Impl__crate_fmt_Debug_for_Rectangle.
   Definition Self := Rectangle.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref Rectangle)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "Rectangle"
@@ -46,7 +44,7 @@ Module Impl__crate_fmt_Debug_for_Rectangle.
         "height"
         self.height;
   |}.
-Module ImplRectangle.
+End Impl__crate_fmt_Debug_for_Rectangle.
 
 Module Triangle.
   Record t : Set := {

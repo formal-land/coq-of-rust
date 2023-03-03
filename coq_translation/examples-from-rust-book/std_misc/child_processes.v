@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module Command := std.process.Command.
+Definition Command := Command.t.
 
 Definition main (_ : unit) : unit :=
   let output :=

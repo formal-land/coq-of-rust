@@ -35,17 +35,17 @@ Module Impl_UsernameWidget_for_Form.
   Definition Self := Form.
   
   Global Instance I : UsernameWidget.Class Self := {|
-    UsernameWidget.get (self : ref Form) := method "clone" self.username;
+    UsernameWidget.get (self : ref Self) := method "clone" self.username;
   |}.
-Module ImplForm.
+End Impl_UsernameWidget_for_Form.
 
 Module Impl_AgeWidget_for_Form.
   Definition Self := Form.
   
   Global Instance I : AgeWidget.Class Self := {|
-    AgeWidget.get (self : ref Form) := self.age;
+    AgeWidget.get (self : ref Self) := self.age;
   |}.
-Module ImplForm.
+End Impl_AgeWidget_for_Form.
 
 Definition main (_ : unit) : unit :=
   let form :=

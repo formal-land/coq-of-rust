@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := Stmt_item.
+Definition main (_ : unit) : unit := Person.
 
 Module Person.
   Record t : Set := {
@@ -17,9 +17,7 @@ Module Impl__crate_fmt_Debug_for_Person.
   Definition Self := Person.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref main.Person)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "Person"
@@ -28,4 +26,4 @@ Module Impl__crate_fmt_Debug_for_Person.
         "age"
         self.age;
   |}.
-Module ImplPerson.
+End Impl__crate_fmt_Debug_for_Person.

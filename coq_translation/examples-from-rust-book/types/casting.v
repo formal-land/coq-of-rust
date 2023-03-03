@@ -6,9 +6,9 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let decimal := 65 (* 65.4321 *) in
   let integer := decimal in
-  let integer := decimal in
-  let character := integer in
-  let character := decimal in
+  let integer := cast decimal u8 in
+  let character := cast integer char in
+  let character := cast decimal char in
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "Casting: "; " -> "; " -> "; "\n" ]
@@ -21,17 +21,17 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "1000 as a u16 is: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display 1000 ]) ;;
+      [ _crate.fmt.ImplArgumentV1.new_display (cast 1000 u16) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "1000 as a u8 is : "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display 1000 ]) ;;
+      [ _crate.fmt.ImplArgumentV1.new_display (cast 1000 u8) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "  -1 as a u8 is : "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (neg 1) ]) ;;
+      [ _crate.fmt.ImplArgumentV1.new_display (cast (neg 1) u8) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
@@ -41,37 +41,38 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ " 128 as a i16 is: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display 128 ]) ;;
+      [ _crate.fmt.ImplArgumentV1.new_display (cast 128 i16) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ " 128 as a i8 is : "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display 128 ]) ;;
+      [ _crate.fmt.ImplArgumentV1.new_display (cast 128 i8) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "1000 as a u8 is : "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display 1000 ]) ;;
+      [ _crate.fmt.ImplArgumentV1.new_display (cast 1000 u8) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ " 232 as a i8 is : "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display 232 ]) ;;
+      [ _crate.fmt.ImplArgumentV1.new_display (cast 232 i8) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ " 300.0 as u8 is : "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display 300 (* 300.0 *) ]) ;;
+      [ _crate.fmt.ImplArgumentV1.new_display (cast 300 (* 300.0 *) u8) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "-100.0 as u8 is : "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (neg 100 (* 100.0 *)) ]) ;;
+      [ _crate.fmt.ImplArgumentV1.new_display (cast (neg 100 (* 100.0 *)) u8)
+      ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "   nan as u8 is : "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display Implf32.NAN ]) ;;
+      [ _crate.fmt.ImplArgumentV1.new_display (cast Implf32.NAN u8) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1

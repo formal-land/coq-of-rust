@@ -6,6 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module iter := std.iter.
 
 Module IntoIter := std.vec.IntoIter.
+Definition IntoIter := IntoIter.t.
 
 Definition combine_vecs_explicit_return_type (v : Vec) (u : Vec) : iter.Cycle :=
   method "cycle" (method "chain" (method "into_iter" v) (method "into_iter" u)).

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module PhantomData := std.marker.PhantomData.
+Definition PhantomData := PhantomData.t.
 
 Module PhantomTuple.
   Inductive t : Set := Build (_ : A) (_ : PhantomData).
@@ -20,17 +21,15 @@ Definition PhantomTuple := PhantomTuple.t.
 Module Impl__crate_marker_StructuralPartialEq_for_PhantomTuple.
   Definition Self := PhantomTuple.
   
-  Global Instance I : _crate.marker.StructuralPartialEq.Class Self :=
+  Global Instance I A B : _crate.marker.StructuralPartialEq.Class Self :=
       _crate.marker.StructuralPartialEq.Build_Class _.
-Module ImplPhantomTuple.
+End Impl__crate_marker_StructuralPartialEq_for_PhantomTuple.
 
 Module Impl__crate_cmp_PartialEq_for_PhantomTuple.
   Definition Self := PhantomTuple.
   
-  Global Instance I : _crate.cmp.PartialEq.Class Self := {|
-    _crate.cmp.PartialEq.eq
-        (self : ref PhantomTuple<A, B>)
-        (other : ref PhantomTuple) :=
+  Global Instance I A B : _crate.cmp.PartialEq.Class Self := {|
+    _crate.cmp.PartialEq.eq (self : ref Self) (other : ref PhantomTuple) :=
       andb
         (eqb
           (IndexedField.get (index := 0) self)
@@ -39,7 +38,7 @@ Module Impl__crate_cmp_PartialEq_for_PhantomTuple.
           (IndexedField.get (index := 1) self)
           (IndexedField.get (index := 1) other));
   |}.
-Module ImplPhantomTuple.
+End Impl__crate_cmp_PartialEq_for_PhantomTuple.
 
 Module PhantomStruct.
   Record t : Set := {
@@ -52,20 +51,18 @@ Definition PhantomStruct : Set := PhantomStruct.t.
 Module Impl__crate_marker_StructuralPartialEq_for_PhantomStruct.
   Definition Self := PhantomStruct.
   
-  Global Instance I : _crate.marker.StructuralPartialEq.Class Self :=
+  Global Instance I A B : _crate.marker.StructuralPartialEq.Class Self :=
       _crate.marker.StructuralPartialEq.Build_Class _.
-Module ImplPhantomStruct.
+End Impl__crate_marker_StructuralPartialEq_for_PhantomStruct.
 
 Module Impl__crate_cmp_PartialEq_for_PhantomStruct.
   Definition Self := PhantomStruct.
   
-  Global Instance I : _crate.cmp.PartialEq.Class Self := {|
-    _crate.cmp.PartialEq.eq
-        (self : ref PhantomStruct<A, B>)
-        (other : ref PhantomStruct) :=
+  Global Instance I A B : _crate.cmp.PartialEq.Class Self := {|
+    _crate.cmp.PartialEq.eq (self : ref Self) (other : ref PhantomStruct) :=
       andb (eqb self.first other.first) (eqb self.phantom other.phantom);
   |}.
-Module ImplPhantomStruct.
+End Impl__crate_cmp_PartialEq_for_PhantomStruct.
 
 Definition main (_ : unit) : unit :=
   let _tuple1 := PhantomTuple.Build Q PhantomData in

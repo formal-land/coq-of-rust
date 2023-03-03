@@ -236,7 +236,7 @@ Definition main (_ : unit) : unit :=
       ]
       (_crate.fmt.ImplUnsafeArg.new tt)) ;;
   tt ;;
-  Stmt_item.
+  Structure.
 
 Module Structure.
   Inductive t : Set := Build (_ : i32).

@@ -29,17 +29,17 @@ Module Impl_Animal_for_Sheep.
   Definition Self := Sheep.
   
   Global Instance I : Animal.Class Self := {|
-    Animal.noise (self : ref Sheep) := "baaaaah!";
+    Animal.noise (self : ref Self) := "baaaaah!";
   |}.
-Module ImplSheep.
+End Impl_Animal_for_Sheep.
 
 Module Impl_Animal_for_Cow.
   Definition Self := Cow.
   
   Global Instance I : Animal.Class Self := {|
-    Animal.noise (self : ref Cow) := "moooooo!";
+    Animal.noise (self : ref Self) := "moooooo!";
   |}.
-Module ImplCow.
+End Impl_Animal_for_Cow.
 
 Definition random_animal (random_number : f64) : Box :=
   if lt random_number 1 (* 0.5 *) then

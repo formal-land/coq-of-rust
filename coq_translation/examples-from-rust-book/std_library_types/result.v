@@ -3,17 +3,21 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module
-  checked
-  :=
-  Error Enum.
+Module checked.
+  Module MathError.
+    Inductive t : Set :=
+    | DivisionByZero
+    | NonPositiveLogarithm
+    | NegativeSquareRoot.
+  End MathError.
+  Definition MathError := MathError.t.
   
   Module Impl__crate_fmt_Debug_for_MathError.
     Definition Self := MathError.
     
     Global Instance I : _crate.fmt.Debug.Class Self := {|
       _crate.fmt.Debug.fmt
-          (self : ref checked.MathError)
+          (self : ref Self)
           (f : mut_ref _crate.fmt.Formatter) :=
         match self with
         | MathError.DivisionByZero =>
@@ -24,7 +28,7 @@ Module
           _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
         end;
     |}.
-  Module ImplMathError.
+  End Impl__crate_fmt_Debug_for_MathError.
   
   Error TyAlias.
   
@@ -44,17 +48,22 @@ Module
     if le x 0 (* 0.0 *) then
       Err MathError.NonPositiveLogarithm
     else
-      Ok (method "ln" x)..
+      Ok (method "ln" x).
+End checked.
 
-Error Enum.
+Module MathError.
+  Inductive t : Set :=
+  | DivisionByZero
+  | NonPositiveLogarithm
+  | NegativeSquareRoot.
+End MathError.
+Definition MathError := MathError.t.
 
 Module Impl__crate_fmt_Debug_for_MathError.
   Definition Self := MathError.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref checked.MathError)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | MathError.DivisionByZero =>
         _crate.fmt.ImplFormatter.write_str f "DivisionByZero"
@@ -64,7 +73,7 @@ Module Impl__crate_fmt_Debug_for_MathError.
         _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
       end;
   |}.
-Module ImplMathError.
+End Impl__crate_fmt_Debug_for_MathError.
 
 Error TyAlias.
 

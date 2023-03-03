@@ -5,22 +5,27 @@ Import Root.std.prelude.rust_2015.
 
 Import crate.List.
 
-Error Enum.
+Module List.
+  Inductive t : Set :=
+  | Cons (_ : u32) (_ : Box)
+  | Nil.
+End List.
+Definition List := List.t.
 
 (* Impl [List] *)
 Module ImplList.
   Definition new (_ : unit) : List := Nil.
   
-  Definition prepend (self : List) (elem : u32) : List :=
+  Definition prepend (self : Self) (elem : u32) : List :=
     Cons elem (ImplBox.new self).
   
-  Definition len (self : ref List) : u32 :=
+  Definition len (self : ref Self) : u32 :=
     match deref self with
     | Cons (_, tail) => add 1 (method "len" tail)
     | Nil => 0
     end.
   
-  Definition stringify (self : ref List) : String :=
+  Definition stringify (self : ref Self) : String :=
     match deref self with
     | Cons (head, tail) =>
       let res :=

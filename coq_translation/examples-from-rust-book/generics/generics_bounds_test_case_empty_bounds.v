@@ -27,13 +27,13 @@ Module Impl_Red_for_Cardinal.
   Definition Self := Cardinal.
   
   Global Instance I : Red.Class Self := Red.Build_Class _.
-Module ImplCardinal.
+End Impl_Red_for_Cardinal.
 
 Module Impl_Blue_for_BlueJay.
   Definition Self := BlueJay.
   
   Global Instance I : Blue.Class Self := Blue.Build_Class _.
-Module ImplBlueJay.
+End Impl_Blue_for_BlueJay.
 
 Definition red {T : Set} `{Red.Class T} (arg : ref T) : ref str := "red".
 

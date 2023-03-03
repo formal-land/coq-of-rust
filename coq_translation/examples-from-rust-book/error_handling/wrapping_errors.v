@@ -10,31 +10,35 @@ Module Error := std.error.Error.
 Module fmt := std.fmt.
 
 Module ParseIntError := std.num.ParseIntError.
+Definition ParseIntError := ParseIntError.t.
 
 Error TyAlias.
 
-Error Enum.
+Module DoubleError.
+  Inductive t : Set :=
+  | EmptyVec
+  | Parse (_ : ParseIntError).
+End DoubleError.
+Definition DoubleError := DoubleError.t.
 
 Module Impl__crate_fmt_Debug_for_DoubleError.
   Definition Self := DoubleError.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref DoubleError)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       match self with
       | DoubleError.EmptyVec => _crate.fmt.ImplFormatter.write_str f "EmptyVec"
       | DoubleError.Parse (__self_0) =>
         _crate.fmt.ImplFormatter.debug_tuple_field1_finish f "Parse" __self_0
       end;
   |}.
-Module ImplDoubleError.
+End Impl__crate_fmt_Debug_for_DoubleError.
 
 Module Impl_fmt_Display_for_DoubleError.
   Definition Self := DoubleError.
   
   Global Instance I : fmt.Display.Class Self := {|
-    fmt.Display.fmt (self : ref DoubleError) (f : mut_ref fmt.Formatter) :=
+    fmt.Display.fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
       match deref self with
       | DoubleError.EmptyVec =>
         method
@@ -52,19 +56,19 @@ Module Impl_fmt_Display_for_DoubleError.
             [  ])
       end;
   |}.
-Module ImplDoubleError.
+End Impl_fmt_Display_for_DoubleError.
 
 Module Impl_error_Error_for_DoubleError.
   Definition Self := DoubleError.
   
   Global Instance I : error.Error.Class Self := {|
-    error.Error.source (self : ref DoubleError) :=
+    error.Error.source (self : ref Self) :=
       match deref self with
       | DoubleError.EmptyVec => None
       | DoubleError.Parse (e) => Some e
       end;
   |}.
-Module ImplDoubleError.
+End Impl_error_Error_for_DoubleError.
 
 Module Impl_From_for_DoubleError.
   Definition Self := DoubleError.
@@ -72,18 +76,18 @@ Module Impl_From_for_DoubleError.
   Global Instance I : From.Class ParseIntError Self := {|
     From.from (err : ParseIntError) := DoubleError.Parse err;
   |}.
-Module ImplDoubleError.
+End Impl_From_for_DoubleError.
 
 Definition double_first (vec : Vec) : Result :=
   let first :=
     match branch (method "ok_or" (method "first" vec) DoubleError.EmptyVec) with
-    | {| Break.0 := residual; |} => Return (from_residual residual)
-    | {| Continue.0 := val; |} => val
+    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    | Continue {| Continue.0 := val; |} => val
     end in
   let parsed :=
     match branch (method "parse" first) with
-    | {| Break.0 := residual; |} => Return (from_residual residual)
-    | {| Continue.0 := val; |} => val
+    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    | Continue {| Continue.0 := val; |} => val
     end in
   Ok (mul 2 parsed).
 

@@ -15,9 +15,7 @@ Module Impl__crate_fmt_Debug_for_Person.
   Definition Self := Person.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref Person)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "Person"
@@ -26,7 +24,7 @@ Module Impl__crate_fmt_Debug_for_Person.
         "age"
         self.age;
   |}.
-Module ImplPerson.
+End Impl__crate_fmt_Debug_for_Person.
 
 Error StructUnit.
 
@@ -85,7 +83,7 @@ Definition main (_ : unit) : unit :=
         _crate.fmt.ImplArgumentV1.new_display bottom_right.y
       ]) ;;
   tt ;;
-  let {| Point.x := left_edge; Point.y := top_edge; |} := point in
+  let Point {| Point.x := left_edge; Point.y := top_edge; |} := point in
   let _rectangle :=
     {|
       Rectangle.top_left := {| Point.x := left_edge; Point.y := top_edge; |};

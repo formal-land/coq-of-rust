@@ -21,18 +21,18 @@ Module Impl__crate_clone_Clone_for_Job.
   Definition Self := Job.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Job) :=
+    _crate.clone.Clone.clone (self : ref Self) :=
       let _ := tt in
       deref self;
   |}.
-Module ImplJob.
+End Impl__crate_clone_Clone_for_Job.
 
 Module Impl__crate_marker_Copy_for_Job.
   Definition Self := Job.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
       _crate.marker.Copy.Build_Class _.
-Module ImplJob.
+End Impl__crate_marker_Copy_for_Job.
 
 Module PhoneNumber.
   Record t : Set := {
@@ -46,32 +46,33 @@ Module Impl__crate_clone_Clone_for_PhoneNumber.
   Definition Self := PhoneNumber.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref PhoneNumber) :=
+    _crate.clone.Clone.clone (self : ref Self) :=
       let _ := tt in
       let _ := tt in
       deref self;
   |}.
-Module ImplPhoneNumber.
+End Impl__crate_clone_Clone_for_PhoneNumber.
 
 Module Impl__crate_marker_Copy_for_PhoneNumber.
   Definition Self := PhoneNumber.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
       _crate.marker.Copy.Build_Class _.
-Module ImplPhoneNumber.
+End Impl__crate_marker_Copy_for_PhoneNumber.
 
 (* Impl [Person] *)
 Module ImplPerson.
-  Definition work_phone_area_code (self : ref Person) : Option :=
+  Definition work_phone_area_code (self : ref Self) : Option :=
     match
         branch
           match branch self.job with
-            | {| Break.0 := residual; |} => Return (from_residual residual)
-            | {| Continue.0 := val; |} => val
+            | Break {| Break.0 := residual; |} =>
+              Return (from_residual residual)
+            | Continue {| Continue.0 := val; |} => val
             end.phone_number
       with
-      | {| Break.0 := residual; |} => Return (from_residual residual)
-      | {| Continue.0 := val; |} => val
+      | Break {| Break.0 := residual; |} => Return (from_residual residual)
+      | Continue {| Continue.0 := val; |} => val
       end.area_code.
 End ImplPerson.
 (* End impl [Person] *)

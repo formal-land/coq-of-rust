@@ -3,7 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Error Enum.
+Module WebEvent.
+  Inductive t : Set :=
+  | PageLoad
+  | PageUnload
+  | KeyPress (_ : char)
+  | Paste (_ : String)
+  | Click (_ : i64) (_ : i64).
+End WebEvent.
+Definition WebEvent := WebEvent.t.
 
 Definition inspect (event : WebEvent) : unit :=
   match event with
@@ -27,7 +35,7 @@ Definition inspect (event : WebEvent) : unit :=
         [ "pasted \""; "\".\n" ]
         [ _crate.fmt.ImplArgumentV1.new_display s ]) ;;
     tt
-  | {| WebEvent.Click.x := x; WebEvent.Click.y := y; |} =>
+  | WebEvent.Click {| WebEvent.Click.x := x; WebEvent.Click.y := y; |} =>
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
         [ "clicked at x="; ", y="; ".\n" ]

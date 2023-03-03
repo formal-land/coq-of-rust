@@ -42,24 +42,24 @@ Module Impl__crate_clone_Clone_for_Complex.
   Definition Self := Complex.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Complex) :=
+    _crate.clone.Clone.clone (self : ref Self) :=
       let _ := tt in
       deref self;
   |}.
-Module ImplComplex.
+End Impl__crate_clone_Clone_for_Complex.
 
 Module Impl__crate_marker_Copy_for_Complex.
   Definition Self := Complex.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
       _crate.marker.Copy.Build_Class _.
-Module ImplComplex.
+End Impl__crate_marker_Copy_for_Complex.
 
 Module Impl_fmt_Debug_for_Complex.
   Definition Self := Complex.
   
   Global Instance I : fmt.Debug.Class Self := {|
-    fmt.Debug.fmt (self : ref Complex) (f : mut_ref fmt.Formatter) :=
+    fmt.Debug.fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
       if lt self.im 0 (* 0. *) then
         method
           "write_fmt"
@@ -81,4 +81,4 @@ Module Impl_fmt_Debug_for_Complex.
               _crate.fmt.ImplArgumentV1.new_display self.im
             ]);
   |}.
-Module ImplComplex.
+End Impl_fmt_Debug_for_Complex.

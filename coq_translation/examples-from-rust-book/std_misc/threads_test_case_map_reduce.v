@@ -14,8 +14,8 @@ Definition main (_ : unit) : unit :=
   | iter =>
     loop
       match next iter with
-      | {|  |} => Break
-      | {| Some.0 := (i, data_segment); |} =>
+      | None => Break
+      | Some {| Some.0 := (i, data_segment); |} =>
         _crate.io._print
           (_crate.fmt.ImplArguments.new_v1
             [ "data segment "; " is \""; "\"\n" ]

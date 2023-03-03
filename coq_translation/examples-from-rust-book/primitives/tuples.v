@@ -29,9 +29,7 @@ Module Impl__crate_fmt_Debug_for_Matrix.
   Definition Self := Matrix.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt
-        (self : ref Matrix)
-        (f : mut_ref _crate.fmt.Formatter) :=
+    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
       _crate.fmt.ImplFormatter.debug_tuple_field4_finish
         f
         "Matrix"
@@ -40,7 +38,7 @@ Module Impl__crate_fmt_Debug_for_Matrix.
         (IndexedField.get (index := 2) self)
         (IndexedField.get (index := 3) self);
   |}.
-Module ImplMatrix.
+End Impl__crate_fmt_Debug_for_Matrix.
 
 Definition main (_ : unit) : unit :=
   let long_tuple :=
