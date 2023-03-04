@@ -10,7 +10,7 @@ Module TryInto := std.convert.TryInto.
 Module EvenNumber.
   Inductive t : Set := Build (_ : i32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 i32 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End EvenNumber.

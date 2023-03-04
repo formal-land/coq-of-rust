@@ -8,6 +8,10 @@ Module my.
     Record t : Set := {
       contents : T;
     }.
+    
+    Global Instance Get_contents : NamedField.Class t "contents" _ := {|
+      NamedField.get '(Build_t x0) := x0;
+    |}.
   End OpenBox.
   Definition OpenBox : Set := OpenBox.t.
   
@@ -15,11 +19,17 @@ Module my.
     Record t : Set := {
       contents : T;
     }.
+    
+    Global Instance Get_contents : NamedField.Class t "contents" _ := {|
+      NamedField.get '(Build_t x0) := x0;
+    |}.
   End ClosedBox.
   Definition ClosedBox : Set := ClosedBox.t.
   
   (* Impl [ClosedBox] *)
   Module ImplClosedBox.
+    Definition Self := ClosedBox.
+    
     Definition new (contents : T) : ClosedBox :=
       {| ClosedBox.contents := contents; |}.
   End ImplClosedBox.
@@ -30,6 +40,10 @@ Module OpenBox.
   Record t : Set := {
     contents : T;
   }.
+  
+  Global Instance Get_contents : NamedField.Class t "contents" _ := {|
+    NamedField.get '(Build_t x0) := x0;
+  |}.
 End OpenBox.
 Definition OpenBox : Set := OpenBox.t.
 
@@ -37,11 +51,17 @@ Module ClosedBox.
   Record t : Set := {
     contents : T;
   }.
+  
+  Global Instance Get_contents : NamedField.Class t "contents" _ := {|
+    NamedField.get '(Build_t x0) := x0;
+  |}.
 End ClosedBox.
 Definition ClosedBox : Set := ClosedBox.t.
 
 (* Impl [ClosedBox] *)
 Module ImplClosedBox.
+  Definition Self := ClosedBox.
+  
   Definition new (contents : T) : ClosedBox :=
     {| ClosedBox.contents := contents; |}.
 End ImplClosedBox.
@@ -52,7 +72,10 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "The open box contains: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display open_box.contents ]) ;;
+      [
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "contents") open_box)
+      ]) ;;
   tt ;;
   let _closed_box := my.ImplClosedBox.new "classified information" in
   tt.

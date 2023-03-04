@@ -9,6 +9,10 @@ Module Circle.
   Record t : Set := {
     radius : i32;
   }.
+  
+  Global Instance Get_radius : NamedField.Class t "radius" _ := {|
+    NamedField.get '(Build_t x0) := x0;
+  |}.
 End Circle.
 Definition Circle : Set := Circle.t.
 
@@ -22,7 +26,10 @@ Module Impl_fmt_Display_for_Circle.
         f
         (_crate.fmt.ImplArguments.new_v1
           [ "Circle of radius " ]
-          [ _crate.fmt.ImplArgumentV1.new_display self.radius ]);
+          [
+            _crate.fmt.ImplArgumentV1.new_display
+              (NamedField.get (name := "radius") self)
+          ]);
   |}.
 End Impl_fmt_Display_for_Circle.
 

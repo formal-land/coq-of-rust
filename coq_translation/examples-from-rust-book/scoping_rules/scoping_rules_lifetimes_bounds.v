@@ -8,7 +8,7 @@ Module Debug := std.fmt.Debug.
 Module Ref.
   Inductive t : Set := Build (_ : ref T).
   
-  Global Instance Get_0 : IndexedField.Class t 0 ref T := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Ref.

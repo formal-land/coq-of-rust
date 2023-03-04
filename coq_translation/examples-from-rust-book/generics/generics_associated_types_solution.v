@@ -6,10 +6,10 @@ Import Root.std.prelude.rust_2015.
 Module Container.
   Inductive t : Set := Build (_ : i32) (_ : i32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 i32 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0 _) := x0;
   |}.
-  Global Instance Get_1 : IndexedField.Class t 1 i32 := {|
+  Global Instance Get_1 : IndexedField.Class t 1 _ := {|
     IndexedField.get '(Build _ x1) := x1;
   |}.
 End Container.

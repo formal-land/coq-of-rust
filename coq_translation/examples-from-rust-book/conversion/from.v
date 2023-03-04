@@ -9,6 +9,10 @@ Module Number.
   Record t : Set := {
     value : i32;
   }.
+  
+  Global Instance Get_value : NamedField.Class t "value" _ := {|
+    NamedField.get '(Build_t x0) := x0;
+  |}.
 End Number.
 Definition Number : Set := Number.t.
 
@@ -21,7 +25,7 @@ Module Impl__crate_fmt_Debug_for_Number.
         f
         "Number"
         "value"
-        self.value;
+        (NamedField.get (name := "value") self);
   |}.
 End Impl__crate_fmt_Debug_for_Number.
 

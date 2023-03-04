@@ -27,7 +27,7 @@ End Impl__crate_fmt_Debug_for_Food.
 Module Peeled.
   Inductive t : Set := Build (_ : Food).
   
-  Global Instance Get_0 : IndexedField.Class t 0 Food := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Peeled.
@@ -48,7 +48,7 @@ End Impl__crate_fmt_Debug_for_Peeled.
 Module Chopped.
   Inductive t : Set := Build (_ : Food).
   
-  Global Instance Get_0 : IndexedField.Class t 0 Food := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Chopped.
@@ -69,7 +69,7 @@ End Impl__crate_fmt_Debug_for_Chopped.
 Module Cooked.
   Inductive t : Set := Build (_ : Food).
   
-  Global Instance Get_0 : IndexedField.Class t 0 Food := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Cooked.

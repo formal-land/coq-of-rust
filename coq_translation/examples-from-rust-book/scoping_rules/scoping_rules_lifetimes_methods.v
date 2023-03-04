@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module Owner.
   Inductive t : Set := Build (_ : i32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 i32 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Owner.
@@ -14,6 +14,8 @@ Definition Owner := Owner.t.
 
 (* Impl [Owner] *)
 Module ImplOwner.
+  Definition Self := Owner.
+  
   Definition add_one (self : mut_ref Self) :=
     assign
       IndexedField.get (index := 0) self

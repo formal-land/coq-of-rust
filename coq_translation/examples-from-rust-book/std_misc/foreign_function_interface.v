@@ -35,6 +35,13 @@ Module Complex.
     re : f32;
     im : f32;
   }.
+  
+  Global Instance Get_re : NamedField.Class t "re" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_im : NamedField.Class t "im" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Complex.
 Definition Complex : Set := Complex.t.
 
@@ -60,15 +67,17 @@ Module Impl_fmt_Debug_for_Complex.
   
   Global Instance I : fmt.Debug.Class Self := {|
     fmt.Debug.fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
-      if lt self.im 0 (* 0. *) then
+      if lt (NamedField.get (name := "im") self) 0 (* 0. *) then
         method
           "write_fmt"
           f
           (_crate.fmt.ImplArguments.new_v1
             [ ""; "-"; "i" ]
             [
-              _crate.fmt.ImplArgumentV1.new_display self.re;
-              _crate.fmt.ImplArgumentV1.new_display (neg self.im)
+              _crate.fmt.ImplArgumentV1.new_display
+                (NamedField.get (name := "re") self);
+              _crate.fmt.ImplArgumentV1.new_display
+                (neg (NamedField.get (name := "im") self))
             ])
       else
         method
@@ -77,8 +86,10 @@ Module Impl_fmt_Debug_for_Complex.
           (_crate.fmt.ImplArguments.new_v1
             [ ""; "+"; "i" ]
             [
-              _crate.fmt.ImplArgumentV1.new_display self.re;
-              _crate.fmt.ImplArgumentV1.new_display self.im
+              _crate.fmt.ImplArgumentV1.new_display
+                (NamedField.get (name := "re") self);
+              _crate.fmt.ImplArgumentV1.new_display
+                (NamedField.get (name := "im") self)
             ]);
   |}.
 End Impl_fmt_Debug_for_Complex.

@@ -8,6 +8,13 @@ Module Person.
     name : String;
     age : u8;
   }.
+  
+  Global Instance Get_name : NamedField.Class t "name" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_age : NamedField.Class t "age" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Person.
 Definition Person : Set := Person.t.
 
@@ -20,9 +27,9 @@ Module Impl__crate_fmt_Debug_for_Person.
         f
         "Person"
         "name"
-        self.name
+        (NamedField.get (name := "name") self)
         "age"
-        self.age;
+        (NamedField.get (name := "age") self);
   |}.
 End Impl__crate_fmt_Debug_for_Person.
 
@@ -31,10 +38,10 @@ Error StructUnit.
 Module Pair.
   Inductive t : Set := Build (_ : i32) (_ : f32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 i32 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0 _) := x0;
   |}.
-  Global Instance Get_1 : IndexedField.Class t 1 f32 := {|
+  Global Instance Get_1 : IndexedField.Class t 1 _ := {|
     IndexedField.get '(Build _ x1) := x1;
   |}.
 End Pair.
@@ -45,6 +52,13 @@ Module Point.
     x : f32;
     y : f32;
   }.
+  
+  Global Instance Get_x : NamedField.Class t "x" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_y : NamedField.Class t "y" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Point.
 Definition Point : Set := Point.t.
 
@@ -53,6 +67,13 @@ Module Rectangle.
     top_left : Point;
     bottom_right : Point;
   }.
+  
+  Global Instance Get_top_left : NamedField.Class t "top_left" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_bottom_right : NamedField.Class t "bottom_right" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
@@ -70,8 +91,10 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.ImplArguments.new_v1
       [ "point coordinates: ("; ", "; ")\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display point.x;
-        _crate.fmt.ImplArgumentV1.new_display point.y
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "x") point);
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "y") point)
       ]) ;;
   tt ;;
   let bottom_right := {| Point.x := 5 (* 5.2 *); |} with point in
@@ -79,8 +102,10 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.ImplArguments.new_v1
       [ "second point: ("; ", "; ")\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display bottom_right.x;
-        _crate.fmt.ImplArgumentV1.new_display bottom_right.y
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "x") bottom_right);
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "y") bottom_right)
       ]) ;;
   tt ;;
   let Point {| Point.x := left_edge; Point.y := top_edge; |} := point in

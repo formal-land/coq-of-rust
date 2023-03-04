@@ -11,6 +11,13 @@ Module Account.
     username : ref str;
     password : ref str;
   }.
+  
+  Global Instance Get_username : NamedField.Class t "username" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_password : NamedField.Class t "password" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Account.
 Definition Account : Set := Account.t.
 
@@ -27,8 +34,12 @@ Module Impl__crate_cmp_PartialEq_for_Account.
   Global Instance I 'a : _crate.cmp.PartialEq.Class Self := {|
     _crate.cmp.PartialEq.eq (self : ref Self) (other : ref Account) :=
       andb
-        (eqb self.username other.username)
-        (eqb self.password other.password);
+        (eqb
+          (NamedField.get (name := "username") self)
+          (NamedField.get (name := "username") other))
+        (eqb
+          (NamedField.get (name := "password") self)
+          (NamedField.get (name := "password") other));
   |}.
 End Impl__crate_cmp_PartialEq_for_Account.
 
@@ -55,8 +66,12 @@ Module Impl__crate_hash_Hash_for_Account.
   
   Global Instance I 'a : _crate.hash.Hash.Class Self := {|
     _crate.hash.Hash.hash (self : ref Self) (state : mut_ref __H) :=
-      _crate.hash.Hash.hash self.username state ;;
-      _crate.hash.Hash.hash self.password state;
+      (_crate.hash.Hash.associated_function "hash")
+        (NamedField.get (name := "username") self)
+        state ;;
+      (_crate.hash.Hash.associated_function "hash")
+        (NamedField.get (name := "password") self)
+        state;
   |}.
 End Impl__crate_hash_Hash_for_Account.
 
@@ -65,6 +80,13 @@ Module AccountInfo.
     name : ref str;
     email : ref str;
   }.
+  
+  Global Instance Get_name : NamedField.Class t "name" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_email : NamedField.Class t "email" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End AccountInfo.
 Definition AccountInfo : Set := AccountInfo.t.
 
@@ -98,12 +120,18 @@ Definition try_logon
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
         [ "Name: "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display account_info.name ]) ;;
+        [
+          _crate.fmt.ImplArgumentV1.new_display
+            (NamedField.get (name := "name") account_info)
+        ]) ;;
     tt ;;
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
         [ "Email: "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display account_info.email ]) ;;
+        [
+          _crate.fmt.ImplArgumentV1.new_display
+            (NamedField.get (name := "email") account_info)
+        ]) ;;
     tt ;;
     tt
   | _ =>

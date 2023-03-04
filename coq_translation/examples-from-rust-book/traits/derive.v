@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module Centimeters.
   Inductive t : Set := Build (_ : f64).
   
-  Global Instance Get_0 : IndexedField.Class t 0 f64 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Centimeters.
@@ -37,7 +37,7 @@ Module Impl__crate_cmp_PartialOrd_for_Centimeters.
     _crate.cmp.PartialOrd.partial_cmp
         (self : ref Self)
         (other : ref Centimeters) :=
-      _crate.cmp.PartialOrd.partial_cmp
+      (_crate.cmp.PartialOrd.associated_function "partial_cmp")
         (IndexedField.get (index := 0) self)
         (IndexedField.get (index := 0) other);
   |}.
@@ -46,7 +46,7 @@ End Impl__crate_cmp_PartialOrd_for_Centimeters.
 Module Inches.
   Inductive t : Set := Build (_ : i32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 i32 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Inches.
@@ -66,6 +66,8 @@ End Impl__crate_fmt_Debug_for_Inches.
 
 (* Impl [Inches] *)
 Module ImplInches.
+  Definition Self := Inches.
+  
   Definition to_centimeters (self : ref Self) : Centimeters :=
     let Inches (inches) := self in
     Centimeters.Build (mul (cast inches f64) 3 (* 2.54 *)).
@@ -75,7 +77,7 @@ End ImplInches.
 Module Seconds.
   Inductive t : Set := Build (_ : i32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 i32 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Seconds.

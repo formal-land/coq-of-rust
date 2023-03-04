@@ -9,6 +9,16 @@ Module Book.
     title : ref str;
     year : u32;
   }.
+  
+  Global Instance Get_author : NamedField.Class t "author" _ := {|
+    NamedField.get '(Build_t x0 _ _) := x0;
+  |}.
+  Global Instance Get_title : NamedField.Class t "title" _ := {|
+    NamedField.get '(Build_t _ x1 _) := x1;
+  |}.
+  Global Instance Get_year : NamedField.Class t "year" _ := {|
+    NamedField.get '(Build_t _ _ x2) := x2;
+  |}.
 End Book.
 Definition Book : Set := Book.t.
 
@@ -36,20 +46,24 @@ Definition borrow_book (book : ref Book) : unit :=
     (_crate.fmt.ImplArguments.new_v1
       [ "I immutably borrowed "; " - "; " edition\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display book.title;
-        _crate.fmt.ImplArgumentV1.new_display book.year
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "title") book);
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "year") book)
       ]) ;;
   tt ;;
   tt.
 
 Definition new_edition (book : mut_ref Book) : unit :=
-  assign book.year := 2014 ;;
+  assign NamedField.get (name := "year") book := 2014 ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "I mutably borrowed "; " - "; " edition\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display book.title;
-        _crate.fmt.ImplArgumentV1.new_display book.year
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "title") book);
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "year") book)
       ]) ;;
   tt ;;
   tt.

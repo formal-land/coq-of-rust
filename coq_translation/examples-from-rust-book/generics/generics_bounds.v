@@ -19,7 +19,10 @@ Module Impl_HasArea_for_Rectangle.
   Definition Self := Rectangle.
   
   Global Instance I : HasArea.Class Self := {|
-    HasArea.area (self : ref Self) := mul self.length self.height;
+    HasArea.area (self : ref Self) :=
+      mul
+        (NamedField.get (name := "length") self)
+        (NamedField.get (name := "height") self);
   |}.
 End Impl_HasArea_for_Rectangle.
 
@@ -28,6 +31,13 @@ Module Rectangle.
     length : f64;
     height : f64;
   }.
+  
+  Global Instance Get_length : NamedField.Class t "length" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_height : NamedField.Class t "height" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
@@ -40,9 +50,9 @@ Module Impl__crate_fmt_Debug_for_Rectangle.
         f
         "Rectangle"
         "length"
-        self.length
+        (NamedField.get (name := "length") self)
         "height"
-        self.height;
+        (NamedField.get (name := "height") self);
   |}.
 End Impl__crate_fmt_Debug_for_Rectangle.
 
@@ -51,6 +61,13 @@ Module Triangle.
     length : f64;
     height : f64;
   }.
+  
+  Global Instance Get_length : NamedField.Class t "length" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_height : NamedField.Class t "height" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Triangle.
 Definition Triangle : Set := Triangle.t.
 

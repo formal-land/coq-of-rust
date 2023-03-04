@@ -25,7 +25,7 @@ Definition Option := Option.t.
 Module Choice.
   Inductive t : Set := Build (_ : u8).
   
-  Global Instance Get_0 : IndexedField.Class t 0 u8 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Choice.
@@ -62,6 +62,8 @@ End Impl__crate_fmt_Debug_for_Choice.
 
 (* Impl [Choice] *)
 Module ImplChoice.
+  Definition Self := Choice.
+  
   Definition unwrap_u8 (self : ref Self) : u8 :=
     IndexedField.get (index := 0) self.
 End ImplChoice.
@@ -685,6 +687,13 @@ Module CtOption.
     value : T;
     is_some : Choice;
   }.
+  
+  Global Instance Get_value : NamedField.Class t "value" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_is_some : NamedField.Class t "is_some" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End CtOption.
 Definition CtOption : Set := CtOption.t.
 
@@ -694,8 +703,12 @@ Module Impl__crate_clone_Clone_for_CtOption.
   Global Instance I T : _crate.clone.Clone.Class Self := {|
     _crate.clone.Clone.clone (self : ref Self) :=
       {|
-        CtOption.value := _crate.clone.Clone.clone self.value;
-        CtOption.is_some := _crate.clone.Clone.clone self.is_some;
+        CtOption.value :=
+          (_crate.clone.Clone.associated_function "clone")
+            (NamedField.get (name := "value") self);
+        CtOption.is_some :=
+          (_crate.clone.Clone.associated_function "clone")
+            (NamedField.get (name := "is_some") self);
       |};
   |}.
 End Impl__crate_clone_Clone_for_CtOption.
@@ -716,9 +729,9 @@ Module Impl__crate_fmt_Debug_for_CtOption.
         f
         "CtOption"
         "value"
-        self.value
+        (NamedField.get (name := "value") self)
         "is_some"
-        self.is_some;
+        (NamedField.get (name := "is_some") self);
   |}.
 End Impl__crate_fmt_Debug_for_CtOption.
 
@@ -728,7 +741,7 @@ Module Impl_From_for_Option.
   Global Instance I T : From.Class CtOption Self := {|
     From.from (source : CtOption) :=
       if eqb (method "unwrap_u8" (method "is_some" source)) 1 then
-        Option.Some source.value
+        Option.Some (NamedField.get (name := "value") source)
       else
         None;
   |}.
@@ -736,11 +749,13 @@ End Impl_From_for_Option.
 
 (* Impl [CtOption] *)
 Module ImplCtOption.
+  Definition Self := CtOption.
+  
   Definition new (value : T) (is_some : Choice) : CtOption :=
     {| CtOption.value := value; CtOption.is_some := is_some; |}.
   
   Definition expect (self : Self) (msg : ref str) : T :=
-    match (method "unwrap_u8" self.is_some, 1) with
+    match (method "unwrap_u8" (NamedField.get (name := "is_some") self), 1) with
     | (left_val, right_val) =>
       if not (eqb (deref left_val) (deref right_val)) then
         let kind := _crate.panicking.AssertKind.Eq in
@@ -756,10 +771,10 @@ Module ImplCtOption.
       else
         tt
     end ;;
-    self.value.
+    NamedField.get (name := "value") self.
   
   Definition unwrap (self : Self) : T :=
-    match (method "unwrap_u8" self.is_some, 1) with
+    match (method "unwrap_u8" (NamedField.get (name := "is_some") self), 1) with
     | (left_val, right_val) =>
       if not (eqb (deref left_val) (deref right_val)) then
         let kind := _crate.panicking.AssertKind.Eq in
@@ -772,27 +787,48 @@ Module ImplCtOption.
       else
         tt
     end ;;
-    self.value.
+    NamedField.get (name := "value") self.
   
   Definition unwrap_or (self : Self) (def : T) : T :=
-    ImplT.conditional_select def self.value self.is_some.
+    ImplT.conditional_select
+      def
+      (NamedField.get (name := "value") self)
+      (NamedField.get (name := "is_some") self).
   
   Definition unwrap_or_else (self : Self) (f : F) : T :=
-    ImplT.conditional_select (f tt) self.value self.is_some.
+    ImplT.conditional_select
+      (f tt)
+      (NamedField.get (name := "value") self)
+      (NamedField.get (name := "is_some") self).
   
-  Definition is_some (self : ref Self) : Choice := self.is_some.
+  Definition is_some (self : ref Self) : Choice :=
+    NamedField.get (name := "is_some") self.
   
-  Definition is_none (self : ref Self) : Choice := not self.is_some.
+  Definition is_none (self : ref Self) : Choice :=
+    not (NamedField.get (name := "is_some") self).
   
   Definition map (self : Self) (f : F) : CtOption :=
     ImplCtOption.new
-      (f (ImplT.conditional_select (ImplT.default tt) self.value self.is_some))
-      self.is_some.
+      (f
+        (ImplT.conditional_select
+          (ImplT.default tt)
+          (NamedField.get (name := "value") self)
+          (NamedField.get (name := "is_some") self)))
+      (NamedField.get (name := "is_some") self).
   
   Definition and_then (self : Self) (f : F) : CtOption :=
     let tmp :=
-      f (ImplT.conditional_select (ImplT.default tt) self.value self.is_some) in
-    assign tmp.is_some := bit_and tmp.is_some self.is_some ;;
+      f
+        (ImplT.conditional_select
+          (ImplT.default tt)
+          (NamedField.get (name := "value") self)
+          (NamedField.get (name := "is_some") self)) in
+    assign
+      NamedField.get (name := "is_some") tmp
+      :=
+      bit_and
+        (NamedField.get (name := "is_some") tmp)
+        (NamedField.get (name := "is_some") self) ;;
     tmp.
   
   Definition or_else (self : Self) (f : F) : CtOption :=
@@ -811,8 +847,14 @@ Module Impl_ConditionallySelectable_for_CtOption.
         (b : ref Self)
         (choice : Choice) :=
       ImplCtOption.new
-        (ImplT.conditional_select a.value b.value choice)
-        (ImplChoice.conditional_select a.is_some b.is_some choice);
+        (ImplT.conditional_select
+          (NamedField.get (name := "value") a)
+          (NamedField.get (name := "value") b)
+          choice)
+        (ImplChoice.conditional_select
+          (NamedField.get (name := "is_some") a)
+          (NamedField.get (name := "is_some") b)
+          choice);
   |}.
 End Impl_ConditionallySelectable_for_CtOption.
 
@@ -824,7 +866,12 @@ Module Impl_ConstantTimeEq_for_CtOption.
       let a := method "is_some" self in
       let b := method "is_some" rhs in
       bit_or
-        (bit_and (bit_and a b) (method "ct_eq" self.value rhs.value))
+        (bit_and
+          (bit_and a b)
+          (method
+            "ct_eq"
+            (NamedField.get (name := "value") self)
+            (NamedField.get (name := "value") rhs)))
         (bit_and (not a) (not b));
   |}.
 End Impl_ConstantTimeEq_for_CtOption.

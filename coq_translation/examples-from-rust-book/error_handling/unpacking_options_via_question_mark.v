@@ -7,6 +7,10 @@ Module Person.
   Record t : Set := {
     job : Option;
   }.
+  
+  Global Instance Get_job : NamedField.Class t "job" _ := {|
+    NamedField.get '(Build_t x0) := x0;
+  |}.
 End Person.
 Definition Person : Set := Person.t.
 
@@ -14,6 +18,10 @@ Module Job.
   Record t : Set := {
     phone_number : Option;
   }.
+  
+  Global Instance Get_phone_number : NamedField.Class t "phone_number" _ := {|
+    NamedField.get '(Build_t x0) := x0;
+  |}.
 End Job.
 Definition Job : Set := Job.t.
 
@@ -39,6 +47,13 @@ Module PhoneNumber.
     area_code : Option;
     number : u32;
   }.
+  
+  Global Instance Get_area_code : NamedField.Class t "area_code" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_number : NamedField.Class t "number" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End PhoneNumber.
 Definition PhoneNumber : Set := PhoneNumber.t.
 
@@ -62,18 +77,24 @@ End Impl__crate_marker_Copy_for_PhoneNumber.
 
 (* Impl [Person] *)
 Module ImplPerson.
+  Definition Self := Person.
+  
   Definition work_phone_area_code (self : ref Self) : Option :=
-    match
+    NamedField.get
+      (name := "area_code")
+      match
         branch
-          match branch self.job with
+          (NamedField.get
+            (name := "phone_number")
+            match branch (NamedField.get (name := "job") self) with
             | Break {| Break.0 := residual; |} =>
               Return (from_residual residual)
             | Continue {| Continue.0 := val; |} => val
-            end.phone_number
+            end)
       with
       | Break {| Break.0 := residual; |} => Return (from_residual residual)
       | Continue {| Continue.0 := val; |} => val
-      end.area_code.
+      end.
 End ImplPerson.
 (* End impl [Person] *)
 

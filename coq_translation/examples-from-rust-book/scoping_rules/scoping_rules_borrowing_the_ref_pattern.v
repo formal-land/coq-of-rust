@@ -8,6 +8,13 @@ Module Point.
     x : i32;
     y : i32;
   }.
+  
+  Global Instance Get_x : NamedField.Class t "x" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_y : NamedField.Class t "y" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Point.
 Definition Point : Set := Point.t.
 
@@ -52,16 +59,20 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.ImplArguments.new_v1
       [ "point is ("; ", "; ")\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display point.x;
-        _crate.fmt.ImplArgumentV1.new_display point.y
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "x") point);
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "y") point)
       ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "mutable_point is ("; ", "; ")\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display mutable_point.x;
-        _crate.fmt.ImplArgumentV1.new_display mutable_point.y
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "x") mutable_point);
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "y") mutable_point)
       ]) ;;
   tt ;;
   let mutable_tuple := (ImplBox.new 5, 3) in

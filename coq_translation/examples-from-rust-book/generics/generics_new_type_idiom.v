@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module Years.
   Inductive t : Set := Build (_ : i64).
   
-  Global Instance Get_0 : IndexedField.Class t 0 i64 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Years.
@@ -15,7 +15,7 @@ Definition Years := Years.t.
 Module Days.
   Inductive t : Set := Build (_ : i64).
   
-  Global Instance Get_0 : IndexedField.Class t 0 i64 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Days.
@@ -23,6 +23,8 @@ Definition Days := Days.t.
 
 (* Impl [Years] *)
 Module ImplYears.
+  Definition Self := Years.
+  
   Definition to_days (self : ref Self) : Days :=
     Days.Build (mul (IndexedField.get (index := 0) self) 365).
 End ImplYears.
@@ -30,6 +32,8 @@ End ImplYears.
 
 (* Impl [Days] *)
 Module ImplDays.
+  Definition Self := Days.
+  
   Definition to_years (self : ref Self) : Years :=
     Years.Build (div (IndexedField.get (index := 0) self) 365).
 End ImplDays.

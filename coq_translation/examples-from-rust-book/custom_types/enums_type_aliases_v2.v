@@ -15,6 +15,8 @@ Definition
 
 (* Impl [VeryVerboseEnumOfThingsToDoWithNumbers] *)
 Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
+  Definition Self := VeryVerboseEnumOfThingsToDoWithNumbers.
+  
   Definition run (self : ref Self) (x : i32) (y : i32) : i32 :=
     match self with
     | ImplSelf.Add => add x y

@@ -9,10 +9,10 @@ Definition PhantomData := PhantomData.t.
 Module PhantomTuple.
   Inductive t : Set := Build (_ : A) (_ : PhantomData).
   
-  Global Instance Get_0 : IndexedField.Class t 0 A := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0 _) := x0;
   |}.
-  Global Instance Get_1 : IndexedField.Class t 1 PhantomData := {|
+  Global Instance Get_1 : IndexedField.Class t 1 _ := {|
     IndexedField.get '(Build _ x1) := x1;
   |}.
 End PhantomTuple.
@@ -45,6 +45,13 @@ Module PhantomStruct.
     first : A;
     phantom : PhantomData;
   }.
+  
+  Global Instance Get_first : NamedField.Class t "first" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_phantom : NamedField.Class t "phantom" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End PhantomStruct.
 Definition PhantomStruct : Set := PhantomStruct.t.
 
@@ -60,7 +67,13 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct.
   
   Global Instance I A B : _crate.cmp.PartialEq.Class Self := {|
     _crate.cmp.PartialEq.eq (self : ref Self) (other : ref PhantomStruct) :=
-      andb (eqb self.first other.first) (eqb self.phantom other.phantom);
+      andb
+        (eqb
+          (NamedField.get (name := "first") self)
+          (NamedField.get (name := "first") other))
+        (eqb
+          (NamedField.get (name := "phantom") self)
+          (NamedField.get (name := "phantom") other));
   |}.
 End Impl__crate_cmp_PartialEq_for_PhantomStruct.
 

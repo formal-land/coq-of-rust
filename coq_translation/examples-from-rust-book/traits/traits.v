@@ -8,6 +8,13 @@ Module Sheep.
     naked : bool;
     name : ref str;
   }.
+  
+  Global Instance Get_naked : NamedField.Class t "naked" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_name : NamedField.Class t "name" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Sheep.
 Definition Sheep : Set := Sheep.t.
 
@@ -35,7 +42,10 @@ End Animal.
 
 (* Impl [Sheep] *)
 Module ImplSheep.
-  Definition is_naked (self : ref Self) : bool := self.naked.
+  Definition Self := Sheep.
+  
+  Definition is_naked (self : ref Self) : bool :=
+    NamedField.get (name := "naked") self.
   
   Definition shear (self : mut_ref Self) :=
     if method "is_naked" self then
@@ -49,9 +59,12 @@ Module ImplSheep.
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ ""; " gets a haircut!\n" ]
-          [ _crate.fmt.ImplArgumentV1.new_display self.name ]) ;;
+          [
+            _crate.fmt.ImplArgumentV1.new_display
+              (NamedField.get (name := "name") self)
+          ]) ;;
       tt ;;
-      assign self.naked := true ;;
+      assign NamedField.get (name := "naked") self := true ;;
       tt.
 End ImplSheep.
 (* End impl [Sheep] *)
@@ -62,7 +75,7 @@ Module Impl_Animal_for_Sheep.
   Global Instance I : Animal.Class Self := {|
     Animal.new (name : ref str) :=
       {| Sheep.name := name; Sheep.naked := false; |};
-    Animal.name (self : ref Self) := self.name;
+    Animal.name (self : ref Self) := NamedField.get (name := "name") self;
     Animal.noise (self : ref Self) :=
       if method "is_naked" self then
         "baaaaah?"
@@ -73,7 +86,8 @@ Module Impl_Animal_for_Sheep.
         (_crate.fmt.ImplArguments.new_v1
           [ ""; " pauses briefly... "; "\n" ]
           [
-            _crate.fmt.ImplArgumentV1.new_display self.name;
+            _crate.fmt.ImplArgumentV1.new_display
+              (NamedField.get (name := "name") self);
             _crate.fmt.ImplArgumentV1.new_display (method "noise" self)
           ]) ;;
       tt ;;
@@ -82,7 +96,7 @@ Module Impl_Animal_for_Sheep.
 End Impl_Animal_for_Sheep.
 
 Definition main (_ : unit) : unit :=
-  let dolly := Animal.new "Dolly" in
+  let dolly := (Animal.associated_function "new") "Dolly" in
   method "talk" dolly ;;
   method "shear" dolly ;;
   method "talk" dolly ;;

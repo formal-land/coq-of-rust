@@ -7,6 +7,10 @@ Module Droppable.
   Record t : Set := {
     name : ref str;
   }.
+  
+  Global Instance Get_name : NamedField.Class t "name" _ := {|
+    NamedField.get '(Build_t x0) := x0;
+  |}.
 End Droppable.
 Definition Droppable : Set := Droppable.t.
 
@@ -18,7 +22,10 @@ Module Impl_Drop_for_Droppable.
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ "> Dropping "; "\n" ]
-          [ _crate.fmt.ImplArgumentV1.new_display self.name ]) ;;
+          [
+            _crate.fmt.ImplArgumentV1.new_display
+              (NamedField.get (name := "name") self)
+          ]) ;;
       tt ;;
       tt;
   |}.

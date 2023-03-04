@@ -28,6 +28,13 @@ Module Form.
     username : String;
     age : u8;
   }.
+  
+  Global Instance Get_username : NamedField.Class t "username" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_age : NamedField.Class t "age" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Form.
 Definition Form : Set := Form.t.
 
@@ -35,7 +42,8 @@ Module Impl_UsernameWidget_for_Form.
   Definition Self := Form.
   
   Global Instance I : UsernameWidget.Class Self := {|
-    UsernameWidget.get (self : ref Self) := method "clone" self.username;
+    UsernameWidget.get (self : ref Self) :=
+      method "clone" (NamedField.get (name := "username") self);
   |}.
 End Impl_UsernameWidget_for_Form.
 
@@ -43,14 +51,14 @@ Module Impl_AgeWidget_for_Form.
   Definition Self := Form.
   
   Global Instance I : AgeWidget.Class Self := {|
-    AgeWidget.get (self : ref Self) := self.age;
+    AgeWidget.get (self : ref Self) := NamedField.get (name := "age") self;
   |}.
 End Impl_AgeWidget_for_Form.
 
 Definition main (_ : unit) : unit :=
   let form :=
     {| Form.username := method "to_owned" "rustacean"; Form.age := 28; |} in
-  let username := UsernameWidget.get form in
+  let username := (UsernameWidget.associated_function "get") form in
   match (method "to_owned" "rustacean", username) with
   | (left_val, right_val) =>
     if not (eqb (deref left_val) (deref right_val)) then
@@ -64,7 +72,7 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  let age := AgeWidget.get form in
+  let age := (AgeWidget.associated_function "get") form in
   match (28, age) with
   | (left_val, right_val) =>
     if not (eqb (deref left_val) (deref right_val)) then

@@ -32,10 +32,10 @@ End Impl__crate_marker_Copy_for_Unit.
 Module Pair.
   Inductive t : Set := Build (_ : Box) (_ : Box).
   
-  Global Instance Get_0 : IndexedField.Class t 0 Box := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0 _) := x0;
   |}.
-  Global Instance Get_1 : IndexedField.Class t 1 Box := {|
+  Global Instance Get_1 : IndexedField.Class t 1 _ := {|
     IndexedField.get '(Build _ x1) := x1;
   |}.
 End Pair.
@@ -47,8 +47,10 @@ Module Impl__crate_clone_Clone_for_Pair.
   Global Instance I : _crate.clone.Clone.Class Self := {|
     _crate.clone.Clone.clone (self : ref Self) :=
       Pair.Build
-        (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
-        (_crate.clone.Clone.clone (IndexedField.get (index := 1) self));
+        ((_crate.clone.Clone.associated_function "clone")
+          (IndexedField.get (index := 0) self))
+        ((_crate.clone.Clone.associated_function "clone")
+          (IndexedField.get (index := 1) self));
   |}.
 End Impl__crate_clone_Clone_for_Pair.
 

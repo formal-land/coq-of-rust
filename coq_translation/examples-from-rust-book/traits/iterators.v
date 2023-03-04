@@ -8,6 +8,13 @@ Module Fibonacci.
     curr : u32;
     next : u32;
   }.
+  
+  Global Instance Get_curr : NamedField.Class t "curr" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_next : NamedField.Class t "next" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Fibonacci.
 Definition Fibonacci : Set := Fibonacci.t.
 
@@ -17,9 +24,15 @@ Module Impl_Iterator_for_Fibonacci.
   Global Instance I : Iterator.Class Self := {|
     Iterator.Item := u32;
     Iterator.next (self : mut_ref Self) :=
-      let current := self.curr in
-      assign self.curr := self.next ;;
-      assign self.next := add current self.next ;;
+      let current := NamedField.get (name := "curr") self in
+      assign
+        NamedField.get (name := "curr") self
+        :=
+        NamedField.get (name := "next") self ;;
+      assign
+        NamedField.get (name := "next") self
+        :=
+        add current (NamedField.get (name := "next") self) ;;
       Some current;
   |}.
 End Impl_Iterator_for_Fibonacci.

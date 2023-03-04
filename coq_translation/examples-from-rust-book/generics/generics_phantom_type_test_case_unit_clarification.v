@@ -71,10 +71,10 @@ End Impl__crate_marker_Copy_for_Mm.
 Module Length.
   Inductive t : Set := Build (_ : f64) (_ : PhantomData).
   
-  Global Instance Get_0 : IndexedField.Class t 0 f64 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0 _) := x0;
   |}.
-  Global Instance Get_1 : IndexedField.Class t 1 PhantomData := {|
+  Global Instance Get_1 : IndexedField.Class t 1 _ := {|
     IndexedField.get '(Build _ x1) := x1;
   |}.
 End Length.
@@ -99,8 +99,10 @@ Module Impl__crate_clone_Clone_for_Length.
   Global Instance I Unit : _crate.clone.Clone.Class Self := {|
     _crate.clone.Clone.clone (self : ref Self) :=
       Length.Build
-        (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
-        (_crate.clone.Clone.clone (IndexedField.get (index := 1) self));
+        ((_crate.clone.Clone.associated_function "clone")
+          (IndexedField.get (index := 0) self))
+        ((_crate.clone.Clone.associated_function "clone")
+          (IndexedField.get (index := 1) self));
   |}.
 End Impl__crate_clone_Clone_for_Length.
 

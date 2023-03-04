@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module Borrowed.
   Inductive t : Set := Build (_ : ref i32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 ref i32 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Borrowed.
@@ -29,6 +29,13 @@ Module NamedBorrowed.
     x : ref i32;
     y : ref i32;
   }.
+  
+  Global Instance Get_x : NamedField.Class t "x" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_y : NamedField.Class t "y" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End NamedBorrowed.
 Definition NamedBorrowed : Set := NamedBorrowed.t.
 
@@ -41,9 +48,9 @@ Module Impl__crate_fmt_Debug_for_NamedBorrowed.
         f
         "NamedBorrowed"
         "x"
-        self.x
+        (NamedField.get (name := "x") self)
         "y"
-        self.y;
+        (NamedField.get (name := "y") self);
   |}.
 End Impl__crate_fmt_Debug_for_NamedBorrowed.
 

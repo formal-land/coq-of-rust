@@ -546,64 +546,121 @@ impl TopLevelItem {
                     text(".t."),
                 ]),
             ]),
-            TopLevelItem::TypeStructStruct { name, fields } => {
-                let fields = fields.iter().map(|(name, ty)| {
-                    group([
-                        hardline(),
+            TopLevelItem::TypeStructStruct { name, fields } => group([
+                nest([text("Module"), line(), text(name), text(".")]),
+                nest([
+                    hardline(),
+                    nest([
+                        text("Record"),
+                        line(),
+                        text("t"),
+                        line(),
                         nest([
-                            text(name),
-                            line(),
                             text(":"),
                             line(),
-                            ty.to_doc(false),
-                            text(";"),
+                            text("Set"),
+                            line(),
+                            text(":="),
+                            line(),
+                            text("{"),
                         ]),
-                    ])
-                });
-                group([
-                    nest([text("Module"), line(), text(name), text(".")]),
-                    nest([
-                        hardline(),
-                        nest([
-                            text("Record"),
-                            line(),
-                            text("t"),
-                            line(),
+                    ]),
+                    nest(fields.iter().map(|(name, ty)| {
+                        group([
+                            hardline(),
                             nest([
+                                text(name),
+                                line(),
                                 text(":"),
                                 line(),
-                                text("Set"),
-                                line(),
-                                text(":="),
-                                line(),
-                                text("{"),
+                                ty.to_doc(false),
+                                text(";"),
                             ]),
-                        ]),
-                        nest(fields),
-                        hardline(),
-                        text("}."),
-                    ]),
+                        ])
+                    })),
                     hardline(),
-                    nest([text("End"), line(), text(name), text(".")]),
-                    hardline(),
-                    nest([
-                        text("Definition"),
-                        line(),
-                        text(name),
-                        line(),
-                        text(":"),
-                        line(),
-                        text("Set"),
-                        line(),
-                        text(":="),
-                        line(),
-                        text(name),
-                        text("."),
-                        text("t"),
-                        text("."),
-                    ]),
-                ])
-            }
+                    text("}."),
+                    if !fields.is_empty() {
+                        hardline()
+                    } else {
+                        nil()
+                    },
+                    concat(fields.iter().enumerate().map(|(i, (name, _))| {
+                        group([
+                            hardline(),
+                            nest([
+                                nest([
+                                    nest([
+                                        text("Global"),
+                                        line(),
+                                        text("Instance"),
+                                        line(),
+                                        text(format!("Get_{name}")),
+                                        text(" :"),
+                                    ]),
+                                    line(),
+                                    nest([
+                                        text("NamedField.Class"),
+                                        line(),
+                                        text("t"),
+                                        line(),
+                                        text(format!("\"{name}\"")),
+                                        line(),
+                                        text("_"),
+                                        text(" := {|"),
+                                    ]),
+                                ]),
+                                hardline(),
+                                nest([
+                                    text("NamedField.get"),
+                                    line(),
+                                    nest([
+                                        text("'(Build_t"),
+                                        line(),
+                                        intersperse(
+                                            (0..fields.len()).map(|j| {
+                                                if i == j {
+                                                    text(format!("x{j}"))
+                                                } else {
+                                                    text("_")
+                                                }
+                                            }),
+                                            [line()],
+                                        ),
+                                        text(")"),
+                                    ]),
+                                    line(),
+                                    text(":="),
+                                    line(),
+                                    text(format!("x{i}")),
+                                    text(";"),
+                                ]),
+                            ]),
+                            hardline(),
+                            text("|}."),
+                        ])
+                    })),
+                ]),
+                hardline(),
+                nest([text("End"), line(), text(name), text(".")]),
+                hardline(),
+                nest([
+                    text("Definition"),
+                    line(),
+                    text(name),
+                    line(),
+                    text(":"),
+                    line(),
+                    text("Set"),
+                    line(),
+                    text(":="),
+                    line(),
+                    text(name),
+                    text("."),
+                    text("t"),
+                    text("."),
+                ]),
+            ]),
             TopLevelItem::TypeStructTuple { name, fields } => group([
                 nest([text("Module"), line(), text(name), text(".")]),
                 nest([
@@ -631,7 +688,7 @@ impl TopLevelItem {
                     ]),
                     hardline(),
                     intersperse(
-                        fields.iter().enumerate().map(|(i, ty)| {
+                        fields.iter().enumerate().map(|(i, _)| {
                             group([
                                 hardline(),
                                 nest([
@@ -652,11 +709,15 @@ impl TopLevelItem {
                                             line(),
                                             text(i.to_string()),
                                             line(),
-                                            ty.to_doc(false),
+                                            text("_"),
                                             text(" := {|"),
                                         ]),
                                     ]),
-                                    hardline(),
+                                    if !fields.is_empty() {
+                                        hardline()
+                                    } else {
+                                        nil()
+                                    },
                                     nest([
                                         text("IndexedField.get"),
                                         line(),
@@ -716,7 +777,22 @@ impl TopLevelItem {
                     self_ty.to_doc(false),
                     text("."),
                 ]),
-                nest([hardline(), body.to_doc()]),
+                nest([
+                    hardline(),
+                    nest([
+                        text("Definition"),
+                        line(),
+                        text("Self"),
+                        line(),
+                        text(":="),
+                        line(),
+                        self_ty.to_doc(false),
+                        text("."),
+                    ]),
+                    hardline(),
+                    hardline(),
+                    body.to_doc(),
+                ]),
                 hardline(),
                 nest([
                     text("End"),

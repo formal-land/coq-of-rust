@@ -7,6 +7,10 @@ Module Borrowed.
   Record t : Set := {
     x : ref i32;
   }.
+  
+  Global Instance Get_x : NamedField.Class t "x" _ := {|
+    NamedField.get '(Build_t x0) := x0;
+  |}.
 End Borrowed.
 Definition Borrowed : Set := Borrowed.t.
 
@@ -19,7 +23,7 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
         f
         "Borrowed"
         "x"
-        self.x;
+        (NamedField.get (name := "x") self);
   |}.
 End Impl__crate_fmt_Debug_for_Borrowed.
 
@@ -32,7 +36,7 @@ Module Impl_Default_for_Borrowed.
 End Impl_Default_for_Borrowed.
 
 Definition main (_ : unit) : unit :=
-  let b := Default.default tt in
+  let b := (Default.associated_function "default") tt in
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "b is "; "\n" ]

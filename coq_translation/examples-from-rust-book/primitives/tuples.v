@@ -10,16 +10,16 @@ Definition reverse (pair : i32 * bool) : bool * i32 :=
 Module Matrix.
   Inductive t : Set := Build (_ : f32) (_ : f32) (_ : f32) (_ : f32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 f32 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0 _ _ _) := x0;
   |}.
-  Global Instance Get_1 : IndexedField.Class t 1 f32 := {|
+  Global Instance Get_1 : IndexedField.Class t 1 _ := {|
     IndexedField.get '(Build _ x1 _ _) := x1;
   |}.
-  Global Instance Get_2 : IndexedField.Class t 2 f32 := {|
+  Global Instance Get_2 : IndexedField.Class t 2 _ := {|
     IndexedField.get '(Build _ _ x2 _) := x2;
   |}.
-  Global Instance Get_3 : IndexedField.Class t 3 f32 := {|
+  Global Instance Get_3 : IndexedField.Class t 3 _ := {|
     IndexedField.get '(Build _ _ _ x3) := x3;
   |}.
 End Matrix.

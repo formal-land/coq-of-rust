@@ -7,6 +7,10 @@ Module Val.
   Record t : Set := {
     val : f64;
   }.
+  
+  Global Instance Get_val : NamedField.Class t "val" _ := {|
+    NamedField.get '(Build_t x0) := x0;
+  |}.
 End Val.
 Definition Val : Set := Val.t.
 
@@ -14,18 +18,28 @@ Module GenVal.
   Record t : Set := {
     gen_val : T;
   }.
+  
+  Global Instance Get_gen_val : NamedField.Class t "gen_val" _ := {|
+    NamedField.get '(Build_t x0) := x0;
+  |}.
 End GenVal.
 Definition GenVal : Set := GenVal.t.
 
 (* Impl [Val] *)
 Module ImplVal.
-  Definition value (self : ref Self) : ref f64 := self.val.
+  Definition Self := Val.
+  
+  Definition value (self : ref Self) : ref f64 :=
+    NamedField.get (name := "val") self.
 End ImplVal.
 (* End impl [Val] *)
 
 (* Impl [GenVal] *)
 Module ImplGenVal.
-  Definition value (self : ref Self) : ref T := self.gen_val.
+  Definition Self := GenVal.
+  
+  Definition value (self : ref Self) : ref T :=
+    NamedField.get (name := "gen_val") self.
 End ImplGenVal.
 (* End impl [GenVal] *)
 

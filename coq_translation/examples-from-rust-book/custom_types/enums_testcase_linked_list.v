@@ -14,6 +14,8 @@ Definition List := List.t.
 
 (* Impl [List] *)
 Module ImplList.
+  Definition Self := List.
+  
   Definition new (_ : unit) : List := Nil.
   
   Definition prepend (self : Self) (elem : u32) : List :=

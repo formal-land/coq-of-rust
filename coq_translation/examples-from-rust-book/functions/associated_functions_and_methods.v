@@ -8,11 +8,20 @@ Module Point.
     x : f64;
     y : f64;
   }.
+  
+  Global Instance Get_x : NamedField.Class t "x" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_y : NamedField.Class t "y" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Point.
 Definition Point : Set := Point.t.
 
 (* Impl [Point] *)
 Module ImplPoint.
+  Definition Self := Point.
+  
   Definition origin (_ : unit) : Point :=
     {| Point.y := 0 (* 0.0 *); Point.x := 1 (* 1.0 *); |}.
   
@@ -26,28 +35,62 @@ Module Rectangle.
     p1 : Point;
     p2 : Point;
   }.
+  
+  Global Instance Get_p1 : NamedField.Class t "p1" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_p2 : NamedField.Class t "p2" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
 (* Impl [Rectangle] *)
 Module ImplRectangle.
-  Definition get_p1 (self : ref Self) : Point := self.p1.
+  Definition Self := Rectangle.
+  
+  Definition get_p1 (self : ref Self) : Point :=
+    NamedField.get (name := "p1") self.
   
   Definition area (self : ref Self) : f64 :=
-    let Point {| Point.x := x1; Point.y := y1; |} := self.p1 in
-    let Point {| Point.x := x2; Point.y := y2; |} := self.p2 in
+    let Point {| Point.x := x1; Point.y := y1; |} :=
+      NamedField.get (name := "p1") self in
+    let Point {| Point.x := x2; Point.y := y2; |} :=
+      NamedField.get (name := "p2") self in
     method "abs" (mul (sub x1 x2) (sub y1 y2)).
   
   Definition perimeter (self : ref Self) : f64 :=
-    let Point {| Point.x := x1; Point.y := y1; |} := self.p1 in
-    let Point {| Point.x := x2; Point.y := y2; |} := self.p2 in
+    let Point {| Point.x := x1; Point.y := y1; |} :=
+      NamedField.get (name := "p1") self in
+    let Point {| Point.x := x2; Point.y := y2; |} :=
+      NamedField.get (name := "p2") self in
     mul 2 (* 2.0 *) (add (method "abs" (sub x1 x2)) (method "abs" (sub y1 y2))).
   
   Definition translate (self : mut_ref Self) (x : f64) (y : f64) :=
-    assign self.p1.x := add self.p1.x x ;;
-    assign self.p2.x := add self.p2.x x ;;
-    assign self.p1.y := add self.p1.y y ;;
-    assign self.p2.y := add self.p2.y y ;;
+    assign
+      NamedField.get (name := "x") (NamedField.get (name := "p1") self)
+      :=
+      add
+        (NamedField.get (name := "x") (NamedField.get (name := "p1") self))
+        x ;;
+    assign
+      NamedField.get (name := "x") (NamedField.get (name := "p2") self)
+      :=
+      add
+        (NamedField.get (name := "x") (NamedField.get (name := "p2") self))
+        x ;;
+    assign
+      NamedField.get (name := "y") (NamedField.get (name := "p1") self)
+      :=
+      add
+        (NamedField.get (name := "y") (NamedField.get (name := "p1") self))
+        y ;;
+    assign
+      NamedField.get (name := "y") (NamedField.get (name := "p2") self)
+      :=
+      add
+        (NamedField.get (name := "y") (NamedField.get (name := "p2") self))
+        y ;;
     tt.
 End ImplRectangle.
 (* End impl [Rectangle] *)
@@ -55,10 +98,10 @@ End ImplRectangle.
 Module Pair.
   Inductive t : Set := Build (_ : Box) (_ : Box).
   
-  Global Instance Get_0 : IndexedField.Class t 0 Box := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0 _) := x0;
   |}.
-  Global Instance Get_1 : IndexedField.Class t 1 Box := {|
+  Global Instance Get_1 : IndexedField.Class t 1 _ := {|
     IndexedField.get '(Build _ x1) := x1;
   |}.
 End Pair.
@@ -66,6 +109,8 @@ Definition Pair := Pair.t.
 
 (* Impl [Pair] *)
 Module ImplPair.
+  Definition Self := Pair.
+  
   Definition destroy (self : Self) :=
     let Pair (first, second) := self in
     _crate.io._print

@@ -10,6 +10,13 @@ Module Person.
     name : String;
     age : Box;
   }.
+  
+  Global Instance Get_name : NamedField.Class t "name" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_age : NamedField.Class t "age" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Person.
 Definition Person : Set := Person.t.
 
@@ -22,8 +29,8 @@ Module Impl__crate_fmt_Debug_for_Person.
         f
         "Person"
         "name"
-        self.name
+        (NamedField.get (name := "name") self)
         "age"
-        self.age;
+        (NamedField.get (name := "age") self);
   |}.
 End Impl__crate_fmt_Debug_for_Person.

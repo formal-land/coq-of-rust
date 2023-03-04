@@ -25,6 +25,12 @@ impl Path {
         self.segments.last().unwrap()
     }
 
+    pub fn base_before_last(&self) -> Path {
+        Path {
+            segments: self.segments[..self.segments.len() - 1].to_vec(),
+        }
+    }
+
     fn prefix_last_by_impl(&mut self) {
         let last = self.segments.pop().unwrap();
         self.segments.push(format!("Impl{last}"));

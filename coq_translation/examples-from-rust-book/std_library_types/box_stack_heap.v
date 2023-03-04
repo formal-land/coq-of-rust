@@ -10,6 +10,13 @@ Module Point.
     x : f64;
     y : f64;
   }.
+  
+  Global Instance Get_x : NamedField.Class t "x" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_y : NamedField.Class t "y" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Point.
 Definition Point : Set := Point.t.
 
@@ -22,9 +29,9 @@ Module Impl__crate_fmt_Debug_for_Point.
         f
         "Point"
         "x"
-        self.x
+        (NamedField.get (name := "x") self)
         "y"
-        self.y;
+        (NamedField.get (name := "y") self);
   |}.
 End Impl__crate_fmt_Debug_for_Point.
 
@@ -50,6 +57,13 @@ Module Rectangle.
     top_left : Point;
     bottom_right : Point;
   }.
+  
+  Global Instance Get_top_left : NamedField.Class t "top_left" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_bottom_right : NamedField.Class t "bottom_right" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
