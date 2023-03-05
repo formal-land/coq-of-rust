@@ -55,7 +55,7 @@ Definition borrow_book (book : ref Book) : unit :=
   tt.
 
 Definition new_edition (book : mut_ref Book) : unit :=
-  assign NamedField.get (name := "year") book := 2014 ;;
+  assign (NamedField.get (name := "year") book) 2014 ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "I mutably borrowed "; " - "; " edition\n" ]

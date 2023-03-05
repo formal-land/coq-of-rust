@@ -51,9 +51,9 @@ Definition main (_ : unit) : unit :=
       ]) ;;
   tt ;;
   let mutable_borrow := point in
-  assign NamedField.get (name := "x") mutable_borrow := 5 ;;
-  assign NamedField.get (name := "y") mutable_borrow := 2 ;;
-  assign NamedField.get (name := "z") mutable_borrow := 1 ;;
+  assign (NamedField.get (name := "x") mutable_borrow) 5 ;;
+  assign (NamedField.get (name := "y") mutable_borrow) 2 ;;
+  assign (NamedField.get (name := "z") mutable_borrow) 1 ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "Point has coordinates: ("; ", "; ", "; ")\n" ]

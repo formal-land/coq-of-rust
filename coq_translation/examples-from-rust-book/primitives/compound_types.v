@@ -10,8 +10,8 @@ Definition main (_ : unit) : unit :=
   let default_float := 3 (* 3.0 *) in
   let default_integer := 7 in
   let inferred_type := 12 in
-  assign inferred_type := 4294967296 ;;
+  assign inferred_type 4294967296 ;;
   let mutable := 12 in
-  assign mutable := 21 ;;
+  assign mutable 21 ;;
   let mutable := true in
   tt.

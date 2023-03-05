@@ -53,7 +53,7 @@ Definition main (_ : unit) : unit :=
     deref ref_to_x in
   let mutable_point := point in
   let Point {| Point.x := _; Point.y := mut_ref_to_y; |} := mutable_point in
-  assign deref mut_ref_to_y := 1 ;;
+  assign (deref mut_ref_to_y) 1 ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
@@ -77,7 +77,7 @@ Definition main (_ : unit) : unit :=
   tt ;;
   let mutable_tuple := (ImplBox.new 5, 3) in
   let (_, last) := mutable_tuple in
-  assign deref last := 2 ;;
+  assign (deref last) 2 ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1

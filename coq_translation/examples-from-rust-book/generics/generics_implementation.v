@@ -25,23 +25,19 @@ Module GenVal.
 End GenVal.
 Definition GenVal : Set := GenVal.t.
 
-(* Impl [Val] *)
 Module ImplVal.
   Definition Self := Val.
   
   Definition value (self : ref Self) : ref f64 :=
     NamedField.get (name := "val") self.
 End ImplVal.
-(* End impl [Val] *)
 
-(* Impl [GenVal] *)
 Module ImplGenVal.
   Definition Self := GenVal.
   
   Definition value (self : ref Self) : ref T :=
     NamedField.get (name := "gen_val") self.
 End ImplGenVal.
-(* End impl [GenVal] *)
 
 Definition main (_ : unit) : unit :=
   let x := {| Val.val := 3 (* 3.0 *); |} in

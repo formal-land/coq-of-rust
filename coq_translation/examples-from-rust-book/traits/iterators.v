@@ -26,13 +26,11 @@ Module Impl_Iterator_for_Fibonacci.
     Iterator.next (self : mut_ref Self) :=
       let current := NamedField.get (name := "curr") self in
       assign
-        NamedField.get (name := "curr") self
-        :=
-        NamedField.get (name := "next") self ;;
+        (NamedField.get (name := "curr") self)
+        (NamedField.get (name := "next") self) ;;
       assign
-        NamedField.get (name := "next") self
-        :=
-        add current (NamedField.get (name := "next") self) ;;
+        (NamedField.get (name := "next") self)
+        (add current (NamedField.get (name := "next") self)) ;;
       Some current;
   |}.
 End Impl_Iterator_for_Fibonacci.

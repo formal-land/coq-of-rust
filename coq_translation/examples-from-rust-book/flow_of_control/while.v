@@ -31,7 +31,7 @@ Definition main (_ : unit) : unit :=
                 [ _crate.fmt.ImplArgumentV1.new_display n ]) ;;
             tt ;;
             tt ;;
-      assign n := add n 1 ;;
+      assign n (add n 1) ;;
       tt
     else
       Break ;;

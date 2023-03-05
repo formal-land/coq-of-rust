@@ -25,7 +25,7 @@ Definition main (_ : unit) : unit :=
           tt
         else
           if is_odd n_squared then
-            assign acc := add acc n_squared ;;
+            assign acc (add acc n_squared) ;;
             tt
           else
             tt

@@ -7,7 +7,7 @@ Definition main (_ : unit) : unit :=
   let counter := 0 in
   let result :=
     loop
-      assign counter := add counter 1 ;;
+      assign counter (add counter 1) ;;
       if eqb counter 10 then
         Break ;;
         tt

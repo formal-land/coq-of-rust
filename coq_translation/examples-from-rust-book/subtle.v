@@ -60,14 +60,12 @@ Module Impl__crate_fmt_Debug_for_Choice.
   |}.
 End Impl__crate_fmt_Debug_for_Choice.
 
-(* Impl [Choice] *)
 Module ImplChoice.
   Definition Self := Choice.
   
   Definition unwrap_u8 (self : ref Self) : u8 :=
     IndexedField.get (index := 0) self.
 End ImplChoice.
-(* End impl [Choice] *)
 
 Module Impl_From_for_bool.
   Definition Self := bool.
@@ -111,7 +109,7 @@ Module Impl_BitAndAssign_for_Choice.
   
   Global Instance I : BitAndAssign.Class Self := {|
     BitAndAssign.bitand_assign (self : mut_ref Self) (rhs : Choice) :=
-      assign deref self := bit_and (deref self) rhs ;;
+      assign (deref self) (bit_and (deref self) rhs) ;;
       tt;
   |}.
 End Impl_BitAndAssign_for_Choice.
@@ -135,7 +133,7 @@ Module Impl_BitOrAssign_for_Choice.
   
   Global Instance I : BitOrAssign.Class Self := {|
     BitOrAssign.bitor_assign (self : mut_ref Self) (rhs : Choice) :=
-      assign deref self := bit_or (deref self) rhs ;;
+      assign (deref self) (bit_or (deref self) rhs) ;;
       tt;
   |}.
 End Impl_BitOrAssign_for_Choice.
@@ -159,7 +157,7 @@ Module Impl_BitXorAssign_for_Choice.
   
   Global Instance I : BitXorAssign.Class Self := {|
     BitXorAssign.bitxor_assign (self : mut_ref Self) (rhs : Choice) :=
-      assign deref self := bit_xor (deref self) rhs ;;
+      assign (deref self) (bit_xor (deref self) rhs) ;;
       tt;
   |}.
 End Impl_BitXorAssign_for_Choice.
@@ -196,14 +194,15 @@ End Impl_From_for_Choice.
 Module ConstantTimeEq.
   Class Class (Self : Set) : Set := {
     ct_eq : (ref Self) -> ((ref Self) -> Choice);
-    ct_ne : (ref Self) -> ((ref Self) -> Choice);
   }.
   
   Global Instance Method_ct_eq `(Class) : Method "ct_eq" _ := {|
     method := ct_eq;
   |}.
   Global Instance Method_ct_ne `(Class) : Method "ct_ne" _ := {|
-    method := ct_ne;
+    method (self : ref Self) (other : ref Self) :=
+      (not (method "ct_eq" self other)
+      : Choice);
   |}.
 End ConstantTimeEq.
 
@@ -226,7 +225,7 @@ Module Impl_ConstantTimeEq_for_Slice.
           match next iter with
           | None => Break
           | Some {| Some.0 := (ai, bi); |} =>
-            assign x := bit_and x (method "unwrap_u8" (method "ct_eq" ai bi)) ;;
+            assign x (bit_and x (method "unwrap_u8" (method "ct_eq" ai bi))) ;;
             tt
           end ;;
           tt
@@ -352,8 +351,6 @@ End Impl_ConstantTimeEq_for_isize.
 Module ConditionallySelectable.
   Class Class (Self : Set) : Set := {
     conditional_select : (ref Self) -> ((ref Self) -> (Choice -> Self));
-    conditional_assign : (mut_ref Self) -> ((ref Self) -> (Choice -> _));
-    conditional_swap : (mut_ref Self) -> ((mut_ref Self) -> (Choice -> _));
   }.
   
   Global Instance Method_conditional_select `(Class)
@@ -362,11 +359,19 @@ Module ConditionallySelectable.
   |}.
   Global Instance Method_conditional_assign `(Class)
     : Method "conditional_assign" _ := {|
-    method := conditional_assign;
+    method (self : mut_ref Self) (other : ref Self) (choice : Choice) :=
+      (assign (deref self) (ImplSelf.conditional_select self other choice) ;;
+      tt
+      : unit);
   |}.
   Global Instance Method_conditional_swap `(Class)
     : Method "conditional_swap" _ := {|
-    method := conditional_swap;
+    method (a : mut_ref Self) (b : mut_ref Self) (choice : Choice) :=
+      (let t := deref a in
+      method "conditional_assign" a b choice ;;
+      method "conditional_assign" b t choice ;;
+      tt
+      : unit);
   |}.
 End ConditionallySelectable.
 
@@ -386,11 +391,10 @@ Module Impl_ConditionallySelectable_for_u8.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) u8 in
       assign
-        deref self
-        :=
-        bit_xor
+        (deref self)
+        (bit_xor
           (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other))) ;;
+          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
       tt;
     ConditionallySelectable.conditional_swap
         (a : mut_ref Self)
@@ -398,8 +402,8 @@ Module Impl_ConditionallySelectable_for_u8.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) u8 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign deref a := bit_xor (deref a) t ;;
-      assign deref b := bit_xor (deref b) t ;;
+      assign (deref a) (bit_xor (deref a) t) ;;
+      assign (deref b) (bit_xor (deref b) t) ;;
       tt;
   |}.
 End Impl_ConditionallySelectable_for_u8.
@@ -420,11 +424,10 @@ Module Impl_ConditionallySelectable_for_i8.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) i8 in
       assign
-        deref self
-        :=
-        bit_xor
+        (deref self)
+        (bit_xor
           (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other))) ;;
+          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
       tt;
     ConditionallySelectable.conditional_swap
         (a : mut_ref Self)
@@ -432,8 +435,8 @@ Module Impl_ConditionallySelectable_for_i8.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) i8 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign deref a := bit_xor (deref a) t ;;
-      assign deref b := bit_xor (deref b) t ;;
+      assign (deref a) (bit_xor (deref a) t) ;;
+      assign (deref b) (bit_xor (deref b) t) ;;
       tt;
   |}.
 End Impl_ConditionallySelectable_for_i8.
@@ -454,11 +457,10 @@ Module Impl_ConditionallySelectable_for_u16.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) u16 in
       assign
-        deref self
-        :=
-        bit_xor
+        (deref self)
+        (bit_xor
           (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other))) ;;
+          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
       tt;
     ConditionallySelectable.conditional_swap
         (a : mut_ref Self)
@@ -466,8 +468,8 @@ Module Impl_ConditionallySelectable_for_u16.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) u16 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign deref a := bit_xor (deref a) t ;;
-      assign deref b := bit_xor (deref b) t ;;
+      assign (deref a) (bit_xor (deref a) t) ;;
+      assign (deref b) (bit_xor (deref b) t) ;;
       tt;
   |}.
 End Impl_ConditionallySelectable_for_u16.
@@ -488,11 +490,10 @@ Module Impl_ConditionallySelectable_for_i16.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) i16 in
       assign
-        deref self
-        :=
-        bit_xor
+        (deref self)
+        (bit_xor
           (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other))) ;;
+          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
       tt;
     ConditionallySelectable.conditional_swap
         (a : mut_ref Self)
@@ -500,8 +501,8 @@ Module Impl_ConditionallySelectable_for_i16.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) i16 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign deref a := bit_xor (deref a) t ;;
-      assign deref b := bit_xor (deref b) t ;;
+      assign (deref a) (bit_xor (deref a) t) ;;
+      assign (deref b) (bit_xor (deref b) t) ;;
       tt;
   |}.
 End Impl_ConditionallySelectable_for_i16.
@@ -522,11 +523,10 @@ Module Impl_ConditionallySelectable_for_u32.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) u32 in
       assign
-        deref self
-        :=
-        bit_xor
+        (deref self)
+        (bit_xor
           (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other))) ;;
+          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
       tt;
     ConditionallySelectable.conditional_swap
         (a : mut_ref Self)
@@ -534,8 +534,8 @@ Module Impl_ConditionallySelectable_for_u32.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) u32 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign deref a := bit_xor (deref a) t ;;
-      assign deref b := bit_xor (deref b) t ;;
+      assign (deref a) (bit_xor (deref a) t) ;;
+      assign (deref b) (bit_xor (deref b) t) ;;
       tt;
   |}.
 End Impl_ConditionallySelectable_for_u32.
@@ -556,11 +556,10 @@ Module Impl_ConditionallySelectable_for_i32.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) i32 in
       assign
-        deref self
-        :=
-        bit_xor
+        (deref self)
+        (bit_xor
           (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other))) ;;
+          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
       tt;
     ConditionallySelectable.conditional_swap
         (a : mut_ref Self)
@@ -568,8 +567,8 @@ Module Impl_ConditionallySelectable_for_i32.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) i32 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign deref a := bit_xor (deref a) t ;;
-      assign deref b := bit_xor (deref b) t ;;
+      assign (deref a) (bit_xor (deref a) t) ;;
+      assign (deref b) (bit_xor (deref b) t) ;;
       tt;
   |}.
 End Impl_ConditionallySelectable_for_i32.
@@ -590,11 +589,10 @@ Module Impl_ConditionallySelectable_for_u64.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) u64 in
       assign
-        deref self
-        :=
-        bit_xor
+        (deref self)
+        (bit_xor
           (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other))) ;;
+          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
       tt;
     ConditionallySelectable.conditional_swap
         (a : mut_ref Self)
@@ -602,8 +600,8 @@ Module Impl_ConditionallySelectable_for_u64.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) u64 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign deref a := bit_xor (deref a) t ;;
-      assign deref b := bit_xor (deref b) t ;;
+      assign (deref a) (bit_xor (deref a) t) ;;
+      assign (deref b) (bit_xor (deref b) t) ;;
       tt;
   |}.
 End Impl_ConditionallySelectable_for_u64.
@@ -624,11 +622,10 @@ Module Impl_ConditionallySelectable_for_i64.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) i64 in
       assign
-        deref self
-        :=
-        bit_xor
+        (deref self)
+        (bit_xor
           (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other))) ;;
+          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
       tt;
     ConditionallySelectable.conditional_swap
         (a : mut_ref Self)
@@ -636,8 +633,8 @@ Module Impl_ConditionallySelectable_for_i64.
         (choice : Choice) :=
       let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) i64 in
       let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign deref a := bit_xor (deref a) t ;;
-      assign deref b := bit_xor (deref b) t ;;
+      assign (deref a) (bit_xor (deref a) t) ;;
+      assign (deref b) (bit_xor (deref b) t) ;;
       tt;
   |}.
 End Impl_ConditionallySelectable_for_i64.
@@ -747,7 +744,6 @@ Module Impl_From_for_Option.
   |}.
 End Impl_From_for_Option.
 
-(* Impl [CtOption] *)
 Module ImplCtOption.
   Definition Self := CtOption.
   
@@ -824,11 +820,10 @@ Module ImplCtOption.
           (NamedField.get (name := "value") self)
           (NamedField.get (name := "is_some") self)) in
     assign
-      NamedField.get (name := "is_some") tmp
-      :=
-      bit_and
+      (NamedField.get (name := "is_some") tmp)
+      (bit_and
         (NamedField.get (name := "is_some") tmp)
-        (NamedField.get (name := "is_some") self) ;;
+        (NamedField.get (name := "is_some") self)) ;;
     tmp.
   
   Definition or_else (self : Self) (f : F) : CtOption :=
@@ -836,7 +831,6 @@ Module ImplCtOption.
     let f := f tt in
     ImplSelf.conditional_select self f is_none.
 End ImplCtOption.
-(* End impl [CtOption] *)
 
 Module Impl_ConditionallySelectable_for_CtOption.
   Definition Self := CtOption.
@@ -896,8 +890,8 @@ Module Impl_ConstantTimeGreater_for_u8.
       let pow := 1 in
       loop
         (if lt pow 8 then
-          assign ltb := bit_or ltb (shr ltb pow) ;;
-          assign pow := add pow pow ;;
+          assign ltb (bit_or ltb (shr ltb pow)) ;;
+          assign pow (add pow pow) ;;
           tt
         else
           Break ;;
@@ -908,8 +902,8 @@ Module Impl_ConstantTimeGreater_for_u8.
       let pow := 1 in
       loop
         (if lt pow 8 then
-          assign bit := bit_or bit (shr bit pow) ;;
-          assign pow := add pow pow ;;
+          assign bit (bit_or bit (shr bit pow)) ;;
+          assign pow (add pow pow) ;;
           tt
         else
           Break ;;
@@ -930,8 +924,8 @@ Module Impl_ConstantTimeGreater_for_u16.
       let pow := 1 in
       loop
         (if lt pow 16 then
-          assign ltb := bit_or ltb (shr ltb pow) ;;
-          assign pow := add pow pow ;;
+          assign ltb (bit_or ltb (shr ltb pow)) ;;
+          assign pow (add pow pow) ;;
           tt
         else
           Break ;;
@@ -942,8 +936,8 @@ Module Impl_ConstantTimeGreater_for_u16.
       let pow := 1 in
       loop
         (if lt pow 16 then
-          assign bit := bit_or bit (shr bit pow) ;;
-          assign pow := add pow pow ;;
+          assign bit (bit_or bit (shr bit pow)) ;;
+          assign pow (add pow pow) ;;
           tt
         else
           Break ;;
@@ -964,8 +958,8 @@ Module Impl_ConstantTimeGreater_for_u32.
       let pow := 1 in
       loop
         (if lt pow 32 then
-          assign ltb := bit_or ltb (shr ltb pow) ;;
-          assign pow := add pow pow ;;
+          assign ltb (bit_or ltb (shr ltb pow)) ;;
+          assign pow (add pow pow) ;;
           tt
         else
           Break ;;
@@ -976,8 +970,8 @@ Module Impl_ConstantTimeGreater_for_u32.
       let pow := 1 in
       loop
         (if lt pow 32 then
-          assign bit := bit_or bit (shr bit pow) ;;
-          assign pow := add pow pow ;;
+          assign bit (bit_or bit (shr bit pow)) ;;
+          assign pow (add pow pow) ;;
           tt
         else
           Break ;;
@@ -998,8 +992,8 @@ Module Impl_ConstantTimeGreater_for_u64.
       let pow := 1 in
       loop
         (if lt pow 64 then
-          assign ltb := bit_or ltb (shr ltb pow) ;;
-          assign pow := add pow pow ;;
+          assign ltb (bit_or ltb (shr ltb pow)) ;;
+          assign pow (add pow pow) ;;
           tt
         else
           Break ;;
@@ -1010,8 +1004,8 @@ Module Impl_ConstantTimeGreater_for_u64.
       let pow := 1 in
       loop
         (if lt pow 64 then
-          assign bit := bit_or bit (shr bit pow) ;;
-          assign pow := add pow pow ;;
+          assign bit (bit_or bit (shr bit pow)) ;;
+          assign pow (add pow pow) ;;
           tt
         else
           Break ;;
@@ -1024,11 +1018,14 @@ End Impl_ConstantTimeGreater_for_u64.
 
 Module ConstantTimeLess.
   Class Class (Self : Set) : Set := {
-    ct_lt : (ref Self) -> ((ref Self) -> Choice);
   }.
   
   Global Instance Method_ct_lt `(Class) : Method "ct_lt" _ := {|
-    method := ct_lt;
+    method (self : ref Self) (other : ref Self) :=
+      (bit_and
+        (not (method "ct_gt" self other))
+        (not (method "ct_eq" self other))
+      : Choice);
   |}.
 End ConstantTimeLess.
 

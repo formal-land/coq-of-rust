@@ -87,7 +87,7 @@ Definition main (_ : unit) : unit :=
       match next iter with
       | None => Break
       | Some {| Some.0 := x; |} =>
-        assign deref x := mul (deref x) 3 ;;
+        assign (deref x) (mul (deref x) 3) ;;
         tt
       end ;;
       tt

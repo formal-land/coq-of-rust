@@ -12,15 +12,13 @@ Module Owner.
 End Owner.
 Definition Owner := Owner.t.
 
-(* Impl [Owner] *)
 Module ImplOwner.
   Definition Self := Owner.
   
   Definition add_one (self : mut_ref Self) :=
     assign
-      IndexedField.get (index := 0) self
-      :=
-      add (IndexedField.get (index := 0) self) 1 ;;
+      (IndexedField.get (index := 0) self)
+      (add (IndexedField.get (index := 0) self) 1) ;;
     tt.
   
   Definition print (self : ref Self) :=
@@ -34,7 +32,6 @@ Module ImplOwner.
     tt ;;
     tt.
 End ImplOwner.
-(* End impl [Owner] *)
 
 Definition main (_ : unit) : unit :=
   let owner := Owner.Build 18 in

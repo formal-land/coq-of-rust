@@ -64,7 +64,6 @@ Module Impl__crate_fmt_Debug_for_Inches.
   |}.
 End Impl__crate_fmt_Debug_for_Inches.
 
-(* Impl [Inches] *)
 Module ImplInches.
   Definition Self := Inches.
   
@@ -72,7 +71,6 @@ Module ImplInches.
     let Inches (inches) := self in
     Centimeters.Build (mul (cast inches f64) 3 (* 2.54 *)).
 End ImplInches.
-(* End impl [Inches] *)
 
 Module Seconds.
   Inductive t : Set := Build (_ : i32).

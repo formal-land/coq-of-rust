@@ -54,8 +54,12 @@ Parameter axiom : forall {A : Set}, A.
 
 Parameter cast : forall {A : Set}, A -> forall (B : Set), B.
 
-Notation "e1 ;; e2" := (let '_ := e1 in e2)
+Parameter sequence : forall {A B : Set}, A -> B -> B.
+
+Notation "e1 ;; e2" := (sequence e1 e2)
   (at level 61, right associativity).
+
+Parameter assign : forall {A : Set}, A -> A -> unit.
 
 Definition u8 : Set := Z.
 Definition u16 : Set := Z.
@@ -360,6 +364,11 @@ Module std.
     End Error.
   End error.
 End std.
+
+Module str_Instances.
+  Global Instance IDisplay : std.fmt.Display.Class str.
+  Admitted.
+End str_Instances.
 
 Module _crate.
   Module intrinsics.

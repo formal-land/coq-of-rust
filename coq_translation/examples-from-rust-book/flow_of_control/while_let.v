@@ -13,7 +13,7 @@ Definition main (_ : unit) : unit :=
             [ "Greater than 9, quit!\n" ]
             [  ]) ;;
         tt ;;
-        assign optional := None ;;
+        assign optional None ;;
         tt
       else
         _crate.io._print
@@ -21,7 +21,7 @@ Definition main (_ : unit) : unit :=
             [ "`i` is `"; "`. Try again.\n" ]
             [ _crate.fmt.ImplArgumentV1.new_debug i ]) ;;
         tt ;;
-        assign optional := Some (add i 1) ;;
+        assign optional (Some (add i 1)) ;;
         tt
     else
       Break ;;

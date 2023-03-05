@@ -75,7 +75,6 @@ Module Impl__crate_marker_Copy_for_PhoneNumber.
       _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_PhoneNumber.
 
-(* Impl [Person] *)
 Module ImplPerson.
   Definition Self := Person.
   
@@ -96,7 +95,6 @@ Module ImplPerson.
       | Continue {| Continue.0 := val; |} => val
       end.
 End ImplPerson.
-(* End impl [Person] *)
 
 Definition main (_ : unit) : unit :=
   let p :=

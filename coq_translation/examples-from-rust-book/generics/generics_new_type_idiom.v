@@ -21,23 +21,19 @@ Module Days.
 End Days.
 Definition Days := Days.t.
 
-(* Impl [Years] *)
 Module ImplYears.
   Definition Self := Years.
   
   Definition to_days (self : ref Self) : Days :=
     Days.Build (mul (IndexedField.get (index := 0) self) 365).
 End ImplYears.
-(* End impl [Years] *)
 
-(* Impl [Days] *)
 Module ImplDays.
   Definition Self := Days.
   
   Definition to_years (self : ref Self) : Years :=
     Years.Build (div (IndexedField.get (index := 0) self) 365).
 End ImplDays.
-(* End impl [Days] *)
 
 Definition old_enough (age : ref Years) : bool :=
   ge (IndexedField.get (index := 0) age) 18.

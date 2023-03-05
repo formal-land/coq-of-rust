@@ -4,12 +4,19 @@ use crate::path::*;
 use crate::render::*;
 use crate::ty::*;
 
-use rustc_hir::{Impl, ImplItemKind, Item, ItemKind, PatKind, TraitItemKind, VariantData};
+use rustc_hir::{Impl, ImplItemKind, Item, ItemKind, PatKind, TraitFn, TraitItemKind, VariantData};
 use rustc_middle::ty::TyCtxt;
 
 #[derive(Debug)]
 enum TraitItem {
-    Definition { ty: CoqType },
+    Definition {
+        ty: CoqType,
+    },
+    DefinitionWithDefault {
+        args: Vec<(String, CoqType)>,
+        ret_ty: Option<CoqType>,
+        body: Box<Expr>,
+    },
     Type,
 }
 
@@ -30,7 +37,7 @@ enum TopLevelItem {
         where_predicates: Vec<WherePredicate>,
         args: Vec<(String, CoqType)>,
         ret_ty: Option<CoqType>,
-        body: Expr,
+        body: Box<Expr>,
     },
     TypeAlias {
         name: String,
@@ -80,6 +87,40 @@ enum TopLevelItem {
 #[derive(Debug)]
 pub struct TopLevel(Vec<TopLevelItem>);
 
+struct FnSigAndBody {
+    args: Vec<(String, CoqType)>,
+    ret_ty: Option<CoqType>,
+    body: Box<Expr>,
+}
+
+fn compile_fn_sig_and_body_id(
+    tcx: TyCtxt,
+    fn_sig: &rustc_hir::FnSig<'_>,
+    body_id: &rustc_hir::BodyId,
+) -> FnSigAndBody {
+    let body = tcx.hir().body(*body_id);
+    let expr = body.value;
+    FnSigAndBody {
+        args: body
+            .params
+            .iter()
+            .zip(fn_sig.decl.inputs.iter())
+            .map(|(param, ty)| {
+                let name = match &param.pat.kind {
+                    PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
+                    _ => "arg".to_string(),
+                };
+                (name, compile_type(&tcx, ty))
+            })
+            .collect(),
+        ret_ty: match fn_sig.decl.output {
+            rustc_hir::FnRetTy::DefaultReturn(_) => Some(CoqType::unit()),
+            rustc_hir::FnRetTy::Return(ty) => Some(compile_type(&tcx, ty)),
+        },
+        body: Box::new(compile_expr(tcx, expr)),
+    }
+}
+
 /// [compile_top_level_item] compiles hir [Item]s into coq-of-rust (optional)
 /// items.
 /// - See https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/struct.Item.html
@@ -119,7 +160,7 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                 where_predicates: vec![],
                 args: vec![],
                 ret_ty: None,
-                body: compile_expr(tcx, expr),
+                body: Box::new(compile_expr(tcx, expr)),
             }]
         }
         ItemKind::Const(_, body_id) => {
@@ -130,12 +171,12 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                 where_predicates: vec![],
                 args: vec![],
                 ret_ty: None,
-                body: compile_expr(tcx, expr),
+                body: Box::new(compile_expr(tcx, expr)),
             }]
         }
         ItemKind::Fn(fn_sig, generics, body_id) => {
-            let body = tcx.hir().body(*body_id);
-            let expr = body.value;
+            let FnSigAndBody { args, ret_ty, body } =
+                compile_fn_sig_and_body_id(tcx, fn_sig, body_id);
             vec![TopLevelItem::Definition {
                 name: item.ident.name.to_string(),
                 ty_params: generics
@@ -175,23 +216,9 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                         _ => vec![],
                     })
                     .collect(),
-                args: body
-                    .params
-                    .iter()
-                    .zip(fn_sig.decl.inputs.iter())
-                    .map(|(param, ty)| {
-                        let name = match &param.pat.kind {
-                            PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
-                            _ => "arg".to_string(),
-                        };
-                        (name, compile_type(&tcx, ty))
-                    })
-                    .collect(),
-                ret_ty: match fn_sig.decl.output {
-                    rustc_hir::FnRetTy::DefaultReturn(_) => Some(CoqType::unit()),
-                    rustc_hir::FnRetTy::Return(ty) => Some(compile_type(&tcx, ty)),
-                },
-                body: compile_expr(tcx, expr),
+                args,
+                ret_ty,
+                body,
             }]
         }
         ItemKind::Macro(_, _) => vec![],
@@ -276,8 +303,15 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                             TraitItemKind::Const(ty, _) => TraitItem::Definition {
                                 ty: compile_type(&tcx, ty),
                             },
-                            TraitItemKind::Fn(fn_sig, _) => TraitItem::Definition {
-                                ty: compile_fn_decl(&tcx, fn_sig.decl),
+                            TraitItemKind::Fn(fn_sig, trait_fn) => match trait_fn {
+                                TraitFn::Required(_) => TraitItem::Definition {
+                                    ty: compile_fn_decl(&tcx, fn_sig.decl),
+                                },
+                                TraitFn::Provided(body_id) => {
+                                    let FnSigAndBody { args, ret_ty, body } =
+                                        compile_fn_sig_and_body_id(tcx, fn_sig, body_id);
+                                    TraitItem::DefinitionWithDefault { args, ret_ty, body }
+                                }
                             },
                             TraitItemKind::Type(_, _) => TraitItem::Type,
                         };
@@ -314,7 +348,7 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                                 where_predicates: vec![],
                                 args: vec![],
                                 ret_ty: None,
-                                body: compile_expr(tcx, expr),
+                                body: Box::new(compile_expr(tcx, expr)),
                             }]
                         }
                         ImplItemKind::Fn(
@@ -339,7 +373,7 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                                 name: item.ident.name.to_string(),
                                 args: arg_names.zip(arg_tys).collect(),
                                 ret_ty,
-                                body: compile_expr(tcx, expr),
+                                body: Box::new(compile_expr(tcx, expr)),
                             }]
                         }
                         ImplItemKind::Type(ty) => vec![TopLevelItem::TypeAlias {
@@ -377,15 +411,6 @@ pub fn compile_top_level(tcx: TyCtxt) -> TopLevel {
             })
             .collect(),
     )
-}
-
-impl TraitItem {
-    fn to_doc(&self) -> Doc {
-        match self {
-            TraitItem::Definition { ty } => ty.to_doc(false),
-            TraitItem::Type => text("Set"),
-        }
-    }
 }
 
 impl TopLevelItem {
@@ -765,11 +790,6 @@ impl TopLevelItem {
                 ]),
             ]),
             TopLevelItem::Impl { self_ty, body } => group([
-                text("(* Impl ["),
-                self_ty.to_doc(false),
-                text("] "),
-                text("*)"),
-                hardline(),
                 nest([
                     text("Module"),
                     line(),
@@ -801,10 +821,6 @@ impl TopLevelItem {
                     self_ty.to_doc(false),
                     text("."),
                 ]),
-                hardline(),
-                text("(* End impl ["),
-                self_ty.to_doc(false),
-                text("] *)"),
             ]),
             TopLevelItem::Trait {
                 name,
@@ -845,18 +861,30 @@ impl TopLevelItem {
                             text("{"),
                         ]),
                         intersperse(
-                            body.iter().map(|(name, item)| {
-                                group([
+                            body.iter().map(|(name, item)| match item {
+                                TraitItem::Definition { ty } => group([
                                     hardline(),
                                     nest([
                                         text(name),
                                         line(),
                                         text(":"),
                                         line(),
-                                        item.to_doc(),
+                                        ty.to_doc(false),
                                         text(";"),
                                     ]),
-                                ])
+                                ]),
+                                TraitItem::DefinitionWithDefault { .. } => nil(),
+                                TraitItem::Type => group([
+                                    hardline(),
+                                    nest([
+                                        text(name),
+                                        line(),
+                                        text(":"),
+                                        line(),
+                                        text("Set"),
+                                        text(";"),
+                                    ]),
+                                ]),
                             }),
                             [nil()],
                         ),
@@ -868,7 +896,7 @@ impl TopLevelItem {
                     } else {
                         hardline()
                     },
-                    concat(body.iter().map(|(name, _)| {
+                    concat(body.iter().map(|(name, item)| {
                         concat([
                             hardline(),
                             nest([
@@ -892,14 +920,60 @@ impl TopLevelItem {
                             ]),
                             nest([
                                 hardline(),
-                                nest([
-                                    text("method"),
-                                    line(),
-                                    text(":="),
-                                    line(),
-                                    text(name),
-                                    text(";"),
-                                ]),
+                                match item {
+                                    TraitItem::Definition { .. } | TraitItem::Type => nest([
+                                        text("method"),
+                                        line(),
+                                        text(":="),
+                                        line(),
+                                        text(name),
+                                        text(";"),
+                                    ]),
+                                    TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
+                                        nest([
+                                            nest([
+                                                text("method"),
+                                                if args.is_empty() {
+                                                    concat([line(), text("tt")])
+                                                } else {
+                                                    concat(args.iter().map(|(name, ty)| {
+                                                        concat([
+                                                            line(),
+                                                            nest([
+                                                                text("("),
+                                                                text(name),
+                                                                line(),
+                                                                text(": "),
+                                                                ty.to_doc(false),
+                                                                text(")"),
+                                                            ]),
+                                                        ])
+                                                    }))
+                                                },
+                                                text(" :="),
+                                            ]),
+                                            line(),
+                                            match ret_ty {
+                                                Some(_) => text("("),
+                                                None => nil(),
+                                            },
+                                            body.to_doc(false),
+                                            match ret_ty {
+                                                Some(ty) => concat([
+                                                    line(),
+                                                    nest([
+                                                        text(":"),
+                                                        line(),
+                                                        ty.to_doc(false),
+                                                        text(")"),
+                                                    ]),
+                                                ]),
+                                                None => nil(),
+                                            },
+                                            text(";"),
+                                        ])
+                                    }
+                                },
                             ]),
                             hardline(),
                             text("|}."),

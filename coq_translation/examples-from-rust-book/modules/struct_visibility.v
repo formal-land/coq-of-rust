@@ -26,14 +26,12 @@ Module my.
   End ClosedBox.
   Definition ClosedBox : Set := ClosedBox.t.
   
-  (* Impl [ClosedBox] *)
   Module ImplClosedBox.
     Definition Self := ClosedBox.
     
     Definition new (contents : T) : ClosedBox :=
       {| ClosedBox.contents := contents; |}.
   End ImplClosedBox.
-  (* End impl [ClosedBox] *)
 End my.
 
 Module OpenBox.
@@ -58,14 +56,12 @@ Module ClosedBox.
 End ClosedBox.
 Definition ClosedBox : Set := ClosedBox.t.
 
-(* Impl [ClosedBox] *)
 Module ImplClosedBox.
   Definition Self := ClosedBox.
   
   Definition new (contents : T) : ClosedBox :=
     {| ClosedBox.contents := contents; |}.
 End ImplClosedBox.
-(* End impl [ClosedBox] *)
 
 Definition main (_ : unit) : unit :=
   let open_box := {| my.OpenBox.contents := "public information"; |} in

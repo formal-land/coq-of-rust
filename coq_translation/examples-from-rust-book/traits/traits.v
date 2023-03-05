@@ -23,7 +23,6 @@ Module Animal.
     new : (ref str) -> Self;
     name : (ref Self) -> (ref str);
     noise : (ref Self) -> (ref str);
-    talk : (ref Self) -> _;
   }.
   
   Global Instance Method_new `(Class) : Method "new" _ := {|
@@ -36,11 +35,20 @@ Module Animal.
     method := noise;
   |}.
   Global Instance Method_talk `(Class) : Method "talk" _ := {|
-    method := talk;
+    method (self : ref Self) :=
+      (_crate.io._print
+        (_crate.fmt.ImplArguments.new_v1
+          [ ""; " says "; "\n" ]
+          [
+            _crate.fmt.ImplArgumentV1.new_display (method "name" self);
+            _crate.fmt.ImplArgumentV1.new_display (method "noise" self)
+          ]) ;;
+      tt ;;
+      tt
+      : unit);
   |}.
 End Animal.
 
-(* Impl [Sheep] *)
 Module ImplSheep.
   Definition Self := Sheep.
   
@@ -48,26 +56,25 @@ Module ImplSheep.
     NamedField.get (name := "naked") self.
   
   Definition shear (self : mut_ref Self) :=
-    if method "is_naked" self then
-      _crate.io._print
+    if (method "is_naked" self : bool) then
+      (* _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ ""; " is already naked...\n" ]
-          [ _crate.fmt.ImplArgumentV1.new_display (method "name" self) ]) ;;
+          [ _crate.fmt.ImplArgumentV1.new_display (method "name" self) ]) ;; *)
       tt ;;
       tt
     else
-      _crate.io._print
+      (* _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ ""; " gets a haircut!\n" ]
           [
             _crate.fmt.ImplArgumentV1.new_display
               (NamedField.get (name := "name") self)
-          ]) ;;
+          ]) ;; *)
       tt ;;
-      assign NamedField.get (name := "naked") self := true ;;
+      (* assign (NamedField.get (name := "naked") self) true ;; *)
       tt.
 End ImplSheep.
-(* End impl [Sheep] *)
 
 Module Impl_Animal_for_Sheep.
   Definition Self := Sheep.

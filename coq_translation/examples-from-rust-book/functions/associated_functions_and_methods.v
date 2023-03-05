@@ -18,7 +18,6 @@ Module Point.
 End Point.
 Definition Point : Set := Point.t.
 
-(* Impl [Point] *)
 Module ImplPoint.
   Definition Self := Point.
   
@@ -28,7 +27,6 @@ Module ImplPoint.
   Definition new (x : f64) (y : f64) : Point :=
     {| Point.x := x; Point.y := y; |}.
 End ImplPoint.
-(* End impl [Point] *)
 
 Module Rectangle.
   Record t : Set := {
@@ -45,7 +43,6 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
-(* Impl [Rectangle] *)
 Module ImplRectangle.
   Definition Self := Rectangle.
   
@@ -68,32 +65,27 @@ Module ImplRectangle.
   
   Definition translate (self : mut_ref Self) (x : f64) (y : f64) :=
     assign
-      NamedField.get (name := "x") (NamedField.get (name := "p1") self)
-      :=
-      add
+      (NamedField.get (name := "x") (NamedField.get (name := "p1") self))
+      (add
         (NamedField.get (name := "x") (NamedField.get (name := "p1") self))
-        x ;;
+        x) ;;
     assign
-      NamedField.get (name := "x") (NamedField.get (name := "p2") self)
-      :=
-      add
+      (NamedField.get (name := "x") (NamedField.get (name := "p2") self))
+      (add
         (NamedField.get (name := "x") (NamedField.get (name := "p2") self))
-        x ;;
+        x) ;;
     assign
-      NamedField.get (name := "y") (NamedField.get (name := "p1") self)
-      :=
-      add
+      (NamedField.get (name := "y") (NamedField.get (name := "p1") self))
+      (add
         (NamedField.get (name := "y") (NamedField.get (name := "p1") self))
-        y ;;
+        y) ;;
     assign
-      NamedField.get (name := "y") (NamedField.get (name := "p2") self)
-      :=
-      add
+      (NamedField.get (name := "y") (NamedField.get (name := "p2") self))
+      (add
         (NamedField.get (name := "y") (NamedField.get (name := "p2") self))
-        y ;;
+        y) ;;
     tt.
 End ImplRectangle.
-(* End impl [Rectangle] *)
 
 Module Pair.
   Inductive t : Set := Build (_ : Box) (_ : Box).
@@ -107,7 +99,6 @@ Module Pair.
 End Pair.
 Definition Pair := Pair.t.
 
-(* Impl [Pair] *)
 Module ImplPair.
   Definition Self := Pair.
   
@@ -123,7 +114,6 @@ Module ImplPair.
     tt ;;
     tt.
 End ImplPair.
-(* End impl [Pair] *)
 
 Definition main (_ : unit) : unit :=
   let rectangle :=

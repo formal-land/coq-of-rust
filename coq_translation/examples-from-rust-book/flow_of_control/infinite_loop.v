@@ -11,7 +11,7 @@ Definition main (_ : unit) : unit :=
       [  ]) ;;
   tt ;;
   loop
-    assign count := add count 1 ;;
+    assign count (add count 1) ;;
     if eqb count 3 then
       _crate.io._print (_crate.fmt.ImplArguments.new_v1 [ "three\n" ] [  ]) ;;
       tt ;;

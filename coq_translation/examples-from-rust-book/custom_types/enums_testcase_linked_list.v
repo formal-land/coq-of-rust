@@ -12,7 +12,6 @@ Module List.
 End List.
 Definition List := List.t.
 
-(* Impl [List] *)
 Module ImplList.
   Definition Self := List.
   
@@ -45,13 +44,12 @@ Module ImplList.
       res
     end.
 End ImplList.
-(* End impl [List] *)
 
 Definition main (_ : unit) : unit :=
   let list := ImplList.new tt in
-  assign list := method "prepend" list 1 ;;
-  assign list := method "prepend" list 2 ;;
-  assign list := method "prepend" list 3 ;;
+  assign list (method "prepend" list 1) ;;
+  assign list (method "prepend" list 2) ;;
+  assign list (method "prepend" list 3) ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "linked list has length: "; "\n" ]

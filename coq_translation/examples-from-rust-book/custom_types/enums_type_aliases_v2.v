@@ -13,7 +13,6 @@ Definition
   :=
   VeryVerboseEnumOfThingsToDoWithNumbers.t.
 
-(* Impl [VeryVerboseEnumOfThingsToDoWithNumbers] *)
 Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
   Definition Self := VeryVerboseEnumOfThingsToDoWithNumbers.
   
@@ -23,4 +22,3 @@ Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
     | ImplSelf.Subtract => sub x y
     end.
 End ImplVeryVerboseEnumOfThingsToDoWithNumbers.
-(* End impl [VeryVerboseEnumOfThingsToDoWithNumbers] *)

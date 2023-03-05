@@ -574,11 +574,9 @@ impl Expr {
                 nest([
                     text("assign"),
                     line(),
-                    left.to_doc(false),
+                    left.to_doc(true),
                     line(),
-                    text(":="),
-                    line(),
-                    right.to_doc(false),
+                    right.to_doc(true),
                 ]),
             ),
             Expr::AssignOp {
