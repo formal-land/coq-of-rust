@@ -11,6 +11,9 @@ Module Borrowed.
   Global Instance Get_x : NamedField.Class t "x" _ := {|
     NamedField.get '(Build_t x0) := x0;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Borrowed.
 Definition Borrowed : Set := Borrowed.t.
 
@@ -18,12 +21,22 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
   Definition Self := Borrowed.
   
   Global Instance I 'a : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_struct_field1_finish
         f
         "Borrowed"
         "x"
-        (NamedField.get (name := "x") self);
+        (NamedField.get (name := "x") self).
+    
+    Global Instance AF_fmt : Borrowed.AssociatedFunction "fmt" _ := {|
+      Borrowed.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Borrowed.
 
@@ -31,7 +44,11 @@ Module Impl_Default_for_Borrowed.
   Definition Self := Borrowed.
   
   Global Instance I 'a : Default.Class Self := {|
-    Default.default tt := {| Self.x := 10; |};
+    Definition default (_ : unit) : Self := {| Self.x := 10; |}.
+    
+    Global Instance AF_default : Borrowed.AssociatedFunction "default" _ := {|
+      Borrowed.associated_function := default;
+    |}.
   |}.
 End Impl_Default_for_Borrowed.
 

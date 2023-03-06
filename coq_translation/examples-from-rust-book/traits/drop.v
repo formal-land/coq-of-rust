@@ -11,6 +11,9 @@ Module Droppable.
   Global Instance Get_name : NamedField.Class t "name" _ := {|
     NamedField.get '(Build_t x0) := x0;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Droppable.
 Definition Droppable : Set := Droppable.t.
 
@@ -18,7 +21,7 @@ Module Impl_Drop_for_Droppable.
   Definition Self := Droppable.
   
   Global Instance I : Drop.Class Self := {|
-    Drop.drop (self : mut_ref Self) :=
+    Definition drop (self : mut_ref Self) :=
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ "> Dropping "; "\n" ]
@@ -27,7 +30,14 @@ Module Impl_Drop_for_Droppable.
               (NamedField.get (name := "name") self)
           ]) ;;
       tt ;;
-      tt;
+      tt.
+    
+    Global Instance AF_drop : Droppable.AssociatedFunction "drop" _ := {|
+      Droppable.associated_function := drop;
+    |}.
+    Global Instance M_drop : Method "drop" _ := {|
+      method := drop;
+    |}.
   |}.
 End Impl_Drop_for_Droppable.
 

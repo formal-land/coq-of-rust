@@ -21,7 +21,14 @@ Module Impl_DoubleDrop_for_U.
   Definition Self := U.
   
   Global Instance I T U : DoubleDrop.Class T Self := {|
-    DoubleDrop.double_drop (self : Self) (Pattern : T) := tt;
+    Definition double_drop (self : Self) (Pattern : T) := tt.
+    
+    Global Instance AF_double_drop : U.AssociatedFunction "double_drop" _ := {|
+      U.associated_function := double_drop;
+    |}.
+    Global Instance M_double_drop : Method "double_drop" _ := {|
+      method := double_drop;
+    |}.
   |}.
 End Impl_DoubleDrop_for_U.
 

@@ -15,6 +15,9 @@ Module Point.
   Global Instance Get_y : NamedField.Class t "y" _ := {|
     NamedField.get '(Build_t _ x1) := x1;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Point.
 Definition Point : Set := Point.t.
 
@@ -24,8 +27,16 @@ Module ImplPoint.
   Definition origin (_ : unit) : Point :=
     {| Point.y := 0 (* 0.0 *); Point.x := 1 (* 1.0 *); |}.
   
+  Global Instance AF_origin : Point.AssociatedFunction "origin" _ := {|
+    Point.associated_function := origin;
+  |}.
+  
   Definition new (x : f64) (y : f64) : Point :=
     {| Point.x := x; Point.y := y; |}.
+  
+  Global Instance AF_new : Point.AssociatedFunction "new" _ := {|
+    Point.associated_function := new;
+  |}.
 End ImplPoint.
 
 Module Rectangle.
@@ -40,6 +51,9 @@ Module Rectangle.
   Global Instance Get_p2 : NamedField.Class t "p2" _ := {|
     NamedField.get '(Build_t _ x1) := x1;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
@@ -49,6 +63,13 @@ Module ImplRectangle.
   Definition get_p1 (self : ref Self) : Point :=
     NamedField.get (name := "p1") self.
   
+  Global Instance AF_get_p1 : Rectangle.AssociatedFunction "get_p1" _ := {|
+    Rectangle.associated_function := get_p1;
+  |}.
+  Global Instance M_get_p1 : Method "get_p1" _ := {|
+    method := get_p1;
+  |}.
+  
   Definition area (self : ref Self) : f64 :=
     let Point {| Point.x := x1; Point.y := y1; |} :=
       NamedField.get (name := "p1") self in
@@ -56,12 +77,33 @@ Module ImplRectangle.
       NamedField.get (name := "p2") self in
     method "abs" (mul (sub x1 x2) (sub y1 y2)).
   
+  Global Instance AF_area : Rectangle.AssociatedFunction "area" _ := {|
+    Rectangle.associated_function := area;
+  |}.
+  Global Instance M_area : Method "area" _ := {|
+    method := area;
+  |}.
+  
   Definition perimeter (self : ref Self) : f64 :=
     let Point {| Point.x := x1; Point.y := y1; |} :=
       NamedField.get (name := "p1") self in
     let Point {| Point.x := x2; Point.y := y2; |} :=
       NamedField.get (name := "p2") self in
     mul 2 (* 2.0 *) (add (method "abs" (sub x1 x2)) (method "abs" (sub y1 y2))).
+  
+  Global Instance
+    AF_perimeter
+    :
+    Rectangle.AssociatedFunction
+    "perimeter"
+    _
+    :=
+    {|
+    Rectangle.associated_function := perimeter;
+  |}.
+  Global Instance M_perimeter : Method "perimeter" _ := {|
+    method := perimeter;
+  |}.
   
   Definition translate (self : mut_ref Self) (x : f64) (y : f64) :=
     assign
@@ -85,6 +127,20 @@ Module ImplRectangle.
         (NamedField.get (name := "y") (NamedField.get (name := "p2") self))
         y) ;;
     tt.
+  
+  Global Instance
+    AF_translate
+    :
+    Rectangle.AssociatedFunction
+    "translate"
+    _
+    :=
+    {|
+    Rectangle.associated_function := translate;
+  |}.
+  Global Instance M_translate : Method "translate" _ := {|
+    method := translate;
+  |}.
 End ImplRectangle.
 
 Module Pair.
@@ -113,6 +169,13 @@ Module ImplPair.
         ]) ;;
     tt ;;
     tt.
+  
+  Global Instance AF_destroy : Pair.AssociatedFunction "destroy" _ := {|
+    Pair.associated_function := destroy;
+  |}.
+  Global Instance M_destroy : Method "destroy" _ := {|
+    method := destroy;
+  |}.
 End ImplPair.
 
 Definition main (_ : unit) : unit :=

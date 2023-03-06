@@ -19,6 +19,9 @@ Module Point.
   Global Instance Get_z : NamedField.Class t "z" _ := {|
     NamedField.get '(Build_t _ _ x2) := x2;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Point.
 Definition Point : Set := Point.t.
 

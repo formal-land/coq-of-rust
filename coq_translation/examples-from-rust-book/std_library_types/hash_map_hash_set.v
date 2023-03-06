@@ -15,11 +15,11 @@ Definition main (_ : unit) : unit :=
     method
       "collect"
       (method "into_iter" (ComplexTypePath.into_vec [ 2; 3; 4 ])) in
-  if not (method "insert" a 4) then
+  if (not (method "insert" a 4) : bool) then
     _crate.panicking.panic "assertion failed: a.insert(4)"
   else
     tt ;;
-  if not (method "contains" a 4) then
+  if (not (method "contains" a 4) : bool) then
     _crate.panicking.panic "assertion failed: a.contains(&4)"
   else
     tt ;;

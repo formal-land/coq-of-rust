@@ -21,6 +21,13 @@ Module ImplOwner.
       (add (IndexedField.get (index := 0) self) 1) ;;
     tt.
   
+  Global Instance AF_add_one : Owner.AssociatedFunction "add_one" _ := {|
+    Owner.associated_function := add_one;
+  |}.
+  Global Instance M_add_one : Method "add_one" _ := {|
+    method := add_one;
+  |}.
+  
   Definition print (self : ref Self) :=
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
@@ -31,6 +38,13 @@ Module ImplOwner.
         ]) ;;
     tt ;;
     tt.
+  
+  Global Instance AF_print : Owner.AssociatedFunction "print" _ := {|
+    Owner.associated_function := print;
+  |}.
+  Global Instance M_print : Method "print" _ := {|
+    method := print;
+  |}.
 End ImplOwner.
 
 Definition main (_ : unit) : unit :=

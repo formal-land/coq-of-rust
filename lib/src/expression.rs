@@ -537,7 +537,14 @@ impl Expr {
                 with_paren,
                 group([
                     group([
-                        nest([text("if"), line(), condition.to_doc(false)]),
+                        nest([
+                            text("if"),
+                            line(),
+                            text("("),
+                            condition.to_doc(false),
+                            line(),
+                            text(": bool)"),
+                        ]),
                         line(),
                         text("then"),
                     ]),

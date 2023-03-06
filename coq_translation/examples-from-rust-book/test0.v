@@ -14,7 +14,7 @@ Definition main (_ : unit) : unit :=
   let number := Some 7 in
   let letter := None in
   let emoticon := None in
-  if let_if Some (i) := number then
+  if (let_if Some (i) := number : bool) then
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
         [ "Matched "; "!\n" ]
@@ -23,7 +23,7 @@ Definition main (_ : unit) : unit :=
     tt
   else
     tt ;;
-  if let_if Some (j) := letter then
+  if (let_if Some (j) := letter : bool) then
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
         [ "Matched "; "!\n" ]
@@ -38,7 +38,7 @@ Definition main (_ : unit) : unit :=
     tt ;;
     tt ;;
   let i_like_letters := false in
-  if let_if Some (i) := emoticon then
+  if (let_if Some (i) := emoticon : bool) then
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
         [ "Matched "; "!\n" ]
@@ -46,7 +46,7 @@ Definition main (_ : unit) : unit :=
     tt ;;
     tt
   else
-    if i_like_letters then
+    if (i_like_letters : bool) then
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ "Didn't match a number. Let's go with a letter!\n" ]

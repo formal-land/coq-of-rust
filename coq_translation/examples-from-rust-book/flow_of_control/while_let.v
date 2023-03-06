@@ -6,8 +6,8 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let optional := Some 0 in
   loop
-    (if let_if Some (i) := optional then
-      if gt i 9 then
+    (if (let_if Some (i) := optional : bool) then
+      if (gt i 9 : bool) then
         _crate.io._print
           (_crate.fmt.ImplArguments.new_v1
             [ "Greater than 9, quit!\n" ]

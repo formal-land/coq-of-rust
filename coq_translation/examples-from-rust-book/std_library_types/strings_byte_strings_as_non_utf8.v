@@ -26,7 +26,7 @@ Definition main (_ : unit) : unit :=
       [ ""; "\n" ]
       [ _crate.fmt.ImplArgumentV1.new_debug raw_bytestring ]) ;;
   tt ;;
-  if let_if Ok (my_str) := str.from_utf8 raw_bytestring then
+  if (let_if Ok (my_str) := str.from_utf8 raw_bytestring : bool) then
     _crate.io._print
       (_crate.fmt.ImplArguments.new_v1
         [ "And the same as text: '"; "'\n" ]

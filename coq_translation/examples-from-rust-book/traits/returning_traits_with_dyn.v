@@ -6,11 +6,17 @@ Import Root.std.prelude.rust_2015.
 Module Sheep.
   Record t : Set := {
   }.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Sheep.
 Definition Sheep : Set := Sheep.t.
 
 Module Cow.
   Record t : Set := {
+  }.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
   }.
 End Cow.
 Definition Cow : Set := Cow.t.
@@ -29,7 +35,14 @@ Module Impl_Animal_for_Sheep.
   Definition Self := Sheep.
   
   Global Instance I : Animal.Class Self := {|
-    Animal.noise (self : ref Self) := "baaaaah!";
+    Definition noise (self : ref Self) : ref str := "baaaaah!".
+    
+    Global Instance AF_noise : Sheep.AssociatedFunction "noise" _ := {|
+      Sheep.associated_function := noise;
+    |}.
+    Global Instance M_noise : Method "noise" _ := {|
+      method := noise;
+    |}.
   |}.
 End Impl_Animal_for_Sheep.
 
@@ -37,12 +50,19 @@ Module Impl_Animal_for_Cow.
   Definition Self := Cow.
   
   Global Instance I : Animal.Class Self := {|
-    Animal.noise (self : ref Self) := "moooooo!";
+    Definition noise (self : ref Self) : ref str := "moooooo!".
+    
+    Global Instance AF_noise : Cow.AssociatedFunction "noise" _ := {|
+      Cow.associated_function := noise;
+    |}.
+    Global Instance M_noise : Method "noise" _ := {|
+      method := noise;
+    |}.
   |}.
 End Impl_Animal_for_Cow.
 
 Definition random_animal (random_number : f64) : Box :=
-  if lt random_number 1 (* 0.5 *) then
+  if (lt random_number 1 (* 0.5 *) : bool) then
     ImplBox.new {|  |}
   else
     ImplBox.new {|  |}.

@@ -13,6 +13,9 @@ Module Number.
   Global Instance Get_value : NamedField.Class t "value" _ := {|
     NamedField.get '(Build_t x0) := x0;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Number.
 Definition Number : Set := Number.t.
 
@@ -20,12 +23,22 @@ Module Impl__crate_fmt_Debug_for_Number.
   Definition Self := Number.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_struct_field1_finish
         f
         "Number"
         "value"
-        (NamedField.get (name := "value") self);
+        (NamedField.get (name := "value") self).
+    
+    Global Instance AF_fmt : Number.AssociatedFunction "fmt" _ := {|
+      Number.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Number.
 
@@ -33,7 +46,11 @@ Module Impl_From_for_Number.
   Definition Self := Number.
   
   Global Instance I : From.Class i32 Self := {|
-    From.from (item : i32) := {| Number.value := item; |};
+    Definition from (item : i32) : Self := {| Number.value := item; |}.
+    
+    Global Instance AF_from : Number.AssociatedFunction "from" _ := {|
+      Number.associated_function := from;
+    |}.
   |}.
 End Impl_From_for_Number.
 

@@ -17,5 +17,8 @@ Module Foo.
   Global Instance Get_y : NamedField.Class t "y" _ := {|
     NamedField.get '(Build_t _ x1) := x1;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Foo.
 Definition Foo : Set := Foo.t.

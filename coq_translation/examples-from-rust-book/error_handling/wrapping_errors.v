@@ -12,7 +12,7 @@ Module fmt := std.fmt.
 Module ParseIntError := std.num.ParseIntError.
 Definition ParseIntError := ParseIntError.t.
 
-Error TyAlias.
+Definition Result : Set := std.result.Result.
 
 Module DoubleError.
   Inductive t : Set :=
@@ -25,12 +25,22 @@ Module Impl__crate_fmt_Debug_for_DoubleError.
   Definition Self := DoubleError.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       match self with
       | DoubleError.EmptyVec => _crate.fmt.ImplFormatter.write_str f "EmptyVec"
       | DoubleError.Parse (__self_0) =>
         _crate.fmt.ImplFormatter.debug_tuple_field1_finish f "Parse" __self_0
-      end;
+      end.
+    
+    Global Instance AF_fmt : DoubleError.AssociatedFunction "fmt" _ := {|
+      DoubleError.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_DoubleError.
 
@@ -38,7 +48,7 @@ Module Impl_fmt_Display_for_DoubleError.
   Definition Self := DoubleError.
   
   Global Instance I : fmt.Display.Class Self := {|
-    fmt.Display.fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
+    Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
       match deref self with
       | DoubleError.EmptyVec =>
         method
@@ -54,7 +64,14 @@ Module Impl_fmt_Display_for_DoubleError.
           (_crate.fmt.ImplArguments.new_v1
             [ "the provided string could not be parsed as int" ]
             [  ])
-      end;
+      end.
+    
+    Global Instance AF_fmt : DoubleError.AssociatedFunction "fmt" _ := {|
+      DoubleError.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl_fmt_Display_for_DoubleError.
 
@@ -62,11 +79,18 @@ Module Impl_error_Error_for_DoubleError.
   Definition Self := DoubleError.
   
   Global Instance I : error.Error.Class Self := {|
-    error.Error.source (self : ref Self) :=
+    Definition source (self : ref Self) : Option :=
       match deref self with
       | DoubleError.EmptyVec => None
       | DoubleError.Parse (e) => Some e
-      end;
+      end.
+    
+    Global Instance AF_source : DoubleError.AssociatedFunction "source" _ := {|
+      DoubleError.associated_function := source;
+    |}.
+    Global Instance M_source : Method "source" _ := {|
+      method := source;
+    |}.
   |}.
 End Impl_error_Error_for_DoubleError.
 
@@ -74,7 +98,12 @@ Module Impl_From_for_DoubleError.
   Definition Self := DoubleError.
   
   Global Instance I : From.Class ParseIntError Self := {|
-    From.from (err : ParseIntError) := DoubleError.Parse err;
+    Definition from (err : ParseIntError) : DoubleError :=
+      DoubleError.Parse err.
+    
+    Global Instance AF_from : DoubleError.AssociatedFunction "from" _ := {|
+      DoubleError.associated_function := from;
+    |}.
   |}.
 End Impl_From_for_DoubleError.
 
@@ -105,7 +134,7 @@ Definition print (result : Result) : unit :=
         [ "Error: "; "\n" ]
         [ _crate.fmt.ImplArgumentV1.new_display e ]) ;;
     tt ;;
-    if let_if Some (source) := method "source" e then
+    if (let_if Some (source) := method "source" e : bool) then
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ "  Caused by: "; "\n" ]

@@ -20,11 +20,11 @@ Definition main (_ : unit) : unit :=
       | None => Break
       | Some {| Some.0 := n; |} =>
         let n_squared := mul n n in
-        if ge n_squared upper then
+        if (ge n_squared upper : bool) then
           Break ;;
           tt
         else
-          if is_odd n_squared then
+          if (is_odd n_squared : bool) then
             assign acc (add acc n_squared) ;;
             tt
           else

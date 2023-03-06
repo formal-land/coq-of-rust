@@ -8,7 +8,7 @@ Definition main (_ : unit) : unit :=
   tt.
 
 Definition is_divisible_by (lhs : u32) (rhs : u32) : bool :=
-  if eqb rhs 0 then
+  if (eqb rhs 0 : bool) then
     Return false ;;
     tt
   else
@@ -16,17 +16,17 @@ Definition is_divisible_by (lhs : u32) (rhs : u32) : bool :=
   eqb (rem lhs rhs) 0.
 
 Definition fizzbuzz (n : u32) :  :=
-  if is_divisible_by n 15 then
+  if (is_divisible_by n 15 : bool) then
     _crate.io._print (_crate.fmt.ImplArguments.new_v1 [ "fizzbuzz\n" ] [  ]) ;;
     tt ;;
     tt
   else
-    if is_divisible_by n 3 then
+    if (is_divisible_by n 3 : bool) then
       _crate.io._print (_crate.fmt.ImplArguments.new_v1 [ "fizz\n" ] [  ]) ;;
       tt ;;
       tt
     else
-      if is_divisible_by n 5 then
+      if (is_divisible_by n 5 : bool) then
         _crate.io._print (_crate.fmt.ImplArguments.new_v1 [ "buzz\n" ] [  ]) ;;
         tt ;;
         tt

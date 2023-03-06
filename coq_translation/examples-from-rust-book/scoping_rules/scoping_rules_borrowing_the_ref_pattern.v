@@ -15,6 +15,9 @@ Module Point.
   Global Instance Get_y : NamedField.Class t "y" _ := {|
     NamedField.get '(Build_t _ x1) := x1;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Point.
 Definition Point : Set := Point.t.
 
@@ -22,9 +25,16 @@ Module Impl__crate_clone_Clone_for_Point.
   Definition Self := Point.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Self) :=
+    Definition clone (self : ref Self) : Point :=
       let _ := tt in
-      deref self;
+      deref self.
+    
+    Global Instance AF_clone : Point.AssociatedFunction "clone" _ := {|
+      Point.associated_function := clone;
+    |}.
+    Global Instance M_clone : Method "clone" _ := {|
+      method := clone;
+    |}.
   |}.
 End Impl__crate_clone_Clone_for_Point.
 

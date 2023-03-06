@@ -12,6 +12,9 @@ Module my.
     Global Instance Get_contents : NamedField.Class t "contents" _ := {|
       NamedField.get '(Build_t x0) := x0;
     |}.
+    Class AssociatedFunction (name : string) (T : Set) : Set := {
+      associated_function : T;
+    }.
   End OpenBox.
   Definition OpenBox : Set := OpenBox.t.
   
@@ -23,6 +26,9 @@ Module my.
     Global Instance Get_contents : NamedField.Class t "contents" _ := {|
       NamedField.get '(Build_t x0) := x0;
     |}.
+    Class AssociatedFunction (name : string) (T : Set) : Set := {
+      associated_function : T;
+    }.
   End ClosedBox.
   Definition ClosedBox : Set := ClosedBox.t.
   
@@ -31,6 +37,10 @@ Module my.
     
     Definition new (contents : T) : ClosedBox :=
       {| ClosedBox.contents := contents; |}.
+    
+    Global Instance AF_new : ClosedBox.AssociatedFunction "new" _ := {|
+      ClosedBox.associated_function := new;
+    |}.
   End ImplClosedBox.
 End my.
 
@@ -42,6 +52,9 @@ Module OpenBox.
   Global Instance Get_contents : NamedField.Class t "contents" _ := {|
     NamedField.get '(Build_t x0) := x0;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End OpenBox.
 Definition OpenBox : Set := OpenBox.t.
 
@@ -53,6 +66,9 @@ Module ClosedBox.
   Global Instance Get_contents : NamedField.Class t "contents" _ := {|
     NamedField.get '(Build_t x0) := x0;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End ClosedBox.
 Definition ClosedBox : Set := ClosedBox.t.
 
@@ -61,6 +77,10 @@ Module ImplClosedBox.
   
   Definition new (contents : T) : ClosedBox :=
     {| ClosedBox.contents := contents; |}.
+  
+  Global Instance AF_new : ClosedBox.AssociatedFunction "new" _ := {|
+    ClosedBox.associated_function := new;
+  |}.
 End ImplClosedBox.
 
 Definition main (_ : unit) : unit :=

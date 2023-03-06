@@ -35,6 +35,9 @@ Module Form.
   Global Instance Get_age : NamedField.Class t "age" _ := {|
     NamedField.get '(Build_t _ x1) := x1;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Form.
 Definition Form : Set := Form.t.
 
@@ -42,8 +45,15 @@ Module Impl_UsernameWidget_for_Form.
   Definition Self := Form.
   
   Global Instance I : UsernameWidget.Class Self := {|
-    UsernameWidget.get (self : ref Self) :=
-      method "clone" (NamedField.get (name := "username") self);
+    Definition get (self : ref Self) : String :=
+      method "clone" (NamedField.get (name := "username") self).
+    
+    Global Instance AF_get : Form.AssociatedFunction "get" _ := {|
+      Form.associated_function := get;
+    |}.
+    Global Instance M_get : Method "get" _ := {|
+      method := get;
+    |}.
   |}.
 End Impl_UsernameWidget_for_Form.
 
@@ -51,7 +61,15 @@ Module Impl_AgeWidget_for_Form.
   Definition Self := Form.
   
   Global Instance I : AgeWidget.Class Self := {|
-    AgeWidget.get (self : ref Self) := NamedField.get (name := "age") self;
+    Definition get (self : ref Self) : u8 :=
+      NamedField.get (name := "age") self.
+    
+    Global Instance AF_get : Form.AssociatedFunction "get" _ := {|
+      Form.associated_function := get;
+    |}.
+    Global Instance M_get : Method "get" _ := {|
+      method := get;
+    |}.
   |}.
 End Impl_AgeWidget_for_Form.
 
@@ -61,7 +79,7 @@ Definition main (_ : unit) : unit :=
   let username := (UsernameWidget.associated_function "get") form in
   match (method "to_owned" "rustacean", username) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -75,7 +93,7 @@ Definition main (_ : unit) : unit :=
   let age := (AgeWidget.associated_function "get") form in
   match (28, age) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition division (dividend : i32) (divisor : i32) : i32 :=
-  if eqb divisor 0 then
+  if (eqb divisor 0 : bool) then
     _crate.rt.begin_panic "division by zero" ;;
     tt
   else

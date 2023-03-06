@@ -126,7 +126,7 @@ impl CoqType {
     }
 
     // We use this function when we need a quick and recognizable name for a type
-    pub fn to_name(&self) -> String {
+    pub(crate) fn to_name(&self) -> String {
         match self {
             CoqType::Var(path) => path.to_name(),
             CoqType::Application { func, args } => {
@@ -164,6 +164,19 @@ impl CoqType {
                 name.push_str(&ty.to_name());
                 name
             }
+        }
+    }
+
+    // The path of a type: we remove all the type parameters to know on
+    // which type an implementation is working
+    pub(crate) fn to_path_doc(&self) -> Doc {
+        match self {
+            CoqType::Var(path) => path.to_doc(),
+            CoqType::Application { func, args: _ } => func.to_path_doc(),
+            CoqType::Function { .. } => text("Function"),
+            CoqType::Tuple(_) => text("Tuple"),
+            CoqType::Array(_) => text("Array"),
+            CoqType::Ref(_, _) => text("Ref"),
         }
     }
 }

@@ -13,6 +13,9 @@ Module Circle.
   Global Instance Get_radius : NamedField.Class t "radius" _ := {|
     NamedField.get '(Build_t x0) := x0;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Circle.
 Definition Circle : Set := Circle.t.
 
@@ -20,7 +23,7 @@ Module Impl_fmt_Display_for_Circle.
   Definition Self := Circle.
   
   Global Instance I : fmt.Display.Class Self := {|
-    fmt.Display.fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
+    Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
       method
         "write_fmt"
         f
@@ -29,7 +32,14 @@ Module Impl_fmt_Display_for_Circle.
           [
             _crate.fmt.ImplArgumentV1.new_display
               (NamedField.get (name := "radius") self)
-          ]);
+          ]).
+    
+    Global Instance AF_fmt : Circle.AssociatedFunction "fmt" _ := {|
+      Circle.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl_fmt_Display_for_Circle.
 

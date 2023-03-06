@@ -29,14 +29,21 @@ Module Impl__crate_cmp_PartialEq_for_PhantomTuple.
   Definition Self := PhantomTuple.
   
   Global Instance I A B : _crate.cmp.PartialEq.Class Self := {|
-    _crate.cmp.PartialEq.eq (self : ref Self) (other : ref PhantomTuple) :=
+    Definition eq (self : ref Self) (other : ref PhantomTuple) : bool :=
       andb
         (eqb
           (IndexedField.get (index := 0) self)
           (IndexedField.get (index := 0) other))
         (eqb
           (IndexedField.get (index := 1) self)
-          (IndexedField.get (index := 1) other));
+          (IndexedField.get (index := 1) other)).
+    
+    Global Instance AF_eq : PhantomTuple.AssociatedFunction "eq" _ := {|
+      PhantomTuple.associated_function := eq;
+    |}.
+    Global Instance M_eq : Method "eq" _ := {|
+      method := eq;
+    |}.
   |}.
 End Impl__crate_cmp_PartialEq_for_PhantomTuple.
 
@@ -52,6 +59,9 @@ Module PhantomStruct.
   Global Instance Get_phantom : NamedField.Class t "phantom" _ := {|
     NamedField.get '(Build_t _ x1) := x1;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End PhantomStruct.
 Definition PhantomStruct : Set := PhantomStruct.t.
 
@@ -66,14 +76,21 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct.
   Definition Self := PhantomStruct.
   
   Global Instance I A B : _crate.cmp.PartialEq.Class Self := {|
-    _crate.cmp.PartialEq.eq (self : ref Self) (other : ref PhantomStruct) :=
+    Definition eq (self : ref Self) (other : ref PhantomStruct) : bool :=
       andb
         (eqb
           (NamedField.get (name := "first") self)
           (NamedField.get (name := "first") other))
         (eqb
           (NamedField.get (name := "phantom") self)
-          (NamedField.get (name := "phantom") other));
+          (NamedField.get (name := "phantom") other)).
+    
+    Global Instance AF_eq : PhantomStruct.AssociatedFunction "eq" _ := {|
+      PhantomStruct.associated_function := eq;
+    |}.
+    Global Instance M_eq : Method "eq" _ := {|
+      method := eq;
+    |}.
   |}.
 End Impl__crate_cmp_PartialEq_for_PhantomStruct.
 

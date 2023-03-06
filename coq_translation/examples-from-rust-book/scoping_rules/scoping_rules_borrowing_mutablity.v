@@ -19,6 +19,9 @@ Module Book.
   Global Instance Get_year : NamedField.Class t "year" _ := {|
     NamedField.get '(Build_t _ _ x2) := x2;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Book.
 Definition Book : Set := Book.t.
 
@@ -26,11 +29,18 @@ Module Impl__crate_clone_Clone_for_Book.
   Definition Self := Book.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Self) :=
+    Definition clone (self : ref Self) : Book :=
       let _ := tt in
       let _ := tt in
       let _ := tt in
-      deref self;
+      deref self.
+    
+    Global Instance AF_clone : Book.AssociatedFunction "clone" _ := {|
+      Book.associated_function := clone;
+    |}.
+    Global Instance M_clone : Method "clone" _ := {|
+      method := clone;
+    |}.
   |}.
 End Impl__crate_clone_Clone_for_Book.
 

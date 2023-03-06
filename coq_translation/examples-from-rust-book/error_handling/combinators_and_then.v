@@ -15,12 +15,22 @@ Module Impl__crate_fmt_Debug_for_Food.
   Definition Self := Food.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       match self with
       | Food.CordonBleu => _crate.fmt.ImplFormatter.write_str f "CordonBleu"
       | Food.Steak => _crate.fmt.ImplFormatter.write_str f "Steak"
       | Food.Sushi => _crate.fmt.ImplFormatter.write_str f "Sushi"
-      end;
+      end.
+    
+    Global Instance AF_fmt : Food.AssociatedFunction "fmt" _ := {|
+      Food.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Food.
 
@@ -36,12 +46,22 @@ Module Impl__crate_fmt_Debug_for_Day.
   Definition Self := Day.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       match self with
       | Day.Monday => _crate.fmt.ImplFormatter.write_str f "Monday"
       | Day.Tuesday => _crate.fmt.ImplFormatter.write_str f "Tuesday"
       | Day.Wednesday => _crate.fmt.ImplFormatter.write_str f "Wednesday"
-      end;
+      end.
+    
+    Global Instance AF_fmt : Day.AssociatedFunction "fmt" _ := {|
+      Day.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Day.
 

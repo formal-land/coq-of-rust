@@ -8,7 +8,7 @@ Definition main (_ : unit) : unit :=
   loop
     match optional with
     | Some (i) =>
-      if gt i 9 then
+      if (gt i 9 : bool) then
         _crate.io._print
           (_crate.fmt.ImplArguments.new_v1
             [ "Greater than 9, quit!\n" ]

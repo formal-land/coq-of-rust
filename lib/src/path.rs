@@ -2,7 +2,7 @@ use crate::render::*;
 use rustc_hir::QPath;
 use std::fmt;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Path {
     segments: Vec<String>,
 }

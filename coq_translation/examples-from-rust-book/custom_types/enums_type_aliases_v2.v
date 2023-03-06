@@ -21,4 +21,18 @@ Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
     | ImplSelf.Add => add x y
     | ImplSelf.Subtract => sub x y
     end.
+  
+  Global Instance
+    AF_run
+    :
+    VeryVerboseEnumOfThingsToDoWithNumbers.AssociatedFunction
+    "run"
+    _
+    :=
+    {|
+    VeryVerboseEnumOfThingsToDoWithNumbers.associated_function := run;
+  |}.
+  Global Instance M_run : Method "run" _ := {|
+    method := run;
+  |}.
 End ImplVeryVerboseEnumOfThingsToDoWithNumbers.

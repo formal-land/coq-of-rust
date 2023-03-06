@@ -17,14 +17,24 @@ Module Impl__crate_fmt_Debug_for_Fruit.
   Definition Self := Fruit.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       match self with
       | Fruit.Apple => _crate.fmt.ImplFormatter.write_str f "Apple"
       | Fruit.Orange => _crate.fmt.ImplFormatter.write_str f "Orange"
       | Fruit.Banana => _crate.fmt.ImplFormatter.write_str f "Banana"
       | Fruit.Kiwi => _crate.fmt.ImplFormatter.write_str f "Kiwi"
       | Fruit.Lemon => _crate.fmt.ImplFormatter.write_str f "Lemon"
-      end;
+      end.
+    
+    Global Instance AF_fmt : Fruit.AssociatedFunction "fmt" _ := {|
+      Fruit.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Fruit.
 

@@ -16,7 +16,7 @@ Definition main (_ : unit) : unit :=
           (_crate.fmt.ImplArguments.new_v1
             [ "failed to execute process: " ]
             [ _crate.fmt.ImplArgumentV1.new_display e ])) in
-  if method "success" (NamedField.get (name := "status") output) then
+  if (method "success" (NamedField.get (name := "status") output) : bool) then
     let s :=
       ImplString.from_utf8_lossy (NamedField.get (name := "stdout") output) in
     _crate.io._print

@@ -16,11 +16,21 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
   Definition Self := Borrowed.
   
   Global Instance I 'a : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Borrowed"
-        (IndexedField.get (index := 0) self);
+        (IndexedField.get (index := 0) self).
+    
+    Global Instance AF_fmt : Borrowed.AssociatedFunction "fmt" _ := {|
+      Borrowed.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Borrowed.
 
@@ -36,6 +46,9 @@ Module NamedBorrowed.
   Global Instance Get_y : NamedField.Class t "y" _ := {|
     NamedField.get '(Build_t _ x1) := x1;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End NamedBorrowed.
 Definition NamedBorrowed : Set := NamedBorrowed.t.
 
@@ -43,14 +56,24 @@ Module Impl__crate_fmt_Debug_for_NamedBorrowed.
   Definition Self := NamedBorrowed.
   
   Global Instance I 'a : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "NamedBorrowed"
         "x"
         (NamedField.get (name := "x") self)
         "y"
-        (NamedField.get (name := "y") self);
+        (NamedField.get (name := "y") self).
+    
+    Global Instance AF_fmt : NamedBorrowed.AssociatedFunction "fmt" _ := {|
+      NamedBorrowed.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_NamedBorrowed.
 
@@ -65,13 +88,23 @@ Module Impl__crate_fmt_Debug_for_Either.
   Definition Self := Either.
   
   Global Instance I 'a : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       match self with
       | Either.Num (__self_0) =>
         _crate.fmt.ImplFormatter.debug_tuple_field1_finish f "Num" __self_0
       | Either.Ref (__self_0) =>
         _crate.fmt.ImplFormatter.debug_tuple_field1_finish f "Ref" __self_0
-      end;
+      end.
+    
+    Global Instance AF_fmt : Either.AssociatedFunction "fmt" _ := {|
+      Either.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Either.
 

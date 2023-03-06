@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module ParseIntError := std.num.ParseIntError.
 Definition ParseIntError := ParseIntError.t.
 
-Error TyAlias.
+Definition AliasedResult : Set := Result.
 
 Definition multiply
     (first_number_str : ref str)

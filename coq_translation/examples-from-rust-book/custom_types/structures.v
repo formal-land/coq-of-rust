@@ -15,6 +15,9 @@ Module Person.
   Global Instance Get_age : NamedField.Class t "age" _ := {|
     NamedField.get '(Build_t _ x1) := x1;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Person.
 Definition Person : Set := Person.t.
 
@@ -22,14 +25,24 @@ Module Impl__crate_fmt_Debug_for_Person.
   Definition Self := Person.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "Person"
         "name"
         (NamedField.get (name := "name") self)
         "age"
-        (NamedField.get (name := "age") self);
+        (NamedField.get (name := "age") self).
+    
+    Global Instance AF_fmt : Person.AssociatedFunction "fmt" _ := {|
+      Person.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Person.
 
@@ -59,6 +72,9 @@ Module Point.
   Global Instance Get_y : NamedField.Class t "y" _ := {|
     NamedField.get '(Build_t _ x1) := x1;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Point.
 Definition Point : Set := Point.t.
 
@@ -74,6 +90,9 @@ Module Rectangle.
   Global Instance Get_bottom_right : NamedField.Class t "bottom_right" _ := {|
     NamedField.get '(Build_t _ x1) := x1;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 

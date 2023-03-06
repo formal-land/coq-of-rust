@@ -11,6 +11,9 @@ Module Person.
   Global Instance Get_job : NamedField.Class t "job" _ := {|
     NamedField.get '(Build_t x0) := x0;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Person.
 Definition Person : Set := Person.t.
 
@@ -22,6 +25,9 @@ Module Job.
   Global Instance Get_phone_number : NamedField.Class t "phone_number" _ := {|
     NamedField.get '(Build_t x0) := x0;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Job.
 Definition Job : Set := Job.t.
 
@@ -29,9 +35,16 @@ Module Impl__crate_clone_Clone_for_Job.
   Definition Self := Job.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Self) :=
+    Definition clone (self : ref Self) : Job :=
       let _ := tt in
-      deref self;
+      deref self.
+    
+    Global Instance AF_clone : Job.AssociatedFunction "clone" _ := {|
+      Job.associated_function := clone;
+    |}.
+    Global Instance M_clone : Method "clone" _ := {|
+      method := clone;
+    |}.
   |}.
 End Impl__crate_clone_Clone_for_Job.
 
@@ -54,6 +67,9 @@ Module PhoneNumber.
   Global Instance Get_number : NamedField.Class t "number" _ := {|
     NamedField.get '(Build_t _ x1) := x1;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End PhoneNumber.
 Definition PhoneNumber : Set := PhoneNumber.t.
 
@@ -61,10 +77,17 @@ Module Impl__crate_clone_Clone_for_PhoneNumber.
   Definition Self := PhoneNumber.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Self) :=
+    Definition clone (self : ref Self) : PhoneNumber :=
       let _ := tt in
       let _ := tt in
-      deref self;
+      deref self.
+    
+    Global Instance AF_clone : PhoneNumber.AssociatedFunction "clone" _ := {|
+      PhoneNumber.associated_function := clone;
+    |}.
+    Global Instance M_clone : Method "clone" _ := {|
+      method := clone;
+    |}.
   |}.
 End Impl__crate_clone_Clone_for_PhoneNumber.
 
@@ -94,6 +117,20 @@ Module ImplPerson.
       | Break {| Break.0 := residual; |} => Return (from_residual residual)
       | Continue {| Continue.0 := val; |} => val
       end.
+  
+  Global Instance
+    AF_work_phone_area_code
+    :
+    Person.AssociatedFunction
+    "work_phone_area_code"
+    _
+    :=
+    {|
+    Person.associated_function := work_phone_area_code;
+  |}.
+  Global Instance M_work_phone_area_code : Method "work_phone_area_code" _ := {|
+    method := work_phone_area_code;
+  |}.
 End ImplPerson.
 
 Definition main (_ : unit) : unit :=
@@ -112,7 +149,7 @@ Definition main (_ : unit) : unit :=
     |} in
   match (method "work_phone_area_code" p, Some 61) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

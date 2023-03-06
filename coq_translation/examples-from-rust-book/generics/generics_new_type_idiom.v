@@ -26,6 +26,13 @@ Module ImplYears.
   
   Definition to_days (self : ref Self) : Days :=
     Days.Build (mul (IndexedField.get (index := 0) self) 365).
+  
+  Global Instance AF_to_days : Years.AssociatedFunction "to_days" _ := {|
+    Years.associated_function := to_days;
+  |}.
+  Global Instance M_to_days : Method "to_days" _ := {|
+    method := to_days;
+  |}.
 End ImplYears.
 
 Module ImplDays.
@@ -33,6 +40,13 @@ Module ImplDays.
   
   Definition to_years (self : ref Self) : Years :=
     Years.Build (div (IndexedField.get (index := 0) self) 365).
+  
+  Global Instance AF_to_years : Days.AssociatedFunction "to_years" _ := {|
+    Days.associated_function := to_years;
+  |}.
+  Global Instance M_to_years : Method "to_years" _ := {|
+    method := to_years;
+  |}.
 End ImplDays.
 
 Definition old_enough (age : ref Years) : bool :=

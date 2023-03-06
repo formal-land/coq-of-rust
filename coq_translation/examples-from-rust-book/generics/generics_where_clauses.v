@@ -20,13 +20,27 @@ Module Impl_PrintInOption_for_T.
   Definition Self := T.
   
   Global Instance I T : PrintInOption.Class Self := {|
-    PrintInOption.print_in_option (self : Self) :=
+    Definition print_in_option (self : Self) :=
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ ""; "\n" ]
           [ _crate.fmt.ImplArgumentV1.new_debug (Some self) ]) ;;
       tt ;;
-      tt;
+      tt.
+    
+    Global Instance
+      AF_print_in_option
+      :
+      T.AssociatedFunction
+      "print_in_option"
+      _
+      :=
+      {|
+      T.associated_function := print_in_option;
+    |}.
+    Global Instance M_print_in_option : Method "print_in_option" _ := {|
+      method := print_in_option;
+    |}.
   |}.
 End Impl_PrintInOption_for_T.
 
