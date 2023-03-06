@@ -6,8 +6,16 @@ Still a work in progress!
 
 The translation works at the level of the [HIR](https://rustc-dev-guide.rust-lang.org/hir.html) intermediate representation of Rust.
 
+From the root of this repository, run:
+
 ```sh
-cargo run
+cargo install --path lib/
+```
+
+Then in any Rust project, to generate a `Crate.v` file with the Coq translation of the crate:
+
+```sh
+cargo coq-of-rust
 ```
 
 To run the tests (regenerate the Coq files that are acting as a reference):
