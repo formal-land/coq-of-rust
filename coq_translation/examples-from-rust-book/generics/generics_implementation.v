@@ -7,6 +7,13 @@ Module Val.
   Record t : Set := {
     val : f64;
   }.
+  
+  Global Instance Get_val : NamedField.Class t "val" _ := {|
+    NamedField.get '(Build_t x0) := x0;
+  |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Val.
 Definition Val : Set := Val.t.
 
@@ -14,20 +21,43 @@ Module GenVal.
   Record t : Set := {
     gen_val : T;
   }.
+  
+  Global Instance Get_gen_val : NamedField.Class t "gen_val" _ := {|
+    NamedField.get '(Build_t x0) := x0;
+  |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End GenVal.
 Definition GenVal : Set := GenVal.t.
 
-(* Impl [Val] *)
 Module ImplVal.
-  Definition value (self : ref Self) : ref f64 := self.val.
+  Definition Self := Val.
+  
+  Definition value (self : ref Self) : ref f64 :=
+    NamedField.get (name := "val") self.
+  
+  Global Instance AF_value : Val.AssociatedFunction "value" _ := {|
+    Val.associated_function := value;
+  |}.
+  Global Instance M_value : Method "value" _ := {|
+    method := value;
+  |}.
 End ImplVal.
-(* End impl [Val] *)
 
-(* Impl [GenVal] *)
 Module ImplGenVal.
-  Definition value (self : ref Self) : ref T := self.gen_val.
+  Definition Self := GenVal.
+  
+  Definition value (self : ref Self) : ref T :=
+    NamedField.get (name := "gen_val") self.
+  
+  Global Instance AF_value : GenVal.AssociatedFunction "value" _ := {|
+    GenVal.associated_function := value;
+  |}.
+  Global Instance M_value : Method "value" _ := {|
+    method := value;
+  |}.
 End ImplGenVal.
-(* End impl [GenVal] *)
 
 Definition main (_ : unit) : unit :=
   let x := {| Val.val := 3 (* 3.0 *); |} in

@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition checked_division (dividend : i32) (divisor : i32) : Option :=
-  if eqb divisor 0 then
+  if (eqb divisor 0 : bool) then
     None
   else
     Some (div dividend divisor).

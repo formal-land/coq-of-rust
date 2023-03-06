@@ -13,12 +13,26 @@ Definition
   :=
   VeryVerboseEnumOfThingsToDoWithNumbers.t.
 
-(* Impl [VeryVerboseEnumOfThingsToDoWithNumbers] *)
 Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
+  Definition Self := VeryVerboseEnumOfThingsToDoWithNumbers.
+  
   Definition run (self : ref Self) (x : i32) (y : i32) : i32 :=
     match self with
     | ImplSelf.Add => add x y
     | ImplSelf.Subtract => sub x y
     end.
+  
+  Global Instance
+    AF_run
+    :
+    VeryVerboseEnumOfThingsToDoWithNumbers.AssociatedFunction
+    "run"
+    _
+    :=
+    {|
+    VeryVerboseEnumOfThingsToDoWithNumbers.associated_function := run;
+  |}.
+  Global Instance M_run : Method "run" _ := {|
+    method := run;
+  |}.
 End ImplVeryVerboseEnumOfThingsToDoWithNumbers.
-(* End impl [VeryVerboseEnumOfThingsToDoWithNumbers] *)

@@ -6,20 +6,20 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let n := 1 in
   loop
-    (if lt n 101 then
-      if eqb (rem n 15) 0 then
+    (if (lt n 101 : bool) then
+      if (eqb (rem n 15) 0 : bool) then
         _crate.io._print
           (_crate.fmt.ImplArguments.new_v1 [ "fizzbuzz\n" ] [  ]) ;;
         tt ;;
         tt
       else
-        if eqb (rem n 3) 0 then
+        if (eqb (rem n 3) 0 : bool) then
           _crate.io._print
             (_crate.fmt.ImplArguments.new_v1 [ "fizz\n" ] [  ]) ;;
           tt ;;
           tt
         else
-          if eqb (rem n 5) 0 then
+          if (eqb (rem n 5) 0 : bool) then
             _crate.io._print
               (_crate.fmt.ImplArguments.new_v1 [ "buzz\n" ] [  ]) ;;
             tt ;;
@@ -31,7 +31,7 @@ Definition main (_ : unit) : unit :=
                 [ _crate.fmt.ImplArgumentV1.new_display n ]) ;;
             tt ;;
             tt ;;
-      assign n := add n 1 ;;
+      assign n (add n 1) ;;
       tt
     else
       Break ;;

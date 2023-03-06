@@ -8,7 +8,7 @@ Error StructUnit.
 Module Single.
   Inductive t : Set := Build (_ : A).
   
-  Global Instance Get_0 : IndexedField.Class t 0 A := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Single.
@@ -17,7 +17,7 @@ Definition Single := Single.t.
 Module SingleGen.
   Inductive t : Set := Build (_ : T).
   
-  Global Instance Get_0 : IndexedField.Class t 0 T := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End SingleGen.

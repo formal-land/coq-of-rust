@@ -3,11 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Error TyAlias.
+Definition NanoSecond : Set := u64.
 
-Error TyAlias.
+Definition Inch : Set := u64.
 
-Error TyAlias.
+Definition U64 : Set := u64.
 
 Definition main (_ : unit) : unit :=
   let nanoseconds := cast 5 U64 in

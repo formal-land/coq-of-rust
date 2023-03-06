@@ -27,7 +27,7 @@ Definition main (_ : unit) : unit :=
       [
         _crate.fmt.ImplArgumentV1.new_display n;
         _crate.fmt.ImplArgumentV1.new_display
-          (if is_big n then
+          (if (is_big n : bool) then
             "big"
           else
             "small")

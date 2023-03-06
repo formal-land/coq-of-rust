@@ -9,7 +9,7 @@ Definition main (_ : unit) : unit :=
     method "position" (method "iter" vec) (fun x => eqb (rem x 2) 0) in
   match (index_of_first_even_number, Some 5) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -24,7 +24,7 @@ Definition main (_ : unit) : unit :=
     method "position" (method "into_iter" vec) (fun x => lt x 0) in
   match (index_of_first_negative_number, None) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

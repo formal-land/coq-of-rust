@@ -7,5 +7,5 @@ Definition main (_ : unit) : unit :=
   let _mutable_integer := 7 in
   let _mutable_integer := _mutable_integer in
   tt ;;
-  assign _mutable_integer := 3 ;;
+  assign _mutable_integer 3 ;;
   tt.

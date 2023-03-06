@@ -10,6 +10,16 @@ Module Point.
     x : f64;
     y : f64;
   }.
+  
+  Global Instance Get_x : NamedField.Class t "x" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_y : NamedField.Class t "y" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Point.
 Definition Point : Set := Point.t.
 
@@ -17,14 +27,24 @@ Module Impl__crate_fmt_Debug_for_Point.
   Definition Self := Point.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "Point"
         "x"
-        self.x
+        (NamedField.get (name := "x") self)
         "y"
-        self.y;
+        (NamedField.get (name := "y") self).
+    
+    Global Instance AF_fmt : Point.AssociatedFunction "fmt" _ := {|
+      Point.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Point.
 
@@ -32,9 +52,16 @@ Module Impl__crate_clone_Clone_for_Point.
   Definition Self := Point.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Self) :=
+    Definition clone (self : ref Self) : Point :=
       let _ := tt in
-      deref self;
+      deref self.
+    
+    Global Instance AF_clone : Point.AssociatedFunction "clone" _ := {|
+      Point.associated_function := clone;
+    |}.
+    Global Instance M_clone : Method "clone" _ := {|
+      method := clone;
+    |}.
   |}.
 End Impl__crate_clone_Clone_for_Point.
 
@@ -49,6 +76,16 @@ Module Rectangle.
   Record t : Set := {
     top_left : Point;
     bottom_right : Point;
+  }.
+  
+  Global Instance Get_top_left : NamedField.Class t "top_left" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_bottom_right : NamedField.Class t "bottom_right" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
   }.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.

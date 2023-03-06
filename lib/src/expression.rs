@@ -19,6 +19,10 @@ pub struct MatchArm {
 pub enum Expr {
     LocalVar(String),
     Var(Path),
+    AssociatedFunction {
+        ty: Box<Path>,
+        func: String,
+    },
     Literal(LitKind),
     Call {
         func: Box<Expr>,
@@ -81,9 +85,9 @@ pub enum Expr {
         base: Box<Expr>,
         index: u32,
     },
-    Field {
+    NamedField {
         base: Box<Expr>,
-        field: String,
+        name: String,
     },
     Index {
         base: Box<Expr>,
@@ -162,26 +166,19 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         }
         rustc_hir::ExprKind::Call(func, args) => {
             let args = args.iter().map(|expr| compile_expr(tcx, expr)).collect();
-            // We check if we are actually calling a constructor
-            match func {
-                rustc_hir::Expr {
-                    kind:
-                        rustc_hir::ExprKind::Path(rustc_hir::QPath::Resolved(
-                            _,
-                            path @ rustc_hir::Path {
-                                res:
-                                    rustc_hir::def::Res::Def(
-                                        rustc_hir::def::DefKind::Ctor(
-                                            rustc_hir::def::CtorOf::Struct,
-                                            _,
-                                        ),
-                                        _,
-                                    ),
-                                ..
-                            },
-                        )),
-                    ..
-                } => Expr::StructTuple {
+            match func.kind {
+                // Check if we are calling a constructor
+                rustc_hir::ExprKind::Path(rustc_hir::QPath::Resolved(
+                    _,
+                    path @ rustc_hir::Path {
+                        res:
+                            rustc_hir::def::Res::Def(
+                                rustc_hir::def::DefKind::Ctor(rustc_hir::def::CtorOf::Struct, _),
+                                _,
+                            ),
+                        ..
+                    },
+                )) => Expr::StructTuple {
                     path: compile_path(path),
                     fields: args,
                 },
@@ -299,13 +296,11 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         }
         rustc_hir::ExprKind::Field(base, ident) => {
             let base = Box::new(compile_expr(tcx, base));
-            let index = ident.name.to_string().parse::<u32>();
+            let name = ident.name.to_string();
+            let index = name.parse::<u32>();
             match index {
                 Ok(index) => Expr::IndexedField { base, index },
-                Err(_) => {
-                    let field = ident.name.to_string();
-                    Expr::Field { base, field }
-                }
+                Err(_) => Expr::NamedField { base, name },
             }
         }
         rustc_hir::ExprKind::Index(base, index) => {
@@ -314,8 +309,26 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             Expr::Index { base, index }
         }
         rustc_hir::ExprKind::Path(qpath) => {
-            let path = compile_qpath(qpath);
-            Expr::Var(path)
+            // Check if this is an associated function
+            match qpath {
+                rustc_hir::QPath::Resolved(
+                    _,
+                    path @ rustc_hir::Path {
+                        res: rustc_hir::def::Res::Def(rustc_hir::def::DefKind::AssocFn, _),
+                        ..
+                    },
+                ) => {
+                    let path = compile_path(path);
+                    Expr::AssociatedFunction {
+                        ty: Box::new(path.base_before_last()),
+                        func: path.last().to_string(),
+                    }
+                }
+                _ => {
+                    let path = compile_qpath(qpath);
+                    Expr::Var(path)
+                }
+            }
         }
         rustc_hir::ExprKind::AddrOf(_, _, expr) => compile_expr(tcx, expr),
         rustc_hir::ExprKind::Break(_, _) => Expr::LocalVar("Break".to_string()),
@@ -415,6 +428,15 @@ impl Expr {
         match self {
             Expr::LocalVar(ref name) => text(name),
             Expr::Var(path) => path.to_doc(),
+            Expr::AssociatedFunction { ty, func } => paren(
+                with_paren,
+                nest([
+                    ty.to_doc(),
+                    text(".associated_function"),
+                    line(),
+                    text(format!("\"{func}\"")),
+                ]),
+            ),
             Expr::Literal(literal) => literal_to_doc(literal),
             Expr::Call { func, args } => paren(
                 with_paren,
@@ -515,7 +537,14 @@ impl Expr {
                 with_paren,
                 group([
                     group([
-                        nest([text("if"), line(), condition.to_doc(false)]),
+                        nest([
+                            text("if"),
+                            line(),
+                            text("("),
+                            condition.to_doc(false),
+                            line(),
+                            text(": bool)"),
+                        ]),
                         line(),
                         text("then"),
                     ]),
@@ -552,11 +581,9 @@ impl Expr {
                 nest([
                     text("assign"),
                     line(),
-                    left.to_doc(false),
+                    left.to_doc(true),
                     line(),
-                    text(":="),
-                    line(),
-                    right.to_doc(false),
+                    right.to_doc(true),
                 ]),
             ),
             Expr::AssignOp {
@@ -579,7 +606,6 @@ impl Expr {
                     right.to_doc(false),
                 ]),
             ),
-            Expr::Field { base, field } => nest([base.to_doc(true), text("."), text(field)]),
             Expr::IndexedField { base, index } => paren(
                 with_paren,
                 nest([
@@ -591,6 +617,23 @@ impl Expr {
                         text(":="),
                         line(),
                         text(index.to_string()),
+                        text(")"),
+                    ]),
+                    line(),
+                    base.to_doc(true),
+                ]),
+            ),
+            Expr::NamedField { base, name } => paren(
+                with_paren,
+                nest([
+                    text("NamedField.get"),
+                    line(),
+                    nest([
+                        text("(name"),
+                        line(),
+                        text(":="),
+                        line(),
+                        text(format!("\"{name}\"")),
                         text(")"),
                     ]),
                     line(),

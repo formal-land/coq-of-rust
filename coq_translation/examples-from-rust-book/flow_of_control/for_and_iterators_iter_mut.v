@@ -12,8 +12,7 @@ Definition main (_ : unit) : unit :=
       | None => Break
       | Some {| Some.0 := name; |} =>
         assign
-          deref name
-          :=
+          (deref name)
           match name with
           | Str("Ferris", Cooked) => "There is a rustacean among us!"
           | _ => "Hello"

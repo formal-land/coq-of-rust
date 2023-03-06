@@ -8,6 +8,16 @@ Module Sheep.
     naked : bool;
     name : ref str;
   }.
+  
+  Global Instance Get_naked : NamedField.Class t "naked" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_name : NamedField.Class t "name" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Sheep.
 Definition Sheep : Set := Sheep.t.
 
@@ -16,7 +26,6 @@ Module Animal.
     new : (ref str) -> Self;
     name : (ref Self) -> (ref str);
     noise : (ref Self) -> (ref str);
-    talk : (ref Self) -> _;
   }.
   
   Global Instance Method_new `(Class) : Method "new" _ := {|
@@ -29,16 +38,35 @@ Module Animal.
     method := noise;
   |}.
   Global Instance Method_talk `(Class) : Method "talk" _ := {|
-    method := talk;
+    method (self : ref Self) :=
+      (_crate.io._print
+        (_crate.fmt.ImplArguments.new_v1
+          [ ""; " says "; "\n" ]
+          [
+            _crate.fmt.ImplArgumentV1.new_display (method "name" self);
+            _crate.fmt.ImplArgumentV1.new_display (method "noise" self)
+          ]) ;;
+      tt ;;
+      tt
+      : unit);
   |}.
 End Animal.
 
-(* Impl [Sheep] *)
 Module ImplSheep.
-  Definition is_naked (self : ref Self) : bool := self.naked.
+  Definition Self := Sheep.
+  
+  Definition is_naked (self : ref Self) : bool :=
+    NamedField.get (name := "naked") self.
+  
+  Global Instance AF_is_naked : Sheep.AssociatedFunction "is_naked" _ := {|
+    Sheep.associated_function := is_naked;
+  |}.
+  Global Instance M_is_naked : Method "is_naked" _ := {|
+    method := is_naked;
+  |}.
   
   Definition shear (self : mut_ref Self) :=
-    if method "is_naked" self then
+    if (method "is_naked" self : bool) then
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ ""; " is already naked...\n" ]
@@ -49,40 +77,76 @@ Module ImplSheep.
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ ""; " gets a haircut!\n" ]
-          [ _crate.fmt.ImplArgumentV1.new_display self.name ]) ;;
+          [
+            _crate.fmt.ImplArgumentV1.new_display
+              (NamedField.get (name := "name") self)
+          ]) ;;
       tt ;;
-      assign self.naked := true ;;
+      assign (NamedField.get (name := "naked") self) true ;;
       tt.
+  
+  Global Instance AF_shear : Sheep.AssociatedFunction "shear" _ := {|
+    Sheep.associated_function := shear;
+  |}.
+  Global Instance M_shear : Method "shear" _ := {|
+    method := shear;
+  |}.
 End ImplSheep.
-(* End impl [Sheep] *)
 
 Module Impl_Animal_for_Sheep.
   Definition Self := Sheep.
   
   Global Instance I : Animal.Class Self := {|
-    Animal.new (name : ref str) :=
-      {| Sheep.name := name; Sheep.naked := false; |};
-    Animal.name (self : ref Self) := self.name;
-    Animal.noise (self : ref Self) :=
-      if method "is_naked" self then
+    Definition new (name : ref str) : Sheep :=
+      {| Sheep.name := name; Sheep.naked := false; |}.
+    
+    Global Instance AF_new : Sheep.AssociatedFunction "new" _ := {|
+      Sheep.associated_function := new;
+    |}.
+    Definition name (self : ref Self) : ref str :=
+      NamedField.get (name := "name") self.
+    
+    Global Instance AF_name : Sheep.AssociatedFunction "name" _ := {|
+      Sheep.associated_function := name;
+    |}.
+    Global Instance M_name : Method "name" _ := {|
+      method := name;
+    |}.
+    Definition noise (self : ref Self) : ref str :=
+      if (method "is_naked" self : bool) then
         "baaaaah?"
       else
-        "baaaaah!";
-    Animal.talk (self : ref Self) :=
+        "baaaaah!".
+    
+    Global Instance AF_noise : Sheep.AssociatedFunction "noise" _ := {|
+      Sheep.associated_function := noise;
+    |}.
+    Global Instance M_noise : Method "noise" _ := {|
+      method := noise;
+    |}.
+    Definition talk (self : ref Self) :=
       _crate.io._print
         (_crate.fmt.ImplArguments.new_v1
           [ ""; " pauses briefly... "; "\n" ]
           [
-            _crate.fmt.ImplArgumentV1.new_display self.name;
+            _crate.fmt.ImplArgumentV1.new_display
+              (NamedField.get (name := "name") self);
             _crate.fmt.ImplArgumentV1.new_display (method "noise" self)
           ]) ;;
       tt ;;
-      tt;
+      tt.
+    
+    Global Instance AF_talk : Sheep.AssociatedFunction "talk" _ := {|
+      Sheep.associated_function := talk;
+    |}.
+    Global Instance M_talk : Method "talk" _ := {|
+      method := talk;
+    |}.
   |}.
 End Impl_Animal_for_Sheep.
 
 Definition main (_ : unit) : unit :=
-  let dolly := Animal.new "Dolly" in
+  let dolly := (Animal.associated_function "new") "Dolly" in
   method "talk" dolly ;;
   method "shear" dolly ;;
   method "talk" dolly ;;

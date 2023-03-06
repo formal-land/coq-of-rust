@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition drink (beverage : ref str) : unit :=
-  if eqb beverage "lemonade" then
+  if (eqb beverage "lemonade" : bool) then
     _crate.rt.begin_panic "AAAaaaaa!!!!" ;;
     tt
   else

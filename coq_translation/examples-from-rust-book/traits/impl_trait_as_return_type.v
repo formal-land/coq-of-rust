@@ -22,7 +22,7 @@ Definition main (_ : unit) : unit :=
   let v3 := combine_vecs v1 v2 in
   match (Some 1, method "next" v3) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -35,7 +35,7 @@ Definition main (_ : unit) : unit :=
   end ;;
   match (Some 2, method "next" v3) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -48,7 +48,7 @@ Definition main (_ : unit) : unit :=
   end ;;
   match (Some 3, method "next" v3) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -61,7 +61,7 @@ Definition main (_ : unit) : unit :=
   end ;;
   match (Some 4, method "next" v3) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -74,7 +74,7 @@ Definition main (_ : unit) : unit :=
   end ;;
   match (Some 5, method "next" v3) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

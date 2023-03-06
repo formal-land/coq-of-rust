@@ -8,7 +8,7 @@ Module Debug := std.fmt.Debug.
 Module Ref.
   Inductive t : Set := Build (_ : ref T).
   
-  Global Instance Get_0 : IndexedField.Class t 0 ref T := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Ref.
@@ -18,11 +18,21 @@ Module Impl__crate_fmt_Debug_for_Ref.
   Definition Self := Ref.
   
   Global Instance I 'a T : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Ref"
-        (IndexedField.get (index := 0) self);
+        (IndexedField.get (index := 0) self).
+    
+    Global Instance AF_fmt : Ref.AssociatedFunction "fmt" _ := {|
+      Ref.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Ref.
 

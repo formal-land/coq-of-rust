@@ -7,7 +7,7 @@ Module error := std.error.
 
 Module fmt := std.fmt.
 
-Error TyAlias.
+Definition Result : Set := std.result.Result.
 
 Error StructUnit.
 
@@ -15,8 +15,18 @@ Module Impl__crate_fmt_Debug_for_EmptyVec.
   Definition Self := EmptyVec.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
-      _crate.fmt.ImplFormatter.write_str f "EmptyVec";
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
+      _crate.fmt.ImplFormatter.write_str f "EmptyVec".
+    
+    Global Instance AF_fmt : EmptyVec.AssociatedFunction "fmt" _ := {|
+      EmptyVec.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_EmptyVec.
 
@@ -24,13 +34,20 @@ Module Impl_fmt_Display_for_EmptyVec.
   Definition Self := EmptyVec.
   
   Global Instance I : fmt.Display.Class Self := {|
-    fmt.Display.fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
+    Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
       method
         "write_fmt"
         f
         (_crate.fmt.ImplArguments.new_v1
           [ "invalid first item to double" ]
-          [  ]);
+          [  ]).
+    
+    Global Instance AF_fmt : EmptyVec.AssociatedFunction "fmt" _ := {|
+      EmptyVec.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl_fmt_Display_for_EmptyVec.
 

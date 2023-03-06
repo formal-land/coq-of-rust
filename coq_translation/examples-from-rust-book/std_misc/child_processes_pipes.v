@@ -34,7 +34,7 @@ Definition main (_ : unit) : unit :=
   match
     method
       "write_all"
-      (method "unwrap" process.stdin)
+      (method "unwrap" (NamedField.get (name := "stdin") process))
       (method "as_bytes" PANGRAM)
   with
   | Err (why) =>
@@ -48,7 +48,12 @@ Definition main (_ : unit) : unit :=
     tt
   end ;;
   let s := ImplString.new tt in
-  match method "read_to_string" (method "unwrap" process.stdout) s with
+  match
+    method
+      "read_to_string"
+      (method "unwrap" (NamedField.get (name := "stdout") process))
+      s
+  with
   | Err (why) =>
     _crate.rt.panic_fmt
       (_crate.fmt.ImplArguments.new_v1

@@ -10,7 +10,7 @@ Module TryInto := std.convert.TryInto.
 Module EvenNumber.
   Inductive t : Set := Build (_ : i32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 i32 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End EvenNumber.
@@ -20,11 +20,21 @@ Module Impl__crate_fmt_Debug_for_EvenNumber.
   Definition Self := EvenNumber.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "EvenNumber"
-        (IndexedField.get (index := 0) self);
+        (IndexedField.get (index := 0) self).
+    
+    Global Instance AF_fmt : EvenNumber.AssociatedFunction "fmt" _ := {|
+      EvenNumber.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_EvenNumber.
 
@@ -39,10 +49,17 @@ Module Impl__crate_cmp_PartialEq_for_EvenNumber.
   Definition Self := EvenNumber.
   
   Global Instance I : _crate.cmp.PartialEq.Class Self := {|
-    _crate.cmp.PartialEq.eq (self : ref Self) (other : ref EvenNumber) :=
+    Definition eq (self : ref Self) (other : ref EvenNumber) : bool :=
       eqb
         (IndexedField.get (index := 0) self)
-        (IndexedField.get (index := 0) other);
+        (IndexedField.get (index := 0) other).
+    
+    Global Instance AF_eq : EvenNumber.AssociatedFunction "eq" _ := {|
+      EvenNumber.associated_function := eq;
+    |}.
+    Global Instance M_eq : Method "eq" _ := {|
+      method := eq;
+    |}.
   |}.
 End Impl__crate_cmp_PartialEq_for_EvenNumber.
 
@@ -50,19 +67,30 @@ Module Impl_TryFrom_for_EvenNumber.
   Definition Self := EvenNumber.
   
   Global Instance I : TryFrom.Class i32 Self := {|
-    TryFrom.Error := ;
-    TryFrom.try_from (value : i32) :=
-      if eqb (rem value 2) 0 then
+    Definition Error : Set := .
+    Definition try_from (value : i32) : Result :=
+      if (eqb (rem value 2) 0 : bool) then
         Ok (EvenNumber.Build value)
       else
-        Err ();
+        Err ().
+    
+    Global Instance
+      AF_try_from
+      :
+      EvenNumber.AssociatedFunction
+      "try_from"
+      _
+      :=
+      {|
+      EvenNumber.associated_function := try_from;
+    |}.
   |}.
 End Impl_TryFrom_for_EvenNumber.
 
 Definition main (_ : unit) : unit :=
   match (ImplEvenNumber.try_from 8, Ok (EvenNumber.Build 8)) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -75,7 +103,7 @@ Definition main (_ : unit) : unit :=
   end ;;
   match (ImplEvenNumber.try_from 5, Err ()) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -89,7 +117,7 @@ Definition main (_ : unit) : unit :=
   let result := method "try_into" 8 in
   match (result, Ok (EvenNumber.Build 8)) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -103,7 +131,7 @@ Definition main (_ : unit) : unit :=
   let result := method "try_into" 5 in
   match (result, Err ()) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

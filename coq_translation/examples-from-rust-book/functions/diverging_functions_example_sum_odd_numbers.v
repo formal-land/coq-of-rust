@@ -18,7 +18,7 @@ Definition sum_odd_numbers (up_to : u32) : u32 :=
           | Bool(true) => i
           | Bool(false) => Continue
           end in
-        assign acc := add acc addition ;;
+        assign acc (add acc addition) ;;
         tt
       end ;;
       tt

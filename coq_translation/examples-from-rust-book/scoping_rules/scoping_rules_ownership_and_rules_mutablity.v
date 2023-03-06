@@ -16,7 +16,7 @@ Definition main (_ : unit) : unit :=
       [ "mutable_box contains "; "\n" ]
       [ _crate.fmt.ImplArgumentV1.new_display mutable_box ]) ;;
   tt ;;
-  assign deref mutable_box := 4 ;;
+  assign (deref mutable_box) 4 ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "mutable_box now contains "; "\n" ]

@@ -19,7 +19,17 @@ Module Impl_HasArea_for_Rectangle.
   Definition Self := Rectangle.
   
   Global Instance I : HasArea.Class Self := {|
-    HasArea.area (self : ref Self) := mul self.length self.height;
+    Definition area (self : ref Self) : f64 :=
+      mul
+        (NamedField.get (name := "length") self)
+        (NamedField.get (name := "height") self).
+    
+    Global Instance AF_area : Rectangle.AssociatedFunction "area" _ := {|
+      Rectangle.associated_function := area;
+    |}.
+    Global Instance M_area : Method "area" _ := {|
+      method := area;
+    |}.
   |}.
 End Impl_HasArea_for_Rectangle.
 
@@ -28,6 +38,16 @@ Module Rectangle.
     length : f64;
     height : f64;
   }.
+  
+  Global Instance Get_length : NamedField.Class t "length" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_height : NamedField.Class t "height" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
@@ -35,14 +55,24 @@ Module Impl__crate_fmt_Debug_for_Rectangle.
   Definition Self := Rectangle.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "Rectangle"
         "length"
-        self.length
+        (NamedField.get (name := "length") self)
         "height"
-        self.height;
+        (NamedField.get (name := "height") self).
+    
+    Global Instance AF_fmt : Rectangle.AssociatedFunction "fmt" _ := {|
+      Rectangle.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Rectangle.
 
@@ -50,6 +80,16 @@ Module Triangle.
   Record t : Set := {
     length : f64;
     height : f64;
+  }.
+  
+  Global Instance Get_length : NamedField.Class t "length" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_height : NamedField.Class t "height" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
   }.
 End Triangle.
 Definition Triangle : Set := Triangle.t.

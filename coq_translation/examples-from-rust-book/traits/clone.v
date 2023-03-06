@@ -9,8 +9,18 @@ Module Impl__crate_fmt_Debug_for_Unit.
   Definition Self := Unit.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
-      _crate.fmt.ImplFormatter.write_str f "Unit";
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
+      _crate.fmt.ImplFormatter.write_str f "Unit".
+    
+    Global Instance AF_fmt : Unit.AssociatedFunction "fmt" _ := {|
+      Unit.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Unit.
 
@@ -18,7 +28,14 @@ Module Impl__crate_clone_Clone_for_Unit.
   Definition Self := Unit.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Self) := deref self;
+    Definition clone (self : ref Self) : Unit := deref self.
+    
+    Global Instance AF_clone : Unit.AssociatedFunction "clone" _ := {|
+      Unit.associated_function := clone;
+    |}.
+    Global Instance M_clone : Method "clone" _ := {|
+      method := clone;
+    |}.
   |}.
 End Impl__crate_clone_Clone_for_Unit.
 
@@ -32,10 +49,10 @@ End Impl__crate_marker_Copy_for_Unit.
 Module Pair.
   Inductive t : Set := Build (_ : Box) (_ : Box).
   
-  Global Instance Get_0 : IndexedField.Class t 0 Box := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0 _) := x0;
   |}.
-  Global Instance Get_1 : IndexedField.Class t 1 Box := {|
+  Global Instance Get_1 : IndexedField.Class t 1 _ := {|
     IndexedField.get '(Build _ x1) := x1;
   |}.
 End Pair.
@@ -45,10 +62,19 @@ Module Impl__crate_clone_Clone_for_Pair.
   Definition Self := Pair.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Self) :=
+    Definition clone (self : ref Self) : Pair :=
       Pair.Build
-        (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
-        (_crate.clone.Clone.clone (IndexedField.get (index := 1) self));
+        ((_crate.clone.Clone.associated_function "clone")
+          (IndexedField.get (index := 0) self))
+        ((_crate.clone.Clone.associated_function "clone")
+          (IndexedField.get (index := 1) self)).
+    
+    Global Instance AF_clone : Pair.AssociatedFunction "clone" _ := {|
+      Pair.associated_function := clone;
+    |}.
+    Global Instance M_clone : Method "clone" _ := {|
+      method := clone;
+    |}.
   |}.
 End Impl__crate_clone_Clone_for_Pair.
 
@@ -56,12 +82,22 @@ Module Impl__crate_fmt_Debug_for_Pair.
   Definition Self := Pair.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_tuple_field2_finish
         f
         "Pair"
         (IndexedField.get (index := 0) self)
-        (IndexedField.get (index := 1) self);
+        (IndexedField.get (index := 1) self).
+    
+    Global Instance AF_fmt : Pair.AssociatedFunction "fmt" _ := {|
+      Pair.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Pair.
 

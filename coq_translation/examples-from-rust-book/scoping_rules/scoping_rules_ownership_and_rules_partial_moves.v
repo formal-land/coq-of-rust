@@ -10,6 +10,16 @@ Module Person.
     name : String;
     age : Box;
   }.
+  
+  Global Instance Get_name : NamedField.Class t "name" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_age : NamedField.Class t "age" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Person.
 Definition Person : Set := Person.t.
 
@@ -17,13 +27,23 @@ Module Impl__crate_fmt_Debug_for_Person.
   Definition Self := Person.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_struct_field2_finish
         f
         "Person"
         "name"
-        self.name
+        (NamedField.get (name := "name") self)
         "age"
-        self.age;
+        (NamedField.get (name := "age") self).
+    
+    Global Instance AF_fmt : Person.AssociatedFunction "fmt" _ := {|
+      Person.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Person.

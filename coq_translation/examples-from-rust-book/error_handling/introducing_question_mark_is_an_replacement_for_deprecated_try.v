@@ -14,14 +14,18 @@ Definition multiply
     match method "parse" first_number_str with
     | _crate.result.Result.Ok (val) => val
     | _crate.result.Result.Err (err) =>
-      Return (_crate.result.Result.Err (_crate.convert.From.from err)) ;;
+      Return
+        (_crate.result.Result.Err
+          ((_crate.convert.From.associated_function "from") err)) ;;
       tt
     end in
   let second_number :=
     match method "parse" second_number_str with
     | _crate.result.Result.Ok (val) => val
     | _crate.result.Result.Err (err) =>
-      Return (_crate.result.Result.Err (_crate.convert.From.from err)) ;;
+      Return
+        (_crate.result.Result.Err
+          ((_crate.convert.From.associated_function "from") err)) ;;
       tt
     end in
   Ok (mul first_number second_number).

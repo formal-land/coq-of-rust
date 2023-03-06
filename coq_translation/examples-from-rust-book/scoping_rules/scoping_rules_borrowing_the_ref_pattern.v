@@ -8,6 +8,16 @@ Module Point.
     x : i32;
     y : i32;
   }.
+  
+  Global Instance Get_x : NamedField.Class t "x" _ := {|
+    NamedField.get '(Build_t x0 _) := x0;
+  |}.
+  Global Instance Get_y : NamedField.Class t "y" _ := {|
+    NamedField.get '(Build_t _ x1) := x1;
+  |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
 End Point.
 Definition Point : Set := Point.t.
 
@@ -15,9 +25,16 @@ Module Impl__crate_clone_Clone_for_Point.
   Definition Self := Point.
   
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    _crate.clone.Clone.clone (self : ref Self) :=
+    Definition clone (self : ref Self) : Point :=
       let _ := tt in
-      deref self;
+      deref self.
+    
+    Global Instance AF_clone : Point.AssociatedFunction "clone" _ := {|
+      Point.associated_function := clone;
+    |}.
+    Global Instance M_clone : Method "clone" _ := {|
+      method := clone;
+    |}.
   |}.
 End Impl__crate_clone_Clone_for_Point.
 
@@ -46,27 +63,31 @@ Definition main (_ : unit) : unit :=
     deref ref_to_x in
   let mutable_point := point in
   let Point {| Point.x := _; Point.y := mut_ref_to_y; |} := mutable_point in
-  assign deref mut_ref_to_y := 1 ;;
+  assign (deref mut_ref_to_y) 1 ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "point is ("; ", "; ")\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display point.x;
-        _crate.fmt.ImplArgumentV1.new_display point.y
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "x") point);
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "y") point)
       ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "mutable_point is ("; ", "; ")\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display mutable_point.x;
-        _crate.fmt.ImplArgumentV1.new_display mutable_point.y
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "x") mutable_point);
+        _crate.fmt.ImplArgumentV1.new_display
+          (NamedField.get (name := "y") mutable_point)
       ]) ;;
   tt ;;
   let mutable_tuple := (ImplBox.new 5, 3) in
   let (_, last) := mutable_tuple in
-  assign deref last := 2 ;;
+  assign (deref last) 2 ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1

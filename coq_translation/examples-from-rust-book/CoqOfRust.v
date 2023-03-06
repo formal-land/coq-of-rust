@@ -54,8 +54,12 @@ Parameter axiom : forall {A : Set}, A.
 
 Parameter cast : forall {A : Set}, A -> forall (B : Set), B.
 
-Notation "e1 ;; e2" := (let '_ := e1 in e2)
+Parameter sequence : forall {A B : Set}, A -> B -> B.
+
+Notation "e1 ;; e2" := (sequence e1 e2)
   (at level 61, right associativity).
+
+Parameter assign : forall {A : Set}, A -> A -> unit.
 
 Definition u8 : Set := Z.
 Definition u16 : Set := Z.
@@ -97,6 +101,12 @@ Module IndexedField.
   |}.
 End IndexedField.
 
+Module NamedField.
+  Class Class (Self : Set) (name : string) (T : Set) : Set := {
+    get : Self -> T;
+  }.
+End NamedField.
+
 Module Root.
   Module std.
     Module prelude.
@@ -119,18 +129,21 @@ Module std.
   End result.
 
   Module fmt.
-    Parameter Formatter : Set.
+    Parameter Alignment : Set.
+
     Parameter Error : Set.
 
     Definition Result : Set := result.Result unit Error.
 
-    Module Display.
-      Class Class (Self : Set) : Set := {
-        fmt : Self -> mut_ref Formatter -> Result;
-      }.
-    End Display.
+    Module Arguments.
+      Parameter t : Set.
 
-    Parameter Arguments : Set.
+      Class AssociatedFunction (name : string) (T : Set) : Set := {
+        associated_function : T;
+      }.
+      Arguments associated_function name {T AssociatedFunction}.
+    End Arguments.
+    Definition Arguments := Arguments.t.
 
     Module Write.
       Class Class (Self : Set) : Set := {
@@ -150,7 +163,185 @@ Module std.
       |}.
     End Write.
 
-    Global Instance Write_for_Formatter  : Write.Class Formatter.
+    Module Formatter.
+      Parameter t : Set.
+
+      Class AssociatedFunction (name : string) (T : Set) : Set := {
+        associated_function : T;
+      }.
+      Arguments associated_function name {T AssociatedFunction}.
+    End Formatter.
+    Definition Formatter := Formatter.t.
+
+    Module ImplFormatter.
+      Parameter new : forall {W : Set} `{Write.Class W}, mut_ref W -> Formatter.
+
+      Global Instance Formatter_new {W : Set} `{Write.Class W} :
+        Formatter.AssociatedFunction "new" _ := {|
+        Formatter.associated_function := new;
+      |}.
+    End ImplFormatter.
+
+    Module Display.
+      Class Class (Self : Set) : Set := {
+        fmt : ref Self -> mut_ref Formatter -> Result;
+      }.
+    End Display.
+
+    Module Debug.
+      Class Class (Self : Set) : Set := {
+        fmt : ref Self -> mut_ref Formatter -> Result;
+      }.
+    End Debug.
+
+    Module Octal.
+      Class Class (Self : Set) : Set := {
+        fmt : ref Self -> mut_ref Formatter -> Result;
+      }.
+    End Octal.
+
+    Module LowerHex.
+      Class Class (Self : Set) : Set := {
+        fmt : ref Self -> mut_ref Formatter -> Result;
+      }.
+    End LowerHex.
+
+    Module UpperHex.
+      Class Class (Self : Set) : Set := {
+        fmt : ref Self -> mut_ref Formatter -> Result;
+      }.
+    End UpperHex.
+
+    Module Pointer.
+      Class Class (Self : Set) : Set := {
+        fmt : ref Self -> mut_ref Formatter -> Result;
+      }.
+    End Pointer.
+
+    Module Binary.
+      Class Class (Self : Set) : Set := {
+        fmt : ref Self -> mut_ref Formatter -> Result;
+      }.
+    End Binary.
+
+    Module LowerExp.
+      Class Class (Self : Set) : Set := {
+        fmt : ref Self -> mut_ref Formatter -> Result;
+      }.
+    End LowerExp.
+
+    Module UpperExp.
+      Class Class (Self : Set) : Set := {
+        fmt : ref Self -> mut_ref Formatter -> Result;
+      }.
+    End UpperExp.
+
+    Module ArgumentV1.
+      Parameter t : Set.
+
+      Class AssociatedFunction (name : string) (T : Set) : Set := {
+        associated_function : T;
+      }.
+      Arguments associated_function name {T AssociatedFunction}.
+    End ArgumentV1.
+    Definition ArgumentV1 := ArgumentV1.t.
+
+    Module ImplArgumentV1.
+      Definition Self := ArgumentV1.
+
+      Parameter new :
+        forall {T : Set},
+        ref T -> (ref T -> mut_ref Formatter -> Result) -> Self.
+
+      Global Instance ArgumentV1_new {T : Set} :
+        ArgumentV1.AssociatedFunction "new" _ := {|
+        ArgumentV1.associated_function := new (T := T) ;
+      |}.
+
+      Parameter new_display :
+        forall {T : Set} `{Display.Class T}, ref T -> Self.
+
+      Global Instance ArgumentV1_new_display {T : Set} `{Display.Class T} :
+        ArgumentV1.AssociatedFunction "new_display" _ := {|
+        ArgumentV1.associated_function := new_display (T := T);
+      |}.
+
+      Parameter new_debug :
+        forall {T : Set} `{Debug.Class T}, ref T -> Self.
+
+      Global Instance ArgumentV1_new_debug {T : Set} `{Debug.Class T} :
+        ArgumentV1.AssociatedFunction "new_debug" _ := {|
+        ArgumentV1.associated_function := new_debug (T := T);
+      |}.
+
+      Parameter new_octal :
+        forall {T : Set} `{Octal.Class T}, ref T -> Self.
+
+      Global Instance ArgumentV1_new_octal {T : Set} `{Octal.Class T} :
+        ArgumentV1.AssociatedFunction "new_octal" _ := {|
+        ArgumentV1.associated_function := new_octal (T := T);
+      |}.
+
+      Parameter new_lower_hex :
+        forall {T : Set} `{LowerHex.Class T}, ref T -> Self.
+
+      Global Instance ArgumentV1_new_lower_hex {T : Set} `{LowerHex.Class T} :
+        ArgumentV1.AssociatedFunction "new_lower_hex" _ := {|
+        ArgumentV1.associated_function := new_lower_hex (T := T);
+      |}.
+
+      Parameter new_upper_hex :
+        forall {T : Set} `{UpperHex.Class T}, ref T -> Self.
+
+      Global Instance ArgumentV1_new_upper_hex {T : Set} `{UpperHex.Class T} :
+        ArgumentV1.AssociatedFunction "new_upper_hex" _ := {|
+        ArgumentV1.associated_function := new_upper_hex (T := T);
+      |}.
+
+      Parameter new_pointer :
+        forall {T : Set} `{Pointer.Class T}, ref T -> Self.
+
+      Global Instance ArgumentV1_new_pointer {T : Set} `{Pointer.Class T} :
+        ArgumentV1.AssociatedFunction "new_pointer" _ := {|
+        ArgumentV1.associated_function := new_pointer (T := T);
+      |}.
+
+      Parameter new_binary :
+        forall {T : Set} `{Binary.Class T}, ref T -> Self.
+
+      Global Instance ArgumentV1_new_binary {T : Set} `{Binary.Class T} :
+        ArgumentV1.AssociatedFunction "new_binary" _ := {|
+        ArgumentV1.associated_function := new_binary (T := T);
+      |}.
+
+      Parameter new_lower_exp :
+        forall {T : Set} `{LowerExp.Class T}, ref T -> Self.
+
+      Global Instance ArgumentV1_new_lower_exp {T : Set} `{LowerExp.Class T} :
+        ArgumentV1.AssociatedFunction "new_lower_exp" _ := {|
+        ArgumentV1.associated_function := new_lower_exp (T := T);
+      |}.
+
+      Parameter new_upper_exp :
+        forall {T : Set} `{UpperExp.Class T}, ref T -> Self.
+
+      Global Instance ArgumentV1_new_upper_exp {T : Set} `{UpperExp.Class T} :
+        ArgumentV1.AssociatedFunction "new_upper_exp" _ := {|
+        ArgumentV1.associated_function := new_upper_exp (T := T);
+      |}.
+    End ImplArgumentV1.
+
+    Module ImplArguments.
+      Parameter new_v1 :
+        ref (list (ref str)) -> ref (list ArgumentV1) -> Arguments.
+
+      Global Instance Arguments_new_v1 :
+        Arguments.AssociatedFunction "new_v1" _ := {|
+        Arguments.associated_function := new_v1;
+      |}.
+    End ImplArguments.
+
+    Global Instance Write_for_Formatter : Write.Class Formatter.
     Admitted.
   End fmt.
 
@@ -173,6 +364,11 @@ Module std.
     End Error.
   End error.
 End std.
+
+Module str_Instances.
+  Global Instance IDisplay : std.fmt.Display.Class str.
+  Admitted.
+End str_Instances.
 
 Module _crate.
   Module intrinsics.
@@ -228,35 +424,7 @@ Module _crate.
     Parameter _print : forall {A : Set}, A -> unit.
   End io.
 
-  Module fmt.
-    Parameter Formatter : Set.
-
-    Parameter Error : Set.
-
-    Definition Result : Set := std.result.Result unit Error.
-
-    Module ImplArguments.
-      Parameter new_v1 : forall {A : Set}, A -> list str -> std.fmt.Arguments.
-      Parameter new_v1_formatted : forall {A B C : Set}, A -> B -> C -> unit.
-    End ImplArguments.
-
-    Module ImplArgumentV1.
-      Parameter new_display : forall {A : Set}, A -> unit.
-      Parameter new_binary : forall {A : Set}, A -> unit.
-      Parameter new_octal : forall {A : Set}, A -> unit.
-      Parameter new_lower_hex : forall {A : Set}, A -> unit.
-    End ImplArgumentV1.
-
-    Module ImplFormatter.
-      Parameter write_str : Formatter -> string -> Result.
-    End ImplFormatter.
-
-    Module Debug.
-      Class Class (Self : Set) : Set := {
-        fmt : ref Self -> mut_ref Formatter -> Result;
-      }.
-    End Debug.
-  End fmt.
+  Module fmt := std.fmt.
 
   Module log.
     Parameter sol_log : str -> unit.

@@ -56,7 +56,7 @@ Definition main (_ : unit) : unit :=
   let empty_array := [  ] in
   match (empty_array, [  ]) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -69,7 +69,7 @@ Definition main (_ : unit) : unit :=
   end ;;
   match (empty_array, [  ][{|  |}]) with
   | (left_val, right_val) =>
-    if not (eqb (deref left_val) (deref right_val)) then
+    if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

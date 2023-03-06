@@ -15,19 +15,29 @@ Module Impl__crate_fmt_Debug_for_Food.
   Definition Self := Food.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       match self with
       | Food.Apple => _crate.fmt.ImplFormatter.write_str f "Apple"
       | Food.Carrot => _crate.fmt.ImplFormatter.write_str f "Carrot"
       | Food.Potato => _crate.fmt.ImplFormatter.write_str f "Potato"
-      end;
+      end.
+    
+    Global Instance AF_fmt : Food.AssociatedFunction "fmt" _ := {|
+      Food.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Food.
 
 Module Peeled.
   Inductive t : Set := Build (_ : Food).
   
-  Global Instance Get_0 : IndexedField.Class t 0 Food := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Peeled.
@@ -37,18 +47,28 @@ Module Impl__crate_fmt_Debug_for_Peeled.
   Definition Self := Peeled.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Peeled"
-        (IndexedField.get (index := 0) self);
+        (IndexedField.get (index := 0) self).
+    
+    Global Instance AF_fmt : Peeled.AssociatedFunction "fmt" _ := {|
+      Peeled.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Peeled.
 
 Module Chopped.
   Inductive t : Set := Build (_ : Food).
   
-  Global Instance Get_0 : IndexedField.Class t 0 Food := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Chopped.
@@ -58,18 +78,28 @@ Module Impl__crate_fmt_Debug_for_Chopped.
   Definition Self := Chopped.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Chopped"
-        (IndexedField.get (index := 0) self);
+        (IndexedField.get (index := 0) self).
+    
+    Global Instance AF_fmt : Chopped.AssociatedFunction "fmt" _ := {|
+      Chopped.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Chopped.
 
 Module Cooked.
   Inductive t : Set := Build (_ : Food).
   
-  Global Instance Get_0 : IndexedField.Class t 0 Food := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Cooked.
@@ -79,11 +109,21 @@ Module Impl__crate_fmt_Debug_for_Cooked.
   Definition Self := Cooked.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_tuple_field1_finish
         f
         "Cooked"
-        (IndexedField.get (index := 0) self);
+        (IndexedField.get (index := 0) self).
+    
+    Global Instance AF_fmt : Cooked.AssociatedFunction "fmt" _ := {|
+      Cooked.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Cooked.
 

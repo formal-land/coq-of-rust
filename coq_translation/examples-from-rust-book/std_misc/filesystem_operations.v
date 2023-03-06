@@ -105,7 +105,7 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1 [ "`ln -s ../b.txt a/c/b.txt`\n" ] [  ]) ;;
   tt ;;
-  if true then
+  if (true : bool) then
     method
       "unwrap_or_else"
       (unix.fs.symlink "../b.txt" "a/c/b.txt")

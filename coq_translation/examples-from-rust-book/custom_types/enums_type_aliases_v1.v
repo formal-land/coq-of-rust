@@ -13,7 +13,7 @@ Definition
   :=
   VeryVerboseEnumOfThingsToDoWithNumbers.t.
 
-Error TyAlias.
+Definition Operations : Set := VeryVerboseEnumOfThingsToDoWithNumbers.
 
 Definition main (_ : unit) : unit :=
   let x := ImplOperations.Add in

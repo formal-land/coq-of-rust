@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Definition add (a : i32) (b : i32) : i32 := add a b.
 
 Definition div (a : i32) (b : i32) : i32 :=
-  if eqb b 0 then
+  if (eqb b 0 : bool) then
     _crate.rt.begin_panic "Divide-by-zero error" ;;
     tt
   else

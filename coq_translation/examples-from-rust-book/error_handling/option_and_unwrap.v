@@ -23,7 +23,7 @@ Definition give_adult (drink : Option) : unit :=
 
 Definition drink (drink : Option) : unit :=
   let inside := method "unwrap" drink in
-  if eqb inside "lemonade" then
+  if (eqb inside "lemonade" : bool) then
     _crate.rt.begin_panic "AAAaaaaa!!!!" ;;
     tt
   else

@@ -16,9 +16,10 @@ Module checked.
     Definition Self := MathError.
     
     Global Instance I : _crate.fmt.Debug.Class Self := {|
-      _crate.fmt.Debug.fmt
+      Definition fmt
           (self : ref Self)
-          (f : mut_ref _crate.fmt.Formatter) :=
+          (f : mut_ref _crate.fmt.Formatter)
+          : _crate.fmt.Result :=
         match self with
         | MathError.DivisionByZero =>
           _crate.fmt.ImplFormatter.write_str f "DivisionByZero"
@@ -26,26 +27,33 @@ Module checked.
           _crate.fmt.ImplFormatter.write_str f "NonPositiveLogarithm"
         | MathError.NegativeSquareRoot =>
           _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
-        end;
+        end.
+      
+      Global Instance AF_fmt : MathError.AssociatedFunction "fmt" _ := {|
+        MathError.associated_function := fmt;
+      |}.
+      Global Instance M_fmt : Method "fmt" _ := {|
+        method := fmt;
+      |}.
     |}.
   End Impl__crate_fmt_Debug_for_MathError.
   
-  Error TyAlias.
+  Definition MathResult : Set := Result.
   
   Definition div (x : f64) (y : f64) : MathResult :=
-    if eqb y 0 (* 0.0 *) then
+    if (eqb y 0 (* 0.0 *) : bool) then
       Err MathError.DivisionByZero
     else
       Ok (div x y).
   
   Definition sqrt (x : f64) : MathResult :=
-    if lt x 0 (* 0.0 *) then
+    if (lt x 0 (* 0.0 *) : bool) then
       Err MathError.NegativeSquareRoot
     else
       Ok (method "sqrt" x).
   
   Definition ln (x : f64) : MathResult :=
-    if le x 0 (* 0.0 *) then
+    if (le x 0 (* 0.0 *) : bool) then
       Err MathError.NonPositiveLogarithm
     else
       Ok (method "ln" x).
@@ -93,7 +101,10 @@ Module Impl__crate_fmt_Debug_for_MathError.
   Definition Self := MathError.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       match self with
       | MathError.DivisionByZero =>
         _crate.fmt.ImplFormatter.write_str f "DivisionByZero"
@@ -101,26 +112,33 @@ Module Impl__crate_fmt_Debug_for_MathError.
         _crate.fmt.ImplFormatter.write_str f "NonPositiveLogarithm"
       | MathError.NegativeSquareRoot =>
         _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
-      end;
+      end.
+    
+    Global Instance AF_fmt : MathError.AssociatedFunction "fmt" _ := {|
+      MathError.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_MathError.
 
-Error TyAlias.
+Definition MathResult : Set := Result.
 
 Definition div (x : f64) (y : f64) : MathResult :=
-  if eqb y 0 (* 0.0 *) then
+  if (eqb y 0 (* 0.0 *) : bool) then
     Err MathError.DivisionByZero
   else
     Ok (div x y).
 
 Definition sqrt (x : f64) : MathResult :=
-  if lt x 0 (* 0.0 *) then
+  if (lt x 0 (* 0.0 *) : bool) then
     Err MathError.NegativeSquareRoot
   else
     Ok (method "sqrt" x).
 
 Definition ln (x : f64) : MathResult :=
-  if le x 0 (* 0.0 *) then
+  if (le x 0 (* 0.0 *) : bool) then
     Err MathError.NonPositiveLogarithm
   else
     Ok (method "ln" x).

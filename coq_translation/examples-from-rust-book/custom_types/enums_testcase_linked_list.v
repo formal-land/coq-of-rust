@@ -12,18 +12,37 @@ Module List.
 End List.
 Definition List := List.t.
 
-(* Impl [List] *)
 Module ImplList.
+  Definition Self := List.
+  
   Definition new (_ : unit) : List := Nil.
+  
+  Global Instance AF_new : List.AssociatedFunction "new" _ := {|
+    List.associated_function := new;
+  |}.
   
   Definition prepend (self : Self) (elem : u32) : List :=
     Cons elem (ImplBox.new self).
+  
+  Global Instance AF_prepend : List.AssociatedFunction "prepend" _ := {|
+    List.associated_function := prepend;
+  |}.
+  Global Instance M_prepend : Method "prepend" _ := {|
+    method := prepend;
+  |}.
   
   Definition len (self : ref Self) : u32 :=
     match deref self with
     | Cons (_, tail) => add 1 (method "len" tail)
     | Nil => 0
     end.
+  
+  Global Instance AF_len : List.AssociatedFunction "len" _ := {|
+    List.associated_function := len;
+  |}.
+  Global Instance M_len : Method "len" _ := {|
+    method := len;
+  |}.
   
   Definition stringify (self : ref Self) : String :=
     match deref self with
@@ -42,14 +61,20 @@ Module ImplList.
         _crate.fmt.format (_crate.fmt.ImplArguments.new_v1 [ "Nil" ] [  ]) in
       res
     end.
+  
+  Global Instance AF_stringify : List.AssociatedFunction "stringify" _ := {|
+    List.associated_function := stringify;
+  |}.
+  Global Instance M_stringify : Method "stringify" _ := {|
+    method := stringify;
+  |}.
 End ImplList.
-(* End impl [List] *)
 
 Definition main (_ : unit) : unit :=
   let list := ImplList.new tt in
-  assign list := method "prepend" list 1 ;;
-  assign list := method "prepend" list 2 ;;
-  assign list := method "prepend" list 3 ;;
+  assign list (method "prepend" list 1) ;;
+  assign list (method "prepend" list 2) ;;
+  assign list (method "prepend" list 3) ;;
   _crate.io._print
     (_crate.fmt.ImplArguments.new_v1
       [ "linked list has length: "; "\n" ]

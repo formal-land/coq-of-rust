@@ -10,16 +10,16 @@ Definition reverse (pair : i32 * bool) : bool * i32 :=
 Module Matrix.
   Inductive t : Set := Build (_ : f32) (_ : f32) (_ : f32) (_ : f32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 f32 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0 _ _ _) := x0;
   |}.
-  Global Instance Get_1 : IndexedField.Class t 1 f32 := {|
+  Global Instance Get_1 : IndexedField.Class t 1 _ := {|
     IndexedField.get '(Build _ x1 _ _) := x1;
   |}.
-  Global Instance Get_2 : IndexedField.Class t 2 f32 := {|
+  Global Instance Get_2 : IndexedField.Class t 2 _ := {|
     IndexedField.get '(Build _ _ x2 _) := x2;
   |}.
-  Global Instance Get_3 : IndexedField.Class t 3 f32 := {|
+  Global Instance Get_3 : IndexedField.Class t 3 _ := {|
     IndexedField.get '(Build _ _ _ x3) := x3;
   |}.
 End Matrix.
@@ -29,14 +29,24 @@ Module Impl__crate_fmt_Debug_for_Matrix.
   Definition Self := Matrix.
   
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    _crate.fmt.Debug.fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
       _crate.fmt.ImplFormatter.debug_tuple_field4_finish
         f
         "Matrix"
         (IndexedField.get (index := 0) self)
         (IndexedField.get (index := 1) self)
         (IndexedField.get (index := 2) self)
-        (IndexedField.get (index := 3) self);
+        (IndexedField.get (index := 3) self).
+    
+    Global Instance AF_fmt : Matrix.AssociatedFunction "fmt" _ := {|
+      Matrix.associated_function := fmt;
+    |}.
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
   |}.
 End Impl__crate_fmt_Debug_for_Matrix.
 

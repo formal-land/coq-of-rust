@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module Years.
   Inductive t : Set := Build (_ : i64).
   
-  Global Instance Get_0 : IndexedField.Class t 0 i64 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Years.
@@ -15,25 +15,39 @@ Definition Years := Years.t.
 Module Days.
   Inductive t : Set := Build (_ : i64).
   
-  Global Instance Get_0 : IndexedField.Class t 0 i64 := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
     IndexedField.get '(Build x0) := x0;
   |}.
 End Days.
 Definition Days := Days.t.
 
-(* Impl [Years] *)
 Module ImplYears.
+  Definition Self := Years.
+  
   Definition to_days (self : ref Self) : Days :=
     Days.Build (mul (IndexedField.get (index := 0) self) 365).
+  
+  Global Instance AF_to_days : Years.AssociatedFunction "to_days" _ := {|
+    Years.associated_function := to_days;
+  |}.
+  Global Instance M_to_days : Method "to_days" _ := {|
+    method := to_days;
+  |}.
 End ImplYears.
-(* End impl [Years] *)
 
-(* Impl [Days] *)
 Module ImplDays.
+  Definition Self := Days.
+  
   Definition to_years (self : ref Self) : Years :=
     Years.Build (div (IndexedField.get (index := 0) self) 365).
+  
+  Global Instance AF_to_years : Days.AssociatedFunction "to_years" _ := {|
+    Days.associated_function := to_years;
+  |}.
+  Global Instance M_to_years : Method "to_years" _ := {|
+    method := to_years;
+  |}.
 End ImplDays.
-(* End impl [Days] *)
 
 Definition old_enough (age : ref Years) : bool :=
   ge (IndexedField.get (index := 0) age) 18.
