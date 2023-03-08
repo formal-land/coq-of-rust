@@ -14,41 +14,52 @@ Module Borrowed.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Borrowed.
 Definition Borrowed : Set := Borrowed.t.
 
 Module Impl__crate_fmt_Debug_for_Borrowed.
   Definition Self := Borrowed.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.debug_struct_field1_finish
+      f
+      "Borrowed"
+      "x"
+      (NamedField.get (name := "x") self).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Borrowed.AssociatedFunction "fmt" _ := {|
+    Borrowed.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I 'a : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.debug_struct_field1_finish
-        f
-        "Borrowed"
-        "x"
-        (NamedField.get (name := "x") self).
-    
-    Global Instance AF_fmt : Borrowed.AssociatedFunction "fmt" _ := {|
-      Borrowed.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Borrowed.
 
 Module Impl_Default_for_Borrowed.
   Definition Self := Borrowed.
   
+  Definition default (_ : unit) : Self := {| Self.x := 10; |}.
+  
+  Global Instance AF_default : Borrowed.AssociatedFunction "default" _ := {|
+    Borrowed.associated_function := default;
+  |}.
+  Global Instance AFT_default : Default.AssociatedFunction "default" _ := {|
+    Default.associated_function := default;
+  |}.
+  
   Global Instance I 'a : Default.Class Self := {|
-    Definition default (_ : unit) : Self := {| Self.x := 10; |}.
-    
-    Global Instance AF_default : Borrowed.AssociatedFunction "default" _ := {|
-      Borrowed.associated_function := default;
-    |}.
+    Default.default := default;
   |}.
 End Impl_Default_for_Borrowed.
 

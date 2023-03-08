@@ -14,23 +14,28 @@ Definition Food := Food.t.
 Module Impl__crate_fmt_Debug_for_Food.
   Definition Self := Food.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    match self with
+    | Food.Apple => _crate.fmt.ImplFormatter.write_str f "Apple"
+    | Food.Carrot => _crate.fmt.ImplFormatter.write_str f "Carrot"
+    | Food.Potato => _crate.fmt.ImplFormatter.write_str f "Potato"
+    end.
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Food.AssociatedFunction "fmt" _ := {|
+    Food.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      match self with
-      | Food.Apple => _crate.fmt.ImplFormatter.write_str f "Apple"
-      | Food.Carrot => _crate.fmt.ImplFormatter.write_str f "Carrot"
-      | Food.Potato => _crate.fmt.ImplFormatter.write_str f "Potato"
-      end.
-    
-    Global Instance AF_fmt : Food.AssociatedFunction "fmt" _ := {|
-      Food.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Food.
 
@@ -46,22 +51,27 @@ Definition Peeled := Peeled.t.
 Module Impl__crate_fmt_Debug_for_Peeled.
   Definition Self := Peeled.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.debug_tuple_field1_finish
+      f
+      "Peeled"
+      (IndexedField.get (index := 0) self).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Peeled.AssociatedFunction "fmt" _ := {|
+    Peeled.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.debug_tuple_field1_finish
-        f
-        "Peeled"
-        (IndexedField.get (index := 0) self).
-    
-    Global Instance AF_fmt : Peeled.AssociatedFunction "fmt" _ := {|
-      Peeled.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Peeled.
 
@@ -77,22 +87,27 @@ Definition Chopped := Chopped.t.
 Module Impl__crate_fmt_Debug_for_Chopped.
   Definition Self := Chopped.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.debug_tuple_field1_finish
+      f
+      "Chopped"
+      (IndexedField.get (index := 0) self).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Chopped.AssociatedFunction "fmt" _ := {|
+    Chopped.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.debug_tuple_field1_finish
-        f
-        "Chopped"
-        (IndexedField.get (index := 0) self).
-    
-    Global Instance AF_fmt : Chopped.AssociatedFunction "fmt" _ := {|
-      Chopped.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Chopped.
 
@@ -108,22 +123,27 @@ Definition Cooked := Cooked.t.
 Module Impl__crate_fmt_Debug_for_Cooked.
   Definition Self := Cooked.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.debug_tuple_field1_finish
+      f
+      "Cooked"
+      (IndexedField.get (index := 0) self).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Cooked.AssociatedFunction "fmt" _ := {|
+    Cooked.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.debug_tuple_field1_finish
-        f
-        "Cooked"
-        (IndexedField.get (index := 0) self).
-    
-    Global Instance AF_fmt : Cooked.AssociatedFunction "fmt" _ := {|
-      Cooked.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Cooked.
 

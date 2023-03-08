@@ -21,6 +21,7 @@ Module Account.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Account.
 Definition Account : Set := Account.t.
 
@@ -28,28 +29,33 @@ Module Impl__crate_marker_StructuralPartialEq_for_Account.
   Definition Self := Account.
   
   Global Instance I 'a : _crate.marker.StructuralPartialEq.Class Self :=
-      _crate.marker.StructuralPartialEq.Build_Class _.
+    _crate.marker.StructuralPartialEq.Build_Class _.
 End Impl__crate_marker_StructuralPartialEq_for_Account.
 
 Module Impl__crate_cmp_PartialEq_for_Account.
   Definition Self := Account.
   
+  Definition eq (self : ref Self) (other : ref Account) : bool :=
+    andb
+      (eqb
+        (NamedField.get (name := "username") self)
+        (NamedField.get (name := "username") other))
+      (eqb
+        (NamedField.get (name := "password") self)
+        (NamedField.get (name := "password") other)).
+  
+  Global Instance M_eq : Method "eq" _ := {|
+    method := eq;
+  |}.
+  Global Instance AF_eq : Account.AssociatedFunction "eq" _ := {|
+    Account.associated_function := eq;
+  |}.
+  Global Instance AFT_eq : _crate.cmp.PartialEq.AssociatedFunction "eq" _ := {|
+    _crate.cmp.PartialEq.associated_function := eq;
+  |}.
+  
   Global Instance I 'a : _crate.cmp.PartialEq.Class Self := {|
-    Definition eq (self : ref Self) (other : ref Account) : bool :=
-      andb
-        (eqb
-          (NamedField.get (name := "username") self)
-          (NamedField.get (name := "username") other))
-        (eqb
-          (NamedField.get (name := "password") self)
-          (NamedField.get (name := "password") other)).
-    
-    Global Instance AF_eq : Account.AssociatedFunction "eq" _ := {|
-      Account.associated_function := eq;
-    |}.
-    Global Instance M_eq : Method "eq" _ := {|
-      method := eq;
-    |}.
+    _crate.cmp.PartialEq.eq := eq;
   |}.
 End Impl__crate_cmp_PartialEq_for_Account.
 
@@ -57,59 +63,75 @@ Module Impl__crate_marker_StructuralEq_for_Account.
   Definition Self := Account.
   
   Global Instance I 'a : _crate.marker.StructuralEq.Class Self :=
-      _crate.marker.StructuralEq.Build_Class _.
+    _crate.marker.StructuralEq.Build_Class _.
 End Impl__crate_marker_StructuralEq_for_Account.
 
 Module Impl__crate_cmp_Eq_for_Account.
   Definition Self := Account.
   
+  Definition assert_receiver_is_total_eq (self : ref Self) :  :=
+    let _ := tt in
+    let _ := tt in
+    tt.
+  
+  Global Instance
+    M_assert_receiver_is_total_eq
+    :
+    Method
+    "assert_receiver_is_total_eq"
+    _
+    :=
+    {|
+    method := assert_receiver_is_total_eq;
+  |}.
+  Global Instance
+    AF_assert_receiver_is_total_eq
+    :
+    Account.AssociatedFunction
+    "assert_receiver_is_total_eq"
+    _
+    :=
+    {|
+    Account.associated_function := assert_receiver_is_total_eq;
+  |}.
+  Global Instance
+    AFT_assert_receiver_is_total_eq
+    :
+    _crate.cmp.Eq.AssociatedFunction
+    "assert_receiver_is_total_eq"
+    _
+    :=
+    {|
+    _crate.cmp.Eq.associated_function := assert_receiver_is_total_eq;
+  |}.
+  
   Global Instance I 'a : _crate.cmp.Eq.Class Self := {|
-    Definition assert_receiver_is_total_eq (self : ref Self) :  :=
-      let _ := tt in
-      let _ := tt in
-      tt.
-    
-    Global Instance
-      AF_assert_receiver_is_total_eq
-      :
-      Account.AssociatedFunction
-      "assert_receiver_is_total_eq"
-      _
-      :=
-      {|
-      Account.associated_function := assert_receiver_is_total_eq;
-    |}.
-    Global Instance
-      M_assert_receiver_is_total_eq
-      :
-      Method
-      "assert_receiver_is_total_eq"
-      _
-      :=
-      {|
-      method := assert_receiver_is_total_eq;
-    |}.
   |}.
 End Impl__crate_cmp_Eq_for_Account.
 
 Module Impl__crate_hash_Hash_for_Account.
   Definition Self := Account.
   
+  Definition hash (self : ref Self) (state : mut_ref __H) :  :=
+    (_crate.hash.Hash.associated_function "hash")
+      (NamedField.get (name := "username") self)
+      state ;;
+    (_crate.hash.Hash.associated_function "hash")
+      (NamedField.get (name := "password") self)
+      state.
+  
+  Global Instance M_hash : Method "hash" _ := {|
+    method := hash;
+  |}.
+  Global Instance AF_hash : Account.AssociatedFunction "hash" _ := {|
+    Account.associated_function := hash;
+  |}.
+  Global Instance AFT_hash : _crate.hash.Hash.AssociatedFunction "hash" _ := {|
+    _crate.hash.Hash.associated_function := hash;
+  |}.
+  
   Global Instance I 'a : _crate.hash.Hash.Class Self := {|
-    Definition hash (self : ref Self) (state : mut_ref __H) :  :=
-      (_crate.hash.Hash.associated_function "hash")
-        (NamedField.get (name := "username") self)
-        state ;;
-      (_crate.hash.Hash.associated_function "hash")
-        (NamedField.get (name := "password") self)
-        state.
-    
-    Global Instance AF_hash : Account.AssociatedFunction "hash" _ := {|
-      Account.associated_function := hash;
-    |}.
-    Global Instance M_hash : Method "hash" _ := {|
-      method := hash;
-    |}.
+    _crate.hash.Hash.hash := hash;
   |}.
 End Impl__crate_hash_Hash_for_Account.
 
@@ -128,6 +150,7 @@ Module AccountInfo.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End AccountInfo.
 Definition AccountInfo : Set := AccountInfo.t.
 

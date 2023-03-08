@@ -20,48 +20,66 @@ Module Point.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Point.
 Definition Point : Set := Point.t.
 
 Module Impl__crate_fmt_Debug_for_Point.
   Definition Self := Point.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.debug_struct_field2_finish
+      f
+      "Point"
+      "x"
+      (NamedField.get (name := "x") self)
+      "y"
+      (NamedField.get (name := "y") self).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Point.AssociatedFunction "fmt" _ := {|
+    Point.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.debug_struct_field2_finish
-        f
-        "Point"
-        "x"
-        (NamedField.get (name := "x") self)
-        "y"
-        (NamedField.get (name := "y") self).
-    
-    Global Instance AF_fmt : Point.AssociatedFunction "fmt" _ := {|
-      Point.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Point.
 
 Module Impl__crate_clone_Clone_for_Point.
   Definition Self := Point.
   
+  Definition clone (self : ref Self) : Point :=
+    let _ := tt in
+    deref self.
+  
+  Global Instance M_clone : Method "clone" _ := {|
+    method := clone;
+  |}.
+  Global Instance AF_clone : Point.AssociatedFunction "clone" _ := {|
+    Point.associated_function := clone;
+  |}.
+  Global Instance
+    AFT_clone
+    :
+    _crate.clone.Clone.AssociatedFunction
+    "clone"
+    _
+    :=
+    {|
+    _crate.clone.Clone.associated_function := clone;
+  |}.
+  
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    Definition clone (self : ref Self) : Point :=
-      let _ := tt in
-      deref self.
-    
-    Global Instance AF_clone : Point.AssociatedFunction "clone" _ := {|
-      Point.associated_function := clone;
-    |}.
-    Global Instance M_clone : Method "clone" _ := {|
-      method := clone;
-    |}.
+    _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_Point.
 
@@ -69,7 +87,7 @@ Module Impl__crate_marker_Copy_for_Point.
   Definition Self := Point.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
-      _crate.marker.Copy.Build_Class _.
+    _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Point.
 
 Module Rectangle.
@@ -87,6 +105,7 @@ Module Rectangle.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 

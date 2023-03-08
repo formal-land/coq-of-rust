@@ -18,23 +18,36 @@ Module Point.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Point.
 Definition Point : Set := Point.t.
 
 Module Impl__crate_clone_Clone_for_Point.
   Definition Self := Point.
   
+  Definition clone (self : ref Self) : Point :=
+    let _ := tt in
+    deref self.
+  
+  Global Instance M_clone : Method "clone" _ := {|
+    method := clone;
+  |}.
+  Global Instance AF_clone : Point.AssociatedFunction "clone" _ := {|
+    Point.associated_function := clone;
+  |}.
+  Global Instance
+    AFT_clone
+    :
+    _crate.clone.Clone.AssociatedFunction
+    "clone"
+    _
+    :=
+    {|
+    _crate.clone.Clone.associated_function := clone;
+  |}.
+  
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    Definition clone (self : ref Self) : Point :=
-      let _ := tt in
-      deref self.
-    
-    Global Instance AF_clone : Point.AssociatedFunction "clone" _ := {|
-      Point.associated_function := clone;
-    |}.
-    Global Instance M_clone : Method "clone" _ := {|
-      method := clone;
-    |}.
+    _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_Point.
 
@@ -42,7 +55,7 @@ Module Impl__crate_marker_Copy_for_Point.
   Definition Self := Point.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
-      _crate.marker.Copy.Build_Class _.
+    _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Point.
 
 Definition main (_ : unit) : unit :=

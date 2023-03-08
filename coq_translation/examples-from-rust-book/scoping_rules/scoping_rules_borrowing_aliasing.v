@@ -22,6 +22,7 @@ Module Point.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Point.
 Definition Point : Set := Point.t.
 

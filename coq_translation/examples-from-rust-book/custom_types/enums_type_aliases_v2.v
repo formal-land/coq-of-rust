@@ -22,6 +22,9 @@ Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
     | ImplSelf.Subtract => sub x y
     end.
   
+  Global Instance M_run : Method "run" _ := {|
+    method := run;
+  |}.
   Global Instance
     AF_run
     :
@@ -31,8 +34,5 @@ Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
     :=
     {|
     VeryVerboseEnumOfThingsToDoWithNumbers.associated_function := run;
-  |}.
-  Global Instance M_run : Method "run" _ := {|
-    method := run;
   |}.
 End ImplVeryVerboseEnumOfThingsToDoWithNumbers.

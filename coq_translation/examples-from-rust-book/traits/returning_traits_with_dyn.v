@@ -9,6 +9,7 @@ Module Sheep.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Sheep.
 Definition Sheep : Set := Sheep.t.
 
@@ -18,6 +19,7 @@ Module Cow.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Cow.
 Definition Cow : Set := Cow.t.
 
@@ -29,35 +31,49 @@ Module Animal.
   Global Instance Method_noise `(Class) : Method "noise" _ := {|
     method := noise;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Animal.
 
 Module Impl_Animal_for_Sheep.
   Definition Self := Sheep.
   
+  Definition noise (self : ref Self) : ref str := "baaaaah!".
+  
+  Global Instance M_noise : Method "noise" _ := {|
+    method := noise;
+  |}.
+  Global Instance AF_noise : Sheep.AssociatedFunction "noise" _ := {|
+    Sheep.associated_function := noise;
+  |}.
+  Global Instance AFT_noise : Animal.AssociatedFunction "noise" _ := {|
+    Animal.associated_function := noise;
+  |}.
+  
   Global Instance I : Animal.Class Self := {|
-    Definition noise (self : ref Self) : ref str := "baaaaah!".
-    
-    Global Instance AF_noise : Sheep.AssociatedFunction "noise" _ := {|
-      Sheep.associated_function := noise;
-    |}.
-    Global Instance M_noise : Method "noise" _ := {|
-      method := noise;
-    |}.
+    Animal.noise := noise;
   |}.
 End Impl_Animal_for_Sheep.
 
 Module Impl_Animal_for_Cow.
   Definition Self := Cow.
   
+  Definition noise (self : ref Self) : ref str := "moooooo!".
+  
+  Global Instance M_noise : Method "noise" _ := {|
+    method := noise;
+  |}.
+  Global Instance AF_noise : Cow.AssociatedFunction "noise" _ := {|
+    Cow.associated_function := noise;
+  |}.
+  Global Instance AFT_noise : Animal.AssociatedFunction "noise" _ := {|
+    Animal.associated_function := noise;
+  |}.
+  
   Global Instance I : Animal.Class Self := {|
-    Definition noise (self : ref Self) : ref str := "moooooo!".
-    
-    Global Instance AF_noise : Cow.AssociatedFunction "noise" _ := {|
-      Cow.associated_function := noise;
-    |}.
-    Global Instance M_noise : Method "noise" _ := {|
-      method := noise;
-    |}.
+    Animal.noise := noise;
   |}.
 End Impl_Animal_for_Cow.
 

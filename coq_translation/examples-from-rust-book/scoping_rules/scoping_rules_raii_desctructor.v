@@ -8,21 +8,24 @@ Error StructUnit.
 Module Impl_Drop_for_ToDrop.
   Definition Self := ToDrop.
   
+  Definition drop (self : mut_ref Self) :=
+    _crate.io._print
+      (_crate.fmt.ImplArguments.new_v1 [ "ToDrop is being dropped\n" ] [  ]) ;;
+    tt ;;
+    tt.
+  
+  Global Instance M_drop : Method "drop" _ := {|
+    method := drop;
+  |}.
+  Global Instance AF_drop : ToDrop.AssociatedFunction "drop" _ := {|
+    ToDrop.associated_function := drop;
+  |}.
+  Global Instance AFT_drop : Drop.AssociatedFunction "drop" _ := {|
+    Drop.associated_function := drop;
+  |}.
+  
   Global Instance I : Drop.Class Self := {|
-    Definition drop (self : mut_ref Self) :=
-      _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1
-          [ "ToDrop is being dropped\n" ]
-          [  ]) ;;
-      tt ;;
-      tt.
-    
-    Global Instance AF_drop : ToDrop.AssociatedFunction "drop" _ := {|
-      ToDrop.associated_function := drop;
-    |}.
-    Global Instance M_drop : Method "drop" _ := {|
-      method := drop;
-    |}.
+    Drop.drop := drop;
   |}.
 End Impl_Drop_for_ToDrop.
 

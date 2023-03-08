@@ -14,6 +14,10 @@ Module Red.
   Class Class (Self : Set) : Set := {
   }.
   Global Set Primitive Projections.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Red.
 
 Module Blue.
@@ -21,6 +25,10 @@ Module Blue.
   Class Class (Self : Set) : Set := {
   }.
   Global Set Primitive Projections.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Blue.
 
 Module Impl_Red_for_Cardinal.

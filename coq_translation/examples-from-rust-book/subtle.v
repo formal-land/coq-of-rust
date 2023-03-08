@@ -35,45 +35,62 @@ Module Impl__crate_marker_Copy_for_Choice.
   Definition Self := Choice.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
-      _crate.marker.Copy.Build_Class _.
+    _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Choice.
 
 Module Impl__crate_clone_Clone_for_Choice.
   Definition Self := Choice.
   
+  Definition clone (self : ref Self) : Choice :=
+    let _ := tt in
+    deref self.
+  
+  Global Instance M_clone : Method "clone" _ := {|
+    method := clone;
+  |}.
+  Global Instance AF_clone : Choice.AssociatedFunction "clone" _ := {|
+    Choice.associated_function := clone;
+  |}.
+  Global Instance
+    AFT_clone
+    :
+    _crate.clone.Clone.AssociatedFunction
+    "clone"
+    _
+    :=
+    {|
+    _crate.clone.Clone.associated_function := clone;
+  |}.
+  
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    Definition clone (self : ref Self) : Choice :=
-      let _ := tt in
-      deref self.
-    
-    Global Instance AF_clone : Choice.AssociatedFunction "clone" _ := {|
-      Choice.associated_function := clone;
-    |}.
-    Global Instance M_clone : Method "clone" _ := {|
-      method := clone;
-    |}.
+    _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_Choice.
 
 Module Impl__crate_fmt_Debug_for_Choice.
   Definition Self := Choice.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.debug_tuple_field1_finish
+      f
+      "Choice"
+      (IndexedField.get (index := 0) self).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Choice.AssociatedFunction "fmt" _ := {|
+    Choice.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.debug_tuple_field1_finish
-        f
-        "Choice"
-        (IndexedField.get (index := 0) self).
-    
-    Global Instance AF_fmt : Choice.AssociatedFunction "fmt" _ := {|
-      Choice.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Choice.
 
@@ -83,191 +100,260 @@ Module ImplChoice.
   Definition unwrap_u8 (self : ref Self) : u8 :=
     IndexedField.get (index := 0) self.
   
-  Global Instance AF_unwrap_u8 : Choice.AssociatedFunction "unwrap_u8" _ := {|
-    Choice.associated_function := unwrap_u8;
-  |}.
   Global Instance M_unwrap_u8 : Method "unwrap_u8" _ := {|
     method := unwrap_u8;
+  |}.
+  Global Instance AF_unwrap_u8 : Choice.AssociatedFunction "unwrap_u8" _ := {|
+    Choice.associated_function := unwrap_u8;
   |}.
 End ImplChoice.
 
 Module Impl_From_for_bool.
   Definition Self := bool.
   
-  Global Instance I : From.Class Choice Self := {|
-    Definition from (source : Choice) : bool :=
-      if (true : bool) then
-        if
-          (not
-            (bit_or
-              (eqb (IndexedField.get (index := 0) source) 0)
-              (eqb (IndexedField.get (index := 0) source) 1))
-          : bool)
-        then
-          _crate.panicking.panic
-            "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
-        else
-          tt ;;
-        tt
+  Definition from (source : Choice) : bool :=
+    if (true : bool) then
+      if
+        (not
+          (bit_or
+            (eqb (IndexedField.get (index := 0) source) 0)
+            (eqb (IndexedField.get (index := 0) source) 1))
+        : bool)
+      then
+        _crate.panicking.panic
+          "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
       else
         tt ;;
-      ne (IndexedField.get (index := 0) source) 0.
-    
-    Global Instance AF_from : bool.AssociatedFunction "from" _ := {|
-      bool.associated_function := from;
-    |}.
+      tt
+    else
+      tt ;;
+    ne (IndexedField.get (index := 0) source) 0.
+  
+  Global Instance AF_from : bool.AssociatedFunction "from" _ := {|
+    bool.associated_function := from;
+  |}.
+  Global Instance AFT_from : From.AssociatedFunction "from" _ := {|
+    From.associated_function := from;
+  |}.
+  
+  Global Instance I : From.Class Choice Self := {|
+    From.from := from;
   |}.
 End Impl_From_for_bool.
 
 Module Impl_BitAnd_for_Choice.
   Definition Self := Choice.
   
+  Definition Output : Set := Choice.
+  
+  Definition bitand (self : Self) (rhs : Choice) : Choice :=
+    method
+      "into"
+      (bit_and
+        (IndexedField.get (index := 0) self)
+        (IndexedField.get (index := 0) rhs)).
+  
+  Global Instance M_bitand : Method "bitand" _ := {|
+    method := bitand;
+  |}.
+  Global Instance AF_bitand : Choice.AssociatedFunction "bitand" _ := {|
+    Choice.associated_function := bitand;
+  |}.
+  Global Instance AFT_bitand : BitAnd.AssociatedFunction "bitand" _ := {|
+    BitAnd.associated_function := bitand;
+  |}.
+  
   Global Instance I : BitAnd.Class Self := {|
-    Definition Output : Set := Choice.
-    Definition bitand (self : Self) (rhs : Choice) : Choice :=
-      method
-        "into"
-        (bit_and
-          (IndexedField.get (index := 0) self)
-          (IndexedField.get (index := 0) rhs)).
-    
-    Global Instance AF_bitand : Choice.AssociatedFunction "bitand" _ := {|
-      Choice.associated_function := bitand;
-    |}.
-    Global Instance M_bitand : Method "bitand" _ := {|
-      method := bitand;
-    |}.
+    BitAnd.Output := Output;
+    BitAnd.bitand := bitand;
   |}.
 End Impl_BitAnd_for_Choice.
 
 Module Impl_BitAndAssign_for_Choice.
   Definition Self := Choice.
   
+  Definition bitand_assign (self : mut_ref Self) (rhs : Choice) :=
+    assign (deref self) (bit_and (deref self) rhs) ;;
+    tt.
+  
+  Global Instance M_bitand_assign : Method "bitand_assign" _ := {|
+    method := bitand_assign;
+  |}.
+  Global Instance
+    AF_bitand_assign
+    :
+    Choice.AssociatedFunction
+    "bitand_assign"
+    _
+    :=
+    {|
+    Choice.associated_function := bitand_assign;
+  |}.
+  Global Instance
+    AFT_bitand_assign
+    :
+    BitAndAssign.AssociatedFunction
+    "bitand_assign"
+    _
+    :=
+    {|
+    BitAndAssign.associated_function := bitand_assign;
+  |}.
+  
   Global Instance I : BitAndAssign.Class Self := {|
-    Definition bitand_assign (self : mut_ref Self) (rhs : Choice) :=
-      assign (deref self) (bit_and (deref self) rhs) ;;
-      tt.
-    
-    Global Instance
-      AF_bitand_assign
-      :
-      Choice.AssociatedFunction
-      "bitand_assign"
-      _
-      :=
-      {|
-      Choice.associated_function := bitand_assign;
-    |}.
-    Global Instance M_bitand_assign : Method "bitand_assign" _ := {|
-      method := bitand_assign;
-    |}.
+    BitAndAssign.bitand_assign := bitand_assign;
   |}.
 End Impl_BitAndAssign_for_Choice.
 
 Module Impl_BitOr_for_Choice.
   Definition Self := Choice.
   
+  Definition Output : Set := Choice.
+  
+  Definition bitor (self : Self) (rhs : Choice) : Choice :=
+    method
+      "into"
+      (bit_or
+        (IndexedField.get (index := 0) self)
+        (IndexedField.get (index := 0) rhs)).
+  
+  Global Instance M_bitor : Method "bitor" _ := {|
+    method := bitor;
+  |}.
+  Global Instance AF_bitor : Choice.AssociatedFunction "bitor" _ := {|
+    Choice.associated_function := bitor;
+  |}.
+  Global Instance AFT_bitor : BitOr.AssociatedFunction "bitor" _ := {|
+    BitOr.associated_function := bitor;
+  |}.
+  
   Global Instance I : BitOr.Class Self := {|
-    Definition Output : Set := Choice.
-    Definition bitor (self : Self) (rhs : Choice) : Choice :=
-      method
-        "into"
-        (bit_or
-          (IndexedField.get (index := 0) self)
-          (IndexedField.get (index := 0) rhs)).
-    
-    Global Instance AF_bitor : Choice.AssociatedFunction "bitor" _ := {|
-      Choice.associated_function := bitor;
-    |}.
-    Global Instance M_bitor : Method "bitor" _ := {|
-      method := bitor;
-    |}.
+    BitOr.Output := Output;
+    BitOr.bitor := bitor;
   |}.
 End Impl_BitOr_for_Choice.
 
 Module Impl_BitOrAssign_for_Choice.
   Definition Self := Choice.
   
+  Definition bitor_assign (self : mut_ref Self) (rhs : Choice) :=
+    assign (deref self) (bit_or (deref self) rhs) ;;
+    tt.
+  
+  Global Instance M_bitor_assign : Method "bitor_assign" _ := {|
+    method := bitor_assign;
+  |}.
+  Global Instance
+    AF_bitor_assign
+    :
+    Choice.AssociatedFunction
+    "bitor_assign"
+    _
+    :=
+    {|
+    Choice.associated_function := bitor_assign;
+  |}.
+  Global Instance
+    AFT_bitor_assign
+    :
+    BitOrAssign.AssociatedFunction
+    "bitor_assign"
+    _
+    :=
+    {|
+    BitOrAssign.associated_function := bitor_assign;
+  |}.
+  
   Global Instance I : BitOrAssign.Class Self := {|
-    Definition bitor_assign (self : mut_ref Self) (rhs : Choice) :=
-      assign (deref self) (bit_or (deref self) rhs) ;;
-      tt.
-    
-    Global Instance
-      AF_bitor_assign
-      :
-      Choice.AssociatedFunction
-      "bitor_assign"
-      _
-      :=
-      {|
-      Choice.associated_function := bitor_assign;
-    |}.
-    Global Instance M_bitor_assign : Method "bitor_assign" _ := {|
-      method := bitor_assign;
-    |}.
+    BitOrAssign.bitor_assign := bitor_assign;
   |}.
 End Impl_BitOrAssign_for_Choice.
 
 Module Impl_BitXor_for_Choice.
   Definition Self := Choice.
   
+  Definition Output : Set := Choice.
+  
+  Definition bitxor (self : Self) (rhs : Choice) : Choice :=
+    method
+      "into"
+      (bit_xor
+        (IndexedField.get (index := 0) self)
+        (IndexedField.get (index := 0) rhs)).
+  
+  Global Instance M_bitxor : Method "bitxor" _ := {|
+    method := bitxor;
+  |}.
+  Global Instance AF_bitxor : Choice.AssociatedFunction "bitxor" _ := {|
+    Choice.associated_function := bitxor;
+  |}.
+  Global Instance AFT_bitxor : BitXor.AssociatedFunction "bitxor" _ := {|
+    BitXor.associated_function := bitxor;
+  |}.
+  
   Global Instance I : BitXor.Class Self := {|
-    Definition Output : Set := Choice.
-    Definition bitxor (self : Self) (rhs : Choice) : Choice :=
-      method
-        "into"
-        (bit_xor
-          (IndexedField.get (index := 0) self)
-          (IndexedField.get (index := 0) rhs)).
-    
-    Global Instance AF_bitxor : Choice.AssociatedFunction "bitxor" _ := {|
-      Choice.associated_function := bitxor;
-    |}.
-    Global Instance M_bitxor : Method "bitxor" _ := {|
-      method := bitxor;
-    |}.
+    BitXor.Output := Output;
+    BitXor.bitxor := bitxor;
   |}.
 End Impl_BitXor_for_Choice.
 
 Module Impl_BitXorAssign_for_Choice.
   Definition Self := Choice.
   
+  Definition bitxor_assign (self : mut_ref Self) (rhs : Choice) :=
+    assign (deref self) (bit_xor (deref self) rhs) ;;
+    tt.
+  
+  Global Instance M_bitxor_assign : Method "bitxor_assign" _ := {|
+    method := bitxor_assign;
+  |}.
+  Global Instance
+    AF_bitxor_assign
+    :
+    Choice.AssociatedFunction
+    "bitxor_assign"
+    _
+    :=
+    {|
+    Choice.associated_function := bitxor_assign;
+  |}.
+  Global Instance
+    AFT_bitxor_assign
+    :
+    BitXorAssign.AssociatedFunction
+    "bitxor_assign"
+    _
+    :=
+    {|
+    BitXorAssign.associated_function := bitxor_assign;
+  |}.
+  
   Global Instance I : BitXorAssign.Class Self := {|
-    Definition bitxor_assign (self : mut_ref Self) (rhs : Choice) :=
-      assign (deref self) (bit_xor (deref self) rhs) ;;
-      tt.
-    
-    Global Instance
-      AF_bitxor_assign
-      :
-      Choice.AssociatedFunction
-      "bitxor_assign"
-      _
-      :=
-      {|
-      Choice.associated_function := bitxor_assign;
-    |}.
-    Global Instance M_bitxor_assign : Method "bitxor_assign" _ := {|
-      method := bitxor_assign;
-    |}.
+    BitXorAssign.bitxor_assign := bitxor_assign;
   |}.
 End Impl_BitXorAssign_for_Choice.
 
 Module Impl_Not_for_Choice.
   Definition Self := Choice.
   
+  Definition Output : Set := Choice.
+  
+  Definition not (self : Self) : Choice :=
+    method "into" (bit_and 1 (not (IndexedField.get (index := 0) self))).
+  
+  Global Instance M_not : Method "not" _ := {|
+    method := not;
+  |}.
+  Global Instance AF_not : Choice.AssociatedFunction "not" _ := {|
+    Choice.associated_function := not;
+  |}.
+  Global Instance AFT_not : Not.AssociatedFunction "not" _ := {|
+    Not.associated_function := not;
+  |}.
+  
   Global Instance I : Not.Class Self := {|
-    Definition Output : Set := Choice.
-    Definition not (self : Self) : Choice :=
-      method "into" (bit_and 1 (not (IndexedField.get (index := 0) self))).
-    
-    Global Instance AF_not : Choice.AssociatedFunction "not" _ := {|
-      Choice.associated_function := not;
-    |}.
-    Global Instance M_not : Method "not" _ := {|
-      method := not;
-    |}.
+    Not.Output := Output;
+    Not.not := not;
   |}.
 End Impl_Not_for_Choice.
 
@@ -285,12 +371,17 @@ Definition black_box (input : u8) : u8 :=
 Module Impl_From_for_Choice.
   Definition Self := Choice.
   
+  Definition from (input : u8) : Choice := Choice.Build (black_box input).
+  
+  Global Instance AF_from : Choice.AssociatedFunction "from" _ := {|
+    Choice.associated_function := from;
+  |}.
+  Global Instance AFT_from : From.AssociatedFunction "from" _ := {|
+    From.associated_function := from;
+  |}.
+  
   Global Instance I : From.Class u8 Self := {|
-    Definition from (input : u8) : Choice := Choice.Build (black_box input).
-    
-    Global Instance AF_from : Choice.AssociatedFunction "from" _ := {|
-      Choice.associated_function := from;
-    |}.
+    From.from := from;
   |}.
 End Impl_From_for_Choice.
 
@@ -307,231 +398,295 @@ Module ConstantTimeEq.
       (not (method "ct_eq" self other)
       : Choice);
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End ConstantTimeEq.
 
 Module Impl_ConstantTimeEq_for_Slice.
   Definition Self := Slice.
   
-  Global Instance I T : ConstantTimeEq.Class Self := {|
-    Definition ct_eq (self : ref Self) (_rhs : ref Slice) : Choice :=
-      let len := method "len" self in
-      if (ne len (method "len" _rhs) : bool) then
-        Return (ImplChoice.from 0) ;;
-        tt
-      else
-        tt ;;
-      let x := 1 in
-      match into_iter (method "zip" (method "iter" self) (method "iter" _rhs))
-      with
-      | iter =>
-        loop
-          match next iter with
-          | None => Break
-          | Some {| Some.0 := (ai, bi); |} =>
-            assign x (bit_and x (method "unwrap_u8" (method "ct_eq" ai bi))) ;;
-            tt
-          end ;;
+  Definition ct_eq (self : ref Self) (_rhs : ref Slice) : Choice :=
+    let len := method "len" self in
+    if (ne len (method "len" _rhs) : bool) then
+      Return (ImplChoice.from 0) ;;
+      tt
+    else
+      tt ;;
+    let x := 1 in
+    match into_iter (method "zip" (method "iter" self) (method "iter" _rhs))
+    with
+    | iter =>
+      loop
+        match next iter with
+        | None => Break
+        | Some {| Some.0 := (ai, bi); |} =>
+          assign x (bit_and x (method "unwrap_u8" (method "ct_eq" ai bi))) ;;
           tt
-          from
-          for
-      end ;;
-      method "into" x.
-    
-    Global Instance AF_ct_eq : Slice.AssociatedFunction "ct_eq" _ := {|
-      Slice.associated_function := ct_eq;
-    |}.
-    Global Instance M_ct_eq : Method "ct_eq" _ := {|
-      method := ct_eq;
-    |}.
+        end ;;
+        tt
+        from
+        for
+    end ;;
+    method "into" x.
+  
+  Global Instance M_ct_eq : Method "ct_eq" _ := {|
+    method := ct_eq;
+  |}.
+  Global Instance AF_ct_eq : Slice.AssociatedFunction "ct_eq" _ := {|
+    Slice.associated_function := ct_eq;
+  |}.
+  Global Instance AFT_ct_eq : ConstantTimeEq.AssociatedFunction "ct_eq" _ := {|
+    ConstantTimeEq.associated_function := ct_eq;
+  |}.
+  
+  Global Instance I T : ConstantTimeEq.Class Self := {|
+    ConstantTimeEq.ct_eq := ct_eq;
   |}.
 End Impl_ConstantTimeEq_for_Slice.
 
 Module Impl_ConstantTimeEq_for_Choice.
   Definition Self := Choice.
   
+  Definition ct_eq (self : ref Self) (rhs : ref Choice) : Choice :=
+    not (bit_xor (deref self) (deref rhs)).
+  
+  Global Instance M_ct_eq : Method "ct_eq" _ := {|
+    method := ct_eq;
+  |}.
+  Global Instance AF_ct_eq : Choice.AssociatedFunction "ct_eq" _ := {|
+    Choice.associated_function := ct_eq;
+  |}.
+  Global Instance AFT_ct_eq : ConstantTimeEq.AssociatedFunction "ct_eq" _ := {|
+    ConstantTimeEq.associated_function := ct_eq;
+  |}.
+  
   Global Instance I : ConstantTimeEq.Class Self := {|
-    Definition ct_eq (self : ref Self) (rhs : ref Choice) : Choice :=
-      not (bit_xor (deref self) (deref rhs)).
-    
-    Global Instance AF_ct_eq : Choice.AssociatedFunction "ct_eq" _ := {|
-      Choice.associated_function := ct_eq;
-    |}.
-    Global Instance M_ct_eq : Method "ct_eq" _ := {|
-      method := ct_eq;
-    |}.
+    ConstantTimeEq.ct_eq := ct_eq;
   |}.
 End Impl_ConstantTimeEq_for_Choice.
 
 Module Impl_ConstantTimeEq_for_u8.
   Definition Self := u8.
   
+  Definition ct_eq (self : ref Self) (other : ref u8) : Choice :=
+    let x := bit_xor self other in
+    let y := shr (bit_or x (method "wrapping_neg" x)) (sub 8 1) in
+    method "into" (cast (bit_xor y (cast 1 u8)) u8).
+  
+  Global Instance M_ct_eq : Method "ct_eq" _ := {|
+    method := ct_eq;
+  |}.
+  Global Instance AF_ct_eq : u8.AssociatedFunction "ct_eq" _ := {|
+    u8.associated_function := ct_eq;
+  |}.
+  Global Instance AFT_ct_eq : ConstantTimeEq.AssociatedFunction "ct_eq" _ := {|
+    ConstantTimeEq.associated_function := ct_eq;
+  |}.
+  
   Global Instance I : ConstantTimeEq.Class Self := {|
-    Definition ct_eq (self : ref Self) (other : ref u8) : Choice :=
-      let x := bit_xor self other in
-      let y := shr (bit_or x (method "wrapping_neg" x)) (sub 8 1) in
-      method "into" (cast (bit_xor y (cast 1 u8)) u8).
-    
-    Global Instance AF_ct_eq : u8.AssociatedFunction "ct_eq" _ := {|
-      u8.associated_function := ct_eq;
-    |}.
-    Global Instance M_ct_eq : Method "ct_eq" _ := {|
-      method := ct_eq;
-    |}.
+    ConstantTimeEq.ct_eq := ct_eq;
   |}.
 End Impl_ConstantTimeEq_for_u8.
 
 Module Impl_ConstantTimeEq_for_i8.
   Definition Self := i8.
   
+  Definition ct_eq (self : ref Self) (other : ref i8) : Choice :=
+    method "ct_eq" (cast (deref self) u8) (cast (deref other) u8).
+  
+  Global Instance M_ct_eq : Method "ct_eq" _ := {|
+    method := ct_eq;
+  |}.
+  Global Instance AF_ct_eq : i8.AssociatedFunction "ct_eq" _ := {|
+    i8.associated_function := ct_eq;
+  |}.
+  Global Instance AFT_ct_eq : ConstantTimeEq.AssociatedFunction "ct_eq" _ := {|
+    ConstantTimeEq.associated_function := ct_eq;
+  |}.
+  
   Global Instance I : ConstantTimeEq.Class Self := {|
-    Definition ct_eq (self : ref Self) (other : ref i8) : Choice :=
-      method "ct_eq" (cast (deref self) u8) (cast (deref other) u8).
-    
-    Global Instance AF_ct_eq : i8.AssociatedFunction "ct_eq" _ := {|
-      i8.associated_function := ct_eq;
-    |}.
-    Global Instance M_ct_eq : Method "ct_eq" _ := {|
-      method := ct_eq;
-    |}.
+    ConstantTimeEq.ct_eq := ct_eq;
   |}.
 End Impl_ConstantTimeEq_for_i8.
 
 Module Impl_ConstantTimeEq_for_u16.
   Definition Self := u16.
   
+  Definition ct_eq (self : ref Self) (other : ref u16) : Choice :=
+    let x := bit_xor self other in
+    let y := shr (bit_or x (method "wrapping_neg" x)) (sub 16 1) in
+    method "into" (cast (bit_xor y (cast 1 u16)) u8).
+  
+  Global Instance M_ct_eq : Method "ct_eq" _ := {|
+    method := ct_eq;
+  |}.
+  Global Instance AF_ct_eq : u16.AssociatedFunction "ct_eq" _ := {|
+    u16.associated_function := ct_eq;
+  |}.
+  Global Instance AFT_ct_eq : ConstantTimeEq.AssociatedFunction "ct_eq" _ := {|
+    ConstantTimeEq.associated_function := ct_eq;
+  |}.
+  
   Global Instance I : ConstantTimeEq.Class Self := {|
-    Definition ct_eq (self : ref Self) (other : ref u16) : Choice :=
-      let x := bit_xor self other in
-      let y := shr (bit_or x (method "wrapping_neg" x)) (sub 16 1) in
-      method "into" (cast (bit_xor y (cast 1 u16)) u8).
-    
-    Global Instance AF_ct_eq : u16.AssociatedFunction "ct_eq" _ := {|
-      u16.associated_function := ct_eq;
-    |}.
-    Global Instance M_ct_eq : Method "ct_eq" _ := {|
-      method := ct_eq;
-    |}.
+    ConstantTimeEq.ct_eq := ct_eq;
   |}.
 End Impl_ConstantTimeEq_for_u16.
 
 Module Impl_ConstantTimeEq_for_i16.
   Definition Self := i16.
   
+  Definition ct_eq (self : ref Self) (other : ref i16) : Choice :=
+    method "ct_eq" (cast (deref self) u16) (cast (deref other) u16).
+  
+  Global Instance M_ct_eq : Method "ct_eq" _ := {|
+    method := ct_eq;
+  |}.
+  Global Instance AF_ct_eq : i16.AssociatedFunction "ct_eq" _ := {|
+    i16.associated_function := ct_eq;
+  |}.
+  Global Instance AFT_ct_eq : ConstantTimeEq.AssociatedFunction "ct_eq" _ := {|
+    ConstantTimeEq.associated_function := ct_eq;
+  |}.
+  
   Global Instance I : ConstantTimeEq.Class Self := {|
-    Definition ct_eq (self : ref Self) (other : ref i16) : Choice :=
-      method "ct_eq" (cast (deref self) u16) (cast (deref other) u16).
-    
-    Global Instance AF_ct_eq : i16.AssociatedFunction "ct_eq" _ := {|
-      i16.associated_function := ct_eq;
-    |}.
-    Global Instance M_ct_eq : Method "ct_eq" _ := {|
-      method := ct_eq;
-    |}.
+    ConstantTimeEq.ct_eq := ct_eq;
   |}.
 End Impl_ConstantTimeEq_for_i16.
 
 Module Impl_ConstantTimeEq_for_u32.
   Definition Self := u32.
   
+  Definition ct_eq (self : ref Self) (other : ref u32) : Choice :=
+    let x := bit_xor self other in
+    let y := shr (bit_or x (method "wrapping_neg" x)) (sub 32 1) in
+    method "into" (cast (bit_xor y (cast 1 u32)) u8).
+  
+  Global Instance M_ct_eq : Method "ct_eq" _ := {|
+    method := ct_eq;
+  |}.
+  Global Instance AF_ct_eq : u32.AssociatedFunction "ct_eq" _ := {|
+    u32.associated_function := ct_eq;
+  |}.
+  Global Instance AFT_ct_eq : ConstantTimeEq.AssociatedFunction "ct_eq" _ := {|
+    ConstantTimeEq.associated_function := ct_eq;
+  |}.
+  
   Global Instance I : ConstantTimeEq.Class Self := {|
-    Definition ct_eq (self : ref Self) (other : ref u32) : Choice :=
-      let x := bit_xor self other in
-      let y := shr (bit_or x (method "wrapping_neg" x)) (sub 32 1) in
-      method "into" (cast (bit_xor y (cast 1 u32)) u8).
-    
-    Global Instance AF_ct_eq : u32.AssociatedFunction "ct_eq" _ := {|
-      u32.associated_function := ct_eq;
-    |}.
-    Global Instance M_ct_eq : Method "ct_eq" _ := {|
-      method := ct_eq;
-    |}.
+    ConstantTimeEq.ct_eq := ct_eq;
   |}.
 End Impl_ConstantTimeEq_for_u32.
 
 Module Impl_ConstantTimeEq_for_i32.
   Definition Self := i32.
   
+  Definition ct_eq (self : ref Self) (other : ref i32) : Choice :=
+    method "ct_eq" (cast (deref self) u32) (cast (deref other) u32).
+  
+  Global Instance M_ct_eq : Method "ct_eq" _ := {|
+    method := ct_eq;
+  |}.
+  Global Instance AF_ct_eq : i32.AssociatedFunction "ct_eq" _ := {|
+    i32.associated_function := ct_eq;
+  |}.
+  Global Instance AFT_ct_eq : ConstantTimeEq.AssociatedFunction "ct_eq" _ := {|
+    ConstantTimeEq.associated_function := ct_eq;
+  |}.
+  
   Global Instance I : ConstantTimeEq.Class Self := {|
-    Definition ct_eq (self : ref Self) (other : ref i32) : Choice :=
-      method "ct_eq" (cast (deref self) u32) (cast (deref other) u32).
-    
-    Global Instance AF_ct_eq : i32.AssociatedFunction "ct_eq" _ := {|
-      i32.associated_function := ct_eq;
-    |}.
-    Global Instance M_ct_eq : Method "ct_eq" _ := {|
-      method := ct_eq;
-    |}.
+    ConstantTimeEq.ct_eq := ct_eq;
   |}.
 End Impl_ConstantTimeEq_for_i32.
 
 Module Impl_ConstantTimeEq_for_u64.
   Definition Self := u64.
   
+  Definition ct_eq (self : ref Self) (other : ref u64) : Choice :=
+    let x := bit_xor self other in
+    let y := shr (bit_or x (method "wrapping_neg" x)) (sub 64 1) in
+    method "into" (cast (bit_xor y (cast 1 u64)) u8).
+  
+  Global Instance M_ct_eq : Method "ct_eq" _ := {|
+    method := ct_eq;
+  |}.
+  Global Instance AF_ct_eq : u64.AssociatedFunction "ct_eq" _ := {|
+    u64.associated_function := ct_eq;
+  |}.
+  Global Instance AFT_ct_eq : ConstantTimeEq.AssociatedFunction "ct_eq" _ := {|
+    ConstantTimeEq.associated_function := ct_eq;
+  |}.
+  
   Global Instance I : ConstantTimeEq.Class Self := {|
-    Definition ct_eq (self : ref Self) (other : ref u64) : Choice :=
-      let x := bit_xor self other in
-      let y := shr (bit_or x (method "wrapping_neg" x)) (sub 64 1) in
-      method "into" (cast (bit_xor y (cast 1 u64)) u8).
-    
-    Global Instance AF_ct_eq : u64.AssociatedFunction "ct_eq" _ := {|
-      u64.associated_function := ct_eq;
-    |}.
-    Global Instance M_ct_eq : Method "ct_eq" _ := {|
-      method := ct_eq;
-    |}.
+    ConstantTimeEq.ct_eq := ct_eq;
   |}.
 End Impl_ConstantTimeEq_for_u64.
 
 Module Impl_ConstantTimeEq_for_i64.
   Definition Self := i64.
   
+  Definition ct_eq (self : ref Self) (other : ref i64) : Choice :=
+    method "ct_eq" (cast (deref self) u64) (cast (deref other) u64).
+  
+  Global Instance M_ct_eq : Method "ct_eq" _ := {|
+    method := ct_eq;
+  |}.
+  Global Instance AF_ct_eq : i64.AssociatedFunction "ct_eq" _ := {|
+    i64.associated_function := ct_eq;
+  |}.
+  Global Instance AFT_ct_eq : ConstantTimeEq.AssociatedFunction "ct_eq" _ := {|
+    ConstantTimeEq.associated_function := ct_eq;
+  |}.
+  
   Global Instance I : ConstantTimeEq.Class Self := {|
-    Definition ct_eq (self : ref Self) (other : ref i64) : Choice :=
-      method "ct_eq" (cast (deref self) u64) (cast (deref other) u64).
-    
-    Global Instance AF_ct_eq : i64.AssociatedFunction "ct_eq" _ := {|
-      i64.associated_function := ct_eq;
-    |}.
-    Global Instance M_ct_eq : Method "ct_eq" _ := {|
-      method := ct_eq;
-    |}.
+    ConstantTimeEq.ct_eq := ct_eq;
   |}.
 End Impl_ConstantTimeEq_for_i64.
 
 Module Impl_ConstantTimeEq_for_usize.
   Definition Self := usize.
   
+  Definition ct_eq (self : ref Self) (other : ref usize) : Choice :=
+    let x := bit_xor self other in
+    let y :=
+      shr
+        (bit_or x (method "wrapping_neg" x))
+        (sub (mul (Root.core.mem.size_of tt) 8) 1) in
+    method "into" (cast (bit_xor y (cast 1 usize)) u8).
+  
+  Global Instance M_ct_eq : Method "ct_eq" _ := {|
+    method := ct_eq;
+  |}.
+  Global Instance AF_ct_eq : usize.AssociatedFunction "ct_eq" _ := {|
+    usize.associated_function := ct_eq;
+  |}.
+  Global Instance AFT_ct_eq : ConstantTimeEq.AssociatedFunction "ct_eq" _ := {|
+    ConstantTimeEq.associated_function := ct_eq;
+  |}.
+  
   Global Instance I : ConstantTimeEq.Class Self := {|
-    Definition ct_eq (self : ref Self) (other : ref usize) : Choice :=
-      let x := bit_xor self other in
-      let y :=
-        shr
-          (bit_or x (method "wrapping_neg" x))
-          (sub (mul (Root.core.mem.size_of tt) 8) 1) in
-      method "into" (cast (bit_xor y (cast 1 usize)) u8).
-    
-    Global Instance AF_ct_eq : usize.AssociatedFunction "ct_eq" _ := {|
-      usize.associated_function := ct_eq;
-    |}.
-    Global Instance M_ct_eq : Method "ct_eq" _ := {|
-      method := ct_eq;
-    |}.
+    ConstantTimeEq.ct_eq := ct_eq;
   |}.
 End Impl_ConstantTimeEq_for_usize.
 
 Module Impl_ConstantTimeEq_for_isize.
   Definition Self := isize.
   
+  Definition ct_eq (self : ref Self) (other : ref isize) : Choice :=
+    method "ct_eq" (cast (deref self) usize) (cast (deref other) usize).
+  
+  Global Instance M_ct_eq : Method "ct_eq" _ := {|
+    method := ct_eq;
+  |}.
+  Global Instance AF_ct_eq : isize.AssociatedFunction "ct_eq" _ := {|
+    isize.associated_function := ct_eq;
+  |}.
+  Global Instance AFT_ct_eq : ConstantTimeEq.AssociatedFunction "ct_eq" _ := {|
+    ConstantTimeEq.associated_function := ct_eq;
+  |}.
+  
   Global Instance I : ConstantTimeEq.Class Self := {|
-    Definition ct_eq (self : ref Self) (other : ref isize) : Choice :=
-      method "ct_eq" (cast (deref self) usize) (cast (deref other) usize).
-    
-    Global Instance AF_ct_eq : isize.AssociatedFunction "ct_eq" _ := {|
-      isize.associated_function := ct_eq;
-    |}.
-    Global Instance M_ct_eq : Method "ct_eq" _ := {|
-      method := ct_eq;
-    |}.
+    ConstantTimeEq.ct_eq := ct_eq;
   |}.
 End Impl_ConstantTimeEq_for_isize.
 
@@ -560,593 +715,881 @@ Module ConditionallySelectable.
       tt
       : unit);
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End ConditionallySelectable.
 
 Module Impl_ConditionallySelectable_for_u8.
   Definition Self := u8.
   
-  Global Instance I : ConditionallySelectable.Class Self := {|
-    Definition conditional_select
-        (a : ref Self)
-        (b : ref Self)
-        (choice : Choice)
-        : Self :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) u8 in
-      bit_xor a (bit_and mask (bit_xor a b)).
-    
-    Global Instance
-      AF_conditional_select
-      :
-      u8.AssociatedFunction
-      "conditional_select"
-      _
-      :=
-      {|
-      u8.associated_function := conditional_select;
-    |}.
-    Definition conditional_assign
-        (self : mut_ref Self)
-        (other : ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) u8 in
-      assign
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : Choice)
+      : Self :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) u8 in
+    bit_xor a (bit_and mask (bit_xor a b)).
+  
+  Global Instance
+    AF_conditional_select
+    :
+    u8.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    u8.associated_function := conditional_select;
+  |}.
+  Global Instance
+    AFT_conditional_select
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_select;
+  |}.
+  
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) u8 in
+    assign
+      (deref self)
+      (bit_xor
         (deref self)
-        (bit_xor
-          (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_assign
-      :
-      u8.AssociatedFunction
-      "conditional_assign"
-      _
-      :=
-      {|
-      u8.associated_function := conditional_assign;
-    |}.
-    Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
-      method := conditional_assign;
-    |}.
-    Definition conditional_swap
-        (a : mut_ref Self)
-        (b : mut_ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) u8 in
-      let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign (deref a) (bit_xor (deref a) t) ;;
-      assign (deref b) (bit_xor (deref b) t) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_swap
-      :
-      u8.AssociatedFunction
-      "conditional_swap"
-      _
-      :=
-      {|
-      u8.associated_function := conditional_swap;
-    |}.
+        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+    tt.
+  
+  Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
+    method := conditional_assign;
+  |}.
+  Global Instance
+    AF_conditional_assign
+    :
+    u8.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    u8.associated_function := conditional_assign;
+  |}.
+  Global Instance
+    AFT_conditional_assign
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_assign;
+  |}.
+  
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) u8 in
+    let t := bit_and mask (bit_xor (deref a) (deref b)) in
+    assign (deref a) (bit_xor (deref a) t) ;;
+    assign (deref b) (bit_xor (deref b) t) ;;
+    tt.
+  
+  Global Instance
+    AF_conditional_swap
+    :
+    u8.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    u8.associated_function := conditional_swap;
+  |}.
+  Global Instance
+    AFT_conditional_swap
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_swap;
+  |}.
+  
+  Global Instance I : ConditionallySelectable.Class Self := {|
+    ConditionallySelectable.conditional_select := conditional_select;
   |}.
 End Impl_ConditionallySelectable_for_u8.
 
 Module Impl_ConditionallySelectable_for_i8.
   Definition Self := i8.
   
-  Global Instance I : ConditionallySelectable.Class Self := {|
-    Definition conditional_select
-        (a : ref Self)
-        (b : ref Self)
-        (choice : Choice)
-        : Self :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) i8 in
-      bit_xor a (bit_and mask (bit_xor a b)).
-    
-    Global Instance
-      AF_conditional_select
-      :
-      i8.AssociatedFunction
-      "conditional_select"
-      _
-      :=
-      {|
-      i8.associated_function := conditional_select;
-    |}.
-    Definition conditional_assign
-        (self : mut_ref Self)
-        (other : ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) i8 in
-      assign
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : Choice)
+      : Self :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) i8 in
+    bit_xor a (bit_and mask (bit_xor a b)).
+  
+  Global Instance
+    AF_conditional_select
+    :
+    i8.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    i8.associated_function := conditional_select;
+  |}.
+  Global Instance
+    AFT_conditional_select
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_select;
+  |}.
+  
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) i8 in
+    assign
+      (deref self)
+      (bit_xor
         (deref self)
-        (bit_xor
-          (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_assign
-      :
-      i8.AssociatedFunction
-      "conditional_assign"
-      _
-      :=
-      {|
-      i8.associated_function := conditional_assign;
-    |}.
-    Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
-      method := conditional_assign;
-    |}.
-    Definition conditional_swap
-        (a : mut_ref Self)
-        (b : mut_ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) i8 in
-      let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign (deref a) (bit_xor (deref a) t) ;;
-      assign (deref b) (bit_xor (deref b) t) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_swap
-      :
-      i8.AssociatedFunction
-      "conditional_swap"
-      _
-      :=
-      {|
-      i8.associated_function := conditional_swap;
-    |}.
+        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+    tt.
+  
+  Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
+    method := conditional_assign;
+  |}.
+  Global Instance
+    AF_conditional_assign
+    :
+    i8.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    i8.associated_function := conditional_assign;
+  |}.
+  Global Instance
+    AFT_conditional_assign
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_assign;
+  |}.
+  
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i8)) i8 in
+    let t := bit_and mask (bit_xor (deref a) (deref b)) in
+    assign (deref a) (bit_xor (deref a) t) ;;
+    assign (deref b) (bit_xor (deref b) t) ;;
+    tt.
+  
+  Global Instance
+    AF_conditional_swap
+    :
+    i8.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    i8.associated_function := conditional_swap;
+  |}.
+  Global Instance
+    AFT_conditional_swap
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_swap;
+  |}.
+  
+  Global Instance I : ConditionallySelectable.Class Self := {|
+    ConditionallySelectable.conditional_select := conditional_select;
   |}.
 End Impl_ConditionallySelectable_for_i8.
 
 Module Impl_ConditionallySelectable_for_u16.
   Definition Self := u16.
   
-  Global Instance I : ConditionallySelectable.Class Self := {|
-    Definition conditional_select
-        (a : ref Self)
-        (b : ref Self)
-        (choice : Choice)
-        : Self :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) u16 in
-      bit_xor a (bit_and mask (bit_xor a b)).
-    
-    Global Instance
-      AF_conditional_select
-      :
-      u16.AssociatedFunction
-      "conditional_select"
-      _
-      :=
-      {|
-      u16.associated_function := conditional_select;
-    |}.
-    Definition conditional_assign
-        (self : mut_ref Self)
-        (other : ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) u16 in
-      assign
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : Choice)
+      : Self :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) u16 in
+    bit_xor a (bit_and mask (bit_xor a b)).
+  
+  Global Instance
+    AF_conditional_select
+    :
+    u16.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    u16.associated_function := conditional_select;
+  |}.
+  Global Instance
+    AFT_conditional_select
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_select;
+  |}.
+  
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) u16 in
+    assign
+      (deref self)
+      (bit_xor
         (deref self)
-        (bit_xor
-          (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_assign
-      :
-      u16.AssociatedFunction
-      "conditional_assign"
-      _
-      :=
-      {|
-      u16.associated_function := conditional_assign;
-    |}.
-    Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
-      method := conditional_assign;
-    |}.
-    Definition conditional_swap
-        (a : mut_ref Self)
-        (b : mut_ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) u16 in
-      let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign (deref a) (bit_xor (deref a) t) ;;
-      assign (deref b) (bit_xor (deref b) t) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_swap
-      :
-      u16.AssociatedFunction
-      "conditional_swap"
-      _
-      :=
-      {|
-      u16.associated_function := conditional_swap;
-    |}.
+        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+    tt.
+  
+  Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
+    method := conditional_assign;
+  |}.
+  Global Instance
+    AF_conditional_assign
+    :
+    u16.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    u16.associated_function := conditional_assign;
+  |}.
+  Global Instance
+    AFT_conditional_assign
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_assign;
+  |}.
+  
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) u16 in
+    let t := bit_and mask (bit_xor (deref a) (deref b)) in
+    assign (deref a) (bit_xor (deref a) t) ;;
+    assign (deref b) (bit_xor (deref b) t) ;;
+    tt.
+  
+  Global Instance
+    AF_conditional_swap
+    :
+    u16.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    u16.associated_function := conditional_swap;
+  |}.
+  Global Instance
+    AFT_conditional_swap
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_swap;
+  |}.
+  
+  Global Instance I : ConditionallySelectable.Class Self := {|
+    ConditionallySelectable.conditional_select := conditional_select;
   |}.
 End Impl_ConditionallySelectable_for_u16.
 
 Module Impl_ConditionallySelectable_for_i16.
   Definition Self := i16.
   
-  Global Instance I : ConditionallySelectable.Class Self := {|
-    Definition conditional_select
-        (a : ref Self)
-        (b : ref Self)
-        (choice : Choice)
-        : Self :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) i16 in
-      bit_xor a (bit_and mask (bit_xor a b)).
-    
-    Global Instance
-      AF_conditional_select
-      :
-      i16.AssociatedFunction
-      "conditional_select"
-      _
-      :=
-      {|
-      i16.associated_function := conditional_select;
-    |}.
-    Definition conditional_assign
-        (self : mut_ref Self)
-        (other : ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) i16 in
-      assign
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : Choice)
+      : Self :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) i16 in
+    bit_xor a (bit_and mask (bit_xor a b)).
+  
+  Global Instance
+    AF_conditional_select
+    :
+    i16.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    i16.associated_function := conditional_select;
+  |}.
+  Global Instance
+    AFT_conditional_select
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_select;
+  |}.
+  
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) i16 in
+    assign
+      (deref self)
+      (bit_xor
         (deref self)
-        (bit_xor
-          (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_assign
-      :
-      i16.AssociatedFunction
-      "conditional_assign"
-      _
-      :=
-      {|
-      i16.associated_function := conditional_assign;
-    |}.
-    Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
-      method := conditional_assign;
-    |}.
-    Definition conditional_swap
-        (a : mut_ref Self)
-        (b : mut_ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) i16 in
-      let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign (deref a) (bit_xor (deref a) t) ;;
-      assign (deref b) (bit_xor (deref b) t) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_swap
-      :
-      i16.AssociatedFunction
-      "conditional_swap"
-      _
-      :=
-      {|
-      i16.associated_function := conditional_swap;
-    |}.
+        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+    tt.
+  
+  Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
+    method := conditional_assign;
+  |}.
+  Global Instance
+    AF_conditional_assign
+    :
+    i16.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    i16.associated_function := conditional_assign;
+  |}.
+  Global Instance
+    AFT_conditional_assign
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_assign;
+  |}.
+  
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i16)) i16 in
+    let t := bit_and mask (bit_xor (deref a) (deref b)) in
+    assign (deref a) (bit_xor (deref a) t) ;;
+    assign (deref b) (bit_xor (deref b) t) ;;
+    tt.
+  
+  Global Instance
+    AF_conditional_swap
+    :
+    i16.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    i16.associated_function := conditional_swap;
+  |}.
+  Global Instance
+    AFT_conditional_swap
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_swap;
+  |}.
+  
+  Global Instance I : ConditionallySelectable.Class Self := {|
+    ConditionallySelectable.conditional_select := conditional_select;
   |}.
 End Impl_ConditionallySelectable_for_i16.
 
 Module Impl_ConditionallySelectable_for_u32.
   Definition Self := u32.
   
-  Global Instance I : ConditionallySelectable.Class Self := {|
-    Definition conditional_select
-        (a : ref Self)
-        (b : ref Self)
-        (choice : Choice)
-        : Self :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) u32 in
-      bit_xor a (bit_and mask (bit_xor a b)).
-    
-    Global Instance
-      AF_conditional_select
-      :
-      u32.AssociatedFunction
-      "conditional_select"
-      _
-      :=
-      {|
-      u32.associated_function := conditional_select;
-    |}.
-    Definition conditional_assign
-        (self : mut_ref Self)
-        (other : ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) u32 in
-      assign
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : Choice)
+      : Self :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) u32 in
+    bit_xor a (bit_and mask (bit_xor a b)).
+  
+  Global Instance
+    AF_conditional_select
+    :
+    u32.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    u32.associated_function := conditional_select;
+  |}.
+  Global Instance
+    AFT_conditional_select
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_select;
+  |}.
+  
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) u32 in
+    assign
+      (deref self)
+      (bit_xor
         (deref self)
-        (bit_xor
-          (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_assign
-      :
-      u32.AssociatedFunction
-      "conditional_assign"
-      _
-      :=
-      {|
-      u32.associated_function := conditional_assign;
-    |}.
-    Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
-      method := conditional_assign;
-    |}.
-    Definition conditional_swap
-        (a : mut_ref Self)
-        (b : mut_ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) u32 in
-      let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign (deref a) (bit_xor (deref a) t) ;;
-      assign (deref b) (bit_xor (deref b) t) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_swap
-      :
-      u32.AssociatedFunction
-      "conditional_swap"
-      _
-      :=
-      {|
-      u32.associated_function := conditional_swap;
-    |}.
+        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+    tt.
+  
+  Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
+    method := conditional_assign;
+  |}.
+  Global Instance
+    AF_conditional_assign
+    :
+    u32.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    u32.associated_function := conditional_assign;
+  |}.
+  Global Instance
+    AFT_conditional_assign
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_assign;
+  |}.
+  
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) u32 in
+    let t := bit_and mask (bit_xor (deref a) (deref b)) in
+    assign (deref a) (bit_xor (deref a) t) ;;
+    assign (deref b) (bit_xor (deref b) t) ;;
+    tt.
+  
+  Global Instance
+    AF_conditional_swap
+    :
+    u32.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    u32.associated_function := conditional_swap;
+  |}.
+  Global Instance
+    AFT_conditional_swap
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_swap;
+  |}.
+  
+  Global Instance I : ConditionallySelectable.Class Self := {|
+    ConditionallySelectable.conditional_select := conditional_select;
   |}.
 End Impl_ConditionallySelectable_for_u32.
 
 Module Impl_ConditionallySelectable_for_i32.
   Definition Self := i32.
   
-  Global Instance I : ConditionallySelectable.Class Self := {|
-    Definition conditional_select
-        (a : ref Self)
-        (b : ref Self)
-        (choice : Choice)
-        : Self :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) i32 in
-      bit_xor a (bit_and mask (bit_xor a b)).
-    
-    Global Instance
-      AF_conditional_select
-      :
-      i32.AssociatedFunction
-      "conditional_select"
-      _
-      :=
-      {|
-      i32.associated_function := conditional_select;
-    |}.
-    Definition conditional_assign
-        (self : mut_ref Self)
-        (other : ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) i32 in
-      assign
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : Choice)
+      : Self :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) i32 in
+    bit_xor a (bit_and mask (bit_xor a b)).
+  
+  Global Instance
+    AF_conditional_select
+    :
+    i32.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    i32.associated_function := conditional_select;
+  |}.
+  Global Instance
+    AFT_conditional_select
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_select;
+  |}.
+  
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) i32 in
+    assign
+      (deref self)
+      (bit_xor
         (deref self)
-        (bit_xor
-          (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_assign
-      :
-      i32.AssociatedFunction
-      "conditional_assign"
-      _
-      :=
-      {|
-      i32.associated_function := conditional_assign;
-    |}.
-    Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
-      method := conditional_assign;
-    |}.
-    Definition conditional_swap
-        (a : mut_ref Self)
-        (b : mut_ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) i32 in
-      let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign (deref a) (bit_xor (deref a) t) ;;
-      assign (deref b) (bit_xor (deref b) t) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_swap
-      :
-      i32.AssociatedFunction
-      "conditional_swap"
-      _
-      :=
-      {|
-      i32.associated_function := conditional_swap;
-    |}.
+        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+    tt.
+  
+  Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
+    method := conditional_assign;
+  |}.
+  Global Instance
+    AF_conditional_assign
+    :
+    i32.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    i32.associated_function := conditional_assign;
+  |}.
+  Global Instance
+    AFT_conditional_assign
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_assign;
+  |}.
+  
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i32)) i32 in
+    let t := bit_and mask (bit_xor (deref a) (deref b)) in
+    assign (deref a) (bit_xor (deref a) t) ;;
+    assign (deref b) (bit_xor (deref b) t) ;;
+    tt.
+  
+  Global Instance
+    AF_conditional_swap
+    :
+    i32.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    i32.associated_function := conditional_swap;
+  |}.
+  Global Instance
+    AFT_conditional_swap
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_swap;
+  |}.
+  
+  Global Instance I : ConditionallySelectable.Class Self := {|
+    ConditionallySelectable.conditional_select := conditional_select;
   |}.
 End Impl_ConditionallySelectable_for_i32.
 
 Module Impl_ConditionallySelectable_for_u64.
   Definition Self := u64.
   
-  Global Instance I : ConditionallySelectable.Class Self := {|
-    Definition conditional_select
-        (a : ref Self)
-        (b : ref Self)
-        (choice : Choice)
-        : Self :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) u64 in
-      bit_xor a (bit_and mask (bit_xor a b)).
-    
-    Global Instance
-      AF_conditional_select
-      :
-      u64.AssociatedFunction
-      "conditional_select"
-      _
-      :=
-      {|
-      u64.associated_function := conditional_select;
-    |}.
-    Definition conditional_assign
-        (self : mut_ref Self)
-        (other : ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) u64 in
-      assign
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : Choice)
+      : Self :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) u64 in
+    bit_xor a (bit_and mask (bit_xor a b)).
+  
+  Global Instance
+    AF_conditional_select
+    :
+    u64.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    u64.associated_function := conditional_select;
+  |}.
+  Global Instance
+    AFT_conditional_select
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_select;
+  |}.
+  
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) u64 in
+    assign
+      (deref self)
+      (bit_xor
         (deref self)
-        (bit_xor
-          (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_assign
-      :
-      u64.AssociatedFunction
-      "conditional_assign"
-      _
-      :=
-      {|
-      u64.associated_function := conditional_assign;
-    |}.
-    Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
-      method := conditional_assign;
-    |}.
-    Definition conditional_swap
-        (a : mut_ref Self)
-        (b : mut_ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) u64 in
-      let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign (deref a) (bit_xor (deref a) t) ;;
-      assign (deref b) (bit_xor (deref b) t) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_swap
-      :
-      u64.AssociatedFunction
-      "conditional_swap"
-      _
-      :=
-      {|
-      u64.associated_function := conditional_swap;
-    |}.
+        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+    tt.
+  
+  Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
+    method := conditional_assign;
+  |}.
+  Global Instance
+    AF_conditional_assign
+    :
+    u64.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    u64.associated_function := conditional_assign;
+  |}.
+  Global Instance
+    AFT_conditional_assign
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_assign;
+  |}.
+  
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) u64 in
+    let t := bit_and mask (bit_xor (deref a) (deref b)) in
+    assign (deref a) (bit_xor (deref a) t) ;;
+    assign (deref b) (bit_xor (deref b) t) ;;
+    tt.
+  
+  Global Instance
+    AF_conditional_swap
+    :
+    u64.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    u64.associated_function := conditional_swap;
+  |}.
+  Global Instance
+    AFT_conditional_swap
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_swap;
+  |}.
+  
+  Global Instance I : ConditionallySelectable.Class Self := {|
+    ConditionallySelectable.conditional_select := conditional_select;
   |}.
 End Impl_ConditionallySelectable_for_u64.
 
 Module Impl_ConditionallySelectable_for_i64.
   Definition Self := i64.
   
-  Global Instance I : ConditionallySelectable.Class Self := {|
-    Definition conditional_select
-        (a : ref Self)
-        (b : ref Self)
-        (choice : Choice)
-        : Self :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) i64 in
-      bit_xor a (bit_and mask (bit_xor a b)).
-    
-    Global Instance
-      AF_conditional_select
-      :
-      i64.AssociatedFunction
-      "conditional_select"
-      _
-      :=
-      {|
-      i64.associated_function := conditional_select;
-    |}.
-    Definition conditional_assign
-        (self : mut_ref Self)
-        (other : ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) i64 in
-      assign
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : Choice)
+      : Self :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) i64 in
+    bit_xor a (bit_and mask (bit_xor a b)).
+  
+  Global Instance
+    AF_conditional_select
+    :
+    i64.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    i64.associated_function := conditional_select;
+  |}.
+  Global Instance
+    AFT_conditional_select
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_select;
+  |}.
+  
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) i64 in
+    assign
+      (deref self)
+      (bit_xor
         (deref self)
-        (bit_xor
-          (deref self)
-          (bit_and mask (bit_xor (deref self) (deref other)))) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_assign
-      :
-      i64.AssociatedFunction
-      "conditional_assign"
-      _
-      :=
-      {|
-      i64.associated_function := conditional_assign;
-    |}.
-    Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
-      method := conditional_assign;
-    |}.
-    Definition conditional_swap
-        (a : mut_ref Self)
-        (b : mut_ref Self)
-        (choice : Choice) :=
-      let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) i64 in
-      let t := bit_and mask (bit_xor (deref a) (deref b)) in
-      assign (deref a) (bit_xor (deref a) t) ;;
-      assign (deref b) (bit_xor (deref b) t) ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_swap
-      :
-      i64.AssociatedFunction
-      "conditional_swap"
-      _
-      :=
-      {|
-      i64.associated_function := conditional_swap;
-    |}.
+        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+    tt.
+  
+  Global Instance M_conditional_assign : Method "conditional_assign" _ := {|
+    method := conditional_assign;
+  |}.
+  Global Instance
+    AF_conditional_assign
+    :
+    i64.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    i64.associated_function := conditional_assign;
+  |}.
+  Global Instance
+    AFT_conditional_assign
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_assign"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_assign;
+  |}.
+  
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : Choice) :=
+    let mask := cast (neg (cast (method "unwrap_u8" choice) i64)) i64 in
+    let t := bit_and mask (bit_xor (deref a) (deref b)) in
+    assign (deref a) (bit_xor (deref a) t) ;;
+    assign (deref b) (bit_xor (deref b) t) ;;
+    tt.
+  
+  Global Instance
+    AF_conditional_swap
+    :
+    i64.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    i64.associated_function := conditional_swap;
+  |}.
+  Global Instance
+    AFT_conditional_swap
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_swap"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_swap;
+  |}.
+  
+  Global Instance I : ConditionallySelectable.Class Self := {|
+    ConditionallySelectable.conditional_select := conditional_select;
   |}.
 End Impl_ConditionallySelectable_for_i64.
 
 Module Impl_ConditionallySelectable_for_Choice.
   Definition Self := Choice.
   
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : Choice)
+      : Self :=
+    Choice.Build
+      (Implu8.conditional_select
+        (IndexedField.get (index := 0) a)
+        (IndexedField.get (index := 0) b)
+        choice).
+  
+  Global Instance
+    AF_conditional_select
+    :
+    Choice.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    Choice.associated_function := conditional_select;
+  |}.
+  Global Instance
+    AFT_conditional_select
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_select;
+  |}.
+  
   Global Instance I : ConditionallySelectable.Class Self := {|
-    Definition conditional_select
-        (a : ref Self)
-        (b : ref Self)
-        (choice : Choice)
-        : Self :=
-      Choice.Build
-        (Implu8.conditional_select
-          (IndexedField.get (index := 0) a)
-          (IndexedField.get (index := 0) b)
-          choice).
-    
-    Global Instance
-      AF_conditional_select
-      :
-      Choice.AssociatedFunction
-      "conditional_select"
-      _
-      :=
-      {|
-      Choice.associated_function := conditional_select;
-    |}.
+    ConditionallySelectable.conditional_select := conditional_select;
   |}.
 End Impl_ConditionallySelectable_for_Choice.
 
@@ -1159,30 +1602,46 @@ Module ConditionallyNegatable.
     : Method "conditional_negate" _ := {|
     method := conditional_negate;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End ConditionallyNegatable.
 
 Module Impl_ConditionallyNegatable_for_T.
   Definition Self := T.
   
+  Definition conditional_negate (self : mut_ref Self) (choice : Choice) :=
+    let self_neg := neg (cast self (ref T)) in
+    method "conditional_assign" self self_neg choice ;;
+    tt.
+  
+  Global Instance M_conditional_negate : Method "conditional_negate" _ := {|
+    method := conditional_negate;
+  |}.
+  Global Instance
+    AF_conditional_negate
+    :
+    T.AssociatedFunction
+    "conditional_negate"
+    _
+    :=
+    {|
+    T.associated_function := conditional_negate;
+  |}.
+  Global Instance
+    AFT_conditional_negate
+    :
+    ConditionallyNegatable.AssociatedFunction
+    "conditional_negate"
+    _
+    :=
+    {|
+    ConditionallyNegatable.associated_function := conditional_negate;
+  |}.
+  
   Global Instance I T : ConditionallyNegatable.Class Self := {|
-    Definition conditional_negate (self : mut_ref Self) (choice : Choice) :=
-      let self_neg := neg (cast self (ref T)) in
-      method "conditional_assign" self self_neg choice ;;
-      tt.
-    
-    Global Instance
-      AF_conditional_negate
-      :
-      T.AssociatedFunction
-      "conditional_negate"
-      _
-      :=
-      {|
-      T.associated_function := conditional_negate;
-    |}.
-    Global Instance M_conditional_negate : Method "conditional_negate" _ := {|
-      method := conditional_negate;
-    |}.
+    ConditionallyNegatable.conditional_negate := conditional_negate;
   |}.
 End Impl_ConditionallyNegatable_for_T.
 
@@ -1201,29 +1660,42 @@ Module CtOption.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End CtOption.
 Definition CtOption : Set := CtOption.t.
 
 Module Impl__crate_clone_Clone_for_CtOption.
   Definition Self := CtOption.
   
+  Definition clone (self : ref Self) : CtOption :=
+    {|
+      CtOption.value :=
+        (_crate.clone.Clone.associated_function "clone")
+          (NamedField.get (name := "value") self);
+      CtOption.is_some :=
+        (_crate.clone.Clone.associated_function "clone")
+          (NamedField.get (name := "is_some") self);
+    |}.
+  
+  Global Instance M_clone : Method "clone" _ := {|
+    method := clone;
+  |}.
+  Global Instance AF_clone : CtOption.AssociatedFunction "clone" _ := {|
+    CtOption.associated_function := clone;
+  |}.
+  Global Instance
+    AFT_clone
+    :
+    _crate.clone.Clone.AssociatedFunction
+    "clone"
+    _
+    :=
+    {|
+    _crate.clone.Clone.associated_function := clone;
+  |}.
+  
   Global Instance I T : _crate.clone.Clone.Class Self := {|
-    Definition clone (self : ref Self) : CtOption :=
-      {|
-        CtOption.value :=
-          (_crate.clone.Clone.associated_function "clone")
-            (NamedField.get (name := "value") self);
-        CtOption.is_some :=
-          (_crate.clone.Clone.associated_function "clone")
-            (NamedField.get (name := "is_some") self);
-      |}.
-    
-    Global Instance AF_clone : CtOption.AssociatedFunction "clone" _ := {|
-      CtOption.associated_function := clone;
-    |}.
-    Global Instance M_clone : Method "clone" _ := {|
-      method := clone;
-    |}.
+    _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_CtOption.
 
@@ -1231,47 +1703,57 @@ Module Impl__crate_marker_Copy_for_CtOption.
   Definition Self := CtOption.
   
   Global Instance I T : _crate.marker.Copy.Class Self :=
-      _crate.marker.Copy.Build_Class _.
+    _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_CtOption.
 
 Module Impl__crate_fmt_Debug_for_CtOption.
   Definition Self := CtOption.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.debug_struct_field2_finish
+      f
+      "CtOption"
+      "value"
+      (NamedField.get (name := "value") self)
+      "is_some"
+      (NamedField.get (name := "is_some") self).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : CtOption.AssociatedFunction "fmt" _ := {|
+    CtOption.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I T : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.debug_struct_field2_finish
-        f
-        "CtOption"
-        "value"
-        (NamedField.get (name := "value") self)
-        "is_some"
-        (NamedField.get (name := "is_some") self).
-    
-    Global Instance AF_fmt : CtOption.AssociatedFunction "fmt" _ := {|
-      CtOption.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_CtOption.
 
 Module Impl_From_for_Option.
   Definition Self := Option.
   
+  Definition from (source : CtOption) : Option :=
+    if (eqb (method "unwrap_u8" (method "is_some" source)) 1 : bool) then
+      Option.Some (NamedField.get (name := "value") source)
+    else
+      None.
+  
+  Global Instance AF_from : Option.AssociatedFunction "from" _ := {|
+    Option.associated_function := from;
+  |}.
+  Global Instance AFT_from : From.AssociatedFunction "from" _ := {|
+    From.associated_function := from;
+  |}.
+  
   Global Instance I T : From.Class CtOption Self := {|
-    Definition from (source : CtOption) : Option :=
-      if (eqb (method "unwrap_u8" (method "is_some" source)) 1 : bool) then
-        Option.Some (NamedField.get (name := "value") source)
-      else
-        None.
-    
-    Global Instance AF_from : Option.AssociatedFunction "from" _ := {|
-      Option.associated_function := from;
-    |}.
+    From.from := from;
   |}.
 End Impl_From_for_Option.
 
@@ -1304,11 +1786,11 @@ Module ImplCtOption.
     end ;;
     NamedField.get (name := "value") self.
   
-  Global Instance AF_expect : CtOption.AssociatedFunction "expect" _ := {|
-    CtOption.associated_function := expect;
-  |}.
   Global Instance M_expect : Method "expect" _ := {|
     method := expect;
+  |}.
+  Global Instance AF_expect : CtOption.AssociatedFunction "expect" _ := {|
+    CtOption.associated_function := expect;
   |}.
   
   Definition unwrap (self : Self) : T :=
@@ -1327,11 +1809,11 @@ Module ImplCtOption.
     end ;;
     NamedField.get (name := "value") self.
   
-  Global Instance AF_unwrap : CtOption.AssociatedFunction "unwrap" _ := {|
-    CtOption.associated_function := unwrap;
-  |}.
   Global Instance M_unwrap : Method "unwrap" _ := {|
     method := unwrap;
+  |}.
+  Global Instance AF_unwrap : CtOption.AssociatedFunction "unwrap" _ := {|
+    CtOption.associated_function := unwrap;
   |}.
   
   Definition unwrap_or (self : Self) (def : T) : T :=
@@ -1340,11 +1822,11 @@ Module ImplCtOption.
       (NamedField.get (name := "value") self)
       (NamedField.get (name := "is_some") self).
   
-  Global Instance AF_unwrap_or : CtOption.AssociatedFunction "unwrap_or" _ := {|
-    CtOption.associated_function := unwrap_or;
-  |}.
   Global Instance M_unwrap_or : Method "unwrap_or" _ := {|
     method := unwrap_or;
+  |}.
+  Global Instance AF_unwrap_or : CtOption.AssociatedFunction "unwrap_or" _ := {|
+    CtOption.associated_function := unwrap_or;
   |}.
   
   Definition unwrap_or_else (self : Self) (f : F) : T :=
@@ -1353,6 +1835,9 @@ Module ImplCtOption.
       (NamedField.get (name := "value") self)
       (NamedField.get (name := "is_some") self).
   
+  Global Instance M_unwrap_or_else : Method "unwrap_or_else" _ := {|
+    method := unwrap_or_else;
+  |}.
   Global Instance
     AF_unwrap_or_else
     :
@@ -1363,28 +1848,25 @@ Module ImplCtOption.
     {|
     CtOption.associated_function := unwrap_or_else;
   |}.
-  Global Instance M_unwrap_or_else : Method "unwrap_or_else" _ := {|
-    method := unwrap_or_else;
-  |}.
   
   Definition is_some (self : ref Self) : Choice :=
     NamedField.get (name := "is_some") self.
   
-  Global Instance AF_is_some : CtOption.AssociatedFunction "is_some" _ := {|
-    CtOption.associated_function := is_some;
-  |}.
   Global Instance M_is_some : Method "is_some" _ := {|
     method := is_some;
+  |}.
+  Global Instance AF_is_some : CtOption.AssociatedFunction "is_some" _ := {|
+    CtOption.associated_function := is_some;
   |}.
   
   Definition is_none (self : ref Self) : Choice :=
     not (NamedField.get (name := "is_some") self).
   
-  Global Instance AF_is_none : CtOption.AssociatedFunction "is_none" _ := {|
-    CtOption.associated_function := is_none;
-  |}.
   Global Instance M_is_none : Method "is_none" _ := {|
     method := is_none;
+  |}.
+  Global Instance AF_is_none : CtOption.AssociatedFunction "is_none" _ := {|
+    CtOption.associated_function := is_none;
   |}.
   
   Definition map (self : Self) (f : F) : CtOption :=
@@ -1396,11 +1878,11 @@ Module ImplCtOption.
           (NamedField.get (name := "is_some") self)))
       (NamedField.get (name := "is_some") self).
   
-  Global Instance AF_map : CtOption.AssociatedFunction "map" _ := {|
-    CtOption.associated_function := map;
-  |}.
   Global Instance M_map : Method "map" _ := {|
     method := map;
+  |}.
+  Global Instance AF_map : CtOption.AssociatedFunction "map" _ := {|
+    CtOption.associated_function := map;
   |}.
   
   Definition and_then (self : Self) (f : F) : CtOption :=
@@ -1417,11 +1899,11 @@ Module ImplCtOption.
         (NamedField.get (name := "is_some") self)) ;;
     tmp.
   
-  Global Instance AF_and_then : CtOption.AssociatedFunction "and_then" _ := {|
-    CtOption.associated_function := and_then;
-  |}.
   Global Instance M_and_then : Method "and_then" _ := {|
     method := and_then;
+  |}.
+  Global Instance AF_and_then : CtOption.AssociatedFunction "and_then" _ := {|
+    CtOption.associated_function := and_then;
   |}.
   
   Definition or_else (self : Self) (f : F) : CtOption :=
@@ -1429,68 +1911,85 @@ Module ImplCtOption.
     let f := f tt in
     ImplSelf.conditional_select self f is_none.
   
-  Global Instance AF_or_else : CtOption.AssociatedFunction "or_else" _ := {|
-    CtOption.associated_function := or_else;
-  |}.
   Global Instance M_or_else : Method "or_else" _ := {|
     method := or_else;
+  |}.
+  Global Instance AF_or_else : CtOption.AssociatedFunction "or_else" _ := {|
+    CtOption.associated_function := or_else;
   |}.
 End ImplCtOption.
 
 Module Impl_ConditionallySelectable_for_CtOption.
   Definition Self := CtOption.
   
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : Choice)
+      : Self :=
+    ImplCtOption.new
+      (ImplT.conditional_select
+        (NamedField.get (name := "value") a)
+        (NamedField.get (name := "value") b)
+        choice)
+      (ImplChoice.conditional_select
+        (NamedField.get (name := "is_some") a)
+        (NamedField.get (name := "is_some") b)
+        choice).
+  
+  Global Instance
+    AF_conditional_select
+    :
+    CtOption.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    CtOption.associated_function := conditional_select;
+  |}.
+  Global Instance
+    AFT_conditional_select
+    :
+    ConditionallySelectable.AssociatedFunction
+    "conditional_select"
+    _
+    :=
+    {|
+    ConditionallySelectable.associated_function := conditional_select;
+  |}.
+  
   Global Instance I T : ConditionallySelectable.Class Self := {|
-    Definition conditional_select
-        (a : ref Self)
-        (b : ref Self)
-        (choice : Choice)
-        : Self :=
-      ImplCtOption.new
-        (ImplT.conditional_select
-          (NamedField.get (name := "value") a)
-          (NamedField.get (name := "value") b)
-          choice)
-        (ImplChoice.conditional_select
-          (NamedField.get (name := "is_some") a)
-          (NamedField.get (name := "is_some") b)
-          choice).
-    
-    Global Instance
-      AF_conditional_select
-      :
-      CtOption.AssociatedFunction
-      "conditional_select"
-      _
-      :=
-      {|
-      CtOption.associated_function := conditional_select;
-    |}.
+    ConditionallySelectable.conditional_select := conditional_select;
   |}.
 End Impl_ConditionallySelectable_for_CtOption.
 
 Module Impl_ConstantTimeEq_for_CtOption.
   Definition Self := CtOption.
   
+  Definition ct_eq (self : ref Self) (rhs : ref CtOption) : Choice :=
+    let a := method "is_some" self in
+    let b := method "is_some" rhs in
+    bit_or
+      (bit_and
+        (bit_and a b)
+        (method
+          "ct_eq"
+          (NamedField.get (name := "value") self)
+          (NamedField.get (name := "value") rhs)))
+      (bit_and (not a) (not b)).
+  
+  Global Instance M_ct_eq : Method "ct_eq" _ := {|
+    method := ct_eq;
+  |}.
+  Global Instance AF_ct_eq : CtOption.AssociatedFunction "ct_eq" _ := {|
+    CtOption.associated_function := ct_eq;
+  |}.
+  Global Instance AFT_ct_eq : ConstantTimeEq.AssociatedFunction "ct_eq" _ := {|
+    ConstantTimeEq.associated_function := ct_eq;
+  |}.
+  
   Global Instance I T : ConstantTimeEq.Class Self := {|
-    Definition ct_eq (self : ref Self) (rhs : ref CtOption) : Choice :=
-      let a := method "is_some" self in
-      let b := method "is_some" rhs in
-      bit_or
-        (bit_and
-          (bit_and a b)
-          (method
-            "ct_eq"
-            (NamedField.get (name := "value") self)
-            (NamedField.get (name := "value") rhs)))
-        (bit_and (not a) (not b)).
-    
-    Global Instance AF_ct_eq : CtOption.AssociatedFunction "ct_eq" _ := {|
-      CtOption.associated_function := ct_eq;
-    |}.
-    Global Instance M_ct_eq : Method "ct_eq" _ := {|
-      method := ct_eq;
-    |}.
+    ConstantTimeEq.ct_eq := ct_eq;
   |}.
 End Impl_ConstantTimeEq_for_CtOption.
 
@@ -1502,169 +2001,221 @@ Module ConstantTimeGreater.
   Global Instance Method_ct_gt `(Class) : Method "ct_gt" _ := {|
     method := ct_gt;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End ConstantTimeGreater.
 
 Module Impl_ConstantTimeGreater_for_u8.
   Definition Self := u8.
   
+  Definition ct_gt (self : ref Self) (other : ref u8) : Choice :=
+    let gtb := bit_and self (not other) in
+    let ltb := bit_and (not self) other in
+    let pow := 1 in
+    loop
+      (if (lt pow 8 : bool) then
+        assign ltb (bit_or ltb (shr ltb pow)) ;;
+        assign pow (add pow pow) ;;
+        tt
+      else
+        Break ;;
+        tt)
+      from
+      while ;;
+    let bit := bit_and gtb (not ltb) in
+    let pow := 1 in
+    loop
+      (if (lt pow 8 : bool) then
+        assign bit (bit_or bit (shr bit pow)) ;;
+        assign pow (add pow pow) ;;
+        tt
+      else
+        Break ;;
+        tt)
+      from
+      while ;;
+    ImplChoice.from (cast (bit_and bit 1) u8).
+  
+  Global Instance M_ct_gt : Method "ct_gt" _ := {|
+    method := ct_gt;
+  |}.
+  Global Instance AF_ct_gt : u8.AssociatedFunction "ct_gt" _ := {|
+    u8.associated_function := ct_gt;
+  |}.
+  Global Instance
+    AFT_ct_gt
+    :
+    ConstantTimeGreater.AssociatedFunction
+    "ct_gt"
+    _
+    :=
+    {|
+    ConstantTimeGreater.associated_function := ct_gt;
+  |}.
+  
   Global Instance I : ConstantTimeGreater.Class Self := {|
-    Definition ct_gt (self : ref Self) (other : ref u8) : Choice :=
-      let gtb := bit_and self (not other) in
-      let ltb := bit_and (not self) other in
-      let pow := 1 in
-      loop
-        (if (lt pow 8 : bool) then
-          assign ltb (bit_or ltb (shr ltb pow)) ;;
-          assign pow (add pow pow) ;;
-          tt
-        else
-          Break ;;
-          tt)
-        from
-        while ;;
-      let bit := bit_and gtb (not ltb) in
-      let pow := 1 in
-      loop
-        (if (lt pow 8 : bool) then
-          assign bit (bit_or bit (shr bit pow)) ;;
-          assign pow (add pow pow) ;;
-          tt
-        else
-          Break ;;
-          tt)
-        from
-        while ;;
-      ImplChoice.from (cast (bit_and bit 1) u8).
-    
-    Global Instance AF_ct_gt : u8.AssociatedFunction "ct_gt" _ := {|
-      u8.associated_function := ct_gt;
-    |}.
-    Global Instance M_ct_gt : Method "ct_gt" _ := {|
-      method := ct_gt;
-    |}.
+    ConstantTimeGreater.ct_gt := ct_gt;
   |}.
 End Impl_ConstantTimeGreater_for_u8.
 
 Module Impl_ConstantTimeGreater_for_u16.
   Definition Self := u16.
   
+  Definition ct_gt (self : ref Self) (other : ref u16) : Choice :=
+    let gtb := bit_and self (not other) in
+    let ltb := bit_and (not self) other in
+    let pow := 1 in
+    loop
+      (if (lt pow 16 : bool) then
+        assign ltb (bit_or ltb (shr ltb pow)) ;;
+        assign pow (add pow pow) ;;
+        tt
+      else
+        Break ;;
+        tt)
+      from
+      while ;;
+    let bit := bit_and gtb (not ltb) in
+    let pow := 1 in
+    loop
+      (if (lt pow 16 : bool) then
+        assign bit (bit_or bit (shr bit pow)) ;;
+        assign pow (add pow pow) ;;
+        tt
+      else
+        Break ;;
+        tt)
+      from
+      while ;;
+    ImplChoice.from (cast (bit_and bit 1) u8).
+  
+  Global Instance M_ct_gt : Method "ct_gt" _ := {|
+    method := ct_gt;
+  |}.
+  Global Instance AF_ct_gt : u16.AssociatedFunction "ct_gt" _ := {|
+    u16.associated_function := ct_gt;
+  |}.
+  Global Instance
+    AFT_ct_gt
+    :
+    ConstantTimeGreater.AssociatedFunction
+    "ct_gt"
+    _
+    :=
+    {|
+    ConstantTimeGreater.associated_function := ct_gt;
+  |}.
+  
   Global Instance I : ConstantTimeGreater.Class Self := {|
-    Definition ct_gt (self : ref Self) (other : ref u16) : Choice :=
-      let gtb := bit_and self (not other) in
-      let ltb := bit_and (not self) other in
-      let pow := 1 in
-      loop
-        (if (lt pow 16 : bool) then
-          assign ltb (bit_or ltb (shr ltb pow)) ;;
-          assign pow (add pow pow) ;;
-          tt
-        else
-          Break ;;
-          tt)
-        from
-        while ;;
-      let bit := bit_and gtb (not ltb) in
-      let pow := 1 in
-      loop
-        (if (lt pow 16 : bool) then
-          assign bit (bit_or bit (shr bit pow)) ;;
-          assign pow (add pow pow) ;;
-          tt
-        else
-          Break ;;
-          tt)
-        from
-        while ;;
-      ImplChoice.from (cast (bit_and bit 1) u8).
-    
-    Global Instance AF_ct_gt : u16.AssociatedFunction "ct_gt" _ := {|
-      u16.associated_function := ct_gt;
-    |}.
-    Global Instance M_ct_gt : Method "ct_gt" _ := {|
-      method := ct_gt;
-    |}.
+    ConstantTimeGreater.ct_gt := ct_gt;
   |}.
 End Impl_ConstantTimeGreater_for_u16.
 
 Module Impl_ConstantTimeGreater_for_u32.
   Definition Self := u32.
   
+  Definition ct_gt (self : ref Self) (other : ref u32) : Choice :=
+    let gtb := bit_and self (not other) in
+    let ltb := bit_and (not self) other in
+    let pow := 1 in
+    loop
+      (if (lt pow 32 : bool) then
+        assign ltb (bit_or ltb (shr ltb pow)) ;;
+        assign pow (add pow pow) ;;
+        tt
+      else
+        Break ;;
+        tt)
+      from
+      while ;;
+    let bit := bit_and gtb (not ltb) in
+    let pow := 1 in
+    loop
+      (if (lt pow 32 : bool) then
+        assign bit (bit_or bit (shr bit pow)) ;;
+        assign pow (add pow pow) ;;
+        tt
+      else
+        Break ;;
+        tt)
+      from
+      while ;;
+    ImplChoice.from (cast (bit_and bit 1) u8).
+  
+  Global Instance M_ct_gt : Method "ct_gt" _ := {|
+    method := ct_gt;
+  |}.
+  Global Instance AF_ct_gt : u32.AssociatedFunction "ct_gt" _ := {|
+    u32.associated_function := ct_gt;
+  |}.
+  Global Instance
+    AFT_ct_gt
+    :
+    ConstantTimeGreater.AssociatedFunction
+    "ct_gt"
+    _
+    :=
+    {|
+    ConstantTimeGreater.associated_function := ct_gt;
+  |}.
+  
   Global Instance I : ConstantTimeGreater.Class Self := {|
-    Definition ct_gt (self : ref Self) (other : ref u32) : Choice :=
-      let gtb := bit_and self (not other) in
-      let ltb := bit_and (not self) other in
-      let pow := 1 in
-      loop
-        (if (lt pow 32 : bool) then
-          assign ltb (bit_or ltb (shr ltb pow)) ;;
-          assign pow (add pow pow) ;;
-          tt
-        else
-          Break ;;
-          tt)
-        from
-        while ;;
-      let bit := bit_and gtb (not ltb) in
-      let pow := 1 in
-      loop
-        (if (lt pow 32 : bool) then
-          assign bit (bit_or bit (shr bit pow)) ;;
-          assign pow (add pow pow) ;;
-          tt
-        else
-          Break ;;
-          tt)
-        from
-        while ;;
-      ImplChoice.from (cast (bit_and bit 1) u8).
-    
-    Global Instance AF_ct_gt : u32.AssociatedFunction "ct_gt" _ := {|
-      u32.associated_function := ct_gt;
-    |}.
-    Global Instance M_ct_gt : Method "ct_gt" _ := {|
-      method := ct_gt;
-    |}.
+    ConstantTimeGreater.ct_gt := ct_gt;
   |}.
 End Impl_ConstantTimeGreater_for_u32.
 
 Module Impl_ConstantTimeGreater_for_u64.
   Definition Self := u64.
   
+  Definition ct_gt (self : ref Self) (other : ref u64) : Choice :=
+    let gtb := bit_and self (not other) in
+    let ltb := bit_and (not self) other in
+    let pow := 1 in
+    loop
+      (if (lt pow 64 : bool) then
+        assign ltb (bit_or ltb (shr ltb pow)) ;;
+        assign pow (add pow pow) ;;
+        tt
+      else
+        Break ;;
+        tt)
+      from
+      while ;;
+    let bit := bit_and gtb (not ltb) in
+    let pow := 1 in
+    loop
+      (if (lt pow 64 : bool) then
+        assign bit (bit_or bit (shr bit pow)) ;;
+        assign pow (add pow pow) ;;
+        tt
+      else
+        Break ;;
+        tt)
+      from
+      while ;;
+    ImplChoice.from (cast (bit_and bit 1) u8).
+  
+  Global Instance M_ct_gt : Method "ct_gt" _ := {|
+    method := ct_gt;
+  |}.
+  Global Instance AF_ct_gt : u64.AssociatedFunction "ct_gt" _ := {|
+    u64.associated_function := ct_gt;
+  |}.
+  Global Instance
+    AFT_ct_gt
+    :
+    ConstantTimeGreater.AssociatedFunction
+    "ct_gt"
+    _
+    :=
+    {|
+    ConstantTimeGreater.associated_function := ct_gt;
+  |}.
+  
   Global Instance I : ConstantTimeGreater.Class Self := {|
-    Definition ct_gt (self : ref Self) (other : ref u64) : Choice :=
-      let gtb := bit_and self (not other) in
-      let ltb := bit_and (not self) other in
-      let pow := 1 in
-      loop
-        (if (lt pow 64 : bool) then
-          assign ltb (bit_or ltb (shr ltb pow)) ;;
-          assign pow (add pow pow) ;;
-          tt
-        else
-          Break ;;
-          tt)
-        from
-        while ;;
-      let bit := bit_and gtb (not ltb) in
-      let pow := 1 in
-      loop
-        (if (lt pow 64 : bool) then
-          assign bit (bit_or bit (shr bit pow)) ;;
-          assign pow (add pow pow) ;;
-          tt
-        else
-          Break ;;
-          tt)
-        from
-        while ;;
-      ImplChoice.from (cast (bit_and bit 1) u8).
-    
-    Global Instance AF_ct_gt : u64.AssociatedFunction "ct_gt" _ := {|
-      u64.associated_function := ct_gt;
-    |}.
-    Global Instance M_ct_gt : Method "ct_gt" _ := {|
-      method := ct_gt;
-    |}.
+    ConstantTimeGreater.ct_gt := ct_gt;
   |}.
 End Impl_ConstantTimeGreater_for_u64.
 
@@ -1679,32 +2230,36 @@ Module ConstantTimeLess.
         (not (method "ct_eq" self other))
       : Choice);
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End ConstantTimeLess.
 
 Module Impl_ConstantTimeLess_for_u8.
   Definition Self := u8.
   
   Global Instance I : ConstantTimeLess.Class Self :=
-      ConstantTimeLess.Build_Class _.
+    ConstantTimeLess.Build_Class _.
 End Impl_ConstantTimeLess_for_u8.
 
 Module Impl_ConstantTimeLess_for_u16.
   Definition Self := u16.
   
   Global Instance I : ConstantTimeLess.Class Self :=
-      ConstantTimeLess.Build_Class _.
+    ConstantTimeLess.Build_Class _.
 End Impl_ConstantTimeLess_for_u16.
 
 Module Impl_ConstantTimeLess_for_u32.
   Definition Self := u32.
   
   Global Instance I : ConstantTimeLess.Class Self :=
-      ConstantTimeLess.Build_Class _.
+    ConstantTimeLess.Build_Class _.
 End Impl_ConstantTimeLess_for_u32.
 
 Module Impl_ConstantTimeLess_for_u64.
   Definition Self := u64.
   
   Global Instance I : ConstantTimeLess.Class Self :=
-      ConstantTimeLess.Build_Class _.
+    ConstantTimeLess.Build_Class _.
 End Impl_ConstantTimeLess_for_u64.

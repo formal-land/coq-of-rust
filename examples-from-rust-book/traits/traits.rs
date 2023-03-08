@@ -21,17 +21,6 @@ impl Sheep {
     fn is_naked(&self) -> bool {
         self.naked
     }
-
-    fn shear(&mut self) {
-        if self.is_naked() {
-            // Implementor methods can use the implementor's trait methods.
-            println!("{} is already naked...", self.name());
-        } else {
-            println!("{} gets a haircut!", self.name);
-
-            self.naked = true;
-        }
-    }
 }
 
 // Implement the `Animal` trait for `Sheep`.
@@ -60,6 +49,19 @@ impl Animal for Sheep {
     fn talk(&self) {
         // For example, we can add some quiet contemplation.
         println!("{} pauses briefly... {}", self.name, self.noise());
+    }
+}
+
+impl Sheep {
+    fn shear(&mut self) {
+        if self.is_naked() {
+            // Implementor methods can use the implementor's trait methods.
+            println!("{} is already naked...", self.name());
+        } else {
+            println!("{} gets a haircut!", self.name);
+
+            self.naked = true;
+        }
     }
 }
 

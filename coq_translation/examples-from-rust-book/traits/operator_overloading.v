@@ -14,19 +14,24 @@ Error StructUnit.
 Module Impl__crate_fmt_Debug_for_FooBar.
   Definition Self := FooBar.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.write_str f "FooBar".
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : FooBar.AssociatedFunction "fmt" _ := {|
+    FooBar.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.write_str f "FooBar".
-    
-    Global Instance AF_fmt : FooBar.AssociatedFunction "fmt" _ := {|
-      FooBar.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_FooBar.
 
@@ -35,63 +40,82 @@ Error StructUnit.
 Module Impl__crate_fmt_Debug_for_BarFoo.
   Definition Self := BarFoo.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.write_str f "BarFoo".
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : BarFoo.AssociatedFunction "fmt" _ := {|
+    BarFoo.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.write_str f "BarFoo".
-    
-    Global Instance AF_fmt : BarFoo.AssociatedFunction "fmt" _ := {|
-      BarFoo.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_BarFoo.
 
 Module Impl_ops_Add_for_Foo.
   Definition Self := Foo.
   
+  Definition Output : Set := FooBar.
+  
+  Definition add (self : Self) (_rhs : Bar) : FooBar :=
+    _crate.io._print
+      (_crate.fmt.ImplArguments.new_v1
+        [ "> Foo.add(Bar) was called\n" ]
+        [  ]) ;;
+    tt ;;
+    FooBar.
+  
+  Global Instance M_add : Method "add" _ := {|
+    method := add;
+  |}.
+  Global Instance AF_add : Foo.AssociatedFunction "add" _ := {|
+    Foo.associated_function := add;
+  |}.
+  Global Instance AFT_add : ops.Add.AssociatedFunction "add" _ := {|
+    ops.Add.associated_function := add;
+  |}.
+  
   Global Instance I : ops.Add.Class Bar Self := {|
-    Definition Output : Set := FooBar.
-    Definition add (self : Self) (_rhs : Bar) : FooBar :=
-      _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1
-          [ "> Foo.add(Bar) was called\n" ]
-          [  ]) ;;
-      tt ;;
-      FooBar.
-    
-    Global Instance AF_add : Foo.AssociatedFunction "add" _ := {|
-      Foo.associated_function := add;
-    |}.
-    Global Instance M_add : Method "add" _ := {|
-      method := add;
-    |}.
+    ops.Add.Output := Output;
+    ops.Add.add := add;
   |}.
 End Impl_ops_Add_for_Foo.
 
 Module Impl_ops_Add_for_Bar.
   Definition Self := Bar.
   
+  Definition Output : Set := BarFoo.
+  
+  Definition add (self : Self) (_rhs : Foo) : BarFoo :=
+    _crate.io._print
+      (_crate.fmt.ImplArguments.new_v1
+        [ "> Bar.add(Foo) was called\n" ]
+        [  ]) ;;
+    tt ;;
+    BarFoo.
+  
+  Global Instance M_add : Method "add" _ := {|
+    method := add;
+  |}.
+  Global Instance AF_add : Bar.AssociatedFunction "add" _ := {|
+    Bar.associated_function := add;
+  |}.
+  Global Instance AFT_add : ops.Add.AssociatedFunction "add" _ := {|
+    ops.Add.associated_function := add;
+  |}.
+  
   Global Instance I : ops.Add.Class Foo Self := {|
-    Definition Output : Set := BarFoo.
-    Definition add (self : Self) (_rhs : Foo) : BarFoo :=
-      _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1
-          [ "> Bar.add(Foo) was called\n" ]
-          [  ]) ;;
-      tt ;;
-      BarFoo.
-    
-    Global Instance AF_add : Bar.AssociatedFunction "add" _ := {|
-      Bar.associated_function := add;
-    |}.
-    Global Instance M_add : Method "add" _ := {|
-      method := add;
-    |}.
+    ops.Add.Output := Output;
+    ops.Add.add := add;
   |}.
 End Impl_ops_Add_for_Bar.
 

@@ -24,11 +24,11 @@ Module ImplList.
   Definition prepend (self : Self) (elem : u32) : List :=
     Cons elem (ImplBox.new self).
   
-  Global Instance AF_prepend : List.AssociatedFunction "prepend" _ := {|
-    List.associated_function := prepend;
-  |}.
   Global Instance M_prepend : Method "prepend" _ := {|
     method := prepend;
+  |}.
+  Global Instance AF_prepend : List.AssociatedFunction "prepend" _ := {|
+    List.associated_function := prepend;
   |}.
   
   Definition len (self : ref Self) : u32 :=
@@ -37,11 +37,11 @@ Module ImplList.
     | Nil => 0
     end.
   
-  Global Instance AF_len : List.AssociatedFunction "len" _ := {|
-    List.associated_function := len;
-  |}.
   Global Instance M_len : Method "len" _ := {|
     method := len;
+  |}.
+  Global Instance AF_len : List.AssociatedFunction "len" _ := {|
+    List.associated_function := len;
   |}.
   
   Definition stringify (self : ref Self) : String :=
@@ -62,11 +62,11 @@ Module ImplList.
       res
     end.
   
-  Global Instance AF_stringify : List.AssociatedFunction "stringify" _ := {|
-    List.associated_function := stringify;
-  |}.
   Global Instance M_stringify : Method "stringify" _ := {|
     method := stringify;
+  |}.
+  Global Instance AF_stringify : List.AssociatedFunction "stringify" _ := {|
+    List.associated_function := stringify;
   |}.
 End ImplList.
 

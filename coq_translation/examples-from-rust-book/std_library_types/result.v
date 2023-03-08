@@ -15,26 +15,31 @@ Module checked.
   Module Impl__crate_fmt_Debug_for_MathError.
     Definition Self := MathError.
     
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref _crate.fmt.Formatter)
+        : _crate.fmt.Result :=
+      match self with
+      | MathError.DivisionByZero =>
+        _crate.fmt.ImplFormatter.write_str f "DivisionByZero"
+      | MathError.NonPositiveLogarithm =>
+        _crate.fmt.ImplFormatter.write_str f "NonPositiveLogarithm"
+      | MathError.NegativeSquareRoot =>
+        _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
+      end.
+    
+    Global Instance M_fmt : Method "fmt" _ := {|
+      method := fmt;
+    |}.
+    Global Instance AF_fmt : MathError.AssociatedFunction "fmt" _ := {|
+      MathError.associated_function := fmt;
+    |}.
+    Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+      _crate.fmt.Debug.associated_function := fmt;
+    |}.
+    
     Global Instance I : _crate.fmt.Debug.Class Self := {|
-      Definition fmt
-          (self : ref Self)
-          (f : mut_ref _crate.fmt.Formatter)
-          : _crate.fmt.Result :=
-        match self with
-        | MathError.DivisionByZero =>
-          _crate.fmt.ImplFormatter.write_str f "DivisionByZero"
-        | MathError.NonPositiveLogarithm =>
-          _crate.fmt.ImplFormatter.write_str f "NonPositiveLogarithm"
-        | MathError.NegativeSquareRoot =>
-          _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
-        end.
-      
-      Global Instance AF_fmt : MathError.AssociatedFunction "fmt" _ := {|
-        MathError.associated_function := fmt;
-      |}.
-      Global Instance M_fmt : Method "fmt" _ := {|
-        method := fmt;
-      |}.
+      _crate.fmt.Debug.fmt := fmt;
     |}.
   End Impl__crate_fmt_Debug_for_MathError.
   
@@ -70,26 +75,31 @@ Definition MathError := MathError.t.
 Module Impl__crate_fmt_Debug_for_MathError.
   Definition Self := MathError.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    match self with
+    | MathError.DivisionByZero =>
+      _crate.fmt.ImplFormatter.write_str f "DivisionByZero"
+    | MathError.NonPositiveLogarithm =>
+      _crate.fmt.ImplFormatter.write_str f "NonPositiveLogarithm"
+    | MathError.NegativeSquareRoot =>
+      _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
+    end.
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : MathError.AssociatedFunction "fmt" _ := {|
+    MathError.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      match self with
-      | MathError.DivisionByZero =>
-        _crate.fmt.ImplFormatter.write_str f "DivisionByZero"
-      | MathError.NonPositiveLogarithm =>
-        _crate.fmt.ImplFormatter.write_str f "NonPositiveLogarithm"
-      | MathError.NegativeSquareRoot =>
-        _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
-      end.
-    
-    Global Instance AF_fmt : MathError.AssociatedFunction "fmt" _ := {|
-      MathError.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_MathError.
 

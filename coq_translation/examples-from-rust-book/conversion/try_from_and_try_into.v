@@ -19,22 +19,27 @@ Definition EvenNumber := EvenNumber.t.
 Module Impl__crate_fmt_Debug_for_EvenNumber.
   Definition Self := EvenNumber.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.debug_tuple_field1_finish
+      f
+      "EvenNumber"
+      (IndexedField.get (index := 0) self).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : EvenNumber.AssociatedFunction "fmt" _ := {|
+    EvenNumber.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.debug_tuple_field1_finish
-        f
-        "EvenNumber"
-        (IndexedField.get (index := 0) self).
-    
-    Global Instance AF_fmt : EvenNumber.AssociatedFunction "fmt" _ := {|
-      EvenNumber.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_EvenNumber.
 
@@ -42,48 +47,53 @@ Module Impl__crate_marker_StructuralPartialEq_for_EvenNumber.
   Definition Self := EvenNumber.
   
   Global Instance I : _crate.marker.StructuralPartialEq.Class Self :=
-      _crate.marker.StructuralPartialEq.Build_Class _.
+    _crate.marker.StructuralPartialEq.Build_Class _.
 End Impl__crate_marker_StructuralPartialEq_for_EvenNumber.
 
 Module Impl__crate_cmp_PartialEq_for_EvenNumber.
   Definition Self := EvenNumber.
   
+  Definition eq (self : ref Self) (other : ref EvenNumber) : bool :=
+    eqb
+      (IndexedField.get (index := 0) self)
+      (IndexedField.get (index := 0) other).
+  
+  Global Instance M_eq : Method "eq" _ := {|
+    method := eq;
+  |}.
+  Global Instance AF_eq : EvenNumber.AssociatedFunction "eq" _ := {|
+    EvenNumber.associated_function := eq;
+  |}.
+  Global Instance AFT_eq : _crate.cmp.PartialEq.AssociatedFunction "eq" _ := {|
+    _crate.cmp.PartialEq.associated_function := eq;
+  |}.
+  
   Global Instance I : _crate.cmp.PartialEq.Class Self := {|
-    Definition eq (self : ref Self) (other : ref EvenNumber) : bool :=
-      eqb
-        (IndexedField.get (index := 0) self)
-        (IndexedField.get (index := 0) other).
-    
-    Global Instance AF_eq : EvenNumber.AssociatedFunction "eq" _ := {|
-      EvenNumber.associated_function := eq;
-    |}.
-    Global Instance M_eq : Method "eq" _ := {|
-      method := eq;
-    |}.
+    _crate.cmp.PartialEq.eq := eq;
   |}.
 End Impl__crate_cmp_PartialEq_for_EvenNumber.
 
 Module Impl_TryFrom_for_EvenNumber.
   Definition Self := EvenNumber.
   
+  Definition Error : Set := .
+  
+  Definition try_from (value : i32) : Result :=
+    if (eqb (rem value 2) 0 : bool) then
+      Ok (EvenNumber.Build value)
+    else
+      Err ().
+  
+  Global Instance AF_try_from : EvenNumber.AssociatedFunction "try_from" _ := {|
+    EvenNumber.associated_function := try_from;
+  |}.
+  Global Instance AFT_try_from : TryFrom.AssociatedFunction "try_from" _ := {|
+    TryFrom.associated_function := try_from;
+  |}.
+  
   Global Instance I : TryFrom.Class i32 Self := {|
-    Definition Error : Set := .
-    Definition try_from (value : i32) : Result :=
-      if (eqb (rem value 2) 0 : bool) then
-        Ok (EvenNumber.Build value)
-      else
-        Err ().
-    
-    Global Instance
-      AF_try_from
-      :
-      EvenNumber.AssociatedFunction
-      "try_from"
-      _
-      :=
-      {|
-      EvenNumber.associated_function := try_from;
-    |}.
+    TryFrom.Error := Error;
+    TryFrom.try_from := try_from;
   |}.
 End Impl_TryFrom_for_EvenNumber.
 

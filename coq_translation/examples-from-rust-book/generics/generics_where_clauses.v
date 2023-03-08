@@ -14,33 +14,49 @@ Module PrintInOption.
     : Method "print_in_option" _ := {|
     method := print_in_option;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End PrintInOption.
 
 Module Impl_PrintInOption_for_T.
   Definition Self := T.
   
+  Definition print_in_option (self : Self) :=
+    _crate.io._print
+      (_crate.fmt.ImplArguments.new_v1
+        [ ""; "\n" ]
+        [ _crate.fmt.ImplArgumentV1.new_debug (Some self) ]) ;;
+    tt ;;
+    tt.
+  
+  Global Instance M_print_in_option : Method "print_in_option" _ := {|
+    method := print_in_option;
+  |}.
+  Global Instance
+    AF_print_in_option
+    :
+    T.AssociatedFunction
+    "print_in_option"
+    _
+    :=
+    {|
+    T.associated_function := print_in_option;
+  |}.
+  Global Instance
+    AFT_print_in_option
+    :
+    PrintInOption.AssociatedFunction
+    "print_in_option"
+    _
+    :=
+    {|
+    PrintInOption.associated_function := print_in_option;
+  |}.
+  
   Global Instance I T : PrintInOption.Class Self := {|
-    Definition print_in_option (self : Self) :=
-      _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1
-          [ ""; "\n" ]
-          [ _crate.fmt.ImplArgumentV1.new_debug (Some self) ]) ;;
-      tt ;;
-      tt.
-    
-    Global Instance
-      AF_print_in_option
-      :
-      T.AssociatedFunction
-      "print_in_option"
-      _
-      :=
-      {|
-      T.associated_function := print_in_option;
-    |}.
-    Global Instance M_print_in_option : Method "print_in_option" _ := {|
-      method := print_in_option;
-    |}.
+    PrintInOption.print_in_option := print_in_option;
   |}.
 End Impl_PrintInOption_for_T.
 

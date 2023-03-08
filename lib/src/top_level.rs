@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::expression::*;
 use crate::header::*;
 use crate::path::*;
@@ -74,6 +76,8 @@ enum TopLevelItem {
     },
     Impl {
         self_ty: CoqType,
+        /// We use a counter to disambiguate several impls for the same type
+        counter: u64,
         items: Vec<(String, ImplItem)>,
     },
     Trait {
@@ -87,6 +91,7 @@ enum TopLevelItem {
         self_ty: CoqType,
         of_trait: Path,
         items: Vec<(String, ImplItem)>,
+        trait_non_default_items: Vec<String>,
     },
     Use {
         name: String,
@@ -141,7 +146,11 @@ fn compile_fn_sig_and_body_id(
 /// - [rustc_middle::hir::map::Map] is intuitively the type for hir environments
 /// - Method [body] allows retrievient the body of an identifier [body_id] in an
 ///   hir environment [hir]
-fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
+fn compile_top_level_item(
+    tcx: TyCtxt,
+    impl_counter: &mut HashMap<CoqType, u64>,
+    item: &Item,
+) -> Vec<TopLevelItem> {
     match &item.kind {
         ItemKind::ExternCrate(_) => vec![],
         ItemKind::Use(path, use_kind) => {
@@ -241,7 +250,7 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                 .iter()
                 .flat_map(|item_id| {
                     let item = tcx.hir().item(*item_id);
-                    compile_top_level_item(tcx, item)
+                    compile_top_level_item(tcx, impl_counter, item)
                 })
                 .collect();
             vec![TopLevelItem::Module {
@@ -401,26 +410,47 @@ fn compile_top_level_item(tcx: TyCtxt, item: &Item) -> Vec<TopLevelItem> {
                 .collect();
             let self_ty = compile_type(&tcx, self_ty);
             match of_trait {
-                Some(trait_ref) => vec![TopLevelItem::TraitImpl {
-                    generic_tys,
-                    ty_params: compile_path_ty_params(&tcx, trait_ref.path),
-                    self_ty,
-                    of_trait: compile_path(trait_ref.path),
-                    items,
-                }],
-                None => vec![TopLevelItem::Impl { self_ty, items }],
+                Some(trait_ref) => {
+                    let trait_non_default_items = tcx
+                        .associated_items(trait_ref.trait_def_id().unwrap())
+                        .in_definition_order()
+                        .filter(|item| !item.defaultness(tcx).has_value())
+                        .map(|item| item.name.to_string())
+                        .collect();
+
+                    vec![TopLevelItem::TraitImpl {
+                        generic_tys,
+                        ty_params: compile_path_ty_params(&tcx, trait_ref.path),
+                        self_ty,
+                        of_trait: compile_path(trait_ref.path),
+                        items,
+                        trait_non_default_items,
+                    }]
+                }
+                None => {
+                    let entry = impl_counter.entry(self_ty.clone());
+                    let counter = *entry.and_modify(|counter| *counter += 1).or_insert(1);
+
+                    vec![TopLevelItem::Impl {
+                        self_ty,
+                        counter,
+                        items,
+                    }]
+                }
             }
         }
     }
 }
 
 pub fn compile_top_level(tcx: TyCtxt) -> TopLevel {
+    let mut impl_counter = HashMap::new();
+
     TopLevel(
         tcx.hir()
             .items()
             .flat_map(|item_id| {
                 let item = tcx.hir().item(item_id);
-                compile_top_level_item(tcx, item)
+                compile_top_level_item(tcx, &mut impl_counter, item)
             })
             .collect(),
     )
@@ -434,9 +464,6 @@ fn fn_to_doc<'a>(
     ret_ty: &'a Option<CoqType>,
     body: &'a Expr,
 ) -> Doc<'a> {
-    // let ty_params = ty_params.unwrap_or(&vec![]);
-    // let where_predicates = where_predicates.unwrap_or(&vec![]);
-
     nest([
         nest([
             nest([text("Definition"), line(), text(name)]),
@@ -519,8 +546,88 @@ fn fn_to_doc<'a>(
     ])
 }
 
+fn associated_function_class_to_doc<'a>() -> Doc<'a> {
+    concat([
+        nest([
+            text("Class"),
+            line(),
+            text("AssociatedFunction"),
+            line(),
+            text("(name : string)"),
+            line(),
+            text("(T : Set)"),
+            line(),
+            text(":"),
+            line(),
+            text("Set"),
+            line(),
+            text(":="),
+            line(),
+            text("{"),
+        ]),
+        nest([hardline(), text("associated_function : T;")]),
+        hardline(),
+        text("}."),
+        hardline(),
+        text("Arguments associated_function name {T AssociatedFunction}."),
+    ])
+}
+
 impl ImplItem {
-    fn to_doc<'a>(&'a self, self_ty: &'a CoqType, name: &'a String) -> Doc<'a> {
+    fn class_instance_to_doc<'a>(
+        instance_prefix: &'a str,
+        name: &'a str,
+        class_prefix: Option<Doc<'a>>,
+        class_name: &'a str,
+        method_name: &'a str,
+    ) -> Doc<'a> {
+        let class_prefix = match class_prefix {
+            None => nil(),
+            Some(class_prefix) => concat([class_prefix, text(".")]),
+        };
+
+        group([
+            nest([
+                text("Global Instance"),
+                line(),
+                text(format!("{instance_prefix}_{name}")),
+                line(),
+                text(":"),
+                line(),
+                class_prefix.clone(),
+                text(class_name),
+                line(),
+                text(format!("\"{name}\"")),
+                line(),
+                text("_"),
+                line(),
+                text(":="),
+                line(),
+                text("{|"),
+            ]),
+            nest([
+                hardline(),
+                nest([
+                    class_prefix,
+                    text(method_name),
+                    line(),
+                    text(":="),
+                    line(),
+                    text(name),
+                    text(";"),
+                ]),
+            ]),
+            hardline(),
+            text("|}."),
+        ])
+    }
+
+    fn to_doc<'a>(
+        &'a self,
+        self_ty: &'a CoqType,
+        trait_path: Option<&'a Path>,
+        name: &'a String,
+    ) -> Doc<'a> {
         match self {
             ImplItem::Definition {
                 args,
@@ -531,78 +638,33 @@ impl ImplItem {
                 fn_to_doc(name, None, None, args, ret_ty, body),
                 hardline(),
                 hardline(),
-                group([
-                    nest([
-                        text("Global Instance"),
-                        line(),
-                        text(format!("AF_{name}")),
-                        line(),
-                        text(":"),
-                        line(),
-                        self_ty.to_path_doc(),
-                        text(".AssociatedFunction"),
-                        line(),
-                        text(format!("\"{name}\"")),
-                        line(),
-                        text("_"),
-                        line(),
-                        text(":="),
-                        line(),
-                        text("{|"),
-                    ]),
-                    nest([
-                        hardline(),
-                        nest([
-                            self_ty.to_path_doc(),
-                            text(".associated_function"),
-                            line(),
-                            text(":="),
-                            line(),
-                            text(name),
-                            text(";"),
-                        ]),
-                    ]),
-                    hardline(),
-                    text("|}."),
-                ]),
                 if *is_method {
                     concat([
+                        Self::class_instance_to_doc("M", name, None, "Method", "method"),
                         hardline(),
-                        group([
-                            nest([
-                                text("Global Instance"),
-                                line(),
-                                text(format!("M_{name}")),
-                                line(),
-                                text(":"),
-                                line(),
-                                text("Method"),
-                                line(),
-                                text(format!("\"{name}\"")),
-                                line(),
-                                text("_"),
-                                line(),
-                                text(":="),
-                                line(),
-                                text("{|"),
-                            ]),
-                            nest([
-                                hardline(),
-                                nest([
-                                    text("method"),
-                                    line(),
-                                    text(":="),
-                                    line(),
-                                    text(name),
-                                    text(";"),
-                                ]),
-                            ]),
-                            hardline(),
-                            text("|}."),
-                        ]),
                     ])
                 } else {
                     nil()
+                },
+                Self::class_instance_to_doc(
+                    "AF",
+                    name,
+                    Some(self_ty.to_path_doc()),
+                    "AssociatedFunction",
+                    "associated_function",
+                ),
+                match trait_path {
+                    None => nil(),
+                    Some(trait_path) => concat([
+                        hardline(),
+                        Self::class_instance_to_doc(
+                            "AFT",
+                            name,
+                            Some(trait_path.to_doc()),
+                            "AssociatedFunction",
+                            "associated_function",
+                        ),
+                    ]),
                 },
             ]),
             ImplItem::Type { ty } => nest([
@@ -815,26 +877,7 @@ impl TopLevelItem {
                         ])
                     })),
                     hardline(),
-                    nest([
-                        text("Class"),
-                        line(),
-                        text("AssociatedFunction"),
-                        line(),
-                        text("(name : string)"),
-                        line(),
-                        text("(T : Set)"),
-                        line(),
-                        text(":"),
-                        line(),
-                        text("Set"),
-                        line(),
-                        text(":="),
-                        line(),
-                        text("{"),
-                    ]),
-                    nest([hardline(), text("associated_function : T;")]),
-                    hardline(),
-                    text("}."),
+                    associated_function_class_to_doc(),
                 ]),
                 hardline(),
                 nest([text("End"), line(), text(name), text(".")]),
@@ -959,39 +1002,43 @@ impl TopLevelItem {
                     text(".t."),
                 ]),
             ]),
-            TopLevelItem::Impl { self_ty, items } => group([
-                nest([
-                    text("Module"),
-                    line(),
+            TopLevelItem::Impl {
+                self_ty,
+                counter,
+                items,
+            } => {
+                let module_name = concat([
                     text("Impl"),
                     self_ty.to_doc(false),
-                    text("."),
-                ]),
-                nest([
-                    hardline(),
+                    if *counter != 1 {
+                        text(format!("_{counter}"))
+                    } else {
+                        nil()
+                    },
+                ]);
+
+                group([
+                    nest([text("Module"), line(), module_name.clone(), text(".")]),
                     nest([
-                        text("Definition"),
-                        line(),
-                        text("Self"),
-                        line(),
-                        text(":="),
-                        line(),
-                        self_ty.to_doc(false),
-                        text("."),
+                        hardline(),
+                        nest([
+                            text("Definition"),
+                            line(),
+                            text("Self"),
+                            line(),
+                            text(":="),
+                            line(),
+                            self_ty.to_doc(false),
+                            text("."),
+                        ]),
+                        concat(items.iter().map(|(name, item)| {
+                            concat([hardline(), hardline(), item.to_doc(self_ty, None, name)])
+                        })),
                     ]),
-                    concat(items.iter().map(|(name, item)| {
-                        concat([hardline(), hardline(), item.to_doc(self_ty, name)])
-                    })),
-                ]),
-                hardline(),
-                nest([
-                    text("End"),
-                    line(),
-                    text("Impl"),
-                    self_ty.to_doc(false),
-                    text("."),
-                ]),
-            ]),
+                    hardline(),
+                    nest([text("End"), line(), module_name, text(".")]),
+                ])
+            }
             TopLevelItem::Trait {
                 name,
                 ty_params,
@@ -1149,6 +1196,8 @@ impl TopLevelItem {
                             text("|}."),
                         ])
                     })),
+                    hardline(),
+                    associated_function_class_to_doc(),
                 ]),
                 hardline(),
                 nest([text("End"), line(), text(name), text(".")]),
@@ -1159,6 +1208,7 @@ impl TopLevelItem {
                 self_ty,
                 of_trait,
                 items,
+                trait_non_default_items,
             } => group([
                 nest([
                     nest([
@@ -1183,42 +1233,57 @@ impl TopLevelItem {
                     ]),
                     hardline(),
                     hardline(),
+                    concat(items.iter().map(|(name, item)| {
+                        concat([
+                            item.to_doc(self_ty, Some(of_trait), name),
+                            hardline(),
+                            hardline(),
+                        ])
+                    })),
                     nest([
                         nest([
-                            nest([
-                                nest([text("Global"), line(), text("Instance"), line(), text("I")]),
-                                line(),
-                                concat(
-                                    generic_tys
-                                        .iter()
-                                        .map(|generic_ty| concat([text(generic_ty), line()])),
-                                ),
-                                text(":"),
-                                line(),
-                                of_trait.to_doc(),
-                                text(".Class"),
-                                concat(
-                                    ty_params
-                                        .iter()
-                                        .map(|ty_param| concat([line(), ty_param.to_doc(false)])),
-                                ),
-                                line(),
-                                text("Self"),
-                            ]),
-                            text(" :="),
+                            nest([text("Global"), line(), text("Instance"), line(), text("I")]),
                             line(),
-                            if items.is_empty() {
-                                nest([of_trait.to_doc(), text(".Build_Class"), line(), text("_")])
-                            } else {
-                                text("{|")
-                            },
+                            concat(
+                                generic_tys
+                                    .iter()
+                                    .map(|generic_ty| concat([text(generic_ty), line()])),
+                            ),
+                            text(":"),
+                            line(),
+                            of_trait.to_doc(),
+                            text(".Class"),
+                            concat(
+                                ty_params
+                                    .iter()
+                                    .map(|ty_param| concat([line(), ty_param.to_doc(false)])),
+                            ),
+                            line(),
+                            text("Self"),
                         ]),
-                        concat(
-                            items.iter().map(|(name, item)| {
-                                concat([hardline(), item.to_doc(self_ty, name)])
-                            }),
-                        ),
+                        text(" :="),
+                        line(),
+                        if items.is_empty() {
+                            nest([of_trait.to_doc(), text(".Build_Class"), line(), text("_")])
+                        } else {
+                            text("{|")
+                        },
                     ]),
+                    nest(trait_non_default_items.iter().map(|name| {
+                        concat([
+                            hardline(),
+                            nest([
+                                of_trait.to_doc(),
+                                text("."),
+                                text(name),
+                                line(),
+                                text(":="),
+                                line(),
+                                text(name),
+                                text(";"),
+                            ]),
+                        ])
+                    })),
                     if items.is_empty() {
                         text(".")
                     } else {

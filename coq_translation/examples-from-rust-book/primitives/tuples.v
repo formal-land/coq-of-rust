@@ -28,25 +28,30 @@ Definition Matrix := Matrix.t.
 Module Impl__crate_fmt_Debug_for_Matrix.
   Definition Self := Matrix.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.debug_tuple_field4_finish
+      f
+      "Matrix"
+      (IndexedField.get (index := 0) self)
+      (IndexedField.get (index := 1) self)
+      (IndexedField.get (index := 2) self)
+      (IndexedField.get (index := 3) self).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Matrix.AssociatedFunction "fmt" _ := {|
+    Matrix.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.debug_tuple_field4_finish
-        f
-        "Matrix"
-        (IndexedField.get (index := 0) self)
-        (IndexedField.get (index := 1) self)
-        (IndexedField.get (index := 2) self)
-        (IndexedField.get (index := 3) self).
-    
-    Global Instance AF_fmt : Matrix.AssociatedFunction "fmt" _ := {|
-      Matrix.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Matrix.
 
