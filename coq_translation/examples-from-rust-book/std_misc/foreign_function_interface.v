@@ -45,23 +45,36 @@ Module Complex.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Complex.
 Definition Complex : Set := Complex.t.
 
 Module Impl__crate_clone_Clone_for_Complex.
   Definition Self := Complex.
   
+  Definition clone (self : ref Self) : Complex :=
+    let _ := tt in
+    deref self.
+  
+  Global Instance M_clone : Method "clone" _ := {|
+    method := clone;
+  |}.
+  Global Instance AF_clone : Complex.AssociatedFunction "clone" _ := {|
+    Complex.associated_function := clone;
+  |}.
+  Global Instance
+    AFT_clone
+    :
+    _crate.clone.Clone.AssociatedFunction
+    "clone"
+    _
+    :=
+    {|
+    _crate.clone.Clone.associated_function := clone;
+  |}.
+  
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    Definition clone (self : ref Self) : Complex :=
-      let _ := tt in
-      deref self.
-    
-    Global Instance AF_clone : Complex.AssociatedFunction "clone" _ := {|
-      Complex.associated_function := clone;
-    |}.
-    Global Instance M_clone : Method "clone" _ := {|
-      method := clone;
-    |}.
+    _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_Complex.
 
@@ -69,44 +82,49 @@ Module Impl__crate_marker_Copy_for_Complex.
   Definition Self := Complex.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
-      _crate.marker.Copy.Build_Class _.
+    _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Complex.
 
 Module Impl_fmt_Debug_for_Complex.
   Definition Self := Complex.
   
+  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
+    if (lt (NamedField.get (name := "im") self) 0 (* 0. *) : bool) then
+      method
+        "write_fmt"
+        f
+        (_crate.fmt.ImplArguments.new_v1
+          [ ""; "-"; "i" ]
+          [
+            _crate.fmt.ImplArgumentV1.new_display
+              (NamedField.get (name := "re") self);
+            _crate.fmt.ImplArgumentV1.new_display
+              (neg (NamedField.get (name := "im") self))
+          ])
+    else
+      method
+        "write_fmt"
+        f
+        (_crate.fmt.ImplArguments.new_v1
+          [ ""; "+"; "i" ]
+          [
+            _crate.fmt.ImplArgumentV1.new_display
+              (NamedField.get (name := "re") self);
+            _crate.fmt.ImplArgumentV1.new_display
+              (NamedField.get (name := "im") self)
+          ]).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Complex.AssociatedFunction "fmt" _ := {|
+    Complex.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : fmt.Debug.AssociatedFunction "fmt" _ := {|
+    fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : fmt.Debug.Class Self := {|
-    Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
-      if (lt (NamedField.get (name := "im") self) 0 (* 0. *) : bool) then
-        method
-          "write_fmt"
-          f
-          (_crate.fmt.ImplArguments.new_v1
-            [ ""; "-"; "i" ]
-            [
-              _crate.fmt.ImplArgumentV1.new_display
-                (NamedField.get (name := "re") self);
-              _crate.fmt.ImplArgumentV1.new_display
-                (neg (NamedField.get (name := "im") self))
-            ])
-      else
-        method
-          "write_fmt"
-          f
-          (_crate.fmt.ImplArguments.new_v1
-            [ ""; "+"; "i" ]
-            [
-              _crate.fmt.ImplArgumentV1.new_display
-                (NamedField.get (name := "re") self);
-              _crate.fmt.ImplArgumentV1.new_display
-                (NamedField.get (name := "im") self)
-            ]).
-    
-    Global Instance AF_fmt : Complex.AssociatedFunction "fmt" _ := {|
-      Complex.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    fmt.Debug.fmt := fmt;
   |}.
 End Impl_fmt_Debug_for_Complex.

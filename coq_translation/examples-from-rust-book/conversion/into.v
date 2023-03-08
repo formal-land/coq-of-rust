@@ -16,41 +16,52 @@ Module Number.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Number.
 Definition Number : Set := Number.t.
 
 Module Impl__crate_fmt_Debug_for_Number.
   Definition Self := Number.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.debug_struct_field1_finish
+      f
+      "Number"
+      "value"
+      (NamedField.get (name := "value") self).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Number.AssociatedFunction "fmt" _ := {|
+    Number.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.debug_struct_field1_finish
-        f
-        "Number"
-        "value"
-        (NamedField.get (name := "value") self).
-    
-    Global Instance AF_fmt : Number.AssociatedFunction "fmt" _ := {|
-      Number.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Number.
 
 Module Impl_From_for_Number.
   Definition Self := Number.
   
+  Definition from (item : i32) : Self := {| Number.value := item; |}.
+  
+  Global Instance AF_from : Number.AssociatedFunction "from" _ := {|
+    Number.associated_function := from;
+  |}.
+  Global Instance AFT_from : From.AssociatedFunction "from" _ := {|
+    From.associated_function := from;
+  |}.
+  
   Global Instance I : From.Class i32 Self := {|
-    Definition from (item : i32) : Self := {| Number.value := item; |}.
-    
-    Global Instance AF_from : Number.AssociatedFunction "from" _ := {|
-      Number.associated_function := from;
-    |}.
+    From.from := from;
   |}.
 End Impl_From_for_Number.
 

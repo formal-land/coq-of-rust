@@ -3,7 +3,7 @@ use crate::render::*;
 use rustc_hir::{FnDecl, FnRetTy, Ty, TyKind};
 use rustc_middle::ty::TyCtxt;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Hash, Clone)]
 pub enum CoqType {
     Var(Path),
     Application {

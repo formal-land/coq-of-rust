@@ -17,34 +17,51 @@ Definition Inch := Inch.t.
 Module Impl__crate_fmt_Debug_for_Inch.
   Definition Self := Inch.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.intrinsics.unreachable tt.
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Inch.AssociatedFunction "fmt" _ := {|
+    Inch.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.intrinsics.unreachable tt.
-    
-    Global Instance AF_fmt : Inch.AssociatedFunction "fmt" _ := {|
-      Inch.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Inch.
 
 Module Impl__crate_clone_Clone_for_Inch.
   Definition Self := Inch.
   
+  Definition clone (self : ref Self) : Inch := deref self.
+  
+  Global Instance M_clone : Method "clone" _ := {|
+    method := clone;
+  |}.
+  Global Instance AF_clone : Inch.AssociatedFunction "clone" _ := {|
+    Inch.associated_function := clone;
+  |}.
+  Global Instance
+    AFT_clone
+    :
+    _crate.clone.Clone.AssociatedFunction
+    "clone"
+    _
+    :=
+    {|
+    _crate.clone.Clone.associated_function := clone;
+  |}.
+  
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    Definition clone (self : ref Self) : Inch := deref self.
-    
-    Global Instance AF_clone : Inch.AssociatedFunction "clone" _ := {|
-      Inch.associated_function := clone;
-    |}.
-    Global Instance M_clone : Method "clone" _ := {|
-      method := clone;
-    |}.
+    _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_Inch.
 
@@ -52,7 +69,7 @@ Module Impl__crate_marker_Copy_for_Inch.
   Definition Self := Inch.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
-      _crate.marker.Copy.Build_Class _.
+    _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Inch.
 
 Module Mm.
@@ -64,34 +81,51 @@ Definition Mm := Mm.t.
 Module Impl__crate_fmt_Debug_for_Mm.
   Definition Self := Mm.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.intrinsics.unreachable tt.
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Mm.AssociatedFunction "fmt" _ := {|
+    Mm.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.intrinsics.unreachable tt.
-    
-    Global Instance AF_fmt : Mm.AssociatedFunction "fmt" _ := {|
-      Mm.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Mm.
 
 Module Impl__crate_clone_Clone_for_Mm.
   Definition Self := Mm.
   
+  Definition clone (self : ref Self) : Mm := deref self.
+  
+  Global Instance M_clone : Method "clone" _ := {|
+    method := clone;
+  |}.
+  Global Instance AF_clone : Mm.AssociatedFunction "clone" _ := {|
+    Mm.associated_function := clone;
+  |}.
+  Global Instance
+    AFT_clone
+    :
+    _crate.clone.Clone.AssociatedFunction
+    "clone"
+    _
+    :=
+    {|
+    _crate.clone.Clone.associated_function := clone;
+  |}.
+  
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    Definition clone (self : ref Self) : Mm := deref self.
-    
-    Global Instance AF_clone : Mm.AssociatedFunction "clone" _ := {|
-      Mm.associated_function := clone;
-    |}.
-    Global Instance M_clone : Method "clone" _ := {|
-      method := clone;
-    |}.
+    _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_Mm.
 
@@ -99,7 +133,7 @@ Module Impl__crate_marker_Copy_for_Mm.
   Definition Self := Mm.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
-      _crate.marker.Copy.Build_Class _.
+    _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Mm.
 
 Module Length.
@@ -117,43 +151,60 @@ Definition Length := Length.t.
 Module Impl__crate_fmt_Debug_for_Length.
   Definition Self := Length.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.debug_tuple_field2_finish
+      f
+      "Length"
+      (IndexedField.get (index := 0) self)
+      (IndexedField.get (index := 1) self).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Length.AssociatedFunction "fmt" _ := {|
+    Length.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I Unit : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.debug_tuple_field2_finish
-        f
-        "Length"
-        (IndexedField.get (index := 0) self)
-        (IndexedField.get (index := 1) self).
-    
-    Global Instance AF_fmt : Length.AssociatedFunction "fmt" _ := {|
-      Length.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Length.
 
 Module Impl__crate_clone_Clone_for_Length.
   Definition Self := Length.
   
+  Definition clone (self : ref Self) : Length :=
+    Length.Build
+      ((_crate.clone.Clone.associated_function "clone")
+        (IndexedField.get (index := 0) self))
+      ((_crate.clone.Clone.associated_function "clone")
+        (IndexedField.get (index := 1) self)).
+  
+  Global Instance M_clone : Method "clone" _ := {|
+    method := clone;
+  |}.
+  Global Instance AF_clone : Length.AssociatedFunction "clone" _ := {|
+    Length.associated_function := clone;
+  |}.
+  Global Instance
+    AFT_clone
+    :
+    _crate.clone.Clone.AssociatedFunction
+    "clone"
+    _
+    :=
+    {|
+    _crate.clone.Clone.associated_function := clone;
+  |}.
+  
   Global Instance I Unit : _crate.clone.Clone.Class Self := {|
-    Definition clone (self : ref Self) : Length :=
-      Length.Build
-        ((_crate.clone.Clone.associated_function "clone")
-          (IndexedField.get (index := 0) self))
-        ((_crate.clone.Clone.associated_function "clone")
-          (IndexedField.get (index := 1) self)).
-    
-    Global Instance AF_clone : Length.AssociatedFunction "clone" _ := {|
-      Length.associated_function := clone;
-    |}.
-    Global Instance M_clone : Method "clone" _ := {|
-      method := clone;
-    |}.
+    _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_Length.
 
@@ -161,27 +212,34 @@ Module Impl__crate_marker_Copy_for_Length.
   Definition Self := Length.
   
   Global Instance I Unit : _crate.marker.Copy.Class Self :=
-      _crate.marker.Copy.Build_Class _.
+    _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Length.
 
 Module Impl_Add_for_Length.
   Definition Self := Length.
   
+  Definition Output : Set := Length.
+  
+  Definition add (self : Self) (rhs : Length) : Length :=
+    Length.Build
+      (add
+        (IndexedField.get (index := 0) self)
+        (IndexedField.get (index := 0) rhs))
+      PhantomData.
+  
+  Global Instance M_add : Method "add" _ := {|
+    method := add;
+  |}.
+  Global Instance AF_add : Length.AssociatedFunction "add" _ := {|
+    Length.associated_function := add;
+  |}.
+  Global Instance AFT_add : Add.AssociatedFunction "add" _ := {|
+    Add.associated_function := add;
+  |}.
+  
   Global Instance I Unit : Add.Class Self := {|
-    Definition Output : Set := Length.
-    Definition add (self : Self) (rhs : Length) : Length :=
-      Length.Build
-        (add
-          (IndexedField.get (index := 0) self)
-          (IndexedField.get (index := 0) rhs))
-        PhantomData.
-    
-    Global Instance AF_add : Length.AssociatedFunction "add" _ := {|
-      Length.associated_function := add;
-    |}.
-    Global Instance M_add : Method "add" _ := {|
-      method := add;
-    |}.
+    Add.Output := Output;
+    Add.add := add;
   |}.
 End Impl_Add_for_Length.
 

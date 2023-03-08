@@ -14,23 +14,28 @@ Definition Food := Food.t.
 Module Impl__crate_fmt_Debug_for_Food.
   Definition Self := Food.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    match self with
+    | Food.CordonBleu => _crate.fmt.ImplFormatter.write_str f "CordonBleu"
+    | Food.Steak => _crate.fmt.ImplFormatter.write_str f "Steak"
+    | Food.Sushi => _crate.fmt.ImplFormatter.write_str f "Sushi"
+    end.
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Food.AssociatedFunction "fmt" _ := {|
+    Food.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      match self with
-      | Food.CordonBleu => _crate.fmt.ImplFormatter.write_str f "CordonBleu"
-      | Food.Steak => _crate.fmt.ImplFormatter.write_str f "Steak"
-      | Food.Sushi => _crate.fmt.ImplFormatter.write_str f "Sushi"
-      end.
-    
-    Global Instance AF_fmt : Food.AssociatedFunction "fmt" _ := {|
-      Food.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Food.
 
@@ -45,23 +50,28 @@ Definition Day := Day.t.
 Module Impl__crate_fmt_Debug_for_Day.
   Definition Self := Day.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    match self with
+    | Day.Monday => _crate.fmt.ImplFormatter.write_str f "Monday"
+    | Day.Tuesday => _crate.fmt.ImplFormatter.write_str f "Tuesday"
+    | Day.Wednesday => _crate.fmt.ImplFormatter.write_str f "Wednesday"
+    end.
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Day.AssociatedFunction "fmt" _ := {|
+    Day.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      match self with
-      | Day.Monday => _crate.fmt.ImplFormatter.write_str f "Monday"
-      | Day.Tuesday => _crate.fmt.ImplFormatter.write_str f "Tuesday"
-      | Day.Wednesday => _crate.fmt.ImplFormatter.write_str f "Wednesday"
-      end.
-    
-    Global Instance AF_fmt : Day.AssociatedFunction "fmt" _ := {|
-      Day.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Day.
 

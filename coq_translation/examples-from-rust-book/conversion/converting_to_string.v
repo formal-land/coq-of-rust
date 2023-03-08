@@ -16,30 +16,36 @@ Module Circle.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Circle.
 Definition Circle : Set := Circle.t.
 
 Module Impl_fmt_Display_for_Circle.
   Definition Self := Circle.
   
+  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
+    method
+      "write_fmt"
+      f
+      (_crate.fmt.ImplArguments.new_v1
+        [ "Circle of radius " ]
+        [
+          _crate.fmt.ImplArgumentV1.new_display
+            (NamedField.get (name := "radius") self)
+        ]).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Circle.AssociatedFunction "fmt" _ := {|
+    Circle.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : fmt.Display.AssociatedFunction "fmt" _ := {|
+    fmt.Display.associated_function := fmt;
+  |}.
+  
   Global Instance I : fmt.Display.Class Self := {|
-    Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
-      method
-        "write_fmt"
-        f
-        (_crate.fmt.ImplArguments.new_v1
-          [ "Circle of radius " ]
-          [
-            _crate.fmt.ImplArgumentV1.new_display
-              (NamedField.get (name := "radius") self)
-          ]).
-    
-    Global Instance AF_fmt : Circle.AssociatedFunction "fmt" _ := {|
-      Circle.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    fmt.Display.fmt := fmt;
   |}.
 End Impl_fmt_Display_for_Circle.
 

@@ -11,6 +11,10 @@ Module UsernameWidget.
   Global Instance Method_get `(Class) : Method "get" _ := {|
     method := get;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End UsernameWidget.
 
 Module AgeWidget.
@@ -21,6 +25,10 @@ Module AgeWidget.
   Global Instance Method_get `(Class) : Method "get" _ := {|
     method := get;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End AgeWidget.
 
 Module Form.
@@ -38,38 +46,48 @@ Module Form.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Form.
 Definition Form : Set := Form.t.
 
 Module Impl_UsernameWidget_for_Form.
   Definition Self := Form.
   
+  Definition get (self : ref Self) : String :=
+    method "clone" (NamedField.get (name := "username") self).
+  
+  Global Instance M_get : Method "get" _ := {|
+    method := get;
+  |}.
+  Global Instance AF_get : Form.AssociatedFunction "get" _ := {|
+    Form.associated_function := get;
+  |}.
+  Global Instance AFT_get : UsernameWidget.AssociatedFunction "get" _ := {|
+    UsernameWidget.associated_function := get;
+  |}.
+  
   Global Instance I : UsernameWidget.Class Self := {|
-    Definition get (self : ref Self) : String :=
-      method "clone" (NamedField.get (name := "username") self).
-    
-    Global Instance AF_get : Form.AssociatedFunction "get" _ := {|
-      Form.associated_function := get;
-    |}.
-    Global Instance M_get : Method "get" _ := {|
-      method := get;
-    |}.
+    UsernameWidget.get := get;
   |}.
 End Impl_UsernameWidget_for_Form.
 
 Module Impl_AgeWidget_for_Form.
   Definition Self := Form.
   
+  Definition get (self : ref Self) : u8 := NamedField.get (name := "age") self.
+  
+  Global Instance M_get : Method "get" _ := {|
+    method := get;
+  |}.
+  Global Instance AF_get : Form.AssociatedFunction "get" _ := {|
+    Form.associated_function := get;
+  |}.
+  Global Instance AFT_get : AgeWidget.AssociatedFunction "get" _ := {|
+    AgeWidget.associated_function := get;
+  |}.
+  
   Global Instance I : AgeWidget.Class Self := {|
-    Definition get (self : ref Self) : u8 :=
-      NamedField.get (name := "age") self.
-    
-    Global Instance AF_get : Form.AssociatedFunction "get" _ := {|
-      Form.associated_function := get;
-    |}.
-    Global Instance M_get : Method "get" _ := {|
-      method := get;
-    |}.
+    AgeWidget.get := get;
   |}.
 End Impl_AgeWidget_for_Form.
 

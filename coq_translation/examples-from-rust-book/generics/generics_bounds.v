@@ -13,23 +13,32 @@ Module HasArea.
   Global Instance Method_area `(Class) : Method "area" _ := {|
     method := area;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End HasArea.
 
 Module Impl_HasArea_for_Rectangle.
   Definition Self := Rectangle.
   
+  Definition area (self : ref Self) : f64 :=
+    mul
+      (NamedField.get (name := "length") self)
+      (NamedField.get (name := "height") self).
+  
+  Global Instance M_area : Method "area" _ := {|
+    method := area;
+  |}.
+  Global Instance AF_area : Rectangle.AssociatedFunction "area" _ := {|
+    Rectangle.associated_function := area;
+  |}.
+  Global Instance AFT_area : HasArea.AssociatedFunction "area" _ := {|
+    HasArea.associated_function := area;
+  |}.
+  
   Global Instance I : HasArea.Class Self := {|
-    Definition area (self : ref Self) : f64 :=
-      mul
-        (NamedField.get (name := "length") self)
-        (NamedField.get (name := "height") self).
-    
-    Global Instance AF_area : Rectangle.AssociatedFunction "area" _ := {|
-      Rectangle.associated_function := area;
-    |}.
-    Global Instance M_area : Method "area" _ := {|
-      method := area;
-    |}.
+    HasArea.area := area;
   |}.
 End Impl_HasArea_for_Rectangle.
 
@@ -48,31 +57,37 @@ Module Rectangle.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
 Module Impl__crate_fmt_Debug_for_Rectangle.
   Definition Self := Rectangle.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.debug_struct_field2_finish
+      f
+      "Rectangle"
+      "length"
+      (NamedField.get (name := "length") self)
+      "height"
+      (NamedField.get (name := "height") self).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : Rectangle.AssociatedFunction "fmt" _ := {|
+    Rectangle.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.debug_struct_field2_finish
-        f
-        "Rectangle"
-        "length"
-        (NamedField.get (name := "length") self)
-        "height"
-        (NamedField.get (name := "height") self).
-    
-    Global Instance AF_fmt : Rectangle.AssociatedFunction "fmt" _ := {|
-      Rectangle.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Rectangle.
 
@@ -91,6 +106,7 @@ Module Triangle.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Triangle.
 Definition Triangle : Set := Triangle.t.
 

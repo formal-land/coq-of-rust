@@ -12,55 +12,75 @@ Error StructUnit.
 Module Impl__crate_fmt_Debug_for_DoubleError.
   Definition Self := DoubleError.
   
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref _crate.fmt.Formatter)
+      : _crate.fmt.Result :=
+    _crate.fmt.ImplFormatter.write_str f "DoubleError".
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : DoubleError.AssociatedFunction "fmt" _ := {|
+    DoubleError.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
+    _crate.fmt.Debug.associated_function := fmt;
+  |}.
+  
   Global Instance I : _crate.fmt.Debug.Class Self := {|
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.ImplFormatter.write_str f "DoubleError".
-    
-    Global Instance AF_fmt : DoubleError.AssociatedFunction "fmt" _ := {|
-      DoubleError.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_DoubleError.
 
 Module Impl__crate_clone_Clone_for_DoubleError.
   Definition Self := DoubleError.
   
+  Definition clone (self : ref Self) : DoubleError := DoubleError.
+  
+  Global Instance M_clone : Method "clone" _ := {|
+    method := clone;
+  |}.
+  Global Instance AF_clone : DoubleError.AssociatedFunction "clone" _ := {|
+    DoubleError.associated_function := clone;
+  |}.
+  Global Instance
+    AFT_clone
+    :
+    _crate.clone.Clone.AssociatedFunction
+    "clone"
+    _
+    :=
+    {|
+    _crate.clone.Clone.associated_function := clone;
+  |}.
+  
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    Definition clone (self : ref Self) : DoubleError := DoubleError.
-    
-    Global Instance AF_clone : DoubleError.AssociatedFunction "clone" _ := {|
-      DoubleError.associated_function := clone;
-    |}.
-    Global Instance M_clone : Method "clone" _ := {|
-      method := clone;
-    |}.
+    _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_DoubleError.
 
 Module Impl_fmt_Display_for_DoubleError.
   Definition Self := DoubleError.
   
+  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
+    method
+      "write_fmt"
+      f
+      (_crate.fmt.ImplArguments.new_v1 [ "invalid first item to double" ] [  ]).
+  
+  Global Instance M_fmt : Method "fmt" _ := {|
+    method := fmt;
+  |}.
+  Global Instance AF_fmt : DoubleError.AssociatedFunction "fmt" _ := {|
+    DoubleError.associated_function := fmt;
+  |}.
+  Global Instance AFT_fmt : fmt.Display.AssociatedFunction "fmt" _ := {|
+    fmt.Display.associated_function := fmt;
+  |}.
+  
   Global Instance I : fmt.Display.Class Self := {|
-    Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
-      method
-        "write_fmt"
-        f
-        (_crate.fmt.ImplArguments.new_v1
-          [ "invalid first item to double" ]
-          [  ]).
-    
-    Global Instance AF_fmt : DoubleError.AssociatedFunction "fmt" _ := {|
-      DoubleError.associated_function := fmt;
-    |}.
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
-    |}.
+    fmt.Display.fmt := fmt;
   |}.
 End Impl_fmt_Display_for_DoubleError.
 

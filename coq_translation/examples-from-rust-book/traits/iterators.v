@@ -18,30 +18,38 @@ Module Fibonacci.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Fibonacci.
 Definition Fibonacci : Set := Fibonacci.t.
 
 Module Impl_Iterator_for_Fibonacci.
   Definition Self := Fibonacci.
   
+  Definition Item : Set := u32.
+  
+  Definition next (self : mut_ref Self) : Option :=
+    let current := NamedField.get (name := "curr") self in
+    assign
+      (NamedField.get (name := "curr") self)
+      (NamedField.get (name := "next") self) ;;
+    assign
+      (NamedField.get (name := "next") self)
+      (add current (NamedField.get (name := "next") self)) ;;
+    Some current.
+  
+  Global Instance M_next : Method "next" _ := {|
+    method := next;
+  |}.
+  Global Instance AF_next : Fibonacci.AssociatedFunction "next" _ := {|
+    Fibonacci.associated_function := next;
+  |}.
+  Global Instance AFT_next : Iterator.AssociatedFunction "next" _ := {|
+    Iterator.associated_function := next;
+  |}.
+  
   Global Instance I : Iterator.Class Self := {|
-    Definition Item : Set := u32.
-    Definition next (self : mut_ref Self) : Option :=
-      let current := NamedField.get (name := "curr") self in
-      assign
-        (NamedField.get (name := "curr") self)
-        (NamedField.get (name := "next") self) ;;
-      assign
-        (NamedField.get (name := "next") self)
-        (add current (NamedField.get (name := "next") self)) ;;
-      Some current.
-    
-    Global Instance AF_next : Fibonacci.AssociatedFunction "next" _ := {|
-      Fibonacci.associated_function := next;
-    |}.
-    Global Instance M_next : Method "next" _ := {|
-      method := next;
-    |}.
+    Iterator.Item := Item;
+    Iterator.next := next;
   |}.
 End Impl_Iterator_for_Fibonacci.
 

@@ -20,5 +20,6 @@ Module Foo.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Foo.
 Definition Foo : Set := Foo.t.

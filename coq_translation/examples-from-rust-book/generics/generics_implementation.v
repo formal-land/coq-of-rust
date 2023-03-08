@@ -14,6 +14,7 @@ Module Val.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Val.
 Definition Val : Set := Val.t.
 
@@ -28,6 +29,7 @@ Module GenVal.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End GenVal.
 Definition GenVal : Set := GenVal.t.
 
@@ -37,11 +39,11 @@ Module ImplVal.
   Definition value (self : ref Self) : ref f64 :=
     NamedField.get (name := "val") self.
   
-  Global Instance AF_value : Val.AssociatedFunction "value" _ := {|
-    Val.associated_function := value;
-  |}.
   Global Instance M_value : Method "value" _ := {|
     method := value;
+  |}.
+  Global Instance AF_value : Val.AssociatedFunction "value" _ := {|
+    Val.associated_function := value;
   |}.
 End ImplVal.
 
@@ -51,11 +53,11 @@ Module ImplGenVal.
   Definition value (self : ref Self) : ref T :=
     NamedField.get (name := "gen_val") self.
   
-  Global Instance AF_value : GenVal.AssociatedFunction "value" _ := {|
-    GenVal.associated_function := value;
-  |}.
   Global Instance M_value : Method "value" _ := {|
     method := value;
+  |}.
+  Global Instance AF_value : GenVal.AssociatedFunction "value" _ := {|
+    GenVal.associated_function := value;
   |}.
 End ImplGenVal.
 

@@ -22,25 +22,38 @@ Module Book.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Book.
 Definition Book : Set := Book.t.
 
 Module Impl__crate_clone_Clone_for_Book.
   Definition Self := Book.
   
+  Definition clone (self : ref Self) : Book :=
+    let _ := tt in
+    let _ := tt in
+    let _ := tt in
+    deref self.
+  
+  Global Instance M_clone : Method "clone" _ := {|
+    method := clone;
+  |}.
+  Global Instance AF_clone : Book.AssociatedFunction "clone" _ := {|
+    Book.associated_function := clone;
+  |}.
+  Global Instance
+    AFT_clone
+    :
+    _crate.clone.Clone.AssociatedFunction
+    "clone"
+    _
+    :=
+    {|
+    _crate.clone.Clone.associated_function := clone;
+  |}.
+  
   Global Instance I : _crate.clone.Clone.Class Self := {|
-    Definition clone (self : ref Self) : Book :=
-      let _ := tt in
-      let _ := tt in
-      let _ := tt in
-      deref self.
-    
-    Global Instance AF_clone : Book.AssociatedFunction "clone" _ := {|
-      Book.associated_function := clone;
-    |}.
-    Global Instance M_clone : Method "clone" _ := {|
-      method := clone;
-    |}.
+    _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_Book.
 
@@ -48,7 +61,7 @@ Module Impl__crate_marker_Copy_for_Book.
   Definition Self := Book.
   
   Global Instance I : _crate.marker.Copy.Class Self :=
-      _crate.marker.Copy.Build_Class _.
+    _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Book.
 
 Definition borrow_book (book : ref Book) : unit :=

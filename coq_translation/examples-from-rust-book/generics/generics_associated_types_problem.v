@@ -31,52 +31,63 @@ Module Contains.
   Global Instance Method_last `(Class) : Method "last" _ := {|
     method := last;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Contains.
 
 Module Impl_Contains_for_Container.
   Definition Self := Container.
   
+  Definition contains
+      (self : ref Self)
+      (number_1 : ref i32)
+      (number_2 : ref i32)
+      : bool :=
+    andb
+      (eqb (IndexedField.get (index := 0) self) number_1)
+      (eqb (IndexedField.get (index := 1) self) number_2).
+  
+  Global Instance M_contains : Method "contains" _ := {|
+    method := contains;
+  |}.
+  Global Instance AF_contains : Container.AssociatedFunction "contains" _ := {|
+    Container.associated_function := contains;
+  |}.
+  Global Instance AFT_contains : Contains.AssociatedFunction "contains" _ := {|
+    Contains.associated_function := contains;
+  |}.
+  
+  Definition first (self : ref Self) : i32 :=
+    IndexedField.get (index := 0) self.
+  
+  Global Instance M_first : Method "first" _ := {|
+    method := first;
+  |}.
+  Global Instance AF_first : Container.AssociatedFunction "first" _ := {|
+    Container.associated_function := first;
+  |}.
+  Global Instance AFT_first : Contains.AssociatedFunction "first" _ := {|
+    Contains.associated_function := first;
+  |}.
+  
+  Definition last (self : ref Self) : i32 := IndexedField.get (index := 1) self.
+  
+  Global Instance M_last : Method "last" _ := {|
+    method := last;
+  |}.
+  Global Instance AF_last : Container.AssociatedFunction "last" _ := {|
+    Container.associated_function := last;
+  |}.
+  Global Instance AFT_last : Contains.AssociatedFunction "last" _ := {|
+    Contains.associated_function := last;
+  |}.
+  
   Global Instance I : Contains.Class i32 i32 Self := {|
-    Definition contains
-        (self : ref Self)
-        (number_1 : ref i32)
-        (number_2 : ref i32)
-        : bool :=
-      andb
-        (eqb (IndexedField.get (index := 0) self) number_1)
-        (eqb (IndexedField.get (index := 1) self) number_2).
-    
-    Global Instance
-      AF_contains
-      :
-      Container.AssociatedFunction
-      "contains"
-      _
-      :=
-      {|
-      Container.associated_function := contains;
-    |}.
-    Global Instance M_contains : Method "contains" _ := {|
-      method := contains;
-    |}.
-    Definition first (self : ref Self) : i32 :=
-      IndexedField.get (index := 0) self.
-    
-    Global Instance AF_first : Container.AssociatedFunction "first" _ := {|
-      Container.associated_function := first;
-    |}.
-    Global Instance M_first : Method "first" _ := {|
-      method := first;
-    |}.
-    Definition last (self : ref Self) : i32 :=
-      IndexedField.get (index := 1) self.
-    
-    Global Instance AF_last : Container.AssociatedFunction "last" _ := {|
-      Container.associated_function := last;
-    |}.
-    Global Instance M_last : Method "last" _ := {|
-      method := last;
-    |}.
+    Contains.contains := contains;
+    Contains.first := first;
+    Contains.last := last;
   |}.
 End Impl_Contains_for_Container.
 

@@ -15,6 +15,7 @@ Module my.
     Class AssociatedFunction (name : string) (T : Set) : Set := {
       associated_function : T;
     }.
+    Arguments associated_function name {T AssociatedFunction}.
   End OpenBox.
   Definition OpenBox : Set := OpenBox.t.
   
@@ -29,6 +30,7 @@ Module my.
     Class AssociatedFunction (name : string) (T : Set) : Set := {
       associated_function : T;
     }.
+    Arguments associated_function name {T AssociatedFunction}.
   End ClosedBox.
   Definition ClosedBox : Set := ClosedBox.t.
   
@@ -55,6 +57,7 @@ Module OpenBox.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End OpenBox.
 Definition OpenBox : Set := OpenBox.t.
 
@@ -69,10 +72,11 @@ Module ClosedBox.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
   }.
+  Arguments associated_function name {T AssociatedFunction}.
 End ClosedBox.
 Definition ClosedBox : Set := ClosedBox.t.
 
-Module ImplClosedBox.
+Module ImplClosedBox_2.
   Definition Self := ClosedBox.
   
   Definition new (contents : T) : ClosedBox :=
@@ -81,7 +85,7 @@ Module ImplClosedBox.
   Global Instance AF_new : ClosedBox.AssociatedFunction "new" _ := {|
     ClosedBox.associated_function := new;
   |}.
-End ImplClosedBox.
+End ImplClosedBox_2.
 
 Definition main (_ : unit) : unit :=
   let open_box := {| my.OpenBox.contents := "public information"; |} in

@@ -11,6 +11,10 @@ Module Person.
   Global Instance Method_name `(Class) : Method "name" _ := {|
     method := name;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Person.
 
 Module Student.
@@ -21,6 +25,10 @@ Module Student.
   Global Instance Method_university `(Class) : Method "university" _ := {|
     method := university;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Student.
 
 Module Programmer.
@@ -31,6 +39,10 @@ Module Programmer.
   Global Instance Method_fav_language `(Class) : Method "fav_language" _ := {|
     method := fav_language;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End Programmer.
 
 Module CompSciStudent.
@@ -41,6 +53,10 @@ Module CompSciStudent.
   Global Instance Method_git_username `(Class) : Method "git_username" _ := {|
     method := git_username;
   |}.
+  Class AssociatedFunction (name : string) (T : Set) : Set := {
+    associated_function : T;
+  }.
+  Arguments associated_function name {T AssociatedFunction}.
 End CompSciStudent.
 
 Definition comp_sci_student_greeting (student : ref TraitObject) : String :=
