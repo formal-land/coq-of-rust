@@ -9,5 +9,5 @@ macro_rules! say_hello {
 
 fn main() {
     // This call will expand into `println!("Hello");`
-    say_hello!()
+    say_hello!();
 }
