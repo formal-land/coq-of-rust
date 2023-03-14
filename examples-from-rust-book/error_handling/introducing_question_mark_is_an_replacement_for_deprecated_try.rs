@@ -1,3 +1,5 @@
+#![allow(deprecated)] // FIXME
+
 // To compile and run this example without errors, while using Cargo, change the value
 // of the `edition` field, in the `[package]` section of the `Cargo.toml` file, to "2015".
 

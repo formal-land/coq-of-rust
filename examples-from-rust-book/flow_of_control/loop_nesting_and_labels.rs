@@ -1,4 +1,5 @@
 #![allow(unreachable_code)]
+#![allow(unused_labels)]
 
 fn main() {
     'outer: loop {
