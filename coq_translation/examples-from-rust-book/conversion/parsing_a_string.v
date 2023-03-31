@@ -8,7 +8,7 @@ Definition main (_ : unit) : unit :=
   let turbo_parsed := method "unwrap" (Method:=unwrap) (method (Method:=parse) "parse" "10") in
   let sum := add parsed turbo_parsed in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 
+    (_crate.fmt.ImplArguments.new_v1
       [ "Sum: "; "\n" ]
       [ _crate.fmt.ImplArgumentV1.new_debug sum ]) ;;
   tt ;;
