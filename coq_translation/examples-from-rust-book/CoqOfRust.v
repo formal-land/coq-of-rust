@@ -56,7 +56,7 @@ Module ExperimentsAroundMethods.
 
   Parameter foo : Ty.t -> bool.
   Parameter arg : Ty.t -> string.
-
+  
   Global Instance Ty_foo : Ty.AssociatedFunction "foo" (Ty.t -> bool) := {|
     Ty.associated_function := foo;
   |}.
@@ -64,7 +64,7 @@ Module ExperimentsAroundMethods.
   Global Instance Ty_arg : Ty.AssociatedFunction "arg" (Ty.t -> string) := {|
     Ty.associated_function := arg;
   |}.
-
+          
   Definition gre : Ty.t -> string := Ty.associated_function "arg".
 
   Global Instance explain : Method "explain" (Ty.t -> string) := {|
@@ -546,3 +546,13 @@ Module rand.
   Module Rng.
   End Rng.
 End rand.
+
+Global Instance parse : Method "parse" (string -> i32) :=
+  {
+    method := axiom (* @TODO *)
+  }.
+
+Global Instance unwrap : Method "unwrap" (i32 -> Z) :=
+  {
+    method := axiom (* @TODO *)
+  }.

@@ -4,11 +4,11 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  let parsed := method "unwrap" (method "parse" "5") in
-  let turbo_parsed := method "unwrap" (method "parse" "10") in
+  let parsed := method (Method:=unwrap) "unwrap" (method (Method:=parse) "parse" "5") in
+  let turbo_parsed := method "unwrap" (Method:=unwrap) (method (Method:=parse) "parse" "10") in
   let sum := add parsed turbo_parsed in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.ImplArguments.new_v1 
       [ "Sum: "; "\n" ]
       [ _crate.fmt.ImplArgumentV1.new_debug sum ]) ;;
   tt ;;
