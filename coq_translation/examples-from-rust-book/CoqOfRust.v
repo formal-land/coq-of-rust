@@ -115,6 +115,8 @@ Parameter eqb : forall {A : Set}, A -> A -> bool.
 
 Parameter sub : Z -> Z -> Z.
 
+Parameter add : Z -> Z -> Z.
+
 Module IndexedField.
   Class Class (Self : Set) (index : Z) (T : Set) : Set := {
     get : Self -> T;
@@ -388,6 +390,19 @@ Module std.
       Global Set Primitive Projections.
     End Error.
   End error.
+
+  Module io.
+  End io.
+
+  Module cmp.
+    Module Ordering.
+      Inductive t : Set :=
+      | Less : t
+      | Grreater : t
+      | Equal : t.
+    End Ordering.  
+  End cmp.
+
 End std.
 
 Module str_Instances.
@@ -525,3 +540,9 @@ End _num_traits.
 Module crate.
   Parameter check_program_account : unit -> unit.
 End crate.
+
+Module rand.
+  Parameter thread_rng : unit -> Set.
+  Module Rng.
+  End Rng.
+End rand.
