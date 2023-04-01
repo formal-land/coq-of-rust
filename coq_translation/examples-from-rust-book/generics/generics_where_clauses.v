@@ -10,8 +10,7 @@ Module PrintInOption.
     print_in_option : Self -> _;
   }.
   
-  Global Instance Method_print_in_option `(Class)
-    : Method "print_in_option" _ := {|
+  Global Instance M_print_in_option `(Class) : Method "print_in_option" _ := {|
     method := print_in_option;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {

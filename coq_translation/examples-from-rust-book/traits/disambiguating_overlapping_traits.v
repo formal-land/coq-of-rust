@@ -8,7 +8,7 @@ Module UsernameWidget.
     get : (ref Self) -> String;
   }.
   
-  Global Instance Method_get `(Class) : Method "get" _ := {|
+  Global Instance M_get `(Class) : Method "get" _ := {|
     method := get;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
@@ -22,7 +22,7 @@ Module AgeWidget.
     get : (ref Self) -> u8;
   }.
   
-  Global Instance Method_get `(Class) : Method "get" _ := {|
+  Global Instance M_get `(Class) : Method "get" _ := {|
     method := get;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {

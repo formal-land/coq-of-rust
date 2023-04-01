@@ -12,7 +12,7 @@ Module DoubleDrop.
     double_drop : Self -> (T -> _);
   }.
   
-  Global Instance Method_double_drop `(Class) : Method "double_drop" _ := {|
+  Global Instance M_double_drop `(Class) : Method "double_drop" _ := {|
     method := double_drop;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {

@@ -3,6 +3,28 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
+Class AF (type : Set) (name : string) (T : Set) : Set := {
+  af : T;
+}.
+Arguments af type name {T AF}.
+
+Global Instance default_Z : AF Z "default" _ := {|
+  af := 0;
+|}.
+Global Instance default_bool : AF bool "default" _ := {|
+  af := false;
+|}.
+
+Definition gre := af Z "default".
+Compute gre.
+Definition arg := af bool "default".
+Compute arg.
+
+Class AF (trait : Set -> Set) (name : string) (T : Set) : Set := {
+  af : T;
+}.
+Arguments af trait name {T AF}.
+
 Module Sheep.
   Record t : Set := {
     naked : bool;
@@ -29,16 +51,16 @@ Module Animal.
     noise : (ref Self) -> (ref str);
   }.
   
-  Global Instance Method_new `(Class) : Method "new" _ := {|
+  Global Instance M_new `(Class) : Method "new" _ := {|
     method := new;
   |}.
-  Global Instance Method_name `(Class) : Method "name" _ := {|
+  Global Instance M_name `(Class) : Method "name" _ := {|
     method := name;
   |}.
-  Global Instance Method_noise `(Class) : Method "noise" _ := {|
+  Global Instance M_noise `(Class) : Method "noise" _ := {|
     method := noise;
   |}.
-  Global Instance Method_talk `(Class) : Method "talk" _ := {|
+  Global Instance M_talk `(Class) : Method "talk" _ := {|
     method (self : ref Self) :=
       (_crate.io._print
         (_crate.fmt.ImplArguments.new_v1
@@ -80,9 +102,12 @@ Module Impl_Animal_for_Sheep.
   Global Instance AF_new : Sheep.AssociatedFunction "new" _ := {|
     Sheep.associated_function := new;
   |}.
-  Global Instance AFT_new : Animal.AssociatedFunction "new" _ := {|
-    Animal.associated_function := new;
+  Global Instance AFT_new : AF Animal.Class "new" _ := {|
+    af := new;
   |}.
+  (* Global Instance AFT_new : Animal.AssociatedFunction "new" _ := {|
+    Animal.associated_function := new;
+  |}. *)
   
   Definition name (self : ref Self) : ref str :=
     NamedField.get (name := "name") self.
@@ -174,7 +199,7 @@ Module ImplSheep_2.
 End ImplSheep_2.
 
 Definition main (_ : unit) : unit :=
-  let dolly := (Animal.associated_function "new") "Dolly" in
+  let dolly := (((af Animal.Class "new") "Dolly") ) in
   method "talk" dolly ;;
   method "shear" dolly ;;
   method "talk" dolly ;;

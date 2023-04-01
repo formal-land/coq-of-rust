@@ -390,10 +390,10 @@ Module ConstantTimeEq.
     ct_eq : (ref Self) -> ((ref Self) -> Choice);
   }.
   
-  Global Instance Method_ct_eq `(Class) : Method "ct_eq" _ := {|
+  Global Instance M_ct_eq `(Class) : Method "ct_eq" _ := {|
     method := ct_eq;
   |}.
-  Global Instance Method_ct_ne `(Class) : Method "ct_ne" _ := {|
+  Global Instance M_ct_ne `(Class) : Method "ct_ne" _ := {|
     method (self : ref Self) (other : ref Self) :=
       (not (method "ct_eq" self other)
       : Choice);
@@ -695,18 +695,18 @@ Module ConditionallySelectable.
     conditional_select : (ref Self) -> ((ref Self) -> (Choice -> Self));
   }.
   
-  Global Instance Method_conditional_select `(Class)
+  Global Instance M_conditional_select `(Class)
     : Method "conditional_select" _ := {|
     method := conditional_select;
   |}.
-  Global Instance Method_conditional_assign `(Class)
+  Global Instance M_conditional_assign `(Class)
     : Method "conditional_assign" _ := {|
     method (self : mut_ref Self) (other : ref Self) (choice : Choice) :=
       (assign (deref self) (ImplSelf.conditional_select self other choice) ;;
       tt
       : unit);
   |}.
-  Global Instance Method_conditional_swap `(Class)
+  Global Instance M_conditional_swap `(Class)
     : Method "conditional_swap" _ := {|
     method (a : mut_ref Self) (b : mut_ref Self) (choice : Choice) :=
       (let t := deref a in
@@ -1598,7 +1598,7 @@ Module ConditionallyNegatable.
     conditional_negate : (mut_ref Self) -> (Choice -> _);
   }.
   
-  Global Instance Method_conditional_negate `(Class)
+  Global Instance M_conditional_negate `(Class)
     : Method "conditional_negate" _ := {|
     method := conditional_negate;
   |}.
@@ -1998,7 +1998,7 @@ Module ConstantTimeGreater.
     ct_gt : (ref Self) -> ((ref Self) -> Choice);
   }.
   
-  Global Instance Method_ct_gt `(Class) : Method "ct_gt" _ := {|
+  Global Instance M_ct_gt `(Class) : Method "ct_gt" _ := {|
     method := ct_gt;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
@@ -2223,7 +2223,7 @@ Module ConstantTimeLess.
   Class Class (Self : Set) : Set := {
   }.
   
-  Global Instance Method_ct_lt `(Class) : Method "ct_lt" _ := {|
+  Global Instance M_ct_lt `(Class) : Method "ct_lt" _ := {|
     method (self : ref Self) (other : ref Self) :=
       (bit_and
         (not (method "ct_gt" self other))

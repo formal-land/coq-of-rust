@@ -1120,7 +1120,7 @@ impl TopLevelItem {
                                 nest([
                                     text("Global Instance"),
                                     line(),
-                                    text(format!("Method_{name}")),
+                                    text(format!("M_{name}")),
                                     line(),
                                     text("`(Class)"),
                                 ]),

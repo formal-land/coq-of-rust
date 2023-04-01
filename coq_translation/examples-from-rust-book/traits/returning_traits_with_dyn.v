@@ -28,7 +28,7 @@ Module Animal.
     noise : (ref Self) -> (ref str);
   }.
   
-  Global Instance Method_noise `(Class) : Method "noise" _ := {|
+  Global Instance M_noise `(Class) : Method "noise" _ := {|
     method := noise;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {

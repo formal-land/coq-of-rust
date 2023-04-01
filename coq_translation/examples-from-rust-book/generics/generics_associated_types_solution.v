@@ -24,19 +24,19 @@ Module Contains.
     last : (ref Self) -> i32;
   }.
   
-  Global Instance Method_A `(Class) : Method "A" _ := {|
+  Global Instance M_A `(Class) : Method "A" _ := {|
     method := A;
   |}.
-  Global Instance Method_B `(Class) : Method "B" _ := {|
+  Global Instance M_B `(Class) : Method "B" _ := {|
     method := B;
   |}.
-  Global Instance Method_contains `(Class) : Method "contains" _ := {|
+  Global Instance M_contains `(Class) : Method "contains" _ := {|
     method := contains;
   |}.
-  Global Instance Method_first `(Class) : Method "first" _ := {|
+  Global Instance M_first `(Class) : Method "first" _ := {|
     method := first;
   |}.
-  Global Instance Method_last `(Class) : Method "last" _ := {|
+  Global Instance M_last `(Class) : Method "last" _ := {|
     method := last;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {

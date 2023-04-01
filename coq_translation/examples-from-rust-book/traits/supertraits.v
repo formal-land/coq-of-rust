@@ -8,7 +8,7 @@ Module Person.
     name : (ref Self) -> String;
   }.
   
-  Global Instance Method_name `(Class) : Method "name" _ := {|
+  Global Instance M_name `(Class) : Method "name" _ := {|
     method := name;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
@@ -22,7 +22,7 @@ Module Student.
     university : (ref Self) -> String;
   }.
   
-  Global Instance Method_university `(Class) : Method "university" _ := {|
+  Global Instance M_university `(Class) : Method "university" _ := {|
     method := university;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
@@ -36,7 +36,7 @@ Module Programmer.
     fav_language : (ref Self) -> String;
   }.
   
-  Global Instance Method_fav_language `(Class) : Method "fav_language" _ := {|
+  Global Instance M_fav_language `(Class) : Method "fav_language" _ := {|
     method := fav_language;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
@@ -50,7 +50,7 @@ Module CompSciStudent.
     git_username : (ref Self) -> String;
   }.
   
-  Global Instance Method_git_username `(Class) : Method "git_username" _ := {|
+  Global Instance M_git_username `(Class) : Method "git_username" _ := {|
     method := git_username;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {

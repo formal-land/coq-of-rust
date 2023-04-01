@@ -10,7 +10,7 @@ Module HasArea.
     area : (ref Self) -> f64;
   }.
   
-  Global Instance Method_area `(Class) : Method "area" _ := {|
+  Global Instance M_area `(Class) : Method "area" _ := {|
     method := area;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {

@@ -67,7 +67,7 @@ impl Sheep {
 
 fn main() {
     // Type annotation is necessary in this case.
-    let mut dolly: Sheep = Animal::new("Dolly");
+    let mut dolly = Animal::new("Dolly"): Sheep;
     // TODO ^ Try removing the type annotations.
 
     dolly.talk();

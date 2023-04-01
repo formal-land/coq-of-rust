@@ -49,6 +49,10 @@ pub enum Expr {
         expr: Box<Expr>,
         ty: Box<CoqType>,
     },
+    Type {
+        expr: Box<Expr>,
+        ty: Box<CoqType>,
+    },
     Array {
         elements: Vec<Expr>,
     },
@@ -227,7 +231,10 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             expr: Box::new(compile_expr(tcx, expr)),
             ty: Box::new(compile_type(&tcx, ty)),
         },
-        rustc_hir::ExprKind::Type(expr, _ty) => compile_expr(tcx, expr),
+        rustc_hir::ExprKind::Type(expr, ty) => Expr::Type {
+            expr: Box::new(compile_expr(tcx, expr)),
+            ty: Box::new(compile_type(&tcx, ty)),
+        },
         rustc_hir::ExprKind::DropTemps(expr) => compile_expr(tcx, expr),
         rustc_hir::ExprKind::Let(rustc_hir::Let { pat, init, .. }) => {
             let pat = compile_pattern(pat);
@@ -500,6 +507,14 @@ impl Expr {
                     ty.to_doc(true),
                 ]),
             ),
+            Expr::Type { expr, ty } => nest([
+                text("("),
+                expr.to_doc(true),
+                line(),
+                text(": "),
+                ty.to_doc(true),
+                text(")"),
+            ]),
             Expr::Array { elements } => group([
                 nest([
                     text("["),
@@ -528,7 +543,6 @@ impl Expr {
                 line(),
                 init.to_doc(false),
             ]),
-
             Expr::If {
                 condition,
                 success,
