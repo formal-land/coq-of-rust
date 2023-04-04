@@ -29,6 +29,7 @@ pub enum Expr {
         args: Vec<Expr>,
     },
     MethodCall {
+        object: Box<Expr>,
         func: String,
         args: Vec<Expr>,
     },
@@ -193,13 +194,13 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             }
         }
         rustc_hir::ExprKind::MethodCall(path_segment, object, args, _) => {
+            let object = compile_expr(tcx, object);
             let func = path_segment.ident.to_string();
-            let mut object_with_args = vec![compile_expr(tcx, object)];
             let args: Vec<_> = args.iter().map(|expr| compile_expr(tcx, expr)).collect();
-            object_with_args.extend(args);
             Expr::MethodCall {
+                object: Box::new(object),
                 func,
-                args: object_with_args,
+                args,
             }
         }
         rustc_hir::ExprKind::Tup(elements) => {
@@ -457,12 +458,13 @@ impl Expr {
                     },
                 ]),
             ),
-            Expr::MethodCall { func, args } => paren(
-                with_paren,
+            Expr::MethodCall { object, func, args } => paren(
+                with_paren && !args.is_empty(),
                 nest([
-                    text("method"),
-                    line(),
+                    object.to_doc(true),
+                    text(".["),
                     text(format!("\"{func}\"")),
+                    text("]"),
                     concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                 ]),
             ),
@@ -637,23 +639,12 @@ impl Expr {
                     base.to_doc(true),
                 ]),
             ),
-            Expr::NamedField { base, name } => paren(
-                with_paren,
-                nest([
-                    text("NamedField.get"),
-                    line(),
-                    nest([
-                        text("(name"),
-                        line(),
-                        text(":="),
-                        line(),
-                        text(format!("\"{name}\"")),
-                        text(")"),
-                    ]),
-                    line(),
-                    base.to_doc(true),
-                ]),
-            ),
+            Expr::NamedField { base, name } => nest([
+                base.to_doc(true),
+                text(".["),
+                text(format!("\"{name}\"")),
+                text("]"),
+            ]),
             Expr::Index { base, index } => {
                 nest([base.to_doc(true), text("["), index.to_doc(false), text("]")])
             }

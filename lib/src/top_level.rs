@@ -498,7 +498,7 @@ fn fn_to_doc<'a>(
                             nest([
                                 text("`{"),
                                 name.to_doc(),
-                                text(".Class"),
+                                text(".Trait"),
                                 line(),
                                 concat(
                                     ty_params
@@ -640,7 +640,7 @@ impl ImplItem {
                 hardline(),
                 if *is_method {
                     concat([
-                        Self::class_instance_to_doc("M", name, None, "Method", "method"),
+                        Self::class_instance_to_doc("Method", name, None, "Method", "method"),
                         hardline(),
                     ])
                 } else {
@@ -836,19 +836,15 @@ impl TopLevelItem {
                                     ]),
                                     line(),
                                     nest([
-                                        text("NamedField.Class"),
-                                        line(),
-                                        text("t"),
+                                        text("Notation.Dot"),
                                         line(),
                                         text(format!("\"{name}\"")),
-                                        line(),
-                                        text("_"),
                                         text(" := {|"),
                                     ]),
                                 ]),
                                 hardline(),
                                 nest([
-                                    text("NamedField.get"),
+                                    text("Notation.dot"),
                                     line(),
                                     nest([
                                         text("'(Build_t"),
@@ -876,8 +872,6 @@ impl TopLevelItem {
                             text("|}."),
                         ])
                     })),
-                    hardline(),
-                    associated_function_class_to_doc(),
                 ]),
                 hardline(),
                 nest([text("End"), line(), text(name), text(".")]),
@@ -1056,7 +1050,7 @@ impl TopLevelItem {
                         nest([
                             text("Class"),
                             line(),
-                            text("Class"),
+                            text("Trait"),
                             line(),
                             nest([
                                 text("("),
@@ -1120,9 +1114,9 @@ impl TopLevelItem {
                                 nest([
                                     text("Global Instance"),
                                     line(),
-                                    text(format!("M_{name}")),
+                                    text(format!("Method_{name}")),
                                     line(),
-                                    text("`(Class)"),
+                                    text("`(Trait)"),
                                 ]),
                                 line(),
                                 nest([
@@ -1252,7 +1246,7 @@ impl TopLevelItem {
                             text(":"),
                             line(),
                             of_trait.to_doc(),
-                            text(".Class"),
+                            text(".Trait"),
                             concat(
                                 ty_params
                                     .iter()
