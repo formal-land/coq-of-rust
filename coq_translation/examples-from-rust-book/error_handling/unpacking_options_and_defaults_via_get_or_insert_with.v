@@ -21,24 +21,21 @@ Module Impl__crate_fmt_Debug_for_Fruit.
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
     match self with
-    | Fruit.Apple => _crate.fmt.ImplFormatter.write_str f "Apple"
-    | Fruit.Orange => _crate.fmt.ImplFormatter.write_str f "Orange"
-    | Fruit.Banana => _crate.fmt.ImplFormatter.write_str f "Banana"
-    | Fruit.Kiwi => _crate.fmt.ImplFormatter.write_str f "Kiwi"
-    | Fruit.Lemon => _crate.fmt.ImplFormatter.write_str f "Lemon"
+    | Fruit.Apple => _crate.fmt.Formatter::["write_str"] f "Apple"
+    | Fruit.Orange => _crate.fmt.Formatter::["write_str"] f "Orange"
+    | Fruit.Banana => _crate.fmt.Formatter::["write_str"] f "Banana"
+    | Fruit.Kiwi => _crate.fmt.Formatter::["write_str"] f "Kiwi"
+    | Fruit.Lemon => _crate.fmt.Formatter::["write_str"] f "Lemon"
     end.
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Fruit.AssociatedFunction "fmt" _ := {|
-    Fruit.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Fruit.
@@ -48,34 +45,34 @@ Definition main (_ : unit) : unit :=
   let get_lemon_as_fallback :=
     fun  =>
       _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1
+        (_crate.fmt.Arguments::["new_v1"]
           [ "Providing lemon as fallback\n" ]
           [  ]) ;;
       tt ;;
       Fruit.Lemon in
   let first_available_fruit :=
-    method "get_or_insert_with" my_fruit get_lemon_as_fallback in
+    my_fruit.["get_or_insert_with"] get_lemon_as_fallback in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "my_fruit is: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug first_available_fruit ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] first_available_fruit ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "first_available_fruit is: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug first_available_fruit ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] first_available_fruit ]) ;;
   tt ;;
   let my_apple := Some Fruit.Apple in
   let should_be_apple :=
-    method "get_or_insert_with" my_apple get_lemon_as_fallback in
+    my_apple.["get_or_insert_with"] get_lemon_as_fallback in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "should_be_apple is: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug should_be_apple ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] should_be_apple ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "my_apple is unchanged: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug my_apple ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] my_apple ]) ;;
   tt ;;
   tt.

@@ -6,23 +6,23 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let pangram := "the quick brown fox jumps over the lazy dog" in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Pangram: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display pangram ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] pangram ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "Words in reverse\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "Words in reverse\n" ] [  ]) ;;
   tt ;;
-  match into_iter (method "rev" (method "split_whitespace" pangram)) with
+  match LangItem pangram.["split_whitespace"].["rev"] with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := word; |} =>
         _crate.io._print
-          (_crate.fmt.ImplArguments.new_v1
+          (_crate.fmt.Arguments::["new_v1"]
             [ "> "; "\n" ]
-            [ _crate.fmt.ImplArgumentV1.new_display word ]) ;;
+            [ _crate.fmt.ArgumentV1::["new_display"] word ]) ;;
         tt ;;
         tt
       end ;;
@@ -30,18 +30,18 @@ Definition main (_ : unit) : unit :=
       from
       for
   end ;;
-  let chars := method "collect" (method "chars" pangram) in
-  method "sort" chars ;;
-  method "dedup" chars ;;
-  let string := ImplString.new tt in
-  match into_iter chars with
+  let chars := pangram.["chars"].["collect"] in
+  chars.["sort"] ;;
+  chars.["dedup"] ;;
+  let string := String::["new"] tt in
+  match LangItem chars with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := c; |} =>
-        method "push" string c ;;
-        method "push_str" string ", " ;;
+        string.["push"] c ;;
+        string.["push_str"] ", " ;;
         tt
       end ;;
       tt
@@ -49,22 +49,22 @@ Definition main (_ : unit) : unit :=
       for
   end ;;
   let chars_to_trim := [  ; , ] in
-  let trimmed_str := method "trim_matches" string chars_to_trim in
+  let trimmed_str := string.["trim_matches"] chars_to_trim in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Used characters: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display trimmed_str ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] trimmed_str ]) ;;
   tt ;;
-  let alice := ImplString.from "I like dogs" in
-  let bob := method "replace" alice "dog" "cat" in
+  let alice := String::["from"] "I like dogs" in
+  let bob := alice.["replace"] "dog" "cat" in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Alice says: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display alice ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] alice ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Bob says: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display bob ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] bob ]) ;;
   tt ;;
   tt.

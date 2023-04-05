@@ -4,11 +4,11 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  let names := ComplexTypePath.into_vec [ "Bob"; "Frank"; "Ferris" ] in
-  match into_iter (method "iter_mut" names) with
+  let names := Slice::["into_vec"] [ "Bob"; "Frank"; "Ferris" ] in
+  match LangItem names.["iter_mut"] with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := name; |} =>
         assign
@@ -23,8 +23,8 @@ Definition main (_ : unit) : unit :=
       for
   end ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "names: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug names ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] names ]) ;;
   tt ;;
   tt.

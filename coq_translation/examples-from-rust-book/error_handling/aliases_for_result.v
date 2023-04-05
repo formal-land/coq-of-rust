@@ -12,28 +12,24 @@ Definition multiply
     (first_number_str : ref str)
     (second_number_str : ref str)
     : AliasedResult :=
-  method
-    "and_then"
-    (method "parse" first_number_str)
+  first_number_str.["parse"].["and_then"]
     (fun first_number =>
-      method
-        "map"
-        (method "parse" second_number_str)
+      second_number_str.["parse"].["map"]
         (fun second_number => mul first_number second_number)).
 
 Definition print (result : AliasedResult) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "n is "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display n ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
     tt
   | Err (e) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Error: "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display e ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] e ]) ;;
     tt
   end.
 

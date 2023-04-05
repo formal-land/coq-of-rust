@@ -4,26 +4,26 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition double_first (vec : Vec) : i32 :=
-  let first := method "unwrap" (method "first" vec) in
-  mul 2 (method "unwrap" (method "parse" first)).
+  let first := vec.["first"].["unwrap"] in
+  mul 2 first.["parse"].["unwrap"].
 
 Definition main (_ : unit) : unit :=
-  let numbers := ComplexTypePath.into_vec [ "42"; "93"; "18" ] in
-  let empty := _crate.vec.ImplVec.new tt in
-  let strings := ComplexTypePath.into_vec [ "tofu"; "93"; "18" ] in
+  let numbers := Slice::["into_vec"] [ "42"; "93"; "18" ] in
+  let empty := _crate.vec.Vec::["new"] tt in
+  let strings := Slice::["into_vec"] [ "tofu"; "93"; "18" ] in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "The first doubled is "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (double_first numbers) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (double_first numbers) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "The first doubled is "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (double_first empty) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (double_first empty) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "The first doubled is "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (double_first strings) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (double_first strings) ]) ;;
   tt ;;
   tt.

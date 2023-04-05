@@ -11,21 +11,17 @@ Definition multiply
     (second_number_str : ref str)
     : Result :=
   let first_number :=
-    match method "parse" first_number_str with
+    match first_number_str.["parse"] with
     | _crate.result.Result.Ok (val) => val
     | _crate.result.Result.Err (err) =>
-      Return
-        (_crate.result.Result.Err
-          ((_crate.convert.From.associated_function "from") err)) ;;
+      Return (_crate.result.Result.Err (_crate.convert.From.from err)) ;;
       tt
     end in
   let second_number :=
-    match method "parse" second_number_str with
+    match second_number_str.["parse"] with
     | _crate.result.Result.Ok (val) => val
     | _crate.result.Result.Err (err) =>
-      Return
-        (_crate.result.Result.Err
-          ((_crate.convert.From.associated_function "from") err)) ;;
+      Return (_crate.result.Result.Err (_crate.convert.From.from err)) ;;
       tt
     end in
   Ok (mul first_number second_number).
@@ -34,15 +30,15 @@ Definition print (result : Result) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "n is "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display n ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
     tt
   | Err (e) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Error: "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display e ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] e ]) ;;
     tt
   end.
 

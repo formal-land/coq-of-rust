@@ -21,19 +21,19 @@ Definition Color := Color.t.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "zero is "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (cast Number.Zero i32) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (cast Number.Zero i32) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "one is "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (cast Number.One i32) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (cast Number.One i32) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1_formatted
+    (_crate.fmt.Arguments::["new_v1_formatted"]
       [ "roses are #"; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_lower_hex (cast Color.Red i32) ]
+      [ _crate.fmt.ArgumentV1::["new_lower_hex"] (cast Color.Red i32) ]
       [
         {|
           _crate.fmt.rt.v1.Argument.position := 0;
@@ -49,12 +49,12 @@ Definition main (_ : unit) : unit :=
             |};
         |}
       ]
-      (_crate.fmt.ImplUnsafeArg.new tt)) ;;
+      (_crate.fmt.UnsafeArg::["new"] tt)) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1_formatted
+    (_crate.fmt.Arguments::["new_v1_formatted"]
       [ "violets are #"; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_lower_hex (cast Color.Blue i32) ]
+      [ _crate.fmt.ArgumentV1::["new_lower_hex"] (cast Color.Blue i32) ]
       [
         {|
           _crate.fmt.rt.v1.Argument.position := 0;
@@ -70,6 +70,6 @@ Definition main (_ : unit) : unit :=
             |};
         |}
       ]
-      (_crate.fmt.ImplUnsafeArg.new tt)) ;;
+      (_crate.fmt.UnsafeArg::["new"] tt)) ;;
   tt ;;
   tt.

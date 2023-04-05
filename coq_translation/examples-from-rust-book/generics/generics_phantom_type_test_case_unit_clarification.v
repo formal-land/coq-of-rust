@@ -23,17 +23,14 @@ Module Impl__crate_fmt_Debug_for_Inch.
       : _crate.fmt.Result :=
     _crate.intrinsics.unreachable tt.
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Inch.AssociatedFunction "fmt" _ := {|
-    Inch.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Inch.
@@ -43,24 +40,15 @@ Module Impl__crate_clone_Clone_for_Inch.
   
   Definition clone (self : ref Self) : Inch := deref self.
   
-  Global Instance M_clone : Method "clone" _ := {|
-    method := clone;
+  Global Instance Method_clone : Notation.Dot "clone" := {|
+    Notation.dot := clone;
   |}.
-  Global Instance AF_clone : Inch.AssociatedFunction "clone" _ := {|
-    Inch.associated_function := clone;
-  |}.
-  Global Instance
-    AFT_clone
-    :
-    _crate.clone.Clone.AssociatedFunction
-    "clone"
-    _
-    :=
-    {|
-    _crate.clone.Clone.associated_function := clone;
+  Global Instance AssociatedFunction_clone :
+    Notation.DoubleColon Self "clone" := {|
+    Notation.double_colon := clone;
   |}.
   
-  Global Instance I : _crate.clone.Clone.Class Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {|
     _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_Inch.
@@ -68,7 +56,7 @@ End Impl__crate_clone_Clone_for_Inch.
 Module Impl__crate_marker_Copy_for_Inch.
   Definition Self := Inch.
   
-  Global Instance I : _crate.marker.Copy.Class Self :=
+  Global Instance I : _crate.marker.Copy.Trait Self :=
     _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Inch.
 
@@ -87,17 +75,14 @@ Module Impl__crate_fmt_Debug_for_Mm.
       : _crate.fmt.Result :=
     _crate.intrinsics.unreachable tt.
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Mm.AssociatedFunction "fmt" _ := {|
-    Mm.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Mm.
@@ -107,24 +92,15 @@ Module Impl__crate_clone_Clone_for_Mm.
   
   Definition clone (self : ref Self) : Mm := deref self.
   
-  Global Instance M_clone : Method "clone" _ := {|
-    method := clone;
+  Global Instance Method_clone : Notation.Dot "clone" := {|
+    Notation.dot := clone;
   |}.
-  Global Instance AF_clone : Mm.AssociatedFunction "clone" _ := {|
-    Mm.associated_function := clone;
-  |}.
-  Global Instance
-    AFT_clone
-    :
-    _crate.clone.Clone.AssociatedFunction
-    "clone"
-    _
-    :=
-    {|
-    _crate.clone.Clone.associated_function := clone;
+  Global Instance AssociatedFunction_clone :
+    Notation.DoubleColon Self "clone" := {|
+    Notation.double_colon := clone;
   |}.
   
-  Global Instance I : _crate.clone.Clone.Class Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {|
     _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_Mm.
@@ -132,7 +108,7 @@ End Impl__crate_clone_Clone_for_Mm.
 Module Impl__crate_marker_Copy_for_Mm.
   Definition Self := Mm.
   
-  Global Instance I : _crate.marker.Copy.Class Self :=
+  Global Instance I : _crate.marker.Copy.Trait Self :=
     _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Mm.
 
@@ -155,23 +131,20 @@ Module Impl__crate_fmt_Debug_for_Length.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.debug_tuple_field2_finish
+    _crate.fmt.Formatter::["debug_tuple_field2_finish"]
       f
       "Length"
       (IndexedField.get (index := 0) self)
       (IndexedField.get (index := 1) self).
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Length.AssociatedFunction "fmt" _ := {|
-    Length.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I Unit : _crate.fmt.Debug.Class Self := {|
+  Global Instance I Unit : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Length.
@@ -181,29 +154,18 @@ Module Impl__crate_clone_Clone_for_Length.
   
   Definition clone (self : ref Self) : Length :=
     Length.Build
-      ((_crate.clone.Clone.associated_function "clone")
-        (IndexedField.get (index := 0) self))
-      ((_crate.clone.Clone.associated_function "clone")
-        (IndexedField.get (index := 1) self)).
+      (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
+      (_crate.clone.Clone.clone (IndexedField.get (index := 1) self)).
   
-  Global Instance M_clone : Method "clone" _ := {|
-    method := clone;
+  Global Instance Method_clone : Notation.Dot "clone" := {|
+    Notation.dot := clone;
   |}.
-  Global Instance AF_clone : Length.AssociatedFunction "clone" _ := {|
-    Length.associated_function := clone;
-  |}.
-  Global Instance
-    AFT_clone
-    :
-    _crate.clone.Clone.AssociatedFunction
-    "clone"
-    _
-    :=
-    {|
-    _crate.clone.Clone.associated_function := clone;
+  Global Instance AssociatedFunction_clone :
+    Notation.DoubleColon Self "clone" := {|
+    Notation.double_colon := clone;
   |}.
   
-  Global Instance I Unit : _crate.clone.Clone.Class Self := {|
+  Global Instance I Unit : _crate.clone.Clone.Trait Self := {|
     _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_Length.
@@ -211,7 +173,7 @@ End Impl__crate_clone_Clone_for_Length.
 Module Impl__crate_marker_Copy_for_Length.
   Definition Self := Length.
   
-  Global Instance I Unit : _crate.marker.Copy.Class Self :=
+  Global Instance I Unit : _crate.marker.Copy.Trait Self :=
     _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Length.
 
@@ -227,17 +189,14 @@ Module Impl_Add_for_Length.
         (IndexedField.get (index := 0) rhs))
       PhantomData.
   
-  Global Instance M_add : Method "add" _ := {|
-    method := add;
+  Global Instance Method_add : Notation.Dot "add" := {|
+    Notation.dot := add;
   |}.
-  Global Instance AF_add : Length.AssociatedFunction "add" _ := {|
-    Length.associated_function := add;
-  |}.
-  Global Instance AFT_add : Add.AssociatedFunction "add" _ := {|
-    Add.associated_function := add;
+  Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {|
+    Notation.double_colon := add;
   |}.
   
-  Global Instance I Unit : Add.Class Self := {|
+  Global Instance I Unit : Add.Trait Self := {|
     Add.Output := Output;
     Add.add := add;
   |}.
@@ -249,18 +208,18 @@ Definition main (_ : unit) : unit :=
   let two_feet := add one_foot one_foot in
   let two_meters := add one_meter one_meter in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "one foot + one_foot = "; " in\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_debug
+        _crate.fmt.ArgumentV1::["new_debug"]
           (IndexedField.get (index := 0) two_feet)
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "one meter + one_meter = "; " mm\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_debug
+        _crate.fmt.ArgumentV1::["new_debug"]
           (IndexedField.get (index := 0) two_meters)
       ]) ;;
   tt ;;

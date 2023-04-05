@@ -16,7 +16,7 @@ End Container.
 Definition Container := Container.t.
 
 Module Contains.
-  Class Class (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
     A : Set;
     B : Set;
     contains : (ref Self) -> ((ref ImplSelf.A) -> ((ref ImplSelf.B) -> bool));
@@ -24,20 +24,20 @@ Module Contains.
     last : (ref Self) -> i32;
   }.
   
-  Global Instance M_A `(Class) : Method "A" _ := {|
-    method := A;
+  Global Instance Method_A `(Trait) : Notation.Dot "A" := {|
+    Notation.dot := A;
   |}.
-  Global Instance M_B `(Class) : Method "B" _ := {|
-    method := B;
+  Global Instance Method_B `(Trait) : Notation.Dot "B" := {|
+    Notation.dot := B;
   |}.
-  Global Instance M_contains `(Class) : Method "contains" _ := {|
-    method := contains;
+  Global Instance Method_contains `(Trait) : Notation.Dot "contains" := {|
+    Notation.dot := contains;
   |}.
-  Global Instance M_first `(Class) : Method "first" _ := {|
-    method := first;
+  Global Instance Method_first `(Trait) : Notation.Dot "first" := {|
+    Notation.dot := first;
   |}.
-  Global Instance M_last `(Class) : Method "last" _ := {|
-    method := last;
+  Global Instance Method_last `(Trait) : Notation.Dot "last" := {|
+    Notation.dot := last;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
@@ -61,42 +61,36 @@ Module Impl_Contains_for_Container.
       (eqb (IndexedField.get (index := 0) self) number_1)
       (eqb (IndexedField.get (index := 1) self) number_2).
   
-  Global Instance M_contains : Method "contains" _ := {|
-    method := contains;
+  Global Instance Method_contains : Notation.Dot "contains" := {|
+    Notation.dot := contains;
   |}.
-  Global Instance AF_contains : Container.AssociatedFunction "contains" _ := {|
-    Container.associated_function := contains;
-  |}.
-  Global Instance AFT_contains : Contains.AssociatedFunction "contains" _ := {|
-    Contains.associated_function := contains;
+  Global Instance AssociatedFunction_contains :
+    Notation.DoubleColon Self "contains" := {|
+    Notation.double_colon := contains;
   |}.
   
   Definition first (self : ref Self) : i32 :=
     IndexedField.get (index := 0) self.
   
-  Global Instance M_first : Method "first" _ := {|
-    method := first;
+  Global Instance Method_first : Notation.Dot "first" := {|
+    Notation.dot := first;
   |}.
-  Global Instance AF_first : Container.AssociatedFunction "first" _ := {|
-    Container.associated_function := first;
-  |}.
-  Global Instance AFT_first : Contains.AssociatedFunction "first" _ := {|
-    Contains.associated_function := first;
+  Global Instance AssociatedFunction_first :
+    Notation.DoubleColon Self "first" := {|
+    Notation.double_colon := first;
   |}.
   
   Definition last (self : ref Self) : i32 := IndexedField.get (index := 1) self.
   
-  Global Instance M_last : Method "last" _ := {|
-    method := last;
+  Global Instance Method_last : Notation.Dot "last" := {|
+    Notation.dot := last;
   |}.
-  Global Instance AF_last : Container.AssociatedFunction "last" _ := {|
-    Container.associated_function := last;
-  |}.
-  Global Instance AFT_last : Contains.AssociatedFunction "last" _ := {|
-    Contains.associated_function := last;
+  Global Instance AssociatedFunction_last :
+    Notation.DoubleColon Self "last" := {|
+    Notation.double_colon := last;
   |}.
   
-  Global Instance I : Contains.Class Self := {|
+  Global Instance I : Contains.Trait Self := {|
     Contains.A := A;
     Contains.B := B;
     Contains.contains := contains;
@@ -105,36 +99,36 @@ Module Impl_Contains_for_Container.
   |}.
 End Impl_Contains_for_Container.
 
-Definition difference {C : Set} `{Contains.Class C} (container : ref C) : i32 :=
-  sub (method "last" container) (method "first" container).
+Definition difference {C : Set} `{Contains.Trait C} (container : ref C) : i32 :=
+  sub container.["last"] container.["first"].
 
 Definition main (_ : unit) : unit :=
   let number_1 := 3 in
   let number_2 := 10 in
   let container := Container.Build number_1 number_2 in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Does container contain "; " and "; ": "; "\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display number_1;
-        _crate.fmt.ImplArgumentV1.new_display number_2;
-        _crate.fmt.ImplArgumentV1.new_display
-          (method "contains" container number_1 number_2)
+        _crate.fmt.ArgumentV1::["new_display"] number_1;
+        _crate.fmt.ArgumentV1::["new_display"] number_2;
+        _crate.fmt.ArgumentV1::["new_display"]
+          (container.["contains"] number_1 number_2)
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "First number: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (method "first" container) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] container.["first"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Last number: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (method "last" container) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] container.["last"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "The difference is: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (difference container) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (difference container) ]) ;;
   tt ;;
   tt.

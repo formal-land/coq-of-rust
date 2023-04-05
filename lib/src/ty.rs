@@ -166,17 +166,4 @@ impl CoqType {
             }
         }
     }
-
-    // The path of a type: we remove all the type parameters to know on
-    // which type an implementation is working
-    pub(crate) fn to_path_doc(&self) -> Doc {
-        match self {
-            CoqType::Var(path) => path.to_doc(),
-            CoqType::Application { func, args: _ } => func.to_path_doc(),
-            CoqType::Function { .. } => text("Function"),
-            CoqType::Tuple(_) => text("Tuple"),
-            CoqType::Array(_) => text("Array"),
-            CoqType::Ref(_, _) => text("Ref"),
-        }
-    }
 }

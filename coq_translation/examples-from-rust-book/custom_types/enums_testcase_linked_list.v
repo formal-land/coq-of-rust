@@ -17,31 +17,32 @@ Module ImplList.
   
   Definition new (_ : unit) : List := Nil.
   
-  Global Instance AF_new : List.AssociatedFunction "new" _ := {|
-    List.associated_function := new;
+  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {|
+    Notation.double_colon := new;
   |}.
   
   Definition prepend (self : Self) (elem : u32) : List :=
-    Cons elem (ImplBox.new self).
+    Cons elem (Box::["new"] self).
   
-  Global Instance M_prepend : Method "prepend" _ := {|
-    method := prepend;
+  Global Instance Method_prepend : Notation.Dot "prepend" := {|
+    Notation.dot := prepend;
   |}.
-  Global Instance AF_prepend : List.AssociatedFunction "prepend" _ := {|
-    List.associated_function := prepend;
+  Global Instance AssociatedFunction_prepend :
+    Notation.DoubleColon Self "prepend" := {|
+    Notation.double_colon := prepend;
   |}.
   
   Definition len (self : ref Self) : u32 :=
     match deref self with
-    | Cons (_, tail) => add 1 (method "len" tail)
+    | Cons (_, tail) => add 1 tail.["len"]
     | Nil => 0
     end.
   
-  Global Instance M_len : Method "len" _ := {|
-    method := len;
+  Global Instance Method_len : Notation.Dot "len" := {|
+    Notation.dot := len;
   |}.
-  Global Instance AF_len : List.AssociatedFunction "len" _ := {|
-    List.associated_function := len;
+  Global Instance AssociatedFunction_len : Notation.DoubleColon Self "len" := {|
+    Notation.double_colon := len;
   |}.
   
   Definition stringify (self : ref Self) : String :=
@@ -49,40 +50,41 @@ Module ImplList.
     | Cons (head, tail) =>
       let res :=
         _crate.fmt.format
-          (_crate.fmt.ImplArguments.new_v1
+          (_crate.fmt.Arguments::["new_v1"]
             [ ""; ", " ]
             [
-              _crate.fmt.ImplArgumentV1.new_display head;
-              _crate.fmt.ImplArgumentV1.new_display (method "stringify" tail)
+              _crate.fmt.ArgumentV1::["new_display"] head;
+              _crate.fmt.ArgumentV1::["new_display"] tail.["stringify"]
             ]) in
       res
     | Nil =>
       let res :=
-        _crate.fmt.format (_crate.fmt.ImplArguments.new_v1 [ "Nil" ] [  ]) in
+        _crate.fmt.format (_crate.fmt.Arguments::["new_v1"] [ "Nil" ] [  ]) in
       res
     end.
   
-  Global Instance M_stringify : Method "stringify" _ := {|
-    method := stringify;
+  Global Instance Method_stringify : Notation.Dot "stringify" := {|
+    Notation.dot := stringify;
   |}.
-  Global Instance AF_stringify : List.AssociatedFunction "stringify" _ := {|
-    List.associated_function := stringify;
+  Global Instance AssociatedFunction_stringify :
+    Notation.DoubleColon Self "stringify" := {|
+    Notation.double_colon := stringify;
   |}.
 End ImplList.
 
 Definition main (_ : unit) : unit :=
-  let list := ImplList.new tt in
-  assign list (method "prepend" list 1) ;;
-  assign list (method "prepend" list 2) ;;
-  assign list (method "prepend" list 3) ;;
+  let list := List::["new"] tt in
+  assign list (list.["prepend"] 1) ;;
+  assign list (list.["prepend"] 2) ;;
+  assign list (list.["prepend"] 3) ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "linked list has length: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (method "len" list) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] list.["len"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ ""; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (method "stringify" list) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] list.["stringify"] ]) ;;
   tt ;;
   tt.

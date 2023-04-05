@@ -18,19 +18,16 @@ Module Impl__crate_fmt_Debug_for_FooBar.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.write_str f "FooBar".
+    _crate.fmt.Formatter::["write_str"] f "FooBar".
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : FooBar.AssociatedFunction "fmt" _ := {|
-    FooBar.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_FooBar.
@@ -44,19 +41,16 @@ Module Impl__crate_fmt_Debug_for_BarFoo.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.write_str f "BarFoo".
+    _crate.fmt.Formatter::["write_str"] f "BarFoo".
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : BarFoo.AssociatedFunction "fmt" _ := {|
-    BarFoo.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_BarFoo.
@@ -68,23 +62,20 @@ Module Impl_ops_Add_for_Foo.
   
   Definition add (self : Self) (_rhs : Bar) : FooBar :=
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "> Foo.add(Bar) was called\n" ]
         [  ]) ;;
     tt ;;
     FooBar.
   
-  Global Instance M_add : Method "add" _ := {|
-    method := add;
+  Global Instance Method_add : Notation.Dot "add" := {|
+    Notation.dot := add;
   |}.
-  Global Instance AF_add : Foo.AssociatedFunction "add" _ := {|
-    Foo.associated_function := add;
-  |}.
-  Global Instance AFT_add : ops.Add.AssociatedFunction "add" _ := {|
-    ops.Add.associated_function := add;
+  Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {|
+    Notation.double_colon := add;
   |}.
   
-  Global Instance I : ops.Add.Class Bar Self := {|
+  Global Instance I : ops.Add.Trait Bar Self := {|
     ops.Add.Output := Output;
     ops.Add.add := add;
   |}.
@@ -97,23 +88,20 @@ Module Impl_ops_Add_for_Bar.
   
   Definition add (self : Self) (_rhs : Foo) : BarFoo :=
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "> Bar.add(Foo) was called\n" ]
         [  ]) ;;
     tt ;;
     BarFoo.
   
-  Global Instance M_add : Method "add" _ := {|
-    method := add;
+  Global Instance Method_add : Notation.Dot "add" := {|
+    Notation.dot := add;
   |}.
-  Global Instance AF_add : Bar.AssociatedFunction "add" _ := {|
-    Bar.associated_function := add;
-  |}.
-  Global Instance AFT_add : ops.Add.AssociatedFunction "add" _ := {|
-    ops.Add.associated_function := add;
+  Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {|
+    Notation.double_colon := add;
   |}.
   
-  Global Instance I : ops.Add.Class Foo Self := {|
+  Global Instance I : ops.Add.Trait Foo Self := {|
     ops.Add.Output := Output;
     ops.Add.add := add;
   |}.
@@ -121,13 +109,13 @@ End Impl_ops_Add_for_Bar.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Foo + Bar = "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug (add Foo Bar) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] (add Foo Bar) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Bar + Foo = "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug (add Bar Foo) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] (add Bar Foo) ]) ;;
   tt ;;
   tt.

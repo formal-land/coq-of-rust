@@ -6,12 +6,13 @@ Import Root.std.prelude.rust_2015.
 Module Debug := std.fmt.Debug.
 
 Module PrintInOption.
-  Class Class (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
     print_in_option : Self -> _;
   }.
   
-  Global Instance M_print_in_option `(Class) : Method "print_in_option" _ := {|
-    method := print_in_option;
+  Global Instance Method_print_in_option `(Trait)
+    : Notation.Dot "print_in_option" := {|
+    Notation.dot := print_in_option;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
@@ -24,42 +25,26 @@ Module Impl_PrintInOption_for_T.
   
   Definition print_in_option (self : Self) :=
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ ""; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_debug (Some self) ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_debug"] (Some self) ]) ;;
     tt ;;
     tt.
   
-  Global Instance M_print_in_option : Method "print_in_option" _ := {|
-    method := print_in_option;
+  Global Instance Method_print_in_option : Notation.Dot "print_in_option" := {|
+    Notation.dot := print_in_option;
   |}.
-  Global Instance
-    AF_print_in_option
-    :
-    T.AssociatedFunction
-    "print_in_option"
-    _
-    :=
-    {|
-    T.associated_function := print_in_option;
-  |}.
-  Global Instance
-    AFT_print_in_option
-    :
-    PrintInOption.AssociatedFunction
-    "print_in_option"
-    _
-    :=
-    {|
-    PrintInOption.associated_function := print_in_option;
+  Global Instance AssociatedFunction_print_in_option :
+    Notation.DoubleColon Self "print_in_option" := {|
+    Notation.double_colon := print_in_option;
   |}.
   
-  Global Instance I T : PrintInOption.Class Self := {|
+  Global Instance I T : PrintInOption.Trait Self := {|
     PrintInOption.print_in_option := print_in_option;
   |}.
 End Impl_PrintInOption_for_T.
 
 Definition main (_ : unit) : unit :=
-  let vec := ComplexTypePath.into_vec [ 1; 2; 3 ] in
-  method "print_in_option" vec ;;
+  let vec := Slice::["into_vec"] [ 1; 2; 3 ] in
+  vec.["print_in_option"] ;;
   tt.

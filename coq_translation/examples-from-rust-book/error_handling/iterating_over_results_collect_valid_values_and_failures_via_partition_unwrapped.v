@@ -4,28 +4,22 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  let strings := ComplexTypePath.into_vec [ "tofu"; "93"; "18" ] in
+  let strings := Slice::["into_vec"] [ "tofu"; "93"; "18" ] in
   let (numbers, errors) :=
-    method
-      "partition"
-      (method "map" (method "into_iter" strings) (fun s => method "parse" s))
-      ImplResult.is_ok in
+    (strings.["into_iter"].["map"] (fun s => s.["parse"])).["partition"]
+      Result::["is_ok"] in
   let numbers :=
-    method
-      "collect"
-      (method "map" (method "into_iter" numbers) ImplResult.unwrap) in
+    (numbers.["into_iter"].["map"] Result::["unwrap"]).["collect"] in
   let errors :=
-    method
-      "collect"
-      (method "map" (method "into_iter" errors) ImplResult.unwrap_err) in
+    (errors.["into_iter"].["map"] Result::["unwrap_err"]).["collect"] in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Numbers: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug numbers ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] numbers ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Errors: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug errors ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] errors ]) ;;
   tt ;;
   tt.

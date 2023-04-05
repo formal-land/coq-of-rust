@@ -10,7 +10,7 @@ Definition main (_ : unit) : unit :=
     | Some (i) =>
       if (gt i 9 : bool) then
         _crate.io._print
-          (_crate.fmt.ImplArguments.new_v1
+          (_crate.fmt.Arguments::["new_v1"]
             [ "Greater than 9, quit!\n" ]
             [  ]) ;;
         tt ;;
@@ -18,9 +18,9 @@ Definition main (_ : unit) : unit :=
         tt
       else
         _crate.io._print
-          (_crate.fmt.ImplArguments.new_v1
+          (_crate.fmt.Arguments::["new_v1"]
             [ "`i` is `"; "`. Try again.\n" ]
-            [ _crate.fmt.ImplArgumentV1.new_debug i ]) ;;
+            [ _crate.fmt.ArgumentV1::["new_debug"] i ]) ;;
         tt ;;
         assign optional (Some (add i 1)) ;;
         tt

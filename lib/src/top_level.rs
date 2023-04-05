@@ -577,38 +577,28 @@ impl ImplItem {
     fn class_instance_to_doc<'a>(
         instance_prefix: &'a str,
         name: &'a str,
-        class_prefix: Option<Doc<'a>>,
         class_name: &'a str,
         method_name: &'a str,
     ) -> Doc<'a> {
-        let class_prefix = match class_prefix {
-            None => nil(),
-            Some(class_prefix) => concat([class_prefix, text(".")]),
-        };
-
         group([
             nest([
-                text("Global Instance"),
+                nest([
+                    text("Global Instance"),
+                    line(),
+                    text(format!("{instance_prefix}_{name}")),
+                    text(" :"),
+                ]),
                 line(),
-                text(format!("{instance_prefix}_{name}")),
-                line(),
-                text(":"),
-                line(),
-                class_prefix.clone(),
-                text(class_name),
-                line(),
-                text(format!("\"{name}\"")),
-                line(),
-                text("_"),
-                line(),
-                text(":="),
-                line(),
-                text("{|"),
+                nest([
+                    text(class_name),
+                    line(),
+                    text(format!("\"{name}\"")),
+                    text(" := {|"),
+                ]),
             ]),
             nest([
                 hardline(),
                 nest([
-                    class_prefix,
                     text(method_name),
                     line(),
                     text(":="),
@@ -622,12 +612,7 @@ impl ImplItem {
         ])
     }
 
-    fn to_doc<'a>(
-        &'a self,
-        self_ty: &'a CoqType,
-        trait_path: Option<&'a Path>,
-        name: &'a String,
-    ) -> Doc<'a> {
+    fn to_doc<'a>(&'a self, name: &'a String) -> Doc<'a> {
         match self {
             ImplItem::Definition {
                 args,
@@ -640,32 +625,18 @@ impl ImplItem {
                 hardline(),
                 if *is_method {
                     concat([
-                        Self::class_instance_to_doc("Method", name, None, "Method", "method"),
+                        Self::class_instance_to_doc("Method", name, "Notation.Dot", "Notation.dot"),
                         hardline(),
                     ])
                 } else {
                     nil()
                 },
                 Self::class_instance_to_doc(
-                    "AF",
-                    name,
-                    Some(self_ty.to_path_doc()),
                     "AssociatedFunction",
-                    "associated_function",
+                    name,
+                    "Notation.DoubleColon Self",
+                    "Notation.double_colon",
                 ),
-                match trait_path {
-                    None => nil(),
-                    Some(trait_path) => concat([
-                        hardline(),
-                        Self::class_instance_to_doc(
-                            "AFT",
-                            name,
-                            Some(trait_path.to_doc()),
-                            "AssociatedFunction",
-                            "associated_function",
-                        ),
-                    ]),
-                },
             ]),
             ImplItem::Type { ty } => nest([
                 nest([
@@ -1026,7 +997,7 @@ impl TopLevelItem {
                             text("."),
                         ]),
                         concat(items.iter().map(|(name, item)| {
-                            concat([hardline(), hardline(), item.to_doc(self_ty, None, name)])
+                            concat([hardline(), hardline(), item.to_doc(name)])
                         })),
                     ]),
                     hardline(),
@@ -1120,11 +1091,9 @@ impl TopLevelItem {
                                 ]),
                                 line(),
                                 nest([
-                                    text(": Method"),
+                                    text(": Notation.Dot"),
                                     line(),
                                     text(format!("\"{name}\"")),
-                                    line(),
-                                    text("_"),
                                     line(),
                                     text(":= {|"),
                                 ]),
@@ -1133,7 +1102,7 @@ impl TopLevelItem {
                                 hardline(),
                                 match item {
                                     TraitItem::Definition { .. } | TraitItem::Type => nest([
-                                        text("method"),
+                                        text("Notation.dot"),
                                         line(),
                                         text(":="),
                                         line(),
@@ -1143,7 +1112,7 @@ impl TopLevelItem {
                                     TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
                                         nest([
                                             nest([
-                                                text("method"),
+                                                text("Notation.dot"),
                                                 if args.is_empty() {
                                                     concat([line(), text("tt")])
                                                 } else {
@@ -1203,10 +1172,87 @@ impl TopLevelItem {
                 of_trait,
                 items,
                 trait_non_default_items,
-            } => group([
-                nest([
+            } => {
+                group([
                     nest([
-                        text("Module"),
+                        nest([
+                            text("Module"),
+                            line(),
+                            text("Impl_"),
+                            text(of_trait.to_name()),
+                            text("_for_"),
+                            text(self_ty.to_name()),
+                            text("."),
+                        ]),
+                        hardline(),
+                        nest([
+                            text("Definition"),
+                            line(),
+                            text("Self"),
+                            line(),
+                            text(":="),
+                            line(),
+                            self_ty.to_doc(false),
+                            text("."),
+                        ]),
+                        hardline(),
+                        hardline(),
+                        concat(items.iter().map(|(name, item)| {
+                            concat([item.to_doc(name), hardline(), hardline()])
+                        })),
+                        nest([
+                            nest([
+                                nest([text("Global"), line(), text("Instance"), line(), text("I")]),
+                                line(),
+                                concat(
+                                    generic_tys
+                                        .iter()
+                                        .map(|generic_ty| concat([text(generic_ty), line()])),
+                                ),
+                                text(":"),
+                                line(),
+                                of_trait.to_doc(),
+                                text(".Trait"),
+                                concat(
+                                    ty_params
+                                        .iter()
+                                        .map(|ty_param| concat([line(), ty_param.to_doc(false)])),
+                                ),
+                                line(),
+                                text("Self"),
+                            ]),
+                            text(" :="),
+                            line(),
+                            if items.is_empty() {
+                                nest([of_trait.to_doc(), text(".Build_Class"), line(), text("_")])
+                            } else {
+                                text("{|")
+                            },
+                        ]),
+                        nest(trait_non_default_items.iter().map(|name| {
+                            concat([
+                                hardline(),
+                                nest([
+                                    of_trait.to_doc(),
+                                    text("."),
+                                    text(name),
+                                    line(),
+                                    text(":="),
+                                    line(),
+                                    text(name),
+                                    text(";"),
+                                ]),
+                            ])
+                        })),
+                        if items.is_empty() {
+                            text(".")
+                        } else {
+                            group([hardline(), text("|}.")])
+                        },
+                    ]),
+                    hardline(),
+                    nest([
+                        text("End"),
                         line(),
                         text("Impl_"),
                         text(of_trait.to_name()),
@@ -1214,87 +1260,8 @@ impl TopLevelItem {
                         text(self_ty.to_name()),
                         text("."),
                     ]),
-                    hardline(),
-                    nest([
-                        text("Definition"),
-                        line(),
-                        text("Self"),
-                        line(),
-                        text(":="),
-                        line(),
-                        self_ty.to_doc(false),
-                        text("."),
-                    ]),
-                    hardline(),
-                    hardline(),
-                    concat(items.iter().map(|(name, item)| {
-                        concat([
-                            item.to_doc(self_ty, Some(of_trait), name),
-                            hardline(),
-                            hardline(),
-                        ])
-                    })),
-                    nest([
-                        nest([
-                            nest([text("Global"), line(), text("Instance"), line(), text("I")]),
-                            line(),
-                            concat(
-                                generic_tys
-                                    .iter()
-                                    .map(|generic_ty| concat([text(generic_ty), line()])),
-                            ),
-                            text(":"),
-                            line(),
-                            of_trait.to_doc(),
-                            text(".Trait"),
-                            concat(
-                                ty_params
-                                    .iter()
-                                    .map(|ty_param| concat([line(), ty_param.to_doc(false)])),
-                            ),
-                            line(),
-                            text("Self"),
-                        ]),
-                        text(" :="),
-                        line(),
-                        if items.is_empty() {
-                            nest([of_trait.to_doc(), text(".Build_Class"), line(), text("_")])
-                        } else {
-                            text("{|")
-                        },
-                    ]),
-                    nest(trait_non_default_items.iter().map(|name| {
-                        concat([
-                            hardline(),
-                            nest([
-                                of_trait.to_doc(),
-                                text("."),
-                                text(name),
-                                line(),
-                                text(":="),
-                                line(),
-                                text(name),
-                                text(";"),
-                            ]),
-                        ])
-                    })),
-                    if items.is_empty() {
-                        text(".")
-                    } else {
-                        group([hardline(), text("|}.")])
-                    },
-                ]),
-                hardline(),
-                nest([
-                    text("End"),
-                    line(),
-                    text("Impl_"),
-                    text(of_trait.to_name()),
-                    text("_for_"),
-                    text(self_ty.to_name()),
-                    text("."),
-                ]),
-            ]),
+                ])
+            }
             TopLevelItem::Use {
                 name,
                 path,

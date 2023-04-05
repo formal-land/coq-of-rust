@@ -4,12 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module UsernameWidget.
-  Class Class (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
     get : (ref Self) -> String;
   }.
   
-  Global Instance M_get `(Class) : Method "get" _ := {|
-    method := get;
+  Global Instance Method_get `(Trait) : Notation.Dot "get" := {|
+    Notation.dot := get;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
@@ -18,12 +18,12 @@ Module UsernameWidget.
 End UsernameWidget.
 
 Module AgeWidget.
-  Class Class (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
     get : (ref Self) -> u8;
   }.
   
-  Global Instance M_get `(Class) : Method "get" _ := {|
-    method := get;
+  Global Instance Method_get `(Trait) : Notation.Dot "get" := {|
+    Notation.dot := get;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
@@ -37,36 +37,28 @@ Module Form.
     age : u8;
   }.
   
-  Global Instance Get_username : NamedField.Class t "username" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_username : Notation.Dot "username" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_age : NamedField.Class t "age" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_age : Notation.Dot "age" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Form.
 Definition Form : Set := Form.t.
 
 Module Impl_UsernameWidget_for_Form.
   Definition Self := Form.
   
-  Definition get (self : ref Self) : String :=
-    method "clone" (NamedField.get (name := "username") self).
+  Definition get (self : ref Self) : String := self.["username"].["clone"].
   
-  Global Instance M_get : Method "get" _ := {|
-    method := get;
+  Global Instance Method_get : Notation.Dot "get" := {|
+    Notation.dot := get;
   |}.
-  Global Instance AF_get : Form.AssociatedFunction "get" _ := {|
-    Form.associated_function := get;
-  |}.
-  Global Instance AFT_get : UsernameWidget.AssociatedFunction "get" _ := {|
-    UsernameWidget.associated_function := get;
+  Global Instance AssociatedFunction_get : Notation.DoubleColon Self "get" := {|
+    Notation.double_colon := get;
   |}.
   
-  Global Instance I : UsernameWidget.Class Self := {|
+  Global Instance I : UsernameWidget.Trait Self := {|
     UsernameWidget.get := get;
   |}.
 End Impl_UsernameWidget_for_Form.
@@ -74,28 +66,25 @@ End Impl_UsernameWidget_for_Form.
 Module Impl_AgeWidget_for_Form.
   Definition Self := Form.
   
-  Definition get (self : ref Self) : u8 := NamedField.get (name := "age") self.
+  Definition get (self : ref Self) : u8 := self.["age"].
   
-  Global Instance M_get : Method "get" _ := {|
-    method := get;
+  Global Instance Method_get : Notation.Dot "get" := {|
+    Notation.dot := get;
   |}.
-  Global Instance AF_get : Form.AssociatedFunction "get" _ := {|
-    Form.associated_function := get;
-  |}.
-  Global Instance AFT_get : AgeWidget.AssociatedFunction "get" _ := {|
-    AgeWidget.associated_function := get;
+  Global Instance AssociatedFunction_get : Notation.DoubleColon Self "get" := {|
+    Notation.double_colon := get;
   |}.
   
-  Global Instance I : AgeWidget.Class Self := {|
+  Global Instance I : AgeWidget.Trait Self := {|
     AgeWidget.get := get;
   |}.
 End Impl_AgeWidget_for_Form.
 
 Definition main (_ : unit) : unit :=
   let form :=
-    {| Form.username := method "to_owned" "rustacean"; Form.age := 28; |} in
-  let username := (UsernameWidget.associated_function "get") form in
-  match (method "to_owned" "rustacean", username) with
+    {| Form.username := "rustacean".["to_owned"]; Form.age := 28; |} in
+  let username := UsernameWidget.get form in
+  match ("rustacean".["to_owned"], username) with
   | (left_val, right_val) =>
     if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
@@ -108,7 +97,7 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  let age := (AgeWidget.associated_function "get") form in
+  let age := AgeWidget.get form in
   match (28, age) with
   | (left_val, right_val) =>
     if (not (eqb (deref left_val) (deref right_val)) : bool) then

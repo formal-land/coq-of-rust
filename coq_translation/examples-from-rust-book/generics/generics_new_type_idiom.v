@@ -27,11 +27,12 @@ Module ImplYears.
   Definition to_days (self : ref Self) : Days :=
     Days.Build (mul (IndexedField.get (index := 0) self) 365).
   
-  Global Instance M_to_days : Method "to_days" _ := {|
-    method := to_days;
+  Global Instance Method_to_days : Notation.Dot "to_days" := {|
+    Notation.dot := to_days;
   |}.
-  Global Instance AF_to_days : Years.AssociatedFunction "to_days" _ := {|
-    Years.associated_function := to_days;
+  Global Instance AssociatedFunction_to_days :
+    Notation.DoubleColon Self "to_days" := {|
+    Notation.double_colon := to_days;
   |}.
 End ImplYears.
 
@@ -41,11 +42,12 @@ Module ImplDays.
   Definition to_years (self : ref Self) : Years :=
     Years.Build (div (IndexedField.get (index := 0) self) 365).
   
-  Global Instance M_to_years : Method "to_years" _ := {|
-    method := to_years;
+  Global Instance Method_to_years : Notation.Dot "to_years" := {|
+    Notation.dot := to_years;
   |}.
-  Global Instance AF_to_years : Days.AssociatedFunction "to_years" _ := {|
-    Days.associated_function := to_years;
+  Global Instance AssociatedFunction_to_years :
+    Notation.DoubleColon Self "to_years" := {|
+    Notation.double_colon := to_years;
   |}.
 End ImplDays.
 
@@ -54,18 +56,18 @@ Definition old_enough (age : ref Years) : bool :=
 
 Definition main (_ : unit) : unit :=
   let age := Years.Build 5 in
-  let age_days := method "to_days" age in
+  let age_days := age.["to_days"] in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Old enough "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (old_enough age) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (old_enough age) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Old enough "; "\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display
-          (old_enough (method "to_years" age_days))
+        _crate.fmt.ArgumentV1::["new_display"]
+          (old_enough age_days.["to_years"])
       ]) ;;
   tt ;;
   tt.

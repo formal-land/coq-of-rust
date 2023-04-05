@@ -7,10 +7,10 @@ Definition main (_ : unit) : unit := sum_odd_numbers.
 
 Definition sum_odd_numbers (up_to : u32) : u32 :=
   let acc := 0 in
-  match into_iter {| Range.start := 0; Range.end := up_to; |} with
+  match LangItem {| Range.start := 0; Range.end := up_to; |} with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := i; |} =>
         let addition :=

@@ -6,30 +6,22 @@ Import Root.std.prelude.rust_2015.
 Module Sheep.
   Record t : Set := {
   }.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Sheep.
 Definition Sheep : Set := Sheep.t.
 
 Module Cow.
   Record t : Set := {
   }.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Cow.
 Definition Cow : Set := Cow.t.
 
 Module Animal.
-  Class Class (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
     noise : (ref Self) -> (ref str);
   }.
   
-  Global Instance M_noise `(Class) : Method "noise" _ := {|
-    method := noise;
+  Global Instance Method_noise `(Trait) : Notation.Dot "noise" := {|
+    Notation.dot := noise;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
@@ -42,17 +34,15 @@ Module Impl_Animal_for_Sheep.
   
   Definition noise (self : ref Self) : ref str := "baaaaah!".
   
-  Global Instance M_noise : Method "noise" _ := {|
-    method := noise;
+  Global Instance Method_noise : Notation.Dot "noise" := {|
+    Notation.dot := noise;
   |}.
-  Global Instance AF_noise : Sheep.AssociatedFunction "noise" _ := {|
-    Sheep.associated_function := noise;
-  |}.
-  Global Instance AFT_noise : Animal.AssociatedFunction "noise" _ := {|
-    Animal.associated_function := noise;
+  Global Instance AssociatedFunction_noise :
+    Notation.DoubleColon Self "noise" := {|
+    Notation.double_colon := noise;
   |}.
   
-  Global Instance I : Animal.Class Self := {|
+  Global Instance I : Animal.Trait Self := {|
     Animal.noise := noise;
   |}.
 End Impl_Animal_for_Sheep.
@@ -62,33 +52,31 @@ Module Impl_Animal_for_Cow.
   
   Definition noise (self : ref Self) : ref str := "moooooo!".
   
-  Global Instance M_noise : Method "noise" _ := {|
-    method := noise;
+  Global Instance Method_noise : Notation.Dot "noise" := {|
+    Notation.dot := noise;
   |}.
-  Global Instance AF_noise : Cow.AssociatedFunction "noise" _ := {|
-    Cow.associated_function := noise;
-  |}.
-  Global Instance AFT_noise : Animal.AssociatedFunction "noise" _ := {|
-    Animal.associated_function := noise;
+  Global Instance AssociatedFunction_noise :
+    Notation.DoubleColon Self "noise" := {|
+    Notation.double_colon := noise;
   |}.
   
-  Global Instance I : Animal.Class Self := {|
+  Global Instance I : Animal.Trait Self := {|
     Animal.noise := noise;
   |}.
 End Impl_Animal_for_Cow.
 
 Definition random_animal (random_number : f64) : Box :=
   if (lt random_number 1 (* 0.5 *) : bool) then
-    ImplBox.new {|  |}
+    Box::["new"] {|  |}
   else
-    ImplBox.new {|  |}.
+    Box::["new"] {|  |}.
 
 Definition main (_ : unit) : unit :=
   let random_number := 0 (* 0.234 *) in
   let animal := random_animal random_number in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "You've randomly chosen an animal, and it says "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (method "noise" animal) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] animal.["noise"] ]) ;;
   tt ;;
   tt.

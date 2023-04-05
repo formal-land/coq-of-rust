@@ -4,9 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  let vec := ComplexTypePath.into_vec [ 1; 9; 3; 3; 13; 2 ] in
+  let vec := Slice::["into_vec"] [ 1; 9; 3; 3; 13; 2 ] in
   let index_of_first_even_number :=
-    method "position" (method "iter" vec) (fun x => eqb (rem x 2) 0) in
+    vec.["iter"].["position"] (fun x => eqb (rem x 2) 0) in
   match (index_of_first_even_number, Some 5) with
   | (left_val, right_val) =>
     if (not (eqb (deref left_val) (deref right_val)) : bool) then
@@ -21,7 +21,7 @@ Definition main (_ : unit) : unit :=
       tt
   end ;;
   let index_of_first_negative_number :=
-    method "position" (method "into_iter" vec) (fun x => lt x 0) in
+    vec.["into_iter"].["position"] (fun x => lt x 0) in
   match (index_of_first_negative_number, None) with
   | (left_val, right_val) =>
     if (not (eqb (deref left_val) (deref right_val)) : bool) then

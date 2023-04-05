@@ -10,19 +10,15 @@ Module Book.
     year : u32;
   }.
   
-  Global Instance Get_author : NamedField.Class t "author" _ := {|
-    NamedField.get '(Build_t x0 _ _) := x0;
+  Global Instance Get_author : Notation.Dot "author" := {|
+    Notation.dot '(Build_t x0 _ _) := x0;
   |}.
-  Global Instance Get_title : NamedField.Class t "title" _ := {|
-    NamedField.get '(Build_t _ x1 _) := x1;
+  Global Instance Get_title : Notation.Dot "title" := {|
+    Notation.dot '(Build_t _ x1 _) := x1;
   |}.
-  Global Instance Get_year : NamedField.Class t "year" _ := {|
-    NamedField.get '(Build_t _ _ x2) := x2;
+  Global Instance Get_year : Notation.Dot "year" := {|
+    Notation.dot '(Build_t _ _ x2) := x2;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Book.
 Definition Book : Set := Book.t.
 
@@ -35,24 +31,15 @@ Module Impl__crate_clone_Clone_for_Book.
     let _ := tt in
     deref self.
   
-  Global Instance M_clone : Method "clone" _ := {|
-    method := clone;
+  Global Instance Method_clone : Notation.Dot "clone" := {|
+    Notation.dot := clone;
   |}.
-  Global Instance AF_clone : Book.AssociatedFunction "clone" _ := {|
-    Book.associated_function := clone;
-  |}.
-  Global Instance
-    AFT_clone
-    :
-    _crate.clone.Clone.AssociatedFunction
-    "clone"
-    _
-    :=
-    {|
-    _crate.clone.Clone.associated_function := clone;
+  Global Instance AssociatedFunction_clone :
+    Notation.DoubleColon Self "clone" := {|
+    Notation.double_colon := clone;
   |}.
   
-  Global Instance I : _crate.clone.Clone.Class Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {|
     _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_Book.
@@ -60,33 +47,29 @@ End Impl__crate_clone_Clone_for_Book.
 Module Impl__crate_marker_Copy_for_Book.
   Definition Self := Book.
   
-  Global Instance I : _crate.marker.Copy.Class Self :=
+  Global Instance I : _crate.marker.Copy.Trait Self :=
     _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Book.
 
 Definition borrow_book (book : ref Book) : unit :=
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "I immutably borrowed "; " - "; " edition\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display
-          (NamedField.get (name := "title") book);
-        _crate.fmt.ImplArgumentV1.new_display
-          (NamedField.get (name := "year") book)
+        _crate.fmt.ArgumentV1::["new_display"] book.["title"];
+        _crate.fmt.ArgumentV1::["new_display"] book.["year"]
       ]) ;;
   tt ;;
   tt.
 
 Definition new_edition (book : mut_ref Book) : unit :=
-  assign (NamedField.get (name := "year") book) 2014 ;;
+  assign book.["year"] 2014 ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "I mutably borrowed "; " - "; " edition\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display
-          (NamedField.get (name := "title") book);
-        _crate.fmt.ImplArgumentV1.new_display
-          (NamedField.get (name := "year") book)
+        _crate.fmt.ArgumentV1::["new_display"] book.["title"];
+        _crate.fmt.ArgumentV1::["new_display"] book.["year"]
       ]) ;;
   tt ;;
   tt.

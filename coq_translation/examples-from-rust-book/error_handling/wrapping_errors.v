@@ -29,22 +29,19 @@ Module Impl__crate_fmt_Debug_for_DoubleError.
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
     match self with
-    | DoubleError.EmptyVec => _crate.fmt.ImplFormatter.write_str f "EmptyVec"
+    | DoubleError.EmptyVec => _crate.fmt.Formatter::["write_str"] f "EmptyVec"
     | DoubleError.Parse (__self_0) =>
-      _crate.fmt.ImplFormatter.debug_tuple_field1_finish f "Parse" __self_0
+      _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Parse" __self_0
     end.
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : DoubleError.AssociatedFunction "fmt" _ := {|
-    DoubleError.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_DoubleError.
@@ -55,32 +52,25 @@ Module Impl_fmt_Display_for_DoubleError.
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
     match deref self with
     | DoubleError.EmptyVec =>
-      method
-        "write_fmt"
-        f
-        (_crate.fmt.ImplArguments.new_v1
+      f.["write_fmt"]
+        (_crate.fmt.Arguments::["new_v1"]
           [ "please use a vector with at least one element" ]
           [  ])
     | DoubleError.Parse () =>
-      method
-        "write_fmt"
-        f
-        (_crate.fmt.ImplArguments.new_v1
+      f.["write_fmt"]
+        (_crate.fmt.Arguments::["new_v1"]
           [ "the provided string could not be parsed as int" ]
           [  ])
     end.
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : DoubleError.AssociatedFunction "fmt" _ := {|
-    DoubleError.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : fmt.Display.AssociatedFunction "fmt" _ := {|
-    fmt.Display.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : fmt.Display.Class Self := {|
+  Global Instance I : fmt.Display.Trait Self := {|
     fmt.Display.fmt := fmt;
   |}.
 End Impl_fmt_Display_for_DoubleError.
@@ -94,17 +84,15 @@ Module Impl_error_Error_for_DoubleError.
     | DoubleError.Parse (e) => Some e
     end.
   
-  Global Instance M_source : Method "source" _ := {|
-    method := source;
+  Global Instance Method_source : Notation.Dot "source" := {|
+    Notation.dot := source;
   |}.
-  Global Instance AF_source : DoubleError.AssociatedFunction "source" _ := {|
-    DoubleError.associated_function := source;
-  |}.
-  Global Instance AFT_source : error.Error.AssociatedFunction "source" _ := {|
-    error.Error.associated_function := source;
+  Global Instance AssociatedFunction_source :
+    Notation.DoubleColon Self "source" := {|
+    Notation.double_colon := source;
   |}.
   
-  Global Instance I : error.Error.Class Self := {|
+  Global Instance I : error.Error.Trait Self := {|
   |}.
 End Impl_error_Error_for_DoubleError.
 
@@ -113,27 +101,25 @@ Module Impl_From_for_DoubleError.
   
   Definition from (err : ParseIntError) : DoubleError := DoubleError.Parse err.
   
-  Global Instance AF_from : DoubleError.AssociatedFunction "from" _ := {|
-    DoubleError.associated_function := from;
-  |}.
-  Global Instance AFT_from : From.AssociatedFunction "from" _ := {|
-    From.associated_function := from;
+  Global Instance AssociatedFunction_from :
+    Notation.DoubleColon Self "from" := {|
+    Notation.double_colon := from;
   |}.
   
-  Global Instance I : From.Class ParseIntError Self := {|
+  Global Instance I : From.Trait ParseIntError Self := {|
     From.from := from;
   |}.
 End Impl_From_for_DoubleError.
 
 Definition double_first (vec : Vec) : Result :=
   let first :=
-    match branch (method "ok_or" (method "first" vec) DoubleError.EmptyVec) with
-    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    match LangItem (vec.["first"].["ok_or"] DoubleError.EmptyVec) with
+    | Break {| Break.0 := residual; |} => Return (LangItem residual)
     | Continue {| Continue.0 := val; |} => val
     end in
   let parsed :=
-    match branch (method "parse" first) with
-    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    match LangItem first.["parse"] with
+    | Break {| Break.0 := residual; |} => Return (LangItem residual)
     | Continue {| Continue.0 := val; |} => val
     end in
   Ok (mul 2 parsed).
@@ -142,21 +128,21 @@ Definition print (result : Result) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "The first doubled is "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display n ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
     tt
   | Err (e) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Error: "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display e ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] e ]) ;;
     tt ;;
-    if (let_if Some (source) := method "source" e : bool) then
+    if (let_if Some (source) := e.["source"] : bool) then
       _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1
+        (_crate.fmt.Arguments::["new_v1"]
           [ "  Caused by: "; "\n" ]
-          [ _crate.fmt.ImplArgumentV1.new_display source ]) ;;
+          [ _crate.fmt.ArgumentV1::["new_display"] source ]) ;;
       tt ;;
       tt
     else
@@ -164,9 +150,9 @@ Definition print (result : Result) : unit :=
   end.
 
 Definition main (_ : unit) : unit :=
-  let numbers := ComplexTypePath.into_vec [ "42"; "93"; "18" ] in
-  let empty := _crate.vec.ImplVec.new tt in
-  let strings := ComplexTypePath.into_vec [ "tofu"; "93"; "18" ] in
+  let numbers := Slice::["into_vec"] [ "42"; "93"; "18" ] in
+  let empty := _crate.vec.Vec::["new"] tt in
+  let strings := Slice::["into_vec"] [ "tofu"; "93"; "18" ] in
   print (double_first numbers) ;;
   print (double_first empty) ;;
   print (double_first strings) ;;

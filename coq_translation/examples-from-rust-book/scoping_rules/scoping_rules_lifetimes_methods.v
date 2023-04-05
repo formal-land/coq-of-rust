@@ -21,34 +21,36 @@ Module ImplOwner.
       (add (IndexedField.get (index := 0) self) 1) ;;
     tt.
   
-  Global Instance M_add_one : Method "add_one" _ := {|
-    method := add_one;
+  Global Instance Method_add_one : Notation.Dot "add_one" := {|
+    Notation.dot := add_one;
   |}.
-  Global Instance AF_add_one : Owner.AssociatedFunction "add_one" _ := {|
-    Owner.associated_function := add_one;
+  Global Instance AssociatedFunction_add_one :
+    Notation.DoubleColon Self "add_one" := {|
+    Notation.double_colon := add_one;
   |}.
   
   Definition print (self : ref Self) :=
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "`print`: "; "\n" ]
         [
-          _crate.fmt.ImplArgumentV1.new_display
+          _crate.fmt.ArgumentV1::["new_display"]
             (IndexedField.get (index := 0) self)
         ]) ;;
     tt ;;
     tt.
   
-  Global Instance M_print : Method "print" _ := {|
-    method := print;
+  Global Instance Method_print : Notation.Dot "print" := {|
+    Notation.dot := print;
   |}.
-  Global Instance AF_print : Owner.AssociatedFunction "print" _ := {|
-    Owner.associated_function := print;
+  Global Instance AssociatedFunction_print :
+    Notation.DoubleColon Self "print" := {|
+    Notation.double_colon := print;
   |}.
 End ImplOwner.
 
 Definition main (_ : unit) : unit :=
   let owner := Owner.Build 18 in
-  method "add_one" owner ;;
-  method "print" owner ;;
+  owner.["add_one"] ;;
+  owner.["print"] ;;
   tt.

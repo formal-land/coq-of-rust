@@ -22,142 +22,131 @@ Definition Path := Path.t.
 
 Definition cat (path : ref Path) : io.Result :=
   let f :=
-    match branch (ImplFile.open path) with
-    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    match LangItem (File::["open"] path) with
+    | Break {| Break.0 := residual; |} => Return (LangItem residual)
     | Continue {| Continue.0 := val; |} => val
     end in
-  let s := ImplString.new tt in
-  match method "read_to_string" f s with
+  let s := String::["new"] tt in
+  match f.["read_to_string"] s with
   | Ok (_) => Ok s
   | Err (e) => Err e
   end.
 
 Definition echo (s : ref str) (path : ref Path) : io.Result :=
   let f :=
-    match branch (ImplFile.create path) with
-    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    match LangItem (File::["create"] path) with
+    | Break {| Break.0 := residual; |} => Return (LangItem residual)
     | Continue {| Continue.0 := val; |} => val
     end in
-  method "write_all" f (method "as_bytes" s).
+  f.["write_all"] s.["as_bytes"].
 
 Definition touch (path : ref Path) : io.Result :=
   match
-    method
-      "open"
-      (method "write" (method "create" (ImplOpenOptions.new tt) true) true)
-      path
+    (((OpenOptions::["new"] tt).["create"] true).["write"] true).["open"] path
   with
   | Ok (_) => Ok ()
   | Err (e) => Err e
   end.
 
 Definition main (_ : unit) : unit :=
-  _crate.io._print (_crate.fmt.ImplArguments.new_v1 [ "`mkdir a`\n" ] [  ]) ;;
+  _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "`mkdir a`\n" ] [  ]) ;;
   tt ;;
   match fs.create_dir "a" with
   | Err (why) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "! "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
     tt
   | Ok (_) => tt
   end ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "`echo hello > a/b.txt`\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "`echo hello > a/b.txt`\n" ] [  ]) ;;
   tt ;;
-  method
-    "unwrap_or_else"
-    (echo "hello" (ImplPath.new "a/b.txt"))
+  (echo "hello" (Path::["new"] "a/b.txt")).["unwrap_or_else"]
     (fun why =>
       _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1
+        (_crate.fmt.Arguments::["new_v1"]
           [ "! "; "\n" ]
-          [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
+          [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
       tt ;;
       tt) ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "`mkdir -p a/c/d`\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "`mkdir -p a/c/d`\n" ] [  ]) ;;
   tt ;;
-  method
-    "unwrap_or_else"
-    (fs.create_dir_all "a/c/d")
+  (fs.create_dir_all "a/c/d").["unwrap_or_else"]
     (fun why =>
       _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1
+        (_crate.fmt.Arguments::["new_v1"]
           [ "! "; "\n" ]
-          [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
+          [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
       tt ;;
       tt) ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "`touch a/c/e.txt`\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "`touch a/c/e.txt`\n" ] [  ]) ;;
   tt ;;
-  method
-    "unwrap_or_else"
-    (touch (ImplPath.new "a/c/e.txt"))
+  (touch (Path::["new"] "a/c/e.txt")).["unwrap_or_else"]
     (fun why =>
       _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1
+        (_crate.fmt.Arguments::["new_v1"]
           [ "! "; "\n" ]
-          [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
+          [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
       tt ;;
       tt) ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "`ln -s ../b.txt a/c/b.txt`\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"]
+      [ "`ln -s ../b.txt a/c/b.txt`\n" ]
+      [  ]) ;;
   tt ;;
   if (true : bool) then
-    method
-      "unwrap_or_else"
-      (unix.fs.symlink "../b.txt" "a/c/b.txt")
+    (unix.fs.symlink "../b.txt" "a/c/b.txt").["unwrap_or_else"]
       (fun why =>
         _crate.io._print
-          (_crate.fmt.ImplArguments.new_v1
+          (_crate.fmt.Arguments::["new_v1"]
             [ "! "; "\n" ]
-            [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
+            [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
         tt ;;
         tt) ;;
     tt
   else
     tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "`cat a/c/b.txt`\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "`cat a/c/b.txt`\n" ] [  ]) ;;
   tt ;;
-  match cat (ImplPath.new "a/c/b.txt") with
+  match cat (Path::["new"] "a/c/b.txt") with
   | Err (why) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "! "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
     tt
   | Ok (s) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "> "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display s ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] s ]) ;;
     tt
   end ;;
-  _crate.io._print (_crate.fmt.ImplArguments.new_v1 [ "`ls a`\n" ] [  ]) ;;
+  _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "`ls a`\n" ] [  ]) ;;
   tt ;;
   match fs.read_dir "a" with
   | Err (why) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "! "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
     tt
   | Ok (paths) =>
-    match into_iter paths with
+    match LangItem paths with
     | iter =>
       loop
-        match next iter with
+        match LangItem iter with
         | None => Break
         | Some {| Some.0 := path; |} =>
           _crate.io._print
-            (_crate.fmt.ImplArguments.new_v1
+            (_crate.fmt.Arguments::["new_v1"]
               [ "> "; "\n" ]
-              [
-                _crate.fmt.ImplArgumentV1.new_debug
-                  (method "path" (method "unwrap" path))
+              [ _crate.fmt.ArgumentV1::["new_debug"] path.["unwrap"].["path"]
               ]) ;;
           tt ;;
           tt
@@ -168,29 +157,25 @@ Definition main (_ : unit) : unit :=
     end
   end ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "`rm a/c/e.txt`\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "`rm a/c/e.txt`\n" ] [  ]) ;;
   tt ;;
-  method
-    "unwrap_or_else"
-    (fs.remove_file "a/c/e.txt")
+  (fs.remove_file "a/c/e.txt").["unwrap_or_else"]
     (fun why =>
       _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1
+        (_crate.fmt.Arguments::["new_v1"]
           [ "! "; "\n" ]
-          [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
+          [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
       tt ;;
       tt) ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "`rmdir a/c/d`\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "`rmdir a/c/d`\n" ] [  ]) ;;
   tt ;;
-  method
-    "unwrap_or_else"
-    (fs.remove_dir "a/c/d")
+  (fs.remove_dir "a/c/d").["unwrap_or_else"]
     (fun why =>
       _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1
+        (_crate.fmt.Arguments::["new_v1"]
           [ "! "; "\n" ]
-          [ _crate.fmt.ImplArgumentV1.new_debug (method "kind" why) ]) ;;
+          [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
       tt ;;
       tt) ;;
   tt.

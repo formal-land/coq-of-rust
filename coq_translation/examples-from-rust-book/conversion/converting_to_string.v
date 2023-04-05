@@ -18,18 +18,18 @@ Definition Circle : Set := Circle.t.
 
 Module Impl_fmt_Display_for_Circle.
   Definition Self := Circle.
-
+  
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
     f.["write_fmt"]
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Circle of radius " ]
-        [
-          _crate.fmt.ImplArgumentV1.new_display
-            self.["radius"]
-        ]).
+        [ _crate.fmt.ArgumentV1::["new_display"] self.["radius"] ]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
+  |}.
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
   Global Instance I : fmt.Display.Trait Self := {|
@@ -40,8 +40,8 @@ End Impl_fmt_Display_for_Circle.
 Definition main (_ : unit) : unit :=
   let circle := {| Circle.radius := 6; |} in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ ""; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display circle.["to_string"] ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] circle.["to_string"] ]) ;;
   tt ;;
   tt.

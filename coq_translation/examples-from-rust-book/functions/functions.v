@@ -17,32 +17,32 @@ Definition is_divisible_by (lhs : u32) (rhs : u32) : bool :=
 
 Definition fizzbuzz (n : u32) :  :=
   if (is_divisible_by n 15 : bool) then
-    _crate.io._print (_crate.fmt.ImplArguments.new_v1 [ "fizzbuzz\n" ] [  ]) ;;
+    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "fizzbuzz\n" ] [  ]) ;;
     tt ;;
     tt
   else
     if (is_divisible_by n 3 : bool) then
-      _crate.io._print (_crate.fmt.ImplArguments.new_v1 [ "fizz\n" ] [  ]) ;;
+      _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "fizz\n" ] [  ]) ;;
       tt ;;
       tt
     else
       if (is_divisible_by n 5 : bool) then
-        _crate.io._print (_crate.fmt.ImplArguments.new_v1 [ "buzz\n" ] [  ]) ;;
+        _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "buzz\n" ] [  ]) ;;
         tt ;;
         tt
       else
         _crate.io._print
-          (_crate.fmt.ImplArguments.new_v1
+          (_crate.fmt.Arguments::["new_v1"]
             [ ""; "\n" ]
-            [ _crate.fmt.ImplArgumentV1.new_display n ]) ;;
+            [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
         tt ;;
         tt.
 
 Definition fizzbuzz_to (n : u32) : unit :=
-  match into_iter (range_inclusive_new 1 n) with
+  match LangItem (LangItem 1 n) with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := n; |} =>
         fizzbuzz n ;;

@@ -8,13 +8,9 @@ Module Droppable.
     name : ref str;
   }.
   
-  Global Instance Get_name : NamedField.Class t "name" _ := {|
-    NamedField.get '(Build_t x0) := x0;
+  Global Instance Get_name : Notation.Dot "name" := {|
+    Notation.dot '(Build_t x0) := x0;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Droppable.
 Definition Droppable : Set := Droppable.t.
 
@@ -23,26 +19,21 @@ Module Impl_Drop_for_Droppable.
   
   Definition drop (self : mut_ref Self) :=
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "> Dropping "; "\n" ]
-        [
-          _crate.fmt.ImplArgumentV1.new_display
-            (NamedField.get (name := "name") self)
-        ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] self.["name"] ]) ;;
     tt ;;
     tt.
   
-  Global Instance M_drop : Method "drop" _ := {|
-    method := drop;
+  Global Instance Method_drop : Notation.Dot "drop" := {|
+    Notation.dot := drop;
   |}.
-  Global Instance AF_drop : Droppable.AssociatedFunction "drop" _ := {|
-    Droppable.associated_function := drop;
-  |}.
-  Global Instance AFT_drop : Drop.AssociatedFunction "drop" _ := {|
-    Drop.associated_function := drop;
+  Global Instance AssociatedFunction_drop :
+    Notation.DoubleColon Self "drop" := {|
+    Notation.double_colon := drop;
   |}.
   
-  Global Instance I : Drop.Class Self := {|
+  Global Instance I : Drop.Trait Self := {|
     Drop.drop := drop;
   |}.
 End Impl_Drop_for_Droppable.
@@ -53,21 +44,21 @@ Definition main (_ : unit) : unit :=
   let _c := {| Droppable.name := "c"; |} in
   let _d := {| Droppable.name := "d"; |} in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "Exiting block B\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "Exiting block B\n" ] [  ]) ;;
   tt ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "Just exited block B\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "Just exited block B\n" ] [  ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "Exiting block A\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "Exiting block A\n" ] [  ]) ;;
   tt ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "Just exited block A\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "Just exited block A\n" ] [  ]) ;;
   tt ;;
   drop _a ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "end of the main function\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "end of the main function\n" ] [  ]) ;;
   tt ;;
   tt.

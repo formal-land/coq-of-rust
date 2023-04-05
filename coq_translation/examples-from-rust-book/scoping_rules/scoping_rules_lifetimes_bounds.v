@@ -21,39 +21,36 @@ Module Impl__crate_fmt_Debug_for_Ref.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.debug_tuple_field1_finish
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Ref"
       (IndexedField.get (index := 0) self).
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Ref.AssociatedFunction "fmt" _ := {|
-    Ref.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I 'a T : _crate.fmt.Debug.Class Self := {|
+  Global Instance I 'a T : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Ref.
 
-Definition print {T : Set} `{Debug.Class T} (t : T) : unit :=
+Definition print {T : Set} `{Debug.Trait T} (t : T) : unit :=
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "`print`: t is "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug t ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] t ]) ;;
   tt ;;
   tt.
 
-Definition print_ref {T : Set} `{Debug.Class T} (t : ref T) : unit :=
+Definition print_ref {T : Set} `{Debug.Trait T} (t : ref T) : unit :=
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "`print_ref`: t is "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug t ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] t ]) ;;
   tt ;;
   tt.
 

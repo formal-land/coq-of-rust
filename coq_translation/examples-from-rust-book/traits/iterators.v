@@ -9,16 +9,12 @@ Module Fibonacci.
     next : u32;
   }.
   
-  Global Instance Get_curr : NamedField.Class t "curr" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_curr : Notation.Dot "curr" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_next : NamedField.Class t "next" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_next : Notation.Dot "next" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Fibonacci.
 Definition Fibonacci : Set := Fibonacci.t.
 
@@ -28,26 +24,20 @@ Module Impl_Iterator_for_Fibonacci.
   Definition Item : Set := u32.
   
   Definition next (self : mut_ref Self) : Option :=
-    let current := NamedField.get (name := "curr") self in
-    assign
-      (NamedField.get (name := "curr") self)
-      (NamedField.get (name := "next") self) ;;
-    assign
-      (NamedField.get (name := "next") self)
-      (add current (NamedField.get (name := "next") self)) ;;
+    let current := self.["curr"] in
+    assign self.["curr"] self.["next"] ;;
+    assign self.["next"] (add current self.["next"]) ;;
     Some current.
   
-  Global Instance M_next : Method "next" _ := {|
-    method := next;
+  Global Instance Method_next : Notation.Dot "next" := {|
+    Notation.dot := next;
   |}.
-  Global Instance AF_next : Fibonacci.AssociatedFunction "next" _ := {|
-    Fibonacci.associated_function := next;
-  |}.
-  Global Instance AFT_next : Iterator.AssociatedFunction "next" _ := {|
-    Iterator.associated_function := next;
+  Global Instance AssociatedFunction_next :
+    Notation.DoubleColon Self "next" := {|
+    Notation.double_colon := next;
   |}.
   
-  Global Instance I : Iterator.Class Self := {|
+  Global Instance I : Iterator.Trait Self := {|
     Iterator.Item := Item;
     Iterator.next := next;
   |}.
@@ -59,45 +49,45 @@ Definition fibonacci (_ : unit) : Fibonacci :=
 Definition main (_ : unit) : unit :=
   let sequence := {| Range.start := 0; Range.end := 3; |} in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Four consecutive `next` calls on 0..3\n" ]
       [  ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "> "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug (method "next" sequence) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] sequence.["next"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "> "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug (method "next" sequence) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] sequence.["next"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "> "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug (method "next" sequence) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] sequence.["next"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "> "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug (method "next" sequence) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] sequence.["next"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Iterate through 0..3 using `for`\n" ]
       [  ]) ;;
   tt ;;
-  match into_iter {| Range.start := 0; Range.end := 3; |} with
+  match LangItem {| Range.start := 0; Range.end := 3; |} with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := i; |} =>
         _crate.io._print
-          (_crate.fmt.ImplArguments.new_v1
+          (_crate.fmt.Arguments::["new_v1"]
             [ "> "; "\n" ]
-            [ _crate.fmt.ImplArgumentV1.new_display i ]) ;;
+            [ _crate.fmt.ArgumentV1::["new_display"] i ]) ;;
         tt ;;
         tt
       end ;;
@@ -106,20 +96,20 @@ Definition main (_ : unit) : unit :=
       for
   end ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "The first four terms of the Fibonacci sequence are: \n" ]
       [  ]) ;;
   tt ;;
-  match into_iter (method "take" (fibonacci tt) 4) with
+  match LangItem ((fibonacci tt).["take"] 4) with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := i; |} =>
         _crate.io._print
-          (_crate.fmt.ImplArguments.new_v1
+          (_crate.fmt.Arguments::["new_v1"]
             [ "> "; "\n" ]
-            [ _crate.fmt.ImplArgumentV1.new_display i ]) ;;
+            [ _crate.fmt.ArgumentV1::["new_display"] i ]) ;;
         tt ;;
         tt
       end ;;
@@ -128,20 +118,20 @@ Definition main (_ : unit) : unit :=
       for
   end ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "The next four terms of the Fibonacci sequence are: \n" ]
       [  ]) ;;
   tt ;;
-  match into_iter (method "take" (method "skip" (fibonacci tt) 4) 4) with
+  match LangItem (((fibonacci tt).["skip"] 4).["take"] 4) with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := i; |} =>
         _crate.io._print
-          (_crate.fmt.ImplArguments.new_v1
+          (_crate.fmt.Arguments::["new_v1"]
             [ "> "; "\n" ]
-            [ _crate.fmt.ImplArgumentV1.new_display i ]) ;;
+            [ _crate.fmt.ArgumentV1::["new_display"] i ]) ;;
         tt ;;
         tt
       end ;;
@@ -151,20 +141,20 @@ Definition main (_ : unit) : unit :=
   end ;;
   let array := [ 1; 3; 3; 7 ] in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Iterate the following array "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug array ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] array ]) ;;
   tt ;;
-  match into_iter (method "iter" array) with
+  match LangItem array.["iter"] with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := i; |} =>
         _crate.io._print
-          (_crate.fmt.ImplArguments.new_v1
+          (_crate.fmt.Arguments::["new_v1"]
             [ "> "; "\n" ]
-            [ _crate.fmt.ImplArgumentV1.new_display i ]) ;;
+            [ _crate.fmt.ArgumentV1::["new_display"] i ]) ;;
         tt ;;
         tt
       end ;;
