@@ -60,10 +60,6 @@ Module ImplRectangle.
   Global Instance Method_get_p1 : Notation.Dot "get_p1" := {|
     Notation.dot := get_p1;
   |}.
-  Global Instance AssociatedFunction_get_p1 :
-    Notation.DoubleColon Self "get_p1" := {|
-    Notation.double_colon := get_p1;
-  |}.
   
   Definition area (self : ref Self) : f64 :=
     let Point {| Point.x := x1; Point.y := y1; |} := self.["p1"] in
@@ -73,10 +69,6 @@ Module ImplRectangle.
   Global Instance Method_area : Notation.Dot "area" := {|
     Notation.dot := area;
   |}.
-  Global Instance AssociatedFunction_area :
-    Notation.DoubleColon Self "area" := {|
-    Notation.double_colon := area;
-  |}.
   
   Definition perimeter (self : ref Self) : f64 :=
     let Point {| Point.x := x1; Point.y := y1; |} := self.["p1"] in
@@ -85,10 +77,6 @@ Module ImplRectangle.
   
   Global Instance Method_perimeter : Notation.Dot "perimeter" := {|
     Notation.dot := perimeter;
-  |}.
-  Global Instance AssociatedFunction_perimeter :
-    Notation.DoubleColon Self "perimeter" := {|
-    Notation.double_colon := perimeter;
   |}.
   
   Definition translate (self : mut_ref Self) (x : f64) (y : f64) :=
@@ -100,10 +88,6 @@ Module ImplRectangle.
   
   Global Instance Method_translate : Notation.Dot "translate" := {|
     Notation.dot := translate;
-  |}.
-  Global Instance AssociatedFunction_translate :
-    Notation.DoubleColon Self "translate" := {|
-    Notation.double_colon := translate;
   |}.
 End ImplRectangle.
 
@@ -136,10 +120,6 @@ Module ImplPair.
   
   Global Instance Method_destroy : Notation.Dot "destroy" := {|
     Notation.dot := destroy;
-  |}.
-  Global Instance AssociatedFunction_destroy :
-    Notation.DoubleColon Self "destroy" := {|
-    Notation.double_colon := destroy;
   |}.
 End ImplPair.
 

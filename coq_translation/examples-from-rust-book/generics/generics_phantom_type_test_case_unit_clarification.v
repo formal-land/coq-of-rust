@@ -26,9 +26,6 @@ Module Impl__crate_fmt_Debug_for_Inch.
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
   |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
-  |}.
   
   Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
@@ -42,10 +39,6 @@ Module Impl__crate_clone_Clone_for_Inch.
   
   Global Instance Method_clone : Notation.Dot "clone" := {|
     Notation.dot := clone;
-  |}.
-  Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {|
-    Notation.double_colon := clone;
   |}.
   
   Global Instance I : _crate.clone.Clone.Trait Self := {|
@@ -78,9 +71,6 @@ Module Impl__crate_fmt_Debug_for_Mm.
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
   |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
-  |}.
   
   Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
@@ -94,10 +84,6 @@ Module Impl__crate_clone_Clone_for_Mm.
   
   Global Instance Method_clone : Notation.Dot "clone" := {|
     Notation.dot := clone;
-  |}.
-  Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {|
-    Notation.double_colon := clone;
   |}.
   
   Global Instance I : _crate.clone.Clone.Trait Self := {|
@@ -140,9 +126,6 @@ Module Impl__crate_fmt_Debug_for_Length.
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
   |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
-  |}.
   
   Global Instance I Unit : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
@@ -159,10 +142,6 @@ Module Impl__crate_clone_Clone_for_Length.
   
   Global Instance Method_clone : Notation.Dot "clone" := {|
     Notation.dot := clone;
-  |}.
-  Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {|
-    Notation.double_colon := clone;
   |}.
   
   Global Instance I Unit : _crate.clone.Clone.Trait Self := {|
@@ -191,9 +170,6 @@ Module Impl_Add_for_Length.
   
   Global Instance Method_add : Notation.Dot "add" := {|
     Notation.dot := add;
-  |}.
-  Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {|
-    Notation.double_colon := add;
   |}.
   
   Global Instance I Unit : Add.Trait Self := {|

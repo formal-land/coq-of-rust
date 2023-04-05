@@ -30,9 +30,6 @@ Module Impl__crate_cmp_PartialEq_for_Centimeters.
   Global Instance Method_eq : Notation.Dot "eq" := {|
     Notation.dot := eq;
   |}.
-  Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {|
-    Notation.double_colon := eq;
-  |}.
   
   Global Instance I : _crate.cmp.PartialEq.Trait Self := {|
     _crate.cmp.PartialEq.eq := eq;
@@ -52,10 +49,6 @@ Module Impl__crate_cmp_PartialOrd_for_Centimeters.
   
   Global Instance Method_partial_cmp : Notation.Dot "partial_cmp" := {|
     Notation.dot := partial_cmp;
-  |}.
-  Global Instance AssociatedFunction_partial_cmp :
-    Notation.DoubleColon Self "partial_cmp" := {|
-    Notation.double_colon := partial_cmp;
   |}.
   
   Global Instance I : _crate.cmp.PartialOrd.Trait Self := {|
@@ -87,9 +80,6 @@ Module Impl__crate_fmt_Debug_for_Inches.
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
   |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
-  |}.
   
   Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
@@ -105,10 +95,6 @@ Module ImplInches.
   
   Global Instance Method_to_centimeters : Notation.Dot "to_centimeters" := {|
     Notation.dot := to_centimeters;
-  |}.
-  Global Instance AssociatedFunction_to_centimeters :
-    Notation.DoubleColon Self "to_centimeters" := {|
-    Notation.double_colon := to_centimeters;
   |}.
 End ImplInches.
 

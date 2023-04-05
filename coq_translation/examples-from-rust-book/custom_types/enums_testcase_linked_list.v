@@ -27,10 +27,6 @@ Module ImplList.
   Global Instance Method_prepend : Notation.Dot "prepend" := {|
     Notation.dot := prepend;
   |}.
-  Global Instance AssociatedFunction_prepend :
-    Notation.DoubleColon Self "prepend" := {|
-    Notation.double_colon := prepend;
-  |}.
   
   Definition len (self : ref Self) : u32 :=
     match deref self with
@@ -40,9 +36,6 @@ Module ImplList.
   
   Global Instance Method_len : Notation.Dot "len" := {|
     Notation.dot := len;
-  |}.
-  Global Instance AssociatedFunction_len : Notation.DoubleColon Self "len" := {|
-    Notation.double_colon := len;
   |}.
   
   Definition stringify (self : ref Self) : String :=
@@ -65,10 +58,6 @@ Module ImplList.
   
   Global Instance Method_stringify : Notation.Dot "stringify" := {|
     Notation.dot := stringify;
-  |}.
-  Global Instance AssociatedFunction_stringify :
-    Notation.DoubleColon Self "stringify" := {|
-    Notation.double_colon := stringify;
   |}.
 End ImplList.
 

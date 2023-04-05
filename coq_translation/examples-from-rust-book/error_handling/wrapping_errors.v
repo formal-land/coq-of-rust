@@ -37,9 +37,6 @@ Module Impl__crate_fmt_Debug_for_DoubleError.
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
   |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
-  |}.
   
   Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
@@ -66,9 +63,6 @@ Module Impl_fmt_Display_for_DoubleError.
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
   |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
-  |}.
   
   Global Instance I : fmt.Display.Trait Self := {|
     fmt.Display.fmt := fmt;
@@ -86,10 +80,6 @@ Module Impl_error_Error_for_DoubleError.
   
   Global Instance Method_source : Notation.Dot "source" := {|
     Notation.dot := source;
-  |}.
-  Global Instance AssociatedFunction_source :
-    Notation.DoubleColon Self "source" := {|
-    Notation.double_colon := source;
   |}.
   
   Global Instance I : error.Error.Trait Self := {|

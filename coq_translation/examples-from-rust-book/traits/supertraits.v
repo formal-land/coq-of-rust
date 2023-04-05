@@ -11,10 +11,6 @@ Module Person.
   Global Instance Method_name `(Trait) : Notation.Dot "name" := {|
     Notation.dot := name;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Person.
 
 Module Student.
@@ -25,10 +21,6 @@ Module Student.
   Global Instance Method_university `(Trait) : Notation.Dot "university" := {|
     Notation.dot := university;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Student.
 
 Module Programmer.
@@ -40,10 +32,6 @@ Module Programmer.
     : Notation.Dot "fav_language" := {|
     Notation.dot := fav_language;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Programmer.
 
 Module CompSciStudent.
@@ -55,10 +43,6 @@ Module CompSciStudent.
     : Notation.Dot "git_username" := {|
     Notation.dot := git_username;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End CompSciStudent.
 
 Definition comp_sci_student_greeting (student : ref TraitObject) : String :=

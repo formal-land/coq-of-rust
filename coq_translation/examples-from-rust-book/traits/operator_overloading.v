@@ -23,9 +23,6 @@ Module Impl__crate_fmt_Debug_for_FooBar.
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
   |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
-  |}.
   
   Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
@@ -45,9 +42,6 @@ Module Impl__crate_fmt_Debug_for_BarFoo.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
-  |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
   |}.
   
   Global Instance I : _crate.fmt.Debug.Trait Self := {|
@@ -71,9 +65,6 @@ Module Impl_ops_Add_for_Foo.
   Global Instance Method_add : Notation.Dot "add" := {|
     Notation.dot := add;
   |}.
-  Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {|
-    Notation.double_colon := add;
-  |}.
   
   Global Instance I : ops.Add.Trait Bar Self := {|
     ops.Add.Output := Output;
@@ -96,9 +87,6 @@ Module Impl_ops_Add_for_Bar.
   
   Global Instance Method_add : Notation.Dot "add" := {|
     Notation.dot := add;
-  |}.
-  Global Instance AssociatedFunction_add : Notation.DoubleColon Self "add" := {|
-    Notation.double_colon := add;
   |}.
   
   Global Instance I : ops.Add.Trait Foo Self := {|

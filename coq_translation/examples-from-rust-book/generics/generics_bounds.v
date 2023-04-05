@@ -13,10 +13,6 @@ Module HasArea.
   Global Instance Method_area `(Trait) : Notation.Dot "area" := {|
     Notation.dot := area;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End HasArea.
 
 Module Impl_HasArea_for_Rectangle.
@@ -27,10 +23,6 @@ Module Impl_HasArea_for_Rectangle.
   
   Global Instance Method_area : Notation.Dot "area" := {|
     Notation.dot := area;
-  |}.
-  Global Instance AssociatedFunction_area :
-    Notation.DoubleColon Self "area" := {|
-    Notation.double_colon := area;
   |}.
   
   Global Instance I : HasArea.Trait Self := {|
@@ -70,9 +62,6 @@ Module Impl__crate_fmt_Debug_for_Rectangle.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
-  |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
   |}.
   
   Global Instance I : _crate.fmt.Debug.Trait Self := {|

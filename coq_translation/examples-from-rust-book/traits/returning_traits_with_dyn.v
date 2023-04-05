@@ -23,10 +23,6 @@ Module Animal.
   Global Instance Method_noise `(Trait) : Notation.Dot "noise" := {|
     Notation.dot := noise;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Animal.
 
 Module Impl_Animal_for_Sheep.
@@ -36,10 +32,6 @@ Module Impl_Animal_for_Sheep.
   
   Global Instance Method_noise : Notation.Dot "noise" := {|
     Notation.dot := noise;
-  |}.
-  Global Instance AssociatedFunction_noise :
-    Notation.DoubleColon Self "noise" := {|
-    Notation.double_colon := noise;
   |}.
   
   Global Instance I : Animal.Trait Self := {|
@@ -54,10 +46,6 @@ Module Impl_Animal_for_Cow.
   
   Global Instance Method_noise : Notation.Dot "noise" := {|
     Notation.dot := noise;
-  |}.
-  Global Instance AssociatedFunction_noise :
-    Notation.DoubleColon Self "noise" := {|
-    Notation.double_colon := noise;
   |}.
   
   Global Instance I : Animal.Trait Self := {|

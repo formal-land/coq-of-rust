@@ -24,10 +24,6 @@ Module ImplOwner.
   Global Instance Method_add_one : Notation.Dot "add_one" := {|
     Notation.dot := add_one;
   |}.
-  Global Instance AssociatedFunction_add_one :
-    Notation.DoubleColon Self "add_one" := {|
-    Notation.double_colon := add_one;
-  |}.
   
   Definition print (self : ref Self) :=
     _crate.io._print
@@ -42,10 +38,6 @@ Module ImplOwner.
   
   Global Instance Method_print : Notation.Dot "print" := {|
     Notation.dot := print;
-  |}.
-  Global Instance AssociatedFunction_print :
-    Notation.DoubleColon Self "print" := {|
-    Notation.double_colon := print;
   |}.
 End ImplOwner.
 
