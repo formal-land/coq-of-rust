@@ -3,7 +3,7 @@ use crate::pattern::*;
 use crate::render::*;
 use crate::ty::*;
 use rustc_ast::LitKind;
-use rustc_hir::{BinOp, BinOpKind};
+use rustc_hir::{BinOp, BinOpKind, QPath};
 use rustc_middle::ty::TyCtxt;
 
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
@@ -20,7 +20,7 @@ pub enum Expr {
     LocalVar(String),
     Var(Path),
     AssociatedFunction {
-        ty: Box<Path>,
+        ty: Box<CoqType>,
         func: String,
     },
     Literal(LitKind),
@@ -29,6 +29,7 @@ pub enum Expr {
         args: Vec<Expr>,
     },
     MethodCall {
+        object: Box<Expr>,
         func: String,
         args: Vec<Expr>,
     },
@@ -46,6 +47,10 @@ pub enum Expr {
         second: Box<Expr>,
     },
     Cast {
+        expr: Box<Expr>,
+        ty: Box<CoqType>,
+    },
+    Type {
         expr: Box<Expr>,
         ty: Box<CoqType>,
     },
@@ -147,6 +152,18 @@ fn compile_loop_source(loop_source: &rustc_hir::LoopSource) -> String {
     }
 }
 
+fn compile_qpath(tcx: &TyCtxt, qpath: &QPath) -> Expr {
+    match qpath {
+        QPath::Resolved(_, path) => Expr::Var(compile_path(path)),
+        QPath::TypeRelative(ty, segment) => {
+            let ty = Box::new(compile_type(tcx, ty));
+            let func = segment.ident.to_string();
+            Expr::AssociatedFunction { ty, func }
+        }
+        QPath::LangItem(_, _, _) => Expr::LocalVar("LangItem".to_string()),
+    }
+}
+
 /// The Coq value [tt] (the inhabitant of the [unit] type) is used as default
 /// value
 fn tt() -> Expr {
@@ -189,13 +206,13 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             }
         }
         rustc_hir::ExprKind::MethodCall(path_segment, object, args, _) => {
+            let object = compile_expr(tcx, object);
             let func = path_segment.ident.to_string();
-            let mut object_with_args = vec![compile_expr(tcx, object)];
             let args: Vec<_> = args.iter().map(|expr| compile_expr(tcx, expr)).collect();
-            object_with_args.extend(args);
             Expr::MethodCall {
+                object: Box::new(object),
                 func,
-                args: object_with_args,
+                args,
             }
         }
         rustc_hir::ExprKind::Tup(elements) => {
@@ -227,7 +244,10 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             expr: Box::new(compile_expr(tcx, expr)),
             ty: Box::new(compile_type(&tcx, ty)),
         },
-        rustc_hir::ExprKind::Type(expr, _ty) => compile_expr(tcx, expr),
+        rustc_hir::ExprKind::Type(expr, ty) => Expr::Type {
+            expr: Box::new(compile_expr(tcx, expr)),
+            ty: Box::new(compile_type(&tcx, ty)),
+        },
         rustc_hir::ExprKind::DropTemps(expr) => compile_expr(tcx, expr),
         rustc_hir::ExprKind::Let(rustc_hir::Let { pat, init, .. }) => {
             let pat = compile_pattern(pat);
@@ -308,28 +328,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             let index = Box::new(compile_expr(tcx, index));
             Expr::Index { base, index }
         }
-        rustc_hir::ExprKind::Path(qpath) => {
-            // Check if this is an associated function
-            match qpath {
-                rustc_hir::QPath::Resolved(
-                    _,
-                    path @ rustc_hir::Path {
-                        res: rustc_hir::def::Res::Def(rustc_hir::def::DefKind::AssocFn, _),
-                        ..
-                    },
-                ) => {
-                    let path = compile_path(path);
-                    Expr::AssociatedFunction {
-                        ty: Box::new(path.base_before_last()),
-                        func: path.last().to_string(),
-                    }
-                }
-                _ => {
-                    let path = compile_qpath(qpath);
-                    Expr::Var(path)
-                }
-            }
-        }
+        rustc_hir::ExprKind::Path(qpath) => compile_qpath(&tcx, qpath),
         rustc_hir::ExprKind::AddrOf(_, _, expr) => compile_expr(tcx, expr),
         rustc_hir::ExprKind::Break(_, _) => Expr::LocalVar("Break".to_string()),
         rustc_hir::ExprKind::Continue(_) => Expr::LocalVar("Continue".to_string()),
@@ -343,7 +342,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         }
         rustc_hir::ExprKind::InlineAsm(_) => Expr::LocalVar("InlineAsm".to_string()),
         rustc_hir::ExprKind::Struct(qpath, fields, base) => {
-            let path = compile_qpath(qpath);
+            let path = crate::path::compile_qpath(qpath);
             let fields = fields
                 .iter()
                 .map(|rustc_hir::ExprField { ident, expr, .. }| {
@@ -428,15 +427,12 @@ impl Expr {
         match self {
             Expr::LocalVar(ref name) => text(name),
             Expr::Var(path) => path.to_doc(),
-            Expr::AssociatedFunction { ty, func } => paren(
-                with_paren,
-                nest([
-                    ty.to_doc(),
-                    text(".associated_function"),
-                    line(),
-                    text(format!("\"{func}\"")),
-                ]),
-            ),
+            Expr::AssociatedFunction { ty, func } => nest([
+                ty.to_doc(true),
+                text("::["),
+                text(format!("\"{func}\"")),
+                text("]"),
+            ]),
             Expr::Literal(literal) => literal_to_doc(literal),
             Expr::Call { func, args } => paren(
                 with_paren,
@@ -450,12 +446,13 @@ impl Expr {
                     },
                 ]),
             ),
-            Expr::MethodCall { func, args } => paren(
-                with_paren,
+            Expr::MethodCall { object, func, args } => paren(
+                with_paren && !args.is_empty(),
                 nest([
-                    text("method"),
-                    line(),
+                    object.to_doc(true),
+                    text(".["),
                     text(format!("\"{func}\"")),
+                    text("]"),
                     concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                 ]),
             ),
@@ -500,6 +497,14 @@ impl Expr {
                     ty.to_doc(true),
                 ]),
             ),
+            Expr::Type { expr, ty } => nest([
+                text("("),
+                expr.to_doc(true),
+                line(),
+                text(": "),
+                ty.to_doc(true),
+                text(")"),
+            ]),
             Expr::Array { elements } => group([
                 nest([
                     text("["),
@@ -528,7 +533,6 @@ impl Expr {
                 line(),
                 init.to_doc(false),
             ]),
-
             Expr::If {
                 condition,
                 success,
@@ -623,23 +627,12 @@ impl Expr {
                     base.to_doc(true),
                 ]),
             ),
-            Expr::NamedField { base, name } => paren(
-                with_paren,
-                nest([
-                    text("NamedField.get"),
-                    line(),
-                    nest([
-                        text("(name"),
-                        line(),
-                        text(":="),
-                        line(),
-                        text(format!("\"{name}\"")),
-                        text(")"),
-                    ]),
-                    line(),
-                    base.to_doc(true),
-                ]),
-            ),
+            Expr::NamedField { base, name } => nest([
+                base.to_doc(true),
+                text(".["),
+                text(format!("\"{name}\"")),
+                text("]"),
+            ]),
             Expr::Index { base, index } => {
                 nest([base.to_doc(true), text("["), index.to_doc(false), text("]")])
             }

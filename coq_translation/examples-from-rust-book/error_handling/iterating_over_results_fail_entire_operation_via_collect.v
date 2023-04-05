@@ -4,14 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  let strings := ComplexTypePath.into_vec [ "tofu"; "93"; "18" ] in
+  let strings := Slice::["into_vec"] [ "tofu"; "93"; "18" ] in
   let numbers :=
-    method
-      "collect"
-      (method "map" (method "into_iter" strings) (fun s => method "parse" s)) in
+    (strings.["into_iter"].["map"] (fun s => s.["parse"])).["collect"] in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Results: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug numbers ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] numbers ]) ;;
   tt ;;
   tt.

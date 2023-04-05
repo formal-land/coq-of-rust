@@ -8,13 +8,9 @@ Module Val.
     val : f64;
   }.
   
-  Global Instance Get_val : NamedField.Class t "val" _ := {|
-    NamedField.get '(Build_t x0) := x0;
+  Global Instance Get_val : Notation.Dot "val" := {|
+    Notation.dot '(Build_t x0) := x0;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Val.
 Definition Val : Set := Val.t.
 
@@ -23,41 +19,37 @@ Module GenVal.
     gen_val : T;
   }.
   
-  Global Instance Get_gen_val : NamedField.Class t "gen_val" _ := {|
-    NamedField.get '(Build_t x0) := x0;
+  Global Instance Get_gen_val : Notation.Dot "gen_val" := {|
+    Notation.dot '(Build_t x0) := x0;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End GenVal.
 Definition GenVal : Set := GenVal.t.
 
 Module ImplVal.
   Definition Self := Val.
   
-  Definition value (self : ref Self) : ref f64 :=
-    NamedField.get (name := "val") self.
+  Definition value (self : ref Self) : ref f64 := self.["val"].
   
-  Global Instance M_value : Method "value" _ := {|
-    method := value;
+  Global Instance Method_value : Notation.Dot "value" := {|
+    Notation.dot := value;
   |}.
-  Global Instance AF_value : Val.AssociatedFunction "value" _ := {|
-    Val.associated_function := value;
+  Global Instance AssociatedFunction_value :
+    Notation.DoubleColon Self "value" := {|
+    Notation.double_colon := value;
   |}.
 End ImplVal.
 
 Module ImplGenVal.
   Definition Self := GenVal.
   
-  Definition value (self : ref Self) : ref T :=
-    NamedField.get (name := "gen_val") self.
+  Definition value (self : ref Self) : ref T := self.["gen_val"].
   
-  Global Instance M_value : Method "value" _ := {|
-    method := value;
+  Global Instance Method_value : Notation.Dot "value" := {|
+    Notation.dot := value;
   |}.
-  Global Instance AF_value : GenVal.AssociatedFunction "value" _ := {|
-    GenVal.associated_function := value;
+  Global Instance AssociatedFunction_value :
+    Notation.DoubleColon Self "value" := {|
+    Notation.double_colon := value;
   |}.
 End ImplGenVal.
 
@@ -65,11 +57,11 @@ Definition main (_ : unit) : unit :=
   let x := {| Val.val := 3 (* 3.0 *); |} in
   let y := {| GenVal.gen_val := 3; |} in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ ""; ", "; "\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display (method "value" x);
-        _crate.fmt.ImplArgumentV1.new_display (method "value" y)
+        _crate.fmt.ArgumentV1::["new_display"] x.["value"];
+        _crate.fmt.ArgumentV1::["new_display"] y.["value"]
       ]) ;;
   tt ;;
   tt.

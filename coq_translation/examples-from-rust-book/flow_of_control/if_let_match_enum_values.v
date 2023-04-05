@@ -17,30 +17,30 @@ Definition main (_ : unit) : unit :=
   let c := Foo.Qux 100 in
   if (let_if Foo.Bar := a : bool) then
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1 [ "a is foobar\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "a is foobar\n" ] [  ]) ;;
     tt ;;
     tt
   else
     tt ;;
   if (let_if Foo.Bar := b : bool) then
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1 [ "b is foobar\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "b is foobar\n" ] [  ]) ;;
     tt ;;
     tt
   else
     tt ;;
   if (let_if Foo.Qux (value) := c : bool) then
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "c is "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display value ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] value ]) ;;
     tt ;;
     tt
   else
     tt ;;
   if (let_if Foo.Qux (value) := c : bool) then
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1 [ "c is one hundred\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "c is one hundred\n" ] [  ]) ;;
     tt ;;
     tt
   else

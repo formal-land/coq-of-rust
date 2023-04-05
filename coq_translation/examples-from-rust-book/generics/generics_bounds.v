@@ -6,12 +6,12 @@ Import Root.std.prelude.rust_2015.
 Module Debug := std.fmt.Debug.
 
 Module HasArea.
-  Class Class (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
     area : (ref Self) -> f64;
   }.
   
-  Global Instance Method_area `(Class) : Method "area" _ := {|
-    method := area;
+  Global Instance Method_area `(Trait) : Notation.Dot "area" := {|
+    Notation.dot := area;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
@@ -23,21 +23,17 @@ Module Impl_HasArea_for_Rectangle.
   Definition Self := Rectangle.
   
   Definition area (self : ref Self) : f64 :=
-    mul
-      (NamedField.get (name := "length") self)
-      (NamedField.get (name := "height") self).
+    mul self.["length"] self.["height"].
   
-  Global Instance M_area : Method "area" _ := {|
-    method := area;
+  Global Instance Method_area : Notation.Dot "area" := {|
+    Notation.dot := area;
   |}.
-  Global Instance AF_area : Rectangle.AssociatedFunction "area" _ := {|
-    Rectangle.associated_function := area;
-  |}.
-  Global Instance AFT_area : HasArea.AssociatedFunction "area" _ := {|
-    HasArea.associated_function := area;
+  Global Instance AssociatedFunction_area :
+    Notation.DoubleColon Self "area" := {|
+    Notation.double_colon := area;
   |}.
   
-  Global Instance I : HasArea.Class Self := {|
+  Global Instance I : HasArea.Trait Self := {|
     HasArea.area := area;
   |}.
 End Impl_HasArea_for_Rectangle.
@@ -48,16 +44,12 @@ Module Rectangle.
     height : f64;
   }.
   
-  Global Instance Get_length : NamedField.Class t "length" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_length : Notation.Dot "length" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_height : NamedField.Class t "height" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_height : Notation.Dot "height" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
@@ -68,25 +60,22 @@ Module Impl__crate_fmt_Debug_for_Rectangle.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.debug_struct_field2_finish
+    _crate.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Rectangle"
       "length"
-      (NamedField.get (name := "length") self)
+      self.["length"]
       "height"
-      (NamedField.get (name := "height") self).
+      self.["height"].
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Rectangle.AssociatedFunction "fmt" _ := {|
-    Rectangle.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Rectangle.
@@ -97,29 +86,24 @@ Module Triangle.
     height : f64;
   }.
   
-  Global Instance Get_length : NamedField.Class t "length" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_length : Notation.Dot "length" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_height : NamedField.Class t "height" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_height : Notation.Dot "height" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Triangle.
 Definition Triangle : Set := Triangle.t.
 
-Definition print_debug {T : Set} `{Debug.Class T} (t : ref T) : unit :=
+Definition print_debug {T : Set} `{Debug.Trait T} (t : ref T) : unit :=
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ ""; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug t ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] t ]) ;;
   tt ;;
   tt.
 
-Definition area {T : Set} `{HasArea.Class T} (t : ref T) : f64 :=
-  method "area" t.
+Definition area {T : Set} `{HasArea.Trait T} (t : ref T) : f64 := t.["area"].
 
 Definition main (_ : unit) : unit :=
   let rectangle :=
@@ -128,8 +112,8 @@ Definition main (_ : unit) : unit :=
     {| Triangle.length := 3 (* 3.0 *); Triangle.height := 4 (* 4.0 *); |} in
   print_debug rectangle ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Area: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (method "area" rectangle) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] rectangle.["area"] ]) ;;
   tt ;;
   tt.

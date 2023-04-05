@@ -12,23 +12,19 @@ Module Account.
     password : ref str;
   }.
   
-  Global Instance Get_username : NamedField.Class t "username" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_username : Notation.Dot "username" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_password : NamedField.Class t "password" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_password : Notation.Dot "password" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Account.
 Definition Account : Set := Account.t.
 
 Module Impl__crate_marker_StructuralPartialEq_for_Account.
   Definition Self := Account.
   
-  Global Instance I 'a : _crate.marker.StructuralPartialEq.Class Self :=
+  Global Instance I 'a : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
 End Impl__crate_marker_StructuralPartialEq_for_Account.
 
@@ -37,24 +33,17 @@ Module Impl__crate_cmp_PartialEq_for_Account.
   
   Definition eq (self : ref Self) (other : ref Account) : bool :=
     andb
-      (eqb
-        (NamedField.get (name := "username") self)
-        (NamedField.get (name := "username") other))
-      (eqb
-        (NamedField.get (name := "password") self)
-        (NamedField.get (name := "password") other)).
+      (eqb self.["username"] other.["username"])
+      (eqb self.["password"] other.["password"]).
   
-  Global Instance M_eq : Method "eq" _ := {|
-    method := eq;
+  Global Instance Method_eq : Notation.Dot "eq" := {|
+    Notation.dot := eq;
   |}.
-  Global Instance AF_eq : Account.AssociatedFunction "eq" _ := {|
-    Account.associated_function := eq;
-  |}.
-  Global Instance AFT_eq : _crate.cmp.PartialEq.AssociatedFunction "eq" _ := {|
-    _crate.cmp.PartialEq.associated_function := eq;
+  Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {|
+    Notation.double_colon := eq;
   |}.
   
-  Global Instance I 'a : _crate.cmp.PartialEq.Class Self := {|
+  Global Instance I 'a : _crate.cmp.PartialEq.Trait Self := {|
     _crate.cmp.PartialEq.eq := eq;
   |}.
 End Impl__crate_cmp_PartialEq_for_Account.
@@ -62,7 +51,7 @@ End Impl__crate_cmp_PartialEq_for_Account.
 Module Impl__crate_marker_StructuralEq_for_Account.
   Definition Self := Account.
   
-  Global Instance I 'a : _crate.marker.StructuralEq.Class Self :=
+  Global Instance I 'a : _crate.marker.StructuralEq.Trait Self :=
     _crate.marker.StructuralEq.Build_Class _.
 End Impl__crate_marker_StructuralEq_for_Account.
 
@@ -74,38 +63,16 @@ Module Impl__crate_cmp_Eq_for_Account.
     let _ := tt in
     tt.
   
-  Global Instance
-    M_assert_receiver_is_total_eq
-    :
-    Method
-    "assert_receiver_is_total_eq"
-    _
-    :=
-    {|
-    method := assert_receiver_is_total_eq;
+  Global Instance Method_assert_receiver_is_total_eq :
+    Notation.Dot "assert_receiver_is_total_eq" := {|
+    Notation.dot := assert_receiver_is_total_eq;
   |}.
-  Global Instance
-    AF_assert_receiver_is_total_eq
-    :
-    Account.AssociatedFunction
-    "assert_receiver_is_total_eq"
-    _
-    :=
-    {|
-    Account.associated_function := assert_receiver_is_total_eq;
-  |}.
-  Global Instance
-    AFT_assert_receiver_is_total_eq
-    :
-    _crate.cmp.Eq.AssociatedFunction
-    "assert_receiver_is_total_eq"
-    _
-    :=
-    {|
-    _crate.cmp.Eq.associated_function := assert_receiver_is_total_eq;
+  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+    Notation.DoubleColon Self "assert_receiver_is_total_eq" := {|
+    Notation.double_colon := assert_receiver_is_total_eq;
   |}.
   
-  Global Instance I 'a : _crate.cmp.Eq.Class Self := {|
+  Global Instance I 'a : _crate.cmp.Eq.Trait Self := {|
   |}.
 End Impl__crate_cmp_Eq_for_Account.
 
@@ -113,24 +80,18 @@ Module Impl__crate_hash_Hash_for_Account.
   Definition Self := Account.
   
   Definition hash (self : ref Self) (state : mut_ref __H) :  :=
-    (_crate.hash.Hash.associated_function "hash")
-      (NamedField.get (name := "username") self)
-      state ;;
-    (_crate.hash.Hash.associated_function "hash")
-      (NamedField.get (name := "password") self)
-      state.
+    _crate.hash.Hash.hash self.["username"] state ;;
+    _crate.hash.Hash.hash self.["password"] state.
   
-  Global Instance M_hash : Method "hash" _ := {|
-    method := hash;
+  Global Instance Method_hash : Notation.Dot "hash" := {|
+    Notation.dot := hash;
   |}.
-  Global Instance AF_hash : Account.AssociatedFunction "hash" _ := {|
-    Account.associated_function := hash;
-  |}.
-  Global Instance AFT_hash : _crate.hash.Hash.AssociatedFunction "hash" _ := {|
-    _crate.hash.Hash.associated_function := hash;
+  Global Instance AssociatedFunction_hash :
+    Notation.DoubleColon Self "hash" := {|
+    Notation.double_colon := hash;
   |}.
   
-  Global Instance I 'a : _crate.hash.Hash.Class Self := {|
+  Global Instance I 'a : _crate.hash.Hash.Trait Self := {|
     _crate.hash.Hash.hash := hash;
   |}.
 End Impl__crate_hash_Hash_for_Account.
@@ -141,16 +102,12 @@ Module AccountInfo.
     email : ref str;
   }.
   
-  Global Instance Get_name : NamedField.Class t "name" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_name : Notation.Dot "name" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_email : NamedField.Class t "email" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_email : Notation.Dot "email" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End AccountInfo.
 Definition AccountInfo : Set := AccountInfo.t.
 
@@ -162,50 +119,44 @@ Definition try_logon
     (password : ref str)
     : unit :=
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Username: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display username ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] username ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Password: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display password ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] password ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "Attempting logon...\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "Attempting logon...\n" ] [  ]) ;;
   tt ;;
   let logon :=
     {| Account.username := username; Account.password := password; |} in
-  match method "get" accounts logon with
+  match accounts.["get"] logon with
   | Some (account_info) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1 [ "Successful logon!\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "Successful logon!\n" ] [  ]) ;;
     tt ;;
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Name: "; "\n" ]
-        [
-          _crate.fmt.ImplArgumentV1.new_display
-            (NamedField.get (name := "name") account_info)
-        ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] account_info.["name"] ]) ;;
     tt ;;
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Email: "; "\n" ]
-        [
-          _crate.fmt.ImplArgumentV1.new_display
-            (NamedField.get (name := "email") account_info)
-        ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] account_info.["email"] ]) ;;
     tt ;;
     tt
   | _ =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1 [ "Login failed!\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "Login failed!\n" ] [  ]) ;;
     tt
   end.
 
 Definition main (_ : unit) : unit :=
-  let accounts := ImplHashMap.new tt in
+  let accounts := HashMap::["new"] tt in
   let account :=
     {| Account.username := "j.everyman"; Account.password := "password123";
     |} in
@@ -214,7 +165,7 @@ Definition main (_ : unit) : unit :=
       AccountInfo.name := "John Everyman";
       AccountInfo.email := "j.everyman@email.com";
     |} in
-  method "insert" accounts account account_info ;;
+  accounts.["insert"] account account_info ;;
   try_logon accounts "j.everyman" "psasword123" ;;
   try_logon accounts "j.everyman" "password123" ;;
   tt.

@@ -4,25 +4,25 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  let names := ComplexTypePath.into_vec [ "Bob"; "Frank"; "Ferris" ] in
-  match into_iter (method "into_iter" names) with
+  let names := Slice::["into_vec"] [ "Bob"; "Frank"; "Ferris" ] in
+  match LangItem names.["into_iter"] with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := name; |} =>
         match name with
         | Str("Ferris", Cooked) =>
           _crate.io._print
-            (_crate.fmt.ImplArguments.new_v1
+            (_crate.fmt.Arguments::["new_v1"]
               [ "There is a rustacean among us!\n" ]
               [  ]) ;;
           tt
         | _ =>
           _crate.io._print
-            (_crate.fmt.ImplArguments.new_v1
+            (_crate.fmt.Arguments::["new_v1"]
               [ "Hello "; "\n" ]
-              [ _crate.fmt.ImplArgumentV1.new_display name ]) ;;
+              [ _crate.fmt.ArgumentV1::["new_display"] name ]) ;;
           tt
         end
       end ;;

@@ -9,19 +9,19 @@ Definition main (_ : unit) : unit :=
   let unit := () in
   let copied_integer := an_integer in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "An integer: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug copied_integer ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] copied_integer ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "A boolean: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug a_boolean ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] a_boolean ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Meet the unit value: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug unit ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] unit ]) ;;
   tt ;;
   let _unused_variable := 3 in
   let _noisy_unused_variable := 2 in

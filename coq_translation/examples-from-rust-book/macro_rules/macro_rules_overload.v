@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ ""; " and "; " is "; "\n" ]
       match
         ("1i32 + 1 == 2i32",
@@ -14,26 +14,26 @@ Definition main (_ : unit) : unit :=
       with
       | args =>
         [
-          _crate.fmt.ImplArgumentV1.new_debug
+          _crate.fmt.ArgumentV1::["new_debug"]
             (IndexedField.get (index := 0) args);
-          _crate.fmt.ImplArgumentV1.new_debug
+          _crate.fmt.ArgumentV1::["new_debug"]
             (IndexedField.get (index := 1) args);
-          _crate.fmt.ImplArgumentV1.new_debug
+          _crate.fmt.ArgumentV1::["new_debug"]
             (IndexedField.get (index := 2) args)
         ]
       end) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ ""; " or "; " is "; "\n" ]
       match ("true", "false", or true false) with
       | args =>
         [
-          _crate.fmt.ImplArgumentV1.new_debug
+          _crate.fmt.ArgumentV1::["new_debug"]
             (IndexedField.get (index := 0) args);
-          _crate.fmt.ImplArgumentV1.new_debug
+          _crate.fmt.ArgumentV1::["new_debug"]
             (IndexedField.get (index := 1) args);
-          _crate.fmt.ImplArgumentV1.new_debug
+          _crate.fmt.ArgumentV1::["new_debug"]
             (IndexedField.get (index := 2) args)
         ]
       end) ;;

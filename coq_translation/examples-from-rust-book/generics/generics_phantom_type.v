@@ -21,7 +21,7 @@ Definition PhantomTuple := PhantomTuple.t.
 Module Impl__crate_marker_StructuralPartialEq_for_PhantomTuple.
   Definition Self := PhantomTuple.
   
-  Global Instance I A B : _crate.marker.StructuralPartialEq.Class Self :=
+  Global Instance I A B : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
 End Impl__crate_marker_StructuralPartialEq_for_PhantomTuple.
 
@@ -37,17 +37,14 @@ Module Impl__crate_cmp_PartialEq_for_PhantomTuple.
         (IndexedField.get (index := 1) self)
         (IndexedField.get (index := 1) other)).
   
-  Global Instance M_eq : Method "eq" _ := {|
-    method := eq;
+  Global Instance Method_eq : Notation.Dot "eq" := {|
+    Notation.dot := eq;
   |}.
-  Global Instance AF_eq : PhantomTuple.AssociatedFunction "eq" _ := {|
-    PhantomTuple.associated_function := eq;
-  |}.
-  Global Instance AFT_eq : _crate.cmp.PartialEq.AssociatedFunction "eq" _ := {|
-    _crate.cmp.PartialEq.associated_function := eq;
+  Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {|
+    Notation.double_colon := eq;
   |}.
   
-  Global Instance I A B : _crate.cmp.PartialEq.Class Self := {|
+  Global Instance I A B : _crate.cmp.PartialEq.Trait Self := {|
     _crate.cmp.PartialEq.eq := eq;
   |}.
 End Impl__crate_cmp_PartialEq_for_PhantomTuple.
@@ -58,23 +55,19 @@ Module PhantomStruct.
     phantom : PhantomData;
   }.
   
-  Global Instance Get_first : NamedField.Class t "first" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_first : Notation.Dot "first" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_phantom : NamedField.Class t "phantom" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_phantom : Notation.Dot "phantom" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End PhantomStruct.
 Definition PhantomStruct : Set := PhantomStruct.t.
 
 Module Impl__crate_marker_StructuralPartialEq_for_PhantomStruct.
   Definition Self := PhantomStruct.
   
-  Global Instance I A B : _crate.marker.StructuralPartialEq.Class Self :=
+  Global Instance I A B : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
 End Impl__crate_marker_StructuralPartialEq_for_PhantomStruct.
 
@@ -83,24 +76,17 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct.
   
   Definition eq (self : ref Self) (other : ref PhantomStruct) : bool :=
     andb
-      (eqb
-        (NamedField.get (name := "first") self)
-        (NamedField.get (name := "first") other))
-      (eqb
-        (NamedField.get (name := "phantom") self)
-        (NamedField.get (name := "phantom") other)).
+      (eqb self.["first"] other.["first"])
+      (eqb self.["phantom"] other.["phantom"]).
   
-  Global Instance M_eq : Method "eq" _ := {|
-    method := eq;
+  Global Instance Method_eq : Notation.Dot "eq" := {|
+    Notation.dot := eq;
   |}.
-  Global Instance AF_eq : PhantomStruct.AssociatedFunction "eq" _ := {|
-    PhantomStruct.associated_function := eq;
-  |}.
-  Global Instance AFT_eq : _crate.cmp.PartialEq.AssociatedFunction "eq" _ := {|
-    _crate.cmp.PartialEq.associated_function := eq;
+  Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {|
+    Notation.double_colon := eq;
   |}.
   
-  Global Instance I A B : _crate.cmp.PartialEq.Class Self := {|
+  Global Instance I A B : _crate.cmp.PartialEq.Trait Self := {|
     _crate.cmp.PartialEq.eq := eq;
   |}.
 End Impl__crate_cmp_PartialEq_for_PhantomStruct.

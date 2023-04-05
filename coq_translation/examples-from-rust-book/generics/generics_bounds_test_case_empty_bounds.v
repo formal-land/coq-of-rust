@@ -11,7 +11,7 @@ Error StructUnit.
 
 Module Red.
   Unset Primitive Projections.
-  Class Class (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
   }.
   Global Set Primitive Projections.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
@@ -22,7 +22,7 @@ End Red.
 
 Module Blue.
   Unset Primitive Projections.
-  Class Class (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
   }.
   Global Set Primitive Projections.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
@@ -34,31 +34,31 @@ End Blue.
 Module Impl_Red_for_Cardinal.
   Definition Self := Cardinal.
   
-  Global Instance I : Red.Class Self := Red.Build_Class _.
+  Global Instance I : Red.Trait Self := Red.Build_Class _.
 End Impl_Red_for_Cardinal.
 
 Module Impl_Blue_for_BlueJay.
   Definition Self := BlueJay.
   
-  Global Instance I : Blue.Class Self := Blue.Build_Class _.
+  Global Instance I : Blue.Trait Self := Blue.Build_Class _.
 End Impl_Blue_for_BlueJay.
 
-Definition red {T : Set} `{Red.Class T} (arg : ref T) : ref str := "red".
+Definition red {T : Set} `{Red.Trait T} (arg : ref T) : ref str := "red".
 
-Definition blue {T : Set} `{Blue.Class T} (arg : ref T) : ref str := "blue".
+Definition blue {T : Set} `{Blue.Trait T} (arg : ref T) : ref str := "blue".
 
 Definition main (_ : unit) : unit :=
   let cardinal := Cardinal in
   let blue_jay := BlueJay in
   let _turkey := Turkey in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "A cardinal is "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (red cardinal) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (red cardinal) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "A blue jay is "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (blue blue_jay) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (blue blue_jay) ]) ;;
   tt ;;
   tt.

@@ -21,24 +21,21 @@ Module Impl__crate_fmt_Debug_for_Fruit.
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
     match self with
-    | Fruit.Apple => _crate.fmt.ImplFormatter.write_str f "Apple"
-    | Fruit.Orange => _crate.fmt.ImplFormatter.write_str f "Orange"
-    | Fruit.Banana => _crate.fmt.ImplFormatter.write_str f "Banana"
-    | Fruit.Kiwi => _crate.fmt.ImplFormatter.write_str f "Kiwi"
-    | Fruit.Lemon => _crate.fmt.ImplFormatter.write_str f "Lemon"
+    | Fruit.Apple => _crate.fmt.Formatter::["write_str"] f "Apple"
+    | Fruit.Orange => _crate.fmt.Formatter::["write_str"] f "Orange"
+    | Fruit.Banana => _crate.fmt.Formatter::["write_str"] f "Banana"
+    | Fruit.Kiwi => _crate.fmt.Formatter::["write_str"] f "Kiwi"
+    | Fruit.Lemon => _crate.fmt.Formatter::["write_str"] f "Lemon"
     end.
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Fruit.AssociatedFunction "fmt" _ := {|
-    Fruit.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Fruit.
@@ -47,11 +44,10 @@ Definition main (_ : unit) : unit :=
   let apple := Some Fruit.Apple in
   let orange := Some Fruit.Orange in
   let no_fruit := None in
-  let first_available_fruit :=
-    method "or" (method "or" no_fruit orange) apple in
+  let first_available_fruit := (no_fruit.["or"] orange).["or"] apple in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "first_available_fruit: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug first_available_fruit ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] first_available_fruit ]) ;;
   tt ;;
   tt.

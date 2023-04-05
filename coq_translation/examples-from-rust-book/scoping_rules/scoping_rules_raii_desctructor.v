@@ -10,21 +10,19 @@ Module Impl_Drop_for_ToDrop.
   
   Definition drop (self : mut_ref Self) :=
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1 [ "ToDrop is being dropped\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "ToDrop is being dropped\n" ] [  ]) ;;
     tt ;;
     tt.
   
-  Global Instance M_drop : Method "drop" _ := {|
-    method := drop;
+  Global Instance Method_drop : Notation.Dot "drop" := {|
+    Notation.dot := drop;
   |}.
-  Global Instance AF_drop : ToDrop.AssociatedFunction "drop" _ := {|
-    ToDrop.associated_function := drop;
-  |}.
-  Global Instance AFT_drop : Drop.AssociatedFunction "drop" _ := {|
-    Drop.associated_function := drop;
+  Global Instance AssociatedFunction_drop :
+    Notation.DoubleColon Self "drop" := {|
+    Notation.double_colon := drop;
   |}.
   
-  Global Instance I : Drop.Class Self := {|
+  Global Instance I : Drop.Trait Self := {|
     Drop.drop := drop;
   |}.
 End Impl_Drop_for_ToDrop.
@@ -32,6 +30,6 @@ End Impl_Drop_for_ToDrop.
 Definition main (_ : unit) : unit :=
   let x := ToDrop in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "Made a ToDrop!\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "Made a ToDrop!\n" ] [  ]) ;;
   tt ;;
   tt.

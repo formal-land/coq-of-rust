@@ -25,5 +25,6 @@
     "titleBar.inactiveForeground": "#e7e7e799"
   },
   "cSpell.words": ["hardline", "rcdoc"],
-  "peacock.color": "#000000"
+  "peacock.color": "#000000",
+  "git-blame.gitWebUrl": ""
 }

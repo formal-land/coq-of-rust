@@ -22,17 +22,10 @@ Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
     | ImplSelf.Subtract => sub x y
     end.
   
-  Global Instance M_run : Method "run" _ := {|
-    method := run;
+  Global Instance Method_run : Notation.Dot "run" := {|
+    Notation.dot := run;
   |}.
-  Global Instance
-    AF_run
-    :
-    VeryVerboseEnumOfThingsToDoWithNumbers.AssociatedFunction
-    "run"
-    _
-    :=
-    {|
-    VeryVerboseEnumOfThingsToDoWithNumbers.associated_function := run;
+  Global Instance AssociatedFunction_run : Notation.DoubleColon Self "run" := {|
+    Notation.double_colon := run;
   |}.
 End ImplVeryVerboseEnumOfThingsToDoWithNumbers.

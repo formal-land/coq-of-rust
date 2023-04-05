@@ -7,7 +7,7 @@ Module other_function := deeply.nested.function.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "called `function()`\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "called `function()`\n" ] [  ]) ;;
   tt ;;
   tt.
 
@@ -15,7 +15,7 @@ Module deeply.
   Module nested.
     Definition function (_ : unit) : unit :=
       _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1
+        (_crate.fmt.Arguments::["new_v1"]
           [ "called `deeply::nested::function()`\n" ]
           [  ]) ;;
       tt ;;
@@ -26,7 +26,7 @@ End deeply.
 Module nested.
   Definition function (_ : unit) : unit :=
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "called `deeply::nested::function()`\n" ]
         [  ]) ;;
     tt ;;
@@ -35,7 +35,7 @@ End nested.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "called `deeply::nested::function()`\n" ]
       [  ]) ;;
   tt ;;
@@ -44,7 +44,7 @@ Definition function (_ : unit) : unit :=
 Definition main (_ : unit) : unit :=
   other_function tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "Entering block\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "Entering block\n" ] [  ]) ;;
   tt ;;
   function ;;
   function tt ;;

@@ -4,50 +4,50 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  let vec1 := ComplexTypePath.into_vec [ 1; 2; 3 ] in
-  let vec2 := ComplexTypePath.into_vec [ 4; 5; 6 ] in
+  let vec1 := Slice::["into_vec"] [ 1; 2; 3 ] in
+  let vec2 := Slice::["into_vec"] [ 4; 5; 6 ] in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "2 in vec1: "; "\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display
-          (method "any" (method "iter" vec1) (fun x => eqb x 2))
+        _crate.fmt.ArgumentV1::["new_display"]
+          (vec1.["iter"].["any"] (fun x => eqb x 2))
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "2 in vec2: "; "\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display
-          (method "any" (method "into_iter" vec2) (fun x => eqb x 2))
+        _crate.fmt.ArgumentV1::["new_display"]
+          (vec2.["into_iter"].["any"] (fun x => eqb x 2))
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "vec1 len: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (method "len" vec1) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] vec1.["len"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "First element of vec1 is: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display vec1[0] ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] vec1[0] ]) ;;
   tt ;;
   let array1 := [ 1; 2; 3 ] in
   let array2 := [ 4; 5; 6 ] in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "2 in array1: "; "\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display
-          (method "any" (method "iter" array1) (fun x => eqb x 2))
+        _crate.fmt.ArgumentV1::["new_display"]
+          (array1.["iter"].["any"] (fun x => eqb x 2))
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "2 in array2: "; "\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display
-          (method "any" (method "into_iter" array2) (fun x => eqb x 2))
+        _crate.fmt.ArgumentV1::["new_display"]
+          (array2.["into_iter"].["any"] (fun x => eqb x 2))
       ]) ;;
   tt ;;
   tt.

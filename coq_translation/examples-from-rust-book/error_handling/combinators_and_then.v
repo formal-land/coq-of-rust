@@ -19,22 +19,19 @@ Module Impl__crate_fmt_Debug_for_Food.
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
     match self with
-    | Food.CordonBleu => _crate.fmt.ImplFormatter.write_str f "CordonBleu"
-    | Food.Steak => _crate.fmt.ImplFormatter.write_str f "Steak"
-    | Food.Sushi => _crate.fmt.ImplFormatter.write_str f "Sushi"
+    | Food.CordonBleu => _crate.fmt.Formatter::["write_str"] f "CordonBleu"
+    | Food.Steak => _crate.fmt.Formatter::["write_str"] f "Steak"
+    | Food.Sushi => _crate.fmt.Formatter::["write_str"] f "Sushi"
     end.
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Food.AssociatedFunction "fmt" _ := {|
-    Food.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Food.
@@ -55,22 +52,19 @@ Module Impl__crate_fmt_Debug_for_Day.
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
     match self with
-    | Day.Monday => _crate.fmt.ImplFormatter.write_str f "Monday"
-    | Day.Tuesday => _crate.fmt.ImplFormatter.write_str f "Tuesday"
-    | Day.Wednesday => _crate.fmt.ImplFormatter.write_str f "Wednesday"
+    | Day.Monday => _crate.fmt.Formatter::["write_str"] f "Monday"
+    | Day.Tuesday => _crate.fmt.Formatter::["write_str"] f "Tuesday"
+    | Day.Wednesday => _crate.fmt.Formatter::["write_str"] f "Wednesday"
     end.
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Day.AssociatedFunction "fmt" _ := {|
-    Day.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Day.
@@ -98,24 +92,24 @@ Definition cookable_v1 (food : Food) : Option :=
   end.
 
 Definition cookable_v2 (food : Food) : Option :=
-  method "and_then" (have_recipe food) have_ingredients.
+  (have_recipe food).["and_then"] have_ingredients.
 
 Definition eat (food : Food) (day : Day) : unit :=
   match cookable_v2 food with
   | Some (food) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Yay! On "; " we get to eat "; ".\n" ]
         [
-          _crate.fmt.ImplArgumentV1.new_debug day;
-          _crate.fmt.ImplArgumentV1.new_debug food
+          _crate.fmt.ArgumentV1::["new_debug"] day;
+          _crate.fmt.ArgumentV1::["new_debug"] food
         ]) ;;
     tt
   | None =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Oh no. We don't get to eat on "; "?\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_debug day ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_debug"] day ]) ;;
     tt
   end.
 

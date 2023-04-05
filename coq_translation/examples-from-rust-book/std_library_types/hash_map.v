@@ -16,53 +16,53 @@ Definition call (number : ref str) : ref str :=
   end.
 
 Definition main (_ : unit) : unit :=
-  let contacts := ImplHashMap.new tt in
-  method "insert" contacts "Daniel" "798-1364" ;;
-  method "insert" contacts "Ashley" "645-7689" ;;
-  method "insert" contacts "Katie" "435-8291" ;;
-  method "insert" contacts "Robert" "956-1745" ;;
-  match method "get" contacts "Daniel" with
+  let contacts := HashMap::["new"] tt in
+  contacts.["insert"] "Daniel" "798-1364" ;;
+  contacts.["insert"] "Ashley" "645-7689" ;;
+  contacts.["insert"] "Katie" "435-8291" ;;
+  contacts.["insert"] "Robert" "956-1745" ;;
+  match contacts.["get"] "Daniel" with
   | Some (number) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Calling Daniel: "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display (call number) ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] (call number) ]) ;;
     tt
   | _ =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Don't have Daniel's number.\n" ]
         [  ]) ;;
     tt
   end ;;
-  method "insert" contacts "Daniel" "164-6743" ;;
-  match method "get" contacts "Ashley" with
+  contacts.["insert"] "Daniel" "164-6743" ;;
+  match contacts.["get"] "Ashley" with
   | Some (number) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Calling Ashley: "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display (call number) ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] (call number) ]) ;;
     tt
   | _ =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Don't have Ashley's number.\n" ]
         [  ]) ;;
     tt
   end ;;
-  method "remove" contacts "Ashley" ;;
-  match into_iter (method "iter" contacts) with
+  contacts.["remove"] "Ashley" ;;
+  match LangItem contacts.["iter"] with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := (contact, number); |} =>
         _crate.io._print
-          (_crate.fmt.ImplArguments.new_v1
+          (_crate.fmt.Arguments::["new_v1"]
             [ "Calling "; ": "; "\n" ]
             [
-              _crate.fmt.ImplArgumentV1.new_display contact;
-              _crate.fmt.ImplArgumentV1.new_display (call number)
+              _crate.fmt.ArgumentV1::["new_display"] contact;
+              _crate.fmt.ArgumentV1::["new_display"] (call number)
             ]) ;;
         tt ;;
         tt

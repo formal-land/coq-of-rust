@@ -11,15 +11,11 @@ Module Foo.
     y : u32;
   }.
   
-  Global Instance Get_x : NamedField.Class t "x" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_x : Notation.Dot "x" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_y : NamedField.Class t "y" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_y : Notation.Dot "y" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Foo.
 Definition Foo : Set := Foo.t.

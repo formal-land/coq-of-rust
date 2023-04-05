@@ -10,13 +10,9 @@ Module Circle.
     radius : i32;
   }.
   
-  Global Instance Get_radius : NamedField.Class t "radius" _ := {|
-    NamedField.get '(Build_t x0) := x0;
+  Global Instance Get_radius : Notation.Dot "radius" := {|
+    Notation.dot '(Build_t x0) := x0;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Circle.
 Definition Circle : Set := Circle.t.
 
@@ -24,27 +20,19 @@ Module Impl_fmt_Display_for_Circle.
   Definition Self := Circle.
   
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
-    method
-      "write_fmt"
-      f
-      (_crate.fmt.ImplArguments.new_v1
+    f.["write_fmt"]
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Circle of radius " ]
-        [
-          _crate.fmt.ImplArgumentV1.new_display
-            (NamedField.get (name := "radius") self)
-        ]).
+        [ _crate.fmt.ArgumentV1::["new_display"] self.["radius"] ]).
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Circle.AssociatedFunction "fmt" _ := {|
-    Circle.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : fmt.Display.AssociatedFunction "fmt" _ := {|
-    fmt.Display.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : fmt.Display.Class Self := {|
+  Global Instance I : fmt.Display.Trait Self := {|
     fmt.Display.fmt := fmt;
   |}.
 End Impl_fmt_Display_for_Circle.
@@ -52,8 +40,8 @@ End Impl_fmt_Display_for_Circle.
 Definition main (_ : unit) : unit :=
   let circle := {| Circle.radius := 6; |} in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ ""; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (method "to_string" circle) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] circle.["to_string"] ]) ;;
   tt ;;
   tt.

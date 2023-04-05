@@ -3,13 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition call_me {F : Set} `{Fn.Class () F} (f : F) : unit :=
+Definition call_me {F : Set} `{Fn.Trait () F} (f : F) : unit :=
   f tt ;;
   tt.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "I'm a function!\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "I'm a function!\n" ] [  ]) ;;
   tt ;;
   tt.
 
@@ -17,7 +17,7 @@ Definition main (_ : unit) : unit :=
   let closure :=
     fun  =>
       _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1 [ "I'm a closure!\n" ] [  ]) ;;
+        (_crate.fmt.Arguments::["new_v1"] [ "I'm a closure!\n" ] [  ]) ;;
       tt in
   call_me closure ;;
   call_me function ;;

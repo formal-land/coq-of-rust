@@ -7,63 +7,50 @@ Module HashSet := std.collections.HashSet.
 Definition HashSet := HashSet.t.
 
 Definition main (_ : unit) : unit :=
-  let a :=
-    method
-      "collect"
-      (method "into_iter" (ComplexTypePath.into_vec [ 1; 2; 3 ])) in
-  let b :=
-    method
-      "collect"
-      (method "into_iter" (ComplexTypePath.into_vec [ 2; 3; 4 ])) in
-  if (not (method "insert" a 4) : bool) then
+  let a := (Slice::["into_vec"] [ 1; 2; 3 ]).["into_iter"].["collect"] in
+  let b := (Slice::["into_vec"] [ 2; 3; 4 ]).["into_iter"].["collect"] in
+  if (not (a.["insert"] 4) : bool) then
     _crate.panicking.panic "assertion failed: a.insert(4)"
   else
     tt ;;
-  if (not (method "contains" a 4) : bool) then
+  if (not (a.["contains"] 4) : bool) then
     _crate.panicking.panic "assertion failed: a.contains(&4)"
   else
     tt ;;
-  method "insert" b 5 ;;
+  b.["insert"] 5 ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "A: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug a ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] a ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "B: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug b ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] b ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Union: "; "\n" ]
-      [
-        _crate.fmt.ImplArgumentV1.new_debug
-          (method "collect" (method "union" a b))
-      ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] (a.["union"] b).["collect"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Difference: "; "\n" ]
-      [
-        _crate.fmt.ImplArgumentV1.new_debug
-          (method "collect" (method "difference" a b))
+      [ _crate.fmt.ArgumentV1::["new_debug"] (a.["difference"] b).["collect"]
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Intersection: "; "\n" ]
-      [
-        _crate.fmt.ImplArgumentV1.new_debug
-          (method "collect" (method "intersection" a b))
+      [ _crate.fmt.ArgumentV1::["new_debug"] (a.["intersection"] b).["collect"]
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Symmetric Difference: "; "\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_debug
-          (method "collect" (method "symmetric_difference" a b))
+        _crate.fmt.ArgumentV1::["new_debug"]
+          (a.["symmetric_difference"] b).["collect"]
       ]) ;;
   tt ;;
   tt.

@@ -8,22 +8,20 @@ Module thread := std.thread.
 Definition NTHREADS (_ : unit) := 10.
 
 Definition main (_ : unit) : unit :=
-  let children := _crate.vec.ImplVec.new tt in
-  match into_iter {| Range.start := 0; Range.end := NTHREADS; |} with
+  let children := _crate.vec.Vec::["new"] tt in
+  match LangItem {| Range.start := 0; Range.end := NTHREADS; |} with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := i; |} =>
-        method
-          "push"
-          children
+        children.["push"]
           (thread.spawn
             (fun  =>
               _crate.io._print
-                (_crate.fmt.ImplArguments.new_v1
+                (_crate.fmt.Arguments::["new_v1"]
                   [ "this is thread number "; "\n" ]
-                  [ _crate.fmt.ImplArgumentV1.new_display i ]) ;;
+                  [ _crate.fmt.ArgumentV1::["new_display"] i ]) ;;
               tt ;;
               tt)) ;;
         tt
@@ -32,13 +30,13 @@ Definition main (_ : unit) : unit :=
       from
       for
   end ;;
-  match into_iter children with
+  match LangItem children with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := child; |} =>
-        let _ := method "join" child in
+        let _ := child.["join"] in
         tt
       end ;;
       tt

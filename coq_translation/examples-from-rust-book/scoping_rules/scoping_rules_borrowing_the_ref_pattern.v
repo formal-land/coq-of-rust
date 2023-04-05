@@ -9,16 +9,12 @@ Module Point.
     y : i32;
   }.
   
-  Global Instance Get_x : NamedField.Class t "x" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_x : Notation.Dot "x" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_y : NamedField.Class t "y" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_y : Notation.Dot "y" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Point.
 Definition Point : Set := Point.t.
 
@@ -29,24 +25,15 @@ Module Impl__crate_clone_Clone_for_Point.
     let _ := tt in
     deref self.
   
-  Global Instance M_clone : Method "clone" _ := {|
-    method := clone;
+  Global Instance Method_clone : Notation.Dot "clone" := {|
+    Notation.dot := clone;
   |}.
-  Global Instance AF_clone : Point.AssociatedFunction "clone" _ := {|
-    Point.associated_function := clone;
-  |}.
-  Global Instance
-    AFT_clone
-    :
-    _crate.clone.Clone.AssociatedFunction
-    "clone"
-    _
-    :=
-    {|
-    _crate.clone.Clone.associated_function := clone;
+  Global Instance AssociatedFunction_clone :
+    Notation.DoubleColon Self "clone" := {|
+    Notation.double_colon := clone;
   |}.
   
-  Global Instance I : _crate.clone.Clone.Class Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {|
     _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_Point.
@@ -54,7 +41,7 @@ End Impl__crate_clone_Clone_for_Point.
 Module Impl__crate_marker_Copy_for_Point.
   Definition Self := Point.
   
-  Global Instance I : _crate.marker.Copy.Class Self :=
+  Global Instance I : _crate.marker.Copy.Trait Self :=
     _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Point.
 
@@ -63,10 +50,10 @@ Definition main (_ : unit) : unit :=
   let ref_c1 := c in
   let ref_c2 := c in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "ref_c1 equals ref_c2: "; "\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display
+        _crate.fmt.ArgumentV1::["new_display"]
           (eqb (deref ref_c1) (deref ref_c2))
       ]) ;;
   tt ;;
@@ -79,32 +66,28 @@ Definition main (_ : unit) : unit :=
   assign (deref mut_ref_to_y) 1 ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "point is ("; ", "; ")\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display
-          (NamedField.get (name := "x") point);
-        _crate.fmt.ImplArgumentV1.new_display
-          (NamedField.get (name := "y") point)
+        _crate.fmt.ArgumentV1::["new_display"] point.["x"];
+        _crate.fmt.ArgumentV1::["new_display"] point.["y"]
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "mutable_point is ("; ", "; ")\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display
-          (NamedField.get (name := "x") mutable_point);
-        _crate.fmt.ImplArgumentV1.new_display
-          (NamedField.get (name := "y") mutable_point)
+        _crate.fmt.ArgumentV1::["new_display"] mutable_point.["x"];
+        _crate.fmt.ArgumentV1::["new_display"] mutable_point.["y"]
       ]) ;;
   tt ;;
-  let mutable_tuple := (ImplBox.new 5, 3) in
+  let mutable_tuple := (Box::["new"] 5, 3) in
   let (_, last) := mutable_tuple in
   assign (deref last) 2 ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "tuple is "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug mutable_tuple ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] mutable_tuple ]) ;;
   tt ;;
   tt.

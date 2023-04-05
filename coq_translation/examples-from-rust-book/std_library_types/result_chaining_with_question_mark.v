@@ -21,24 +21,22 @@ Module checked.
         : _crate.fmt.Result :=
       match self with
       | MathError.DivisionByZero =>
-        _crate.fmt.ImplFormatter.write_str f "DivisionByZero"
+        _crate.fmt.Formatter::["write_str"] f "DivisionByZero"
       | MathError.NonPositiveLogarithm =>
-        _crate.fmt.ImplFormatter.write_str f "NonPositiveLogarithm"
+        _crate.fmt.Formatter::["write_str"] f "NonPositiveLogarithm"
       | MathError.NegativeSquareRoot =>
-        _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
+        _crate.fmt.Formatter::["write_str"] f "NegativeSquareRoot"
       end.
     
-    Global Instance M_fmt : Method "fmt" _ := {|
-      method := fmt;
+    Global Instance Method_fmt : Notation.Dot "fmt" := {|
+      Notation.dot := fmt;
     |}.
-    Global Instance AF_fmt : MathError.AssociatedFunction "fmt" _ := {|
-      MathError.associated_function := fmt;
-    |}.
-    Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-      _crate.fmt.Debug.associated_function := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {|
+      Notation.double_colon := fmt;
     |}.
     
-    Global Instance I : _crate.fmt.Debug.Class Self := {|
+    Global Instance I : _crate.fmt.Debug.Trait Self := {|
       _crate.fmt.Debug.fmt := fmt;
     |}.
   End Impl__crate_fmt_Debug_for_MathError.
@@ -55,23 +53,23 @@ Module checked.
     if (lt x 0 (* 0.0 *) : bool) then
       Err MathError.NegativeSquareRoot
     else
-      Ok (method "sqrt" x).
+      Ok x.["sqrt"].
   
   Definition ln (x : f64) : MathResult :=
     if (le x 0 (* 0.0 *) : bool) then
       Err MathError.NonPositiveLogarithm
     else
-      Ok (method "ln" x).
+      Ok x.["ln"].
   
   Definition op_ (x : f64) (y : f64) : MathResult :=
     let ratio :=
-      match branch (div x y) with
-      | Break {| Break.0 := residual; |} => Return (from_residual residual)
+      match LangItem (div x y) with
+      | Break {| Break.0 := residual; |} => Return (LangItem residual)
       | Continue {| Continue.0 := val; |} => val
       end in
     let ln :=
-      match branch (ln ratio) with
-      | Break {| Break.0 := residual; |} => Return (from_residual residual)
+      match LangItem (ln ratio) with
+      | Break {| Break.0 := residual; |} => Return (LangItem residual)
       | Continue {| Continue.0 := val; |} => val
       end in
     sqrt ln.
@@ -87,9 +85,9 @@ Module checked.
         end
     | Ok (value) =>
       _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1
+        (_crate.fmt.Arguments::["new_v1"]
           [ ""; "\n" ]
-          [ _crate.fmt.ImplArgumentV1.new_display value ]) ;;
+          [ _crate.fmt.ArgumentV1::["new_display"] value ]) ;;
       tt
     end.
 End checked.
@@ -111,24 +109,21 @@ Module Impl__crate_fmt_Debug_for_MathError.
       : _crate.fmt.Result :=
     match self with
     | MathError.DivisionByZero =>
-      _crate.fmt.ImplFormatter.write_str f "DivisionByZero"
+      _crate.fmt.Formatter::["write_str"] f "DivisionByZero"
     | MathError.NonPositiveLogarithm =>
-      _crate.fmt.ImplFormatter.write_str f "NonPositiveLogarithm"
+      _crate.fmt.Formatter::["write_str"] f "NonPositiveLogarithm"
     | MathError.NegativeSquareRoot =>
-      _crate.fmt.ImplFormatter.write_str f "NegativeSquareRoot"
+      _crate.fmt.Formatter::["write_str"] f "NegativeSquareRoot"
     end.
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : MathError.AssociatedFunction "fmt" _ := {|
-    MathError.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_MathError.
@@ -145,23 +140,23 @@ Definition sqrt (x : f64) : MathResult :=
   if (lt x 0 (* 0.0 *) : bool) then
     Err MathError.NegativeSquareRoot
   else
-    Ok (method "sqrt" x).
+    Ok x.["sqrt"].
 
 Definition ln (x : f64) : MathResult :=
   if (le x 0 (* 0.0 *) : bool) then
     Err MathError.NonPositiveLogarithm
   else
-    Ok (method "ln" x).
+    Ok x.["ln"].
 
 Definition op_ (x : f64) (y : f64) : MathResult :=
   let ratio :=
-    match branch (div x y) with
-    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    match LangItem (div x y) with
+    | Break {| Break.0 := residual; |} => Return (LangItem residual)
     | Continue {| Continue.0 := val; |} => val
     end in
   let ln :=
-    match branch (ln ratio) with
-    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    match LangItem (ln ratio) with
+    | Break {| Break.0 := residual; |} => Return (LangItem residual)
     | Continue {| Continue.0 := val; |} => val
     end in
   sqrt ln.
@@ -177,9 +172,9 @@ Definition op (x : f64) (y : f64) : unit :=
       end
   | Ok (value) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ ""; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display value ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] value ]) ;;
     tt
   end.
 

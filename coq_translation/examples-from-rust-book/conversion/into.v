@@ -10,13 +10,9 @@ Module Number.
     value : i32;
   }.
   
-  Global Instance Get_value : NamedField.Class t "value" _ := {|
-    NamedField.get '(Build_t x0) := x0;
+  Global Instance Get_value : Notation.Dot "value" := {|
+    Notation.dot '(Build_t x0) := x0;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Number.
 Definition Number : Set := Number.t.
 
@@ -27,23 +23,20 @@ Module Impl__crate_fmt_Debug_for_Number.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.debug_struct_field1_finish
+    _crate.fmt.Formatter::["debug_struct_field1_finish"]
       f
       "Number"
       "value"
-      (NamedField.get (name := "value") self).
+      self.["value"].
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Number.AssociatedFunction "fmt" _ := {|
-    Number.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Number.
@@ -53,24 +46,22 @@ Module Impl_From_for_Number.
   
   Definition from (item : i32) : Self := {| Number.value := item; |}.
   
-  Global Instance AF_from : Number.AssociatedFunction "from" _ := {|
-    Number.associated_function := from;
-  |}.
-  Global Instance AFT_from : From.AssociatedFunction "from" _ := {|
-    From.associated_function := from;
+  Global Instance AssociatedFunction_from :
+    Notation.DoubleColon Self "from" := {|
+    Notation.double_colon := from;
   |}.
   
-  Global Instance I : From.Class i32 Self := {|
+  Global Instance I : From.Trait i32 Self := {|
     From.from := from;
   |}.
 End Impl_From_for_Number.
 
 Definition main (_ : unit) : unit :=
   let int := 5 in
-  let num := method "into" int in
+  let num := int.["into"] in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "My number is "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug num ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] num ]) ;;
   tt ;;
   tt.

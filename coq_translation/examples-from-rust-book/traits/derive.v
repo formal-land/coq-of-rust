@@ -15,7 +15,7 @@ Definition Centimeters := Centimeters.t.
 Module Impl__crate_marker_StructuralPartialEq_for_Centimeters.
   Definition Self := Centimeters.
   
-  Global Instance I : _crate.marker.StructuralPartialEq.Class Self :=
+  Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
 End Impl__crate_marker_StructuralPartialEq_for_Centimeters.
 
@@ -27,17 +27,14 @@ Module Impl__crate_cmp_PartialEq_for_Centimeters.
       (IndexedField.get (index := 0) self)
       (IndexedField.get (index := 0) other).
   
-  Global Instance M_eq : Method "eq" _ := {|
-    method := eq;
+  Global Instance Method_eq : Notation.Dot "eq" := {|
+    Notation.dot := eq;
   |}.
-  Global Instance AF_eq : Centimeters.AssociatedFunction "eq" _ := {|
-    Centimeters.associated_function := eq;
-  |}.
-  Global Instance AFT_eq : _crate.cmp.PartialEq.AssociatedFunction "eq" _ := {|
-    _crate.cmp.PartialEq.associated_function := eq;
+  Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {|
+    Notation.double_colon := eq;
   |}.
   
-  Global Instance I : _crate.cmp.PartialEq.Class Self := {|
+  Global Instance I : _crate.cmp.PartialEq.Trait Self := {|
     _crate.cmp.PartialEq.eq := eq;
   |}.
 End Impl__crate_cmp_PartialEq_for_Centimeters.
@@ -49,35 +46,19 @@ Module Impl__crate_cmp_PartialOrd_for_Centimeters.
       (self : ref Self)
       (other : ref Centimeters)
       : _crate.option.Option :=
-    (_crate.cmp.PartialOrd.associated_function "partial_cmp")
+    _crate.cmp.PartialOrd.partial_cmp
       (IndexedField.get (index := 0) self)
       (IndexedField.get (index := 0) other).
   
-  Global Instance M_partial_cmp : Method "partial_cmp" _ := {|
-    method := partial_cmp;
+  Global Instance Method_partial_cmp : Notation.Dot "partial_cmp" := {|
+    Notation.dot := partial_cmp;
   |}.
-  Global Instance
-    AF_partial_cmp
-    :
-    Centimeters.AssociatedFunction
-    "partial_cmp"
-    _
-    :=
-    {|
-    Centimeters.associated_function := partial_cmp;
-  |}.
-  Global Instance
-    AFT_partial_cmp
-    :
-    _crate.cmp.PartialOrd.AssociatedFunction
-    "partial_cmp"
-    _
-    :=
-    {|
-    _crate.cmp.PartialOrd.associated_function := partial_cmp;
+  Global Instance AssociatedFunction_partial_cmp :
+    Notation.DoubleColon Self "partial_cmp" := {|
+    Notation.double_colon := partial_cmp;
   |}.
   
-  Global Instance I : _crate.cmp.PartialOrd.Class Self := {|
+  Global Instance I : _crate.cmp.PartialOrd.Trait Self := {|
     _crate.cmp.PartialOrd.partial_cmp := partial_cmp;
   |}.
 End Impl__crate_cmp_PartialOrd_for_Centimeters.
@@ -98,22 +79,19 @@ Module Impl__crate_fmt_Debug_for_Inches.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.debug_tuple_field1_finish
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Inches"
       (IndexedField.get (index := 0) self).
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Inches.AssociatedFunction "fmt" _ := {|
-    Inches.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Inches.
@@ -125,18 +103,12 @@ Module ImplInches.
     let Inches (inches) := self in
     Centimeters.Build (mul (cast inches f64) 3 (* 2.54 *)).
   
-  Global Instance M_to_centimeters : Method "to_centimeters" _ := {|
-    method := to_centimeters;
+  Global Instance Method_to_centimeters : Notation.Dot "to_centimeters" := {|
+    Notation.dot := to_centimeters;
   |}.
-  Global Instance
-    AF_to_centimeters
-    :
-    Inches.AssociatedFunction
-    "to_centimeters"
-    _
-    :=
-    {|
-    Inches.associated_function := to_centimeters;
+  Global Instance AssociatedFunction_to_centimeters :
+    Notation.DoubleColon Self "to_centimeters" := {|
+    Notation.double_colon := to_centimeters;
   |}.
 End ImplInches.
 
@@ -153,19 +125,19 @@ Definition main (_ : unit) : unit :=
   let _one_second := Seconds.Build 1 in
   let foot := Inches.Build 12 in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "One foot equals "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug foot ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] foot ]) ;;
   tt ;;
   let meter := Centimeters.Build 100 (* 100.0 *) in
   let cmp :=
-    if (lt (method "to_centimeters" foot) meter : bool) then
+    if (lt foot.["to_centimeters"] meter : bool) then
       "smaller"
     else
       "bigger" in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "One foot is "; " than one meter.\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display cmp ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] cmp ]) ;;
   tt ;;
   tt.

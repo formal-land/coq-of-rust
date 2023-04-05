@@ -11,16 +11,12 @@ Module Point.
     y : f64;
   }.
   
-  Global Instance Get_x : NamedField.Class t "x" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_x : Notation.Dot "x" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_y : NamedField.Class t "y" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_y : Notation.Dot "y" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Point.
 Definition Point : Set := Point.t.
 
@@ -31,25 +27,22 @@ Module Impl__crate_fmt_Debug_for_Point.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.debug_struct_field2_finish
+    _crate.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Point"
       "x"
-      (NamedField.get (name := "x") self)
+      self.["x"]
       "y"
-      (NamedField.get (name := "y") self).
+      self.["y"].
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Point.AssociatedFunction "fmt" _ := {|
-    Point.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Point.
@@ -61,24 +54,15 @@ Module Impl__crate_clone_Clone_for_Point.
     let _ := tt in
     deref self.
   
-  Global Instance M_clone : Method "clone" _ := {|
-    method := clone;
+  Global Instance Method_clone : Notation.Dot "clone" := {|
+    Notation.dot := clone;
   |}.
-  Global Instance AF_clone : Point.AssociatedFunction "clone" _ := {|
-    Point.associated_function := clone;
-  |}.
-  Global Instance
-    AFT_clone
-    :
-    _crate.clone.Clone.AssociatedFunction
-    "clone"
-    _
-    :=
-    {|
-    _crate.clone.Clone.associated_function := clone;
+  Global Instance AssociatedFunction_clone :
+    Notation.DoubleColon Self "clone" := {|
+    Notation.double_colon := clone;
   |}.
   
-  Global Instance I : _crate.clone.Clone.Class Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {|
     _crate.clone.Clone.clone := clone;
   |}.
 End Impl__crate_clone_Clone_for_Point.
@@ -86,7 +70,7 @@ End Impl__crate_clone_Clone_for_Point.
 Module Impl__crate_marker_Copy_for_Point.
   Definition Self := Point.
   
-  Global Instance I : _crate.marker.Copy.Class Self :=
+  Global Instance I : _crate.marker.Copy.Trait Self :=
     _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Point.
 
@@ -96,16 +80,12 @@ Module Rectangle.
     bottom_right : Point;
   }.
   
-  Global Instance Get_top_left : NamedField.Class t "top_left" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_top_left : Notation.Dot "top_left" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_bottom_right : NamedField.Class t "bottom_right" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
@@ -113,7 +93,7 @@ Definition origin (_ : unit) : Point :=
   {| Point.x := 0 (* 0.0 *); Point.y := 0 (* 0.0 *); |}.
 
 Definition boxed_origin (_ : unit) : Box :=
-  ImplBox.new {| Point.x := 0 (* 0.0 *); Point.y := 0 (* 0.0 *); |}.
+  Box::["new"] {| Point.x := 0 (* 0.0 *); Point.y := 0 (* 0.0 *); |}.
 
 Definition main (_ : unit) : unit :=
   let point := origin tt in
@@ -124,47 +104,47 @@ Definition main (_ : unit) : unit :=
         {| Point.x := 3 (* 3.0 *); Point.y := neg 4 (* 4.0 *); |};
     |} in
   let boxed_rectangle :=
-    ImplBox.new
+    Box::["new"]
       {|
         Rectangle.top_left := origin tt;
         Rectangle.bottom_right :=
           {| Point.x := 3 (* 3.0 *); Point.y := neg 4 (* 4.0 *); |};
       |} in
-  let boxed_point := ImplBox.new (origin tt) in
-  let box_in_a_box := ImplBox.new (boxed_origin tt) in
+  let boxed_point := Box::["new"] (origin tt) in
+  let box_in_a_box := Box::["new"] (boxed_origin tt) in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Point occupies "; " bytes on the stack\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (mem.size_of_val point) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val point) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Rectangle occupies "; " bytes on the stack\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (mem.size_of_val rectangle) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val rectangle) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Boxed point occupies "; " bytes on the stack\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (mem.size_of_val boxed_point)
+      [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val boxed_point)
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Boxed rectangle occupies "; " bytes on the stack\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (mem.size_of_val boxed_rectangle)
+      [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val boxed_rectangle)
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Boxed box occupies "; " bytes on the stack\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (mem.size_of_val box_in_a_box)
+      [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val box_in_a_box)
       ]) ;;
   tt ;;
   let unboxed_point := deref boxed_point in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "Unboxed point occupies "; " bytes on the stack\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (mem.size_of_val unboxed_point)
+      [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val unboxed_point)
       ]) ;;
   tt ;;
   tt.

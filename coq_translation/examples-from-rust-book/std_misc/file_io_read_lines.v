@@ -14,22 +14,22 @@ Module BufReader := std.io.BufReader.
 Definition BufReader := BufReader.t.
 
 Definition read_lines (filename : String) : io.Lines :=
-  let file := method "unwrap" (ImplFile.open filename) in
-  Return (method "lines" (io.ImplBufReader.new file)) ;;
+  let file := (File::["open"] filename).["unwrap"] in
+  Return (io.BufReader::["new"] file).["lines"] ;;
   tt.
 
 Definition main (_ : unit) : unit :=
-  let lines := read_lines (method "to_string" "./hosts") in
-  match into_iter lines with
+  let lines := read_lines "./hosts".["to_string"] in
+  match LangItem lines with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := line; |} =>
         _crate.io._print
-          (_crate.fmt.ImplArguments.new_v1
+          (_crate.fmt.Arguments::["new_v1"]
             [ ""; "\n" ]
-            [ _crate.fmt.ImplArgumentV1.new_display (method "unwrap" line) ]) ;;
+            [ _crate.fmt.ArgumentV1::["new_display"] line.["unwrap"] ]) ;;
         tt ;;
         tt
       end ;;

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition apply {F : Set} `{Fn.Class () F} (f : F) : unit :=
+Definition apply {F : Set} `{Fn.Trait () F} (f : F) : unit :=
   f tt ;;
   tt.
 
@@ -12,9 +12,9 @@ Definition main (_ : unit) : unit :=
   let print :=
     fun  =>
       _crate.io._print
-        (_crate.fmt.ImplArguments.new_v1
+        (_crate.fmt.Arguments::["new_v1"]
           [ ""; "\n" ]
-          [ _crate.fmt.ImplArgumentV1.new_display x ]) ;;
+          [ _crate.fmt.ArgumentV1::["new_display"] x ]) ;;
       tt in
   apply print ;;
   tt.

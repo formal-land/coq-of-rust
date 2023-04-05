@@ -9,16 +9,12 @@ Module Person.
     age : u8;
   }.
   
-  Global Instance Get_name : NamedField.Class t "name" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_name : Notation.Dot "name" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_age : NamedField.Class t "age" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_age : Notation.Dot "age" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Person.
 Definition Person : Set := Person.t.
 
@@ -29,25 +25,22 @@ Module Impl__crate_fmt_Debug_for_Person.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.debug_struct_field2_finish
+    _crate.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Person"
       "name"
-      (NamedField.get (name := "name") self)
+      self.["name"]
       "age"
-      (NamedField.get (name := "age") self).
+      self.["age"].
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Person.AssociatedFunction "fmt" _ := {|
-    Person.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Person.
@@ -72,16 +65,12 @@ Module Point.
     y : f32;
   }.
   
-  Global Instance Get_x : NamedField.Class t "x" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_x : Notation.Dot "x" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_y : NamedField.Class t "y" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_y : Notation.Dot "y" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Point.
 Definition Point : Set := Point.t.
 
@@ -91,48 +80,40 @@ Module Rectangle.
     bottom_right : Point;
   }.
   
-  Global Instance Get_top_left : NamedField.Class t "top_left" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_top_left : Notation.Dot "top_left" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_bottom_right : NamedField.Class t "bottom_right" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
 Definition main (_ : unit) : unit :=
-  let name := ImplString.from "Peter" in
+  let name := String::["from"] "Peter" in
   let age := 27 in
   let peter := {| Person.name := name; Person.age := age; |} in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ ""; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug peter ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] peter ]) ;;
   tt ;;
   let point := {| Point.x := 10 (* 10.3 *); Point.y := 0 (* 0.4 *); |} in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "point coordinates: ("; ", "; ")\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display
-          (NamedField.get (name := "x") point);
-        _crate.fmt.ImplArgumentV1.new_display
-          (NamedField.get (name := "y") point)
+        _crate.fmt.ArgumentV1::["new_display"] point.["x"];
+        _crate.fmt.ArgumentV1::["new_display"] point.["y"]
       ]) ;;
   tt ;;
   let bottom_right := {| Point.x := 5 (* 5.2 *); |} with point in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "second point: ("; ", "; ")\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_display
-          (NamedField.get (name := "x") bottom_right);
-        _crate.fmt.ImplArgumentV1.new_display
-          (NamedField.get (name := "y") bottom_right)
+        _crate.fmt.ArgumentV1::["new_display"] bottom_right.["x"];
+        _crate.fmt.ArgumentV1::["new_display"] bottom_right.["y"]
       ]) ;;
   tt ;;
   let Point {| Point.x := left_edge; Point.y := top_edge; |} := point in
@@ -144,21 +125,22 @@ Definition main (_ : unit) : unit :=
   let _unit := Unit in
   let pair := Pair.Build 1 0 (* 0.1 *) in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "pair contains "; " and "; "\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_debug
+        _crate.fmt.ArgumentV1::["new_debug"]
           (IndexedField.get (index := 0) pair);
-        _crate.fmt.ImplArgumentV1.new_debug (IndexedField.get (index := 1) pair)
+        _crate.fmt.ArgumentV1::["new_debug"]
+          (IndexedField.get (index := 1) pair)
       ]) ;;
   tt ;;
   let Pair (integer, decimal) := pair in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "pair contains "; " and "; "\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_debug integer;
-        _crate.fmt.ImplArgumentV1.new_debug decimal
+        _crate.fmt.ArgumentV1::["new_debug"] integer;
+        _crate.fmt.ArgumentV1::["new_debug"] decimal
       ]) ;;
   tt ;;
   tt.

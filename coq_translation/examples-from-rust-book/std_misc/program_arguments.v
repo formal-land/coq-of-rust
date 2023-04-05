@@ -6,18 +6,18 @@ Import Root.std.prelude.rust_2015.
 Module env := std.env.
 
 Definition main (_ : unit) : unit :=
-  let args := method "collect" (env.args tt) in
+  let args := (env.args tt).["collect"] in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "My path is "; ".\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display args[0] ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] args[0] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "I got "; " arguments: "; ".\n" ]
       [
-        _crate.fmt.ImplArgumentV1.new_debug (sub (method "len" args) 1);
-        _crate.fmt.ImplArgumentV1.new_debug args[{| RangeFrom.start := 1; |}]
+        _crate.fmt.ArgumentV1::["new_debug"] (sub args.["len"] 1);
+        _crate.fmt.ArgumentV1::["new_debug"] args[{| RangeFrom.start := 1; |}]
       ]) ;;
   tt ;;
   tt.

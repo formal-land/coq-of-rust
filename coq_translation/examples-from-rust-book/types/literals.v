@@ -10,28 +10,28 @@ Definition main (_ : unit) : unit :=
   let i := 1 in
   let f := 1 (* 1.0 *) in
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "size of `x` in bytes: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (std.mem.size_of_val x) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (std.mem.size_of_val x) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "size of `y` in bytes: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (std.mem.size_of_val y) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (std.mem.size_of_val y) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "size of `z` in bytes: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (std.mem.size_of_val z) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (std.mem.size_of_val z) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "size of `i` in bytes: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (std.mem.size_of_val i) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (std.mem.size_of_val i) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ "size of `f` in bytes: "; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_display (std.mem.size_of_val f) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (std.mem.size_of_val f) ]) ;;
   tt ;;
   tt.

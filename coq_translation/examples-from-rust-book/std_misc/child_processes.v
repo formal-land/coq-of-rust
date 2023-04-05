@@ -8,29 +8,26 @@ Definition Command := Command.t.
 
 Definition main (_ : unit) : unit :=
   let output :=
-    method
-      "unwrap_or_else"
-      (method "output" (method "arg" (ImplCommand.new "rustc") "--version"))
+    ((Command::["new"] "rustc").["arg"]
+          "--version").["output"].["unwrap_or_else"]
       (fun e =>
         _crate.rt.panic_fmt
-          (_crate.fmt.ImplArguments.new_v1
+          (_crate.fmt.Arguments::["new_v1"]
             [ "failed to execute process: " ]
-            [ _crate.fmt.ImplArgumentV1.new_display e ])) in
-  if (method "success" (NamedField.get (name := "status") output) : bool) then
-    let s :=
-      ImplString.from_utf8_lossy (NamedField.get (name := "stdout") output) in
+            [ _crate.fmt.ArgumentV1::["new_display"] e ])) in
+  if (output.["status"].["success"] : bool) then
+    let s := String::["from_utf8_lossy"] output.["stdout"] in
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "rustc succeeded and stdout was:\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display s ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] s ]) ;;
     tt ;;
     tt
   else
-    let s :=
-      ImplString.from_utf8_lossy (NamedField.get (name := "stderr") output) in
+    let s := String::["from_utf8_lossy"] output.["stderr"] in
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "rustc failed and stderr was:\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display s ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] s ]) ;;
     tt ;;
     tt.

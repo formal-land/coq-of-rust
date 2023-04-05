@@ -19,22 +19,19 @@ Module Impl__crate_fmt_Debug_for_Food.
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
     match self with
-    | Food.Apple => _crate.fmt.ImplFormatter.write_str f "Apple"
-    | Food.Carrot => _crate.fmt.ImplFormatter.write_str f "Carrot"
-    | Food.Potato => _crate.fmt.ImplFormatter.write_str f "Potato"
+    | Food.Apple => _crate.fmt.Formatter::["write_str"] f "Apple"
+    | Food.Carrot => _crate.fmt.Formatter::["write_str"] f "Carrot"
+    | Food.Potato => _crate.fmt.Formatter::["write_str"] f "Potato"
     end.
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Food.AssociatedFunction "fmt" _ := {|
-    Food.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Food.
@@ -55,22 +52,19 @@ Module Impl__crate_fmt_Debug_for_Peeled.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.debug_tuple_field1_finish
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Peeled"
       (IndexedField.get (index := 0) self).
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Peeled.AssociatedFunction "fmt" _ := {|
-    Peeled.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Peeled.
@@ -91,22 +85,19 @@ Module Impl__crate_fmt_Debug_for_Chopped.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.debug_tuple_field1_finish
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Chopped"
       (IndexedField.get (index := 0) self).
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Chopped.AssociatedFunction "fmt" _ := {|
-    Chopped.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Chopped.
@@ -127,22 +118,19 @@ Module Impl__crate_fmt_Debug_for_Cooked.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.debug_tuple_field1_finish
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Cooked"
       (IndexedField.get (index := 0) self).
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Cooked.AssociatedFunction "fmt" _ := {|
-    Cooked.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Cooked.
@@ -160,28 +148,26 @@ Definition chop (peeled : Option) : Option :=
   end.
 
 Definition cook (chopped : Option) : Option :=
-  method "map" chopped (fun Chopped (food) => Cooked.Build food).
+  chopped.["map"] (fun Chopped (food) => Cooked.Build food).
 
 Definition process (food : Option) : Option :=
-  method
-    "map"
-    (method
-      "map"
-      (method "map" food (fun f => Peeled.Build f))
-      (fun Peeled (f) => Chopped.Build f))
+  ((food.["map"] (fun f => Peeled.Build f)).["map"]
+      (fun Peeled (f) => Chopped.Build f)).["map"]
     (fun Chopped (f) => Cooked.Build f).
 
 Definition eat (food : Option) : unit :=
   match food with
   | Some (food) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Mmm. I love "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_debug food ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_debug"] food ]) ;;
     tt
   | None =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1 [ "Oh no! It wasn't edible.\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"]
+        [ "Oh no! It wasn't edible.\n" ]
+        [  ]) ;;
     tt
   end.
 

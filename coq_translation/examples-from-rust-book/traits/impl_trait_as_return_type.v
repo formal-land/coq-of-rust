@@ -9,18 +9,18 @@ Module IntoIter := std.vec.IntoIter.
 Definition IntoIter := IntoIter.t.
 
 Definition combine_vecs_explicit_return_type (v : Vec) (u : Vec) : iter.Cycle :=
-  method "cycle" (method "chain" (method "into_iter" v) (method "into_iter" u)).
+  (v.["into_iter"].["chain"] u.["into_iter"]).["cycle"].
 
 Definition combine_vecs (v : Vec) (u : Vec) : OpaqueDef :=
-  method "cycle" (method "chain" (method "into_iter" v) (method "into_iter" u)).
+  (v.["into_iter"].["chain"] u.["into_iter"]).["cycle"].
 
 Error OpaqueTy.
 
 Definition main (_ : unit) : unit :=
-  let v1 := ComplexTypePath.into_vec [ 1; 2; 3 ] in
-  let v2 := ComplexTypePath.into_vec [ 4; 5 ] in
+  let v1 := Slice::["into_vec"] [ 1; 2; 3 ] in
+  let v2 := Slice::["into_vec"] [ 4; 5 ] in
   let v3 := combine_vecs v1 v2 in
-  match (Some 1, method "next" v3) with
+  match (Some 1, v3.["next"]) with
   | (left_val, right_val) =>
     if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
@@ -33,7 +33,7 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  match (Some 2, method "next" v3) with
+  match (Some 2, v3.["next"]) with
   | (left_val, right_val) =>
     if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
@@ -46,7 +46,7 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  match (Some 3, method "next" v3) with
+  match (Some 3, v3.["next"]) with
   | (left_val, right_val) =>
     if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
@@ -59,7 +59,7 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  match (Some 4, method "next" v3) with
+  match (Some 4, v3.["next"]) with
   | (left_val, right_val) =>
     if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
@@ -72,7 +72,7 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  match (Some 5, method "next" v3) with
+  match (Some 5, v3.["next"]) with
   | (left_val, right_val) =>
     if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
@@ -85,6 +85,6 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  _crate.io._print (_crate.fmt.ImplArguments.new_v1 [ "all done\n" ] [  ]) ;;
+  _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "all done\n" ] [  ]) ;;
   tt ;;
   tt.

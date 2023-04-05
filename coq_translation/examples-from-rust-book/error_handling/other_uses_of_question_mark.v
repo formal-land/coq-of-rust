@@ -18,19 +18,16 @@ Module Impl__crate_fmt_Debug_for_EmptyVec.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.write_str f "EmptyVec".
+    _crate.fmt.Formatter::["write_str"] f "EmptyVec".
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : EmptyVec.AssociatedFunction "fmt" _ := {|
-    EmptyVec.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_EmptyVec.
@@ -39,22 +36,19 @@ Module Impl_fmt_Display_for_EmptyVec.
   Definition Self := EmptyVec.
   
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
-    method
-      "write_fmt"
-      f
-      (_crate.fmt.ImplArguments.new_v1 [ "invalid first item to double" ] [  ]).
+    f.["write_fmt"]
+      (_crate.fmt.Arguments::["new_v1"]
+        [ "invalid first item to double" ]
+        [  ]).
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : EmptyVec.AssociatedFunction "fmt" _ := {|
-    EmptyVec.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : fmt.Display.AssociatedFunction "fmt" _ := {|
-    fmt.Display.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : fmt.Display.Class Self := {|
+  Global Instance I : fmt.Display.Trait Self := {|
     fmt.Display.fmt := fmt;
   |}.
 End Impl_fmt_Display_for_EmptyVec.
@@ -62,18 +56,18 @@ End Impl_fmt_Display_for_EmptyVec.
 Module Impl_error_Error_for_EmptyVec.
   Definition Self := EmptyVec.
   
-  Global Instance I : error.Error.Class Self := error.Error.Build_Class _.
+  Global Instance I : error.Error.Trait Self := error.Error.Build_Class _.
 End Impl_error_Error_for_EmptyVec.
 
 Definition double_first (vec : Vec) : Result :=
   let first :=
-    match branch (method "ok_or" (method "first" vec) EmptyVec) with
-    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    match LangItem (vec.["first"].["ok_or"] EmptyVec) with
+    | Break {| Break.0 := residual; |} => Return (LangItem residual)
     | Continue {| Continue.0 := val; |} => val
     end in
   let parsed :=
-    match branch (method "parse" first) with
-    | Break {| Break.0 := residual; |} => Return (from_residual residual)
+    match LangItem first.["parse"] with
+    | Break {| Break.0 := residual; |} => Return (LangItem residual)
     | Continue {| Continue.0 := val; |} => val
     end in
   Ok (mul 2 parsed).
@@ -82,22 +76,22 @@ Definition print (result : Result) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "The first doubled is "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display n ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
     tt
   | Err (e) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "Error: "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display e ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] e ]) ;;
     tt
   end.
 
 Definition main (_ : unit) : unit :=
-  let numbers := ComplexTypePath.into_vec [ "42"; "93"; "18" ] in
-  let empty := _crate.vec.ImplVec.new tt in
-  let strings := ComplexTypePath.into_vec [ "tofu"; "93"; "18" ] in
+  let numbers := Slice::["into_vec"] [ "42"; "93"; "18" ] in
+  let empty := _crate.vec.Vec::["new"] tt in
+  let strings := Slice::["into_vec"] [ "tofu"; "93"; "18" ] in
   print (double_first numbers) ;;
   print (double_first empty) ;;
   print (double_first strings) ;;

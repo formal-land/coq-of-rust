@@ -17,55 +17,52 @@ Definition NTHREADS (_ : unit) := 3.
 
 Definition main (_ : unit) : unit :=
   let (tx, rx) := mpsc.channel tt in
-  let children := ImplVec.new tt in
-  match into_iter {| Range.start := 0; Range.end := NTHREADS; |} with
+  let children := Vec::["new"] tt in
+  match LangItem {| Range.start := 0; Range.end := NTHREADS; |} with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := id; |} =>
-        let thread_tx := method "clone" tx in
+        let thread_tx := tx.["clone"] in
         let child :=
           thread.spawn
             (fun  =>
-              method "unwrap" (method "send" thread_tx id) ;;
+              (thread_tx.["send"] id).["unwrap"] ;;
               _crate.io._print
-                (_crate.fmt.ImplArguments.new_v1
+                (_crate.fmt.Arguments::["new_v1"]
                   [ "thread "; " finished\n" ]
-                  [ _crate.fmt.ImplArgumentV1.new_display id ]) ;;
+                  [ _crate.fmt.ArgumentV1::["new_display"] id ]) ;;
               tt ;;
               tt) in
-        method "push" children child ;;
+        children.["push"] child ;;
         tt
       end ;;
       tt
       from
       for
   end ;;
-  let ids := ImplVec.with_capacity (cast NTHREADS usize) in
-  match into_iter {| Range.start := 0; Range.end := NTHREADS; |} with
+  let ids := Vec::["with_capacity"] (cast NTHREADS usize) in
+  match LangItem {| Range.start := 0; Range.end := NTHREADS; |} with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := _; |} =>
-        method "push" ids (method "recv" rx) ;;
+        ids.["push"] rx.["recv"] ;;
         tt
       end ;;
       tt
       from
       for
   end ;;
-  match into_iter children with
+  match LangItem children with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := child; |} =>
-        method
-          "expect"
-          (method "join" child)
-          "oops! the child thread panicked" ;;
+        child.["join"].["expect"] "oops! the child thread panicked" ;;
         tt
       end ;;
       tt
@@ -73,8 +70,8 @@ Definition main (_ : unit) : unit :=
       for
   end ;;
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1
+    (_crate.fmt.Arguments::["new_v1"]
       [ ""; "\n" ]
-      [ _crate.fmt.ImplArgumentV1.new_debug ids ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] ids ]) ;;
   tt ;;
   tt.

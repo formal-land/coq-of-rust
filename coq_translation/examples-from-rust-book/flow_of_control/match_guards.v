@@ -15,26 +15,26 @@ Definition main (_ : unit) : unit :=
   match temperature with
   | Temperature.Celsius (t) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ ""; "C is above 30 Celsius\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display t ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
     tt
   | Temperature.Celsius (t) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ ""; "C is below 30 Celsius\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display t ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
     tt
   | Temperature.Fahrenheit (t) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ ""; "F is above 86 Fahrenheit\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display t ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
     tt
   | Temperature.Fahrenheit (t) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ ""; "F is below 86 Fahrenheit\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display t ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
     tt
   end.

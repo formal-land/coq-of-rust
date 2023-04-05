@@ -6,11 +6,11 @@ Import Root.std.prelude.rust_2015.
 Module slice := std.slice.
 
 Definition main (_ : unit) : unit :=
-  let some_vector := ComplexTypePath.into_vec [ 1; 2; 3; 4 ] in
-  let pointer := method "as_ptr" some_vector in
-  let length := method "len" some_vector in
+  let some_vector := Slice::["into_vec"] [ 1; 2; 3; 4 ] in
+  let pointer := some_vector.["as_ptr"] in
+  let length := some_vector.["len"] in
   let my_slice := slice.from_raw_parts pointer length in
-  match (method "as_slice" some_vector, my_slice) with
+  match (some_vector.["as_slice"], my_slice) with
   | (left_val, right_val) =>
     if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in

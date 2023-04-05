@@ -12,20 +12,20 @@ Module Duration := std.time.Duration.
 Definition Duration := Duration.t.
 
 Definition main (_ : unit) : unit :=
-  let apple := ImplArc.new "the same apple" in
-  match into_iter {| Range.start := 0; Range.end := 10; |} with
+  let apple := Arc::["new"] "the same apple" in
+  match LangItem {| Range.start := 0; Range.end := 10; |} with
   | iter =>
     loop
-      match next iter with
+      match LangItem iter with
       | None => Break
       | Some {| Some.0 := _; |} =>
-        let apple := ImplArc.clone apple in
+        let apple := Arc::["clone"] apple in
         thread.spawn
           (fun  =>
             _crate.io._print
-              (_crate.fmt.ImplArguments.new_v1
+              (_crate.fmt.Arguments::["new_v1"]
                 [ ""; "\n" ]
-                [ _crate.fmt.ImplArgumentV1.new_debug apple ]) ;;
+                [ _crate.fmt.ArgumentV1::["new_debug"] apple ]) ;;
             tt ;;
             tt) ;;
         tt
@@ -34,5 +34,5 @@ Definition main (_ : unit) : unit :=
       from
       for
   end ;;
-  thread.sleep (ImplDuration.from_secs 1) ;;
+  thread.sleep (Duration::["from_secs"] 1) ;;
   tt.

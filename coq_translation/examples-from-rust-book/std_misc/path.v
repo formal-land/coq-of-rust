@@ -7,18 +7,18 @@ Module Path := std.path.Path.
 Definition Path := Path.t.
 
 Definition main (_ : unit) : unit :=
-  let path := ImplPath.new "." in
-  let _display := method "display" path in
-  let new_path := method "join" (method "join" path "a") "b" in
-  method "push" new_path "c" ;;
-  method "push" new_path "myfile.tar.gz" ;;
-  method "set_file_name" new_path "package.tgz" ;;
-  match method "to_str" new_path with
+  let path := Path::["new"] "." in
+  let _display := path.["display"] in
+  let new_path := (path.["join"] "a").["join"] "b" in
+  new_path.["push"] "c" ;;
+  new_path.["push"] "myfile.tar.gz" ;;
+  new_path.["set_file_name"] "package.tgz" ;;
+  match new_path.["to_str"] with
   | None => _crate.rt.begin_panic "new path is not a valid UTF-8 sequence"
   | Some (s) =>
     _crate.io._print
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [ "new path is "; "\n" ]
-        [ _crate.fmt.ImplArgumentV1.new_display s ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] s ]) ;;
     tt
   end.

@@ -23,22 +23,19 @@ Module Impl__crate_fmt_Debug_for_EvenNumber.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.debug_tuple_field1_finish
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "EvenNumber"
       (IndexedField.get (index := 0) self).
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : EvenNumber.AssociatedFunction "fmt" _ := {|
-    EvenNumber.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_EvenNumber.
@@ -46,7 +43,7 @@ End Impl__crate_fmt_Debug_for_EvenNumber.
 Module Impl__crate_marker_StructuralPartialEq_for_EvenNumber.
   Definition Self := EvenNumber.
   
-  Global Instance I : _crate.marker.StructuralPartialEq.Class Self :=
+  Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
 End Impl__crate_marker_StructuralPartialEq_for_EvenNumber.
 
@@ -58,17 +55,14 @@ Module Impl__crate_cmp_PartialEq_for_EvenNumber.
       (IndexedField.get (index := 0) self)
       (IndexedField.get (index := 0) other).
   
-  Global Instance M_eq : Method "eq" _ := {|
-    method := eq;
+  Global Instance Method_eq : Notation.Dot "eq" := {|
+    Notation.dot := eq;
   |}.
-  Global Instance AF_eq : EvenNumber.AssociatedFunction "eq" _ := {|
-    EvenNumber.associated_function := eq;
-  |}.
-  Global Instance AFT_eq : _crate.cmp.PartialEq.AssociatedFunction "eq" _ := {|
-    _crate.cmp.PartialEq.associated_function := eq;
+  Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {|
+    Notation.double_colon := eq;
   |}.
   
-  Global Instance I : _crate.cmp.PartialEq.Class Self := {|
+  Global Instance I : _crate.cmp.PartialEq.Trait Self := {|
     _crate.cmp.PartialEq.eq := eq;
   |}.
 End Impl__crate_cmp_PartialEq_for_EvenNumber.
@@ -84,21 +78,19 @@ Module Impl_TryFrom_for_EvenNumber.
     else
       Err ().
   
-  Global Instance AF_try_from : EvenNumber.AssociatedFunction "try_from" _ := {|
-    EvenNumber.associated_function := try_from;
-  |}.
-  Global Instance AFT_try_from : TryFrom.AssociatedFunction "try_from" _ := {|
-    TryFrom.associated_function := try_from;
+  Global Instance AssociatedFunction_try_from :
+    Notation.DoubleColon Self "try_from" := {|
+    Notation.double_colon := try_from;
   |}.
   
-  Global Instance I : TryFrom.Class i32 Self := {|
+  Global Instance I : TryFrom.Trait i32 Self := {|
     TryFrom.Error := Error;
     TryFrom.try_from := try_from;
   |}.
 End Impl_TryFrom_for_EvenNumber.
 
 Definition main (_ : unit) : unit :=
-  match (ImplEvenNumber.try_from 8, Ok (EvenNumber.Build 8)) with
+  match (EvenNumber::["try_from"] 8, Ok (EvenNumber.Build 8)) with
   | (left_val, right_val) =>
     if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
@@ -111,7 +103,7 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  match (ImplEvenNumber.try_from 5, Err ()) with
+  match (EvenNumber::["try_from"] 5, Err ()) with
   | (left_val, right_val) =>
     if (not (eqb (deref left_val) (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
@@ -124,7 +116,7 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  let result := method "try_into" 8 in
+  let result := 8.["try_into"] in
   match (result, Ok (EvenNumber.Build 8)) with
   | (left_val, right_val) =>
     if (not (eqb (deref left_val) (deref right_val)) : bool) then
@@ -138,7 +130,7 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  let result := method "try_into" 5 in
+  let result := 5.["try_into"] in
   match (result, Err ()) with
   | (left_val, right_val) =>
     if (not (eqb (deref left_val) (deref right_val)) : bool) then

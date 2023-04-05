@@ -11,16 +11,12 @@ Module Person.
     age : Box;
   }.
   
-  Global Instance Get_name : NamedField.Class t "name" _ := {|
-    NamedField.get '(Build_t x0 _) := x0;
+  Global Instance Get_name : Notation.Dot "name" := {|
+    Notation.dot '(Build_t x0 _) := x0;
   |}.
-  Global Instance Get_age : NamedField.Class t "age" _ := {|
-    NamedField.get '(Build_t _ x1) := x1;
+  Global Instance Get_age : Notation.Dot "age" := {|
+    Notation.dot '(Build_t _ x1) := x1;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Person.
 Definition Person : Set := Person.t.
 
@@ -31,25 +27,22 @@ Module Impl__crate_fmt_Debug_for_Person.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.ImplFormatter.debug_struct_field2_finish
+    _crate.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Person"
       "name"
-      (NamedField.get (name := "name") self)
+      self.["name"]
       "age"
-      (NamedField.get (name := "age") self).
+      self.["age"].
   
-  Global Instance M_fmt : Method "fmt" _ := {|
-    method := fmt;
+  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Notation.dot := fmt;
   |}.
-  Global Instance AF_fmt : Person.AssociatedFunction "fmt" _ := {|
-    Person.associated_function := fmt;
-  |}.
-  Global Instance AFT_fmt : _crate.fmt.Debug.AssociatedFunction "fmt" _ := {|
-    _crate.fmt.Debug.associated_function := fmt;
+  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
+    Notation.double_colon := fmt;
   |}.
   
-  Global Instance I : _crate.fmt.Debug.Class Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
   |}.
 End Impl__crate_fmt_Debug_for_Person.

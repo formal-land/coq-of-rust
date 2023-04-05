@@ -5,6 +5,6 @@ Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.ImplArguments.new_v1 [ "Hello World!\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "Hello World!\n" ] [  ]) ;;
   tt ;;
   tt.

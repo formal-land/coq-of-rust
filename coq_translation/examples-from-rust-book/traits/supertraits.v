@@ -4,12 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module Person.
-  Class Class (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
     name : (ref Self) -> String;
   }.
   
-  Global Instance Method_name `(Class) : Method "name" _ := {|
-    method := name;
+  Global Instance Method_name `(Trait) : Notation.Dot "name" := {|
+    Notation.dot := name;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
@@ -18,12 +18,12 @@ Module Person.
 End Person.
 
 Module Student.
-  Class Class (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
     university : (ref Self) -> String;
   }.
   
-  Global Instance Method_university `(Class) : Method "university" _ := {|
-    method := university;
+  Global Instance Method_university `(Trait) : Notation.Dot "university" := {|
+    Notation.dot := university;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
@@ -32,12 +32,13 @@ Module Student.
 End Student.
 
 Module Programmer.
-  Class Class (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
     fav_language : (ref Self) -> String;
   }.
   
-  Global Instance Method_fav_language `(Class) : Method "fav_language" _ := {|
-    method := fav_language;
+  Global Instance Method_fav_language `(Trait)
+    : Notation.Dot "fav_language" := {|
+    Notation.dot := fav_language;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
@@ -46,12 +47,13 @@ Module Programmer.
 End Programmer.
 
 Module CompSciStudent.
-  Class Class (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {
     git_username : (ref Self) -> String;
   }.
   
-  Global Instance Method_git_username `(Class) : Method "git_username" _ := {|
-    method := git_username;
+  Global Instance Method_git_username `(Trait)
+    : Notation.Dot "git_username" := {|
+    Notation.dot := git_username;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
@@ -62,7 +64,7 @@ End CompSciStudent.
 Definition comp_sci_student_greeting (student : ref TraitObject) : String :=
   let res :=
     _crate.fmt.format
-      (_crate.fmt.ImplArguments.new_v1
+      (_crate.fmt.Arguments::["new_v1"]
         [
           "My name is ";
           " and I attend ";
@@ -70,10 +72,10 @@ Definition comp_sci_student_greeting (student : ref TraitObject) : String :=
           ". My Git username is "
         ]
         [
-          _crate.fmt.ImplArgumentV1.new_display (method "name" student);
-          _crate.fmt.ImplArgumentV1.new_display (method "university" student);
-          _crate.fmt.ImplArgumentV1.new_display (method "fav_language" student);
-          _crate.fmt.ImplArgumentV1.new_display (method "git_username" student)
+          _crate.fmt.ArgumentV1::["new_display"] student.["name"];
+          _crate.fmt.ArgumentV1::["new_display"] student.["university"];
+          _crate.fmt.ArgumentV1::["new_display"] student.["fav_language"];
+          _crate.fmt.ArgumentV1::["new_display"] student.["git_username"]
         ]) in
   res.
 

@@ -37,43 +37,39 @@ Global Open Scope Z_scope.
 
 Export List.ListNotations.
 
-(** A generic class to represent methods by name. *)
-Class Method (name : string) (T : Set) : Set := {
-  method : T;
-}.
-Arguments method name {T Method}.
+Module Notation.
+  (** A class to represent the notation [e1.e2]. This is mainly used to call
+      methods, or access to named or indexed fields of structures.
+      The kind is either a string or an integer. *)
+  Class Dot {Kind : Set} (name : Kind) {T : Set} : Set := {
+    dot : T;
+  }.
+  Arguments dot {Kind} name {T Dot}.
 
-Module ExperimentsAroundMethods.
-  Module Ty.
-    Parameter t : Set.
+  (** A class to represent associated functions (the notation [e1::e2]). The
+      kind might be [Set] functions associated to a type, or [Set -> Set] for
+      functions associated to a trait. *)
+  Class DoubleColon {Kind : Type} (type : Kind) (name : string) {T : Set} :
+    Set := {
+    double_colon : T;
+  }.
+  Arguments double_colon {Kind} type name {T DoubleColon}.
+End Notation.
 
-    (** A class to the represent the associated functions of a given type. *)
-    Class AssociatedFunction (name : string) (T : Set) : Set := {
-      associated_function : T;
-    }.
-    Arguments associated_function name {T AssociatedFunction}.
-  End Ty.
+(** Note that we revert the arguments in this notation. *)
+Notation "e1 .[ e2 ]" := (Notation.dot e2 e1)
+  (at level 0).
 
-  Parameter foo : Ty.t -> bool.
-  Parameter arg : Ty.t -> string.
+Notation "e1 ::[ e2 ]" := (Notation.double_colon e1 e2)
+  (at level 0).
 
-  Global Instance Ty_foo : Ty.AssociatedFunction "foo" (Ty.t -> bool) := {|
-    Ty.associated_function := foo;
-  |}.
-
-  Global Instance Ty_arg : Ty.AssociatedFunction "arg" (Ty.t -> string) := {|
-    Ty.associated_function := arg;
-  |}.
-
-  Definition gre : Ty.t -> string := Ty.associated_function "arg".
-
-  Global Instance explain : Method "explain" (Ty.t -> string) := {|
-    method self := "hello";
-  |}.
-
-  Definition gre2 (ty : Ty.t) : string :=
-    method "explain" ty ++ " world".
-End ExperimentsAroundMethods.
+(** A method is also an associated function for its type. *)
+Global Instance AssociatedFunctionFromMethod
+  (type : Set) (name : string) (T : Set)
+  `(Notation.Dot (Kind := string) name (T := type -> T)) :
+  Notation.DoubleColon type name (T := type -> T) := {|
+  Notation.double_colon := Notation.dot name;
+|}.
 
 Parameter axiom : forall {A : Set}, A.
 
@@ -103,8 +99,8 @@ Definition f32 : Set := Z.
 Definition f64 : Set := Z.
 
 Definition str : Set := string.
-Definition char : Set := string.
-Parameter String : Set.
+Definition char : Set := ascii.
+Definition String : Set := string.
 
 Definition ref (A : Set) : Set := A.
 Definition mut_ref : Set -> Set := ref.
@@ -117,23 +113,6 @@ Parameter sub : Z -> Z -> Z.
 
 Parameter add : Z -> Z -> Z.
 
-Module IndexedField.
-  Class Class (Self : Set) (index : Z) (T : Set) : Set := {
-    get : Self -> T;
-  }.
-
-  Global Instance TupleOfSingleElement (T : Set)
-    : IndexedField.Class T 0 T := {|
-    get self := self;
-  |}.
-End IndexedField.
-
-Module NamedField.
-  Class Class (Self : Set) (name : string) (T : Set) : Set := {
-    get : Self -> T;
-  }.
-End NamedField.
-
 Module Root.
   Module std.
     Module prelude.
@@ -144,6 +123,18 @@ Module Root.
 End Root.
 
 Module std.
+  Module string.
+    Module ToString.
+      Class Trait (Self : Set) : Set := {
+        to_string : ref Self -> String;
+      }.
+
+      Global Instance Method_to_string `(Trait) : Notation.Dot "to_string" := {|
+        Notation.dot := to_string;
+      |}.
+    End ToString.
+  End string.
+
   Module result.
     Module Result.
       Inductive t (T E : Set) : Set :=
@@ -164,112 +155,101 @@ Module std.
 
     Module Arguments.
       Parameter t : Set.
-
-      Class AssociatedFunction (name : string) (T : Set) : Set := {
-        associated_function : T;
-      }.
-      Arguments associated_function name {T AssociatedFunction}.
     End Arguments.
     Definition Arguments := Arguments.t.
 
     Module Write.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
         write_str : mut_ref Self -> ref str -> Result;
         write_char : mut_ref Self -> char -> Result;
         write_fmt : mut_ref Self -> Arguments -> Result;
       }.
 
-      Global Instance Method_write_str `(Class) : Method "write_str" _ := {|
-        method := write_str;
+      Global Instance Method_write_str `(Trait) : Notation.Dot "write_str" := {|
+        Notation.dot := write_str;
       |}.
-      Global Instance Method_write_char `(Class) : Method "write_char" _ := {|
-        method := write_char;
+      Global Instance Method_write_char `(Trait) : Notation.Dot "write_char" := {|
+        Notation.dot := write_char;
       |}.
-      Global Instance Method_write_fmt `(Class) : Method "write_fmt" _ := {|
-        method := write_fmt;
+      Global Instance Method_write_fmt `(Trait) : Notation.Dot "write_fmt" := {|
+        Notation.dot := write_fmt;
       |}.
     End Write.
 
     Module Formatter.
       Parameter t : Set.
-
-      Class AssociatedFunction (name : string) (T : Set) : Set := {
-        associated_function : T;
-      }.
-      Arguments associated_function name {T AssociatedFunction}.
     End Formatter.
     Definition Formatter := Formatter.t.
 
     Module ImplFormatter.
-      Parameter new : forall {W : Set} `{Write.Class W}, mut_ref W -> Formatter.
+      Parameter new : forall {W : Set} `{Write.Trait W}, mut_ref W -> Formatter.
 
-      Global Instance Formatter_new {W : Set} `{Write.Class W} :
-        Formatter.AssociatedFunction "new" _ := {|
-        Formatter.associated_function := new;
+      Global Instance Formatter_new {W : Set} `{Write.Trait W} :
+        Notation.DoubleColon Formatter "new" := {|
+        Notation.double_colon := new;
       |}.
     End ImplFormatter.
 
     Module Display.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
         fmt : ref Self -> mut_ref Formatter -> Result;
       }.
     End Display.
 
+    Global Instance ToString_on_Display {Self : Set} `{Display.Trait Self} :
+      string.ToString.Trait Self.
+    Admitted.
+
     Module Debug.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
         fmt : ref Self -> mut_ref Formatter -> Result;
       }.
     End Debug.
 
     Module Octal.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
         fmt : ref Self -> mut_ref Formatter -> Result;
       }.
     End Octal.
 
     Module LowerHex.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
         fmt : ref Self -> mut_ref Formatter -> Result;
       }.
     End LowerHex.
 
     Module UpperHex.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
         fmt : ref Self -> mut_ref Formatter -> Result;
       }.
     End UpperHex.
 
     Module Pointer.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
         fmt : ref Self -> mut_ref Formatter -> Result;
       }.
     End Pointer.
 
     Module Binary.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
         fmt : ref Self -> mut_ref Formatter -> Result;
       }.
     End Binary.
 
     Module LowerExp.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
         fmt : ref Self -> mut_ref Formatter -> Result;
       }.
     End LowerExp.
 
     Module UpperExp.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
         fmt : ref Self -> mut_ref Formatter -> Result;
       }.
     End UpperExp.
 
     Module ArgumentV1.
       Parameter t : Set.
-
-      Class AssociatedFunction (name : string) (T : Set) : Set := {
-        associated_function : T;
-      }.
-      Arguments associated_function name {T AssociatedFunction}.
     End ArgumentV1.
     Definition ArgumentV1 := ArgumentV1.t.
 
@@ -281,80 +261,80 @@ Module std.
         ref T -> (ref T -> mut_ref Formatter -> Result) -> Self.
 
       Global Instance ArgumentV1_new {T : Set} :
-        ArgumentV1.AssociatedFunction "new" _ := {|
-        ArgumentV1.associated_function := new (T := T) ;
+        Notation.DoubleColon ArgumentV1 "new" := {|
+        Notation.double_colon := new (T := T);
       |}.
 
       Parameter new_display :
-        forall {T : Set} `{Display.Class T}, ref T -> Self.
+        forall {T : Set} `{Display.Trait T}, ref T -> Self.
 
-      Global Instance ArgumentV1_new_display {T : Set} `{Display.Class T} :
-        ArgumentV1.AssociatedFunction "new_display" _ := {|
-        ArgumentV1.associated_function := new_display (T := T);
+      Global Instance ArgumentV1_new_display {T : Set} `{Display.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_display" := {|
+        Notation.double_colon := new_display (T := T);
       |}.
 
       Parameter new_debug :
-        forall {T : Set} `{Debug.Class T}, ref T -> Self.
+        forall {T : Set} `{Debug.Trait T}, ref T -> Self.
 
-      Global Instance ArgumentV1_new_debug {T : Set} `{Debug.Class T} :
-        ArgumentV1.AssociatedFunction "new_debug" _ := {|
-        ArgumentV1.associated_function := new_debug (T := T);
+      Global Instance ArgumentV1_new_debug {T : Set} `{Debug.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_debug" := {|
+        Notation.double_colon := new_debug (T := T);
       |}.
 
       Parameter new_octal :
-        forall {T : Set} `{Octal.Class T}, ref T -> Self.
+        forall {T : Set} `{Octal.Trait T}, ref T -> Self.
 
-      Global Instance ArgumentV1_new_octal {T : Set} `{Octal.Class T} :
-        ArgumentV1.AssociatedFunction "new_octal" _ := {|
-        ArgumentV1.associated_function := new_octal (T := T);
+      Global Instance ArgumentV1_new_octal {T : Set} `{Octal.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_octal" := {|
+        Notation.double_colon := new_octal (T := T);
       |}.
 
       Parameter new_lower_hex :
-        forall {T : Set} `{LowerHex.Class T}, ref T -> Self.
+        forall {T : Set} `{LowerHex.Trait T}, ref T -> Self.
 
-      Global Instance ArgumentV1_new_lower_hex {T : Set} `{LowerHex.Class T} :
-        ArgumentV1.AssociatedFunction "new_lower_hex" _ := {|
-        ArgumentV1.associated_function := new_lower_hex (T := T);
+      Global Instance ArgumentV1_new_lower_hex {T : Set} `{LowerHex.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_lower_hex" := {|
+        Notation.double_colon := new_lower_hex (T := T);
       |}.
 
       Parameter new_upper_hex :
-        forall {T : Set} `{UpperHex.Class T}, ref T -> Self.
+        forall {T : Set} `{UpperHex.Trait T}, ref T -> Self.
 
-      Global Instance ArgumentV1_new_upper_hex {T : Set} `{UpperHex.Class T} :
-        ArgumentV1.AssociatedFunction "new_upper_hex" _ := {|
-        ArgumentV1.associated_function := new_upper_hex (T := T);
+      Global Instance ArgumentV1_new_upper_hex {T : Set} `{UpperHex.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_upper_hex" := {|
+        Notation.double_colon := new_upper_hex (T := T);
       |}.
 
       Parameter new_pointer :
-        forall {T : Set} `{Pointer.Class T}, ref T -> Self.
+        forall {T : Set} `{Pointer.Trait T}, ref T -> Self.
 
-      Global Instance ArgumentV1_new_pointer {T : Set} `{Pointer.Class T} :
-        ArgumentV1.AssociatedFunction "new_pointer" _ := {|
-        ArgumentV1.associated_function := new_pointer (T := T);
+      Global Instance ArgumentV1_new_pointer {T : Set} `{Pointer.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_pointer" := {|
+        Notation.double_colon := new_pointer (T := T);
       |}.
 
       Parameter new_binary :
-        forall {T : Set} `{Binary.Class T}, ref T -> Self.
+        forall {T : Set} `{Binary.Trait T}, ref T -> Self.
 
-      Global Instance ArgumentV1_new_binary {T : Set} `{Binary.Class T} :
-        ArgumentV1.AssociatedFunction "new_binary" _ := {|
-        ArgumentV1.associated_function := new_binary (T := T);
+      Global Instance ArgumentV1_new_binary {T : Set} `{Binary.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_binary" := {|
+        Notation.double_colon := new_binary (T := T);
       |}.
 
       Parameter new_lower_exp :
-        forall {T : Set} `{LowerExp.Class T}, ref T -> Self.
+        forall {T : Set} `{LowerExp.Trait T}, ref T -> Self.
 
-      Global Instance ArgumentV1_new_lower_exp {T : Set} `{LowerExp.Class T} :
-        ArgumentV1.AssociatedFunction "new_lower_exp" _ := {|
-        ArgumentV1.associated_function := new_lower_exp (T := T);
+      Global Instance ArgumentV1_new_lower_exp {T : Set} `{LowerExp.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_lower_exp" := {|
+        Notation.double_colon := new_lower_exp (T := T);
       |}.
 
       Parameter new_upper_exp :
-        forall {T : Set} `{UpperExp.Class T}, ref T -> Self.
+        forall {T : Set} `{UpperExp.Trait T}, ref T -> Self.
 
-      Global Instance ArgumentV1_new_upper_exp {T : Set} `{UpperExp.Class T} :
-        ArgumentV1.AssociatedFunction "new_upper_exp" _ := {|
-        ArgumentV1.associated_function := new_upper_exp (T := T);
+      Global Instance ArgumentV1_new_upper_exp {T : Set} `{UpperExp.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_upper_exp" := {|
+        Notation.double_colon := new_upper_exp (T := T);
       |}.
     End ImplArgumentV1.
 
@@ -363,19 +343,19 @@ Module std.
         ref (list (ref str)) -> ref (list ArgumentV1) -> Arguments.
 
       Global Instance Arguments_new_v1 :
-        Arguments.AssociatedFunction "new_v1" _ := {|
-        Arguments.associated_function := new_v1;
+        Notation.DoubleColon Arguments "new_v1" := {|
+        Notation.double_colon := new_v1;
       |}.
     End ImplArguments.
 
-    Global Instance Write_for_Formatter : Write.Class Formatter.
+    Global Instance Write_for_Formatter : Write.Trait Formatter.
     Admitted.
   End fmt.
 
   Module prelude.
     Module rust_2021.
       Module From.
-        Class Class (T : Set) (Self : Set) : Set := {
+        Class Trait (T : Set) (Self : Set) : Set := {
           from : T -> Self;
         }.
       End From.
@@ -385,7 +365,7 @@ Module std.
   Module error.
     Module Error.
       Unset Primitive Projections.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
       }.
       Global Set Primitive Projections.
     End Error.
@@ -406,9 +386,14 @@ Module std.
 End std.
 
 Module str_Instances.
-  Global Instance IDisplay : std.fmt.Display.Class str.
+  Global Instance IDisplay : std.fmt.Display.Trait str.
   Admitted.
 End str_Instances.
+
+Module Z_Instances.
+  Global Instance IDisplay : std.fmt.Display.Trait Z.
+  Admitted.
+End Z_Instances.
 
 Module _crate.
   Module intrinsics.
@@ -418,21 +403,21 @@ Module _crate.
   Module marker.
     Module Copy.
       Unset Primitive Projections.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
       }.
       Global Set Primitive Projections.
     End Copy.
 
     Module StructuralEq.
       Unset Primitive Projections.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
       }.
       Global Set Primitive Projections.
     End StructuralEq.
 
     Module StructuralPartialEq.
       Unset Primitive Projections.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
       }.
       Global Set Primitive Projections.
     End StructuralPartialEq.
@@ -440,7 +425,7 @@ Module _crate.
 
   Module clone.
     Module Clone.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
         clone : ref Self -> Self;
       }.
     End Clone.
@@ -448,13 +433,13 @@ Module _crate.
 
   Module cmp.
     Module Eq.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
         assert_receiver_is_total_eq : ref Self -> unit;
       }.
     End Eq.
 
     Module PartialEq.
-      Class Class (Self : Set) : Set := {
+      Class Trait (Self : Set) : Set := {
         eq : ref Self -> ref Self -> bool;
       }.
     End PartialEq.

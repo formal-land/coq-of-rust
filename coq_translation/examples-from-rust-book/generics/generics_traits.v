@@ -8,12 +8,12 @@ Error StructUnit.
 Error StructUnit.
 
 Module DoubleDrop.
-  Class Class (T Self : Set) : Set := {
+  Class Trait (T Self : Set) : Set := {
     double_drop : Self -> (T -> _);
   }.
   
-  Global Instance Method_double_drop `(Class) : Method "double_drop" _ := {|
-    method := double_drop;
+  Global Instance Method_double_drop `(Trait) : Notation.Dot "double_drop" := {|
+    Notation.dot := double_drop;
   |}.
   Class AssociatedFunction (name : string) (T : Set) : Set := {
     associated_function : T;
@@ -26,24 +26,15 @@ Module Impl_DoubleDrop_for_U.
   
   Definition double_drop (self : Self) (Pattern : T) := tt.
   
-  Global Instance M_double_drop : Method "double_drop" _ := {|
-    method := double_drop;
+  Global Instance Method_double_drop : Notation.Dot "double_drop" := {|
+    Notation.dot := double_drop;
   |}.
-  Global Instance AF_double_drop : U.AssociatedFunction "double_drop" _ := {|
-    U.associated_function := double_drop;
-  |}.
-  Global Instance
-    AFT_double_drop
-    :
-    DoubleDrop.AssociatedFunction
-    "double_drop"
-    _
-    :=
-    {|
-    DoubleDrop.associated_function := double_drop;
+  Global Instance AssociatedFunction_double_drop :
+    Notation.DoubleColon Self "double_drop" := {|
+    Notation.double_colon := double_drop;
   |}.
   
-  Global Instance I T U : DoubleDrop.Class T Self := {|
+  Global Instance I T U : DoubleDrop.Trait T Self := {|
     DoubleDrop.double_drop := double_drop;
   |}.
 End Impl_DoubleDrop_for_U.
@@ -51,5 +42,5 @@ End Impl_DoubleDrop_for_U.
 Definition main (_ : unit) : unit :=
   let empty := Empty in
   let null := Null in
-  method "double_drop" empty null ;;
+  empty.["double_drop"] null ;;
   tt.
