@@ -33,10 +33,6 @@ Module ImplVal.
   Global Instance Method_value : Notation.Dot "value" := {|
     Notation.dot := value;
   |}.
-  Global Instance AssociatedFunction_value :
-    Notation.DoubleColon Self "value" := {|
-    Notation.double_colon := value;
-  |}.
 End ImplVal.
 
 Module ImplGenVal.
@@ -46,10 +42,6 @@ Module ImplGenVal.
   
   Global Instance Method_value : Notation.Dot "value" := {|
     Notation.dot := value;
-  |}.
-  Global Instance AssociatedFunction_value :
-    Notation.DoubleColon Self "value" := {|
-    Notation.double_colon := value;
   |}.
 End ImplGenVal.
 

@@ -25,7 +25,4 @@ Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
   Global Instance Method_run : Notation.Dot "run" := {|
     Notation.dot := run;
   |}.
-  Global Instance AssociatedFunction_run : Notation.DoubleColon Self "run" := {|
-    Notation.double_colon := run;
-  |}.
 End ImplVeryVerboseEnumOfThingsToDoWithNumbers.

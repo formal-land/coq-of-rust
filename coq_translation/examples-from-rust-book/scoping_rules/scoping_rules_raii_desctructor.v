@@ -17,10 +17,6 @@ Module Impl_Drop_for_ToDrop.
   Global Instance Method_drop : Notation.Dot "drop" := {|
     Notation.dot := drop;
   |}.
-  Global Instance AssociatedFunction_drop :
-    Notation.DoubleColon Self "drop" := {|
-    Notation.double_colon := drop;
-  |}.
   
   Global Instance I : Drop.Trait Self := {|
     Drop.drop := drop;

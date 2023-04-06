@@ -35,10 +35,6 @@ Module Impl__crate_clone_Clone_for_Job.
   Global Instance Method_clone : Notation.Dot "clone" := {|
     Notation.dot := clone;
   |}.
-  Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {|
-    Notation.double_colon := clone;
-  |}.
   
   Global Instance I : _crate.clone.Clone.Trait Self := {|
     _crate.clone.Clone.clone := clone;
@@ -78,10 +74,6 @@ Module Impl__crate_clone_Clone_for_PhoneNumber.
   Global Instance Method_clone : Notation.Dot "clone" := {|
     Notation.dot := clone;
   |}.
-  Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {|
-    Notation.double_colon := clone;
-  |}.
   
   Global Instance I : _crate.clone.Clone.Trait Self := {|
     _crate.clone.Clone.clone := clone;
@@ -113,10 +105,6 @@ Module ImplPerson.
   Global Instance Method_work_phone_area_code :
     Notation.Dot "work_phone_area_code" := {|
     Notation.dot := work_phone_area_code;
-  |}.
-  Global Instance AssociatedFunction_work_phone_area_code :
-    Notation.DoubleColon Self "work_phone_area_code" := {|
-    Notation.double_colon := work_phone_area_code;
   |}.
 End ImplPerson.
 

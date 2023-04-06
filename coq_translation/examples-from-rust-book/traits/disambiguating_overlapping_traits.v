@@ -11,10 +11,6 @@ Module UsernameWidget.
   Global Instance Method_get `(Trait) : Notation.Dot "get" := {|
     Notation.dot := get;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End UsernameWidget.
 
 Module AgeWidget.
@@ -25,10 +21,6 @@ Module AgeWidget.
   Global Instance Method_get `(Trait) : Notation.Dot "get" := {|
     Notation.dot := get;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End AgeWidget.
 
 Module Form.
@@ -54,9 +46,6 @@ Module Impl_UsernameWidget_for_Form.
   Global Instance Method_get : Notation.Dot "get" := {|
     Notation.dot := get;
   |}.
-  Global Instance AssociatedFunction_get : Notation.DoubleColon Self "get" := {|
-    Notation.double_colon := get;
-  |}.
   
   Global Instance I : UsernameWidget.Trait Self := {|
     UsernameWidget.get := get;
@@ -70,9 +59,6 @@ Module Impl_AgeWidget_for_Form.
   
   Global Instance Method_get : Notation.Dot "get" := {|
     Notation.dot := get;
-  |}.
-  Global Instance AssociatedFunction_get : Notation.DoubleColon Self "get" := {|
-    Notation.double_colon := get;
   |}.
   
   Global Instance I : AgeWidget.Trait Self := {|

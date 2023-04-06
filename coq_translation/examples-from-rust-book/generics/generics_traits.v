@@ -15,10 +15,6 @@ Module DoubleDrop.
   Global Instance Method_double_drop `(Trait) : Notation.Dot "double_drop" := {|
     Notation.dot := double_drop;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End DoubleDrop.
 
 Module Impl_DoubleDrop_for_U.
@@ -28,10 +24,6 @@ Module Impl_DoubleDrop_for_U.
   
   Global Instance Method_double_drop : Notation.Dot "double_drop" := {|
     Notation.dot := double_drop;
-  |}.
-  Global Instance AssociatedFunction_double_drop :
-    Notation.DoubleColon Self "double_drop" := {|
-    Notation.double_colon := double_drop;
   |}.
   
   Global Instance I T U : DoubleDrop.Trait T Self := {|

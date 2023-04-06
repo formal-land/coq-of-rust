@@ -546,33 +546,6 @@ fn fn_to_doc<'a>(
     ])
 }
 
-fn associated_function_class_to_doc<'a>() -> Doc<'a> {
-    concat([
-        nest([
-            text("Class"),
-            line(),
-            text("AssociatedFunction"),
-            line(),
-            text("(name : string)"),
-            line(),
-            text("(T : Set)"),
-            line(),
-            text(":"),
-            line(),
-            text("Set"),
-            line(),
-            text(":="),
-            line(),
-            text("{"),
-        ]),
-        nest([hardline(), text("associated_function : T;")]),
-        hardline(),
-        text("}."),
-        hardline(),
-        text("Arguments associated_function name {T AssociatedFunction}."),
-    ])
-}
-
 impl ImplItem {
     fn class_instance_to_doc<'a>(
         instance_prefix: &'a str,
@@ -624,19 +597,20 @@ impl ImplItem {
                 hardline(),
                 hardline(),
                 if *is_method {
-                    concat([
-                        Self::class_instance_to_doc("Method", name, "Notation.Dot", "Notation.dot"),
-                        hardline(),
-                    ])
+                    concat([Self::class_instance_to_doc(
+                        "Method",
+                        name,
+                        "Notation.Dot",
+                        "Notation.dot",
+                    )])
                 } else {
-                    nil()
+                    Self::class_instance_to_doc(
+                        "AssociatedFunction",
+                        name,
+                        "Notation.DoubleColon Self",
+                        "Notation.double_colon",
+                    )
                 },
-                Self::class_instance_to_doc(
-                    "AssociatedFunction",
-                    name,
-                    "Notation.DoubleColon Self",
-                    "Notation.double_colon",
-                ),
             ]),
             ImplItem::Type { ty } => nest([
                 nest([
@@ -1159,8 +1133,6 @@ impl TopLevelItem {
                             text("|}."),
                         ])
                     })),
-                    hardline(),
-                    associated_function_class_to_doc(),
                 ]),
                 hardline(),
                 nest([text("End"), line(), text(name), text(".")]),

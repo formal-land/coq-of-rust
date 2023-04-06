@@ -17,9 +17,6 @@ Module Impl__crate_fmt_Debug_for_Unit.
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
   |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
-  |}.
   
   Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
@@ -33,10 +30,6 @@ Module Impl__crate_clone_Clone_for_Unit.
   
   Global Instance Method_clone : Notation.Dot "clone" := {|
     Notation.dot := clone;
-  |}.
-  Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {|
-    Notation.double_colon := clone;
   |}.
   
   Global Instance I : _crate.clone.Clone.Trait Self := {|
@@ -74,10 +67,6 @@ Module Impl__crate_clone_Clone_for_Pair.
   Global Instance Method_clone : Notation.Dot "clone" := {|
     Notation.dot := clone;
   |}.
-  Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {|
-    Notation.double_colon := clone;
-  |}.
   
   Global Instance I : _crate.clone.Clone.Trait Self := {|
     _crate.clone.Clone.clone := clone;
@@ -99,9 +88,6 @@ Module Impl__crate_fmt_Debug_for_Pair.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
-  |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
   |}.
   
   Global Instance I : _crate.fmt.Debug.Trait Self := {|

@@ -47,10 +47,6 @@ Module Animal.
       tt
       : unit);
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Animal.
 
 Module ImplSheep.
@@ -60,10 +56,6 @@ Module ImplSheep.
   
   Global Instance Method_is_naked : Notation.Dot "is_naked" := {|
     Notation.dot := is_naked;
-  |}.
-  Global Instance AssociatedFunction_is_naked :
-    Notation.DoubleColon Self "is_naked" := {|
-    Notation.double_colon := is_naked;
   |}.
 End ImplSheep.
 
@@ -82,10 +74,6 @@ Module Impl_Animal_for_Sheep.
   Global Instance Method_name : Notation.Dot "name" := {|
     Notation.dot := name;
   |}.
-  Global Instance AssociatedFunction_name :
-    Notation.DoubleColon Self "name" := {|
-    Notation.double_colon := name;
-  |}.
   
   Definition noise (self : ref Self) : ref str :=
     if (self.["is_naked"] : bool) then
@@ -95,10 +83,6 @@ Module Impl_Animal_for_Sheep.
   
   Global Instance Method_noise : Notation.Dot "noise" := {|
     Notation.dot := noise;
-  |}.
-  Global Instance AssociatedFunction_noise :
-    Notation.DoubleColon Self "noise" := {|
-    Notation.double_colon := noise;
   |}.
   
   Definition talk (self : ref Self) :=
@@ -114,10 +98,6 @@ Module Impl_Animal_for_Sheep.
   
   Global Instance Method_talk : Notation.Dot "talk" := {|
     Notation.dot := talk;
-  |}.
-  Global Instance AssociatedFunction_talk :
-    Notation.DoubleColon Self "talk" := {|
-    Notation.double_colon := talk;
   |}.
   
   Global Instance I : Animal.Trait Self := {|
@@ -149,10 +129,6 @@ Module ImplSheep_2.
   
   Global Instance Method_shear : Notation.Dot "shear" := {|
     Notation.dot := shear;
-  |}.
-  Global Instance AssociatedFunction_shear :
-    Notation.DoubleColon Self "shear" := {|
-    Notation.double_colon := shear;
   |}.
 End ImplSheep_2.
 

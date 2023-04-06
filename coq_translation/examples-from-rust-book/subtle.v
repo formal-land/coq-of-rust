@@ -48,10 +48,6 @@ Module Impl__crate_clone_Clone_for_Choice.
   Global Instance Method_clone : Notation.Dot "clone" := {|
     Notation.dot := clone;
   |}.
-  Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {|
-    Notation.double_colon := clone;
-  |}.
   
   Global Instance I : _crate.clone.Clone.Trait Self := {|
     _crate.clone.Clone.clone := clone;
@@ -73,9 +69,6 @@ Module Impl__crate_fmt_Debug_for_Choice.
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
   |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
-  |}.
   
   Global Instance I : _crate.fmt.Debug.Trait Self := {|
     _crate.fmt.Debug.fmt := fmt;
@@ -90,10 +83,6 @@ Module ImplChoice.
   
   Global Instance Method_unwrap_u8 : Notation.Dot "unwrap_u8" := {|
     Notation.dot := unwrap_u8;
-  |}.
-  Global Instance AssociatedFunction_unwrap_u8 :
-    Notation.DoubleColon Self "unwrap_u8" := {|
-    Notation.double_colon := unwrap_u8;
   |}.
 End ImplChoice.
 
@@ -141,10 +130,6 @@ Module Impl_BitAnd_for_Choice.
   Global Instance Method_bitand : Notation.Dot "bitand" := {|
     Notation.dot := bitand;
   |}.
-  Global Instance AssociatedFunction_bitand :
-    Notation.DoubleColon Self "bitand" := {|
-    Notation.double_colon := bitand;
-  |}.
   
   Global Instance I : BitAnd.Trait Self := {|
     BitAnd.Output := Output;
@@ -161,10 +146,6 @@ Module Impl_BitAndAssign_for_Choice.
   
   Global Instance Method_bitand_assign : Notation.Dot "bitand_assign" := {|
     Notation.dot := bitand_assign;
-  |}.
-  Global Instance AssociatedFunction_bitand_assign :
-    Notation.DoubleColon Self "bitand_assign" := {|
-    Notation.double_colon := bitand_assign;
   |}.
   
   Global Instance I : BitAndAssign.Trait Self := {|
@@ -185,10 +166,6 @@ Module Impl_BitOr_for_Choice.
   Global Instance Method_bitor : Notation.Dot "bitor" := {|
     Notation.dot := bitor;
   |}.
-  Global Instance AssociatedFunction_bitor :
-    Notation.DoubleColon Self "bitor" := {|
-    Notation.double_colon := bitor;
-  |}.
   
   Global Instance I : BitOr.Trait Self := {|
     BitOr.Output := Output;
@@ -205,10 +182,6 @@ Module Impl_BitOrAssign_for_Choice.
   
   Global Instance Method_bitor_assign : Notation.Dot "bitor_assign" := {|
     Notation.dot := bitor_assign;
-  |}.
-  Global Instance AssociatedFunction_bitor_assign :
-    Notation.DoubleColon Self "bitor_assign" := {|
-    Notation.double_colon := bitor_assign;
   |}.
   
   Global Instance I : BitOrAssign.Trait Self := {|
@@ -229,10 +202,6 @@ Module Impl_BitXor_for_Choice.
   Global Instance Method_bitxor : Notation.Dot "bitxor" := {|
     Notation.dot := bitxor;
   |}.
-  Global Instance AssociatedFunction_bitxor :
-    Notation.DoubleColon Self "bitxor" := {|
-    Notation.double_colon := bitxor;
-  |}.
   
   Global Instance I : BitXor.Trait Self := {|
     BitXor.Output := Output;
@@ -250,10 +219,6 @@ Module Impl_BitXorAssign_for_Choice.
   Global Instance Method_bitxor_assign : Notation.Dot "bitxor_assign" := {|
     Notation.dot := bitxor_assign;
   |}.
-  Global Instance AssociatedFunction_bitxor_assign :
-    Notation.DoubleColon Self "bitxor_assign" := {|
-    Notation.double_colon := bitxor_assign;
-  |}.
   
   Global Instance I : BitXorAssign.Trait Self := {|
     BitXorAssign.bitxor_assign := bitxor_assign;
@@ -270,9 +235,6 @@ Module Impl_Not_for_Choice.
   
   Global Instance Method_not : Notation.Dot "not" := {|
     Notation.dot := not;
-  |}.
-  Global Instance AssociatedFunction_not : Notation.DoubleColon Self "not" := {|
-    Notation.double_colon := not;
   |}.
   
   Global Instance I : Not.Trait Self := {|
@@ -320,10 +282,6 @@ Module ConstantTimeEq.
       (not (self.["ct_eq"] other)
       : Choice);
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End ConstantTimeEq.
 
 Module Impl_ConstantTimeEq_for_Slice.
@@ -355,10 +313,6 @@ Module Impl_ConstantTimeEq_for_Slice.
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
     Notation.dot := ct_eq;
   |}.
-  Global Instance AssociatedFunction_ct_eq :
-    Notation.DoubleColon Self "ct_eq" := {|
-    Notation.double_colon := ct_eq;
-  |}.
   
   Global Instance I T : ConstantTimeEq.Trait Self := {|
     ConstantTimeEq.ct_eq := ct_eq;
@@ -373,10 +327,6 @@ Module Impl_ConstantTimeEq_for_Choice.
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
     Notation.dot := ct_eq;
-  |}.
-  Global Instance AssociatedFunction_ct_eq :
-    Notation.DoubleColon Self "ct_eq" := {|
-    Notation.double_colon := ct_eq;
   |}.
   
   Global Instance I : ConstantTimeEq.Trait Self := {|
@@ -395,10 +345,6 @@ Module Impl_ConstantTimeEq_for_u8.
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
     Notation.dot := ct_eq;
   |}.
-  Global Instance AssociatedFunction_ct_eq :
-    Notation.DoubleColon Self "ct_eq" := {|
-    Notation.double_colon := ct_eq;
-  |}.
   
   Global Instance I : ConstantTimeEq.Trait Self := {|
     ConstantTimeEq.ct_eq := ct_eq;
@@ -413,10 +359,6 @@ Module Impl_ConstantTimeEq_for_i8.
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
     Notation.dot := ct_eq;
-  |}.
-  Global Instance AssociatedFunction_ct_eq :
-    Notation.DoubleColon Self "ct_eq" := {|
-    Notation.double_colon := ct_eq;
   |}.
   
   Global Instance I : ConstantTimeEq.Trait Self := {|
@@ -435,10 +377,6 @@ Module Impl_ConstantTimeEq_for_u16.
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
     Notation.dot := ct_eq;
   |}.
-  Global Instance AssociatedFunction_ct_eq :
-    Notation.DoubleColon Self "ct_eq" := {|
-    Notation.double_colon := ct_eq;
-  |}.
   
   Global Instance I : ConstantTimeEq.Trait Self := {|
     ConstantTimeEq.ct_eq := ct_eq;
@@ -453,10 +391,6 @@ Module Impl_ConstantTimeEq_for_i16.
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
     Notation.dot := ct_eq;
-  |}.
-  Global Instance AssociatedFunction_ct_eq :
-    Notation.DoubleColon Self "ct_eq" := {|
-    Notation.double_colon := ct_eq;
   |}.
   
   Global Instance I : ConstantTimeEq.Trait Self := {|
@@ -475,10 +409,6 @@ Module Impl_ConstantTimeEq_for_u32.
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
     Notation.dot := ct_eq;
   |}.
-  Global Instance AssociatedFunction_ct_eq :
-    Notation.DoubleColon Self "ct_eq" := {|
-    Notation.double_colon := ct_eq;
-  |}.
   
   Global Instance I : ConstantTimeEq.Trait Self := {|
     ConstantTimeEq.ct_eq := ct_eq;
@@ -493,10 +423,6 @@ Module Impl_ConstantTimeEq_for_i32.
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
     Notation.dot := ct_eq;
-  |}.
-  Global Instance AssociatedFunction_ct_eq :
-    Notation.DoubleColon Self "ct_eq" := {|
-    Notation.double_colon := ct_eq;
   |}.
   
   Global Instance I : ConstantTimeEq.Trait Self := {|
@@ -515,10 +441,6 @@ Module Impl_ConstantTimeEq_for_u64.
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
     Notation.dot := ct_eq;
   |}.
-  Global Instance AssociatedFunction_ct_eq :
-    Notation.DoubleColon Self "ct_eq" := {|
-    Notation.double_colon := ct_eq;
-  |}.
   
   Global Instance I : ConstantTimeEq.Trait Self := {|
     ConstantTimeEq.ct_eq := ct_eq;
@@ -533,10 +455,6 @@ Module Impl_ConstantTimeEq_for_i64.
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
     Notation.dot := ct_eq;
-  |}.
-  Global Instance AssociatedFunction_ct_eq :
-    Notation.DoubleColon Self "ct_eq" := {|
-    Notation.double_colon := ct_eq;
   |}.
   
   Global Instance I : ConstantTimeEq.Trait Self := {|
@@ -558,10 +476,6 @@ Module Impl_ConstantTimeEq_for_usize.
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
     Notation.dot := ct_eq;
   |}.
-  Global Instance AssociatedFunction_ct_eq :
-    Notation.DoubleColon Self "ct_eq" := {|
-    Notation.double_colon := ct_eq;
-  |}.
   
   Global Instance I : ConstantTimeEq.Trait Self := {|
     ConstantTimeEq.ct_eq := ct_eq;
@@ -576,10 +490,6 @@ Module Impl_ConstantTimeEq_for_isize.
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
     Notation.dot := ct_eq;
-  |}.
-  Global Instance AssociatedFunction_ct_eq :
-    Notation.DoubleColon Self "ct_eq" := {|
-    Notation.double_colon := ct_eq;
   |}.
   
   Global Instance I : ConstantTimeEq.Trait Self := {|
@@ -612,10 +522,6 @@ Module ConditionallySelectable.
       tt
       : unit);
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End ConditionallySelectable.
 
 Module Impl_ConditionallySelectable_for_u8.
@@ -649,10 +555,6 @@ Module Impl_ConditionallySelectable_for_u8.
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {|
     Notation.dot := conditional_assign;
-  |}.
-  Global Instance AssociatedFunction_conditional_assign :
-    Notation.DoubleColon Self "conditional_assign" := {|
-    Notation.double_colon := conditional_assign;
   |}.
   
   Definition conditional_swap
@@ -707,10 +609,6 @@ Module Impl_ConditionallySelectable_for_i8.
     Notation.Dot "conditional_assign" := {|
     Notation.dot := conditional_assign;
   |}.
-  Global Instance AssociatedFunction_conditional_assign :
-    Notation.DoubleColon Self "conditional_assign" := {|
-    Notation.double_colon := conditional_assign;
-  |}.
   
   Definition conditional_swap
       (a : mut_ref Self)
@@ -763,10 +661,6 @@ Module Impl_ConditionallySelectable_for_u16.
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {|
     Notation.dot := conditional_assign;
-  |}.
-  Global Instance AssociatedFunction_conditional_assign :
-    Notation.DoubleColon Self "conditional_assign" := {|
-    Notation.double_colon := conditional_assign;
   |}.
   
   Definition conditional_swap
@@ -821,10 +715,6 @@ Module Impl_ConditionallySelectable_for_i16.
     Notation.Dot "conditional_assign" := {|
     Notation.dot := conditional_assign;
   |}.
-  Global Instance AssociatedFunction_conditional_assign :
-    Notation.DoubleColon Self "conditional_assign" := {|
-    Notation.double_colon := conditional_assign;
-  |}.
   
   Definition conditional_swap
       (a : mut_ref Self)
@@ -877,10 +767,6 @@ Module Impl_ConditionallySelectable_for_u32.
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {|
     Notation.dot := conditional_assign;
-  |}.
-  Global Instance AssociatedFunction_conditional_assign :
-    Notation.DoubleColon Self "conditional_assign" := {|
-    Notation.double_colon := conditional_assign;
   |}.
   
   Definition conditional_swap
@@ -935,10 +821,6 @@ Module Impl_ConditionallySelectable_for_i32.
     Notation.Dot "conditional_assign" := {|
     Notation.dot := conditional_assign;
   |}.
-  Global Instance AssociatedFunction_conditional_assign :
-    Notation.DoubleColon Self "conditional_assign" := {|
-    Notation.double_colon := conditional_assign;
-  |}.
   
   Definition conditional_swap
       (a : mut_ref Self)
@@ -992,10 +874,6 @@ Module Impl_ConditionallySelectable_for_u64.
     Notation.Dot "conditional_assign" := {|
     Notation.dot := conditional_assign;
   |}.
-  Global Instance AssociatedFunction_conditional_assign :
-    Notation.DoubleColon Self "conditional_assign" := {|
-    Notation.double_colon := conditional_assign;
-  |}.
   
   Definition conditional_swap
       (a : mut_ref Self)
@@ -1048,10 +926,6 @@ Module Impl_ConditionallySelectable_for_i64.
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {|
     Notation.dot := conditional_assign;
-  |}.
-  Global Instance AssociatedFunction_conditional_assign :
-    Notation.DoubleColon Self "conditional_assign" := {|
-    Notation.double_colon := conditional_assign;
   |}.
   
   Definition conditional_swap
@@ -1107,10 +981,6 @@ Module ConditionallyNegatable.
     : Notation.Dot "conditional_negate" := {|
     Notation.dot := conditional_negate;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End ConditionallyNegatable.
 
 Module Impl_ConditionallyNegatable_for_T.
@@ -1124,10 +994,6 @@ Module Impl_ConditionallyNegatable_for_T.
   Global Instance Method_conditional_negate :
     Notation.Dot "conditional_negate" := {|
     Notation.dot := conditional_negate;
-  |}.
-  Global Instance AssociatedFunction_conditional_negate :
-    Notation.DoubleColon Self "conditional_negate" := {|
-    Notation.double_colon := conditional_negate;
   |}.
   
   Global Instance I T : ConditionallyNegatable.Trait Self := {|
@@ -1162,10 +1028,6 @@ Module Impl__crate_clone_Clone_for_CtOption.
   Global Instance Method_clone : Notation.Dot "clone" := {|
     Notation.dot := clone;
   |}.
-  Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {|
-    Notation.double_colon := clone;
-  |}.
   
   Global Instance I T : _crate.clone.Clone.Trait Self := {|
     _crate.clone.Clone.clone := clone;
@@ -1196,9 +1058,6 @@ Module Impl__crate_fmt_Debug_for_CtOption.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
-  |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
   |}.
   
   Global Instance I T : _crate.fmt.Debug.Trait Self := {|
@@ -1257,10 +1116,6 @@ Module ImplCtOption.
   Global Instance Method_expect : Notation.Dot "expect" := {|
     Notation.dot := expect;
   |}.
-  Global Instance AssociatedFunction_expect :
-    Notation.DoubleColon Self "expect" := {|
-    Notation.double_colon := expect;
-  |}.
   
   Definition unwrap (self : Self) : T :=
     match (self.["is_some"].["unwrap_u8"], 1) with
@@ -1281,20 +1136,12 @@ Module ImplCtOption.
   Global Instance Method_unwrap : Notation.Dot "unwrap" := {|
     Notation.dot := unwrap;
   |}.
-  Global Instance AssociatedFunction_unwrap :
-    Notation.DoubleColon Self "unwrap" := {|
-    Notation.double_colon := unwrap;
-  |}.
   
   Definition unwrap_or (self : Self) (def : T) : T :=
     T::["conditional_select"] def self.["value"] self.["is_some"].
   
   Global Instance Method_unwrap_or : Notation.Dot "unwrap_or" := {|
     Notation.dot := unwrap_or;
-  |}.
-  Global Instance AssociatedFunction_unwrap_or :
-    Notation.DoubleColon Self "unwrap_or" := {|
-    Notation.double_colon := unwrap_or;
   |}.
   
   Definition unwrap_or_else (self : Self) (f : F) : T :=
@@ -1303,29 +1150,17 @@ Module ImplCtOption.
   Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {|
     Notation.dot := unwrap_or_else;
   |}.
-  Global Instance AssociatedFunction_unwrap_or_else :
-    Notation.DoubleColon Self "unwrap_or_else" := {|
-    Notation.double_colon := unwrap_or_else;
-  |}.
   
   Definition is_some (self : ref Self) : Choice := self.["is_some"].
   
   Global Instance Method_is_some : Notation.Dot "is_some" := {|
     Notation.dot := is_some;
   |}.
-  Global Instance AssociatedFunction_is_some :
-    Notation.DoubleColon Self "is_some" := {|
-    Notation.double_colon := is_some;
-  |}.
   
   Definition is_none (self : ref Self) : Choice := not self.["is_some"].
   
   Global Instance Method_is_none : Notation.Dot "is_none" := {|
     Notation.dot := is_none;
-  |}.
-  Global Instance AssociatedFunction_is_none :
-    Notation.DoubleColon Self "is_none" := {|
-    Notation.double_colon := is_none;
   |}.
   
   Definition map (self : Self) (f : F) : CtOption :=
@@ -1339,9 +1174,6 @@ Module ImplCtOption.
   
   Global Instance Method_map : Notation.Dot "map" := {|
     Notation.dot := map;
-  |}.
-  Global Instance AssociatedFunction_map : Notation.DoubleColon Self "map" := {|
-    Notation.double_colon := map;
   |}.
   
   Definition and_then (self : Self) (f : F) : CtOption :=
@@ -1357,10 +1189,6 @@ Module ImplCtOption.
   Global Instance Method_and_then : Notation.Dot "and_then" := {|
     Notation.dot := and_then;
   |}.
-  Global Instance AssociatedFunction_and_then :
-    Notation.DoubleColon Self "and_then" := {|
-    Notation.double_colon := and_then;
-  |}.
   
   Definition or_else (self : Self) (f : F) : CtOption :=
     let is_none := self.["is_none"] in
@@ -1369,10 +1197,6 @@ Module ImplCtOption.
   
   Global Instance Method_or_else : Notation.Dot "or_else" := {|
     Notation.dot := or_else;
-  |}.
-  Global Instance AssociatedFunction_or_else :
-    Notation.DoubleColon Self "or_else" := {|
-    Notation.double_colon := or_else;
   |}.
 End ImplCtOption.
 
@@ -1411,10 +1235,6 @@ Module Impl_ConstantTimeEq_for_CtOption.
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
     Notation.dot := ct_eq;
   |}.
-  Global Instance AssociatedFunction_ct_eq :
-    Notation.DoubleColon Self "ct_eq" := {|
-    Notation.double_colon := ct_eq;
-  |}.
   
   Global Instance I T : ConstantTimeEq.Trait Self := {|
     ConstantTimeEq.ct_eq := ct_eq;
@@ -1429,10 +1249,6 @@ Module ConstantTimeGreater.
   Global Instance Method_ct_gt `(Trait) : Notation.Dot "ct_gt" := {|
     Notation.dot := ct_gt;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End ConstantTimeGreater.
 
 Module Impl_ConstantTimeGreater_for_u8.
@@ -1468,10 +1284,6 @@ Module Impl_ConstantTimeGreater_for_u8.
   
   Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {|
     Notation.dot := ct_gt;
-  |}.
-  Global Instance AssociatedFunction_ct_gt :
-    Notation.DoubleColon Self "ct_gt" := {|
-    Notation.double_colon := ct_gt;
   |}.
   
   Global Instance I : ConstantTimeGreater.Trait Self := {|
@@ -1513,10 +1325,6 @@ Module Impl_ConstantTimeGreater_for_u16.
   Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {|
     Notation.dot := ct_gt;
   |}.
-  Global Instance AssociatedFunction_ct_gt :
-    Notation.DoubleColon Self "ct_gt" := {|
-    Notation.double_colon := ct_gt;
-  |}.
   
   Global Instance I : ConstantTimeGreater.Trait Self := {|
     ConstantTimeGreater.ct_gt := ct_gt;
@@ -1556,10 +1364,6 @@ Module Impl_ConstantTimeGreater_for_u32.
   
   Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {|
     Notation.dot := ct_gt;
-  |}.
-  Global Instance AssociatedFunction_ct_gt :
-    Notation.DoubleColon Self "ct_gt" := {|
-    Notation.double_colon := ct_gt;
   |}.
   
   Global Instance I : ConstantTimeGreater.Trait Self := {|
@@ -1601,10 +1405,6 @@ Module Impl_ConstantTimeGreater_for_u64.
   Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {|
     Notation.dot := ct_gt;
   |}.
-  Global Instance AssociatedFunction_ct_gt :
-    Notation.DoubleColon Self "ct_gt" := {|
-    Notation.double_colon := ct_gt;
-  |}.
   
   Global Instance I : ConstantTimeGreater.Trait Self := {|
     ConstantTimeGreater.ct_gt := ct_gt;
@@ -1620,10 +1420,6 @@ Module ConstantTimeLess.
       (bit_and (not (self.["ct_gt"] other)) (not (self.["ct_eq"] other))
       : Choice);
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End ConstantTimeLess.
 
 Module Impl_ConstantTimeLess_for_u8.

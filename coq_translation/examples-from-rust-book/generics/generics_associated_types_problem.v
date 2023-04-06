@@ -31,10 +31,6 @@ Module Contains.
   Global Instance Method_last `(Trait) : Notation.Dot "last" := {|
     Notation.dot := last;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End Contains.
 
 Module Impl_Contains_for_Container.
@@ -52,10 +48,6 @@ Module Impl_Contains_for_Container.
   Global Instance Method_contains : Notation.Dot "contains" := {|
     Notation.dot := contains;
   |}.
-  Global Instance AssociatedFunction_contains :
-    Notation.DoubleColon Self "contains" := {|
-    Notation.double_colon := contains;
-  |}.
   
   Definition first (self : ref Self) : i32 :=
     IndexedField.get (index := 0) self.
@@ -63,19 +55,11 @@ Module Impl_Contains_for_Container.
   Global Instance Method_first : Notation.Dot "first" := {|
     Notation.dot := first;
   |}.
-  Global Instance AssociatedFunction_first :
-    Notation.DoubleColon Self "first" := {|
-    Notation.double_colon := first;
-  |}.
   
   Definition last (self : ref Self) : i32 := IndexedField.get (index := 1) self.
   
   Global Instance Method_last : Notation.Dot "last" := {|
     Notation.dot := last;
-  |}.
-  Global Instance AssociatedFunction_last :
-    Notation.DoubleColon Self "last" := {|
-    Notation.double_colon := last;
   |}.
   
   Global Instance I : Contains.Trait i32 i32 Self := {|

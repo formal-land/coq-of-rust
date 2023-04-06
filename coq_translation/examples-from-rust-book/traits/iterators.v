@@ -32,10 +32,6 @@ Module Impl_Iterator_for_Fibonacci.
   Global Instance Method_next : Notation.Dot "next" := {|
     Notation.dot := next;
   |}.
-  Global Instance AssociatedFunction_next :
-    Notation.DoubleColon Self "next" := {|
-    Notation.double_colon := next;
-  |}.
   
   Global Instance I : Iterator.Trait Self := {|
     Iterator.Item := Item;

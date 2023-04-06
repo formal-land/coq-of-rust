@@ -14,10 +14,6 @@ Module PrintInOption.
     : Notation.Dot "print_in_option" := {|
     Notation.dot := print_in_option;
   |}.
-  Class AssociatedFunction (name : string) (T : Set) : Set := {
-    associated_function : T;
-  }.
-  Arguments associated_function name {T AssociatedFunction}.
 End PrintInOption.
 
 Module Impl_PrintInOption_for_T.
@@ -33,10 +29,6 @@ Module Impl_PrintInOption_for_T.
   
   Global Instance Method_print_in_option : Notation.Dot "print_in_option" := {|
     Notation.dot := print_in_option;
-  |}.
-  Global Instance AssociatedFunction_print_in_option :
-    Notation.DoubleColon Self "print_in_option" := {|
-    Notation.double_colon := print_in_option;
   |}.
   
   Global Instance I T : PrintInOption.Trait Self := {|

@@ -40,9 +40,6 @@ Module Impl__crate_cmp_PartialEq_for_PhantomTuple.
   Global Instance Method_eq : Notation.Dot "eq" := {|
     Notation.dot := eq;
   |}.
-  Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {|
-    Notation.double_colon := eq;
-  |}.
   
   Global Instance I A B : _crate.cmp.PartialEq.Trait Self := {|
     _crate.cmp.PartialEq.eq := eq;
@@ -81,9 +78,6 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct.
   
   Global Instance Method_eq : Notation.Dot "eq" := {|
     Notation.dot := eq;
-  |}.
-  Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {|
-    Notation.double_colon := eq;
   |}.
   
   Global Instance I A B : _crate.cmp.PartialEq.Trait Self := {|

@@ -55,10 +55,6 @@ Module Impl__crate_clone_Clone_for_Complex.
   Global Instance Method_clone : Notation.Dot "clone" := {|
     Notation.dot := clone;
   |}.
-  Global Instance AssociatedFunction_clone :
-    Notation.DoubleColon Self "clone" := {|
-    Notation.double_colon := clone;
-  |}.
   
   Global Instance I : _crate.clone.Clone.Trait Self := {|
     _crate.clone.Clone.clone := clone;
@@ -95,9 +91,6 @@ Module Impl_fmt_Debug_for_Complex.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
-  |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
   |}.
   
   Global Instance I : fmt.Debug.Trait Self := {|

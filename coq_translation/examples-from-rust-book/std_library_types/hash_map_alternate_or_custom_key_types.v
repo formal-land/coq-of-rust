@@ -39,9 +39,6 @@ Module Impl__crate_cmp_PartialEq_for_Account.
   Global Instance Method_eq : Notation.Dot "eq" := {|
     Notation.dot := eq;
   |}.
-  Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {|
-    Notation.double_colon := eq;
-  |}.
   
   Global Instance I 'a : _crate.cmp.PartialEq.Trait Self := {|
     _crate.cmp.PartialEq.eq := eq;
@@ -67,10 +64,6 @@ Module Impl__crate_cmp_Eq_for_Account.
     Notation.Dot "assert_receiver_is_total_eq" := {|
     Notation.dot := assert_receiver_is_total_eq;
   |}.
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notation.DoubleColon Self "assert_receiver_is_total_eq" := {|
-    Notation.double_colon := assert_receiver_is_total_eq;
-  |}.
   
   Global Instance I 'a : _crate.cmp.Eq.Trait Self := {|
   |}.
@@ -85,10 +78,6 @@ Module Impl__crate_hash_Hash_for_Account.
   
   Global Instance Method_hash : Notation.Dot "hash" := {|
     Notation.dot := hash;
-  |}.
-  Global Instance AssociatedFunction_hash :
-    Notation.DoubleColon Self "hash" := {|
-    Notation.double_colon := hash;
   |}.
   
   Global Instance I 'a : _crate.hash.Hash.Trait Self := {|

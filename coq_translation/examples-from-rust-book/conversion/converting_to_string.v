@@ -28,9 +28,6 @@ Module Impl_fmt_Display_for_Circle.
   Global Instance Method_fmt : Notation.Dot "fmt" := {|
     Notation.dot := fmt;
   |}.
-  Global Instance AssociatedFunction_fmt : Notation.DoubleColon Self "fmt" := {|
-    Notation.double_colon := fmt;
-  |}.
   
   Global Instance I : fmt.Display.Trait Self := {|
     fmt.Display.fmt := fmt;

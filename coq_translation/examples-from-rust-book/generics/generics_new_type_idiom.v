@@ -30,10 +30,6 @@ Module ImplYears.
   Global Instance Method_to_days : Notation.Dot "to_days" := {|
     Notation.dot := to_days;
   |}.
-  Global Instance AssociatedFunction_to_days :
-    Notation.DoubleColon Self "to_days" := {|
-    Notation.double_colon := to_days;
-  |}.
 End ImplYears.
 
 Module ImplDays.
@@ -44,10 +40,6 @@ Module ImplDays.
   
   Global Instance Method_to_years : Notation.Dot "to_years" := {|
     Notation.dot := to_years;
-  |}.
-  Global Instance AssociatedFunction_to_years :
-    Notation.DoubleColon Self "to_years" := {|
-    Notation.double_colon := to_years;
   |}.
 End ImplDays.
 
