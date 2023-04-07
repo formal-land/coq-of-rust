@@ -63,11 +63,12 @@ Notation "e1 .[ e2 ]" := (Notation.dot e2 e1)
 Notation "e1 ::[ e2 ]" := (Notation.double_colon e1 e2)
   (at level 0).
 
-(** A method is also an associated function for its type. *)
+(** A method is also an associated function for its type.
+    [Self] is directly from the [Rust]. So, namely [Self]. *)
 Global Instance AssociatedFunctionFromMethod
-  (type : Set) (name : string) (T : Set)
-  `(Notation.Dot (Kind := string) name (T := type -> T)) :
-  Notation.DoubleColon type name (T := type -> T) := {|
+  (Self : Set) (name : string) (T : Set)
+  `(Notation.Dot (Kind := string) name (T := Self -> T)) :
+  Notation.DoubleColon Self name (T := Self -> T) := {|
   Notation.double_colon := Notation.dot name;
 |}.
 
@@ -144,7 +145,35 @@ Module std.
       Arguments Err {T E} _.
     End Result.
     Definition Result := Result.t.
+
+    Instance result_to_string T E
+      `{string.ToString.Trait T}
+      `{string.ToString.Trait E} : string.ToString.Trait (Result T E) := {|
+      string.ToString.to_string := fun (res : Result T E) => match res with
+                             | Result.Ok t => "Ok (" ++ string.ToString.to_string t ++ ")"
+                             | Result.Err e => "Err (" ++ string.ToString.to_string e ++ ")"
+                                         end
+      |}.
   End result.
+
+  Module ops.
+    Module Add.
+      Class Trait {Output : Set} (Self : Set) : Set := {
+          Output := Output;
+          add : Self -> Self -> Output;
+        }.
+
+      Global Instance Method_add `(Trait) : Notation.Dot "add" := {|
+         Notation.dot := add;
+      |}.
+    End Add.
+  End ops.
+
+  Global Instance add_i32 : ops.Add.Trait i32 := {|
+                                                  ops.Add.add := Z.add;
+                                                |}.
+
+  Definition test (i j : i32) : i32 := i.["add"] j.
 
   Module fmt.
     Parameter Alignment : Set.
