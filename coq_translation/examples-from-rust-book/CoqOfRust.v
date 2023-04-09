@@ -374,6 +374,108 @@ Module std.
   Module io.
   End io.
 
+  Module ops.
+    Module Add.
+      Class Trait {Output : Set} (Self : Set) : Set := {
+        Output := Output;
+        add : Self -> Self -> Output;
+        }.
+      Global Instance Method_add `(Trait) : Notation.Dot "add" := {|
+        Notation.dot := add;
+      |}.
+    End Add.
+
+    Module Sub.
+      Class Trait {Output : Set} (Self : Set) : Set := {
+        Output := Output;
+        sub : Self -> Self -> Output;
+        }.
+      Global Instance Method_sub `(Trait) : Notation.Dot "sub" := {|
+        Notation.dot := sub;
+      |}.
+    End Sub.
+
+    Module Mul.
+      Class Trait {Output : Set} (Self : Set) : Set := {
+        Output := Output;
+        mul : Self -> Self -> Output;
+        }.
+      Global Instance Method_mul `(Trait) : Notation.Dot "mul" := {|
+        Notation.dot := mul;
+      |}.
+    End Mul.
+
+    Module Div.
+      Class Trait {Output : Set} (Self : Set) : Set := {
+        Output := Output;
+        div : Self -> Self -> Output;
+        }.
+      Global Instance Method_div `(Trait) : Notation.Dot "div" := {|
+        Notation.dot := div;
+      |}.
+    End Div.
+
+    Module Rem.
+      Class Trait {Output : Set} (Self : Set) : Set := {
+        Output := Output;
+        rem : Self -> Self -> Output;
+        }.
+      Global Instance Method_add `(Trait) : Notation.Dot "rem" := {|
+        Notation.dot := rem;
+      |}.
+    End Rem.
+
+    Module BitXor.
+      Class Trait {Output : Set} (Self : Set) : Set := {
+        Output := Output;
+        bitxor : Self -> Self -> Output;
+        }.
+      Global Instance Method_bitxor `(Trait) : Notation.Dot "bitxor" := {|
+        Notation.dot := bitxor;
+      |}.
+    End BitXor.
+
+    Module BitAnd.
+      Class Trait {Output : Set} (Self : Set) : Set := {
+        Output := Output;
+        bitand : Self -> Self -> Output;
+        }.
+      Global Instance Method_bitand `(Trait) : Notation.Dot "bitand" := {|
+        Notation.dot := bitand;
+      |}.
+    End BitAnd.
+
+    Module BitOr.
+      Class Trait {Output : Set} (Self : Set) : Set := {
+        Output := Output;
+        bitor : Self -> Self -> Output;
+        }.
+      Global Instance Method_bitor `(Trait) : Notation.Dot "bitor" := {|
+        Notation.dot := bitor;
+      |}.
+    End BitOr.
+
+    Module Shl.
+      Class Trait {Output : Set} (Self : Set) : Set := {
+        Output := Output;
+        shl : Self -> Self -> Output;
+        }.
+      Global Instance Method_shl `(Trait) : Notation.Dot "shl" := {|
+        Notation.dot := shl;
+      |}.
+    End Shl.
+
+    Module Shr.
+      Class Trait {Output : Set} (Self : Set) : Set := {
+        Output := Output;
+        shr : Self -> Self -> Output;
+        }.
+      Global Instance Method_shr `(Trait) : Notation.Dot "shr" := {|
+        Notation.dot := shr;
+      |}.
+    End Shr.
+  End ops.
+
   Module cmp.
     Module Ordering.
       Inductive t : Set :=
@@ -381,6 +483,46 @@ Module std.
       | Grreater : t
       | Equal : t.
     End Ordering.  
+
+    Module PartialEq.
+      Class Trait (Self : Set) : Set := {
+        eq : ref Self -> ref Self -> bool;
+        ne : ref Self -> ref Self -> bool;
+      }.
+
+      Global Instance Method_eq `(Trait) : Notation.Dot "eq" := {| 
+        Notation.dot := eq;
+      |}.
+      Global Instance Method_ne `(Trait) : Notation.Dot "ne" := {| 
+        Notation.dot := ne;
+      |}.
+    End PartialEq.
+
+    Module PartialOrd.
+      Class Trait (Self : Set) : Set := {
+        partial_cmp : ref Self -> ref Self -> option (Ordering.t);
+        lt : ref Self -> ref Self -> bool;
+        le : ref Self -> ref Self -> bool;
+        gt : ref Self -> ref Self -> bool;
+        ge : ref Self -> ref Self -> bool;
+      }.
+
+      Global Instance Method_partial_cmp `(Trait) : Notation.Dot "partial_cmp" := {| 
+        Notation.dot := partial_cmp;
+      |}.
+      Global Instance Method_lt `(Trait) : Notation.Dot "lt" := {| 
+        Notation.dot := lt;
+      |}.
+      Global Instance Method_le `(Trait) : Notation.Dot "le" := {| 
+        Notation.dot := le;
+      |}.
+      Global Instance Method_gt `(Trait) : Notation.Dot "gt" := {| 
+        Notation.dot := gt;
+      |}.
+      Global Instance Method_ge `(Trait) : Notation.Dot "ge" := {| 
+        Notation.dot := ge;
+      |}.
+    End PartialOrd.
   End cmp.
 
 End std.
