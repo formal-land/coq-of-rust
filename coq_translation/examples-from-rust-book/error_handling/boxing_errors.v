@@ -71,7 +71,7 @@ Definition double_first (vec : Vec) : Result :=
   (vec.["first"].["ok_or_else"] (fun  => EmptyVec.["into"])).["and_then"]
     (fun s =>
       (s.["parse"].["map_err"] (fun e => e.["into"])).["map"]
-        (fun i => mul 2 i)).
+        (fun i => 2.["mul"] i)).
 
 Definition print (result : Result) : unit :=
   match result with

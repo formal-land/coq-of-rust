@@ -99,11 +99,11 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "Foo + Bar = "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] (add Foo Bar) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] (Foo.["add"] Bar) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "Bar + Foo = "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] (add Bar Foo) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] (Bar.["add"] Foo) ]) ;;
   tt ;;
   tt.

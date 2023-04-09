@@ -124,7 +124,7 @@ Definition main (_ : unit) : unit :=
     |} in
   match (p.["work_phone_area_code"], Some 61) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

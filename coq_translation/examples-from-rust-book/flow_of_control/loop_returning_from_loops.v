@@ -8,7 +8,7 @@ Definition main (_ : unit) : unit :=
   let result :=
     loop
       assign counter (add counter 1) ;;
-      if (eqb counter 10 : bool) then
+      if (counter.["eq"] 10 : bool) then
         Break ;;
         tt
       else
@@ -17,7 +17,7 @@ Definition main (_ : unit) : unit :=
       loop in
   match (result, 20) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

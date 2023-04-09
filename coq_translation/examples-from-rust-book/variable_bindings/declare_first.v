@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let a_binding := tt in
   let x := 2 in
-  assign a_binding (mul x x) ;;
+  assign a_binding (x.["mul"] x) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]

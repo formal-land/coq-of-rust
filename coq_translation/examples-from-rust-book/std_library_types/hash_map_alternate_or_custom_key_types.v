@@ -32,9 +32,8 @@ Module Impl__crate_cmp_PartialEq_for_Account.
   Definition Self := Account.
   
   Definition eq (self : ref Self) (other : ref Account) : bool :=
-    andb
-      (eqb self.["username"] other.["username"])
-      (eqb self.["password"] other.["password"]).
+    (self.["username"].["eq"] other.["username"]).["andb"]
+      (self.["password"].["eq"] other.["password"]).
   
   Global Instance Method_eq : Notation.Dot "eq" := {|
     Notation.dot := eq;

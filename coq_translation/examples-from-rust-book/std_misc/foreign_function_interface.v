@@ -72,7 +72,7 @@ Module Impl_fmt_Debug_for_Complex.
   Definition Self := Complex.
   
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
-    if (lt self.["im"] 0 (* 0. *) : bool) then
+    if (self.["im"].["lt"] 0 (* 0. *) : bool) then
       f.["write_fmt"]
         (_crate.fmt.Arguments::["new_v1"]
           [ ""; "-"; "i" ]

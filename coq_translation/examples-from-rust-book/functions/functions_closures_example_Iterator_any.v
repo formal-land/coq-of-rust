@@ -11,7 +11,7 @@ Definition main (_ : unit) : unit :=
       [ "2 in vec1: "; "\n" ]
       [
         _crate.fmt.ArgumentV1::["new_display"]
-          (vec1.["iter"].["any"] (fun x => eqb x 2))
+          (vec1.["iter"].["any"] (fun x => x.["eq"] 2))
       ]) ;;
   tt ;;
   _crate.io._print
@@ -19,7 +19,7 @@ Definition main (_ : unit) : unit :=
       [ "2 in vec2: "; "\n" ]
       [
         _crate.fmt.ArgumentV1::["new_display"]
-          (vec2.["into_iter"].["any"] (fun x => eqb x 2))
+          (vec2.["into_iter"].["any"] (fun x => x.["eq"] 2))
       ]) ;;
   tt ;;
   _crate.io._print
@@ -39,7 +39,7 @@ Definition main (_ : unit) : unit :=
       [ "2 in array1: "; "\n" ]
       [
         _crate.fmt.ArgumentV1::["new_display"]
-          (array1.["iter"].["any"] (fun x => eqb x 2))
+          (array1.["iter"].["any"] (fun x => x.["eq"] 2))
       ]) ;;
   tt ;;
   _crate.io._print
@@ -47,7 +47,7 @@ Definition main (_ : unit) : unit :=
       [ "2 in array2: "; "\n" ]
       [
         _crate.fmt.ArgumentV1::["new_display"]
-          (array2.["into_iter"].["any"] (fun x => eqb x 2))
+          (array2.["into_iter"].["any"] (fun x => x.["eq"] 2))
       ]) ;;
   tt ;;
   tt.

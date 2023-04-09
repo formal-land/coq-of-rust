@@ -12,7 +12,7 @@ Definition main (_ : unit) : unit :=
   tt ;;
   loop
     assign count (add count 1) ;;
-    if (eqb count 3 : bool) then
+    if (count.["eq"] 3 : bool) then
       _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "three\n" ] [  ]) ;;
       tt ;;
       Continue ;;
@@ -24,7 +24,7 @@ Definition main (_ : unit) : unit :=
         [ ""; "\n" ]
         [ _crate.fmt.ArgumentV1::["new_display"] count ]) ;;
     tt ;;
-    if (eqb count 5 : bool) then
+    if (count.["eq"] 5 : bool) then
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"] [ "OK, that's enough\n" ] [  ]) ;;
       tt ;;

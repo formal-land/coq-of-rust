@@ -6,10 +6,10 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let vec := Slice::["into_vec"] [ 1; 9; 3; 3; 13; 2 ] in
   let index_of_first_even_number :=
-    vec.["iter"].["position"] (fun x => eqb (rem x 2) 0) in
+    vec.["iter"].["position"] (fun x => (x.["rem"] 2).["eq"] 0) in
   match (index_of_first_even_number, Some 5) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -21,10 +21,10 @@ Definition main (_ : unit) : unit :=
       tt
   end ;;
   let index_of_first_negative_number :=
-    vec.["into_iter"].["position"] (fun x => lt x 0) in
+    vec.["into_iter"].["position"] (fun x => x.["lt"] 0) in
   match (index_of_first_negative_number, None) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

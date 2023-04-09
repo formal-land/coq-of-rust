@@ -29,12 +29,9 @@ Module Impl__crate_cmp_PartialEq_for_PhantomTuple.
   Definition Self := PhantomTuple.
   
   Definition eq (self : ref Self) (other : ref PhantomTuple) : bool :=
-    andb
-      (eqb
-        (IndexedField.get (index := 0) self)
-        (IndexedField.get (index := 0) other))
-      (eqb
-        (IndexedField.get (index := 1) self)
+    ((IndexedField.get (index := 0) self).["eq"]
+        (IndexedField.get (index := 0) other)).["andb"]
+      ((IndexedField.get (index := 1) self).["eq"]
         (IndexedField.get (index := 1) other)).
   
   Global Instance Method_eq : Notation.Dot "eq" := {|
@@ -72,9 +69,8 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct.
   Definition Self := PhantomStruct.
   
   Definition eq (self : ref Self) (other : ref PhantomStruct) : bool :=
-    andb
-      (eqb self.["first"] other.["first"])
-      (eqb self.["phantom"] other.["phantom"]).
+    (self.["first"].["eq"] other.["first"]).["andb"]
+      (self.["phantom"].["eq"] other.["phantom"]).
   
   Global Instance Method_eq : Notation.Dot "eq" := {|
     Notation.dot := eq;

@@ -18,7 +18,7 @@ Definition main (_ : unit) : unit :=
       [
         _crate.fmt.ArgumentV1::["new_display"] nanoseconds;
         _crate.fmt.ArgumentV1::["new_display"] inches;
-        _crate.fmt.ArgumentV1::["new_display"] (add nanoseconds inches)
+        _crate.fmt.ArgumentV1::["new_display"] (nanoseconds.["add"] inches)
       ]) ;;
   tt ;;
   tt.

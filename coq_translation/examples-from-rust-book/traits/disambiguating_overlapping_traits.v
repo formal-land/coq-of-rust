@@ -72,7 +72,7 @@ Definition main (_ : unit) : unit :=
   let username := UsernameWidget.get form in
   match ("rustacean".["to_owned"], username) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -86,7 +86,7 @@ Definition main (_ : unit) : unit :=
   let age := AgeWidget.get form in
   match (28, age) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

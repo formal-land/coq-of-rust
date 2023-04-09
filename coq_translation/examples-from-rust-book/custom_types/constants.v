@@ -7,7 +7,7 @@ Definition LANGUAGE (_ : unit) := "Rust".
 
 Definition THRESHOLD (_ : unit) := 10.
 
-Definition is_big (n : i32) : bool := gt n THRESHOLD.
+Definition is_big (n : i32) : bool := n.["gt"] THRESHOLD.
 
 Definition main (_ : unit) : unit :=
   let n := 16 in

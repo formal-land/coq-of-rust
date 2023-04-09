@@ -54,7 +54,7 @@ Module Impl_Animal_for_Cow.
 End Impl_Animal_for_Cow.
 
 Definition random_animal (random_number : f64) : Box :=
-  if (lt random_number 1 (* 0.5 *) : bool) then
+  if (random_number.["lt"] 1 (* 0.5 *) : bool) then
     Box::["new"] {|  |}
   else
     Box::["new"] {|  |}.

@@ -64,7 +64,7 @@ Module ImplRectangle.
   Definition area (self : ref Self) : f64 :=
     let Point {| Point.x := x1; Point.y := y1; |} := self.["p1"] in
     let Point {| Point.x := x2; Point.y := y2; |} := self.["p2"] in
-    (mul (sub x1 x2) (sub y1 y2)).["abs"].
+    ((x1.["sub"] x2).["mul"] (y1.["sub"] y2)).["abs"].
   
   Global Instance Method_area : Notation.Dot "area" := {|
     Notation.dot := area;
@@ -73,7 +73,8 @@ Module ImplRectangle.
   Definition perimeter (self : ref Self) : f64 :=
     let Point {| Point.x := x1; Point.y := y1; |} := self.["p1"] in
     let Point {| Point.x := x2; Point.y := y2; |} := self.["p2"] in
-    mul 2 (* 2.0 *) (add (sub x1 x2).["abs"] (sub y1 y2).["abs"]).
+    2 (* 2.0 *).["mul"]
+      ((x1.["sub"] x2).["abs"].["add"] (y1.["sub"] y2).["abs"]).
   
   Global Instance Method_perimeter : Notation.Dot "perimeter" := {|
     Notation.dot := perimeter;

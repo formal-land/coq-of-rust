@@ -15,7 +15,7 @@ Definition multiply
   first_number_str.["parse"].["and_then"]
     (fun first_number =>
       second_number_str.["parse"].["map"]
-        (fun second_number => mul first_number second_number)).
+        (fun second_number => first_number.["mul"] second_number)).
 
 Definition print (result : AliasedResult) : unit :=
   match result with

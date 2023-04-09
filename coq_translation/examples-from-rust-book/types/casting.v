@@ -36,7 +36,7 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "1000 mod 256 is : "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (rem 1000 256) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (1000.["rem"] 256) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]

@@ -48,8 +48,7 @@ Module Impl__crate_cmp_PartialEq_for_EvenNumber.
   Definition Self := EvenNumber.
   
   Definition eq (self : ref Self) (other : ref EvenNumber) : bool :=
-    eqb
-      (IndexedField.get (index := 0) self)
+    (IndexedField.get (index := 0) self).["eq"]
       (IndexedField.get (index := 0) other).
   
   Global Instance Method_eq : Notation.Dot "eq" := {|
@@ -67,7 +66,7 @@ Module Impl_TryFrom_for_EvenNumber.
   Definition Error : Set := .
   
   Definition try_from (value : i32) : Result :=
-    if (eqb (rem value 2) 0 : bool) then
+    if ((value.["rem"] 2).["eq"] 0 : bool) then
       Ok (EvenNumber.Build value)
     else
       Err ().
@@ -86,7 +85,7 @@ End Impl_TryFrom_for_EvenNumber.
 Definition main (_ : unit) : unit :=
   match (EvenNumber::["try_from"] 8, Ok (EvenNumber.Build 8)) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -99,7 +98,7 @@ Definition main (_ : unit) : unit :=
   end ;;
   match (EvenNumber::["try_from"] 5, Err ()) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -113,7 +112,7 @@ Definition main (_ : unit) : unit :=
   let result := 8.["try_into"] in
   match (result, Ok (EvenNumber.Build 8)) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -127,7 +126,7 @@ Definition main (_ : unit) : unit :=
   let result := 5.["try_into"] in
   match (result, Err ()) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

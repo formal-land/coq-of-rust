@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Definition double_first (vec : Vec) : i32 :=
   let first := vec.["first"].["unwrap"] in
-  mul 2 first.["parse"].["unwrap"].
+  2.["mul"] first.["parse"].["unwrap"].
 
 Definition main (_ : unit) : unit :=
   let numbers := Slice::["into_vec"] [ "42"; "93"; "18" ] in

@@ -6,11 +6,11 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let x := 5 in
   let y :=
-    let x_squared := mul x x in
-    let x_cube := mul x_squared x in
-    add (add x_cube x_squared) x in
+    let x_squared := x.["mul"] x in
+    let x_cube := x_squared.["mul"] x in
+    (x_cube.["add"] x_squared).["add"] x in
   let z :=
-    mul 2 x ;;
+    2.["mul"] x ;;
     tt in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]

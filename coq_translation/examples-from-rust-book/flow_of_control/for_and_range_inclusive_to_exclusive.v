@@ -10,19 +10,19 @@ Definition main (_ : unit) : unit :=
       match LangItem iter with
       | None => Break
       | Some {| Some.0 := n; |} =>
-        if (eqb (rem n 15) 0 : bool) then
+        if ((n.["rem"] 15).["eq"] 0 : bool) then
           _crate.io._print
             (_crate.fmt.Arguments::["new_v1"] [ "fizzbuzz\n" ] [  ]) ;;
           tt ;;
           tt
         else
-          if (eqb (rem n 3) 0 : bool) then
+          if ((n.["rem"] 3).["eq"] 0 : bool) then
             _crate.io._print
               (_crate.fmt.Arguments::["new_v1"] [ "fizz\n" ] [  ]) ;;
             tt ;;
             tt
           else
-            if (eqb (rem n 5) 0 : bool) then
+            if ((n.["rem"] 5).["eq"] 0 : bool) then
               _crate.io._print
                 (_crate.fmt.Arguments::["new_v1"] [ "buzz\n" ] [  ]) ;;
               tt ;;

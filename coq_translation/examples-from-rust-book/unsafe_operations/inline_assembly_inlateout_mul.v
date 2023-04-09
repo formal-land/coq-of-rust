@@ -12,4 +12,4 @@ Definition mul (a : u64) (b : u64) : u128 :=
   let hi := tt in
   InlineAsm ;;
   tt ;;
-  add (shl (cast hi u128) 64) (cast lo u128).
+  ((cast hi u128).["shl"] 64).["add"] (cast lo u128).

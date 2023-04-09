@@ -10,7 +10,7 @@ Definition main (_ : unit) : unit :=
       match
         ("1i32 + 1 == 2i32",
           "2i32 * 2 == 4i32",
-          andb (eqb (add 1 1) 2) (eqb (mul 2 2) 4))
+          ((1.["add"] 1).["eq"] 2).["andb"] ((2.["mul"] 2).["eq"] 4))
       with
       | args =>
         [
@@ -26,7 +26,7 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ ""; " or "; " is "; "\n" ]
-      match ("true", "false", or true false) with
+      match ("true", "false", true.["or"] false) with
       | args =>
         [
           _crate.fmt.ArgumentV1::["new_debug"]

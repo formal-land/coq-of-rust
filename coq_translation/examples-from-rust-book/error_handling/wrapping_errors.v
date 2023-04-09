@@ -112,7 +112,7 @@ Definition double_first (vec : Vec) : Result :=
     | Break {| Break.0 := residual; |} => Return (LangItem residual)
     | Continue {| Continue.0 := val; |} => val
     end in
-  Ok (mul 2 parsed).
+  Ok (2.["mul"] parsed).
 
 Definition print (result : Result) : unit :=
   match result with

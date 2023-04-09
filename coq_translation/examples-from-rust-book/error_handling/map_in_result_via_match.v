@@ -13,7 +13,7 @@ Definition multiply
   match first_number_str.["parse"] with
   | Ok (first_number) =>
     match second_number_str.["parse"] with
-    | Ok (second_number) => Ok (mul first_number second_number)
+    | Ok (second_number) => Ok (first_number.["mul"] second_number)
     | Err (e) => Err e
     end
   | Err (e) => Err e

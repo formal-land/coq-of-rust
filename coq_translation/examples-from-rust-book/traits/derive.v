@@ -23,8 +23,7 @@ Module Impl__crate_cmp_PartialEq_for_Centimeters.
   Definition Self := Centimeters.
   
   Definition eq (self : ref Self) (other : ref Centimeters) : bool :=
-    eqb
-      (IndexedField.get (index := 0) self)
+    (IndexedField.get (index := 0) self).["eq"]
       (IndexedField.get (index := 0) other).
   
   Global Instance Method_eq : Notation.Dot "eq" := {|
@@ -91,7 +90,7 @@ Module ImplInches.
   
   Definition to_centimeters (self : ref Self) : Centimeters :=
     let Inches (inches) := self in
-    Centimeters.Build (mul (cast inches f64) 3 (* 2.54 *)).
+    Centimeters.Build ((cast inches f64).["mul"] 3 (* 2.54 *)).
   
   Global Instance Method_to_centimeters : Notation.Dot "to_centimeters" := {|
     Notation.dot := to_centimeters;
@@ -117,7 +116,7 @@ Definition main (_ : unit) : unit :=
   tt ;;
   let meter := Centimeters.Build 100 (* 100.0 *) in
   let cmp :=
-    if (lt foot.["to_centimeters"] meter : bool) then
+    if (foot.["to_centimeters"].["lt"] meter : bool) then
       "smaller"
     else
       "bigger" in

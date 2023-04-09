@@ -19,7 +19,7 @@ Module Impl_HasArea_for_Rectangle.
   Definition Self := Rectangle.
   
   Definition area (self : ref Self) : f64 :=
-    mul self.["length"] self.["height"].
+    self.["length"].["mul"] self.["height"].
   
   Global Instance Method_area : Notation.Dot "area" := {|
     Notation.dot := area;

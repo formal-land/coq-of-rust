@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition multiply (first : ref i32) (second : ref i32) : i32 :=
-  mul first second.
+  first.["mul"] second.
 
 Definition choose_first (first : ref i32) (arg : ref i32) : ref i32 := first.
 

@@ -16,7 +16,7 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"]
       [ "I got "; " arguments: "; ".\n" ]
       [
-        _crate.fmt.ArgumentV1::["new_debug"] (sub args.["len"] 1);
+        _crate.fmt.ArgumentV1::["new_debug"] (args.["len"].["sub"] 1);
         _crate.fmt.ArgumentV1::["new_debug"] args[{| RangeFrom.start := 1; |}]
       ]) ;;
   tt ;;

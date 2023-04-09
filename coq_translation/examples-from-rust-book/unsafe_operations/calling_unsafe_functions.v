@@ -12,7 +12,7 @@ Definition main (_ : unit) : unit :=
   let my_slice := slice.from_raw_parts pointer length in
   match (some_vector.["as_slice"], my_slice) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

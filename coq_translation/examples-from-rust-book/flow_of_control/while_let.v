@@ -7,7 +7,7 @@ Definition main (_ : unit) : unit :=
   let optional := Some 0 in
   loop
     (if (let_if Some (i) := optional : bool) then
-      if (gt i 9 : bool) then
+      if (i.["gt"] 9 : bool) then
         _crate.io._print
           (_crate.fmt.Arguments::["new_v1"]
             [ "Greater than 9, quit!\n" ]
@@ -21,7 +21,7 @@ Definition main (_ : unit) : unit :=
             [ "`i` is `"; "`. Try again.\n" ]
             [ _crate.fmt.ArgumentV1::["new_debug"] i ]) ;;
         tt ;;
-        assign optional (Some (add i 1)) ;;
+        assign optional (Some (i.["add"] 1)) ;;
         tt
     else
       Break ;;

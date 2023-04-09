@@ -9,7 +9,7 @@ Definition ParseIntError := ParseIntError.t.
 Definition double_first (vec : Vec) : Result :=
   let opt :=
     vec.["first"].["map"]
-      (fun first => first.["parse"].["map"] (fun n => mul 2 n)) in
+      (fun first => first.["parse"].["map"] (fun n => 2.["mul"] n)) in
   opt.["map_or"] (Ok None) (fun r => r.["map"] Some).
 
 Definition main (_ : unit) : unit :=

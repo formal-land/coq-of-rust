@@ -41,9 +41,8 @@ Module Impl_Contains_for_Container.
       (number_1 : ref i32)
       (number_2 : ref i32)
       : bool :=
-    andb
-      (eqb (IndexedField.get (index := 0) self) number_1)
-      (eqb (IndexedField.get (index := 1) self) number_2).
+    ((IndexedField.get (index := 0) self).["eq"] number_1).["andb"]
+      ((IndexedField.get (index := 1) self).["eq"] number_2).
   
   Global Instance Method_contains : Notation.Dot "contains" := {|
     Notation.dot := contains;
@@ -74,7 +73,7 @@ Definition difference
     `{Contains.Trait A B C}
     (container : ref C)
     : i32 :=
-  sub container.["last"] container.["first"].
+  container.["last"].["sub"] container.["first"].
 
 Definition main (_ : unit) : unit :=
   let number_1 := 3 in

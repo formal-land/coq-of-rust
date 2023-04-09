@@ -30,7 +30,7 @@ Module ImplList.
   
   Definition len (self : ref Self) : u32 :=
     match deref self with
-    | Cons (_, tail) => add 1 tail.["len"]
+    | Cons (_, tail) => 1.["add"] tail.["len"]
     | Nil => 0
     end.
   

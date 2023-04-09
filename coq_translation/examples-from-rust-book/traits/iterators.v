@@ -26,7 +26,7 @@ Module Impl_Iterator_for_Fibonacci.
   Definition next (self : mut_ref Self) : Option :=
     let current := self.["curr"] in
     assign self.["curr"] self.["next"] ;;
-    assign self.["next"] (add current self.["next"]) ;;
+    assign self.["next"] (current.["add"] self.["next"]) ;;
     Some current.
   
   Global Instance Method_next : Notation.Dot "next" := {|

@@ -163,8 +163,7 @@ Module Impl_Add_for_Length.
   
   Definition add (self : Self) (rhs : Length) : Length :=
     Length.Build
-      (add
-        (IndexedField.get (index := 0) self)
+      ((IndexedField.get (index := 0) self).["add"]
         (IndexedField.get (index := 0) rhs))
       PhantomData.
   
@@ -181,8 +180,8 @@ End Impl_Add_for_Length.
 Definition main (_ : unit) : unit :=
   let one_foot := Length.Build 12 (* 12.0 *) PhantomData in
   let one_meter := Length.Build 1000 (* 1000.0 *) PhantomData in
-  let two_feet := add one_foot one_foot in
-  let two_meters := add one_meter one_meter in
+  let two_feet := one_foot.["add"] one_foot in
+  let two_meters := one_meter.["add"] one_meter in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "one foot + one_foot = "; " in\n" ]
