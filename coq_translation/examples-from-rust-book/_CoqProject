@@ -1,2 +1,22 @@
 -R . CoqOfRust
 -arg -impredicative-set
+
+# Files that currently compile
+attributes/dead_code.v
+cargo/concurrent_tests.v
+conversion/converting_to_string.v
+CoqOfRust.v
+expressions/statement.v
+hello_world/hello_world.v
+macro_rules/macro_example.v
+primitives/compound_types.v
+scoping_rules/scoping_rules_borrowing_aliasing.v
+scoping_rules/scoping_rules_lifetimes_elision.v
+scoping_rules/scoping_rules_lifetimes_functions.v
+scoping_rules/scoping_rules_lifetimes.v
+traits/operator_overloading.v
+traits/traits.v
+variable_bindings/freezing.v
+variable_bindings/mutability.v
+variable_bindings/scope.v
+variable_bindings/variable_shadowing.v
