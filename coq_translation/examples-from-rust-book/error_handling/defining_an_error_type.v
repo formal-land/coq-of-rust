@@ -7,7 +7,10 @@ Module fmt := std.fmt.
 
 Definition Result : Set := std.result.Result.
 
-Error StructUnit.
+Module DoubleError.
+  Inductive t : Set := Build.
+End DoubleError.
+Definition DoubleError := DoubleError.t.
 
 Module Impl__crate_fmt_Debug_for_DoubleError.
   Definition Self := DoubleError.
@@ -18,27 +21,27 @@ Module Impl__crate_fmt_Debug_for_DoubleError.
       : _crate.fmt.Result :=
     _crate.fmt.Formatter::["write_str"] f "DoubleError".
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_DoubleError.
 
 Module Impl__crate_clone_Clone_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition clone (self : ref Self) : DoubleError := DoubleError.
+  Definition clone (self : ref Self) : DoubleError := DoubleError.Build.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {|
+  Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
-  |}.
+  }.
   
-  Global Instance I : _crate.clone.Clone.Trait Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
-  |}.
+  }.
 End Impl__crate_clone_Clone_for_DoubleError.
 
 Module Impl_fmt_Display_for_DoubleError.
@@ -50,19 +53,19 @@ Module Impl_fmt_Display_for_DoubleError.
         [ "invalid first item to double" ]
         [  ]).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : fmt.Display.Trait Self := {|
+  Global Instance I : fmt.Display.Trait Self := {
     fmt.Display.fmt := fmt;
-  |}.
+  }.
 End Impl_fmt_Display_for_DoubleError.
 
 Definition double_first (vec : Vec) : Result :=
-  (vec.["first"].["ok_or"] DoubleError).["and_then"]
+  (vec.["first"].["ok_or"] DoubleError.Build).["and_then"]
     (fun s =>
-      (s.["parse"].["map_err"] (fun _ => DoubleError)).["map"]
+      (s.["parse"].["map_err"] (fun _ => DoubleError.Build)).["map"]
         (fun i => 2.["mul"] i)).
 
 Definition print (result : Result) : unit :=

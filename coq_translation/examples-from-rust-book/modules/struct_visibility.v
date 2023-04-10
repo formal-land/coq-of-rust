@@ -9,9 +9,9 @@ Module my.
       contents : T;
     }.
     
-    Global Instance Get_contents : Notation.Dot "contents" := {|
+    Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot '(Build_t x0) := x0;
-    |}.
+    }.
   End OpenBox.
   Definition OpenBox : Set := OpenBox.t.
   
@@ -20,9 +20,9 @@ Module my.
       contents : T;
     }.
     
-    Global Instance Get_contents : Notation.Dot "contents" := {|
+    Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot '(Build_t x0) := x0;
-    |}.
+    }.
   End ClosedBox.
   Definition ClosedBox : Set := ClosedBox.t.
   
@@ -33,9 +33,9 @@ Module my.
       {| ClosedBox.contents := contents; |}.
     
     Global Instance AssociatedFunction_new :
-      Notation.DoubleColon Self "new" := {|
+      Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
-    |}.
+    }.
   End ImplClosedBox.
 End my.
 
@@ -44,9 +44,9 @@ Module OpenBox.
     contents : T;
   }.
   
-  Global Instance Get_contents : Notation.Dot "contents" := {|
+  Global Instance Get_contents : Notation.Dot "contents" := {
     Notation.dot '(Build_t x0) := x0;
-  |}.
+  }.
 End OpenBox.
 Definition OpenBox : Set := OpenBox.t.
 
@@ -55,9 +55,9 @@ Module ClosedBox.
     contents : T;
   }.
   
-  Global Instance Get_contents : Notation.Dot "contents" := {|
+  Global Instance Get_contents : Notation.Dot "contents" := {
     Notation.dot '(Build_t x0) := x0;
-  |}.
+  }.
 End ClosedBox.
 Definition ClosedBox : Set := ClosedBox.t.
 
@@ -67,9 +67,9 @@ Module ImplClosedBox_2.
   Definition new (contents : T) : ClosedBox :=
     {| ClosedBox.contents := contents; |}.
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {|
+  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
-  |}.
+  }.
 End ImplClosedBox_2.
 
 Definition main (_ : unit) : unit :=

@@ -10,9 +10,9 @@ Module TryInto := std.convert.TryInto.
 Module EvenNumber.
   Inductive t : Set := Build (_ : i32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0) := x0;
-  |}.
+  }.
 End EvenNumber.
 Definition EvenNumber := EvenNumber.t.
 
@@ -28,13 +28,13 @@ Module Impl__crate_fmt_Debug_for_EvenNumber.
       "EvenNumber"
       (IndexedField.get (index := 0) self).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_EvenNumber.
 
 Module Impl__crate_marker_StructuralPartialEq_for_EvenNumber.
@@ -51,13 +51,13 @@ Module Impl__crate_cmp_PartialEq_for_EvenNumber.
     (IndexedField.get (index := 0) self).["eq"]
       (IndexedField.get (index := 0) other).
   
-  Global Instance Method_eq : Notation.Dot "eq" := {|
+  Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
-  |}.
+  }.
   
-  Global Instance I : _crate.cmp.PartialEq.Trait Self := {|
+  Global Instance I : _crate.cmp.PartialEq.Trait Self := {
     _crate.cmp.PartialEq.eq := eq;
-  |}.
+  }.
 End Impl__crate_cmp_PartialEq_for_EvenNumber.
 
 Module Impl_TryFrom_for_EvenNumber.
@@ -72,14 +72,13 @@ Module Impl_TryFrom_for_EvenNumber.
       Err ().
   
   Global Instance AssociatedFunction_try_from :
-    Notation.DoubleColon Self "try_from" := {|
+    Notation.DoubleColon Self "try_from" := {
     Notation.double_colon := try_from;
-  |}.
+  }.
   
-  Global Instance I : TryFrom.Trait i32 Self := {|
-    TryFrom.Error := Error;
+  Global Instance I : TryFrom.Trait Self i32 := {
     TryFrom.try_from := try_from;
-  |}.
+  }.
 End Impl_TryFrom_for_EvenNumber.
 
 Definition main (_ : unit) : unit :=

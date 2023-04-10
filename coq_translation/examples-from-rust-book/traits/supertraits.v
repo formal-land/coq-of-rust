@@ -8,9 +8,9 @@ Module Person.
     name : (ref Self) -> String;
   }.
   
-  Global Instance Method_name `(Trait) : Notation.Dot "name" := {|
+  Global Instance Method_name `(Trait) : Notation.Dot "name" := {
     Notation.dot := name;
-  |}.
+  }.
 End Person.
 
 Module Student.
@@ -18,9 +18,9 @@ Module Student.
     university : (ref Self) -> String;
   }.
   
-  Global Instance Method_university `(Trait) : Notation.Dot "university" := {|
+  Global Instance Method_university `(Trait) : Notation.Dot "university" := {
     Notation.dot := university;
-  |}.
+  }.
 End Student.
 
 Module Programmer.
@@ -29,9 +29,9 @@ Module Programmer.
   }.
   
   Global Instance Method_fav_language `(Trait)
-    : Notation.Dot "fav_language" := {|
+    : Notation.Dot "fav_language" := {
     Notation.dot := fav_language;
-  |}.
+  }.
 End Programmer.
 
 Module CompSciStudent.
@@ -40,9 +40,9 @@ Module CompSciStudent.
   }.
   
   Global Instance Method_git_username `(Trait)
-    : Notation.Dot "git_username" := {|
+    : Notation.Dot "git_username" := {
     Notation.dot := git_username;
-  |}.
+  }.
 End CompSciStudent.
 
 Definition comp_sci_student_greeting (student : ref TraitObject) : String :=

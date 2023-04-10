@@ -241,8 +241,8 @@ Definition main (_ : unit) : unit :=
 Module Structure.
   Inductive t : Set := Build (_ : i32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0) := x0;
-  |}.
+  }.
 End Structure.
 Definition Structure := Structure.t.

@@ -6,9 +6,9 @@ Import Root.std.prelude.rust_2015.
 Module Centimeters.
   Inductive t : Set := Build (_ : f64).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0) := x0;
-  |}.
+  }.
 End Centimeters.
 Definition Centimeters := Centimeters.t.
 
@@ -26,13 +26,13 @@ Module Impl__crate_cmp_PartialEq_for_Centimeters.
     (IndexedField.get (index := 0) self).["eq"]
       (IndexedField.get (index := 0) other).
   
-  Global Instance Method_eq : Notation.Dot "eq" := {|
+  Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
-  |}.
+  }.
   
-  Global Instance I : _crate.cmp.PartialEq.Trait Self := {|
+  Global Instance I : _crate.cmp.PartialEq.Trait Self := {
     _crate.cmp.PartialEq.eq := eq;
-  |}.
+  }.
 End Impl__crate_cmp_PartialEq_for_Centimeters.
 
 Module Impl__crate_cmp_PartialOrd_for_Centimeters.
@@ -46,21 +46,21 @@ Module Impl__crate_cmp_PartialOrd_for_Centimeters.
       (IndexedField.get (index := 0) self)
       (IndexedField.get (index := 0) other).
   
-  Global Instance Method_partial_cmp : Notation.Dot "partial_cmp" := {|
+  Global Instance Method_partial_cmp : Notation.Dot "partial_cmp" := {
     Notation.dot := partial_cmp;
-  |}.
+  }.
   
-  Global Instance I : _crate.cmp.PartialOrd.Trait Self := {|
+  Global Instance I : _crate.cmp.PartialOrd.Trait Self := {
     _crate.cmp.PartialOrd.partial_cmp := partial_cmp;
-  |}.
+  }.
 End Impl__crate_cmp_PartialOrd_for_Centimeters.
 
 Module Inches.
   Inductive t : Set := Build (_ : i32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0) := x0;
-  |}.
+  }.
 End Inches.
 Definition Inches := Inches.t.
 
@@ -76,13 +76,13 @@ Module Impl__crate_fmt_Debug_for_Inches.
       "Inches"
       (IndexedField.get (index := 0) self).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Inches.
 
 Module ImplInches.
@@ -92,17 +92,17 @@ Module ImplInches.
     let Inches (inches) := self in
     Centimeters.Build ((cast inches f64).["mul"] 3 (* 2.54 *)).
   
-  Global Instance Method_to_centimeters : Notation.Dot "to_centimeters" := {|
+  Global Instance Method_to_centimeters : Notation.Dot "to_centimeters" := {
     Notation.dot := to_centimeters;
-  |}.
+  }.
 End ImplInches.
 
 Module Seconds.
   Inductive t : Set := Build (_ : i32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0) := x0;
-  |}.
+  }.
 End Seconds.
 Definition Seconds := Seconds.t.
 

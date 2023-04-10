@@ -8,9 +8,9 @@ Module Borrowed.
     x : ref i32;
   }.
   
-  Global Instance Get_x : Notation.Dot "x" := {|
+  Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot '(Build_t x0) := x0;
-  |}.
+  }.
 End Borrowed.
 Definition Borrowed : Set := Borrowed.t.
 
@@ -27,13 +27,13 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
       "x"
       self.["x"].
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I 'a : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Borrowed.
 
 Module Impl_Default_for_Borrowed.
@@ -42,13 +42,13 @@ Module Impl_Default_for_Borrowed.
   Definition default (_ : unit) : Self := {| Self.x := 10; |}.
   
   Global Instance AssociatedFunction_default :
-    Notation.DoubleColon Self "default" := {|
+    Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
-  |}.
+  }.
   
-  Global Instance I 'a : Default.Trait Self := {|
+  Global Instance I : Default.Trait Self := {
     Default.default := default;
-  |}.
+  }.
 End Impl_Default_for_Borrowed.
 
 Definition main (_ : unit) : unit :=

@@ -5,11 +5,20 @@ Import Root.std.prelude.rust_2015.
 
 Module ops := std.ops.
 
-Error StructUnit.
+Module Foo.
+  Inductive t : Set := Build.
+End Foo.
+Definition Foo := Foo.t.
 
-Error StructUnit.
+Module Bar.
+  Inductive t : Set := Build.
+End Bar.
+Definition Bar := Bar.t.
 
-Error StructUnit.
+Module FooBar.
+  Inductive t : Set := Build.
+End FooBar.
+Definition FooBar := FooBar.t.
 
 Module Impl__crate_fmt_Debug_for_FooBar.
   Definition Self := FooBar.
@@ -20,16 +29,19 @@ Module Impl__crate_fmt_Debug_for_FooBar.
       : _crate.fmt.Result :=
     _crate.fmt.Formatter::["write_str"] f "FooBar".
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_FooBar.
 
-Error StructUnit.
+Module BarFoo.
+  Inductive t : Set := Build.
+End BarFoo.
+Definition BarFoo := BarFoo.t.
 
 Module Impl__crate_fmt_Debug_for_BarFoo.
   Definition Self := BarFoo.
@@ -40,13 +52,13 @@ Module Impl__crate_fmt_Debug_for_BarFoo.
       : _crate.fmt.Result :=
     _crate.fmt.Formatter::["write_str"] f "BarFoo".
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_BarFoo.
 
 Module Impl_ops_Add_for_Foo.
@@ -60,16 +72,15 @@ Module Impl_ops_Add_for_Foo.
         [ "> Foo.add(Bar) was called\n" ]
         [  ]) ;;
     tt ;;
-    FooBar.
+    FooBar.Build.
   
-  Global Instance Method_add : Notation.Dot "add" := {|
+  Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
-  |}.
+  }.
   
-  Global Instance I : ops.Add.Trait Bar Self := {|
-    ops.Add.Output := Output;
+  Global Instance I : ops.Add.Trait Self (Some Bar) := {
     ops.Add.add := add;
-  |}.
+  }.
 End Impl_ops_Add_for_Foo.
 
 Module Impl_ops_Add_for_Bar.
@@ -83,27 +94,26 @@ Module Impl_ops_Add_for_Bar.
         [ "> Bar.add(Foo) was called\n" ]
         [  ]) ;;
     tt ;;
-    BarFoo.
+    BarFoo.Build.
   
-  Global Instance Method_add : Notation.Dot "add" := {|
+  Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
-  |}.
+  }.
   
-  Global Instance I : ops.Add.Trait Foo Self := {|
-    ops.Add.Output := Output;
+  Global Instance I : ops.Add.Trait Self (Some Foo) := {
     ops.Add.add := add;
-  |}.
+  }.
 End Impl_ops_Add_for_Bar.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "Foo + Bar = "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] (Foo.["add"] Bar) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] (Foo.Build.["add"] Bar.Build) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "Bar + Foo = "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] (Bar.["add"] Foo) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] (Bar.Build.["add"] Foo.Build) ]) ;;
   tt ;;
   tt.

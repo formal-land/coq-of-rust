@@ -22,7 +22,7 @@ Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
     | ImplSelf.Subtract => x.["sub"] y
     end.
   
-  Global Instance Method_run : Notation.Dot "run" := {|
+  Global Instance Method_run : Notation.Dot "run" := {
     Notation.dot := run;
-  |}.
+  }.
 End ImplVeryVerboseEnumOfThingsToDoWithNumbers.

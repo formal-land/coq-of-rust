@@ -31,8 +31,8 @@ jobs:
     # - name: Compile Coq translations
     #   run: |
     #     cd coq_translation/examples-from-rust-book ;
-    #     coqc -R . CoqOfRust CoqOfRust.v ;
+    #     coqc -impredicative-set -R . CoqOfRust CoqOfRust.v ;
     #     for f in `find . -name "*.v" |sort` ; do
-    #       coqc -R . CoqOfRust $f ;
+    #       coqc -impredicative-set -R . CoqOfRust $f ;
     #     done ;
     #     cd ../..

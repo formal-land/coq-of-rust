@@ -34,13 +34,13 @@ Module Impl__crate_fmt_Debug_for_DoubleError.
       _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Parse" __self_0
     end.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_DoubleError.
 
 Module Impl_fmt_Display_for_DoubleError.
@@ -60,13 +60,13 @@ Module Impl_fmt_Display_for_DoubleError.
           [  ])
     end.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : fmt.Display.Trait Self := {|
+  Global Instance I : fmt.Display.Trait Self := {
     fmt.Display.fmt := fmt;
-  |}.
+  }.
 End Impl_fmt_Display_for_DoubleError.
 
 Module Impl_error_Error_for_DoubleError.
@@ -78,12 +78,12 @@ Module Impl_error_Error_for_DoubleError.
     | DoubleError.Parse (e) => Some e
     end.
   
-  Global Instance Method_source : Notation.Dot "source" := {|
+  Global Instance Method_source : Notation.Dot "source" := {
     Notation.dot := source;
-  |}.
+  }.
   
-  Global Instance I : error.Error.Trait Self := {|
-  |}.
+  Global Instance I : error.Error.Trait Self := {
+  }.
 End Impl_error_Error_for_DoubleError.
 
 Module Impl_From_for_DoubleError.
@@ -92,13 +92,13 @@ Module Impl_From_for_DoubleError.
   Definition from (err : ParseIntError) : DoubleError := DoubleError.Parse err.
   
   Global Instance AssociatedFunction_from :
-    Notation.DoubleColon Self "from" := {|
+    Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
-  |}.
+  }.
   
-  Global Instance I : From.Trait ParseIntError Self := {|
+  Global Instance I : From.Trait Self ParseIntError := {
     From.from := from;
-  |}.
+  }.
 End Impl_From_for_DoubleError.
 
 Definition double_first (vec : Vec) : Result :=

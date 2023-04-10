@@ -3,11 +3,20 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Error StructUnit.
+Module Cardinal.
+  Inductive t : Set := Build.
+End Cardinal.
+Definition Cardinal := Cardinal.t.
 
-Error StructUnit.
+Module BlueJay.
+  Inductive t : Set := Build.
+End BlueJay.
+Definition BlueJay := BlueJay.t.
 
-Error StructUnit.
+Module Turkey.
+  Inductive t : Set := Build.
+End Turkey.
+Definition Turkey := Turkey.t.
 
 Module Red.
   Unset Primitive Projections.
@@ -40,9 +49,9 @@ Definition red {T : Set} `{Red.Trait T} (arg : ref T) : ref str := "red".
 Definition blue {T : Set} `{Blue.Trait T} (arg : ref T) : ref str := "blue".
 
 Definition main (_ : unit) : unit :=
-  let cardinal := Cardinal in
-  let blue_jay := BlueJay in
-  let _turkey := Turkey in
+  let cardinal := Cardinal.Build in
+  let blue_jay := BlueJay.Build in
+  let _turkey := Turkey.Build in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "A cardinal is "; "\n" ]

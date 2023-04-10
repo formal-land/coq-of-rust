@@ -24,21 +24,21 @@ Module Impl__crate_fmt_Debug_for_Food.
     | Food.Potato => _crate.fmt.Formatter::["write_str"] f "Potato"
     end.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Food.
 
 Module Peeled.
   Inductive t : Set := Build (_ : Food).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0) := x0;
-  |}.
+  }.
 End Peeled.
 Definition Peeled := Peeled.t.
 
@@ -54,21 +54,21 @@ Module Impl__crate_fmt_Debug_for_Peeled.
       "Peeled"
       (IndexedField.get (index := 0) self).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Peeled.
 
 Module Chopped.
   Inductive t : Set := Build (_ : Food).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0) := x0;
-  |}.
+  }.
 End Chopped.
 Definition Chopped := Chopped.t.
 
@@ -84,21 +84,21 @@ Module Impl__crate_fmt_Debug_for_Chopped.
       "Chopped"
       (IndexedField.get (index := 0) self).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Chopped.
 
 Module Cooked.
   Inductive t : Set := Build (_ : Food).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0) := x0;
-  |}.
+  }.
 End Cooked.
 Definition Cooked := Cooked.t.
 
@@ -114,13 +114,13 @@ Module Impl__crate_fmt_Debug_for_Cooked.
       "Cooked"
       (IndexedField.get (index := 0) self).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Cooked.
 
 Definition peel (food : Option) : Option :=

@@ -28,13 +28,13 @@ Module Impl__crate_fmt_Debug_for_Fruit.
     | Fruit.Lemon => _crate.fmt.Formatter::["write_str"] f "Lemon"
     end.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Fruit.
 
 Definition main (_ : unit) : unit :=

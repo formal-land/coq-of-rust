@@ -10,15 +10,15 @@ Module Point.
     z : i32;
   }.
   
-  Global Instance Get_x : Notation.Dot "x" := {|
+  Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot '(Build_t x0 _ _) := x0;
-  |}.
-  Global Instance Get_y : Notation.Dot "y" := {|
+  }.
+  Global Instance Get_y : Notation.Dot "y" := {
     Notation.dot '(Build_t _ x1 _) := x1;
-  |}.
-  Global Instance Get_z : Notation.Dot "z" := {|
+  }.
+  Global Instance Get_z : Notation.Dot "z" := {
     Notation.dot '(Build_t _ _ x2) := x2;
-  |}.
+  }.
 End Point.
 Definition Point : Set := Point.t.
 

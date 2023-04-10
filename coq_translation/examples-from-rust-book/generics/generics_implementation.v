@@ -8,9 +8,9 @@ Module Val.
     val : f64;
   }.
   
-  Global Instance Get_val : Notation.Dot "val" := {|
+  Global Instance Get_val : Notation.Dot "val" := {
     Notation.dot '(Build_t x0) := x0;
-  |}.
+  }.
 End Val.
 Definition Val : Set := Val.t.
 
@@ -19,9 +19,9 @@ Module GenVal.
     gen_val : T;
   }.
   
-  Global Instance Get_gen_val : Notation.Dot "gen_val" := {|
+  Global Instance Get_gen_val : Notation.Dot "gen_val" := {
     Notation.dot '(Build_t x0) := x0;
-  |}.
+  }.
 End GenVal.
 Definition GenVal : Set := GenVal.t.
 
@@ -30,9 +30,9 @@ Module ImplVal.
   
   Definition value (self : ref Self) : ref f64 := self.["val"].
   
-  Global Instance Method_value : Notation.Dot "value" := {|
+  Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
-  |}.
+  }.
 End ImplVal.
 
 Module ImplGenVal.
@@ -40,9 +40,9 @@ Module ImplGenVal.
   
   Definition value (self : ref Self) : ref T := self.["gen_val"].
   
-  Global Instance Method_value : Notation.Dot "value" := {|
+  Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
-  |}.
+  }.
 End ImplGenVal.
 
 Definition main (_ : unit) : unit :=

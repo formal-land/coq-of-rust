@@ -6,9 +6,9 @@ Import Root.std.prelude.rust_2015.
 Module Borrowed.
   Inductive t : Set := Build (_ : ref i32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0) := x0;
-  |}.
+  }.
 End Borrowed.
 Definition Borrowed := Borrowed.t.
 
@@ -24,13 +24,13 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
       "Borrowed"
       (IndexedField.get (index := 0) self).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I 'a : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Borrowed.
 
 Module NamedBorrowed.
@@ -39,12 +39,12 @@ Module NamedBorrowed.
     y : ref i32;
   }.
   
-  Global Instance Get_x : Notation.Dot "x" := {|
+  Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_y : Notation.Dot "y" := {|
+  }.
+  Global Instance Get_y : Notation.Dot "y" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End NamedBorrowed.
 Definition NamedBorrowed : Set := NamedBorrowed.t.
 
@@ -63,13 +63,13 @@ Module Impl__crate_fmt_Debug_for_NamedBorrowed.
       "y"
       self.["y"].
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I 'a : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_NamedBorrowed.
 
 Module Either.
@@ -93,13 +93,13 @@ Module Impl__crate_fmt_Debug_for_Either.
       _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Ref" __self_0
     end.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I 'a : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Either.
 
 Definition main (_ : unit) : unit :=

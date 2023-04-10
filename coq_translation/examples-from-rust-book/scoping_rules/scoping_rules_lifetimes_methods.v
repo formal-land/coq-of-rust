@@ -6,9 +6,9 @@ Import Root.std.prelude.rust_2015.
 Module Owner.
   Inductive t : Set := Build (_ : i32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0) := x0;
-  |}.
+  }.
 End Owner.
 Definition Owner := Owner.t.
 
@@ -21,9 +21,9 @@ Module ImplOwner.
       (add (IndexedField.get (index := 0) self) 1) ;;
     tt.
   
-  Global Instance Method_add_one : Notation.Dot "add_one" := {|
+  Global Instance Method_add_one : Notation.Dot "add_one" := {
     Notation.dot := add_one;
-  |}.
+  }.
   
   Definition print (self : ref Self) :=
     _crate.io._print
@@ -36,9 +36,9 @@ Module ImplOwner.
     tt ;;
     tt.
   
-  Global Instance Method_print : Notation.Dot "print" := {|
+  Global Instance Method_print : Notation.Dot "print" := {
     Notation.dot := print;
-  |}.
+  }.
 End ImplOwner.
 
 Definition main (_ : unit) : unit :=

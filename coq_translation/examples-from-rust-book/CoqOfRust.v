@@ -67,9 +67,15 @@ Notation "e1 ::[ e2 ]" := (Notation.double_colon e1 e2)
 Global Instance AssociatedFunctionFromMethod
   (type : Set) (name : string) (T : Set)
   `(Notation.Dot (Kind := string) name (T := type -> T)) :
-  Notation.DoubleColon type name (T := type -> T) := {|
+  Notation.DoubleColon type name (T := type -> T) := {
   Notation.double_colon := Notation.dot name;
-|}.
+}.
+
+Definition defaultType (T : option Set) (Default : Set) : Set :=
+  match T with
+  | Some T => T
+  | None => Default
+  end.
 
 Parameter axiom : forall {A : Set}, A.
 
@@ -129,9 +135,9 @@ Module std.
         to_string : ref Self -> String;
       }.
 
-      Global Instance Method_to_string `(Trait) : Notation.Dot "to_string" := {|
+      Global Instance Method_to_string `(Trait) : Notation.Dot "to_string" := {
         Notation.dot := to_string;
-      |}.
+      }.
     End ToString.
   End string.
 
@@ -165,15 +171,15 @@ Module std.
         write_fmt : mut_ref Self -> Arguments -> Result;
       }.
 
-      Global Instance Method_write_str `(Trait) : Notation.Dot "write_str" := {|
+      Global Instance Method_write_str `(Trait) : Notation.Dot "write_str" := {
         Notation.dot := write_str;
-      |}.
-      Global Instance Method_write_char `(Trait) : Notation.Dot "write_char" := {|
+      }.
+      Global Instance Method_write_char `(Trait) : Notation.Dot "write_char" := {
         Notation.dot := write_char;
-      |}.
-      Global Instance Method_write_fmt `(Trait) : Notation.Dot "write_fmt" := {|
+      }.
+      Global Instance Method_write_fmt `(Trait) : Notation.Dot "write_fmt" := {
         Notation.dot := write_fmt;
-      |}.
+      }.
     End Write.
 
     Module Formatter.
@@ -185,9 +191,9 @@ Module std.
       Parameter new : forall {W : Set} `{Write.Trait W}, mut_ref W -> Formatter.
 
       Global Instance Formatter_new {W : Set} `{Write.Trait W} :
-        Notation.DoubleColon Formatter "new" := {|
+        Notation.DoubleColon Formatter "new" := {
         Notation.double_colon := new;
-      |}.
+      }.
     End ImplFormatter.
 
     Module Display.
@@ -261,81 +267,81 @@ Module std.
         ref T -> (ref T -> mut_ref Formatter -> Result) -> Self.
 
       Global Instance ArgumentV1_new {T : Set} :
-        Notation.DoubleColon ArgumentV1 "new" := {|
+        Notation.DoubleColon ArgumentV1 "new" := {
         Notation.double_colon := new (T := T);
-      |}.
+      }.
 
       Parameter new_display :
         forall {T : Set} `{Display.Trait T}, ref T -> Self.
 
       Global Instance ArgumentV1_new_display {T : Set} `{Display.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_display" := {|
+        Notation.DoubleColon ArgumentV1 "new_display" := {
         Notation.double_colon := new_display (T := T);
-      |}.
+      }.
 
       Parameter new_debug :
         forall {T : Set} `{Debug.Trait T}, ref T -> Self.
 
       Global Instance ArgumentV1_new_debug {T : Set} `{Debug.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_debug" := {|
+        Notation.DoubleColon ArgumentV1 "new_debug" := {
         Notation.double_colon := new_debug (T := T);
-      |}.
+      }.
 
       Parameter new_octal :
         forall {T : Set} `{Octal.Trait T}, ref T -> Self.
 
       Global Instance ArgumentV1_new_octal {T : Set} `{Octal.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_octal" := {|
+        Notation.DoubleColon ArgumentV1 "new_octal" := {
         Notation.double_colon := new_octal (T := T);
-      |}.
+      }.
 
       Parameter new_lower_hex :
         forall {T : Set} `{LowerHex.Trait T}, ref T -> Self.
 
       Global Instance ArgumentV1_new_lower_hex {T : Set} `{LowerHex.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_lower_hex" := {|
+        Notation.DoubleColon ArgumentV1 "new_lower_hex" := {
         Notation.double_colon := new_lower_hex (T := T);
-      |}.
+      }.
 
       Parameter new_upper_hex :
         forall {T : Set} `{UpperHex.Trait T}, ref T -> Self.
 
       Global Instance ArgumentV1_new_upper_hex {T : Set} `{UpperHex.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_upper_hex" := {|
+        Notation.DoubleColon ArgumentV1 "new_upper_hex" := {
         Notation.double_colon := new_upper_hex (T := T);
-      |}.
+      }.
 
       Parameter new_pointer :
         forall {T : Set} `{Pointer.Trait T}, ref T -> Self.
 
       Global Instance ArgumentV1_new_pointer {T : Set} `{Pointer.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_pointer" := {|
+        Notation.DoubleColon ArgumentV1 "new_pointer" := {
         Notation.double_colon := new_pointer (T := T);
-      |}.
+      }.
 
       Parameter new_binary :
         forall {T : Set} `{Binary.Trait T}, ref T -> Self.
 
       Global Instance ArgumentV1_new_binary {T : Set} `{Binary.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_binary" := {|
+        Notation.DoubleColon ArgumentV1 "new_binary" := {
         Notation.double_colon := new_binary (T := T);
-      |}.
+      }.
 
       Parameter new_lower_exp :
         forall {T : Set} `{LowerExp.Trait T}, ref T -> Self.
 
       Global Instance ArgumentV1_new_lower_exp {T : Set} `{LowerExp.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_lower_exp" := {|
+        Notation.DoubleColon ArgumentV1 "new_lower_exp" := {
         Notation.double_colon := new_lower_exp (T := T);
-      |}.
+      }.
 
       Parameter new_upper_exp :
         forall {T : Set} `{UpperExp.Trait T}, ref T -> Self.
 
       Global Instance ArgumentV1_new_upper_exp {T : Set} `{UpperExp.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_upper_exp" := {|
+        Notation.DoubleColon ArgumentV1 "new_upper_exp" := {
         Notation.double_colon := new_upper_exp (T := T);
-      |}.
+      }.
     End ImplArgumentV1.
 
     Module ImplArguments.
@@ -343,9 +349,9 @@ Module std.
         ref (list (ref str)) -> ref (list ArgumentV1) -> Arguments.
 
       Global Instance Arguments_new_v1 :
-        Notation.DoubleColon Arguments "new_v1" := {|
+        Notation.DoubleColon Arguments "new_v1" := {
         Notation.double_colon := new_v1;
-      |}.
+      }.
     End ImplArguments.
 
     Global Instance Write_for_Formatter : Write.Trait Formatter.
@@ -376,13 +382,17 @@ Module std.
 
   Module ops.
     Module Add.
-      Class Trait {Output : Set} (Self : Set) : Set := {
+      Global Unset Primitive Projections.
+
+      Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
-        add : Self -> Self -> Output;
-        }.
-      Global Instance Method_add `(Trait) : Notation.Dot "add" := {|
+        Rhs := defaultType Rhs Self;
+        add : Self -> Rhs -> Output;
+      }.
+
+      Global Instance Method_add `(Trait) : Notation.Dot "add" := {
         Notation.dot := add;
-      |}.
+      }.
     End Add.
 
     Module Sub.
@@ -390,9 +400,9 @@ Module std.
         Output := Output;
         sub : Self -> Self -> Output;
         }.
-      Global Instance Method_sub `(Trait) : Notation.Dot "sub" := {|
+      Global Instance Method_sub `(Trait) : Notation.Dot "sub" := {
         Notation.dot := sub;
-      |}.
+      }.
     End Sub.
 
     Module Mul.
@@ -400,9 +410,9 @@ Module std.
         Output := Output;
         mul : Self -> Self -> Output;
         }.
-      Global Instance Method_mul `(Trait) : Notation.Dot "mul" := {|
+      Global Instance Method_mul `(Trait) : Notation.Dot "mul" := {
         Notation.dot := mul;
-      |}.
+      }.
     End Mul.
 
     Module Div.
@@ -410,9 +420,9 @@ Module std.
         Output := Output;
         div : Self -> Self -> Output;
         }.
-      Global Instance Method_div `(Trait) : Notation.Dot "div" := {|
+      Global Instance Method_div `(Trait) : Notation.Dot "div" := {
         Notation.dot := div;
-      |}.
+      }.
     End Div.
 
     Module Rem.
@@ -420,9 +430,9 @@ Module std.
         Output := Output;
         rem : Self -> Self -> Output;
         }.
-      Global Instance Method_add `(Trait) : Notation.Dot "rem" := {|
+      Global Instance Method_add `(Trait) : Notation.Dot "rem" := {
         Notation.dot := rem;
-      |}.
+      }.
     End Rem.
 
     Module BitXor.
@@ -430,9 +440,9 @@ Module std.
         Output := Output;
         bitxor : Self -> Self -> Output;
         }.
-      Global Instance Method_bitxor `(Trait) : Notation.Dot "bitxor" := {|
+      Global Instance Method_bitxor `(Trait) : Notation.Dot "bitxor" := {
         Notation.dot := bitxor;
-      |}.
+      }.
     End BitXor.
 
     Module BitAnd.
@@ -440,9 +450,9 @@ Module std.
         Output := Output;
         bitand : Self -> Self -> Output;
         }.
-      Global Instance Method_bitand `(Trait) : Notation.Dot "bitand" := {|
+      Global Instance Method_bitand `(Trait) : Notation.Dot "bitand" := {
         Notation.dot := bitand;
-      |}.
+      }.
     End BitAnd.
 
     Module BitOr.
@@ -450,9 +460,9 @@ Module std.
         Output := Output;
         bitor : Self -> Self -> Output;
         }.
-      Global Instance Method_bitor `(Trait) : Notation.Dot "bitor" := {|
+      Global Instance Method_bitor `(Trait) : Notation.Dot "bitor" := {
         Notation.dot := bitor;
-      |}.
+      }.
     End BitOr.
 
     Module Shl.
@@ -460,9 +470,9 @@ Module std.
         Output := Output;
         shl : Self -> Self -> Output;
         }.
-      Global Instance Method_shl `(Trait) : Notation.Dot "shl" := {|
+      Global Instance Method_shl `(Trait) : Notation.Dot "shl" := {
         Notation.dot := shl;
-      |}.
+      }.
     End Shl.
 
     Module Shr.
@@ -470,9 +480,9 @@ Module std.
         Output := Output;
         shr : Self -> Self -> Output;
         }.
-      Global Instance Method_shr `(Trait) : Notation.Dot "shr" := {|
+      Global Instance Method_shr `(Trait) : Notation.Dot "shr" := {
         Notation.dot := shr;
-      |}.
+      }.
     End Shr.
   End ops.
 
@@ -490,12 +500,12 @@ Module std.
         ne : ref Self -> ref Self -> bool;
       }.
 
-      Global Instance Method_eq `(Trait) : Notation.Dot "eq" := {| 
+      Global Instance Method_eq `(Trait) : Notation.Dot "eq" := { 
         Notation.dot := eq;
-      |}.
-      Global Instance Method_ne `(Trait) : Notation.Dot "ne" := {| 
+      }.
+      Global Instance Method_ne `(Trait) : Notation.Dot "ne" := { 
         Notation.dot := ne;
-      |}.
+      }.
     End PartialEq.
 
     Module PartialOrd.
@@ -507,21 +517,21 @@ Module std.
         ge : ref Self -> ref Self -> bool;
       }.
 
-      Global Instance Method_partial_cmp `(Trait) : Notation.Dot "partial_cmp" := {| 
+      Global Instance Method_partial_cmp `(Trait) : Notation.Dot "partial_cmp" := { 
         Notation.dot := partial_cmp;
-      |}.
-      Global Instance Method_lt `(Trait) : Notation.Dot "lt" := {| 
+      }.
+      Global Instance Method_lt `(Trait) : Notation.Dot "lt" := { 
         Notation.dot := lt;
-      |}.
-      Global Instance Method_le `(Trait) : Notation.Dot "le" := {| 
+      }.
+      Global Instance Method_le `(Trait) : Notation.Dot "le" := { 
         Notation.dot := le;
-      |}.
-      Global Instance Method_gt `(Trait) : Notation.Dot "gt" := {| 
+      }.
+      Global Instance Method_gt `(Trait) : Notation.Dot "gt" := { 
         Notation.dot := gt;
-      |}.
-      Global Instance Method_ge `(Trait) : Notation.Dot "ge" := {| 
+      }.
+      Global Instance Method_ge `(Trait) : Notation.Dot "ge" := { 
         Notation.dot := ge;
-      |}.
+      }.
     End PartialOrd.
   End cmp.
 

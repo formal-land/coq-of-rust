@@ -70,6 +70,9 @@ enum TopLevelItem {
         name: String,
         fields: Vec<CoqType>,
     },
+    TypeStructUnit {
+        name: String,
+    },
     Module {
         name: String,
         body: TopLevel,
@@ -87,7 +90,8 @@ enum TopLevelItem {
     },
     TraitImpl {
         generic_tys: Vec<String>,
-        ty_params: Vec<CoqType>,
+        // The boolean is there to indicate if the type parameter has a default
+        ty_params: Vec<(CoqType, bool)>,
         self_ty: CoqType,
         of_trait: Path,
         items: Vec<(String, ImplItem)>,
@@ -309,7 +313,11 @@ fn compile_top_level_item(
                         .collect(),
                 }]
             }
-            VariantData::Unit(_, _) => vec![TopLevelItem::Error("StructUnit".to_string())],
+            VariantData::Unit(_, _) => {
+                vec![TopLevelItem::TypeStructUnit {
+                    name: item.ident.name.to_string(),
+                }]
+            }
         },
         ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
         ItemKind::Trait(_, _, generics, _, items) => {
@@ -355,9 +363,10 @@ fn compile_top_level_item(
             items,
             ..
         }) => {
-            let generic_tys = generics
+            let generic_tys: Vec<String> = generics
                 .params
                 .iter()
+                .filter(|param| matches!(param.kind, rustc_hir::GenericParamKind::Type { .. }))
                 .map(|param| param.name.ident().to_string())
                 .collect();
             let items = items
@@ -415,12 +424,36 @@ fn compile_top_level_item(
                         .associated_items(trait_ref.trait_def_id().unwrap())
                         .in_definition_order()
                         .filter(|item| !item.defaultness(tcx).has_value())
+                        .filter(|item| item.kind != rustc_middle::ty::AssocKind::Type)
                         .map(|item| item.name.to_string())
                         .collect();
 
+                    // Get the generics for the trait
+                    let generics = tcx.generics_of(trait_ref.trait_def_id().unwrap());
+
+                    // Get the list of type parameters default status (true if it has a default)
+                    let mut type_params_default_status: Vec<bool> = generics
+                        .params
+                        .iter()
+                        .filter_map(|param| match param.kind {
+                            rustc_middle::ty::GenericParamDefKind::Type { has_default, .. } => {
+                                Some(has_default)
+                            }
+                            _ => None,
+                        })
+                        .collect();
+                    // The first type parameter is always the Self type, that we do not consider as
+                    // part of the list of type parameters.
+                    type_params_default_status.remove(0);
+
+                    let ty_params = compile_path_ty_params(&tcx, trait_ref.path);
+
                     vec![TopLevelItem::TraitImpl {
                         generic_tys,
-                        ty_params: compile_path_ty_params(&tcx, trait_ref.path),
+                        ty_params: ty_params
+                            .into_iter()
+                            .zip(type_params_default_status)
+                            .collect(),
                         self_ty,
                         of_trait: compile_path(trait_ref.path),
                         items,
@@ -566,7 +599,7 @@ impl ImplItem {
                     text(class_name),
                     line(),
                     text(format!("\"{name}\"")),
-                    text(" := {|"),
+                    text(" := {"),
                 ]),
             ]),
             nest([
@@ -581,7 +614,7 @@ impl ImplItem {
                 ]),
             ]),
             hardline(),
-            text("|}."),
+            text("}."),
         ])
     }
 
@@ -772,9 +805,7 @@ impl TopLevelItem {
                             nest([
                                 nest([
                                     nest([
-                                        text("Global"),
-                                        line(),
-                                        text("Instance"),
+                                        text("Global Instance"),
                                         line(),
                                         text(format!("Get_{name}")),
                                         text(" :"),
@@ -784,7 +815,7 @@ impl TopLevelItem {
                                         text("Notation.Dot"),
                                         line(),
                                         text(format!("\"{name}\"")),
-                                        text(" := {|"),
+                                        text(" := {"),
                                     ]),
                                 ]),
                                 hardline(),
@@ -814,7 +845,7 @@ impl TopLevelItem {
                                 ]),
                             ]),
                             hardline(),
-                            text("|}."),
+                            text("}."),
                         ])
                     })),
                 ]),
@@ -871,9 +902,7 @@ impl TopLevelItem {
                                 nest([
                                     nest([
                                         nest([
-                                            text("Global"),
-                                            line(),
-                                            text("Instance"),
+                                            text("Global Instance"),
                                             line(),
                                             text(format!("Get_{i}")),
                                             text(" :"),
@@ -887,7 +916,7 @@ impl TopLevelItem {
                                             text(i.to_string()),
                                             line(),
                                             text("_"),
-                                            text(" := {|"),
+                                            text(" := {"),
                                         ]),
                                     ]),
                                     if !fields.is_empty() {
@@ -921,11 +950,41 @@ impl TopLevelItem {
                                     ]),
                                 ]),
                                 hardline(),
-                                text("|}."),
+                                text("}."),
                             ])
                         }),
                         [nil()],
                     ),
+                ]),
+                hardline(),
+                nest([text("End"), line(), text(name), text(".")]),
+                hardline(),
+                nest([
+                    text("Definition"),
+                    line(),
+                    text(name),
+                    line(),
+                    text(":="),
+                    line(),
+                    text(name),
+                    text(".t."),
+                ]),
+            ]),
+            TopLevelItem::TypeStructUnit { name } => group([
+                nest([text("Module"), line(), text(name), text(".")]),
+                nest([
+                    hardline(),
+                    nest([
+                        nest([
+                            text("Inductive"),
+                            line(),
+                            text("t"),
+                            line(),
+                            nest([text(":"), line(), text("Set"), text(" :=")]),
+                        ]),
+                        line(),
+                        nest([text("Build"), text(".")]),
+                    ]),
                 ]),
                 hardline(),
                 nest([text("End"), line(), text(name), text(".")]),
@@ -1069,7 +1128,7 @@ impl TopLevelItem {
                                     line(),
                                     text(format!("\"{name}\"")),
                                     line(),
-                                    text(":= {|"),
+                                    text(":= {"),
                                 ]),
                             ]),
                             nest([
@@ -1130,7 +1189,7 @@ impl TopLevelItem {
                                 },
                             ]),
                             hardline(),
-                            text("|}."),
+                            text("}."),
                         ])
                     })),
                 ]),
@@ -1174,7 +1233,7 @@ impl TopLevelItem {
                         })),
                         nest([
                             nest([
-                                nest([text("Global"), line(), text("Instance"), line(), text("I")]),
+                                nest([text("Global Instance"), line(), text("I")]),
                                 line(),
                                 concat(
                                     generic_tys
@@ -1185,20 +1244,30 @@ impl TopLevelItem {
                                 line(),
                                 of_trait.to_doc(),
                                 text(".Trait"),
-                                concat(
-                                    ty_params
-                                        .iter()
-                                        .map(|ty_param| concat([line(), ty_param.to_doc(false)])),
-                                ),
                                 line(),
                                 text("Self"),
+                                concat(ty_params.iter().map(|(ty_param, has_default)| {
+                                    concat([
+                                        line(),
+                                        (if *has_default {
+                                            nest([
+                                                text("(Some"),
+                                                line(),
+                                                ty_param.to_doc(false),
+                                                text(")"),
+                                            ])
+                                        } else {
+                                            ty_param.to_doc(false)
+                                        }),
+                                    ])
+                                })),
                             ]),
                             text(" :="),
                             line(),
                             if items.is_empty() {
                                 nest([of_trait.to_doc(), text(".Build_Class"), line(), text("_")])
                             } else {
-                                text("{|")
+                                text("{")
                             },
                         ]),
                         nest(trait_non_default_items.iter().map(|name| {
@@ -1219,7 +1288,7 @@ impl TopLevelItem {
                         if items.is_empty() {
                             text(".")
                         } else {
-                            group([hardline(), text("|}.")])
+                            group([hardline(), text("}.")])
                         },
                     ]),
                     hardline(),

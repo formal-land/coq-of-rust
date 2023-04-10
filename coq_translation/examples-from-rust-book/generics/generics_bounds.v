@@ -10,9 +10,9 @@ Module HasArea.
     area : (ref Self) -> f64;
   }.
   
-  Global Instance Method_area `(Trait) : Notation.Dot "area" := {|
+  Global Instance Method_area `(Trait) : Notation.Dot "area" := {
     Notation.dot := area;
-  |}.
+  }.
 End HasArea.
 
 Module Impl_HasArea_for_Rectangle.
@@ -21,13 +21,13 @@ Module Impl_HasArea_for_Rectangle.
   Definition area (self : ref Self) : f64 :=
     self.["length"].["mul"] self.["height"].
   
-  Global Instance Method_area : Notation.Dot "area" := {|
+  Global Instance Method_area : Notation.Dot "area" := {
     Notation.dot := area;
-  |}.
+  }.
   
-  Global Instance I : HasArea.Trait Self := {|
+  Global Instance I : HasArea.Trait Self := {
     HasArea.area := area;
-  |}.
+  }.
 End Impl_HasArea_for_Rectangle.
 
 Module Rectangle.
@@ -36,12 +36,12 @@ Module Rectangle.
     height : f64;
   }.
   
-  Global Instance Get_length : Notation.Dot "length" := {|
+  Global Instance Get_length : Notation.Dot "length" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_height : Notation.Dot "height" := {|
+  }.
+  Global Instance Get_height : Notation.Dot "height" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
@@ -60,13 +60,13 @@ Module Impl__crate_fmt_Debug_for_Rectangle.
       "height"
       self.["height"].
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Rectangle.
 
 Module Triangle.
@@ -75,12 +75,12 @@ Module Triangle.
     height : f64;
   }.
   
-  Global Instance Get_length : Notation.Dot "length" := {|
+  Global Instance Get_length : Notation.Dot "length" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_height : Notation.Dot "height" := {|
+  }.
+  Global Instance Get_height : Notation.Dot "height" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End Triangle.
 Definition Triangle : Set := Triangle.t.
 

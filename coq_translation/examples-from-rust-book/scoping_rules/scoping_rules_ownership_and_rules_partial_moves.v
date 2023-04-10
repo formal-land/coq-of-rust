@@ -11,12 +11,12 @@ Module Person.
     age : Box;
   }.
   
-  Global Instance Get_name : Notation.Dot "name" := {|
+  Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_age : Notation.Dot "age" := {|
+  }.
+  Global Instance Get_age : Notation.Dot "age" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End Person.
 Definition Person : Set := Person.t.
 
@@ -35,11 +35,11 @@ Module Impl__crate_fmt_Debug_for_Person.
       "age"
       self.["age"].
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Person.

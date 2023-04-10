@@ -3,7 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Error StructUnit.
+Module Unit.
+  Inductive t : Set := Build.
+End Unit.
+Definition Unit := Unit.t.
 
 Module Impl__crate_fmt_Debug_for_Unit.
   Definition Self := Unit.
@@ -14,13 +17,13 @@ Module Impl__crate_fmt_Debug_for_Unit.
       : _crate.fmt.Result :=
     _crate.fmt.Formatter::["write_str"] f "Unit".
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Unit.
 
 Module Impl__crate_clone_Clone_for_Unit.
@@ -28,13 +31,13 @@ Module Impl__crate_clone_Clone_for_Unit.
   
   Definition clone (self : ref Self) : Unit := deref self.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {|
+  Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
-  |}.
+  }.
   
-  Global Instance I : _crate.clone.Clone.Trait Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
-  |}.
+  }.
 End Impl__crate_clone_Clone_for_Unit.
 
 Module Impl__crate_marker_Copy_for_Unit.
@@ -47,12 +50,12 @@ End Impl__crate_marker_Copy_for_Unit.
 Module Pair.
   Inductive t : Set := Build (_ : Box) (_ : Box).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0 _) := x0;
-  |}.
-  Global Instance Get_1 : IndexedField.Class t 1 _ := {|
+  }.
+  Global Instance Get_1 : IndexedField.Class t 1 _ := {
     IndexedField.get '(Build _ x1) := x1;
-  |}.
+  }.
 End Pair.
 Definition Pair := Pair.t.
 
@@ -64,13 +67,13 @@ Module Impl__crate_clone_Clone_for_Pair.
       (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
       (_crate.clone.Clone.clone (IndexedField.get (index := 1) self)).
   
-  Global Instance Method_clone : Notation.Dot "clone" := {|
+  Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
-  |}.
+  }.
   
-  Global Instance I : _crate.clone.Clone.Trait Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
-  |}.
+  }.
 End Impl__crate_clone_Clone_for_Pair.
 
 Module Impl__crate_fmt_Debug_for_Pair.
@@ -86,17 +89,17 @@ Module Impl__crate_fmt_Debug_for_Pair.
       (IndexedField.get (index := 0) self)
       (IndexedField.get (index := 1) self).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Pair.
 
 Definition main (_ : unit) : unit :=
-  let unit := Unit in
+  let unit := Unit.Build in
   let copied_unit := unit in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]

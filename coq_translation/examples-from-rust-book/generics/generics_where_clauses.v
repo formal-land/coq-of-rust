@@ -11,9 +11,9 @@ Module PrintInOption.
   }.
   
   Global Instance Method_print_in_option `(Trait)
-    : Notation.Dot "print_in_option" := {|
+    : Notation.Dot "print_in_option" := {
     Notation.dot := print_in_option;
-  |}.
+  }.
 End PrintInOption.
 
 Module Impl_PrintInOption_for_T.
@@ -27,13 +27,13 @@ Module Impl_PrintInOption_for_T.
     tt ;;
     tt.
   
-  Global Instance Method_print_in_option : Notation.Dot "print_in_option" := {|
+  Global Instance Method_print_in_option : Notation.Dot "print_in_option" := {
     Notation.dot := print_in_option;
-  |}.
+  }.
   
-  Global Instance I T : PrintInOption.Trait Self := {|
+  Global Instance I T : PrintInOption.Trait Self := {
     PrintInOption.print_in_option := print_in_option;
-  |}.
+  }.
 End Impl_PrintInOption_for_T.
 
 Definition main (_ : unit) : unit :=

@@ -107,6 +107,9 @@ pub enum Expr {
         path: Path,
         fields: Vec<Expr>,
     },
+    StructUnit {
+        path: Path,
+    },
 }
 
 /// The function [compile_bin_op] converts a hir binary operator to a
@@ -329,7 +332,23 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             let index = Box::new(compile_expr(tcx, index));
             Expr::Index { base, index }
         }
-        rustc_hir::ExprKind::Path(qpath) => compile_qpath(&tcx, qpath),
+        rustc_hir::ExprKind::Path(qpath) => {
+            // Check if the path is a constructor.
+            if let rustc_hir::QPath::Resolved(_, path) = qpath {
+                if let rustc_hir::def::Res::Def(
+                    rustc_hir::def::DefKind::Ctor(rustc_hir::def::CtorOf::Struct, _),
+                    _,
+                ) = path.res
+                {
+                    // We consider the constructor to be a unit struct,
+                    // otherwise it would be in a Call expression.
+                    return Expr::StructUnit {
+                        path: compile_path(path),
+                    };
+                }
+            }
+            compile_qpath(&tcx, qpath)
+        }
         rustc_hir::ExprKind::AddrOf(_, _, expr) => compile_expr(tcx, expr),
         rustc_hir::ExprKind::Break(_, _) => Expr::LocalVar("Break".to_string()),
         rustc_hir::ExprKind::Continue(_) => Expr::LocalVar("Continue".to_string()),
@@ -678,6 +697,7 @@ impl Expr {
                     },
                 ]),
             ),
+            Expr::StructUnit { path } => nest([path.to_doc(), text(".Build")]),
         }
     }
 }
