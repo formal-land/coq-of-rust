@@ -24,7 +24,7 @@ Definition multiply
       Return (_crate.result.Result.Err (_crate.convert.From.from err)) ;;
       tt
     end in
-  Ok (mul first_number second_number).
+  Ok (first_number.["mul"] second_number).
 
 Definition print (result : Result) : unit :=
   match result with

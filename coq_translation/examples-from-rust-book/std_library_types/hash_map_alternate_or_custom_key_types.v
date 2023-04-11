@@ -12,19 +12,19 @@ Module Account.
     password : ref str;
   }.
   
-  Global Instance Get_username : Notation.Dot "username" := {|
+  Global Instance Get_username : Notation.Dot "username" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_password : Notation.Dot "password" := {|
+  }.
+  Global Instance Get_password : Notation.Dot "password" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End Account.
 Definition Account : Set := Account.t.
 
 Module Impl__crate_marker_StructuralPartialEq_for_Account.
   Definition Self := Account.
   
-  Global Instance I 'a : _crate.marker.StructuralPartialEq.Trait Self :=
+  Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
 End Impl__crate_marker_StructuralPartialEq_for_Account.
 
@@ -32,23 +32,22 @@ Module Impl__crate_cmp_PartialEq_for_Account.
   Definition Self := Account.
   
   Definition eq (self : ref Self) (other : ref Account) : bool :=
-    andb
-      (eqb self.["username"] other.["username"])
-      (eqb self.["password"] other.["password"]).
+    (self.["username"].["eq"] other.["username"]).["andb"]
+      (self.["password"].["eq"] other.["password"]).
   
-  Global Instance Method_eq : Notation.Dot "eq" := {|
+  Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
-  |}.
+  }.
   
-  Global Instance I 'a : _crate.cmp.PartialEq.Trait Self := {|
+  Global Instance I : _crate.cmp.PartialEq.Trait Self := {
     _crate.cmp.PartialEq.eq := eq;
-  |}.
+  }.
 End Impl__crate_cmp_PartialEq_for_Account.
 
 Module Impl__crate_marker_StructuralEq_for_Account.
   Definition Self := Account.
   
-  Global Instance I 'a : _crate.marker.StructuralEq.Trait Self :=
+  Global Instance I : _crate.marker.StructuralEq.Trait Self :=
     _crate.marker.StructuralEq.Build_Class _.
 End Impl__crate_marker_StructuralEq_for_Account.
 
@@ -61,12 +60,12 @@ Module Impl__crate_cmp_Eq_for_Account.
     tt.
   
   Global Instance Method_assert_receiver_is_total_eq :
-    Notation.Dot "assert_receiver_is_total_eq" := {|
+    Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
-  |}.
+  }.
   
-  Global Instance I 'a : _crate.cmp.Eq.Trait Self := {|
-  |}.
+  Global Instance I : _crate.cmp.Eq.Trait Self := {
+  }.
 End Impl__crate_cmp_Eq_for_Account.
 
 Module Impl__crate_hash_Hash_for_Account.
@@ -76,13 +75,13 @@ Module Impl__crate_hash_Hash_for_Account.
     _crate.hash.Hash.hash self.["username"] state ;;
     _crate.hash.Hash.hash self.["password"] state.
   
-  Global Instance Method_hash : Notation.Dot "hash" := {|
+  Global Instance Method_hash : Notation.Dot "hash" := {
     Notation.dot := hash;
-  |}.
+  }.
   
-  Global Instance I 'a : _crate.hash.Hash.Trait Self := {|
+  Global Instance I : _crate.hash.Hash.Trait Self := {
     _crate.hash.Hash.hash := hash;
-  |}.
+  }.
 End Impl__crate_hash_Hash_for_Account.
 
 Module AccountInfo.
@@ -91,12 +90,12 @@ Module AccountInfo.
     email : ref str;
   }.
   
-  Global Instance Get_name : Notation.Dot "name" := {|
+  Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_email : Notation.Dot "email" := {|
+  }.
+  Global Instance Get_email : Notation.Dot "email" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End AccountInfo.
 Definition AccountInfo : Set := AccountInfo.t.
 

@@ -9,7 +9,10 @@ Module fmt := std.fmt.
 
 Definition Result : Set := std.result.Result.
 
-Error StructUnit.
+Module EmptyVec.
+  Inductive t : Set := Build.
+End EmptyVec.
+Definition EmptyVec := EmptyVec.t.
 
 Module Impl__crate_fmt_Debug_for_EmptyVec.
   Definition Self := EmptyVec.
@@ -20,27 +23,27 @@ Module Impl__crate_fmt_Debug_for_EmptyVec.
       : _crate.fmt.Result :=
     _crate.fmt.Formatter::["write_str"] f "EmptyVec".
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_EmptyVec.
 
 Module Impl__crate_clone_Clone_for_EmptyVec.
   Definition Self := EmptyVec.
   
-  Definition clone (self : ref Self) : EmptyVec := EmptyVec.
+  Definition clone (self : ref Self) : EmptyVec := EmptyVec.Build.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {|
+  Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
-  |}.
+  }.
   
-  Global Instance I : _crate.clone.Clone.Trait Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
-  |}.
+  }.
 End Impl__crate_clone_Clone_for_EmptyVec.
 
 Module Impl_fmt_Display_for_EmptyVec.
@@ -52,13 +55,13 @@ Module Impl_fmt_Display_for_EmptyVec.
         [ "invalid first item to double" ]
         [  ]).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : fmt.Display.Trait Self := {|
+  Global Instance I : fmt.Display.Trait Self := {
     fmt.Display.fmt := fmt;
-  |}.
+  }.
 End Impl_fmt_Display_for_EmptyVec.
 
 Module Impl_error_Error_for_EmptyVec.
@@ -68,10 +71,10 @@ Module Impl_error_Error_for_EmptyVec.
 End Impl_error_Error_for_EmptyVec.
 
 Definition double_first (vec : Vec) : Result :=
-  (vec.["first"].["ok_or_else"] (fun  => EmptyVec.["into"])).["and_then"]
+  (vec.["first"].["ok_or_else"] (fun  => EmptyVec.Build.["into"])).["and_then"]
     (fun s =>
       (s.["parse"].["map_err"] (fun e => e.["into"])).["map"]
-        (fun i => mul 2 i)).
+        (fun i => 2.["mul"] i)).
 
 Definition print (result : Result) : unit :=
   match result with

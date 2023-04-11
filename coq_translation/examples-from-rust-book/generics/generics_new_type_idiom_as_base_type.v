@@ -6,9 +6,9 @@ Import Root.std.prelude.rust_2015.
 Module Years.
   Inductive t : Set := Build (_ : i64).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0) := x0;
-  |}.
+  }.
 End Years.
 Definition Years := Years.t.
 

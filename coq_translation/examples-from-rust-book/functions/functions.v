@@ -8,12 +8,12 @@ Definition main (_ : unit) : unit :=
   tt.
 
 Definition is_divisible_by (lhs : u32) (rhs : u32) : bool :=
-  if (eqb rhs 0 : bool) then
+  if (rhs.["eq"] 0 : bool) then
     Return false ;;
     tt
   else
     tt ;;
-  eqb (rem lhs rhs) 0.
+  (lhs.["rem"] rhs).["eq"] 0.
 
 Definition fizzbuzz (n : u32) :  :=
   if (is_divisible_by n 15 : bool) then

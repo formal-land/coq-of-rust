@@ -28,31 +28,31 @@ Module checked.
         _crate.fmt.Formatter::["write_str"] f "NegativeSquareRoot"
       end.
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {|
+    Global Instance Method_fmt : Notation.Dot "fmt" := {
       Notation.dot := fmt;
-    |}.
+    }.
     
-    Global Instance I : _crate.fmt.Debug.Trait Self := {|
+    Global Instance I : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
-    |}.
+    }.
   End Impl__crate_fmt_Debug_for_MathError.
   
   Definition MathResult : Set := Result.
   
   Definition div (x : f64) (y : f64) : MathResult :=
-    if (eqb y 0 (* 0.0 *) : bool) then
+    if (y.["eq"] 0 (* 0.0 *) : bool) then
       Err MathError.DivisionByZero
     else
-      Ok (div x y).
+      Ok (x.["div"] y).
   
   Definition sqrt (x : f64) : MathResult :=
-    if (lt x 0 (* 0.0 *) : bool) then
+    if (x.["lt"] 0 (* 0.0 *) : bool) then
       Err MathError.NegativeSquareRoot
     else
       Ok x.["sqrt"].
   
   Definition ln (x : f64) : MathResult :=
-    if (le x 0 (* 0.0 *) : bool) then
+    if (x.["le"] 0 (* 0.0 *) : bool) then
       Err MathError.NonPositiveLogarithm
     else
       Ok x.["ln"].
@@ -112,31 +112,31 @@ Module Impl__crate_fmt_Debug_for_MathError.
       _crate.fmt.Formatter::["write_str"] f "NegativeSquareRoot"
     end.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_MathError.
 
 Definition MathResult : Set := Result.
 
 Definition div (x : f64) (y : f64) : MathResult :=
-  if (eqb y 0 (* 0.0 *) : bool) then
+  if (y.["eq"] 0 (* 0.0 *) : bool) then
     Err MathError.DivisionByZero
   else
-    Ok (div x y).
+    Ok (x.["div"] y).
 
 Definition sqrt (x : f64) : MathResult :=
-  if (lt x 0 (* 0.0 *) : bool) then
+  if (x.["lt"] 0 (* 0.0 *) : bool) then
     Err MathError.NegativeSquareRoot
   else
     Ok x.["sqrt"].
 
 Definition ln (x : f64) : MathResult :=
-  if (le x 0 (* 0.0 *) : bool) then
+  if (x.["le"] 0 (* 0.0 *) : bool) then
     Err MathError.NonPositiveLogarithm
   else
     Ok x.["ln"].

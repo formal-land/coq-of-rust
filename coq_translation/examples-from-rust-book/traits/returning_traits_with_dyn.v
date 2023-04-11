@@ -20,9 +20,9 @@ Module Animal.
     noise : (ref Self) -> (ref str);
   }.
   
-  Global Instance Method_noise `(Trait) : Notation.Dot "noise" := {|
+  Global Instance Method_noise `(Trait) : Notation.Dot "noise" := {
     Notation.dot := noise;
-  |}.
+  }.
 End Animal.
 
 Module Impl_Animal_for_Sheep.
@@ -30,13 +30,13 @@ Module Impl_Animal_for_Sheep.
   
   Definition noise (self : ref Self) : ref str := "baaaaah!".
   
-  Global Instance Method_noise : Notation.Dot "noise" := {|
+  Global Instance Method_noise : Notation.Dot "noise" := {
     Notation.dot := noise;
-  |}.
+  }.
   
-  Global Instance I : Animal.Trait Self := {|
+  Global Instance I : Animal.Trait Self := {
     Animal.noise := noise;
-  |}.
+  }.
 End Impl_Animal_for_Sheep.
 
 Module Impl_Animal_for_Cow.
@@ -44,17 +44,17 @@ Module Impl_Animal_for_Cow.
   
   Definition noise (self : ref Self) : ref str := "moooooo!".
   
-  Global Instance Method_noise : Notation.Dot "noise" := {|
+  Global Instance Method_noise : Notation.Dot "noise" := {
     Notation.dot := noise;
-  |}.
+  }.
   
-  Global Instance I : Animal.Trait Self := {|
+  Global Instance I : Animal.Trait Self := {
     Animal.noise := noise;
-  |}.
+  }.
 End Impl_Animal_for_Cow.
 
 Definition random_animal (random_number : f64) : Box :=
-  if (lt random_number 1 (* 0.5 *) : bool) then
+  if (random_number.["lt"] 1 (* 0.5 *) : bool) then
     Box::["new"] {|  |}
   else
     Box::["new"] {|  |}.

@@ -10,9 +10,9 @@ Module Number.
     value : i32;
   }.
   
-  Global Instance Get_value : Notation.Dot "value" := {|
+  Global Instance Get_value : Notation.Dot "value" := {
     Notation.dot '(Build_t x0) := x0;
-  |}.
+  }.
 End Number.
 Definition Number : Set := Number.t.
 
@@ -29,13 +29,13 @@ Module Impl__crate_fmt_Debug_for_Number.
       "value"
       self.["value"].
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Number.
 
 Module Impl_From_for_Number.
@@ -44,13 +44,13 @@ Module Impl_From_for_Number.
   Definition from (item : i32) : Self := {| Number.value := item; |}.
   
   Global Instance AssociatedFunction_from :
-    Notation.DoubleColon Self "from" := {|
+    Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
-  |}.
+  }.
   
-  Global Instance I : From.Trait i32 Self := {|
+  Global Instance I : From.Trait Self i32 := {
     From.from := from;
-  |}.
+  }.
 End Impl_From_for_Number.
 
 Definition main (_ : unit) : unit :=

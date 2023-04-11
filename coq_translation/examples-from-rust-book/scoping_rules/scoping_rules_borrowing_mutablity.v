@@ -10,15 +10,15 @@ Module Book.
     year : u32;
   }.
   
-  Global Instance Get_author : Notation.Dot "author" := {|
+  Global Instance Get_author : Notation.Dot "author" := {
     Notation.dot '(Build_t x0 _ _) := x0;
-  |}.
-  Global Instance Get_title : Notation.Dot "title" := {|
+  }.
+  Global Instance Get_title : Notation.Dot "title" := {
     Notation.dot '(Build_t _ x1 _) := x1;
-  |}.
-  Global Instance Get_year : Notation.Dot "year" := {|
+  }.
+  Global Instance Get_year : Notation.Dot "year" := {
     Notation.dot '(Build_t _ _ x2) := x2;
-  |}.
+  }.
 End Book.
 Definition Book : Set := Book.t.
 
@@ -31,13 +31,13 @@ Module Impl__crate_clone_Clone_for_Book.
     let _ := tt in
     deref self.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {|
+  Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
-  |}.
+  }.
   
-  Global Instance I : _crate.clone.Clone.Trait Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
-  |}.
+  }.
 End Impl__crate_clone_Clone_for_Book.
 
 Module Impl__crate_marker_Copy_for_Book.

@@ -3,7 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Error StructUnit.
+Module ToDrop.
+  Inductive t : Set := Build.
+End ToDrop.
+Definition ToDrop := ToDrop.t.
 
 Module Impl_Drop_for_ToDrop.
   Definition Self := ToDrop.
@@ -14,17 +17,17 @@ Module Impl_Drop_for_ToDrop.
     tt ;;
     tt.
   
-  Global Instance Method_drop : Notation.Dot "drop" := {|
+  Global Instance Method_drop : Notation.Dot "drop" := {
     Notation.dot := drop;
-  |}.
+  }.
   
-  Global Instance I : Drop.Trait Self := {|
+  Global Instance I : Drop.Trait Self := {
     Drop.drop := drop;
-  |}.
+  }.
 End Impl_Drop_for_ToDrop.
 
 Definition main (_ : unit) : unit :=
-  let x := ToDrop in
+  let x := ToDrop.Build in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "Made a ToDrop!\n" ] [  ]) ;;
   tt ;;

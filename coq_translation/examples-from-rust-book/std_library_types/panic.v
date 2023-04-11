@@ -4,11 +4,11 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition division (dividend : i32) (divisor : i32) : i32 :=
-  if (eqb divisor 0 : bool) then
+  if (divisor.["eq"] 0 : bool) then
     _crate.rt.begin_panic "division by zero" ;;
     tt
   else
-    div dividend divisor.
+    dividend.["div"] divisor.
 
 Definition main (_ : unit) : unit :=
   let _x := Box::["new"] 0 in

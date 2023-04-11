@@ -8,9 +8,9 @@ Module UsernameWidget.
     get : (ref Self) -> String;
   }.
   
-  Global Instance Method_get `(Trait) : Notation.Dot "get" := {|
+  Global Instance Method_get `(Trait) : Notation.Dot "get" := {
     Notation.dot := get;
-  |}.
+  }.
 End UsernameWidget.
 
 Module AgeWidget.
@@ -18,9 +18,9 @@ Module AgeWidget.
     get : (ref Self) -> u8;
   }.
   
-  Global Instance Method_get `(Trait) : Notation.Dot "get" := {|
+  Global Instance Method_get `(Trait) : Notation.Dot "get" := {
     Notation.dot := get;
-  |}.
+  }.
 End AgeWidget.
 
 Module Form.
@@ -29,12 +29,12 @@ Module Form.
     age : u8;
   }.
   
-  Global Instance Get_username : Notation.Dot "username" := {|
+  Global Instance Get_username : Notation.Dot "username" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_age : Notation.Dot "age" := {|
+  }.
+  Global Instance Get_age : Notation.Dot "age" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End Form.
 Definition Form : Set := Form.t.
 
@@ -43,13 +43,13 @@ Module Impl_UsernameWidget_for_Form.
   
   Definition get (self : ref Self) : String := self.["username"].["clone"].
   
-  Global Instance Method_get : Notation.Dot "get" := {|
+  Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
-  |}.
+  }.
   
-  Global Instance I : UsernameWidget.Trait Self := {|
+  Global Instance I : UsernameWidget.Trait Self := {
     UsernameWidget.get := get;
-  |}.
+  }.
 End Impl_UsernameWidget_for_Form.
 
 Module Impl_AgeWidget_for_Form.
@@ -57,13 +57,13 @@ Module Impl_AgeWidget_for_Form.
   
   Definition get (self : ref Self) : u8 := self.["age"].
   
-  Global Instance Method_get : Notation.Dot "get" := {|
+  Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
-  |}.
+  }.
   
-  Global Instance I : AgeWidget.Trait Self := {|
+  Global Instance I : AgeWidget.Trait Self := {
     AgeWidget.get := get;
-  |}.
+  }.
 End Impl_AgeWidget_for_Form.
 
 Definition main (_ : unit) : unit :=
@@ -72,7 +72,7 @@ Definition main (_ : unit) : unit :=
   let username := UsernameWidget.get form in
   match ("rustacean".["to_owned"], username) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -86,7 +86,7 @@ Definition main (_ : unit) : unit :=
   let age := AgeWidget.get form in
   match (28, age) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

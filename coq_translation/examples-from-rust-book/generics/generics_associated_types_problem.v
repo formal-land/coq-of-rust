@@ -6,12 +6,12 @@ Import Root.std.prelude.rust_2015.
 Module Container.
   Inductive t : Set := Build (_ : i32) (_ : i32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0 _) := x0;
-  |}.
-  Global Instance Get_1 : IndexedField.Class t 1 _ := {|
+  }.
+  Global Instance Get_1 : IndexedField.Class t 1 _ := {
     IndexedField.get '(Build _ x1) := x1;
-  |}.
+  }.
 End Container.
 Definition Container := Container.t.
 
@@ -22,15 +22,15 @@ Module Contains.
     last : (ref Self) -> i32;
   }.
   
-  Global Instance Method_contains `(Trait) : Notation.Dot "contains" := {|
+  Global Instance Method_contains `(Trait) : Notation.Dot "contains" := {
     Notation.dot := contains;
-  |}.
-  Global Instance Method_first `(Trait) : Notation.Dot "first" := {|
+  }.
+  Global Instance Method_first `(Trait) : Notation.Dot "first" := {
     Notation.dot := first;
-  |}.
-  Global Instance Method_last `(Trait) : Notation.Dot "last" := {|
+  }.
+  Global Instance Method_last `(Trait) : Notation.Dot "last" := {
     Notation.dot := last;
-  |}.
+  }.
 End Contains.
 
 Module Impl_Contains_for_Container.
@@ -41,32 +41,31 @@ Module Impl_Contains_for_Container.
       (number_1 : ref i32)
       (number_2 : ref i32)
       : bool :=
-    andb
-      (eqb (IndexedField.get (index := 0) self) number_1)
-      (eqb (IndexedField.get (index := 1) self) number_2).
+    ((IndexedField.get (index := 0) self).["eq"] number_1).["andb"]
+      ((IndexedField.get (index := 1) self).["eq"] number_2).
   
-  Global Instance Method_contains : Notation.Dot "contains" := {|
+  Global Instance Method_contains : Notation.Dot "contains" := {
     Notation.dot := contains;
-  |}.
+  }.
   
   Definition first (self : ref Self) : i32 :=
     IndexedField.get (index := 0) self.
   
-  Global Instance Method_first : Notation.Dot "first" := {|
+  Global Instance Method_first : Notation.Dot "first" := {
     Notation.dot := first;
-  |}.
+  }.
   
   Definition last (self : ref Self) : i32 := IndexedField.get (index := 1) self.
   
-  Global Instance Method_last : Notation.Dot "last" := {|
+  Global Instance Method_last : Notation.Dot "last" := {
     Notation.dot := last;
-  |}.
+  }.
   
-  Global Instance I : Contains.Trait i32 i32 Self := {|
+  Global Instance I : Contains.Trait Self i32 i32 := {
     Contains.contains := contains;
     Contains.first := first;
     Contains.last := last;
-  |}.
+  }.
 End Impl_Contains_for_Container.
 
 Definition difference
@@ -74,7 +73,7 @@ Definition difference
     `{Contains.Trait A B C}
     (container : ref C)
     : i32 :=
-  sub container.["last"] container.["first"].
+  container.["last"].["sub"] container.["first"].
 
 Definition main (_ : unit) : unit :=
   let number_1 := 3 in

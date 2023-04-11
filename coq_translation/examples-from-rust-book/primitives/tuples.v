@@ -10,18 +10,18 @@ Definition reverse (pair : i32 * bool) : bool * i32 :=
 Module Matrix.
   Inductive t : Set := Build (_ : f32) (_ : f32) (_ : f32) (_ : f32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0 _ _ _) := x0;
-  |}.
-  Global Instance Get_1 : IndexedField.Class t 1 _ := {|
+  }.
+  Global Instance Get_1 : IndexedField.Class t 1 _ := {
     IndexedField.get '(Build _ x1 _ _) := x1;
-  |}.
-  Global Instance Get_2 : IndexedField.Class t 2 _ := {|
+  }.
+  Global Instance Get_2 : IndexedField.Class t 2 _ := {
     IndexedField.get '(Build _ _ x2 _) := x2;
-  |}.
-  Global Instance Get_3 : IndexedField.Class t 3 _ := {|
+  }.
+  Global Instance Get_3 : IndexedField.Class t 3 _ := {
     IndexedField.get '(Build _ _ _ x3) := x3;
-  |}.
+  }.
 End Matrix.
 Definition Matrix := Matrix.t.
 
@@ -40,13 +40,13 @@ Module Impl__crate_fmt_Debug_for_Matrix.
       (IndexedField.get (index := 2) self)
       (IndexedField.get (index := 3) self).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Matrix.
 
 Definition main (_ : unit) : unit :=

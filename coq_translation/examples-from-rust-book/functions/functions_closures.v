@@ -5,8 +5,8 @@ Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
   let outer_var := 42 in
-  let closure_annotated := fun i => add i outer_var in
-  let closure_inferred := fun i => add i outer_var in
+  let closure_annotated := fun i => i.["add"] outer_var in
+  let closure_inferred := fun i => i.["add"] outer_var in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "closure_annotated: "; "\n" ]

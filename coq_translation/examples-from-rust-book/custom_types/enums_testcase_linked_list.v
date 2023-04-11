@@ -17,26 +17,26 @@ Module ImplList.
   
   Definition new (_ : unit) : List := Nil.
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {|
+  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
-  |}.
+  }.
   
   Definition prepend (self : Self) (elem : u32) : List :=
     Cons elem (Box::["new"] self).
   
-  Global Instance Method_prepend : Notation.Dot "prepend" := {|
+  Global Instance Method_prepend : Notation.Dot "prepend" := {
     Notation.dot := prepend;
-  |}.
+  }.
   
   Definition len (self : ref Self) : u32 :=
     match deref self with
-    | Cons (_, tail) => add 1 tail.["len"]
+    | Cons (_, tail) => 1.["add"] tail.["len"]
     | Nil => 0
     end.
   
-  Global Instance Method_len : Notation.Dot "len" := {|
+  Global Instance Method_len : Notation.Dot "len" := {
     Notation.dot := len;
-  |}.
+  }.
   
   Definition stringify (self : ref Self) : String :=
     match deref self with
@@ -56,9 +56,9 @@ Module ImplList.
       res
     end.
   
-  Global Instance Method_stringify : Notation.Dot "stringify" := {|
+  Global Instance Method_stringify : Notation.Dot "stringify" := {
     Notation.dot := stringify;
-  |}.
+  }.
 End ImplList.
 
 Definition main (_ : unit) : unit :=

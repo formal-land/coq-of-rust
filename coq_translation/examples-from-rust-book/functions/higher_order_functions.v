@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition is_odd (n : u32) : bool := eqb (rem n 2) 1.
+Definition is_odd (n : u32) : bool := (n.["rem"] 2).["eq"] 1.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
@@ -19,8 +19,8 @@ Definition main (_ : unit) : unit :=
       match LangItem iter with
       | None => Break
       | Some {| Some.0 := n; |} =>
-        let n_squared := mul n n in
-        if (ge n_squared upper : bool) then
+        let n_squared := n.["mul"] n in
+        if (n_squared.["ge"] upper : bool) then
           Break ;;
           tt
         else
@@ -40,8 +40,9 @@ Definition main (_ : unit) : unit :=
       [ _crate.fmt.ArgumentV1::["new_display"] acc ]) ;;
   tt ;;
   let sum_of_squared_odd_numbers :=
-    ((({| RangeFrom.start := 0; |}.["map"] (fun n => mul n n)).["take_while"]
-          (fun n_squared => lt n_squared upper)).["filter"]
+    ((({| RangeFrom.start := 0; |}.["map"]
+            (fun n => n.["mul"] n)).["take_while"]
+          (fun n_squared => n_squared.["lt"] upper)).["filter"]
         (fun n_squared => is_odd n_squared)).["sum"] in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]

@@ -9,12 +9,12 @@ Module Person.
     age : u8;
   }.
   
-  Global Instance Get_name : Notation.Dot "name" := {|
+  Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_age : Notation.Dot "age" := {|
+  }.
+  Global Instance Get_age : Notation.Dot "age" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End Person.
 Definition Person : Set := Person.t.
 
@@ -33,26 +33,29 @@ Module Impl__crate_fmt_Debug_for_Person.
       "age"
       self.["age"].
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Person.
 
-Error StructUnit.
+Module Unit.
+  Inductive t : Set := Build.
+End Unit.
+Definition Unit := Unit.t.
 
 Module Pair.
   Inductive t : Set := Build (_ : i32) (_ : f32).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0 _) := x0;
-  |}.
-  Global Instance Get_1 : IndexedField.Class t 1 _ := {|
+  }.
+  Global Instance Get_1 : IndexedField.Class t 1 _ := {
     IndexedField.get '(Build _ x1) := x1;
-  |}.
+  }.
 End Pair.
 Definition Pair := Pair.t.
 
@@ -62,12 +65,12 @@ Module Point.
     y : f32;
   }.
   
-  Global Instance Get_x : Notation.Dot "x" := {|
+  Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_y : Notation.Dot "y" := {|
+  }.
+  Global Instance Get_y : Notation.Dot "y" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End Point.
 Definition Point : Set := Point.t.
 
@@ -77,12 +80,12 @@ Module Rectangle.
     bottom_right : Point;
   }.
   
-  Global Instance Get_top_left : Notation.Dot "top_left" := {|
+  Global Instance Get_top_left : Notation.Dot "top_left" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {|
+  }.
+  Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
@@ -119,7 +122,7 @@ Definition main (_ : unit) : unit :=
       Rectangle.top_left := {| Point.x := left_edge; Point.y := top_edge; |};
       Rectangle.bottom_right := bottom_right;
     |} in
-  let _unit := Unit in
+  let _unit := Unit.Build in
   let pair := Pair.Build 1 0 (* 0.1 *) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]

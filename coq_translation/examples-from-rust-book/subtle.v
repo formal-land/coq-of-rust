@@ -25,9 +25,9 @@ Definition Option := Option.t.
 Module Choice.
   Inductive t : Set := Build (_ : u8).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0) := x0;
-  |}.
+  }.
 End Choice.
 Definition Choice := Choice.t.
 
@@ -45,13 +45,13 @@ Module Impl__crate_clone_Clone_for_Choice.
     let _ := tt in
     deref self.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {|
+  Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
-  |}.
+  }.
   
-  Global Instance I : _crate.clone.Clone.Trait Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
-  |}.
+  }.
 End Impl__crate_clone_Clone_for_Choice.
 
 Module Impl__crate_fmt_Debug_for_Choice.
@@ -66,13 +66,13 @@ Module Impl__crate_fmt_Debug_for_Choice.
       "Choice"
       (IndexedField.get (index := 0) self).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Choice.
 
 Module ImplChoice.
@@ -81,9 +81,9 @@ Module ImplChoice.
   Definition unwrap_u8 (self : ref Self) : u8 :=
     IndexedField.get (index := 0) self.
   
-  Global Instance Method_unwrap_u8 : Notation.Dot "unwrap_u8" := {|
+  Global Instance Method_unwrap_u8 : Notation.Dot "unwrap_u8" := {
     Notation.dot := unwrap_u8;
-  |}.
+  }.
 End ImplChoice.
 
 Module Impl_From_for_bool.
@@ -93,9 +93,8 @@ Module Impl_From_for_bool.
     if (true : bool) then
       if
         (not
-          (bit_or
-            (eqb (IndexedField.get (index := 0) source) 0)
-            (eqb (IndexedField.get (index := 0) source) 1))
+          (((IndexedField.get (index := 0) source).["eq"] 0).["bitor"]
+            ((IndexedField.get (index := 0) source).["eq"] 1))
         : bool)
       then
         _crate.panicking.panic
@@ -105,16 +104,16 @@ Module Impl_From_for_bool.
       tt
     else
       tt ;;
-    ne (IndexedField.get (index := 0) source) 0.
+    (IndexedField.get (index := 0) source).["ne"] 0.
   
   Global Instance AssociatedFunction_from :
-    Notation.DoubleColon Self "from" := {|
+    Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
-  |}.
+  }.
   
-  Global Instance I : From.Trait Choice Self := {|
+  Global Instance I : From.Trait Self Choice := {
     From.from := from;
-  |}.
+  }.
 End Impl_From_for_bool.
 
 Module Impl_BitAnd_for_Choice.
@@ -123,34 +122,32 @@ Module Impl_BitAnd_for_Choice.
   Definition Output : Set := Choice.
   
   Definition bitand (self : Self) (rhs : Choice) : Choice :=
-    (bit_and
-        (IndexedField.get (index := 0) self)
+    ((IndexedField.get (index := 0) self).["bitand"]
         (IndexedField.get (index := 0) rhs)).["into"].
   
-  Global Instance Method_bitand : Notation.Dot "bitand" := {|
+  Global Instance Method_bitand : Notation.Dot "bitand" := {
     Notation.dot := bitand;
-  |}.
+  }.
   
-  Global Instance I : BitAnd.Trait Self := {|
-    BitAnd.Output := Output;
+  Global Instance I : BitAnd.Trait Self := {
     BitAnd.bitand := bitand;
-  |}.
+  }.
 End Impl_BitAnd_for_Choice.
 
 Module Impl_BitAndAssign_for_Choice.
   Definition Self := Choice.
   
   Definition bitand_assign (self : mut_ref Self) (rhs : Choice) :=
-    assign (deref self) (bit_and (deref self) rhs) ;;
+    assign (deref self) ((deref self).["bitand"] rhs) ;;
     tt.
   
-  Global Instance Method_bitand_assign : Notation.Dot "bitand_assign" := {|
+  Global Instance Method_bitand_assign : Notation.Dot "bitand_assign" := {
     Notation.dot := bitand_assign;
-  |}.
+  }.
   
-  Global Instance I : BitAndAssign.Trait Self := {|
+  Global Instance I : BitAndAssign.Trait Self := {
     BitAndAssign.bitand_assign := bitand_assign;
-  |}.
+  }.
 End Impl_BitAndAssign_for_Choice.
 
 Module Impl_BitOr_for_Choice.
@@ -159,34 +156,32 @@ Module Impl_BitOr_for_Choice.
   Definition Output : Set := Choice.
   
   Definition bitor (self : Self) (rhs : Choice) : Choice :=
-    (bit_or
-        (IndexedField.get (index := 0) self)
+    ((IndexedField.get (index := 0) self).["bitor"]
         (IndexedField.get (index := 0) rhs)).["into"].
   
-  Global Instance Method_bitor : Notation.Dot "bitor" := {|
+  Global Instance Method_bitor : Notation.Dot "bitor" := {
     Notation.dot := bitor;
-  |}.
+  }.
   
-  Global Instance I : BitOr.Trait Self := {|
-    BitOr.Output := Output;
+  Global Instance I : BitOr.Trait Self := {
     BitOr.bitor := bitor;
-  |}.
+  }.
 End Impl_BitOr_for_Choice.
 
 Module Impl_BitOrAssign_for_Choice.
   Definition Self := Choice.
   
   Definition bitor_assign (self : mut_ref Self) (rhs : Choice) :=
-    assign (deref self) (bit_or (deref self) rhs) ;;
+    assign (deref self) ((deref self).["bitor"] rhs) ;;
     tt.
   
-  Global Instance Method_bitor_assign : Notation.Dot "bitor_assign" := {|
+  Global Instance Method_bitor_assign : Notation.Dot "bitor_assign" := {
     Notation.dot := bitor_assign;
-  |}.
+  }.
   
-  Global Instance I : BitOrAssign.Trait Self := {|
+  Global Instance I : BitOrAssign.Trait Self := {
     BitOrAssign.bitor_assign := bitor_assign;
-  |}.
+  }.
 End Impl_BitOrAssign_for_Choice.
 
 Module Impl_BitXor_for_Choice.
@@ -195,34 +190,32 @@ Module Impl_BitXor_for_Choice.
   Definition Output : Set := Choice.
   
   Definition bitxor (self : Self) (rhs : Choice) : Choice :=
-    (bit_xor
-        (IndexedField.get (index := 0) self)
+    ((IndexedField.get (index := 0) self).["bitxor"]
         (IndexedField.get (index := 0) rhs)).["into"].
   
-  Global Instance Method_bitxor : Notation.Dot "bitxor" := {|
+  Global Instance Method_bitxor : Notation.Dot "bitxor" := {
     Notation.dot := bitxor;
-  |}.
+  }.
   
-  Global Instance I : BitXor.Trait Self := {|
-    BitXor.Output := Output;
+  Global Instance I : BitXor.Trait Self := {
     BitXor.bitxor := bitxor;
-  |}.
+  }.
 End Impl_BitXor_for_Choice.
 
 Module Impl_BitXorAssign_for_Choice.
   Definition Self := Choice.
   
   Definition bitxor_assign (self : mut_ref Self) (rhs : Choice) :=
-    assign (deref self) (bit_xor (deref self) rhs) ;;
+    assign (deref self) ((deref self).["bitxor"] rhs) ;;
     tt.
   
-  Global Instance Method_bitxor_assign : Notation.Dot "bitxor_assign" := {|
+  Global Instance Method_bitxor_assign : Notation.Dot "bitxor_assign" := {
     Notation.dot := bitxor_assign;
-  |}.
+  }.
   
-  Global Instance I : BitXorAssign.Trait Self := {|
+  Global Instance I : BitXorAssign.Trait Self := {
     BitXorAssign.bitxor_assign := bitxor_assign;
-  |}.
+  }.
 End Impl_BitXorAssign_for_Choice.
 
 Module Impl_Not_for_Choice.
@@ -231,21 +224,20 @@ Module Impl_Not_for_Choice.
   Definition Output : Set := Choice.
   
   Definition not (self : Self) : Choice :=
-    (bit_and 1 (not (IndexedField.get (index := 0) self))).["into"].
+    (1.["bitand"] (not (IndexedField.get (index := 0) self))).["into"].
   
-  Global Instance Method_not : Notation.Dot "not" := {|
+  Global Instance Method_not : Notation.Dot "not" := {
     Notation.dot := not;
-  |}.
+  }.
   
-  Global Instance I : Not.Trait Self := {|
-    Not.Output := Output;
+  Global Instance I : Not.Trait Self := {
     Not.not := not;
-  |}.
+  }.
 End Impl_Not_for_Choice.
 
 Definition black_box (input : u8) : u8 :=
   if (true : bool) then
-    if (not (bit_or (eqb input 0) (eqb input 1)) : bool) then
+    if (not ((input.["eq"] 0).["bitor"] (input.["eq"] 1)) : bool) then
       _crate.panicking.panic "assertion failed: (input == 0u8) | (input == 1u8)"
     else
       tt ;;
@@ -260,13 +252,13 @@ Module Impl_From_for_Choice.
   Definition from (input : u8) : Choice := Choice.Build (black_box input).
   
   Global Instance AssociatedFunction_from :
-    Notation.DoubleColon Self "from" := {|
+    Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
-  |}.
+  }.
   
-  Global Instance I : From.Trait u8 Self := {|
+  Global Instance I : From.Trait Self u8 := {
     From.from := from;
-  |}.
+  }.
 End Impl_From_for_Choice.
 
 Module ConstantTimeEq.
@@ -274,14 +266,14 @@ Module ConstantTimeEq.
     ct_eq : (ref Self) -> ((ref Self) -> Choice);
   }.
   
-  Global Instance Method_ct_eq `(Trait) : Notation.Dot "ct_eq" := {|
+  Global Instance Method_ct_eq `(Trait) : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
-  |}.
-  Global Instance Method_ct_ne `(Trait) : Notation.Dot "ct_ne" := {|
+  }.
+  Global Instance Method_ct_ne `(Trait) : Notation.Dot "ct_ne" := {
     Notation.dot (self : ref Self) (other : ref Self) :=
       (not (self.["ct_eq"] other)
       : Choice);
-  |}.
+  }.
 End ConstantTimeEq.
 
 Module Impl_ConstantTimeEq_for_Slice.
@@ -289,7 +281,7 @@ Module Impl_ConstantTimeEq_for_Slice.
   
   Definition ct_eq (self : ref Self) (_rhs : ref Slice) : Choice :=
     let len := self.["len"] in
-    if (ne len _rhs.["len"] : bool) then
+    if (len.["ne"] _rhs.["len"] : bool) then
       Return (Choice::["from"] 0) ;;
       tt
     else
@@ -301,7 +293,7 @@ Module Impl_ConstantTimeEq_for_Slice.
         match LangItem iter with
         | None => Break
         | Some {| Some.0 := (ai, bi); |} =>
-          assign x (bit_and x (ai.["ct_eq"] bi).["unwrap_u8"]) ;;
+          assign x (bitand x (ai.["ct_eq"] bi).["unwrap_u8"]) ;;
           tt
         end ;;
         tt
@@ -310,45 +302,45 @@ Module Impl_ConstantTimeEq_for_Slice.
     end ;;
     x.["into"].
   
-  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
+  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
-  |}.
+  }.
   
-  Global Instance I T : ConstantTimeEq.Trait Self := {|
+  Global Instance I T : ConstantTimeEq.Trait Self := {
     ConstantTimeEq.ct_eq := ct_eq;
-  |}.
+  }.
 End Impl_ConstantTimeEq_for_Slice.
 
 Module Impl_ConstantTimeEq_for_Choice.
   Definition Self := Choice.
   
   Definition ct_eq (self : ref Self) (rhs : ref Choice) : Choice :=
-    not (bit_xor (deref self) (deref rhs)).
+    not ((deref self).["bitxor"] (deref rhs)).
   
-  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
+  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeEq.Trait Self := {|
+  Global Instance I : ConstantTimeEq.Trait Self := {
     ConstantTimeEq.ct_eq := ct_eq;
-  |}.
+  }.
 End Impl_ConstantTimeEq_for_Choice.
 
 Module Impl_ConstantTimeEq_for_u8.
   Definition Self := u8.
   
   Definition ct_eq (self : ref Self) (other : ref u8) : Choice :=
-    let x := bit_xor self other in
-    let y := shr (bit_or x x.["wrapping_neg"]) (sub 8 1) in
-    (cast (bit_xor y (cast 1 u8)) u8).["into"].
+    let x := self.["bitxor"] other in
+    let y := (x.["bitor"] x.["wrapping_neg"]).["shr"] (8.["sub"] 1) in
+    (cast (y.["bitxor"] (cast 1 u8)) u8).["into"].
   
-  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
+  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeEq.Trait Self := {|
+  Global Instance I : ConstantTimeEq.Trait Self := {
     ConstantTimeEq.ct_eq := ct_eq;
-  |}.
+  }.
 End Impl_ConstantTimeEq_for_u8.
 
 Module Impl_ConstantTimeEq_for_i8.
@@ -357,30 +349,30 @@ Module Impl_ConstantTimeEq_for_i8.
   Definition ct_eq (self : ref Self) (other : ref i8) : Choice :=
     (cast (deref self) u8).["ct_eq"] (cast (deref other) u8).
   
-  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
+  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeEq.Trait Self := {|
+  Global Instance I : ConstantTimeEq.Trait Self := {
     ConstantTimeEq.ct_eq := ct_eq;
-  |}.
+  }.
 End Impl_ConstantTimeEq_for_i8.
 
 Module Impl_ConstantTimeEq_for_u16.
   Definition Self := u16.
   
   Definition ct_eq (self : ref Self) (other : ref u16) : Choice :=
-    let x := bit_xor self other in
-    let y := shr (bit_or x x.["wrapping_neg"]) (sub 16 1) in
-    (cast (bit_xor y (cast 1 u16)) u8).["into"].
+    let x := self.["bitxor"] other in
+    let y := (x.["bitor"] x.["wrapping_neg"]).["shr"] (16.["sub"] 1) in
+    (cast (y.["bitxor"] (cast 1 u16)) u8).["into"].
   
-  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
+  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeEq.Trait Self := {|
+  Global Instance I : ConstantTimeEq.Trait Self := {
     ConstantTimeEq.ct_eq := ct_eq;
-  |}.
+  }.
 End Impl_ConstantTimeEq_for_u16.
 
 Module Impl_ConstantTimeEq_for_i16.
@@ -389,30 +381,30 @@ Module Impl_ConstantTimeEq_for_i16.
   Definition ct_eq (self : ref Self) (other : ref i16) : Choice :=
     (cast (deref self) u16).["ct_eq"] (cast (deref other) u16).
   
-  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
+  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeEq.Trait Self := {|
+  Global Instance I : ConstantTimeEq.Trait Self := {
     ConstantTimeEq.ct_eq := ct_eq;
-  |}.
+  }.
 End Impl_ConstantTimeEq_for_i16.
 
 Module Impl_ConstantTimeEq_for_u32.
   Definition Self := u32.
   
   Definition ct_eq (self : ref Self) (other : ref u32) : Choice :=
-    let x := bit_xor self other in
-    let y := shr (bit_or x x.["wrapping_neg"]) (sub 32 1) in
-    (cast (bit_xor y (cast 1 u32)) u8).["into"].
+    let x := self.["bitxor"] other in
+    let y := (x.["bitor"] x.["wrapping_neg"]).["shr"] (32.["sub"] 1) in
+    (cast (y.["bitxor"] (cast 1 u32)) u8).["into"].
   
-  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
+  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeEq.Trait Self := {|
+  Global Instance I : ConstantTimeEq.Trait Self := {
     ConstantTimeEq.ct_eq := ct_eq;
-  |}.
+  }.
 End Impl_ConstantTimeEq_for_u32.
 
 Module Impl_ConstantTimeEq_for_i32.
@@ -421,30 +413,30 @@ Module Impl_ConstantTimeEq_for_i32.
   Definition ct_eq (self : ref Self) (other : ref i32) : Choice :=
     (cast (deref self) u32).["ct_eq"] (cast (deref other) u32).
   
-  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
+  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeEq.Trait Self := {|
+  Global Instance I : ConstantTimeEq.Trait Self := {
     ConstantTimeEq.ct_eq := ct_eq;
-  |}.
+  }.
 End Impl_ConstantTimeEq_for_i32.
 
 Module Impl_ConstantTimeEq_for_u64.
   Definition Self := u64.
   
   Definition ct_eq (self : ref Self) (other : ref u64) : Choice :=
-    let x := bit_xor self other in
-    let y := shr (bit_or x x.["wrapping_neg"]) (sub 64 1) in
-    (cast (bit_xor y (cast 1 u64)) u8).["into"].
+    let x := self.["bitxor"] other in
+    let y := (x.["bitor"] x.["wrapping_neg"]).["shr"] (64.["sub"] 1) in
+    (cast (y.["bitxor"] (cast 1 u64)) u8).["into"].
   
-  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
+  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeEq.Trait Self := {|
+  Global Instance I : ConstantTimeEq.Trait Self := {
     ConstantTimeEq.ct_eq := ct_eq;
-  |}.
+  }.
 End Impl_ConstantTimeEq_for_u64.
 
 Module Impl_ConstantTimeEq_for_i64.
@@ -453,33 +445,32 @@ Module Impl_ConstantTimeEq_for_i64.
   Definition ct_eq (self : ref Self) (other : ref i64) : Choice :=
     (cast (deref self) u64).["ct_eq"] (cast (deref other) u64).
   
-  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
+  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeEq.Trait Self := {|
+  Global Instance I : ConstantTimeEq.Trait Self := {
     ConstantTimeEq.ct_eq := ct_eq;
-  |}.
+  }.
 End Impl_ConstantTimeEq_for_i64.
 
 Module Impl_ConstantTimeEq_for_usize.
   Definition Self := usize.
   
   Definition ct_eq (self : ref Self) (other : ref usize) : Choice :=
-    let x := bit_xor self other in
+    let x := self.["bitxor"] other in
     let y :=
-      shr
-        (bit_or x x.["wrapping_neg"])
-        (sub (mul (Root.core.mem.size_of tt) 8) 1) in
-    (cast (bit_xor y (cast 1 usize)) u8).["into"].
+      (x.["bitor"] x.["wrapping_neg"]).["shr"]
+        (((Root.core.mem.size_of tt).["mul"] 8).["sub"] 1) in
+    (cast (y.["bitxor"] (cast 1 usize)) u8).["into"].
   
-  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
+  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeEq.Trait Self := {|
+  Global Instance I : ConstantTimeEq.Trait Self := {
     ConstantTimeEq.ct_eq := ct_eq;
-  |}.
+  }.
 End Impl_ConstantTimeEq_for_usize.
 
 Module Impl_ConstantTimeEq_for_isize.
@@ -488,13 +479,13 @@ Module Impl_ConstantTimeEq_for_isize.
   Definition ct_eq (self : ref Self) (other : ref isize) : Choice :=
     (cast (deref self) usize).["ct_eq"] (cast (deref other) usize).
   
-  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
+  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeEq.Trait Self := {|
+  Global Instance I : ConstantTimeEq.Trait Self := {
     ConstantTimeEq.ct_eq := ct_eq;
-  |}.
+  }.
 End Impl_ConstantTimeEq_for_isize.
 
 Module ConditionallySelectable.
@@ -503,25 +494,25 @@ Module ConditionallySelectable.
   }.
   
   Global Instance Method_conditional_select `(Trait)
-    : Notation.Dot "conditional_select" := {|
+    : Notation.Dot "conditional_select" := {
     Notation.dot := conditional_select;
-  |}.
+  }.
   Global Instance Method_conditional_assign `(Trait)
-    : Notation.Dot "conditional_assign" := {|
+    : Notation.Dot "conditional_assign" := {
     Notation.dot (self : mut_ref Self) (other : ref Self) (choice : Choice) :=
       (assign (deref self) (Self::["conditional_select"] self other choice) ;;
       tt
       : unit);
-  |}.
+  }.
   Global Instance Method_conditional_swap `(Trait)
-    : Notation.Dot "conditional_swap" := {|
+    : Notation.Dot "conditional_swap" := {
     Notation.dot (a : mut_ref Self) (b : mut_ref Self) (choice : Choice) :=
       (let t := deref a in
       a.["conditional_assign"] b choice ;;
       b.["conditional_assign"] t choice ;;
       tt
       : unit);
-  |}.
+  }.
 End ConditionallySelectable.
 
 Module Impl_ConditionallySelectable_for_u8.
@@ -533,12 +524,12 @@ Module Impl_ConditionallySelectable_for_u8.
       (choice : Choice)
       : Self :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i8)) u8 in
-    bit_xor a (bit_and mask (bit_xor a b)).
+    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
   
   Global Instance AssociatedFunction_conditional_select :
-    Notation.DoubleColon Self "conditional_select" := {|
+    Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
-  |}.
+  }.
   
   Definition conditional_assign
       (self : mut_ref Self)
@@ -547,34 +538,34 @@ Module Impl_ConditionallySelectable_for_u8.
     let mask := cast (neg (cast choice.["unwrap_u8"] i8)) u8 in
     assign
       (deref self)
-      (bit_xor
+      (bitxor
         (deref self)
-        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
-    Notation.Dot "conditional_assign" := {|
+    Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
-  |}.
+  }.
   
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i8)) u8 in
-    let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign (deref a) (bit_xor (deref a) t) ;;
-    assign (deref b) (bit_xor (deref b) t) ;;
+    let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
+    assign (deref a) (bitxor (deref a) t) ;;
+    assign (deref b) (bitxor (deref b) t) ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notation.DoubleColon Self "conditional_swap" := {|
+    Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
-  |}.
+  }.
   
-  Global Instance I : ConditionallySelectable.Trait Self := {|
+  Global Instance I : ConditionallySelectable.Trait Self := {
     ConditionallySelectable.conditional_select := conditional_select;
-  |}.
+  }.
 End Impl_ConditionallySelectable_for_u8.
 
 Module Impl_ConditionallySelectable_for_i8.
@@ -586,12 +577,12 @@ Module Impl_ConditionallySelectable_for_i8.
       (choice : Choice)
       : Self :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i8)) i8 in
-    bit_xor a (bit_and mask (bit_xor a b)).
+    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
   
   Global Instance AssociatedFunction_conditional_select :
-    Notation.DoubleColon Self "conditional_select" := {|
+    Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
-  |}.
+  }.
   
   Definition conditional_assign
       (self : mut_ref Self)
@@ -600,34 +591,34 @@ Module Impl_ConditionallySelectable_for_i8.
     let mask := cast (neg (cast choice.["unwrap_u8"] i8)) i8 in
     assign
       (deref self)
-      (bit_xor
+      (bitxor
         (deref self)
-        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
-    Notation.Dot "conditional_assign" := {|
+    Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
-  |}.
+  }.
   
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i8)) i8 in
-    let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign (deref a) (bit_xor (deref a) t) ;;
-    assign (deref b) (bit_xor (deref b) t) ;;
+    let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
+    assign (deref a) (bitxor (deref a) t) ;;
+    assign (deref b) (bitxor (deref b) t) ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notation.DoubleColon Self "conditional_swap" := {|
+    Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
-  |}.
+  }.
   
-  Global Instance I : ConditionallySelectable.Trait Self := {|
+  Global Instance I : ConditionallySelectable.Trait Self := {
     ConditionallySelectable.conditional_select := conditional_select;
-  |}.
+  }.
 End Impl_ConditionallySelectable_for_i8.
 
 Module Impl_ConditionallySelectable_for_u16.
@@ -639,12 +630,12 @@ Module Impl_ConditionallySelectable_for_u16.
       (choice : Choice)
       : Self :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i16)) u16 in
-    bit_xor a (bit_and mask (bit_xor a b)).
+    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
   
   Global Instance AssociatedFunction_conditional_select :
-    Notation.DoubleColon Self "conditional_select" := {|
+    Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
-  |}.
+  }.
   
   Definition conditional_assign
       (self : mut_ref Self)
@@ -653,34 +644,34 @@ Module Impl_ConditionallySelectable_for_u16.
     let mask := cast (neg (cast choice.["unwrap_u8"] i16)) u16 in
     assign
       (deref self)
-      (bit_xor
+      (bitxor
         (deref self)
-        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
-    Notation.Dot "conditional_assign" := {|
+    Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
-  |}.
+  }.
   
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i16)) u16 in
-    let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign (deref a) (bit_xor (deref a) t) ;;
-    assign (deref b) (bit_xor (deref b) t) ;;
+    let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
+    assign (deref a) (bitxor (deref a) t) ;;
+    assign (deref b) (bitxor (deref b) t) ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notation.DoubleColon Self "conditional_swap" := {|
+    Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
-  |}.
+  }.
   
-  Global Instance I : ConditionallySelectable.Trait Self := {|
+  Global Instance I : ConditionallySelectable.Trait Self := {
     ConditionallySelectable.conditional_select := conditional_select;
-  |}.
+  }.
 End Impl_ConditionallySelectable_for_u16.
 
 Module Impl_ConditionallySelectable_for_i16.
@@ -692,12 +683,12 @@ Module Impl_ConditionallySelectable_for_i16.
       (choice : Choice)
       : Self :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i16)) i16 in
-    bit_xor a (bit_and mask (bit_xor a b)).
+    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
   
   Global Instance AssociatedFunction_conditional_select :
-    Notation.DoubleColon Self "conditional_select" := {|
+    Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
-  |}.
+  }.
   
   Definition conditional_assign
       (self : mut_ref Self)
@@ -706,34 +697,34 @@ Module Impl_ConditionallySelectable_for_i16.
     let mask := cast (neg (cast choice.["unwrap_u8"] i16)) i16 in
     assign
       (deref self)
-      (bit_xor
+      (bitxor
         (deref self)
-        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
-    Notation.Dot "conditional_assign" := {|
+    Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
-  |}.
+  }.
   
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i16)) i16 in
-    let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign (deref a) (bit_xor (deref a) t) ;;
-    assign (deref b) (bit_xor (deref b) t) ;;
+    let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
+    assign (deref a) (bitxor (deref a) t) ;;
+    assign (deref b) (bitxor (deref b) t) ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notation.DoubleColon Self "conditional_swap" := {|
+    Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
-  |}.
+  }.
   
-  Global Instance I : ConditionallySelectable.Trait Self := {|
+  Global Instance I : ConditionallySelectable.Trait Self := {
     ConditionallySelectable.conditional_select := conditional_select;
-  |}.
+  }.
 End Impl_ConditionallySelectable_for_i16.
 
 Module Impl_ConditionallySelectable_for_u32.
@@ -745,12 +736,12 @@ Module Impl_ConditionallySelectable_for_u32.
       (choice : Choice)
       : Self :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i32)) u32 in
-    bit_xor a (bit_and mask (bit_xor a b)).
+    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
   
   Global Instance AssociatedFunction_conditional_select :
-    Notation.DoubleColon Self "conditional_select" := {|
+    Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
-  |}.
+  }.
   
   Definition conditional_assign
       (self : mut_ref Self)
@@ -759,34 +750,34 @@ Module Impl_ConditionallySelectable_for_u32.
     let mask := cast (neg (cast choice.["unwrap_u8"] i32)) u32 in
     assign
       (deref self)
-      (bit_xor
+      (bitxor
         (deref self)
-        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
-    Notation.Dot "conditional_assign" := {|
+    Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
-  |}.
+  }.
   
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i32)) u32 in
-    let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign (deref a) (bit_xor (deref a) t) ;;
-    assign (deref b) (bit_xor (deref b) t) ;;
+    let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
+    assign (deref a) (bitxor (deref a) t) ;;
+    assign (deref b) (bitxor (deref b) t) ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notation.DoubleColon Self "conditional_swap" := {|
+    Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
-  |}.
+  }.
   
-  Global Instance I : ConditionallySelectable.Trait Self := {|
+  Global Instance I : ConditionallySelectable.Trait Self := {
     ConditionallySelectable.conditional_select := conditional_select;
-  |}.
+  }.
 End Impl_ConditionallySelectable_for_u32.
 
 Module Impl_ConditionallySelectable_for_i32.
@@ -798,12 +789,12 @@ Module Impl_ConditionallySelectable_for_i32.
       (choice : Choice)
       : Self :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i32)) i32 in
-    bit_xor a (bit_and mask (bit_xor a b)).
+    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
   
   Global Instance AssociatedFunction_conditional_select :
-    Notation.DoubleColon Self "conditional_select" := {|
+    Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
-  |}.
+  }.
   
   Definition conditional_assign
       (self : mut_ref Self)
@@ -812,34 +803,34 @@ Module Impl_ConditionallySelectable_for_i32.
     let mask := cast (neg (cast choice.["unwrap_u8"] i32)) i32 in
     assign
       (deref self)
-      (bit_xor
+      (bitxor
         (deref self)
-        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
-    Notation.Dot "conditional_assign" := {|
+    Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
-  |}.
+  }.
   
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i32)) i32 in
-    let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign (deref a) (bit_xor (deref a) t) ;;
-    assign (deref b) (bit_xor (deref b) t) ;;
+    let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
+    assign (deref a) (bitxor (deref a) t) ;;
+    assign (deref b) (bitxor (deref b) t) ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notation.DoubleColon Self "conditional_swap" := {|
+    Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
-  |}.
+  }.
   
-  Global Instance I : ConditionallySelectable.Trait Self := {|
+  Global Instance I : ConditionallySelectable.Trait Self := {
     ConditionallySelectable.conditional_select := conditional_select;
-  |}.
+  }.
 End Impl_ConditionallySelectable_for_i32.
 
 Module Impl_ConditionallySelectable_for_u64.
@@ -851,12 +842,12 @@ Module Impl_ConditionallySelectable_for_u64.
       (choice : Choice)
       : Self :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i64)) u64 in
-    bit_xor a (bit_and mask (bit_xor a b)).
+    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
   
   Global Instance AssociatedFunction_conditional_select :
-    Notation.DoubleColon Self "conditional_select" := {|
+    Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
-  |}.
+  }.
   
   Definition conditional_assign
       (self : mut_ref Self)
@@ -865,34 +856,34 @@ Module Impl_ConditionallySelectable_for_u64.
     let mask := cast (neg (cast choice.["unwrap_u8"] i64)) u64 in
     assign
       (deref self)
-      (bit_xor
+      (bitxor
         (deref self)
-        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
-    Notation.Dot "conditional_assign" := {|
+    Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
-  |}.
+  }.
   
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i64)) u64 in
-    let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign (deref a) (bit_xor (deref a) t) ;;
-    assign (deref b) (bit_xor (deref b) t) ;;
+    let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
+    assign (deref a) (bitxor (deref a) t) ;;
+    assign (deref b) (bitxor (deref b) t) ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notation.DoubleColon Self "conditional_swap" := {|
+    Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
-  |}.
+  }.
   
-  Global Instance I : ConditionallySelectable.Trait Self := {|
+  Global Instance I : ConditionallySelectable.Trait Self := {
     ConditionallySelectable.conditional_select := conditional_select;
-  |}.
+  }.
 End Impl_ConditionallySelectable_for_u64.
 
 Module Impl_ConditionallySelectable_for_i64.
@@ -904,12 +895,12 @@ Module Impl_ConditionallySelectable_for_i64.
       (choice : Choice)
       : Self :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i64)) i64 in
-    bit_xor a (bit_and mask (bit_xor a b)).
+    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
   
   Global Instance AssociatedFunction_conditional_select :
-    Notation.DoubleColon Self "conditional_select" := {|
+    Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
-  |}.
+  }.
   
   Definition conditional_assign
       (self : mut_ref Self)
@@ -918,34 +909,34 @@ Module Impl_ConditionallySelectable_for_i64.
     let mask := cast (neg (cast choice.["unwrap_u8"] i64)) i64 in
     assign
       (deref self)
-      (bit_xor
+      (bitxor
         (deref self)
-        (bit_and mask (bit_xor (deref self) (deref other)))) ;;
+        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
-    Notation.Dot "conditional_assign" := {|
+    Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
-  |}.
+  }.
   
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i64)) i64 in
-    let t := bit_and mask (bit_xor (deref a) (deref b)) in
-    assign (deref a) (bit_xor (deref a) t) ;;
-    assign (deref b) (bit_xor (deref b) t) ;;
+    let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
+    assign (deref a) (bitxor (deref a) t) ;;
+    assign (deref b) (bitxor (deref b) t) ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notation.DoubleColon Self "conditional_swap" := {|
+    Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
-  |}.
+  }.
   
-  Global Instance I : ConditionallySelectable.Trait Self := {|
+  Global Instance I : ConditionallySelectable.Trait Self := {
     ConditionallySelectable.conditional_select := conditional_select;
-  |}.
+  }.
 End Impl_ConditionallySelectable_for_i64.
 
 Module Impl_ConditionallySelectable_for_Choice.
@@ -963,13 +954,13 @@ Module Impl_ConditionallySelectable_for_Choice.
         choice).
   
   Global Instance AssociatedFunction_conditional_select :
-    Notation.DoubleColon Self "conditional_select" := {|
+    Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
-  |}.
+  }.
   
-  Global Instance I : ConditionallySelectable.Trait Self := {|
+  Global Instance I : ConditionallySelectable.Trait Self := {
     ConditionallySelectable.conditional_select := conditional_select;
-  |}.
+  }.
 End Impl_ConditionallySelectable_for_Choice.
 
 Module ConditionallyNegatable.
@@ -978,9 +969,9 @@ Module ConditionallyNegatable.
   }.
   
   Global Instance Method_conditional_negate `(Trait)
-    : Notation.Dot "conditional_negate" := {|
+    : Notation.Dot "conditional_negate" := {
     Notation.dot := conditional_negate;
-  |}.
+  }.
 End ConditionallyNegatable.
 
 Module Impl_ConditionallyNegatable_for_T.
@@ -992,13 +983,13 @@ Module Impl_ConditionallyNegatable_for_T.
     tt.
   
   Global Instance Method_conditional_negate :
-    Notation.Dot "conditional_negate" := {|
+    Notation.Dot "conditional_negate" := {
     Notation.dot := conditional_negate;
-  |}.
+  }.
   
-  Global Instance I T : ConditionallyNegatable.Trait Self := {|
+  Global Instance I T : ConditionallyNegatable.Trait Self := {
     ConditionallyNegatable.conditional_negate := conditional_negate;
-  |}.
+  }.
 End Impl_ConditionallyNegatable_for_T.
 
 Module CtOption.
@@ -1007,12 +998,12 @@ Module CtOption.
     is_some : Choice;
   }.
   
-  Global Instance Get_value : Notation.Dot "value" := {|
+  Global Instance Get_value : Notation.Dot "value" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_is_some : Notation.Dot "is_some" := {|
+  }.
+  Global Instance Get_is_some : Notation.Dot "is_some" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End CtOption.
 Definition CtOption : Set := CtOption.t.
 
@@ -1025,13 +1016,13 @@ Module Impl__crate_clone_Clone_for_CtOption.
       CtOption.is_some := _crate.clone.Clone.clone self.["is_some"];
     |}.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {|
+  Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
-  |}.
+  }.
   
-  Global Instance I T : _crate.clone.Clone.Trait Self := {|
+  Global Instance I T : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
-  |}.
+  }.
 End Impl__crate_clone_Clone_for_CtOption.
 
 Module Impl__crate_marker_Copy_for_CtOption.
@@ -1056,32 +1047,32 @@ Module Impl__crate_fmt_Debug_for_CtOption.
       "is_some"
       self.["is_some"].
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I T : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I T : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_CtOption.
 
 Module Impl_From_for_Option.
   Definition Self := Option.
   
   Definition from (source : CtOption) : Option :=
-    if (eqb source.["is_some"].["unwrap_u8"] 1 : bool) then
+    if (source.["is_some"].["unwrap_u8"].["eq"] 1 : bool) then
       Option.Some source.["value"]
     else
       None.
   
   Global Instance AssociatedFunction_from :
-    Notation.DoubleColon Self "from" := {|
+    Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
-  |}.
+  }.
   
-  Global Instance I T : From.Trait CtOption Self := {|
+  Global Instance I T : From.Trait Self CtOption := {
     From.from := from;
-  |}.
+  }.
 End Impl_From_for_Option.
 
 Module ImplCtOption.
@@ -1090,14 +1081,14 @@ Module ImplCtOption.
   Definition new (value : T) (is_some : Choice) : CtOption :=
     {| CtOption.value := value; CtOption.is_some := is_some; |}.
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {|
+  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
-  |}.
+  }.
   
   Definition expect (self : Self) (msg : ref str) : T :=
     match (self.["is_some"].["unwrap_u8"], 1) with
     | (left_val, right_val) =>
-      if (not (eqb (deref left_val) (deref right_val)) : bool) then
+      if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
         _crate.panicking.assert_failed
           kind
@@ -1113,14 +1104,14 @@ Module ImplCtOption.
     end ;;
     self.["value"].
   
-  Global Instance Method_expect : Notation.Dot "expect" := {|
+  Global Instance Method_expect : Notation.Dot "expect" := {
     Notation.dot := expect;
-  |}.
+  }.
   
   Definition unwrap (self : Self) : T :=
     match (self.["is_some"].["unwrap_u8"], 1) with
     | (left_val, right_val) =>
-      if (not (eqb (deref left_val) (deref right_val)) : bool) then
+      if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
         _crate.panicking.assert_failed
           kind
@@ -1133,35 +1124,35 @@ Module ImplCtOption.
     end ;;
     self.["value"].
   
-  Global Instance Method_unwrap : Notation.Dot "unwrap" := {|
+  Global Instance Method_unwrap : Notation.Dot "unwrap" := {
     Notation.dot := unwrap;
-  |}.
+  }.
   
   Definition unwrap_or (self : Self) (def : T) : T :=
     T::["conditional_select"] def self.["value"] self.["is_some"].
   
-  Global Instance Method_unwrap_or : Notation.Dot "unwrap_or" := {|
+  Global Instance Method_unwrap_or : Notation.Dot "unwrap_or" := {
     Notation.dot := unwrap_or;
-  |}.
+  }.
   
   Definition unwrap_or_else (self : Self) (f : F) : T :=
     T::["conditional_select"] (f tt) self.["value"] self.["is_some"].
   
-  Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {|
+  Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {
     Notation.dot := unwrap_or_else;
-  |}.
+  }.
   
   Definition is_some (self : ref Self) : Choice := self.["is_some"].
   
-  Global Instance Method_is_some : Notation.Dot "is_some" := {|
+  Global Instance Method_is_some : Notation.Dot "is_some" := {
     Notation.dot := is_some;
-  |}.
+  }.
   
   Definition is_none (self : ref Self) : Choice := not self.["is_some"].
   
-  Global Instance Method_is_none : Notation.Dot "is_none" := {|
+  Global Instance Method_is_none : Notation.Dot "is_none" := {
     Notation.dot := is_none;
-  |}.
+  }.
   
   Definition map (self : Self) (f : F) : CtOption :=
     CtOption::["new"]
@@ -1172,9 +1163,9 @@ Module ImplCtOption.
           self.["is_some"]))
       self.["is_some"].
   
-  Global Instance Method_map : Notation.Dot "map" := {|
+  Global Instance Method_map : Notation.Dot "map" := {
     Notation.dot := map;
-  |}.
+  }.
   
   Definition and_then (self : Self) (f : F) : CtOption :=
     let tmp :=
@@ -1183,21 +1174,21 @@ Module ImplCtOption.
           (T::["default"] tt)
           self.["value"]
           self.["is_some"]) in
-    assign tmp.["is_some"] (bit_and tmp.["is_some"] self.["is_some"]) ;;
+    assign tmp.["is_some"] (bitand tmp.["is_some"] self.["is_some"]) ;;
     tmp.
   
-  Global Instance Method_and_then : Notation.Dot "and_then" := {|
+  Global Instance Method_and_then : Notation.Dot "and_then" := {
     Notation.dot := and_then;
-  |}.
+  }.
   
   Definition or_else (self : Self) (f : F) : CtOption :=
     let is_none := self.["is_none"] in
     let f := f tt in
     Self::["conditional_select"] self f is_none.
   
-  Global Instance Method_or_else : Notation.Dot "or_else" := {|
+  Global Instance Method_or_else : Notation.Dot "or_else" := {
     Notation.dot := or_else;
-  |}.
+  }.
 End ImplCtOption.
 
 Module Impl_ConditionallySelectable_for_CtOption.
@@ -1213,13 +1204,13 @@ Module Impl_ConditionallySelectable_for_CtOption.
       (Choice::["conditional_select"] a.["is_some"] b.["is_some"] choice).
   
   Global Instance AssociatedFunction_conditional_select :
-    Notation.DoubleColon Self "conditional_select" := {|
+    Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
-  |}.
+  }.
   
-  Global Instance I T : ConditionallySelectable.Trait Self := {|
+  Global Instance I T : ConditionallySelectable.Trait Self := {
     ConditionallySelectable.conditional_select := conditional_select;
-  |}.
+  }.
 End Impl_ConditionallySelectable_for_CtOption.
 
 Module Impl_ConstantTimeEq_for_CtOption.
@@ -1228,17 +1219,17 @@ Module Impl_ConstantTimeEq_for_CtOption.
   Definition ct_eq (self : ref Self) (rhs : ref CtOption) : Choice :=
     let a := self.["is_some"] in
     let b := rhs.["is_some"] in
-    bit_or
-      (bit_and (bit_and a b) (self.["value"].["ct_eq"] rhs.["value"]))
-      (bit_and (not a) (not b)).
+    ((a.["bitand"] b).["bitand"]
+        (self.["value"].["ct_eq"] rhs.["value"])).["bitor"]
+      ((not a).["bitand"] (not b)).
   
-  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {|
+  Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
-  |}.
+  }.
   
-  Global Instance I T : ConstantTimeEq.Trait Self := {|
+  Global Instance I T : ConstantTimeEq.Trait Self := {
     ConstantTimeEq.ct_eq := ct_eq;
-  |}.
+  }.
 End Impl_ConstantTimeEq_for_CtOption.
 
 Module ConstantTimeGreater.
@@ -1246,21 +1237,21 @@ Module ConstantTimeGreater.
     ct_gt : (ref Self) -> ((ref Self) -> Choice);
   }.
   
-  Global Instance Method_ct_gt `(Trait) : Notation.Dot "ct_gt" := {|
+  Global Instance Method_ct_gt `(Trait) : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
-  |}.
+  }.
 End ConstantTimeGreater.
 
 Module Impl_ConstantTimeGreater_for_u8.
   Definition Self := u8.
   
   Definition ct_gt (self : ref Self) (other : ref u8) : Choice :=
-    let gtb := bit_and self (not other) in
-    let ltb := bit_and (not self) other in
+    let gtb := self.["bitand"] (not other) in
+    let ltb := (not self).["bitand"] other in
     let pow := 1 in
     loop
-      (if (lt pow 8 : bool) then
-        assign ltb (bit_or ltb (shr ltb pow)) ;;
+      (if (pow.["lt"] 8 : bool) then
+        assign ltb (bitor ltb (ltb.["shr"] pow)) ;;
         assign pow (add pow pow) ;;
         tt
       else
@@ -1268,11 +1259,11 @@ Module Impl_ConstantTimeGreater_for_u8.
         tt)
       from
       while ;;
-    let bit := bit_and gtb (not ltb) in
+    let bit := gtb.["bitand"] (not ltb) in
     let pow := 1 in
     loop
-      (if (lt pow 8 : bool) then
-        assign bit (bit_or bit (shr bit pow)) ;;
+      (if (pow.["lt"] 8 : bool) then
+        assign bit (bitor bit (bit.["shr"] pow)) ;;
         assign pow (add pow pow) ;;
         tt
       else
@@ -1280,27 +1271,27 @@ Module Impl_ConstantTimeGreater_for_u8.
         tt)
       from
       while ;;
-    Choice::["from"] (cast (bit_and bit 1) u8).
+    Choice::["from"] (cast (bit.["bitand"] 1) u8).
   
-  Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {|
+  Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeGreater.Trait Self := {|
+  Global Instance I : ConstantTimeGreater.Trait Self := {
     ConstantTimeGreater.ct_gt := ct_gt;
-  |}.
+  }.
 End Impl_ConstantTimeGreater_for_u8.
 
 Module Impl_ConstantTimeGreater_for_u16.
   Definition Self := u16.
   
   Definition ct_gt (self : ref Self) (other : ref u16) : Choice :=
-    let gtb := bit_and self (not other) in
-    let ltb := bit_and (not self) other in
+    let gtb := self.["bitand"] (not other) in
+    let ltb := (not self).["bitand"] other in
     let pow := 1 in
     loop
-      (if (lt pow 16 : bool) then
-        assign ltb (bit_or ltb (shr ltb pow)) ;;
+      (if (pow.["lt"] 16 : bool) then
+        assign ltb (bitor ltb (ltb.["shr"] pow)) ;;
         assign pow (add pow pow) ;;
         tt
       else
@@ -1308,11 +1299,11 @@ Module Impl_ConstantTimeGreater_for_u16.
         tt)
       from
       while ;;
-    let bit := bit_and gtb (not ltb) in
+    let bit := gtb.["bitand"] (not ltb) in
     let pow := 1 in
     loop
-      (if (lt pow 16 : bool) then
-        assign bit (bit_or bit (shr bit pow)) ;;
+      (if (pow.["lt"] 16 : bool) then
+        assign bit (bitor bit (bit.["shr"] pow)) ;;
         assign pow (add pow pow) ;;
         tt
       else
@@ -1320,27 +1311,27 @@ Module Impl_ConstantTimeGreater_for_u16.
         tt)
       from
       while ;;
-    Choice::["from"] (cast (bit_and bit 1) u8).
+    Choice::["from"] (cast (bit.["bitand"] 1) u8).
   
-  Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {|
+  Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeGreater.Trait Self := {|
+  Global Instance I : ConstantTimeGreater.Trait Self := {
     ConstantTimeGreater.ct_gt := ct_gt;
-  |}.
+  }.
 End Impl_ConstantTimeGreater_for_u16.
 
 Module Impl_ConstantTimeGreater_for_u32.
   Definition Self := u32.
   
   Definition ct_gt (self : ref Self) (other : ref u32) : Choice :=
-    let gtb := bit_and self (not other) in
-    let ltb := bit_and (not self) other in
+    let gtb := self.["bitand"] (not other) in
+    let ltb := (not self).["bitand"] other in
     let pow := 1 in
     loop
-      (if (lt pow 32 : bool) then
-        assign ltb (bit_or ltb (shr ltb pow)) ;;
+      (if (pow.["lt"] 32 : bool) then
+        assign ltb (bitor ltb (ltb.["shr"] pow)) ;;
         assign pow (add pow pow) ;;
         tt
       else
@@ -1348,11 +1339,11 @@ Module Impl_ConstantTimeGreater_for_u32.
         tt)
       from
       while ;;
-    let bit := bit_and gtb (not ltb) in
+    let bit := gtb.["bitand"] (not ltb) in
     let pow := 1 in
     loop
-      (if (lt pow 32 : bool) then
-        assign bit (bit_or bit (shr bit pow)) ;;
+      (if (pow.["lt"] 32 : bool) then
+        assign bit (bitor bit (bit.["shr"] pow)) ;;
         assign pow (add pow pow) ;;
         tt
       else
@@ -1360,27 +1351,27 @@ Module Impl_ConstantTimeGreater_for_u32.
         tt)
       from
       while ;;
-    Choice::["from"] (cast (bit_and bit 1) u8).
+    Choice::["from"] (cast (bit.["bitand"] 1) u8).
   
-  Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {|
+  Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeGreater.Trait Self := {|
+  Global Instance I : ConstantTimeGreater.Trait Self := {
     ConstantTimeGreater.ct_gt := ct_gt;
-  |}.
+  }.
 End Impl_ConstantTimeGreater_for_u32.
 
 Module Impl_ConstantTimeGreater_for_u64.
   Definition Self := u64.
   
   Definition ct_gt (self : ref Self) (other : ref u64) : Choice :=
-    let gtb := bit_and self (not other) in
-    let ltb := bit_and (not self) other in
+    let gtb := self.["bitand"] (not other) in
+    let ltb := (not self).["bitand"] other in
     let pow := 1 in
     loop
-      (if (lt pow 64 : bool) then
-        assign ltb (bit_or ltb (shr ltb pow)) ;;
+      (if (pow.["lt"] 64 : bool) then
+        assign ltb (bitor ltb (ltb.["shr"] pow)) ;;
         assign pow (add pow pow) ;;
         tt
       else
@@ -1388,11 +1379,11 @@ Module Impl_ConstantTimeGreater_for_u64.
         tt)
       from
       while ;;
-    let bit := bit_and gtb (not ltb) in
+    let bit := gtb.["bitand"] (not ltb) in
     let pow := 1 in
     loop
-      (if (lt pow 64 : bool) then
-        assign bit (bit_or bit (shr bit pow)) ;;
+      (if (pow.["lt"] 64 : bool) then
+        assign bit (bitor bit (bit.["shr"] pow)) ;;
         assign pow (add pow pow) ;;
         tt
       else
@@ -1400,26 +1391,26 @@ Module Impl_ConstantTimeGreater_for_u64.
         tt)
       from
       while ;;
-    Choice::["from"] (cast (bit_and bit 1) u8).
+    Choice::["from"] (cast (bit.["bitand"] 1) u8).
   
-  Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {|
+  Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
-  |}.
+  }.
   
-  Global Instance I : ConstantTimeGreater.Trait Self := {|
+  Global Instance I : ConstantTimeGreater.Trait Self := {
     ConstantTimeGreater.ct_gt := ct_gt;
-  |}.
+  }.
 End Impl_ConstantTimeGreater_for_u64.
 
 Module ConstantTimeLess.
   Class Trait (Self : Set) : Set := {
   }.
   
-  Global Instance Method_ct_lt `(Trait) : Notation.Dot "ct_lt" := {|
+  Global Instance Method_ct_lt `(Trait) : Notation.Dot "ct_lt" := {
     Notation.dot (self : ref Self) (other : ref Self) :=
-      (bit_and (not (self.["ct_gt"] other)) (not (self.["ct_eq"] other))
+      ((not (self.["ct_gt"] other)).["bitand"] (not (self.["ct_eq"] other))
       : Choice);
-  |}.
+  }.
 End ConstantTimeLess.
 
 Module Impl_ConstantTimeLess_for_u8.

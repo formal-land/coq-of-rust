@@ -13,7 +13,7 @@ Definition foo (arg : i32) : i32 :=
       [ "arg = "; "\n" ]
       [ _crate.fmt.ArgumentV1::["new_display"] arg ]) ;;
   tt ;;
-  mul arg 2.
+  arg.["mul"] 2.
 
 Definition call_foo (arg : i32) : i32 :=
   let result := tt in

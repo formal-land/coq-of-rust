@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  let val := add 1 2 in
+  let val := 1.["add"] 2 in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ ""; " = "; "\n" ]
@@ -14,7 +14,7 @@ Definition main (_ : unit) : unit :=
       ]) ;;
   tt ;;
   tt ;;
-  let val := mul (add 1 2) (div 3 4) in
+  let val := (1.["add"] 2).["mul"] (3.["div"] 4) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ ""; " = "; "\n" ]

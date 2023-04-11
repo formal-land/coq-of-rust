@@ -10,9 +10,9 @@ Module Circle.
     radius : i32;
   }.
   
-  Global Instance Get_radius : Notation.Dot "radius" := {|
+  Global Instance Get_radius : Notation.Dot "radius" := {
     Notation.dot '(Build_t x0) := x0;
-  |}.
+  }.
 End Circle.
 Definition Circle : Set := Circle.t.
 
@@ -25,13 +25,13 @@ Module Impl_fmt_Display_for_Circle.
         [ "Circle of radius " ]
         [ _crate.fmt.ArgumentV1::["new_display"] self.["radius"] ]).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : fmt.Display.Trait Self := {|
+  Global Instance I : fmt.Display.Trait Self := {
     fmt.Display.fmt := fmt;
-  |}.
+  }.
 End Impl_fmt_Display_for_Circle.
 
 Definition main (_ : unit) : unit :=

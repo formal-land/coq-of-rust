@@ -14,7 +14,7 @@ Definition sum_odd_numbers (up_to : u32) : u32 :=
       | None => Break
       | Some {| Some.0 := i; |} =>
         let addition :=
-          match eqb (rem i 2) 1 with
+          match (i.["rem"] 2).["eq"] 1 with
           | Bool(true) => i
           | Bool(false) => Continue
           end in

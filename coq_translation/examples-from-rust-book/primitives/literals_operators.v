@@ -7,22 +7,22 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "1 + 2 = "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (add 1 2) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (1.["add"] 2) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "1 - 2 = "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (sub 1 2) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (1.["sub"] 2) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "true AND false is "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (andb true false) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (true.["andb"] false) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "true OR false is "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (or true false) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (true.["or"] false) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
@@ -32,7 +32,7 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1_formatted"]
       [ "0011 AND 0101 is "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_binary"] (bit_and 3 5) ]
+      [ _crate.fmt.ArgumentV1::["new_binary"] (3.["bitand"] 5) ]
       [
         {|
           _crate.fmt.rt.v1.Argument.position := 0;
@@ -53,7 +53,7 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1_formatted"]
       [ "0011 OR 0101 is "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_binary"] (bit_or 3 5) ]
+      [ _crate.fmt.ArgumentV1::["new_binary"] (3.["bitor"] 5) ]
       [
         {|
           _crate.fmt.rt.v1.Argument.position := 0;
@@ -74,7 +74,7 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1_formatted"]
       [ "0011 XOR 0101 is "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_binary"] (bit_xor 3 5) ]
+      [ _crate.fmt.ArgumentV1::["new_binary"] (3.["bitxor"] 5) ]
       [
         {|
           _crate.fmt.rt.v1.Argument.position := 0;
@@ -95,12 +95,12 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "1 << 5 is "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (shl 1 5) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (1.["shl"] 5) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "0x80 >> 2 is 0x"; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_lower_hex"] (shr 128 2) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_lower_hex"] (128.["shr"] 2) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]

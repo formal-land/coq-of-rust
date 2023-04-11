@@ -8,9 +8,9 @@ Module Debug := std.fmt.Debug.
 Module Ref.
   Inductive t : Set := Build (_ : ref T).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0) := x0;
-  |}.
+  }.
 End Ref.
 Definition Ref := Ref.t.
 
@@ -26,13 +26,13 @@ Module Impl__crate_fmt_Debug_for_Ref.
       "Ref"
       (IndexedField.get (index := 0) self).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I 'a T : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I T : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Ref.
 
 Definition print {T : Set} `{Debug.Trait T} (t : T) : unit :=

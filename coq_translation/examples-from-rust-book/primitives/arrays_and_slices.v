@@ -56,7 +56,7 @@ Definition main (_ : unit) : unit :=
   let empty_array := [  ] in
   match (empty_array, [  ]) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -69,7 +69,7 @@ Definition main (_ : unit) : unit :=
   end ;;
   match (empty_array, [  ][{|  |}]) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
@@ -80,7 +80,7 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  match LangItem {| Range.start := 0; Range.end := add xs.["len"] 1; |} with
+  match LangItem {| Range.start := 0; Range.end := xs.["len"].["add"] 1; |} with
   | iter =>
     loop
       match LangItem iter with

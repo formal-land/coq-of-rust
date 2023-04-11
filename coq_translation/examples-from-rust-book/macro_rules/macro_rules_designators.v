@@ -27,7 +27,7 @@ Definition main (_ : unit) : unit :=
       [ ""; " = "; "\n" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"] "1u32 + 1";
-        _crate.fmt.ArgumentV1::["new_debug"] (add 1 1)
+        _crate.fmt.ArgumentV1::["new_debug"] (1.["add"] 1)
       ]) ;;
   tt ;;
   _crate.io._print
@@ -38,7 +38,7 @@ Definition main (_ : unit) : unit :=
           "{ let x = 1u32; x * x + 2 * x - 1 }";
         _crate.fmt.ArgumentV1::["new_debug"]
           let x := 1 in
-          sub (add (mul x x) (mul 2 x)) 1
+          ((x.["mul"] x).["add"] (2.["mul"] x)).["sub"] 1
       ]) ;;
   tt ;;
   tt.

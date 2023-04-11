@@ -23,13 +23,13 @@ Module Impl__crate_fmt_Debug_for_Inch.
       : _crate.fmt.Result :=
     _crate.intrinsics.unreachable tt.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Inch.
 
 Module Impl__crate_clone_Clone_for_Inch.
@@ -37,13 +37,13 @@ Module Impl__crate_clone_Clone_for_Inch.
   
   Definition clone (self : ref Self) : Inch := deref self.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {|
+  Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
-  |}.
+  }.
   
-  Global Instance I : _crate.clone.Clone.Trait Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
-  |}.
+  }.
 End Impl__crate_clone_Clone_for_Inch.
 
 Module Impl__crate_marker_Copy_for_Inch.
@@ -68,13 +68,13 @@ Module Impl__crate_fmt_Debug_for_Mm.
       : _crate.fmt.Result :=
     _crate.intrinsics.unreachable tt.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Mm.
 
 Module Impl__crate_clone_Clone_for_Mm.
@@ -82,13 +82,13 @@ Module Impl__crate_clone_Clone_for_Mm.
   
   Definition clone (self : ref Self) : Mm := deref self.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {|
+  Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
-  |}.
+  }.
   
-  Global Instance I : _crate.clone.Clone.Trait Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
-  |}.
+  }.
 End Impl__crate_clone_Clone_for_Mm.
 
 Module Impl__crate_marker_Copy_for_Mm.
@@ -101,12 +101,12 @@ End Impl__crate_marker_Copy_for_Mm.
 Module Length.
   Inductive t : Set := Build (_ : f64) (_ : PhantomData).
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {|
+  Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0 _) := x0;
-  |}.
-  Global Instance Get_1 : IndexedField.Class t 1 _ := {|
+  }.
+  Global Instance Get_1 : IndexedField.Class t 1 _ := {
     IndexedField.get '(Build _ x1) := x1;
-  |}.
+  }.
 End Length.
 Definition Length := Length.t.
 
@@ -123,13 +123,13 @@ Module Impl__crate_fmt_Debug_for_Length.
       (IndexedField.get (index := 0) self)
       (IndexedField.get (index := 1) self).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I Unit : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I Unit : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Length.
 
 Module Impl__crate_clone_Clone_for_Length.
@@ -140,13 +140,13 @@ Module Impl__crate_clone_Clone_for_Length.
       (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
       (_crate.clone.Clone.clone (IndexedField.get (index := 1) self)).
   
-  Global Instance Method_clone : Notation.Dot "clone" := {|
+  Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
-  |}.
+  }.
   
-  Global Instance I Unit : _crate.clone.Clone.Trait Self := {|
+  Global Instance I Unit : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
-  |}.
+  }.
 End Impl__crate_clone_Clone_for_Length.
 
 Module Impl__crate_marker_Copy_for_Length.
@@ -163,26 +163,24 @@ Module Impl_Add_for_Length.
   
   Definition add (self : Self) (rhs : Length) : Length :=
     Length.Build
-      (add
-        (IndexedField.get (index := 0) self)
+      ((IndexedField.get (index := 0) self).["add"]
         (IndexedField.get (index := 0) rhs))
-      PhantomData.
+      PhantomData.Build.
   
-  Global Instance Method_add : Notation.Dot "add" := {|
+  Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
-  |}.
+  }.
   
-  Global Instance I Unit : Add.Trait Self := {|
-    Add.Output := Output;
+  Global Instance I Unit : Add.Trait Self := {
     Add.add := add;
-  |}.
+  }.
 End Impl_Add_for_Length.
 
 Definition main (_ : unit) : unit :=
-  let one_foot := Length.Build 12 (* 12.0 *) PhantomData in
-  let one_meter := Length.Build 1000 (* 1000.0 *) PhantomData in
-  let two_feet := add one_foot one_foot in
-  let two_meters := add one_meter one_meter in
+  let one_foot := Length.Build 12 (* 12.0 *) PhantomData.Build in
+  let one_meter := Length.Build 1000 (* 1000.0 *) PhantomData.Build in
+  let two_feet := one_foot.["add"] one_foot in
+  let two_meters := one_meter.["add"] one_meter in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "one foot + one_foot = "; " in\n" ]

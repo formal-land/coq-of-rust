@@ -9,7 +9,10 @@ Module fmt := std.fmt.
 
 Definition Result : Set := std.result.Result.
 
-Error StructUnit.
+Module EmptyVec.
+  Inductive t : Set := Build.
+End EmptyVec.
+Definition EmptyVec := EmptyVec.t.
 
 Module Impl__crate_fmt_Debug_for_EmptyVec.
   Definition Self := EmptyVec.
@@ -20,13 +23,13 @@ Module Impl__crate_fmt_Debug_for_EmptyVec.
       : _crate.fmt.Result :=
     _crate.fmt.Formatter::["write_str"] f "EmptyVec".
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_EmptyVec.
 
 Module Impl_fmt_Display_for_EmptyVec.
@@ -38,13 +41,13 @@ Module Impl_fmt_Display_for_EmptyVec.
         [ "invalid first item to double" ]
         [  ]).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : fmt.Display.Trait Self := {|
+  Global Instance I : fmt.Display.Trait Self := {
     fmt.Display.fmt := fmt;
-  |}.
+  }.
 End Impl_fmt_Display_for_EmptyVec.
 
 Module Impl_error_Error_for_EmptyVec.
@@ -55,7 +58,7 @@ End Impl_error_Error_for_EmptyVec.
 
 Definition double_first (vec : Vec) : Result :=
   let first :=
-    match LangItem (vec.["first"].["ok_or"] EmptyVec) with
+    match LangItem (vec.["first"].["ok_or"] EmptyVec.Build) with
     | Break {| Break.0 := residual; |} => Return (LangItem residual)
     | Continue {| Continue.0 := val; |} => val
     end in
@@ -64,7 +67,7 @@ Definition double_first (vec : Vec) : Result :=
     | Break {| Break.0 := residual; |} => Return (LangItem residual)
     | Continue {| Continue.0 := val; |} => val
     end in
-  Ok (mul 2 parsed).
+  Ok (2.["mul"] parsed).
 
 Definition print (result : Result) : unit :=
   match result with

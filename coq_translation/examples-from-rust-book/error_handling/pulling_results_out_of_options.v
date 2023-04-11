@@ -8,7 +8,7 @@ Definition ParseIntError := ParseIntError.t.
 
 Definition double_first (vec : Vec) : Option :=
   vec.["first"].["map"]
-    (fun first => first.["parse"].["map"] (fun n => mul 2 n)).
+    (fun first => first.["parse"].["map"] (fun n => 2.["mul"] n)).
 
 Definition main (_ : unit) : unit :=
   let numbers := Slice::["into_vec"] [ "42"; "93"; "18" ] in

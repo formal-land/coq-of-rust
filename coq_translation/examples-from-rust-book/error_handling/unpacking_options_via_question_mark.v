@@ -8,9 +8,9 @@ Module Person.
     job : Option;
   }.
   
-  Global Instance Get_job : Notation.Dot "job" := {|
+  Global Instance Get_job : Notation.Dot "job" := {
     Notation.dot '(Build_t x0) := x0;
-  |}.
+  }.
 End Person.
 Definition Person : Set := Person.t.
 
@@ -19,9 +19,9 @@ Module Job.
     phone_number : Option;
   }.
   
-  Global Instance Get_phone_number : Notation.Dot "phone_number" := {|
+  Global Instance Get_phone_number : Notation.Dot "phone_number" := {
     Notation.dot '(Build_t x0) := x0;
-  |}.
+  }.
 End Job.
 Definition Job : Set := Job.t.
 
@@ -32,13 +32,13 @@ Module Impl__crate_clone_Clone_for_Job.
     let _ := tt in
     deref self.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {|
+  Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
-  |}.
+  }.
   
-  Global Instance I : _crate.clone.Clone.Trait Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
-  |}.
+  }.
 End Impl__crate_clone_Clone_for_Job.
 
 Module Impl__crate_marker_Copy_for_Job.
@@ -54,12 +54,12 @@ Module PhoneNumber.
     number : u32;
   }.
   
-  Global Instance Get_area_code : Notation.Dot "area_code" := {|
+  Global Instance Get_area_code : Notation.Dot "area_code" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_number : Notation.Dot "number" := {|
+  }.
+  Global Instance Get_number : Notation.Dot "number" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End PhoneNumber.
 Definition PhoneNumber : Set := PhoneNumber.t.
 
@@ -71,13 +71,13 @@ Module Impl__crate_clone_Clone_for_PhoneNumber.
     let _ := tt in
     deref self.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {|
+  Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
-  |}.
+  }.
   
-  Global Instance I : _crate.clone.Clone.Trait Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
-  |}.
+  }.
 End Impl__crate_clone_Clone_for_PhoneNumber.
 
 Module Impl__crate_marker_Copy_for_PhoneNumber.
@@ -103,9 +103,9 @@ Module ImplPerson.
       end.["area_code"].
   
   Global Instance Method_work_phone_area_code :
-    Notation.Dot "work_phone_area_code" := {|
+    Notation.Dot "work_phone_area_code" := {
     Notation.dot := work_phone_area_code;
-  |}.
+  }.
 End ImplPerson.
 
 Definition main (_ : unit) : unit :=
@@ -124,7 +124,7 @@ Definition main (_ : unit) : unit :=
     |} in
   match (p.["work_phone_area_code"], Some 61) with
   | (left_val, right_val) =>
-    if (not (eqb (deref left_val) (deref right_val)) : bool) then
+    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind

@@ -24,13 +24,13 @@ Module Impl__crate_fmt_Debug_for_Food.
     | Food.Sushi => _crate.fmt.Formatter::["write_str"] f "Sushi"
     end.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Food.
 
 Module Day.
@@ -54,13 +54,13 @@ Module Impl__crate_fmt_Debug_for_Day.
     | Day.Wednesday => _crate.fmt.Formatter::["write_str"] f "Wednesday"
     end.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Day.
 
 Definition have_ingredients (food : Food) : Option :=

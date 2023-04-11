@@ -8,9 +8,9 @@ Module Droppable.
     name : ref str;
   }.
   
-  Global Instance Get_name : Notation.Dot "name" := {|
+  Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot '(Build_t x0) := x0;
-  |}.
+  }.
 End Droppable.
 Definition Droppable : Set := Droppable.t.
 
@@ -25,13 +25,13 @@ Module Impl_Drop_for_Droppable.
     tt ;;
     tt.
   
-  Global Instance Method_drop : Notation.Dot "drop" := {|
+  Global Instance Method_drop : Notation.Dot "drop" := {
     Notation.dot := drop;
-  |}.
+  }.
   
-  Global Instance I : Drop.Trait Self := {|
+  Global Instance I : Drop.Trait Self := {
     Drop.drop := drop;
-  |}.
+  }.
 End Impl_Drop_for_Droppable.
 
 Definition main (_ : unit) : unit :=

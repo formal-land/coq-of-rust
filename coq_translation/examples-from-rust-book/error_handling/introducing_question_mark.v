@@ -20,7 +20,7 @@ Definition multiply
     | Break {| Break.0 := residual; |} => Return (LangItem residual)
     | Continue {| Continue.0 := val; |} => val
     end in
-  Ok (mul first_number second_number).
+  Ok (first_number.["mul"] second_number).
 
 Definition print (result : Result) : unit :=
   match result with

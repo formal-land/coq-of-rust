@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
   let n := 5 in
-  if (lt n 0 : bool) then
+  if (n.["lt"] 0 : bool) then
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ ""; " is negative" ]
@@ -13,7 +13,7 @@ Definition main (_ : unit) : unit :=
     tt ;;
     tt
   else
-    if (gt n 0 : bool) then
+    if (n.["gt"] 0 : bool) then
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
           [ ""; " is positive" ]
@@ -28,20 +28,20 @@ Definition main (_ : unit) : unit :=
       tt ;;
       tt ;;
   let big_n :=
-    if (andb (lt n 10) (gt n (neg 10)) : bool) then
+    if ((n.["lt"] 10).["andb"] (n.["gt"] (neg 10)) : bool) then
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
           [ ", and is a small number, increase ten-fold\n" ]
           [  ]) ;;
       tt ;;
-      mul 10 n
+      10.["mul"] n
     else
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
           [ ", and is a big number, halve the number\n" ]
           [  ]) ;;
       tt ;;
-      div n 2 in
+      n.["div"] 2 in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ ""; " -> "; "\n" ]

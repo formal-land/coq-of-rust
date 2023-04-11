@@ -11,12 +11,12 @@ Module Point.
     y : f64;
   }.
   
-  Global Instance Get_x : Notation.Dot "x" := {|
+  Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_y : Notation.Dot "y" := {|
+  }.
+  Global Instance Get_y : Notation.Dot "y" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End Point.
 Definition Point : Set := Point.t.
 
@@ -35,13 +35,13 @@ Module Impl__crate_fmt_Debug_for_Point.
       "y"
       self.["y"].
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {|
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
-  |}.
+  }.
   
-  Global Instance I : _crate.fmt.Debug.Trait Self := {|
+  Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
-  |}.
+  }.
 End Impl__crate_fmt_Debug_for_Point.
 
 Module Impl__crate_clone_Clone_for_Point.
@@ -51,13 +51,13 @@ Module Impl__crate_clone_Clone_for_Point.
     let _ := tt in
     deref self.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {|
+  Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
-  |}.
+  }.
   
-  Global Instance I : _crate.clone.Clone.Trait Self := {|
+  Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
-  |}.
+  }.
 End Impl__crate_clone_Clone_for_Point.
 
 Module Impl__crate_marker_Copy_for_Point.
@@ -73,12 +73,12 @@ Module Rectangle.
     bottom_right : Point;
   }.
   
-  Global Instance Get_top_left : Notation.Dot "top_left" := {|
+  Global Instance Get_top_left : Notation.Dot "top_left" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {|
+  }.
+  Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 

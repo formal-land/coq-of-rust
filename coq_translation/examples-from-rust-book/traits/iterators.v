@@ -9,12 +9,12 @@ Module Fibonacci.
     next : u32;
   }.
   
-  Global Instance Get_curr : Notation.Dot "curr" := {|
+  Global Instance Get_curr : Notation.Dot "curr" := {
     Notation.dot '(Build_t x0 _) := x0;
-  |}.
-  Global Instance Get_next : Notation.Dot "next" := {|
+  }.
+  Global Instance Get_next : Notation.Dot "next" := {
     Notation.dot '(Build_t _ x1) := x1;
-  |}.
+  }.
 End Fibonacci.
 Definition Fibonacci : Set := Fibonacci.t.
 
@@ -26,17 +26,16 @@ Module Impl_Iterator_for_Fibonacci.
   Definition next (self : mut_ref Self) : Option :=
     let current := self.["curr"] in
     assign self.["curr"] self.["next"] ;;
-    assign self.["next"] (add current self.["next"]) ;;
+    assign self.["next"] (current.["add"] self.["next"]) ;;
     Some current.
   
-  Global Instance Method_next : Notation.Dot "next" := {|
+  Global Instance Method_next : Notation.Dot "next" := {
     Notation.dot := next;
-  |}.
+  }.
   
-  Global Instance I : Iterator.Trait Self := {|
-    Iterator.Item := Item;
+  Global Instance I : Iterator.Trait Self := {
     Iterator.next := next;
-  |}.
+  }.
 End Impl_Iterator_for_Fibonacci.
 
 Definition fibonacci (_ : unit) : Fibonacci :=
