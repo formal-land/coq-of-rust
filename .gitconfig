@@ -1,0 +1,7 @@
+[http]
+    sslbackend = openssl
+
+[user]
+    name = InfiniteEchoes
+    email = InfiniteEchoes@user-no-reply.github.com
+
