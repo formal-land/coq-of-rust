@@ -382,8 +382,6 @@ Module std.
 
   Module ops.
     Module Add.
-      Global Unset Primitive Projections.
-
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
@@ -396,8 +394,6 @@ Module std.
     End Add.
 
     Module Sub.
-      Global Unset Primitive Projections.
-
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
@@ -410,8 +406,6 @@ Module std.
     End Sub.
 
     Module Mul.
-      Global Unset Primitive Projections.
-
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
@@ -424,8 +418,6 @@ Module std.
     End Mul.
 
     Module Divv.
-      Global Unset Primitive Projections.
-
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
@@ -438,8 +430,6 @@ Module std.
     End Divv.
 
     Module Rem.
-      Global Unset Primitive Projections.
-
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
@@ -452,8 +442,6 @@ Module std.
     End Rem.
 
     Module BitXor.
-      Global Unset Primitive Projections.
-
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
@@ -466,8 +454,6 @@ Module std.
     End BitXor.
 
     Module BitAnd.
-      Global Unset Primitive Projections.
-
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
@@ -480,8 +466,6 @@ Module std.
     End BitAnd.
 
     Module BitOr.
-      Global Unset Primitive Projections.
-
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
@@ -494,8 +478,6 @@ Module std.
     End BitOr.
 
     Module Shl.
-      Global Unset Primitive Projections.
-
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
@@ -508,8 +490,6 @@ Module std.
     End Shl.
 
     Module Shr.
-      Global Unset Primitive Projections.
-
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
@@ -520,7 +500,6 @@ Module std.
         Notation.dot := shr;
       }.
     End Shr.
-
   End ops.
 
   Module cmp.
