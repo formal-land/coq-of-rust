@@ -577,7 +577,7 @@ Module std.
   End cmp.
 
 End std.
- 
+
 Module str_Instances.
   Global Instance IDisplay : std.fmt.Display.Trait str.
   Admitted.
