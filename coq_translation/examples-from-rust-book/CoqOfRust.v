@@ -382,8 +382,6 @@ Module std.
 
   Module ops.
     Module Add.
-      Global Unset Primitive Projections.
-
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
@@ -396,90 +394,108 @@ Module std.
     End Add.
 
     Module Sub.
-      Class Trait {Output : Set} (Self : Set) : Set := {
+      Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
-        sub : Self -> Self -> Output;
-        }.
+        Rhs := defaultType Rhs Self;
+        sub : Self -> Rhs -> Output;
+      }.
+
       Global Instance Method_sub `(Trait) : Notation.Dot "sub" := {
         Notation.dot := sub;
       }.
     End Sub.
 
     Module Mul.
-      Class Trait {Output : Set} (Self : Set) : Set := {
+      Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
-        mul : Self -> Self -> Output;
-        }.
+        Rhs := defaultType Rhs Self;
+        mul : Self -> Rhs -> Output;
+      }.
+
       Global Instance Method_mul `(Trait) : Notation.Dot "mul" := {
         Notation.dot := mul;
       }.
     End Mul.
 
-    Module Div.
-      Class Trait {Output : Set} (Self : Set) : Set := {
+    Module Divv.
+      Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
-        div : Self -> Self -> Output;
-        }.
-      Global Instance Method_div `(Trait) : Notation.Dot "div" := {
-        Notation.dot := div;
+        Rhs := defaultType Rhs Self;
+        divv : Self -> Rhs -> Output;
       }.
-    End Div.
+
+      Global Instance Method_divv `(Trait) : Notation.Dot "divv" := {
+        Notation.dot := divv;
+      }.
+    End Divv.
 
     Module Rem.
-      Class Trait {Output : Set} (Self : Set) : Set := {
+      Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
-        rem : Self -> Self -> Output;
-        }.
-      Global Instance Method_add `(Trait) : Notation.Dot "rem" := {
+        Rhs := defaultType Rhs Self;
+        rem : Self -> Rhs -> Output;
+      }.
+
+      Global Instance Method_rem `(Trait) : Notation.Dot "rem" := {
         Notation.dot := rem;
       }.
     End Rem.
 
     Module BitXor.
-      Class Trait {Output : Set} (Self : Set) : Set := {
+      Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
-        bitxor : Self -> Self -> Output;
-        }.
+        Rhs := defaultType Rhs Self;
+        bitxor : Self -> Rhs -> Output;
+      }.
+
       Global Instance Method_bitxor `(Trait) : Notation.Dot "bitxor" := {
         Notation.dot := bitxor;
       }.
     End BitXor.
 
     Module BitAnd.
-      Class Trait {Output : Set} (Self : Set) : Set := {
+      Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
-        bitand : Self -> Self -> Output;
-        }.
+        Rhs := defaultType Rhs Self;
+        bitand : Self -> Rhs -> Output;
+      }.
+
       Global Instance Method_bitand `(Trait) : Notation.Dot "bitand" := {
         Notation.dot := bitand;
       }.
     End BitAnd.
 
     Module BitOr.
-      Class Trait {Output : Set} (Self : Set) : Set := {
+      Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
-        bitor : Self -> Self -> Output;
-        }.
+        Rhs := defaultType Rhs Self;
+        bitor : Self -> Rhs -> Output;
+      }.
+
       Global Instance Method_bitor `(Trait) : Notation.Dot "bitor" := {
         Notation.dot := bitor;
       }.
     End BitOr.
 
     Module Shl.
-      Class Trait {Output : Set} (Self : Set) : Set := {
+      Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
-        shl : Self -> Self -> Output;
-        }.
+        Rhs := defaultType Rhs Self;
+        shl : Self -> Rhs -> Output;
+      }.
+
       Global Instance Method_shl `(Trait) : Notation.Dot "shl" := {
         Notation.dot := shl;
       }.
     End Shl.
 
     Module Shr.
-      Class Trait {Output : Set} (Self : Set) : Set := {
+      Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
-        shr : Self -> Self -> Output;
-        }.
+        Rhs := defaultType Rhs Self;
+        shr : Self -> Rhs -> Output;
+      }.
+
       Global Instance Method_shr `(Trait) : Notation.Dot "shr" := {
         Notation.dot := shr;
       }.
@@ -495,9 +511,11 @@ Module std.
     End Ordering.  
 
     Module PartialEq.
-      Class Trait (Self : Set) : Set := {
-        eq : ref Self -> ref Self -> bool;
-        ne : ref Self -> ref Self -> bool;
+      Class Trait (Self : Set) (Rhs : option Set) : Set := {
+        Rhs := defaultType Rhs Self;
+
+        eq : ref Self -> ref Rhs -> bool;
+        ne : ref Self -> ref Rhs -> bool;
       }.
 
       Global Instance Method_eq `(Trait) : Notation.Dot "eq" := { 
@@ -509,12 +527,14 @@ Module std.
     End PartialEq.
 
     Module PartialOrd.
-      Class Trait (Self : Set) : Set := {
+      Class Trait (Self : Set) (Rhs : option Set) : Set := {
+        Rhs := defaultType Rhs Self;
+
         partial_cmp : ref Self -> ref Self -> option (Ordering.t);
-        lt : ref Self -> ref Self -> bool;
-        le : ref Self -> ref Self -> bool;
-        gt : ref Self -> ref Self -> bool;
-        ge : ref Self -> ref Self -> bool;
+        lt : ref Self -> ref Rhs -> bool;
+        le : ref Self -> ref Rhs -> bool;
+        gt : ref Self -> ref Rhs -> bool;
+        ge : ref Self -> ref Rhs -> bool;
       }.
 
       Global Instance Method_partial_cmp `(Trait) : Notation.Dot "partial_cmp" := { 
