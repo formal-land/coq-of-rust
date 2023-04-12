@@ -237,11 +237,12 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         }
         rustc_hir::ExprKind::Unary(un_op, expr) => {
             let expr = compile_expr(tcx, expr);
-            let func = Box::new(Expr::LocalVar(compile_un_op(un_op)));
-            Expr::Call {
-                func,
-                args: vec![expr],
-            }
+            let func = compile_un_op(un_op);
+            Expr::MethodCall {
+              object: Box::new(expr),
+              func,
+              args: vec![],
+          }
         }
         rustc_hir::ExprKind::Lit(lit) => Expr::Literal(lit.node.clone()),
         rustc_hir::ExprKind::Cast(expr, ty) => Expr::Cast {

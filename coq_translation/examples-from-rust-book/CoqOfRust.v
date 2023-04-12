@@ -381,6 +381,7 @@ Module std.
   End io.
 
   Module ops.
+    (* Binary Operators *)
     Module Add.
       Global Unset Primitive Projections.
 
@@ -533,6 +534,39 @@ Module std.
         Notation.dot := ge;
       }.
     End PartialOrd.
+    (* End Binary Operators *)
+
+    (* Unary Operators *)
+    Module Neg.
+      Class Trait {Output : Set} (Self : Set) : Set := {
+        Output := Output;
+        neg : Self -> Output;
+        }.
+      Global Instance Method_neg `(Trait) : Notation.Dot "neg" := {
+        Notation.dot := neg;
+      }.
+    End Neg.
+
+    Module Not.
+      Class Trait {Output : Set} (Self : Set) : Set := {
+        Output := Output;
+        not : Self -> Output;
+        }.
+      Global Instance Method_snot `(Trait) : Notation.Dot "not" := {
+        Notation.dot := not;
+      }.
+    End Not.
+
+    (* TODO: Finish this module *)
+    Module Deref.
+      (* Class Trait {Output : Set} (Self : Set) : Set := {
+        Output := Output;
+        not : Self -> Output;
+        }.
+      Global Instance Method_snot `(Trait) : Notation.Dot "not" := {
+        Notation.dot := not;
+      }. *)
+    End Deref.
   End cmp.
 
 End std.
