@@ -293,7 +293,7 @@ Module Impl_ConstantTimeEq_for_Slice.
         match LangItem iter with
         | None => Break
         | Some {| Some.0 := (ai, bi); |} =>
-          assign x (bitand x (ai.["ct_eq"] bi).["unwrap_u8"]) ;;
+          x.["bitand_assign"] (ai.["ct_eq"] bi).["unwrap_u8"] ;;
           tt
         end ;;
         tt
@@ -536,11 +536,8 @@ Module Impl_ConditionallySelectable_for_u8.
       (other : ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i8)) u8 in
-    assign
-      (deref self)
-      (bitxor
-        (deref self)
-        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
+    (deref self).["bitxor_assign"]
+      (mask.["bitand"] ((deref self).["bitxor"] (deref other))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
@@ -554,8 +551,8 @@ Module Impl_ConditionallySelectable_for_u8.
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i8)) u8 in
     let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
-    assign (deref a) (bitxor (deref a) t) ;;
-    assign (deref b) (bitxor (deref b) t) ;;
+    (deref a).["bitxor_assign"] t ;;
+    (deref b).["bitxor_assign"] t ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
@@ -589,11 +586,8 @@ Module Impl_ConditionallySelectable_for_i8.
       (other : ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i8)) i8 in
-    assign
-      (deref self)
-      (bitxor
-        (deref self)
-        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
+    (deref self).["bitxor_assign"]
+      (mask.["bitand"] ((deref self).["bitxor"] (deref other))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
@@ -607,8 +601,8 @@ Module Impl_ConditionallySelectable_for_i8.
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i8)) i8 in
     let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
-    assign (deref a) (bitxor (deref a) t) ;;
-    assign (deref b) (bitxor (deref b) t) ;;
+    (deref a).["bitxor_assign"] t ;;
+    (deref b).["bitxor_assign"] t ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
@@ -642,11 +636,8 @@ Module Impl_ConditionallySelectable_for_u16.
       (other : ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i16)) u16 in
-    assign
-      (deref self)
-      (bitxor
-        (deref self)
-        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
+    (deref self).["bitxor_assign"]
+      (mask.["bitand"] ((deref self).["bitxor"] (deref other))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
@@ -660,8 +651,8 @@ Module Impl_ConditionallySelectable_for_u16.
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i16)) u16 in
     let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
-    assign (deref a) (bitxor (deref a) t) ;;
-    assign (deref b) (bitxor (deref b) t) ;;
+    (deref a).["bitxor_assign"] t ;;
+    (deref b).["bitxor_assign"] t ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
@@ -695,11 +686,8 @@ Module Impl_ConditionallySelectable_for_i16.
       (other : ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i16)) i16 in
-    assign
-      (deref self)
-      (bitxor
-        (deref self)
-        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
+    (deref self).["bitxor_assign"]
+      (mask.["bitand"] ((deref self).["bitxor"] (deref other))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
@@ -713,8 +701,8 @@ Module Impl_ConditionallySelectable_for_i16.
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i16)) i16 in
     let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
-    assign (deref a) (bitxor (deref a) t) ;;
-    assign (deref b) (bitxor (deref b) t) ;;
+    (deref a).["bitxor_assign"] t ;;
+    (deref b).["bitxor_assign"] t ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
@@ -748,11 +736,8 @@ Module Impl_ConditionallySelectable_for_u32.
       (other : ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i32)) u32 in
-    assign
-      (deref self)
-      (bitxor
-        (deref self)
-        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
+    (deref self).["bitxor_assign"]
+      (mask.["bitand"] ((deref self).["bitxor"] (deref other))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
@@ -766,8 +751,8 @@ Module Impl_ConditionallySelectable_for_u32.
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i32)) u32 in
     let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
-    assign (deref a) (bitxor (deref a) t) ;;
-    assign (deref b) (bitxor (deref b) t) ;;
+    (deref a).["bitxor_assign"] t ;;
+    (deref b).["bitxor_assign"] t ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
@@ -801,11 +786,8 @@ Module Impl_ConditionallySelectable_for_i32.
       (other : ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i32)) i32 in
-    assign
-      (deref self)
-      (bitxor
-        (deref self)
-        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
+    (deref self).["bitxor_assign"]
+      (mask.["bitand"] ((deref self).["bitxor"] (deref other))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
@@ -819,8 +801,8 @@ Module Impl_ConditionallySelectable_for_i32.
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i32)) i32 in
     let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
-    assign (deref a) (bitxor (deref a) t) ;;
-    assign (deref b) (bitxor (deref b) t) ;;
+    (deref a).["bitxor_assign"] t ;;
+    (deref b).["bitxor_assign"] t ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
@@ -854,11 +836,8 @@ Module Impl_ConditionallySelectable_for_u64.
       (other : ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i64)) u64 in
-    assign
-      (deref self)
-      (bitxor
-        (deref self)
-        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
+    (deref self).["bitxor_assign"]
+      (mask.["bitand"] ((deref self).["bitxor"] (deref other))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
@@ -872,8 +851,8 @@ Module Impl_ConditionallySelectable_for_u64.
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i64)) u64 in
     let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
-    assign (deref a) (bitxor (deref a) t) ;;
-    assign (deref b) (bitxor (deref b) t) ;;
+    (deref a).["bitxor_assign"] t ;;
+    (deref b).["bitxor_assign"] t ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
@@ -907,11 +886,8 @@ Module Impl_ConditionallySelectable_for_i64.
       (other : ref Self)
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i64)) i64 in
-    assign
-      (deref self)
-      (bitxor
-        (deref self)
-        (mask.["bitand"] ((deref self).["bitxor"] (deref other)))) ;;
+    (deref self).["bitxor_assign"]
+      (mask.["bitand"] ((deref self).["bitxor"] (deref other))) ;;
     tt.
   
   Global Instance Method_conditional_assign :
@@ -925,8 +901,8 @@ Module Impl_ConditionallySelectable_for_i64.
       (choice : Choice) :=
     let mask := cast (neg (cast choice.["unwrap_u8"] i64)) i64 in
     let t := mask.["bitand"] ((deref a).["bitxor"] (deref b)) in
-    assign (deref a) (bitxor (deref a) t) ;;
-    assign (deref b) (bitxor (deref b) t) ;;
+    (deref a).["bitxor_assign"] t ;;
+    (deref b).["bitxor_assign"] t ;;
     tt.
   
   Global Instance AssociatedFunction_conditional_swap :
@@ -1174,7 +1150,7 @@ Module ImplCtOption.
           (T::["default"] tt)
           self.["value"]
           self.["is_some"]) in
-    assign tmp.["is_some"] (bitand tmp.["is_some"] self.["is_some"]) ;;
+    tmp.["is_some"].["bitand_assign"] self.["is_some"] ;;
     tmp.
   
   Global Instance Method_and_then : Notation.Dot "and_then" := {
@@ -1251,8 +1227,8 @@ Module Impl_ConstantTimeGreater_for_u8.
     let pow := 1 in
     loop
       (if (pow.["lt"] 8 : bool) then
-        assign ltb (bitor ltb (ltb.["shr"] pow)) ;;
-        assign pow (add pow pow) ;;
+        ltb.["bitor_assign"] (ltb.["shr"] pow) ;;
+        pow.["add_assign"] pow ;;
         tt
       else
         Break ;;
@@ -1263,8 +1239,8 @@ Module Impl_ConstantTimeGreater_for_u8.
     let pow := 1 in
     loop
       (if (pow.["lt"] 8 : bool) then
-        assign bit (bitor bit (bit.["shr"] pow)) ;;
-        assign pow (add pow pow) ;;
+        bit.["bitor_assign"] (bit.["shr"] pow) ;;
+        pow.["add_assign"] pow ;;
         tt
       else
         Break ;;
@@ -1291,8 +1267,8 @@ Module Impl_ConstantTimeGreater_for_u16.
     let pow := 1 in
     loop
       (if (pow.["lt"] 16 : bool) then
-        assign ltb (bitor ltb (ltb.["shr"] pow)) ;;
-        assign pow (add pow pow) ;;
+        ltb.["bitor_assign"] (ltb.["shr"] pow) ;;
+        pow.["add_assign"] pow ;;
         tt
       else
         Break ;;
@@ -1303,8 +1279,8 @@ Module Impl_ConstantTimeGreater_for_u16.
     let pow := 1 in
     loop
       (if (pow.["lt"] 16 : bool) then
-        assign bit (bitor bit (bit.["shr"] pow)) ;;
-        assign pow (add pow pow) ;;
+        bit.["bitor_assign"] (bit.["shr"] pow) ;;
+        pow.["add_assign"] pow ;;
         tt
       else
         Break ;;
@@ -1331,8 +1307,8 @@ Module Impl_ConstantTimeGreater_for_u32.
     let pow := 1 in
     loop
       (if (pow.["lt"] 32 : bool) then
-        assign ltb (bitor ltb (ltb.["shr"] pow)) ;;
-        assign pow (add pow pow) ;;
+        ltb.["bitor_assign"] (ltb.["shr"] pow) ;;
+        pow.["add_assign"] pow ;;
         tt
       else
         Break ;;
@@ -1343,8 +1319,8 @@ Module Impl_ConstantTimeGreater_for_u32.
     let pow := 1 in
     loop
       (if (pow.["lt"] 32 : bool) then
-        assign bit (bitor bit (bit.["shr"] pow)) ;;
-        assign pow (add pow pow) ;;
+        bit.["bitor_assign"] (bit.["shr"] pow) ;;
+        pow.["add_assign"] pow ;;
         tt
       else
         Break ;;
@@ -1371,8 +1347,8 @@ Module Impl_ConstantTimeGreater_for_u64.
     let pow := 1 in
     loop
       (if (pow.["lt"] 64 : bool) then
-        assign ltb (bitor ltb (ltb.["shr"] pow)) ;;
-        assign pow (add pow pow) ;;
+        ltb.["bitor_assign"] (ltb.["shr"] pow) ;;
+        pow.["add_assign"] pow ;;
         tt
       else
         Break ;;
@@ -1383,8 +1359,8 @@ Module Impl_ConstantTimeGreater_for_u64.
     let pow := 1 in
     loop
       (if (pow.["lt"] 64 : bool) then
-        assign bit (bitor bit (bit.["shr"] pow)) ;;
-        assign pow (add pow pow) ;;
+        bit.["bitor_assign"] (bit.["shr"] pow) ;;
+        pow.["add_assign"] pow ;;
         tt
       else
         Break ;;

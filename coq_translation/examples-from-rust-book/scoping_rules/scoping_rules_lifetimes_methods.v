@@ -16,9 +16,7 @@ Module ImplOwner.
   Definition Self := Owner.
   
   Definition add_one (self : mut_ref Self) :=
-    assign
-      (IndexedField.get (index := 0) self)
-      (add (IndexedField.get (index := 0) self) 1) ;;
+    (IndexedField.get (index := 0) self).["add_assign"] 1 ;;
     tt.
   
   Global Instance Method_add_one : Notation.Dot "add_one" := {

@@ -81,10 +81,10 @@ Module ImplRectangle.
   }.
   
   Definition translate (self : mut_ref Self) (x : f64) (y : f64) :=
-    assign self.["p1"].["x"] (add self.["p1"].["x"] x) ;;
-    assign self.["p2"].["x"] (add self.["p2"].["x"] x) ;;
-    assign self.["p1"].["y"] (add self.["p1"].["y"] y) ;;
-    assign self.["p2"].["y"] (add self.["p2"].["y"] y) ;;
+    self.["p1"].["x"].["add_assign"] x ;;
+    self.["p2"].["x"].["add_assign"] x ;;
+    self.["p1"].["y"].["add_assign"] y ;;
+    self.["p2"].["y"].["add_assign"] y ;;
     tt.
   
   Global Instance Method_translate : Notation.Dot "translate" := {

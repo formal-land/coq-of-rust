@@ -11,7 +11,7 @@ Definition main (_ : unit) : unit :=
       [  ]) ;;
   tt ;;
   loop
-    assign count (add count 1) ;;
+    count.["add_assign"] 1 ;;
     if (count.["eq"] 3 : bool) then
       _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "three\n" ] [  ]) ;;
       tt ;;

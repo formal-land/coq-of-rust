@@ -11,7 +11,7 @@ Definition main (_ : unit) : unit :=
       [ "Before mutation: "; "\n" ]
       [ _crate.fmt.ArgumentV1::["new_display"] mutable_binding ]) ;;
   tt ;;
-  assign mutable_binding (add mutable_binding 1) ;;
+  mutable_binding.["add_assign"] 1 ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "After mutation: "; "\n" ]
