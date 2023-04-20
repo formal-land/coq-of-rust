@@ -35,7 +35,7 @@ Definition main (_ : unit) : unit :=
   end ;;
   match mut_value with
   | m =>
-    assign (deref m) (add (deref m) 10) ;;
+    (deref m).["add_assign"] 10 ;;
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "We added 10. `mut_value`: "; "\n" ]

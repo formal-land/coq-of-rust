@@ -81,11 +81,6 @@ pub enum Expr {
         left: Box<Expr>,
         right: Box<Expr>,
     },
-    AssignOp {
-        bin_op: String,
-        left: Box<Expr>,
-        right: Box<Expr>,
-    },
     IndexedField {
         base: Box<Expr>,
         index: u32,
@@ -135,6 +130,10 @@ fn compile_bin_op(bin_op: &BinOp) -> String {
         BinOpKind::Ge => "ge".to_string(),
         BinOpKind::Gt => "gt".to_string(),
     }
+}
+
+fn compile_assign_bin_op(bin_op: &BinOp) -> String {
+    format!("{}_assign", compile_bin_op(bin_op))
 }
 
 fn compile_un_op(un_op: &rustc_hir::UnOp) -> String {
@@ -306,17 +305,13 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             Expr::Assign { left, right }
         }
         rustc_hir::ExprKind::AssignOp(bin_op, left, right) => {
-            let func = Box::new(Expr::LocalVar(compile_bin_op(bin_op)));
-            // We have to duplicate the code here for memory allocations
-            let left_left = compile_expr(tcx, left);
-            let left_right = compile_expr(tcx, left);
+            let func = compile_assign_bin_op(bin_op);
+            let left = compile_expr(tcx, left);
             let right = compile_expr(tcx, right);
-            Expr::Assign {
-                left: Box::new(left_left),
-                right: Box::new(Expr::Call {
-                    func,
-                    args: vec![left_right, right],
-                }),
+            Expr::MethodCall {
+                object: Box::new(left),
+                func,
+                args: vec![right],
             }
         }
         rustc_hir::ExprKind::Field(base, ident) => {
@@ -609,26 +604,6 @@ impl Expr {
                     left.to_doc(true),
                     line(),
                     right.to_doc(true),
-                ]),
-            ),
-            Expr::AssignOp {
-                bin_op,
-                left,
-                right,
-            } => paren(
-                with_paren,
-                nest([
-                    text("assign"),
-                    line(),
-                    left.to_doc(false),
-                    line(),
-                    text(":="),
-                    line(),
-                    left.to_doc(false),
-                    line(),
-                    text(bin_op),
-                    line(),
-                    right.to_doc(false),
                 ]),
             ),
             Expr::IndexedField { base, index } => paren(

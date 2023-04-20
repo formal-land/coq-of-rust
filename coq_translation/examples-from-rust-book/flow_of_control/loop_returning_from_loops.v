@@ -7,7 +7,7 @@ Definition main (_ : unit) : unit :=
   let counter := 0 in
   let result :=
     loop
-      assign counter (add counter 1) ;;
+      counter.["add_assign"] 1 ;;
       if (counter.["eq"] 10 : bool) then
         Break ;;
         tt
