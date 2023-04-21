@@ -875,7 +875,7 @@ impl TopLevelItem {
                     hardline(),
                     nest([
                         nest([
-                            text("Inductive"),
+                            text("Record"),
                             line(),
                             text("t"),
                             line(),
@@ -883,14 +883,15 @@ impl TopLevelItem {
                         ]),
                         line(),
                         nest([
-                            text("Build"),
+                            text("{"),
                             line(),
                             intersperse(
                                 fields.iter().map(|ty| {
-                                    nest([text("(_ :"), line(), ty.to_doc(false), text(")")])
+                                    nest([text("_ :"), line(), ty.to_doc(false), text(";")])
                                 }),
                                 [line()],
                             ),
+                            text("}"),
                         ]),
                         text("."),
                     ]),
@@ -909,13 +910,9 @@ impl TopLevelItem {
                                         ]),
                                         line(),
                                         nest([
-                                            text("IndexedField.Class"),
-                                            line(),
-                                            text("t"),
+                                            text("Notation.Dot"),
                                             line(),
                                             text(i.to_string()),
-                                            line(),
-                                            text("_"),
                                             text(" := {"),
                                         ]),
                                     ]),
@@ -925,10 +922,10 @@ impl TopLevelItem {
                                         nil()
                                     },
                                     nest([
-                                        text("IndexedField.get"),
+                                        text("Notation.dot"),
                                         line(),
                                         nest([
-                                            text("'(Build"),
+                                            text("'(Build_t"),
                                             line(),
                                             intersperse(
                                                 (0..fields.len()).map(|j| {
