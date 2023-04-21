@@ -4,10 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module Borrowed.
-  Inductive t : Set := Build (_ : ref i32).
+  Record t : Set := { _ : ref i32;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Borrowed.
 Definition Borrowed := Borrowed.t.

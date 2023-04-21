@@ -8,10 +8,10 @@ Module TryFrom := std.convert.TryFrom.
 Module TryInto := std.convert.TryInto.
 
 Module EvenNumber.
-  Inductive t : Set := Build (_ : i32).
+  Record t : Set := { _ : i32;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End EvenNumber.
 Definition EvenNumber := EvenNumber.t.

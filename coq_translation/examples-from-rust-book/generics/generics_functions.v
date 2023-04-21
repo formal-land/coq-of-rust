@@ -9,19 +9,19 @@ End A.
 Definition A := A.t.
 
 Module S.
-  Inductive t : Set := Build (_ : A).
+  Record t : Set := { _ : A;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End S.
 Definition S := S.t.
 
 Module SGen.
-  Inductive t : Set := Build (_ : T).
+  Record t : Set := { _ : T;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End SGen.
 Definition SGen := SGen.t.

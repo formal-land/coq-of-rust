@@ -62,8 +62,8 @@ Module ImplRectangle.
   }.
   
   Definition area (self : ref Self) : f64 :=
-    let '{| Point.x := x1; Point.y := y1; |} := self.["p1"] in
-    let '{| Point.x := x2; Point.y := y2; |} := self.["p2"] in
+    let Point {| Point.x := x1; Point.y := y1; |} := self.["p1"] in
+    let Point {| Point.x := x2; Point.y := y2; |} := self.["p2"] in
     ((x1.["sub"] x2).["mul"] (y1.["sub"] y2)).["abs"].
   
   Global Instance Method_area : Notation.Dot "area" := {
@@ -71,8 +71,8 @@ Module ImplRectangle.
   }.
   
   Definition perimeter (self : ref Self) : f64 :=
-    let '{| Point.x := x1; Point.y := y1; |} := self.["p1"] in
-    let '{| Point.x := x2; Point.y := y2; |} := self.["p2"] in
+    let Point {| Point.x := x1; Point.y := y1; |} := self.["p1"] in
+    let Point {| Point.x := x2; Point.y := y2; |} := self.["p2"] in
     2 (* 2.0 *).["mul"]
       ((x1.["sub"] x2).["abs"].["add"] (y1.["sub"] y2).["abs"]).
   
@@ -93,13 +93,13 @@ Module ImplRectangle.
 End ImplRectangle.
 
 Module Pair.
-  Inductive t : Set := Build (_ : Box i32) (_ : Box i32).
+  Record t : Set := { _ : Box; _ : Box;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0 _) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0 _) := x0;
   }.
-  Global Instance Get_1 : IndexedField.Class t 1 _ := {
-    IndexedField.get '(Build _ x1) := x1;
+  Global Instance Get_1 : Notation.Dot 1 := {
+    Notation.dot '(Build_t _ x1) := x1;
   }.
 End Pair.
 Definition Pair := Pair.t.
@@ -108,7 +108,7 @@ Module ImplPair.
   Definition Self := Pair.
   
   Definition destroy (self : Self) :=
-    let 'Pair (first, second) := self in
+    let Pair (first, second) := self in
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Destroying Pair("; ", "; ")\n" ]

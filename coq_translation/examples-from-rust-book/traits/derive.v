@@ -4,10 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module Centimeters.
-  Inductive t : Set := Build (_ : f64).
+  Record t : Set := { _ : f64;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Centimeters.
 Definition Centimeters := Centimeters.t.
@@ -56,10 +56,10 @@ Module Impl__crate_cmp_PartialOrd_for_Centimeters.
 End Impl__crate_cmp_PartialOrd_for_Centimeters.
 
 Module Inches.
-  Inductive t : Set := Build (_ : i32).
+  Record t : Set := { _ : i32;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Inches.
 Definition Inches := Inches.t.
@@ -98,10 +98,10 @@ Module ImplInches.
 End ImplInches.
 
 Module Seconds.
-  Inductive t : Set := Build (_ : i32).
+  Record t : Set := { _ : i32;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Seconds.
 Definition Seconds := Seconds.t.

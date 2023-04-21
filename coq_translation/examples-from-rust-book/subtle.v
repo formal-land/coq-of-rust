@@ -23,10 +23,10 @@ Module Option := core.option.Option.
 Definition Option := Option.t.
 
 Module Choice.
-  Inductive t : Set := Build (_ : u8).
+  Record t : Set := { _ : u8;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Choice.
 Definition Choice := Choice.t.

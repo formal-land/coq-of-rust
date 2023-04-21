@@ -6,10 +6,10 @@ Import Root.std.prelude.rust_2015.
 Module Debug := std.fmt.Debug.
 
 Module Ref.
-  Inductive t : Set := Build (_ : ref T).
+  Record t : Set := { _ : ref T;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Ref.
 Definition Ref := Ref.t.

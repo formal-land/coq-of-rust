@@ -34,10 +34,10 @@ Module Impl__crate_fmt_Debug_for_Food.
 End Impl__crate_fmt_Debug_for_Food.
 
 Module Peeled.
-  Inductive t : Set := Build (_ : Food).
+  Record t : Set := { _ : Food;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Peeled.
 Definition Peeled := Peeled.t.
@@ -64,10 +64,10 @@ Module Impl__crate_fmt_Debug_for_Peeled.
 End Impl__crate_fmt_Debug_for_Peeled.
 
 Module Chopped.
-  Inductive t : Set := Build (_ : Food).
+  Record t : Set := { _ : Food;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Chopped.
 Definition Chopped := Chopped.t.
@@ -94,10 +94,10 @@ Module Impl__crate_fmt_Debug_for_Chopped.
 End Impl__crate_fmt_Debug_for_Chopped.
 
 Module Cooked.
-  Inductive t : Set := Build (_ : Food).
+  Record t : Set := { _ : Food;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Cooked.
 Definition Cooked := Cooked.t.

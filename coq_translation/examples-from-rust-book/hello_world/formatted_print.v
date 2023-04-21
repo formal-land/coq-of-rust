@@ -239,10 +239,10 @@ Definition main (_ : unit) : unit :=
   Structure.
 
 Module Structure.
-  Inductive t : Set := Build (_ : i32).
+  Record t : Set := { _ : i32;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Structure.
 Definition Structure := Structure.t.

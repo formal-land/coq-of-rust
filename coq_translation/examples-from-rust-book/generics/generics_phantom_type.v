@@ -7,28 +7,28 @@ Module PhantomData := std.marker.PhantomData.
 Definition PhantomData := PhantomData.t.
 
 Module PhantomTuple.
-  Inductive t : Set := Build (_ : A) (_ : PhantomData B).
+  Record t : Set := { _ : A; _ : PhantomData;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0 _) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0 _) := x0;
   }.
-  Global Instance Get_1 : IndexedField.Class t 1 _ := {
-    IndexedField.get '(Build _ x1) := x1;
+  Global Instance Get_1 : Notation.Dot 1 := {
+    Notation.dot '(Build_t _ x1) := x1;
   }.
 End PhantomTuple.
 Definition PhantomTuple := PhantomTuple.t.
 
-Module Impl__crate_marker_StructuralPartialEq_for_PhantomTuple_A_B.
-  Definition Self := PhantomTuple A B.
+Module Impl__crate_marker_StructuralPartialEq_for_PhantomTuple.
+  Definition Self := PhantomTuple.
   
   Global Instance I A B : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
-End Impl__crate_marker_StructuralPartialEq_for_PhantomTuple_A_B.
+End Impl__crate_marker_StructuralPartialEq_for_PhantomTuple.
 
-Module Impl__crate_cmp_PartialEq_for_PhantomTuple_A_B.
-  Definition Self := PhantomTuple A B.
+Module Impl__crate_cmp_PartialEq_for_PhantomTuple.
+  Definition Self := PhantomTuple.
   
-  Definition eq (self : ref Self) (other : ref (PhantomTuple A B)) : bool :=
+  Definition eq (self : ref Self) (other : ref PhantomTuple) : bool :=
     ((IndexedField.get (index := 0) self).["eq"]
         (IndexedField.get (index := 0) other)).["andb"]
       ((IndexedField.get (index := 1) self).["eq"]
@@ -41,12 +41,12 @@ Module Impl__crate_cmp_PartialEq_for_PhantomTuple_A_B.
   Global Instance I A B : _crate.cmp.PartialEq.Trait Self := {
     _crate.cmp.PartialEq.eq := eq;
   }.
-End Impl__crate_cmp_PartialEq_for_PhantomTuple_A_B.
+End Impl__crate_cmp_PartialEq_for_PhantomTuple.
 
 Module PhantomStruct.
   Record t : Set := {
     first : A;
-    phantom : PhantomData B;
+    phantom : PhantomData;
   }.
   
   Global Instance Get_first : Notation.Dot "first" := {
@@ -58,17 +58,17 @@ Module PhantomStruct.
 End PhantomStruct.
 Definition PhantomStruct : Set := PhantomStruct.t.
 
-Module Impl__crate_marker_StructuralPartialEq_for_PhantomStruct_A_B.
-  Definition Self := PhantomStruct A B.
+Module Impl__crate_marker_StructuralPartialEq_for_PhantomStruct.
+  Definition Self := PhantomStruct.
   
   Global Instance I A B : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
-End Impl__crate_marker_StructuralPartialEq_for_PhantomStruct_A_B.
+End Impl__crate_marker_StructuralPartialEq_for_PhantomStruct.
 
-Module Impl__crate_cmp_PartialEq_for_PhantomStruct_A_B.
-  Definition Self := PhantomStruct A B.
+Module Impl__crate_cmp_PartialEq_for_PhantomStruct.
+  Definition Self := PhantomStruct.
   
-  Definition eq (self : ref Self) (other : ref (PhantomStruct A B)) : bool :=
+  Definition eq (self : ref Self) (other : ref PhantomStruct) : bool :=
     (self.["first"].["eq"] other.["first"]).["andb"]
       (self.["phantom"].["eq"] other.["phantom"]).
   
@@ -79,7 +79,7 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct_A_B.
   Global Instance I A B : _crate.cmp.PartialEq.Trait Self := {
     _crate.cmp.PartialEq.eq := eq;
   }.
-End Impl__crate_cmp_PartialEq_for_PhantomStruct_A_B.
+End Impl__crate_cmp_PartialEq_for_PhantomStruct.
 
 Definition main (_ : unit) : unit :=
   let _tuple1 := PhantomTuple.Build Q PhantomData.Build in
