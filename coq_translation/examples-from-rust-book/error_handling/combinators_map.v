@@ -52,7 +52,7 @@ Module Impl__crate_fmt_Debug_for_Peeled.
     _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Peeled"
-      (IndexedField.get (index := 0) self).
+      (self .[ 0 ]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -82,7 +82,7 @@ Module Impl__crate_fmt_Debug_for_Chopped.
     _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Chopped"
-      (IndexedField.get (index := 0) self).
+      (self .[ 0 ]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -112,7 +112,7 @@ Module Impl__crate_fmt_Debug_for_Cooked.
     _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Cooked"
-      (IndexedField.get (index := 0) self).
+      (self .[ 0 ]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -123,27 +123,27 @@ Module Impl__crate_fmt_Debug_for_Cooked.
   }.
 End Impl__crate_fmt_Debug_for_Cooked.
 
-Definition peel (food : Option Food) : Option Peeled :=
+Definition peel (food : Option) : Option :=
   match food with
-  | Some (food) => Some (Peeled.Build food)
+  | Some (food) => Some (Peeled.Build_t food)
   | None => None
   end.
 
-Definition chop (peeled : Option Peeled) : Option Chopped :=
+Definition chop (peeled : Option) : Option :=
   match peeled with
-  | Some (Peeled (food)) => Some (Chopped.Build food)
+  | Some (Peeled (food)) => Some (Chopped.Build_t food)
   | None => None
   end.
 
-Definition cook (chopped : Option Chopped) : Option Cooked :=
-  chopped.["map"] (fun Chopped (food) => Cooked.Build food).
+Definition cook (chopped : Option) : Option :=
+  chopped.["map"] (fun Chopped (food) => Cooked.Build_t food).
 
-Definition process (food : Option Food) : Option Cooked :=
-  ((food.["map"] (fun f => Peeled.Build f)).["map"]
-      (fun Peeled (f) => Chopped.Build f)).["map"]
-    (fun Chopped (f) => Cooked.Build f).
+Definition process (food : Option) : Option :=
+  ((food.["map"] (fun f => Peeled.Build_t f)).["map"]
+      (fun Peeled (f) => Chopped.Build_t f)).["map"]
+    (fun Chopped (f) => Cooked.Build_t f).
 
-Definition eat (food : Option Cooked) : unit :=
+Definition eat (food : Option) : unit :=
   match food with
   | Some (food) =>
     _crate.io._print

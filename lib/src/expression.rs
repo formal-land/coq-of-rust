@@ -617,18 +617,13 @@ impl Expr {
             Expr::IndexedField { base, index } => paren(
                 with_paren,
                 nest([
-                    text("IndexedField.get"),
-                    line(),
-                    nest([
-                        text("(index"),
-                        line(),
-                        text(":="),
-                        line(),
-                        text(index.to_string()),
-                        text(")"),
-                    ]),
-                    line(),
                     base.to_doc(true),
+                    line(),
+                    text(".["),
+                    line(),
+                    text(index.to_string()),
+                    line(),
+                    text("]"),
                 ]),
             ),
             Expr::NamedField { base, name } => nest([
@@ -672,7 +667,7 @@ impl Expr {
                 with_paren,
                 nest([
                     path.to_doc(),
-                    text(".Build"),
+                    text(".Build_t"),
                     line(),
                     if fields.is_empty() {
                         text("tt")

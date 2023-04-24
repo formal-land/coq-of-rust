@@ -22,7 +22,7 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
     _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Borrowed"
-      (IndexedField.get (index := 0) self).
+      (self .[ 0 ]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -105,7 +105,7 @@ End Impl__crate_fmt_Debug_for_Either.
 Definition main (_ : unit) : unit :=
   let x := 18 in
   let y := 15 in
-  let single := Borrowed.Build x in
+  let single := Borrowed.Build_t x in
   let double := {| NamedBorrowed.x := x; NamedBorrowed.y := y; |} in
   let reference := Either.Ref x in
   let number := Either.Num y in

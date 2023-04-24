@@ -21,10 +21,7 @@ Module Impl__crate_fmt_Debug_for_Ref_T.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Ref"
-      (IndexedField.get (index := 0) self).
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Ref" (self .[ 0 ]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -53,7 +50,7 @@ Definition print_ref {T : Set} `{Debug.Trait T} (t : ref T) : unit :=
 
 Definition main (_ : unit) : unit :=
   let x := 7 in
-  let ref_x := Ref.Build x in
+  let ref_x := Ref.Build_t x in
   print_ref ref_x ;;
   print ref_x ;;
   tt.

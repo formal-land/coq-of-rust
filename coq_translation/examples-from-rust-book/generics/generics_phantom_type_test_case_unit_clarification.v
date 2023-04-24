@@ -120,8 +120,8 @@ Module Impl__crate_fmt_Debug_for_Length.
     _crate.fmt.Formatter::["debug_tuple_field2_finish"]
       f
       "Length"
-      (IndexedField.get (index := 0) self)
-      (IndexedField.get (index := 1) self).
+      (self .[ 0 ])
+      (self .[ 1 ]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -136,9 +136,9 @@ Module Impl__crate_clone_Clone_for_Length.
   Definition Self := Length.
   
   Definition clone (self : ref Self) : Length :=
-    Length.Build
-      (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
-      (_crate.clone.Clone.clone (IndexedField.get (index := 1) self)).
+    Length.Build_t
+      (_crate.clone.Clone.clone (self .[ 0 ]))
+      (_crate.clone.Clone.clone (self .[ 1 ])).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -162,10 +162,7 @@ Module Impl_Add_for_Length.
   Definition Output : Set := Length.
   
   Definition add (self : Self) (rhs : Length) : Length :=
-    Length.Build
-      ((IndexedField.get (index := 0) self).["add"]
-        (IndexedField.get (index := 0) rhs))
-      PhantomData.Build.
+    Length.Build_t ((self .[ 0 ]).["add"] (rhs .[ 0 ])) PhantomData.Build.
   
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -177,24 +174,18 @@ Module Impl_Add_for_Length.
 End Impl_Add_for_Length.
 
 Definition main (_ : unit) : unit :=
-  let one_foot := Length.Build 12 (* 12.0 *) PhantomData.Build in
-  let one_meter := Length.Build 1000 (* 1000.0 *) PhantomData.Build in
+  let one_foot := Length.Build_t 12 (* 12.0 *) PhantomData.Build in
+  let one_meter := Length.Build_t 1000 (* 1000.0 *) PhantomData.Build in
   let two_feet := one_foot.["add"] one_foot in
   let two_meters := one_meter.["add"] one_meter in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "one foot + one_foot = "; " in\n" ]
-      [
-        _crate.fmt.ArgumentV1::["new_debug"]
-          (IndexedField.get (index := 0) two_feet)
-      ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] (two_feet .[ 0 ]) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "one meter + one_meter = "; " mm\n" ]
-      [
-        _crate.fmt.ArgumentV1::["new_debug"]
-          (IndexedField.get (index := 0) two_meters)
-      ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] (two_meters .[ 0 ]) ]) ;;
   tt ;;
   tt.

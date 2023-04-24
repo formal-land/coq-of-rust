@@ -146,6 +146,6 @@ Definition main (_ : unit) : unit :=
       Rectangle.p2 := Point::["new"] 1 (* 1.0 *) 1 (* 1.0 *);
     |} in
   square.["translate"] 1 (* 1.0 *) 1 (* 1.0 *) ;;
-  let pair := Pair.Build (Box::["new"] 1) (Box::["new"] 2) in
+  let pair := Pair.Build_t (Box::["new"] 1) (Box::["new"] 2) in
   pair.["destroy"] ;;
   tt.

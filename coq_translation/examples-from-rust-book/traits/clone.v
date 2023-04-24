@@ -63,9 +63,9 @@ Module Impl__crate_clone_Clone_for_Pair.
   Definition Self := Pair.
   
   Definition clone (self : ref Self) : Pair :=
-    Pair.Build
-      (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
-      (_crate.clone.Clone.clone (IndexedField.get (index := 1) self)).
+    Pair.Build_t
+      (_crate.clone.Clone.clone (self .[ 0 ]))
+      (_crate.clone.Clone.clone (self .[ 1 ])).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -86,8 +86,8 @@ Module Impl__crate_fmt_Debug_for_Pair.
     _crate.fmt.Formatter::["debug_tuple_field2_finish"]
       f
       "Pair"
-      (IndexedField.get (index := 0) self)
-      (IndexedField.get (index := 1) self).
+      (self .[ 0 ])
+      (self .[ 1 ]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -111,7 +111,7 @@ Definition main (_ : unit) : unit :=
       [ "copy: "; "\n" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] copied_unit ]) ;;
   tt ;;
-  let pair := Pair.Build (Box::["new"] 1) (Box::["new"] 2) in
+  let pair := Pair.Build_t (Box::["new"] 1) (Box::["new"] 2) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "original: "; "\n" ]

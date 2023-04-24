@@ -82,12 +82,9 @@ Definition main (_ : unit) : unit :=
       match ("the lazy dog", "the quick brown fox", "jumps over") with
       | args =>
         [
-          _crate.fmt.ArgumentV1::["new_display"]
-            (IndexedField.get (index := 1) args);
-          _crate.fmt.ArgumentV1::["new_display"]
-            (IndexedField.get (index := 2) args);
-          _crate.fmt.ArgumentV1::["new_display"]
-            (IndexedField.get (index := 0) args)
+          _crate.fmt.ArgumentV1::["new_display"] (args .[ 1 ]);
+          _crate.fmt.ArgumentV1::["new_display"] (args .[ 2 ]);
+          _crate.fmt.ArgumentV1::["new_display"] (args .[ 0 ])
         ]
       end) ;;
   tt ;;

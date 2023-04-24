@@ -23,8 +23,7 @@ Module Impl__crate_cmp_PartialEq_for_Centimeters.
   Definition Self := Centimeters.
   
   Definition eq (self : ref Self) (other : ref Centimeters) : bool :=
-    (IndexedField.get (index := 0) self).["eq"]
-      (IndexedField.get (index := 0) other).
+    (self .[ 0 ]).["eq"] (other .[ 0 ]).
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -41,10 +40,8 @@ Module Impl__crate_cmp_PartialOrd_for_Centimeters.
   Definition partial_cmp
       (self : ref Self)
       (other : ref Centimeters)
-      : _crate.option.Option _crate.cmp.Ordering :=
-    _crate.cmp.PartialOrd.partial_cmp
-      (IndexedField.get (index := 0) self)
-      (IndexedField.get (index := 0) other).
+      : _crate.option.Option :=
+    _crate.cmp.PartialOrd.partial_cmp (self .[ 0 ]) (other .[ 0 ]).
   
   Global Instance Method_partial_cmp : Notation.Dot "partial_cmp" := {
     Notation.dot := partial_cmp;
@@ -74,7 +71,7 @@ Module Impl__crate_fmt_Debug_for_Inches.
     _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Inches"
-      (IndexedField.get (index := 0) self).
+      (self .[ 0 ]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -89,8 +86,8 @@ Module ImplInches.
   Definition Self := Inches.
   
   Definition to_centimeters (self : ref Self) : Centimeters :=
-    let 'Inches (inches) := self in
-    Centimeters.Build ((cast inches f64).["mul"] 3 (* 2.54 *)).
+    let Inches (inches) := self in
+    Centimeters.Build_t ((cast inches f64).["mul"] 3 (* 2.54 *)).
   
   Global Instance Method_to_centimeters : Notation.Dot "to_centimeters" := {
     Notation.dot := to_centimeters;
@@ -107,14 +104,14 @@ End Seconds.
 Definition Seconds := Seconds.t.
 
 Definition main (_ : unit) : unit :=
-  let _one_second := Seconds.Build 1 in
-  let foot := Inches.Build 12 in
+  let _one_second := Seconds.Build_t 1 in
+  let foot := Inches.Build_t 12 in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "One foot equals "; "\n" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] foot ]) ;;
   tt ;;
-  let meter := Centimeters.Build 100 (* 100.0 *) in
+  let meter := Centimeters.Build_t 100 (* 100.0 *) in
   let cmp :=
     if (foot.["to_centimeters"].["lt"] meter : bool) then
       "smaller"

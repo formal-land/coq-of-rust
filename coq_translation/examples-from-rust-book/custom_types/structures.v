@@ -123,15 +123,13 @@ Definition main (_ : unit) : unit :=
       Rectangle.bottom_right := bottom_right;
     |} in
   let _unit := Unit.Build in
-  let pair := Pair.Build 1 0 (* 0.1 *) in
+  let pair := Pair.Build_t 1 0 (* 0.1 *) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "pair contains "; " and "; "\n" ]
       [
-        _crate.fmt.ArgumentV1::["new_debug"]
-          (IndexedField.get (index := 0) pair);
-        _crate.fmt.ArgumentV1::["new_debug"]
-          (IndexedField.get (index := 1) pair)
+        _crate.fmt.ArgumentV1::["new_debug"] (pair .[ 0 ]);
+        _crate.fmt.ArgumentV1::["new_debug"] (pair .[ 1 ])
       ]) ;;
   tt ;;
   let 'Pair (integer, decimal) := pair in

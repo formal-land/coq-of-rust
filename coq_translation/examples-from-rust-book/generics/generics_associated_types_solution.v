@@ -53,21 +53,19 @@ Module Impl_Contains_for_Container.
       (number_1 : ref i32)
       (number_2 : ref i32)
       : bool :=
-    ((IndexedField.get (index := 0) self).["eq"] number_1).["andb"]
-      ((IndexedField.get (index := 1) self).["eq"] number_2).
+    ((self .[ 0 ]).["eq"] number_1).["andb"] ((self .[ 1 ]).["eq"] number_2).
   
   Global Instance Method_contains : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
-  Definition first (self : ref Self) : i32 :=
-    IndexedField.get (index := 0) self.
+  Definition first (self : ref Self) : i32 := self .[ 0 ].
   
   Global Instance Method_first : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
-  Definition last (self : ref Self) : i32 := IndexedField.get (index := 1) self.
+  Definition last (self : ref Self) : i32 := self .[ 1 ].
   
   Global Instance Method_last : Notation.Dot "last" := {
     Notation.dot := last;
@@ -86,7 +84,7 @@ Definition difference {C : Set} `{Contains.Trait C} (container : ref C) : i32 :=
 Definition main (_ : unit) : unit :=
   let number_1 := 3 in
   let number_2 := 10 in
-  let container := Container.Build number_1 number_2 in
+  let container := Container.Build_t number_1 number_2 in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "Does container contain "; " and "; ": "; "\n" ]
