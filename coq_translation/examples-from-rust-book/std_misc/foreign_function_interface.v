@@ -49,7 +49,7 @@ Module Impl__crate_clone_Clone_for_Complex.
   Definition Self := Complex.
   
   Definition clone (self : ref Self) : Complex :=
-    let _ := tt in
+    let '_ := tt in
     deref self.
   
   Global Instance Method_clone : Notation.Dot "clone" := {

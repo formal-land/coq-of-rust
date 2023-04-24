@@ -37,7 +37,7 @@ Module checked.
     }.
   End Impl__crate_fmt_Debug_for_MathError.
   
-  Definition MathResult : Set := Result.
+  Definition MathResult : Set := Result f64 MathError.
   
   Definition div (x : f64) (y : f64) : MathResult :=
     if (y.["eq"] 0 (* 0.0 *) : bool) then
@@ -121,7 +121,7 @@ Module Impl__crate_fmt_Debug_for_MathError.
   }.
 End Impl__crate_fmt_Debug_for_MathError.
 
-Definition MathResult : Set := Result.
+Definition MathResult : Set := Result f64 MathError.
 
 Definition div (x : f64) (y : f64) : MathResult :=
   if (y.["eq"] 0 (* 0.0 *) : bool) then

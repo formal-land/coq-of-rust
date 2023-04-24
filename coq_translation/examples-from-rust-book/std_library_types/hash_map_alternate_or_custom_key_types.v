@@ -55,8 +55,8 @@ Module Impl__crate_cmp_Eq_for_Account.
   Definition Self := Account.
   
   Definition assert_receiver_is_total_eq (self : ref Self) :  :=
-    let _ := tt in
-    let _ := tt in
+    let '_ := tt in
+    let '_ := tt in
     tt.
   
   Global Instance Method_assert_receiver_is_total_eq :
@@ -99,7 +99,7 @@ Module AccountInfo.
 End AccountInfo.
 Definition AccountInfo : Set := AccountInfo.t.
 
-Definition Accounts : Set := HashMap.
+Definition Accounts : Set := HashMap Account AccountInfo.
 
 Definition try_logon
     (accounts : ref Accounts)

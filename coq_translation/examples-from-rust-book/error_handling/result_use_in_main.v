@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module ParseIntError := std.num.ParseIntError.
 Definition ParseIntError := ParseIntError.t.
 
-Definition main (_ : unit) : Result :=
+Definition main (_ : unit) : Result () ParseIntError :=
   let number_str := "10" in
   let number :=
     match number_str.["parse"] with

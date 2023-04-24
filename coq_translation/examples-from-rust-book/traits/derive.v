@@ -41,7 +41,7 @@ Module Impl__crate_cmp_PartialOrd_for_Centimeters.
   Definition partial_cmp
       (self : ref Self)
       (other : ref Centimeters)
-      : _crate.option.Option :=
+      : _crate.option.Option _crate.cmp.Ordering :=
     _crate.cmp.PartialOrd.partial_cmp
       (IndexedField.get (index := 0) self)
       (IndexedField.get (index := 0) other).
@@ -89,7 +89,7 @@ Module ImplInches.
   Definition Self := Inches.
   
   Definition to_centimeters (self : ref Self) : Centimeters :=
-    let Inches (inches) := self in
+    let 'Inches (inches) := self in
     Centimeters.Build ((cast inches f64).["mul"] 3 (* 2.54 *)).
   
   Global Instance Method_to_centimeters : Notation.Dot "to_centimeters" := {

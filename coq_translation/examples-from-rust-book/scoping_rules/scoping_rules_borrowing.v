@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition eat_box_i32 (boxed_i32 : Box) : unit :=
+Definition eat_box_i32 (boxed_i32 : Box i32) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "Destroying box that contains "; "\n" ]

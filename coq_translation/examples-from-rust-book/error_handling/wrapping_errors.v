@@ -12,7 +12,7 @@ Module fmt := std.fmt.
 Module ParseIntError := std.num.ParseIntError.
 Definition ParseIntError := ParseIntError.t.
 
-Definition Result : Set := std.result.Result.
+Definition Result : Set := std.result.Result T DoubleError.
 
 Module DoubleError.
   Inductive t : Set :=
@@ -72,7 +72,7 @@ End Impl_fmt_Display_for_DoubleError.
 Module Impl_error_Error_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition source (self : ref Self) : Option :=
+  Definition source (self : ref Self) : Option (ref TraitObject) :=
     match deref self with
     | DoubleError.EmptyVec => None
     | DoubleError.Parse (e) => Some e
@@ -101,7 +101,7 @@ Module Impl_From_for_DoubleError.
   }.
 End Impl_From_for_DoubleError.
 
-Definition double_first (vec : Vec) : Result :=
+Definition double_first (vec : Vec (ref str)) : Result i32 :=
   let first :=
     match LangItem (vec.["first"].["ok_or"] DoubleError.EmptyVec) with
     | Break {| Break.0 := residual; |} => Return (LangItem residual)
@@ -114,7 +114,7 @@ Definition double_first (vec : Vec) : Result :=
     end in
   Ok (2.["mul"] parsed).
 
-Definition print (result : Result) : unit :=
+Definition print (result : Result i32) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print

@@ -13,7 +13,7 @@ Module BufRead := std.io.BufRead.
 Module BufReader := std.io.BufReader.
 Definition BufReader := BufReader.t.
 
-Definition read_lines (filename : String) : io.Lines :=
+Definition read_lines (filename : String) : io.Lines (BufReader File) :=
   let file := (File::["open"] filename).["unwrap"] in
   Return (io.BufReader::["new"] file).["lines"] ;;
   tt.

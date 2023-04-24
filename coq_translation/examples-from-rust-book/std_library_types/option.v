@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition checked_division (dividend : i32) (divisor : i32) : Option :=
+Definition checked_division (dividend : i32) (divisor : i32) : Option i32 :=
   if (divisor.["eq"] 0 : bool) then
     None
   else

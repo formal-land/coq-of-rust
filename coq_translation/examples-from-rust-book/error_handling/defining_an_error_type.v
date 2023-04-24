@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module fmt := std.fmt.
 
-Definition Result : Set := std.result.Result.
+Definition Result : Set := std.result.Result T DoubleError.
 
 Module DoubleError.
   Inductive t : Set := Build.
@@ -62,13 +62,13 @@ Module Impl_fmt_Display_for_DoubleError.
   }.
 End Impl_fmt_Display_for_DoubleError.
 
-Definition double_first (vec : Vec) : Result :=
+Definition double_first (vec : Vec (ref str)) : Result i32 :=
   (vec.["first"].["ok_or"] DoubleError.Build).["and_then"]
     (fun s =>
       (s.["parse"].["map_err"] (fun _ => DoubleError.Build)).["map"]
         (fun i => 2.["mul"] i)).
 
-Definition print (result : Result) : unit :=
+Definition print (result : Result i32) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print

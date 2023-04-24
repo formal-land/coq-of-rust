@@ -7,7 +7,7 @@ Import crate.List.
 
 Module List.
   Inductive t : Set :=
-  | Cons (_ : u32) (_ : Box)
+  | Cons (_ : u32) (_ : Box List)
   | Nil.
 End List.
 Definition List := List.t.

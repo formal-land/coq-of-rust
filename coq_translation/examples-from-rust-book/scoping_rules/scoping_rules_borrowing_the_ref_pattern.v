@@ -22,7 +22,7 @@ Module Impl__crate_clone_Clone_for_Point.
   Definition Self := Point.
   
   Definition clone (self : ref Self) : Point :=
-    let _ := tt in
+    let '_ := tt in
     deref self.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -55,10 +55,10 @@ Definition main (_ : unit) : unit :=
   tt ;;
   let point := {| Point.x := 0; Point.y := 0; |} in
   let _copy_of_x :=
-    let Point {| Point.x := ref_to_x; Point.y := _; |} := point in
+    let '{| Point.x := ref_to_x; Point.y := _; |} := point in
     deref ref_to_x in
   let mutable_point := point in
-  let Point {| Point.x := _; Point.y := mut_ref_to_y; |} := mutable_point in
+  let '{| Point.x := _; Point.y := mut_ref_to_y; |} := mutable_point in
   assign (deref mut_ref_to_y) 1 ;;
   tt ;;
   _crate.io._print
@@ -78,7 +78,7 @@ Definition main (_ : unit) : unit :=
       ]) ;;
   tt ;;
   let mutable_tuple := (Box::["new"] 5, 3) in
-  let (_, last) := mutable_tuple in
+  let '(_, last) := mutable_tuple in
   assign (deref last) 2 ;;
   tt ;;
   _crate.io._print

@@ -476,7 +476,16 @@ impl Expr {
                     nest([
                         text("let"),
                         line(),
-                        group([pat.to_doc(), line(), text(":=")]),
+                        group([
+                            (if !pat.is_single_binding() {
+                                text("'")
+                            } else {
+                                nil()
+                            }),
+                            pat.to_doc(),
+                            line(),
+                            text(":="),
+                        ]),
                     ]),
                     line(),
                     group([init.to_doc(false), text(" in")]),

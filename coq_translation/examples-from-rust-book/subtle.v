@@ -42,7 +42,7 @@ Module Impl__crate_clone_Clone_for_Choice.
   Definition Self := Choice.
   
   Definition clone (self : ref Self) : Choice :=
-    let _ := tt in
+    let '_ := tt in
     deref self.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -983,10 +983,10 @@ Module CtOption.
 End CtOption.
 Definition CtOption : Set := CtOption.t.
 
-Module Impl__crate_clone_Clone_for_CtOption.
-  Definition Self := CtOption.
+Module Impl__crate_clone_Clone_for_CtOption_T.
+  Definition Self := CtOption T.
   
-  Definition clone (self : ref Self) : CtOption :=
+  Definition clone (self : ref Self) : CtOption T :=
     {|
       CtOption.value := _crate.clone.Clone.clone self.["value"];
       CtOption.is_some := _crate.clone.Clone.clone self.["is_some"];
@@ -999,17 +999,17 @@ Module Impl__crate_clone_Clone_for_CtOption.
   Global Instance I T : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_CtOption.
+End Impl__crate_clone_Clone_for_CtOption_T.
 
-Module Impl__crate_marker_Copy_for_CtOption.
-  Definition Self := CtOption.
+Module Impl__crate_marker_Copy_for_CtOption_T.
+  Definition Self := CtOption T.
   
   Global Instance I T : _crate.marker.Copy.Trait Self :=
     _crate.marker.Copy.Build_Class _.
-End Impl__crate_marker_Copy_for_CtOption.
+End Impl__crate_marker_Copy_for_CtOption_T.
 
-Module Impl__crate_fmt_Debug_for_CtOption.
-  Definition Self := CtOption.
+Module Impl__crate_fmt_Debug_for_CtOption_T.
+  Definition Self := CtOption T.
   
   Definition fmt
       (self : ref Self)
@@ -1030,12 +1030,12 @@ Module Impl__crate_fmt_Debug_for_CtOption.
   Global Instance I T : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_CtOption.
+End Impl__crate_fmt_Debug_for_CtOption_T.
 
-Module Impl_From_for_Option.
-  Definition Self := Option.
+Module Impl_From_for_Option_T.
+  Definition Self := Option T.
   
-  Definition from (source : CtOption) : Option :=
+  Definition from (source : CtOption T) : Option T :=
     if (source.["is_some"].["unwrap_u8"].["eq"] 1 : bool) then
       Option.Some source.["value"]
     else
@@ -1046,15 +1046,15 @@ Module Impl_From_for_Option.
     Notation.double_colon := from;
   }.
   
-  Global Instance I T : From.Trait Self CtOption := {
+  Global Instance I T : From.Trait Self CtOption T := {
     From.from := from;
   }.
-End Impl_From_for_Option.
+End Impl_From_for_Option_T.
 
-Module ImplCtOption.
-  Definition Self := CtOption.
+Module ImplCtOption T.
+  Definition Self := CtOption T.
   
-  Definition new (value : T) (is_some : Choice) : CtOption :=
+  Definition new (value : T) (is_some : Choice) : CtOption T :=
     {| CtOption.value := value; CtOption.is_some := is_some; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
@@ -1130,7 +1130,7 @@ Module ImplCtOption.
     Notation.dot := is_none;
   }.
   
-  Definition map (self : Self) (f : F) : CtOption :=
+  Definition map (self : Self) (f : F) : CtOption U :=
     CtOption::["new"]
       (f
         (T::["conditional_select"]
@@ -1143,7 +1143,7 @@ Module ImplCtOption.
     Notation.dot := map;
   }.
   
-  Definition and_then (self : Self) (f : F) : CtOption :=
+  Definition and_then (self : Self) (f : F) : CtOption U :=
     let tmp :=
       f
         (T::["conditional_select"]
@@ -1157,7 +1157,7 @@ Module ImplCtOption.
     Notation.dot := and_then;
   }.
   
-  Definition or_else (self : Self) (f : F) : CtOption :=
+  Definition or_else (self : Self) (f : F) : CtOption T :=
     let is_none := self.["is_none"] in
     let f := f tt in
     Self::["conditional_select"] self f is_none.
@@ -1165,10 +1165,10 @@ Module ImplCtOption.
   Global Instance Method_or_else : Notation.Dot "or_else" := {
     Notation.dot := or_else;
   }.
-End ImplCtOption.
+End ImplCtOption T.
 
-Module Impl_ConditionallySelectable_for_CtOption.
-  Definition Self := CtOption.
+Module Impl_ConditionallySelectable_for_CtOption_T.
+  Definition Self := CtOption T.
   
   Definition conditional_select
       (a : ref Self)
@@ -1187,12 +1187,12 @@ Module Impl_ConditionallySelectable_for_CtOption.
   Global Instance I T : ConditionallySelectable.Trait Self := {
     ConditionallySelectable.conditional_select := conditional_select;
   }.
-End Impl_ConditionallySelectable_for_CtOption.
+End Impl_ConditionallySelectable_for_CtOption_T.
 
-Module Impl_ConstantTimeEq_for_CtOption.
-  Definition Self := CtOption.
+Module Impl_ConstantTimeEq_for_CtOption_T.
+  Definition Self := CtOption T.
   
-  Definition ct_eq (self : ref Self) (rhs : ref CtOption) : Choice :=
+  Definition ct_eq (self : ref Self) (rhs : ref (CtOption T)) : Choice :=
     let a := self.["is_some"] in
     let b := rhs.["is_some"] in
     ((a.["bitand"] b).["bitand"]
@@ -1206,7 +1206,7 @@ Module Impl_ConstantTimeEq_for_CtOption.
   Global Instance I T : ConstantTimeEq.Trait Self := {
     ConstantTimeEq.ct_eq := ct_eq;
   }.
-End Impl_ConstantTimeEq_for_CtOption.
+End Impl_ConstantTimeEq_for_CtOption_T.
 
 Module ConstantTimeGreater.
   Class Trait (Self : Set) : Set := {

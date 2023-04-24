@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition destroy_box (c : Box) : unit :=
+Definition destroy_box (c : Box i32) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "Destroying a box that contains "; "\n" ]

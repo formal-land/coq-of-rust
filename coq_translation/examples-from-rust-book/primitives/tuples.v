@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition reverse (pair : i32 * bool) : bool * i32 :=
-  let (int_param, bool_param) := pair in
+  let '(int_param, bool_param) := pair in
   (bool_param, int_param).
 
 Module Matrix.
@@ -107,7 +107,7 @@ Definition main (_ : unit) : unit :=
       [ _crate.fmt.ArgumentV1::["new_debug"] 5 ]) ;;
   tt ;;
   let tuple := (1, "hello", 5 (* 4.5 *), true) in
-  let (a, b, c, d) := tuple in
+  let '(a, b, c, d) := tuple in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ ""; ", "; ", "; ", "; "\n" ]

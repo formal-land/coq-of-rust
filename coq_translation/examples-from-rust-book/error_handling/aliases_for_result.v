@@ -6,18 +6,18 @@ Import Root.std.prelude.rust_2015.
 Module ParseIntError := std.num.ParseIntError.
 Definition ParseIntError := ParseIntError.t.
 
-Definition AliasedResult : Set := Result.
+Definition AliasedResult : Set := Result T ParseIntError.
 
 Definition multiply
     (first_number_str : ref str)
     (second_number_str : ref str)
-    : AliasedResult :=
+    : AliasedResult i32 :=
   first_number_str.["parse"].["and_then"]
     (fun first_number =>
       second_number_str.["parse"].["map"]
         (fun second_number => first_number.["mul"] second_number)).
 
-Definition print (result : AliasedResult) : unit :=
+Definition print (result : AliasedResult i32) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print

@@ -23,7 +23,7 @@ Module Impl_Iterator_for_Fibonacci.
   
   Definition Item : Set := u32.
   
-  Definition next (self : mut_ref Self) : Option :=
+  Definition next (self : mut_ref Self) : Option ImplSelf.Item :=
     let current := self.["curr"] in
     assign self.["curr"] self.["next"] ;;
     assign self.["next"] (current.["add"] self.["next"]) ;;

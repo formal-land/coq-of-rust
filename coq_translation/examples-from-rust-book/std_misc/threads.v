@@ -36,7 +36,7 @@ Definition main (_ : unit) : unit :=
       match LangItem iter with
       | None => Break
       | Some {| Some.0 := child; |} =>
-        let _ := child.["join"] in
+        let '_ := child.["join"] in
         tt
       end ;;
       tt

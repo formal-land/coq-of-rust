@@ -4,11 +4,45 @@ use crate::render::*;
 use rustc_ast::LitKind;
 use rustc_hir::{Pat, PatKind};
 
+#[derive(Debug)]
+pub enum StructOrVariant {
+    Struct,
+    Variant,
+}
+
+impl StructOrVariant {
+    /// Returns wether a qpath refers to a struct or a variant.
+    fn of_qpath(qpath: &rustc_hir::QPath) -> StructOrVariant {
+        match qpath {
+            rustc_hir::QPath::Resolved(_, path) => match path.res {
+                rustc_hir::def::Res::Def(rustc_hir::def::DefKind::Struct, _) => {
+                    StructOrVariant::Struct
+                }
+                rustc_hir::def::Res::Def(rustc_hir::def::DefKind::Variant, _) => {
+                    StructOrVariant::Variant
+                }
+                _ => panic!("Unexpected path resolution: {:?}", path.res),
+            },
+            rustc_hir::QPath::TypeRelative(..) => panic!("Unhandled qpath: {qpath:?}"),
+            rustc_hir::QPath::LangItem(lang_item, ..) => match lang_item {
+                rustc_hir::LangItem::OptionNone => StructOrVariant::Variant,
+                rustc_hir::LangItem::OptionSome => StructOrVariant::Variant,
+                rustc_hir::LangItem::ResultOk => StructOrVariant::Variant,
+                rustc_hir::LangItem::ResultErr => StructOrVariant::Variant,
+                rustc_hir::LangItem::ControlFlowContinue => StructOrVariant::Variant,
+                rustc_hir::LangItem::ControlFlowBreak => StructOrVariant::Variant,
+                _ => panic!("Unhandled lang item: {lang_item:?}. TODO: add support for this item"),
+            },
+        }
+    }
+}
+
 /// The enum [Pat] represents the patterns which can be matched
 #[derive(Debug)]
 pub enum Pattern {
     Wild,
-    Struct(Path, Vec<(String, Pattern)>),
+    Binding(String),
+    Struct(Path, Vec<(String, Pattern)>, StructOrVariant),
     TupleStruct(Path, Vec<Pattern>),
     Or(Vec<Pattern>),
     Path(Path),
@@ -20,14 +54,15 @@ pub enum Pattern {
 pub fn compile_pattern(pat: &Pat) -> Pattern {
     match &pat.kind {
         PatKind::Wild => Pattern::Wild,
-        PatKind::Binding(_, _, ident, _) => Pattern::Path(Path::local(ident.name.to_string())),
+        PatKind::Binding(_, _, ident, _) => Pattern::Binding(ident.name.to_string()),
         PatKind::Struct(qpath, pats, _) => {
             let path = compile_qpath(qpath);
             let pats = pats
                 .iter()
                 .map(|pat| (pat.ident.name.to_string(), compile_pattern(pat.pat)))
                 .collect();
-            Pattern::Struct(path, pats)
+            let struct_or_variant = StructOrVariant::of_qpath(qpath);
+            Pattern::Struct(path, pats, struct_or_variant)
         }
         PatKind::TupleStruct(qpath, pats, _) => {
             let path = compile_qpath(qpath);
@@ -49,16 +84,29 @@ pub fn compile_pattern(pat: &Pat) -> Pattern {
 }
 
 impl Pattern {
+    /// Returns wether a pattern is a single binding, to know if we need a quote
+    /// in the "let" in Coq.
+    pub fn is_single_binding(&self) -> bool {
+        matches!(self, Pattern::Binding(_))
+    }
+
     pub fn to_doc(&self) -> Doc {
         match self {
             Pattern::Wild => text("_"),
-            Pattern::Struct(path, fields) => group([
-                path.to_doc(),
+            Pattern::Binding(name) => text(name),
+            Pattern::Struct(path, fields, struct_or_variant) => group([
+                match struct_or_variant {
+                    StructOrVariant::Struct => nil(),
+                    StructOrVariant::Variant => path.to_doc(),
+                },
                 if fields.is_empty() {
                     nil()
                 } else {
                     concat([
-                        line(),
+                        match struct_or_variant {
+                            StructOrVariant::Struct => nil(),
+                            StructOrVariant::Variant => line(),
+                        },
                         nest([
                             text("{|"),
                             line(),

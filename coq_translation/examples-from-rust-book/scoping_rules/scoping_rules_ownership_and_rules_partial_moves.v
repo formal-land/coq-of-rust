@@ -8,7 +8,7 @@ Definition main (_ : unit) : unit := Person.
 Module Person.
   Record t : Set := {
     name : String;
-    age : Box;
+    age : Box u8;
   }.
   
   Global Instance Get_name : Notation.Dot "name" := {

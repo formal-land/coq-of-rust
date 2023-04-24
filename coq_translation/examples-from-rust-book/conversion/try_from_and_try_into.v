@@ -65,7 +65,7 @@ Module Impl_TryFrom_for_EvenNumber.
   
   Definition Error : Set := .
   
-  Definition try_from (value : i32) : Result :=
+  Definition try_from (value : i32) : Result Self ImplSelf.Error :=
     if ((value.["rem"] 2).["eq"] 0 : bool) then
       Ok (EvenNumber.Build value)
     else

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition some_number (_ : unit) : Option := Some 42.
+Definition some_number (_ : unit) : Option u32 := Some 42.
 
 Definition main (_ : unit) : unit :=
   match some_number tt with

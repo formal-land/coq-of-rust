@@ -42,7 +42,7 @@ Definition read_lines
     {P : Set}
     `{AsRef.Trait Path P}
     (filename : P)
-    : io.Result :=
+    : io.Result (io.Lines (io.BufReader File)) :=
   let file :=
     match LangItem (File::["open"] filename) with
     | Break {| Break.0 := residual; |} => Return (LangItem residual)

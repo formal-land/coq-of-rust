@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition give_adult (drink : Option) : unit :=
+Definition give_adult (drink : Option (ref str)) : unit :=
   match drink with
   | Some (Str("lemonade", Cooked)) =>
     _crate.io._print
@@ -21,7 +21,7 @@ Definition give_adult (drink : Option) : unit :=
     tt
   end.
 
-Definition drink (drink : Option) : unit :=
+Definition drink (drink : Option (ref str)) : unit :=
   let inside := drink.["unwrap"] in
   if (inside.["eq"] "lemonade" : bool) then
     _crate.rt.begin_panic "AAAaaaaa!!!!" ;;
