@@ -28,11 +28,11 @@ Definition SGen := SGen.t.
 
 Definition reg_fn (_s : S) : unit := tt.
 
-Definition gen_spec_t (_s : SGen) : unit := tt.
+Definition gen_spec_t (_s : SGen A) : unit := tt.
 
-Definition gen_spec_i32 (_s : SGen) : unit := tt.
+Definition gen_spec_i32 (_s : SGen i32) : unit := tt.
 
-Definition generic {T : Set} (_s : SGen) : unit := tt.
+Definition generic {T : Set} (_s : SGen T) : unit := tt.
 
 Definition main (_ : unit) : unit :=
   reg_fn (S.Build A.Build) ;;

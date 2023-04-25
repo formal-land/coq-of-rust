@@ -26,9 +26,9 @@ Module Impl__crate_clone_Clone_for_Book.
   Definition Self := Book.
   
   Definition clone (self : ref Self) : Book :=
-    let _ := tt in
-    let _ := tt in
-    let _ := tt in
+    let '_ := tt in
+    let '_ := tt in
+    let '_ := tt in
     deref self.
   
   Global Instance Method_clone : Notation.Dot "clone" := {

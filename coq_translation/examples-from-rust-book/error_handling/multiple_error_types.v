@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition double_first (vec : Vec) : i32 :=
+Definition double_first (vec : Vec (ref str)) : i32 :=
   let first := vec.["first"].["unwrap"] in
   2.["mul"] first.["parse"].["unwrap"].
 

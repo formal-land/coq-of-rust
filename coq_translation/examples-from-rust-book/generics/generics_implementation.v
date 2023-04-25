@@ -35,15 +35,15 @@ Module ImplVal.
   }.
 End ImplVal.
 
-Module ImplGenVal.
-  Definition Self := GenVal.
+Module ImplGenVal T.
+  Definition Self := GenVal T.
   
   Definition value (self : ref Self) : ref T := self.["gen_val"].
   
   Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
   }.
-End ImplGenVal.
+End ImplGenVal T.
 
 Definition main (_ : unit) : unit :=
   let x := {| Val.val := 3 (* 3.0 *); |} in

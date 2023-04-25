@@ -63,19 +63,19 @@ Module Impl__crate_fmt_Debug_for_Day.
   }.
 End Impl__crate_fmt_Debug_for_Day.
 
-Definition have_ingredients (food : Food) : Option :=
+Definition have_ingredients (food : Food) : Option Food :=
   match food with
   | Food.Sushi => None
   | _ => Some food
   end.
 
-Definition have_recipe (food : Food) : Option :=
+Definition have_recipe (food : Food) : Option Food :=
   match food with
   | Food.CordonBleu => None
   | _ => Some food
   end.
 
-Definition cookable_v1 (food : Food) : Option :=
+Definition cookable_v1 (food : Food) : Option Food :=
   match have_recipe food with
   | None => None
   | Some (food) =>
@@ -85,7 +85,7 @@ Definition cookable_v1 (food : Food) : Option :=
     end
   end.
 
-Definition cookable_v2 (food : Food) : Option :=
+Definition cookable_v2 (food : Food) : Option Food :=
   (have_recipe food).["and_then"] have_ingredients.
 
 Definition eat (food : Food) (day : Day) : unit :=
@@ -108,7 +108,7 @@ Definition eat (food : Food) (day : Day) : unit :=
   end.
 
 Definition main (_ : unit) : unit :=
-  let (cordon_bleu, steak, sushi) :=
+  let '(cordon_bleu, steak, sushi) :=
     (Food.CordonBleu, Food.Steak, Food.Sushi) in
   eat cordon_bleu Day.Monday ;;
   eat steak Day.Tuesday ;;

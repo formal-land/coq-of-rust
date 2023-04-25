@@ -53,7 +53,7 @@ Module Impl_Animal_for_Cow.
   }.
 End Impl_Animal_for_Cow.
 
-Definition random_animal (random_number : f64) : Box :=
+Definition random_animal (random_number : f64) : Box TraitObject :=
   if (random_number.["lt"] 1 (* 0.5 *) : bool) then
     Box::["new"] {|  |}
   else

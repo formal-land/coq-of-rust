@@ -20,7 +20,7 @@ Module unix := std.os.unix.
 Module Path := std.path.Path.
 Definition Path := Path.t.
 
-Definition cat (path : ref Path) : io.Result :=
+Definition cat (path : ref Path) : io.Result String :=
   let f :=
     match LangItem (File::["open"] path) with
     | Break {| Break.0 := residual; |} => Return (LangItem residual)
@@ -32,7 +32,7 @@ Definition cat (path : ref Path) : io.Result :=
   | Err (e) => Err e
   end.
 
-Definition echo (s : ref str) (path : ref Path) : io.Result :=
+Definition echo (s : ref str) (path : ref Path) : io.Result () :=
   let f :=
     match LangItem (File::["create"] path) with
     | Break {| Break.0 := residual; |} => Return (LangItem residual)
@@ -40,7 +40,7 @@ Definition echo (s : ref str) (path : ref Path) : io.Result :=
     end in
   f.["write_all"] s.["as_bytes"].
 
-Definition touch (path : ref Path) : io.Result :=
+Definition touch (path : ref Path) : io.Result () :=
   match
     (((OpenOptions::["new"] tt).["create"] true).["write"] true).["open"] path
   with

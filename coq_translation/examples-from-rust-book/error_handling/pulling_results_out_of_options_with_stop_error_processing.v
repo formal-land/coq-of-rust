@@ -6,7 +6,9 @@ Import Root.std.prelude.rust_2015.
 Module ParseIntError := std.num.ParseIntError.
 Definition ParseIntError := ParseIntError.t.
 
-Definition double_first (vec : Vec) : Result :=
+Definition double_first
+    (vec : Vec (ref str))
+    : Result (Option i32) ParseIntError :=
   let opt :=
     vec.["first"].["map"]
       (fun first => first.["parse"].["map"] (fun n => 2.["mul"] n)) in

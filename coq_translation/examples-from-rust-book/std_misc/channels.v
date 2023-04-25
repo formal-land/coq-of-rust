@@ -16,7 +16,7 @@ Module thread := std.thread.
 Definition NTHREADS (_ : unit) := 3.
 
 Definition main (_ : unit) : unit :=
-  let (tx, rx) := mpsc.channel tt in
+  let '(tx, rx) := mpsc.channel tt in
   let children := Vec::["new"] tt in
   match LangItem {| Range.start := 0; Range.end := NTHREADS; |} with
   | iter =>

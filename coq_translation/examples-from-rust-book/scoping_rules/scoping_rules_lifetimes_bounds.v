@@ -14,8 +14,8 @@ Module Ref.
 End Ref.
 Definition Ref := Ref.t.
 
-Module Impl__crate_fmt_Debug_for_Ref.
-  Definition Self := Ref.
+Module Impl__crate_fmt_Debug_for_Ref_T.
+  Definition Self := Ref T.
   
   Definition fmt
       (self : ref Self)
@@ -33,7 +33,7 @@ Module Impl__crate_fmt_Debug_for_Ref.
   Global Instance I T : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_Ref.
+End Impl__crate_fmt_Debug_for_Ref_T.
 
 Definition print {T : Set} `{Debug.Trait T} (t : T) : unit :=
   _crate.io._print

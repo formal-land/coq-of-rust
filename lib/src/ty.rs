@@ -1,6 +1,6 @@
 use crate::path::*;
 use crate::render::*;
-use rustc_hir::{FnDecl, FnRetTy, Ty, TyKind};
+use rustc_hir::{BareFnTy, FnDecl, FnRetTy, Ty, TyKind};
 use rustc_middle::ty::TyCtxt;
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
@@ -33,12 +33,22 @@ pub fn compile_type(_tcx: &TyCtxt, ty: &Ty) -> CoqType {
         TyKind::Ref(_, mut_ty) => {
             CoqType::Ref(Box::new(compile_type(_tcx, mut_ty.ty)), mut_ty.mutbl)
         }
-        TyKind::BareFn(_) => CoqType::Var(Path::local("BareFn".to_string())),
+        TyKind::BareFn(BareFnTy { decl, .. }) => compile_fn_decl(_tcx, decl),
         TyKind::Never => CoqType::Var(Path::local("Empty_set".to_string())),
         TyKind::Tup(tys) => CoqType::Tuple(tys.iter().map(|ty| compile_type(_tcx, ty)).collect()),
         TyKind::Path(qpath) => {
-            let path = compile_qpath(qpath);
-            CoqType::Var(path)
+            let params = match qpath {
+                rustc_hir::QPath::Resolved(_, path) => compile_path_ty_params(_tcx, path),
+                _ => vec![],
+            };
+            if params.is_empty() {
+                CoqType::Var(compile_qpath(qpath))
+            } else {
+                CoqType::Application {
+                    func: Box::new(CoqType::Var(compile_qpath(qpath))),
+                    args: params,
+                }
+            }
         }
         TyKind::OpaqueDef(_, _, _) => CoqType::Var(Path::local("OpaqueDef".to_string())),
         TyKind::TraitObject(_, _, _) => CoqType::Var(Path::local("TraitObject".to_string())),

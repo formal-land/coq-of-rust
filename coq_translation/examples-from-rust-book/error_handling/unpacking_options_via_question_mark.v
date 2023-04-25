@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module Person.
   Record t : Set := {
-    job : Option;
+    job : Option Job;
   }.
   
   Global Instance Get_job : Notation.Dot "job" := {
@@ -16,7 +16,7 @@ Definition Person : Set := Person.t.
 
 Module Job.
   Record t : Set := {
-    phone_number : Option;
+    phone_number : Option PhoneNumber;
   }.
   
   Global Instance Get_phone_number : Notation.Dot "phone_number" := {
@@ -29,7 +29,7 @@ Module Impl__crate_clone_Clone_for_Job.
   Definition Self := Job.
   
   Definition clone (self : ref Self) : Job :=
-    let _ := tt in
+    let '_ := tt in
     deref self.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -50,7 +50,7 @@ End Impl__crate_marker_Copy_for_Job.
 
 Module PhoneNumber.
   Record t : Set := {
-    area_code : Option;
+    area_code : Option u8;
     number : u32;
   }.
   
@@ -67,8 +67,8 @@ Module Impl__crate_clone_Clone_for_PhoneNumber.
   Definition Self := PhoneNumber.
   
   Definition clone (self : ref Self) : PhoneNumber :=
-    let _ := tt in
-    let _ := tt in
+    let '_ := tt in
+    let '_ := tt in
     deref self.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -90,7 +90,7 @@ End Impl__crate_marker_Copy_for_PhoneNumber.
 Module ImplPerson.
   Definition Self := Person.
   
-  Definition work_phone_area_code (self : ref Self) : Option :=
+  Definition work_phone_area_code (self : ref Self) : Option u8 :=
     match
         LangItem
           match LangItem self.["job"] with

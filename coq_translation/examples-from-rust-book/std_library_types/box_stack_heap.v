@@ -48,7 +48,7 @@ Module Impl__crate_clone_Clone_for_Point.
   Definition Self := Point.
   
   Definition clone (self : ref Self) : Point :=
-    let _ := tt in
+    let '_ := tt in
     deref self.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -85,7 +85,7 @@ Definition Rectangle : Set := Rectangle.t.
 Definition origin (_ : unit) : Point :=
   {| Point.x := 0 (* 0.0 *); Point.y := 0 (* 0.0 *); |}.
 
-Definition boxed_origin (_ : unit) : Box :=
+Definition boxed_origin (_ : unit) : Box Point :=
   Box::["new"] {| Point.x := 0 (* 0.0 *); Point.y := 0 (* 0.0 *); |}.
 
 Definition main (_ : unit) : unit :=

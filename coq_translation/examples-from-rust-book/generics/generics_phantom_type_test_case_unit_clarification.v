@@ -99,7 +99,7 @@ Module Impl__crate_marker_Copy_for_Mm.
 End Impl__crate_marker_Copy_for_Mm.
 
 Module Length.
-  Inductive t : Set := Build (_ : f64) (_ : PhantomData).
+  Inductive t : Set := Build (_ : f64) (_ : PhantomData Unit).
   
   Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0 _) := x0;
@@ -110,8 +110,8 @@ Module Length.
 End Length.
 Definition Length := Length.t.
 
-Module Impl__crate_fmt_Debug_for_Length.
-  Definition Self := Length.
+Module Impl__crate_fmt_Debug_for_Length_Unit.
+  Definition Self := Length Unit.
   
   Definition fmt
       (self : ref Self)
@@ -130,12 +130,12 @@ Module Impl__crate_fmt_Debug_for_Length.
   Global Instance I Unit : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_Length.
+End Impl__crate_fmt_Debug_for_Length_Unit.
 
-Module Impl__crate_clone_Clone_for_Length.
-  Definition Self := Length.
+Module Impl__crate_clone_Clone_for_Length_Unit.
+  Definition Self := Length Unit.
   
-  Definition clone (self : ref Self) : Length :=
+  Definition clone (self : ref Self) : Length Unit :=
     Length.Build
       (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
       (_crate.clone.Clone.clone (IndexedField.get (index := 1) self)).
@@ -147,21 +147,21 @@ Module Impl__crate_clone_Clone_for_Length.
   Global Instance I Unit : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_Length.
+End Impl__crate_clone_Clone_for_Length_Unit.
 
-Module Impl__crate_marker_Copy_for_Length.
-  Definition Self := Length.
+Module Impl__crate_marker_Copy_for_Length_Unit.
+  Definition Self := Length Unit.
   
   Global Instance I Unit : _crate.marker.Copy.Trait Self :=
     _crate.marker.Copy.Build_Class _.
-End Impl__crate_marker_Copy_for_Length.
+End Impl__crate_marker_Copy_for_Length_Unit.
 
-Module Impl_Add_for_Length.
-  Definition Self := Length.
+Module Impl_Add_for_Length_Unit.
+  Definition Self := Length Unit.
   
-  Definition Output : Set := Length.
+  Definition Output : Set := Length Unit.
   
-  Definition add (self : Self) (rhs : Length) : Length :=
+  Definition add (self : Self) (rhs : Length Unit) : Length Unit :=
     Length.Build
       ((IndexedField.get (index := 0) self).["add"]
         (IndexedField.get (index := 0) rhs))
@@ -174,7 +174,7 @@ Module Impl_Add_for_Length.
   Global Instance I Unit : Add.Trait Self := {
     Add.add := add;
   }.
-End Impl_Add_for_Length.
+End Impl_Add_for_Length_Unit.
 
 Definition main (_ : unit) : unit :=
   let one_foot := Length.Build 12 (* 12.0 *) PhantomData.Build in

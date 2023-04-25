@@ -8,10 +8,13 @@ Module iter := std.iter.
 Module IntoIter := std.vec.IntoIter.
 Definition IntoIter := IntoIter.t.
 
-Definition combine_vecs_explicit_return_type (v : Vec) (u : Vec) : iter.Cycle :=
+Definition combine_vecs_explicit_return_type
+    (v : Vec i32)
+    (u : Vec i32)
+    : iter.Cycle (iter.Chain (IntoIter i32) (IntoIter i32)) :=
   (v.["into_iter"].["chain"] u.["into_iter"]).["cycle"].
 
-Definition combine_vecs (v : Vec) (u : Vec) : OpaqueDef :=
+Definition combine_vecs (v : Vec i32) (u : Vec i32) : OpaqueDef :=
   (v.["into_iter"].["chain"] u.["into_iter"]).["cycle"].
 
 Error OpaqueTy.

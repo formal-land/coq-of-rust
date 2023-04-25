@@ -26,17 +26,17 @@ Module my.
   End ClosedBox.
   Definition ClosedBox : Set := ClosedBox.t.
   
-  Module ImplClosedBox.
-    Definition Self := ClosedBox.
+  Module ImplClosedBox T.
+    Definition Self := ClosedBox T.
     
-    Definition new (contents : T) : ClosedBox :=
+    Definition new (contents : T) : ClosedBox T :=
       {| ClosedBox.contents := contents; |}.
     
     Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
-  End ImplClosedBox.
+  End ImplClosedBox T.
 End my.
 
 Module OpenBox.
@@ -61,16 +61,16 @@ Module ClosedBox.
 End ClosedBox.
 Definition ClosedBox : Set := ClosedBox.t.
 
-Module ImplClosedBox_2.
-  Definition Self := ClosedBox.
+Module ImplClosedBox T_2.
+  Definition Self := ClosedBox T.
   
-  Definition new (contents : T) : ClosedBox :=
+  Definition new (contents : T) : ClosedBox T :=
     {| ClosedBox.contents := contents; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
-End ImplClosedBox_2.
+End ImplClosedBox T_2.
 
 Definition main (_ : unit) : unit :=
   let open_box := {| my.OpenBox.contents := "public information"; |} in

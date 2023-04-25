@@ -7,7 +7,7 @@ Module error := std.error.
 
 Module fmt := std.fmt.
 
-Definition Result : Set := std.result.Result.
+Definition Result : Set := std.result.Result T (Box TraitObject).
 
 Module EmptyVec.
   Inductive t : Set := Build.
@@ -56,7 +56,7 @@ Module Impl_error_Error_for_EmptyVec.
   Global Instance I : error.Error.Trait Self := error.Error.Build_Class _.
 End Impl_error_Error_for_EmptyVec.
 
-Definition double_first (vec : Vec) : Result :=
+Definition double_first (vec : Vec (ref str)) : Result i32 :=
   let first :=
     match LangItem (vec.["first"].["ok_or"] EmptyVec.Build) with
     | Break {| Break.0 := residual; |} => Return (LangItem residual)
@@ -69,7 +69,7 @@ Definition double_first (vec : Vec) : Result :=
     end in
   Ok (2.["mul"] parsed).
 
-Definition print (result : Result) : unit :=
+Definition print (result : Result i32) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print

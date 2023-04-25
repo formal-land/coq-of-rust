@@ -48,7 +48,7 @@ Module Impl__crate_marker_Copy_for_Unit.
 End Impl__crate_marker_Copy_for_Unit.
 
 Module Pair.
-  Inductive t : Set := Build (_ : Box) (_ : Box).
+  Inductive t : Set := Build (_ : Box i32) (_ : Box i32).
   
   Global Instance Get_0 : IndexedField.Class t 0 _ := {
     IndexedField.get '(Build x0 _) := x0;

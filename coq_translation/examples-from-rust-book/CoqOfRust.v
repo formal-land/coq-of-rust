@@ -113,7 +113,23 @@ Definition mut_ref : Set -> Set := ref.
 
 Definition deref {A : Set} (r : ref A) : A := r.
 
+Definition Box (A : Set) : Set := A.
+
 Parameter eqb : forall {A : Set}, A -> A -> bool.
+
+(** The functions on [Z] should eventually be replaced by functions on the
+    corresponding integer types. *)
+Global Instance Method_Z_abs : Notation.Dot "abs" := {
+  Notation.dot := (Z.abs : Z -> Z);
+}.
+
+Global Instance Method_Box_new (A : Set) : Notation.DoubleColon Box "new" := {
+  Notation.double_colon (x : A) := (x : Box A);
+}.
+
+Global Instance Method_destroy (A : Set) : Notation.Dot "destroy" := {
+  Notation.dot (x : A) := tt;
+}.
 
 Module Root.
   Module std.

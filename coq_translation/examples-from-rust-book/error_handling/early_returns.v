@@ -9,7 +9,7 @@ Definition ParseIntError := ParseIntError.t.
 Definition multiply
     (first_number_str : ref str)
     (second_number_str : ref str)
-    : Result :=
+    : Result i32 ParseIntError :=
   let first_number :=
     match first_number_str.["parse"] with
     | Ok (first_number) => first_number
@@ -22,7 +22,7 @@ Definition multiply
     end in
   Ok (first_number.["mul"] second_number).
 
-Definition print (result : Result) : unit :=
+Definition print (result : Result i32 ParseIntError) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print

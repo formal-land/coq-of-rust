@@ -9,13 +9,13 @@ Definition ParseIntError := ParseIntError.t.
 Definition multiply
     (first_number_str : ref str)
     (second_number_str : ref str)
-    : Result :=
+    : Result i32 ParseIntError :=
   first_number_str.["parse"].["and_then"]
     (fun first_number =>
       second_number_str.["parse"].["map"]
         (fun second_number => first_number.["mul"] second_number)).
 
-Definition print (result : Result) : unit :=
+Definition print (result : Result i32 ParseIntError) : unit :=
   match result with
   | Ok (n) =>
     _crate.io._print

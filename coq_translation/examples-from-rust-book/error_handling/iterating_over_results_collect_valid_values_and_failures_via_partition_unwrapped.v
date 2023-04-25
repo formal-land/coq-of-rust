@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
   let strings := Slice::["into_vec"] [ "tofu"; "93"; "18" ] in
-  let (numbers, errors) :=
+  let '(numbers, errors) :=
     (strings.["into_iter"].["map"] (fun s => s.["parse"])).["partition"]
       Result::["is_ok"] in
   let numbers :=
