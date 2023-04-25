@@ -132,14 +132,23 @@ impl Pattern {
                 },
             ]),
             Pattern::TupleStruct(path, fields) => {
-                let signature_in_parentheses_doc = paren(
-                    true,
+                // let signature_in_parentheses_doc = paren(
+                //     true,
+                //     nest([intersperse(
+                //         fields.iter().map(|field| field.to_doc()),
+                //         [text(","), line()],
+                //     )]),
+                // );
+                return nest([
+                    text("'"),
+                    path.to_doc(),
+                    text(".Build_t"),
+                    line(),
                     nest([intersperse(
                         fields.iter().map(|field| field.to_doc()),
-                        [text(","), line()],
+                        [line()],
                     )]),
-                );
-                return nest([path.to_doc(), line(), signature_in_parentheses_doc]);
+                ]);
             }
             Pattern::Or(pats) => paren(
                 true,

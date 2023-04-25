@@ -87,7 +87,7 @@ Definition main (_ : unit) : unit :=
       | None => Break
       | Some {| Some.0 := i; |} =>
         match xs.["get"] i with
-        | Some (xval) =>
+        | 'Some.Build_t xval =>
           _crate.io._print
             (_crate.fmt.Arguments::["new_v1"]
               [ ""; ": "; "\n" ]

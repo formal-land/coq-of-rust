@@ -30,7 +30,7 @@ Module Impl__crate_fmt_Debug_for_DoubleError.
       : _crate.fmt.Result :=
     match self with
     | DoubleError.EmptyVec => _crate.fmt.Formatter::["write_str"] f "EmptyVec"
-    | DoubleError.Parse (__self_0) =>
+    | 'DoubleError.Parse.Build_t __self_0 =>
       _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Parse" __self_0
     end.
   
@@ -53,7 +53,7 @@ Module Impl_fmt_Display_for_DoubleError.
         (_crate.fmt.Arguments::["new_v1"]
           [ "please use a vector with at least one element" ]
           [  ])
-    | DoubleError.Parse () =>
+    | 'DoubleError.Parse.Build_t  =>
       f.["write_fmt"]
         (_crate.fmt.Arguments::["new_v1"]
           [ "the provided string could not be parsed as int" ]
@@ -75,7 +75,7 @@ Module Impl_error_Error_for_DoubleError.
   Definition source (self : ref Self) : Option (ref TraitObject) :=
     match deref self with
     | DoubleError.EmptyVec => None
-    | DoubleError.Parse (e) => Some e
+    | 'DoubleError.Parse.Build_t e => Some e
     end.
   
   Global Instance Method_source : Notation.Dot "source" := {
@@ -116,19 +116,19 @@ Definition double_first (vec : Vec (ref str)) : Result i32 :=
 
 Definition print (result : Result i32) : unit :=
   match result with
-  | Ok (n) =>
+  | 'Ok.Build_t n =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "The first doubled is "; "\n" ]
         [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
     tt
-  | Err (e) =>
+  | 'Err.Build_t e =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Error: "; "\n" ]
         [ _crate.fmt.ArgumentV1::["new_display"] e ]) ;;
     tt ;;
-    if (let_if Some (source) := e.["source"] : bool) then
+    if (let_if 'Some.Build_t source := e.["source"] : bool) then
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
           [ "  Caused by: "; "\n" ]

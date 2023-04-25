@@ -13,25 +13,25 @@ Definition Temperature := Temperature.t.
 Definition main (_ : unit) : unit :=
   let temperature := Temperature.Celsius 35 in
   match temperature with
-  | Temperature.Celsius (t) =>
+  | 'Temperature.Celsius.Build_t t =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ ""; "C is above 30 Celsius\n" ]
         [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
     tt
-  | Temperature.Celsius (t) =>
+  | 'Temperature.Celsius.Build_t t =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ ""; "C is below 30 Celsius\n" ]
         [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
     tt
-  | Temperature.Fahrenheit (t) =>
+  | 'Temperature.Fahrenheit.Build_t t =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ ""; "F is above 86 Fahrenheit\n" ]
         [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
     tt
-  | Temperature.Fahrenheit (t) =>
+  | 'Temperature.Fahrenheit.Build_t t =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ ""; "F is below 86 Fahrenheit\n" ]

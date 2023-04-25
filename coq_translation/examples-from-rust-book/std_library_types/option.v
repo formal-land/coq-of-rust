@@ -20,7 +20,7 @@ Definition try_division (dividend : i32) (divisor : i32) : unit :=
           _crate.fmt.ArgumentV1::["new_display"] divisor
         ]) ;;
     tt
-  | Some (quotient) =>
+  | 'Some.Build_t quotient =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ ""; " / "; " = "; "\n" ]

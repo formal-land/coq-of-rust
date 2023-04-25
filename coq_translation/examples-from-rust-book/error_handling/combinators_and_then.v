@@ -78,10 +78,10 @@ Definition have_recipe (food : Food) : Option Food :=
 Definition cookable_v1 (food : Food) : Option Food :=
   match have_recipe food with
   | None => None
-  | Some (food) =>
+  | 'Some.Build_t food =>
     match have_ingredients food with
     | None => None
-    | Some (food) => Some food
+    | 'Some.Build_t food => Some food
     end
   end.
 
@@ -90,7 +90,7 @@ Definition cookable_v2 (food : Food) : Option Food :=
 
 Definition eat (food : Food) (day : Day) : unit :=
   match cookable_v2 food with
-  | Some (food) =>
+  | 'Some.Build_t food =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Yay! On "; " we get to eat "; ".\n" ]

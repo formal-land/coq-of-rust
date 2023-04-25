@@ -34,7 +34,7 @@ Definition main (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "The color is Green!\n" ] [  ]) ;;
     tt
-  | Color.RGB (r, g, b) =>
+  | 'Color.RGB.Build_t r g b =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Red: "; ", green: "; ", and blue: "; "!\n" ]
@@ -44,7 +44,7 @@ Definition main (_ : unit) : unit :=
           _crate.fmt.ArgumentV1::["new_display"] b
         ]) ;;
     tt
-  | Color.HSV (h, s, v) =>
+  | 'Color.HSV.Build_t h s v =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Hue: "; ", saturation: "; ", value: "; "!\n" ]
@@ -54,7 +54,7 @@ Definition main (_ : unit) : unit :=
           _crate.fmt.ArgumentV1::["new_display"] v
         ]) ;;
     tt
-  | Color.HSL (h, s, l) =>
+  | 'Color.HSL.Build_t h s l =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Hue: "; ", saturation: "; ", lightness: "; "!\n" ]
@@ -64,7 +64,7 @@ Definition main (_ : unit) : unit :=
           _crate.fmt.ArgumentV1::["new_display"] l
         ]) ;;
     tt
-  | Color.CMY (c, m, y) =>
+  | 'Color.CMY.Build_t c m y =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Cyan: "; ", magenta: "; ", yellow: "; "!\n" ]
@@ -74,7 +74,7 @@ Definition main (_ : unit) : unit :=
           _crate.fmt.ArgumentV1::["new_display"] y
         ]) ;;
     tt
-  | Color.CMYK (c, m, y, k) =>
+  | 'Color.CMYK.Build_t c m y k =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Cyan: "; ", magenta: "; ", yellow: "; ", key (black): "; "!\n" ]

@@ -12,25 +12,25 @@ Definition multiply
     : Result i32 ParseIntError :=
   let first_number :=
     match first_number_str.["parse"] with
-    | Ok (first_number) => first_number
-    | Err (e) => Return (Err e)
+    | 'Ok.Build_t first_number => first_number
+    | 'Err.Build_t e => Return (Err e)
     end in
   let second_number :=
     match second_number_str.["parse"] with
-    | Ok (second_number) => second_number
-    | Err (e) => Return (Err e)
+    | 'Ok.Build_t second_number => second_number
+    | 'Err.Build_t e => Return (Err e)
     end in
   Ok (first_number.["mul"] second_number).
 
 Definition print (result : Result i32 ParseIntError) : unit :=
   match result with
-  | Ok (n) =>
+  | 'Ok.Build_t n =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "n is "; "\n" ]
         [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
     tt
-  | Err (e) =>
+  | 'Err.Build_t e =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Error: "; "\n" ]

@@ -86,7 +86,7 @@ Module ImplInches.
   Definition Self := Inches.
   
   Definition to_centimeters (self : ref Self) : Centimeters :=
-    let Inches (inches) := self in
+    let 'Inches.Build_t inches := self in
     Centimeters.Build_t ((cast inches f64).["mul"] 3 (* 2.54 *)).
   
   Global Instance Method_to_centimeters : Notation.Dot "to_centimeters" := {

@@ -30,7 +30,7 @@ Module ImplList.
   
   Definition len (self : ref Self) : u32 :=
     match deref self with
-    | Cons (_, tail) => 1.["add"] tail.["len"]
+    | 'Cons.Build_t _ tail => 1.["add"] tail.["len"]
     | Nil => 0
     end.
   
@@ -40,7 +40,7 @@ Module ImplList.
   
   Definition stringify (self : ref Self) : String :=
     match deref self with
-    | Cons (head, tail) =>
+    | 'Cons.Build_t head tail =>
       let res :=
         _crate.fmt.format
           (_crate.fmt.Arguments::["new_v1"]

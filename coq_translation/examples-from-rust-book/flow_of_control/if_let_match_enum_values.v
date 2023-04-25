@@ -29,7 +29,7 @@ Definition main (_ : unit) : unit :=
     tt
   else
     tt ;;
-  if (let_if Foo.Qux (value) := c : bool) then
+  if (let_if 'Foo.Qux.Build_t value := c : bool) then
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "c is "; "\n" ]
@@ -38,7 +38,7 @@ Definition main (_ : unit) : unit :=
     tt
   else
     tt ;;
-  if (let_if Foo.Qux (value) := c : bool) then
+  if (let_if 'Foo.Qux.Build_t value := c : bool) then
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "c is one hundred\n" ] [  ]) ;;
     tt ;;
