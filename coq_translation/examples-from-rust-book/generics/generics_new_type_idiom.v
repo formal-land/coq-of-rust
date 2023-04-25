@@ -25,7 +25,7 @@ Module ImplYears.
   Definition Self := Years.
   
   Definition to_days (self : ref Self) : Days :=
-    Days.Build_t ((self .[ 0 ]).["mul"] 365).
+    Days.Build_t ((self.[0]).["mul"] 365).
   
   Global Instance Method_to_days : Notation.Dot "to_days" := {
     Notation.dot := to_days;
@@ -36,14 +36,14 @@ Module ImplDays.
   Definition Self := Days.
   
   Definition to_years (self : ref Self) : Years :=
-    Years.Build_t ((self .[ 0 ]).["div"] 365).
+    Years.Build_t ((self.[0]).["div"] 365).
   
   Global Instance Method_to_years : Notation.Dot "to_years" := {
     Notation.dot := to_years;
   }.
 End ImplDays.
 
-Definition old_enough (age : ref Years) : bool := (age .[ 0 ]).["ge"] 18.
+Definition old_enough (age : ref Years) : bool := (age.[0]).["ge"] 18.
 
 Definition main (_ : unit) : unit :=
   let age := Years.Build_t 5 in

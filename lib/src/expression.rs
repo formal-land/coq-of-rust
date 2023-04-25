@@ -618,11 +618,8 @@ impl Expr {
                 with_paren,
                 nest([
                     base.to_doc(true),
-                    line(),
                     text(".["),
-                    line(),
                     text(index.to_string()),
-                    line(),
                     text("]"),
                 ]),
             ),

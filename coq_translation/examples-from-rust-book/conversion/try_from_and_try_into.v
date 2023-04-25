@@ -26,7 +26,7 @@ Module Impl__crate_fmt_Debug_for_EvenNumber.
     _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "EvenNumber"
-      (self .[ 0 ]).
+      (self.[0]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -48,7 +48,7 @@ Module Impl__crate_cmp_PartialEq_for_EvenNumber.
   Definition Self := EvenNumber.
   
   Definition eq (self : ref Self) (other : ref EvenNumber) : bool :=
-    (self .[ 0 ]).["eq"] (other .[ 0 ]).
+    (self.[0]).["eq"] (other.[0]).
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;

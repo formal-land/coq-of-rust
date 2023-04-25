@@ -16,7 +16,7 @@ Module ImplOwner.
   Definition Self := Owner.
   
   Definition add_one (self : mut_ref Self) :=
-    (self .[ 0 ]).["add_assign"] 1 ;;
+    (self.[0]).["add_assign"] 1 ;;
     tt.
   
   Global Instance Method_add_one : Notation.Dot "add_one" := {
@@ -27,7 +27,7 @@ Module ImplOwner.
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "`print`: "; "\n" ]
-        [ _crate.fmt.ArgumentV1::["new_display"] (self .[ 0 ]) ]) ;;
+        [ _crate.fmt.ArgumentV1::["new_display"] (self.[0]) ]) ;;
     tt ;;
     tt.
   

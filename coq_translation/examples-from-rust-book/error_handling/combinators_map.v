@@ -49,10 +49,7 @@ Module Impl__crate_fmt_Debug_for_Peeled.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Peeled"
-      (self .[ 0 ]).
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Peeled" (self.[0]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -79,10 +76,7 @@ Module Impl__crate_fmt_Debug_for_Chopped.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Chopped"
-      (self .[ 0 ]).
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Chopped" (self.[0]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -109,10 +103,7 @@ Module Impl__crate_fmt_Debug_for_Cooked.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Cooked"
-      (self .[ 0 ]).
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Cooked" (self.[0]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;

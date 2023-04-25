@@ -14,6 +14,6 @@ Definition Years := Years.t.
 
 Definition main (_ : unit) : unit :=
   let years := Years.Build_t 42 in
-  let years_as_primitive_1 := years .[ 0 ] in
+  let years_as_primitive_1 := years.[0] in
   let ''Years.Build_t years_as_primitive_2 := years in
   tt.

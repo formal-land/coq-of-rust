@@ -35,10 +35,10 @@ Module Impl__crate_fmt_Debug_for_Matrix.
     _crate.fmt.Formatter::["debug_tuple_field4_finish"]
       f
       "Matrix"
-      (self .[ 0 ])
-      (self .[ 1 ])
-      (self .[ 2 ])
-      (self .[ 3 ]).
+      (self.[0])
+      (self.[1])
+      (self.[2])
+      (self.[3]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -66,12 +66,12 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "long tuple first value: "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (long_tuple .[ 0 ]) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (long_tuple.[0]) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "long tuple second value: "; "\n" ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (long_tuple .[ 1 ]) ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (long_tuple.[1]) ]) ;;
   tt ;;
   let tuple_of_tuples := ((1, 2, 2), (4, neg 1), neg 2) in
   _crate.io._print

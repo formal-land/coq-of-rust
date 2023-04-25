@@ -23,7 +23,7 @@ Module Impl__crate_cmp_PartialEq_for_Centimeters.
   Definition Self := Centimeters.
   
   Definition eq (self : ref Self) (other : ref Centimeters) : bool :=
-    (self .[ 0 ]).["eq"] (other .[ 0 ]).
+    (self.[0]).["eq"] (other.[0]).
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -41,7 +41,7 @@ Module Impl__crate_cmp_PartialOrd_for_Centimeters.
       (self : ref Self)
       (other : ref Centimeters)
       : _crate.option.Option _crate.cmp.Ordering :=
-    _crate.cmp.PartialOrd.partial_cmp (self .[ 0 ]) (other .[ 0 ]).
+    _crate.cmp.PartialOrd.partial_cmp (self.[0]) (other.[0]).
   
   Global Instance Method_partial_cmp : Notation.Dot "partial_cmp" := {
     Notation.dot := partial_cmp;
@@ -68,10 +68,7 @@ Module Impl__crate_fmt_Debug_for_Inches.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Inches"
-      (self .[ 0 ]).
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Inches" (self.[0]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;

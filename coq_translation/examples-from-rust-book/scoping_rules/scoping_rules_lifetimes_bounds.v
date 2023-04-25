@@ -21,7 +21,7 @@ Module Impl__crate_fmt_Debug_for_Ref_T.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Ref" (self .[ 0 ]).
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Ref" (self.[0]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;

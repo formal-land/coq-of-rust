@@ -41,19 +41,19 @@ Module Impl_Contains_for_Container.
       (number_1 : ref i32)
       (number_2 : ref i32)
       : bool :=
-    ((self .[ 0 ]).["eq"] number_1).["andb"] ((self .[ 1 ]).["eq"] number_2).
+    ((self.[0]).["eq"] number_1).["andb"] ((self.[1]).["eq"] number_2).
   
   Global Instance Method_contains : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
-  Definition first (self : ref Self) : i32 := self .[ 0 ].
+  Definition first (self : ref Self) : i32 := self.[0].
   
   Global Instance Method_first : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
-  Definition last (self : ref Self) : i32 := self .[ 1 ].
+  Definition last (self : ref Self) : i32 := self.[1].
   
   Global Instance Method_last : Notation.Dot "last" := {
     Notation.dot := last;

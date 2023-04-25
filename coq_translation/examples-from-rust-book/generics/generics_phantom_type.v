@@ -29,8 +29,7 @@ Module Impl__crate_cmp_PartialEq_for_PhantomTuple_A_B.
   Definition Self := PhantomTuple A B.
   
   Definition eq (self : ref Self) (other : ref (PhantomTuple A B)) : bool :=
-    ((self .[ 0 ]).["eq"] (other .[ 0 ])).["andb"]
-      ((self .[ 1 ]).["eq"] (other .[ 1 ])).
+    ((self.[0]).["eq"] (other.[0])).["andb"] ((self.[1]).["eq"] (other.[1])).
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;

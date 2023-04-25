@@ -64,8 +64,8 @@ Module Impl__crate_clone_Clone_for_Pair.
   
   Definition clone (self : ref Self) : Pair :=
     Pair.Build_t
-      (_crate.clone.Clone.clone (self .[ 0 ]))
-      (_crate.clone.Clone.clone (self .[ 1 ])).
+      (_crate.clone.Clone.clone (self.[0]))
+      (_crate.clone.Clone.clone (self.[1])).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -86,8 +86,8 @@ Module Impl__crate_fmt_Debug_for_Pair.
     _crate.fmt.Formatter::["debug_tuple_field2_finish"]
       f
       "Pair"
-      (self .[ 0 ])
-      (self .[ 1 ]).
+      (self.[0])
+      (self.[1]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;

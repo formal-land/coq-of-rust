@@ -128,8 +128,8 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"]
       [ "pair contains "; " and "; "\n" ]
       [
-        _crate.fmt.ArgumentV1::["new_debug"] (pair .[ 0 ]);
-        _crate.fmt.ArgumentV1::["new_debug"] (pair .[ 1 ])
+        _crate.fmt.ArgumentV1::["new_debug"] (pair.[0]);
+        _crate.fmt.ArgumentV1::["new_debug"] (pair.[1])
       ]) ;;
   tt ;;
   let ''Pair.Build_t integer decimal := pair in

@@ -61,10 +61,7 @@ Module Impl__crate_fmt_Debug_for_Choice.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Choice"
-      (self .[ 0 ]).
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Choice" (self.[0]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -78,7 +75,7 @@ End Impl__crate_fmt_Debug_for_Choice.
 Module ImplChoice.
   Definition Self := Choice.
   
-  Definition unwrap_u8 (self : ref Self) : u8 := self .[ 0 ].
+  Definition unwrap_u8 (self : ref Self) : u8 := self.[0].
   
   Global Instance Method_unwrap_u8 : Notation.Dot "unwrap_u8" := {
     Notation.dot := unwrap_u8;
@@ -91,7 +88,7 @@ Module Impl_From_for_bool.
   Definition from (source : Choice) : bool :=
     if (true : bool) then
       if
-        (not (((source .[ 0 ]).["eq"] 0).["bitor"] ((source .[ 0 ]).["eq"] 1))
+        (not (((source.[0]).["eq"] 0).["bitor"] ((source.[0]).["eq"] 1))
         : bool)
       then
         _crate.panicking.panic
@@ -101,7 +98,7 @@ Module Impl_From_for_bool.
       tt
     else
       tt ;;
-    (source .[ 0 ]).["ne"] 0.
+    (source.[0]).["ne"] 0.
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -119,7 +116,7 @@ Module Impl_BitAnd_for_Choice.
   Definition Output : Set := Choice.
   
   Definition bitand (self : Self) (rhs : Choice) : Choice :=
-    ((self .[ 0 ]).["bitand"] (rhs .[ 0 ])).["into"].
+    ((self.[0]).["bitand"] (rhs.[0])).["into"].
   
   Global Instance Method_bitand : Notation.Dot "bitand" := {
     Notation.dot := bitand;
@@ -152,7 +149,7 @@ Module Impl_BitOr_for_Choice.
   Definition Output : Set := Choice.
   
   Definition bitor (self : Self) (rhs : Choice) : Choice :=
-    ((self .[ 0 ]).["bitor"] (rhs .[ 0 ])).["into"].
+    ((self.[0]).["bitor"] (rhs.[0])).["into"].
   
   Global Instance Method_bitor : Notation.Dot "bitor" := {
     Notation.dot := bitor;
@@ -185,7 +182,7 @@ Module Impl_BitXor_for_Choice.
   Definition Output : Set := Choice.
   
   Definition bitxor (self : Self) (rhs : Choice) : Choice :=
-    ((self .[ 0 ]).["bitxor"] (rhs .[ 0 ])).["into"].
+    ((self.[0]).["bitxor"] (rhs.[0])).["into"].
   
   Global Instance Method_bitxor : Notation.Dot "bitxor" := {
     Notation.dot := bitxor;
@@ -218,7 +215,7 @@ Module Impl_Not_for_Choice.
   Definition Output : Set := Choice.
   
   Definition not (self : Self) : Choice :=
-    (1.["bitand"] (not (self .[ 0 ]))).["into"].
+    (1.["bitand"] (not (self.[0]))).["into"].
   
   Global Instance Method_not : Notation.Dot "not" := {
     Notation.dot := not;
@@ -917,7 +914,7 @@ Module Impl_ConditionallySelectable_for_Choice.
       (b : ref Self)
       (choice : Choice)
       : Self :=
-    Choice.Build_t (u8::["conditional_select"] (a .[ 0 ]) (b .[ 0 ]) choice).
+    Choice.Build_t (u8::["conditional_select"] (a.[0]) (b.[0]) choice).
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
