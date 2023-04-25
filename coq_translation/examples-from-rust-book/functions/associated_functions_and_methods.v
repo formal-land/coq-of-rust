@@ -62,8 +62,8 @@ Module ImplRectangle.
   }.
   
   Definition area (self : ref Self) : f64 :=
-    let Point {| Point.x := x1; Point.y := y1; |} := self.["p1"] in
-    let Point {| Point.x := x2; Point.y := y2; |} := self.["p2"] in
+    let '{| Point.x := x1; Point.y := y1; |} := self.["p1"] in
+    let '{| Point.x := x2; Point.y := y2; |} := self.["p2"] in
     ((x1.["sub"] x2).["mul"] (y1.["sub"] y2)).["abs"].
   
   Global Instance Method_area : Notation.Dot "area" := {
@@ -71,8 +71,8 @@ Module ImplRectangle.
   }.
   
   Definition perimeter (self : ref Self) : f64 :=
-    let Point {| Point.x := x1; Point.y := y1; |} := self.["p1"] in
-    let Point {| Point.x := x2; Point.y := y2; |} := self.["p2"] in
+    let '{| Point.x := x1; Point.y := y1; |} := self.["p1"] in
+    let '{| Point.x := x2; Point.y := y2; |} := self.["p2"] in
     2 (* 2.0 *).["mul"]
       ((x1.["sub"] x2).["abs"].["add"] (y1.["sub"] y2).["abs"]).
   
@@ -93,7 +93,7 @@ Module ImplRectangle.
 End ImplRectangle.
 
 Module Pair.
-  Record t : Set := { _ : Box; _ : Box;}.
+  Record t : Set := { _ : Box i32; _ : Box i32;}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -108,7 +108,7 @@ Module ImplPair.
   Definition Self := Pair.
   
   Definition destroy (self : Self) :=
-    let 'Pair.Build_t first second := self in
+    let ''Pair.Build_t first second := self in
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Destroying Pair("; ", "; ")\n" ]

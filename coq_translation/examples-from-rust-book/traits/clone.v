@@ -48,7 +48,7 @@ Module Impl__crate_marker_Copy_for_Unit.
 End Impl__crate_marker_Copy_for_Unit.
 
 Module Pair.
-  Record t : Set := { _ : Box; _ : Box;}.
+  Record t : Set := { _ : Box i32; _ : Box i32;}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0 _) := x0;

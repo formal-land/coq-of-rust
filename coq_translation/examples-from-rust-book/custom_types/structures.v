@@ -116,7 +116,7 @@ Definition main (_ : unit) : unit :=
         _crate.fmt.ArgumentV1::["new_display"] bottom_right.["y"]
       ]) ;;
   tt ;;
-  let Point {| Point.x := left_edge; Point.y := top_edge; |} := point in
+  let '{| Point.x := left_edge; Point.y := top_edge; |} := point in
   let _rectangle :=
     {|
       Rectangle.top_left := {| Point.x := left_edge; Point.y := top_edge; |};
@@ -132,7 +132,7 @@ Definition main (_ : unit) : unit :=
         _crate.fmt.ArgumentV1::["new_debug"] (pair .[ 1 ])
       ]) ;;
   tt ;;
-  let 'Pair.Build_t integer decimal := pair in
+  let ''Pair.Build_t integer decimal := pair in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "pair contains "; " and "; "\n" ]
