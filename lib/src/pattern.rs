@@ -133,7 +133,6 @@ impl Pattern {
             ]),
             Pattern::TupleStruct(path, fields) => {
                 return nest([
-                    text("'"),
                     path.to_doc(),
                     text(".Build_t"),
                     line(),

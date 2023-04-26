@@ -26,7 +26,7 @@ Definition main (_ : unit) : unit :=
       [ ""; "\n" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] raw_bytestring ]) ;;
   tt ;;
-  if (let_if 'Ok.Build_t my_str := str.from_utf8 raw_bytestring : bool) then
+  if (let_if Ok.Build_t my_str := str.from_utf8 raw_bytestring : bool) then
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "And the same as text: '"; "'\n" ]
@@ -39,13 +39,13 @@ Definition main (_ : unit) : unit :=
     [89, 111, 117, 32, 99, 97, 110, 32, 97, 108, 115, 111, 32, 117, 115, 101, 32, 34, 102, 97, 110, 99, 105, 101, 114, 34, 32, 102, 111, 114, 109, 97, 116, 116, 105, 110, 103, 44, 32, 92, 10, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 108, 105, 107, 101, 32, 119, 105, 116, 104, 32, 110, 111, 114, 109, 97, 108, 32, 114, 97, 119, 32, 115, 116, 114, 105, 110, 103, 115] in
   let shift_jis := [130, 230, 130, 168, 130, 177, 130, 187] in
   match str.from_utf8 shift_jis with
-  | 'Ok.Build_t my_str =>
+  | Ok.Build_t my_str =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Conversion successful: '"; "'\n" ]
         [ _crate.fmt.ArgumentV1::["new_display"] my_str ]) ;;
     tt
-  | 'Err.Build_t e =>
+  | Err.Build_t e =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Conversion failed: "; "\n" ]

@@ -108,7 +108,7 @@ Module ImplPair.
   Definition Self := Pair.
   
   Definition destroy (self : Self) :=
-    let ''Pair.Build_t first second := self in
+    let 'Pair.Build_t first second := self in
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Destroying Pair("; ", "; ")\n" ]

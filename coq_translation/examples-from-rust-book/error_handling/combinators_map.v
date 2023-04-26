@@ -116,27 +116,27 @@ End Impl__crate_fmt_Debug_for_Cooked.
 
 Definition peel (food : Option Food) : Option Peeled :=
   match food with
-  | 'Some.Build_t food => Some (Peeled.Build_t food)
+  | Some.Build_t food => Some (Peeled.Build_t food)
   | None => None
   end.
 
 Definition chop (peeled : Option Peeled) : Option Chopped :=
   match peeled with
-  | 'Some.Build_t 'Peeled.Build_t food => Some (Chopped.Build_t food)
+  | Some.Build_t Peeled.Build_t food => Some (Chopped.Build_t food)
   | None => None
   end.
 
 Definition cook (chopped : Option Chopped) : Option Cooked :=
-  chopped.["map"] (fun 'Chopped.Build_t food => Cooked.Build_t food).
+  chopped.["map"] (fun Chopped.Build_t food => Cooked.Build_t food).
 
 Definition process (food : Option Food) : Option Cooked :=
   ((food.["map"] (fun f => Peeled.Build_t f)).["map"]
-      (fun 'Peeled.Build_t f => Chopped.Build_t f)).["map"]
-    (fun 'Chopped.Build_t f => Cooked.Build_t f).
+      (fun Peeled.Build_t f => Chopped.Build_t f)).["map"]
+    (fun Chopped.Build_t f => Cooked.Build_t f).
 
 Definition eat (food : Option Cooked) : unit :=
   match food with
-  | 'Some.Build_t food =>
+  | Some.Build_t food =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Mmm. I love "; "\n" ]

@@ -23,13 +23,13 @@ Definition inspect (event : WebEvent) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "page unloaded\n" ] [  ]) ;;
     tt
-  | 'WebEvent.KeyPress.Build_t c =>
+  | WebEvent.KeyPress.Build_t c =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "pressed '"; "'.\n" ]
         [ _crate.fmt.ArgumentV1::["new_display"] c ]) ;;
     tt
-  | 'WebEvent.Paste.Build_t s =>
+  | WebEvent.Paste.Build_t s =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "pasted \""; "\".\n" ]

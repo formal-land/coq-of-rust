@@ -25,8 +25,8 @@ Definition main (_ : unit) : unit :=
     ((io.stdin tt).["read_line"] guess).["expect"] "Failed to read line" ;;
     let guess :=
       match guess.["trim"].["parse"] with
-      | 'Ok.Build_t num => num
-      | 'Err.Build_t _ => Continue
+      | Ok.Build_t num => num
+      | Err.Build_t _ => Continue
       end in
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
