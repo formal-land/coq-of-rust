@@ -8,10 +8,10 @@ Module TryFrom := std.convert.TryFrom.
 Module TryInto := std.convert.TryInto.
 
 Module EvenNumber.
-  Inductive t : Set := Build (_ : i32).
+  Record t : Set := { _ : i32;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End EvenNumber.
 Definition EvenNumber := EvenNumber.t.
@@ -26,7 +26,7 @@ Module Impl__crate_fmt_Debug_for_EvenNumber.
     _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "EvenNumber"
-      (IndexedField.get (index := 0) self).
+      (self.[0]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -48,8 +48,7 @@ Module Impl__crate_cmp_PartialEq_for_EvenNumber.
   Definition Self := EvenNumber.
   
   Definition eq (self : ref Self) (other : ref EvenNumber) : bool :=
-    (IndexedField.get (index := 0) self).["eq"]
-      (IndexedField.get (index := 0) other).
+    (self.[0]).["eq"] (other.[0]).
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -67,7 +66,7 @@ Module Impl_TryFrom_for_EvenNumber.
   
   Definition try_from (value : i32) : Result Self ImplSelf.Error :=
     if ((value.["rem"] 2).["eq"] 0 : bool) then
-      Ok (EvenNumber.Build value)
+      Ok (EvenNumber.Build_t value)
     else
       Err ().
   
@@ -82,7 +81,7 @@ Module Impl_TryFrom_for_EvenNumber.
 End Impl_TryFrom_for_EvenNumber.
 
 Definition main (_ : unit) : unit :=
-  match (EvenNumber::["try_from"] 8, Ok (EvenNumber.Build 8)) with
+  match (EvenNumber::["try_from"] 8, Ok (EvenNumber.Build_t 8)) with
   | (left_val, right_val) =>
     if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
@@ -109,7 +108,7 @@ Definition main (_ : unit) : unit :=
       tt
   end ;;
   let result := 8.["try_into"] in
-  match (result, Ok (EvenNumber.Build 8)) with
+  match (result, Ok (EvenNumber.Build_t 8)) with
   | (left_val, right_val) =>
     if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in

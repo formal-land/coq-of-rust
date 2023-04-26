@@ -4,16 +4,16 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module Years.
-  Inductive t : Set := Build (_ : i64).
+  Record t : Set := { _ : i64;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Years.
 Definition Years := Years.t.
 
 Definition main (_ : unit) : unit :=
-  let years := Years.Build 42 in
-  let years_as_primitive_1 := IndexedField.get (index := 0) years in
-  let 'Years (years_as_primitive_2) := years in
+  let years := Years.Build_t 42 in
+  let years_as_primitive_1 := years.[0] in
+  let 'Years.Build_t years_as_primitive_2 := years in
   tt.

@@ -93,13 +93,13 @@ Module ImplRectangle.
 End ImplRectangle.
 
 Module Pair.
-  Inductive t : Set := Build (_ : Box i32) (_ : Box i32).
+  Record t : Set := { _ : Box i32; _ : Box i32;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0 _) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0 _) := x0;
   }.
-  Global Instance Get_1 : IndexedField.Class t 1 _ := {
-    IndexedField.get '(Build _ x1) := x1;
+  Global Instance Get_1 : Notation.Dot 1 := {
+    Notation.dot '(Build_t _ x1) := x1;
   }.
 End Pair.
 Definition Pair := Pair.t.
@@ -108,7 +108,7 @@ Module ImplPair.
   Definition Self := Pair.
   
   Definition destroy (self : Self) :=
-    let 'Pair (first, second) := self in
+    let 'Pair.Build_t first second := self in
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Destroying Pair("; ", "; ")\n" ]
@@ -146,6 +146,6 @@ Definition main (_ : unit) : unit :=
       Rectangle.p2 := Point::["new"] 1 (* 1.0 *) 1 (* 1.0 *);
     |} in
   square.["translate"] 1 (* 1.0 *) 1 (* 1.0 *) ;;
-  let pair := Pair.Build (Box::["new"] 1) (Box::["new"] 2) in
+  let pair := Pair.Build_t (Box::["new"] 1) (Box::["new"] 2) in
   pair.["destroy"] ;;
   tt.

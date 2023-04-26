@@ -99,13 +99,13 @@ Module Impl__crate_marker_Copy_for_Mm.
 End Impl__crate_marker_Copy_for_Mm.
 
 Module Length.
-  Inductive t : Set := Build (_ : f64) (_ : PhantomData Unit).
+  Record t : Set := { _ : f64; _ : PhantomData Unit;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0 _) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0 _) := x0;
   }.
-  Global Instance Get_1 : IndexedField.Class t 1 _ := {
-    IndexedField.get '(Build _ x1) := x1;
+  Global Instance Get_1 : Notation.Dot 1 := {
+    Notation.dot '(Build_t _ x1) := x1;
   }.
 End Length.
 Definition Length := Length.t.
@@ -120,8 +120,8 @@ Module Impl__crate_fmt_Debug_for_Length_Unit.
     _crate.fmt.Formatter::["debug_tuple_field2_finish"]
       f
       "Length"
-      (IndexedField.get (index := 0) self)
-      (IndexedField.get (index := 1) self).
+      (self.[0])
+      (self.[1]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -136,9 +136,9 @@ Module Impl__crate_clone_Clone_for_Length_Unit.
   Definition Self := Length Unit.
   
   Definition clone (self : ref Self) : Length Unit :=
-    Length.Build
-      (_crate.clone.Clone.clone (IndexedField.get (index := 0) self))
-      (_crate.clone.Clone.clone (IndexedField.get (index := 1) self)).
+    Length.Build_t
+      (_crate.clone.Clone.clone (self.[0]))
+      (_crate.clone.Clone.clone (self.[1])).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -162,10 +162,7 @@ Module Impl_Add_for_Length_Unit.
   Definition Output : Set := Length Unit.
   
   Definition add (self : Self) (rhs : Length Unit) : Length Unit :=
-    Length.Build
-      ((IndexedField.get (index := 0) self).["add"]
-        (IndexedField.get (index := 0) rhs))
-      PhantomData.Build.
+    Length.Build_t ((self.[0]).["add"] (rhs.[0])) PhantomData.Build.
   
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -177,24 +174,18 @@ Module Impl_Add_for_Length_Unit.
 End Impl_Add_for_Length_Unit.
 
 Definition main (_ : unit) : unit :=
-  let one_foot := Length.Build 12 (* 12.0 *) PhantomData.Build in
-  let one_meter := Length.Build 1000 (* 1000.0 *) PhantomData.Build in
+  let one_foot := Length.Build_t 12 (* 12.0 *) PhantomData.Build in
+  let one_meter := Length.Build_t 1000 (* 1000.0 *) PhantomData.Build in
   let two_feet := one_foot.["add"] one_foot in
   let two_meters := one_meter.["add"] one_meter in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "one foot + one_foot = "; " in\n" ]
-      [
-        _crate.fmt.ArgumentV1::["new_debug"]
-          (IndexedField.get (index := 0) two_feet)
-      ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] (two_feet.[0]) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "one meter + one_meter = "; " mm\n" ]
-      [
-        _crate.fmt.ArgumentV1::["new_debug"]
-          (IndexedField.get (index := 0) two_meters)
-      ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_debug"] (two_meters.[0]) ]) ;;
   tt ;;
   tt.

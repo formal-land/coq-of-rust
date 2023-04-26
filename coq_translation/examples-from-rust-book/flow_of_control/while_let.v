@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let optional := Some 0 in
   loop
-    (if (let_if Some (i) := optional : bool) then
+    (if (let_if Some.Build_t i := optional : bool) then
       if (i.["gt"] 9 : bool) then
         _crate.io._print
           (_crate.fmt.Arguments::["new_v1"]

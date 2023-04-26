@@ -82,12 +82,9 @@ Definition main (_ : unit) : unit :=
       match ("the lazy dog", "the quick brown fox", "jumps over") with
       | args =>
         [
-          _crate.fmt.ArgumentV1::["new_display"]
-            (IndexedField.get (index := 1) args);
-          _crate.fmt.ArgumentV1::["new_display"]
-            (IndexedField.get (index := 2) args);
-          _crate.fmt.ArgumentV1::["new_display"]
-            (IndexedField.get (index := 0) args)
+          _crate.fmt.ArgumentV1::["new_display"] (args.[1]);
+          _crate.fmt.ArgumentV1::["new_display"] (args.[2]);
+          _crate.fmt.ArgumentV1::["new_display"] (args.[0])
         ]
       end) ;;
   tt ;;
@@ -239,10 +236,10 @@ Definition main (_ : unit) : unit :=
   Structure.
 
 Module Structure.
-  Inductive t : Set := Build (_ : i32).
+  Record t : Set := { _ : i32;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Structure.
 Definition Structure := Structure.t.

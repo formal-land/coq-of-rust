@@ -48,13 +48,13 @@ End Unit.
 Definition Unit := Unit.t.
 
 Module Pair.
-  Inductive t : Set := Build (_ : i32) (_ : f32).
+  Record t : Set := { _ : i32; _ : f32;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0 _) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0 _) := x0;
   }.
-  Global Instance Get_1 : IndexedField.Class t 1 _ := {
-    IndexedField.get '(Build _ x1) := x1;
+  Global Instance Get_1 : Notation.Dot 1 := {
+    Notation.dot '(Build_t _ x1) := x1;
   }.
 End Pair.
 Definition Pair := Pair.t.
@@ -123,18 +123,16 @@ Definition main (_ : unit) : unit :=
       Rectangle.bottom_right := bottom_right;
     |} in
   let _unit := Unit.Build in
-  let pair := Pair.Build 1 0 (* 0.1 *) in
+  let pair := Pair.Build_t 1 0 (* 0.1 *) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "pair contains "; " and "; "\n" ]
       [
-        _crate.fmt.ArgumentV1::["new_debug"]
-          (IndexedField.get (index := 0) pair);
-        _crate.fmt.ArgumentV1::["new_debug"]
-          (IndexedField.get (index := 1) pair)
+        _crate.fmt.ArgumentV1::["new_debug"] (pair.[0]);
+        _crate.fmt.ArgumentV1::["new_debug"] (pair.[1])
       ]) ;;
   tt ;;
-  let 'Pair (integer, decimal) := pair in
+  let 'Pair.Build_t integer decimal := pair in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "pair contains "; " and "; "\n" ]

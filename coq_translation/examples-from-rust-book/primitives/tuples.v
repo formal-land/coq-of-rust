@@ -8,19 +8,19 @@ Definition reverse (pair : i32 * bool) : bool * i32 :=
   (bool_param, int_param).
 
 Module Matrix.
-  Inductive t : Set := Build (_ : f32) (_ : f32) (_ : f32) (_ : f32).
+  Record t : Set := { _ : f32; _ : f32; _ : f32; _ : f32;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0 _ _ _) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0 _ _ _) := x0;
   }.
-  Global Instance Get_1 : IndexedField.Class t 1 _ := {
-    IndexedField.get '(Build _ x1 _ _) := x1;
+  Global Instance Get_1 : Notation.Dot 1 := {
+    Notation.dot '(Build_t _ x1 _ _) := x1;
   }.
-  Global Instance Get_2 : IndexedField.Class t 2 _ := {
-    IndexedField.get '(Build _ _ x2 _) := x2;
+  Global Instance Get_2 : Notation.Dot 2 := {
+    Notation.dot '(Build_t _ _ x2 _) := x2;
   }.
-  Global Instance Get_3 : IndexedField.Class t 3 _ := {
-    IndexedField.get '(Build _ _ _ x3) := x3;
+  Global Instance Get_3 : Notation.Dot 3 := {
+    Notation.dot '(Build_t _ _ _ x3) := x3;
   }.
 End Matrix.
 Definition Matrix := Matrix.t.
@@ -35,10 +35,10 @@ Module Impl__crate_fmt_Debug_for_Matrix.
     _crate.fmt.Formatter::["debug_tuple_field4_finish"]
       f
       "Matrix"
-      (IndexedField.get (index := 0) self)
-      (IndexedField.get (index := 1) self)
-      (IndexedField.get (index := 2) self)
-      (IndexedField.get (index := 3) self).
+      (self.[0])
+      (self.[1])
+      (self.[2])
+      (self.[3]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -66,18 +66,12 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "long tuple first value: "; "\n" ]
-      [
-        _crate.fmt.ArgumentV1::["new_display"]
-          (IndexedField.get (index := 0) long_tuple)
-      ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (long_tuple.[0]) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "long tuple second value: "; "\n" ]
-      [
-        _crate.fmt.ArgumentV1::["new_display"]
-          (IndexedField.get (index := 1) long_tuple)
-      ]) ;;
+      [ _crate.fmt.ArgumentV1::["new_display"] (long_tuple.[1]) ]) ;;
   tt ;;
   let tuple_of_tuples := ((1, 2, 2), (4, neg 1), neg 2) in
   _crate.io._print
@@ -118,7 +112,8 @@ Definition main (_ : unit) : unit :=
         _crate.fmt.ArgumentV1::["new_debug"] d
       ]) ;;
   tt ;;
-  let matrix := Matrix.Build 1 (* 1.1 *) 1 (* 1.2 *) 2 (* 2.1 *) 2 (* 2.2 *) in
+  let matrix :=
+    Matrix.Build_t 1 (* 1.1 *) 1 (* 1.2 *) 2 (* 2.1 *) 2 (* 2.2 *) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ ""; "\n" ]

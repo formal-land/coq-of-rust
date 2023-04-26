@@ -9,27 +9,27 @@ End A.
 Definition A := A.t.
 
 Module Single.
-  Inductive t : Set := Build (_ : A).
+  Record t : Set := { _ : A;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Single.
 Definition Single := Single.t.
 
 Module SingleGen.
-  Inductive t : Set := Build (_ : T).
+  Record t : Set := { _ : T;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End SingleGen.
 Definition SingleGen := SingleGen.t.
 
 Definition main (_ : unit) : unit :=
-  let _s := Single.Build A.Build in
-  let _char := SingleGen.Build a in
-  let _t := SingleGen.Build A.Build in
-  let _i32 := SingleGen.Build 6 in
-  let _char := SingleGen.Build a in
+  let _s := Single.Build_t A.Build in
+  let _char := SingleGen.Build_t a in
+  let _t := SingleGen.Build_t A.Build in
+  let _i32 := SingleGen.Build_t 6 in
+  let _char := SingleGen.Build_t a in
   tt.

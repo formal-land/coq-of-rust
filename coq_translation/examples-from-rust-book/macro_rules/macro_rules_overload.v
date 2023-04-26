@@ -14,12 +14,9 @@ Definition main (_ : unit) : unit :=
       with
       | args =>
         [
-          _crate.fmt.ArgumentV1::["new_debug"]
-            (IndexedField.get (index := 0) args);
-          _crate.fmt.ArgumentV1::["new_debug"]
-            (IndexedField.get (index := 1) args);
-          _crate.fmt.ArgumentV1::["new_debug"]
-            (IndexedField.get (index := 2) args)
+          _crate.fmt.ArgumentV1::["new_debug"] (args.[0]);
+          _crate.fmt.ArgumentV1::["new_debug"] (args.[1]);
+          _crate.fmt.ArgumentV1::["new_debug"] (args.[2])
         ]
       end) ;;
   tt ;;
@@ -29,12 +26,9 @@ Definition main (_ : unit) : unit :=
       match ("true", "false", true.["or"] false) with
       | args =>
         [
-          _crate.fmt.ArgumentV1::["new_debug"]
-            (IndexedField.get (index := 0) args);
-          _crate.fmt.ArgumentV1::["new_debug"]
-            (IndexedField.get (index := 1) args);
-          _crate.fmt.ArgumentV1::["new_debug"]
-            (IndexedField.get (index := 2) args)
+          _crate.fmt.ArgumentV1::["new_debug"] (args.[0]);
+          _crate.fmt.ArgumentV1::["new_debug"] (args.[1]);
+          _crate.fmt.ArgumentV1::["new_debug"] (args.[2])
         ]
       end) ;;
   tt ;;

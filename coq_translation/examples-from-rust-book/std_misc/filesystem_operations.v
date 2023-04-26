@@ -28,8 +28,8 @@ Definition cat (path : ref Path) : io.Result String :=
     end in
   let s := String::["new"] tt in
   match f.["read_to_string"] s with
-  | Ok (_) => Ok s
-  | Err (e) => Err e
+  | Ok.Build_t _ => Ok s
+  | Err.Build_t e => Err e
   end.
 
 Definition echo (s : ref str) (path : ref Path) : io.Result () :=
@@ -44,21 +44,21 @@ Definition touch (path : ref Path) : io.Result () :=
   match
     (((OpenOptions::["new"] tt).["create"] true).["write"] true).["open"] path
   with
-  | Ok (_) => Ok ()
-  | Err (e) => Err e
+  | Ok.Build_t _ => Ok ()
+  | Err.Build_t e => Err e
   end.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "`mkdir a`\n" ] [  ]) ;;
   tt ;;
   match fs.create_dir "a" with
-  | Err (why) =>
+  | Err.Build_t why =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "! "; "\n" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
     tt
-  | Ok (_) => tt
+  | Ok.Build_t _ => tt
   end ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "`echo hello > a/b.txt`\n" ] [  ]) ;;
@@ -114,13 +114,13 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"] [ "`cat a/c/b.txt`\n" ] [  ]) ;;
   tt ;;
   match cat (Path::["new"] "a/c/b.txt") with
-  | Err (why) =>
+  | Err.Build_t why =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "! "; "\n" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
     tt
-  | Ok (s) =>
+  | Ok.Build_t s =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "> "; "\n" ]
@@ -130,13 +130,13 @@ Definition main (_ : unit) : unit :=
   _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "`ls a`\n" ] [  ]) ;;
   tt ;;
   match fs.read_dir "a" with
-  | Err (why) =>
+  | Err.Build_t why =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "! "; "\n" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
     tt
-  | Ok (paths) =>
+  | Ok.Build_t paths =>
     match LangItem paths with
     | iter =>
       loop

@@ -4,10 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module Borrowed.
-  Inductive t : Set := Build (_ : ref i32).
+  Record t : Set := { _ : ref i32;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Borrowed.
 Definition Borrowed := Borrowed.t.
@@ -19,10 +19,7 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Borrowed"
-      (IndexedField.get (index := 0) self).
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Borrowed" (self.[0]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -87,9 +84,9 @@ Module Impl__crate_fmt_Debug_for_Either.
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
     match self with
-    | Either.Num (__self_0) =>
+    | Either.Num.Build_t __self_0 =>
       _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Num" __self_0
-    | Either.Ref (__self_0) =>
+    | Either.Ref.Build_t __self_0 =>
       _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Ref" __self_0
     end.
   
@@ -105,7 +102,7 @@ End Impl__crate_fmt_Debug_for_Either.
 Definition main (_ : unit) : unit :=
   let x := 18 in
   let y := 15 in
-  let single := Borrowed.Build x in
+  let single := Borrowed.Build_t x in
   let double := {| NamedBorrowed.x := x; NamedBorrowed.y := y; |} in
   let reference := Either.Ref x in
   let number := Either.Num y in

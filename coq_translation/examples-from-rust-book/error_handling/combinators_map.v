@@ -34,10 +34,10 @@ Module Impl__crate_fmt_Debug_for_Food.
 End Impl__crate_fmt_Debug_for_Food.
 
 Module Peeled.
-  Inductive t : Set := Build (_ : Food).
+  Record t : Set := { _ : Food;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Peeled.
 Definition Peeled := Peeled.t.
@@ -49,10 +49,7 @@ Module Impl__crate_fmt_Debug_for_Peeled.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Peeled"
-      (IndexedField.get (index := 0) self).
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Peeled" (self.[0]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -64,10 +61,10 @@ Module Impl__crate_fmt_Debug_for_Peeled.
 End Impl__crate_fmt_Debug_for_Peeled.
 
 Module Chopped.
-  Inductive t : Set := Build (_ : Food).
+  Record t : Set := { _ : Food;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Chopped.
 Definition Chopped := Chopped.t.
@@ -79,10 +76,7 @@ Module Impl__crate_fmt_Debug_for_Chopped.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Chopped"
-      (IndexedField.get (index := 0) self).
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Chopped" (self.[0]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -94,10 +88,10 @@ Module Impl__crate_fmt_Debug_for_Chopped.
 End Impl__crate_fmt_Debug_for_Chopped.
 
 Module Cooked.
-  Inductive t : Set := Build (_ : Food).
+  Record t : Set := { _ : Food;}.
   
-  Global Instance Get_0 : IndexedField.Class t 0 _ := {
-    IndexedField.get '(Build x0) := x0;
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
   }.
 End Cooked.
 Definition Cooked := Cooked.t.
@@ -109,10 +103,7 @@ Module Impl__crate_fmt_Debug_for_Cooked.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Cooked"
-      (IndexedField.get (index := 0) self).
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Cooked" (self.[0]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -125,27 +116,27 @@ End Impl__crate_fmt_Debug_for_Cooked.
 
 Definition peel (food : Option Food) : Option Peeled :=
   match food with
-  | Some (food) => Some (Peeled.Build food)
+  | Some.Build_t food => Some (Peeled.Build_t food)
   | None => None
   end.
 
 Definition chop (peeled : Option Peeled) : Option Chopped :=
   match peeled with
-  | Some (Peeled (food)) => Some (Chopped.Build food)
+  | Some.Build_t Peeled.Build_t food => Some (Chopped.Build_t food)
   | None => None
   end.
 
 Definition cook (chopped : Option Chopped) : Option Cooked :=
-  chopped.["map"] (fun Chopped (food) => Cooked.Build food).
+  chopped.["map"] (fun Chopped.Build_t food => Cooked.Build_t food).
 
 Definition process (food : Option Food) : Option Cooked :=
-  ((food.["map"] (fun f => Peeled.Build f)).["map"]
-      (fun Peeled (f) => Chopped.Build f)).["map"]
-    (fun Chopped (f) => Cooked.Build f).
+  ((food.["map"] (fun f => Peeled.Build_t f)).["map"]
+      (fun Peeled.Build_t f => Chopped.Build_t f)).["map"]
+    (fun Chopped.Build_t f => Cooked.Build_t f).
 
 Definition eat (food : Option Cooked) : unit :=
   match food with
-  | Some (food) =>
+  | Some.Build_t food =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Mmm. I love "; "\n" ]
