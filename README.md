@@ -1,4 +1,4 @@
-# coq-of-rust
+# <img src="logo.png" alt= "logo" width="120px" height="120px" style="vertical-align: middle;"> <span style="vertical-align: middle;">coq-of-rust</span>
 
 > Formal verification for Rust 🦀 by translation to the proof system Coq 🐓
 
