@@ -26,3 +26,5 @@ Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
     Notation.dot := run;
   }.
 End ImplVeryVerboseEnumOfThingsToDoWithNumbers.
+
+Definition main (_ : unit) : unit := test.

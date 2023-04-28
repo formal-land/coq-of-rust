@@ -37,3 +37,5 @@ Definition main (_ : unit) : unit :=
       from
       for
   end.
+
+Definition main (_ : unit) : unit := test.

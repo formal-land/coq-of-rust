@@ -9,3 +9,5 @@ Definition main (_ : unit) : unit :=
   tt ;;
   assign _mutable_integer 3 ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

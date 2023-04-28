@@ -161,3 +161,5 @@ Definition main (_ : unit) : unit :=
   eat cooked_carrot ;;
   eat cooked_potato ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

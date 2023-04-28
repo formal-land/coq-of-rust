@@ -82,3 +82,5 @@ Definition main (_ : unit) : unit :=
   borrow_book mutabook ;;
   new_edition mutabook ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

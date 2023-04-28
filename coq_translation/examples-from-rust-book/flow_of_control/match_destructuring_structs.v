@@ -19,3 +19,5 @@ Module Foo.
   }.
 End Foo.
 Definition Foo : Set := Foo.t.
+
+Definition main (_ : unit) : unit := test.

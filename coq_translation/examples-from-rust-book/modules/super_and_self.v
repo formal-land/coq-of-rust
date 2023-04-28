@@ -96,3 +96,5 @@ Module root_function := crate.cool.function.
 Definition main (_ : unit) : unit :=
   my.indirect_call tt ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

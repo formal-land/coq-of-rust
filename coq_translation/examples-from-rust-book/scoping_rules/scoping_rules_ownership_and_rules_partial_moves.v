@@ -43,3 +43,5 @@ Module Impl__crate_fmt_Debug_for_Person.
     _crate.fmt.Debug.fmt := fmt;
   }.
 End Impl__crate_fmt_Debug_for_Person.
+
+Definition main (_ : unit) : unit := test.

@@ -51,3 +51,5 @@ Definition main (_ : unit) : unit :=
   tt.
 
 Module function := crate.deeply.nested.function.
+
+Definition main (_ : unit) : unit := test.

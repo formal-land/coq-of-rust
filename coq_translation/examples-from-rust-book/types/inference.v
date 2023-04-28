@@ -13,3 +13,5 @@ Definition main (_ : unit) : unit :=
       [ _crate.fmt.ArgumentV1::["new_debug"] vec ]) ;;
   tt ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

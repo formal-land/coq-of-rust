@@ -24,3 +24,5 @@ Module Poor := crate.Status.Poor.
 Module Rich := crate.Status.Rich.
 
 Import crate.Work.
+
+Definition main (_ : unit) : unit := test.

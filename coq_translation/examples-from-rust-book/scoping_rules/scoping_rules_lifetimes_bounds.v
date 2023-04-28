@@ -54,3 +54,5 @@ Definition main (_ : unit) : unit :=
   print_ref ref_x ;;
   print ref_x ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

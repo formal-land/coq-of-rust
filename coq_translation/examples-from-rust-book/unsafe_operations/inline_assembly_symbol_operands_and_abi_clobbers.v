@@ -19,3 +19,5 @@ Definition call_foo (arg : i32) : i32 :=
   let result := tt in
   InlineAsm ;;
   result.
+
+Definition main (_ : unit) : unit := test.

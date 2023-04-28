@@ -117,13 +117,19 @@ impl CoqType {
                     ret.to_doc(true),
                 ]),
             ),
-            CoqType::Tuple(tys) => paren(
-                with_paren,
-                nest([intersperse(
-                    tys.iter().map(|ty| ty.to_doc(true)),
-                    [text(" *"), line()],
-                )]),
-            ),
+            CoqType::Tuple(tys) => {
+                if tys.is_empty() {
+                    text("unit")
+                } else {
+                    paren(
+                        with_paren,
+                        nest([intersperse(
+                            tys.iter().map(|ty| ty.to_doc(true)),
+                            [text(" *"), line()],
+                        )]),
+                    )
+                }
+            }
             CoqType::Array(ty) => nest([text("list"), line(), ty.to_doc(true)]),
             CoqType::Ref(ty, mutbl) => paren(
                 with_paren,

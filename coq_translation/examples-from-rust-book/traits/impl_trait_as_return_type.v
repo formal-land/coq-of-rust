@@ -91,3 +91,5 @@ Definition main (_ : unit) : unit :=
   _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "all done\n" ] [  ]) ;;
   tt ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

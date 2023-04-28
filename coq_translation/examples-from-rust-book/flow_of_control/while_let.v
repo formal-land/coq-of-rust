@@ -28,3 +28,5 @@ Definition main (_ : unit) : unit :=
       tt)
     from
     while.
+
+Definition main (_ : unit) : unit := test.

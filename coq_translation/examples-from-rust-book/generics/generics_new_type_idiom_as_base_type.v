@@ -17,3 +17,5 @@ Definition main (_ : unit) : unit :=
   let years_as_primitive_1 := years.[0] in
   let 'Years.Build_t years_as_primitive_2 := years in
   tt.
+
+Definition main (_ : unit) : unit := test.

@@ -15,3 +15,5 @@ Definition main (_ : unit) : unit :=
   assign mutable 21 ;;
   let mutable := true in
   tt.
+
+Definition main (_ : unit) : unit := test.

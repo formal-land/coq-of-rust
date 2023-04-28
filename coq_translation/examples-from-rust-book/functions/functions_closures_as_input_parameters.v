@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition apply {F : Set} `{FnOnce.Trait () F} (f : F) : unit :=
+Definition apply {F : Set} `{FnOnce.Trait unit F} (f : F) : unit :=
   f tt ;;
   tt.
 
@@ -12,3 +12,5 @@ Definition apply_to_3 {F : Set} `{Fn.Trait (i32) F} (f : F) : i32 := f 3.
 Definition main (_ : unit) : unit := mem.
 
 Module mem := std.mem.
+
+Definition main (_ : unit) : unit := test.

@@ -41,3 +41,5 @@ Definition main (_ : unit) : unit :=
   generic (SGen.Build_t a) ;;
   generic (SGen.Build_t c) ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

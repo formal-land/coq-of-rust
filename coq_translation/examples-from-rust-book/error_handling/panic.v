@@ -20,3 +20,5 @@ Definition main (_ : unit) : unit :=
   drink "water" ;;
   drink "lemonade" ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

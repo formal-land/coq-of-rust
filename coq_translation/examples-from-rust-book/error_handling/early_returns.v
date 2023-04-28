@@ -42,3 +42,5 @@ Definition main (_ : unit) : unit :=
   print (multiply "10" "2") ;;
   print (multiply "t" "2") ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

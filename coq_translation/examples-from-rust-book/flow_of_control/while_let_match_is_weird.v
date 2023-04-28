@@ -30,3 +30,5 @@ Definition main (_ : unit) : unit :=
     end
     from
     loop.
+
+Definition main (_ : unit) : unit := test.

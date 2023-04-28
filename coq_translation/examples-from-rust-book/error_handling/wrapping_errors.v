@@ -147,3 +147,5 @@ Definition main (_ : unit) : unit :=
   print (double_first empty) ;;
   print (double_first strings) ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

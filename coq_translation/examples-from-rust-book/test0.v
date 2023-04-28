@@ -60,3 +60,5 @@ Definition main (_ : unit) : unit :=
           [  ]) ;;
       tt ;;
       tt.
+
+Definition main (_ : unit) : unit := test.

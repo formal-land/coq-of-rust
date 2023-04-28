@@ -13,3 +13,5 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"] [ "reached end of main\n" ] [  ]) ;;
   tt ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

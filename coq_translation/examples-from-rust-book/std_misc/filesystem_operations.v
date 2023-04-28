@@ -32,7 +32,7 @@ Definition cat (path : ref Path) : io.Result String :=
   | Err.Build_t e => Err e
   end.
 
-Definition echo (s : ref str) (path : ref Path) : io.Result () :=
+Definition echo (s : ref str) (path : ref Path) : io.Result unit :=
   let f :=
     match LangItem (File::["create"] path) with
     | Break {| Break.0 := residual; |} => Return (LangItem residual)
@@ -40,7 +40,7 @@ Definition echo (s : ref str) (path : ref Path) : io.Result () :=
     end in
   f.["write_all"] s.["as_bytes"].
 
-Definition touch (path : ref Path) : io.Result () :=
+Definition touch (path : ref Path) : io.Result unit :=
   match
     (((OpenOptions::["new"] tt).["create"] true).["write"] true).["open"] path
   with
@@ -179,3 +179,5 @@ Definition main (_ : unit) : unit :=
       tt ;;
       tt) ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

@@ -33,3 +33,5 @@ Definition main (_ : unit) : unit :=
   let _i32 := SingleGen.Build_t 6 in
   let _char := SingleGen.Build_t a in
   tt.
+
+Definition main (_ : unit) : unit := test.

@@ -288,3 +288,5 @@ Definition main (_ : unit) : unit :=
   my_mod.call_public_function_in_my_mod tt ;;
   my_mod.public_function_in_crate tt ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

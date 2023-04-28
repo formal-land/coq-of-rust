@@ -86,3 +86,5 @@ Definition main (_ : unit) : unit :=
     help tt ;;
     tt
   end.
+
+Definition main (_ : unit) : unit := test.

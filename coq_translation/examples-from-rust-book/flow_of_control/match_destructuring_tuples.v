@@ -45,3 +45,5 @@ Definition main (_ : unit) : unit :=
         [  ]) ;;
     tt
   end.
+
+Definition main (_ : unit) : unit := test.

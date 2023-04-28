@@ -37,3 +37,5 @@ Definition main (_ : unit) : unit :=
   let tt := multiply "t" "2" in
   print tt ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

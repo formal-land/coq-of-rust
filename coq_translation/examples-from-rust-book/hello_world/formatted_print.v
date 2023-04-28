@@ -243,3 +243,5 @@ Module Structure.
   }.
 End Structure.
 Definition Structure := Structure.t.
+
+Definition main (_ : unit) : unit := test.

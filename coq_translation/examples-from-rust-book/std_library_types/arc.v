@@ -36,3 +36,5 @@ Definition main (_ : unit) : unit :=
   end ;;
   thread.sleep (Duration::["from_secs"] 1) ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

@@ -149,3 +149,5 @@ Definition main (_ : unit) : unit :=
   let pair := Pair.Build_t (Box::["new"] 1) (Box::["new"] 2) in
   pair.["destroy"] ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

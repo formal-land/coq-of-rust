@@ -31,3 +31,5 @@ Definition main (_ : unit) : unit :=
   let b := a in
   destroy_box b ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

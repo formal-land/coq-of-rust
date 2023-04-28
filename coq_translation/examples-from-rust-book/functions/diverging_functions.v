@@ -8,3 +8,5 @@ Definition main (_ : unit) : unit := foo.
 Definition foo (_ : unit) : Empty_set :=
   _crate.rt.begin_panic "This call never returns." ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

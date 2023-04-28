@@ -88,3 +88,5 @@ Definition main (_ : unit) : unit :=
     {| PhantomStruct.first := Q; PhantomStruct.phantom := PhantomData.Build;
     |} in
   tt.
+
+Definition main (_ : unit) : unit := test.

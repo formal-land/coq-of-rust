@@ -44,3 +44,5 @@ Definition main (_ : unit) : unit :=
   fn_mut tt ;;
   fn_once tt ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

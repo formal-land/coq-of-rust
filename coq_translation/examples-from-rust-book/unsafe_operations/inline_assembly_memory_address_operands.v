@@ -10,3 +10,5 @@ Module asm := std.arch.asm.
 Definition load_fpu_control_word (control : u16) : unit :=
   InlineAsm ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

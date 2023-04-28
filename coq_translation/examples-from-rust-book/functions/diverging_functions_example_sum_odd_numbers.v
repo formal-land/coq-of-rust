@@ -26,3 +26,5 @@ Definition sum_odd_numbers (up_to : u32) : u32 :=
       for
   end ;;
   acc.
+
+Definition main (_ : unit) : unit := test.

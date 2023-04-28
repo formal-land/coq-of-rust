@@ -65,3 +65,5 @@ Definition main (_ : unit) : unit :=
       [ _crate.fmt.ArgumentV1::["new_debug"] first_available_fruit ]) ;;
   tt ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

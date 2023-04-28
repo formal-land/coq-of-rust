@@ -38,3 +38,5 @@ Definition main (_ : unit) : unit :=
         [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
     tt
   end.
+
+Definition main (_ : unit) : unit := test.

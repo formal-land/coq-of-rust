@@ -13,3 +13,5 @@ Definition mul (a : u64) (b : u64) : u128 :=
   InlineAsm ;;
   tt ;;
   ((cast hi u128).["shl"] 64).["add"] (cast lo u128).
+
+Definition main (_ : unit) : unit := test.

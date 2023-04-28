@@ -26,3 +26,5 @@ Definition main (_ : unit) : unit :=
   let _unused_variable := 3 in
   let _noisy_unused_variable := 2 in
   tt.
+
+Definition main (_ : unit) : unit := test.

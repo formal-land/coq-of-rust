@@ -47,3 +47,5 @@ Definition main (_ : unit) : unit :=
   drink coffee ;;
   drink nothing ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

@@ -108,3 +108,5 @@ Definition main (_ : unit) : unit :=
       [ _crate.fmt.ArgumentV1::["new_display"] 1000000 ]) ;;
   tt ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

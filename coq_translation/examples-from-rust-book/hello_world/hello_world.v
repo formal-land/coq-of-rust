@@ -8,3 +8,5 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"] [ "Hello World!\n" ] [  ]) ;;
   tt ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

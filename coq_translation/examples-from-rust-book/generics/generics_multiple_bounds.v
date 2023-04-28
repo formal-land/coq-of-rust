@@ -51,3 +51,5 @@ Definition main (_ : unit) : unit :=
   compare_prints string ;;
   compare_types array vec ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

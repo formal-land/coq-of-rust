@@ -62,7 +62,7 @@ End Impl__crate_cmp_PartialEq_for_EvenNumber.
 Module Impl_TryFrom_for_EvenNumber.
   Definition Self := EvenNumber.
   
-  Definition Error : Set := .
+  Definition Error : Set := unit.
   
   Definition try_from (value : i32) : Result Self ImplSelf.Error :=
     if ((value.["rem"] 2).["eq"] 0 : bool) then
@@ -136,3 +136,5 @@ Definition main (_ : unit) : unit :=
       tt
   end ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

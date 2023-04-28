@@ -45,3 +45,5 @@ Definition main (_ : unit) : unit :=
     tt
   else
     tt.
+
+Definition main (_ : unit) : unit := test.

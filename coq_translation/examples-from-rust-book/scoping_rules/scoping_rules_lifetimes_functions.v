@@ -39,3 +39,5 @@ Definition main (_ : unit) : unit :=
   add_one t ;;
   print_one t ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

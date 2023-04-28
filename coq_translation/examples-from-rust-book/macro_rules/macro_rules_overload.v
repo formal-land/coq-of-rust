@@ -33,3 +33,5 @@ Definition main (_ : unit) : unit :=
       end) ;;
   tt ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

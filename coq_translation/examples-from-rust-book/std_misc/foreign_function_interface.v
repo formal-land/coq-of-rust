@@ -97,3 +97,5 @@ Module Impl_fmt_Debug_for_Complex.
     fmt.Debug.fmt := fmt;
   }.
 End Impl_fmt_Debug_for_Complex.
+
+Definition main (_ : unit) : unit := test.

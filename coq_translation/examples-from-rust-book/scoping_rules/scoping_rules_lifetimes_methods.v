@@ -41,3 +41,5 @@ Definition main (_ : unit) : unit :=
   owner.["add_one"] ;;
   owner.["print"] ;;
   tt.
+
+Definition main (_ : unit) : unit := test.

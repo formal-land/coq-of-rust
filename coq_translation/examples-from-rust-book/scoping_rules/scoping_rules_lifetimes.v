@@ -19,3 +19,5 @@ Definition main (_ : unit) : unit :=
       [ _crate.fmt.ArgumentV1::["new_display"] borrow2 ]) ;;
   tt ;;
   tt.
+
+Definition main (_ : unit) : unit := test.
