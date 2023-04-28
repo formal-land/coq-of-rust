@@ -46,6 +46,11 @@ struct WherePredicate {
 /// See https://doc.rust-lang.org/reference/items.html
 #[derive(Debug)]
 enum TopLevelItem {
+    Const {
+        name: String,
+        ty: Box<CoqType>,
+        value: Box<Expr>,
+    },
     Definition {
         name: String,
         ty_params: Vec<String>,
@@ -178,26 +183,12 @@ fn compile_top_level_item(
                 }]
             }
         }
-        ItemKind::Static(_, _, body_id) => {
-            let expr = tcx.hir().body(*body_id).value;
-            vec![TopLevelItem::Definition {
+        ItemKind::Static(ty, _, body_id) | ItemKind::Const(ty, body_id) => {
+            let value = tcx.hir().body(*body_id).value;
+            vec![TopLevelItem::Const {
                 name: item.ident.name.to_string(),
-                ty_params: vec![],
-                where_predicates: vec![],
-                args: vec![],
-                ret_ty: None,
-                body: Box::new(compile_expr(tcx, expr)),
-            }]
-        }
-        ItemKind::Const(_, body_id) => {
-            let expr = tcx.hir().body(*body_id).value;
-            vec![TopLevelItem::Definition {
-                name: item.ident.name.to_string(),
-                ty_params: vec![],
-                where_predicates: vec![],
-                args: vec![],
-                ret_ty: None,
-                body: Box::new(compile_expr(tcx, expr)),
+                ty: Box::new(compile_type(&tcx, ty)),
+                value: Box::new(compile_expr(tcx, value)),
             }]
         }
         ItemKind::Fn(fn_sig, generics, body_id) => {
@@ -668,6 +659,20 @@ impl ImplItem {
 impl TopLevelItem {
     fn to_doc(&self) -> Doc {
         match self {
+            TopLevelItem::Const { name, ty, value } => nest([
+                nest([
+                    text("Definition"),
+                    line(),
+                    text(name),
+                    text(" :"),
+                    line(),
+                    ty.to_doc(false),
+                    text(" :="),
+                ]),
+                line(),
+                value.to_doc(false),
+                text("."),
+            ]),
             TopLevelItem::Definition {
                 name,
                 ty_params,

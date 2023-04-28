@@ -13,7 +13,7 @@ Definition Sender := Sender.t.
 
 Module thread := std.thread.
 
-Definition NTHREADS (_ : unit) := 3.
+Definition NTHREADS : i32 := 3.
 
 Definition main (_ : unit) : unit :=
   let '(tx, rx) := mpsc.channel tt in

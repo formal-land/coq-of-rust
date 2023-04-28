@@ -11,7 +11,7 @@ Definition Command := Command.t.
 Module Stdio := std.process.Stdio.
 Definition Stdio := Stdio.t.
 
-Definition PANGRAM (_ : unit) :=
+Definition PANGRAM : ref str :=
   "the quick brown fox jumped over the lazy dog\n".
 
 Definition main (_ : unit) : unit :=

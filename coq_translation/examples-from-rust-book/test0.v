@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition message (_ : unit) := "Hello, World!".
+Definition message : ref str := "Hello, World!".
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
