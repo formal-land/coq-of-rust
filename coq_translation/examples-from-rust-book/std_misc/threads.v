@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module thread := std.thread.
 
-Definition NTHREADS (_ : unit) := 10.
+Definition NTHREADS : u32 := 10.
 
 Definition main (_ : unit) : unit :=
   let children := _crate.vec.Vec::["new"] tt in

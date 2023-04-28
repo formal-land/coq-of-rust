@@ -3,9 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition LANGUAGE (_ : unit) := "Rust".
+Definition LANGUAGE : ref str := "Rust".
 
-Definition THRESHOLD (_ : unit) := 10.
+Definition THRESHOLD : i32 := 10.
 
 Definition is_big (n : i32) : bool := n.["gt"] THRESHOLD.
 

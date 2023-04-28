@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition NUM (_ : unit) := 18.
+Definition NUM : i32 := 18.
 
 Definition coerce_static (arg : ref i32) : ref i32 := NUM.
 
