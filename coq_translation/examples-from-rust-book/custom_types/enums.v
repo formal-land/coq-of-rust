@@ -4,12 +4,19 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module WebEvent.
+  Module Click.
+    Record t : Set := {
+      x : i64;
+      y : i64;
+    }.
+  End Click.
+  
   Inductive t : Set :=
   | PageLoad
   | PageUnload
   | KeyPress (_ : char)
   | Paste (_ : String)
-  | Click (_ : i64) (_ : i64).
+  | Click (_ : Click.t).
 End WebEvent.
 Definition WebEvent := WebEvent.t.
 

@@ -45,6 +45,12 @@ struct WherePredicate {
     ty: CoqType,
 }
 
+#[derive(Debug)]
+enum VariantItem {
+    Struct { fields: Vec<(String, CoqType)> },
+    Tuple { tys: Vec<CoqType> },
+}
+
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
 #[derive(Debug)]
@@ -68,7 +74,7 @@ enum TopLevelItem {
     },
     TypeEnum {
         name: String,
-        variants: Vec<(String, Vec<CoqType>)>,
+        variants: Vec<(String, VariantItem)>,
     },
     TypeStructStruct {
         name: String,
@@ -330,15 +336,23 @@ fn compile_top_level_item(
                 .map(|variant| {
                     let name = variant.ident.name.to_string();
                     let fields = match &variant.data {
-                        VariantData::Struct(fields, _) => fields
-                            .iter()
-                            .map(|field| compile_type(&tcx, field.ty))
-                            .collect(),
-                        VariantData::Tuple(fields, _, _) => fields
-                            .iter()
-                            .map(|field| compile_type(&tcx, field.ty))
-                            .collect(),
-                        VariantData::Unit(_, _) => vec![],
+                        VariantData::Struct(fields, _) => {
+                            let fields = fields
+                                .iter()
+                                .map(|field| {
+                                    (field.ident.to_string(), compile_type(&tcx, field.ty))
+                                })
+                                .collect();
+                            VariantItem::Struct { fields }
+                        }
+                        VariantData::Tuple(fields, _, _) => {
+                            let tys = fields
+                                .iter()
+                                .map(|field| compile_type(&tcx, field.ty))
+                                .collect();
+                            VariantItem::Tuple { tys }
+                        }
+                        VariantData::Unit(_, _) => VariantItem::Tuple { tys: vec![] },
                     };
                     (name, fields)
                 })
@@ -774,6 +788,43 @@ impl TopLevelItem {
                 nest([text("Module"), line(), text(name), text(".")]),
                 nest([
                     hardline(),
+                    concat(variants.iter().map(|(name, fields)| match fields {
+                        VariantItem::Tuple { .. } => nil(),
+                        VariantItem::Struct { fields } => concat([
+                            nest([text("Module"), line(), text(name), text(".")]),
+                            nest([
+                                hardline(),
+                                nest([
+                                    text("Record"),
+                                    line(),
+                                    text("t"),
+                                    text(" :"),
+                                    line(),
+                                    text("Set"),
+                                    text(" := {"),
+                                ]),
+                                nest([concat(fields.iter().map(|(name, ty)| {
+                                    concat([
+                                        hardline(),
+                                        nest([
+                                            text(name),
+                                            line(),
+                                            text(":"),
+                                            line(),
+                                            ty.to_doc(false),
+                                            text(";"),
+                                        ]),
+                                    ])
+                                }))]),
+                                hardline(),
+                                text("}."),
+                            ]),
+                            hardline(),
+                            nest([text("End"), line(), text(name), text(".")]),
+                            hardline(),
+                            hardline(),
+                        ]),
+                    })),
                     nest([
                         text("Inductive"),
                         line(),
@@ -787,24 +838,35 @@ impl TopLevelItem {
                     ]),
                     hardline(),
                     intersperse(
-                        variants.iter().map(|(name, tys)| {
+                        variants.iter().map(|(name, fields)| {
                             nest([
                                 text("|"),
                                 line(),
                                 text(name),
-                                concat(tys.iter().map(|ty| {
-                                    concat([
+                                match fields {
+                                    VariantItem::Struct { .. } => concat([
                                         line(),
                                         nest([
-                                            text("(_"),
+                                            text("(_ :"),
                                             line(),
-                                            text(":"),
-                                            line(),
-                                            ty.to_doc(false),
+                                            text(format!("{name}.t")),
                                             text(")"),
                                         ]),
-                                    ])
-                                })),
+                                    ]),
+                                    VariantItem::Tuple { tys } => concat(tys.iter().map(|ty| {
+                                        concat([
+                                            line(),
+                                            nest([
+                                                text("(_"),
+                                                line(),
+                                                text(":"),
+                                                line(),
+                                                ty.to_doc(false),
+                                                text(")"),
+                                            ]),
+                                        ])
+                                    })),
+                                },
                             ])
                         }),
                         [line()],
