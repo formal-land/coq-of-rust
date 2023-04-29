@@ -15,7 +15,7 @@ Definition is_divisible_by (lhs : u32) (rhs : u32) : bool :=
     tt ;;
   (lhs.["rem"] rhs).["eq"] 0.
 
-Definition fizzbuzz (n : u32) :  :=
+Definition fizzbuzz (n : u32) : unit :=
   if (is_divisible_by n 15 : bool) then
     _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "fizzbuzz\n" ] [  ]) ;;
     tt ;;

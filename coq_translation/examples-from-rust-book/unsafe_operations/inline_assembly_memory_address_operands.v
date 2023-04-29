@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := asm.
+Definition main (_ : unit) : unit := tt.
 
 Module asm := std.arch.asm.
 

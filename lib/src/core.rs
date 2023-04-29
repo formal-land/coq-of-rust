@@ -71,6 +71,8 @@ fn create_translation_to_coq(input_file_name: PathBuf) -> String {
     let config = rustc_interface::Config {
         opts: config::Options {
             maybe_sysroot: Some(path::PathBuf::from(sysroot)),
+            // Run in test mode to generate a translation of the tests.
+            test: true,
             ..config::Options::default()
         },
         input: config::Input::File(input_file_name),

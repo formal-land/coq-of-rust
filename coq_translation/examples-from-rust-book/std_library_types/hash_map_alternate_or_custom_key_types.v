@@ -54,7 +54,7 @@ End Impl__crate_marker_StructuralEq_for_Account.
 Module Impl__crate_cmp_Eq_for_Account.
   Definition Self := Account.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) :  :=
+  Definition assert_receiver_is_total_eq (self : ref Self) : unit :=
     let '_ := tt in
     let '_ := tt in
     tt.
@@ -71,7 +71,7 @@ End Impl__crate_cmp_Eq_for_Account.
 Module Impl__crate_hash_Hash_for_Account.
   Definition Self := Account.
   
-  Definition hash (self : ref Self) (state : mut_ref __H) :  :=
+  Definition hash (self : ref Self) (state : mut_ref __H) : unit :=
     _crate.hash.Hash.hash self.["username"] state ;;
     _crate.hash.Hash.hash self.["password"] state.
   

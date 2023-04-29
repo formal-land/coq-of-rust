@@ -3,8 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := apply.
+Definition main (_ : unit) : unit := tt.
 
-Definition apply {F : Set} `{FnOnce.Trait () F} (f : F) : unit :=
+Definition apply {F : Set} `{FnOnce.Trait unit F} (f : F) : unit :=
   f tt ;;
   tt.

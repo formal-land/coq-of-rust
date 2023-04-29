@@ -17,7 +17,33 @@ Module Work.
 End Work.
 Definition Work := Work.t.
 
-Definition main (_ : unit) : unit := .
+Definition main (_ : unit) : unit :=
+  let status := Poor in
+  let work := Civilian in
+  match status with
+  | Rich =>
+    _crate.io._print
+      (_crate.fmt.Arguments::["new_v1"]
+        [ "The rich have lots of money!\n" ]
+        [  ]) ;;
+    tt
+  | Poor =>
+    _crate.io._print
+      (_crate.fmt.Arguments::["new_v1"]
+        [ "The poor have no money...\n" ]
+        [  ]) ;;
+    tt
+  end ;;
+  match work with
+  | Civilian =>
+    _crate.io._print
+      (_crate.fmt.Arguments::["new_v1"] [ "Civilians work!\n" ] [  ]) ;;
+    tt
+  | Soldier =>
+    _crate.io._print
+      (_crate.fmt.Arguments::["new_v1"] [ "Soldiers fight!\n" ] [  ]) ;;
+    tt
+  end.
 
 Module Poor := crate.Status.Poor.
 

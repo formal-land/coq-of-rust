@@ -46,7 +46,11 @@ Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "Entering block\n" ] [  ]) ;;
   tt ;;
-  function ;;
+  function tt ;;
+  _crate.io._print
+    (_crate.fmt.Arguments::["new_v1"] [ "Leaving block\n" ] [  ]) ;;
+  tt ;;
+  tt ;;
   function tt ;;
   tt.
 

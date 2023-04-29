@@ -24,6 +24,7 @@ pub enum Expr {
         func: String,
     },
     Literal(LitKind),
+    AddrOf(Box<Expr>),
     Call {
         func: Box<Expr>,
         args: Vec<Expr>,
@@ -344,7 +345,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             }
             compile_qpath(&tcx, qpath)
         }
-        rustc_hir::ExprKind::AddrOf(_, _, expr) => compile_expr(tcx, expr),
+        rustc_hir::ExprKind::AddrOf(_, _, expr) => Expr::AddrOf(Box::new(compile_expr(tcx, expr))),
         rustc_hir::ExprKind::Break(_, _) => Expr::LocalVar("Break".to_string()),
         rustc_hir::ExprKind::Continue(_) => Expr::LocalVar("Continue".to_string()),
         rustc_hir::ExprKind::Ret(expr) => {
@@ -405,9 +406,8 @@ fn compile_stmts(tcx: TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir
                 let body = Box::new(compile_stmts(tcx, stmts, expr));
                 Expr::Let { pat, init, body }
             }
-            rustc_hir::StmtKind::Item(item_id) => {
-                Expr::LocalVar(tcx.hir().item(item_id).ident.to_string())
-            }
+            // We ignore "Item" as we do not know yet how to handle them / what they are for.
+            rustc_hir::StmtKind::Item(_) => compile_stmts(tcx, stmts, expr),
             rustc_hir::StmtKind::Expr(current_expr) | rustc_hir::StmtKind::Semi(current_expr) => {
                 let first = Box::new(compile_expr(tcx, current_expr));
                 let second = Box::new(compile_stmts(tcx, stmts, expr));
@@ -449,6 +449,7 @@ impl Expr {
                 text("]"),
             ]),
             Expr::Literal(literal) => literal_to_doc(literal),
+            Expr::AddrOf(expr) => expr.to_doc(with_paren),
             Expr::Call { func, args } => paren(
                 with_paren,
                 nest([

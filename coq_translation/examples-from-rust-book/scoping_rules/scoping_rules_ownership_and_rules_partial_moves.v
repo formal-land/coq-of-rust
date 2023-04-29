@@ -3,7 +3,27 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := Person.
+Definition main (_ : unit) : unit :=
+  let person :=
+    {| Person.name := String::["from"] "Alice"; Person.age := Box::["new"] 20;
+    |} in
+  let '{| Person.name := name; Person.age := age; |} := person in
+  _crate.io._print
+    (_crate.fmt.Arguments::["new_v1"]
+      [ "The person's age is "; "\n" ]
+      [ _crate.fmt.ArgumentV1::["new_display"] age ]) ;;
+  tt ;;
+  _crate.io._print
+    (_crate.fmt.Arguments::["new_v1"]
+      [ "The person's name is "; "\n" ]
+      [ _crate.fmt.ArgumentV1::["new_display"] name ]) ;;
+  tt ;;
+  _crate.io._print
+    (_crate.fmt.Arguments::["new_v1"]
+      [ "The person's age from person struct is "; "\n" ]
+      [ _crate.fmt.ArgumentV1::["new_display"] person.["age"] ]) ;;
+  tt ;;
+  tt.
 
 Module Person.
   Record t : Set := {

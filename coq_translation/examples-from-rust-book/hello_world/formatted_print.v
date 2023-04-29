@@ -233,7 +233,34 @@ Definition main (_ : unit) : unit :=
       ]
       (_crate.fmt.UnsafeArg::["new"] tt)) ;;
   tt ;;
-  Structure.
+  let number := 1 (* 1.0 *) in
+  let width := 5 in
+  _crate.io._print
+    (_crate.fmt.Arguments::["new_v1_formatted"]
+      [ ""; "\n" ]
+      [
+        _crate.fmt.ArgumentV1::["new_display"] number;
+        _crate.fmt.ArgumentV1::["from_usize"] width
+      ]
+      [
+        {|
+          _crate.fmt.rt.v1.Argument.position := 0;
+          _crate.fmt.rt.v1.Argument.format :=
+            {|
+              _crate.fmt.rt.v1.FormatSpec.fill :=  ;
+              _crate.fmt.rt.v1.FormatSpec.align :=
+                _crate.fmt.rt.v1.Alignment.Right;
+              _crate.fmt.rt.v1.FormatSpec.flags := 0;
+              _crate.fmt.rt.v1.FormatSpec.precision :=
+                _crate.fmt.rt.v1.Count.Implied;
+              _crate.fmt.rt.v1.FormatSpec.width :=
+                _crate.fmt.rt.v1.Count.Param 1;
+            |};
+        |}
+      ]
+      (_crate.fmt.UnsafeArg::["new"] tt)) ;;
+  tt ;;
+  tt.
 
 Module Structure.
   Record t : Set := { _ : i32;}.

@@ -148,6 +148,34 @@ fn compile_fn_sig_and_body_id(
     }
 }
 
+/// Check if the function body is actually the main test function calling to all
+/// tests in the file. If so, we do not want to compile it.
+fn check_if_is_test_main_function(tcx: TyCtxt, body_id: &rustc_hir::BodyId) -> bool {
+    let body = tcx.hir().body(*body_id);
+    let expr = body.value;
+    match expr.kind {
+        rustc_hir::ExprKind::Block(block, _) => match block.expr {
+            Some(expr) => match expr.kind {
+                rustc_hir::ExprKind::Call(func, _) => match &func.kind {
+                    rustc_hir::ExprKind::Path(rustc_hir::QPath::Resolved(_, path)) => {
+                        match path.segments {
+                            [base, path] => {
+                                base.ident.name.to_string() == "test"
+                                    && path.ident.name.to_string() == "test_main_static"
+                            }
+                            _ => false,
+                        }
+                    }
+                    _ => false,
+                },
+                _ => false,
+            },
+            None => false,
+        },
+        _ => false,
+    }
+}
+
 /// [compile_top_level_item] compiles hir [Item]s into coq-of-rust (optional)
 /// items.
 /// - See https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/struct.Item.html
@@ -192,6 +220,9 @@ fn compile_top_level_item(
             }]
         }
         ItemKind::Fn(fn_sig, generics, body_id) => {
+            if check_if_is_test_main_function(tcx, body_id) {
+                return vec![];
+            }
             let FnSigAndBody { args, ret_ty, body } =
                 compile_fn_sig_and_body_id(tcx, fn_sig, body_id);
             vec![TopLevelItem::Definition {

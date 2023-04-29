@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition call_me {F : Set} `{Fn.Trait () F} (f : F) : unit :=
+Definition call_me {F : Set} `{Fn.Trait unit F} (f : F) : unit :=
   f tt ;;
   tt.
 
