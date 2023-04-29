@@ -9,5 +9,3 @@ Definition main (_ : unit) : unit :=
   x.["add"] 1 ;;
   15 ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

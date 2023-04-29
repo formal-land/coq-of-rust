@@ -34,5 +34,3 @@ Definition main (_ : unit) : unit :=
       tt
     from
     loop.
-
-Definition main (_ : unit) : unit := test.

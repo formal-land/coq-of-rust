@@ -19,5 +19,3 @@ Definition main (_ : unit) : Result unit ParseIntError :=
       [ _crate.fmt.ArgumentV1::["new_display"] number ]) ;;
   tt ;;
   Ok ().
-
-Definition main (_ : unit) : unit := test.

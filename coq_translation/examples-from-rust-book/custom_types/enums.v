@@ -59,5 +59,3 @@ Definition main (_ : unit) : unit :=
   inspect load ;;
   inspect unload ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

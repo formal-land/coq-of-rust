@@ -29,5 +29,3 @@ Definition main (_ : unit) : unit :=
   tt ;;
   eat_box_i32 boxed_i32 ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

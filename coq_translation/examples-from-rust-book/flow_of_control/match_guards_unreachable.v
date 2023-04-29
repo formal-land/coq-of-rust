@@ -15,5 +15,3 @@ Definition main (_ : unit) : unit :=
     tt
   | _ => _crate.panicking.unreachable_display "Should never happen."
   end.
-
-Definition main (_ : unit) : unit := test.

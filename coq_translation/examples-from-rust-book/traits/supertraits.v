@@ -64,5 +64,3 @@ Definition comp_sci_student_greeting (student : ref TraitObject) : String :=
   res.
 
 Definition main (_ : unit) : unit := tt.
-
-Definition main (_ : unit) : unit := test.

@@ -58,5 +58,3 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"] [ "end of the main function\n" ] [  ]) ;;
   tt ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

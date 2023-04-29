@@ -30,5 +30,3 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"] [ "Exited the outer loop\n" ] [  ]) ;;
   tt ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

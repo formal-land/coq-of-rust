@@ -12,5 +12,3 @@ Definition noisy_unused_function (_ : unit) : unit := tt.
 Definition main (_ : unit) : unit :=
   used_function tt ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

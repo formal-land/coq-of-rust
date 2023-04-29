@@ -3,8 +3,43 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := mem.
+Definition main (_ : unit) : unit :=
+  let color := String::["from"] "green" in
+  let print :=
+    fun  =>
+      _crate.io._print
+        (_crate.fmt.Arguments::["new_v1"]
+          [ "`color`: "; "\n" ]
+          [ _crate.fmt.ArgumentV1::["new_display"] color ]) ;;
+      tt in
+  print tt ;;
+  let _reborrow := color in
+  print tt ;;
+  let _color_moved := color in
+  let count := 0 in
+  let inc :=
+    fun  =>
+      count.["add_assign"] 1 ;;
+      _crate.io._print
+        (_crate.fmt.Arguments::["new_v1"]
+          [ "`count`: "; "\n" ]
+          [ _crate.fmt.ArgumentV1::["new_display"] count ]) ;;
+      tt ;;
+      tt in
+  inc tt ;;
+  inc tt ;;
+  let _count_reborrowed := count in
+  let movable := Box::["new"] 3 in
+  let consume :=
+    fun  =>
+      _crate.io._print
+        (_crate.fmt.Arguments::["new_v1"]
+          [ "`movable`: "; "\n" ]
+          [ _crate.fmt.ArgumentV1::["new_debug"] movable ]) ;;
+      tt ;;
+      mem.drop movable ;;
+      tt in
+  consume tt ;;
+  tt.
 
 Module mem := std.mem.
-
-Definition main (_ : unit) : unit := test.

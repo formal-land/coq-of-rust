@@ -114,5 +114,3 @@ Definition main (_ : unit) : unit :=
   eat steak Day.Tuesday ;;
   eat sushi Day.Wednesday ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

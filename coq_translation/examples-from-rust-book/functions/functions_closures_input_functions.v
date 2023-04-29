@@ -22,5 +22,3 @@ Definition main (_ : unit) : unit :=
   call_me closure ;;
   call_me function ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

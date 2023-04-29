@@ -138,5 +138,3 @@ Definition main (_ : unit) : unit :=
   dolly.["shear"] ;;
   dolly.["talk"] ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

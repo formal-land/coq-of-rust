@@ -21,5 +21,3 @@ Definition main (_ : unit) : unit :=
     tt
   | _ => ()
   end.
-
-Definition main (_ : unit) : unit := test.

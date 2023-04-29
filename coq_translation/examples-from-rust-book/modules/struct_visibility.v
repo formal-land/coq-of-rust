@@ -81,5 +81,3 @@ Definition main (_ : unit) : unit :=
   tt ;;
   let _closed_box := my.ClosedBox::["new"] "classified information" in
   tt.
-
-Definition main (_ : unit) : unit := test.

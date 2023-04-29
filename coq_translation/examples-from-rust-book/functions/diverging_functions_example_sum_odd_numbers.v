@@ -3,7 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := sum_odd_numbers.
+Definition main (_ : unit) : unit :=
+  _crate.io._print
+    (_crate.fmt.Arguments::["new_v1"]
+      [ "Sum of odd numbers up to 9 (excluding): "; "\n" ]
+      [ _crate.fmt.ArgumentV1::["new_display"] (sum_odd_numbers 9) ]) ;;
+  tt ;;
+  tt.
 
 Definition sum_odd_numbers (up_to : u32) : u32 :=
   let acc := 0 in
@@ -26,5 +32,3 @@ Definition sum_odd_numbers (up_to : u32) : u32 :=
       for
   end ;;
   acc.
-
-Definition main (_ : unit) : unit := test.

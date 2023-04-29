@@ -140,5 +140,3 @@ Definition test_bad_add (_ : unit) : unit :=
       tt
   end ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

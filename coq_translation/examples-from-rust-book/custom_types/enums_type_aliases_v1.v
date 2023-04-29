@@ -18,5 +18,3 @@ Definition Operations : Set := VeryVerboseEnumOfThingsToDoWithNumbers.
 Definition main (_ : unit) : unit :=
   let x := Operations::["Add"] in
   tt.
-
-Definition main (_ : unit) : unit := test.

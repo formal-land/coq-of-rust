@@ -174,5 +174,3 @@ Definition op (x : f64) (y : f64) : unit :=
 Definition main (_ : unit) : unit :=
   checked.op 1 (* 1.0 *) 10 (* 10.0 *) ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

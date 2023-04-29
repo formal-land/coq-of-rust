@@ -157,5 +157,3 @@ Definition main (_ : unit) : unit :=
   try_logon accounts "j.everyman" "psasword123" ;;
   try_logon accounts "j.everyman" "password123" ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

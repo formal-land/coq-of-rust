@@ -73,5 +73,3 @@ Definition main (_ : unit) : unit :=
       (_crate.fmt.UnsafeArg::["new"] tt)) ;;
   tt ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

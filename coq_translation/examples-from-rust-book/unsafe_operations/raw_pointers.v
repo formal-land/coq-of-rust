@@ -10,5 +10,3 @@ Definition main (_ : unit) : unit :=
   else
     tt ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

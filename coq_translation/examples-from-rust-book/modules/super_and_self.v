@@ -52,7 +52,8 @@ Module my.
     function tt ;;
     self.cool.function tt ;;
     super.function tt ;;
-    root_function.
+    root_function tt ;;
+    tt.
 End my.
 
 Definition function (_ : unit) : unit :=
@@ -89,12 +90,11 @@ Definition indirect_call (_ : unit) : unit :=
   function tt ;;
   self.cool.function tt ;;
   super.function tt ;;
-  root_function.
+  root_function tt ;;
+  tt.
 
 Module root_function := crate.cool.function.
 
 Definition main (_ : unit) : unit :=
   my.indirect_call tt ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

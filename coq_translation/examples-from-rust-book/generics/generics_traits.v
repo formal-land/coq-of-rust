@@ -42,5 +42,3 @@ Definition main (_ : unit) : unit :=
   let null := Null.Build in
   empty.["double_drop"] null ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

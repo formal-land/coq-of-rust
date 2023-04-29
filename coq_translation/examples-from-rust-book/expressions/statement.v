@@ -4,5 +4,3 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit := tt.
-
-Definition main (_ : unit) : unit := test.

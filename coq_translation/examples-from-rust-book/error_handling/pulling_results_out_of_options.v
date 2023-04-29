@@ -32,5 +32,3 @@ Definition main (_ : unit) : unit :=
       [ _crate.fmt.ArgumentV1::["new_debug"] (double_first strings) ]) ;;
   tt ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

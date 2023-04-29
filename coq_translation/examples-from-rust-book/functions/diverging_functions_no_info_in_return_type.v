@@ -12,5 +12,3 @@ Definition main (_ : unit) : unit :=
       [ "This function returns and you can see this line.\n" ]
       [  ]) ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

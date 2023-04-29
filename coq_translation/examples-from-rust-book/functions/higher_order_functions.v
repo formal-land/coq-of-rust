@@ -50,5 +50,3 @@ Definition main (_ : unit) : unit :=
       [ _crate.fmt.ArgumentV1::["new_display"] sum_of_squared_odd_numbers ]) ;;
   tt ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

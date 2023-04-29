@@ -9,8 +9,36 @@ Definition apply {F : Set} `{FnOnce.Trait unit F} (f : F) : unit :=
 
 Definition apply_to_3 {F : Set} `{Fn.Trait (i32) F} (f : F) : i32 := f 3.
 
-Definition main (_ : unit) : unit := mem.
+Definition main (_ : unit) : unit :=
+  let greeting := "hello" in
+  let farewell := "goodbye".["to_owned"] in
+  let diary :=
+    fun  =>
+      _crate.io._print
+        (_crate.fmt.Arguments::["new_v1"]
+          [ "I said "; ".\n" ]
+          [ _crate.fmt.ArgumentV1::["new_display"] greeting ]) ;;
+      tt ;;
+      farewell.["push_str"] "!!!" ;;
+      _crate.io._print
+        (_crate.fmt.Arguments::["new_v1"]
+          [ "Then I screamed "; ".\n" ]
+          [ _crate.fmt.ArgumentV1::["new_display"] farewell ]) ;;
+      tt ;;
+      _crate.io._print
+        (_crate.fmt.Arguments::["new_v1"]
+          [ "Now I can sleep. zzzzz\n" ]
+          [  ]) ;;
+      tt ;;
+      mem.drop farewell ;;
+      tt in
+  apply diary ;;
+  let double := fun x => 2.["mul"] x in
+  _crate.io._print
+    (_crate.fmt.Arguments::["new_v1"]
+      [ "3 doubled: "; "\n" ]
+      [ _crate.fmt.ArgumentV1::["new_display"] (apply_to_3 double) ]) ;;
+  tt ;;
+  tt.
 
 Module mem := std.mem.
-
-Definition main (_ : unit) : unit := test.

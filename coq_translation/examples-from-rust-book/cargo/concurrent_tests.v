@@ -158,5 +158,3 @@ Definition test_file_also (_ : unit) : unit :=
       from
       for
   end.
-
-Definition main (_ : unit) : unit := test.

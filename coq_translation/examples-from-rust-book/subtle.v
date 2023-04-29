@@ -1403,5 +1403,3 @@ Module Impl_ConstantTimeLess_for_u64.
   Global Instance I : ConstantTimeLess.Trait Self :=
     ConstantTimeLess.Build_Class _.
 End Impl_ConstantTimeLess_for_u64.
-
-Definition main (_ : unit) : unit := test.

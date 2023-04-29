@@ -29,5 +29,3 @@ Definition main (_ : unit) : unit :=
       [ _crate.fmt.ArgumentV1::["new_display"] shadowed_binding ]) ;;
   tt ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

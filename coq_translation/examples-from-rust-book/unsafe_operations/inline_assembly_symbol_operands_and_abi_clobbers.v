@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := asm.
+Definition main (_ : unit) : unit := tt.
 
 Module asm := std.arch.asm.
 
@@ -19,5 +19,3 @@ Definition call_foo (arg : i32) : i32 :=
   let result := tt in
   InlineAsm ;;
   result.
-
-Definition main (_ : unit) : unit := test.

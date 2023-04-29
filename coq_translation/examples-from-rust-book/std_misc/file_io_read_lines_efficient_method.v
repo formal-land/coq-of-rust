@@ -49,5 +49,3 @@ Definition read_lines
     | Continue {| Continue.0 := val; |} => val
     end in
   Ok (io.BufReader::["new"] file).["lines"].
-
-Definition main (_ : unit) : unit := test.

@@ -18,5 +18,3 @@ Definition main (_ : unit) : unit :=
       tt in
   apply print ;;
   tt.
-
-Definition main (_ : unit) : unit := test.

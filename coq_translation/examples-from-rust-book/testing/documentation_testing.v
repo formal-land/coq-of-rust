@@ -12,5 +12,3 @@ Definition div (a : i32) (b : i32) : i32 :=
   else
     tt ;;
   a.["div"] b.
-
-Definition main (_ : unit) : unit := test.

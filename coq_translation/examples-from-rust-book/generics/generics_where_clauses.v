@@ -40,5 +40,3 @@ Definition main (_ : unit) : unit :=
   let vec := Slice::["into_vec"] [ 1; 2; 3 ] in
   vec.["print_in_option"] ;;
   tt.
-
-Definition main (_ : unit) : unit := test.
