@@ -81,7 +81,7 @@ Definition main (_ : unit) : unit :=
         Return tt ;;
         tt
       end in
-    match cmd[{|  |}] with
+    match cmd[RangeFull {|  |}] with
     | Str("increase", Cooked) => increase number
     | Str("decrease", Cooked) => decrease number
     | _ =>

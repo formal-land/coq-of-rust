@@ -19,7 +19,8 @@ Definition main (_ : unit) : unit :=
 " ]
       [
         _crate.fmt.ArgumentV1::["new_debug"] (args.["len"].["sub"] 1);
-        _crate.fmt.ArgumentV1::["new_debug"] args[{| RangeFrom.start := 1; |}]
+        _crate.fmt.ArgumentV1::["new_debug"]
+          args[RangeFrom {| RangeFrom.start := 1; |}]
       ]) ;;
   tt ;;
   tt.

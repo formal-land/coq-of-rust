@@ -42,7 +42,7 @@ Definition fibonacci (_ : unit) : Fibonacci :=
   {| Fibonacci.curr := 0; Fibonacci.next := 1; |}.
 
 Definition main (_ : unit) : unit :=
-  let sequence := {| Range.start := 0; Range.end := 3; |} in
+  let sequence := Range {| Range.start := 0; Range.end := 3; |} in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "Four consecutive `next` calls on 0..3
@@ -79,7 +79,7 @@ Definition main (_ : unit) : unit :=
 " ]
       [  ]) ;;
   tt ;;
-  match LangItem {| Range.start := 0; Range.end := 3; |} with
+  match LangItem Range {| Range.start := 0; Range.end := 3; |} with
   | iter =>
     loop
       match LangItem iter with

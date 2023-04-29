@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
   let collected_iterator :=
-    {| Range.start := 0; Range.end := 10; |}.["collect"] in
+    Range {| Range.start := 0; Range.end := 10; |}.["collect"] in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "Collected (0..10) into: "; "

@@ -2,41 +2,7 @@ use crate::path::*;
 use crate::render::*;
 
 use rustc_ast::LitKind;
-use rustc_hir::def::{CtorOf, DefKind, Res};
 use rustc_hir::{Pat, PatKind};
-
-#[derive(Debug)]
-pub enum StructOrVariant {
-    Struct,
-    Variant,
-}
-
-impl StructOrVariant {
-    /// Returns wether a qpath refers to a struct or a variant.
-    fn of_qpath(qpath: &rustc_hir::QPath) -> StructOrVariant {
-        match qpath {
-            rustc_hir::QPath::Resolved(_, path) => match path.res {
-                Res::Def(DefKind::Struct | DefKind::Ctor(CtorOf::Struct, _), _) => {
-                    StructOrVariant::Struct
-                }
-                Res::Def(DefKind::Variant | DefKind::Ctor(CtorOf::Variant, _), _) => {
-                    StructOrVariant::Variant
-                }
-                _ => panic!("Unexpected path resolution: {:?}", path.res),
-            },
-            rustc_hir::QPath::TypeRelative(..) => panic!("Unhandled qpath: {qpath:?}"),
-            rustc_hir::QPath::LangItem(lang_item, ..) => match lang_item {
-                rustc_hir::LangItem::OptionNone => StructOrVariant::Variant,
-                rustc_hir::LangItem::OptionSome => StructOrVariant::Variant,
-                rustc_hir::LangItem::ResultOk => StructOrVariant::Variant,
-                rustc_hir::LangItem::ResultErr => StructOrVariant::Variant,
-                rustc_hir::LangItem::ControlFlowContinue => StructOrVariant::Variant,
-                rustc_hir::LangItem::ControlFlowBreak => StructOrVariant::Variant,
-                _ => panic!("Unhandled lang item: {lang_item:?}. TODO: add support for this item"),
-            },
-        }
-    }
-}
 
 /// The enum [Pat] represents the patterns which can be matched
 #[derive(Debug)]

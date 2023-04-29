@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  match LangItem {| Range.start := 1; Range.end := 101; |} with
+  match LangItem Range {| Range.start := 1; Range.end := 101; |} with
   | iter =>
     loop
       match LangItem iter with

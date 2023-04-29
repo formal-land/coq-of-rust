@@ -60,7 +60,7 @@ Definition main (_ : unit) : unit :=
 " ]
       [  ]) ;;
   tt ;;
-  analyze_slice ys[{| Range.start := 1; Range.end := 4; |}] ;;
+  analyze_slice ys[Range {| Range.start := 1; Range.end := 4; |}] ;;
   let empty_array := [  ] in
   match (empty_array, [  ]) with
   | (left_val, right_val) =>
@@ -75,7 +75,7 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  match (empty_array, [  ][{|  |}]) with
+  match (empty_array, [  ][RangeFull {|  |}]) with
   | (left_val, right_val) =>
     if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
@@ -88,7 +88,9 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  match LangItem {| Range.start := 0; Range.end := xs.["len"].["add"] 1; |} with
+  match
+    LangItem Range {| Range.start := 0; Range.end := xs.["len"].["add"] 1; |}
+  with
   | iter =>
     loop
       match LangItem iter with

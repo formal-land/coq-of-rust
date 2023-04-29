@@ -18,7 +18,7 @@ Definition NTHREADS : i32 := 3.
 Definition main (_ : unit) : unit :=
   let '(tx, rx) := mpsc.channel tt in
   let children := Vec::["new"] tt in
-  match LangItem {| Range.start := 0; Range.end := NTHREADS; |} with
+  match LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} with
   | iter =>
     loop
       match LangItem iter with
@@ -44,7 +44,7 @@ Definition main (_ : unit) : unit :=
       for
   end ;;
   let ids := Vec::["with_capacity"] (cast NTHREADS usize) in
-  match LangItem {| Range.start := 0; Range.end := NTHREADS; |} with
+  match LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} with
   | iter =>
     loop
       match LangItem iter with

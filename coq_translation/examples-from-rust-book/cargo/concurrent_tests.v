@@ -24,7 +24,7 @@ Module tests.
       ((((OpenOptions::["new"] tt).["append"] true).["create"] true).["open"]
           "ferris.txt").["expect"]
         "Failed to open ferris.txt" in
-    match LangItem {| Range.start := 0; Range.end := 5; |} with
+    match LangItem Range {| Range.start := 0; Range.end := 5; |} with
     | iter =>
       loop
         match LangItem iter with
@@ -45,7 +45,7 @@ Module tests.
       ((((OpenOptions::["new"] tt).["append"] true).["create"] true).["open"]
           "ferris.txt").["expect"]
         "Failed to open ferris.txt" in
-    match LangItem {| Range.start := 0; Range.end := 5; |} with
+    match LangItem Range {| Range.start := 0; Range.end := 5; |} with
     | iter =>
       loop
         match LangItem iter with
@@ -70,7 +70,7 @@ Definition test_file (_ : unit) : unit :=
     ((((OpenOptions::["new"] tt).["append"] true).["create"] true).["open"]
         "ferris.txt").["expect"]
       "Failed to open ferris.txt" in
-  match LangItem {| Range.start := 0; Range.end := 5; |} with
+  match LangItem Range {| Range.start := 0; Range.end := 5; |} with
   | iter =>
     loop
       match LangItem iter with
@@ -91,7 +91,7 @@ Definition test_file_also (_ : unit) : unit :=
     ((((OpenOptions::["new"] tt).["append"] true).["create"] true).["open"]
         "ferris.txt").["expect"]
       "Failed to open ferris.txt" in
-  match LangItem {| Range.start := 0; Range.end := 5; |} with
+  match LangItem Range {| Range.start := 0; Range.end := 5; |} with
   | iter =>
     loop
       match LangItem iter with

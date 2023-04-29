@@ -11,7 +11,7 @@ Definition main (_ : unit) : unit :=
   let _box2 := Box::["new"] 5 in
   let _box3 := Box::["new"] 4 in
   tt ;;
-  match LangItem {| Range.start := 0; Range.end := 1000; |} with
+  match LangItem Range {| Range.start := 0; Range.end := 1000; |} with
   | iter =>
     loop
       match LangItem iter with

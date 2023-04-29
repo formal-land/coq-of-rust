@@ -13,7 +13,7 @@ Definition Duration := Duration.t.
 
 Definition main (_ : unit) : unit :=
   let apple := Arc::["new"] "the same apple" in
-  match LangItem {| Range.start := 0; Range.end := 10; |} with
+  match LangItem Range {| Range.start := 0; Range.end := 10; |} with
   | iter =>
     loop
       match LangItem iter with

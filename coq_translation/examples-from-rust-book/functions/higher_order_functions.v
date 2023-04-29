@@ -14,7 +14,7 @@ Definition main (_ : unit) : unit :=
   tt ;;
   let upper := 1000 in
   let acc := 0 in
-  match LangItem {| RangeFrom.start := 0; |} with
+  match LangItem RangeFrom {| RangeFrom.start := 0; |} with
   | iter =>
     loop
       match LangItem iter with
@@ -42,7 +42,7 @@ Definition main (_ : unit) : unit :=
       [ _crate.fmt.ArgumentV1::["new_display"] acc ]) ;;
   tt ;;
   let sum_of_squared_odd_numbers :=
-    ((({| RangeFrom.start := 0; |}.["map"]
+    (((RangeFrom {| RangeFrom.start := 0; |}.["map"]
             (fun n => n.["mul"] n)).["take_while"]
           (fun n_squared => n_squared.["lt"] upper)).["filter"]
         (fun n_squared => is_odd n_squared)).["sum"] in

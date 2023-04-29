@@ -14,7 +14,7 @@ Definition main (_ : unit) : unit :=
 
 Definition sum_odd_numbers (up_to : u32) : u32 :=
   let acc := 0 in
-  match LangItem {| Range.start := 0; Range.end := up_to; |} with
+  match LangItem Range {| Range.start := 0; Range.end := up_to; |} with
   | iter =>
     loop
       match LangItem iter with

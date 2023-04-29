@@ -74,7 +74,8 @@ Definition inspect (event : WebEvent) : unit :=
 Definition main (_ : unit) : unit :=
   let pressed := WebEvent.KeyPress "x"%char in
   let pasted := WebEvent.Paste "my text".["to_owned"] in
-  let click := {| WebEvent.Click.x := 20; WebEvent.Click.y := 80; |} in
+  let click :=
+    WebEvent.Click {| WebEvent.Click.x := 20; WebEvent.Click.y := 80; |} in
   let load := WebEvent.PageLoad in
   let unload := WebEvent.PageUnload in
   inspect pressed ;;

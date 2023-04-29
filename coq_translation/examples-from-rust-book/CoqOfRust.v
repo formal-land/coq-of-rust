@@ -958,3 +958,9 @@ Module rand.
   Module Rng.
   End Rng.
 End rand.
+
+(** For now we assume that all types implement [to_owned] and that this is the
+    identity function. *)
+Global Instance Method_to_owned {A : Set} : Notation.Dot "to_owned" := {
+  Notation.dot := (id : A -> A);
+}.

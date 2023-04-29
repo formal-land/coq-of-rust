@@ -9,7 +9,7 @@ Definition NTHREADS : u32 := 10.
 
 Definition main (_ : unit) : unit :=
   let children := _crate.vec.Vec::["new"] tt in
-  match LangItem {| Range.start := 0; Range.end := NTHREADS; |} with
+  match LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} with
   | iter =>
     loop
       match LangItem iter with
