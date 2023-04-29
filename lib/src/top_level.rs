@@ -192,24 +192,32 @@ fn compile_top_level_item(
         ItemKind::ExternCrate(_) => vec![],
         ItemKind::Use(path, use_kind) => {
             if matches!(use_kind, rustc_hir::UseKind::ListStem) {
-                vec![]
-            } else {
-                vec![TopLevelItem::Use {
-                    name: item.ident.name.to_string(),
-                    path: compile_path(path),
-                    is_glob: matches!(use_kind, rustc_hir::UseKind::Glob),
-                    is_type: path.res.iter().any(|res| match res {
-                        rustc_hir::def::Res::Def(def, _) => matches!(
-                            def,
-                            rustc_hir::def::DefKind::TyAlias
-                                | rustc_hir::def::DefKind::Enum
-                                | rustc_hir::def::DefKind::Struct
-                                | rustc_hir::def::DefKind::Union
-                        ),
-                        _ => false,
-                    }),
-                }]
+                return vec![];
             }
+            let is_trait_use = path.res.iter().any(|res| {
+                matches!(
+                    res,
+                    rustc_hir::def::Res::Def(rustc_hir::def::DefKind::Trait, _)
+                )
+            });
+            if is_trait_use {
+                return vec![];
+            }
+            vec![TopLevelItem::Use {
+                name: item.ident.name.to_string(),
+                path: compile_path(path),
+                is_glob: matches!(use_kind, rustc_hir::UseKind::Glob),
+                is_type: path.res.iter().any(|res| match res {
+                    rustc_hir::def::Res::Def(def, _) => matches!(
+                        def,
+                        rustc_hir::def::DefKind::TyAlias
+                            | rustc_hir::def::DefKind::Enum
+                            | rustc_hir::def::DefKind::Struct
+                            | rustc_hir::def::DefKind::Union
+                    ),
+                    _ => false,
+                }),
+            }]
         }
         ItemKind::Static(ty, _, body_id) | ItemKind::Const(ty, body_id) => {
             let value = tcx.hir().body(*body_id).value;

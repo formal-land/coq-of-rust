@@ -3,8 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module Debug := std.fmt.Debug.
-
 Module PrintInOption.
   Class Trait (Self : Set) : Set := {
     print_in_option : Self -> _;

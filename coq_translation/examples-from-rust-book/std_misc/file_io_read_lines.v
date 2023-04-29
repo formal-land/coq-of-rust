@@ -8,8 +8,6 @@ Definition File := File.t.
 
 Module io := std.io.
 
-Module BufRead := std.io.BufRead.
-
 Module BufReader := std.io.BufReader.
 Definition BufReader := BufReader.t.
 

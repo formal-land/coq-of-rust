@@ -5,8 +5,6 @@ Import Root.std.prelude.rust_2015.
 
 Module error := std.error.
 
-Module Error := std.error.Error.
-
 Module fmt := std.fmt.
 
 Module ParseIntError := std.num.ParseIntError.

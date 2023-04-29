@@ -3,10 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module Debug := std.fmt.Debug.
-
-Module Display := std.fmt.Display.
-
 Definition compare_prints
     {T : Set}
     `{Debug.Trait T}

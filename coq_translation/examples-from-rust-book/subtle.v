@@ -3,22 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.core.prelude.rust_2015.
 
-Module BitAnd := core.ops.BitAnd.
-
-Module BitAndAssign := core.ops.BitAndAssign.
-
-Module BitOr := core.ops.BitOr.
-
-Module BitOrAssign := core.ops.BitOrAssign.
-
-Module BitXor := core.ops.BitXor.
-
-Module BitXorAssign := core.ops.BitXorAssign.
-
-Module Neg := core.ops.Neg.
-
-Module Not := core.ops.Not.
-
 Module Option := core.option.Option.
 Definition Option := Option.t.
 

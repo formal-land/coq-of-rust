@@ -3,8 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module From := std.convert.From.
-
 Module Number.
   Record t : Set := {
     value : i32;

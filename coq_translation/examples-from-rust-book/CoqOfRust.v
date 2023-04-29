@@ -799,6 +799,12 @@ Module std.
     End PartialOrd.
   End cmp.
 
+  Module fs.
+    Module OpenOptions.
+      Parameter t : Set.
+    End OpenOptions.
+    Definition t : Set := OpenOptions.t.
+  End fs.
 End std.
 
 Module str_Instances.

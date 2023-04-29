@@ -8,8 +8,6 @@ Definition File := File.t.
 
 Module io := std.io.
 
-Module BufRead := std.io.BufRead.
-
 Module Path := std.path.Path.
 Definition Path := Path.t.
 

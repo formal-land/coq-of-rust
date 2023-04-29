@@ -6,8 +6,6 @@ Import Root.std.prelude.rust_2015.
 Module PhantomData := std.marker.PhantomData.
 Definition PhantomData := PhantomData.t.
 
-Module Add := std.ops.Add.
-
 Module Inch.
   Inductive t : Set :=
   .

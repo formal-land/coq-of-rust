@@ -7,8 +7,6 @@ Module tests.
   Module OpenOptions := std.fs.OpenOptions.
   Definition OpenOptions := OpenOptions.t.
   
-  Module Write := std.io.Write.
-  
   Definition test_file : test.TestDescAndFn :=
     {|
       test.TestDescAndFn.desc :=
@@ -84,8 +82,6 @@ End tests.
 
 Module OpenOptions := std.fs.OpenOptions.
 Definition OpenOptions := OpenOptions.t.
-
-Module Write := std.io.Write.
 
 Definition test_file : test.TestDescAndFn :=
   {|
