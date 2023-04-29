@@ -6,7 +6,10 @@ use crate::path::*;
 use crate::render::*;
 use crate::ty::*;
 
-use rustc_hir::{Impl, ImplItemKind, Item, ItemKind, PatKind, TraitFn, TraitItemKind, VariantData};
+use rustc_hir::{
+    Impl, ImplItemKind, Item, ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind,
+    VariantData,
+};
 use rustc_middle::ty::TyCtxt;
 
 #[derive(Debug)]
@@ -176,6 +179,21 @@ fn check_if_is_test_main_function(tcx: TyCtxt, body_id: &rustc_hir::BodyId) -> b
     }
 }
 
+/// Check if a top-level definition is actually test metadata. If so, we ignore
+/// it.
+fn check_if_test_declaration(ty: &Ty) -> bool {
+    match &ty.kind {
+        TyKind::Path(QPath::Resolved(_, path)) => match path.segments {
+            [base, path] => {
+                base.ident.name.to_string() == "test"
+                    && path.ident.name.to_string() == "TestDescAndFn"
+            }
+            _ => false,
+        },
+        _ => false,
+    }
+}
+
 /// [compile_top_level_item] compiles hir [Item]s into coq-of-rust (optional)
 /// items.
 /// - See https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/struct.Item.html
@@ -220,6 +238,9 @@ fn compile_top_level_item(
             }]
         }
         ItemKind::Static(ty, _, body_id) | ItemKind::Const(ty, body_id) => {
+            if check_if_test_declaration(ty) {
+                return vec![];
+            }
             let value = tcx.hir().body(*body_id).value;
             vec![TopLevelItem::Const {
                 name: item.ident.name.to_string(),
