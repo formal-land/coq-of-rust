@@ -14,17 +14,20 @@ Definition main (_ : unit) : unit :=
     tt in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "x is "; "\n" ]
+      [ "x is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] x ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "y is "; "\n" ]
+      [ "y is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] y ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "z is "; "\n" ]
+      [ "z is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] z ]) ;;
   tt ;;
   tt.

@@ -7,13 +7,15 @@ Definition main (_ : unit) : unit :=
   let count := 0 in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Let's count until infinity!\n" ]
+      [ "Let's count until infinity!
+" ]
       [  ]) ;;
   tt ;;
   loop
     count.["add_assign"] 1 ;;
     if (count.["eq"] 3 : bool) then
-      _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "three\n" ] [  ]) ;;
+      _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "three
+" ] [  ]) ;;
       tt ;;
       Continue ;;
       tt
@@ -21,12 +23,14 @@ Definition main (_ : unit) : unit :=
       tt ;;
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ ""; "\n" ]
+        [ ""; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] count ]) ;;
     tt ;;
     if (count.["eq"] 5 : bool) then
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"] [ "OK, that's enough\n" ] [  ]) ;;
+        (_crate.fmt.Arguments::["new_v1"] [ "OK, that's enough
+" ] [  ]) ;;
       tt ;;
       Break ;;
       tt

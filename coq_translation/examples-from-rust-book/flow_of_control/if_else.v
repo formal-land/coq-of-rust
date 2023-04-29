@@ -31,20 +31,23 @@ Definition main (_ : unit) : unit :=
     if ((n.["lt"] 10).["andb"] (n.["gt"] (neg 10)) : bool) then
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ ", and is a small number, increase ten-fold\n" ]
+          [ ", and is a small number, increase ten-fold
+" ]
           [  ]) ;;
       tt ;;
       10.["mul"] n
     else
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ ", and is a big number, halve the number\n" ]
+          [ ", and is a big number, halve the number
+" ]
           [  ]) ;;
       tt ;;
       n.["div"] 2 in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; " -> "; "\n" ]
+      [ ""; " -> "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"] n;
         _crate.fmt.ArgumentV1::["new_display"] big_n

@@ -50,7 +50,8 @@ Definition main (_ : unit) : unit :=
   let y := {| GenVal.gen_val := 3; |} in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; ", "; "\n" ]
+      [ ""; ", "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"] x.["value"];
         _crate.fmt.ArgumentV1::["new_display"] y.["value"]

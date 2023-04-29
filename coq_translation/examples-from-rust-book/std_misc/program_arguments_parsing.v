@@ -8,7 +8,8 @@ Module env := std.env.
 Definition increase (number : i32) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; "\n" ]
+      [ ""; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (number.["add"] 1) ]) ;;
   tt ;;
   tt.
@@ -16,7 +17,8 @@ Definition increase (number : i32) : unit :=
 Definition decrease (number : i32) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; "\n" ]
+      [ ""; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (number.["sub"] 1) ]) ;;
   tt ;;
   tt.
@@ -25,7 +27,12 @@ Definition help (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [
-        "usage:\nmatch_args <string>\n    Check whether given string is the answer.\nmatch_args {increase|decrease} <integer>\n    Increase or decrease given integer by one.\n"
+        "usage:
+match_args <string>
+    Check whether given string is the answer.
+match_args {increase|decrease} <integer>
+    Increase or decrease given integer by one.
+"
       ]
       [  ]) ;;
   tt ;;
@@ -37,7 +44,8 @@ Definition main (_ : unit) : unit :=
   | Int(1, Unsuffixed) =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "My name is 'match_args'. Try passing some arguments!\n" ]
+        [ "My name is 'match_args'. Try passing some arguments!
+" ]
         [  ]) ;;
     tt ;;
     tt
@@ -45,12 +53,14 @@ Definition main (_ : unit) : unit :=
     match args[1].["parse"] with
     | Ok.Build_t Int(42, Unsuffixed) =>
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"] [ "This is the answer!\n" ] [  ]) ;;
+        (_crate.fmt.Arguments::["new_v1"] [ "This is the answer!
+" ] [  ]) ;;
       tt
     | _ =>
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "This is not the answer.\n" ]
+          [ "This is not the answer.
+" ]
           [  ]) ;;
       tt
     end
@@ -63,7 +73,8 @@ Definition main (_ : unit) : unit :=
       | Err.Build_t _ =>
         _crate.io._eprint
           (_crate.fmt.Arguments::["new_v1"]
-            [ "error: second argument not an integer\n" ]
+            [ "error: second argument not an integer
+" ]
             [  ]) ;;
         tt ;;
         help tt ;;
@@ -75,9 +86,8 @@ Definition main (_ : unit) : unit :=
     | Str("decrease", Cooked) => decrease number
     | _ =>
       _crate.io._eprint
-        (_crate.fmt.Arguments::["new_v1"]
-          [ "error: invalid command\n" ]
-          [  ]) ;;
+        (_crate.fmt.Arguments::["new_v1"] [ "error: invalid command
+" ] [  ]) ;;
       tt ;;
       help tt ;;
       tt

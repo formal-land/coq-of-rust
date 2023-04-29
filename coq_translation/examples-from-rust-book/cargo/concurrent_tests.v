@@ -3,6 +3,18 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
+Definition foo {A : Set} (o : Option A) : unit :=
+  match o with
+  | Some.Build_t _a =>
+    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "some
+" ] [  ]) ;;
+    tt
+  | None =>
+    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "nothing
+" ] [  ]) ;;
+    tt
+  end.
+
 Module tests.
   Module OpenOptions := std.fs.OpenOptions.
   Definition OpenOptions := OpenOptions.t.
@@ -18,7 +30,8 @@ Module tests.
         match LangItem iter with
         | None => Break
         | Some {| Some.0 := _; |} =>
-          (file.["write_all"] "Ferris\n".["as_bytes"]).["expect"]
+          (file.["write_all"] "Ferris
+".["as_bytes"]).["expect"]
             "Could not write to ferris.txt" ;;
           tt
         end ;;
@@ -38,7 +51,8 @@ Module tests.
         match LangItem iter with
         | None => Break
         | Some {| Some.0 := _; |} =>
-          (file.["write_all"] "Corro\n".["as_bytes"]).["expect"]
+          (file.["write_all"] "Corro
+".["as_bytes"]).["expect"]
             "Could not write to ferris.txt" ;;
           tt
         end ;;
@@ -62,7 +76,8 @@ Definition test_file (_ : unit) : unit :=
       match LangItem iter with
       | None => Break
       | Some {| Some.0 := _; |} =>
-        (file.["write_all"] "Ferris\n".["as_bytes"]).["expect"]
+        (file.["write_all"] "Ferris
+".["as_bytes"]).["expect"]
           "Could not write to ferris.txt" ;;
         tt
       end ;;
@@ -82,7 +97,8 @@ Definition test_file_also (_ : unit) : unit :=
       match LangItem iter with
       | None => Break
       | Some {| Some.0 := _; |} =>
-        (file.["write_all"] "Corro\n".["as_bytes"]).["expect"]
+        (file.["write_all"] "Corro
+".["as_bytes"]).["expect"]
           "Could not write to ferris.txt" ;;
         tt
       end ;;

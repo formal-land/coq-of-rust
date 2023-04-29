@@ -17,14 +17,16 @@ Definition main (_ : unit) : unit :=
   let c := Foo.Qux 100 in
   if (let_if Foo.Bar := a : bool) then
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "a is foobar\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "a is foobar
+" ] [  ]) ;;
     tt ;;
     tt
   else
     tt ;;
   if (let_if Foo.Bar := b : bool) then
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "b is foobar\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "b is foobar
+" ] [  ]) ;;
     tt ;;
     tt
   else
@@ -32,7 +34,8 @@ Definition main (_ : unit) : unit :=
   if (let_if Foo.Qux.Build_t value := c : bool) then
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "c is "; "\n" ]
+        [ "c is "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] value ]) ;;
     tt ;;
     tt
@@ -40,7 +43,8 @@ Definition main (_ : unit) : unit :=
     tt ;;
   if (let_if Foo.Qux.Build_t value := c : bool) then
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "c is one hundred\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "c is one hundred
+" ] [  ]) ;;
     tt ;;
     tt
   else

@@ -6,32 +6,38 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "1 + 2 = "; "\n" ]
+      [ "1 + 2 = "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (1.["add"] 2) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "1 - 2 = "; "\n" ]
+      [ "1 - 2 = "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (1.["sub"] 2) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "true AND false is "; "\n" ]
+      [ "true AND false is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (true.["andb"] false) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "true OR false is "; "\n" ]
+      [ "true OR false is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (true.["or"] false) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "NOT true is "; "\n" ]
+      [ "NOT true is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (not true) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1_formatted"]
-      [ "0011 AND 0101 is "; "\n" ]
+      [ "0011 AND 0101 is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_binary"] (3.["bitand"] 5) ]
       [
         {|
@@ -52,7 +58,8 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1_formatted"]
-      [ "0011 OR 0101 is "; "\n" ]
+      [ "0011 OR 0101 is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_binary"] (3.["bitor"] 5) ]
       [
         {|
@@ -73,7 +80,8 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1_formatted"]
-      [ "0011 XOR 0101 is "; "\n" ]
+      [ "0011 XOR 0101 is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_binary"] (3.["bitxor"] 5) ]
       [
         {|
@@ -94,17 +102,20 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "1 << 5 is "; "\n" ]
+      [ "1 << 5 is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (1.["shl"] 5) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "0x80 >> 2 is 0x"; "\n" ]
+      [ "0x80 >> 2 is 0x"; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_lower_hex"] (128.["shr"] 2) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "One million is written as "; "\n" ]
+      [ "One million is written as "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] 1000000 ]) ;;
   tt ;;
   tt.

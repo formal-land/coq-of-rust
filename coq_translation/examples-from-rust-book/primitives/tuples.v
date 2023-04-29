@@ -65,46 +65,54 @@ Definition main (_ : unit) : unit :=
       true) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "long tuple first value: "; "\n" ]
+      [ "long tuple first value: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (long_tuple.[0]) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "long tuple second value: "; "\n" ]
+      [ "long tuple second value: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (long_tuple.[1]) ]) ;;
   tt ;;
   let tuple_of_tuples := ((1, 2, 2), (4, neg 1), neg 2) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "tuple of tuples: "; "\n" ]
+      [ "tuple of tuples: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] tuple_of_tuples ]) ;;
   tt ;;
   let pair := (1, true) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "pair is "; "\n" ]
+      [ "pair is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] pair ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "the reversed pair is "; "\n" ]
+      [ "the reversed pair is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] (reverse pair) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "one element tuple: "; "\n" ]
+      [ "one element tuple: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] (5) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "just an integer: "; "\n" ]
+      [ "just an integer: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] 5 ]) ;;
   tt ;;
   let tuple := (1, "hello", 5 (* 4.5 *), true) in
   let '(a, b, c, d) := tuple in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; ", "; ", "; ", "; "\n" ]
+      [ ""; ", "; ", "; ", "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"] a;
         _crate.fmt.ArgumentV1::["new_debug"] b;
@@ -116,7 +124,8 @@ Definition main (_ : unit) : unit :=
     Matrix.Build_t 1 (* 1.1 *) 1 (* 1.2 *) 2 (* 2.1 *) 2 (* 2.2 *) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; "\n" ]
+      [ ""; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] matrix ]) ;;
   tt ;;
   tt.

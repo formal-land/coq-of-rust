@@ -93,7 +93,8 @@ Definition eat (food : Food) (day : Day) : unit :=
   | Some.Build_t food =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Yay! On "; " we get to eat "; ".\n" ]
+        [ "Yay! On "; " we get to eat "; ".
+" ]
         [
           _crate.fmt.ArgumentV1::["new_debug"] day;
           _crate.fmt.ArgumentV1::["new_debug"] food
@@ -102,7 +103,8 @@ Definition eat (food : Food) (day : Day) : unit :=
   | None =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Oh no. We don't get to eat on "; "?\n" ]
+        [ "Oh no. We don't get to eat on "; "?
+" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] day ]) ;;
     tt
   end.

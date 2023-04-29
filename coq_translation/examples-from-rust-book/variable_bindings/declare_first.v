@@ -10,14 +10,16 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "a binding: "; "\n" ]
+      [ "a binding: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] a_binding ]) ;;
   tt ;;
   let another_binding := tt in
   assign another_binding 1 ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "another binding: "; "\n" ]
+      [ "another binding: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] another_binding ]) ;;
   tt ;;
   tt.

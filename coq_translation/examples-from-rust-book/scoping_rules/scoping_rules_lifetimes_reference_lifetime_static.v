@@ -11,7 +11,8 @@ Definition main (_ : unit) : unit :=
   let static_string := "I'm in read-only memory" in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "static_string: "; "\n" ]
+      [ "static_string: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] static_string ]) ;;
   tt ;;
   tt ;;
@@ -19,13 +20,15 @@ Definition main (_ : unit) : unit :=
   let coerced_static := coerce_static lifetime_num in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "coerced_static: "; "\n" ]
+      [ "coerced_static: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] coerced_static ]) ;;
   tt ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "NUM: "; " stays accessible!\n" ]
+      [ "NUM: "; " stays accessible!
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] NUM ]) ;;
   tt ;;
   tt.

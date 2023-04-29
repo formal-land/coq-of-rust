@@ -9,7 +9,8 @@ Definition main (_ : unit) : unit :=
   let sum := parsed.["add"] turbo_parsed in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Sum: "; "\n" ]
+      [ "Sum: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] sum ]) ;;
   tt ;;
   tt.

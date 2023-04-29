@@ -33,7 +33,8 @@ End Impl__crate_fmt_Debug_for_Ref_T.
 Definition print {T : Set} `{Debug.Trait T} (t : T) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "`print`: t is "; "\n" ]
+      [ "`print`: t is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] t ]) ;;
   tt ;;
   tt.
@@ -41,7 +42,8 @@ Definition print {T : Set} `{Debug.Trait T} (t : T) : unit :=
 Definition print_ref {T : Set} `{Debug.Trait T} (t : ref T) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "`print_ref`: t is "; "\n" ]
+      [ "`print_ref`: t is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] t ]) ;;
   tt ;;
   tt.

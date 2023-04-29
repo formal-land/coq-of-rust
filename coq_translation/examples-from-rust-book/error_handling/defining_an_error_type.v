@@ -73,13 +73,15 @@ Definition print (result : Result i32) : unit :=
   | Ok.Build_t n =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "The first doubled is "; "\n" ]
+        [ "The first doubled is "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
     tt
   | Err.Build_t e =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Error: "; "\n" ]
+        [ "Error: "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] e ]) ;;
     tt
   end.

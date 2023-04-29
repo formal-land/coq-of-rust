@@ -8,7 +8,8 @@ Definition message : ref str := "Hello, World!".
 Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; "\n" ]
+      [ ""; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] message ]) ;;
   tt ;;
   let number := Some 7 in
@@ -17,7 +18,8 @@ Definition main (_ : unit) : unit :=
   if (let_if Some.Build_t i := number : bool) then
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Matched "; "!\n" ]
+        [ "Matched "; "!
+" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] i ]) ;;
     tt ;;
     tt
@@ -26,14 +28,16 @@ Definition main (_ : unit) : unit :=
   if (let_if Some.Build_t j := letter : bool) then
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Matched "; "!\n" ]
+        [ "Matched "; "!
+" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] j ]) ;;
     tt ;;
     tt
   else
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Didn't match a number. Let's go with a letter!\n" ]
+        [ "Didn't match a number. Let's go with a letter!
+" ]
         [  ]) ;;
     tt ;;
     tt ;;
@@ -41,7 +45,8 @@ Definition main (_ : unit) : unit :=
   if (let_if Some.Build_t i := emoticon : bool) then
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Matched "; "!\n" ]
+        [ "Matched "; "!
+" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] i ]) ;;
     tt ;;
     tt
@@ -49,14 +54,16 @@ Definition main (_ : unit) : unit :=
     if (i_like_letters : bool) then
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "Didn't match a number. Let's go with a letter!\n" ]
+          [ "Didn't match a number. Let's go with a letter!
+" ]
           [  ]) ;;
       tt ;;
       tt
     else
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "I don't like letters. Let's go with an emoticon :)!\n" ]
+          [ "I don't like letters. Let's go with an emoticon :)!
+" ]
           [  ]) ;;
       tt ;;
       tt.

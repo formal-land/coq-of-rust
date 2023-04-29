@@ -39,7 +39,8 @@ Definition main (_ : unit) : unit :=
   | Ok.Build_t _ =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ ""; " contains:\n" ]
+        [ ""; " contains:
+" ]
         [
           _crate.fmt.ArgumentV1::["new_display"] display;
           _crate.fmt.ArgumentV1::["new_display"] s

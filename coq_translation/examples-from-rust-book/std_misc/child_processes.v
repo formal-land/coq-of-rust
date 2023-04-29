@@ -19,7 +19,8 @@ Definition main (_ : unit) : unit :=
     let s := String::["from_utf8_lossy"] output.["stdout"] in
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "rustc succeeded and stdout was:\n" ]
+        [ "rustc succeeded and stdout was:
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] s ]) ;;
     tt ;;
     tt
@@ -27,7 +28,8 @@ Definition main (_ : unit) : unit :=
     let s := String::["from_utf8_lossy"] output.["stderr"] in
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "rustc failed and stderr was:\n" ]
+        [ "rustc failed and stderr was:
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] s ]) ;;
     tt ;;
     tt.

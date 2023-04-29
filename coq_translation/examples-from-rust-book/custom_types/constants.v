@@ -13,17 +13,20 @@ Definition main (_ : unit) : unit :=
   let n := 16 in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "This is "; "\n" ]
+      [ "This is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] LANGUAGE ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "The threshold is "; "\n" ]
+      [ "The threshold is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] THRESHOLD ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; " is "; "\n" ]
+      [ ""; " is "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"] n;
         _crate.fmt.ArgumentV1::["new_display"]

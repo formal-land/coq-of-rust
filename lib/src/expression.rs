@@ -448,7 +448,7 @@ impl Expr {
                 text(format!("\"{func}\"")),
                 text("]"),
             ]),
-            Expr::Literal(literal) => literal_to_doc(literal),
+            Expr::Literal(literal) => literal_to_doc(with_paren, literal),
             Expr::AddrOf(expr) => expr.to_doc(with_paren),
             Expr::Call { func, args } => paren(
                 with_paren,

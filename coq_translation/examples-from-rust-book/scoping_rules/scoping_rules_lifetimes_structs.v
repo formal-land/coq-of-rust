@@ -108,22 +108,26 @@ Definition main (_ : unit) : unit :=
   let number := Either.Num y in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "x is borrowed in "; "\n" ]
+      [ "x is borrowed in "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] single ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "x and y are borrowed in "; "\n" ]
+      [ "x and y are borrowed in "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] double ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "x is borrowed in "; "\n" ]
+      [ "x is borrowed in "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] reference ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "y is *not* borrowed in "; "\n" ]
+      [ "y is *not* borrowed in "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] number ]) ;;
   tt ;;
   tt.

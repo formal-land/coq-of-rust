@@ -9,7 +9,8 @@ Definition main (_ : unit) : unit :=
   | Some.Build_t i =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "This is a really long string and `"; "`\n" ]
+        [ "This is a really long string and `"; "`
+" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] i ]) ;;
     tt ;;
     tt

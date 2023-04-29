@@ -103,31 +103,36 @@ Definition main (_ : unit) : unit :=
   let copied_unit := unit in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "original: "; "\n" ]
+      [ "original: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] unit ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "copy: "; "\n" ]
+      [ "copy: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] copied_unit ]) ;;
   tt ;;
   let pair := Pair.Build_t (Box::["new"] 1) (Box::["new"] 2) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "original: "; "\n" ]
+      [ "original: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] pair ]) ;;
   tt ;;
   let moved_pair := pair in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "moved: "; "\n" ]
+      [ "moved: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] moved_pair ]) ;;
   tt ;;
   let cloned_pair := moved_pair.["clone"] in
   drop moved_pair ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "clone: "; "\n" ]
+      [ "clone: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] cloned_pair ]) ;;
   tt ;;
   tt.

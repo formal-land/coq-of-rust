@@ -7,11 +7,13 @@ Definition main (_ : unit) : unit :=
   let number := 4 in
   match number with
   | i =>
-    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "Zero\n" ] [  ]) ;;
+    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "Zero
+" ] [  ]) ;;
     tt
   | i =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "Greater than zero\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "Greater than zero
+" ] [  ]) ;;
     tt
   | _ => _crate.panicking.unreachable_display "Should never happen."
   end.

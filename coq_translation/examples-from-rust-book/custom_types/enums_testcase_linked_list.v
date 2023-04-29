@@ -68,12 +68,14 @@ Definition main (_ : unit) : unit :=
   assign list (list.["prepend"] 3) ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "linked list has length: "; "\n" ]
+      [ "linked list has length: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] list.["len"] ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; "\n" ]
+      [ ""; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] list.["stringify"] ]) ;;
   tt ;;
   tt.

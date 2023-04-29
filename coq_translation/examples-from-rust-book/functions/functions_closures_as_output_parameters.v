@@ -8,7 +8,8 @@ Definition create_fn (_ : unit) : OpaqueDef :=
   fun  =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "This is a: "; "\n" ]
+        [ "This is a: "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] text ]) ;;
     tt.
 
@@ -19,7 +20,8 @@ Definition create_fnmut (_ : unit) : OpaqueDef :=
   fun  =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "This is a: "; "\n" ]
+        [ "This is a: "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] text ]) ;;
     tt.
 
@@ -30,7 +32,8 @@ Definition create_fnonce (_ : unit) : OpaqueDef :=
   fun  =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "This is a: "; "\n" ]
+        [ "This is a: "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] text ]) ;;
     tt.
 

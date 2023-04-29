@@ -178,12 +178,14 @@ Definition main (_ : unit) : unit :=
   let two_meters := one_meter.["add"] one_meter in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "one foot + one_foot = "; " in\n" ]
+      [ "one foot + one_foot = "; " in
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] (two_feet.[0]) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "one meter + one_meter = "; " mm\n" ]
+      [ "one meter + one_meter = "; " mm
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] (two_meters.[0]) ]) ;;
   tt ;;
   tt.

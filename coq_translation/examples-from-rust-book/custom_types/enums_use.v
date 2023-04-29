@@ -24,24 +24,28 @@ Definition main (_ : unit) : unit :=
   | Rich =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "The rich have lots of money!\n" ]
+        [ "The rich have lots of money!
+" ]
         [  ]) ;;
     tt
   | Poor =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "The poor have no money...\n" ]
+        [ "The poor have no money...
+" ]
         [  ]) ;;
     tt
   end ;;
   match work with
   | Civilian =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "Civilians work!\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "Civilians work!
+" ] [  ]) ;;
     tt
   | Soldier =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "Soldiers fight!\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "Soldiers fight!
+" ] [  ]) ;;
     tt
   end.
 

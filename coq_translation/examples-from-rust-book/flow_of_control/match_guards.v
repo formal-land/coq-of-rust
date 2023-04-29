@@ -16,25 +16,29 @@ Definition main (_ : unit) : unit :=
   | Temperature.Celsius.Build_t t =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ ""; "C is above 30 Celsius\n" ]
+        [ ""; "C is above 30 Celsius
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
     tt
   | Temperature.Celsius.Build_t t =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ ""; "C is below 30 Celsius\n" ]
+        [ ""; "C is below 30 Celsius
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
     tt
   | Temperature.Fahrenheit.Build_t t =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ ""; "F is above 86 Fahrenheit\n" ]
+        [ ""; "F is above 86 Fahrenheit
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
     tt
   | Temperature.Fahrenheit.Build_t t =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ ""; "F is below 86 Fahrenheit\n" ]
+        [ ""; "F is below 86 Fahrenheit
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
     tt
   end.

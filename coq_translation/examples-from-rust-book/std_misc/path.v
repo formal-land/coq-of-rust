@@ -18,7 +18,8 @@ Definition main (_ : unit) : unit :=
   | Some.Build_t s =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "new path is "; "\n" ]
+        [ "new path is "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] s ]) ;;
     tt
   end.

@@ -107,36 +107,42 @@ Definition main (_ : unit) : unit :=
   let box_in_a_box := Box::["new"] (boxed_origin tt) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Point occupies "; " bytes on the stack\n" ]
+      [ "Point occupies "; " bytes on the stack
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val point) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Rectangle occupies "; " bytes on the stack\n" ]
+      [ "Rectangle occupies "; " bytes on the stack
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val rectangle) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Boxed point occupies "; " bytes on the stack\n" ]
+      [ "Boxed point occupies "; " bytes on the stack
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val boxed_point)
       ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Boxed rectangle occupies "; " bytes on the stack\n" ]
+      [ "Boxed rectangle occupies "; " bytes on the stack
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val boxed_rectangle)
       ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Boxed box occupies "; " bytes on the stack\n" ]
+      [ "Boxed box occupies "; " bytes on the stack
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val box_in_a_box)
       ]) ;;
   tt ;;
   let unboxed_point := deref boxed_point in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Unboxed point occupies "; " bytes on the stack\n" ]
+      [ "Unboxed point occupies "; " bytes on the stack
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val unboxed_point)
       ]) ;;
   tt ;;

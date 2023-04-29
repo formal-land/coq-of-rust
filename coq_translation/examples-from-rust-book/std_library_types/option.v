@@ -14,7 +14,8 @@ Definition try_division (dividend : i32) (divisor : i32) : unit :=
   | None =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ ""; " / "; " failed!\n" ]
+        [ ""; " / "; " failed!
+" ]
         [
           _crate.fmt.ArgumentV1::["new_display"] dividend;
           _crate.fmt.ArgumentV1::["new_display"] divisor
@@ -23,7 +24,8 @@ Definition try_division (dividend : i32) (divisor : i32) : unit :=
   | Some.Build_t quotient =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ ""; " / "; " = "; "\n" ]
+        [ ""; " / "; " = "; "
+" ]
         [
           _crate.fmt.ArgumentV1::["new_display"] dividend;
           _crate.fmt.ArgumentV1::["new_display"] divisor;
@@ -40,7 +42,8 @@ Definition main (_ : unit) : unit :=
   let optional_float := Some 0 (* 0 *) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; " unwraps to "; "\n" ]
+      [ ""; " unwraps to "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"] optional_float;
         _crate.fmt.ArgumentV1::["new_debug"] optional_float.["unwrap"]
@@ -48,7 +51,8 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; " unwraps to "; "\n" ]
+      [ ""; " unwraps to "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"] none;
         _crate.fmt.ArgumentV1::["new_debug"] none.["unwrap"]

@@ -11,8 +11,8 @@ Definition Command := Command.t.
 Module Stdio := std.process.Stdio.
 Definition Stdio := Stdio.t.
 
-Definition PANGRAM : ref str :=
-  "the quick brown fox jumped over the lazy dog\n".
+Definition PANGRAM : ref str := "the quick brown fox jumped over the lazy dog
+".
 
 Definition main (_ : unit) : unit :=
   let process :=
@@ -35,7 +35,8 @@ Definition main (_ : unit) : unit :=
         [ _crate.fmt.ArgumentV1::["new_display"] why ])
   | Ok.Build_t _ =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "sent pangram to wc\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "sent pangram to wc
+" ] [  ]) ;;
     tt
   end ;;
   let s := String::["new"] tt in
@@ -48,7 +49,8 @@ Definition main (_ : unit) : unit :=
   | Ok.Build_t _ =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "wc responded with:\n" ]
+        [ "wc responded with:
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] s ]) ;;
     tt
   end.

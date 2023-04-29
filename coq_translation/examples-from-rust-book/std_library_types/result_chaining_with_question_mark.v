@@ -82,7 +82,8 @@ Module checked.
     | Ok.Build_t value =>
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ ""; "\n" ]
+          [ ""; "
+" ]
           [ _crate.fmt.ArgumentV1::["new_display"] value ]) ;;
       tt
     end.
@@ -166,7 +167,8 @@ Definition op (x : f64) (y : f64) : unit :=
   | Ok.Build_t value =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ ""; "\n" ]
+        [ ""; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] value ]) ;;
     tt
   end.

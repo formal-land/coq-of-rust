@@ -11,7 +11,8 @@ Definition drink (beverage : ref str) : unit :=
     tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Some refreshing "; " is all I need.\n" ]
+      [ "Some refreshing "; " is all I need.
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] beverage ]) ;;
   tt ;;
   tt.

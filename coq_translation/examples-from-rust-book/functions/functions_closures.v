@@ -9,18 +9,21 @@ Definition main (_ : unit) : unit :=
   let closure_inferred := fun i => i.["add"] outer_var in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "closure_annotated: "; "\n" ]
+      [ "closure_annotated: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (closure_annotated 1) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "closure_inferred: "; "\n" ]
+      [ "closure_inferred: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (closure_inferred 1) ]) ;;
   tt ;;
   let one := fun  => 1 in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "closure returning one: "; "\n" ]
+      [ "closure returning one: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (one tt) ]) ;;
   tt ;;
   tt.

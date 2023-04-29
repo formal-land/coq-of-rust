@@ -17,28 +17,35 @@ Definition inspect (event : WebEvent) : unit :=
   match event with
   | WebEvent.PageLoad =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "page loaded\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"]
+        [ "page loaded, r" ++ String "233" ("f" ++ String "233" "
+") ]
+        [  ]) ;;
     tt
   | WebEvent.PageUnload =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "page unloaded\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "page unloaded
+" ] [  ]) ;;
     tt
   | WebEvent.KeyPress.Build_t c =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "pressed '"; "'.\n" ]
+        [ "pressed '"; "'.
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] c ]) ;;
     tt
   | WebEvent.Paste.Build_t s =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "pasted \""; "\".\n" ]
+        [ "pasted ""; "".
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] s ]) ;;
     tt
   | WebEvent.Click {| WebEvent.Click.x := x; WebEvent.Click.y := y; |} =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "clicked at x="; ", y="; ".\n" ]
+        [ "clicked at x="; ", y="; ".
+" ]
         [
           _crate.fmt.ArgumentV1::["new_display"] x;
           _crate.fmt.ArgumentV1::["new_display"] y

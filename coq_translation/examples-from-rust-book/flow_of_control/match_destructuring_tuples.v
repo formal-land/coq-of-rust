@@ -7,14 +7,16 @@ Definition main (_ : unit) : unit :=
   let triple := (0, neg 2, 3) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Tell me about "; "\n" ]
+      [ "Tell me about "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] triple ]) ;;
   tt ;;
   match triple with
   | (Int(0, Unsuffixed), y, z) =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "First is `0`, `y` is "; ", and `z` is "; "\n" ]
+        [ "First is `0`, `y` is "; ", and `z` is "; "
+" ]
         [
           _crate.fmt.ArgumentV1::["new_debug"] y;
           _crate.fmt.ArgumentV1::["new_debug"] z
@@ -23,25 +25,29 @@ Definition main (_ : unit) : unit :=
   | (Int(1, Unsuffixed)) =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "First is `1` and the rest doesn't matter\n" ]
+        [ "First is `1` and the rest doesn't matter
+" ]
         [  ]) ;;
     tt
   | (Int(2, Unsuffixed)) =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "last is `2` and the rest doesn't matter\n" ]
+        [ "last is `2` and the rest doesn't matter
+" ]
         [  ]) ;;
     tt
   | (Int(3, Unsuffixed), Int(4, Unsuffixed)) =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "First is `3`, last is `4`, and the rest doesn't matter\n" ]
+        [ "First is `3`, last is `4`, and the rest doesn't matter
+" ]
         [  ]) ;;
     tt
   | _ =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "It doesn't matter what they are\n" ]
+        [ "It doesn't matter what they are
+" ]
         [  ]) ;;
     tt
   end.

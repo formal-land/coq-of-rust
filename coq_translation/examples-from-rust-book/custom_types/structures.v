@@ -95,13 +95,15 @@ Definition main (_ : unit) : unit :=
   let peter := {| Person.name := name; Person.age := age; |} in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; "\n" ]
+      [ ""; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] peter ]) ;;
   tt ;;
   let point := {| Point.x := 10 (* 10.3 *); Point.y := 0 (* 0.4 *); |} in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "point coordinates: ("; ", "; ")\n" ]
+      [ "point coordinates: ("; ", "; ")
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"] point.["x"];
         _crate.fmt.ArgumentV1::["new_display"] point.["y"]
@@ -110,7 +112,8 @@ Definition main (_ : unit) : unit :=
   let bottom_right := {| Point.x := 5 (* 5.2 *); |} with point in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "second point: ("; ", "; ")\n" ]
+      [ "second point: ("; ", "; ")
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"] bottom_right.["x"];
         _crate.fmt.ArgumentV1::["new_display"] bottom_right.["y"]
@@ -126,7 +129,8 @@ Definition main (_ : unit) : unit :=
   let pair := Pair.Build_t 1 0 (* 0.1 *) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "pair contains "; " and "; "\n" ]
+      [ "pair contains "; " and "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"] (pair.[0]);
         _crate.fmt.ArgumentV1::["new_debug"] (pair.[1])
@@ -135,7 +139,8 @@ Definition main (_ : unit) : unit :=
   let 'Pair.Build_t integer decimal := pair in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "pair contains "; " and "; "\n" ]
+      [ "pair contains "; " and "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"] integer;
         _crate.fmt.ArgumentV1::["new_debug"] decimal

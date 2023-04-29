@@ -3,7 +3,7 @@
 
 # Files that currently compile
 attributes/dead_code.v
-cargo/concurrent_tests.v
+# cargo/concurrent_tests.v
 conversion/converting_to_string.v
 CoqOfRust.v
 expressions/statement.v

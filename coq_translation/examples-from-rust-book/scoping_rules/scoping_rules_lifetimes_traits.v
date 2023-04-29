@@ -55,7 +55,8 @@ Definition main (_ : unit) : unit :=
   let b := Default.default tt in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "b is "; "\n" ]
+      [ "b is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] b ]) ;;
   tt ;;
   tt.

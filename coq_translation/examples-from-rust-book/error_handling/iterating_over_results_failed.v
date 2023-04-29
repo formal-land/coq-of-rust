@@ -9,7 +9,8 @@ Definition main (_ : unit) : unit :=
     (strings.["into_iter"].["map"] (fun s => s.["parse"])).["collect"] in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Results: "; "\n" ]
+      [ "Results: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] numbers ]) ;;
   tt ;;
   tt.

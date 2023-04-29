@@ -10,6 +10,7 @@ Definition main (_ : unit) : unit :=
   let child := ((Command::["new"] "sleep").["arg"] "5").["spawn"].["unwrap"] in
   let _result := child.["wait"].["unwrap"] in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "reached end of main\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "reached end of main
+" ] [  ]) ;;
   tt ;;
   tt.

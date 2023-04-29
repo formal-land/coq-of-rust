@@ -24,7 +24,8 @@ Definition main (_ : unit) : unit :=
           (fun  =>
             _crate.io._print
               (_crate.fmt.Arguments::["new_v1"]
-                [ ""; "\n" ]
+                [ ""; "
+" ]
                 [ _crate.fmt.ArgumentV1::["new_debug"] apple ]) ;;
             tt ;;
             tt) ;;

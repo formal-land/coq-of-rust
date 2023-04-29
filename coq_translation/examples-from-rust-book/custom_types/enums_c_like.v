@@ -22,17 +22,20 @@ Definition Color := Color.t.
 Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "zero is "; "\n" ]
+      [ "zero is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (cast Number.Zero i32) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "one is "; "\n" ]
+      [ "one is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (cast Number.One i32) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1_formatted"]
-      [ "roses are #"; "\n" ]
+      [ "roses are #"; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_lower_hex"] (cast Color.Red i32) ]
       [
         {|
@@ -53,7 +56,8 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1_formatted"]
-      [ "violets are #"; "\n" ]
+      [ "violets are #"; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_lower_hex"] (cast Color.Blue i32) ]
       [
         {|

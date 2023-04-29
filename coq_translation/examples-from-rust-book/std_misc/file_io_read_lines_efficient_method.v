@@ -22,7 +22,8 @@ Definition main (_ : unit) : unit :=
           if (let_if Ok.Build_t ip := line : bool) then
             _crate.io._print
               (_crate.fmt.Arguments::["new_v1"]
-                [ ""; "\n" ]
+                [ ""; "
+" ]
                 [ _crate.fmt.ArgumentV1::["new_display"] ip ]) ;;
             tt ;;
             tt

@@ -807,6 +807,11 @@ Module std.
   End fs.
 End std.
 
+Module char_Instances.
+  Global Instance IDisplay : std.fmt.Display.Trait char.
+  Admitted.
+End char_Instances.
+
 Module str_Instances.
   Global Instance IDisplay : std.fmt.Display.Trait str.
   Admitted.

@@ -9,7 +9,8 @@ Definition main (_ : unit) : unit :=
   vec.["push"] elem ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; "\n" ]
+      [ ""; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] vec ]) ;;
   tt ;;
   tt.

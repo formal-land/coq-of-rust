@@ -13,7 +13,8 @@ Definition main (_ : unit) : unit :=
   let a := Foo.Bar in
   if (let_if Foo.Bar := a : bool) then
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "a is foobar\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "a is foobar
+" ] [  ]) ;;
     tt ;;
     tt
   else

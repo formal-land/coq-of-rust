@@ -139,14 +139,14 @@ Definition eat (food : Option Cooked) : unit :=
   | Some.Build_t food =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Mmm. I love "; "\n" ]
+        [ "Mmm. I love "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] food ]) ;;
     tt
   | None =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
-        [ "Oh no! It wasn't edible.\n" ]
-        [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "Oh no! It wasn't edible.
+" ] [  ]) ;;
     tt
   end.
 

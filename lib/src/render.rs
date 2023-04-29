@@ -15,9 +15,84 @@ fn round_symbol(symbol: &Symbol) -> i32 {
     s.parse::<f64>().unwrap().round() as i32
 }
 
-pub(crate) fn literal_to_doc(literal: &LitKind) -> RcDoc<()> {
+#[derive(Debug)]
+enum StringPiece {
+    /// A string of ASCII characters
+    AsciiString(String),
+    /// A single non-ASCII character
+    UnicodeChar(char),
+}
+
+/// As we can only represent purely ASCII strings in Coq, we need to cut the
+/// string in pieces, alternating between ASCII strings and non-ASCII
+/// characters.
+fn cut_string_in_pieces_for_coq(input: &str) -> Vec<StringPiece> {
+    let mut result: Vec<StringPiece> = Vec::new();
+    let mut ascii_buf = String::new();
+
+    for c in input.chars() {
+        if c.is_ascii() {
+            ascii_buf.push(c);
+        } else {
+            if !ascii_buf.is_empty() {
+                result.push(StringPiece::AsciiString(ascii_buf.clone()));
+                ascii_buf.clear();
+            }
+            result.push(StringPiece::UnicodeChar(c));
+        }
+    }
+
+    if !ascii_buf.is_empty() {
+        result.push(StringPiece::AsciiString(ascii_buf));
+    }
+
+    result
+}
+
+fn string_pieces_to_doc<'a>(with_paren: bool, pieces: &[StringPiece]) -> RcDoc<'a, ()> {
+    match pieces {
+        [] => RcDoc::text("\"\""),
+        [StringPiece::AsciiString(s), rest @ ..] => paren(
+            with_paren && !rest.is_empty(),
+            RcDoc::concat([
+                RcDoc::text("\""),
+                RcDoc::text(s.clone()),
+                RcDoc::text("\""),
+                if rest.is_empty() {
+                    RcDoc::nil()
+                } else {
+                    RcDoc::concat([
+                        RcDoc::line(),
+                        RcDoc::text("++"),
+                        RcDoc::line(),
+                        string_pieces_to_doc(false, rest),
+                    ])
+                },
+            ]),
+        ),
+        [StringPiece::UnicodeChar(c), rest @ ..] => paren(
+            with_paren,
+            RcDoc::concat([
+                RcDoc::text("String"),
+                RcDoc::line(),
+                RcDoc::text("\""),
+                RcDoc::text(format!("{}", *c as u8)),
+                RcDoc::text("\""),
+                RcDoc::line(),
+                string_pieces_to_doc(true, rest),
+            ]),
+        ),
+    }
+}
+
+fn string_to_doc(with_paren: bool, text: &str) -> RcDoc<()> {
+    let pieces = cut_string_in_pieces_for_coq(text);
+    string_pieces_to_doc(with_paren, &pieces)
+}
+
+pub(crate) fn literal_to_doc(with_paren: bool, literal: &LitKind) -> RcDoc<()> {
     match literal {
-        LitKind::Str(s, _) => RcDoc::text(format!("{s:?}")),
+        LitKind::Str(s, _) => string_to_doc(with_paren, s.as_str()),
         LitKind::Int(i, _) => RcDoc::text(format!("{i}")),
         LitKind::Float(f, _) => RcDoc::text(format!("{} (* {f} *)", round_symbol(f))),
         LitKind::Bool(b) => RcDoc::text(format!("{b}")),

@@ -140,7 +140,8 @@ Definition op (x : f64) (y : f64) : f64 :=
 Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; "\n" ]
+      [ ""; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (op 1 (* 1.0 *) 10 (* 10.0 *))
       ]) ;;
   tt ;;
