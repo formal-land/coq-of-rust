@@ -15,7 +15,7 @@ Definition main (_ : unit) : unit :=
   new_path.["set_file_name"] "package.tgz" ;;
   match new_path.["to_str"] with
   | None => _crate.rt.begin_panic "new path is not a valid UTF-8 sequence"
-  | Some.Build_t s =>
+  | Some s =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "new path is "; "

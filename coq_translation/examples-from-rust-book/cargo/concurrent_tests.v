@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Definition foo {A : Set} (o : Option A) : unit :=
   match o with
-  | Some.Build_t _a =>
+  | Some _a =>
     _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "some
 " ] [  ]) ;;
     tt

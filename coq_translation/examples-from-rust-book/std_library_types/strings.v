@@ -51,7 +51,7 @@ Definition main (_ : unit) : unit :=
       from
       for
   end ;;
-  let chars_to_trim := [  ; , ] in
+  let chars_to_trim := [ " "%char; ","%char ] in
   let trimmed_str := string.["trim_matches"] chars_to_trim in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]

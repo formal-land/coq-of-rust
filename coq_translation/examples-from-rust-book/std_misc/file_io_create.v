@@ -25,7 +25,7 @@ Definition main (_ : unit) : unit :=
   let display := path.["display"] in
   let file :=
     match File::["create"] path with
-    | Err.Build_t why =>
+    | Err why =>
       _crate.rt.panic_fmt
         (_crate.fmt.Arguments::["new_v1"]
           [ "couldn't create "; ": " ]
@@ -33,10 +33,10 @@ Definition main (_ : unit) : unit :=
             _crate.fmt.ArgumentV1::["new_display"] display;
             _crate.fmt.ArgumentV1::["new_display"] why
           ])
-    | Ok.Build_t file => file
+    | Ok file => file
     end in
   match file.["write_all"] LOREM_IPSUM.["as_bytes"] with
-  | Err.Build_t why =>
+  | Err why =>
     _crate.rt.panic_fmt
       (_crate.fmt.Arguments::["new_v1"]
         [ "couldn't write to "; ": " ]
@@ -44,7 +44,7 @@ Definition main (_ : unit) : unit :=
           _crate.fmt.ArgumentV1::["new_display"] display;
           _crate.fmt.ArgumentV1::["new_display"] why
         ])
-  | Ok.Build_t _ =>
+  | Ok _ =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "successfully wrote to "; "

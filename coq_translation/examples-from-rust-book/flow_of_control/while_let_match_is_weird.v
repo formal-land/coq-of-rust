@@ -7,7 +7,7 @@ Definition main (_ : unit) : unit :=
   let optional := Some 0 in
   loop
     match optional with
-    | Some.Build_t i =>
+    | Some i =>
       if (i.["gt"] 9 : bool) then
         _crate.io._print
           (_crate.fmt.Arguments::["new_v1"]

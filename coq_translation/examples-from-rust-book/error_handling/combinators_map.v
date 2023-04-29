@@ -116,13 +116,13 @@ End Impl__crate_fmt_Debug_for_Cooked.
 
 Definition peel (food : Option Food) : Option Peeled :=
   match food with
-  | Some.Build_t food => Some (Peeled.Build_t food)
+  | Some food => Some (Peeled.Build_t food)
   | None => None
   end.
 
 Definition chop (peeled : Option Peeled) : Option Chopped :=
   match peeled with
-  | Some.Build_t Peeled.Build_t food => Some (Chopped.Build_t food)
+  | Some Peeled.Build_t food => Some (Chopped.Build_t food)
   | None => None
   end.
 
@@ -136,7 +136,7 @@ Definition process (food : Option Food) : Option Cooked :=
 
 Definition eat (food : Option Cooked) : unit :=
   match food with
-  | Some.Build_t food =>
+  | Some food =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Mmm. I love "; "

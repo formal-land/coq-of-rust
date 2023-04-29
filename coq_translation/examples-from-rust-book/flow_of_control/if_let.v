@@ -7,7 +7,7 @@ Definition main (_ : unit) : unit :=
   let number := Some 7 in
   let letter := None in
   let emoticon := None in
-  if (let_if Some.Build_t i := number : bool) then
+  if (let_if Some i := number : bool) then
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Matched "; "!
@@ -17,7 +17,7 @@ Definition main (_ : unit) : unit :=
     tt
   else
     tt ;;
-  if (let_if Some.Build_t i := letter : bool) then
+  if (let_if Some i := letter : bool) then
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Matched "; "!
@@ -34,7 +34,7 @@ Definition main (_ : unit) : unit :=
     tt ;;
     tt ;;
   let i_like_letters := false in
-  if (let_if Some.Build_t i := emoticon : bool) then
+  if (let_if Some i := emoticon : bool) then
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Matched "; "!

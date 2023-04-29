@@ -10,8 +10,8 @@ Definition main (_ : unit) : Result unit ParseIntError :=
   let number_str := "10" in
   let number :=
     match number_str.["parse"] with
-    | Ok.Build_t number => number
-    | Err.Build_t e => Return (Err e)
+    | Ok number => number
+    | Err e => Return (Err e)
     end in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]

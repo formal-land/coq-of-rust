@@ -61,7 +61,7 @@ Definition main (_ : unit) : unit :=
       neg 4,
       0 (* 0.1 *),
       0 (* 0.2 *),
-      a,
+      "a"%char,
       true) in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]

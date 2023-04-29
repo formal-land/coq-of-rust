@@ -79,12 +79,16 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct_A_B.
 End Impl__crate_cmp_PartialEq_for_PhantomStruct_A_B.
 
 Definition main (_ : unit) : unit :=
-  let _tuple1 := PhantomTuple.Build_t Q PhantomData.Build in
-  let _tuple2 := PhantomTuple.Build_t Q PhantomData.Build in
+  let _tuple1 := PhantomTuple.Build_t "Q"%char PhantomData.Build in
+  let _tuple2 := PhantomTuple.Build_t "Q"%char PhantomData.Build in
   let _struct1 :=
-    {| PhantomStruct.first := Q; PhantomStruct.phantom := PhantomData.Build;
+    {|
+      PhantomStruct.first := "Q"%char;
+      PhantomStruct.phantom := PhantomData.Build;
     |} in
   let _struct2 :=
-    {| PhantomStruct.first := Q; PhantomStruct.phantom := PhantomData.Build;
+    {|
+      PhantomStruct.first := "Q"%char;
+      PhantomStruct.phantom := PhantomData.Build;
     |} in
   tt.

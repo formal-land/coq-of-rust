@@ -84,9 +84,9 @@ Module Impl__crate_fmt_Debug_for_Either.
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
     match self with
-    | Either.Num.Build_t __self_0 =>
+    | Either.Num __self_0 =>
       _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Num" __self_0
-    | Either.Ref.Build_t __self_0 =>
+    | Either.Ref __self_0 =>
       _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Ref" __self_0
     end.
   

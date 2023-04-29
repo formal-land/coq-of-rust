@@ -28,8 +28,8 @@ Definition cat (path : ref Path) : io.Result String :=
     end in
   let s := String::["new"] tt in
   match f.["read_to_string"] s with
-  | Ok.Build_t _ => Ok s
-  | Err.Build_t e => Err e
+  | Ok _ => Ok s
+  | Err e => Err e
   end.
 
 Definition echo (s : ref str) (path : ref Path) : io.Result unit :=
@@ -44,8 +44,8 @@ Definition touch (path : ref Path) : io.Result unit :=
   match
     (((OpenOptions::["new"] tt).["create"] true).["write"] true).["open"] path
   with
-  | Ok.Build_t _ => Ok ()
-  | Err.Build_t e => Err e
+  | Ok _ => Ok ()
+  | Err e => Err e
   end.
 
 Definition main (_ : unit) : unit :=
@@ -53,14 +53,14 @@ Definition main (_ : unit) : unit :=
 " ] [  ]) ;;
   tt ;;
   match fs.create_dir "a" with
-  | Err.Build_t why =>
+  | Err why =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "! "; "
 " ]
         [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
     tt
-  | Ok.Build_t _ => tt
+  | Ok _ => tt
   end ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "`echo hello > a/b.txt`
@@ -123,14 +123,14 @@ Definition main (_ : unit) : unit :=
 " ] [  ]) ;;
   tt ;;
   match cat (Path::["new"] "a/c/b.txt") with
-  | Err.Build_t why =>
+  | Err why =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "! "; "
 " ]
         [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
     tt
-  | Ok.Build_t s =>
+  | Ok s =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "> "; "
@@ -142,14 +142,14 @@ Definition main (_ : unit) : unit :=
 " ] [  ]) ;;
   tt ;;
   match fs.read_dir "a" with
-  | Err.Build_t why =>
+  | Err why =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "! "; "
 " ]
         [ _crate.fmt.ArgumentV1::["new_debug"] why.["kind"] ]) ;;
     tt
-  | Ok.Build_t paths =>
+  | Ok paths =>
     match LangItem paths with
     | iter =>
       loop

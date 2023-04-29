@@ -51,7 +51,7 @@ Definition main (_ : unit) : unit :=
     tt
   | Int(2, Unsuffixed) =>
     match args[1].["parse"] with
-    | Ok.Build_t Int(42, Unsuffixed) =>
+    | Ok Int(42, Unsuffixed) =>
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"] [ "This is the answer!
 " ] [  ]) ;;
@@ -69,8 +69,8 @@ Definition main (_ : unit) : unit :=
     let num := args[2] in
     let number :=
       match num.["parse"] with
-      | Ok.Build_t n => n
-      | Err.Build_t _ =>
+      | Ok n => n
+      | Err _ =>
         _crate.io._eprint
           (_crate.fmt.Arguments::["new_v1"]
             [ "error: second argument not an integer

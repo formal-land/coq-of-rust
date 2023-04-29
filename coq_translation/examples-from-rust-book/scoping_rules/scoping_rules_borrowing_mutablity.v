@@ -76,7 +76,7 @@ Definition main (_ : unit) : unit :=
   let immutabook :=
     {|
       Book.author := "Douglas Hofstadter";
-      Book.title := "G" ++ String "246" "del, Escher, Bach";
+      Book.title := "G" ++ String.String "246" "del, Escher, Bach";
       Book.year := 1979;
     |} in
   let mutabook := immutabook in

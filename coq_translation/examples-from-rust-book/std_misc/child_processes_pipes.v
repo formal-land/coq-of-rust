@@ -20,20 +20,20 @@ Definition main (_ : unit) : unit :=
       (((Command::["new"] "wc").["stdin"] (Stdio::["piped"] tt)).["stdout"]
           (Stdio::["piped"] tt)).["spawn"]
     with
-    | Err.Build_t why =>
+    | Err why =>
       _crate.rt.panic_fmt
         (_crate.fmt.Arguments::["new_v1"]
           [ "couldn't spawn wc: " ]
           [ _crate.fmt.ArgumentV1::["new_display"] why ])
-    | Ok.Build_t process => process
+    | Ok process => process
     end in
   match process.["stdin"].["unwrap"].["write_all"] PANGRAM.["as_bytes"] with
-  | Err.Build_t why =>
+  | Err why =>
     _crate.rt.panic_fmt
       (_crate.fmt.Arguments::["new_v1"]
         [ "couldn't write to wc stdin: " ]
         [ _crate.fmt.ArgumentV1::["new_display"] why ])
-  | Ok.Build_t _ =>
+  | Ok _ =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "sent pangram to wc
 " ] [  ]) ;;
@@ -41,12 +41,12 @@ Definition main (_ : unit) : unit :=
   end ;;
   let s := String::["new"] tt in
   match process.["stdout"].["unwrap"].["read_to_string"] s with
-  | Err.Build_t why =>
+  | Err why =>
     _crate.rt.panic_fmt
       (_crate.fmt.Arguments::["new_v1"]
         [ "couldn't read wc stdout: " ]
         [ _crate.fmt.ArgumentV1::["new_display"] why ])
-  | Ok.Build_t _ =>
+  | Ok _ =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "wc responded with:

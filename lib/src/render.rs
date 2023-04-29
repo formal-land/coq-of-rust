@@ -73,7 +73,7 @@ fn string_pieces_to_doc<'a>(with_paren: bool, pieces: &[StringPiece]) -> RcDoc<'
         [StringPiece::UnicodeChar(c), rest @ ..] => paren(
             with_paren,
             RcDoc::concat([
-                RcDoc::text("String"),
+                RcDoc::text("String.String"),
                 RcDoc::line(),
                 RcDoc::text("\""),
                 RcDoc::text(format!("{}", *c as u8)),
@@ -96,7 +96,7 @@ pub(crate) fn literal_to_doc(with_paren: bool, literal: &LitKind) -> RcDoc<()> {
         LitKind::Int(i, _) => RcDoc::text(format!("{i}")),
         LitKind::Float(f, _) => RcDoc::text(format!("{} (* {f} *)", round_symbol(f))),
         LitKind::Bool(b) => RcDoc::text(format!("{b}")),
-        LitKind::Char(c) => RcDoc::text(format!("{c}")),
+        LitKind::Char(c) => RcDoc::text(format!("\"{c}\"%char")),
         LitKind::Byte(b) => RcDoc::text(format!("{b}")),
         LitKind::ByteStr(b, _) => RcDoc::text(format!("{b:?}")),
         LitKind::Err => RcDoc::text("Err"),

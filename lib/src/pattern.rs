@@ -2,6 +2,7 @@ use crate::path::*;
 use crate::render::*;
 
 use rustc_ast::LitKind;
+use rustc_hir::def::{CtorOf, DefKind, Res};
 use rustc_hir::{Pat, PatKind};
 
 #[derive(Debug)]
@@ -15,10 +16,10 @@ impl StructOrVariant {
     fn of_qpath(qpath: &rustc_hir::QPath) -> StructOrVariant {
         match qpath {
             rustc_hir::QPath::Resolved(_, path) => match path.res {
-                rustc_hir::def::Res::Def(rustc_hir::def::DefKind::Struct, _) => {
+                Res::Def(DefKind::Struct | DefKind::Ctor(CtorOf::Struct, _), _) => {
                     StructOrVariant::Struct
                 }
-                rustc_hir::def::Res::Def(rustc_hir::def::DefKind::Variant, _) => {
+                Res::Def(DefKind::Variant | DefKind::Ctor(CtorOf::Variant, _), _) => {
                     StructOrVariant::Variant
                 }
                 _ => panic!("Unexpected path resolution: {:?}", path.res),
@@ -42,8 +43,8 @@ impl StructOrVariant {
 pub enum Pattern {
     Wild,
     Binding(String),
-    Struct(Path, Vec<(String, Pattern)>, StructOrVariant),
-    TupleStruct(Path, Vec<Pattern>),
+    StructStruct(Path, Vec<(String, Pattern)>, StructOrVariant),
+    StructTuple(Path, Vec<Pattern>, StructOrVariant),
     Or(Vec<Pattern>),
     Path(Path),
     Tuple(Vec<Pattern>),
@@ -62,12 +63,13 @@ pub fn compile_pattern(pat: &Pat) -> Pattern {
                 .map(|pat| (pat.ident.name.to_string(), compile_pattern(pat.pat)))
                 .collect();
             let struct_or_variant = StructOrVariant::of_qpath(qpath);
-            Pattern::Struct(path, pats, struct_or_variant)
+            Pattern::StructStruct(path, pats, struct_or_variant)
         }
         PatKind::TupleStruct(qpath, pats, _) => {
             let path = compile_qpath(qpath);
             let pats = pats.iter().map(compile_pattern).collect();
-            Pattern::TupleStruct(path, pats)
+            let struct_or_variant = StructOrVariant::of_qpath(qpath);
+            Pattern::StructTuple(path, pats, struct_or_variant)
         }
         PatKind::Or(pats) => Pattern::Or(pats.iter().map(compile_pattern).collect()),
         PatKind::Path(qpath) => Pattern::Path(compile_qpath(qpath)),
@@ -94,7 +96,7 @@ impl Pattern {
         match self {
             Pattern::Wild => text("_"),
             Pattern::Binding(name) => text(name),
-            Pattern::Struct(path, fields, struct_or_variant) => group([
+            Pattern::StructStruct(path, fields, struct_or_variant) => group([
                 match struct_or_variant {
                     StructOrVariant::Struct => nil(),
                     StructOrVariant::Variant => path.to_doc(),
@@ -131,10 +133,13 @@ impl Pattern {
                     ])
                 },
             ]),
-            Pattern::TupleStruct(path, fields) => {
+            Pattern::StructTuple(path, fields, struct_or_variant) => {
                 return nest([
                     path.to_doc(),
-                    text(".Build_t"),
+                    match struct_or_variant {
+                        StructOrVariant::Variant => nil(),
+                        StructOrVariant::Struct => text(".Build_t"),
+                    },
                     line(),
                     nest([intersperse(
                         fields.iter().map(|field| field.to_doc()),

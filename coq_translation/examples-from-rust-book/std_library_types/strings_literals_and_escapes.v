@@ -11,7 +11,7 @@ Definition main (_ : unit) : unit :=
 " ]
       [ _crate.fmt.ArgumentV1::["new_display"] byte_escape ]) ;;
   tt ;;
-  let unicode_codepoint := String "29" "" in
+  let unicode_codepoint := String.String "29" "" in
   let character_name := ""DOUBLE-STRUCK CAPITAL R"" in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]

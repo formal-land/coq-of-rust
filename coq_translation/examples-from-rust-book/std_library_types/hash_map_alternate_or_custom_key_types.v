@@ -125,7 +125,7 @@ Definition try_logon
   let logon :=
     {| Account.username := username; Account.password := password; |} in
   match accounts.["get"] logon with
-  | Some.Build_t account_info =>
+  | Some account_info =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "Successful logon!
 " ] [  ]) ;;

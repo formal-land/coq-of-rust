@@ -42,7 +42,7 @@ Module Impl__crate_marker_Copy_for_Point.
 End Impl__crate_marker_Copy_for_Point.
 
 Definition main (_ : unit) : unit :=
-  let c := Q in
+  let c := "Q"%char in
   let ref_c1 := c in
   let ref_c2 := c in
   _crate.io._print

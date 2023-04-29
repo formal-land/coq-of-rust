@@ -25,8 +25,18 @@ Definition inspect (event : WebEvent) : unit :=
   | WebEvent.PageLoad =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "page loaded, r" ++ String "233" ("f" ++ String "233" "
-") ]
+        [
+          "page loaded, r"
+          ++
+          String.String
+          "233"
+          ("f"
+          ++
+          String.String
+          "233"
+          "
+")
+        ]
         [  ]) ;;
     tt
   | WebEvent.PageUnload =>
@@ -34,14 +44,14 @@ Definition inspect (event : WebEvent) : unit :=
       (_crate.fmt.Arguments::["new_v1"] [ "page unloaded
 " ] [  ]) ;;
     tt
-  | WebEvent.KeyPress.Build_t c =>
+  | WebEvent.KeyPress c =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "pressed '"; "'.
 " ]
         [ _crate.fmt.ArgumentV1::["new_display"] c ]) ;;
     tt
-  | WebEvent.Paste.Build_t s =>
+  | WebEvent.Paste s =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "pasted ""; "".
@@ -62,7 +72,7 @@ Definition inspect (event : WebEvent) : unit :=
   end.
 
 Definition main (_ : unit) : unit :=
-  let pressed := WebEvent.KeyPress x in
+  let pressed := WebEvent.KeyPress "x"%char in
   let pasted := WebEvent.Paste "my text".["to_owned"] in
   let click := {| WebEvent.Click.x := 20; WebEvent.Click.y := 80; |} in
   let load := WebEvent.PageLoad in

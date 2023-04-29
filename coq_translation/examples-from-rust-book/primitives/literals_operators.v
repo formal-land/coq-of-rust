@@ -44,7 +44,7 @@ Definition main (_ : unit) : unit :=
           _crate.fmt.rt.v1.Argument.position := 0;
           _crate.fmt.rt.v1.Argument.format :=
             {|
-              _crate.fmt.rt.v1.FormatSpec.fill :=  ;
+              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
               _crate.fmt.rt.v1.FormatSpec.align :=
                 _crate.fmt.rt.v1.Alignment.Unknown;
               _crate.fmt.rt.v1.FormatSpec.flags := 8;
@@ -66,7 +66,7 @@ Definition main (_ : unit) : unit :=
           _crate.fmt.rt.v1.Argument.position := 0;
           _crate.fmt.rt.v1.Argument.format :=
             {|
-              _crate.fmt.rt.v1.FormatSpec.fill :=  ;
+              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
               _crate.fmt.rt.v1.FormatSpec.align :=
                 _crate.fmt.rt.v1.Alignment.Unknown;
               _crate.fmt.rt.v1.FormatSpec.flags := 8;
@@ -88,7 +88,7 @@ Definition main (_ : unit) : unit :=
           _crate.fmt.rt.v1.Argument.position := 0;
           _crate.fmt.rt.v1.Argument.format :=
             {|
-              _crate.fmt.rt.v1.FormatSpec.fill :=  ;
+              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
               _crate.fmt.rt.v1.FormatSpec.align :=
                 _crate.fmt.rt.v1.Alignment.Unknown;
               _crate.fmt.rt.v1.FormatSpec.flags := 8;

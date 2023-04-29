@@ -16,7 +16,7 @@ Definition main (_ : unit) : unit :=
   let display := path.["display"] in
   let file :=
     match File::["open"] path with
-    | Err.Build_t why =>
+    | Err why =>
       _crate.rt.panic_fmt
         (_crate.fmt.Arguments::["new_v1"]
           [ "couldn't open "; ": " ]
@@ -24,11 +24,11 @@ Definition main (_ : unit) : unit :=
             _crate.fmt.ArgumentV1::["new_display"] display;
             _crate.fmt.ArgumentV1::["new_display"] why
           ])
-    | Ok.Build_t file => file
+    | Ok file => file
     end in
   let s := String::["new"] tt in
   match file.["read_to_string"] s with
-  | Err.Build_t why =>
+  | Err why =>
     _crate.rt.panic_fmt
       (_crate.fmt.Arguments::["new_v1"]
         [ "couldn't read "; ": " ]
@@ -36,7 +36,7 @@ Definition main (_ : unit) : unit :=
           _crate.fmt.ArgumentV1::["new_display"] display;
           _crate.fmt.ArgumentV1::["new_display"] why
         ])
-  | Ok.Build_t _ =>
+  | Ok _ =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ ""; " contains:

@@ -24,7 +24,7 @@ Definition main (_ : unit) : unit :=
   contacts.["insert"] "Katie" "435-8291" ;;
   contacts.["insert"] "Robert" "956-1745" ;;
   match contacts.["get"] "Daniel" with
-  | Some.Build_t number =>
+  | Some number =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Calling Daniel: "; "
@@ -41,7 +41,7 @@ Definition main (_ : unit) : unit :=
   end ;;
   contacts.["insert"] "Daniel" "164-6743" ;;
   match contacts.["get"] "Ashley" with
-  | Some.Build_t number =>
+  | Some number =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "Calling Ashley: "; "
