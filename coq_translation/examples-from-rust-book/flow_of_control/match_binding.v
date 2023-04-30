@@ -7,38 +7,36 @@ Definition age (_ : unit) : u32 := 15.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_const"]
       [ "Tell me what type of person you are
-" ]
-      [  ]) ;;
+" ]) ;;
   tt ;;
   match age tt with
-  | Int(0, Unsuffixed) =>
+  | 0 =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_const"]
         [ "I haven't celebrated my first birthday yet
-" ]
-        [  ]) ;;
+" ]) ;;
     tt
-  | n =>
+  | ((1|2|3|4|5|6|7|8|9|10|11|12) as n) =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "I'm a child of age "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] n ]) ;;
+        [ format_argument::["new_debug"] n ]) ;;
     tt
-  | n =>
+  | ((13|14|15|16|17|18|19) as n) =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "I'm a teen of age "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] n ]) ;;
+        [ format_argument::["new_debug"] n ]) ;;
     tt
   | n =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "I'm an old person of age "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] n ]) ;;
+        [ format_argument::["new_debug"] n ]) ;;
     tt
   end.

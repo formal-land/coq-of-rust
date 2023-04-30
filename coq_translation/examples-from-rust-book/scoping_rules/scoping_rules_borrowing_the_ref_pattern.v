@@ -46,12 +46,10 @@ Definition main (_ : unit) : unit :=
   let ref_c1 := c in
   let ref_c2 := c in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "ref_c1 equals ref_c2: "; "
 " ]
-      [
-        _crate.fmt.ArgumentV1::["new_display"]
-          ((deref ref_c1).["eq"] (deref ref_c2))
+      [ format_argument::["new_display"] ((deref ref_c1).["eq"] (deref ref_c2))
       ]) ;;
   tt ;;
   let point := {| Point.x := 0; Point.y := 0; |} in
@@ -63,21 +61,21 @@ Definition main (_ : unit) : unit :=
   assign (deref mut_ref_to_y) 1 ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "point is ("; ", "; ")
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] point.["x"];
-        _crate.fmt.ArgumentV1::["new_display"] point.["y"]
+        format_argument::["new_display"] point.["x"];
+        format_argument::["new_display"] point.["y"]
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "mutable_point is ("; ", "; ")
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] mutable_point.["x"];
-        _crate.fmt.ArgumentV1::["new_display"] mutable_point.["y"]
+        format_argument::["new_display"] mutable_point.["x"];
+        format_argument::["new_display"] mutable_point.["y"]
       ]) ;;
   tt ;;
   let mutable_tuple := (Box::["new"] 5, 3) in
@@ -85,9 +83,9 @@ Definition main (_ : unit) : unit :=
   assign (deref last) 2 ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "tuple is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] mutable_tuple ]) ;;
+      [ format_argument::["new_debug"] mutable_tuple ]) ;;
   tt ;;
   tt.

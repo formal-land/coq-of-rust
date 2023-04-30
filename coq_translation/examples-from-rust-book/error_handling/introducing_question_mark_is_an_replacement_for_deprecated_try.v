@@ -30,17 +30,17 @@ Definition print (result : Result i32 ParseIntError) : unit :=
   match result with
   | Ok n =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "n is "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
+        [ format_argument::["new_display"] n ]) ;;
     tt
   | Err e =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Error: "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] e ]) ;;
+        [ format_argument::["new_display"] e ]) ;;
     tt
   end.
 

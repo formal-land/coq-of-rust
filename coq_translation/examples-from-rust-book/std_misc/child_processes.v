@@ -12,24 +12,24 @@ Definition main (_ : unit) : unit :=
           "--version").["output"].["unwrap_or_else"]
       (fun e =>
         _crate.rt.panic_fmt
-          (_crate.fmt.Arguments::["new_v1"]
+          (format_arguments::["new_v1"]
             [ "failed to execute process: " ]
-            [ _crate.fmt.ArgumentV1::["new_display"] e ])) in
+            [ format_argument::["new_display"] e ])) in
   if (output.["status"].["success"] : bool) then
     let s := String::["from_utf8_lossy"] output.["stdout"] in
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "rustc succeeded and stdout was:
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] s ]) ;;
+        [ format_argument::["new_display"] s ]) ;;
     tt ;;
     tt
   else
     let s := String::["from_utf8_lossy"] output.["stderr"] in
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "rustc failed and stderr was:
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] s ]) ;;
+        [ format_argument::["new_display"] s ]) ;;
     tt ;;
     tt.

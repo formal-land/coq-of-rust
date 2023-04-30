@@ -106,44 +106,40 @@ Definition main (_ : unit) : unit :=
   let boxed_point := Box::["new"] (origin tt) in
   let box_in_a_box := Box::["new"] (boxed_origin tt) in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Point occupies "; " bytes on the stack
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val point) ]) ;;
+      [ format_argument::["new_display"] (mem.size_of_val point) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Rectangle occupies "; " bytes on the stack
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val rectangle) ]) ;;
+      [ format_argument::["new_display"] (mem.size_of_val rectangle) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Boxed point occupies "; " bytes on the stack
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val boxed_point)
-      ]) ;;
+      [ format_argument::["new_display"] (mem.size_of_val boxed_point) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Boxed rectangle occupies "; " bytes on the stack
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val boxed_rectangle)
-      ]) ;;
+      [ format_argument::["new_display"] (mem.size_of_val boxed_rectangle) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Boxed box occupies "; " bytes on the stack
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val box_in_a_box)
-      ]) ;;
+      [ format_argument::["new_display"] (mem.size_of_val box_in_a_box) ]) ;;
   tt ;;
   let unboxed_point := deref boxed_point in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Unboxed point occupies "; " bytes on the stack
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (mem.size_of_val unboxed_point)
-      ]) ;;
+      [ format_argument::["new_display"] (mem.size_of_val unboxed_point) ]) ;;
   tt ;;
   tt.

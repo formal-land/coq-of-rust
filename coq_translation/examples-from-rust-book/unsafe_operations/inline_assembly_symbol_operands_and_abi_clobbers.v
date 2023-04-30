@@ -9,10 +9,10 @@ Module asm := std.arch.asm.
 
 Definition foo (arg : i32) : i32 :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "arg = "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] arg ]) ;;
+      [ format_argument::["new_display"] arg ]) ;;
   tt ;;
   arg.["mul"] 2.
 

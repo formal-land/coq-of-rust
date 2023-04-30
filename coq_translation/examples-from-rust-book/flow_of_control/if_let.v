@@ -9,53 +9,50 @@ Definition main (_ : unit) : unit :=
   let emoticon := None in
   if (let_if Some i := number : bool) then
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Matched "; "!
 " ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] i ]) ;;
+        [ format_argument::["new_debug"] i ]) ;;
     tt ;;
     tt
   else
     tt ;;
   if (let_if Some i := letter : bool) then
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Matched "; "!
 " ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] i ]) ;;
+        [ format_argument::["new_debug"] i ]) ;;
     tt ;;
     tt
   else
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_const"]
         [ "Didn't match a number. Let's go with a letter!
-" ]
-        [  ]) ;;
+" ]) ;;
     tt ;;
     tt ;;
   let i_like_letters := false in
   if (let_if Some i := emoticon : bool) then
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Matched "; "!
 " ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] i ]) ;;
+        [ format_argument::["new_debug"] i ]) ;;
     tt ;;
     tt
   else
     if (i_like_letters : bool) then
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_const"]
           [ "Didn't match a number. Let's go with a letter!
-" ]
-          [  ]) ;;
+" ]) ;;
       tt ;;
       tt
     else
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_const"]
           [ "I don't like letters. Let's go with an emoticon :)!
-" ]
-          [  ]) ;;
+" ]) ;;
       tt ;;
       tt.

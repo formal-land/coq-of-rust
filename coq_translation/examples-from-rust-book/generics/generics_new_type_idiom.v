@@ -49,18 +49,16 @@ Definition main (_ : unit) : unit :=
   let age := Years.Build_t 5 in
   let age_days := age.["to_days"] in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Old enough "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (old_enough age) ]) ;;
+      [ format_argument::["new_display"] (old_enough age) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Old enough "; "
 " ]
-      [
-        _crate.fmt.ArgumentV1::["new_display"]
-          (old_enough age_days.["to_years"])
+      [ format_argument::["new_display"] (old_enough age_days.["to_years"])
       ]) ;;
   tt ;;
   tt.

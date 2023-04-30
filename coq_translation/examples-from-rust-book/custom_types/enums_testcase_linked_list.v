@@ -43,16 +43,16 @@ Module ImplList.
     | Cons head tail =>
       let res :=
         _crate.fmt.format
-          (_crate.fmt.Arguments::["new_v1"]
+          (format_arguments::["new_v1"]
             [ ""; ", " ]
             [
-              _crate.fmt.ArgumentV1::["new_display"] head;
-              _crate.fmt.ArgumentV1::["new_display"] tail.["stringify"]
+              format_argument::["new_display"] head;
+              format_argument::["new_display"] tail.["stringify"]
             ]) in
       res
     | Nil =>
       let res :=
-        _crate.fmt.format (_crate.fmt.Arguments::["new_v1"] [ "Nil" ] [  ]) in
+        _crate.fmt.format (format_arguments::["new_const"] [ "Nil" ]) in
       res
     end.
   
@@ -67,15 +67,15 @@ Definition main (_ : unit) : unit :=
   assign list (list.["prepend"] 2) ;;
   assign list (list.["prepend"] 3) ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "linked list has length: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] list.["len"] ]) ;;
+      [ format_argument::["new_display"] list.["len"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] list.["stringify"] ]) ;;
+      [ format_argument::["new_display"] list.["stringify"] ]) ;;
   tt ;;
   tt.

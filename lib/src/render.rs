@@ -51,34 +51,29 @@ fn cut_string_in_pieces_for_coq(input: &str) -> Vec<StringPiece> {
 
 fn string_pieces_to_doc<'a>(with_paren: bool, pieces: &[StringPiece]) -> RcDoc<'a, ()> {
     match pieces {
-        [] => RcDoc::text("\"\""),
+        [] => text("\"\""),
         [StringPiece::AsciiString(s), rest @ ..] => paren(
             with_paren && !rest.is_empty(),
-            RcDoc::concat([
-                RcDoc::text("\""),
-                RcDoc::text(s.clone()),
-                RcDoc::text("\""),
+            nest([
+                text("\""),
+                text(s.clone()),
+                text("\""),
                 if rest.is_empty() {
-                    RcDoc::nil()
+                    nil()
                 } else {
-                    RcDoc::concat([
-                        RcDoc::line(),
-                        RcDoc::text("++"),
-                        RcDoc::line(),
-                        string_pieces_to_doc(false, rest),
-                    ])
+                    concat([text(" ++"), line(), string_pieces_to_doc(false, rest)])
                 },
             ]),
         ),
         [StringPiece::UnicodeChar(c), rest @ ..] => paren(
             with_paren,
-            RcDoc::concat([
-                RcDoc::text("String.String"),
-                RcDoc::line(),
-                RcDoc::text("\""),
-                RcDoc::text(format!("{}", *c as u8)),
-                RcDoc::text("\""),
-                RcDoc::line(),
+            nest([
+                text("String.String"),
+                line(),
+                text("\""),
+                text(format!("{}", *c as u8)),
+                text("\""),
+                line(),
                 string_pieces_to_doc(true, rest),
             ]),
         ),

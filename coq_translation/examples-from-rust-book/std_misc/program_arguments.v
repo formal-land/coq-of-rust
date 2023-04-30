@@ -8,18 +8,18 @@ Module env := std.env.
 Definition main (_ : unit) : unit :=
   let args := (env.args tt).["collect"] in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "My path is "; ".
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] args[0] ]) ;;
+      [ format_argument::["new_display"] args[0] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "I got "; " arguments: "; ".
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_debug"] (args.["len"].["sub"] 1);
-        _crate.fmt.ArgumentV1::["new_debug"]
+        format_argument::["new_debug"] (args.["len"].["sub"] 1);
+        format_argument::["new_debug"]
           args[RangeFrom {| RangeFrom.start := 1; |}]
       ]) ;;
   tt ;;

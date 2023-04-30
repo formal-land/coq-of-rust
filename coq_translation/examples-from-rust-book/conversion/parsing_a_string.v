@@ -8,9 +8,9 @@ Definition main (_ : unit) : unit :=
   let turbo_parsed := "10".["parse"].["unwrap"] in
   let sum := parsed.["add"] turbo_parsed in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Sum: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] sum ]) ;;
+      [ format_argument::["new_debug"] sum ]) ;;
   tt ;;
   tt.

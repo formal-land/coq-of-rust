@@ -75,10 +75,10 @@ End ImplClosedBox T_2.
 Definition main (_ : unit) : unit :=
   let open_box := {| my.OpenBox.contents := "public information"; |} in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "The open box contains: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] open_box.["contents"] ]) ;;
+      [ format_argument::["new_display"] open_box.["contents"] ]) ;;
   tt ;;
   let _closed_box := my.ClosedBox::["new"] "classified information" in
   tt.

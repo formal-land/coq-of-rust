@@ -6,14 +6,13 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let pangram := "the quick brown fox jumps over the lazy dog" in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Pangram: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] pangram ]) ;;
+      [ format_argument::["new_display"] pangram ]) ;;
   tt ;;
-  _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "Words in reverse
-" ] [  ]) ;;
+  _crate.io._print (format_arguments::["new_const"] [ "Words in reverse
+" ]) ;;
   tt ;;
   match LangItem pangram.["split_whitespace"].["rev"] with
   | iter =>
@@ -22,10 +21,10 @@ Definition main (_ : unit) : unit :=
       | None => Break
       | Some {| Some.0 := word; |} =>
         _crate.io._print
-          (_crate.fmt.Arguments::["new_v1"]
+          (format_arguments::["new_v1"]
             [ "> "; "
 " ]
-            [ _crate.fmt.ArgumentV1::["new_display"] word ]) ;;
+            [ format_argument::["new_display"] word ]) ;;
         tt ;;
         tt
       end ;;
@@ -54,23 +53,23 @@ Definition main (_ : unit) : unit :=
   let chars_to_trim := [ " "%char; ","%char ] in
   let trimmed_str := string.["trim_matches"] chars_to_trim in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Used characters: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] trimmed_str ]) ;;
+      [ format_argument::["new_display"] trimmed_str ]) ;;
   tt ;;
   let alice := String::["from"] "I like dogs" in
   let bob := alice.["replace"] "dog" "cat" in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Alice says: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] alice ]) ;;
+      [ format_argument::["new_display"] alice ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Bob says: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] bob ]) ;;
+      [ format_argument::["new_display"] bob ]) ;;
   tt ;;
   tt.

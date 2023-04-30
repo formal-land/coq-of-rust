@@ -5,33 +5,24 @@ Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; " and "; " is "; "
 " ]
-      match
-        ("1i32 + 1 == 2i32",
-          "2i32 * 2 == 4i32",
-          ((1.["add"] 1).["eq"] 2).["andb"] ((2.["mul"] 2).["eq"] 4))
-      with
-      | args =>
-        [
-          _crate.fmt.ArgumentV1::["new_debug"] (args.[0]);
-          _crate.fmt.ArgumentV1::["new_debug"] (args.[1]);
-          _crate.fmt.ArgumentV1::["new_debug"] (args.[2])
-        ]
-      end) ;;
+      [
+        format_argument::["new_debug"] "1i32 + 1 == 2i32";
+        format_argument::["new_debug"] "2i32 * 2 == 4i32";
+        format_argument::["new_debug"]
+          (((1.["add"] 1).["eq"] 2).["andb"] ((2.["mul"] 2).["eq"] 4))
+      ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; " or "; " is "; "
 " ]
-      match ("true", "false", true.["or"] false) with
-      | args =>
-        [
-          _crate.fmt.ArgumentV1::["new_debug"] (args.[0]);
-          _crate.fmt.ArgumentV1::["new_debug"] (args.[1]);
-          _crate.fmt.ArgumentV1::["new_debug"] (args.[2])
-        ]
-      end) ;;
+      [
+        format_argument::["new_debug"] "true";
+        format_argument::["new_debug"] "false";
+        format_argument::["new_debug"] (true.["or"] false)
+      ]) ;;
   tt ;;
   tt.

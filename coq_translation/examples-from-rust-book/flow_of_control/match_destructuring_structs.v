@@ -3,35 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  let foo := {| Foo.x := (1, 2); Foo.y := 3; |} in
-  match foo with
-  | {| Foo.x := (Int(1, Unsuffixed), b); Foo.y := y; |} =>
-    _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
-        [ "First of x is 1, b = "; ",  y = "; " 
-" ]
-        [
-          _crate.fmt.ArgumentV1::["new_display"] b;
-          _crate.fmt.ArgumentV1::["new_display"] y
-        ]) ;;
-    tt
-  | {| Foo.y := Int(2, Unsuffixed); Foo.x := i; |} =>
-    _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
-        [ "y is 2, i = "; "
-" ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] i ]) ;;
-    tt
-  | {| Foo.y := y; |} =>
-    _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
-        [ "y = "; ", we don't care about x
-" ]
-        [ _crate.fmt.ArgumentV1::["new_display"] y ]) ;;
-    tt
-  end.
-
 Module Foo.
   Record t : Set := {
     x : u32 * u32;
@@ -46,3 +17,30 @@ Module Foo.
   }.
 End Foo.
 Definition Foo : Set := Foo.t.
+
+Definition main (_ : unit) : unit :=
+  let foo := {| Foo.x := (1, 2); Foo.y := 3; |} in
+  match foo with
+  | {| Foo.x := (1, b); Foo.y := y; |} =>
+    _crate.io._print
+      (format_arguments::["new_v1"]
+        [ "First of x is 1, b = "; ",  y = "; " 
+" ]
+        [ format_argument::["new_display"] b; format_argument::["new_display"] y
+        ]) ;;
+    tt
+  | {| Foo.y := 2; Foo.x := i; |} =>
+    _crate.io._print
+      (format_arguments::["new_v1"]
+        [ "y is 2, i = "; "
+" ]
+        [ format_argument::["new_debug"] i ]) ;;
+    tt
+  | {| Foo.y := y; |} =>
+    _crate.io._print
+      (format_arguments::["new_v1"]
+        [ "y = "; ", we don't care about x
+" ]
+        [ format_argument::["new_display"] y ]) ;;
+    tt
+  end.

@@ -8,10 +8,10 @@ Definition main (_ : unit) : unit :=
   let print :=
     fun  =>
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ "`color`: "; "
 " ]
-          [ _crate.fmt.ArgumentV1::["new_display"] color ]) ;;
+          [ format_argument::["new_display"] color ]) ;;
       tt in
   print tt ;;
   let _reborrow := color in
@@ -22,10 +22,10 @@ Definition main (_ : unit) : unit :=
     fun  =>
       count.["add_assign"] 1 ;;
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ "`count`: "; "
 " ]
-          [ _crate.fmt.ArgumentV1::["new_display"] count ]) ;;
+          [ format_argument::["new_display"] count ]) ;;
       tt ;;
       tt in
   inc tt ;;
@@ -35,10 +35,10 @@ Definition main (_ : unit) : unit :=
   let consume :=
     fun  =>
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ "`movable`: "; "
 " ]
-          [ _crate.fmt.ArgumentV1::["new_debug"] movable ]) ;;
+          [ format_argument::["new_debug"] movable ]) ;;
       tt ;;
       mem.drop movable ;;
       tt in

@@ -21,9 +21,9 @@ Module Impl_fmt_Display_for_Circle.
   
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
     f.["write_fmt"]
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Circle of radius " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] self.["radius"] ]).
+        [ format_argument::["new_display"] self.["radius"] ]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -37,9 +37,9 @@ End Impl_fmt_Display_for_Circle.
 Definition main (_ : unit) : unit :=
   let circle := {| Circle.radius := 6; |} in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] circle.["to_string"] ]) ;;
+      [ format_argument::["new_display"] circle.["to_string"] ]) ;;
   tt ;;
   tt.

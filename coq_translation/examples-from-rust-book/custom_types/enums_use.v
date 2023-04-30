@@ -23,29 +23,23 @@ Definition main (_ : unit) : unit :=
   match status with
   | Rich =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
-        [ "The rich have lots of money!
-" ]
-        [  ]) ;;
+      (format_arguments::["new_const"] [ "The rich have lots of money!
+" ]) ;;
     tt
   | Poor =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
-        [ "The poor have no money...
-" ]
-        [  ]) ;;
+      (format_arguments::["new_const"] [ "The poor have no money...
+" ]) ;;
     tt
   end ;;
   match work with
   | Civilian =>
-    _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "Civilians work!
-" ] [  ]) ;;
+    _crate.io._print (format_arguments::["new_const"] [ "Civilians work!
+" ]) ;;
     tt
   | Soldier =>
-    _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "Soldiers fight!
-" ] [  ]) ;;
+    _crate.io._print (format_arguments::["new_const"] [ "Soldiers fight!
+" ]) ;;
     tt
   end.
 

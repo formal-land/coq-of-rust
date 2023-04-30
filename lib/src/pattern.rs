@@ -1,14 +1,17 @@
 use crate::path::*;
 use crate::render::*;
 
-use rustc_ast::LitKind;
-use rustc_hir::{Pat, PatKind};
+use rustc_ast::{LitIntType, LitKind};
+use rustc_hir::{ExprKind, Pat, PatKind, RangeEnd};
+use rustc_middle::ty::TyCtxt;
+use rustc_span::source_map::Spanned;
 
 /// The enum [Pat] represents the patterns which can be matched
 #[derive(Debug)]
 pub enum Pattern {
     Wild,
-    Binding(String),
+    Variable(String),
+    Binding(String, Box<Pattern>),
     StructStruct(Path, Vec<(String, Pattern)>, StructOrVariant),
     StructTuple(Path, Vec<Pattern>, StructOrVariant),
     Or(Vec<Pattern>),
@@ -18,35 +21,115 @@ pub enum Pattern {
 }
 
 /// The function [compile_pattern] translates a hir pattern to a coq-of-rust pattern.
-pub fn compile_pattern(pat: &Pat) -> Pattern {
+pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
     match &pat.kind {
         PatKind::Wild => Pattern::Wild,
-        PatKind::Binding(_, _, ident, _) => Pattern::Binding(ident.name.to_string()),
+        PatKind::Binding(_, _, ident, pat) => {
+            let name = ident.name.to_string();
+            match pat {
+                None => Pattern::Variable(ident.name.to_string()),
+                Some(pat) => Pattern::Binding(name, Box::new(compile_pattern(tcx, pat))),
+            }
+        }
         PatKind::Struct(qpath, pats, _) => {
             let path = compile_qpath(qpath);
             let pats = pats
                 .iter()
-                .map(|pat| (pat.ident.name.to_string(), compile_pattern(pat.pat)))
+                .map(|pat| (pat.ident.name.to_string(), compile_pattern(tcx, pat.pat)))
                 .collect();
             let struct_or_variant = StructOrVariant::of_qpath(qpath);
             Pattern::StructStruct(path, pats, struct_or_variant)
         }
         PatKind::TupleStruct(qpath, pats, _) => {
             let path = compile_qpath(qpath);
-            let pats = pats.iter().map(compile_pattern).collect();
+            let pats = pats.iter().map(|pat| compile_pattern(tcx, pat)).collect();
             let struct_or_variant = StructOrVariant::of_qpath(qpath);
             Pattern::StructTuple(path, pats, struct_or_variant)
         }
-        PatKind::Or(pats) => Pattern::Or(pats.iter().map(compile_pattern).collect()),
+        PatKind::Or(pats) => {
+            Pattern::Or(pats.iter().map(|pat| compile_pattern(tcx, pat)).collect())
+        }
         PatKind::Path(qpath) => Pattern::Path(compile_qpath(qpath)),
-        PatKind::Tuple(pats, _) => Pattern::Tuple(pats.iter().map(compile_pattern).collect()),
-        PatKind::Box(pat) => compile_pattern(pat),
-        PatKind::Ref(pat, _) => compile_pattern(pat),
+        PatKind::Tuple(pats, dot_dot_pos) => {
+            let mut pats = pats
+                .iter()
+                .map(|pat| compile_pattern(tcx, pat))
+                .collect::<Vec<_>>();
+            match dot_dot_pos.as_opt_usize() {
+                None => (),
+                Some(0) => pats.insert(0, Pattern::Wild),
+                Some(_) => {
+                    tcx.sess
+                        .struct_span_warn(
+                            pat.span,
+                            "Only leading `..` patterns are supported in tuple patterns.",
+                        )
+                        .help("Use underscore `_` patterns instead.")
+                        .emit();
+                }
+            }
+            Pattern::Tuple(pats)
+        }
+        PatKind::Box(pat) => compile_pattern(tcx, pat),
+        PatKind::Ref(pat, _) => compile_pattern(tcx, pat),
         PatKind::Lit(expr) => match expr.kind {
-            rustc_hir::ExprKind::Lit(ref lit) => Pattern::Lit(lit.node.clone()),
-            _ => Pattern::Wild,
+            ExprKind::Lit(lit) => Pattern::Lit(lit.node.clone()),
+            _ => {
+                tcx.sess
+                    .struct_span_warn(
+                        pat.span,
+                        "Only literal expressions in patterns are supported.",
+                    )
+                    .help("Use an `if` statement instead.")
+                    .emit();
+                Pattern::Wild
+            }
         },
-        PatKind::Range(_, _, _) => Pattern::Wild,
+        PatKind::Range(start, end, inclusion) => match (start, end) {
+            (Some(start), Some(end)) => match (start.kind, end.kind) {
+                (
+                    ExprKind::Lit(Spanned {
+                        node: LitKind::Int(start, _),
+                        ..
+                    }),
+                    ExprKind::Lit(Spanned {
+                        node: LitKind::Int(end, _),
+                        ..
+                    }),
+                ) => {
+                    let range = *start..=match inclusion {
+                        RangeEnd::Included => *end,
+                        RangeEnd::Excluded => *end - 1,
+                    };
+                    Pattern::Or(
+                        range
+                            .map(|i| Pattern::Lit(LitKind::Int(i, LitIntType::Unsuffixed)))
+                            .collect(),
+                    )
+                }
+                _ => {
+                    tcx.sess
+                        .struct_span_warn(
+                            pat.span,
+                            "Only ranges on literal integers are supported.",
+                        )
+                        .help("Use an `if` statement instead.")
+                        .emit();
+                    Pattern::Wild
+                }
+            },
+            (None, None) => Pattern::Wild,
+            _ => {
+                tcx.sess
+                    .struct_span_warn(
+                        pat.span,
+                        "Range patterns with an open bound are not supported.",
+                    )
+                    .help("Use an `if` statement instead.")
+                    .emit();
+                Pattern::Wild
+            }
+        },
         PatKind::Slice(_, _, _) => Pattern::Wild,
     }
 }
@@ -55,13 +138,21 @@ impl Pattern {
     /// Returns wether a pattern is a single binding, to know if we need a quote
     /// in the "let" in Coq.
     pub fn is_single_binding(&self) -> bool {
-        matches!(self, Pattern::Binding(_))
+        matches!(self, Pattern::Variable(_))
     }
 
     pub fn to_doc(&self) -> Doc {
         match self {
             Pattern::Wild => text("_"),
-            Pattern::Binding(name) => text(name),
+            Pattern::Variable(name) => text(name),
+            Pattern::Binding(name, pat) => nest([
+                text("("),
+                pat.to_doc(),
+                text(" as"),
+                line(),
+                text(name),
+                text(")"),
+            ]),
             Pattern::StructStruct(path, fields, struct_or_variant) => group([
                 match struct_or_variant {
                     StructOrVariant::Struct => nil(),
@@ -125,7 +216,7 @@ impl Pattern {
                     [text(","), line()],
                 )]),
             ),
-            Pattern::Lit(literal) => text(format!("{literal:?}")),
+            Pattern::Lit(literal) => literal_to_doc(false, literal),
         }
     }
 }

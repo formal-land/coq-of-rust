@@ -63,9 +63,9 @@ Definition main (_ : unit) : unit :=
   let random_number := 0 (* 0.234 *) in
   let animal := random_animal random_number in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "You've randomly chosen an animal, and it says "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] animal.["noise"] ]) ;;
+      [ format_argument::["new_display"] animal.["noise"] ]) ;;
   tt ;;
   tt.

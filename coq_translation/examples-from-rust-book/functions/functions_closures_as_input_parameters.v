@@ -15,31 +15,31 @@ Definition main (_ : unit) : unit :=
   let diary :=
     fun  =>
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ "I said "; ".
 " ]
-          [ _crate.fmt.ArgumentV1::["new_display"] greeting ]) ;;
+          [ format_argument::["new_display"] greeting ]) ;;
       tt ;;
       farewell.["push_str"] "!!!" ;;
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ "Then I screamed "; ".
 " ]
-          [ _crate.fmt.ArgumentV1::["new_display"] farewell ]) ;;
+          [ format_argument::["new_display"] farewell ]) ;;
       tt ;;
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"] [ "Now I can sleep. zzzzz
-" ] [  ]) ;;
+        (format_arguments::["new_const"] [ "Now I can sleep. zzzzz
+" ]) ;;
       tt ;;
       mem.drop farewell ;;
       tt in
   apply diary ;;
   let double := fun x => 2.["mul"] x in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "3 doubled: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (apply_to_3 double) ]) ;;
+      [ format_argument::["new_display"] (apply_to_3 double) ]) ;;
   tt ;;
   tt.
 

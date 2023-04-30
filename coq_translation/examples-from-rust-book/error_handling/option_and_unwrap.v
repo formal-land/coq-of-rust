@@ -5,22 +5,22 @@ Import Root.std.prelude.rust_2015.
 
 Definition give_adult (drink : Option (ref str)) : unit :=
   match drink with
-  | Some Str("lemonade", Cooked) =>
+  | Some "lemonade" =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "Yuck! Too sugary.
-" ] [  ]) ;;
+      (format_arguments::["new_const"] [ "Yuck! Too sugary.
+" ]) ;;
     tt
   | Some inner =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ ""; "? How nice.
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] inner ]) ;;
+        [ format_argument::["new_display"] inner ]) ;;
     tt
   | None =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "No drink? Oh well.
-" ] [  ]) ;;
+      (format_arguments::["new_const"] [ "No drink? Oh well.
+" ]) ;;
     tt
   end.
 
@@ -32,10 +32,10 @@ Definition drink (drink : Option (ref str)) : unit :=
   else
     tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "I love "; "s!!!!!
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] inside ]) ;;
+      [ format_argument::["new_display"] inside ]) ;;
   tt ;;
   tt.
 

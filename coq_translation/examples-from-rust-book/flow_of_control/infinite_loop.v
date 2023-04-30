@@ -6,31 +6,29 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let count := 0 in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
-      [ "Let's count until infinity!
-" ]
-      [  ]) ;;
+    (format_arguments::["new_const"] [ "Let's count until infinity!
+" ]) ;;
   tt ;;
   loop
     count.["add_assign"] 1 ;;
     if (count.["eq"] 3 : bool) then
-      _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "three
-" ] [  ]) ;;
+      _crate.io._print (format_arguments::["new_const"] [ "three
+" ]) ;;
       tt ;;
       Continue ;;
       tt
     else
       tt ;;
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ ""; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] count ]) ;;
+        [ format_argument::["new_display"] count ]) ;;
     tt ;;
     if (count.["eq"] 5 : bool) then
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"] [ "OK, that's enough
-" ] [  ]) ;;
+        (format_arguments::["new_const"] [ "OK, that's enough
+" ]) ;;
       tt ;;
       Break ;;
       tt

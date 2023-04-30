@@ -9,22 +9,22 @@ Definition main (_ : unit) : unit :=
     |} in
   let '{| Person.name := name; Person.age := age; |} := person in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "The person's age is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] age ]) ;;
+      [ format_argument::["new_display"] age ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "The person's name is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] name ]) ;;
+      [ format_argument::["new_display"] name ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "The person's age from person struct is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] person.["age"] ]) ;;
+      [ format_argument::["new_display"] person.["age"] ]) ;;
   tt ;;
   tt.
 

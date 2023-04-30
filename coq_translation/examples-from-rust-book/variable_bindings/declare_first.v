@@ -9,17 +9,17 @@ Definition main (_ : unit) : unit :=
   assign a_binding (x.["mul"] x) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "a binding: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] a_binding ]) ;;
+      [ format_argument::["new_display"] a_binding ]) ;;
   tt ;;
   let another_binding := tt in
   assign another_binding 1 ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "another binding: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] another_binding ]) ;;
+      [ format_argument::["new_display"] another_binding ]) ;;
   tt ;;
   tt.

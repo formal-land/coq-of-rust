@@ -22,35 +22,35 @@ Definition main (_ : unit) : unit :=
     with
     | Err why =>
       _crate.rt.panic_fmt
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ "couldn't spawn wc: " ]
-          [ _crate.fmt.ArgumentV1::["new_display"] why ])
+          [ format_argument::["new_display"] why ])
     | Ok process => process
     end in
   match process.["stdin"].["unwrap"].["write_all"] PANGRAM.["as_bytes"] with
   | Err why =>
     _crate.rt.panic_fmt
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "couldn't write to wc stdin: " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] why ])
+        [ format_argument::["new_display"] why ])
   | Ok _ =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "sent pangram to wc
-" ] [  ]) ;;
+      (format_arguments::["new_const"] [ "sent pangram to wc
+" ]) ;;
     tt
   end ;;
   let s := String::["new"] tt in
   match process.["stdout"].["unwrap"].["read_to_string"] s with
   | Err why =>
     _crate.rt.panic_fmt
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "couldn't read wc stdout: " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] why ])
+        [ format_argument::["new_display"] why ])
   | Ok _ =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "wc responded with:
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] s ]) ;;
+        [ format_argument::["new_display"] s ]) ;;
     tt
   end.

@@ -4,7 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  let names := Slice::["into_vec"] [ "Bob"; "Frank"; "Ferris" ] in
+  let names :=
+    Slice::["into_vec"]
+      (_crate.boxed.Box::["new"] [ "Bob"; "Frank"; "Ferris" ]) in
   match LangItem names.["iter_mut"] with
   | iter =>
     loop
@@ -14,7 +16,7 @@ Definition main (_ : unit) : unit :=
         assign
           (deref name)
           match name with
-          | Str("Ferris", Cooked) => "There is a rustacean among us!"
+          | "Ferris" => "There is a rustacean among us!"
           | _ => "Hello"
           end
       end ;;
@@ -23,9 +25,9 @@ Definition main (_ : unit) : unit :=
       for
   end ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "names: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] names ]) ;;
+      [ format_argument::["new_debug"] names ]) ;;
   tt ;;
   tt.

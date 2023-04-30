@@ -8,48 +8,48 @@ Definition main (_ : unit) : unit :=
   match array with
   | _ =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "array[0] = 0, array[1] = "; ", array[2] = "; "
 " ]
         [
-          _crate.fmt.ArgumentV1::["new_display"] second;
-          _crate.fmt.ArgumentV1::["new_display"] third
+          format_argument::["new_display"] second;
+          format_argument::["new_display"] third
         ]) ;;
     tt
   | _ =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "array[0] = 1, array[2] = "; " and array[1] was ignored
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] third ]) ;;
+        [ format_argument::["new_display"] third ]) ;;
     tt
   | _ =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "array[0] = -1, array[1] = "; " and all the other ones were ignored
 "
         ]
-        [ _crate.fmt.ArgumentV1::["new_display"] second ]) ;;
+        [ format_argument::["new_display"] second ]) ;;
     tt
   | _ =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "array[0] = 3, array[1] = "; " and the other elements were "; "
 " ]
         [
-          _crate.fmt.ArgumentV1::["new_display"] second;
-          _crate.fmt.ArgumentV1::["new_debug"] tail
+          format_argument::["new_display"] second;
+          format_argument::["new_debug"] tail
         ]) ;;
     tt
   | _ =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "array[0] = "; ", middle = "; ", array[2] = "; "
 " ]
         [
-          _crate.fmt.ArgumentV1::["new_display"] first;
-          _crate.fmt.ArgumentV1::["new_debug"] middle;
-          _crate.fmt.ArgumentV1::["new_display"] last
+          format_argument::["new_display"] first;
+          format_argument::["new_debug"] middle;
+          format_argument::["new_display"] last
         ]) ;;
     tt
   end.

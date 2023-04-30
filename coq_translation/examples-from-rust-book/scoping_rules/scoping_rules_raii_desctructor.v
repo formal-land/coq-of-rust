@@ -13,8 +13,8 @@ Module Impl_Drop_for_ToDrop.
   
   Definition drop (self : mut_ref Self) :=
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "ToDrop is being dropped
-" ] [  ]) ;;
+      (format_arguments::["new_const"] [ "ToDrop is being dropped
+" ]) ;;
     tt ;;
     tt.
   
@@ -29,8 +29,7 @@ End Impl_Drop_for_ToDrop.
 
 Definition main (_ : unit) : unit :=
   let x := ToDrop.Build in
-  _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "Made a ToDrop!
-" ] [  ]) ;;
+  _crate.io._print (format_arguments::["new_const"] [ "Made a ToDrop!
+" ]) ;;
   tt ;;
   tt.

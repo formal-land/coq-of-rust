@@ -9,70 +9,66 @@ Definition Rc := Rc.t.
 Definition main (_ : unit) : unit :=
   let rc_examples := "Rc examples".["to_string"] in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "--- rc_a is created ---
-" ] [  ]) ;;
+    (format_arguments::["new_const"] [ "--- rc_a is created ---
+" ]) ;;
   tt ;;
   let rc_a := Rc::["new"] rc_examples in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Reference Count of rc_a: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (Rc::["strong_count"] rc_a) ]) ;;
+      [ format_argument::["new_display"] (Rc::["strong_count"] rc_a) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
-      [ "--- rc_a is cloned to rc_b ---
-" ]
-      [  ]) ;;
+    (format_arguments::["new_const"] [ "--- rc_a is cloned to rc_b ---
+" ]) ;;
   tt ;;
   let rc_b := Rc::["clone"] rc_a in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Reference Count of rc_b: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (Rc::["strong_count"] rc_b) ]) ;;
+      [ format_argument::["new_display"] (Rc::["strong_count"] rc_b) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Reference Count of rc_a: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (Rc::["strong_count"] rc_a) ]) ;;
+      [ format_argument::["new_display"] (Rc::["strong_count"] rc_a) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "rc_a and rc_b are equal: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (rc_a.["eq"] rc_b) ]) ;;
+      [ format_argument::["new_display"] (rc_a.["eq"] rc_b) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Length of the value inside rc_a: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] rc_a.["len"] ]) ;;
+      [ format_argument::["new_display"] rc_a.["len"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Value of rc_b: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] rc_b ]) ;;
+      [ format_argument::["new_display"] rc_b ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_const"]
       [ "--- rc_b is dropped out of scope ---
-" ]
-      [  ]) ;;
+" ]) ;;
   tt ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Reference Count of rc_a: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (Rc::["strong_count"] rc_a) ]) ;;
+      [ format_argument::["new_display"] (Rc::["strong_count"] rc_a) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_const"]
       [ "--- rc_a is dropped out of scope ---
-" ]
-      [  ]) ;;
+" ]) ;;
   tt ;;
   tt.

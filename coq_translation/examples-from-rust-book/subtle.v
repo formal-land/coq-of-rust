@@ -1042,9 +1042,9 @@ Module ImplCtOption T.
           (deref left_val)
           (deref right_val)
           (_crate.option.Option.Some
-            (_crate.fmt.Arguments::["new_v1"]
+            (format_arguments::["new_v1"]
               [ "" ]
-              [ _crate.fmt.ArgumentV1::["new_display"] msg ])) ;;
+              [ format_argument::["new_display"] msg ])) ;;
         tt
       else
         tt

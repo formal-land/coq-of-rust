@@ -13,21 +13,17 @@ Definition main (_ : unit) : unit :=
   let z := {| Complex.re := neg 1 (* 1. *); Complex.im := 0 (* 0. *); |} in
   let z_sqrt := csqrtf z in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "the square root of "; " is "; "
 " ]
-      [
-        _crate.fmt.ArgumentV1::["new_debug"] z;
-        _crate.fmt.ArgumentV1::["new_debug"] z_sqrt
+      [ format_argument::["new_debug"] z; format_argument::["new_debug"] z_sqrt
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "cos("; ") = "; "
 " ]
-      [
-        _crate.fmt.ArgumentV1::["new_debug"] z;
-        _crate.fmt.ArgumentV1::["new_debug"] (cos z)
+      [ format_argument::["new_debug"] z; format_argument::["new_debug"] (cos z)
       ]) ;;
   tt ;;
   tt.
@@ -76,19 +72,19 @@ Module Impl_fmt_Debug_for_Complex.
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
     if (self.["im"].["lt"] 0 (* 0. *) : bool) then
       f.["write_fmt"]
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ ""; "-"; "i" ]
           [
-            _crate.fmt.ArgumentV1::["new_display"] self.["re"];
-            _crate.fmt.ArgumentV1::["new_display"] (neg self.["im"])
+            format_argument::["new_display"] self.["re"];
+            format_argument::["new_display"] (neg self.["im"])
           ])
     else
       f.["write_fmt"]
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ ""; "+"; "i" ]
           [
-            _crate.fmt.ArgumentV1::["new_display"] self.["re"];
-            _crate.fmt.ArgumentV1::["new_display"] self.["im"]
+            format_argument::["new_display"] self.["re"];
+            format_argument::["new_display"] self.["im"]
           ]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {

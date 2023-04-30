@@ -104,10 +104,10 @@ Definition main (_ : unit) : unit :=
   let _one_second := Seconds.Build_t 1 in
   let foot := Inches.Build_t 12 in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "One foot equals "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] foot ]) ;;
+      [ format_argument::["new_debug"] foot ]) ;;
   tt ;;
   let meter := Centimeters.Build_t 100 (* 100.0 *) in
   let cmp :=
@@ -116,9 +116,9 @@ Definition main (_ : unit) : unit :=
     else
       "bigger" in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "One foot is "; " than one meter.
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] cmp ]) ;;
+      [ format_argument::["new_display"] cmp ]) ;;
   tt ;;
   tt.

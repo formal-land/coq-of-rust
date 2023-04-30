@@ -6,23 +6,23 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let raw_str := "Escapes don't work here: \x3F \u{211D}" in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] raw_str ]) ;;
+      [ format_argument::["new_display"] raw_str ]) ;;
   tt ;;
   let quotes := "And then I said: "There is no escape!"" in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] quotes ]) ;;
+      [ format_argument::["new_display"] quotes ]) ;;
   tt ;;
   let longer_delimiter := "A string with "# in it. And even "##!" in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] longer_delimiter ]) ;;
+      [ format_argument::["new_display"] longer_delimiter ]) ;;
   tt ;;
   tt.

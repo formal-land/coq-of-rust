@@ -86,32 +86,32 @@ Definition main (_ : unit) : unit :=
   let number_2 := 10 in
   let container := Container.Build_t number_1 number_2 in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Does container contain "; " and "; ": "; "
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] number_1;
-        _crate.fmt.ArgumentV1::["new_display"] number_2;
-        _crate.fmt.ArgumentV1::["new_display"]
+        format_argument::["new_display"] number_1;
+        format_argument::["new_display"] number_2;
+        format_argument::["new_display"]
           (container.["contains"] number_1 number_2)
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "First number: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] container.["first"] ]) ;;
+      [ format_argument::["new_display"] container.["first"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Last number: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] container.["last"] ]) ;;
+      [ format_argument::["new_display"] container.["last"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "The difference is: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (difference container) ]) ;;
+      [ format_argument::["new_display"] (difference container) ]) ;;
   tt ;;
   tt.

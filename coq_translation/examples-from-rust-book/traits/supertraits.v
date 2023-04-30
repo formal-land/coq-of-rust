@@ -48,7 +48,7 @@ End CompSciStudent.
 Definition comp_sci_student_greeting (student : ref TraitObject) : String :=
   let res :=
     _crate.fmt.format
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [
           "My name is ";
           " and I attend ";
@@ -56,10 +56,10 @@ Definition comp_sci_student_greeting (student : ref TraitObject) : String :=
           ". My Git username is "
         ]
         [
-          _crate.fmt.ArgumentV1::["new_display"] student.["name"];
-          _crate.fmt.ArgumentV1::["new_display"] student.["university"];
-          _crate.fmt.ArgumentV1::["new_display"] student.["fav_language"];
-          _crate.fmt.ArgumentV1::["new_display"] student.["git_username"]
+          format_argument::["new_display"] student.["name"];
+          format_argument::["new_display"] student.["university"];
+          format_argument::["new_display"] student.["fav_language"];
+          format_argument::["new_display"] student.["git_username"]
         ]) in
   res.
 

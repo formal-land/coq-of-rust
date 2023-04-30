@@ -18,11 +18,13 @@ Module Impl__crate_fmt_Debug_for_Food.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    match self with
-    | Food.Apple => _crate.fmt.Formatter::["write_str"] f "Apple"
-    | Food.Carrot => _crate.fmt.Formatter::["write_str"] f "Carrot"
-    | Food.Potato => _crate.fmt.Formatter::["write_str"] f "Potato"
-    end.
+    _crate.fmt.Formatter::["write_str"]
+      f
+      match self with
+      | Food.Apple => "Apple"
+      | Food.Carrot => "Carrot"
+      | Food.Potato => "Potato"
+      end.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -138,15 +140,15 @@ Definition eat (food : Option Cooked) : unit :=
   match food with
   | Some food =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Mmm. I love "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] food ]) ;;
+        [ format_argument::["new_debug"] food ]) ;;
     tt
   | None =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "Oh no! It wasn't edible.
-" ] [  ]) ;;
+      (format_arguments::["new_const"] [ "Oh no! It wasn't edible.
+" ]) ;;
     tt
   end.
 

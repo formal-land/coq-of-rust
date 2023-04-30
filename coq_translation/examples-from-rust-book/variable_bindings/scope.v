@@ -7,16 +7,16 @@ Definition main (_ : unit) : unit :=
   let long_lived_binding := 1 in
   let short_lived_binding := 2 in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "inner short: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] short_lived_binding ]) ;;
+      [ format_argument::["new_display"] short_lived_binding ]) ;;
   tt ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "outer long: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] long_lived_binding ]) ;;
+      [ format_argument::["new_display"] long_lived_binding ]) ;;
   tt ;;
   tt.

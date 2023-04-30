@@ -8,9 +8,9 @@ Definition main (_ : unit) : unit :=
   let vec := Vec::["new"] tt in
   vec.["push"] elem ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] vec ]) ;;
+      [ format_argument::["new_debug"] vec ]) ;;
   tt ;;
   tt.

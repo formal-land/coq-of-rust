@@ -18,11 +18,11 @@ Definition main (_ : unit) : unit :=
     match File::["open"] path with
     | Err why =>
       _crate.rt.panic_fmt
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ "couldn't open "; ": " ]
           [
-            _crate.fmt.ArgumentV1::["new_display"] display;
-            _crate.fmt.ArgumentV1::["new_display"] why
+            format_argument::["new_display"] display;
+            format_argument::["new_display"] why
           ])
     | Ok file => file
     end in
@@ -30,20 +30,20 @@ Definition main (_ : unit) : unit :=
   match file.["read_to_string"] s with
   | Err why =>
     _crate.rt.panic_fmt
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "couldn't read "; ": " ]
         [
-          _crate.fmt.ArgumentV1::["new_display"] display;
-          _crate.fmt.ArgumentV1::["new_display"] why
+          format_argument::["new_display"] display;
+          format_argument::["new_display"] why
         ])
   | Ok _ =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ ""; " contains:
 " ]
         [
-          _crate.fmt.ArgumentV1::["new_display"] display;
-          _crate.fmt.ArgumentV1::["new_display"] s
+          format_argument::["new_display"] display;
+          format_argument::["new_display"] s
         ]) ;;
     tt
   end.

@@ -7,50 +7,48 @@ Definition main (_ : unit) : unit :=
   let n := 5 in
   if (n.["lt"] 0 : bool) then
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ ""; " is negative" ]
-        [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
+        [ format_argument::["new_display"] n ]) ;;
     tt ;;
     tt
   else
     if (n.["gt"] 0 : bool) then
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ ""; " is positive" ]
-          [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
+          [ format_argument::["new_display"] n ]) ;;
       tt ;;
       tt
     else
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ ""; " is zero" ]
-          [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
+          [ format_argument::["new_display"] n ]) ;;
       tt ;;
       tt ;;
   let big_n :=
     if ((n.["lt"] 10).["andb"] (n.["gt"] (neg 10)) : bool) then
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_const"]
           [ ", and is a small number, increase ten-fold
-" ]
-          [  ]) ;;
+" ]) ;;
       tt ;;
       10.["mul"] n
     else
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_const"]
           [ ", and is a big number, halve the number
-" ]
-          [  ]) ;;
+" ]) ;;
       tt ;;
       n.["div"] 2 in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; " -> "; "
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] n;
-        _crate.fmt.ArgumentV1::["new_display"] big_n
+        format_argument::["new_display"] n;
+        format_argument::["new_display"] big_n
       ]) ;;
   tt ;;
   tt.

@@ -48,7 +48,7 @@ pub fn compile_path<Res>(path: &rustc_hir::Path<Res>) -> Path {
     }
 }
 
-pub fn compile_qpath(qpath: &QPath) -> Path {
+pub(crate) fn compile_qpath(qpath: &QPath) -> Path {
     match qpath {
         QPath::Resolved(_, path) => compile_path(path),
         QPath::TypeRelative(ty, segment) => {

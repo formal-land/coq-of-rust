@@ -6,20 +6,20 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let byte_escape := "I'm writing Rust!" in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "What are you doing? (\x3F means ?) "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] byte_escape ]) ;;
+      [ format_argument::["new_display"] byte_escape ]) ;;
   tt ;;
   let unicode_codepoint := String.String "29" "" in
   let character_name := ""DOUBLE-STRUCK CAPITAL R"" in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Unicode character "; " (U+211D) is called "; "
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] unicode_codepoint;
-        _crate.fmt.ArgumentV1::["new_display"] character_name
+        format_argument::["new_display"] unicode_codepoint;
+        format_argument::["new_display"] character_name
       ]) ;;
   tt ;;
   let long_string :=
@@ -27,9 +27,9 @@ Definition main (_ : unit) : unit :=
                         can span multiple lines.
                         The linebreak and indentation here -><- can be escaped too!" in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] long_string ]) ;;
+      [ format_argument::["new_display"] long_string ]) ;;
   tt ;;
   tt.

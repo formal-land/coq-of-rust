@@ -17,28 +17,28 @@ Definition is_divisible_by (lhs : u32) (rhs : u32) : bool :=
 
 Definition fizzbuzz (n : u32) : unit :=
   if (is_divisible_by n 15 : bool) then
-    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "fizzbuzz
-" ] [  ]) ;;
+    _crate.io._print (format_arguments::["new_const"] [ "fizzbuzz
+" ]) ;;
     tt ;;
     tt
   else
     if (is_divisible_by n 3 : bool) then
-      _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "fizz
-" ] [  ]) ;;
+      _crate.io._print (format_arguments::["new_const"] [ "fizz
+" ]) ;;
       tt ;;
       tt
     else
       if (is_divisible_by n 5 : bool) then
-        _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "buzz
-" ] [  ]) ;;
+        _crate.io._print (format_arguments::["new_const"] [ "buzz
+" ]) ;;
         tt ;;
         tt
       else
         _crate.io._print
-          (_crate.fmt.Arguments::["new_v1"]
+          (format_arguments::["new_v1"]
             [ ""; "
 " ]
-            [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
+            [ format_argument::["new_display"] n ]) ;;
         tt ;;
         tt.
 

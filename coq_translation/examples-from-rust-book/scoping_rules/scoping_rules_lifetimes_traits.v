@@ -54,9 +54,9 @@ End Impl_Default_for_Borrowed.
 Definition main (_ : unit) : unit :=
   let b := Default.default tt in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "b is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] b ]) ;;
+      [ format_argument::["new_debug"] b ]) ;;
   tt ;;
   tt.

@@ -5,117 +5,99 @@ Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "1 + 2 = "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (1.["add"] 2) ]) ;;
+      [ format_argument::["new_display"] (1.["add"] 2) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "1 - 2 = "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (1.["sub"] 2) ]) ;;
+      [ format_argument::["new_display"] (1.["sub"] 2) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "true AND false is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (true.["andb"] false) ]) ;;
+      [ format_argument::["new_display"] (true.["andb"] false) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "true OR false is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (true.["or"] false) ]) ;;
+      [ format_argument::["new_display"] (true.["or"] false) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "NOT true is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (not true) ]) ;;
+      [ format_argument::["new_display"] (not true) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1_formatted"]
+    (format_arguments::["new_v1_formatted"]
       [ "0011 AND 0101 is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_binary"] (3.["bitand"] 5) ]
+      [ format_argument::["new_binary"] (3.["bitand"] 5) ]
       [
-        {|
-          _crate.fmt.rt.v1.Argument.position := 0;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Unknown;
-              _crate.fmt.rt.v1.FormatSpec.flags := 8;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Is 4;
-            |};
-        |}
+        format_placeholder::["new"]
+          0
+          " "%char
+          format_alignment::["Unknown"]
+          8
+          format_count::["Implied"]
+          (format_count::["Is"] 4)
       ]
-      (_crate.fmt.UnsafeArg::["new"] tt)) ;;
+      (format_unsafe_arg::["new"] tt)) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1_formatted"]
+    (format_arguments::["new_v1_formatted"]
       [ "0011 OR 0101 is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_binary"] (3.["bitor"] 5) ]
+      [ format_argument::["new_binary"] (3.["bitor"] 5) ]
       [
-        {|
-          _crate.fmt.rt.v1.Argument.position := 0;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Unknown;
-              _crate.fmt.rt.v1.FormatSpec.flags := 8;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Is 4;
-            |};
-        |}
+        format_placeholder::["new"]
+          0
+          " "%char
+          format_alignment::["Unknown"]
+          8
+          format_count::["Implied"]
+          (format_count::["Is"] 4)
       ]
-      (_crate.fmt.UnsafeArg::["new"] tt)) ;;
+      (format_unsafe_arg::["new"] tt)) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1_formatted"]
+    (format_arguments::["new_v1_formatted"]
       [ "0011 XOR 0101 is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_binary"] (3.["bitxor"] 5) ]
+      [ format_argument::["new_binary"] (3.["bitxor"] 5) ]
       [
-        {|
-          _crate.fmt.rt.v1.Argument.position := 0;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Unknown;
-              _crate.fmt.rt.v1.FormatSpec.flags := 8;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Is 4;
-            |};
-        |}
+        format_placeholder::["new"]
+          0
+          " "%char
+          format_alignment::["Unknown"]
+          8
+          format_count::["Implied"]
+          (format_count::["Is"] 4)
       ]
-      (_crate.fmt.UnsafeArg::["new"] tt)) ;;
+      (format_unsafe_arg::["new"] tt)) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "1 << 5 is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (1.["shl"] 5) ]) ;;
+      [ format_argument::["new_display"] (1.["shl"] 5) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "0x80 >> 2 is 0x"; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_lower_hex"] (128.["shr"] 2) ]) ;;
+      [ format_argument::["new_lower_hex"] (128.["shr"] 2) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
-      [ "One million is written as "; "
+    (format_arguments::["new_v1"]
+      [ "One million is written as 1000000
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] 1000000 ]) ;;
+      [ ]) ;;
   tt ;;
   tt.

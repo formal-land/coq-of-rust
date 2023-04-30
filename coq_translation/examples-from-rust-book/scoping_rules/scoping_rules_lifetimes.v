@@ -7,17 +7,17 @@ Definition main (_ : unit) : unit :=
   let i := 3 in
   let borrow1 := i in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "borrow1: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] borrow1 ]) ;;
+      [ format_argument::["new_display"] borrow1 ]) ;;
   tt ;;
   tt ;;
   let borrow2 := i in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "borrow2: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] borrow2 ]) ;;
+      [ format_argument::["new_display"] borrow2 ]) ;;
   tt ;;
   tt.

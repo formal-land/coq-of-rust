@@ -10,25 +10,25 @@ Definition coerce_static (arg : ref i32) : ref i32 := NUM.
 Definition main (_ : unit) : unit :=
   let static_string := "I'm in read-only memory" in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "static_string: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] static_string ]) ;;
+      [ format_argument::["new_display"] static_string ]) ;;
   tt ;;
   tt ;;
   let lifetime_num := 9 in
   let coerced_static := coerce_static lifetime_num in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "coerced_static: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] coerced_static ]) ;;
+      [ format_argument::["new_display"] coerced_static ]) ;;
   tt ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "NUM: "; " stays accessible!
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] NUM ]) ;;
+      [ format_argument::["new_display"] NUM ]) ;;
   tt ;;
   tt.

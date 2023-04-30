@@ -7,16 +7,16 @@ Definition main (_ : unit) : unit :=
   let _immutable_binding := 1 in
   let mutable_binding := 1 in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Before mutation: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] mutable_binding ]) ;;
+      [ format_argument::["new_display"] mutable_binding ]) ;;
   tt ;;
   mutable_binding.["add_assign"] 1 ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "After mutation: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] mutable_binding ]) ;;
+      [ format_argument::["new_display"] mutable_binding ]) ;;
   tt ;;
   tt.

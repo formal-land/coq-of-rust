@@ -6,12 +6,12 @@ Import Root.std.prelude.rust_2015.
 Definition foo {A : Set} (o : Option A) : unit :=
   match o with
   | Some _a =>
-    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "some
-" ] [  ]) ;;
+    _crate.io._print (format_arguments::["new_const"] [ "some
+" ]) ;;
     tt
   | None =>
-    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "nothing
-" ] [  ]) ;;
+    _crate.io._print (format_arguments::["new_const"] [ "nothing
+" ]) ;;
     tt
   end.
 

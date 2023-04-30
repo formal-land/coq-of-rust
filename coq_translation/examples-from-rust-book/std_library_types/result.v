@@ -19,14 +19,13 @@ Module checked.
         (self : ref Self)
         (f : mut_ref _crate.fmt.Formatter)
         : _crate.fmt.Result :=
-      match self with
-      | MathError.DivisionByZero =>
-        _crate.fmt.Formatter::["write_str"] f "DivisionByZero"
-      | MathError.NonPositiveLogarithm =>
-        _crate.fmt.Formatter::["write_str"] f "NonPositiveLogarithm"
-      | MathError.NegativeSquareRoot =>
-        _crate.fmt.Formatter::["write_str"] f "NegativeSquareRoot"
-      end.
+      _crate.fmt.Formatter::["write_str"]
+        f
+        match self with
+        | MathError.DivisionByZero => "DivisionByZero"
+        | MathError.NonPositiveLogarithm => "NonPositiveLogarithm"
+        | MathError.NegativeSquareRoot => "NegativeSquareRoot"
+        end.
     
     Global Instance Method_fmt : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -73,14 +72,13 @@ Module Impl__crate_fmt_Debug_for_MathError.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    match self with
-    | MathError.DivisionByZero =>
-      _crate.fmt.Formatter::["write_str"] f "DivisionByZero"
-    | MathError.NonPositiveLogarithm =>
-      _crate.fmt.Formatter::["write_str"] f "NonPositiveLogarithm"
-    | MathError.NegativeSquareRoot =>
-      _crate.fmt.Formatter::["write_str"] f "NegativeSquareRoot"
-    end.
+    _crate.fmt.Formatter::["write_str"]
+      f
+      match self with
+      | MathError.DivisionByZero => "DivisionByZero"
+      | MathError.NonPositiveLogarithm => "NonPositiveLogarithm"
+      | MathError.NegativeSquareRoot => "NegativeSquareRoot"
+      end.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -115,23 +113,23 @@ Definition op (x : f64) (y : f64) : f64 :=
   match checked.div x y with
   | Err why =>
     _crate.rt.panic_fmt
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "" ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] why ])
+        [ format_argument::["new_debug"] why ])
   | Ok ratio =>
     match checked.ln ratio with
     | Err why =>
       _crate.rt.panic_fmt
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ "" ]
-          [ _crate.fmt.ArgumentV1::["new_debug"] why ])
+          [ format_argument::["new_debug"] why ])
     | Ok ln =>
       match checked.sqrt ln with
       | Err why =>
         _crate.rt.panic_fmt
-          (_crate.fmt.Arguments::["new_v1"]
+          (format_arguments::["new_v1"]
             [ "" ]
-            [ _crate.fmt.ArgumentV1::["new_debug"] why ])
+            [ format_argument::["new_debug"] why ])
       | Ok sqrt => sqrt
       end
     end
@@ -139,10 +137,9 @@ Definition op (x : f64) (y : f64) : f64 :=
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (op 1 (* 1.0 *) 10 (* 10.0 *))
-      ]) ;;
+      [ format_argument::["new_display"] (op 1 (* 1.0 *) 10 (* 10.0 *)) ]) ;;
   tt ;;
   tt.

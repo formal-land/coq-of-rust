@@ -4,22 +4,24 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  let strings := Slice::["into_vec"] [ "42"; "tofu"; "93"; "999"; "18" ] in
+  let strings :=
+    Slice::["into_vec"]
+      (_crate.boxed.Box::["new"] [ "42"; "tofu"; "93"; "999"; "18" ]) in
   let errors := _crate.vec.Vec::["new"] tt in
   let numbers :=
     ((strings.["into_iter"].["map"] (fun s => s.["parse"])).["filter_map"]
         (fun r =>
           (r.["map_err"] (fun e => errors.["push"] e)).["ok"])).["collect"] in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Numbers: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] numbers ]) ;;
+      [ format_argument::["new_debug"] numbers ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Errors: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] errors ]) ;;
+      [ format_argument::["new_debug"] errors ]) ;;
   tt ;;
   tt.

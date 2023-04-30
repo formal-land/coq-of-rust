@@ -84,10 +84,10 @@ Definition Triangle : Set := Triangle.t.
 
 Definition print_debug {T : Set} `{Debug.Trait T} (t : ref T) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] t ]) ;;
+      [ format_argument::["new_debug"] t ]) ;;
   tt ;;
   tt.
 
@@ -100,9 +100,9 @@ Definition main (_ : unit) : unit :=
     {| Triangle.length := 3 (* 3.0 *); Triangle.height := 4 (* 4.0 *); |} in
   print_debug rectangle ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Area: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] rectangle.["area"] ]) ;;
+      [ format_argument::["new_display"] rectangle.["area"] ]) ;;
   tt ;;
   tt.

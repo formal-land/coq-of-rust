@@ -19,10 +19,10 @@ Module Impl_PrintInOption_for_T.
   
   Definition print_in_option (self : Self) :=
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ ""; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] (Some self) ]) ;;
+        [ format_argument::["new_debug"] (Some self) ]) ;;
     tt ;;
     tt.
   
@@ -36,6 +36,6 @@ Module Impl_PrintInOption_for_T.
 End Impl_PrintInOption_for_T.
 
 Definition main (_ : unit) : unit :=
-  let vec := Slice::["into_vec"] [ 1; 2; 3 ] in
+  let vec := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
   vec.["print_in_option"] ;;
   tt.

@@ -6,25 +6,25 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let an_integer := 1 in
   let a_boolean := true in
-  let unit := () in
+  let unit := tt in
   let copied_integer := an_integer in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "An integer: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] copied_integer ]) ;;
+      [ format_argument::["new_debug"] copied_integer ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "A boolean: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] a_boolean ]) ;;
+      [ format_argument::["new_debug"] a_boolean ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Meet the unit value: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] unit ]) ;;
+      [ format_argument::["new_debug"] unit ]) ;;
   tt ;;
   let _unused_variable := 3 in
   let _noisy_unused_variable := 2 in

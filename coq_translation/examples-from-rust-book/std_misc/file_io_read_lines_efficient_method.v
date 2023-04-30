@@ -21,10 +21,10 @@ Definition main (_ : unit) : unit :=
         | Some {| Some.0 := line; |} =>
           if (let_if Ok ip := line : bool) then
             _crate.io._print
-              (_crate.fmt.Arguments::["new_v1"]
+              (format_arguments::["new_v1"]
                 [ ""; "
 " ]
-                [ _crate.fmt.ArgumentV1::["new_display"] ip ]) ;;
+                [ format_argument::["new_display"] ip ]) ;;
             tt ;;
             tt
           else

@@ -13,21 +13,21 @@ Definition main (_ : unit) : unit :=
     2.["mul"] x ;;
     tt in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "x is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] x ]) ;;
+      [ format_argument::["new_debug"] x ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "y is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] y ]) ;;
+      [ format_argument::["new_debug"] y ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "z is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] z ]) ;;
+      [ format_argument::["new_debug"] z ]) ;;
   tt ;;
   tt.

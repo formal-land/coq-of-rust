@@ -10,16 +10,16 @@ Definition compare_prints
     (t : ref T)
     : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Debug: `"; "`
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] t ]) ;;
+      [ format_argument::["new_debug"] t ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Display: `"; "`
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
+      [ format_argument::["new_display"] t ]) ;;
   tt ;;
   tt.
 
@@ -31,23 +31,23 @@ Definition compare_types
     (u : ref U)
     : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "t: `"; "`
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] t ]) ;;
+      [ format_argument::["new_debug"] t ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "u: `"; "`
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] u ]) ;;
+      [ format_argument::["new_debug"] u ]) ;;
   tt ;;
   tt.
 
 Definition main (_ : unit) : unit :=
   let string := "words" in
   let array := [ 1; 2; 3 ] in
-  let vec := Slice::["into_vec"] [ 1; 2; 3 ] in
+  let vec := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
   compare_prints string ;;
   compare_types array vec ;;
   tt.

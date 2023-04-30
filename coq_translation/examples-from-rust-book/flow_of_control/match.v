@@ -6,46 +6,42 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let number := 13 in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Tell me about "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] number ]) ;;
+      [ format_argument::["new_display"] number ]) ;;
   tt ;;
   match number with
-  | Int(1, Unsuffixed) =>
-    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "One!
-" ] [  ]) ;;
+  | 1 =>
+    _crate.io._print (format_arguments::["new_const"] [ "One!
+" ]) ;;
     tt
-  |
-      (Int(2, Unsuffixed)|Int(3, Unsuffixed)|Int(5, Unsuffixed)|Int(7, Unsuffixed)|Int(11, Unsuffixed))
-      =>
-    _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "This is a prime
-" ] [  ]) ;;
+  | (2|3|5|7|11) =>
+    _crate.io._print (format_arguments::["new_const"] [ "This is a prime
+" ]) ;;
     tt
-  | _ =>
-    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "A teen
-" ] [  ]) ;;
+  | (13|14|15|16|17|18|19) =>
+    _crate.io._print (format_arguments::["new_const"] [ "A teen
+" ]) ;;
     tt
   | _ =>
-    _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "Ain't special
-" ] [  ]) ;;
+    _crate.io._print (format_arguments::["new_const"] [ "Ain't special
+" ]) ;;
     tt
   end ;;
   let boolean := true in
   let binary :=
     match boolean with
-    | Bool(false) => 0
-    | Bool(true) => 1
+    | false => 0
+    | true => 1
     end in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; " -> "; "
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] boolean;
-        _crate.fmt.ArgumentV1::["new_display"] binary
+        format_argument::["new_display"] boolean;
+        format_argument::["new_display"] binary
       ]) ;;
   tt ;;
   tt.
