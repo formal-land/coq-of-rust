@@ -8,10 +8,10 @@ Definition HashMap := HashMap.t.
 
 Definition call (number : ref str) : ref str :=
   match number with
-  | Str("798-1364", Cooked) =>
+  | "798-1364" =>
     "We're sorry, the call cannot be completed as dialed. 
             Please hang up and try again."
-  | Str("645-7689", Cooked) =>
+  | "645-7689" =>
     "Hello, this is Mr. Awesome's Pizza. My name is Fred.
             What can I get for you today?"
   | _ => "Hi! Who is this again?"

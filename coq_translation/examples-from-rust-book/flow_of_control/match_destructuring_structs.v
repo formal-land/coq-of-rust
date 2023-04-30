@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let foo := {| Foo.x := (1, 2); Foo.y := 3; |} in
   match foo with
-  | {| Foo.x := (Int(1, Unsuffixed), b); Foo.y := y; |} =>
+  | {| Foo.x := (1, b); Foo.y := y; |} =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "First of x is 1, b = "; ",  y = "; " 
@@ -16,7 +16,7 @@ Definition main (_ : unit) : unit :=
           _crate.fmt.ArgumentV1::["new_display"] y
         ]) ;;
     tt
-  | {| Foo.y := Int(2, Unsuffixed); Foo.x := i; |} =>
+  | {| Foo.y := 2; Foo.x := i; |} =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "y is 2, i = "; "

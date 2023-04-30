@@ -12,7 +12,7 @@ Definition main (_ : unit) : unit :=
       | None => Break
       | Some {| Some.0 := name; |} =>
         match name with
-        | Str("Ferris", Cooked) =>
+        | "Ferris" =>
           _crate.io._print
             (_crate.fmt.Arguments::["new_v1"]
               [ "There is a rustacean among us!

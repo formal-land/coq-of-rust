@@ -12,7 +12,7 @@ Definition main (_ : unit) : unit :=
       [ _crate.fmt.ArgumentV1::["new_debug"] triple ]) ;;
   tt ;;
   match triple with
-  | (Int(0, Unsuffixed), y, z) =>
+  | (0, y, z) =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "First is `0`, `y` is "; ", and `z` is "; "
@@ -22,21 +22,21 @@ Definition main (_ : unit) : unit :=
           _crate.fmt.ArgumentV1::["new_debug"] z
         ]) ;;
     tt
-  | (Int(1, Unsuffixed)) =>
+  | (1) =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "First is `1` and the rest doesn't matter
 " ]
         [ ]) ;;
     tt
-  | (Int(2, Unsuffixed)) =>
+  | (2) =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "last is `2` and the rest doesn't matter
 " ]
         [ ]) ;;
     tt
-  | (Int(3, Unsuffixed), Int(4, Unsuffixed)) =>
+  | (3, 4) =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "First is `3`, last is `4`, and the rest doesn't matter

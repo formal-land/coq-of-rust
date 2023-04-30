@@ -41,7 +41,7 @@ match_args {increase|decrease} <integer>
 Definition main (_ : unit) : unit :=
   let args := (env.args tt).["collect"] in
   match args.["len"] with
-  | Int(1, Unsuffixed) =>
+  | 1 =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "My name is 'match_args'. Try passing some arguments!
@@ -49,9 +49,9 @@ Definition main (_ : unit) : unit :=
         [ ]) ;;
     tt ;;
     tt
-  | Int(2, Unsuffixed) =>
+  | 2 =>
     match args[1].["parse"] with
-    | Ok Int(42, Unsuffixed) =>
+    | Ok 42 =>
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"] [ "This is the answer!
 " ] [ ]) ;;
@@ -62,7 +62,7 @@ Definition main (_ : unit) : unit :=
 " ] [ ]) ;;
       tt
     end
-  | Int(3, Unsuffixed) =>
+  | 3 =>
     let cmd := args[1] in
     let num := args[2] in
     let number :=
@@ -80,8 +80,8 @@ Definition main (_ : unit) : unit :=
         tt
       end in
     match cmd[RangeFull {|  |}] with
-    | Str("increase", Cooked) => increase number
-    | Str("decrease", Cooked) => decrease number
+    | "increase" => increase number
+    | "decrease" => decrease number
     | _ =>
       _crate.io._eprint
         (_crate.fmt.Arguments::["new_v1"] [ "error: invalid command

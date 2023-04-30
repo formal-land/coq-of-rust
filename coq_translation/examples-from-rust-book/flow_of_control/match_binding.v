@@ -13,7 +13,7 @@ Definition main (_ : unit) : unit :=
       [ ]) ;;
   tt ;;
   match age tt with
-  | Int(0, Unsuffixed) =>
+  | 0 =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "I haven't celebrated my first birthday yet

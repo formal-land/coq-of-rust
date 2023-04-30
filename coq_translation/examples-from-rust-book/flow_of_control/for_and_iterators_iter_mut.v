@@ -14,7 +14,7 @@ Definition main (_ : unit) : unit :=
         assign
           (deref name)
           match name with
-          | Str("Ferris", Cooked) => "There is a rustacean among us!"
+          | "Ferris" => "There is a rustacean among us!"
           | _ => "Hello"
           end
       end ;;

@@ -12,13 +12,11 @@ Definition main (_ : unit) : unit :=
       [ _crate.fmt.ArgumentV1::["new_display"] number ]) ;;
   tt ;;
   match number with
-  | Int(1, Unsuffixed) =>
+  | 1 =>
     _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "One!
 " ] [ ]) ;;
     tt
-  |
-      (Int(2, Unsuffixed)|Int(3, Unsuffixed)|Int(5, Unsuffixed)|Int(7, Unsuffixed)|Int(11, Unsuffixed))
-      =>
+  | (2|3|5|7|11) =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "This is a prime
 " ] [ ]) ;;
@@ -36,8 +34,8 @@ Definition main (_ : unit) : unit :=
   let boolean := true in
   let binary :=
     match boolean with
-    | Bool(false) => 0
-    | Bool(true) => 1
+    | false => 0
+    | true => 1
     end in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]

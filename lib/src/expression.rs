@@ -2,6 +2,7 @@ use crate::path::*;
 use crate::pattern::*;
 use crate::render::*;
 use crate::ty::*;
+
 use rustc_ast::LitKind;
 use rustc_hir::{BinOp, BinOpKind, QPath};
 use rustc_middle::ty::TyCtxt;
@@ -255,7 +256,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         },
         rustc_hir::ExprKind::DropTemps(expr) => compile_expr(tcx, expr),
         rustc_hir::ExprKind::Let(rustc_hir::Let { pat, init, .. }) => {
-            let pat = compile_pattern(pat);
+            let pat = compile_pattern(&tcx, pat);
             let init = Box::new(compile_expr(tcx, init));
             Expr::LetIf { pat, init }
         }
@@ -282,7 +283,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             let arms = arms
                 .iter()
                 .map(|arm| {
-                    let pat = compile_pattern(arm.pat);
+                    let pat = compile_pattern(&tcx, arm.pat);
                     let body = compile_expr(tcx, arm.body);
                     MatchArm { pat, body }
                 })
@@ -294,7 +295,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             let args = body
                 .params
                 .iter()
-                .map(|rustc_hir::Param { pat, .. }| compile_pattern(pat))
+                .map(|rustc_hir::Param { pat, .. }| compile_pattern(&tcx, pat))
                 .collect();
             let body = Box::new(compile_expr(tcx, body.value));
             Expr::Lambda { args, body }
@@ -405,7 +406,7 @@ fn compile_stmts(tcx: TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir
     match stmts {
         [stmt, stmts @ ..] => match stmt.kind {
             rustc_hir::StmtKind::Local(rustc_hir::Local { pat, init, .. }) => {
-                let pat = compile_pattern(pat);
+                let pat = compile_pattern(&tcx, pat);
                 let init = match init {
                     Some(init) => Box::new(compile_expr(tcx, init)),
                     None => Box::new(tt()),

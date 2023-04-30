@@ -2,7 +2,8 @@ use crate::path::*;
 use crate::render::*;
 
 use rustc_ast::LitKind;
-use rustc_hir::{Pat, PatKind};
+use rustc_hir::{ExprKind, Pat, PatKind};
+use rustc_middle::ty::TyCtxt;
 
 /// The enum [Pat] represents the patterns which can be matched
 #[derive(Debug)]
@@ -18,7 +19,7 @@ pub enum Pattern {
 }
 
 /// The function [compile_pattern] translates a hir pattern to a coq-of-rust pattern.
-pub fn compile_pattern(pat: &Pat) -> Pattern {
+pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
     match &pat.kind {
         PatKind::Wild => Pattern::Wild,
         PatKind::Binding(_, _, ident, _) => Pattern::Binding(ident.name.to_string()),
@@ -26,27 +27,45 @@ pub fn compile_pattern(pat: &Pat) -> Pattern {
             let path = compile_qpath(qpath);
             let pats = pats
                 .iter()
-                .map(|pat| (pat.ident.name.to_string(), compile_pattern(pat.pat)))
+                .map(|pat| (pat.ident.name.to_string(), compile_pattern(tcx, pat.pat)))
                 .collect();
             let struct_or_variant = StructOrVariant::of_qpath(qpath);
             Pattern::StructStruct(path, pats, struct_or_variant)
         }
         PatKind::TupleStruct(qpath, pats, _) => {
             let path = compile_qpath(qpath);
-            let pats = pats.iter().map(compile_pattern).collect();
+            let pats = pats.iter().map(|pat| compile_pattern(tcx, pat)).collect();
             let struct_or_variant = StructOrVariant::of_qpath(qpath);
             Pattern::StructTuple(path, pats, struct_or_variant)
         }
-        PatKind::Or(pats) => Pattern::Or(pats.iter().map(compile_pattern).collect()),
+        PatKind::Or(pats) => {
+            Pattern::Or(pats.iter().map(|pat| compile_pattern(tcx, pat)).collect())
+        }
         PatKind::Path(qpath) => Pattern::Path(compile_qpath(qpath)),
-        PatKind::Tuple(pats, _) => Pattern::Tuple(pats.iter().map(compile_pattern).collect()),
-        PatKind::Box(pat) => compile_pattern(pat),
-        PatKind::Ref(pat, _) => compile_pattern(pat),
+        PatKind::Tuple(pats, _) => {
+            Pattern::Tuple(pats.iter().map(|pat| compile_pattern(tcx, pat)).collect())
+        }
+        PatKind::Box(pat) => compile_pattern(tcx, pat),
+        PatKind::Ref(pat, _) => compile_pattern(tcx, pat),
         PatKind::Lit(expr) => match expr.kind {
-            rustc_hir::ExprKind::Lit(ref lit) => Pattern::Lit(lit.node.clone()),
-            _ => Pattern::Wild,
+            ExprKind::Lit(ref lit) => Pattern::Lit(lit.node.clone()),
+            _ => {
+                tcx.sess
+                    .struct_span_warn(
+                        pat.span,
+                        "Only literal expressions in patterns are supported.",
+                    )
+                    .emit();
+                Pattern::Wild
+            }
         },
-        PatKind::Range(_, _, _) => Pattern::Wild,
+        PatKind::Range(_, _, _) => {
+            tcx.sess
+                .struct_span_warn(pat.span, "Range patterns are not supported.")
+                .help("You can use an 'if' statement instead.")
+                .emit();
+            Pattern::Wild
+        }
         PatKind::Slice(_, _, _) => Pattern::Wild,
     }
 }
@@ -125,7 +144,7 @@ impl Pattern {
                     [text(","), line()],
                 )]),
             ),
-            Pattern::Lit(literal) => text(format!("{literal:?}")),
+            Pattern::Lit(literal) => literal_to_doc(false, literal),
         }
     }
 }
