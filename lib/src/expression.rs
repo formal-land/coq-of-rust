@@ -550,13 +550,19 @@ impl Expr {
                 line(),
                 text("]"),
             ]),
-            Expr::Tuple { elements } => paren(
-                true,
-                nest([intersperse(
-                    elements.iter().map(|element| element.to_doc(false)),
-                    [text(","), line()],
-                )]),
-            ),
+            Expr::Tuple { elements } => {
+                if elements.is_empty() {
+                    text("tt")
+                } else {
+                    paren(
+                        true,
+                        nest([intersperse(
+                            elements.iter().map(|element| element.to_doc(false)),
+                            [text(","), line()],
+                        )]),
+                    )
+                }
+            }
             Expr::LetIf { pat, init } => group([
                 text("let_if"),
                 line(),

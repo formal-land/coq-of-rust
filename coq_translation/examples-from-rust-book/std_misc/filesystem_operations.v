@@ -44,7 +44,7 @@ Definition touch (path : ref Path) : io.Result unit :=
   match
     (((OpenOptions::["new"] tt).["create"] true).["write"] true).["open"] path
   with
-  | Ok _ => Ok ()
+  | Ok _ => Ok tt
   | Err e => Err e
   end.
 

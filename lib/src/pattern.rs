@@ -1,9 +1,10 @@
 use crate::path::*;
 use crate::render::*;
 
-use rustc_ast::LitKind;
-use rustc_hir::{ExprKind, Pat, PatKind};
+use rustc_ast::{LitIntType, LitKind};
+use rustc_hir::{ExprKind, Pat, PatKind, RangeEnd};
 use rustc_middle::ty::TyCtxt;
+use rustc_span::source_map::Spanned;
 
 /// The enum [Pat] represents the patterns which can be matched
 #[derive(Debug)]
@@ -59,13 +60,51 @@ pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
                 Pattern::Wild
             }
         },
-        PatKind::Range(_, _, _) => {
-            tcx.sess
-                .struct_span_warn(pat.span, "Range patterns are not supported.")
-                .help("You can use an 'if' statement instead.")
-                .emit();
-            Pattern::Wild
-        }
+        PatKind::Range(start, end, inclusion) => match (start, end) {
+            (Some(start), Some(end)) => match (start.kind, end.kind) {
+                (
+                    ExprKind::Lit(Spanned {
+                        node: LitKind::Int(start, _),
+                        ..
+                    }),
+                    ExprKind::Lit(Spanned {
+                        node: LitKind::Int(end, _),
+                        ..
+                    }),
+                ) => {
+                    let range = *start..=match inclusion {
+                        RangeEnd::Included => *end,
+                        RangeEnd::Excluded => *end - 1,
+                    };
+                    Pattern::Or(
+                        range
+                            .map(|i| Pattern::Lit(LitKind::Int(i, LitIntType::Unsuffixed)))
+                            .collect(),
+                    )
+                }
+                _ => {
+                    tcx.sess
+                        .struct_span_warn(
+                            pat.span,
+                            "Only ranges on literal integers are supported.",
+                        )
+                        .help("You can use an 'if' statement instead.")
+                        .emit();
+                    Pattern::Wild
+                }
+            },
+            (None, None) => Pattern::Wild,
+            _ => {
+                tcx.sess
+                    .struct_span_warn(
+                        pat.span,
+                        "Range patterns with an open bound are not supported.",
+                    )
+                    .help("You can use an 'if' statement instead.")
+                    .emit();
+                Pattern::Wild
+            }
+        },
         PatKind::Slice(_, _, _) => Pattern::Wild,
     }
 }

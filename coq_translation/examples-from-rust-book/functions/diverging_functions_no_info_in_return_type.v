@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition some_fn (_ : unit) : unit := ().
+Definition some_fn (_ : unit) : unit := tt.
 
 Definition main (_ : unit) : unit :=
   let a := some_fn tt in

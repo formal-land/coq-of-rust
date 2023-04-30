@@ -115,6 +115,8 @@ Definition deref {A : Set} (r : ref A) : A := r.
 
 Definition Box (A : Set) : Set := A.
 
+Definition Option : Set -> Set := option.
+
 Parameter eqb : forall {A : Set}, A -> A -> bool.
 
 (** The functions on [Z] should eventually be replaced by functions on the
@@ -813,6 +815,11 @@ Module std.
     Definition t : Set := OpenOptions.t.
   End fs.
 End std.
+
+Module bool_Instances.
+  Global Instance IDisplay : std.fmt.Display.Trait bool.
+  Admitted.
+End bool_Instances.
 
 Module char_Instances.
   Global Instance IDisplay : std.fmt.Display.Trait char.

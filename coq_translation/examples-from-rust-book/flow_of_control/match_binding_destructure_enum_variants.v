@@ -21,5 +21,5 @@ Definition main (_ : unit) : unit :=
 " ]
         [ format_argument::["new_display"] n ]) ;;
     tt
-  | _ => ()
+  | _ => tt
   end.

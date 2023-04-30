@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let an_integer := 1 in
   let a_boolean := true in
-  let unit := () in
+  let unit := tt in
   let copied_integer := an_integer in
   _crate.io._print
     (format_arguments::["new_v1"]

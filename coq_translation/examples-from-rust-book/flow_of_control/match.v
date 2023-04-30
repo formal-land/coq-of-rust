@@ -20,7 +20,7 @@ Definition main (_ : unit) : unit :=
     _crate.io._print (format_arguments::["new_const"] [ "This is a prime
 " ]) ;;
     tt
-  | _ =>
+  | (13|14|15|16|17|18|19) =>
     _crate.io._print (format_arguments::["new_const"] [ "A teen
 " ]) ;;
     tt

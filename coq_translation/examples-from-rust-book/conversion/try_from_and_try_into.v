@@ -64,7 +64,7 @@ Module Impl_TryFrom_for_EvenNumber.
     if ((value.["rem"] 2).["eq"] 0 : bool) then
       Ok (EvenNumber.Build_t value)
     else
-      Err ().
+      Err tt.
   
   Global Instance AssociatedFunction_try_from :
     Notation.DoubleColon Self "try_from" := {
@@ -90,7 +90,7 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  match (EvenNumber::["try_from"] 5, Err ()) with
+  match (EvenNumber::["try_from"] 5, Err tt) with
   | (left_val, right_val) =>
     if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
@@ -118,7 +118,7 @@ Definition main (_ : unit) : unit :=
       tt
   end ;;
   let result := 5.["try_into"] in
-  match (result, Err ()) with
+  match (result, Err tt) with
   | (left_val, right_val) =>
     if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in

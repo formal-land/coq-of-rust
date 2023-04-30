@@ -19,4 +19,4 @@ Definition main (_ : unit) : Result unit ParseIntError :=
 " ]
       [ format_argument::["new_display"] number ]) ;;
   tt ;;
-  Ok ().
+  Ok tt.
