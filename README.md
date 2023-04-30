@@ -15,13 +15,13 @@
 - [Contributing](#contributing)
 
 ## Rationale
-Formal verification is essential for critical software.
+Formal verification allows to prevent all bugs in critical software. This is used in aerospace industry for example 🧑‍🚀.
 
-The type system of Rust already offers strong guarantees to prevent common bugs that would exist in C or Python programs, for example. We still need to write tests to catch bugs that the type system cannot prevent and cannot cover all possible use cases.
+The type system of Rust already offers strong guarantees to avoid bugs that exist in C or Python. We still need to write tests to verify the business rules or the absence of `panic`. Testing is incomplete as it cannot to cover all execution cases.
 
-With formal verification it is possible to cover all possible execution paths (code 100% bug-free!). We replace the tests by mathematical reasoning on the code. The reasoning can be made in a proof system, for example [Coq](https://coq.inria.fr/).
+With formal verification **we cover all cases** (code 100% bug-free!). We replace the tests by mathematical reasoning on code. You can view it as an extension of the type system, but without restriction on the expressivity.
 
-This tool `coq-of-rust`, by translating Rust programs to the proof system Coq, allows to mathematically and exhaustively verify Rust programs.
+This tool `coq-of-rust` translates Rust programs to the formal verification language Coq to make Rust programs 100% safe 🌙.
 
 ## Prerequisites
 
@@ -55,8 +55,6 @@ Update the snapshots of the translations of the test files, including the error 
 python run_tests.py
 ```
 
-There is a bit of code taken from the [Creusot](https://github.com/xldenis/creusot) project, to make the Cargo command `coq-of-rust` and run the translation in the same context as Cargo.
-
 ## Features
 Note that we are still developing support for most of language constructs of Rust.
 
@@ -76,4 +74,4 @@ Here are other projects working on formal verification for Rust:
 - [Kani](https://github.com/model-checking/kani): Model-checking with [CBMC](https://github.com/diffblue/cbmc)
 
 ## Contributing
-Open pull-requests or issues to contribute to this project. All contributions are welcome! This project is open-source under license AGPL for the Rust code (the translator) and MIT for the Coq libraries.
+Open pull-requests or issues to contribute to this project. All contributions are welcome! This project is open-source under license AGPL for the Rust code (the translator) and MIT for the Coq libraries. There is a bit of code taken from the [Creusot](https://github.com/xldenis/creusot) project, to make the Cargo command `coq-of-rust` and run the translation in the same context as Cargo.
