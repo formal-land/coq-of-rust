@@ -39,7 +39,7 @@ Definition main (_ : unit) : unit :=
     tt
   else
     tt ;;
-  if (let_if Foo.Qux value := c : bool) then
+  if (let_if Foo.Qux (100 as value) := c : bool) then
     _crate.io._print
       (format_arguments::["new_const"] [ "c is one hundred
 " ]) ;;

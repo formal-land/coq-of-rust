@@ -9,6 +9,7 @@ CoqOfRust.v
 custom_types/enums.v
 expressions/statement.v
 flow_of_control/match.v
+flow_of_control/match_binding_destructure_enum_variants.v
 hello_world/hello_world.v
 macro_rules/macro_example.v
 primitives/compound_types.v

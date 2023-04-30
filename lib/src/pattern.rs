@@ -10,7 +10,8 @@ use rustc_span::source_map::Spanned;
 #[derive(Debug)]
 pub enum Pattern {
     Wild,
-    Binding(String),
+    Variable(String),
+    Binding(String, Box<Pattern>),
     StructStruct(Path, Vec<(String, Pattern)>, StructOrVariant),
     StructTuple(Path, Vec<Pattern>, StructOrVariant),
     Or(Vec<Pattern>),
@@ -23,7 +24,13 @@ pub enum Pattern {
 pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
     match &pat.kind {
         PatKind::Wild => Pattern::Wild,
-        PatKind::Binding(_, _, ident, _) => Pattern::Binding(ident.name.to_string()),
+        PatKind::Binding(_, _, ident, pat) => {
+            let name = ident.name.to_string();
+            match pat {
+                None => Pattern::Variable(ident.name.to_string()),
+                Some(pat) => Pattern::Binding(name, Box::new(compile_pattern(tcx, pat))),
+            }
+        }
         PatKind::Struct(qpath, pats, _) => {
             let path = compile_qpath(qpath);
             let pats = pats
@@ -113,13 +120,21 @@ impl Pattern {
     /// Returns wether a pattern is a single binding, to know if we need a quote
     /// in the "let" in Coq.
     pub fn is_single_binding(&self) -> bool {
-        matches!(self, Pattern::Binding(_))
+        matches!(self, Pattern::Variable(_))
     }
 
     pub fn to_doc(&self) -> Doc {
         match self {
             Pattern::Wild => text("_"),
-            Pattern::Binding(name) => text(name),
+            Pattern::Variable(name) => text(name),
+            Pattern::Binding(name, pat) => nest([
+                text("("),
+                pat.to_doc(),
+                text(" as"),
+                line(),
+                text(name),
+                text(")"),
+            ]),
             Pattern::StructStruct(path, fields, struct_or_variant) => group([
                 match struct_or_variant {
                     StructOrVariant::Struct => nil(),

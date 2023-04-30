@@ -18,14 +18,14 @@ Definition main (_ : unit) : unit :=
         [ "I haven't celebrated my first birthday yet
 " ]) ;;
     tt
-  | n =>
+  | ((1|2|3|4|5|6|7|8|9|10|11|12) as n) =>
     _crate.io._print
       (format_arguments::["new_v1"]
         [ "I'm a child of age "; "
 " ]
         [ format_argument::["new_debug"] n ]) ;;
     tt
-  | n =>
+  | ((13|14|15|16|17|18|19) as n) =>
     _crate.io._print
       (format_arguments::["new_v1"]
         [ "I'm a teen of age "; "
