@@ -29,7 +29,7 @@ Module ImplList.
   }.
   
   Definition len (self : ref Self) : u32 :=
-    match deref self with
+    match self.["deref"] with
     | Cons _ tail => 1.["add"] tail.["len"]
     | Nil => 0
     end.
@@ -39,7 +39,7 @@ Module ImplList.
   }.
   
   Definition stringify (self : ref Self) : String :=
-    match deref self with
+    match self.["deref"] with
     | Cons head tail =>
       let res :=
         _crate.fmt.format

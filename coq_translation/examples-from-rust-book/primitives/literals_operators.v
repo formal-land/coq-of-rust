@@ -32,7 +32,7 @@ Definition main (_ : unit) : unit :=
     (format_arguments::["new_v1"]
       [ "NOT true is "; "
 " ]
-      [ format_argument::["new_display"] (not true) ]) ;;
+      [ format_argument::["new_display"] true.["not"] ]) ;;
   tt ;;
   _crate.io._print
     (format_arguments::["new_v1_formatted"]

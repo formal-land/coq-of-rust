@@ -55,10 +55,10 @@ Definition main (_ : unit) : unit :=
       2,
       3,
       4,
-      neg 1,
-      neg 2,
-      neg 3,
-      neg 4,
+      1.["neg"],
+      2.["neg"],
+      3.["neg"],
+      4.["neg"],
       0 (* 0.1 *),
       0 (* 0.2 *),
       "a"%char,
@@ -75,7 +75,7 @@ Definition main (_ : unit) : unit :=
 " ]
       [ format_argument::["new_display"] (long_tuple.[1]) ]) ;;
   tt ;;
-  let tuple_of_tuples := ((1, 2, 2), (4, neg 1), neg 2) in
+  let tuple_of_tuples := ((1, 2, 2), (4, 1.["neg"]), 2.["neg"]) in
   _crate.io._print
     (format_arguments::["new_v1"]
       [ "tuple of tuples: "; "

@@ -49,7 +49,7 @@ Module Impl__crate_clone_Clone_for_Point.
   
   Definition clone (self : ref Self) : Point :=
     let '_ := tt in
-    deref self.
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -94,14 +94,14 @@ Definition main (_ : unit) : unit :=
     {|
       Rectangle.top_left := origin tt;
       Rectangle.bottom_right :=
-        {| Point.x := 3 (* 3.0 *); Point.y := neg 4 (* 4.0 *); |};
+        {| Point.x := 3 (* 3.0 *); Point.y := 4 (* 4.0 *).["neg"]; |};
     |} in
   let boxed_rectangle :=
     Box::["new"]
       {|
         Rectangle.top_left := origin tt;
         Rectangle.bottom_right :=
-          {| Point.x := 3 (* 3.0 *); Point.y := neg 4 (* 4.0 *); |};
+          {| Point.x := 3 (* 3.0 *); Point.y := 4 (* 4.0 *).["neg"]; |};
       |} in
   let boxed_point := Box::["new"] (origin tt) in
   let box_in_a_box := Box::["new"] (boxed_origin tt) in
@@ -135,7 +135,7 @@ Definition main (_ : unit) : unit :=
 " ]
       [ format_argument::["new_display"] (mem.size_of_val box_in_a_box) ]) ;;
   tt ;;
-  let unboxed_point := deref boxed_point in
+  let unboxed_point := boxed_point.["deref"] in
   _crate.io._print
     (format_arguments::["new_v1"]
       [ "Unboxed point occupies "; " bytes on the stack

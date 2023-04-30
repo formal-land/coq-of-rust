@@ -35,7 +35,7 @@ Definition main (_ : unit) : unit :=
     (format_arguments::["new_v1"]
       [ "  -1 as a u8 is : "; "
 " ]
-      [ format_argument::["new_display"] (cast (neg 1) u8) ]) ;;
+      [ format_argument::["new_display"] (cast 1.["neg"] u8) ]) ;;
   tt ;;
   _crate.io._print
     (format_arguments::["new_v1"]
@@ -77,7 +77,7 @@ Definition main (_ : unit) : unit :=
     (format_arguments::["new_v1"]
       [ "-100.0 as u8 is : "; "
 " ]
-      [ format_argument::["new_display"] (cast (neg 100 (* 100.0 *)) u8) ]) ;;
+      [ format_argument::["new_display"] (cast 100 (* 100.0 *).["neg"] u8) ]) ;;
   tt ;;
   _crate.io._print
     (format_arguments::["new_v1"]
@@ -98,7 +98,7 @@ Definition main (_ : unit) : unit :=
 " ]
       [
         format_argument::["new_display"]
-          (neg 100 (* 100.0 *)).["to_int_unchecked"]
+          100 (* 100.0 *).["neg"].["to_int_unchecked"]
       ]) ;;
   tt ;;
   _crate.io._print

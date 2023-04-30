@@ -13,7 +13,7 @@ Definition print_one (x : ref i32) : unit :=
   tt.
 
 Definition add_one (x : mut_ref i32) : unit :=
-  (deref x).["add_assign"] 1 ;;
+  x.["deref"].["add_assign"] 1 ;;
   tt.
 
 Definition print_multi (x : ref i32) (y : ref i32) : unit :=

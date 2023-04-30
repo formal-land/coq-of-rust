@@ -72,12 +72,12 @@ Definition main (_ : unit) : unit :=
   let username := UsernameWidget.get form in
   match ("rustacean".["to_owned"], username) with
   | (left_val, right_val) =>
-    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
+    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
-        (deref left_val)
-        (deref right_val)
+        left_val.["deref"]
+        right_val.["deref"]
         _crate.option.Option.None ;;
       tt
     else
@@ -86,12 +86,12 @@ Definition main (_ : unit) : unit :=
   let age := AgeWidget.get form in
   match (28, age) with
   | (left_val, right_val) =>
-    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
+    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
-        (deref left_val)
-        (deref right_val)
+        left_val.["deref"]
+        right_val.["deref"]
         _crate.option.Option.None ;;
       tt
     else

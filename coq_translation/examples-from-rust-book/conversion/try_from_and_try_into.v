@@ -79,12 +79,12 @@ End Impl_TryFrom_for_EvenNumber.
 Definition main (_ : unit) : unit :=
   match (EvenNumber::["try_from"] 8, Ok (EvenNumber.Build_t 8)) with
   | (left_val, right_val) =>
-    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
+    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
-        (deref left_val)
-        (deref right_val)
+        left_val.["deref"]
+        right_val.["deref"]
         _crate.option.Option.None ;;
       tt
     else
@@ -92,12 +92,12 @@ Definition main (_ : unit) : unit :=
   end ;;
   match (EvenNumber::["try_from"] 5, Err tt) with
   | (left_val, right_val) =>
-    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
+    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
-        (deref left_val)
-        (deref right_val)
+        left_val.["deref"]
+        right_val.["deref"]
         _crate.option.Option.None ;;
       tt
     else
@@ -106,12 +106,12 @@ Definition main (_ : unit) : unit :=
   let result := 8.["try_into"] in
   match (result, Ok (EvenNumber.Build_t 8)) with
   | (left_val, right_val) =>
-    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
+    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
-        (deref left_val)
-        (deref right_val)
+        left_val.["deref"]
+        right_val.["deref"]
         _crate.option.Option.None ;;
       tt
     else
@@ -120,12 +120,12 @@ Definition main (_ : unit) : unit :=
   let result := 5.["try_into"] in
   match (result, Err tt) with
   | (left_val, right_val) =>
-    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
+    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
-        (deref left_val)
-        (deref right_val)
+        left_val.["deref"]
+        right_val.["deref"]
         _crate.option.Option.None ;;
       tt
     else

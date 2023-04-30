@@ -18,7 +18,7 @@ Definition main (_ : unit) : unit :=
 " ]
       [ format_argument::["new_display"] mutable_box ]) ;;
   tt ;;
-  assign (deref mutable_box) 4 ;;
+  assign mutable_box.["deref"] 4 ;;
   _crate.io._print
     (format_arguments::["new_v1"]
       [ "mutable_box now contains "; "

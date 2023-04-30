@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  let triple := (0, neg 2, 3) in
+  let triple := (0, 2.["neg"], 3) in
   _crate.io._print
     (format_arguments::["new_v1"]
       [ "Tell me about "; "

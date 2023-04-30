@@ -33,7 +33,7 @@ End Impl__crate_fmt_Debug_for_Inch.
 Module Impl__crate_clone_Clone_for_Inch.
   Definition Self := Inch.
   
-  Definition clone (self : ref Self) : Inch := deref self.
+  Definition clone (self : ref Self) : Inch := self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -78,7 +78,7 @@ End Impl__crate_fmt_Debug_for_Mm.
 Module Impl__crate_clone_Clone_for_Mm.
   Definition Self := Mm.
   
-  Definition clone (self : ref Self) : Mm := deref self.
+  Definition clone (self : ref Self) : Mm := self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;

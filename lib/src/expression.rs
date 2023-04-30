@@ -110,8 +110,6 @@ pub enum Expr {
     },
 }
 
-/// The function [compile_bin_op] converts a hir binary operator to a
-/// stringfields
 fn compile_bin_op(bin_op: &BinOp) -> String {
     match bin_op.node {
         BinOpKind::Add => "add".to_string(),
@@ -238,10 +236,11 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         }
         ExprKind::Unary(un_op, expr) => {
             let expr = compile_expr(tcx, expr);
-            let func = Box::new(Expr::LocalVar(compile_un_op(un_op)));
-            Expr::Call {
+            let func = compile_un_op(un_op);
+            Expr::MethodCall {
+                object: Box::new(expr),
                 func,
-                args: vec![expr],
+                args: vec![],
             }
         }
         ExprKind::Lit(lit) => Expr::Literal(lit.node.clone()),
