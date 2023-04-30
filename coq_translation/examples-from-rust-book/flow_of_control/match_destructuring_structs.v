@@ -3,6 +3,21 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
+Module Foo.
+  Record t : Set := {
+    x : u32 * u32;
+    y : u32;
+  }.
+  
+  Global Instance Get_x : Notation.Dot "x" := {
+    Notation.dot '(Build_t x0 _) := x0;
+  }.
+  Global Instance Get_y : Notation.Dot "y" := {
+    Notation.dot '(Build_t _ x1) := x1;
+  }.
+End Foo.
+Definition Foo : Set := Foo.t.
+
 Definition main (_ : unit) : unit :=
   let foo := {| Foo.x := (1, 2); Foo.y := 3; |} in
   match foo with
@@ -29,18 +44,3 @@ Definition main (_ : unit) : unit :=
         [ format_argument::["new_display"] y ]) ;;
     tt
   end.
-
-Module Foo.
-  Record t : Set := {
-    x : u32 * u32;
-    y : u32;
-  }.
-  
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
-End Foo.
-Definition Foo : Set := Foo.t.

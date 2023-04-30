@@ -20,19 +20,19 @@ Definition main (_ : unit) : unit :=
         [ format_argument::["new_debug"] y; format_argument::["new_debug"] z
         ]) ;;
     tt
-  | (1) =>
+  | (1, _, _) =>
     _crate.io._print
       (format_arguments::["new_const"]
         [ "First is `1` and the rest doesn't matter
 " ]) ;;
     tt
-  | (2) =>
+  | (_, 2) =>
     _crate.io._print
       (format_arguments::["new_const"]
         [ "last is `2` and the rest doesn't matter
 " ]) ;;
     tt
-  | (3, 4) =>
+  | (3, _, 4) =>
     _crate.io._print
       (format_arguments::["new_const"]
         [ "First is `3`, last is `4`, and the rest doesn't matter

@@ -50,8 +50,25 @@ pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
             Pattern::Or(pats.iter().map(|pat| compile_pattern(tcx, pat)).collect())
         }
         PatKind::Path(qpath) => Pattern::Path(compile_qpath(qpath)),
-        PatKind::Tuple(pats, _) => {
-            Pattern::Tuple(pats.iter().map(|pat| compile_pattern(tcx, pat)).collect())
+        PatKind::Tuple(pats, dot_dot_pos) => {
+            let mut pats = pats
+                .iter()
+                .map(|pat| compile_pattern(tcx, pat))
+                .collect::<Vec<_>>();
+            match dot_dot_pos.as_opt_usize() {
+                None => (),
+                Some(0) => pats.insert(0, Pattern::Wild),
+                Some(_) => {
+                    tcx.sess
+                        .struct_span_warn(
+                            pat.span,
+                            "Only leading `..` patterns are supported in tuple patterns.",
+                        )
+                        .help("Use underscore `_` patterns instead.")
+                        .emit();
+                }
+            }
+            Pattern::Tuple(pats)
         }
         PatKind::Box(pat) => compile_pattern(tcx, pat),
         PatKind::Ref(pat, _) => compile_pattern(tcx, pat),
@@ -63,6 +80,7 @@ pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
                         pat.span,
                         "Only literal expressions in patterns are supported.",
                     )
+                    .help("Use an `if` statement instead.")
                     .emit();
                 Pattern::Wild
             }
@@ -95,7 +113,7 @@ pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
                             pat.span,
                             "Only ranges on literal integers are supported.",
                         )
-                        .help("You can use an 'if' statement instead.")
+                        .help("Use an `if` statement instead.")
                         .emit();
                     Pattern::Wild
                 }
@@ -107,7 +125,7 @@ pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
                         pat.span,
                         "Range patterns with an open bound are not supported.",
                     )
-                    .help("You can use an 'if' statement instead.")
+                    .help("Use an `if` statement instead.")
                     .emit();
                 Pattern::Wild
             }

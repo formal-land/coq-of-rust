@@ -1,9 +1,9 @@
-fn main() {
-    struct Foo {
-        x: (u32, u32),
-        y: u32,
-    }
+struct Foo {
+    x: (u32, u32),
+    y: u32,
+}
 
+fn main() {
     // Try changing the values in the struct to see what happens
     let foo = Foo { x: (1, 2), y: 3 };
 

@@ -819,22 +819,157 @@ End std.
 Module bool_Instances.
   Global Instance IDisplay : std.fmt.Display.Trait bool.
   Admitted.
+
+  Global Instance IDebug : std.fmt.Debug.Trait bool.
+  Admitted.
 End bool_Instances.
 
 Module char_Instances.
   Global Instance IDisplay : std.fmt.Display.Trait char.
+  Admitted.
+
+  Global Instance IDebug : std.fmt.Debug.Trait char.
   Admitted.
 End char_Instances.
 
 Module str_Instances.
   Global Instance IDisplay : std.fmt.Display.Trait str.
   Admitted.
+
+  Global Instance IDebug : std.fmt.Debug.Trait str.
+  Admitted.
 End str_Instances.
 
 Module Z_Instances.
   Global Instance IDisplay : std.fmt.Display.Trait Z.
   Admitted.
+
+  Global Instance IDebug : std.fmt.Debug.Trait Z.
+  Admitted.
 End Z_Instances.
+
+Module Debug_Tuple_Instances.
+  Global Instance IDebug2 {A1 A2 : Set}
+    `(std.fmt.Debug.Trait A1)
+    `(std.fmt.Debug.Trait A2) :
+    std.fmt.Debug.Trait (A1 * A2).
+  Admitted.
+
+  Global Instance IDebug3 {A1 A2 A3 : Set}
+    `(std.fmt.Debug.Trait A1)
+    `(std.fmt.Debug.Trait A2)
+    `(std.fmt.Debug.Trait A3) :
+    std.fmt.Debug.Trait (A1 * A2 * A3).
+  Admitted.
+
+  Global Instance IDebug4 {A1 A2 A3 A4 : Set}
+    `(std.fmt.Debug.Trait A1)
+    `(std.fmt.Debug.Trait A2)
+    `(std.fmt.Debug.Trait A3)
+    `(std.fmt.Debug.Trait A4) :
+   std.fmt.Debug.Trait (A1 * A2 * A3 * A4).
+  Admitted.
+
+  Global Instance IDebug5 {A1 A2 A3 A4 A5 : Set}
+    `(std.fmt.Debug.Trait A1)
+    `(std.fmt.Debug.Trait A2)
+    `(std.fmt.Debug.Trait A3)
+    `(std.fmt.Debug.Trait A4)
+    `(std.fmt.Debug.Trait A5) :
+   std.fmt.Debug.Trait (A1 * A2 * A3 * A4 * A5).
+  Admitted.
+
+  Global Instance IDebug6 {A1 A2 A3 A4 A5 A6 : Set}
+    `(std.fmt.Debug.Trait A1)
+    `(std.fmt.Debug.Trait A2)
+    `(std.fmt.Debug.Trait A3)
+    `(std.fmt.Debug.Trait A4)
+    `(std.fmt.Debug.Trait A5)
+    `(std.fmt.Debug.Trait A6) :
+   std.fmt.Debug.Trait (A1 * A2 * A3 * A4 * A5 * A6).
+  Admitted.
+
+  Global Instance IDebug7 {A1 A2 A3 A4 A5 A6 A7 : Set}
+    `(std.fmt.Debug.Trait A1)
+    `(std.fmt.Debug.Trait A2)
+    `(std.fmt.Debug.Trait A3)
+    `(std.fmt.Debug.Trait A4)
+    `(std.fmt.Debug.Trait A5)
+    `(std.fmt.Debug.Trait A6)
+    `(std.fmt.Debug.Trait A7) :
+   std.fmt.Debug.Trait (A1 * A2 * A3 * A4 * A5 * A6 * A7).
+  Admitted.
+
+  Global Instance IDebug8 {A1 A2 A3 A4 A5 A6 A7 A8 : Set}
+    `(std.fmt.Debug.Trait A1)
+    `(std.fmt.Debug.Trait A2)
+    `(std.fmt.Debug.Trait A3)
+    `(std.fmt.Debug.Trait A4)
+    `(std.fmt.Debug.Trait A5)
+    `(std.fmt.Debug.Trait A6)
+    `(std.fmt.Debug.Trait A7)
+    `(std.fmt.Debug.Trait A8) :
+    std.fmt.Debug.Trait (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8).
+  Admitted.
+
+  Global Instance IDebug9 {A1 A2 A3 A4 A5 A6 A7 A8 A9 : Set}
+    `(std.fmt.Debug.Trait A1)
+    `(std.fmt.Debug.Trait A2)
+    `(std.fmt.Debug.Trait A3)
+    `(std.fmt.Debug.Trait A4)
+    `(std.fmt.Debug.Trait A5)
+    `(std.fmt.Debug.Trait A6)
+    `(std.fmt.Debug.Trait A7)
+    `(std.fmt.Debug.Trait A8)
+    `(std.fmt.Debug.Trait A9) :
+    std.fmt.Debug.Trait (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8 * A9).
+  Admitted.
+
+  Global Instance IDebug10 {A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 : Set}
+    `(std.fmt.Debug.Trait A1)
+    `(std.fmt.Debug.Trait A2)
+    `(std.fmt.Debug.Trait A3)
+    `(std.fmt.Debug.Trait A4)
+    `(std.fmt.Debug.Trait A5)
+    `(std.fmt.Debug.Trait A6)
+    `(std.fmt.Debug.Trait A7)
+    `(std.fmt.Debug.Trait A8)
+    `(std.fmt.Debug.Trait A9)
+    `(std.fmt.Debug.Trait A10) :
+    std.fmt.Debug.Trait (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8 * A9 * A10).
+  Admitted.
+
+Global Instance IDebug11 {A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 A11 : Set}
+    `(std.fmt.Debug.Trait A1)
+    `(std.fmt.Debug.Trait A2)
+    `(std.fmt.Debug.Trait A3)
+    `(std.fmt.Debug.Trait A4)
+    `(std.fmt.Debug.Trait A5)
+    `(std.fmt.Debug.Trait A6)
+    `(std.fmt.Debug.Trait A7)
+    `(std.fmt.Debug.Trait A8)
+    `(std.fmt.Debug.Trait A9)
+    `(std.fmt.Debug.Trait A10)
+    `(std.fmt.Debug.Trait A11) :
+    std.fmt.Debug.Trait (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8 * A9 * A10 * A11).
+  Admitted.
+
+  Global Instance IDebug12 {A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 A11 A12 : Set}
+    `(std.fmt.Debug.Trait A1)
+    `(std.fmt.Debug.Trait A2)
+    `(std.fmt.Debug.Trait A3)
+    `(std.fmt.Debug.Trait A4)
+    `(std.fmt.Debug.Trait A5)
+    `(std.fmt.Debug.Trait A6)
+    `(std.fmt.Debug.Trait A7)
+    `(std.fmt.Debug.Trait A8)
+    `(std.fmt.Debug.Trait A9)
+    `(std.fmt.Debug.Trait A10)
+    `(std.fmt.Debug.Trait A11)
+    `(std.fmt.Debug.Trait A12) :
+    std.fmt.Debug.Trait (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8 * A9 * A10 * A11 * A12).
+  Admitted.
+End Debug_Tuple_Instances.
 
 Module _crate.
   Module intrinsics.
