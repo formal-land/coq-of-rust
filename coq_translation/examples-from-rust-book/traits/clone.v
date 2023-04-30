@@ -29,7 +29,7 @@ End Impl__crate_fmt_Debug_for_Unit.
 Module Impl__crate_clone_Clone_for_Unit.
   Definition Self := Unit.
   
-  Definition clone (self : ref Self) : Unit := deref self.
+  Definition clone (self : ref Self) : Unit := self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;

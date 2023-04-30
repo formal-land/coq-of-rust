@@ -13,28 +13,30 @@ fn change_to_coq_extension(path: &path::Path) -> PathBuf {
     new_path
 }
 
-pub fn run(src_folder: &path::Path) {
+pub fn run(src_path: &path::Path) {
+    // Get the parent folder if it is a file.
+    let src_folder = if src_path.is_file() {
+        src_path.parent().unwrap()
+    } else {
+        src_path
+    };
     let basic_folder_name = "coq_translation";
-    let unique_folder_name = format!(
-        "{}/{}/",
-        basic_folder_name,
-        src_folder.file_name().unwrap().to_str().unwrap(),
-    );
+    let unique_folder_name = format!("{}/{}/", basic_folder_name, src_folder.to_str().unwrap(),);
     let dst_folder = path::Path::new(&unique_folder_name);
-    if src_folder.is_file() {
-        let translation = create_translation_to_coq(PathBuf::from(src_folder));
+    if src_path.is_file() {
+        let translation = create_translation_to_coq(PathBuf::from(src_path));
 
-        let write_to_path = dst_folder.join(
-            change_to_coq_extension(src_folder)
+        let path_to_write = dst_folder.join(
+            change_to_coq_extension(src_path)
                 .file_name()
                 .unwrap()
                 .to_str()
                 .unwrap(),
         );
-        if !write_to_path.exists() {
+        if !path_to_write.exists() {
             fs::create_dir_all(dst_folder).unwrap();
         }
-        fs::write(write_to_path, translation).unwrap();
+        fs::write(path_to_write, translation).unwrap();
     } else {
         for entry in WalkDir::new(src_folder) {
             let entry = entry.unwrap();

@@ -13,11 +13,11 @@ Definition main (_ : unit) : unit :=
   let b :=
     (Slice::["into_vec"]
           (_crate.boxed.Box::["new"] [ 2; 3; 4 ])).["into_iter"].["collect"] in
-  if (not (a.["insert"] 4) : bool) then
+  if ((a.["insert"] 4).["not"] : bool) then
     _crate.panicking.panic "assertion failed: a.insert(4)"
   else
     tt ;;
-  if (not (a.["contains"] 4) : bool) then
+  if ((a.["contains"] 4).["not"] : bool) then
     _crate.panicking.panic "assertion failed: a.contains(&4)"
   else
     tt ;;

@@ -96,7 +96,7 @@ Definition main (_ : unit) : unit :=
       match LangItem iter with
       | None => Break
       | Some {| Some.0 := x; |} =>
-        (deref x).["mul_assign"] 3 ;;
+        x.["deref"].["mul_assign"] 3 ;;
         tt
       end ;;
       tt

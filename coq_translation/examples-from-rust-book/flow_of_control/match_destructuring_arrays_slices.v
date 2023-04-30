@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  let array := [ 1; neg 2; 6 ] in
+  let array := [ 1; 2.["neg"]; 6 ] in
   match array with
   | _ =>
     _crate.io._print

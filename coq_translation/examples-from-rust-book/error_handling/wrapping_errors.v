@@ -45,7 +45,7 @@ Module Impl_fmt_Display_for_DoubleError.
   Definition Self := DoubleError.
   
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
-    match deref self with
+    match self.["deref"] with
     | DoubleError.EmptyVec =>
       f.["write_fmt"]
         (format_arguments::["new_const"]
@@ -69,7 +69,7 @@ Module Impl_error_Error_for_DoubleError.
   Definition Self := DoubleError.
   
   Definition source (self : ref Self) : Option (ref TraitObject) :=
-    match deref self with
+    match self.["deref"] with
     | DoubleError.EmptyVec => None
     | DoubleError.Parse e => Some e
     end.

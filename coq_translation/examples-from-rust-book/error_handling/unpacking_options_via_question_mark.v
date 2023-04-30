@@ -30,7 +30,7 @@ Module Impl__crate_clone_Clone_for_Job.
   
   Definition clone (self : ref Self) : Job :=
     let '_ := tt in
-    deref self.
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -69,7 +69,7 @@ Module Impl__crate_clone_Clone_for_PhoneNumber.
   Definition clone (self : ref Self) : PhoneNumber :=
     let '_ := tt in
     let '_ := tt in
-    deref self.
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -124,12 +124,12 @@ Definition main (_ : unit) : unit :=
     |} in
   match (p.["work_phone_area_code"], Some 61) with
   | (left_val, right_val) =>
-    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
+    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
-        (deref left_val)
-        (deref right_val)
+        left_val.["deref"]
+        right_val.["deref"]
         _crate.option.Option.None ;;
       tt
     else

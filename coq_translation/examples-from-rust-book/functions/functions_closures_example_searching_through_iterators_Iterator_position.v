@@ -10,12 +10,12 @@ Definition main (_ : unit) : unit :=
     vec.["iter"].["position"] (fun x => (x.["rem"] 2).["eq"] 0) in
   match (index_of_first_even_number, Some 5) with
   | (left_val, right_val) =>
-    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
+    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
-        (deref left_val)
-        (deref right_val)
+        left_val.["deref"]
+        right_val.["deref"]
         _crate.option.Option.None ;;
       tt
     else
@@ -25,12 +25,12 @@ Definition main (_ : unit) : unit :=
     vec.["into_iter"].["position"] (fun x => x.["lt"] 0) in
   match (index_of_first_negative_number, None) with
   | (left_val, right_val) =>
-    if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
+    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
       _crate.panicking.assert_failed
         kind
-        (deref left_val)
-        (deref right_val)
+        left_val.["deref"]
+        right_val.["deref"]
         _crate.option.Option.None ;;
       tt
     else

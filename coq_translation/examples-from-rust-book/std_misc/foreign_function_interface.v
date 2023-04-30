@@ -10,7 +10,7 @@ Error ForeignMod.
 Definition cos (z : Complex) : Complex := ccosf z.
 
 Definition main (_ : unit) : unit :=
-  let z := {| Complex.re := neg 1 (* 1. *); Complex.im := 0 (* 0. *); |} in
+  let z := {| Complex.re := 1 (* 1. *).["neg"]; Complex.im := 0 (* 0. *); |} in
   let z_sqrt := csqrtf z in
   _crate.io._print
     (format_arguments::["new_v1"]
@@ -48,7 +48,7 @@ Module Impl__crate_clone_Clone_for_Complex.
   
   Definition clone (self : ref Self) : Complex :=
     let '_ := tt in
-    deref self.
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -76,7 +76,7 @@ Module Impl_fmt_Debug_for_Complex.
           [ ""; "-"; "i" ]
           [
             format_argument::["new_display"] self.["re"];
-            format_argument::["new_display"] (neg self.["im"])
+            format_argument::["new_display"] self.["im"].["neg"]
           ])
     else
       f.["write_fmt"]

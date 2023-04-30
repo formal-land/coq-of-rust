@@ -14,7 +14,7 @@ Definition main (_ : unit) : unit :=
         [ format_argument::["new_debug"] val ]) ;;
     tt
   end ;;
-  match deref reference with
+  match reference.["deref"] with
   | val =>
     _crate.io._print
       (format_arguments::["new_v1"]
@@ -38,7 +38,7 @@ Definition main (_ : unit) : unit :=
   end ;;
   match mut_value with
   | m =>
-    (deref m).["add_assign"] 10 ;;
+    m.["deref"].["add_assign"] 10 ;;
     _crate.io._print
       (format_arguments::["new_v1"]
         [ "We added 10. `mut_value`: "; "

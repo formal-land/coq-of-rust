@@ -23,7 +23,7 @@ Module Impl__crate_clone_Clone_for_Point.
   
   Definition clone (self : ref Self) : Point :=
     let '_ := tt in
-    deref self.
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -49,16 +49,18 @@ Definition main (_ : unit) : unit :=
     (format_arguments::["new_v1"]
       [ "ref_c1 equals ref_c2: "; "
 " ]
-      [ format_argument::["new_display"] ((deref ref_c1).["eq"] (deref ref_c2))
+      [
+        format_argument::["new_display"]
+          (ref_c1.["deref"].["eq"] ref_c2.["deref"])
       ]) ;;
   tt ;;
   let point := {| Point.x := 0; Point.y := 0; |} in
   let _copy_of_x :=
     let '{| Point.x := ref_to_x; Point.y := _; |} := point in
-    deref ref_to_x in
+    ref_to_x.["deref"] in
   let mutable_point := point in
   let '{| Point.x := _; Point.y := mut_ref_to_y; |} := mutable_point in
-  assign (deref mut_ref_to_y) 1 ;;
+  assign mut_ref_to_y.["deref"] 1 ;;
   tt ;;
   _crate.io._print
     (format_arguments::["new_v1"]
@@ -80,7 +82,7 @@ Definition main (_ : unit) : unit :=
   tt ;;
   let mutable_tuple := (Box::["new"] 5, 3) in
   let '(_, last) := mutable_tuple in
-  assign (deref last) 2 ;;
+  assign last.["deref"] 2 ;;
   tt ;;
   _crate.io._print
     (format_arguments::["new_v1"]

@@ -17,7 +17,7 @@ fn is_valid_path(path: &str) -> Result<PathBuf, String> {
     if target_path.exists() {
         Ok(target_path.to_path_buf())
     } else {
-        Err(format!("Path is not valid: {path}"))
+        Err(format!("Path does not exist: {path}"))
     }
 }
 
@@ -40,13 +40,6 @@ struct Cli {
 
 fn main() {
     let cli = Cli::parse();
-
-    match cli.debug {
-        0 => (), //println!("Debug mode is off"),
-        1 => println!("Debug mode is kind of on"),
-        2 => println!("Debug mode is on"),
-        _ => println!("Don't be crazy"),
-    }
 
     match &cli.command {
         Commands::Translate(path) => {

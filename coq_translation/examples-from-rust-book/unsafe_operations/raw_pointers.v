@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
   let raw_p := 10 in
-  if (not ((deref raw_p).["eq"] 10) : bool) then
+  if ((raw_p.["deref"].["eq"] 10).["not"] : bool) then
     _crate.panicking.panic "assertion failed: *raw_p == 10"
   else
     tt ;;

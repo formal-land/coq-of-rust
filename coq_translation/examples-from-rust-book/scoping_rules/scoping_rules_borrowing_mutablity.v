@@ -29,7 +29,7 @@ Module Impl__crate_clone_Clone_for_Book.
     let '_ := tt in
     let '_ := tt in
     let '_ := tt in
-    deref self.
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;

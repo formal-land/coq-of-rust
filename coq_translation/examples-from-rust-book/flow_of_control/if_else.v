@@ -28,7 +28,7 @@ Definition main (_ : unit) : unit :=
       tt ;;
       tt ;;
   let big_n :=
-    if ((n.["lt"] 10).["andb"] (n.["gt"] (neg 10)) : bool) then
+    if ((n.["lt"] 10).["andb"] (n.["gt"] 10.["neg"]) : bool) then
       _crate.io._print
         (format_arguments::["new_const"]
           [ ", and is a small number, increase ten-fold

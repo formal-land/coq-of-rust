@@ -26,7 +26,7 @@ jobs:
       run: cargo clippy --all-targets --all-features -- -D warnings
     - name: Translate Rust examples
       run: |
-        cargo run --bin coq-of-rust -- translate --path examples-from-rust-book
+        python run_tests.py
         git -c color.ui=always diff --exit-code
     - name: Compile Coq translations
       run: |
