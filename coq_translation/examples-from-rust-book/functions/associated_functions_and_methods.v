@@ -110,12 +110,12 @@ Module ImplPair.
   Definition destroy (self : Self) :=
     let 'Pair.Build_t first second := self in
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Destroying Pair("; ", "; ")
 " ]
         [
-          _crate.fmt.ArgumentV1::["new_display"] first;
-          _crate.fmt.ArgumentV1::["new_display"] second
+          format_argument::["new_display"] first;
+          format_argument::["new_display"] second
         ]) ;;
     tt ;;
     tt.
@@ -132,16 +132,16 @@ Definition main (_ : unit) : unit :=
       Rectangle.p2 := Point::["new"] 3 (* 3.0 *) 4 (* 4.0 *);
     |} in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Rectangle perimeter: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] rectangle.["perimeter"] ]) ;;
+      [ format_argument::["new_display"] rectangle.["perimeter"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Rectangle area: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] rectangle.["area"] ]) ;;
+      [ format_argument::["new_display"] rectangle.["area"] ]) ;;
   tt ;;
   let square :=
     {|

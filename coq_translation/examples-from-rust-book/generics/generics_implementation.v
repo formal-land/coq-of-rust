@@ -49,12 +49,12 @@ Definition main (_ : unit) : unit :=
   let x := {| Val.val := 3 (* 3.0 *); |} in
   let y := {| GenVal.gen_val := 3; |} in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; ", "; "
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] x.["value"];
-        _crate.fmt.ArgumentV1::["new_display"] y.["value"]
+        format_argument::["new_display"] x.["value"];
+        format_argument::["new_display"] y.["value"]
       ]) ;;
   tt ;;
   tt.

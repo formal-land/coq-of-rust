@@ -11,15 +11,14 @@ Definition Ordering := Ordering.t.
 Module Rng := rand.Rng.
 
 Definition main (_ : unit) : unit :=
-  _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "Guess the number!
-" ] [ ]) ;;
+  _crate.io._print (format_arguments::["new_const"] [ "Guess the number!
+" ]) ;;
   tt ;;
   let secret_number := (rand.thread_rng tt).["gen_range"] (LangItem 1 100) in
   loop
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "Please input your guess.
-" ] [ ]) ;;
+      (format_arguments::["new_const"] [ "Please input your guess.
+" ]) ;;
     tt ;;
     let guess := String::["new"] tt in
     ((io.stdin tt).["read_line"] guess).["expect"] "Failed to read line" ;;
@@ -29,24 +28,23 @@ Definition main (_ : unit) : unit :=
       | Err _ => Continue
       end in
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "You guessed: "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] guess ]) ;;
+        [ format_argument::["new_display"] guess ]) ;;
     tt ;;
     match guess.["cmp"] secret_number with
     | Ordering.Less =>
-      _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"] [ "Too small!
-" ] [ ]) ;;
+      _crate.io._print (format_arguments::["new_const"] [ "Too small!
+" ]) ;;
       tt
     | Ordering.Greater =>
-      _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "Too big!
-" ] [ ]) ;;
+      _crate.io._print (format_arguments::["new_const"] [ "Too big!
+" ]) ;;
       tt
     | Ordering.Equal =>
-      _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "You win!
-" ] [ ]) ;;
+      _crate.io._print (format_arguments::["new_const"] [ "You win!
+" ]) ;;
       tt ;;
       Break ;;
       tt

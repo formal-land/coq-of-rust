@@ -12,16 +12,16 @@ Definition main (_ : unit) : unit :=
   let first := 2 in
   let second := 3 in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "The product is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (multiply first second) ]) ;;
+      [ format_argument::["new_display"] (multiply first second) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; " is the first
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (choose_first first second) ]) ;;
+      [ format_argument::["new_display"] (choose_first first second) ]) ;;
   tt ;;
   tt ;;
   tt.

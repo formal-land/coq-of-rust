@@ -11,9 +11,9 @@ Definition main (_ : unit) : unit :=
   tt ;;
   let name := (core.str.from_utf8 name_buf).["unwrap"] in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "CPU Manufacturer ID: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] name ]) ;;
+      [ format_argument::["new_display"] name ]) ;;
   tt ;;
   tt.

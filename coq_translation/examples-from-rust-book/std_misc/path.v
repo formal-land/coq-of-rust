@@ -17,9 +17,9 @@ Definition main (_ : unit) : unit :=
   | None => _crate.rt.begin_panic "new path is not a valid UTF-8 sequence"
   | Some s =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "new path is "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] s ]) ;;
+        [ format_argument::["new_display"] s ]) ;;
     tt
   end.

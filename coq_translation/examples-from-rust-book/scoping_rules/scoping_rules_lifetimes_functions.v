@@ -5,10 +5,10 @@ Import Root.std.prelude.rust_2015.
 
 Definition print_one (x : ref i32) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "`print_one`: x is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] x ]) ;;
+      [ format_argument::["new_display"] x ]) ;;
   tt ;;
   tt.
 
@@ -18,12 +18,10 @@ Definition add_one (x : mut_ref i32) : unit :=
 
 Definition print_multi (x : ref i32) (y : ref i32) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "`print_multi`: x is "; ", y is "; "
 " ]
-      [
-        _crate.fmt.ArgumentV1::["new_display"] x;
-        _crate.fmt.ArgumentV1::["new_display"] y
+      [ format_argument::["new_display"] x; format_argument::["new_display"] y
       ]) ;;
   tt ;;
   tt.

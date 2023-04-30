@@ -24,12 +24,12 @@ Definition main (_ : unit) : unit :=
       | None => Break
       | Some {| Some.0 := (i, data_segment); |} =>
         _crate.io._print
-          (_crate.fmt.Arguments::["new_v1"]
+          (format_arguments::["new_v1"]
             [ "data segment "; " is ""; ""
 " ]
             [
-              _crate.fmt.ArgumentV1::["new_display"] i;
-              _crate.fmt.ArgumentV1::["new_display"] data_segment
+              format_argument::["new_display"] i;
+              format_argument::["new_display"] data_segment
             ]) ;;
         tt ;;
         children.["push"]
@@ -41,12 +41,12 @@ Definition main (_ : unit) : unit :=
                       (c.["to_digit"] 10).["expect"]
                         "should be a digit")).["sum"] in
               _crate.io._print
-                (_crate.fmt.Arguments::["new_v1"]
+                (format_arguments::["new_v1"]
                   [ "processed segment "; ", result="; "
 " ]
                   [
-                    _crate.fmt.ArgumentV1::["new_display"] i;
-                    _crate.fmt.ArgumentV1::["new_display"] result
+                    format_argument::["new_display"] i;
+                    format_argument::["new_display"] result
                   ]) ;;
               tt ;;
               result)) ;;
@@ -59,9 +59,9 @@ Definition main (_ : unit) : unit :=
   let final_result :=
     (children.["into_iter"].["map"] (fun c => c.["join"].["unwrap"])).["sum"] in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Final sum result: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] final_result ]) ;;
+      [ format_argument::["new_display"] final_result ]) ;;
   tt ;;
   tt.

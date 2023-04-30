@@ -4,7 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  let vec := Slice::["into_vec"] [ 1; 9; 3; 3; 13; 2 ] in
+  let vec :=
+    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 9; 3; 3; 13; 2 ]) in
   let index_of_first_even_number :=
     vec.["iter"].["position"] (fun x => (x.["rem"] 2).["eq"] 0) in
   match (index_of_first_even_number, Some 5) with

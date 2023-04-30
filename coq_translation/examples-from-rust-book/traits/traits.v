@@ -37,12 +37,12 @@ Module Animal.
   Global Instance Method_talk `(Trait) : Notation.Dot "talk" := {
     Notation.dot (self : ref Self) :=
       (_crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ ""; " says "; "
 " ]
           [
-            _crate.fmt.ArgumentV1::["new_display"] self.["name"];
-            _crate.fmt.ArgumentV1::["new_display"] self.["noise"]
+            format_argument::["new_display"] self.["name"];
+            format_argument::["new_display"] self.["noise"]
           ]) ;;
       tt ;;
       tt
@@ -88,12 +88,12 @@ Module Impl_Animal_for_Sheep.
   
   Definition talk (self : ref Self) :=
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ ""; " pauses briefly... "; "
 " ]
         [
-          _crate.fmt.ArgumentV1::["new_display"] self.["name"];
-          _crate.fmt.ArgumentV1::["new_display"] self.["noise"]
+          format_argument::["new_display"] self.["name"];
+          format_argument::["new_display"] self.["noise"]
         ]) ;;
     tt ;;
     tt.
@@ -115,18 +115,18 @@ Module ImplSheep_2.
   Definition shear (self : mut_ref Self) :=
     if (self.["is_naked"] : bool) then
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ ""; " is already naked...
 " ]
-          [ _crate.fmt.ArgumentV1::["new_display"] self.["name"] ]) ;;
+          [ format_argument::["new_display"] self.["name"] ]) ;;
       tt ;;
       tt
     else
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ ""; " gets a haircut!
 " ]
-          [ _crate.fmt.ArgumentV1::["new_display"] self.["name"] ]) ;;
+          [ format_argument::["new_display"] self.["name"] ]) ;;
       tt ;;
       assign self.["naked"] true ;;
       tt.

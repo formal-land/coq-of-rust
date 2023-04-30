@@ -13,13 +13,13 @@ Definition main (_ : unit) : unit :=
   let nanoseconds := cast 5 U64 in
   let inches := cast 2 U64 in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; " nanoseconds + "; " inches = "; " unit?
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] nanoseconds;
-        _crate.fmt.ArgumentV1::["new_display"] inches;
-        _crate.fmt.ArgumentV1::["new_display"] (nanoseconds.["add"] inches)
+        format_argument::["new_display"] nanoseconds;
+        format_argument::["new_display"] inches;
+        format_argument::["new_display"] (nanoseconds.["add"] inches)
       ]) ;;
   tt ;;
   tt.

@@ -49,12 +49,12 @@ End Impl__crate_marker_Copy_for_Book.
 
 Definition borrow_book (book : ref Book) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "I immutably borrowed "; " - "; " edition
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] book.["title"];
-        _crate.fmt.ArgumentV1::["new_display"] book.["year"]
+        format_argument::["new_display"] book.["title"];
+        format_argument::["new_display"] book.["year"]
       ]) ;;
   tt ;;
   tt.
@@ -62,12 +62,12 @@ Definition borrow_book (book : ref Book) : unit :=
 Definition new_edition (book : mut_ref Book) : unit :=
   assign book.["year"] 2014 ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "I mutably borrowed "; " - "; " edition
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] book.["title"];
-        _crate.fmt.ArgumentV1::["new_display"] book.["year"]
+        format_argument::["new_display"] book.["title"];
+        format_argument::["new_display"] book.["year"]
       ]) ;;
   tt ;;
   tt.

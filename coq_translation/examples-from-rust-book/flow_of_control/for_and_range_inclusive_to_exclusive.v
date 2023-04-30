@@ -11,31 +11,28 @@ Definition main (_ : unit) : unit :=
       | None => Break
       | Some {| Some.0 := n; |} =>
         if ((n.["rem"] 15).["eq"] 0 : bool) then
-          _crate.io._print
-            (_crate.fmt.Arguments::["new_v1"] [ "fizzbuzz
-" ] [ ]) ;;
+          _crate.io._print (format_arguments::["new_const"] [ "fizzbuzz
+" ]) ;;
           tt ;;
           tt
         else
           if ((n.["rem"] 3).["eq"] 0 : bool) then
-            _crate.io._print
-              (_crate.fmt.Arguments::["new_v1"] [ "fizz
-" ] [ ]) ;;
+            _crate.io._print (format_arguments::["new_const"] [ "fizz
+" ]) ;;
             tt ;;
             tt
           else
             if ((n.["rem"] 5).["eq"] 0 : bool) then
-              _crate.io._print
-                (_crate.fmt.Arguments::["new_v1"] [ "buzz
-" ] [ ]) ;;
+              _crate.io._print (format_arguments::["new_const"] [ "buzz
+" ]) ;;
               tt ;;
               tt
             else
               _crate.io._print
-                (_crate.fmt.Arguments::["new_v1"]
+                (format_arguments::["new_v1"]
                   [ ""; "
 " ]
-                  [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
+                  [ format_argument::["new_display"] n ]) ;;
               tt ;;
               tt
       end ;;

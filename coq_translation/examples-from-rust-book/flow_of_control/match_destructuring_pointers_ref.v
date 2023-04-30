@@ -8,19 +8,19 @@ Definition main (_ : unit) : unit :=
   match reference with
   | val =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Got a value via destructuring: "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] val ]) ;;
+        [ format_argument::["new_debug"] val ]) ;;
     tt
   end ;;
   match deref reference with
   | val =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Got a value via dereferencing: "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] val ]) ;;
+        [ format_argument::["new_debug"] val ]) ;;
     tt
   end ;;
   let _not_a_reference := 3 in
@@ -30,20 +30,20 @@ Definition main (_ : unit) : unit :=
   match value with
   | r =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Got a reference to a value: "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] r ]) ;;
+        [ format_argument::["new_debug"] r ]) ;;
     tt
   end ;;
   match mut_value with
   | m =>
     (deref m).["add_assign"] 10 ;;
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "We added 10. `mut_value`: "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] m ]) ;;
+        [ format_argument::["new_debug"] m ]) ;;
     tt ;;
     tt
   end.

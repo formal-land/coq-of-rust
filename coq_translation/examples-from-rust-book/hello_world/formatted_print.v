@@ -4,274 +4,121 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
-      [ ""; " days
-" ]
-      [ _crate.fmt.ArgumentV1::["new_display"] 31 ]) ;;
+  _crate.io._print (format_arguments::["new_v1"] [ "31 days
+" ] [ ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1_formatted"]
-      [ ""; ", this is "; ". "; ", this is "; "
+    (format_arguments::["new_v1"]
+      [ "Alice, this is Bob. Bob, this is Alice
 " ]
-      [
-        _crate.fmt.ArgumentV1::["new_display"] "Alice";
-        _crate.fmt.ArgumentV1::["new_display"] "Bob"
-      ]
-      [
-        {|
-          _crate.fmt.rt.v1.Argument.position := 0;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Unknown;
-              _crate.fmt.rt.v1.FormatSpec.flags := 0;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width :=
-                _crate.fmt.rt.v1.Count.Implied;
-            |};
-        |};
-        {|
-          _crate.fmt.rt.v1.Argument.position := 1;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Unknown;
-              _crate.fmt.rt.v1.FormatSpec.flags := 0;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width :=
-                _crate.fmt.rt.v1.Count.Implied;
-            |};
-        |};
-        {|
-          _crate.fmt.rt.v1.Argument.position := 1;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Unknown;
-              _crate.fmt.rt.v1.FormatSpec.flags := 0;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width :=
-                _crate.fmt.rt.v1.Count.Implied;
-            |};
-        |};
-        {|
-          _crate.fmt.rt.v1.Argument.position := 0;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Unknown;
-              _crate.fmt.rt.v1.FormatSpec.flags := 0;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width :=
-                _crate.fmt.rt.v1.Count.Implied;
-            |};
-        |}
-      ]
-      (_crate.fmt.UnsafeArg::["new"] tt)) ;;
+      [ ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
-      [ ""; " "; " "; "
+    (format_arguments::["new_v1"]
+      [ "the quick brown fox jumps over the lazy dog
 " ]
-      match ("the lazy dog", "the quick brown fox", "jumps over") with
-      | args =>
-        [
-          _crate.fmt.ArgumentV1::["new_display"] (args.[1]);
-          _crate.fmt.ArgumentV1::["new_display"] (args.[2]);
-          _crate.fmt.ArgumentV1::["new_display"] (args.[0])
-        ]
-      end) ;;
+      [ ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
-      [ "Base 10:               "; "
-" ]
-      [ _crate.fmt.ArgumentV1::["new_display"] 69420 ]) ;;
+    (format_arguments::["new_v1"] [ "Base 10:               69420
+" ] [ ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Base 2 (binary):       "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_binary"] 69420 ]) ;;
+      [ format_argument::["new_binary"] 69420 ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Base 8 (octal):        "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_octal"] 69420 ]) ;;
+      [ format_argument::["new_octal"] 69420 ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Base 16 (hexadecimal): "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_lower_hex"] 69420 ]) ;;
+      [ format_argument::["new_lower_hex"] 69420 ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Base 16 (hexadecimal): "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_upper_hex"] 69420 ]) ;;
+      [ format_argument::["new_upper_hex"] 69420 ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1_formatted"]
+    (format_arguments::["new_v1_formatted"]
       [ ""; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] 1 ]
+      [ format_argument::["new_display"] 1 ]
       [
-        {|
-          _crate.fmt.rt.v1.Argument.position := 0;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Right;
-              _crate.fmt.rt.v1.FormatSpec.flags := 0;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Is 5;
-            |};
-        |}
+        format_placeholder::["new"]
+          0
+          " "%char
+          format_alignment::["Right"]
+          0
+          format_count::["Implied"]
+          (format_count::["Is"] 5)
       ]
-      (_crate.fmt.UnsafeArg::["new"] tt)) ;;
+      (format_unsafe_arg::["new"] tt)) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1_formatted"]
+    (format_arguments::["new_v1_formatted"]
       [ ""; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] 1 ]
+      [ format_argument::["new_display"] 1 ]
       [
-        {|
-          _crate.fmt.rt.v1.Argument.position := 0;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := "0"%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Left;
-              _crate.fmt.rt.v1.FormatSpec.flags := 0;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Is 5;
-            |};
-        |}
+        format_placeholder::["new"]
+          0
+          "0"%char
+          format_alignment::["Left"]
+          0
+          format_count::["Implied"]
+          (format_count::["Is"] 5)
       ]
-      (_crate.fmt.UnsafeArg::["new"] tt)) ;;
+      (format_unsafe_arg::["new"] tt)) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1_formatted"]
+    (format_arguments::["new_v1_formatted"]
       [ ""; "
 " ]
+      [ format_argument::["new_display"] 1; format_argument::["from_usize"] 5 ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] 1;
-        _crate.fmt.ArgumentV1::["from_usize"] 5
+        format_placeholder::["new"]
+          0
+          "0"%char
+          format_alignment::["Right"]
+          0
+          format_count::["Implied"]
+          (format_count::["Param"] 1)
       ]
-      [
-        {|
-          _crate.fmt.rt.v1.Argument.position := 0;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := "0"%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Right;
-              _crate.fmt.rt.v1.FormatSpec.flags := 0;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width :=
-                _crate.fmt.rt.v1.Count.Param 1;
-            |};
-        |}
-      ]
-      (_crate.fmt.UnsafeArg::["new"] tt)) ;;
+      (format_unsafe_arg::["new"] tt)) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1_formatted"]
-      [ "My name is "; ", "; " "; "
-" ]
-      [
-        _crate.fmt.ArgumentV1::["new_display"] "Bond";
-        _crate.fmt.ArgumentV1::["new_display"] "James"
-      ]
-      [
-        {|
-          _crate.fmt.rt.v1.Argument.position := 0;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Unknown;
-              _crate.fmt.rt.v1.FormatSpec.flags := 0;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width :=
-                _crate.fmt.rt.v1.Count.Implied;
-            |};
-        |};
-        {|
-          _crate.fmt.rt.v1.Argument.position := 1;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Unknown;
-              _crate.fmt.rt.v1.FormatSpec.flags := 0;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width :=
-                _crate.fmt.rt.v1.Count.Implied;
-            |};
-        |};
-        {|
-          _crate.fmt.rt.v1.Argument.position := 0;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Unknown;
-              _crate.fmt.rt.v1.FormatSpec.flags := 0;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width :=
-                _crate.fmt.rt.v1.Count.Implied;
-            |};
-        |}
-      ]
-      (_crate.fmt.UnsafeArg::["new"] tt)) ;;
+    (format_arguments::["new_v1"] [ "My name is Bond, James Bond
+" ] [ ]) ;;
   tt ;;
   let number := 1 (* 1.0 *) in
   let width := 5 in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1_formatted"]
+    (format_arguments::["new_v1_formatted"]
       [ ""; "
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] number;
-        _crate.fmt.ArgumentV1::["from_usize"] width
+        format_argument::["new_display"] number;
+        format_argument::["from_usize"] width
       ]
       [
-        {|
-          _crate.fmt.rt.v1.Argument.position := 0;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Right;
-              _crate.fmt.rt.v1.FormatSpec.flags := 0;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width :=
-                _crate.fmt.rt.v1.Count.Param 1;
-            |};
-        |}
+        format_placeholder::["new"]
+          0
+          " "%char
+          format_alignment::["Right"]
+          0
+          format_count::["Implied"]
+          (format_count::["Param"] 1)
       ]
-      (_crate.fmt.UnsafeArg::["new"] tt)) ;;
+      (format_unsafe_arg::["new"] tt)) ;;
   tt ;;
   tt.
 

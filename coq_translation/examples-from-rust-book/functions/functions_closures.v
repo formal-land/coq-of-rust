@@ -8,22 +8,22 @@ Definition main (_ : unit) : unit :=
   let closure_annotated := fun i => i.["add"] outer_var in
   let closure_inferred := fun i => i.["add"] outer_var in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "closure_annotated: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (closure_annotated 1) ]) ;;
+      [ format_argument::["new_display"] (closure_annotated 1) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "closure_inferred: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (closure_inferred 1) ]) ;;
+      [ format_argument::["new_display"] (closure_inferred 1) ]) ;;
   tt ;;
   let one := fun  => 1 in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "closure returning one: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (one tt) ]) ;;
+      [ format_argument::["new_display"] (one tt) ]) ;;
   tt ;;
   tt.

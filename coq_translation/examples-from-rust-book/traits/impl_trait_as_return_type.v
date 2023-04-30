@@ -20,8 +20,8 @@ Definition combine_vecs (v : Vec i32) (u : Vec i32) : OpaqueDef :=
 Error OpaqueTy.
 
 Definition main (_ : unit) : unit :=
-  let v1 := Slice::["into_vec"] [ 1; 2; 3 ] in
-  let v2 := Slice::["into_vec"] [ 4; 5 ] in
+  let v1 := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
+  let v2 := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 4; 5 ]) in
   let v3 := combine_vecs v1 v2 in
   match (Some 1, v3.["next"]) with
   | (left_val, right_val) =>
@@ -88,7 +88,7 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "all done
-" ] [ ]) ;;
+  _crate.io._print (format_arguments::["new_const"] [ "all done
+" ]) ;;
   tt ;;
   tt.

@@ -21,59 +21,47 @@ Definition Color := Color.t.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "zero is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (cast Number.Zero i32) ]) ;;
+      [ format_argument::["new_display"] (cast Number.Zero i32) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "one is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (cast Number.One i32) ]) ;;
+      [ format_argument::["new_display"] (cast Number.One i32) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1_formatted"]
+    (format_arguments::["new_v1_formatted"]
       [ "roses are #"; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_lower_hex"] (cast Color.Red i32) ]
+      [ format_argument::["new_lower_hex"] (cast Color.Red i32) ]
       [
-        {|
-          _crate.fmt.rt.v1.Argument.position := 0;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Unknown;
-              _crate.fmt.rt.v1.FormatSpec.flags := 8;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Is 6;
-            |};
-        |}
+        format_placeholder::["new"]
+          0
+          " "%char
+          format_alignment::["Unknown"]
+          8
+          format_count::["Implied"]
+          (format_count::["Is"] 6)
       ]
-      (_crate.fmt.UnsafeArg::["new"] tt)) ;;
+      (format_unsafe_arg::["new"] tt)) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1_formatted"]
+    (format_arguments::["new_v1_formatted"]
       [ "violets are #"; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_lower_hex"] (cast Color.Blue i32) ]
+      [ format_argument::["new_lower_hex"] (cast Color.Blue i32) ]
       [
-        {|
-          _crate.fmt.rt.v1.Argument.position := 0;
-          _crate.fmt.rt.v1.Argument.format :=
-            {|
-              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
-              _crate.fmt.rt.v1.FormatSpec.align :=
-                _crate.fmt.rt.v1.Alignment.Unknown;
-              _crate.fmt.rt.v1.FormatSpec.flags := 8;
-              _crate.fmt.rt.v1.FormatSpec.precision :=
-                _crate.fmt.rt.v1.Count.Implied;
-              _crate.fmt.rt.v1.FormatSpec.width := _crate.fmt.rt.v1.Count.Is 6;
-            |};
-        |}
+        format_placeholder::["new"]
+          0
+          " "%char
+          format_alignment::["Unknown"]
+          8
+          format_count::["Implied"]
+          (format_count::["Is"] 6)
       ]
-      (_crate.fmt.UnsafeArg::["new"] tt)) ;;
+      (format_unsafe_arg::["new"] tt)) ;;
   tt ;;
   tt.

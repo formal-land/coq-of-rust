@@ -8,27 +8,25 @@ Definition main (_ : unit) : unit :=
   match foo with
   | {| Foo.x := (1, b); Foo.y := y; |} =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "First of x is 1, b = "; ",  y = "; " 
 " ]
-        [
-          _crate.fmt.ArgumentV1::["new_display"] b;
-          _crate.fmt.ArgumentV1::["new_display"] y
+        [ format_argument::["new_display"] b; format_argument::["new_display"] y
         ]) ;;
     tt
   | {| Foo.y := 2; Foo.x := i; |} =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "y is 2, i = "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] i ]) ;;
+        [ format_argument::["new_debug"] i ]) ;;
     tt
   | {| Foo.y := y; |} =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "y = "; ", we don't care about x
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] y ]) ;;
+        [ format_argument::["new_display"] y ]) ;;
     tt
   end.
 

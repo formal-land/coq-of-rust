@@ -51,7 +51,7 @@ Module Impl_fmt_Display_for_EmptyVec.
   
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
     f.["write_fmt"]
-      (_crate.fmt.Arguments::["new_v1"] [ "invalid first item to double" ] [ ]).
+      (format_arguments::["new_const"] [ "invalid first item to double" ]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -78,24 +78,26 @@ Definition print (result : Result i32) : unit :=
   match result with
   | Ok n =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "The first doubled is "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] n ]) ;;
+        [ format_argument::["new_display"] n ]) ;;
     tt
   | Err e =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Error: "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] e ]) ;;
+        [ format_argument::["new_display"] e ]) ;;
     tt
   end.
 
 Definition main (_ : unit) : unit :=
-  let numbers := Slice::["into_vec"] [ "42"; "93"; "18" ] in
+  let numbers :=
+    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "42"; "93"; "18" ]) in
   let empty := _crate.vec.Vec::["new"] tt in
-  let strings := Slice::["into_vec"] [ "tofu"; "93"; "18" ] in
+  let strings :=
+    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ]) in
   print (double_first numbers) ;;
   print (double_first empty) ;;
   print (double_first strings) ;;

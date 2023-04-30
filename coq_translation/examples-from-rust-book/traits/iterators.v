@@ -44,40 +44,37 @@ Definition fibonacci (_ : unit) : Fibonacci :=
 Definition main (_ : unit) : unit :=
   let sequence := Range {| Range.start := 0; Range.end := 3; |} in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_const"]
       [ "Four consecutive `next` calls on 0..3
-" ]
-      [ ]) ;;
+" ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "> "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] sequence.["next"] ]) ;;
+      [ format_argument::["new_debug"] sequence.["next"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "> "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] sequence.["next"] ]) ;;
+      [ format_argument::["new_debug"] sequence.["next"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "> "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] sequence.["next"] ]) ;;
+      [ format_argument::["new_debug"] sequence.["next"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "> "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] sequence.["next"] ]) ;;
+      [ format_argument::["new_debug"] sequence.["next"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
-      [ "Iterate through 0..3 using `for`
-" ]
-      [ ]) ;;
+    (format_arguments::["new_const"] [ "Iterate through 0..3 using `for`
+" ]) ;;
   tt ;;
   match LangItem Range {| Range.start := 0; Range.end := 3; |} with
   | iter =>
@@ -86,10 +83,10 @@ Definition main (_ : unit) : unit :=
       | None => Break
       | Some {| Some.0 := i; |} =>
         _crate.io._print
-          (_crate.fmt.Arguments::["new_v1"]
+          (format_arguments::["new_v1"]
             [ "> "; "
 " ]
-            [ _crate.fmt.ArgumentV1::["new_display"] i ]) ;;
+            [ format_argument::["new_display"] i ]) ;;
         tt ;;
         tt
       end ;;
@@ -98,10 +95,9 @@ Definition main (_ : unit) : unit :=
       for
   end ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_const"]
       [ "The first four terms of the Fibonacci sequence are: 
-" ]
-      [ ]) ;;
+" ]) ;;
   tt ;;
   match LangItem ((fibonacci tt).["take"] 4) with
   | iter =>
@@ -110,10 +106,10 @@ Definition main (_ : unit) : unit :=
       | None => Break
       | Some {| Some.0 := i; |} =>
         _crate.io._print
-          (_crate.fmt.Arguments::["new_v1"]
+          (format_arguments::["new_v1"]
             [ "> "; "
 " ]
-            [ _crate.fmt.ArgumentV1::["new_display"] i ]) ;;
+            [ format_argument::["new_display"] i ]) ;;
         tt ;;
         tt
       end ;;
@@ -122,10 +118,9 @@ Definition main (_ : unit) : unit :=
       for
   end ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_const"]
       [ "The next four terms of the Fibonacci sequence are: 
-" ]
-      [ ]) ;;
+" ]) ;;
   tt ;;
   match LangItem (((fibonacci tt).["skip"] 4).["take"] 4) with
   | iter =>
@@ -134,10 +129,10 @@ Definition main (_ : unit) : unit :=
       | None => Break
       | Some {| Some.0 := i; |} =>
         _crate.io._print
-          (_crate.fmt.Arguments::["new_v1"]
+          (format_arguments::["new_v1"]
             [ "> "; "
 " ]
-            [ _crate.fmt.ArgumentV1::["new_display"] i ]) ;;
+            [ format_argument::["new_display"] i ]) ;;
         tt ;;
         tt
       end ;;
@@ -147,10 +142,10 @@ Definition main (_ : unit) : unit :=
   end ;;
   let array := [ 1; 3; 3; 7 ] in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Iterate the following array "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] array ]) ;;
+      [ format_argument::["new_debug"] array ]) ;;
   tt ;;
   match LangItem array.["iter"] with
   | iter =>
@@ -159,10 +154,10 @@ Definition main (_ : unit) : unit :=
       | None => Break
       | Some {| Some.0 := i; |} =>
         _crate.io._print
-          (_crate.fmt.Arguments::["new_v1"]
+          (format_arguments::["new_v1"]
             [ "> "; "
 " ]
-            [ _crate.fmt.ArgumentV1::["new_display"] i ]) ;;
+            [ format_argument::["new_display"] i ]) ;;
         tt ;;
         tt
       end ;;

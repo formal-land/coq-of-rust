@@ -54,9 +54,9 @@ End Impl_From_for_Number.
 Definition main (_ : unit) : unit :=
   let num := Number::["from"] 30 in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "My number is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] num ]) ;;
+      [ format_argument::["new_debug"] num ]) ;;
   tt ;;
   tt.

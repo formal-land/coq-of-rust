@@ -13,25 +13,27 @@ Definition double_first
     (fun first => first.["parse"].["map"] (fun n => 2.["mul"] n)).
 
 Definition main (_ : unit) : unit :=
-  let numbers := Slice::["into_vec"] [ "42"; "93"; "18" ] in
+  let numbers :=
+    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "42"; "93"; "18" ]) in
   let empty := _crate.vec.Vec::["new"] tt in
-  let strings := Slice::["into_vec"] [ "tofu"; "93"; "18" ] in
+  let strings :=
+    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ]) in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "The first doubled is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] (double_first numbers) ]) ;;
+      [ format_argument::["new_debug"] (double_first numbers) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "The first doubled is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] (double_first empty) ]) ;;
+      [ format_argument::["new_debug"] (double_first empty) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "The first doubled is "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] (double_first strings) ]) ;;
+      [ format_argument::["new_debug"] (double_first strings) ]) ;;
   tt ;;
   tt.

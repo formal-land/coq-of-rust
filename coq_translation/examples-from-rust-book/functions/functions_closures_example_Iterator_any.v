@@ -4,55 +4,55 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
-  let vec1 := Slice::["into_vec"] [ 1; 2; 3 ] in
-  let vec2 := Slice::["into_vec"] [ 4; 5; 6 ] in
+  let vec1 := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
+  let vec2 := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 4; 5; 6 ]) in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "2 in vec1: "; "
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"]
+        format_argument::["new_display"]
           (vec1.["iter"].["any"] (fun x => x.["eq"] 2))
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "2 in vec2: "; "
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"]
+        format_argument::["new_display"]
           (vec2.["into_iter"].["any"] (fun x => x.["eq"] 2))
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "vec1 len: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] vec1.["len"] ]) ;;
+      [ format_argument::["new_display"] vec1.["len"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "First element of vec1 is: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] vec1[0] ]) ;;
+      [ format_argument::["new_display"] vec1[0] ]) ;;
   tt ;;
   let array1 := [ 1; 2; 3 ] in
   let array2 := [ 4; 5; 6 ] in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "2 in array1: "; "
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"]
+        format_argument::["new_display"]
           (array1.["iter"].["any"] (fun x => x.["eq"] 2))
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "2 in array2: "; "
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"]
+        format_argument::["new_display"]
           (array2.["into_iter"].["any"] (fun x => x.["eq"] 2))
       ]) ;;
   tt ;;

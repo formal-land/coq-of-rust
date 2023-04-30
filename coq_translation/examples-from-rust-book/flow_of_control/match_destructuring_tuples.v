@@ -6,48 +6,42 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let triple := (0, neg 2, 3) in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Tell me about "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] triple ]) ;;
+      [ format_argument::["new_debug"] triple ]) ;;
   tt ;;
   match triple with
   | (0, y, z) =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "First is `0`, `y` is "; ", and `z` is "; "
 " ]
-        [
-          _crate.fmt.ArgumentV1::["new_debug"] y;
-          _crate.fmt.ArgumentV1::["new_debug"] z
+        [ format_argument::["new_debug"] y; format_argument::["new_debug"] z
         ]) ;;
     tt
   | (1) =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_const"]
         [ "First is `1` and the rest doesn't matter
-" ]
-        [ ]) ;;
+" ]) ;;
     tt
   | (2) =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_const"]
         [ "last is `2` and the rest doesn't matter
-" ]
-        [ ]) ;;
+" ]) ;;
     tt
   | (3, 4) =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_const"]
         [ "First is `3`, last is `4`, and the rest doesn't matter
-" ]
-        [ ]) ;;
+" ]) ;;
     tt
   | _ =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_const"]
         [ "It doesn't matter what they are
-" ]
-        [ ]) ;;
+" ]) ;;
     tt
   end.

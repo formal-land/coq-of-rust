@@ -18,80 +18,79 @@ Definition Color := Color.t.
 
 Definition main (_ : unit) : unit :=
   let color := Color.RGB 122 17 40 in
-  _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "What color is it?
-" ] [ ]) ;;
+  _crate.io._print (format_arguments::["new_const"] [ "What color is it?
+" ]) ;;
   tt ;;
   match color with
   | Color.Red =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "The color is Red!
-" ] [ ]) ;;
+      (format_arguments::["new_const"] [ "The color is Red!
+" ]) ;;
     tt
   | Color.Blue =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "The color is Blue!
-" ] [ ]) ;;
+      (format_arguments::["new_const"] [ "The color is Blue!
+" ]) ;;
     tt
   | Color.Green =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "The color is Green!
-" ] [ ]) ;;
+      (format_arguments::["new_const"] [ "The color is Green!
+" ]) ;;
     tt
   | Color.RGB r g b =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Red: "; ", green: "; ", and blue: "; "!
 " ]
         [
-          _crate.fmt.ArgumentV1::["new_display"] r;
-          _crate.fmt.ArgumentV1::["new_display"] g;
-          _crate.fmt.ArgumentV1::["new_display"] b
+          format_argument::["new_display"] r;
+          format_argument::["new_display"] g;
+          format_argument::["new_display"] b
         ]) ;;
     tt
   | Color.HSV h s v =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Hue: "; ", saturation: "; ", value: "; "!
 " ]
         [
-          _crate.fmt.ArgumentV1::["new_display"] h;
-          _crate.fmt.ArgumentV1::["new_display"] s;
-          _crate.fmt.ArgumentV1::["new_display"] v
+          format_argument::["new_display"] h;
+          format_argument::["new_display"] s;
+          format_argument::["new_display"] v
         ]) ;;
     tt
   | Color.HSL h s l =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Hue: "; ", saturation: "; ", lightness: "; "!
 " ]
         [
-          _crate.fmt.ArgumentV1::["new_display"] h;
-          _crate.fmt.ArgumentV1::["new_display"] s;
-          _crate.fmt.ArgumentV1::["new_display"] l
+          format_argument::["new_display"] h;
+          format_argument::["new_display"] s;
+          format_argument::["new_display"] l
         ]) ;;
     tt
   | Color.CMY c m y =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Cyan: "; ", magenta: "; ", yellow: "; "!
 " ]
         [
-          _crate.fmt.ArgumentV1::["new_display"] c;
-          _crate.fmt.ArgumentV1::["new_display"] m;
-          _crate.fmt.ArgumentV1::["new_display"] y
+          format_argument::["new_display"] c;
+          format_argument::["new_display"] m;
+          format_argument::["new_display"] y
         ]) ;;
     tt
   | Color.CMYK c m y k =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Cyan: "; ", magenta: "; ", yellow: "; ", key (black): "; "!
 " ]
         [
-          _crate.fmt.ArgumentV1::["new_display"] c;
-          _crate.fmt.ArgumentV1::["new_display"] m;
-          _crate.fmt.ArgumentV1::["new_display"] y;
-          _crate.fmt.ArgumentV1::["new_display"] k
+          format_argument::["new_display"] c;
+          format_argument::["new_display"] m;
+          format_argument::["new_display"] y;
+          format_argument::["new_display"] k
         ]) ;;
     tt
   end.

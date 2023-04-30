@@ -7,50 +7,49 @@ Definition main (_ : unit) : unit :=
   let collected_iterator :=
     Range {| Range.start := 0; Range.end := 10; |}.["collect"] in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Collected (0..10) into: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] collected_iterator ]) ;;
+      [ format_argument::["new_debug"] collected_iterator ]) ;;
   tt ;;
-  let xs := Slice::["into_vec"] [ 1; 2; 3 ] in
+  let xs := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Initial vector: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] xs ]) ;;
+      [ format_argument::["new_debug"] xs ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "Push 4 into the vector
-" ] [ ]) ;;
+    (format_arguments::["new_const"] [ "Push 4 into the vector
+" ]) ;;
   tt ;;
   xs.["push"] 4 ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Vector: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] xs ]) ;;
+      [ format_argument::["new_debug"] xs ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Vector length: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] xs.["len"] ]) ;;
+      [ format_argument::["new_display"] xs.["len"] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Second element: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] xs[1] ]) ;;
+      [ format_argument::["new_display"] xs[1] ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Pop last element: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] xs.["pop"] ]) ;;
+      [ format_argument::["new_debug"] xs.["pop"] ]) ;;
   tt ;;
-  _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "Contents of xs:
-" ] [ ]) ;;
+  _crate.io._print (format_arguments::["new_const"] [ "Contents of xs:
+" ]) ;;
   tt ;;
   match LangItem xs.["iter"] with
   | iter =>
@@ -59,10 +58,10 @@ Definition main (_ : unit) : unit :=
       | None => Break
       | Some {| Some.0 := x; |} =>
         _crate.io._print
-          (_crate.fmt.Arguments::["new_v1"]
+          (format_arguments::["new_v1"]
             [ "> "; "
 " ]
-            [ _crate.fmt.ArgumentV1::["new_display"] x ]) ;;
+            [ format_argument::["new_display"] x ]) ;;
         tt ;;
         tt
       end ;;
@@ -77,12 +76,12 @@ Definition main (_ : unit) : unit :=
       | None => Break
       | Some {| Some.0 := (i, x); |} =>
         _crate.io._print
-          (_crate.fmt.Arguments::["new_v1"]
+          (format_arguments::["new_v1"]
             [ "In position "; " we have value "; "
 " ]
             [
-              _crate.fmt.ArgumentV1::["new_display"] i;
-              _crate.fmt.ArgumentV1::["new_display"] x
+              format_argument::["new_display"] i;
+              format_argument::["new_display"] x
             ]) ;;
         tt ;;
         tt
@@ -105,9 +104,9 @@ Definition main (_ : unit) : unit :=
       for
   end ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Updated vector: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] xs ]) ;;
+      [ format_argument::["new_debug"] xs ]) ;;
   tt ;;
   tt.

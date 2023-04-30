@@ -94,29 +94,29 @@ Definition main (_ : unit) : unit :=
   let age := 27 in
   let peter := {| Person.name := name; Person.age := age; |} in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] peter ]) ;;
+      [ format_argument::["new_debug"] peter ]) ;;
   tt ;;
   let point := {| Point.x := 10 (* 10.3 *); Point.y := 0 (* 0.4 *); |} in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "point coordinates: ("; ", "; ")
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] point.["x"];
-        _crate.fmt.ArgumentV1::["new_display"] point.["y"]
+        format_argument::["new_display"] point.["x"];
+        format_argument::["new_display"] point.["y"]
       ]) ;;
   tt ;;
   let bottom_right := {| Point.x := 5 (* 5.2 *); |} with point in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "second point: ("; ", "; ")
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] bottom_right.["x"];
-        _crate.fmt.ArgumentV1::["new_display"] bottom_right.["y"]
+        format_argument::["new_display"] bottom_right.["x"];
+        format_argument::["new_display"] bottom_right.["y"]
       ]) ;;
   tt ;;
   let '{| Point.x := left_edge; Point.y := top_edge; |} := point in
@@ -128,22 +128,22 @@ Definition main (_ : unit) : unit :=
   let _unit := Unit.Build in
   let pair := Pair.Build_t 1 0 (* 0.1 *) in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "pair contains "; " and "; "
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_debug"] (pair.[0]);
-        _crate.fmt.ArgumentV1::["new_debug"] (pair.[1])
+        format_argument::["new_debug"] (pair.[0]);
+        format_argument::["new_debug"] (pair.[1])
       ]) ;;
   tt ;;
   let 'Pair.Build_t integer decimal := pair in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "pair contains "; " and "; "
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_debug"] integer;
-        _crate.fmt.ArgumentV1::["new_debug"] decimal
+        format_argument::["new_debug"] integer;
+        format_argument::["new_debug"] decimal
       ]) ;;
   tt ;;
   tt.

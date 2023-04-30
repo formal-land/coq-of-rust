@@ -5,10 +5,10 @@ Import Root.std.prelude.rust_2015.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Sum of odd numbers up to 9 (excluding): "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (sum_odd_numbers 9) ]) ;;
+      [ format_argument::["new_display"] (sum_odd_numbers 9) ]) ;;
   tt ;;
   tt.
 

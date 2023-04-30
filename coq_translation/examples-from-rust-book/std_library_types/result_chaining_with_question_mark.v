@@ -19,14 +19,13 @@ Module checked.
         (self : ref Self)
         (f : mut_ref _crate.fmt.Formatter)
         : _crate.fmt.Result :=
-      match self with
-      | MathError.DivisionByZero =>
-        _crate.fmt.Formatter::["write_str"] f "DivisionByZero"
-      | MathError.NonPositiveLogarithm =>
-        _crate.fmt.Formatter::["write_str"] f "NonPositiveLogarithm"
-      | MathError.NegativeSquareRoot =>
-        _crate.fmt.Formatter::["write_str"] f "NegativeSquareRoot"
-      end.
+      _crate.fmt.Formatter::["write_str"]
+        f
+        match self with
+        | MathError.DivisionByZero => "DivisionByZero"
+        | MathError.NonPositiveLogarithm => "NonPositiveLogarithm"
+        | MathError.NegativeSquareRoot => "NegativeSquareRoot"
+        end.
     
     Global Instance Method_fmt : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -81,10 +80,10 @@ Module checked.
         end
     | Ok value =>
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
+        (format_arguments::["new_v1"]
           [ ""; "
 " ]
-          [ _crate.fmt.ArgumentV1::["new_display"] value ]) ;;
+          [ format_argument::["new_display"] value ]) ;;
       tt
     end.
 End checked.
@@ -104,14 +103,13 @@ Module Impl__crate_fmt_Debug_for_MathError.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    match self with
-    | MathError.DivisionByZero =>
-      _crate.fmt.Formatter::["write_str"] f "DivisionByZero"
-    | MathError.NonPositiveLogarithm =>
-      _crate.fmt.Formatter::["write_str"] f "NonPositiveLogarithm"
-    | MathError.NegativeSquareRoot =>
-      _crate.fmt.Formatter::["write_str"] f "NegativeSquareRoot"
-    end.
+    _crate.fmt.Formatter::["write_str"]
+      f
+      match self with
+      | MathError.DivisionByZero => "DivisionByZero"
+      | MathError.NonPositiveLogarithm => "NonPositiveLogarithm"
+      | MathError.NegativeSquareRoot => "NegativeSquareRoot"
+      end.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -166,10 +164,10 @@ Definition op (x : f64) (y : f64) : unit :=
       end
   | Ok value =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ ""; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] value ]) ;;
+        [ format_argument::["new_display"] value ]) ;;
     tt
   end.
 

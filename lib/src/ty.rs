@@ -54,7 +54,7 @@ pub fn compile_type(_tcx: &TyCtxt, ty: &Ty) -> CoqType {
         TyKind::TraitObject(_, _, _) => CoqType::Var(Path::local("TraitObject".to_string())),
         TyKind::Typeof(_) => CoqType::Var(Path::local("Typeof".to_string())),
         TyKind::Infer => CoqType::Var(Path::local("_".to_string())),
-        TyKind::Err => CoqType::Var(Path::local("Error_type".to_string())),
+        TyKind::Err(_) => CoqType::Var(Path::local("Error_type".to_string())),
     }
 }
 

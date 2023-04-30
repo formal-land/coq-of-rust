@@ -48,7 +48,7 @@ pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
         PatKind::Box(pat) => compile_pattern(tcx, pat),
         PatKind::Ref(pat, _) => compile_pattern(tcx, pat),
         PatKind::Lit(expr) => match expr.kind {
-            ExprKind::Lit(ref lit) => Pattern::Lit(lit.node.clone()),
+            ExprKind::Lit(lit) => Pattern::Lit(lit.node.clone()),
             _ => {
                 tcx.sess
                     .struct_span_warn(

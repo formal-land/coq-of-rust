@@ -20,13 +20,15 @@ Module Impl__crate_fmt_Debug_for_Fruit.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    match self with
-    | Fruit.Apple => _crate.fmt.Formatter::["write_str"] f "Apple"
-    | Fruit.Orange => _crate.fmt.Formatter::["write_str"] f "Orange"
-    | Fruit.Banana => _crate.fmt.Formatter::["write_str"] f "Banana"
-    | Fruit.Kiwi => _crate.fmt.Formatter::["write_str"] f "Kiwi"
-    | Fruit.Lemon => _crate.fmt.Formatter::["write_str"] f "Lemon"
-    end.
+    _crate.fmt.Formatter::["write_str"]
+      f
+      match self with
+      | Fruit.Apple => "Apple"
+      | Fruit.Orange => "Orange"
+      | Fruit.Banana => "Banana"
+      | Fruit.Kiwi => "Kiwi"
+      | Fruit.Lemon => "Lemon"
+      end.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -42,39 +44,37 @@ Definition main (_ : unit) : unit :=
   let get_lemon_as_fallback :=
     fun  =>
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
-          [ "Providing lemon as fallback
-" ]
-          [ ]) ;;
+        (format_arguments::["new_const"] [ "Providing lemon as fallback
+" ]) ;;
       tt ;;
       Fruit.Lemon in
   let first_available_fruit :=
     my_fruit.["get_or_insert_with"] get_lemon_as_fallback in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "my_fruit is: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] first_available_fruit ]) ;;
+      [ format_argument::["new_debug"] first_available_fruit ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "first_available_fruit is: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] first_available_fruit ]) ;;
+      [ format_argument::["new_debug"] first_available_fruit ]) ;;
   tt ;;
   let my_apple := Some Fruit.Apple in
   let should_be_apple :=
     my_apple.["get_or_insert_with"] get_lemon_as_fallback in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "should_be_apple is: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] should_be_apple ]) ;;
+      [ format_argument::["new_debug"] should_be_apple ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "my_apple is unchanged: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] my_apple ]) ;;
+      [ format_argument::["new_debug"] my_apple ]) ;;
   tt ;;
   tt.

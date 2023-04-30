@@ -16,35 +16,33 @@ Definition main (_ : unit) : unit :=
   let b := Foo.Baz in
   let c := Foo.Qux 100 in
   if (let_if Foo.Bar := a : bool) then
-    _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "a is foobar
-" ] [ ]) ;;
+    _crate.io._print (format_arguments::["new_const"] [ "a is foobar
+" ]) ;;
     tt ;;
     tt
   else
     tt ;;
   if (let_if Foo.Bar := b : bool) then
-    _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "b is foobar
-" ] [ ]) ;;
+    _crate.io._print (format_arguments::["new_const"] [ "b is foobar
+" ]) ;;
     tt ;;
     tt
   else
     tt ;;
   if (let_if Foo.Qux value := c : bool) then
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "c is "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] value ]) ;;
+        [ format_argument::["new_display"] value ]) ;;
     tt ;;
     tt
   else
     tt ;;
   if (let_if Foo.Qux value := c : bool) then
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "c is one hundred
-" ] [ ]) ;;
+      (format_arguments::["new_const"] [ "c is one hundred
+" ]) ;;
     tt ;;
     tt
   else

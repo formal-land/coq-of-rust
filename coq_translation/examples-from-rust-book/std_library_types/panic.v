@@ -14,9 +14,7 @@ Definition main (_ : unit) : unit :=
   let _x := Box::["new"] 0 in
   division 3 0 ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
-      [ "This point won't be reached!
-" ]
-      [ ]) ;;
+    (format_arguments::["new_const"] [ "This point won't be reached!
+" ]) ;;
   tt ;;
   tt.

@@ -15,30 +15,30 @@ Definition main (_ : unit) : unit :=
   match temperature with
   | Temperature.Celsius t =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ ""; "C is above 30 Celsius
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
+        [ format_argument::["new_display"] t ]) ;;
     tt
   | Temperature.Celsius t =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ ""; "C is below 30 Celsius
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
+        [ format_argument::["new_display"] t ]) ;;
     tt
   | Temperature.Fahrenheit t =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ ""; "F is above 86 Fahrenheit
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
+        [ format_argument::["new_display"] t ]) ;;
     tt
   | Temperature.Fahrenheit t =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ ""; "F is below 86 Fahrenheit
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] t ]) ;;
+        [ format_argument::["new_display"] t ]) ;;
     tt
   end.

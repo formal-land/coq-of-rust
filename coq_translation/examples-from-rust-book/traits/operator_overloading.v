@@ -68,8 +68,8 @@ Module Impl_ops_Add_for_Foo.
   
   Definition add (self : Self) (_rhs : Bar) : FooBar :=
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "> Foo.add(Bar) was called
-" ] [ ]) ;;
+      (format_arguments::["new_const"] [ "> Foo.add(Bar) was called
+" ]) ;;
     tt ;;
     FooBar.Build.
   
@@ -89,8 +89,8 @@ Module Impl_ops_Add_for_Bar.
   
   Definition add (self : Self) (_rhs : Foo) : BarFoo :=
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "> Bar.add(Foo) was called
-" ] [ ]) ;;
+      (format_arguments::["new_const"] [ "> Bar.add(Foo) was called
+" ]) ;;
     tt ;;
     BarFoo.Build.
   
@@ -105,15 +105,15 @@ End Impl_ops_Add_for_Bar.
 
 Definition main (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Foo + Bar = "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] (Foo.Build.["add"] Bar.Build) ]) ;;
+      [ format_argument::["new_debug"] (Foo.Build.["add"] Bar.Build) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Bar + Foo = "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] (Bar.Build.["add"] Foo.Build) ]) ;;
+      [ format_argument::["new_debug"] (Bar.Build.["add"] Foo.Build) ]) ;;
   tt ;;
   tt.

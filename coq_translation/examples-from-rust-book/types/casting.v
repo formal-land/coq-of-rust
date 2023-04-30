@@ -10,105 +10,101 @@ Definition main (_ : unit) : unit :=
   let character := cast integer char in
   let character := cast decimal char in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "Casting: "; " -> "; " -> "; "
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"] decimal;
-        _crate.fmt.ArgumentV1::["new_display"] integer;
-        _crate.fmt.ArgumentV1::["new_display"] character
+        format_argument::["new_display"] decimal;
+        format_argument::["new_display"] integer;
+        format_argument::["new_display"] character
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "1000 as a u16 is: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (cast 1000 u16) ]) ;;
+      [ format_argument::["new_display"] (cast 1000 u16) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "1000 as a u8 is : "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (cast 1000 u8) ]) ;;
+      [ format_argument::["new_display"] (cast 1000 u8) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "  -1 as a u8 is : "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (cast (neg 1) u8) ]) ;;
+      [ format_argument::["new_display"] (cast (neg 1) u8) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "1000 mod 256 is : "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (1000.["rem"] 256) ]) ;;
+      [ format_argument::["new_display"] (1000.["rem"] 256) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ " 128 as a i16 is: "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (cast 128 i16) ]) ;;
+      [ format_argument::["new_display"] (cast 128 i16) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ " 128 as a i8 is : "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (cast 128 i8) ]) ;;
+      [ format_argument::["new_display"] (cast 128 i8) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "1000 as a u8 is : "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (cast 1000 u8) ]) ;;
+      [ format_argument::["new_display"] (cast 1000 u8) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ " 232 as a i8 is : "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (cast 232 i8) ]) ;;
+      [ format_argument::["new_display"] (cast 232 i8) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ " 300.0 as u8 is : "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (cast 300 (* 300.0 *) u8) ]) ;;
+      [ format_argument::["new_display"] (cast 300 (* 300.0 *) u8) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "-100.0 as u8 is : "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (cast (neg 100 (* 100.0 *)) u8)
-      ]) ;;
+      [ format_argument::["new_display"] (cast (neg 100 (* 100.0 *)) u8) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "   nan as u8 is : "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] (cast f32::["NAN"] u8) ]) ;;
+      [ format_argument::["new_display"] (cast f32::["NAN"] u8) ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ " 300.0 as u8 is : "; "
 " ]
-      [
-        _crate.fmt.ArgumentV1::["new_display"]
-          300 (* 300.0 *).["to_int_unchecked"]
+      [ format_argument::["new_display"] 300 (* 300.0 *).["to_int_unchecked"]
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "-100.0 as u8 is : "; "
 " ]
       [
-        _crate.fmt.ArgumentV1::["new_display"]
+        format_argument::["new_display"]
           (neg 100 (* 100.0 *)).["to_int_unchecked"]
       ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ "   nan as u8 is : "; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] f32::["NAN"].["to_int_unchecked"]
-      ]) ;;
+      [ format_argument::["new_display"] f32::["NAN"].["to_int_unchecked"] ]) ;;
   tt ;;
   tt.

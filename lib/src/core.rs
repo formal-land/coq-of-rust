@@ -69,24 +69,24 @@ fn create_translation_to_coq(input_file_name: PathBuf) -> String {
         .unwrap();
     let sysroot = str::from_utf8(&out.stdout).unwrap().trim();
     let config = rustc_interface::Config {
+        crate_cfg: rustc_hash::FxHashSet::default(),
+        crate_check_cfg: CheckCfg::default(),
+        file_loader: None,
+        input: config::Input::File(input_file_name),
+        lint_caps: rustc_hash::FxHashMap::default(),
+        locale_resources: rustc_driver::DEFAULT_LOCALE_RESOURCES,
+        make_codegen_backend: None,
         opts: config::Options {
             maybe_sysroot: Some(path::PathBuf::from(sysroot)),
             // Run in test mode to generate a translation of the tests.
             test: true,
             ..config::Options::default()
         },
-        input: config::Input::File(input_file_name),
-        crate_cfg: rustc_hash::FxHashSet::default(),
-        crate_check_cfg: CheckCfg::default(),
-        input_path: None,
         output_dir: None,
         output_file: None,
-        file_loader: None,
-        lint_caps: rustc_hash::FxHashMap::default(),
+        override_queries: None,
         parse_sess_created: None,
         register_lints: None,
-        override_queries: None,
-        make_codegen_backend: None,
         registry: registry::Registry::new(rustc_error_codes::DIAGNOSTICS),
     };
     println!("Starting to translate {filename:?}...");

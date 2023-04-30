@@ -25,7 +25,6 @@ impl Callbacks for ToCoq {
         compiler: &Compiler,
         queries: &'tcx Queries<'tcx>,
     ) -> Compilation {
-        queries.prepare_outputs().unwrap();
         queries.global_ctxt().unwrap();
 
         let output = queries.global_ctxt().unwrap().enter(|tcx| {

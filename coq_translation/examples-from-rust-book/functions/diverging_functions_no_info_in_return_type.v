@@ -8,8 +8,7 @@ Definition some_fn (_ : unit) : unit := ().
 Definition main (_ : unit) : unit :=
   let a := some_fn tt in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_const"]
       [ "This function returns and you can see this line.
-" ]
-      [ ]) ;;
+" ]) ;;
   tt.

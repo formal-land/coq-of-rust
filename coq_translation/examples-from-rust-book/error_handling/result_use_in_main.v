@@ -14,9 +14,9 @@ Definition main (_ : unit) : Result unit ParseIntError :=
     | Err e => Return (Err e)
     end in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_display"] number ]) ;;
+      [ format_argument::["new_display"] number ]) ;;
   tt ;;
   Ok ().

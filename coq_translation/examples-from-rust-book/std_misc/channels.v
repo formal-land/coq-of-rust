@@ -30,10 +30,10 @@ Definition main (_ : unit) : unit :=
             (fun  =>
               (thread_tx.["send"] id).["unwrap"] ;;
               _crate.io._print
-                (_crate.fmt.Arguments::["new_v1"]
+                (format_arguments::["new_v1"]
                   [ "thread "; " finished
 " ]
-                  [ _crate.fmt.ArgumentV1::["new_display"] id ]) ;;
+                  [ format_argument::["new_display"] id ]) ;;
               tt ;;
               tt) in
         children.["push"] child ;;
@@ -71,9 +71,9 @@ Definition main (_ : unit) : unit :=
       for
   end ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"]
+    (format_arguments::["new_v1"]
       [ ""; "
 " ]
-      [ _crate.fmt.ArgumentV1::["new_debug"] ids ]) ;;
+      [ format_argument::["new_debug"] ids ]) ;;
   tt ;;
   tt.

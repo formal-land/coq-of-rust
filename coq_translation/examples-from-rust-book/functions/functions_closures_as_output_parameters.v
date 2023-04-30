@@ -7,10 +7,10 @@ Definition create_fn (_ : unit) : OpaqueDef :=
   let text := "Fn".["to_owned"] in
   fun  =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "This is a: "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] text ]) ;;
+        [ format_argument::["new_display"] text ]) ;;
     tt.
 
 Error OpaqueTy.
@@ -19,10 +19,10 @@ Definition create_fnmut (_ : unit) : OpaqueDef :=
   let text := "FnMut".["to_owned"] in
   fun  =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "This is a: "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] text ]) ;;
+        [ format_argument::["new_display"] text ]) ;;
     tt.
 
 Error OpaqueTy.
@@ -31,10 +31,10 @@ Definition create_fnonce (_ : unit) : OpaqueDef :=
   let text := "FnOnce".["to_owned"] in
   fun  =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "This is a: "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] text ]) ;;
+        [ format_argument::["new_display"] text ]) ;;
     tt.
 
 Error OpaqueTy.

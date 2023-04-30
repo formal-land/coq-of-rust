@@ -26,34 +26,30 @@ Definition main (_ : unit) : unit :=
   match contacts.["get"] "Daniel" with
   | Some number =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Calling Daniel: "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] (call number) ]) ;;
+        [ format_argument::["new_display"] (call number) ]) ;;
     tt
   | _ =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
-        [ "Don't have Daniel's number.
-" ]
-        [ ]) ;;
+      (format_arguments::["new_const"] [ "Don't have Daniel's number.
+" ]) ;;
     tt
   end ;;
   contacts.["insert"] "Daniel" "164-6743" ;;
   match contacts.["get"] "Ashley" with
   | Some number =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Calling Ashley: "; "
 " ]
-        [ _crate.fmt.ArgumentV1::["new_display"] (call number) ]) ;;
+        [ format_argument::["new_display"] (call number) ]) ;;
     tt
   | _ =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
-        [ "Don't have Ashley's number.
-" ]
-        [ ]) ;;
+      (format_arguments::["new_const"] [ "Don't have Ashley's number.
+" ]) ;;
     tt
   end ;;
   contacts.["remove"] "Ashley" ;;
@@ -64,12 +60,12 @@ Definition main (_ : unit) : unit :=
       | None => Break
       | Some {| Some.0 := (contact, number); |} =>
         _crate.io._print
-          (_crate.fmt.Arguments::["new_v1"]
+          (format_arguments::["new_v1"]
             [ "Calling "; ": "; "
 " ]
             [
-              _crate.fmt.ArgumentV1::["new_display"] contact;
-              _crate.fmt.ArgumentV1::["new_display"] (call number)
+              format_argument::["new_display"] contact;
+              format_argument::["new_display"] (call number)
             ]) ;;
         tt ;;
         tt

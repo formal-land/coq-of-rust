@@ -6,7 +6,8 @@ Import Root.std.prelude.rust_2015.
 Module slice := std.slice.
 
 Definition main (_ : unit) : unit :=
-  let some_vector := Slice::["into_vec"] [ 1; 2; 3; 4 ] in
+  let some_vector :=
+    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3; 4 ]) in
   let pointer := some_vector.["as_ptr"] in
   let length := some_vector.["len"] in
   let my_slice := slice.from_raw_parts pointer length in

@@ -18,11 +18,13 @@ Module Impl__crate_fmt_Debug_for_Food.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    match self with
-    | Food.CordonBleu => _crate.fmt.Formatter::["write_str"] f "CordonBleu"
-    | Food.Steak => _crate.fmt.Formatter::["write_str"] f "Steak"
-    | Food.Sushi => _crate.fmt.Formatter::["write_str"] f "Sushi"
-    end.
+    _crate.fmt.Formatter::["write_str"]
+      f
+      match self with
+      | Food.CordonBleu => "CordonBleu"
+      | Food.Steak => "Steak"
+      | Food.Sushi => "Sushi"
+      end.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -48,11 +50,13 @@ Module Impl__crate_fmt_Debug_for_Day.
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
-    match self with
-    | Day.Monday => _crate.fmt.Formatter::["write_str"] f "Monday"
-    | Day.Tuesday => _crate.fmt.Formatter::["write_str"] f "Tuesday"
-    | Day.Wednesday => _crate.fmt.Formatter::["write_str"] f "Wednesday"
-    end.
+    _crate.fmt.Formatter::["write_str"]
+      f
+      match self with
+      | Day.Monday => "Monday"
+      | Day.Tuesday => "Tuesday"
+      | Day.Wednesday => "Wednesday"
+      end.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -92,20 +96,20 @@ Definition eat (food : Food) (day : Day) : unit :=
   match cookable_v2 food with
   | Some food =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Yay! On "; " we get to eat "; ".
 " ]
         [
-          _crate.fmt.ArgumentV1::["new_debug"] day;
-          _crate.fmt.ArgumentV1::["new_debug"] food
+          format_argument::["new_debug"] day;
+          format_argument::["new_debug"] food
         ]) ;;
     tt
   | None =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
+      (format_arguments::["new_v1"]
         [ "Oh no. We don't get to eat on "; "?
 " ]
-        [ _crate.fmt.ArgumentV1::["new_debug"] day ]) ;;
+        [ format_argument::["new_debug"] day ]) ;;
     tt
   end.
 

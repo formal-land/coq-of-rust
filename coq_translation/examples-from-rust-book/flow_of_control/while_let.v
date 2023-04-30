@@ -9,17 +9,17 @@ Definition main (_ : unit) : unit :=
     (if (let_if Some i := optional : bool) then
       if (i.["gt"] 9 : bool) then
         _crate.io._print
-          (_crate.fmt.Arguments::["new_v1"] [ "Greater than 9, quit!
-" ] [ ]) ;;
+          (format_arguments::["new_const"] [ "Greater than 9, quit!
+" ]) ;;
         tt ;;
         assign optional None ;;
         tt
       else
         _crate.io._print
-          (_crate.fmt.Arguments::["new_v1"]
+          (format_arguments::["new_v1"]
             [ "`i` is `"; "`. Try again.
 " ]
-            [ _crate.fmt.ArgumentV1::["new_debug"] i ]) ;;
+            [ format_argument::["new_debug"] i ]) ;;
         tt ;;
         assign optional (Some (i.["add"] 1)) ;;
         tt
