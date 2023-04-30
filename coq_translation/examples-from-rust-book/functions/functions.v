@@ -18,19 +18,19 @@ Definition is_divisible_by (lhs : u32) (rhs : u32) : bool :=
 Definition fizzbuzz (n : u32) : unit :=
   if (is_divisible_by n 15 : bool) then
     _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "fizzbuzz
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt ;;
     tt
   else
     if (is_divisible_by n 3 : bool) then
       _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "fizz
-" ] [  ]) ;;
+" ] [ ]) ;;
       tt ;;
       tt
     else
       if (is_divisible_by n 5 : bool) then
         _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "buzz
-" ] [  ]) ;;
+" ] [ ]) ;;
         tt ;;
         tt
       else

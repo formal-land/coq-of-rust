@@ -89,6 +89,6 @@ Definition main (_ : unit) : unit :=
       tt
   end ;;
   _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "all done
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   tt.

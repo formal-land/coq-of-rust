@@ -18,7 +18,7 @@ Definition main (_ : unit) : unit :=
   if (let_if Foo.Bar := a : bool) then
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "a is foobar
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt ;;
     tt
   else
@@ -26,7 +26,7 @@ Definition main (_ : unit) : unit :=
   if (let_if Foo.Bar := b : bool) then
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "b is foobar
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt ;;
     tt
   else
@@ -44,7 +44,7 @@ Definition main (_ : unit) : unit :=
   if (let_if Foo.Qux value := c : bool) then
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "c is one hundred
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt ;;
     tt
   else

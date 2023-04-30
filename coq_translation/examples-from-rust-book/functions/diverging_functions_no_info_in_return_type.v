@@ -11,5 +11,5 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"]
       [ "This function returns and you can see this line.
 " ]
-      [  ]) ;;
+      [ ]) ;;
   tt.

@@ -20,23 +20,23 @@ Definition main (_ : unit) : unit :=
   let color := Color.RGB 122 17 40 in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "What color is it?
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   match color with
   | Color.Red =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "The color is Red!
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   | Color.Blue =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "The color is Blue!
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   | Color.Green =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "The color is Green!
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   | Color.RGB r g b =>
     _crate.io._print

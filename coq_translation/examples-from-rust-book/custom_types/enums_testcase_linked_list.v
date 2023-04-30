@@ -52,7 +52,7 @@ Module ImplList.
       res
     | Nil =>
       let res :=
-        _crate.fmt.format (_crate.fmt.Arguments::["new_v1"] [ "Nil" ] [  ]) in
+        _crate.fmt.format (_crate.fmt.Arguments::["new_v1"] [ "Nil" ] [ ]) in
       res
     end.
   

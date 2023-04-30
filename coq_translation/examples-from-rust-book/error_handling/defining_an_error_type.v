@@ -49,9 +49,7 @@ Module Impl_fmt_Display_for_DoubleError.
   
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
     f.["write_fmt"]
-      (_crate.fmt.Arguments::["new_v1"]
-        [ "invalid first item to double" ]
-        [  ]).
+      (_crate.fmt.Arguments::["new_v1"] [ "invalid first item to double" ] [ ]).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;

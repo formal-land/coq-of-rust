@@ -21,7 +21,7 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "Push 4 into the vector
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   xs.["push"] 4 ;;
   _crate.io._print
@@ -50,7 +50,7 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "Contents of xs:
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   match LangItem xs.["iter"] with
   | iter =>

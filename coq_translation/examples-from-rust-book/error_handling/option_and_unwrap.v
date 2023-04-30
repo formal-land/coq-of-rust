@@ -8,7 +8,7 @@ Definition give_adult (drink : Option (ref str)) : unit :=
   | Some Str("lemonade", Cooked) =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "Yuck! Too sugary.
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   | Some inner =>
     _crate.io._print
@@ -20,7 +20,7 @@ Definition give_adult (drink : Option (ref str)) : unit :=
   | None =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "No drink? Oh well.
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   end.
 

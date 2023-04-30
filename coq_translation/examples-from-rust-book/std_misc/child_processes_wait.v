@@ -11,6 +11,6 @@ Definition main (_ : unit) : unit :=
   let _result := child.["wait"].["unwrap"] in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "reached end of main
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   tt.

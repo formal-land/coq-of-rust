@@ -26,23 +26,16 @@ Definition inspect (event : WebEvent) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [
-          "page loaded, r"
-          ++
-          String.String
-          "233"
-          ("f"
-          ++
-          String.String
-          "233"
-          "
+          "page loaded, r" ++
+            String.String "233" ("f" ++ String.String "233" "
 ")
         ]
-        [  ]) ;;
+        [ ]) ;;
     tt
   | WebEvent.PageUnload =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "page unloaded
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   | WebEvent.KeyPress c =>
     _crate.io._print

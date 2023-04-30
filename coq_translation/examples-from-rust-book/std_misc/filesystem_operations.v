@@ -50,7 +50,7 @@ Definition touch (path : ref Path) : io.Result unit :=
 
 Definition main (_ : unit) : unit :=
   _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "`mkdir a`
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   match fs.create_dir "a" with
   | Err why =>
@@ -64,7 +64,7 @@ Definition main (_ : unit) : unit :=
   end ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "`echo hello > a/b.txt`
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   (echo "hello" (Path::["new"] "a/b.txt")).["unwrap_or_else"]
     (fun why =>
@@ -77,7 +77,7 @@ Definition main (_ : unit) : unit :=
       tt) ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "`mkdir -p a/c/d`
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   (fs.create_dir_all "a/c/d").["unwrap_or_else"]
     (fun why =>
@@ -90,7 +90,7 @@ Definition main (_ : unit) : unit :=
       tt) ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "`touch a/c/e.txt`
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   (touch (Path::["new"] "a/c/e.txt")).["unwrap_or_else"]
     (fun why =>
@@ -103,7 +103,7 @@ Definition main (_ : unit) : unit :=
       tt) ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "`ln -s ../b.txt a/c/b.txt`
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   if (true : bool) then
     (unix.fs.symlink "../b.txt" "a/c/b.txt").["unwrap_or_else"]
@@ -120,7 +120,7 @@ Definition main (_ : unit) : unit :=
     tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "`cat a/c/b.txt`
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   match cat (Path::["new"] "a/c/b.txt") with
   | Err why =>
@@ -139,7 +139,7 @@ Definition main (_ : unit) : unit :=
     tt
   end ;;
   _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "`ls a`
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   match fs.read_dir "a" with
   | Err why =>
@@ -172,7 +172,7 @@ Definition main (_ : unit) : unit :=
   end ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "`rm a/c/e.txt`
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   (fs.remove_file "a/c/e.txt").["unwrap_or_else"]
     (fun why =>
@@ -185,7 +185,7 @@ Definition main (_ : unit) : unit :=
       tt) ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "`rmdir a/c/d`
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   (fs.remove_dir "a/c/d").["unwrap_or_else"]
     (fun why =>

@@ -13,21 +13,21 @@ Definition main (_ : unit) : unit :=
         if ((n.["rem"] 15).["eq"] 0 : bool) then
           _crate.io._print
             (_crate.fmt.Arguments::["new_v1"] [ "fizzbuzz
-" ] [  ]) ;;
+" ] [ ]) ;;
           tt ;;
           tt
         else
           if ((n.["rem"] 3).["eq"] 0 : bool) then
             _crate.io._print
               (_crate.fmt.Arguments::["new_v1"] [ "fizz
-" ] [  ]) ;;
+" ] [ ]) ;;
             tt ;;
             tt
           else
             if ((n.["rem"] 5).["eq"] 0 : bool) then
               _crate.io._print
                 (_crate.fmt.Arguments::["new_v1"] [ "buzz
-" ] [  ]) ;;
+" ] [ ]) ;;
               tt ;;
               tt
             else

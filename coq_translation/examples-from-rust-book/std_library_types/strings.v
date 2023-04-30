@@ -13,7 +13,7 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "Words in reverse
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   match LangItem pangram.["split_whitespace"].["rev"] with
   | iter =>

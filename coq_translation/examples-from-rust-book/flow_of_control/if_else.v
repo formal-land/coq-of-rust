@@ -33,7 +33,7 @@ Definition main (_ : unit) : unit :=
         (_crate.fmt.Arguments::["new_v1"]
           [ ", and is a small number, increase ten-fold
 " ]
-          [  ]) ;;
+          [ ]) ;;
       tt ;;
       10.["mul"] n
     else
@@ -41,7 +41,7 @@ Definition main (_ : unit) : unit :=
         (_crate.fmt.Arguments::["new_v1"]
           [ ", and is a big number, halve the number
 " ]
-          [  ]) ;;
+          [ ]) ;;
       tt ;;
       n.["div"] 2 in
   _crate.io._print

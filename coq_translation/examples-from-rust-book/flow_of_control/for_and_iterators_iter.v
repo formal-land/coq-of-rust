@@ -17,7 +17,7 @@ Definition main (_ : unit) : unit :=
             (_crate.fmt.Arguments::["new_v1"]
               [ "There is a rustacean among us!
 " ]
-              [  ]) ;;
+              [ ]) ;;
           tt
         | _ =>
           _crate.io._print

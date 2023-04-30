@@ -36,7 +36,7 @@ Definition main (_ : unit) : unit :=
   | Ok _ =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "sent pangram to wc
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   end ;;
   let s := String::["new"] tt in

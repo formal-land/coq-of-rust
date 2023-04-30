@@ -50,12 +50,12 @@ Module Impl_fmt_Display_for_DoubleError.
       f.["write_fmt"]
         (_crate.fmt.Arguments::["new_v1"]
           [ "please use a vector with at least one element" ]
-          [  ])
+          [ ])
     | DoubleError.Parse  =>
       f.["write_fmt"]
         (_crate.fmt.Arguments::["new_v1"]
           [ "the provided string could not be parsed as int" ]
-          [  ])
+          [ ])
     end.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {

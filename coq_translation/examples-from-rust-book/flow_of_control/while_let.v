@@ -9,10 +9,8 @@ Definition main (_ : unit) : unit :=
     (if (let_if Some i := optional : bool) then
       if (i.["gt"] 9 : bool) then
         _crate.io._print
-          (_crate.fmt.Arguments::["new_v1"]
-            [ "Greater than 9, quit!
-" ]
-            [  ]) ;;
+          (_crate.fmt.Arguments::["new_v1"] [ "Greater than 9, quit!
+" ] [ ]) ;;
         tt ;;
         assign optional None ;;
         tt

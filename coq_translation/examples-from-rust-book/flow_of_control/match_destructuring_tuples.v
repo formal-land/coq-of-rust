@@ -27,27 +27,27 @@ Definition main (_ : unit) : unit :=
       (_crate.fmt.Arguments::["new_v1"]
         [ "First is `1` and the rest doesn't matter
 " ]
-        [  ]) ;;
+        [ ]) ;;
     tt
   | (Int(2, Unsuffixed)) =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "last is `2` and the rest doesn't matter
 " ]
-        [  ]) ;;
+        [ ]) ;;
     tt
   | (Int(3, Unsuffixed), Int(4, Unsuffixed)) =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "First is `3`, last is `4`, and the rest doesn't matter
 " ]
-        [  ]) ;;
+        [ ]) ;;
     tt
   | _ =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
         [ "It doesn't matter what they are
 " ]
-        [  ]) ;;
+        [ ]) ;;
     tt
   end.

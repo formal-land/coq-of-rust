@@ -8,12 +8,12 @@ Definition main (_ : unit) : unit :=
   match number with
   | i =>
     _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "Zero
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   | i =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "Greater than zero
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   | _ => _crate.panicking.unreachable_display "Should never happen."
   end.

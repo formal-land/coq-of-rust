@@ -47,7 +47,7 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"]
       [ "Four consecutive `next` calls on 0..3
 " ]
-      [  ]) ;;
+      [ ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
@@ -77,7 +77,7 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"]
       [ "Iterate through 0..3 using `for`
 " ]
-      [  ]) ;;
+      [ ]) ;;
   tt ;;
   match LangItem Range {| Range.start := 0; Range.end := 3; |} with
   | iter =>
@@ -101,7 +101,7 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"]
       [ "The first four terms of the Fibonacci sequence are: 
 " ]
-      [  ]) ;;
+      [ ]) ;;
   tt ;;
   match LangItem ((fibonacci tt).["take"] 4) with
   | iter =>
@@ -125,7 +125,7 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"]
       [ "The next four terms of the Fibonacci sequence are: 
 " ]
-      [  ]) ;;
+      [ ]) ;;
   tt ;;
   match LangItem (((fibonacci tt).["skip"] 4).["take"] 4) with
   | iter =>

@@ -120,7 +120,7 @@ Definition try_logon
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "Attempting logon...
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   let logon :=
     {| Account.username := username; Account.password := password; |} in
@@ -128,7 +128,7 @@ Definition try_logon
   | Some account_info =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "Successful logon!
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt ;;
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
@@ -146,7 +146,7 @@ Definition try_logon
   | _ =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "Login failed!
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   end.
 

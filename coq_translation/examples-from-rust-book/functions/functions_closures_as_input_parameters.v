@@ -29,7 +29,7 @@ Definition main (_ : unit) : unit :=
       tt ;;
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"] [ "Now I can sleep. zzzzz
-" ] [  ]) ;;
+" ] [ ]) ;;
       tt ;;
       mem.drop farewell ;;
       tt in

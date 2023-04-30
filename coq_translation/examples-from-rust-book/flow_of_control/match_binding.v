@@ -10,7 +10,7 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"]
       [ "Tell me what type of person you are
 " ]
-      [  ]) ;;
+      [ ]) ;;
   tt ;;
   match age tt with
   | Int(0, Unsuffixed) =>
@@ -18,7 +18,7 @@ Definition main (_ : unit) : unit :=
       (_crate.fmt.Arguments::["new_v1"]
         [ "I haven't celebrated my first birthday yet
 " ]
-        [  ]) ;;
+        [ ]) ;;
     tt
   | n =>
     _crate.io._print

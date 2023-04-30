@@ -42,25 +42,25 @@ Definition main (_ : unit) : unit :=
   let _d := {| Droppable.name := "d"; |} in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "Exiting block B
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "Just exited block B
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "Exiting block A
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "Just exited block A
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   drop _a ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "end of the main function
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   tt.

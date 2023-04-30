@@ -540,7 +540,7 @@ impl Expr {
             Expr::Array { elements } => group([
                 nest([
                     text("["),
-                    line(),
+                    if !elements.is_empty() { line() } else { nil() },
                     intersperse(
                         elements.iter().map(|element| element.to_doc(false)),
                         [text(";"), line()],

@@ -146,7 +146,7 @@ Definition eat (food : Option Cooked) : unit :=
   | None =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "Oh no! It wasn't edible.
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   end.
 

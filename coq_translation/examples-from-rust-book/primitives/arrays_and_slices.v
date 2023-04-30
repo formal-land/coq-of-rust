@@ -51,18 +51,18 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"]
       [ "borrow the whole array as a slice
 " ]
-      [  ]) ;;
+      [ ]) ;;
   tt ;;
   analyze_slice xs ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
       [ "borrow a section of the array as a slice
 " ]
-      [  ]) ;;
+      [ ]) ;;
   tt ;;
   analyze_slice ys[Range {| Range.start := 1; Range.end := 4; |}] ;;
-  let empty_array := [  ] in
-  match (empty_array, [  ]) with
+  let empty_array := [ ] in
+  match (empty_array, [ ]) with
   | (left_val, right_val) =>
     if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in
@@ -75,7 +75,7 @@ Definition main (_ : unit) : unit :=
     else
       tt
   end ;;
-  match (empty_array, [  ][RangeFull {|  |}]) with
+  match (empty_array, [ ][RangeFull {|  |}]) with
   | (left_val, right_val) =>
     if (not ((deref left_val).["eq"] (deref right_val)) : bool) then
       let kind := _crate.panicking.AssertKind.Eq in

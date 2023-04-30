@@ -7,11 +7,11 @@ Definition foo {A : Set} (o : Option A) : unit :=
   match o with
   | Some _a =>
     _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "some
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   | None =>
     _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "nothing
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   end.
 

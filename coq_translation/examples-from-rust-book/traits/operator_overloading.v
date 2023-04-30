@@ -68,10 +68,8 @@ Module Impl_ops_Add_for_Foo.
   
   Definition add (self : Self) (_rhs : Bar) : FooBar :=
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
-        [ "> Foo.add(Bar) was called
-" ]
-        [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "> Foo.add(Bar) was called
+" ] [ ]) ;;
     tt ;;
     FooBar.Build.
   
@@ -91,10 +89,8 @@ Module Impl_ops_Add_for_Bar.
   
   Definition add (self : Self) (_rhs : Foo) : BarFoo :=
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"]
-        [ "> Bar.add(Foo) was called
-" ]
-        [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "> Bar.add(Foo) was called
+" ] [ ]) ;;
     tt ;;
     BarFoo.Build.
   

@@ -17,6 +17,6 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"]
       [ "This point won't be reached!
 " ]
-      [  ]) ;;
+      [ ]) ;;
   tt ;;
   tt.

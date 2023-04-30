@@ -45,7 +45,7 @@ Definition main (_ : unit) : unit :=
         (_crate.fmt.Arguments::["new_v1"]
           [ "Providing lemon as fallback
 " ]
-          [  ]) ;;
+          [ ]) ;;
       tt ;;
       Fruit.Lemon in
   let first_available_fruit :=

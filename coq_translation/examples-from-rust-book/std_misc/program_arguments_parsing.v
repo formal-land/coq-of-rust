@@ -34,7 +34,7 @@ match_args {increase|decrease} <integer>
     Increase or decrease given integer by one.
 "
       ]
-      [  ]) ;;
+      [ ]) ;;
   tt ;;
   tt.
 
@@ -46,7 +46,7 @@ Definition main (_ : unit) : unit :=
       (_crate.fmt.Arguments::["new_v1"]
         [ "My name is 'match_args'. Try passing some arguments!
 " ]
-        [  ]) ;;
+        [ ]) ;;
     tt ;;
     tt
   | Int(2, Unsuffixed) =>
@@ -54,14 +54,12 @@ Definition main (_ : unit) : unit :=
     | Ok Int(42, Unsuffixed) =>
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"] [ "This is the answer!
-" ] [  ]) ;;
+" ] [ ]) ;;
       tt
     | _ =>
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
-          [ "This is not the answer.
-" ]
-          [  ]) ;;
+        (_crate.fmt.Arguments::["new_v1"] [ "This is not the answer.
+" ] [ ]) ;;
       tt
     end
   | Int(3, Unsuffixed) =>
@@ -75,7 +73,7 @@ Definition main (_ : unit) : unit :=
           (_crate.fmt.Arguments::["new_v1"]
             [ "error: second argument not an integer
 " ]
-            [  ]) ;;
+            [ ]) ;;
         tt ;;
         help tt ;;
         Return tt ;;
@@ -87,7 +85,7 @@ Definition main (_ : unit) : unit :=
     | _ =>
       _crate.io._eprint
         (_crate.fmt.Arguments::["new_v1"] [ "error: invalid command
-" ] [  ]) ;;
+" ] [ ]) ;;
       tt ;;
       help tt ;;
       tt

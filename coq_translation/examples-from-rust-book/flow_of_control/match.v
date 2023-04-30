@@ -14,23 +14,23 @@ Definition main (_ : unit) : unit :=
   match number with
   | Int(1, Unsuffixed) =>
     _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "One!
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   |
       (Int(2, Unsuffixed)|Int(3, Unsuffixed)|Int(5, Unsuffixed)|Int(7, Unsuffixed)|Int(11, Unsuffixed))
       =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "This is a prime
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   | _ =>
     _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "A teen
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   | _ =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"] [ "Ain't special
-" ] [  ]) ;;
+" ] [ ]) ;;
     tt
   end ;;
   let boolean := true in

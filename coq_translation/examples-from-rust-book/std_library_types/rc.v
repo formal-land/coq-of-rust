@@ -10,7 +10,7 @@ Definition main (_ : unit) : unit :=
   let rc_examples := "Rc examples".["to_string"] in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"] [ "--- rc_a is created ---
-" ] [  ]) ;;
+" ] [ ]) ;;
   tt ;;
   let rc_a := Rc::["new"] rc_examples in
   _crate.io._print
@@ -23,7 +23,7 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"]
       [ "--- rc_a is cloned to rc_b ---
 " ]
-      [  ]) ;;
+      [ ]) ;;
   tt ;;
   let rc_b := Rc::["clone"] rc_a in
   _crate.io._print
@@ -60,7 +60,7 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"]
       [ "--- rc_b is dropped out of scope ---
 " ]
-      [  ]) ;;
+      [ ]) ;;
   tt ;;
   tt ;;
   _crate.io._print
@@ -73,6 +73,6 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"]
       [ "--- rc_a is dropped out of scope ---
 " ]
-      [  ]) ;;
+      [ ]) ;;
   tt ;;
   tt.

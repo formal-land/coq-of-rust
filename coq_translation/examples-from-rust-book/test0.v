@@ -38,7 +38,7 @@ Definition main (_ : unit) : unit :=
       (_crate.fmt.Arguments::["new_v1"]
         [ "Didn't match a number. Let's go with a letter!
 " ]
-        [  ]) ;;
+        [ ]) ;;
     tt ;;
     tt ;;
   let i_like_letters := false in
@@ -56,7 +56,7 @@ Definition main (_ : unit) : unit :=
         (_crate.fmt.Arguments::["new_v1"]
           [ "Didn't match a number. Let's go with a letter!
 " ]
-          [  ]) ;;
+          [ ]) ;;
       tt ;;
       tt
     else
@@ -64,6 +64,6 @@ Definition main (_ : unit) : unit :=
         (_crate.fmt.Arguments::["new_v1"]
           [ "I don't like letters. Let's go with an emoticon :)!
 " ]
-          [  ]) ;;
+          [ ]) ;;
       tt ;;
       tt.

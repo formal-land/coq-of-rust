@@ -10,7 +10,7 @@ Definition main (_ : unit) : unit :=
     (_crate.fmt.Arguments::["new_v1"]
       [ "Find the sum of all the squared odd numbers under 1000
 " ]
-      [  ]) ;;
+      [ ]) ;;
   tt ;;
   let upper := 1000 in
   let acc := 0 in

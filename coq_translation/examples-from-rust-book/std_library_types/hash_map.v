@@ -36,7 +36,7 @@ Definition main (_ : unit) : unit :=
       (_crate.fmt.Arguments::["new_v1"]
         [ "Don't have Daniel's number.
 " ]
-        [  ]) ;;
+        [ ]) ;;
     tt
   end ;;
   contacts.["insert"] "Daniel" "164-6743" ;;
@@ -53,7 +53,7 @@ Definition main (_ : unit) : unit :=
       (_crate.fmt.Arguments::["new_v1"]
         [ "Don't have Ashley's number.
 " ]
-        [  ]) ;;
+        [ ]) ;;
     tt
   end ;;
   contacts.["remove"] "Ashley" ;;
