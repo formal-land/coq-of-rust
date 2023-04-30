@@ -5,19 +5,22 @@ Import Root.std.prelude.rust_2015.
 
 Definition give_adult (drink : Option (ref str)) : unit :=
   match drink with
-  | Some.Build_t Str("lemonade", Cooked) =>
+  | Some Str("lemonade", Cooked) =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "Yuck! Too sugary.\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "Yuck! Too sugary.
+" ] [  ]) ;;
     tt
-  | Some.Build_t inner =>
+  | Some inner =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ ""; "? How nice.\n" ]
+        [ ""; "? How nice.
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] inner ]) ;;
     tt
   | None =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "No drink? Oh well.\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "No drink? Oh well.
+" ] [  ]) ;;
     tt
   end.
 
@@ -30,7 +33,8 @@ Definition drink (drink : Option (ref str)) : unit :=
     tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "I love "; "s!!!!!\n" ]
+      [ "I love "; "s!!!!!
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] inside ]) ;;
   tt ;;
   tt.

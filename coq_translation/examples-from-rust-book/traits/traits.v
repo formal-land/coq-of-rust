@@ -38,7 +38,8 @@ Module Animal.
     Notation.dot (self : ref Self) :=
       (_crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ ""; " says "; "\n" ]
+          [ ""; " says "; "
+" ]
           [
             _crate.fmt.ArgumentV1::["new_display"] self.["name"];
             _crate.fmt.ArgumentV1::["new_display"] self.["noise"]
@@ -88,7 +89,8 @@ Module Impl_Animal_for_Sheep.
   Definition talk (self : ref Self) :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ ""; " pauses briefly... "; "\n" ]
+        [ ""; " pauses briefly... "; "
+" ]
         [
           _crate.fmt.ArgumentV1::["new_display"] self.["name"];
           _crate.fmt.ArgumentV1::["new_display"] self.["noise"]
@@ -114,14 +116,16 @@ Module ImplSheep_2.
     if (self.["is_naked"] : bool) then
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ ""; " is already naked...\n" ]
+          [ ""; " is already naked...
+" ]
           [ _crate.fmt.ArgumentV1::["new_display"] self.["name"] ]) ;;
       tt ;;
       tt
     else
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ ""; " gets a haircut!\n" ]
+          [ ""; " gets a haircut!
+" ]
           [ _crate.fmt.ArgumentV1::["new_display"] self.["name"] ]) ;;
       tt ;;
       assign self.["naked"] true ;;

@@ -9,7 +9,7 @@ Definition NTHREADS : u32 := 10.
 
 Definition main (_ : unit) : unit :=
   let children := _crate.vec.Vec::["new"] tt in
-  match LangItem {| Range.start := 0; Range.end := NTHREADS; |} with
+  match LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} with
   | iter =>
     loop
       match LangItem iter with
@@ -20,7 +20,8 @@ Definition main (_ : unit) : unit :=
             (fun  =>
               _crate.io._print
                 (_crate.fmt.Arguments::["new_v1"]
-                  [ "this is thread number "; "\n" ]
+                  [ "this is thread number "; "
+" ]
                   [ _crate.fmt.ArgumentV1::["new_display"] i ]) ;;
               tt ;;
               tt)) ;;

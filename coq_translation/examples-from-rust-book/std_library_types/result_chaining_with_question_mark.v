@@ -72,17 +72,18 @@ Module checked.
   
   Definition op (x : f64) (y : f64) : unit :=
     match op_ x y with
-    | Err.Build_t why =>
+    | Err why =>
       _crate.rt.panic_display
         match why with
         | MathError.NonPositiveLogarithm => "logarithm of non-positive number"
         | MathError.DivisionByZero => "division by zero"
         | MathError.NegativeSquareRoot => "square root of negative number"
         end
-    | Ok.Build_t value =>
+    | Ok value =>
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ ""; "\n" ]
+          [ ""; "
+" ]
           [ _crate.fmt.ArgumentV1::["new_display"] value ]) ;;
       tt
     end.
@@ -156,17 +157,18 @@ Definition op_ (x : f64) (y : f64) : MathResult :=
 
 Definition op (x : f64) (y : f64) : unit :=
   match op_ x y with
-  | Err.Build_t why =>
+  | Err why =>
     _crate.rt.panic_display
       match why with
       | MathError.NonPositiveLogarithm => "logarithm of non-positive number"
       | MathError.DivisionByZero => "division by zero"
       | MathError.NegativeSquareRoot => "square root of negative number"
       end
-  | Ok.Build_t value =>
+  | Ok value =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ ""; "\n" ]
+        [ ""; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] value ]) ;;
     tt
   end.

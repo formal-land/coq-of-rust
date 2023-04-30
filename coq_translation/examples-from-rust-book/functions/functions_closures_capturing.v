@@ -9,7 +9,8 @@ Definition main (_ : unit) : unit :=
     fun  =>
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "`color`: "; "\n" ]
+          [ "`color`: "; "
+" ]
           [ _crate.fmt.ArgumentV1::["new_display"] color ]) ;;
       tt in
   print tt ;;
@@ -22,7 +23,8 @@ Definition main (_ : unit) : unit :=
       count.["add_assign"] 1 ;;
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "`count`: "; "\n" ]
+          [ "`count`: "; "
+" ]
           [ _crate.fmt.ArgumentV1::["new_display"] count ]) ;;
       tt ;;
       tt in
@@ -34,7 +36,8 @@ Definition main (_ : unit) : unit :=
     fun  =>
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "`movable`: "; "\n" ]
+          [ "`movable`: "; "
+" ]
           [ _crate.fmt.ArgumentV1::["new_debug"] movable ]) ;;
       tt ;;
       mem.drop movable ;;

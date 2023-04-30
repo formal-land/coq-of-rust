@@ -6,7 +6,8 @@ Import Root.std.prelude.rust_2015.
 Definition foo (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "You called "; "()\n" ]
+      [ "You called "; "()
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] "foo" ]) ;;
   tt ;;
   tt.
@@ -14,7 +15,8 @@ Definition foo (_ : unit) : unit :=
 Definition bar (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "You called "; "()\n" ]
+      [ "You called "; "()
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] "bar" ]) ;;
   tt ;;
   tt.
@@ -24,7 +26,8 @@ Definition main (_ : unit) : unit :=
   bar tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; " = "; "\n" ]
+      [ ""; " = "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"] "1u32 + 1";
         _crate.fmt.ArgumentV1::["new_debug"] (1.["add"] 1)
@@ -32,7 +35,8 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; " = "; "\n" ]
+      [ ""; " = "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"]
           "{ let x = 1u32; x * x + 2 * x - 1 }";

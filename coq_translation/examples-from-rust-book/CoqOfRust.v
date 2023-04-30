@@ -799,7 +799,18 @@ Module std.
     End PartialOrd.
   End cmp.
 
+  Module fs.
+    Module OpenOptions.
+      Parameter t : Set.
+    End OpenOptions.
+    Definition t : Set := OpenOptions.t.
+  End fs.
 End std.
+
+Module char_Instances.
+  Global Instance IDisplay : std.fmt.Display.Trait char.
+  Admitted.
+End char_Instances.
 
 Module str_Instances.
   Global Instance IDisplay : std.fmt.Display.Trait str.
@@ -947,3 +958,9 @@ Module rand.
   Module Rng.
   End Rng.
 End rand.
+
+(** For now we assume that all types implement [to_owned] and that this is the
+    identity function. *)
+Global Instance Method_to_owned {A : Set} : Notation.Dot "to_owned" := {
+  Notation.dot := (id : A -> A);
+}.

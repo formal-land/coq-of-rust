@@ -38,6 +38,6 @@ Definition main (_ : unit) : unit :=
   reg_fn (S.Build_t A.Build) ;;
   gen_spec_t (SGen.Build_t A.Build) ;;
   gen_spec_i32 (SGen.Build_t 6) ;;
-  generic (SGen.Build_t a) ;;
-  generic (SGen.Build_t c) ;;
+  generic (SGen.Build_t "a"%char) ;;
+  generic (SGen.Build_t "c"%char) ;;
   tt.

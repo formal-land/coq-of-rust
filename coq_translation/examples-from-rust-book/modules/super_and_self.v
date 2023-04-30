@@ -5,7 +5,8 @@ Import Root.std.prelude.rust_2015.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "called `function()`\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "called `function()`
+" ] [  ]) ;;
   tt ;;
   tt.
 
@@ -13,7 +14,8 @@ Module cool.
   Definition function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `cool::function()`\n" ]
+        [ "called `cool::function()`
+" ]
         [  ]) ;;
     tt ;;
     tt.
@@ -21,14 +23,16 @@ End cool.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "called `cool::function()`\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "called `cool::function()`
+" ] [  ]) ;;
   tt ;;
   tt.
 
 Module my.
   Definition function (_ : unit) : unit :=
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "called `my::function()`\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "called `my::function()`
+" ] [  ]) ;;
     tt ;;
     tt.
   
@@ -36,7 +40,8 @@ Module my.
     Definition function (_ : unit) : unit :=
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "called `my::cool::function()`\n" ]
+          [ "called `my::cool::function()`
+" ]
           [  ]) ;;
       tt ;;
       tt.
@@ -45,7 +50,8 @@ Module my.
   Definition indirect_call (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `my::indirect_call()`, that\n> " ]
+        [ "called `my::indirect_call()`, that
+> " ]
         [  ]) ;;
     tt ;;
     self.function tt ;;
@@ -58,7 +64,8 @@ End my.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "called `my::function()`\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "called `my::function()`
+" ] [  ]) ;;
   tt ;;
   tt.
 
@@ -66,7 +73,8 @@ Module cool.
   Definition function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `my::cool::function()`\n" ]
+        [ "called `my::cool::function()`
+" ]
         [  ]) ;;
     tt ;;
     tt.
@@ -75,7 +83,8 @@ End cool.
 Definition function (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "called `my::cool::function()`\n" ]
+      [ "called `my::cool::function()`
+" ]
       [  ]) ;;
   tt ;;
   tt.
@@ -83,7 +92,8 @@ Definition function (_ : unit) : unit :=
 Definition indirect_call (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "called `my::indirect_call()`, that\n> " ]
+      [ "called `my::indirect_call()`, that
+> " ]
       [  ]) ;;
   tt ;;
   self.function tt ;;

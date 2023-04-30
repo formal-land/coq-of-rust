@@ -26,7 +26,8 @@ Module ImplOwner.
   Definition print (self : ref Self) :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "`print`: "; "\n" ]
+        [ "`print`: "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] (self.[0]) ]) ;;
     tt ;;
     tt.

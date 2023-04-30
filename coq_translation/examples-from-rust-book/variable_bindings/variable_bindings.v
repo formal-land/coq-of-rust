@@ -10,17 +10,20 @@ Definition main (_ : unit) : unit :=
   let copied_integer := an_integer in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "An integer: "; "\n" ]
+      [ "An integer: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] copied_integer ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "A boolean: "; "\n" ]
+      [ "A boolean: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] a_boolean ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Meet the unit value: "; "\n" ]
+      [ "Meet the unit value: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] unit ]) ;;
   tt ;;
   let _unused_variable := 3 in

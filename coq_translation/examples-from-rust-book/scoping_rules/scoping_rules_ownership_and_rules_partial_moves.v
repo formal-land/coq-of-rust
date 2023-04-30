@@ -10,17 +10,20 @@ Definition main (_ : unit) : unit :=
   let '{| Person.name := name; Person.age := age; |} := person in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "The person's age is "; "\n" ]
+      [ "The person's age is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] age ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "The person's name is "; "\n" ]
+      [ "The person's name is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] name ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "The person's age from person struct is "; "\n" ]
+      [ "The person's age from person struct is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] person.["age"] ]) ;;
   tt ;;
   tt.

@@ -20,34 +20,40 @@ Definition main (_ : unit) : unit :=
   b.["insert"] 5 ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "A: "; "\n" ]
+      [ "A: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] a ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "B: "; "\n" ]
+      [ "B: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] b ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Union: "; "\n" ]
+      [ "Union: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] (a.["union"] b).["collect"] ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Difference: "; "\n" ]
+      [ "Difference: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] (a.["difference"] b).["collect"]
       ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Intersection: "; "\n" ]
+      [ "Intersection: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] (a.["intersection"] b).["collect"]
       ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Symmetric Difference: "; "\n" ]
+      [ "Symmetric Difference: "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"]
           (a.["symmetric_difference"] b).["collect"]

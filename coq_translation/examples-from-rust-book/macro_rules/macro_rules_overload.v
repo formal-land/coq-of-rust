@@ -6,7 +6,8 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; " and "; " is "; "\n" ]
+      [ ""; " and "; " is "; "
+" ]
       match
         ("1i32 + 1 == 2i32",
           "2i32 * 2 == 4i32",
@@ -22,7 +23,8 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; " or "; " is "; "\n" ]
+      [ ""; " or "; " is "; "
+" ]
       match ("true", "false", true.["or"] false) with
       | args =>
         [

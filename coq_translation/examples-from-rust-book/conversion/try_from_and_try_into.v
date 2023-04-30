@@ -3,10 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module TryFrom := std.convert.TryFrom.
-
-Module TryInto := std.convert.TryInto.
-
 Module EvenNumber.
   Record t : Set := { _ : i32;}.
   

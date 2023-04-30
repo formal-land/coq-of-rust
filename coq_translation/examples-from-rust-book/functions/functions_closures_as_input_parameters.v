@@ -16,19 +16,20 @@ Definition main (_ : unit) : unit :=
     fun  =>
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "I said "; ".\n" ]
+          [ "I said "; ".
+" ]
           [ _crate.fmt.ArgumentV1::["new_display"] greeting ]) ;;
       tt ;;
       farewell.["push_str"] "!!!" ;;
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "Then I screamed "; ".\n" ]
+          [ "Then I screamed "; ".
+" ]
           [ _crate.fmt.ArgumentV1::["new_display"] farewell ]) ;;
       tt ;;
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"]
-          [ "Now I can sleep. zzzzz\n" ]
-          [  ]) ;;
+        (_crate.fmt.Arguments::["new_v1"] [ "Now I can sleep. zzzzz
+" ] [  ]) ;;
       tt ;;
       mem.drop farewell ;;
       tt in
@@ -36,7 +37,8 @@ Definition main (_ : unit) : unit :=
   let double := fun x => 2.["mul"] x in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "3 doubled: "; "\n" ]
+      [ "3 doubled: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (apply_to_3 double) ]) ;;
   tt ;;
   tt.

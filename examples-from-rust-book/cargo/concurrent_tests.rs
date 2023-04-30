@@ -1,3 +1,10 @@
+fn foo<A>(o: Option<A>) {
+    match o {
+        Some(_a) => println!("some"),
+        None => println!("nothing"),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     // Import the necessary modules

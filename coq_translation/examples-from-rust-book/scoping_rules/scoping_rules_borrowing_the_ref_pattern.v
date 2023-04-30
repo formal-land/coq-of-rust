@@ -42,12 +42,13 @@ Module Impl__crate_marker_Copy_for_Point.
 End Impl__crate_marker_Copy_for_Point.
 
 Definition main (_ : unit) : unit :=
-  let c := Q in
+  let c := "Q"%char in
   let ref_c1 := c in
   let ref_c2 := c in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "ref_c1 equals ref_c2: "; "\n" ]
+      [ "ref_c1 equals ref_c2: "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"]
           ((deref ref_c1).["eq"] (deref ref_c2))
@@ -63,7 +64,8 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "point is ("; ", "; ")\n" ]
+      [ "point is ("; ", "; ")
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"] point.["x"];
         _crate.fmt.ArgumentV1::["new_display"] point.["y"]
@@ -71,7 +73,8 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "mutable_point is ("; ", "; ")\n" ]
+      [ "mutable_point is ("; ", "; ")
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"] mutable_point.["x"];
         _crate.fmt.ArgumentV1::["new_display"] mutable_point.["y"]
@@ -83,7 +86,8 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "tuple is "; "\n" ]
+      [ "tuple is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] mutable_tuple ]) ;;
   tt ;;
   tt.

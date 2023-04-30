@@ -3,8 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module Debug := std.fmt.Debug.
-
 Module PrintInOption.
   Class Trait (Self : Set) : Set := {
     print_in_option : Self -> _;
@@ -22,7 +20,8 @@ Module Impl_PrintInOption_for_T.
   Definition print_in_option (self : Self) :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ ""; "\n" ]
+        [ ""; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] (Some self) ]) ;;
     tt ;;
     tt.

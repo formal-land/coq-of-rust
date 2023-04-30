@@ -3,8 +3,10 @@
 
 # Files that currently compile
 attributes/dead_code.v
+# cargo/concurrent_tests.v
 conversion/converting_to_string.v
 CoqOfRust.v
+custom_types/enums.v
 expressions/statement.v
 hello_world/hello_world.v
 macro_rules/macro_example.v

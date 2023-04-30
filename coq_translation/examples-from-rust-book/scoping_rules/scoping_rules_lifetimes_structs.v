@@ -84,9 +84,9 @@ Module Impl__crate_fmt_Debug_for_Either.
       (f : mut_ref _crate.fmt.Formatter)
       : _crate.fmt.Result :=
     match self with
-    | Either.Num.Build_t __self_0 =>
+    | Either.Num __self_0 =>
       _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Num" __self_0
-    | Either.Ref.Build_t __self_0 =>
+    | Either.Ref __self_0 =>
       _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Ref" __self_0
     end.
   
@@ -108,22 +108,26 @@ Definition main (_ : unit) : unit :=
   let number := Either.Num y in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "x is borrowed in "; "\n" ]
+      [ "x is borrowed in "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] single ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "x and y are borrowed in "; "\n" ]
+      [ "x and y are borrowed in "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] double ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "x is borrowed in "; "\n" ]
+      [ "x is borrowed in "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] reference ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "y is *not* borrowed in "; "\n" ]
+      [ "y is *not* borrowed in "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] number ]) ;;
   tt ;;
   tt.

@@ -4,46 +4,13 @@ use crate::render::*;
 use rustc_ast::LitKind;
 use rustc_hir::{Pat, PatKind};
 
-#[derive(Debug)]
-pub enum StructOrVariant {
-    Struct,
-    Variant,
-}
-
-impl StructOrVariant {
-    /// Returns wether a qpath refers to a struct or a variant.
-    fn of_qpath(qpath: &rustc_hir::QPath) -> StructOrVariant {
-        match qpath {
-            rustc_hir::QPath::Resolved(_, path) => match path.res {
-                rustc_hir::def::Res::Def(rustc_hir::def::DefKind::Struct, _) => {
-                    StructOrVariant::Struct
-                }
-                rustc_hir::def::Res::Def(rustc_hir::def::DefKind::Variant, _) => {
-                    StructOrVariant::Variant
-                }
-                _ => panic!("Unexpected path resolution: {:?}", path.res),
-            },
-            rustc_hir::QPath::TypeRelative(..) => panic!("Unhandled qpath: {qpath:?}"),
-            rustc_hir::QPath::LangItem(lang_item, ..) => match lang_item {
-                rustc_hir::LangItem::OptionNone => StructOrVariant::Variant,
-                rustc_hir::LangItem::OptionSome => StructOrVariant::Variant,
-                rustc_hir::LangItem::ResultOk => StructOrVariant::Variant,
-                rustc_hir::LangItem::ResultErr => StructOrVariant::Variant,
-                rustc_hir::LangItem::ControlFlowContinue => StructOrVariant::Variant,
-                rustc_hir::LangItem::ControlFlowBreak => StructOrVariant::Variant,
-                _ => panic!("Unhandled lang item: {lang_item:?}. TODO: add support for this item"),
-            },
-        }
-    }
-}
-
 /// The enum [Pat] represents the patterns which can be matched
 #[derive(Debug)]
 pub enum Pattern {
     Wild,
     Binding(String),
-    Struct(Path, Vec<(String, Pattern)>, StructOrVariant),
-    TupleStruct(Path, Vec<Pattern>),
+    StructStruct(Path, Vec<(String, Pattern)>, StructOrVariant),
+    StructTuple(Path, Vec<Pattern>, StructOrVariant),
     Or(Vec<Pattern>),
     Path(Path),
     Tuple(Vec<Pattern>),
@@ -62,12 +29,13 @@ pub fn compile_pattern(pat: &Pat) -> Pattern {
                 .map(|pat| (pat.ident.name.to_string(), compile_pattern(pat.pat)))
                 .collect();
             let struct_or_variant = StructOrVariant::of_qpath(qpath);
-            Pattern::Struct(path, pats, struct_or_variant)
+            Pattern::StructStruct(path, pats, struct_or_variant)
         }
         PatKind::TupleStruct(qpath, pats, _) => {
             let path = compile_qpath(qpath);
             let pats = pats.iter().map(compile_pattern).collect();
-            Pattern::TupleStruct(path, pats)
+            let struct_or_variant = StructOrVariant::of_qpath(qpath);
+            Pattern::StructTuple(path, pats, struct_or_variant)
         }
         PatKind::Or(pats) => Pattern::Or(pats.iter().map(compile_pattern).collect()),
         PatKind::Path(qpath) => Pattern::Path(compile_qpath(qpath)),
@@ -94,7 +62,7 @@ impl Pattern {
         match self {
             Pattern::Wild => text("_"),
             Pattern::Binding(name) => text(name),
-            Pattern::Struct(path, fields, struct_or_variant) => group([
+            Pattern::StructStruct(path, fields, struct_or_variant) => group([
                 match struct_or_variant {
                     StructOrVariant::Struct => nil(),
                     StructOrVariant::Variant => path.to_doc(),
@@ -131,10 +99,13 @@ impl Pattern {
                     ])
                 },
             ]),
-            Pattern::TupleStruct(path, fields) => {
+            Pattern::StructTuple(path, fields, struct_or_variant) => {
                 return nest([
                     path.to_doc(),
-                    text(".Build_t"),
+                    match struct_or_variant {
+                        StructOrVariant::Variant => nil(),
+                        StructOrVariant::Struct => text(".Build_t"),
+                    },
                     line(),
                     nest([intersperse(
                         fields.iter().map(|field| field.to_doc()),

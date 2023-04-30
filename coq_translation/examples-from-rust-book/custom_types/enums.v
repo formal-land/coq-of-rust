@@ -4,12 +4,19 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module WebEvent.
+  Module Click.
+    Record t : Set := {
+      x : i64;
+      y : i64;
+    }.
+  End Click.
+  
   Inductive t : Set :=
   | PageLoad
   | PageUnload
   | KeyPress (_ : char)
   | Paste (_ : String)
-  | Click (_ : i64) (_ : i64).
+  | Click (_ : Click.t).
 End WebEvent.
 Definition WebEvent := WebEvent.t.
 
@@ -17,28 +24,45 @@ Definition inspect (event : WebEvent) : unit :=
   match event with
   | WebEvent.PageLoad =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "page loaded\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"]
+        [
+          "page loaded, r"
+          ++
+          String.String
+          "233"
+          ("f"
+          ++
+          String.String
+          "233"
+          "
+")
+        ]
+        [  ]) ;;
     tt
   | WebEvent.PageUnload =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "page unloaded\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "page unloaded
+" ] [  ]) ;;
     tt
-  | WebEvent.KeyPress.Build_t c =>
+  | WebEvent.KeyPress c =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "pressed '"; "'.\n" ]
+        [ "pressed '"; "'.
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] c ]) ;;
     tt
-  | WebEvent.Paste.Build_t s =>
+  | WebEvent.Paste s =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "pasted \""; "\".\n" ]
+        [ "pasted ""; "".
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] s ]) ;;
     tt
   | WebEvent.Click {| WebEvent.Click.x := x; WebEvent.Click.y := y; |} =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "clicked at x="; ", y="; ".\n" ]
+        [ "clicked at x="; ", y="; ".
+" ]
         [
           _crate.fmt.ArgumentV1::["new_display"] x;
           _crate.fmt.ArgumentV1::["new_display"] y
@@ -48,9 +72,10 @@ Definition inspect (event : WebEvent) : unit :=
   end.
 
 Definition main (_ : unit) : unit :=
-  let pressed := WebEvent.KeyPress x in
+  let pressed := WebEvent.KeyPress "x"%char in
   let pasted := WebEvent.Paste "my text".["to_owned"] in
-  let click := {| WebEvent.Click.x := 20; WebEvent.Click.y := 80; |} in
+  let click :=
+    WebEvent.Click {| WebEvent.Click.x := 20; WebEvent.Click.y := 80; |} in
   let load := WebEvent.PageLoad in
   let unload := WebEvent.PageUnload in
   inspect pressed ;;

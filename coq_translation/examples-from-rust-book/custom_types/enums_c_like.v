@@ -22,24 +22,27 @@ Definition Color := Color.t.
 Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "zero is "; "\n" ]
+      [ "zero is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (cast Number.Zero i32) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "one is "; "\n" ]
+      [ "one is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (cast Number.One i32) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1_formatted"]
-      [ "roses are #"; "\n" ]
+      [ "roses are #"; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_lower_hex"] (cast Color.Red i32) ]
       [
         {|
           _crate.fmt.rt.v1.Argument.position := 0;
           _crate.fmt.rt.v1.Argument.format :=
             {|
-              _crate.fmt.rt.v1.FormatSpec.fill :=  ;
+              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
               _crate.fmt.rt.v1.FormatSpec.align :=
                 _crate.fmt.rt.v1.Alignment.Unknown;
               _crate.fmt.rt.v1.FormatSpec.flags := 8;
@@ -53,14 +56,15 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1_formatted"]
-      [ "violets are #"; "\n" ]
+      [ "violets are #"; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_lower_hex"] (cast Color.Blue i32) ]
       [
         {|
           _crate.fmt.rt.v1.Argument.position := 0;
           _crate.fmt.rt.v1.Argument.format :=
             {|
-              _crate.fmt.rt.v1.FormatSpec.fill :=  ;
+              _crate.fmt.rt.v1.FormatSpec.fill := " "%char;
               _crate.fmt.rt.v1.FormatSpec.align :=
                 _crate.fmt.rt.v1.Alignment.Unknown;
               _crate.fmt.rt.v1.FormatSpec.flags := 8;

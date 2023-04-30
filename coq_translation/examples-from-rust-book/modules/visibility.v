@@ -7,7 +7,8 @@ Module my_mod.
   Definition private_function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `my_mod::private_function()`\n" ]
+        [ "called `my_mod::private_function()`
+" ]
         [  ]) ;;
     tt ;;
     tt.
@@ -15,7 +16,8 @@ Module my_mod.
   Definition function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `my_mod::function()`\n" ]
+        [ "called `my_mod::function()`
+" ]
         [  ]) ;;
     tt ;;
     tt.
@@ -23,7 +25,8 @@ Module my_mod.
   Definition indirect_access (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `my_mod::indirect_access()`, that\n> " ]
+        [ "called `my_mod::indirect_access()`, that
+> " ]
         [  ]) ;;
     tt ;;
     private_function tt ;;
@@ -33,7 +36,8 @@ Module my_mod.
     Definition function (_ : unit) : unit :=
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "called `my_mod::nested::function()`\n" ]
+          [ "called `my_mod::nested::function()`
+" ]
           [  ]) ;;
       tt ;;
       tt.
@@ -41,7 +45,8 @@ Module my_mod.
     Definition private_function (_ : unit) : unit :=
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "called `my_mod::nested::private_function()`\n" ]
+          [ "called `my_mod::nested::private_function()`
+" ]
           [  ]) ;;
       tt ;;
       tt.
@@ -49,7 +54,8 @@ Module my_mod.
     Definition public_function_in_my_mod (_ : unit) : unit :=
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "called `my_mod::nested::public_function_in_my_mod()`, that\n> " ]
+          [ "called `my_mod::nested::public_function_in_my_mod()`, that
+> " ]
           [  ]) ;;
       tt ;;
       public_function_in_nested tt ;;
@@ -58,7 +64,8 @@ Module my_mod.
     Definition public_function_in_nested (_ : unit) : unit :=
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "called `my_mod::nested::public_function_in_nested()`\n" ]
+          [ "called `my_mod::nested::public_function_in_nested()`
+" ]
           [  ]) ;;
       tt ;;
       tt.
@@ -66,7 +73,8 @@ Module my_mod.
     Definition public_function_in_super_mod (_ : unit) : unit :=
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "called `my_mod::nested::public_function_in_super_mod()`\n" ]
+          [ "called `my_mod::nested::public_function_in_super_mod()`
+" ]
           [  ]) ;;
       tt ;;
       tt.
@@ -75,7 +83,8 @@ Module my_mod.
   Definition call_public_function_in_my_mod (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `my_mod::call_public_function_in_my_mod()`, that\n> " ]
+        [ "called `my_mod::call_public_function_in_my_mod()`, that
+> " ]
         [  ]) ;;
     tt ;;
     nested.public_function_in_my_mod tt ;;
@@ -87,7 +96,8 @@ Module my_mod.
   Definition public_function_in_crate (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `my_mod::public_function_in_crate()`\n" ]
+        [ "called `my_mod::public_function_in_crate()`
+" ]
         [  ]) ;;
     tt ;;
     tt.
@@ -96,7 +106,8 @@ Module my_mod.
     Definition function (_ : unit) : unit :=
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "called `my_mod::private_nested::function()`\n" ]
+          [ "called `my_mod::private_nested::function()`
+" ]
           [  ]) ;;
       tt ;;
       tt.
@@ -104,7 +115,8 @@ Module my_mod.
     Definition restricted_function (_ : unit) : unit :=
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "called `my_mod::private_nested::restricted_function()`\n" ]
+          [ "called `my_mod::private_nested::restricted_function()`
+" ]
           [  ]) ;;
       tt ;;
       tt.
@@ -114,7 +126,8 @@ End my_mod.
 Definition private_function (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "called `my_mod::private_function()`\n" ]
+      [ "called `my_mod::private_function()`
+" ]
       [  ]) ;;
   tt ;;
   tt.
@@ -122,7 +135,8 @@ Definition private_function (_ : unit) : unit :=
 Definition function (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "called `my_mod::function()`\n" ]
+      [ "called `my_mod::function()`
+" ]
       [  ]) ;;
   tt ;;
   tt.
@@ -130,7 +144,8 @@ Definition function (_ : unit) : unit :=
 Definition indirect_access (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "called `my_mod::indirect_access()`, that\n> " ]
+      [ "called `my_mod::indirect_access()`, that
+> " ]
       [  ]) ;;
   tt ;;
   private_function tt ;;
@@ -140,7 +155,8 @@ Module nested.
   Definition function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `my_mod::nested::function()`\n" ]
+        [ "called `my_mod::nested::function()`
+" ]
         [  ]) ;;
     tt ;;
     tt.
@@ -148,7 +164,8 @@ Module nested.
   Definition private_function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `my_mod::nested::private_function()`\n" ]
+        [ "called `my_mod::nested::private_function()`
+" ]
         [  ]) ;;
     tt ;;
     tt.
@@ -156,7 +173,8 @@ Module nested.
   Definition public_function_in_my_mod (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `my_mod::nested::public_function_in_my_mod()`, that\n> " ]
+        [ "called `my_mod::nested::public_function_in_my_mod()`, that
+> " ]
         [  ]) ;;
     tt ;;
     public_function_in_nested tt ;;
@@ -165,7 +183,8 @@ Module nested.
   Definition public_function_in_nested (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `my_mod::nested::public_function_in_nested()`\n" ]
+        [ "called `my_mod::nested::public_function_in_nested()`
+" ]
         [  ]) ;;
     tt ;;
     tt.
@@ -173,7 +192,8 @@ Module nested.
   Definition public_function_in_super_mod (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `my_mod::nested::public_function_in_super_mod()`\n" ]
+        [ "called `my_mod::nested::public_function_in_super_mod()`
+" ]
         [  ]) ;;
     tt ;;
     tt.
@@ -182,7 +202,8 @@ End nested.
 Definition function (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "called `my_mod::nested::function()`\n" ]
+      [ "called `my_mod::nested::function()`
+" ]
       [  ]) ;;
   tt ;;
   tt.
@@ -190,7 +211,8 @@ Definition function (_ : unit) : unit :=
 Definition private_function (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "called `my_mod::nested::private_function()`\n" ]
+      [ "called `my_mod::nested::private_function()`
+" ]
       [  ]) ;;
   tt ;;
   tt.
@@ -198,7 +220,8 @@ Definition private_function (_ : unit) : unit :=
 Definition public_function_in_my_mod (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "called `my_mod::nested::public_function_in_my_mod()`, that\n> " ]
+      [ "called `my_mod::nested::public_function_in_my_mod()`, that
+> " ]
       [  ]) ;;
   tt ;;
   public_function_in_nested tt ;;
@@ -207,7 +230,8 @@ Definition public_function_in_my_mod (_ : unit) : unit :=
 Definition public_function_in_nested (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "called `my_mod::nested::public_function_in_nested()`\n" ]
+      [ "called `my_mod::nested::public_function_in_nested()`
+" ]
       [  ]) ;;
   tt ;;
   tt.
@@ -215,7 +239,8 @@ Definition public_function_in_nested (_ : unit) : unit :=
 Definition public_function_in_super_mod (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "called `my_mod::nested::public_function_in_super_mod()`\n" ]
+      [ "called `my_mod::nested::public_function_in_super_mod()`
+" ]
       [  ]) ;;
   tt ;;
   tt.
@@ -223,7 +248,8 @@ Definition public_function_in_super_mod (_ : unit) : unit :=
 Definition call_public_function_in_my_mod (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "called `my_mod::call_public_function_in_my_mod()`, that\n> " ]
+      [ "called `my_mod::call_public_function_in_my_mod()`, that
+> " ]
       [  ]) ;;
   tt ;;
   nested.public_function_in_my_mod tt ;;
@@ -235,7 +261,8 @@ Definition call_public_function_in_my_mod (_ : unit) : unit :=
 Definition public_function_in_crate (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "called `my_mod::public_function_in_crate()`\n" ]
+      [ "called `my_mod::public_function_in_crate()`
+" ]
       [  ]) ;;
   tt ;;
   tt.
@@ -244,7 +271,8 @@ Module private_nested.
   Definition function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `my_mod::private_nested::function()`\n" ]
+        [ "called `my_mod::private_nested::function()`
+" ]
         [  ]) ;;
     tt ;;
     tt.
@@ -252,7 +280,8 @@ Module private_nested.
   Definition restricted_function (_ : unit) : unit :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "called `my_mod::private_nested::restricted_function()`\n" ]
+        [ "called `my_mod::private_nested::restricted_function()`
+" ]
         [  ]) ;;
     tt ;;
     tt.
@@ -261,7 +290,8 @@ End private_nested.
 Definition function (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "called `my_mod::private_nested::function()`\n" ]
+      [ "called `my_mod::private_nested::function()`
+" ]
       [  ]) ;;
   tt ;;
   tt.
@@ -269,14 +299,16 @@ Definition function (_ : unit) : unit :=
 Definition restricted_function (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "called `my_mod::private_nested::restricted_function()`\n" ]
+      [ "called `my_mod::private_nested::restricted_function()`
+" ]
       [  ]) ;;
   tt ;;
   tt.
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "called `function()`\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "called `function()`
+" ] [  ]) ;;
   tt ;;
   tt.
 

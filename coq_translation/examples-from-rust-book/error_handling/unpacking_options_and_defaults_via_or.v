@@ -44,7 +44,8 @@ Definition main (_ : unit) : unit :=
   let first_available_fruit := (no_fruit.["or"] orange).["or"] apple in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "first_available_fruit: "; "\n" ]
+      [ "first_available_fruit: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] first_available_fruit ]) ;;
   tt ;;
   tt.

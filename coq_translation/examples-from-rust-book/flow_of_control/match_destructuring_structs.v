@@ -9,7 +9,8 @@ Definition main (_ : unit) : unit :=
   | {| Foo.x := (Int(1, Unsuffixed), b); Foo.y := y; |} =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "First of x is 1, b = "; ",  y = "; " \n" ]
+        [ "First of x is 1, b = "; ",  y = "; " 
+" ]
         [
           _crate.fmt.ArgumentV1::["new_display"] b;
           _crate.fmt.ArgumentV1::["new_display"] y
@@ -18,13 +19,15 @@ Definition main (_ : unit) : unit :=
   | {| Foo.y := Int(2, Unsuffixed); Foo.x := i; |} =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "y is 2, i = "; "\n" ]
+        [ "y is 2, i = "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] i ]) ;;
     tt
   | {| Foo.y := y; |} =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "y = "; ", we don't care about x\n" ]
+        [ "y = "; ", we don't care about x
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] y ]) ;;
     tt
   end.

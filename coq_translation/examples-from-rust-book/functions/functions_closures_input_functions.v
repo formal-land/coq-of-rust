@@ -9,7 +9,8 @@ Definition call_me {F : Set} `{Fn.Trait unit F} (f : F) : unit :=
 
 Definition function (_ : unit) : unit :=
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "I'm a function!\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "I'm a function!
+" ] [  ]) ;;
   tt ;;
   tt.
 
@@ -17,7 +18,8 @@ Definition main (_ : unit) : unit :=
   let closure :=
     fun  =>
       _crate.io._print
-        (_crate.fmt.Arguments::["new_v1"] [ "I'm a closure!\n" ] [  ]) ;;
+        (_crate.fmt.Arguments::["new_v1"] [ "I'm a closure!
+" ] [  ]) ;;
       tt in
   call_me closure ;;
   call_me function ;;

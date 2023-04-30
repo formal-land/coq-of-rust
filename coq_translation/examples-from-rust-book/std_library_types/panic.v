@@ -15,7 +15,8 @@ Definition main (_ : unit) : unit :=
   division 3 0 ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "This point won't be reached!\n" ]
+      [ "This point won't be reached!
+" ]
       [  ]) ;;
   tt ;;
   tt.

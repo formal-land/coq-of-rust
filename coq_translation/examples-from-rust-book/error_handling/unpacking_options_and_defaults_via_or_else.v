@@ -44,7 +44,8 @@ Definition main (_ : unit) : unit :=
     fun  =>
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "Providing kiwi as fallback\n" ]
+          [ "Providing kiwi as fallback
+" ]
           [  ]) ;;
       tt ;;
       Some Fruit.Kiwi in
@@ -52,7 +53,8 @@ Definition main (_ : unit) : unit :=
     fun  =>
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "Providing lemon as fallback\n" ]
+          [ "Providing lemon as fallback
+" ]
           [  ]) ;;
       tt ;;
       Some Fruit.Lemon in
@@ -61,7 +63,8 @@ Definition main (_ : unit) : unit :=
       get_lemon_as_fallback in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "first_available_fruit: "; "\n" ]
+      [ "first_available_fruit: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] first_available_fruit ]) ;;
   tt ;;
   tt.

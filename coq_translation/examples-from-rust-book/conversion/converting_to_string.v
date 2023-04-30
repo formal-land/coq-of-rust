@@ -38,7 +38,8 @@ Definition main (_ : unit) : unit :=
   let circle := {| Circle.radius := 6; |} in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; "\n" ]
+      [ ""; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] circle.["to_string"] ]) ;;
   tt ;;
   tt.

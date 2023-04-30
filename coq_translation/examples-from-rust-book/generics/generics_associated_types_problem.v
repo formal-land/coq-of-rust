@@ -79,7 +79,8 @@ Definition main (_ : unit) : unit :=
   let container := Container.Build_t number_1 number_2 in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Does container contain "; " and "; ": "; "\n" ]
+      [ "Does container contain "; " and "; ": "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"] number_1;
         _crate.fmt.ArgumentV1::["new_display"] number_2;
@@ -89,17 +90,20 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "First number: "; "\n" ]
+      [ "First number: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] container.["first"] ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Last number: "; "\n" ]
+      [ "Last number: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] container.["last"] ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "The difference is: "; "\n" ]
+      [ "The difference is: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (difference container) ]) ;;
   tt ;;
   tt.

@@ -10,12 +10,14 @@ Definition main (_ : unit) : unit :=
       Result::["is_ok"] in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Numbers: "; "\n" ]
+      [ "Numbers: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] numbers ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Errors: "; "\n" ]
+      [ "Errors: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] errors ]) ;;
   tt ;;
   tt.

@@ -6,7 +6,10 @@ use crate::path::*;
 use crate::render::*;
 use crate::ty::*;
 
-use rustc_hir::{Impl, ImplItemKind, Item, ItemKind, PatKind, TraitFn, TraitItemKind, VariantData};
+use rustc_hir::{
+    Impl, ImplItemKind, Item, ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind,
+    VariantData,
+};
 use rustc_middle::ty::TyCtxt;
 
 #[derive(Debug)]
@@ -42,6 +45,12 @@ struct WherePredicate {
     ty: CoqType,
 }
 
+#[derive(Debug)]
+enum VariantItem {
+    Struct { fields: Vec<(String, CoqType)> },
+    Tuple { tys: Vec<CoqType> },
+}
+
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
 #[derive(Debug)]
@@ -65,7 +74,7 @@ enum TopLevelItem {
     },
     TypeEnum {
         name: String,
-        variants: Vec<(String, Vec<CoqType>)>,
+        variants: Vec<(String, VariantItem)>,
     },
     TypeStructStruct {
         name: String,
@@ -176,6 +185,21 @@ fn check_if_is_test_main_function(tcx: TyCtxt, body_id: &rustc_hir::BodyId) -> b
     }
 }
 
+/// Check if a top-level definition is actually test metadata. If so, we ignore
+/// it.
+fn check_if_test_declaration(ty: &Ty) -> bool {
+    match &ty.kind {
+        TyKind::Path(QPath::Resolved(_, path)) => match path.segments {
+            [base, path] => {
+                base.ident.name.to_string() == "test"
+                    && path.ident.name.to_string() == "TestDescAndFn"
+            }
+            _ => false,
+        },
+        _ => false,
+    }
+}
+
 /// [compile_top_level_item] compiles hir [Item]s into coq-of-rust (optional)
 /// items.
 /// - See https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/struct.Item.html
@@ -192,26 +216,37 @@ fn compile_top_level_item(
         ItemKind::ExternCrate(_) => vec![],
         ItemKind::Use(path, use_kind) => {
             if matches!(use_kind, rustc_hir::UseKind::ListStem) {
-                vec![]
-            } else {
-                vec![TopLevelItem::Use {
-                    name: item.ident.name.to_string(),
-                    path: compile_path(path),
-                    is_glob: matches!(use_kind, rustc_hir::UseKind::Glob),
-                    is_type: path.res.iter().any(|res| match res {
-                        rustc_hir::def::Res::Def(def, _) => matches!(
-                            def,
-                            rustc_hir::def::DefKind::TyAlias
-                                | rustc_hir::def::DefKind::Enum
-                                | rustc_hir::def::DefKind::Struct
-                                | rustc_hir::def::DefKind::Union
-                        ),
-                        _ => false,
-                    }),
-                }]
+                return vec![];
             }
+            let is_trait_use = path.res.iter().any(|res| {
+                matches!(
+                    res,
+                    rustc_hir::def::Res::Def(rustc_hir::def::DefKind::Trait, _)
+                )
+            });
+            if is_trait_use {
+                return vec![];
+            }
+            vec![TopLevelItem::Use {
+                name: item.ident.name.to_string(),
+                path: compile_path(path),
+                is_glob: matches!(use_kind, rustc_hir::UseKind::Glob),
+                is_type: path.res.iter().any(|res| match res {
+                    rustc_hir::def::Res::Def(def, _) => matches!(
+                        def,
+                        rustc_hir::def::DefKind::TyAlias
+                            | rustc_hir::def::DefKind::Enum
+                            | rustc_hir::def::DefKind::Struct
+                            | rustc_hir::def::DefKind::Union
+                    ),
+                    _ => false,
+                }),
+            }]
         }
         ItemKind::Static(ty, _, body_id) | ItemKind::Const(ty, body_id) => {
+            if check_if_test_declaration(ty) {
+                return vec![];
+            }
             let value = tcx.hir().body(*body_id).value;
             vec![TopLevelItem::Const {
                 name: item.ident.name.to_string(),
@@ -301,15 +336,23 @@ fn compile_top_level_item(
                 .map(|variant| {
                     let name = variant.ident.name.to_string();
                     let fields = match &variant.data {
-                        VariantData::Struct(fields, _) => fields
-                            .iter()
-                            .map(|field| compile_type(&tcx, field.ty))
-                            .collect(),
-                        VariantData::Tuple(fields, _, _) => fields
-                            .iter()
-                            .map(|field| compile_type(&tcx, field.ty))
-                            .collect(),
-                        VariantData::Unit(_, _) => vec![],
+                        VariantData::Struct(fields, _) => {
+                            let fields = fields
+                                .iter()
+                                .map(|field| {
+                                    (field.ident.to_string(), compile_type(&tcx, field.ty))
+                                })
+                                .collect();
+                            VariantItem::Struct { fields }
+                        }
+                        VariantData::Tuple(fields, _, _) => {
+                            let tys = fields
+                                .iter()
+                                .map(|field| compile_type(&tcx, field.ty))
+                                .collect();
+                            VariantItem::Tuple { tys }
+                        }
+                        VariantData::Unit(_, _) => VariantItem::Tuple { tys: vec![] },
                     };
                     (name, fields)
                 })
@@ -745,6 +788,43 @@ impl TopLevelItem {
                 nest([text("Module"), line(), text(name), text(".")]),
                 nest([
                     hardline(),
+                    concat(variants.iter().map(|(name, fields)| match fields {
+                        VariantItem::Tuple { .. } => nil(),
+                        VariantItem::Struct { fields } => concat([
+                            nest([text("Module"), line(), text(name), text(".")]),
+                            nest([
+                                hardline(),
+                                nest([
+                                    text("Record"),
+                                    line(),
+                                    text("t"),
+                                    text(" :"),
+                                    line(),
+                                    text("Set"),
+                                    text(" := {"),
+                                ]),
+                                nest([concat(fields.iter().map(|(name, ty)| {
+                                    concat([
+                                        hardline(),
+                                        nest([
+                                            text(name),
+                                            line(),
+                                            text(":"),
+                                            line(),
+                                            ty.to_doc(false),
+                                            text(";"),
+                                        ]),
+                                    ])
+                                }))]),
+                                hardline(),
+                                text("}."),
+                            ]),
+                            hardline(),
+                            nest([text("End"), line(), text(name), text(".")]),
+                            hardline(),
+                            hardline(),
+                        ]),
+                    })),
                     nest([
                         text("Inductive"),
                         line(),
@@ -758,24 +838,35 @@ impl TopLevelItem {
                     ]),
                     hardline(),
                     intersperse(
-                        variants.iter().map(|(name, tys)| {
+                        variants.iter().map(|(name, fields)| {
                             nest([
                                 text("|"),
                                 line(),
                                 text(name),
-                                concat(tys.iter().map(|ty| {
-                                    concat([
+                                match fields {
+                                    VariantItem::Struct { .. } => concat([
                                         line(),
                                         nest([
-                                            text("(_"),
+                                            text("(_ :"),
                                             line(),
-                                            text(":"),
-                                            line(),
-                                            ty.to_doc(false),
+                                            text(format!("{name}.t")),
                                             text(")"),
                                         ]),
-                                    ])
-                                })),
+                                    ]),
+                                    VariantItem::Tuple { tys } => concat(tys.iter().map(|ty| {
+                                        concat([
+                                            line(),
+                                            nest([
+                                                text("(_"),
+                                                line(),
+                                                text(":"),
+                                                line(),
+                                                ty.to_doc(false),
+                                                text(")"),
+                                            ]),
+                                        ])
+                                    })),
+                                },
                             ])
                         }),
                         [line()],

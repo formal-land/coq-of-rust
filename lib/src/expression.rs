@@ -98,6 +98,7 @@ pub enum Expr {
         path: Path,
         fields: Vec<(String, Expr)>,
         base: Option<Box<Expr>>,
+        struct_or_variant: StructOrVariant,
     },
     StructTuple {
         path: Path,
@@ -368,7 +369,13 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
                 })
                 .collect();
             let base = base.map(|expr| Box::new(compile_expr(tcx, expr)));
-            Expr::StructStruct { path, fields, base }
+            let struct_or_variant = StructOrVariant::of_qpath(qpath);
+            Expr::StructStruct {
+                path,
+                fields,
+                base,
+                struct_or_variant,
+            }
         }
         rustc_hir::ExprKind::Repeat(expr, _) => {
             let expr = compile_expr(tcx, expr);
@@ -448,7 +455,7 @@ impl Expr {
                 text(format!("\"{func}\"")),
                 text("]"),
             ]),
-            Expr::Literal(literal) => literal_to_doc(literal),
+            Expr::Literal(literal) => literal_to_doc(with_paren, literal),
             Expr::AddrOf(expr) => expr.to_doc(with_paren),
             Expr::Call { func, args } => paren(
                 with_paren,
@@ -633,9 +640,18 @@ impl Expr {
             Expr::Index { base, index } => {
                 nest([base.to_doc(true), text("["), index.to_doc(false), text("]")])
             }
-            Expr::StructStruct { path, fields, base } => group([
+            Expr::StructStruct {
+                path,
+                fields,
+                base,
+                struct_or_variant,
+            } => group([
                 group([
                     nest([
+                        match struct_or_variant {
+                            StructOrVariant::Struct => nil(),
+                            StructOrVariant::Variant => concat([path.to_doc(), line()]),
+                        },
                         text("{|"),
                         line(),
                         intersperse(

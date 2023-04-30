@@ -113,26 +113,26 @@ Definition ln (x : f64) : MathResult :=
 
 Definition op (x : f64) (y : f64) : f64 :=
   match checked.div x y with
-  | Err.Build_t why =>
+  | Err why =>
     _crate.rt.panic_fmt
       (_crate.fmt.Arguments::["new_v1"]
         [ "" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] why ])
-  | Ok.Build_t ratio =>
+  | Ok ratio =>
     match checked.ln ratio with
-    | Err.Build_t why =>
+    | Err why =>
       _crate.rt.panic_fmt
         (_crate.fmt.Arguments::["new_v1"]
           [ "" ]
           [ _crate.fmt.ArgumentV1::["new_debug"] why ])
-    | Ok.Build_t ln =>
+    | Ok ln =>
       match checked.sqrt ln with
-      | Err.Build_t why =>
+      | Err why =>
         _crate.rt.panic_fmt
           (_crate.fmt.Arguments::["new_v1"]
             [ "" ]
             [ _crate.fmt.ArgumentV1::["new_debug"] why ])
-      | Ok.Build_t sqrt => sqrt
+      | Ok sqrt => sqrt
       end
     end
   end.
@@ -140,7 +140,8 @@ Definition op (x : f64) (y : f64) : f64 :=
 Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; "\n" ]
+      [ ""; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (op 1 (* 1.0 *) 10 (* 10.0 *))
       ]) ;;
   tt ;;

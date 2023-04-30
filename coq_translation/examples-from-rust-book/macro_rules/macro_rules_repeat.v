@@ -6,18 +6,21 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; "\n" ]
+      [ ""; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] 1 ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; "\n" ]
+      [ ""; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (std.cmp.min (1.["add"] 2) 2)
       ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; "\n" ]
+      [ ""; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"]
           (std.cmp.min 5 (std.cmp.min (2.["mul"] 3) 4))

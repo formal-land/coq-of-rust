@@ -1,5 +1,6 @@
 use crate::render::*;
-use rustc_hir::QPath;
+use rustc_hir::def::{CtorOf, DefKind, Res};
+use rustc_hir::{LangItem, QPath};
 use std::fmt;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -69,6 +70,48 @@ pub fn compile_qpath(qpath: &QPath) -> Path {
         QPath::LangItem(lang_item, _, _) => Path {
             segments: vec![to_valid_coq_name(lang_item.name().to_string())],
         },
+    }
+}
+
+#[derive(Debug)]
+pub enum StructOrVariant {
+    Struct,
+    Variant,
+}
+
+impl StructOrVariant {
+    /// Returns wether a qpath refers to a struct or a variant.
+    pub(crate) fn of_qpath(qpath: &QPath) -> StructOrVariant {
+        match qpath {
+            QPath::Resolved(_, path) => match path.res {
+                Res::Def(DefKind::Struct | DefKind::Ctor(CtorOf::Struct, _), _) => {
+                    StructOrVariant::Struct
+                }
+                Res::Def(DefKind::Variant | DefKind::Ctor(CtorOf::Variant, _), _) => {
+                    StructOrVariant::Variant
+                }
+                // TODO: handle SelfTyAlias
+                Res::SelfTyAlias { .. } => StructOrVariant::Struct,
+                _ => panic!("Unexpected path resolution: {:?}", path.res),
+            },
+            QPath::TypeRelative(..) => panic!("Unhandled qpath: {qpath:?}"),
+            QPath::LangItem(lang_item, ..) => match lang_item {
+                LangItem::OptionNone => StructOrVariant::Variant,
+                LangItem::OptionSome => StructOrVariant::Variant,
+                LangItem::ResultOk => StructOrVariant::Variant,
+                LangItem::ResultErr => StructOrVariant::Variant,
+                LangItem::ControlFlowContinue => StructOrVariant::Variant,
+                LangItem::ControlFlowBreak => StructOrVariant::Variant,
+                LangItem::RangeFrom => StructOrVariant::Variant,
+                LangItem::RangeFull => StructOrVariant::Variant,
+                LangItem::RangeInclusiveStruct => StructOrVariant::Variant,
+                LangItem::RangeInclusiveNew => StructOrVariant::Variant,
+                LangItem::Range => StructOrVariant::Variant,
+                LangItem::RangeToInclusive => StructOrVariant::Variant,
+                LangItem::RangeTo => StructOrVariant::Variant,
+                _ => panic!("Unhandled lang item: {lang_item:?}. TODO: add support for this item"),
+            },
+        }
     }
 }
 

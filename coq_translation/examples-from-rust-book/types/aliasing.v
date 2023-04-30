@@ -14,7 +14,8 @@ Definition main (_ : unit) : unit :=
   let inches := cast 2 U64 in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; " nanoseconds + "; " inches = "; " unit?\n" ]
+      [ ""; " nanoseconds + "; " inches = "; " unit?
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"] nanoseconds;
         _crate.fmt.ArgumentV1::["new_display"] inches;

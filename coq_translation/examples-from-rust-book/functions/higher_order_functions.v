@@ -8,12 +8,13 @@ Definition is_odd (n : u32) : bool := (n.["rem"] 2).["eq"] 1.
 Definition main (_ : unit) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Find the sum of all the squared odd numbers under 1000\n" ]
+      [ "Find the sum of all the squared odd numbers under 1000
+" ]
       [  ]) ;;
   tt ;;
   let upper := 1000 in
   let acc := 0 in
-  match LangItem {| RangeFrom.start := 0; |} with
+  match LangItem RangeFrom {| RangeFrom.start := 0; |} with
   | iter =>
     loop
       match LangItem iter with
@@ -36,17 +37,19 @@ Definition main (_ : unit) : unit :=
   end ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "imperative style: "; "\n" ]
+      [ "imperative style: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] acc ]) ;;
   tt ;;
   let sum_of_squared_odd_numbers :=
-    ((({| RangeFrom.start := 0; |}.["map"]
+    (((RangeFrom {| RangeFrom.start := 0; |}.["map"]
             (fun n => n.["mul"] n)).["take_while"]
           (fun n_squared => n_squared.["lt"] upper)).["filter"]
         (fun n_squared => is_odd n_squared)).["sum"] in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "functional style: "; "\n" ]
+      [ "functional style: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] sum_of_squared_odd_numbers ]) ;;
   tt ;;
   tt.

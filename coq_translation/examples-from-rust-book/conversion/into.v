@@ -3,8 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module From := std.convert.From.
-
 Module Number.
   Record t : Set := {
     value : i32;
@@ -58,7 +56,8 @@ Definition main (_ : unit) : unit :=
   let num := int.["into"] in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "My number is "; "\n" ]
+      [ "My number is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] num ]) ;;
   tt ;;
   tt.

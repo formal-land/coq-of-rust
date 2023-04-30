@@ -10,7 +10,8 @@ Definition main (_ : unit) : unit :=
   let into_iter := vec2.["into_iter"] in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Find 2 in vec1: "; "\n" ]
+      [ "Find 2 in vec1: "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"]
           (iter.["find"] (fun x => x.["eq"] 2))
@@ -18,7 +19,8 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Find 2 in vec2: "; "\n" ]
+      [ "Find 2 in vec2: "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"]
           (into_iter.["find"] (fun x => x.["eq"] 2))
@@ -28,7 +30,8 @@ Definition main (_ : unit) : unit :=
   let array2 := [ 4; 5; 6 ] in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Find 2 in array1: "; "\n" ]
+      [ "Find 2 in array1: "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"]
           (array1.["iter"].["find"] (fun x => x.["eq"] 2))
@@ -36,7 +39,8 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Find 2 in array2: "; "\n" ]
+      [ "Find 2 in array2: "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"]
           (array2.["into_iter"].["find"] (fun x => x.["eq"] 2))

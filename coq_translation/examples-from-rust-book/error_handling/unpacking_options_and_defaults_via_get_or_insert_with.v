@@ -43,7 +43,8 @@ Definition main (_ : unit) : unit :=
     fun  =>
       _crate.io._print
         (_crate.fmt.Arguments::["new_v1"]
-          [ "Providing lemon as fallback\n" ]
+          [ "Providing lemon as fallback
+" ]
           [  ]) ;;
       tt ;;
       Fruit.Lemon in
@@ -51,12 +52,14 @@ Definition main (_ : unit) : unit :=
     my_fruit.["get_or_insert_with"] get_lemon_as_fallback in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "my_fruit is: "; "\n" ]
+      [ "my_fruit is: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] first_available_fruit ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "first_available_fruit is: "; "\n" ]
+      [ "first_available_fruit is: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] first_available_fruit ]) ;;
   tt ;;
   let my_apple := Some Fruit.Apple in
@@ -64,12 +67,14 @@ Definition main (_ : unit) : unit :=
     my_apple.["get_or_insert_with"] get_lemon_as_fallback in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "should_be_apple is: "; "\n" ]
+      [ "should_be_apple is: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] should_be_apple ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "my_apple is unchanged: "; "\n" ]
+      [ "my_apple is unchanged: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] my_apple ]) ;;
   tt ;;
   tt.

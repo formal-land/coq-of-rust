@@ -7,7 +7,14 @@ Module thread := std.thread.
 
 Definition main (_ : unit) : unit :=
   let data :=
-    "86967897737416471853297327050364959\n11861322575564723963297542624962850\n70856234701860851907960690014725639\n38397966707106094172783238747669219\n52380795257888236525459303330302837\n58495327135744041048897885734297812\n69920216438980873548808413720956532\n16278424637452589860345374828574668" in
+    "86967897737416471853297327050364959
+11861322575564723963297542624962850
+70856234701860851907960690014725639
+38397966707106094172783238747669219
+52380795257888236525459303330302837
+58495327135744041048897885734297812
+69920216438980873548808413720956532
+16278424637452589860345374828574668" in
   let children := _crate.vec.Vec::["new"] tt in
   let chunked_data := data.["split_whitespace"] in
   match LangItem chunked_data.["enumerate"] with
@@ -18,7 +25,8 @@ Definition main (_ : unit) : unit :=
       | Some {| Some.0 := (i, data_segment); |} =>
         _crate.io._print
           (_crate.fmt.Arguments::["new_v1"]
-            [ "data segment "; " is \""; "\"\n" ]
+            [ "data segment "; " is ""; ""
+" ]
             [
               _crate.fmt.ArgumentV1::["new_display"] i;
               _crate.fmt.ArgumentV1::["new_display"] data_segment
@@ -34,7 +42,8 @@ Definition main (_ : unit) : unit :=
                         "should be a digit")).["sum"] in
               _crate.io._print
                 (_crate.fmt.Arguments::["new_v1"]
-                  [ "processed segment "; ", result="; "\n" ]
+                  [ "processed segment "; ", result="; "
+" ]
                   [
                     _crate.fmt.ArgumentV1::["new_display"] i;
                     _crate.fmt.ArgumentV1::["new_display"] result
@@ -51,7 +60,8 @@ Definition main (_ : unit) : unit :=
     (children.["into_iter"].["map"] (fun c => c.["join"].["unwrap"])).["sum"] in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Final sum result: "; "\n" ]
+      [ "Final sum result: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] final_result ]) ;;
   tt ;;
   tt.

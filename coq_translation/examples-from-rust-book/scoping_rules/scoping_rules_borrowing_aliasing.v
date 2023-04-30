@@ -28,7 +28,8 @@ Definition main (_ : unit) : unit :=
   let another_borrow := point in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Point has coordinates: ("; ", "; ", "; ")\n" ]
+      [ "Point has coordinates: ("; ", "; ", "; ")
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"] borrowed_point.["x"];
         _crate.fmt.ArgumentV1::["new_display"] another_borrow.["y"];
@@ -37,7 +38,8 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Point has coordinates: ("; ", "; ", "; ")\n" ]
+      [ "Point has coordinates: ("; ", "; ", "; ")
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"] borrowed_point.["x"];
         _crate.fmt.ArgumentV1::["new_display"] another_borrow.["y"];
@@ -50,7 +52,8 @@ Definition main (_ : unit) : unit :=
   assign mutable_borrow.["z"] 1 ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Point has coordinates: ("; ", "; ", "; ")\n" ]
+      [ "Point has coordinates: ("; ", "; ", "; ")
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"] mutable_borrow.["x"];
         _crate.fmt.ArgumentV1::["new_display"] mutable_borrow.["y"];
@@ -60,7 +63,8 @@ Definition main (_ : unit) : unit :=
   let new_borrowed_point := point in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Point now has coordinates: ("; ", "; ", "; ")\n" ]
+      [ "Point now has coordinates: ("; ", "; ", "; ")
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"] new_borrowed_point.["x"];
         _crate.fmt.ArgumentV1::["new_display"] new_borrowed_point.["y"];

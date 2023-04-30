@@ -3,8 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module Debug := std.fmt.Debug.
-
 Module HasArea.
   Class Trait (Self : Set) : Set := {
     area : (ref Self) -> f64;
@@ -87,7 +85,8 @@ Definition Triangle : Set := Triangle.t.
 Definition print_debug {T : Set} `{Debug.Trait T} (t : ref T) : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; "\n" ]
+      [ ""; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_debug"] t ]) ;;
   tt ;;
   tt.
@@ -102,7 +101,8 @@ Definition main (_ : unit) : unit :=
   print_debug rectangle ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Area: "; "\n" ]
+      [ "Area: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] rectangle.["area"] ]) ;;
   tt ;;
   tt.

@@ -20,7 +20,8 @@ Module Impl_Drop_for_Droppable.
   Definition drop (self : mut_ref Self) :=
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "> Dropping "; "\n" ]
+        [ "> Dropping "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] self.["name"] ]) ;;
     tt ;;
     tt.
@@ -40,21 +41,26 @@ Definition main (_ : unit) : unit :=
   let _c := {| Droppable.name := "c"; |} in
   let _d := {| Droppable.name := "d"; |} in
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "Exiting block B\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "Exiting block B
+" ] [  ]) ;;
   tt ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "Just exited block B\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "Just exited block B
+" ] [  ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "Exiting block A\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "Exiting block A
+" ] [  ]) ;;
   tt ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "Just exited block A\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "Just exited block A
+" ] [  ]) ;;
   tt ;;
   drop _a ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "end of the main function\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "end of the main function
+" ] [  ]) ;;
   tt ;;
   tt.

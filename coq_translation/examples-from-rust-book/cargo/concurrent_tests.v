@@ -3,40 +3,35 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
+Definition foo {A : Set} (o : Option A) : unit :=
+  match o with
+  | Some _a =>
+    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "some
+" ] [  ]) ;;
+    tt
+  | None =>
+    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "nothing
+" ] [  ]) ;;
+    tt
+  end.
+
 Module tests.
   Module OpenOptions := std.fs.OpenOptions.
   Definition OpenOptions := OpenOptions.t.
-  
-  Module Write := std.io.Write.
-  
-  Definition test_file : test.TestDescAndFn :=
-    {|
-      test.TestDescAndFn.desc :=
-        {|
-          test.TestDesc.name := test.StaticTestName "tests::test_file";
-          test.TestDesc.ignore := false;
-          test.TestDesc.ignore_message := _crate.option.Option.None;
-          test.TestDesc.compile_fail := false;
-          test.TestDesc.no_run := false;
-          test.TestDesc.should_panic := test.ShouldPanic.No;
-          test.TestDesc.test_type := test.TestType.Unknown;
-        |};
-      test.TestDescAndFn.testfn :=
-        test.StaticTestFn (fun  => test.assert_test_result (test_file tt));
-    |}.
   
   Definition test_file (_ : unit) : unit :=
     let file :=
       ((((OpenOptions::["new"] tt).["append"] true).["create"] true).["open"]
           "ferris.txt").["expect"]
         "Failed to open ferris.txt" in
-    match LangItem {| Range.start := 0; Range.end := 5; |} with
+    match LangItem Range {| Range.start := 0; Range.end := 5; |} with
     | iter =>
       loop
         match LangItem iter with
         | None => Break
         | Some {| Some.0 := _; |} =>
-          (file.["write_all"] "Ferris\n".["as_bytes"]).["expect"]
+          (file.["write_all"] "Ferris
+".["as_bytes"]).["expect"]
             "Could not write to ferris.txt" ;;
           tt
         end ;;
@@ -45,34 +40,19 @@ Module tests.
         for
     end.
   
-  Definition test_file_also : test.TestDescAndFn :=
-    {|
-      test.TestDescAndFn.desc :=
-        {|
-          test.TestDesc.name := test.StaticTestName "tests::test_file_also";
-          test.TestDesc.ignore := false;
-          test.TestDesc.ignore_message := _crate.option.Option.None;
-          test.TestDesc.compile_fail := false;
-          test.TestDesc.no_run := false;
-          test.TestDesc.should_panic := test.ShouldPanic.No;
-          test.TestDesc.test_type := test.TestType.Unknown;
-        |};
-      test.TestDescAndFn.testfn :=
-        test.StaticTestFn (fun  => test.assert_test_result (test_file_also tt));
-    |}.
-  
   Definition test_file_also (_ : unit) : unit :=
     let file :=
       ((((OpenOptions::["new"] tt).["append"] true).["create"] true).["open"]
           "ferris.txt").["expect"]
         "Failed to open ferris.txt" in
-    match LangItem {| Range.start := 0; Range.end := 5; |} with
+    match LangItem Range {| Range.start := 0; Range.end := 5; |} with
     | iter =>
       loop
         match LangItem iter with
         | None => Break
         | Some {| Some.0 := _; |} =>
-          (file.["write_all"] "Corro\n".["as_bytes"]).["expect"]
+          (file.["write_all"] "Corro
+".["as_bytes"]).["expect"]
             "Could not write to ferris.txt" ;;
           tt
         end ;;
@@ -85,36 +65,19 @@ End tests.
 Module OpenOptions := std.fs.OpenOptions.
 Definition OpenOptions := OpenOptions.t.
 
-Module Write := std.io.Write.
-
-Definition test_file : test.TestDescAndFn :=
-  {|
-    test.TestDescAndFn.desc :=
-      {|
-        test.TestDesc.name := test.StaticTestName "tests::test_file";
-        test.TestDesc.ignore := false;
-        test.TestDesc.ignore_message := _crate.option.Option.None;
-        test.TestDesc.compile_fail := false;
-        test.TestDesc.no_run := false;
-        test.TestDesc.should_panic := test.ShouldPanic.No;
-        test.TestDesc.test_type := test.TestType.Unknown;
-      |};
-    test.TestDescAndFn.testfn :=
-      test.StaticTestFn (fun  => test.assert_test_result (test_file tt));
-  |}.
-
 Definition test_file (_ : unit) : unit :=
   let file :=
     ((((OpenOptions::["new"] tt).["append"] true).["create"] true).["open"]
         "ferris.txt").["expect"]
       "Failed to open ferris.txt" in
-  match LangItem {| Range.start := 0; Range.end := 5; |} with
+  match LangItem Range {| Range.start := 0; Range.end := 5; |} with
   | iter =>
     loop
       match LangItem iter with
       | None => Break
       | Some {| Some.0 := _; |} =>
-        (file.["write_all"] "Ferris\n".["as_bytes"]).["expect"]
+        (file.["write_all"] "Ferris
+".["as_bytes"]).["expect"]
           "Could not write to ferris.txt" ;;
         tt
       end ;;
@@ -123,34 +86,19 @@ Definition test_file (_ : unit) : unit :=
       for
   end.
 
-Definition test_file_also : test.TestDescAndFn :=
-  {|
-    test.TestDescAndFn.desc :=
-      {|
-        test.TestDesc.name := test.StaticTestName "tests::test_file_also";
-        test.TestDesc.ignore := false;
-        test.TestDesc.ignore_message := _crate.option.Option.None;
-        test.TestDesc.compile_fail := false;
-        test.TestDesc.no_run := false;
-        test.TestDesc.should_panic := test.ShouldPanic.No;
-        test.TestDesc.test_type := test.TestType.Unknown;
-      |};
-    test.TestDescAndFn.testfn :=
-      test.StaticTestFn (fun  => test.assert_test_result (test_file_also tt));
-  |}.
-
 Definition test_file_also (_ : unit) : unit :=
   let file :=
     ((((OpenOptions::["new"] tt).["append"] true).["create"] true).["open"]
         "ferris.txt").["expect"]
       "Failed to open ferris.txt" in
-  match LangItem {| Range.start := 0; Range.end := 5; |} with
+  match LangItem Range {| Range.start := 0; Range.end := 5; |} with
   | iter =>
     loop
       match LangItem iter with
       | None => Break
       | Some {| Some.0 := _; |} =>
-        (file.["write_all"] "Corro\n".["as_bytes"]).["expect"]
+        (file.["write_all"] "Corro
+".["as_bytes"]).["expect"]
           "Could not write to ferris.txt" ;;
         tt
       end ;;

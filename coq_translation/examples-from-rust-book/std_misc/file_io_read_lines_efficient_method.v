@@ -8,23 +8,22 @@ Definition File := File.t.
 
 Module io := std.io.
 
-Module BufRead := std.io.BufRead.
-
 Module Path := std.path.Path.
 Definition Path := Path.t.
 
 Definition main (_ : unit) : unit :=
-  if (let_if Ok.Build_t lines := read_lines "./hosts" : bool) then
+  if (let_if Ok lines := read_lines "./hosts" : bool) then
     match LangItem lines with
     | iter =>
       loop
         match LangItem iter with
         | None => Break
         | Some {| Some.0 := line; |} =>
-          if (let_if Ok.Build_t ip := line : bool) then
+          if (let_if Ok ip := line : bool) then
             _crate.io._print
               (_crate.fmt.Arguments::["new_v1"]
-                [ ""; "\n" ]
+                [ ""; "
+" ]
                 [ _crate.fmt.ArgumentV1::["new_display"] ip ]) ;;
             tt ;;
             tt

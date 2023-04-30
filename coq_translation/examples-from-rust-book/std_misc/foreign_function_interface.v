@@ -14,7 +14,8 @@ Definition main (_ : unit) : unit :=
   let z_sqrt := csqrtf z in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "the square root of "; " is "; "\n" ]
+      [ "the square root of "; " is "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"] z;
         _crate.fmt.ArgumentV1::["new_debug"] z_sqrt
@@ -22,7 +23,8 @@ Definition main (_ : unit) : unit :=
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "cos("; ") = "; "\n" ]
+      [ "cos("; ") = "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_debug"] z;
         _crate.fmt.ArgumentV1::["new_debug"] (cos z)

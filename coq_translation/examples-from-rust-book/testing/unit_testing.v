@@ -10,22 +10,6 @@ Definition bad_add (a : i32) (b : i32) : i32 := a.["sub"] b.
 Module tests.
   Import super.
   
-  Definition test_add : test.TestDescAndFn :=
-    {|
-      test.TestDescAndFn.desc :=
-        {|
-          test.TestDesc.name := test.StaticTestName "tests::test_add";
-          test.TestDesc.ignore := false;
-          test.TestDesc.ignore_message := _crate.option.Option.None;
-          test.TestDesc.compile_fail := false;
-          test.TestDesc.no_run := false;
-          test.TestDesc.should_panic := test.ShouldPanic.No;
-          test.TestDesc.test_type := test.TestType.Unknown;
-        |};
-      test.TestDescAndFn.testfn :=
-        test.StaticTestFn (fun  => test.assert_test_result (test_add tt));
-    |}.
-  
   Definition test_add (_ : unit) : unit :=
     match (add 1 2, 3) with
     | (left_val, right_val) =>
@@ -41,22 +25,6 @@ Module tests.
         tt
     end ;;
     tt.
-  
-  Definition test_bad_add : test.TestDescAndFn :=
-    {|
-      test.TestDescAndFn.desc :=
-        {|
-          test.TestDesc.name := test.StaticTestName "tests::test_bad_add";
-          test.TestDesc.ignore := false;
-          test.TestDesc.ignore_message := _crate.option.Option.None;
-          test.TestDesc.compile_fail := false;
-          test.TestDesc.no_run := false;
-          test.TestDesc.should_panic := test.ShouldPanic.No;
-          test.TestDesc.test_type := test.TestType.Unknown;
-        |};
-      test.TestDescAndFn.testfn :=
-        test.StaticTestFn (fun  => test.assert_test_result (test_bad_add tt));
-    |}.
   
   Definition test_bad_add (_ : unit) : unit :=
     match (bad_add 1 2, 3) with
@@ -77,22 +45,6 @@ End tests.
 
 Import super.
 
-Definition test_add : test.TestDescAndFn :=
-  {|
-    test.TestDescAndFn.desc :=
-      {|
-        test.TestDesc.name := test.StaticTestName "tests::test_add";
-        test.TestDesc.ignore := false;
-        test.TestDesc.ignore_message := _crate.option.Option.None;
-        test.TestDesc.compile_fail := false;
-        test.TestDesc.no_run := false;
-        test.TestDesc.should_panic := test.ShouldPanic.No;
-        test.TestDesc.test_type := test.TestType.Unknown;
-      |};
-    test.TestDescAndFn.testfn :=
-      test.StaticTestFn (fun  => test.assert_test_result (test_add tt));
-  |}.
-
 Definition test_add (_ : unit) : unit :=
   match (add 1 2, 3) with
   | (left_val, right_val) =>
@@ -108,22 +60,6 @@ Definition test_add (_ : unit) : unit :=
       tt
   end ;;
   tt.
-
-Definition test_bad_add : test.TestDescAndFn :=
-  {|
-    test.TestDescAndFn.desc :=
-      {|
-        test.TestDesc.name := test.StaticTestName "tests::test_bad_add";
-        test.TestDesc.ignore := false;
-        test.TestDesc.ignore_message := _crate.option.Option.None;
-        test.TestDesc.compile_fail := false;
-        test.TestDesc.no_run := false;
-        test.TestDesc.should_panic := test.ShouldPanic.No;
-        test.TestDesc.test_type := test.TestType.Unknown;
-      |};
-    test.TestDescAndFn.testfn :=
-      test.StaticTestFn (fun  => test.assert_test_result (test_bad_add tt));
-  |}.
 
 Definition test_bad_add (_ : unit) : unit :=
   match (bad_add 1 2, 3) with

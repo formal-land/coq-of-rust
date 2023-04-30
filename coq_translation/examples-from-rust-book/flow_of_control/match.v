@@ -7,25 +7,30 @@ Definition main (_ : unit) : unit :=
   let number := 13 in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Tell me about "; "\n" ]
+      [ "Tell me about "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] number ]) ;;
   tt ;;
   match number with
   | Int(1, Unsuffixed) =>
-    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "One!\n" ] [  ]) ;;
+    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "One!
+" ] [  ]) ;;
     tt
   |
       (Int(2, Unsuffixed)|Int(3, Unsuffixed)|Int(5, Unsuffixed)|Int(7, Unsuffixed)|Int(11, Unsuffixed))
       =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "This is a prime\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "This is a prime
+" ] [  ]) ;;
     tt
   | _ =>
-    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "A teen\n" ] [  ]) ;;
+    _crate.io._print (_crate.fmt.Arguments::["new_v1"] [ "A teen
+" ] [  ]) ;;
     tt
   | _ =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "Ain't special\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "Ain't special
+" ] [  ]) ;;
     tt
   end ;;
   let boolean := true in
@@ -36,7 +41,8 @@ Definition main (_ : unit) : unit :=
     end in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; " -> "; "\n" ]
+      [ ""; " -> "; "
+" ]
       [
         _crate.fmt.ArgumentV1::["new_display"] boolean;
         _crate.fmt.ArgumentV1::["new_display"] binary

@@ -108,38 +108,45 @@ Definition try_logon
     : unit :=
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Username: "; "\n" ]
+      [ "Username: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] username ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "Password: "; "\n" ]
+      [ "Password: "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] password ]) ;;
   tt ;;
   _crate.io._print
-    (_crate.fmt.Arguments::["new_v1"] [ "Attempting logon...\n" ] [  ]) ;;
+    (_crate.fmt.Arguments::["new_v1"] [ "Attempting logon...
+" ] [  ]) ;;
   tt ;;
   let logon :=
     {| Account.username := username; Account.password := password; |} in
   match accounts.["get"] logon with
-  | Some.Build_t account_info =>
+  | Some account_info =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "Successful logon!\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "Successful logon!
+" ] [  ]) ;;
     tt ;;
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Name: "; "\n" ]
+        [ "Name: "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] account_info.["name"] ]) ;;
     tt ;;
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Email: "; "\n" ]
+        [ "Email: "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] account_info.["email"] ]) ;;
     tt ;;
     tt
   | _ =>
     _crate.io._print
-      (_crate.fmt.Arguments::["new_v1"] [ "Login failed!\n" ] [  ]) ;;
+      (_crate.fmt.Arguments::["new_v1"] [ "Login failed!
+" ] [  ]) ;;
     tt
   end.
 

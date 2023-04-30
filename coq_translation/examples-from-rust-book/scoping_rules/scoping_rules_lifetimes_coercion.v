@@ -13,12 +13,14 @@ Definition main (_ : unit) : unit :=
   let second := 3 in
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ "The product is "; "\n" ]
+      [ "The product is "; "
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (multiply first second) ]) ;;
   tt ;;
   _crate.io._print
     (_crate.fmt.Arguments::["new_v1"]
-      [ ""; " is the first\n" ]
+      [ ""; " is the first
+" ]
       [ _crate.fmt.ArgumentV1::["new_display"] (choose_first first second) ]) ;;
   tt ;;
   tt ;;

@@ -9,7 +9,8 @@ Definition main (_ : unit) : unit :=
   | val =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Got a value via destructuring: "; "\n" ]
+        [ "Got a value via destructuring: "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] val ]) ;;
     tt
   end ;;
@@ -17,7 +18,8 @@ Definition main (_ : unit) : unit :=
   | val =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Got a value via dereferencing: "; "\n" ]
+        [ "Got a value via dereferencing: "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] val ]) ;;
     tt
   end ;;
@@ -29,7 +31,8 @@ Definition main (_ : unit) : unit :=
   | r =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Got a reference to a value: "; "\n" ]
+        [ "Got a reference to a value: "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] r ]) ;;
     tt
   end ;;
@@ -38,7 +41,8 @@ Definition main (_ : unit) : unit :=
     (deref m).["add_assign"] 10 ;;
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "We added 10. `mut_value`: "; "\n" ]
+        [ "We added 10. `mut_value`: "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] m ]) ;;
     tt ;;
     tt

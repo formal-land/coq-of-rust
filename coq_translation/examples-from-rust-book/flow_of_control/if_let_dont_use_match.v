@@ -6,10 +6,11 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let optional := Some 7 in
   match optional with
-  | Some.Build_t i =>
+  | Some i =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "This is a really long string and `"; "`\n" ]
+        [ "This is a really long string and `"; "`
+" ]
         [ _crate.fmt.ArgumentV1::["new_debug"] i ]) ;;
     tt ;;
     tt

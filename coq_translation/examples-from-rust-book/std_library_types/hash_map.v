@@ -9,9 +9,11 @@ Definition HashMap := HashMap.t.
 Definition call (number : ref str) : ref str :=
   match number with
   | Str("798-1364", Cooked) =>
-    "We're sorry, the call cannot be completed as dialed. \n            Please hang up and try again."
+    "We're sorry, the call cannot be completed as dialed. 
+            Please hang up and try again."
   | Str("645-7689", Cooked) =>
-    "Hello, this is Mr. Awesome's Pizza. My name is Fred.\n            What can I get for you today?"
+    "Hello, this is Mr. Awesome's Pizza. My name is Fred.
+            What can I get for you today?"
   | _ => "Hi! Who is this again?"
   end.
 
@@ -22,31 +24,35 @@ Definition main (_ : unit) : unit :=
   contacts.["insert"] "Katie" "435-8291" ;;
   contacts.["insert"] "Robert" "956-1745" ;;
   match contacts.["get"] "Daniel" with
-  | Some.Build_t number =>
+  | Some number =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Calling Daniel: "; "\n" ]
+        [ "Calling Daniel: "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] (call number) ]) ;;
     tt
   | _ =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Don't have Daniel's number.\n" ]
+        [ "Don't have Daniel's number.
+" ]
         [  ]) ;;
     tt
   end ;;
   contacts.["insert"] "Daniel" "164-6743" ;;
   match contacts.["get"] "Ashley" with
-  | Some.Build_t number =>
+  | Some number =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Calling Ashley: "; "\n" ]
+        [ "Calling Ashley: "; "
+" ]
         [ _crate.fmt.ArgumentV1::["new_display"] (call number) ]) ;;
     tt
   | _ =>
     _crate.io._print
       (_crate.fmt.Arguments::["new_v1"]
-        [ "Don't have Ashley's number.\n" ]
+        [ "Don't have Ashley's number.
+" ]
         [  ]) ;;
     tt
   end ;;
@@ -59,7 +65,8 @@ Definition main (_ : unit) : unit :=
       | Some {| Some.0 := (contact, number); |} =>
         _crate.io._print
           (_crate.fmt.Arguments::["new_v1"]
-            [ "Calling "; ": "; "\n" ]
+            [ "Calling "; ": "; "
+" ]
             [
               _crate.fmt.ArgumentV1::["new_display"] contact;
               _crate.fmt.ArgumentV1::["new_display"] (call number)

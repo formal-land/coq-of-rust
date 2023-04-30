@@ -8,8 +8,6 @@ Definition File := File.t.
 
 Module io := std.io.
 
-Module BufRead := std.io.BufRead.
-
 Module BufReader := std.io.BufReader.
 Definition BufReader := BufReader.t.
 
@@ -28,7 +26,8 @@ Definition main (_ : unit) : unit :=
       | Some {| Some.0 := line; |} =>
         _crate.io._print
           (_crate.fmt.Arguments::["new_v1"]
-            [ ""; "\n" ]
+            [ ""; "
+" ]
             [ _crate.fmt.ArgumentV1::["new_display"] line.["unwrap"] ]) ;;
         tt ;;
         tt
