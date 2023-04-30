@@ -43,10 +43,16 @@ Then in any Rust project, to generate a `Crate.v` file with the Coq translation 
 cargo coq-of-rust
 ```
 
-To run the tests (regenerate the Coq files that are acting as a reference):
+Translate the test files (but show the error/warning messages):
 
 ```sh
 cargo run --bin coq-of-rust -- translate --path examples-from-rust-book
+```
+
+Update the snapshots of the translations of the test files, including the error messages:
+
+```sh
+python run_tests.py
 ```
 
 There is a bit of code taken from the [Creusot](https://github.com/xldenis/creusot) project, to make the Cargo command `coq-of-rust` and run the translation in the same context as Cargo.

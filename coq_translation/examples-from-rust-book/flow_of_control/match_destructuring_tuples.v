@@ -32,7 +32,7 @@ Definition main (_ : unit) : unit :=
         [ "last is `2` and the rest doesn't matter
 " ]) ;;
     tt
-  | (3, _, 4) =>
+  | (3, 4) =>
     _crate.io._print
       (format_arguments::["new_const"]
         [ "First is `3`, last is `4`, and the rest doesn't matter
