@@ -377,7 +377,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
                 })
                 .collect();
             let base = base.map(|expr| Box::new(compile_expr(tcx, expr)));
-            let struct_or_variant = StructOrVariant::of_qpath(qpath);
+            let struct_or_variant = StructOrVariant::of_qpath(&tcx, qpath);
             Expr::StructStruct {
                 path,
                 fields,

@@ -37,13 +37,13 @@ pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
                 .iter()
                 .map(|pat| (pat.ident.name.to_string(), compile_pattern(tcx, pat.pat)))
                 .collect();
-            let struct_or_variant = StructOrVariant::of_qpath(qpath);
+            let struct_or_variant = StructOrVariant::of_qpath(tcx, qpath);
             Pattern::StructStruct(path, pats, struct_or_variant)
         }
         PatKind::TupleStruct(qpath, pats, _) => {
             let path = compile_qpath(qpath);
             let pats = pats.iter().map(|pat| compile_pattern(tcx, pat)).collect();
-            let struct_or_variant = StructOrVariant::of_qpath(qpath);
+            let struct_or_variant = StructOrVariant::of_qpath(tcx, qpath);
             Pattern::StructTuple(path, pats, struct_or_variant)
         }
         PatKind::Or(pats) => {
