@@ -35,6 +35,7 @@ Module Impl_Drop_for_Droppable.
   }.
 End Impl_Drop_for_Droppable.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let _a := {| Droppable.name := "a"; |} in
   let _b := {| Droppable.name := "b"; |} in

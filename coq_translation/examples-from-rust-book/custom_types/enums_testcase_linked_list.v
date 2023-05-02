@@ -61,6 +61,7 @@ Module ImplList.
   }.
 End ImplList.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let list := List::["new"] tt in
   assign list (list.["prepend"] 1) ;;

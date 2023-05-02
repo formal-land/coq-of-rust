@@ -17,6 +17,7 @@ Definition call (number : ref str) : ref str :=
   | _ => "Hi! Who is this again?"
   end.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let contacts := HashMap::["new"] tt in
   contacts.["insert"] "Daniel" "798-1364" ;;

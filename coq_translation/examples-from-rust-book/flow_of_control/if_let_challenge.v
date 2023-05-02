@@ -9,6 +9,7 @@ Module Foo.
 End Foo.
 Definition Foo := Foo.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let a := Foo.Bar in
   if (let_if Foo.Bar := a : bool) then

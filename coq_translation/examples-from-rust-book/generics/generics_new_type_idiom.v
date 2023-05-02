@@ -45,6 +45,7 @@ End ImplDays.
 
 Definition old_enough (age : ref Years) : bool := (age.[0]).["ge"] 18.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let age := Years.Build_t 5 in
   let age_days := age.["to_days"] in

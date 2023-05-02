@@ -63,4 +63,5 @@ Definition comp_sci_student_greeting (student : ref TraitObject) : String :=
         ]) in
   res.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit := tt.

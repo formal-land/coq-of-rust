@@ -35,6 +35,7 @@ Module Impl_PrintInOption_for_T.
   }.
 End Impl_PrintInOption_for_T.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let vec := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
   vec.["print_in_option"] ;;

@@ -9,6 +9,7 @@ Definition apply {F : Set} `{FnOnce.Trait unit F} (f : F) : unit :=
 
 Definition apply_to_3 {F : Set} `{Fn.Trait (i32) F} (f : F) : i32 := f 3.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let greeting := "hello" in
   let farewell := "goodbye".["to_owned"] in

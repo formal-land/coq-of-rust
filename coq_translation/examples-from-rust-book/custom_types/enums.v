@@ -60,6 +60,7 @@ Definition inspect (event : WebEvent) : unit :=
     tt
   end.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let pressed := WebEvent.KeyPress "x"%char in
   let pasted := WebEvent.Paste "my text".["to_owned"] in

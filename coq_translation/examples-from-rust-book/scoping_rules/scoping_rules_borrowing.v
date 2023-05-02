@@ -21,6 +21,7 @@ Definition borrow_i32 (borrowed_i32 : ref i32) : unit :=
   tt ;;
   tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let boxed_i32 := Box::["new"] 5 in
   let stacked_i32 := 6 in

@@ -22,6 +22,7 @@ Module Point.
 End Point.
 Definition Point : Set := Point.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let point := {| Point.x := 0; Point.y := 0; Point.z := 0; |} in
   let borrowed_point := point in

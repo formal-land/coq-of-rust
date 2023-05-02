@@ -16,6 +16,7 @@ Module Color.
 End Color.
 Definition Color := Color.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let color := Color.RGB 122 17 40 in
   _crate.io._print (format_arguments::["new_const"] [ "What color is it?

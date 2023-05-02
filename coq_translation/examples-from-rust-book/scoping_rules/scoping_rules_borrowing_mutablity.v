@@ -3,6 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Module Book.
   Record t : Set := {
     author : ref str;
@@ -25,6 +26,7 @@ Definition Book : Set := Book.t.
 Module Impl__crate_clone_Clone_for_Book.
   Definition Self := Book.
   
+  (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone (self : ref Self) : Book :=
     let '_ := tt in
     let '_ := tt in
@@ -72,6 +74,7 @@ Definition new_edition (book : mut_ref Book) : unit :=
   tt ;;
   tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let immutabook :=
     {|

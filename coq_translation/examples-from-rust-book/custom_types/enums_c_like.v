@@ -19,6 +19,7 @@ Module Color.
 End Color.
 Definition Color := Color.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   _crate.io._print
     (format_arguments::["new_v1"]

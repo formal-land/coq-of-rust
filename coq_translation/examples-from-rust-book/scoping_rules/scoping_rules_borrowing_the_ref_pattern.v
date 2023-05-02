@@ -41,6 +41,7 @@ Module Impl__crate_marker_Copy_for_Point.
     _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Point.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let c := "Q"%char in
   let ref_c1 := c in

@@ -3,6 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let decimal := 65 (* 65.4321 *) in
   let integer := decimal in

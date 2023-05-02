@@ -27,6 +27,7 @@ Module Impl_Drop_for_ToDrop.
   }.
 End Impl_Drop_for_ToDrop.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let x := ToDrop.Build in
   _crate.io._print (format_arguments::["new_const"] [ "Made a ToDrop!

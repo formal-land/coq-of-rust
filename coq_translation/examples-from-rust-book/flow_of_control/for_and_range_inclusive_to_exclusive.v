@@ -3,6 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   match LangItem Range {| Range.start := 1; Range.end := 101; |} with
   | iter =>

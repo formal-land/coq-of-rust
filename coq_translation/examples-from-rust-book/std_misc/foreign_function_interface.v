@@ -9,6 +9,7 @@ Error ForeignMod.
 
 Definition cos (z : Complex) : Complex := ccosf z.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let z := {| Complex.re := 1 (* 1. *).["neg"]; Complex.im := 0 (* 0. *); |} in
   let z_sqrt := csqrtf z in

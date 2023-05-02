@@ -14,6 +14,7 @@ Definition double_first
       (fun first => first.["parse"].["map"] (fun n => 2.["mul"] n)) in
   opt.["map_or"] (Ok None) (fun r => r.["map"] Some).
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let numbers :=
     Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "42"; "93"; "18" ]) in

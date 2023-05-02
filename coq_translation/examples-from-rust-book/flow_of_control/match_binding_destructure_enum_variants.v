@@ -5,6 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Definition some_number (_ : unit) : Option u32 := Some 42.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   match some_number tt with
   | Some (42 as n) =>

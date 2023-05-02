@@ -51,6 +51,7 @@ Module Impl_Default_for_Borrowed.
   }.
 End Impl_Default_for_Borrowed.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let b := Default.default tt in
   _crate.io._print

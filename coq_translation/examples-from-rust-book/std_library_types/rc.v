@@ -6,6 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module Rc := std.rc.Rc.
 Definition Rc := Rc.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let rc_examples := "Rc examples".["to_string"] in
   _crate.io._print

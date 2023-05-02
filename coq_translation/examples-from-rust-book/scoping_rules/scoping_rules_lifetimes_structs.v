@@ -99,6 +99,7 @@ Module Impl__crate_fmt_Debug_for_Either.
   }.
 End Impl__crate_fmt_Debug_for_Either.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let x := 18 in
   let y := 15 in

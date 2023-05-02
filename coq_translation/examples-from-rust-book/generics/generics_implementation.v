@@ -45,6 +45,7 @@ Module ImplGenVal T.
   }.
 End ImplGenVal T.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let x := {| Val.val := 3 (* 3.0 *); |} in
   let y := {| GenVal.gen_val := 3; |} in

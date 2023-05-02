@@ -6,6 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module HashSet := std.collections.HashSet.
 Definition HashSet := HashSet.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let a :=
     (Slice::["into_vec"]

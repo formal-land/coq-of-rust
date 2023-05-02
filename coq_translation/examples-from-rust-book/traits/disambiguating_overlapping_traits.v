@@ -66,6 +66,7 @@ Module Impl_AgeWidget_for_Form.
   }.
 End Impl_AgeWidget_for_Form.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let form :=
     {| Form.username := "rustacean".["to_owned"]; Form.age := 28; |} in

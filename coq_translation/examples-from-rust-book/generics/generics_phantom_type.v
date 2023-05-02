@@ -78,6 +78,7 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct_A_B.
   }.
 End Impl__crate_cmp_PartialEq_for_PhantomStruct_A_B.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let _tuple1 := PhantomTuple.Build_t "Q"%char PhantomData.Build in
   let _tuple2 := PhantomTuple.Build_t "Q"%char PhantomData.Build in

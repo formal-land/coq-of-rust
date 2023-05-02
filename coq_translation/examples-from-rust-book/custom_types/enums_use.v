@@ -17,6 +17,7 @@ Module Work.
 End Work.
 Definition Work := Work.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let status := Poor in
   let work := Civilian in

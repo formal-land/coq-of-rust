@@ -5,6 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Definition add (a : i32) (b : i32) : i32 := a.["add"] b.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition bad_add (a : i32) (b : i32) : i32 := a.["sub"] b.
 
 Module tests.

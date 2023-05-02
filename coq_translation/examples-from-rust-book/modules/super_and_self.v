@@ -96,6 +96,7 @@ Definition indirect_call (_ : unit) : unit :=
 
 Module root_function := crate.cool.function.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   my.indirect_call tt ;;
   tt.

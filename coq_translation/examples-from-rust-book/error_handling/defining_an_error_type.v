@@ -84,6 +84,7 @@ Definition print (result : Result i32) : unit :=
     tt
   end.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let numbers :=
     Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "42"; "93"; "18" ]) in

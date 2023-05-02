@@ -5,6 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Definition some_fn (_ : unit) : unit := tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let a := some_fn tt in
   _crate.io._print

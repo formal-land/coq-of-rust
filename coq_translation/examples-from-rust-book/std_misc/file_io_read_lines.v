@@ -16,6 +16,7 @@ Definition read_lines (filename : String) : io.Lines (BufReader File) :=
   Return (io.BufReader::["new"] file).["lines"] ;;
   tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let lines := read_lines "./hosts".["to_string"] in
   match LangItem lines with

@@ -28,6 +28,7 @@ Definition print_multi (x : ref i32) (y : ref i32) : unit :=
 
 Definition pass_x (x : ref i32) (arg : ref i32) : ref i32 := x.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let x := 7 in
   let y := 9 in
