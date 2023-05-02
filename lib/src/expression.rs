@@ -283,6 +283,15 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
                 .map(|arm| {
                     let pat = compile_pattern(&tcx, arm.pat);
                     let body = compile_expr(tcx, arm.body);
+                    if arm.guard.is_some() {
+                        tcx.sess
+                            .struct_span_warn(
+                                arm.span,
+                                "Guards on match branches are not supported.",
+                            )
+                            .help("Use standalone `if` statements instead.")
+                            .emit();
+                    }
                     MatchArm { pat, body }
                 })
                 .collect();
@@ -368,7 +377,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
                 })
                 .collect();
             let base = base.map(|expr| Box::new(compile_expr(tcx, expr)));
-            let struct_or_variant = StructOrVariant::of_qpath(qpath);
+            let struct_or_variant = StructOrVariant::of_qpath(&tcx, qpath);
             Expr::StructStruct {
                 path,
                 fields,

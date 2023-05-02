@@ -1,6 +1,7 @@
 use crate::render::*;
 use rustc_hir::def::{CtorOf, DefKind, Res};
 use rustc_hir::{LangItem, QPath};
+use rustc_middle::ty::TyCtxt;
 use std::fmt;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -81,7 +82,16 @@ pub enum StructOrVariant {
 
 impl StructOrVariant {
     /// Returns wether a qpath refers to a struct or a variant.
-    pub(crate) fn of_qpath(qpath: &QPath) -> StructOrVariant {
+    pub(crate) fn of_qpath(tcx: &TyCtxt, qpath: &QPath) -> StructOrVariant {
+        let emit_warn_unsupported = || {
+            tcx.sess
+                .struct_span_warn(
+                    qpath.span(),
+                    "Cannot determine if this is a `struct` or an `enum`.",
+                )
+                .note("It should be supported in future versions.")
+                .emit();
+        };
         match qpath {
             QPath::Resolved(_, path) => match path.res {
                 Res::Def(DefKind::Struct | DefKind::Ctor(CtorOf::Struct, _), _) => {
@@ -90,11 +100,16 @@ impl StructOrVariant {
                 Res::Def(DefKind::Variant | DefKind::Ctor(CtorOf::Variant, _), _) => {
                     StructOrVariant::Variant
                 }
-                // TODO: handle SelfTyAlias
                 Res::SelfTyAlias { .. } => StructOrVariant::Struct,
-                _ => panic!("Unexpected path resolution: {:?}", path.res),
+                _ => {
+                    emit_warn_unsupported();
+                    StructOrVariant::Variant
+                }
             },
-            QPath::TypeRelative(..) => panic!("Unhandled qpath: {qpath:?}"),
+            QPath::TypeRelative(..) => {
+                emit_warn_unsupported();
+                StructOrVariant::Struct
+            }
             QPath::LangItem(lang_item, ..) => match lang_item {
                 LangItem::OptionNone => StructOrVariant::Variant,
                 LangItem::OptionSome => StructOrVariant::Variant,
@@ -109,7 +124,10 @@ impl StructOrVariant {
                 LangItem::Range => StructOrVariant::Variant,
                 LangItem::RangeToInclusive => StructOrVariant::Variant,
                 LangItem::RangeTo => StructOrVariant::Variant,
-                _ => panic!("Unhandled lang item: {lang_item:?}. TODO: add support for this item"),
+                _ => {
+                    emit_warn_unsupported();
+                    StructOrVariant::Struct
+                }
             },
         }
     }
