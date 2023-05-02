@@ -7,6 +7,7 @@ Definition double_first (vec : Vec (ref str)) : i32 :=
   let first := vec.["first"].["unwrap"] in
   2.["mul"] first.["parse"].["unwrap"].
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let numbers :=
     Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "42"; "93"; "18" ]) in

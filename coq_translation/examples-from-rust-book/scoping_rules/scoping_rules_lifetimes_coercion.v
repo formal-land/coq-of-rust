@@ -8,6 +8,7 @@ Definition multiply (first : ref i32) (second : ref i32) : i32 :=
 
 Definition choose_first (first : ref i32) (arg : ref i32) : ref i32 := first.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let first := 2 in
   let second := 3 in

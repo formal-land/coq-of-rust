@@ -171,6 +171,7 @@ Module Impl_Add_for_Length_Unit.
   }.
 End Impl_Add_for_Length_Unit.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let one_foot := Length.Build_t 12 (* 12.0 *) PhantomData.Build in
   let one_meter := Length.Build_t 1000 (* 1000.0 *) PhantomData.Build in

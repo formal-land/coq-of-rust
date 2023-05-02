@@ -15,6 +15,7 @@ Definition
 
 Definition Operations : Set := VeryVerboseEnumOfThingsToDoWithNumbers.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let x := Operations::["Add"] in
   tt.

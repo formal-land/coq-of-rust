@@ -149,6 +149,7 @@ Definition try_logon
     tt
   end.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let accounts := HashMap::["new"] tt in
   let account :=

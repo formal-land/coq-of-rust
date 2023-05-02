@@ -171,6 +171,7 @@ Definition op (x : f64) (y : f64) : unit :=
     tt
   end.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   checked.op 1 (* 1.0 *) 10 (* 10.0 *) ;;
   tt.

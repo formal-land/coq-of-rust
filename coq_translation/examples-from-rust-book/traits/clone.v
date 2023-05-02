@@ -98,6 +98,7 @@ Module Impl__crate_fmt_Debug_for_Pair.
   }.
 End Impl__crate_fmt_Debug_for_Pair.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let unit := Unit.Build in
   let copied_unit := unit in

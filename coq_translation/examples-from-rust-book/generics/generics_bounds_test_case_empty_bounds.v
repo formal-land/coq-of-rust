@@ -48,6 +48,7 @@ Definition red {T : Set} `{Red.Trait T} (arg : ref T) : ref str := "red".
 
 Definition blue {T : Set} `{Blue.Trait T} (arg : ref T) : ref str := "blue".
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let cardinal := Cardinal.Build in
   let blue_jay := BlueJay.Build in

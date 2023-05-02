@@ -5,6 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module thread := std.thread.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let data :=
     "86967897737416471853297327050364959

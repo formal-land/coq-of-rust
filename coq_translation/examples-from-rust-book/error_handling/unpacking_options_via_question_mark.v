@@ -108,6 +108,7 @@ Module ImplPerson.
   }.
 End ImplPerson.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let p :=
     {|

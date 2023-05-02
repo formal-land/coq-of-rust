@@ -5,6 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Definition is_odd (n : u32) : bool := (n.["rem"] 2).["eq"] 1.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   _crate.io._print
     (format_arguments::["new_const"]

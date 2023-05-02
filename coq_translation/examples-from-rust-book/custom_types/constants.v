@@ -9,6 +9,7 @@ Definition THRESHOLD : i32 := 10.
 
 Definition is_big (n : i32) : bool := n.["gt"] THRESHOLD.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let n := 16 in
   _crate.io._print

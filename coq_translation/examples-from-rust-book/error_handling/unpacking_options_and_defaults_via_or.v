@@ -39,6 +39,7 @@ Module Impl__crate_fmt_Debug_for_Fruit.
   }.
 End Impl__crate_fmt_Debug_for_Fruit.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let apple := Some Fruit.Apple in
   let orange := Some Fruit.Orange in

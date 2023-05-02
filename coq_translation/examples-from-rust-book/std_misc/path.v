@@ -6,6 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module Path := std.path.Path.
 Definition Path := Path.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let path := Path::["new"] "." in
   let _display := path.["display"] in

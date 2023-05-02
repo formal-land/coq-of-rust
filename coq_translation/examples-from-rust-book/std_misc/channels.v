@@ -15,6 +15,7 @@ Module thread := std.thread.
 
 Definition NTHREADS : i32 := 3.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let '(tx, rx) := mpsc.channel tt in
   let children := Vec::["new"] tt in

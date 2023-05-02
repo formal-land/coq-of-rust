@@ -11,6 +11,7 @@ Module io := std.io.
 Module Path := std.path.Path.
 Definition Path := Path.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   if (let_if Ok lines := read_lines "./hosts" : bool) then
     match LangItem lines with

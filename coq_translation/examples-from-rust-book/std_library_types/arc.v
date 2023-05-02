@@ -11,6 +11,7 @@ Module thread := std.thread.
 Module Duration := std.time.Duration.
 Definition Duration := Duration.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let apple := Arc::["new"] "the same apple" in
   match LangItem Range {| Range.start := 0; Range.end := 10; |} with

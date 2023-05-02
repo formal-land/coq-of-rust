@@ -113,6 +113,7 @@ Definition eat (food : Food) (day : Day) : unit :=
     tt
   end.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let '(cordon_bleu, steak, sushi) :=
     (Food.CordonBleu, Food.Steak, Food.Sushi) in

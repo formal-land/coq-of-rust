@@ -34,6 +34,7 @@ Definition try_division (dividend : i32) (divisor : i32) : unit :=
     tt
   end.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   try_division 4 2 ;;
   try_division 1 0 ;;

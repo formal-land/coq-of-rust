@@ -51,6 +51,7 @@ Module Impl_From_for_Number.
   }.
 End Impl_From_for_Number.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let int := 5 in
   let num := int.["into"] in

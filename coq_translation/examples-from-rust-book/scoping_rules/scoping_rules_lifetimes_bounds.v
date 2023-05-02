@@ -48,6 +48,7 @@ Definition print_ref {T : Set} `{Debug.Trait T} (t : ref T) : unit :=
   tt ;;
   tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let x := 7 in
   let ref_x := Ref.Build_t x in

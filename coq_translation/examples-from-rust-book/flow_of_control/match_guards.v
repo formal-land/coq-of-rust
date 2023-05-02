@@ -10,6 +10,7 @@ Module Temperature.
 End Temperature.
 Definition Temperature := Temperature.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let temperature := Temperature.Celsius 35 in
   match temperature with

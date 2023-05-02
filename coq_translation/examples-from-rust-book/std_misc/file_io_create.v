@@ -20,6 +20,7 @@ Import std.io.prelude.
 Module Path := std.path.Path.
 Definition Path := Path.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let path := Path::["new"] "lorem_ipsum.txt" in
   let display := path.["display"] in

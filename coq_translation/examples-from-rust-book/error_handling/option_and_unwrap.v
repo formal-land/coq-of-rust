@@ -39,6 +39,7 @@ Definition drink (drink : Option (ref str)) : unit :=
   tt ;;
   tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let water := Some "water" in
   let lemonade := Some "lemonade" in

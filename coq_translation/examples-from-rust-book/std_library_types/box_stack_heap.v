@@ -5,6 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module mem := std.mem.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Module Point.
   Record t : Set := {
     x : f64;
@@ -23,6 +24,7 @@ Definition Point : Set := Point.t.
 Module Impl__crate_fmt_Debug_for_Point.
   Definition Self := Point.
   
+  (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
@@ -47,6 +49,7 @@ End Impl__crate_fmt_Debug_for_Point.
 Module Impl__crate_clone_Clone_for_Point.
   Definition Self := Point.
   
+  (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone (self : ref Self) : Point :=
     let '_ := tt in
     self.["deref"].
@@ -67,6 +70,7 @@ Module Impl__crate_marker_Copy_for_Point.
     _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Point.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Module Rectangle.
   Record t : Set := {
     top_left : Point;
@@ -88,6 +92,7 @@ Definition origin (_ : unit) : Point :=
 Definition boxed_origin (_ : unit) : Box Point :=
   Box::["new"] {| Point.x := 0 (* 0.0 *); Point.y := 0 (* 0.0 *); |}.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let point := origin tt in
   let rectangle :=

@@ -7,6 +7,7 @@ Definition create_box (_ : unit) : unit :=
   let _box1 := Box::["new"] 3 in
   tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let _box2 := Box::["new"] 5 in
   let _box3 := Box::["new"] 4 in

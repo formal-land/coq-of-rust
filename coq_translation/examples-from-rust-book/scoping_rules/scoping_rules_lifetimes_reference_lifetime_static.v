@@ -7,6 +7,7 @@ Definition NUM : i32 := 18.
 
 Definition coerce_static (arg : ref i32) : ref i32 := NUM.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let static_string := "I'm in read-only memory" in
   _crate.io._print

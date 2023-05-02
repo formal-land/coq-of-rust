@@ -5,6 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module asm := std.arch.asm.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let name_buf := repeat 0 in
   InlineAsm ;;

@@ -5,6 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module env := std.env.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let args := (env.args tt).["collect"] in
   _crate.io._print

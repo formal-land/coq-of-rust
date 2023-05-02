@@ -136,6 +136,7 @@ Module ImplSheep_2.
   }.
 End ImplSheep_2.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let dolly := ((Animal.new "Dolly") : Sheep) in
   dolly.["talk"] ;;

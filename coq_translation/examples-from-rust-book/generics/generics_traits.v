@@ -37,6 +37,7 @@ Module Impl_DoubleDrop_for_U.
   }.
 End Impl_DoubleDrop_for_U.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let empty := Empty.Build in
   let null := Null.Build in

@@ -34,6 +34,7 @@ Module Impl_fmt_Display_for_Circle.
   }.
 End Impl_fmt_Display_for_Circle.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let circle := {| Circle.radius := 6; |} in
   _crate.io._print

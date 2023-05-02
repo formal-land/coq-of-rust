@@ -13,6 +13,7 @@ Definition function (_ : unit) : unit :=
   tt ;;
   tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let closure :=
     fun  =>

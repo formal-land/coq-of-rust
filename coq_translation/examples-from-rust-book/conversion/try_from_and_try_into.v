@@ -76,6 +76,7 @@ Module Impl_TryFrom_for_EvenNumber.
   }.
 End Impl_TryFrom_for_EvenNumber.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   match (EvenNumber::["try_from"] 8, Ok (EvenNumber.Build_t 8)) with
   | (left_val, right_val) =>

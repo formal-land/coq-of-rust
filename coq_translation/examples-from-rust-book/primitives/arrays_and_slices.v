@@ -20,6 +20,7 @@ Definition analyze_slice (slice : ref Slice) : unit :=
   tt ;;
   tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let xs := [ 1; 2; 3; 4; 5 ] in
   let ys := repeat 0 in
