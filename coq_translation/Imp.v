@@ -27,8 +27,12 @@ Inductive Ctl_ty : Set :=
 | Panic (** unrecovarable errors *)
 | Exception. (** recovarable errors/user errors *)
 
-(** [Mem i] is the memory indexed by the type i, it returns an existential type *)
-Parameter Mem : Set -> (forall a : Set, a).
+(** The type of a memory value which depends on an index *)
+Definition Mem_val_type {a : Set} (i : a) : Set. Admitted.
+(** A memory area indexed by the type [a] *)
+Definition Mem_area (a : Set) : forall (i : a), Mem_val_type i. Admitted.
+Check Mem_area nat. (* A memory area indexed by naturals *)
+Check Mem_val_type 0.
 
 (** [Imp] defines a free monad for a imperative language *)
 Inductive Imp : Set -> Set
@@ -40,9 +44,29 @@ Inductive Imp : Set -> Set
 | Loop {a b : Set} : Imp unit -> Imp unit 
 (** It keeps evaluating its parameter until the answer is [Break]. *)
 | Control {a : Set} : Ctl_ty -> a -> Imp a (** return, break, exceptons ... *)
-| ReadMem {a b : Set} : Mem a b -> a -> Imp b (** read from memory *)
-| WriteMem {a b : Set} : Mem a b -> a -> b -> Imp unit (** write to memory *)
 | Sequence {a b : Set} : Imp a -> (a -> Imp b) -> Imp b
   (** to represent a sequence of computations that may depend on
+
       previous computations *)
 .
+
+
+
+(** Free is the free monad definiton it has to be merged into Imp and 
+    it is here only for reference 
+
+    Free a f =
+      Pure a
+    | Free (f (Free a f))
+
+*)
+Module Free.
+  (* Inductive t (a : Set) (fnctr : Set -> Set) : Set := *)
+  (* | Pure : a -> t a fnctr *)
+  (* | Free : ??? *)
+  (* . *)
+End Free.
+
+
+                         
+                   
