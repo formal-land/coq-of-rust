@@ -3,40 +3,55 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  let names :=
-    Slice::["into_vec"]
-      (_crate.boxed.Box::["new"] [ "Bob"; "Frank"; "Ferris" ]) in
-  match LangItem names.["iter"] with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := name; |} =>
-        match name with
-        | "Ferris" =>
-          _crate.io._print
-            (format_arguments::["new_const"]
-              [ "There is a rustacean among us!
-" ]) ;;
-          tt
-        | _ =>
-          _crate.io._print
-            (format_arguments::["new_v1"]
-              [ "Hello "; "
+Definition main :=
+  ltac:(function (
+    let names :=
+      Slice::["into_vec"](|
+        _crate.boxed.Box::["new"](| [ "Bob"; "Frank"; "Ferris" ] |)
+      |) in
+    let '_ :=
+      match LangItem(| names.["iter"](||) |) with
+      | iter =>
+        loop
+          let '_ :=
+            match LangItem(| iter |) with
+            | None => Break
+            | Some {| Some.0 := name; |} =>
+              match name with
+              | "Ferris" =>
+                let '_ :=
+                  _crate.io._print(|
+                    format_arguments::["new_const"](|
+                      [ "There is a rustacean among us!
 " ]
-              [ format_argument::["new_display"] name ]) ;;
+                    |)
+                  |) in
+                tt
+              | _ =>
+                let '_ :=
+                  _crate.io._print(|
+                    format_arguments::["new_v1"](|
+                      [ "Hello "; "
+" ],
+                      [ format_argument::["new_display"](| name |) ]
+                    |)
+                  |) in
+                tt
+              end
+            end in
           tt
-        end
-      end ;;
-      tt
-      from
-      for
-  end ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "names: "; "
-" ]
-      [ format_argument::["new_debug"] names ]) ;;
-  tt ;;
-  tt.
+          from
+          for
+      end in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "names: "; "
+" ],
+            [ format_argument::["new_debug"](| names |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module Person.
   Class Trait (Self : Set) : Set := {
-    name : (ref Self) -> String;
+    name : (ref Self) -> (M String);
   }.
   
   Global Instance Method_name `(Trait) : Notation.Dot "name" := {
@@ -15,7 +15,7 @@ End Person.
 
 Module Student.
   Class Trait (Self : Set) : Set := {
-    university : (ref Self) -> String;
+    university : (ref Self) -> (M String);
   }.
   
   Global Instance Method_university `(Trait) : Notation.Dot "university" := {
@@ -25,7 +25,7 @@ End Student.
 
 Module Programmer.
   Class Trait (Self : Set) : Set := {
-    fav_language : (ref Self) -> String;
+    fav_language : (ref Self) -> (M String);
   }.
   
   Global Instance Method_fav_language `(Trait)
@@ -36,7 +36,7 @@ End Programmer.
 
 Module CompSciStudent.
   Class Trait (Self : Set) : Set := {
-    git_username : (ref Self) -> String;
+    git_username : (ref Self) -> (M String);
   }.
   
   Global Instance Method_git_username `(Trait)
@@ -45,22 +45,26 @@ Module CompSciStudent.
   }.
 End CompSciStudent.
 
-Definition comp_sci_student_greeting (student : ref TraitObject) : String :=
-  let res :=
-    _crate.fmt.format
-      (format_arguments::["new_v1"]
-        [
-          "My name is ";
-          " and I attend ";
-          ". My favorite language is ";
-          ". My Git username is "
-        ]
-        [
-          format_argument::["new_display"] student.["name"];
-          format_argument::["new_display"] student.["university"];
-          format_argument::["new_display"] student.["fav_language"];
-          format_argument::["new_display"] student.["git_username"]
-        ]) in
-  res.
+Definition comp_sci_student_greeting (student : ref TraitObject) :=
+  ltac:(function (
+    let res :=
+      _crate.fmt.format(|
+        format_arguments::["new_v1"](|
+          [
+            "My name is ";
+            " and I attend ";
+            ". My favorite language is ";
+            ". My Git username is "
+          ],
+          [
+            format_argument::["new_display"](| student.["name"](||) |);
+            format_argument::["new_display"](| student.["university"](||) |);
+            format_argument::["new_display"](| student.["fav_language"](||) |);
+            format_argument::["new_display"](| student.["git_username"](||) |)
+          ]
+        |)
+      |) in
+    res
+    : String)).
 
-Definition main (_ : unit) : unit := tt.
+Definition main := ltac:(function (tt : unit)).

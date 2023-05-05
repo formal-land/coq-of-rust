@@ -3,13 +3,16 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := tt.
+Definition main := ltac:(function (tt : unit)).
 
 Module asm := std.arch.asm.
 
-Definition mul (a : u64) (b : u64) : u128 :=
-  let lo := tt in
-  let hi := tt in
-  InlineAsm ;;
-  tt ;;
-  ((cast hi u128).["shl"] 64).["add"] (cast lo u128).
+Definition mul (a : u64) (b : u64) :=
+  ltac:(function (
+    let lo := tt in
+    let hi := tt in
+    let '_ :=
+      let '_ := InlineAsm in
+      tt in
+    ((cast hi u128).["shl"](| 64 |)).["add"](| cast lo u128 |)
+    : u128)).

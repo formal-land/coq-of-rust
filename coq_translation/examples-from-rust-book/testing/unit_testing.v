@@ -3,76 +3,113 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition add (a : i32) (b : i32) : i32 := a.["add"] b.
+Definition add (a : i32) (b : i32) := ltac:(function (a.["add"](| b |) : i32)).
 
-Definition bad_add (a : i32) (b : i32) : i32 := a.["sub"] b.
+Definition bad_add (a : i32) (b : i32) :=
+  ltac:(function (a.["sub"](| b |) : i32)).
 
 Module tests.
   Import super.
   
-  Definition test_add (_ : unit) : unit :=
-    match (add 1 2, 3) with
-    | (left_val, right_val) =>
-      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-        let kind := _crate.panicking.AssertKind.Eq in
-        _crate.panicking.assert_failed
-          kind
-          left_val.["deref"]
-          right_val.["deref"]
-          _crate.option.Option.None ;;
-        tt
-      else
-        tt
-    end ;;
-    tt.
+  Definition test_add :=
+    ltac:(function (
+      let '_ :=
+        match (add(| 1, 2 |), 3) with
+        | (left_val, right_val) =>
+          if
+            (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
+            |)).["not"](||)
+            : bool)
+          then
+            let kind := _crate.panicking.AssertKind.Eq in
+            let '_ :=
+              _crate.panicking.assert_failed(|
+                kind,
+                left_val.["deref"](||),
+                right_val.["deref"](||),
+                _crate.option.Option.None
+              |) in
+            tt
+          else
+            tt
+        end in
+      tt
+      : unit)).
   
-  Definition test_bad_add (_ : unit) : unit :=
-    match (bad_add 1 2, 3) with
-    | (left_val, right_val) =>
-      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-        let kind := _crate.panicking.AssertKind.Eq in
-        _crate.panicking.assert_failed
-          kind
-          left_val.["deref"]
-          right_val.["deref"]
-          _crate.option.Option.None ;;
-        tt
-      else
-        tt
-    end ;;
-    tt.
+  Definition test_bad_add :=
+    ltac:(function (
+      let '_ :=
+        match (bad_add(| 1, 2 |), 3) with
+        | (left_val, right_val) =>
+          if
+            (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
+            |)).["not"](||)
+            : bool)
+          then
+            let kind := _crate.panicking.AssertKind.Eq in
+            let '_ :=
+              _crate.panicking.assert_failed(|
+                kind,
+                left_val.["deref"](||),
+                right_val.["deref"](||),
+                _crate.option.Option.None
+              |) in
+            tt
+          else
+            tt
+        end in
+      tt
+      : unit)).
 End tests.
 
 Import super.
 
-Definition test_add (_ : unit) : unit :=
-  match (add 1 2, 3) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  tt.
+Definition test_add :=
+  ltac:(function (
+    let '_ :=
+      match (add(| 1, 2 |), 3) with
+      | (left_val, right_val) =>
+        if
+          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
+          |)).["not"](||)
+          : bool)
+        then
+          let kind := _crate.panicking.AssertKind.Eq in
+          let '_ :=
+            _crate.panicking.assert_failed(|
+              kind,
+              left_val.["deref"](||),
+              right_val.["deref"](||),
+              _crate.option.Option.None
+            |) in
+          tt
+        else
+          tt
+      end in
+    tt
+    : unit)).
 
-Definition test_bad_add (_ : unit) : unit :=
-  match (bad_add 1 2, 3) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  tt.
+Definition test_bad_add :=
+  ltac:(function (
+    let '_ :=
+      match (bad_add(| 1, 2 |), 3) with
+      | (left_val, right_val) =>
+        if
+          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
+          |)).["not"](||)
+          : bool)
+        then
+          let kind := _crate.panicking.AssertKind.Eq in
+          let '_ :=
+            _crate.panicking.assert_failed(|
+              kind,
+              left_val.["deref"](||),
+              right_val.["deref"](||),
+              _crate.option.Option.None
+            |) in
+          tt
+        else
+          tt
+      end in
+    tt
+    : unit)).

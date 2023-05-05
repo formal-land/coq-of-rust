@@ -15,7 +15,7 @@ Definition Null := Null.t.
 
 Module DoubleDrop.
   Class Trait (T Self : Set) : Set := {
-    double_drop : Self -> (T -> _);
+    double_drop : Self -> (T -> (M _));
   }.
   
   Global Instance Method_double_drop `(Trait) : Notation.Dot "double_drop" := {
@@ -26,7 +26,8 @@ End DoubleDrop.
 Module Impl_DoubleDrop_for_U.
   Definition Self := U.
   
-  Definition double_drop (self : Self) (Pattern : T) := tt.
+  Definition double_drop (self : Self) (Pattern : T) :=
+    ltac:(function (tt : _)).
   
   Global Instance Method_double_drop : Notation.Dot "double_drop" := {
     Notation.dot := double_drop;
@@ -37,8 +38,10 @@ Module Impl_DoubleDrop_for_U.
   }.
 End Impl_DoubleDrop_for_U.
 
-Definition main (_ : unit) : unit :=
-  let empty := Empty.Build in
-  let null := Null.Build in
-  empty.["double_drop"] null ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let empty := Empty.Build in
+    let null := Null.Build in
+    let '_ := empty.["double_drop"](| null |) in
+    tt
+    : unit)).

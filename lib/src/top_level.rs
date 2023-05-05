@@ -403,7 +403,7 @@ fn compile_top_level_item(
                             },
                             TraitItemKind::Fn(fn_sig, trait_fn) => match trait_fn {
                                 TraitFn::Required(_) => TraitItem::Definition {
-                                    ty: compile_fn_decl(&tcx, fn_sig.decl),
+                                    ty: get_monadic_type(&compile_fn_decl(&tcx, fn_sig.decl)),
                                 },
                                 TraitFn::Provided(body_id) => {
                                     let FnSigAndBody { args, ret_ty, body } =
@@ -558,7 +558,7 @@ fn fn_to_doc<'a>(
     name: &'a String,
     ty_params: Option<&'a Vec<String>>,
     where_predicates: Option<&'a Vec<WherePredicate>>,
-    args: &'a Vec<(String, CoqType)>,
+    args: &'a [(String, CoqType)],
     ret_ty: &'a Option<CoqType>,
     body: &'a Expr,
 ) -> Doc<'a> {
@@ -583,7 +583,6 @@ fn fn_to_doc<'a>(
                     }
                 }
             },
-            line(),
             match where_predicates {
                 None => nil(),
                 Some(where_predicates) => concat(where_predicates.iter().map(
@@ -593,6 +592,7 @@ fn fn_to_doc<'a>(
                          ty,
                      }| {
                         concat([
+                            line(),
                             nest([
                                 text("`{"),
                                 name.to_doc(),
@@ -606,40 +606,44 @@ fn fn_to_doc<'a>(
                                 ty.to_doc(true),
                                 text("}"),
                             ]),
-                            line(),
                         ])
                     },
                 )),
             },
-            if args.is_empty() {
-                text("(_ : unit)")
-            } else {
-                intersperse(
-                    args.iter().map(|(name, ty)| {
-                        nest([
-                            text("("),
-                            text(name),
-                            line(),
-                            text(":"),
-                            line(),
-                            ty.to_doc(false),
-                            text(")"),
-                        ])
-                    }),
-                    [line()],
-                )
-            },
-            match ret_ty {
-                Some(_) => line(),
-                None => nil(),
-            },
-            match ret_ty {
-                Some(ty) => nest([text(":"), line(), ty.to_doc(false), text(" :=")]),
-                None => text(" :="),
-            },
+            concat(args.iter().map(|(name, ty)| {
+                concat([
+                    line(),
+                    nest([
+                        text("("),
+                        text(name),
+                        line(),
+                        text(":"),
+                        line(),
+                        ty.to_doc(false),
+                        text(")"),
+                    ]),
+                ])
+            })),
+            text(" :="),
         ]),
         line(),
-        body.to_doc(false),
+        group([
+            text("ltac:(function ("),
+            nest([
+                line_(),
+                body.to_doc(false),
+                line(),
+                nest([
+                    text(":"),
+                    line(),
+                    match ret_ty {
+                        None => text("_"),
+                        Some(ty) => ty.to_doc(false),
+                    },
+                ]),
+            ]),
+            text("))"),
+        ]),
         text("."),
     ])
 }

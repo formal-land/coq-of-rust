@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module UsernameWidget.
   Class Trait (Self : Set) : Set := {
-    get : (ref Self) -> String;
+    get : (ref Self) -> (M String);
   }.
   
   Global Instance Method_get `(Trait) : Notation.Dot "get" := {
@@ -15,7 +15,7 @@ End UsernameWidget.
 
 Module AgeWidget.
   Class Trait (Self : Set) : Set := {
-    get : (ref Self) -> u8;
+    get : (ref Self) -> (M u8);
   }.
   
   Global Instance Method_get `(Trait) : Notation.Dot "get" := {
@@ -41,7 +41,8 @@ Definition Form : Set := Form.t.
 Module Impl_UsernameWidget_for_Form.
   Definition Self := Form.
   
-  Definition get (self : ref Self) : String := self.["username"].["clone"].
+  Definition get (self : ref Self) :=
+    ltac:(function (self.["username"].["clone"](||) : String)).
   
   Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
@@ -55,7 +56,7 @@ End Impl_UsernameWidget_for_Form.
 Module Impl_AgeWidget_for_Form.
   Definition Self := Form.
   
-  Definition get (self : ref Self) : u8 := self.["age"].
+  Definition get (self : ref Self) := ltac:(function (self.["age"] : u8)).
   
   Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
@@ -66,35 +67,51 @@ Module Impl_AgeWidget_for_Form.
   }.
 End Impl_AgeWidget_for_Form.
 
-Definition main (_ : unit) : unit :=
-  let form :=
-    {| Form.username := "rustacean".["to_owned"]; Form.age := 28; |} in
-  let username := UsernameWidget.get form in
-  match ("rustacean".["to_owned"], username) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  let age := AgeWidget.get form in
-  match (28, age) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let form :=
+      {| Form.username := "rustacean".["to_owned"](||); Form.age := 28; |} in
+    let username := UsernameWidget.get(| form |) in
+    let '_ :=
+      match ("rustacean".["to_owned"](||), username) with
+      | (left_val, right_val) =>
+        if
+          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
+          |)).["not"](||)
+          : bool)
+        then
+          let kind := _crate.panicking.AssertKind.Eq in
+          let '_ :=
+            _crate.panicking.assert_failed(|
+              kind,
+              left_val.["deref"](||),
+              right_val.["deref"](||),
+              _crate.option.Option.None
+            |) in
+          tt
+        else
+          tt
+      end in
+    let age := AgeWidget.get(| form |) in
+    let '_ :=
+      match (28, age) with
+      | (left_val, right_val) =>
+        if
+          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
+          |)).["not"](||)
+          : bool)
+        then
+          let kind := _crate.panicking.AssertKind.Eq in
+          let '_ :=
+            _crate.panicking.assert_failed(|
+              kind,
+              left_val.["deref"](||),
+              right_val.["deref"](||),
+              _crate.option.Option.None
+            |) in
+          tt
+        else
+          tt
+      end in
+    tt
+    : unit)).

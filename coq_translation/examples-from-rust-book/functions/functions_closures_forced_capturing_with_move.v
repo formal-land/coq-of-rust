@@ -3,19 +3,30 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  let haystack := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
-  let contains := fun needle => haystack.["contains"] needle in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] (contains 1) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] (contains 4) ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let haystack :=
+      Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 1; 2; 3 ] |) |) in
+    let contains := fun needle => haystack.["contains"](| needle |) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_display"](| contains(| 1 |) |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_display"](| contains(| 4 |) |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

@@ -28,7 +28,8 @@ Definition GenVal : Set := GenVal.t.
 Module ImplVal.
   Definition Self := Val.
   
-  Definition value (self : ref Self) : ref f64 := self.["val"].
+  Definition value (self : ref Self) :=
+    ltac:(function (self.["val"] : ref f64)).
   
   Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
@@ -38,23 +39,30 @@ End ImplVal.
 Module ImplGenVal T.
   Definition Self := GenVal T.
   
-  Definition value (self : ref Self) : ref T := self.["gen_val"].
+  Definition value (self : ref Self) :=
+    ltac:(function (self.["gen_val"] : ref T)).
   
   Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
   }.
 End ImplGenVal T.
 
-Definition main (_ : unit) : unit :=
-  let x := {| Val.val := 3 (* 3.0 *); |} in
-  let y := {| GenVal.gen_val := 3; |} in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; ", "; "
-" ]
-      [
-        format_argument::["new_display"] x.["value"];
-        format_argument::["new_display"] y.["value"]
-      ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let x := {| Val.val := 3 (* 3.0 *); |} in
+    let y := {| GenVal.gen_val := 3; |} in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; ", "; "
+" ],
+            [
+              format_argument::["new_display"](| x.["value"](||) |);
+              format_argument::["new_display"](| y.["value"](||) |)
+            ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

@@ -3,8 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := tt.
+Definition main := ltac:(function (tt : unit)).
 
-Definition apply {F : Set} `{FnOnce.Trait unit F} (f : F) : unit :=
-  f tt ;;
-  tt.
+Definition apply {F : Set} `{FnOnce.Trait unit F} (f : F) :=
+  ltac:(function (
+    let '_ := f(||) in
+    tt
+    : unit)).

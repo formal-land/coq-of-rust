@@ -3,17 +3,24 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  let optional := Some 7 in
-  match optional with
-  | Some i =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "This is a really long string and `"; "`
-" ]
-        [ format_argument::["new_debug"] i ]) ;;
-    tt ;;
+Definition main :=
+  ltac:(function (
+    let optional := Some 7 in
+    let '_ :=
+      match optional with
+      | Some i =>
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_v1"](|
+                [ "This is a really long string and `"; "`
+" ],
+                [ format_argument::["new_debug"](| i |) ]
+              |)
+            |) in
+          tt in
+        tt
+      | _ => tt
+      end in
     tt
-  | _ => tt
-  end ;;
-  tt.
+    : unit)).

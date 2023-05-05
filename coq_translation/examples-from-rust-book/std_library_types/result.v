@@ -15,17 +15,17 @@ Module checked.
   Module Impl__crate_fmt_Debug_for_MathError.
     Definition Self := MathError.
     
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.Formatter::["write_str"]
-        f
-        match self with
-        | MathError.DivisionByZero => "DivisionByZero"
-        | MathError.NonPositiveLogarithm => "NonPositiveLogarithm"
-        | MathError.NegativeSquareRoot => "NegativeSquareRoot"
-        end.
+    Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+      ltac:(function (
+        _crate.fmt.Formatter::["write_str"](|
+          f,
+          match self with
+          | MathError.DivisionByZero => "DivisionByZero"
+          | MathError.NonPositiveLogarithm => "NonPositiveLogarithm"
+          | MathError.NegativeSquareRoot => "NegativeSquareRoot"
+          end
+        |)
+        : _crate.fmt.Result)).
     
     Global Instance Method_fmt : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -38,23 +38,29 @@ Module checked.
   
   Definition MathResult : Set := Result f64 MathError.
   
-  Definition div (x : f64) (y : f64) : MathResult :=
-    if (y.["eq"] 0 (* 0.0 *) : bool) then
-      Err MathError.DivisionByZero
-    else
-      Ok (x.["div"] y).
+  Definition div (x : f64) (y : f64) :=
+    ltac:(function (
+      if (y.["eq"](| 0 (* 0.0 *) |) : bool) then
+        Err MathError.DivisionByZero
+      else
+        Ok (x.["div"](| y |))
+      : MathResult)).
   
-  Definition sqrt (x : f64) : MathResult :=
-    if (x.["lt"] 0 (* 0.0 *) : bool) then
-      Err MathError.NegativeSquareRoot
-    else
-      Ok x.["sqrt"].
+  Definition sqrt (x : f64) :=
+    ltac:(function (
+      if (x.["lt"](| 0 (* 0.0 *) |) : bool) then
+        Err MathError.NegativeSquareRoot
+      else
+        Ok (x.["sqrt"](||))
+      : MathResult)).
   
-  Definition ln (x : f64) : MathResult :=
-    if (x.["le"] 0 (* 0.0 *) : bool) then
-      Err MathError.NonPositiveLogarithm
-    else
-      Ok x.["ln"].
+  Definition ln (x : f64) :=
+    ltac:(function (
+      if (x.["le"](| 0 (* 0.0 *) |) : bool) then
+        Err MathError.NonPositiveLogarithm
+      else
+        Ok (x.["ln"](||))
+      : MathResult)).
 End checked.
 
 Module MathError.
@@ -68,17 +74,17 @@ Definition MathError := MathError.t.
 Module Impl__crate_fmt_Debug_for_MathError.
   Definition Self := MathError.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["write_str"]
-      f
-      match self with
-      | MathError.DivisionByZero => "DivisionByZero"
-      | MathError.NonPositiveLogarithm => "NonPositiveLogarithm"
-      | MathError.NegativeSquareRoot => "NegativeSquareRoot"
-      end.
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["write_str"](|
+        f,
+        match self with
+        | MathError.DivisionByZero => "DivisionByZero"
+        | MathError.NonPositiveLogarithm => "NonPositiveLogarithm"
+        | MathError.NegativeSquareRoot => "NegativeSquareRoot"
+        end
+      |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -91,55 +97,79 @@ End Impl__crate_fmt_Debug_for_MathError.
 
 Definition MathResult : Set := Result f64 MathError.
 
-Definition div (x : f64) (y : f64) : MathResult :=
-  if (y.["eq"] 0 (* 0.0 *) : bool) then
-    Err MathError.DivisionByZero
-  else
-    Ok (x.["div"] y).
+Definition div (x : f64) (y : f64) :=
+  ltac:(function (
+    if (y.["eq"](| 0 (* 0.0 *) |) : bool) then
+      Err MathError.DivisionByZero
+    else
+      Ok (x.["div"](| y |))
+    : MathResult)).
 
-Definition sqrt (x : f64) : MathResult :=
-  if (x.["lt"] 0 (* 0.0 *) : bool) then
-    Err MathError.NegativeSquareRoot
-  else
-    Ok x.["sqrt"].
+Definition sqrt (x : f64) :=
+  ltac:(function (
+    if (x.["lt"](| 0 (* 0.0 *) |) : bool) then
+      Err MathError.NegativeSquareRoot
+    else
+      Ok (x.["sqrt"](||))
+    : MathResult)).
 
-Definition ln (x : f64) : MathResult :=
-  if (x.["le"] 0 (* 0.0 *) : bool) then
-    Err MathError.NonPositiveLogarithm
-  else
-    Ok x.["ln"].
+Definition ln (x : f64) :=
+  ltac:(function (
+    if (x.["le"](| 0 (* 0.0 *) |) : bool) then
+      Err MathError.NonPositiveLogarithm
+    else
+      Ok (x.["ln"](||))
+    : MathResult)).
 
-Definition op (x : f64) (y : f64) : f64 :=
-  match checked.div x y with
-  | Err why =>
-    _crate.rt.panic_fmt
-      (format_arguments::["new_v1"]
-        [ "" ]
-        [ format_argument::["new_debug"] why ])
-  | Ok ratio =>
-    match checked.ln ratio with
+Definition op (x : f64) (y : f64) :=
+  ltac:(function (
+    match checked.div(| x, y |) with
     | Err why =>
-      _crate.rt.panic_fmt
-        (format_arguments::["new_v1"]
-          [ "" ]
-          [ format_argument::["new_debug"] why ])
-    | Ok ln =>
-      match checked.sqrt ln with
+      _crate.rt.panic_fmt(|
+        format_arguments::["new_v1"](|
+          [ "" ],
+          [ format_argument::["new_debug"](| why |) ]
+        |)
+      |)
+    | Ok ratio =>
+      match checked.ln(| ratio |) with
       | Err why =>
-        _crate.rt.panic_fmt
-          (format_arguments::["new_v1"]
-            [ "" ]
-            [ format_argument::["new_debug"] why ])
-      | Ok sqrt => sqrt
+        _crate.rt.panic_fmt(|
+          format_arguments::["new_v1"](|
+            [ "" ],
+            [ format_argument::["new_debug"](| why |) ]
+          |)
+        |)
+      | Ok ln =>
+        match checked.sqrt(| ln |) with
+        | Err why =>
+          _crate.rt.panic_fmt(|
+            format_arguments::["new_v1"](|
+              [ "" ],
+              [ format_argument::["new_debug"](| why |) ]
+            |)
+          |)
+        | Ok sqrt => sqrt
+        end
       end
     end
-  end.
+    : f64)).
 
-Definition main (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] (op 1 (* 1.0 *) 10 (* 10.0 *)) ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [
+              format_argument::["new_display"](|
+                op(| 1 (* 1.0 *), 10 (* 10.0 *) |)
+              |)
+            ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

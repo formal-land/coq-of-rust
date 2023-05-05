@@ -15,11 +15,8 @@ Definition Inch := Inch.t.
 Module Impl__crate_fmt_Debug_for_Inch.
   Definition Self := Inch.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.intrinsics.unreachable tt.
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (_crate.intrinsics.unreachable(||) : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -33,7 +30,8 @@ End Impl__crate_fmt_Debug_for_Inch.
 Module Impl__crate_clone_Clone_for_Inch.
   Definition Self := Inch.
   
-  Definition clone (self : ref Self) : Inch := self.["deref"].
+  Definition clone (self : ref Self) :=
+    ltac:(function (self.["deref"](||) : Inch)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -60,11 +58,8 @@ Definition Mm := Mm.t.
 Module Impl__crate_fmt_Debug_for_Mm.
   Definition Self := Mm.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.intrinsics.unreachable tt.
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (_crate.intrinsics.unreachable(||) : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -78,7 +73,8 @@ End Impl__crate_fmt_Debug_for_Mm.
 Module Impl__crate_clone_Clone_for_Mm.
   Definition Self := Mm.
   
-  Definition clone (self : ref Self) : Mm := self.["deref"].
+  Definition clone (self : ref Self) :=
+    ltac:(function (self.["deref"](||) : Mm)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -111,15 +107,15 @@ Definition Length := Length.t.
 Module Impl__crate_fmt_Debug_for_Length_Unit.
   Definition Self := Length Unit.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field2_finish"]
-      f
-      "Length"
-      (self.[0])
-      (self.[1]).
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["debug_tuple_field2_finish"](|
+        f,
+        "Length",
+        self.[0],
+        self.[1]
+      |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -133,10 +129,12 @@ End Impl__crate_fmt_Debug_for_Length_Unit.
 Module Impl__crate_clone_Clone_for_Length_Unit.
   Definition Self := Length Unit.
   
-  Definition clone (self : ref Self) : Length Unit :=
-    Length.Build_t
-      (_crate.clone.Clone.clone (self.[0]))
-      (_crate.clone.Clone.clone (self.[1])).
+  Definition clone (self : ref Self) :=
+    ltac:(function (
+      Length.Build_t
+        (_crate.clone.Clone.clone(| self.[0] |))
+        (_crate.clone.Clone.clone(| self.[1] |))
+      : Length Unit)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -159,8 +157,10 @@ Module Impl_Add_for_Length_Unit.
   
   Definition Output : Set := Length Unit.
   
-  Definition add (self : Self) (rhs : Length Unit) : Length Unit :=
-    Length.Build_t ((self.[0]).["add"] (rhs.[0])) PhantomData.Build.
+  Definition add (self : Self) (rhs : Length Unit) :=
+    ltac:(function (
+      Length.Build_t ((self.[0]).["add"](| rhs.[0] |)) PhantomData.Build
+      : Length Unit)).
   
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -171,21 +171,31 @@ Module Impl_Add_for_Length_Unit.
   }.
 End Impl_Add_for_Length_Unit.
 
-Definition main (_ : unit) : unit :=
-  let one_foot := Length.Build_t 12 (* 12.0 *) PhantomData.Build in
-  let one_meter := Length.Build_t 1000 (* 1000.0 *) PhantomData.Build in
-  let two_feet := one_foot.["add"] one_foot in
-  let two_meters := one_meter.["add"] one_meter in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "one foot + one_foot = "; " in
-" ]
-      [ format_argument::["new_debug"] (two_feet.[0]) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "one meter + one_meter = "; " mm
-" ]
-      [ format_argument::["new_debug"] (two_meters.[0]) ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let one_foot := Length.Build_t 12 (* 12.0 *) PhantomData.Build in
+    let one_meter := Length.Build_t 1000 (* 1000.0 *) PhantomData.Build in
+    let two_feet := one_foot.["add"](| one_foot |) in
+    let two_meters := one_meter.["add"](| one_meter |) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "one foot + one_foot = "; " in
+" ],
+            [ format_argument::["new_debug"](| two_feet.[0] |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "one meter + one_meter = "; " mm
+" ],
+            [ format_argument::["new_debug"](| two_meters.[0] |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

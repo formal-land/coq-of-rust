@@ -16,19 +16,19 @@ Definition Fruit := Fruit.t.
 Module Impl__crate_fmt_Debug_for_Fruit.
   Definition Self := Fruit.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["write_str"]
-      f
-      match self with
-      | Fruit.Apple => "Apple"
-      | Fruit.Orange => "Orange"
-      | Fruit.Banana => "Banana"
-      | Fruit.Kiwi => "Kiwi"
-      | Fruit.Lemon => "Lemon"
-      end.
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["write_str"](|
+        f,
+        match self with
+        | Fruit.Apple => "Apple"
+        | Fruit.Orange => "Orange"
+        | Fruit.Banana => "Banana"
+        | Fruit.Kiwi => "Kiwi"
+        | Fruit.Lemon => "Lemon"
+        end
+      |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -39,15 +39,22 @@ Module Impl__crate_fmt_Debug_for_Fruit.
   }.
 End Impl__crate_fmt_Debug_for_Fruit.
 
-Definition main (_ : unit) : unit :=
-  let apple := Some Fruit.Apple in
-  let orange := Some Fruit.Orange in
-  let no_fruit := None in
-  let first_available_fruit := (no_fruit.["or"] orange).["or"] apple in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "first_available_fruit: "; "
-" ]
-      [ format_argument::["new_debug"] first_available_fruit ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let apple := Some Fruit.Apple in
+    let orange := Some Fruit.Orange in
+    let no_fruit := None in
+    let first_available_fruit :=
+      (no_fruit.["or"](| orange |)).["or"](| apple |) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "first_available_fruit: "; "
+" ],
+            [ format_argument::["new_debug"](| first_available_fruit |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

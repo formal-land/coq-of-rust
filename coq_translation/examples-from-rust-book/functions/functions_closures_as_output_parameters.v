@@ -3,47 +3,64 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition create_fn (_ : unit) : OpaqueDef :=
-  let text := "Fn".["to_owned"] in
-  fun  =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "This is a: "; "
-" ]
-        [ format_argument::["new_display"] text ]) ;;
-    tt.
+Definition create_fn :=
+  ltac:(function (
+    let text := "Fn".["to_owned"](||) in
+    fun  =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "This is a: "; "
+" ],
+            [ format_argument::["new_display"](| text |) ]
+          |)
+        |) in
+      tt
+    : OpaqueDef)).
 
 Error OpaqueTy.
 
-Definition create_fnmut (_ : unit) : OpaqueDef :=
-  let text := "FnMut".["to_owned"] in
-  fun  =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "This is a: "; "
-" ]
-        [ format_argument::["new_display"] text ]) ;;
-    tt.
+Definition create_fnmut :=
+  ltac:(function (
+    let text := "FnMut".["to_owned"](||) in
+    fun  =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "This is a: "; "
+" ],
+            [ format_argument::["new_display"](| text |) ]
+          |)
+        |) in
+      tt
+    : OpaqueDef)).
 
 Error OpaqueTy.
 
-Definition create_fnonce (_ : unit) : OpaqueDef :=
-  let text := "FnOnce".["to_owned"] in
-  fun  =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "This is a: "; "
-" ]
-        [ format_argument::["new_display"] text ]) ;;
-    tt.
+Definition create_fnonce :=
+  ltac:(function (
+    let text := "FnOnce".["to_owned"](||) in
+    fun  =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "This is a: "; "
+" ],
+            [ format_argument::["new_display"](| text |) ]
+          |)
+        |) in
+      tt
+    : OpaqueDef)).
 
 Error OpaqueTy.
 
-Definition main (_ : unit) : unit :=
-  let fn_plain := create_fn tt in
-  let fn_mut := create_fnmut tt in
-  let fn_once := create_fnonce tt in
-  fn_plain tt ;;
-  fn_mut tt ;;
-  fn_once tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let fn_plain := create_fn(||) in
+    let fn_mut := create_fnmut(||) in
+    let fn_once := create_fnonce(||) in
+    let '_ := fn_plain(||) in
+    let '_ := fn_mut(||) in
+    let '_ := fn_once(||) in
+    tt
+    : unit)).

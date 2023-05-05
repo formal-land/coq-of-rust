@@ -3,36 +3,54 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  let count := 0 in
-  _crate.io._print
-    (format_arguments::["new_const"] [ "Let's count until infinity!
-" ]) ;;
-  tt ;;
-  loop
-    count.["add_assign"] 1 ;;
-    if (count.["eq"] 3 : bool) then
-      _crate.io._print (format_arguments::["new_const"] [ "three
-" ]) ;;
-      tt ;;
-      Continue ;;
-      tt
-    else
-      tt ;;
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "
+Definition main :=
+  ltac:(function (
+    let count := 0 in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](| [ "Let's count until infinity!
 " ]
-        [ format_argument::["new_display"] count ]) ;;
-    tt ;;
-    if (count.["eq"] 5 : bool) then
-      _crate.io._print
-        (format_arguments::["new_const"] [ "OK, that's enough
-" ]) ;;
-      tt ;;
-      Break ;;
-      tt
-    else
-      tt
-    from
-    loop.
+          |)
+        |) in
+      tt in
+    loop
+      let '_ := count.["add_assign"](| 1 |) in
+      let '_ :=
+        if (count.["eq"](| 3 |) : bool) then
+          let '_ :=
+            let '_ :=
+              _crate.io._print(|
+                format_arguments::["new_const"](| [ "three
+" ] |)
+              |) in
+            tt in
+          let '_ := Continue in
+          tt
+        else
+          tt in
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_v1"](|
+              [ ""; "
+" ],
+              [ format_argument::["new_display"](| count |) ]
+            |)
+          |) in
+        tt in
+      if (count.["eq"](| 5 |) : bool) then
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_const"](| [ "OK, that's enough
+" ] |)
+            |) in
+          tt in
+        let '_ := Break in
+        tt
+      else
+        tt
+      from
+      loop
+    : unit)).

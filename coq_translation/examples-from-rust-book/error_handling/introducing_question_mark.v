@@ -8,39 +8,50 @@ Definition ParseIntError := ParseIntError.t.
 
 Definition multiply
     (first_number_str : ref str)
-    (second_number_str : ref str)
-    : Result i32 ParseIntError :=
-  let first_number :=
-    match LangItem first_number_str.["parse"] with
-    | Break {| Break.0 := residual; |} => Return (LangItem residual)
-    | Continue {| Continue.0 := val; |} => val
-    end in
-  let second_number :=
-    match LangItem second_number_str.["parse"] with
-    | Break {| Break.0 := residual; |} => Return (LangItem residual)
-    | Continue {| Continue.0 := val; |} => val
-    end in
-  Ok (first_number.["mul"] second_number).
+    (second_number_str : ref str) :=
+  ltac:(function (
+    let first_number :=
+      match LangItem(| first_number_str.["parse"](||) |) with
+      | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+      | Continue {| Continue.0 := val; |} => val
+      end in
+    let second_number :=
+      match LangItem(| second_number_str.["parse"](||) |) with
+      | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+      | Continue {| Continue.0 := val; |} => val
+      end in
+    Ok (first_number.["mul"](| second_number |))
+    : Result i32 ParseIntError)).
 
-Definition print (result : Result i32 ParseIntError) : unit :=
-  match result with
-  | Ok n =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "n is "; "
-" ]
-        [ format_argument::["new_display"] n ]) ;;
-    tt
-  | Err e =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Error: "; "
-" ]
-        [ format_argument::["new_display"] e ]) ;;
-    tt
-  end.
+Definition print (result : Result i32 ParseIntError) :=
+  ltac:(function (
+    match result with
+    | Ok n =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "n is "; "
+" ],
+            [ format_argument::["new_display"](| n |) ]
+          |)
+        |) in
+      tt
+    | Err e =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Error: "; "
+" ],
+            [ format_argument::["new_display"](| e |) ]
+          |)
+        |) in
+      tt
+    end
+    : unit)).
 
-Definition main (_ : unit) : unit :=
-  print (multiply "10" "2") ;;
-  print (multiply "t" "2") ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let '_ := print(| multiply(| "10", "2" |) |) in
+    let '_ := print(| multiply(| "t", "2" |) |) in
+    tt
+    : unit)).

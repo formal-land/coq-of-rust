@@ -22,15 +22,19 @@ Definition DoubleError := DoubleError.t.
 Module Impl__crate_fmt_Debug_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    match self with
-    | DoubleError.EmptyVec => _crate.fmt.Formatter::["write_str"] f "EmptyVec"
-    | DoubleError.Parse __self_0 =>
-      _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Parse" __self_0
-    end.
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      match self with
+      | DoubleError.EmptyVec =>
+        _crate.fmt.Formatter::["write_str"](| f, "EmptyVec" |)
+      | DoubleError.Parse __self_0 =>
+        _crate.fmt.Formatter::["debug_tuple_field1_finish"](|
+          f,
+          "Parse",
+          __self_0
+        |)
+      end
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -44,17 +48,23 @@ End Impl__crate_fmt_Debug_for_DoubleError.
 Module Impl_fmt_Display_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
-    match self.["deref"] with
-    | DoubleError.EmptyVec =>
-      f.["write_fmt"]
-        (format_arguments::["new_const"]
-          [ "please use a vector with at least one element" ])
-    | DoubleError.Parse  =>
-      f.["write_fmt"]
-        (format_arguments::["new_const"]
-          [ "the provided string could not be parsed as int" ])
-    end.
+  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
+    ltac:(function (
+      match self.["deref"](||) with
+      | DoubleError.EmptyVec =>
+        f.["write_fmt"](|
+          format_arguments::["new_const"](|
+            [ "please use a vector with at least one element" ]
+          |)
+        |)
+      | DoubleError.Parse  =>
+        f.["write_fmt"](|
+          format_arguments::["new_const"](|
+            [ "the provided string could not be parsed as int" ]
+          |)
+        |)
+      end
+      : fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -68,11 +78,13 @@ End Impl_fmt_Display_for_DoubleError.
 Module Impl_error_Error_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition source (self : ref Self) : Option (ref TraitObject) :=
-    match self.["deref"] with
-    | DoubleError.EmptyVec => None
-    | DoubleError.Parse e => Some e
-    end.
+  Definition source (self : ref Self) :=
+    ltac:(function (
+      match self.["deref"](||) with
+      | DoubleError.EmptyVec => None
+      | DoubleError.Parse e => Some e
+      end
+      : Option (ref TraitObject))).
   
   Global Instance Method_source : Notation.Dot "source" := {
     Notation.dot := source;
@@ -85,7 +97,8 @@ End Impl_error_Error_for_DoubleError.
 Module Impl_From_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition from (err : ParseIntError) : DoubleError := DoubleError.Parse err.
+  Definition from (err : ParseIntError) :=
+    ltac:(function (DoubleError.Parse err : DoubleError)).
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -97,54 +110,76 @@ Module Impl_From_for_DoubleError.
   }.
 End Impl_From_for_DoubleError.
 
-Definition double_first (vec : Vec (ref str)) : Result i32 :=
-  let first :=
-    match LangItem (vec.["first"].["ok_or"] DoubleError.EmptyVec) with
-    | Break {| Break.0 := residual; |} => Return (LangItem residual)
-    | Continue {| Continue.0 := val; |} => val
-    end in
-  let parsed :=
-    match LangItem first.["parse"] with
-    | Break {| Break.0 := residual; |} => Return (LangItem residual)
-    | Continue {| Continue.0 := val; |} => val
-    end in
-  Ok (2.["mul"] parsed).
+Definition double_first (vec : Vec (ref str)) :=
+  ltac:(function (
+    let first :=
+      match
+        LangItem(| (vec.["first"](||)).["ok_or"](| DoubleError.EmptyVec |) |)
+      with
+      | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+      | Continue {| Continue.0 := val; |} => val
+      end in
+    let parsed :=
+      match LangItem(| first.["parse"](||) |) with
+      | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+      | Continue {| Continue.0 := val; |} => val
+      end in
+    Ok (2.["mul"](| parsed |))
+    : Result i32)).
 
-Definition print (result : Result i32) : unit :=
-  match result with
-  | Ok n =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "The first doubled is "; "
-" ]
-        [ format_argument::["new_display"] n ]) ;;
+Definition print (result : Result i32) :=
+  ltac:(function (
+    match result with
+    | Ok n =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "The first doubled is "; "
+" ],
+            [ format_argument::["new_display"](| n |) ]
+          |)
+        |) in
+      tt
+    | Err e =>
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_v1"](|
+              [ "Error: "; "
+" ],
+              [ format_argument::["new_display"](| e |) ]
+            |)
+          |) in
+        tt in
+      if (let_if Some source := e.["source"](||) : bool) then
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_v1"](|
+                [ "  Caused by: "; "
+" ],
+                [ format_argument::["new_display"](| source |) ]
+              |)
+            |) in
+          tt in
+        tt
+      else
+        tt
+    end
+    : unit)).
+
+Definition main :=
+  ltac:(function (
+    let numbers :=
+      Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ "42"; "93"; "18" ] |)
+      |) in
+    let empty := _crate.vec.Vec::["new"](||) in
+    let strings :=
+      Slice::["into_vec"](|
+        _crate.boxed.Box::["new"](| [ "tofu"; "93"; "18" ] |)
+      |) in
+    let '_ := print(| double_first(| numbers |) |) in
+    let '_ := print(| double_first(| empty |) |) in
+    let '_ := print(| double_first(| strings |) |) in
     tt
-  | Err e =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Error: "; "
-" ]
-        [ format_argument::["new_display"] e ]) ;;
-    tt ;;
-    if (let_if Some source := e.["source"] : bool) then
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "  Caused by: "; "
-" ]
-          [ format_argument::["new_display"] source ]) ;;
-      tt ;;
-      tt
-    else
-      tt
-  end.
-
-Definition main (_ : unit) : unit :=
-  let numbers :=
-    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "42"; "93"; "18" ]) in
-  let empty := _crate.vec.Vec::["new"] tt in
-  let strings :=
-    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ]) in
-  print (double_first numbers) ;;
-  print (double_first empty) ;;
-  print (double_first strings) ;;
-  tt.
+    : unit)).

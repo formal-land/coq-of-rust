@@ -15,11 +15,14 @@ Definition Borrowed := Borrowed.t.
 Module Impl__crate_fmt_Debug_for_Borrowed.
   Definition Self := Borrowed.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Borrowed" (self.[0]).
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["debug_tuple_field1_finish"](|
+        f,
+        "Borrowed",
+        self.[0]
+      |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -48,17 +51,17 @@ Definition NamedBorrowed : Set := NamedBorrowed.t.
 Module Impl__crate_fmt_Debug_for_NamedBorrowed.
   Definition Self := NamedBorrowed.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "NamedBorrowed"
-      "x"
-      self.["x"]
-      "y"
-      self.["y"].
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["debug_struct_field2_finish"](|
+        f,
+        "NamedBorrowed",
+        "x",
+        self.["x"],
+        "y",
+        self.["y"]
+      |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -79,16 +82,17 @@ Definition Either := Either.t.
 Module Impl__crate_fmt_Debug_for_Either.
   Definition Self := Either.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    match self with
-    | Either.Num __self_0 =>
-      _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Num" __self_0
-    | Either.Ref __self_0 =>
-      _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Ref" __self_0
-    end.
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      match self with
+      | Either.Num __self_0 =>
+        _crate.fmt.Formatter::["debug_tuple_field1_finish"](| f, "Num", __self_0
+        |)
+      | Either.Ref __self_0 =>
+        _crate.fmt.Formatter::["debug_tuple_field1_finish"](| f, "Ref", __self_0
+        |)
+      end
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -99,35 +103,53 @@ Module Impl__crate_fmt_Debug_for_Either.
   }.
 End Impl__crate_fmt_Debug_for_Either.
 
-Definition main (_ : unit) : unit :=
-  let x := 18 in
-  let y := 15 in
-  let single := Borrowed.Build_t x in
-  let double := {| NamedBorrowed.x := x; NamedBorrowed.y := y; |} in
-  let reference := Either.Ref x in
-  let number := Either.Num y in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "x is borrowed in "; "
-" ]
-      [ format_argument::["new_debug"] single ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "x and y are borrowed in "; "
-" ]
-      [ format_argument::["new_debug"] double ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "x is borrowed in "; "
-" ]
-      [ format_argument::["new_debug"] reference ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "y is *not* borrowed in "; "
-" ]
-      [ format_argument::["new_debug"] number ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let x := 18 in
+    let y := 15 in
+    let single := Borrowed.Build_t x in
+    let double := {| NamedBorrowed.x := x; NamedBorrowed.y := y; |} in
+    let reference := Either.Ref x in
+    let number := Either.Num y in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "x is borrowed in "; "
+" ],
+            [ format_argument::["new_debug"](| single |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "x and y are borrowed in "; "
+" ],
+            [ format_argument::["new_debug"](| double |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "x is borrowed in "; "
+" ],
+            [ format_argument::["new_debug"](| reference |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "y is *not* borrowed in "; "
+" ],
+            [ format_argument::["new_debug"](| number |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

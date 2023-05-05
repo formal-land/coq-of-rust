@@ -3,124 +3,186 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  _crate.io._print (format_arguments::["new_v1"] [ "31 days
-" ] [ ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Alice, this is Bob. Bob, this is Alice
-" ]
-      [ ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "the quick brown fox jumps over the lazy dog
-" ]
-      [ ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"] [ "Base 10:               69420
-" ] [ ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Base 2 (binary):       "; "
-" ]
-      [ format_argument::["new_binary"] 69420 ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Base 8 (octal):        "; "
-" ]
-      [ format_argument::["new_octal"] 69420 ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Base 16 (hexadecimal): "; "
-" ]
-      [ format_argument::["new_lower_hex"] 69420 ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Base 16 (hexadecimal): "; "
-" ]
-      [ format_argument::["new_upper_hex"] 69420 ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1_formatted"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] 1 ]
-      [
-        format_placeholder::["new"]
-          0
-          " "%char
-          format_alignment::["Right"]
-          0
-          format_count::["Implied"]
-          (format_count::["Is"] 5)
-      ]
-      (format_unsafe_arg::["new"] tt)) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1_formatted"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] 1 ]
-      [
-        format_placeholder::["new"]
-          0
-          "0"%char
-          format_alignment::["Left"]
-          0
-          format_count::["Implied"]
-          (format_count::["Is"] 5)
-      ]
-      (format_unsafe_arg::["new"] tt)) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1_formatted"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] 1; format_argument::["from_usize"] 5 ]
-      [
-        format_placeholder::["new"]
-          0
-          "0"%char
-          format_alignment::["Right"]
-          0
-          format_count::["Implied"]
-          (format_count::["Param"] 1)
-      ]
-      (format_unsafe_arg::["new"] tt)) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"] [ "My name is Bond, James Bond
-" ] [ ]) ;;
-  tt ;;
-  let number := 1 (* 1.0 *) in
-  let width := 5 in
-  _crate.io._print
-    (format_arguments::["new_v1_formatted"]
-      [ ""; "
-" ]
-      [
-        format_argument::["new_display"] number;
-        format_argument::["from_usize"] width
-      ]
-      [
-        format_placeholder::["new"]
-          0
-          " "%char
-          format_alignment::["Right"]
-          0
-          format_count::["Implied"]
-          (format_count::["Param"] 1)
-      ]
-      (format_unsafe_arg::["new"] tt)) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(| format_arguments::["new_v1"](| [ "31 days
+" ], [ ] |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Alice, this is Bob. Bob, this is Alice
+" ],
+            [ ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "the quick brown fox jumps over the lazy dog
+" ],
+            [ ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Base 10:               69420
+" ],
+            [ ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Base 2 (binary):       "; "
+" ],
+            [ format_argument::["new_binary"](| 69420 |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Base 8 (octal):        "; "
+" ],
+            [ format_argument::["new_octal"](| 69420 |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Base 16 (hexadecimal): "; "
+" ],
+            [ format_argument::["new_lower_hex"](| 69420 |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Base 16 (hexadecimal): "; "
+" ],
+            [ format_argument::["new_upper_hex"](| 69420 |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1_formatted"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_display"](| 1 |) ],
+            [
+              format_placeholder::["new"](|
+                0,
+                " "%char,
+                format_alignment::["Right"],
+                0,
+                format_count::["Implied"],
+                format_count::["Is"](| 5 |)
+              |)
+            ],
+            format_unsafe_arg::["new"](||)
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1_formatted"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_display"](| 1 |) ],
+            [
+              format_placeholder::["new"](|
+                0,
+                "0"%char,
+                format_alignment::["Left"],
+                0,
+                format_count::["Implied"],
+                format_count::["Is"](| 5 |)
+              |)
+            ],
+            format_unsafe_arg::["new"](||)
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1_formatted"](|
+            [ ""; "
+" ],
+            [
+              format_argument::["new_display"](| 1 |);
+              format_argument::["from_usize"](| 5 |)
+            ],
+            [
+              format_placeholder::["new"](|
+                0,
+                "0"%char,
+                format_alignment::["Right"],
+                0,
+                format_count::["Implied"],
+                format_count::["Param"](| 1 |)
+              |)
+            ],
+            format_unsafe_arg::["new"](||)
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](| [ "My name is Bond, James Bond
+" ], [ ]
+          |)
+        |) in
+      tt in
+    let number := 1 (* 1.0 *) in
+    let width := 5 in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1_formatted"](|
+            [ ""; "
+" ],
+            [
+              format_argument::["new_display"](| number |);
+              format_argument::["from_usize"](| width |)
+            ],
+            [
+              format_placeholder::["new"](|
+                0,
+                " "%char,
+                format_alignment::["Right"],
+                0,
+                format_count::["Implied"],
+                format_count::["Param"](| 1 |)
+              |)
+            ],
+            format_unsafe_arg::["new"](||)
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
 Module Structure.
   Record t : Set := { _ : i32;}.

@@ -9,17 +9,24 @@ Definition Inch : Set := u64.
 
 Definition U64 : Set := u64.
 
-Definition main (_ : unit) : unit :=
-  let nanoseconds := cast 5 U64 in
-  let inches := cast 2 U64 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; " nanoseconds + "; " inches = "; " unit?
-" ]
-      [
-        format_argument::["new_display"] nanoseconds;
-        format_argument::["new_display"] inches;
-        format_argument::["new_display"] (nanoseconds.["add"] inches)
-      ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let nanoseconds := cast 5 U64 in
+    let inches := cast 2 U64 in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; " nanoseconds + "; " inches = "; " unit?
+" ],
+            [
+              format_argument::["new_display"](| nanoseconds |);
+              format_argument::["new_display"](| inches |);
+              format_argument::["new_display"](| nanoseconds.["add"](| inches |)
+              |)
+            ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

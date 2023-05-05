@@ -6,20 +6,26 @@ Import Root.std.prelude.rust_2015.
 Module Path := std.path.Path.
 Definition Path := Path.t.
 
-Definition main (_ : unit) : unit :=
-  let path := Path::["new"] "." in
-  let _display := path.["display"] in
-  let new_path := (path.["join"] "a").["join"] "b" in
-  new_path.["push"] "c" ;;
-  new_path.["push"] "myfile.tar.gz" ;;
-  new_path.["set_file_name"] "package.tgz" ;;
-  match new_path.["to_str"] with
-  | None => _crate.rt.begin_panic "new path is not a valid UTF-8 sequence"
-  | Some s =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "new path is "; "
-" ]
-        [ format_argument::["new_display"] s ]) ;;
-    tt
-  end.
+Definition main :=
+  ltac:(function (
+    let path := Path::["new"](| "." |) in
+    let _display := path.["display"](||) in
+    let new_path := (path.["join"](| "a" |)).["join"](| "b" |) in
+    let '_ := new_path.["push"](| "c" |) in
+    let '_ := new_path.["push"](| "myfile.tar.gz" |) in
+    let '_ := new_path.["set_file_name"](| "package.tgz" |) in
+    match new_path.["to_str"](||) with
+    | None =>
+      _crate.rt.begin_panic(| "new path is not a valid UTF-8 sequence" |)
+    | Some s =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "new path is "; "
+" ],
+            [ format_argument::["new_display"](| s |) ]
+          |)
+        |) in
+      tt
+    end
+    : unit)).

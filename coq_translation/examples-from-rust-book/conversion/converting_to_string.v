@@ -19,11 +19,15 @@ Definition Circle : Set := Circle.t.
 Module Impl_fmt_Display_for_Circle.
   Definition Self := Circle.
   
-  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
-    f.["write_fmt"]
-      (format_arguments::["new_v1"]
-        [ "Circle of radius " ]
-        [ format_argument::["new_display"] self.["radius"] ]).
+  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
+    ltac:(function (
+      f.["write_fmt"](|
+        format_arguments::["new_v1"](|
+          [ "Circle of radius " ],
+          [ format_argument::["new_display"](| self.["radius"] |) ]
+        |)
+      |)
+      : fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -34,12 +38,18 @@ Module Impl_fmt_Display_for_Circle.
   }.
 End Impl_fmt_Display_for_Circle.
 
-Definition main (_ : unit) : unit :=
-  let circle := {| Circle.radius := 6; |} in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] circle.["to_string"] ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let circle := {| Circle.radius := 6; |} in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_display"](| circle.["to_string"](||) |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

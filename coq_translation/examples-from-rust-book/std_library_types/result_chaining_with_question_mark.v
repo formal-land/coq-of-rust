@@ -15,17 +15,17 @@ Module checked.
   Module Impl__crate_fmt_Debug_for_MathError.
     Definition Self := MathError.
     
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.Formatter::["write_str"]
-        f
-        match self with
-        | MathError.DivisionByZero => "DivisionByZero"
-        | MathError.NonPositiveLogarithm => "NonPositiveLogarithm"
-        | MathError.NegativeSquareRoot => "NegativeSquareRoot"
-        end.
+    Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+      ltac:(function (
+        _crate.fmt.Formatter::["write_str"](|
+          f,
+          match self with
+          | MathError.DivisionByZero => "DivisionByZero"
+          | MathError.NonPositiveLogarithm => "NonPositiveLogarithm"
+          | MathError.NegativeSquareRoot => "NegativeSquareRoot"
+          end
+        |)
+        : _crate.fmt.Result)).
     
     Global Instance Method_fmt : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -38,54 +38,68 @@ Module checked.
   
   Definition MathResult : Set := Result f64 MathError.
   
-  Definition div (x : f64) (y : f64) : MathResult :=
-    if (y.["eq"] 0 (* 0.0 *) : bool) then
-      Err MathError.DivisionByZero
-    else
-      Ok (x.["div"] y).
+  Definition div (x : f64) (y : f64) :=
+    ltac:(function (
+      if (y.["eq"](| 0 (* 0.0 *) |) : bool) then
+        Err MathError.DivisionByZero
+      else
+        Ok (x.["div"](| y |))
+      : MathResult)).
   
-  Definition sqrt (x : f64) : MathResult :=
-    if (x.["lt"] 0 (* 0.0 *) : bool) then
-      Err MathError.NegativeSquareRoot
-    else
-      Ok x.["sqrt"].
+  Definition sqrt (x : f64) :=
+    ltac:(function (
+      if (x.["lt"](| 0 (* 0.0 *) |) : bool) then
+        Err MathError.NegativeSquareRoot
+      else
+        Ok (x.["sqrt"](||))
+      : MathResult)).
   
-  Definition ln (x : f64) : MathResult :=
-    if (x.["le"] 0 (* 0.0 *) : bool) then
-      Err MathError.NonPositiveLogarithm
-    else
-      Ok x.["ln"].
+  Definition ln (x : f64) :=
+    ltac:(function (
+      if (x.["le"](| 0 (* 0.0 *) |) : bool) then
+        Err MathError.NonPositiveLogarithm
+      else
+        Ok (x.["ln"](||))
+      : MathResult)).
   
-  Definition op_ (x : f64) (y : f64) : MathResult :=
-    let ratio :=
-      match LangItem (div x y) with
-      | Break {| Break.0 := residual; |} => Return (LangItem residual)
-      | Continue {| Continue.0 := val; |} => val
-      end in
-    let ln :=
-      match LangItem (ln ratio) with
-      | Break {| Break.0 := residual; |} => Return (LangItem residual)
-      | Continue {| Continue.0 := val; |} => val
-      end in
-    sqrt ln.
+  Definition op_ (x : f64) (y : f64) :=
+    ltac:(function (
+      let ratio :=
+        match LangItem(| div(| x, y |) |) with
+        | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+        | Continue {| Continue.0 := val; |} => val
+        end in
+      let ln :=
+        match LangItem(| ln(| ratio |) |) with
+        | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+        | Continue {| Continue.0 := val; |} => val
+        end in
+      sqrt(| ln |)
+      : MathResult)).
   
-  Definition op (x : f64) (y : f64) : unit :=
-    match op_ x y with
-    | Err why =>
-      _crate.rt.panic_display
-        match why with
-        | MathError.NonPositiveLogarithm => "logarithm of non-positive number"
-        | MathError.DivisionByZero => "division by zero"
-        | MathError.NegativeSquareRoot => "square root of negative number"
-        end
-    | Ok value =>
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "
-" ]
-          [ format_argument::["new_display"] value ]) ;;
-      tt
-    end.
+  Definition op (x : f64) (y : f64) :=
+    ltac:(function (
+      match op_(| x, y |) with
+      | Err why =>
+        _crate.rt.panic_display(|
+          match why with
+          | MathError.NonPositiveLogarithm => "logarithm of non-positive number"
+          | MathError.DivisionByZero => "division by zero"
+          | MathError.NegativeSquareRoot => "square root of negative number"
+          end
+        |)
+      | Ok value =>
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_v1"](|
+              [ ""; "
+" ],
+              [ format_argument::["new_display"](| value |) ]
+            |)
+          |) in
+        tt
+      end
+      : unit)).
 End checked.
 
 Module MathError.
@@ -99,17 +113,17 @@ Definition MathError := MathError.t.
 Module Impl__crate_fmt_Debug_for_MathError.
   Definition Self := MathError.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["write_str"]
-      f
-      match self with
-      | MathError.DivisionByZero => "DivisionByZero"
-      | MathError.NonPositiveLogarithm => "NonPositiveLogarithm"
-      | MathError.NegativeSquareRoot => "NegativeSquareRoot"
-      end.
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["write_str"](|
+        f,
+        match self with
+        | MathError.DivisionByZero => "DivisionByZero"
+        | MathError.NonPositiveLogarithm => "NonPositiveLogarithm"
+        | MathError.NegativeSquareRoot => "NegativeSquareRoot"
+        end
+      |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -122,55 +136,71 @@ End Impl__crate_fmt_Debug_for_MathError.
 
 Definition MathResult : Set := Result f64 MathError.
 
-Definition div (x : f64) (y : f64) : MathResult :=
-  if (y.["eq"] 0 (* 0.0 *) : bool) then
-    Err MathError.DivisionByZero
-  else
-    Ok (x.["div"] y).
+Definition div (x : f64) (y : f64) :=
+  ltac:(function (
+    if (y.["eq"](| 0 (* 0.0 *) |) : bool) then
+      Err MathError.DivisionByZero
+    else
+      Ok (x.["div"](| y |))
+    : MathResult)).
 
-Definition sqrt (x : f64) : MathResult :=
-  if (x.["lt"] 0 (* 0.0 *) : bool) then
-    Err MathError.NegativeSquareRoot
-  else
-    Ok x.["sqrt"].
+Definition sqrt (x : f64) :=
+  ltac:(function (
+    if (x.["lt"](| 0 (* 0.0 *) |) : bool) then
+      Err MathError.NegativeSquareRoot
+    else
+      Ok (x.["sqrt"](||))
+    : MathResult)).
 
-Definition ln (x : f64) : MathResult :=
-  if (x.["le"] 0 (* 0.0 *) : bool) then
-    Err MathError.NonPositiveLogarithm
-  else
-    Ok x.["ln"].
+Definition ln (x : f64) :=
+  ltac:(function (
+    if (x.["le"](| 0 (* 0.0 *) |) : bool) then
+      Err MathError.NonPositiveLogarithm
+    else
+      Ok (x.["ln"](||))
+    : MathResult)).
 
-Definition op_ (x : f64) (y : f64) : MathResult :=
-  let ratio :=
-    match LangItem (div x y) with
-    | Break {| Break.0 := residual; |} => Return (LangItem residual)
-    | Continue {| Continue.0 := val; |} => val
-    end in
-  let ln :=
-    match LangItem (ln ratio) with
-    | Break {| Break.0 := residual; |} => Return (LangItem residual)
-    | Continue {| Continue.0 := val; |} => val
-    end in
-  sqrt ln.
+Definition op_ (x : f64) (y : f64) :=
+  ltac:(function (
+    let ratio :=
+      match LangItem(| div(| x, y |) |) with
+      | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+      | Continue {| Continue.0 := val; |} => val
+      end in
+    let ln :=
+      match LangItem(| ln(| ratio |) |) with
+      | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+      | Continue {| Continue.0 := val; |} => val
+      end in
+    sqrt(| ln |)
+    : MathResult)).
 
-Definition op (x : f64) (y : f64) : unit :=
-  match op_ x y with
-  | Err why =>
-    _crate.rt.panic_display
-      match why with
-      | MathError.NonPositiveLogarithm => "logarithm of non-positive number"
-      | MathError.DivisionByZero => "division by zero"
-      | MathError.NegativeSquareRoot => "square root of negative number"
-      end
-  | Ok value =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "
-" ]
-        [ format_argument::["new_display"] value ]) ;;
+Definition op (x : f64) (y : f64) :=
+  ltac:(function (
+    match op_(| x, y |) with
+    | Err why =>
+      _crate.rt.panic_display(|
+        match why with
+        | MathError.NonPositiveLogarithm => "logarithm of non-positive number"
+        | MathError.DivisionByZero => "division by zero"
+        | MathError.NegativeSquareRoot => "square root of negative number"
+        end
+      |)
+    | Ok value =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_display"](| value |) ]
+          |)
+        |) in
+      tt
+    end
+    : unit)).
+
+Definition main :=
+  ltac:(function (
+    let '_ := checked.op(| 1 (* 1.0 *), 10 (* 10.0 *) |) in
     tt
-  end.
-
-Definition main (_ : unit) : unit :=
-  checked.op 1 (* 1.0 *) 10 (* 10.0 *) ;;
-  tt.
+    : unit)).

@@ -3,8 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  _crate.io._print (format_arguments::["new_const"] [ "Hello World!
-" ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](| [ "Hello World!
+" ] |)
+        |) in
+      tt in
+    tt
+    : unit)).

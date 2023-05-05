@@ -12,11 +12,16 @@ Module Impl_Drop_for_ToDrop.
   Definition Self := ToDrop.
   
   Definition drop (self : mut_ref Self) :=
-    _crate.io._print
-      (format_arguments::["new_const"] [ "ToDrop is being dropped
-" ]) ;;
-    tt ;;
-    tt.
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](| [ "ToDrop is being dropped
+" ] |)
+          |) in
+        tt in
+      tt
+      : _)).
   
   Global Instance Method_drop : Notation.Dot "drop" := {
     Notation.dot := drop;
@@ -27,9 +32,15 @@ Module Impl_Drop_for_ToDrop.
   }.
 End Impl_Drop_for_ToDrop.
 
-Definition main (_ : unit) : unit :=
-  let x := ToDrop.Build in
-  _crate.io._print (format_arguments::["new_const"] [ "Made a ToDrop!
-" ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let x := ToDrop.Build in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](| [ "Made a ToDrop!
+" ] |)
+        |) in
+      tt in
+    tt
+    : unit)).

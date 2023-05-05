@@ -3,30 +3,46 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  let person :=
-    {| Person.name := String::["from"] "Alice"; Person.age := Box::["new"] 20;
-    |} in
-  let '{| Person.name := name; Person.age := age; |} := person in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The person's age is "; "
-" ]
-      [ format_argument::["new_display"] age ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The person's name is "; "
-" ]
-      [ format_argument::["new_display"] name ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The person's age from person struct is "; "
-" ]
-      [ format_argument::["new_display"] person.["age"] ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let person :=
+      {|
+        Person.name := String::["from"](| "Alice" |);
+        Person.age := Box::["new"](| 20 |);
+      |} in
+    let '{| Person.name := name; Person.age := age; |} := person in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "The person's age is "; "
+" ],
+            [ format_argument::["new_display"](| age |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "The person's name is "; "
+" ],
+            [ format_argument::["new_display"](| name |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "The person's age from person struct is "; "
+" ],
+            [ format_argument::["new_display"](| person.["age"] |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
 Module Person.
   Record t : Set := {
@@ -46,17 +62,17 @@ Definition Person : Set := Person.t.
 Module Impl__crate_fmt_Debug_for_Person.
   Definition Self := Person.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "Person"
-      "name"
-      self.["name"]
-      "age"
-      self.["age"].
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["debug_struct_field2_finish"](|
+        f,
+        "Person",
+        "name",
+        self.["name"],
+        "age",
+        self.["age"]
+      |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;

@@ -26,18 +26,20 @@ Module SGen.
 End SGen.
 Definition SGen := SGen.t.
 
-Definition reg_fn (_s : S) : unit := tt.
+Definition reg_fn (_s : S) := ltac:(function (tt : unit)).
 
-Definition gen_spec_t (_s : SGen A) : unit := tt.
+Definition gen_spec_t (_s : SGen A) := ltac:(function (tt : unit)).
 
-Definition gen_spec_i32 (_s : SGen i32) : unit := tt.
+Definition gen_spec_i32 (_s : SGen i32) := ltac:(function (tt : unit)).
 
-Definition generic {T : Set} (_s : SGen T) : unit := tt.
+Definition generic {T : Set} (_s : SGen T) := ltac:(function (tt : unit)).
 
-Definition main (_ : unit) : unit :=
-  reg_fn (S.Build_t A.Build) ;;
-  gen_spec_t (SGen.Build_t A.Build) ;;
-  gen_spec_i32 (SGen.Build_t 6) ;;
-  generic (SGen.Build_t "a"%char) ;;
-  generic (SGen.Build_t "c"%char) ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let '_ := reg_fn(| S.Build_t A.Build |) in
+    let '_ := gen_spec_t(| SGen.Build_t A.Build |) in
+    let '_ := gen_spec_i32(| SGen.Build_t 6 |) in
+    let '_ := generic(| SGen.Build_t "a"%char |) in
+    let '_ := generic(| SGen.Build_t "c"%char |) in
+    tt
+    : unit)).

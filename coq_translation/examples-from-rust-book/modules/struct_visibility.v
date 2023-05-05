@@ -29,8 +29,8 @@ Module my.
   Module ImplClosedBox T.
     Definition Self := ClosedBox T.
     
-    Definition new (contents : T) : ClosedBox T :=
-      {| ClosedBox.contents := contents; |}.
+    Definition new (contents : T) :=
+      ltac:(function ({| ClosedBox.contents := contents; |} : ClosedBox T)).
     
     Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
@@ -64,21 +64,27 @@ Definition ClosedBox : Set := ClosedBox.t.
 Module ImplClosedBox T_2.
   Definition Self := ClosedBox T.
   
-  Definition new (contents : T) : ClosedBox T :=
-    {| ClosedBox.contents := contents; |}.
+  Definition new (contents : T) :=
+    ltac:(function ({| ClosedBox.contents := contents; |} : ClosedBox T)).
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
 End ImplClosedBox T_2.
 
-Definition main (_ : unit) : unit :=
-  let open_box := {| my.OpenBox.contents := "public information"; |} in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The open box contains: "; "
-" ]
-      [ format_argument::["new_display"] open_box.["contents"] ]) ;;
-  tt ;;
-  let _closed_box := my.ClosedBox::["new"] "classified information" in
-  tt.
+Definition main :=
+  ltac:(function (
+    let open_box := {| my.OpenBox.contents := "public information"; |} in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "The open box contains: "; "
+" ],
+            [ format_argument::["new_display"](| open_box.["contents"] |) ]
+          |)
+        |) in
+      tt in
+    let _closed_box := my.ClosedBox::["new"](| "classified information" |) in
+    tt
+    : unit)).

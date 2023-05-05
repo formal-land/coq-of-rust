@@ -11,28 +11,38 @@ Module io := std.io.
 Module BufReader := std.io.BufReader.
 Definition BufReader := BufReader.t.
 
-Definition read_lines (filename : String) : io.Lines (BufReader File) :=
-  let file := (File::["open"] filename).["unwrap"] in
-  Return (io.BufReader::["new"] file).["lines"] ;;
-  tt.
+Definition read_lines (filename : String) :=
+  ltac:(function (
+    let file := (File::["open"](| filename |)).["unwrap"](||) in
+    let '_ := Return(| (io.BufReader::["new"](| file |)).["lines"](||) |) in
+    tt
+    : io.Lines (BufReader File))).
 
-Definition main (_ : unit) : unit :=
-  let lines := read_lines "./hosts".["to_string"] in
-  match LangItem lines with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := line; |} =>
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ ""; "
-" ]
-            [ format_argument::["new_display"] line.["unwrap"] ]) ;;
-        tt ;;
+Definition main :=
+  ltac:(function (
+    let lines := read_lines(| "./hosts".["to_string"](||) |) in
+    match LangItem(| lines |) with
+    | iter =>
+      loop
+        let '_ :=
+          match LangItem(| iter |) with
+          | None => Break
+          | Some {| Some.0 := line; |} =>
+            let '_ :=
+              let '_ :=
+                _crate.io._print(|
+                  format_arguments::["new_v1"](|
+                    [ ""; "
+" ],
+                    [ format_argument::["new_display"](| line.["unwrap"](||) |)
+                    ]
+                  |)
+                |) in
+              tt in
+            tt
+          end in
         tt
-      end ;;
-      tt
-      from
-      for
-  end.
+        from
+        for
+    end
+    : unit)).

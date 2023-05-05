@@ -3,14 +3,20 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  let parsed := "5".["parse"].["unwrap"] in
-  let turbo_parsed := "10".["parse"].["unwrap"] in
-  let sum := parsed.["add"] turbo_parsed in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Sum: "; "
-" ]
-      [ format_argument::["new_debug"] sum ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let parsed := ("5".["parse"](||)).["unwrap"](||) in
+    let turbo_parsed := ("10".["parse"](||)).["unwrap"](||) in
+    let sum := parsed.["add"](| turbo_parsed |) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Sum: "; "
+" ],
+            [ format_argument::["new_debug"](| sum |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

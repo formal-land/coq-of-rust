@@ -21,17 +21,17 @@ Definition Person : Set := Person.t.
 Module Impl__crate_fmt_Debug_for_Person.
   Definition Self := Person.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "Person"
-      "name"
-      self.["name"]
-      "age"
-      self.["age"].
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["debug_struct_field2_finish"](|
+        f,
+        "Person",
+        "name",
+        self.["name"],
+        "age",
+        self.["age"]
+      |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -89,61 +89,83 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
-Definition main (_ : unit) : unit :=
-  let name := String::["from"] "Peter" in
-  let age := 27 in
-  let peter := {| Person.name := name; Person.age := age; |} in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_debug"] peter ]) ;;
-  tt ;;
-  let point := {| Point.x := 10 (* 10.3 *); Point.y := 0 (* 0.4 *); |} in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "point coordinates: ("; ", "; ")
-" ]
-      [
-        format_argument::["new_display"] point.["x"];
-        format_argument::["new_display"] point.["y"]
-      ]) ;;
-  tt ;;
-  let bottom_right := {| Point.x := 5 (* 5.2 *); |} with point in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "second point: ("; ", "; ")
-" ]
-      [
-        format_argument::["new_display"] bottom_right.["x"];
-        format_argument::["new_display"] bottom_right.["y"]
-      ]) ;;
-  tt ;;
-  let '{| Point.x := left_edge; Point.y := top_edge; |} := point in
-  let _rectangle :=
-    {|
-      Rectangle.top_left := {| Point.x := left_edge; Point.y := top_edge; |};
-      Rectangle.bottom_right := bottom_right;
-    |} in
-  let _unit := Unit.Build in
-  let pair := Pair.Build_t 1 0 (* 0.1 *) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "pair contains "; " and "; "
-" ]
-      [
-        format_argument::["new_debug"] (pair.[0]);
-        format_argument::["new_debug"] (pair.[1])
-      ]) ;;
-  tt ;;
-  let 'Pair.Build_t integer decimal := pair in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "pair contains "; " and "; "
-" ]
-      [
-        format_argument::["new_debug"] integer;
-        format_argument::["new_debug"] decimal
-      ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let name := String::["from"](| "Peter" |) in
+    let age := 27 in
+    let peter := {| Person.name := name; Person.age := age; |} in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_debug"](| peter |) ]
+          |)
+        |) in
+      tt in
+    let point := {| Point.x := 10 (* 10.3 *); Point.y := 0 (* 0.4 *); |} in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "point coordinates: ("; ", "; ")
+" ],
+            [
+              format_argument::["new_display"](| point.["x"] |);
+              format_argument::["new_display"](| point.["y"] |)
+            ]
+          |)
+        |) in
+      tt in
+    let bottom_right := {| Point.x := 5 (* 5.2 *); |} with point in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "second point: ("; ", "; ")
+" ],
+            [
+              format_argument::["new_display"](| bottom_right.["x"] |);
+              format_argument::["new_display"](| bottom_right.["y"] |)
+            ]
+          |)
+        |) in
+      tt in
+    let '{| Point.x := left_edge; Point.y := top_edge; |} := point in
+    let _rectangle :=
+      {|
+        Rectangle.top_left := {| Point.x := left_edge; Point.y := top_edge; |};
+        Rectangle.bottom_right := bottom_right;
+      |} in
+    let _unit := Unit.Build in
+    let pair := Pair.Build_t 1 0 (* 0.1 *) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "pair contains "; " and "; "
+" ],
+            [
+              format_argument::["new_debug"](| pair.[0] |);
+              format_argument::["new_debug"](| pair.[1] |)
+            ]
+          |)
+        |) in
+      tt in
+    let 'Pair.Build_t integer decimal := pair in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "pair contains "; " and "; "
+" ],
+            [
+              format_argument::["new_debug"](| integer |);
+              format_argument::["new_debug"](| decimal |)
+            ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

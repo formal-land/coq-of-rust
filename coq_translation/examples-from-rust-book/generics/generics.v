@@ -26,10 +26,12 @@ Module SingleGen.
 End SingleGen.
 Definition SingleGen := SingleGen.t.
 
-Definition main (_ : unit) : unit :=
-  let _s := Single.Build_t A.Build in
-  let _char := SingleGen.Build_t "a"%char in
-  let _t := SingleGen.Build_t A.Build in
-  let _i32 := SingleGen.Build_t 6 in
-  let _char := SingleGen.Build_t "a"%char in
-  tt.
+Definition main :=
+  ltac:(function (
+    let _s := Single.Build_t A.Build in
+    let _char := SingleGen.Build_t "a"%char in
+    let _t := SingleGen.Build_t A.Build in
+    let _i32 := SingleGen.Build_t 6 in
+    let _char := SingleGen.Build_t "a"%char in
+    tt
+    : unit)).

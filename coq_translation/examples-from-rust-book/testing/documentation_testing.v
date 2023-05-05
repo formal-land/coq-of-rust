@@ -3,12 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition add (a : i32) (b : i32) : i32 := a.["add"] b.
+Definition add (a : i32) (b : i32) := ltac:(function (a.["add"](| b |) : i32)).
 
-Definition div (a : i32) (b : i32) : i32 :=
-  if (b.["eq"] 0 : bool) then
-    _crate.rt.begin_panic "Divide-by-zero error" ;;
-    tt
-  else
-    tt ;;
-  a.["div"] b.
+Definition div (a : i32) (b : i32) :=
+  ltac:(function (
+    let '_ :=
+      if (b.["eq"](| 0 |) : bool) then
+        let '_ := _crate.rt.begin_panic(| "Divide-by-zero error" |) in
+        tt
+      else
+        tt in
+    a.["div"](| b |)
+    : i32)).

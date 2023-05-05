@@ -17,7 +17,7 @@ Definition Cow : Set := Cow.t.
 
 Module Animal.
   Class Trait (Self : Set) : Set := {
-    noise : (ref Self) -> (ref str);
+    noise : (ref Self) -> (M (ref str));
   }.
   
   Global Instance Method_noise `(Trait) : Notation.Dot "noise" := {
@@ -28,7 +28,7 @@ End Animal.
 Module Impl_Animal_for_Sheep.
   Definition Self := Sheep.
   
-  Definition noise (self : ref Self) : ref str := "baaaaah!".
+  Definition noise (self : ref Self) := ltac:(function ("baaaaah!" : ref str)).
   
   Global Instance Method_noise : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -42,7 +42,7 @@ End Impl_Animal_for_Sheep.
 Module Impl_Animal_for_Cow.
   Definition Self := Cow.
   
-  Definition noise (self : ref Self) : ref str := "moooooo!".
+  Definition noise (self : ref Self) := ltac:(function ("moooooo!" : ref str)).
   
   Global Instance Method_noise : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -53,19 +53,27 @@ Module Impl_Animal_for_Cow.
   }.
 End Impl_Animal_for_Cow.
 
-Definition random_animal (random_number : f64) : Box TraitObject :=
-  if (random_number.["lt"] 1 (* 0.5 *) : bool) then
-    Box::["new"] {|  |}
-  else
-    Box::["new"] {|  |}.
+Definition random_animal (random_number : f64) :=
+  ltac:(function (
+    if (random_number.["lt"](| 1 (* 0.5 *) |) : bool) then
+      Box::["new"](| {|  |} |)
+    else
+      Box::["new"](| {|  |} |)
+    : Box TraitObject)).
 
-Definition main (_ : unit) : unit :=
-  let random_number := 0 (* 0.234 *) in
-  let animal := random_animal random_number in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "You've randomly chosen an animal, and it says "; "
-" ]
-      [ format_argument::["new_display"] animal.["noise"] ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let random_number := 0 (* 0.234 *) in
+    let animal := random_animal(| random_number |) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "You've randomly chosen an animal, and it says "; "
+" ],
+            [ format_argument::["new_display"](| animal.["noise"](||) |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

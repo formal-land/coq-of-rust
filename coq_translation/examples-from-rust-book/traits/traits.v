@@ -20,9 +20,9 @@ Definition Sheep : Set := Sheep.t.
 
 Module Animal.
   Class Trait (Self : Set) : Set := {
-    new : (ref str) -> Self;
-    name : (ref Self) -> (ref str);
-    noise : (ref Self) -> (ref str);
+    new : (ref str) -> (M Self);
+    name : (ref Self) -> (M (ref str));
+    noise : (ref Self) -> (M (ref str));
   }.
   
   Global Instance Method_new `(Trait) : Notation.Dot "new" := {
@@ -36,15 +36,19 @@ Module Animal.
   }.
   Global Instance Method_talk `(Trait) : Notation.Dot "talk" := {
     Notation.dot (self : ref Self) :=
-      (_crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " says "; "
-" ]
-          [
-            format_argument::["new_display"] self.["name"];
-            format_argument::["new_display"] self.["noise"]
-          ]) ;;
-      tt ;;
+      (let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_v1"](|
+              [ ""; " says "; "
+" ],
+              [
+                format_argument::["new_display"](| self.["name"](||) |);
+                format_argument::["new_display"](| self.["noise"](||) |)
+              ]
+            |)
+          |) in
+        tt in
       tt
       : unit);
   }.
@@ -53,7 +57,8 @@ End Animal.
 Module ImplSheep.
   Definition Self := Sheep.
   
-  Definition is_naked (self : ref Self) : bool := self.["naked"].
+  Definition is_naked (self : ref Self) :=
+    ltac:(function (self.["naked"] : bool)).
   
   Global Instance Method_is_naked : Notation.Dot "is_naked" := {
     Notation.dot := is_naked;
@@ -63,40 +68,49 @@ End ImplSheep.
 Module Impl_Animal_for_Sheep.
   Definition Self := Sheep.
   
-  Definition new (name : ref str) : Sheep :=
-    {| Sheep.name := name; Sheep.naked := false; |}.
+  Definition new (name : ref str) :=
+    ltac:(function ({| Sheep.name := name; Sheep.naked := false; |} : Sheep)).
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Definition name (self : ref Self) : ref str := self.["name"].
+  Definition name (self : ref Self) :=
+    ltac:(function (self.["name"] : ref str)).
   
   Global Instance Method_name : Notation.Dot "name" := {
     Notation.dot := name;
   }.
   
-  Definition noise (self : ref Self) : ref str :=
-    if (self.["is_naked"] : bool) then
-      "baaaaah?"
-    else
-      "baaaaah!".
+  Definition noise (self : ref Self) :=
+    ltac:(function (
+      if (self.["is_naked"](||) : bool) then
+        "baaaaah?"
+      else
+        "baaaaah!"
+      : ref str)).
   
   Global Instance Method_noise : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
   Definition talk (self : ref Self) :=
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; " pauses briefly... "; "
-" ]
-        [
-          format_argument::["new_display"] self.["name"];
-          format_argument::["new_display"] self.["noise"]
-        ]) ;;
-    tt ;;
-    tt.
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_v1"](|
+              [ ""; " pauses briefly... "; "
+" ],
+              [
+                format_argument::["new_display"](| self.["name"] |);
+                format_argument::["new_display"](| self.["noise"](||) |)
+              ]
+            |)
+          |) in
+        tt in
+      tt
+      : _)).
   
   Global Instance Method_talk : Notation.Dot "talk" := {
     Notation.dot := talk;
@@ -113,32 +127,44 @@ Module ImplSheep_2.
   Definition Self := Sheep.
   
   Definition shear (self : mut_ref Self) :=
-    if (self.["is_naked"] : bool) then
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " is already naked...
-" ]
-          [ format_argument::["new_display"] self.["name"] ]) ;;
-      tt ;;
-      tt
-    else
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " gets a haircut!
-" ]
-          [ format_argument::["new_display"] self.["name"] ]) ;;
-      tt ;;
-      assign self.["naked"] true ;;
-      tt.
+    ltac:(function (
+      if (self.["is_naked"](||) : bool) then
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_v1"](|
+                [ ""; " is already naked...
+" ],
+                [ format_argument::["new_display"](| self.["name"](||) |) ]
+              |)
+            |) in
+          tt in
+        tt
+      else
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_v1"](|
+                [ ""; " gets a haircut!
+" ],
+                [ format_argument::["new_display"](| self.["name"] |) ]
+              |)
+            |) in
+          tt in
+        let '_ := assign self.["naked"] true in
+        tt
+      : _)).
   
   Global Instance Method_shear : Notation.Dot "shear" := {
     Notation.dot := shear;
   }.
 End ImplSheep_2.
 
-Definition main (_ : unit) : unit :=
-  let dolly := ((Animal.new "Dolly") : Sheep) in
-  dolly.["talk"] ;;
-  dolly.["shear"] ;;
-  dolly.["talk"] ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let dolly := ((Animal.new(| "Dolly" |)) : Sheep) in
+    let '_ := dolly.["talk"](||) in
+    let '_ := dolly.["shear"](||) in
+    let '_ := dolly.["talk"](||) in
+    tt
+    : unit)).

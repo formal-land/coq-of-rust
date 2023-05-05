@@ -3,23 +3,31 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition some_number (_ : unit) : Option u32 := Some 42.
+Definition some_number := ltac:(function (Some 42 : Option u32)).
 
-Definition main (_ : unit) : unit :=
-  match some_number tt with
-  | Some (42 as n) =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "The Answer: "; "!
-" ]
-        [ format_argument::["new_display"] n ]) ;;
-    tt
-  | Some n =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Not interesting... "; "
-" ]
-        [ format_argument::["new_display"] n ]) ;;
-    tt
-  | _ => tt
-  end.
+Definition main :=
+  ltac:(function (
+    match some_number(||) with
+    | Some (42 as n) =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "The Answer: "; "!
+" ],
+            [ format_argument::["new_display"](| n |) ]
+          |)
+        |) in
+      tt
+    | Some n =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Not interesting... "; "
+" ],
+            [ format_argument::["new_display"](| n |) ]
+          |)
+        |) in
+      tt
+    | _ => tt
+    end
+    : unit)).

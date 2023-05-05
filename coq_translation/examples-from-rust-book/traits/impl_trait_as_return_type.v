@@ -8,87 +8,130 @@ Module iter := std.iter.
 Module IntoIter := std.vec.IntoIter.
 Definition IntoIter := IntoIter.t.
 
-Definition combine_vecs_explicit_return_type
-    (v : Vec i32)
-    (u : Vec i32)
-    : iter.Cycle (iter.Chain (IntoIter i32) (IntoIter i32)) :=
-  (v.["into_iter"].["chain"] u.["into_iter"]).["cycle"].
+Definition combine_vecs_explicit_return_type (v : Vec i32) (u : Vec i32) :=
+  ltac:(function (
+    ((v.["into_iter"](||)).["chain"](| u.["into_iter"](||) |)).["cycle"](||)
+    : iter.Cycle (iter.Chain (IntoIter i32) (IntoIter i32)))).
 
-Definition combine_vecs (v : Vec i32) (u : Vec i32) : OpaqueDef :=
-  (v.["into_iter"].["chain"] u.["into_iter"]).["cycle"].
+Definition combine_vecs (v : Vec i32) (u : Vec i32) :=
+  ltac:(function (
+    ((v.["into_iter"](||)).["chain"](| u.["into_iter"](||) |)).["cycle"](||)
+    : OpaqueDef)).
 
 Error OpaqueTy.
 
-Definition main (_ : unit) : unit :=
-  let v1 := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
-  let v2 := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 4; 5 ]) in
-  let v3 := combine_vecs v1 v2 in
-  match (Some 1, v3.["next"]) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  match (Some 2, v3.["next"]) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  match (Some 3, v3.["next"]) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  match (Some 4, v3.["next"]) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  match (Some 5, v3.["next"]) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  _crate.io._print (format_arguments::["new_const"] [ "all done
-" ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let v1 :=
+      Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 1; 2; 3 ] |) |) in
+    let v2 :=
+      Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 4; 5 ] |) |) in
+    let v3 := combine_vecs(| v1, v2 |) in
+    let '_ :=
+      match (Some 1, v3.["next"](||)) with
+      | (left_val, right_val) =>
+        if
+          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
+          |)).["not"](||)
+          : bool)
+        then
+          let kind := _crate.panicking.AssertKind.Eq in
+          let '_ :=
+            _crate.panicking.assert_failed(|
+              kind,
+              left_val.["deref"](||),
+              right_val.["deref"](||),
+              _crate.option.Option.None
+            |) in
+          tt
+        else
+          tt
+      end in
+    let '_ :=
+      match (Some 2, v3.["next"](||)) with
+      | (left_val, right_val) =>
+        if
+          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
+          |)).["not"](||)
+          : bool)
+        then
+          let kind := _crate.panicking.AssertKind.Eq in
+          let '_ :=
+            _crate.panicking.assert_failed(|
+              kind,
+              left_val.["deref"](||),
+              right_val.["deref"](||),
+              _crate.option.Option.None
+            |) in
+          tt
+        else
+          tt
+      end in
+    let '_ :=
+      match (Some 3, v3.["next"](||)) with
+      | (left_val, right_val) =>
+        if
+          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
+          |)).["not"](||)
+          : bool)
+        then
+          let kind := _crate.panicking.AssertKind.Eq in
+          let '_ :=
+            _crate.panicking.assert_failed(|
+              kind,
+              left_val.["deref"](||),
+              right_val.["deref"](||),
+              _crate.option.Option.None
+            |) in
+          tt
+        else
+          tt
+      end in
+    let '_ :=
+      match (Some 4, v3.["next"](||)) with
+      | (left_val, right_val) =>
+        if
+          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
+          |)).["not"](||)
+          : bool)
+        then
+          let kind := _crate.panicking.AssertKind.Eq in
+          let '_ :=
+            _crate.panicking.assert_failed(|
+              kind,
+              left_val.["deref"](||),
+              right_val.["deref"](||),
+              _crate.option.Option.None
+            |) in
+          tt
+        else
+          tt
+      end in
+    let '_ :=
+      match (Some 5, v3.["next"](||)) with
+      | (left_val, right_val) =>
+        if
+          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
+          |)).["not"](||)
+          : bool)
+        then
+          let kind := _crate.panicking.AssertKind.Eq in
+          let '_ :=
+            _crate.panicking.assert_failed(|
+              kind,
+              left_val.["deref"](||),
+              right_val.["deref"](||),
+              _crate.option.Option.None
+            |) in
+          tt
+        else
+          tt
+      end in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(| format_arguments::["new_const"](| [ "all done
+" ] |)
+        |) in
+      tt in
+    tt
+    : unit)).

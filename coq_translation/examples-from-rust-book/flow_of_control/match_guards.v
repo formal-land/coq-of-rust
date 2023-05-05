@@ -10,35 +10,49 @@ Module Temperature.
 End Temperature.
 Definition Temperature := Temperature.t.
 
-Definition main (_ : unit) : unit :=
-  let temperature := Temperature.Celsius 35 in
-  match temperature with
-  | Temperature.Celsius t =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "C is above 30 Celsius
-" ]
-        [ format_argument::["new_display"] t ]) ;;
-    tt
-  | Temperature.Celsius t =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "C is below 30 Celsius
-" ]
-        [ format_argument::["new_display"] t ]) ;;
-    tt
-  | Temperature.Fahrenheit t =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "F is above 86 Fahrenheit
-" ]
-        [ format_argument::["new_display"] t ]) ;;
-    tt
-  | Temperature.Fahrenheit t =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "F is below 86 Fahrenheit
-" ]
-        [ format_argument::["new_display"] t ]) ;;
-    tt
-  end.
+Definition main :=
+  ltac:(function (
+    let temperature := Temperature.Celsius 35 in
+    match temperature with
+    | Temperature.Celsius t =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "C is above 30 Celsius
+" ],
+            [ format_argument::["new_display"](| t |) ]
+          |)
+        |) in
+      tt
+    | Temperature.Celsius t =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "C is below 30 Celsius
+" ],
+            [ format_argument::["new_display"](| t |) ]
+          |)
+        |) in
+      tt
+    | Temperature.Fahrenheit t =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "F is above 86 Fahrenheit
+" ],
+            [ format_argument::["new_display"](| t |) ]
+          |)
+        |) in
+      tt
+    | Temperature.Fahrenheit t =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "F is below 86 Fahrenheit
+" ],
+            [ format_argument::["new_display"](| t |) ]
+          |)
+        |) in
+      tt
+    end
+    : unit)).

@@ -3,10 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  let raw_p := 10 in
-  if ((raw_p.["deref"].["eq"] 10).["not"] : bool) then
-    _crate.panicking.panic "assertion failed: *raw_p == 10"
-  else
-    tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let raw_p := 10 in
+    let '_ :=
+      if (((raw_p.["deref"](||)).["eq"](| 10 |)).["not"](||) : bool) then
+        _crate.panicking.panic(| "assertion failed: *raw_p == 10" |)
+      else
+        tt in
+    tt
+    : unit)).

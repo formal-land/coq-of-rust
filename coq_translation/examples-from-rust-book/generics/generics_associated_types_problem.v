@@ -17,9 +17,9 @@ Definition Container := Container.t.
 
 Module Contains.
   Class Trait (A B Self : Set) : Set := {
-    contains : (ref Self) -> ((ref A) -> ((ref B) -> bool));
-    first : (ref Self) -> i32;
-    last : (ref Self) -> i32;
+    contains : (ref Self) -> ((ref A) -> ((ref B) -> (M bool)));
+    first : (ref Self) -> (M i32);
+    last : (ref Self) -> (M i32);
   }.
   
   Global Instance Method_contains `(Trait) : Notation.Dot "contains" := {
@@ -39,21 +39,24 @@ Module Impl_Contains_for_Container.
   Definition contains
       (self : ref Self)
       (number_1 : ref i32)
-      (number_2 : ref i32)
-      : bool :=
-    ((self.[0]).["eq"] number_1).["andb"] ((self.[1]).["eq"] number_2).
+      (number_2 : ref i32) :=
+    ltac:(function (
+      ((self.[0]).["eq"](| number_1 |)).["andb"](|
+        (self.[1]).["eq"](| number_2 |)
+      |)
+      : bool)).
   
   Global Instance Method_contains : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
-  Definition first (self : ref Self) : i32 := self.[0].
+  Definition first (self : ref Self) := ltac:(function (self.[0] : i32)).
   
   Global Instance Method_first : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
-  Definition last (self : ref Self) : i32 := self.[1].
+  Definition last (self : ref Self) := ltac:(function (self.[1] : i32)).
   
   Global Instance Method_last : Notation.Dot "last" := {
     Notation.dot := last;
@@ -69,41 +72,61 @@ End Impl_Contains_for_Container.
 Definition difference
     {A B C : Set}
     `{Contains.Trait A B C}
-    (container : ref C)
-    : i32 :=
-  container.["last"].["sub"] container.["first"].
+    (container : ref C) :=
+  ltac:(function (
+    (container.["last"](||)).["sub"](| container.["first"](||) |)
+    : i32)).
 
-Definition main (_ : unit) : unit :=
-  let number_1 := 3 in
-  let number_2 := 10 in
-  let container := Container.Build_t number_1 number_2 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Does container contain "; " and "; ": "; "
-" ]
-      [
-        format_argument::["new_display"] number_1;
-        format_argument::["new_display"] number_2;
-        format_argument::["new_display"]
-          (container.["contains"] number_1 number_2)
-      ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "First number: "; "
-" ]
-      [ format_argument::["new_display"] container.["first"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Last number: "; "
-" ]
-      [ format_argument::["new_display"] container.["last"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The difference is: "; "
-" ]
-      [ format_argument::["new_display"] (difference container) ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let number_1 := 3 in
+    let number_2 := 10 in
+    let container := Container.Build_t number_1 number_2 in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Does container contain "; " and "; ": "; "
+" ],
+            [
+              format_argument::["new_display"](| number_1 |);
+              format_argument::["new_display"](| number_2 |);
+              format_argument::["new_display"](|
+                container.["contains"](| number_1, number_2 |)
+              |)
+            ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "First number: "; "
+" ],
+            [ format_argument::["new_display"](| container.["first"](||) |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Last number: "; "
+" ],
+            [ format_argument::["new_display"](| container.["last"](||) |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "The difference is: "; "
+" ],
+            [ format_argument::["new_display"](| difference(| container |) |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

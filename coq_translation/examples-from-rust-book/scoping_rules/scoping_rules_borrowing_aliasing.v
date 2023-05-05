@@ -22,53 +22,71 @@ Module Point.
 End Point.
 Definition Point : Set := Point.t.
 
-Definition main (_ : unit) : unit :=
-  let point := {| Point.x := 0; Point.y := 0; Point.z := 0; |} in
-  let borrowed_point := point in
-  let another_borrow := point in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Point has coordinates: ("; ", "; ", "; ")
-" ]
-      [
-        format_argument::["new_display"] borrowed_point.["x"];
-        format_argument::["new_display"] another_borrow.["y"];
-        format_argument::["new_display"] point.["z"]
-      ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Point has coordinates: ("; ", "; ", "; ")
-" ]
-      [
-        format_argument::["new_display"] borrowed_point.["x"];
-        format_argument::["new_display"] another_borrow.["y"];
-        format_argument::["new_display"] point.["z"]
-      ]) ;;
-  tt ;;
-  let mutable_borrow := point in
-  assign mutable_borrow.["x"] 5 ;;
-  assign mutable_borrow.["y"] 2 ;;
-  assign mutable_borrow.["z"] 1 ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Point has coordinates: ("; ", "; ", "; ")
-" ]
-      [
-        format_argument::["new_display"] mutable_borrow.["x"];
-        format_argument::["new_display"] mutable_borrow.["y"];
-        format_argument::["new_display"] mutable_borrow.["z"]
-      ]) ;;
-  tt ;;
-  let new_borrowed_point := point in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Point now has coordinates: ("; ", "; ", "; ")
-" ]
-      [
-        format_argument::["new_display"] new_borrowed_point.["x"];
-        format_argument::["new_display"] new_borrowed_point.["y"];
-        format_argument::["new_display"] new_borrowed_point.["z"]
-      ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let point := {| Point.x := 0; Point.y := 0; Point.z := 0; |} in
+    let borrowed_point := point in
+    let another_borrow := point in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Point has coordinates: ("; ", "; ", "; ")
+" ],
+            [
+              format_argument::["new_display"](| borrowed_point.["x"] |);
+              format_argument::["new_display"](| another_borrow.["y"] |);
+              format_argument::["new_display"](| point.["z"] |)
+            ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Point has coordinates: ("; ", "; ", "; ")
+" ],
+            [
+              format_argument::["new_display"](| borrowed_point.["x"] |);
+              format_argument::["new_display"](| another_borrow.["y"] |);
+              format_argument::["new_display"](| point.["z"] |)
+            ]
+          |)
+        |) in
+      tt in
+    let mutable_borrow := point in
+    let '_ := assign mutable_borrow.["x"] 5 in
+    let '_ := assign mutable_borrow.["y"] 2 in
+    let '_ := assign mutable_borrow.["z"] 1 in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Point has coordinates: ("; ", "; ", "; ")
+" ],
+            [
+              format_argument::["new_display"](| mutable_borrow.["x"] |);
+              format_argument::["new_display"](| mutable_borrow.["y"] |);
+              format_argument::["new_display"](| mutable_borrow.["z"] |)
+            ]
+          |)
+        |) in
+      tt in
+    let new_borrowed_point := point in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Point now has coordinates: ("; ", "; ", "; ")
+" ],
+            [
+              format_argument::["new_display"](| new_borrowed_point.["x"] |);
+              format_argument::["new_display"](| new_borrowed_point.["y"] |);
+              format_argument::["new_display"](| new_borrowed_point.["z"] |)
+            ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

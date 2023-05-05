@@ -3,33 +3,47 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  let byte_escape := "I'm writing Rust!" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "What are you doing? (\x3F means ?) "; "
-" ]
-      [ format_argument::["new_display"] byte_escape ]) ;;
-  tt ;;
-  let unicode_codepoint := String.String "29" "" in
-  let character_name := ""DOUBLE-STRUCK CAPITAL R"" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Unicode character "; " (U+211D) is called "; "
-" ]
-      [
-        format_argument::["new_display"] unicode_codepoint;
-        format_argument::["new_display"] character_name
-      ]) ;;
-  tt ;;
-  let long_string :=
-    "String literals
+Definition main :=
+  ltac:(function (
+    let byte_escape := "I'm writing Rust!" in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "What are you doing? (\x3F means ?) "; "
+" ],
+            [ format_argument::["new_display"](| byte_escape |) ]
+          |)
+        |) in
+      tt in
+    let unicode_codepoint := String.String "29" "" in
+    let character_name := ""DOUBLE-STRUCK CAPITAL R"" in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Unicode character "; " (U+211D) is called "; "
+" ],
+            [
+              format_argument::["new_display"](| unicode_codepoint |);
+              format_argument::["new_display"](| character_name |)
+            ]
+          |)
+        |) in
+      tt in
+    let long_string :=
+      "String literals
                         can span multiple lines.
                         The linebreak and indentation here -><- can be escaped too!" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] long_string ]) ;;
-  tt ;;
-  tt.
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_display"](| long_string |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

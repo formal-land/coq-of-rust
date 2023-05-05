@@ -17,15 +17,15 @@ Definition Number : Set := Number.t.
 Module Impl__crate_fmt_Debug_for_Number.
   Definition Self := Number.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_struct_field1_finish"]
-      f
-      "Number"
-      "value"
-      self.["value"].
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["debug_struct_field1_finish"](|
+        f,
+        "Number",
+        "value",
+        self.["value"]
+      |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -39,7 +39,8 @@ End Impl__crate_fmt_Debug_for_Number.
 Module Impl_From_for_Number.
   Definition Self := Number.
   
-  Definition from (item : i32) : Self := {| Number.value := item; |}.
+  Definition from (item : i32) :=
+    ltac:(function ({| Number.value := item; |} : Self)).
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -51,12 +52,18 @@ Module Impl_From_for_Number.
   }.
 End Impl_From_for_Number.
 
-Definition main (_ : unit) : unit :=
-  let num := Number::["from"] 30 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "My number is "; "
-" ]
-      [ format_argument::["new_debug"] num ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let num := Number::["from"](| 30 |) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "My number is "; "
+" ],
+            [ format_argument::["new_debug"](| num |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

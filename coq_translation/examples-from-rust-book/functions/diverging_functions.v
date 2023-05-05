@@ -3,8 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := tt.
+Definition main := ltac:(function (tt : unit)).
 
-Definition foo (_ : unit) : Empty_set :=
-  _crate.rt.begin_panic "This call never returns." ;;
-  tt.
+Definition foo :=
+  ltac:(function (
+    let '_ := _crate.rt.begin_panic(| "This call never returns." |) in
+    tt
+    : Empty_set)).

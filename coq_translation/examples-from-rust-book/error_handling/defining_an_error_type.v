@@ -15,11 +15,10 @@ Definition DoubleError := DoubleError.t.
 Module Impl__crate_fmt_Debug_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["write_str"] f "DoubleError".
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["write_str"](| f, "DoubleError" |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -33,7 +32,8 @@ End Impl__crate_fmt_Debug_for_DoubleError.
 Module Impl__crate_clone_Clone_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition clone (self : ref Self) : DoubleError := DoubleError.Build.
+  Definition clone (self : ref Self) :=
+    ltac:(function (DoubleError.Build : DoubleError)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -47,9 +47,12 @@ End Impl__crate_clone_Clone_for_DoubleError.
 Module Impl_fmt_Display_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
-    f.["write_fmt"]
-      (format_arguments::["new_const"] [ "invalid first item to double" ]).
+  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
+    ltac:(function (
+      f.["write_fmt"](|
+        format_arguments::["new_const"](| [ "invalid first item to double" ] |)
+      |)
+      : fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -60,37 +63,54 @@ Module Impl_fmt_Display_for_DoubleError.
   }.
 End Impl_fmt_Display_for_DoubleError.
 
-Definition double_first (vec : Vec (ref str)) : Result i32 :=
-  (vec.["first"].["ok_or"] DoubleError.Build).["and_then"]
-    (fun s =>
-      (s.["parse"].["map_err"] (fun _ => DoubleError.Build)).["map"]
-        (fun i => 2.["mul"] i)).
+Definition double_first (vec : Vec (ref str)) :=
+  ltac:(function (
+    ((vec.["first"](||)).["ok_or"](| DoubleError.Build |)).["and_then"](|
+      fun s =>
+        ((s.["parse"](||)).["map_err"](| fun _ => DoubleError.Build
+        |)).["map"](| fun i => 2.["mul"](| i |)
+        |)
+    |)
+    : Result i32)).
 
-Definition print (result : Result i32) : unit :=
-  match result with
-  | Ok n =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "The first doubled is "; "
-" ]
-        [ format_argument::["new_display"] n ]) ;;
-    tt
-  | Err e =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Error: "; "
-" ]
-        [ format_argument::["new_display"] e ]) ;;
-    tt
-  end.
+Definition print (result : Result i32) :=
+  ltac:(function (
+    match result with
+    | Ok n =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "The first doubled is "; "
+" ],
+            [ format_argument::["new_display"](| n |) ]
+          |)
+        |) in
+      tt
+    | Err e =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Error: "; "
+" ],
+            [ format_argument::["new_display"](| e |) ]
+          |)
+        |) in
+      tt
+    end
+    : unit)).
 
-Definition main (_ : unit) : unit :=
-  let numbers :=
-    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "42"; "93"; "18" ]) in
-  let empty := _crate.vec.Vec::["new"] tt in
-  let strings :=
-    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ]) in
-  print (double_first numbers) ;;
-  print (double_first empty) ;;
-  print (double_first strings) ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let numbers :=
+      Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ "42"; "93"; "18" ] |)
+      |) in
+    let empty := _crate.vec.Vec::["new"](||) in
+    let strings :=
+      Slice::["into_vec"](|
+        _crate.boxed.Box::["new"](| [ "tofu"; "93"; "18" ] |)
+      |) in
+    let '_ := print(| double_first(| numbers |) |) in
+    let '_ := print(| double_first(| empty |) |) in
+    let '_ := print(| double_first(| strings |) |) in
+    tt
+    : unit)).

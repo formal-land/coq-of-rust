@@ -5,57 +5,84 @@ Import Root.std.prelude.rust_2015.
 
 Module str := std.str.
 
-Definition main (_ : unit) : unit :=
-  let bytestring :=
-    [116, 104, 105, 115, 32, 105, 115, 32, 97, 32, 98, 121, 116, 101, 32, 115, 116, 114, 105, 110, 103] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "A byte string: "; "
-" ]
-      [ format_argument::["new_debug"] bytestring ]) ;;
-  tt ;;
-  let escaped := [82, 117, 115, 116, 32, 97, 115, 32, 98, 121, 116, 101, 115] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Some escaped bytes: "; "
-" ]
-      [ format_argument::["new_debug"] escaped ]) ;;
-  tt ;;
-  let raw_bytestring :=
-    [92, 117, 123, 50, 49, 49, 68, 125, 32, 105, 115, 32, 110, 111, 116, 32, 101, 115, 99, 97, 112, 101, 100, 32, 104, 101, 114, 101] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_debug"] raw_bytestring ]) ;;
-  tt ;;
-  if (let_if Ok my_str := str.from_utf8 raw_bytestring : bool) then
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "And the same as text: '"; "'
-" ]
-        [ format_argument::["new_display"] my_str ]) ;;
-    tt ;;
+Definition main :=
+  ltac:(function (
+    let bytestring :=
+      [116, 104, 105, 115, 32, 105, 115, 32, 97, 32, 98, 121, 116, 101, 32, 115, 116, 114, 105, 110, 103] in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "A byte string: "; "
+" ],
+            [ format_argument::["new_debug"](| bytestring |) ]
+          |)
+        |) in
+      tt in
+    let escaped :=
+      [82, 117, 115, 116, 32, 97, 115, 32, 98, 121, 116, 101, 115] in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Some escaped bytes: "; "
+" ],
+            [ format_argument::["new_debug"](| escaped |) ]
+          |)
+        |) in
+      tt in
+    let raw_bytestring :=
+      [92, 117, 123, 50, 49, 49, 68, 125, 32, 105, 115, 32, 110, 111, 116, 32, 101, 115, 99, 97, 112, 101, 100, 32, 104, 101, 114, 101] in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_debug"](| raw_bytestring |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      if (let_if Ok my_str := str.from_utf8(| raw_bytestring |) : bool) then
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_v1"](|
+                [ "And the same as text: '"; "'
+" ],
+                [ format_argument::["new_display"](| my_str |) ]
+              |)
+            |) in
+          tt in
+        tt
+      else
+        tt in
+    let _quotes :=
+      [89, 111, 117, 32, 99, 97, 110, 32, 97, 108, 115, 111, 32, 117, 115, 101, 32, 34, 102, 97, 110, 99, 105, 101, 114, 34, 32, 102, 111, 114, 109, 97, 116, 116, 105, 110, 103, 44, 32, 92, 10, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 108, 105, 107, 101, 32, 119, 105, 116, 104, 32, 110, 111, 114, 109, 97, 108, 32, 114, 97, 119, 32, 115, 116, 114, 105, 110, 103, 115] in
+    let shift_jis := [130, 230, 130, 168, 130, 177, 130, 187] in
+    let '_ :=
+      match str.from_utf8(| shift_jis |) with
+      | Ok my_str =>
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_v1"](|
+              [ "Conversion successful: '"; "'
+" ],
+              [ format_argument::["new_display"](| my_str |) ]
+            |)
+          |) in
+        tt
+      | Err e =>
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_v1"](|
+              [ "Conversion failed: "; "
+" ],
+              [ format_argument::["new_debug"](| e |) ]
+            |)
+          |) in
+        tt
+      end in
     tt
-  else
-    tt ;;
-  let _quotes :=
-    [89, 111, 117, 32, 99, 97, 110, 32, 97, 108, 115, 111, 32, 117, 115, 101, 32, 34, 102, 97, 110, 99, 105, 101, 114, 34, 32, 102, 111, 114, 109, 97, 116, 116, 105, 110, 103, 44, 32, 92, 10, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 108, 105, 107, 101, 32, 119, 105, 116, 104, 32, 110, 111, 114, 109, 97, 108, 32, 114, 97, 119, 32, 115, 116, 114, 105, 110, 103, 115] in
-  let shift_jis := [130, 230, 130, 168, 130, 177, 130, 187] in
-  match str.from_utf8 shift_jis with
-  | Ok my_str =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Conversion successful: '"; "'
-" ]
-        [ format_argument::["new_display"] my_str ]) ;;
-    tt
-  | Err e =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Conversion failed: "; "
-" ]
-        [ format_argument::["new_debug"] e ]) ;;
-    tt
-  end ;;
-  tt.
+    : unit)).

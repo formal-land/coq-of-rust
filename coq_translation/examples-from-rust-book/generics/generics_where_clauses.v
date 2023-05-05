@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module PrintInOption.
   Class Trait (Self : Set) : Set := {
-    print_in_option : Self -> _;
+    print_in_option : Self -> (M _);
   }.
   
   Global Instance Method_print_in_option `(Trait)
@@ -18,13 +18,19 @@ Module Impl_PrintInOption_for_T.
   Definition Self := T.
   
   Definition print_in_option (self : Self) :=
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "
-" ]
-        [ format_argument::["new_debug"] (Some self) ]) ;;
-    tt ;;
-    tt.
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_v1"](|
+              [ ""; "
+" ],
+              [ format_argument::["new_debug"](| Some self |) ]
+            |)
+          |) in
+        tt in
+      tt
+      : _)).
   
   Global Instance Method_print_in_option : Notation.Dot "print_in_option" := {
     Notation.dot := print_in_option;
@@ -35,7 +41,10 @@ Module Impl_PrintInOption_for_T.
   }.
 End Impl_PrintInOption_for_T.
 
-Definition main (_ : unit) : unit :=
-  let vec := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
-  vec.["print_in_option"] ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let vec :=
+      Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 1; 2; 3 ] |) |) in
+    let '_ := vec.["print_in_option"](||) in
+    tt
+    : unit)).

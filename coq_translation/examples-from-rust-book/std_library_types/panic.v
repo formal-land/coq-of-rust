@@ -3,18 +3,26 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition division (dividend : i32) (divisor : i32) : i32 :=
-  if (divisor.["eq"] 0 : bool) then
-    _crate.rt.begin_panic "division by zero" ;;
-    tt
-  else
-    dividend.["div"] divisor.
+Definition division (dividend : i32) (divisor : i32) :=
+  ltac:(function (
+    if (divisor.["eq"](| 0 |) : bool) then
+      let '_ := _crate.rt.begin_panic(| "division by zero" |) in
+      tt
+    else
+      dividend.["div"](| divisor |)
+    : i32)).
 
-Definition main (_ : unit) : unit :=
-  let _x := Box::["new"] 0 in
-  division 3 0 ;;
-  _crate.io._print
-    (format_arguments::["new_const"] [ "This point won't be reached!
-" ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let _x := Box::["new"](| 0 |) in
+    let '_ := division(| 3, 0 |) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](| [ "This point won't be reached!
+" ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

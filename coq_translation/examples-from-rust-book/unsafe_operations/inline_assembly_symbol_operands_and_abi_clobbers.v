@@ -3,20 +3,28 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := tt.
+Definition main := ltac:(function (tt : unit)).
 
 Module asm := std.arch.asm.
 
-Definition foo (arg : i32) : i32 :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "arg = "; "
-" ]
-      [ format_argument::["new_display"] arg ]) ;;
-  tt ;;
-  arg.["mul"] 2.
+Definition foo (arg : i32) :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "arg = "; "
+" ],
+            [ format_argument::["new_display"](| arg |) ]
+          |)
+        |) in
+      tt in
+    arg.["mul"](| 2 |)
+    : i32)).
 
-Definition call_foo (arg : i32) : i32 :=
-  let result := tt in
-  InlineAsm ;;
-  result.
+Definition call_foo (arg : i32) :=
+  ltac:(function (
+    let result := tt in
+    let '_ := InlineAsm in
+    result
+    : i32)).

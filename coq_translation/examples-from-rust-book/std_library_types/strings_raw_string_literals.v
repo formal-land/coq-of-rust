@@ -3,26 +3,40 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  let raw_str := "Escapes don't work here: \x3F \u{211D}" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] raw_str ]) ;;
-  tt ;;
-  let quotes := "And then I said: "There is no escape!"" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] quotes ]) ;;
-  tt ;;
-  let longer_delimiter := "A string with "# in it. And even "##!" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] longer_delimiter ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let raw_str := "Escapes don't work here: \x3F \u{211D}" in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_display"](| raw_str |) ]
+          |)
+        |) in
+      tt in
+    let quotes := "And then I said: "There is no escape!"" in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_display"](| quotes |) ]
+          |)
+        |) in
+      tt in
+    let longer_delimiter := "A string with "# in it. And even "##!" in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_display"](| longer_delimiter |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

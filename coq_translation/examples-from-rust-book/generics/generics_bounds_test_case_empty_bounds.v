@@ -44,24 +44,36 @@ Module Impl_Blue_for_BlueJay.
   Global Instance I : Blue.Trait Self := Blue.Build_Class _.
 End Impl_Blue_for_BlueJay.
 
-Definition red {T : Set} `{Red.Trait T} (arg : ref T) : ref str := "red".
+Definition red {T : Set} `{Red.Trait T} (arg : ref T) :=
+  ltac:(function ("red" : ref str)).
 
-Definition blue {T : Set} `{Blue.Trait T} (arg : ref T) : ref str := "blue".
+Definition blue {T : Set} `{Blue.Trait T} (arg : ref T) :=
+  ltac:(function ("blue" : ref str)).
 
-Definition main (_ : unit) : unit :=
-  let cardinal := Cardinal.Build in
-  let blue_jay := BlueJay.Build in
-  let _turkey := Turkey.Build in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "A cardinal is "; "
-" ]
-      [ format_argument::["new_display"] (red cardinal) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "A blue jay is "; "
-" ]
-      [ format_argument::["new_display"] (blue blue_jay) ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let cardinal := Cardinal.Build in
+    let blue_jay := BlueJay.Build in
+    let _turkey := Turkey.Build in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "A cardinal is "; "
+" ],
+            [ format_argument::["new_display"](| red(| cardinal |) |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "A blue jay is "; "
+" ],
+            [ format_argument::["new_display"](| blue(| blue_jay |) |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

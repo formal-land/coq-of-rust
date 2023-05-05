@@ -3,23 +3,40 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  _crate.io._print (format_arguments::["new_v1"] [ "1
-" ] [ ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] (std.cmp.min (1.["add"] 2) 2) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [
-        format_argument::["new_display"]
-          (std.cmp.min 5 (std.cmp.min (2.["mul"] 3) 4))
-      ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(| format_arguments::["new_v1"](| [ "1
+" ], [ ] |) |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [
+              format_argument::["new_display"](|
+                std.cmp.min(| 1.["add"](| 2 |), 2 |)
+              |)
+            ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [
+              format_argument::["new_display"](|
+                std.cmp.min(| 5, std.cmp.min(| 2.["mul"](| 3 |), 4 |) |)
+              |)
+            ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

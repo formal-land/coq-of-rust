@@ -3,39 +3,58 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition print_one (x : ref i32) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "`print_one`: x is "; "
-" ]
-      [ format_argument::["new_display"] x ]) ;;
-  tt ;;
-  tt.
+Definition print_one (x : ref i32) :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "`print_one`: x is "; "
+" ],
+            [ format_argument::["new_display"](| x |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition add_one (x : mut_ref i32) : unit :=
-  x.["deref"].["add_assign"] 1 ;;
-  tt.
+Definition add_one (x : mut_ref i32) :=
+  ltac:(function (
+    let '_ := (x.["deref"](||)).["add_assign"](| 1 |) in
+    tt
+    : unit)).
 
-Definition print_multi (x : ref i32) (y : ref i32) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "`print_multi`: x is "; ", y is "; "
-" ]
-      [ format_argument::["new_display"] x; format_argument::["new_display"] y
-      ]) ;;
-  tt ;;
-  tt.
+Definition print_multi (x : ref i32) (y : ref i32) :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "`print_multi`: x is "; ", y is "; "
+" ],
+            [
+              format_argument::["new_display"](| x |);
+              format_argument::["new_display"](| y |)
+            ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition pass_x (x : ref i32) (arg : ref i32) : ref i32 := x.
+Definition pass_x (x : ref i32) (arg : ref i32) :=
+  ltac:(function (x : ref i32)).
 
-Definition main (_ : unit) : unit :=
-  let x := 7 in
-  let y := 9 in
-  print_one x ;;
-  print_multi x y ;;
-  let z := pass_x x y in
-  print_one z ;;
-  let t := 3 in
-  add_one t ;;
-  print_one t ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let x := 7 in
+    let y := 9 in
+    let '_ := print_one(| x |) in
+    let '_ := print_multi(| x, y |) in
+    let z := pass_x(| x, y |) in
+    let '_ := print_one(| z |) in
+    let t := 3 in
+    let '_ := add_one(| t |) in
+    let '_ := print_one(| t |) in
+    tt
+    : unit)).

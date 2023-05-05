@@ -3,9 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  let cmd := 209 in
-  InlineAsm ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let cmd := 209 in
+    let '_ := InlineAsm in
+    tt
+    : unit)).
 
 Module asm := std.arch.asm.

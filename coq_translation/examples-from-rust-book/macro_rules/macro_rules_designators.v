@@ -3,45 +3,71 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition foo (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "You called "; "()
-" ]
-      [ format_argument::["new_debug"] "foo" ]) ;;
-  tt ;;
-  tt.
+Definition foo :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "You called "; "()
+" ],
+            [ format_argument::["new_debug"](| "foo" |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition bar (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "You called "; "()
-" ]
-      [ format_argument::["new_debug"] "bar" ]) ;;
-  tt ;;
-  tt.
+Definition bar :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "You called "; "()
+" ],
+            [ format_argument::["new_debug"](| "bar" |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition main (_ : unit) : unit :=
-  foo tt ;;
-  bar tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; " = "; "
-" ]
-      [
-        format_argument::["new_debug"] "1u32 + 1";
-        format_argument::["new_debug"] (1.["add"] 1)
-      ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; " = "; "
-" ]
-      [
-        format_argument::["new_debug"] "{ let x = 1u32; x * x + 2 * x - 1 }";
-        format_argument::["new_debug"]
-          let x := 1 in
-          ((x.["mul"] x).["add"] (2.["mul"] x)).["sub"] 1
-      ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let '_ := foo(||) in
+    let '_ := bar(||) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; " = "; "
+" ],
+            [
+              format_argument::["new_debug"](| "1u32 + 1" |);
+              format_argument::["new_debug"](| 1.["add"](| 1 |) |)
+            ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; " = "; "
+" ],
+            [
+              format_argument::["new_debug"](|
+                "{ let x = 1u32; x * x + 2 * x - 1 }"
+              |);
+              format_argument::["new_debug"](|
+                let x := 1 in
+                ((x.["mul"](| x |)).["add"](| 2.["mul"](| x |) |)).["sub"](| 1
+                |)
+              |)
+            ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

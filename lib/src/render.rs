@@ -144,6 +144,10 @@ pub(crate) fn line<'a>() -> Doc<'a> {
     RcDoc::line()
 }
 
+pub(crate) fn line_<'a>() -> Doc<'a> {
+    RcDoc::line_()
+}
+
 pub(crate) fn hardline<'a>() -> Doc<'a> {
     RcDoc::hardline()
 }

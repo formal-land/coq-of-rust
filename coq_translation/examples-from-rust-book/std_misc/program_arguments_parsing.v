@@ -5,89 +5,124 @@ Import Root.std.prelude.rust_2015.
 
 Module env := std.env.
 
-Definition increase (number : i32) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] (number.["add"] 1) ]) ;;
-  tt ;;
-  tt.
+Definition increase (number : i32) :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_display"](| number.["add"](| 1 |) |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition decrease (number : i32) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] (number.["sub"] 1) ]) ;;
-  tt ;;
-  tt.
+Definition decrease (number : i32) :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_display"](| number.["sub"](| 1 |) |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition help (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [
-        "usage:
+Definition help :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](|
+            [
+              "usage:
 match_args <string>
     Check whether given string is the answer.
 match_args {increase|decrease} <integer>
     Increase or decrease given integer by one.
 "
-      ]) ;;
-  tt ;;
-  tt.
+            ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition main (_ : unit) : unit :=
-  let args := (env.args tt).["collect"] in
-  match args.["len"] with
-  | 1 =>
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "My name is 'match_args'. Try passing some arguments!
-" ]) ;;
-    tt ;;
-    tt
-  | 2 =>
-    match args[1].["parse"] with
-    | Ok 42 =>
-      _crate.io._print
-        (format_arguments::["new_const"] [ "This is the answer!
-" ]) ;;
+Definition main :=
+  ltac:(function (
+    let args := (env.args(||)).["collect"](||) in
+    match args.["len"](||) with
+    | 1 =>
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](|
+              [ "My name is 'match_args'. Try passing some arguments!
+" ]
+            |)
+          |) in
+        tt in
       tt
-    | _ =>
-      _crate.io._print
-        (format_arguments::["new_const"] [ "This is not the answer.
-" ]) ;;
-      tt
-    end
-  | 3 =>
-    let cmd := args[1] in
-    let num := args[2] in
-    let number :=
-      match num.["parse"] with
-      | Ok n => n
-      | Err _ =>
-        _crate.io._eprint
-          (format_arguments::["new_const"]
-            [ "error: second argument not an integer
-" ]) ;;
-        tt ;;
-        help tt ;;
-        Return tt ;;
+    | 2 =>
+      match args[1].["parse"](||) with
+      | Ok 42 =>
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](| [ "This is the answer!
+" ] |)
+          |) in
         tt
-      end in
-    match cmd[RangeFull {|  |}] with
-    | "increase" => increase number
-    | "decrease" => decrease number
+      | _ =>
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](| [ "This is not the answer.
+" ] |)
+          |) in
+        tt
+      end
+    | 3 =>
+      let cmd := args[1] in
+      let num := args[2] in
+      let number :=
+        match num.["parse"](||) with
+        | Ok n => n
+        | Err _ =>
+          let '_ :=
+            let '_ :=
+              _crate.io._eprint(|
+                format_arguments::["new_const"](|
+                  [ "error: second argument not an integer
+" ]
+                |)
+              |) in
+            tt in
+          let '_ := help(||) in
+          let '_ := Return(| tt |) in
+          tt
+        end in
+      match cmd[RangeFull {|  |}] with
+      | "increase" => increase(| number |)
+      | "decrease" => decrease(| number |)
+      | _ =>
+        let '_ :=
+          let '_ :=
+            _crate.io._eprint(|
+              format_arguments::["new_const"](| [ "error: invalid command
+" ] |)
+            |) in
+          tt in
+        let '_ := help(||) in
+        tt
+      end
     | _ =>
-      _crate.io._eprint
-        (format_arguments::["new_const"] [ "error: invalid command
-" ]) ;;
-      tt ;;
-      help tt ;;
+      let '_ := help(||) in
       tt
     end
-  | _ =>
-    help tt ;;
-    tt
-  end.
+    : unit)).

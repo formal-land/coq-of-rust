@@ -3,30 +3,40 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  let optional := Some 0 in
-  loop
-    match optional with
-    | Some i =>
-      if (i.["gt"] 9 : bool) then
-        _crate.io._print
-          (format_arguments::["new_const"] [ "Greater than 9, quit!
-" ]) ;;
-        tt ;;
-        assign optional None ;;
-        tt
-      else
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "`i` is `"; "`. Try again.
+Definition main :=
+  ltac:(function (
+    let optional := Some 0 in
+    loop
+      match optional with
+      | Some i =>
+        if (i.["gt"](| 9 |) : bool) then
+          let '_ :=
+            let '_ :=
+              _crate.io._print(|
+                format_arguments::["new_const"](| [ "Greater than 9, quit!
 " ]
-            [ format_argument::["new_debug"] i ]) ;;
-        tt ;;
-        assign optional (Some (i.["add"] 1)) ;;
+                |)
+              |) in
+            tt in
+          let '_ := assign optional None in
+          tt
+        else
+          let '_ :=
+            let '_ :=
+              _crate.io._print(|
+                format_arguments::["new_v1"](|
+                  [ "`i` is `"; "`. Try again.
+" ],
+                  [ format_argument::["new_debug"](| i |) ]
+                |)
+              |) in
+            tt in
+          let '_ := assign optional (Some (i.["add"](| 1 |))) in
+          tt
+      | _ =>
+        let '_ := Break in
         tt
-    | _ =>
-      Break ;;
-      tt
-    end
-    from
-    loop.
+      end
+      from
+      loop
+    : unit)).

@@ -22,8 +22,8 @@ End Impl__crate_marker_StructuralPartialEq_for_Centimeters.
 Module Impl__crate_cmp_PartialEq_for_Centimeters.
   Definition Self := Centimeters.
   
-  Definition eq (self : ref Self) (other : ref Centimeters) : bool :=
-    (self.[0]).["eq"] (other.[0]).
+  Definition eq (self : ref Self) (other : ref Centimeters) :=
+    ltac:(function ((self.[0]).["eq"](| other.[0] |) : bool)).
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -37,11 +37,10 @@ End Impl__crate_cmp_PartialEq_for_Centimeters.
 Module Impl__crate_cmp_PartialOrd_for_Centimeters.
   Definition Self := Centimeters.
   
-  Definition partial_cmp
-      (self : ref Self)
-      (other : ref Centimeters)
-      : _crate.option.Option _crate.cmp.Ordering :=
-    _crate.cmp.PartialOrd.partial_cmp (self.[0]) (other.[0]).
+  Definition partial_cmp (self : ref Self) (other : ref Centimeters) :=
+    ltac:(function (
+      _crate.cmp.PartialOrd.partial_cmp(| self.[0], other.[0] |)
+      : _crate.option.Option _crate.cmp.Ordering)).
   
   Global Instance Method_partial_cmp : Notation.Dot "partial_cmp" := {
     Notation.dot := partial_cmp;
@@ -64,11 +63,14 @@ Definition Inches := Inches.t.
 Module Impl__crate_fmt_Debug_for_Inches.
   Definition Self := Inches.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Inches" (self.[0]).
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["debug_tuple_field1_finish"](|
+        f,
+        "Inches",
+        self.[0]
+      |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -82,9 +84,11 @@ End Impl__crate_fmt_Debug_for_Inches.
 Module ImplInches.
   Definition Self := Inches.
   
-  Definition to_centimeters (self : ref Self) : Centimeters :=
-    let 'Inches.Build_t inches := self in
-    Centimeters.Build_t ((cast inches f64).["mul"] 3 (* 2.54 *)).
+  Definition to_centimeters (self : ref Self) :=
+    ltac:(function (
+      let 'Inches.Build_t inches := self in
+      Centimeters.Build_t ((cast inches f64).["mul"](| 3 (* 2.54 *) |))
+      : Centimeters)).
   
   Global Instance Method_to_centimeters : Notation.Dot "to_centimeters" := {
     Notation.dot := to_centimeters;
@@ -100,25 +104,35 @@ Module Seconds.
 End Seconds.
 Definition Seconds := Seconds.t.
 
-Definition main (_ : unit) : unit :=
-  let _one_second := Seconds.Build_t 1 in
-  let foot := Inches.Build_t 12 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "One foot equals "; "
-" ]
-      [ format_argument::["new_debug"] foot ]) ;;
-  tt ;;
-  let meter := Centimeters.Build_t 100 (* 100.0 *) in
-  let cmp :=
-    if (foot.["to_centimeters"].["lt"] meter : bool) then
-      "smaller"
-    else
-      "bigger" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "One foot is "; " than one meter.
-" ]
-      [ format_argument::["new_display"] cmp ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let _one_second := Seconds.Build_t 1 in
+    let foot := Inches.Build_t 12 in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "One foot equals "; "
+" ],
+            [ format_argument::["new_debug"](| foot |) ]
+          |)
+        |) in
+      tt in
+    let meter := Centimeters.Build_t 100 (* 100.0 *) in
+    let cmp :=
+      if ((foot.["to_centimeters"](||)).["lt"](| meter |) : bool) then
+        "smaller"
+      else
+        "bigger" in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "One foot is "; " than one meter.
+" ],
+            [ format_argument::["new_display"](| cmp |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

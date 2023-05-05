@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module HasArea.
   Class Trait (Self : Set) : Set := {
-    area : (ref Self) -> f64;
+    area : (ref Self) -> (M f64);
   }.
   
   Global Instance Method_area `(Trait) : Notation.Dot "area" := {
@@ -16,8 +16,8 @@ End HasArea.
 Module Impl_HasArea_for_Rectangle.
   Definition Self := Rectangle.
   
-  Definition area (self : ref Self) : f64 :=
-    self.["length"].["mul"] self.["height"].
+  Definition area (self : ref Self) :=
+    ltac:(function (self.["length"].["mul"](| self.["height"] |) : f64)).
   
   Global Instance Method_area : Notation.Dot "area" := {
     Notation.dot := area;
@@ -46,17 +46,17 @@ Definition Rectangle : Set := Rectangle.t.
 Module Impl__crate_fmt_Debug_for_Rectangle.
   Definition Self := Rectangle.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "Rectangle"
-      "length"
-      self.["length"]
-      "height"
-      self.["height"].
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["debug_struct_field2_finish"](|
+        f,
+        "Rectangle",
+        "length",
+        self.["length"],
+        "height",
+        self.["height"]
+      |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -82,27 +82,40 @@ Module Triangle.
 End Triangle.
 Definition Triangle : Set := Triangle.t.
 
-Definition print_debug {T : Set} `{Debug.Trait T} (t : ref T) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_debug"] t ]) ;;
-  tt ;;
-  tt.
+Definition print_debug {T : Set} `{Debug.Trait T} (t : ref T) :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; "
+" ],
+            [ format_argument::["new_debug"](| t |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition area {T : Set} `{HasArea.Trait T} (t : ref T) : f64 := t.["area"].
+Definition area {T : Set} `{HasArea.Trait T} (t : ref T) :=
+  ltac:(function (t.["area"](||) : f64)).
 
-Definition main (_ : unit) : unit :=
-  let rectangle :=
-    {| Rectangle.length := 3 (* 3.0 *); Rectangle.height := 4 (* 4.0 *); |} in
-  let _triangle :=
-    {| Triangle.length := 3 (* 3.0 *); Triangle.height := 4 (* 4.0 *); |} in
-  print_debug rectangle ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Area: "; "
-" ]
-      [ format_argument::["new_display"] rectangle.["area"] ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let rectangle :=
+      {| Rectangle.length := 3 (* 3.0 *); Rectangle.height := 4 (* 4.0 *); |} in
+    let _triangle :=
+      {| Triangle.length := 3 (* 3.0 *); Triangle.height := 4 (* 4.0 *); |} in
+    let '_ := print_debug(| rectangle |) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Area: "; "
+" ],
+            [ format_argument::["new_display"](| rectangle.["area"](||) |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

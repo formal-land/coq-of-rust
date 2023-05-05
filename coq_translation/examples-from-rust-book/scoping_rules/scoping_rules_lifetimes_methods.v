@@ -16,29 +16,39 @@ Module ImplOwner.
   Definition Self := Owner.
   
   Definition add_one (self : mut_ref Self) :=
-    (self.[0]).["add_assign"] 1 ;;
-    tt.
+    ltac:(function (
+      let '_ := (self.[0]).["add_assign"](| 1 |) in
+      tt
+      : _)).
   
   Global Instance Method_add_one : Notation.Dot "add_one" := {
     Notation.dot := add_one;
   }.
   
   Definition print (self : ref Self) :=
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "`print`: "; "
-" ]
-        [ format_argument::["new_display"] (self.[0]) ]) ;;
-    tt ;;
-    tt.
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_v1"](|
+              [ "`print`: "; "
+" ],
+              [ format_argument::["new_display"](| self.[0] |) ]
+            |)
+          |) in
+        tt in
+      tt
+      : _)).
   
   Global Instance Method_print : Notation.Dot "print" := {
     Notation.dot := print;
   }.
 End ImplOwner.
 
-Definition main (_ : unit) : unit :=
-  let owner := Owner.Build_t 18 in
-  owner.["add_one"] ;;
-  owner.["print"] ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let owner := Owner.Build_t 18 in
+    let '_ := owner.["add_one"](||) in
+    let '_ := owner.["print"](||) in
+    tt
+    : unit)).

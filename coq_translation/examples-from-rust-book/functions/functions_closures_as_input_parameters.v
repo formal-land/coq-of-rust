@@ -3,44 +3,64 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition apply {F : Set} `{FnOnce.Trait unit F} (f : F) : unit :=
-  f tt ;;
-  tt.
+Definition apply {F : Set} `{FnOnce.Trait unit F} (f : F) :=
+  ltac:(function (
+    let '_ := f(||) in
+    tt
+    : unit)).
 
-Definition apply_to_3 {F : Set} `{Fn.Trait (i32) F} (f : F) : i32 := f 3.
+Definition apply_to_3 {F : Set} `{Fn.Trait (i32) F} (f : F) :=
+  ltac:(function (f(| 3 |) : i32)).
 
-Definition main (_ : unit) : unit :=
-  let greeting := "hello" in
-  let farewell := "goodbye".["to_owned"] in
-  let diary :=
-    fun  =>
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "I said "; ".
-" ]
-          [ format_argument::["new_display"] greeting ]) ;;
-      tt ;;
-      farewell.["push_str"] "!!!" ;;
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Then I screamed "; ".
-" ]
-          [ format_argument::["new_display"] farewell ]) ;;
-      tt ;;
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Now I can sleep. zzzzz
-" ]) ;;
-      tt ;;
-      mem.drop farewell ;;
+Definition main :=
+  ltac:(function (
+    let greeting := "hello" in
+    let farewell := "goodbye".["to_owned"](||) in
+    let diary :=
+      fun  =>
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_v1"](|
+                [ "I said "; ".
+" ],
+                [ format_argument::["new_display"](| greeting |) ]
+              |)
+            |) in
+          tt in
+        let '_ := farewell.["push_str"](| "!!!" |) in
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_v1"](|
+                [ "Then I screamed "; ".
+" ],
+                [ format_argument::["new_display"](| farewell |) ]
+              |)
+            |) in
+          tt in
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_const"](| [ "Now I can sleep. zzzzz
+" ] |)
+            |) in
+          tt in
+        let '_ := mem.drop(| farewell |) in
+        tt in
+    let '_ := apply(| diary |) in
+    let double := fun x => 2.["mul"](| x |) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "3 doubled: "; "
+" ],
+            [ format_argument::["new_display"](| apply_to_3(| double |) |) ]
+          |)
+        |) in
       tt in
-  apply diary ;;
-  let double := fun x => 2.["mul"] x in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "3 doubled: "; "
-" ]
-      [ format_argument::["new_display"] (apply_to_3 double) ]) ;;
-  tt ;;
-  tt.
+    tt
+    : unit)).
 
 Module mem := std.mem.

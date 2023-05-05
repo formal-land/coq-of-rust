@@ -23,11 +23,10 @@ Definition FooBar := FooBar.t.
 Module Impl__crate_fmt_Debug_for_FooBar.
   Definition Self := FooBar.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["write_str"] f "FooBar".
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["write_str"](| f, "FooBar" |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -46,11 +45,10 @@ Definition BarFoo := BarFoo.t.
 Module Impl__crate_fmt_Debug_for_BarFoo.
   Definition Self := BarFoo.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["write_str"] f "BarFoo".
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["write_str"](| f, "BarFoo" |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -66,12 +64,18 @@ Module Impl_ops_Add_for_Foo.
   
   Definition Output : Set := FooBar.
   
-  Definition add (self : Self) (_rhs : Bar) : FooBar :=
-    _crate.io._print
-      (format_arguments::["new_const"] [ "> Foo.add(Bar) was called
-" ]) ;;
-    tt ;;
-    FooBar.Build.
+  Definition add (self : Self) (_rhs : Bar) :=
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](| [ "> Foo.add(Bar) was called
+" ]
+            |)
+          |) in
+        tt in
+      FooBar.Build
+      : FooBar)).
   
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -87,12 +91,18 @@ Module Impl_ops_Add_for_Bar.
   
   Definition Output : Set := BarFoo.
   
-  Definition add (self : Self) (_rhs : Foo) : BarFoo :=
-    _crate.io._print
-      (format_arguments::["new_const"] [ "> Bar.add(Foo) was called
-" ]) ;;
-    tt ;;
-    BarFoo.Build.
+  Definition add (self : Self) (_rhs : Foo) :=
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](| [ "> Bar.add(Foo) was called
+" ]
+            |)
+          |) in
+        tt in
+      BarFoo.Build
+      : BarFoo)).
   
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -103,17 +113,33 @@ Module Impl_ops_Add_for_Bar.
   }.
 End Impl_ops_Add_for_Bar.
 
-Definition main (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Foo + Bar = "; "
-" ]
-      [ format_argument::["new_debug"] (Foo.Build.["add"] Bar.Build) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Bar + Foo = "; "
-" ]
-      [ format_argument::["new_debug"] (Bar.Build.["add"] Foo.Build) ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Foo + Bar = "; "
+" ],
+            [
+              format_argument::["new_debug"](| Foo.Build.["add"](| Bar.Build |)
+              |)
+            ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Bar + Foo = "; "
+" ],
+            [
+              format_argument::["new_debug"](| Bar.Build.["add"](| Foo.Build |)
+              |)
+            ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

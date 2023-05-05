@@ -16,19 +16,19 @@ Definition Fruit := Fruit.t.
 Module Impl__crate_fmt_Debug_for_Fruit.
   Definition Self := Fruit.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["write_str"]
-      f
-      match self with
-      | Fruit.Apple => "Apple"
-      | Fruit.Orange => "Orange"
-      | Fruit.Banana => "Banana"
-      | Fruit.Kiwi => "Kiwi"
-      | Fruit.Lemon => "Lemon"
-      end.
+  Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    ltac:(function (
+      _crate.fmt.Formatter::["write_str"](|
+        f,
+        match self with
+        | Fruit.Apple => "Apple"
+        | Fruit.Orange => "Orange"
+        | Fruit.Banana => "Banana"
+        | Fruit.Kiwi => "Kiwi"
+        | Fruit.Lemon => "Lemon"
+        end
+      |)
+      : _crate.fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -39,20 +39,30 @@ Module Impl__crate_fmt_Debug_for_Fruit.
   }.
 End Impl__crate_fmt_Debug_for_Fruit.
 
-Definition main (_ : unit) : unit :=
-  let my_fruit := None in
-  let apple := Fruit.Apple in
-  let first_available_fruit := my_fruit.["get_or_insert"] apple in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "my_fruit is: "; "
-" ]
-      [ format_argument::["new_debug"] first_available_fruit ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "first_available_fruit is: "; "
-" ]
-      [ format_argument::["new_debug"] first_available_fruit ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let my_fruit := None in
+    let apple := Fruit.Apple in
+    let first_available_fruit := my_fruit.["get_or_insert"](| apple |) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "my_fruit is: "; "
+" ],
+            [ format_argument::["new_debug"](| first_available_fruit |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "first_available_fruit is: "; "
+" ],
+            [ format_argument::["new_debug"](| first_available_fruit |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

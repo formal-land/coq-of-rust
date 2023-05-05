@@ -5,22 +5,34 @@ Import Root.std.prelude.rust_2015.
 
 Module env := std.env.
 
-Definition main (_ : unit) : unit :=
-  let args := (env.args tt).["collect"] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "My path is "; ".
-" ]
-      [ format_argument::["new_display"] args[0] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "I got "; " arguments: "; ".
-" ]
-      [
-        format_argument::["new_debug"] (args.["len"].["sub"] 1);
-        format_argument::["new_debug"]
-          args[RangeFrom {| RangeFrom.start := 1; |}]
-      ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let args := (env.args(||)).["collect"](||) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "My path is "; ".
+" ],
+            [ format_argument::["new_display"](| args[0] |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "I got "; " arguments: "; ".
+" ],
+            [
+              format_argument::["new_debug"](| (args.["len"](||)).["sub"](| 1 |)
+              |);
+              format_argument::["new_debug"](|
+                args[RangeFrom {| RangeFrom.start := 1; |}]
+              |)
+            ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

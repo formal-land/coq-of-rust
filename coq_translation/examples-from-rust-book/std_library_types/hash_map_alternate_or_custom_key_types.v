@@ -31,9 +31,12 @@ End Impl__crate_marker_StructuralPartialEq_for_Account.
 Module Impl__crate_cmp_PartialEq_for_Account.
   Definition Self := Account.
   
-  Definition eq (self : ref Self) (other : ref Account) : bool :=
-    (self.["username"].["eq"] other.["username"]).["andb"]
-      (self.["password"].["eq"] other.["password"]).
+  Definition eq (self : ref Self) (other : ref Account) :=
+    ltac:(function (
+      (self.["username"].["eq"](| other.["username"] |)).["andb"](|
+        self.["password"].["eq"](| other.["password"] |)
+      |)
+      : bool)).
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -54,10 +57,12 @@ End Impl__crate_marker_StructuralEq_for_Account.
 Module Impl__crate_cmp_Eq_for_Account.
   Definition Self := Account.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : unit :=
-    let '_ := tt in
-    let '_ := tt in
-    tt.
+  Definition assert_receiver_is_total_eq (self : ref Self) :=
+    ltac:(function (
+      let '_ := tt in
+      let '_ := tt in
+      tt
+      : unit)).
   
   Global Instance Method_assert_receiver_is_total_eq :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -71,9 +76,11 @@ End Impl__crate_cmp_Eq_for_Account.
 Module Impl__crate_hash_Hash_for_Account.
   Definition Self := Account.
   
-  Definition hash (self : ref Self) (state : mut_ref __H) : unit :=
-    _crate.hash.Hash.hash self.["username"] state ;;
-    _crate.hash.Hash.hash self.["password"] state.
+  Definition hash (self : ref Self) (state : mut_ref __H) :=
+    ltac:(function (
+      let '_ := _crate.hash.Hash.hash(| self.["username"], state |) in
+      _crate.hash.Hash.hash(| self.["password"], state |)
+      : unit)).
   
   Global Instance Method_hash : Notation.Dot "hash" := {
     Notation.dot := hash;
@@ -104,62 +111,90 @@ Definition Accounts : Set := HashMap Account AccountInfo.
 Definition try_logon
     (accounts : ref Accounts)
     (username : ref str)
-    (password : ref str)
-    : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Username: "; "
-" ]
-      [ format_argument::["new_display"] username ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Password: "; "
-" ]
-      [ format_argument::["new_display"] password ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_const"] [ "Attempting logon...
-" ]) ;;
-  tt ;;
-  let logon :=
-    {| Account.username := username; Account.password := password; |} in
-  match accounts.["get"] logon with
-  | Some account_info =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "Successful logon!
-" ]) ;;
-    tt ;;
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Name: "; "
-" ]
-        [ format_argument::["new_display"] account_info.["name"] ]) ;;
-    tt ;;
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Email: "; "
-" ]
-        [ format_argument::["new_display"] account_info.["email"] ]) ;;
-    tt ;;
-    tt
-  | _ =>
-    _crate.io._print (format_arguments::["new_const"] [ "Login failed!
-" ]) ;;
-    tt
-  end.
+    (password : ref str) :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Username: "; "
+" ],
+            [ format_argument::["new_display"](| username |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Password: "; "
+" ],
+            [ format_argument::["new_display"](| password |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](| [ "Attempting logon...
+" ] |)
+        |) in
+      tt in
+    let logon :=
+      {| Account.username := username; Account.password := password; |} in
+    match accounts.["get"](| logon |) with
+    | Some account_info =>
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](| [ "Successful logon!
+" ] |)
+          |) in
+        tt in
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_v1"](|
+              [ "Name: "; "
+" ],
+              [ format_argument::["new_display"](| account_info.["name"] |) ]
+            |)
+          |) in
+        tt in
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_v1"](|
+              [ "Email: "; "
+" ],
+              [ format_argument::["new_display"](| account_info.["email"] |) ]
+            |)
+          |) in
+        tt in
+      tt
+    | _ =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](| [ "Login failed!
+" ] |)
+        |) in
+      tt
+    end
+    : unit)).
 
-Definition main (_ : unit) : unit :=
-  let accounts := HashMap::["new"] tt in
-  let account :=
-    {| Account.username := "j.everyman"; Account.password := "password123";
-    |} in
-  let account_info :=
-    {|
-      AccountInfo.name := "John Everyman";
-      AccountInfo.email := "j.everyman@email.com";
-    |} in
-  accounts.["insert"] account account_info ;;
-  try_logon accounts "j.everyman" "psasword123" ;;
-  try_logon accounts "j.everyman" "password123" ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let accounts := HashMap::["new"](||) in
+    let account :=
+      {| Account.username := "j.everyman"; Account.password := "password123";
+      |} in
+    let account_info :=
+      {|
+        AccountInfo.name := "John Everyman";
+        AccountInfo.email := "j.everyman@email.com";
+      |} in
+    let '_ := accounts.["insert"](| account, account_info |) in
+    let '_ := try_logon(| accounts, "j.everyman", "psasword123" |) in
+    let '_ := try_logon(| accounts, "j.everyman", "password123" |) in
+    tt
+    : unit)).

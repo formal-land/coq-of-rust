@@ -3,31 +3,50 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  loop
-    _crate.io._print
-      (format_arguments::["new_const"] [ "Entered the outer loop
-" ]) ;;
-    tt ;;
-    loop
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Entered the inner loop
-" ]) ;;
-      tt ;;
-      Break ;;
-      tt
-      from
-      loop ;;
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "This point will never be reached
-" ]) ;;
-    tt ;;
+Definition main :=
+  ltac:(function (
+    let '_ :=
+      loop
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_const"](| [ "Entered the outer loop
+" ] |)
+            |) in
+          tt in
+        let '_ :=
+          loop
+            let '_ :=
+              let '_ :=
+                _crate.io._print(|
+                  format_arguments::["new_const"](|
+                    [ "Entered the inner loop
+" ]
+                  |)
+                |) in
+              tt in
+            let '_ := Break in
+            tt
+            from
+            loop in
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_const"](|
+                [ "This point will never be reached
+" ]
+              |)
+            |) in
+          tt in
+        tt
+        from
+        loop in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](| [ "Exited the outer loop
+" ] |)
+        |) in
+      tt in
     tt
-    from
-    loop ;;
-  _crate.io._print
-    (format_arguments::["new_const"] [ "Exited the outer loop
-" ]) ;;
-  tt ;;
-  tt.
+    : unit)).

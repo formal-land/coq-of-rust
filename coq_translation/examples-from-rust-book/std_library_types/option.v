@@ -3,59 +3,79 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition checked_division (dividend : i32) (divisor : i32) : Option i32 :=
-  if (divisor.["eq"] 0 : bool) then
-    None
-  else
-    Some (dividend.["div"] divisor).
+Definition checked_division (dividend : i32) (divisor : i32) :=
+  ltac:(function (
+    if (divisor.["eq"](| 0 |) : bool) then
+      None
+    else
+      Some (dividend.["div"](| divisor |))
+    : Option i32)).
 
-Definition try_division (dividend : i32) (divisor : i32) : unit :=
-  match checked_division dividend divisor with
-  | None =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; " / "; " failed!
-" ]
-        [
-          format_argument::["new_display"] dividend;
-          format_argument::["new_display"] divisor
-        ]) ;;
-    tt
-  | Some quotient =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; " / "; " = "; "
-" ]
-        [
-          format_argument::["new_display"] dividend;
-          format_argument::["new_display"] divisor;
-          format_argument::["new_display"] quotient
-        ]) ;;
-    tt
-  end.
+Definition try_division (dividend : i32) (divisor : i32) :=
+  ltac:(function (
+    match checked_division(| dividend, divisor |) with
+    | None =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; " / "; " failed!
+" ],
+            [
+              format_argument::["new_display"](| dividend |);
+              format_argument::["new_display"](| divisor |)
+            ]
+          |)
+        |) in
+      tt
+    | Some quotient =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; " / "; " = "; "
+" ],
+            [
+              format_argument::["new_display"](| dividend |);
+              format_argument::["new_display"](| divisor |);
+              format_argument::["new_display"](| quotient |)
+            ]
+          |)
+        |) in
+      tt
+    end
+    : unit)).
 
-Definition main (_ : unit) : unit :=
-  try_division 4 2 ;;
-  try_division 1 0 ;;
-  let none := None in
-  let _equivalent_none := None in
-  let optional_float := Some 0 (* 0 *) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; " unwraps to "; "
-" ]
-      [
-        format_argument::["new_debug"] optional_float;
-        format_argument::["new_debug"] optional_float.["unwrap"]
-      ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; " unwraps to "; "
-" ]
-      [
-        format_argument::["new_debug"] none;
-        format_argument::["new_debug"] none.["unwrap"]
-      ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let '_ := try_division(| 4, 2 |) in
+    let '_ := try_division(| 1, 0 |) in
+    let none := None in
+    let _equivalent_none := None in
+    let optional_float := Some 0 (* 0 *) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; " unwraps to "; "
+" ],
+            [
+              format_argument::["new_debug"](| optional_float |);
+              format_argument::["new_debug"](| optional_float.["unwrap"](||) |)
+            ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; " unwraps to "; "
+" ],
+            [
+              format_argument::["new_debug"](| none |);
+              format_argument::["new_debug"](| none.["unwrap"](||) |)
+            ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

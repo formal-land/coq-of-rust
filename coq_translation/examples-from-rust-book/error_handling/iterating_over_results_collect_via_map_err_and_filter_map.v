@@ -3,25 +3,37 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  let strings :=
-    Slice::["into_vec"]
-      (_crate.boxed.Box::["new"] [ "42"; "tofu"; "93"; "999"; "18" ]) in
-  let errors := _crate.vec.Vec::["new"] tt in
-  let numbers :=
-    ((strings.["into_iter"].["map"] (fun s => s.["parse"])).["filter_map"]
-        (fun r =>
-          (r.["map_err"] (fun e => errors.["push"] e)).["ok"])).["collect"] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Numbers: "; "
-" ]
-      [ format_argument::["new_debug"] numbers ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Errors: "; "
-" ]
-      [ format_argument::["new_debug"] errors ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let strings :=
+      Slice::["into_vec"](|
+        _crate.boxed.Box::["new"](| [ "42"; "tofu"; "93"; "999"; "18" ] |)
+      |) in
+    let errors := _crate.vec.Vec::["new"](||) in
+    let numbers :=
+      (((strings.["into_iter"](||)).["map"](| fun s => s.["parse"](||)
+      |)).["filter_map"](|
+        fun r => (r.["map_err"](| fun e => errors.["push"](| e |) |)).["ok"](||)
+      |)).["collect"](||) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Numbers: "; "
+" ],
+            [ format_argument::["new_debug"](| numbers |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Errors: "; "
+" ],
+            [ format_argument::["new_debug"](| errors |) ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

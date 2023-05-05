@@ -3,45 +3,66 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit :=
-  let number := 13 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Tell me about "; "
-" ]
-      [ format_argument::["new_display"] number ]) ;;
-  tt ;;
-  match number with
-  | 1 =>
-    _crate.io._print (format_arguments::["new_const"] [ "One!
-" ]) ;;
+Definition main :=
+  ltac:(function (
+    let number := 13 in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Tell me about "; "
+" ],
+            [ format_argument::["new_display"](| number |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      match number with
+      | 1 =>
+        let '_ :=
+          _crate.io._print(| format_arguments::["new_const"](| [ "One!
+" ] |)
+          |) in
+        tt
+      | (2|3|5|7|11) =>
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](| [ "This is a prime
+" ] |)
+          |) in
+        tt
+      | (13|14|15|16|17|18|19) =>
+        let '_ :=
+          _crate.io._print(| format_arguments::["new_const"](| [ "A teen
+" ] |)
+          |) in
+        tt
+      | _ =>
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](| [ "Ain't special
+" ] |)
+          |) in
+        tt
+      end in
+    let boolean := true in
+    let binary :=
+      match boolean with
+      | false => 0
+      | true => 1
+      end in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ ""; " -> "; "
+" ],
+            [
+              format_argument::["new_display"](| boolean |);
+              format_argument::["new_display"](| binary |)
+            ]
+          |)
+        |) in
+      tt in
     tt
-  | (2|3|5|7|11) =>
-    _crate.io._print (format_arguments::["new_const"] [ "This is a prime
-" ]) ;;
-    tt
-  | (13|14|15|16|17|18|19) =>
-    _crate.io._print (format_arguments::["new_const"] [ "A teen
-" ]) ;;
-    tt
-  | _ =>
-    _crate.io._print (format_arguments::["new_const"] [ "Ain't special
-" ]) ;;
-    tt
-  end ;;
-  let boolean := true in
-  let binary :=
-    match boolean with
-    | false => 0
-    | true => 1
-    end in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; " -> "; "
-" ]
-      [
-        format_argument::["new_display"] boolean;
-        format_argument::["new_display"] binary
-      ]) ;;
-  tt ;;
-  tt.
+    : unit)).

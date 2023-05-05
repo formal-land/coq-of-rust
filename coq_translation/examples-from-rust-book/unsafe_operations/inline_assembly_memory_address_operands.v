@@ -3,10 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main (_ : unit) : unit := tt.
+Definition main := ltac:(function (tt : unit)).
 
 Module asm := std.arch.asm.
 
-Definition load_fpu_control_word (control : u16) : unit :=
-  InlineAsm ;;
-  tt.
+Definition load_fpu_control_word (control : u16) :=
+  ltac:(function (
+    let '_ := InlineAsm in
+    tt
+    : unit)).

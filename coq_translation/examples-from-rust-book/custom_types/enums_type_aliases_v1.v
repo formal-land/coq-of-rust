@@ -15,6 +15,8 @@ Definition
 
 Definition Operations : Set := VeryVerboseEnumOfThingsToDoWithNumbers.
 
-Definition main (_ : unit) : unit :=
-  let x := Operations::["Add"] in
-  tt.
+Definition main :=
+  ltac:(function (
+    let x := Operations::["Add"] in
+    tt
+    : unit)).

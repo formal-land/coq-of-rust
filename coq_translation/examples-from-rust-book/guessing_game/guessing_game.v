@@ -10,44 +10,71 @@ Definition Ordering := Ordering.t.
 
 Module Rng := rand.Rng.
 
-Definition main (_ : unit) : unit :=
-  _crate.io._print (format_arguments::["new_const"] [ "Guess the number!
-" ]) ;;
-  tt ;;
-  let secret_number := (rand.thread_rng tt).["gen_range"] (LangItem 1 100) in
-  loop
-    _crate.io._print
-      (format_arguments::["new_const"] [ "Please input your guess.
-" ]) ;;
-    tt ;;
-    let guess := String::["new"] tt in
-    ((io.stdin tt).["read_line"] guess).["expect"] "Failed to read line" ;;
-    let guess :=
-      match guess.["trim"].["parse"] with
-      | Ok num => num
-      | Err _ => Continue
-      end in
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "You guessed: "; "
-" ]
-        [ format_argument::["new_display"] guess ]) ;;
-    tt ;;
-    match guess.["cmp"] secret_number with
-    | Ordering.Less =>
-      _crate.io._print (format_arguments::["new_const"] [ "Too small!
-" ]) ;;
-      tt
-    | Ordering.Greater =>
-      _crate.io._print (format_arguments::["new_const"] [ "Too big!
-" ]) ;;
-      tt
-    | Ordering.Equal =>
-      _crate.io._print (format_arguments::["new_const"] [ "You win!
-" ]) ;;
-      tt ;;
-      Break ;;
-      tt
-    end
-    from
-    loop.
+Definition main :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](| [ "Guess the number!
+" ] |)
+        |) in
+      tt in
+    let secret_number :=
+      (rand.thread_rng(||)).["gen_range"](| LangItem(| 1, 100 |) |) in
+    loop
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](| [ "Please input your guess.
+" ] |)
+          |) in
+        tt in
+      let guess := String::["new"](||) in
+      let '_ :=
+        ((io.stdin(||)).["read_line"](| guess |)).["expect"](|
+          "Failed to read line"
+        |) in
+      let guess :=
+        match (guess.["trim"](||)).["parse"](||) with
+        | Ok num => num
+        | Err _ => Continue
+        end in
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_v1"](|
+              [ "You guessed: "; "
+" ],
+              [ format_argument::["new_display"](| guess |) ]
+            |)
+          |) in
+        tt in
+      match guess.["cmp"](| secret_number |) with
+      | Ordering.Less =>
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](| [ "Too small!
+" ] |)
+          |) in
+        tt
+      | Ordering.Greater =>
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](| [ "Too big!
+" ] |)
+          |) in
+        tt
+      | Ordering.Equal =>
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_const"](| [ "You win!
+" ] |)
+            |) in
+          tt in
+        let '_ := Break in
+        tt
+      end
+      from
+      loop
+    : unit)).

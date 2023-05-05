@@ -24,8 +24,8 @@ Definition Days := Days.t.
 Module ImplYears.
   Definition Self := Years.
   
-  Definition to_days (self : ref Self) : Days :=
-    Days.Build_t ((self.[0]).["mul"] 365).
+  Definition to_days (self : ref Self) :=
+    ltac:(function (Days.Build_t ((self.[0]).["mul"](| 365 |)) : Days)).
   
   Global Instance Method_to_days : Notation.Dot "to_days" := {
     Notation.dot := to_days;
@@ -35,30 +35,44 @@ End ImplYears.
 Module ImplDays.
   Definition Self := Days.
   
-  Definition to_years (self : ref Self) : Years :=
-    Years.Build_t ((self.[0]).["div"] 365).
+  Definition to_years (self : ref Self) :=
+    ltac:(function (Years.Build_t ((self.[0]).["div"](| 365 |)) : Years)).
   
   Global Instance Method_to_years : Notation.Dot "to_years" := {
     Notation.dot := to_years;
   }.
 End ImplDays.
 
-Definition old_enough (age : ref Years) : bool := (age.[0]).["ge"] 18.
+Definition old_enough (age : ref Years) :=
+  ltac:(function ((age.[0]).["ge"](| 18 |) : bool)).
 
-Definition main (_ : unit) : unit :=
-  let age := Years.Build_t 5 in
-  let age_days := age.["to_days"] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Old enough "; "
-" ]
-      [ format_argument::["new_display"] (old_enough age) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Old enough "; "
-" ]
-      [ format_argument::["new_display"] (old_enough age_days.["to_years"])
-      ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let age := Years.Build_t 5 in
+    let age_days := age.["to_days"](||) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Old enough "; "
+" ],
+            [ format_argument::["new_display"](| old_enough(| age |) |) ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "Old enough "; "
+" ],
+            [
+              format_argument::["new_display"](|
+                old_enough(| age_days.["to_years"](||) |)
+              |)
+            ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).

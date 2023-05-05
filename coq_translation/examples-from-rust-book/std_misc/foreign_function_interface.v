@@ -7,26 +7,41 @@ Module fmt := std.fmt.
 
 Error ForeignMod.
 
-Definition cos (z : Complex) : Complex := ccosf z.
+Definition cos (z : Complex) := ltac:(function (ccosf(| z |) : Complex)).
 
-Definition main (_ : unit) : unit :=
-  let z := {| Complex.re := 1 (* 1. *).["neg"]; Complex.im := 0 (* 0. *); |} in
-  let z_sqrt := csqrtf z in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "the square root of "; " is "; "
-" ]
-      [ format_argument::["new_debug"] z; format_argument::["new_debug"] z_sqrt
-      ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "cos("; ") = "; "
-" ]
-      [ format_argument::["new_debug"] z; format_argument::["new_debug"] (cos z)
-      ]) ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let z :=
+      {| Complex.re := 1 (* 1. *).["neg"](||); Complex.im := 0 (* 0. *); |} in
+    let z_sqrt := csqrtf(| z |) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "the square root of "; " is "; "
+" ],
+            [
+              format_argument::["new_debug"](| z |);
+              format_argument::["new_debug"](| z_sqrt |)
+            ]
+          |)
+        |) in
+      tt in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "cos("; ") = "; "
+" ],
+            [
+              format_argument::["new_debug"](| z |);
+              format_argument::["new_debug"](| cos(| z |) |)
+            ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
 Module Complex.
   Record t : Set := {
@@ -46,9 +61,11 @@ Definition Complex : Set := Complex.t.
 Module Impl__crate_clone_Clone_for_Complex.
   Definition Self := Complex.
   
-  Definition clone (self : ref Self) : Complex :=
-    let '_ := tt in
-    self.["deref"].
+  Definition clone (self : ref Self) :=
+    ltac:(function (
+      let '_ := tt in
+      self.["deref"](||)
+      : Complex)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -69,23 +86,29 @@ End Impl__crate_marker_Copy_for_Complex.
 Module Impl_fmt_Debug_for_Complex.
   Definition Self := Complex.
   
-  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
-    if (self.["im"].["lt"] 0 (* 0. *) : bool) then
-      f.["write_fmt"]
-        (format_arguments::["new_v1"]
-          [ ""; "-"; "i" ]
-          [
-            format_argument::["new_display"] self.["re"];
-            format_argument::["new_display"] self.["im"].["neg"]
-          ])
-    else
-      f.["write_fmt"]
-        (format_arguments::["new_v1"]
-          [ ""; "+"; "i" ]
-          [
-            format_argument::["new_display"] self.["re"];
-            format_argument::["new_display"] self.["im"]
-          ]).
+  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
+    ltac:(function (
+      if (self.["im"].["lt"](| 0 (* 0. *) |) : bool) then
+        f.["write_fmt"](|
+          format_arguments::["new_v1"](|
+            [ ""; "-"; "i" ],
+            [
+              format_argument::["new_display"](| self.["re"] |);
+              format_argument::["new_display"](| self.["im"].["neg"](||) |)
+            ]
+          |)
+        |)
+      else
+        f.["write_fmt"](|
+          format_arguments::["new_v1"](|
+            [ ""; "+"; "i" ],
+            [
+              format_argument::["new_display"](| self.["re"] |);
+              format_argument::["new_display"](| self.["im"] |)
+            ]
+          |)
+        |)
+      : fmt.Result)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;

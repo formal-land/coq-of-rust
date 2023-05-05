@@ -4,287 +4,486 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module my_mod.
-  Definition private_function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::private_function()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition private_function :=
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](|
+              [ "called `my_mod::private_function()`
+" ]
+            |)
+          |) in
+        tt in
+      tt
+      : unit)).
   
-  Definition function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"] [ "called `my_mod::function()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition function :=
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](| [ "called `my_mod::function()`
+" ]
+            |)
+          |) in
+        tt in
+      tt
+      : unit)).
   
-  Definition indirect_access (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::indirect_access()`, that
-> " ]) ;;
-    tt ;;
-    private_function tt ;;
-    tt.
+  Definition indirect_access :=
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](|
+              [ "called `my_mod::indirect_access()`, that
+> " ]
+            |)
+          |) in
+        tt in
+      let '_ := private_function(||) in
+      tt
+      : unit)).
   
   Module nested.
-    Definition function (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my_mod::nested::function()`
-" ]) ;;
-      tt ;;
-      tt.
+    Definition function :=
+      ltac:(function (
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_const"](|
+                [ "called `my_mod::nested::function()`
+" ]
+              |)
+            |) in
+          tt in
+        tt
+        : unit)).
     
-    Definition private_function (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my_mod::nested::private_function()`
-" ]) ;;
-      tt ;;
-      tt.
+    Definition private_function :=
+      ltac:(function (
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_const"](|
+                [ "called `my_mod::nested::private_function()`
+" ]
+              |)
+            |) in
+          tt in
+        tt
+        : unit)).
     
-    Definition public_function_in_my_mod (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my_mod::nested::public_function_in_my_mod()`, that
+    Definition public_function_in_my_mod :=
+      ltac:(function (
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_const"](|
+                [
+                  "called `my_mod::nested::public_function_in_my_mod()`, that
 > "
-          ]) ;;
-      tt ;;
-      public_function_in_nested tt ;;
-      tt.
+                ]
+              |)
+            |) in
+          tt in
+        let '_ := public_function_in_nested(||) in
+        tt
+        : unit)).
     
-    Definition public_function_in_nested (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my_mod::nested::public_function_in_nested()`
-" ]) ;;
-      tt ;;
-      tt.
+    Definition public_function_in_nested :=
+      ltac:(function (
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_const"](|
+                [ "called `my_mod::nested::public_function_in_nested()`
+" ]
+              |)
+            |) in
+          tt in
+        tt
+        : unit)).
     
-    Definition public_function_in_super_mod (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my_mod::nested::public_function_in_super_mod()`
-" ]) ;;
-      tt ;;
-      tt.
+    Definition public_function_in_super_mod :=
+      ltac:(function (
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_const"](|
+                [ "called `my_mod::nested::public_function_in_super_mod()`
+" ]
+              |)
+            |) in
+          tt in
+        tt
+        : unit)).
   End nested.
   
-  Definition call_public_function_in_my_mod (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::call_public_function_in_my_mod()`, that
-> " ]) ;;
-    tt ;;
-    nested.public_function_in_my_mod tt ;;
-    _crate.io._print (format_arguments::["new_const"] [ "> " ]) ;;
-    tt ;;
-    nested.public_function_in_super_mod tt ;;
-    tt.
+  Definition call_public_function_in_my_mod :=
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](|
+              [ "called `my_mod::call_public_function_in_my_mod()`, that
+> " ]
+            |)
+          |) in
+        tt in
+      let '_ := nested.public_function_in_my_mod(||) in
+      let '_ :=
+        let '_ :=
+          _crate.io._print(| format_arguments::["new_const"](| [ "> " ] |) |) in
+        tt in
+      let '_ := nested.public_function_in_super_mod(||) in
+      tt
+      : unit)).
   
-  Definition public_function_in_crate (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::public_function_in_crate()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition public_function_in_crate :=
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](|
+              [ "called `my_mod::public_function_in_crate()`
+" ]
+            |)
+          |) in
+        tt in
+      tt
+      : unit)).
   
   Module private_nested.
-    Definition function (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my_mod::private_nested::function()`
-" ]) ;;
-      tt ;;
-      tt.
+    Definition function :=
+      ltac:(function (
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_const"](|
+                [ "called `my_mod::private_nested::function()`
+" ]
+              |)
+            |) in
+          tt in
+        tt
+        : unit)).
     
-    Definition restricted_function (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my_mod::private_nested::restricted_function()`
-" ]) ;;
-      tt ;;
-      tt.
+    Definition restricted_function :=
+      ltac:(function (
+        let '_ :=
+          let '_ :=
+            _crate.io._print(|
+              format_arguments::["new_const"](|
+                [ "called `my_mod::private_nested::restricted_function()`
+" ]
+              |)
+            |) in
+          tt in
+        tt
+        : unit)).
   End private_nested.
 End my_mod.
 
-Definition private_function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::private_function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition private_function :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](|
+            [ "called `my_mod::private_function()`
+" ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"] [ "called `my_mod::function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition function :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](| [ "called `my_mod::function()`
+" ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition indirect_access (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::indirect_access()`, that
-> " ]) ;;
-  tt ;;
-  private_function tt ;;
-  tt.
+Definition indirect_access :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](|
+            [ "called `my_mod::indirect_access()`, that
+> " ]
+          |)
+        |) in
+      tt in
+    let '_ := private_function(||) in
+    tt
+    : unit)).
 
 Module nested.
-  Definition function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::nested::function()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition function :=
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](|
+              [ "called `my_mod::nested::function()`
+" ]
+            |)
+          |) in
+        tt in
+      tt
+      : unit)).
   
-  Definition private_function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::nested::private_function()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition private_function :=
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](|
+              [ "called `my_mod::nested::private_function()`
+" ]
+            |)
+          |) in
+        tt in
+      tt
+      : unit)).
   
-  Definition public_function_in_my_mod (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::nested::public_function_in_my_mod()`, that
-> " ]) ;;
-    tt ;;
-    public_function_in_nested tt ;;
-    tt.
+  Definition public_function_in_my_mod :=
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](|
+              [ "called `my_mod::nested::public_function_in_my_mod()`, that
+> "
+              ]
+            |)
+          |) in
+        tt in
+      let '_ := public_function_in_nested(||) in
+      tt
+      : unit)).
   
-  Definition public_function_in_nested (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::nested::public_function_in_nested()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition public_function_in_nested :=
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](|
+              [ "called `my_mod::nested::public_function_in_nested()`
+" ]
+            |)
+          |) in
+        tt in
+      tt
+      : unit)).
   
-  Definition public_function_in_super_mod (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::nested::public_function_in_super_mod()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition public_function_in_super_mod :=
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](|
+              [ "called `my_mod::nested::public_function_in_super_mod()`
+" ]
+            |)
+          |) in
+        tt in
+      tt
+      : unit)).
 End nested.
 
-Definition function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::nested::function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition function :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](|
+            [ "called `my_mod::nested::function()`
+" ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition private_function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::nested::private_function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition private_function :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](|
+            [ "called `my_mod::nested::private_function()`
+" ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition public_function_in_my_mod (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::nested::public_function_in_my_mod()`, that
-> " ]) ;;
-  tt ;;
-  public_function_in_nested tt ;;
-  tt.
+Definition public_function_in_my_mod :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](|
+            [ "called `my_mod::nested::public_function_in_my_mod()`, that
+> " ]
+          |)
+        |) in
+      tt in
+    let '_ := public_function_in_nested(||) in
+    tt
+    : unit)).
 
-Definition public_function_in_nested (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::nested::public_function_in_nested()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition public_function_in_nested :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](|
+            [ "called `my_mod::nested::public_function_in_nested()`
+" ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition public_function_in_super_mod (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::nested::public_function_in_super_mod()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition public_function_in_super_mod :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](|
+            [ "called `my_mod::nested::public_function_in_super_mod()`
+" ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition call_public_function_in_my_mod (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::call_public_function_in_my_mod()`, that
-> " ]) ;;
-  tt ;;
-  nested.public_function_in_my_mod tt ;;
-  _crate.io._print (format_arguments::["new_const"] [ "> " ]) ;;
-  tt ;;
-  nested.public_function_in_super_mod tt ;;
-  tt.
+Definition call_public_function_in_my_mod :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](|
+            [ "called `my_mod::call_public_function_in_my_mod()`, that
+> " ]
+          |)
+        |) in
+      tt in
+    let '_ := nested.public_function_in_my_mod(||) in
+    let '_ :=
+      let '_ :=
+        _crate.io._print(| format_arguments::["new_const"](| [ "> " ] |) |) in
+      tt in
+    let '_ := nested.public_function_in_super_mod(||) in
+    tt
+    : unit)).
 
-Definition public_function_in_crate (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::public_function_in_crate()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition public_function_in_crate :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](|
+            [ "called `my_mod::public_function_in_crate()`
+" ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
 Module private_nested.
-  Definition function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::private_nested::function()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition function :=
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](|
+              [ "called `my_mod::private_nested::function()`
+" ]
+            |)
+          |) in
+        tt in
+      tt
+      : unit)).
   
-  Definition restricted_function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::private_nested::restricted_function()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition restricted_function :=
+    ltac:(function (
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_const"](|
+              [ "called `my_mod::private_nested::restricted_function()`
+" ]
+            |)
+          |) in
+        tt in
+      tt
+      : unit)).
 End private_nested.
 
-Definition function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::private_nested::function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition function :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](|
+            [ "called `my_mod::private_nested::function()`
+" ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition restricted_function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::private_nested::restricted_function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition restricted_function :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](|
+            [ "called `my_mod::private_nested::restricted_function()`
+" ]
+          |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"] [ "called `function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition function :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](| [ "called `function()`
+" ] |)
+        |) in
+      tt in
+    tt
+    : unit)).
 
-Definition main (_ : unit) : unit :=
-  function tt ;;
-  my_mod.function tt ;;
-  my_mod.indirect_access tt ;;
-  my_mod.nested.function tt ;;
-  my_mod.call_public_function_in_my_mod tt ;;
-  my_mod.public_function_in_crate tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let '_ := function(||) in
+    let '_ := my_mod.function(||) in
+    let '_ := my_mod.indirect_access(||) in
+    let '_ := my_mod.nested.function(||) in
+    let '_ := my_mod.call_public_function_in_my_mod(||) in
+    let '_ := my_mod.public_function_in_crate(||) in
+    tt
+    : unit)).

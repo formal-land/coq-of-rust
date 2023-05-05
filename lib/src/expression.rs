@@ -4,6 +4,7 @@ use crate::render::*;
 use crate::ty::*;
 
 use rustc_ast::LitKind;
+use rustc_hir::def::{CtorOf, DefKind, Res};
 use rustc_hir::{BinOp, BinOpKind, ExprKind, QPath};
 use rustc_middle::ty::TyCtxt;
 
@@ -17,7 +18,7 @@ pub struct MatchArm {
 
 /// Enum [Expr] represents the AST of rust terms.
 #[derive(Debug)]
-pub enum Expr {
+pub(crate) enum Expr {
     LocalVar(String),
     Var(Path),
     AssociatedFunction {
@@ -27,13 +28,13 @@ pub enum Expr {
     Literal(LitKind),
     AddrOf(Box<Expr>),
     Call {
+        monadic: bool,
         func: Box<Expr>,
         args: Vec<Expr>,
     },
-    MethodCall {
+    Member {
         object: Box<Expr>,
-        func: String,
-        args: Vec<Expr>,
+        member: String,
     },
     Let {
         pat: Pattern,
@@ -43,10 +44,6 @@ pub enum Expr {
     Lambda {
         args: Vec<Pattern>,
         body: Box<Expr>,
-    },
-    Seq {
-        first: Box<Expr>,
-        second: Box<Expr>,
     },
     Cast {
         expr: Box<Expr>,
@@ -104,6 +101,7 @@ pub enum Expr {
     StructTuple {
         path: Path,
         fields: Vec<Expr>,
+        struct_or_variant: StructOrVariant,
     },
     StructUnit {
         path: Path,
@@ -173,7 +171,7 @@ fn tt() -> Expr {
     Expr::LocalVar("tt".to_string())
 }
 
-pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
+pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
     match &expr.kind {
         ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
         ExprKind::Array(elements) => {
@@ -186,24 +184,37 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         ExprKind::Call(func, args) => {
             let args = args.iter().map(|expr| compile_expr(tcx, expr)).collect();
             match func.kind {
-                // Check if we are calling a constructor
-                ExprKind::Path(rustc_hir::QPath::Resolved(
+                // Check if we are calling the constructor of a struct
+                ExprKind::Path(QPath::Resolved(
                     _,
                     path @ rustc_hir::Path {
-                        res:
-                            rustc_hir::def::Res::Def(
-                                rustc_hir::def::DefKind::Ctor(rustc_hir::def::CtorOf::Struct, _),
-                                _,
-                            ),
+                        res: Res::Def(DefKind::Ctor(CtorOf::Struct, _), _),
                         ..
                     },
                 )) => Expr::StructTuple {
                     path: compile_path(path),
                     fields: args,
+                    struct_or_variant: StructOrVariant::Struct,
+                },
+                // Check if we are calling the constructor of a variant
+                ExprKind::Path(QPath::Resolved(
+                    _,
+                    path @ rustc_hir::Path {
+                        res: Res::Def(DefKind::Ctor(CtorOf::Variant, _), _),
+                        ..
+                    },
+                )) => Expr::StructTuple {
+                    path: compile_path(path),
+                    fields: args,
+                    struct_or_variant: StructOrVariant::Variant,
                 },
                 _ => {
                     let func = Box::new(compile_expr(tcx, func));
-                    Expr::Call { func, args }
+                    Expr::Call {
+                        monadic: true,
+                        func,
+                        args,
+                    }
                 }
             }
         }
@@ -211,9 +222,12 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             let object = compile_expr(tcx, object);
             let func = path_segment.ident.to_string();
             let args: Vec<_> = args.iter().map(|expr| compile_expr(tcx, expr)).collect();
-            Expr::MethodCall {
-                object: Box::new(object),
-                func,
+            Expr::Call {
+                monadic: true,
+                func: Box::new(Expr::Member {
+                    object: Box::new(object),
+                    member: func,
+                }),
                 args,
             }
         }
@@ -228,18 +242,24 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             let expr_left = compile_expr(tcx, expr_left);
             let expr_right = compile_expr(tcx, expr_right);
             let func = compile_bin_op(bin_op);
-            Expr::MethodCall {
-                object: Box::new(expr_left),
-                func,
+            Expr::Call {
+                monadic: true,
+                func: Box::new(Expr::Member {
+                    object: Box::new(expr_left),
+                    member: func,
+                }),
                 args: vec![expr_right],
             }
         }
         ExprKind::Unary(un_op, expr) => {
             let expr = compile_expr(tcx, expr);
             let func = compile_un_op(un_op);
-            Expr::MethodCall {
-                object: Box::new(expr),
-                func,
+            Expr::Call {
+                monadic: true,
+                func: Box::new(Expr::Member {
+                    object: Box::new(expr),
+                    member: func,
+                }),
                 args: vec![],
             }
         }
@@ -329,9 +349,12 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             let func = compile_assign_bin_op(bin_op);
             let left = compile_expr(tcx, left);
             let right = compile_expr(tcx, right);
-            Expr::MethodCall {
-                object: Box::new(left),
-                func,
+            Expr::Call {
+                monadic: true,
+                func: Box::new(Expr::Member {
+                    object: Box::new(left),
+                    member: func,
+                }),
                 args: vec![right],
             }
         }
@@ -371,11 +394,15 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         ExprKind::Continue(_) => Expr::LocalVar("Continue".to_string()),
         ExprKind::Ret(expr) => {
             let func = Box::new(Expr::LocalVar("Return".to_string()));
-            let args = match expr {
-                Some(expr) => vec![compile_expr(tcx, expr)],
-                None => vec![],
-            };
-            Expr::Call { func, args }
+            let args = vec![match expr {
+                Some(expr) => compile_expr(tcx, expr),
+                None => tt(),
+            }];
+            Expr::Call {
+                monadic: false,
+                func,
+                args,
+            }
         }
         ExprKind::InlineAsm(_) => Expr::LocalVar("InlineAsm".to_string()),
         ExprKind::Struct(qpath, fields, base) => {
@@ -400,14 +427,16 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         ExprKind::Repeat(expr, _) => {
             let expr = compile_expr(tcx, expr);
             Expr::Call {
-                func: Box::new(Expr::LocalVar("repeat".to_string())),
+                monadic: false,
+                func: Box::new(Expr::LocalVar("Repeat".to_string())),
                 args: vec![expr],
             }
         }
         ExprKind::Yield(expr, _) => {
             let expr = compile_expr(tcx, expr);
             Expr::Call {
-                func: Box::new(Expr::LocalVar("yield".to_string())),
+                monadic: false,
+                func: Box::new(Expr::LocalVar("Yield".to_string())),
                 args: vec![expr],
             }
         }
@@ -439,7 +468,11 @@ fn compile_stmts(tcx: TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir
             rustc_hir::StmtKind::Expr(current_expr) | rustc_hir::StmtKind::Semi(current_expr) => {
                 let first = Box::new(compile_expr(tcx, current_expr));
                 let second = Box::new(compile_stmts(tcx, stmts, expr));
-                Expr::Seq { first, second }
+                Expr::Let {
+                    pat: Pattern::Wild,
+                    init: first,
+                    body: second,
+                }
             }
         },
         [] => match expr {
@@ -478,28 +511,38 @@ impl Expr {
             ]),
             Expr::Literal(literal) => literal_to_doc(with_paren, literal),
             Expr::AddrOf(expr) => expr.to_doc(with_paren),
-            Expr::Call { func, args } => paren(
+            Expr::Call {
+                monadic: _monadic,
+                func,
+                args,
+            } => paren(
                 with_paren,
-                nest([
+                group([
                     func.to_doc(true),
-                    line(),
                     if args.is_empty() {
-                        text("tt")
+                        text("(||)")
                     } else {
-                        intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()])
+                        concat([
+                            text("(|"),
+                            nest([
+                                line(),
+                                intersperse(
+                                    args.iter().map(|arg| arg.to_doc(false)),
+                                    [text(","), line()],
+                                ),
+                            ]),
+                            line(),
+                            text("|)"),
+                        ])
                     },
                 ]),
             ),
-            Expr::MethodCall { object, func, args } => paren(
-                with_paren && !args.is_empty(),
-                nest([
-                    object.to_doc(true),
-                    text(".["),
-                    text(format!("\"{func}\"")),
-                    text("]"),
-                    concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
-                ]),
-            ),
+            Expr::Member { object, member } => concat([
+                object.to_doc(true),
+                text(".["),
+                text(format!("\"{member}\"")),
+                text("]"),
+            ]),
             Expr::Let { pat, init, body } => group([
                 nest([
                     nest([
@@ -535,11 +578,6 @@ impl Expr {
                     body.to_doc(false),
                 ]),
             ),
-            Expr::Seq { first, second } => group([
-                group([first.to_doc(false), text(" ;;")]),
-                hardline(),
-                second.to_doc(false),
-            ]),
             Expr::Cast { expr, ty } => paren(
                 with_paren,
                 nest([
@@ -704,11 +742,18 @@ impl Expr {
                     None => nil(),
                 },
             ]),
-            Expr::StructTuple { path, fields } => paren(
+            Expr::StructTuple {
+                path,
+                fields,
+                struct_or_variant,
+            } => paren(
                 with_paren,
                 nest([
                     path.to_doc(),
-                    text(".Build_t"),
+                    match struct_or_variant {
+                        StructOrVariant::Struct => text(".Build_t"),
+                        StructOrVariant::Variant => nil(),
+                    },
                     line(),
                     if fields.is_empty() {
                         text("tt")

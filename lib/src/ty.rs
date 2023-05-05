@@ -95,6 +95,19 @@ pub fn compile_path_ty_params(tcx: &TyCtxt, path: &rustc_hir::Path) -> Vec<CoqTy
     }
 }
 
+pub(crate) fn get_monadic_type(ty: &CoqType) -> CoqType {
+    match ty {
+        CoqType::Function { arg, ret } => CoqType::Function {
+            arg: arg.clone(),
+            ret: Box::new(get_monadic_type(ret)),
+        },
+        _ => CoqType::Application {
+            func: Box::new(CoqType::Var(Path::local("M".to_string()))),
+            args: vec![ty.clone()],
+        },
+    }
+}
+
 impl CoqType {
     pub fn to_doc(&self, with_paren: bool) -> Doc {
         match self {

@@ -3,25 +3,44 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition multiply (first : ref i32) (second : ref i32) : i32 :=
-  first.["mul"] second.
+Definition multiply (first : ref i32) (second : ref i32) :=
+  ltac:(function (first.["mul"](| second |) : i32)).
 
-Definition choose_first (first : ref i32) (arg : ref i32) : ref i32 := first.
+Definition choose_first (first : ref i32) (arg : ref i32) :=
+  ltac:(function (first : ref i32)).
 
-Definition main (_ : unit) : unit :=
-  let first := 2 in
-  let second := 3 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The product is "; "
-" ]
-      [ format_argument::["new_display"] (multiply first second) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; " is the first
-" ]
-      [ format_argument::["new_display"] (choose_first first second) ]) ;;
-  tt ;;
-  tt ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let first := 2 in
+    let '_ :=
+      let second := 3 in
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_v1"](|
+              [ "The product is "; "
+" ],
+              [
+                format_argument::["new_display"](| multiply(| first, second |)
+                |)
+              ]
+            |)
+          |) in
+        tt in
+      let '_ :=
+        let '_ :=
+          _crate.io._print(|
+            format_arguments::["new_v1"](|
+              [ ""; " is the first
+" ],
+              [
+                format_argument::["new_display"](|
+                  choose_first(| first, second |)
+                |)
+              ]
+            |)
+          |) in
+        tt in
+      tt in
+    tt
+    : unit)).

@@ -3,40 +3,58 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition age (_ : unit) : u32 := 15.
+Definition age := ltac:(function (15 : u32)).
 
-Definition main (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "Tell me what type of person you are
-" ]) ;;
-  tt ;;
-  match age tt with
-  | 0 =>
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "I haven't celebrated my first birthday yet
-" ]) ;;
-    tt
-  | ((1|2|3|4|5|6|7|8|9|10|11|12) as n) =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "I'm a child of age "; "
+Definition main :=
+  ltac:(function (
+    let '_ :=
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](|
+            [ "Tell me what type of person you are
 " ]
-        [ format_argument::["new_debug"] n ]) ;;
-    tt
-  | ((13|14|15|16|17|18|19) as n) =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "I'm a teen of age "; "
+          |)
+        |) in
+      tt in
+    match age(||) with
+    | 0 =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_const"](|
+            [ "I haven't celebrated my first birthday yet
 " ]
-        [ format_argument::["new_debug"] n ]) ;;
-    tt
-  | n =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "I'm an old person of age "; "
-" ]
-        [ format_argument::["new_debug"] n ]) ;;
-    tt
-  end.
+          |)
+        |) in
+      tt
+    | ((1|2|3|4|5|6|7|8|9|10|11|12) as n) =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "I'm a child of age "; "
+" ],
+            [ format_argument::["new_debug"](| n |) ]
+          |)
+        |) in
+      tt
+    | ((13|14|15|16|17|18|19) as n) =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "I'm a teen of age "; "
+" ],
+            [ format_argument::["new_debug"](| n |) ]
+          |)
+        |) in
+      tt
+    | n =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "I'm an old person of age "; "
+" ],
+            [ format_argument::["new_debug"](| n |) ]
+          |)
+        |) in
+      tt
+    end
+    : unit)).

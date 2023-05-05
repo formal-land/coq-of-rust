@@ -28,9 +28,11 @@ Definition Job : Set := Job.t.
 Module Impl__crate_clone_Clone_for_Job.
   Definition Self := Job.
   
-  Definition clone (self : ref Self) : Job :=
-    let '_ := tt in
-    self.["deref"].
+  Definition clone (self : ref Self) :=
+    ltac:(function (
+      let '_ := tt in
+      self.["deref"](||)
+      : Job)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -66,10 +68,12 @@ Definition PhoneNumber : Set := PhoneNumber.t.
 Module Impl__crate_clone_Clone_for_PhoneNumber.
   Definition Self := PhoneNumber.
   
-  Definition clone (self : ref Self) : PhoneNumber :=
-    let '_ := tt in
-    let '_ := tt in
-    self.["deref"].
+  Definition clone (self : ref Self) :=
+    ltac:(function (
+      let '_ := tt in
+      let '_ := tt in
+      self.["deref"](||)
+      : PhoneNumber)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -90,17 +94,21 @@ End Impl__crate_marker_Copy_for_PhoneNumber.
 Module ImplPerson.
   Definition Self := Person.
   
-  Definition work_phone_area_code (self : ref Self) : Option u8 :=
-    match
-        LangItem
-          match LangItem self.["job"] with
-            | Break {| Break.0 := residual; |} => Return (LangItem residual)
-            | Continue {| Continue.0 := val; |} => val
-            end.["phone_number"]
-      with
-      | Break {| Break.0 := residual; |} => Return (LangItem residual)
-      | Continue {| Continue.0 := val; |} => val
-      end.["area_code"].
+  Definition work_phone_area_code (self : ref Self) :=
+    ltac:(function (
+      match
+          LangItem(|
+            match LangItem(| self.["job"] |) with
+              | Break {| Break.0 := residual; |} =>
+                Return(| LangItem(| residual |) |)
+              | Continue {| Continue.0 := val; |} => val
+              end.["phone_number"]
+          |)
+        with
+        | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+        | Continue {| Continue.0 := val; |} => val
+        end.["area_code"]
+      : Option u8)).
   
   Global Instance Method_work_phone_area_code :
     Notation.Dot "work_phone_area_code" := {
@@ -108,31 +116,40 @@ Module ImplPerson.
   }.
 End ImplPerson.
 
-Definition main (_ : unit) : unit :=
-  let p :=
-    {|
-      Person.job :=
-        Some
-          {|
-            Job.phone_number :=
-              Some
-                {|
-                  PhoneNumber.area_code := Some 61;
-                  PhoneNumber.number := 439222222;
-                |};
-          |};
-    |} in
-  match (p.["work_phone_area_code"], Some 61) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  tt.
+Definition main :=
+  ltac:(function (
+    let p :=
+      {|
+        Person.job :=
+          Some
+            {|
+              Job.phone_number :=
+                Some
+                  {|
+                    PhoneNumber.area_code := Some 61;
+                    PhoneNumber.number := 439222222;
+                  |};
+            |};
+      |} in
+    let '_ :=
+      match (p.["work_phone_area_code"](||), Some 61) with
+      | (left_val, right_val) =>
+        if
+          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
+          |)).["not"](||)
+          : bool)
+        then
+          let kind := _crate.panicking.AssertKind.Eq in
+          let '_ :=
+            _crate.panicking.assert_failed(|
+              kind,
+              left_val.["deref"](||),
+              right_val.["deref"](||),
+              _crate.option.Option.None
+            |) in
+          tt
+        else
+          tt
+      end in
+    tt
+    : unit)).

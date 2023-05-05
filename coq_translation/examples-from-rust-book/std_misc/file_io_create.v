@@ -20,35 +20,44 @@ Import std.io.prelude.
 Module Path := std.path.Path.
 Definition Path := Path.t.
 
-Definition main (_ : unit) : unit :=
-  let path := Path::["new"] "lorem_ipsum.txt" in
-  let display := path.["display"] in
-  let file :=
-    match File::["create"] path with
+Definition main :=
+  ltac:(function (
+    let path := Path::["new"](| "lorem_ipsum.txt" |) in
+    let display := path.["display"](||) in
+    let file :=
+      match File::["create"](| path |) with
+      | Err why =>
+        _crate.rt.panic_fmt(|
+          format_arguments::["new_v1"](|
+            [ "couldn't create "; ": " ],
+            [
+              format_argument::["new_display"](| display |);
+              format_argument::["new_display"](| why |)
+            ]
+          |)
+        |)
+      | Ok file => file
+      end in
+    match file.["write_all"](| LOREM_IPSUM.["as_bytes"](||) |) with
     | Err why =>
-      _crate.rt.panic_fmt
-        (format_arguments::["new_v1"]
-          [ "couldn't create "; ": " ]
+      _crate.rt.panic_fmt(|
+        format_arguments::["new_v1"](|
+          [ "couldn't write to "; ": " ],
           [
-            format_argument::["new_display"] display;
-            format_argument::["new_display"] why
-          ])
-    | Ok file => file
-    end in
-  match file.["write_all"] LOREM_IPSUM.["as_bytes"] with
-  | Err why =>
-    _crate.rt.panic_fmt
-      (format_arguments::["new_v1"]
-        [ "couldn't write to "; ": " ]
-        [
-          format_argument::["new_display"] display;
-          format_argument::["new_display"] why
-        ])
-  | Ok _ =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "successfully wrote to "; "
-" ]
-        [ format_argument::["new_display"] display ]) ;;
-    tt
-  end.
+            format_argument::["new_display"](| display |);
+            format_argument::["new_display"](| why |)
+          ]
+        |)
+      |)
+    | Ok _ =>
+      let '_ :=
+        _crate.io._print(|
+          format_arguments::["new_v1"](|
+            [ "successfully wrote to "; "
+" ],
+            [ format_argument::["new_display"](| display |) ]
+          |)
+        |) in
+      tt
+    end
+    : unit)).
