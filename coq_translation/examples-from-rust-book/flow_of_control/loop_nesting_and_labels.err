@@ -1,0 +1,14 @@
+warning: Labeled loops are not supported.
+ --> examples-from-rust-book/flow_of_control/loop_nesting_and_labels.rs:5:5
+  |
+5 |     'outer: loop {
+  |     ^^^^^^
+
+warning: Labeled loops are not supported.
+ --> examples-from-rust-book/flow_of_control/loop_nesting_and_labels.rs:8:9
+  |
+8 |         'inner: loop {
+  |         ^^^^^^
+
+warning: 2 warnings emitted
+

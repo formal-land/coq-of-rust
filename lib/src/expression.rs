@@ -271,7 +271,12 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
                 failure,
             }
         }
-        ExprKind::Loop(block, _, loop_source, _) => {
+        ExprKind::Loop(block, label, loop_source, _) => {
+            if let Some(label) = label {
+                tcx.sess
+                    .struct_span_warn(label.ident.span, "Labeled loops are not supported.")
+                    .emit();
+            }
             let body = Box::new(compile_block(tcx, block));
             let loop_source = compile_loop_source(loop_source);
             Expr::Loop { body, loop_source }
@@ -307,7 +312,14 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             let body = Box::new(compile_expr(tcx, body.value));
             Expr::Lambda { args, body }
         }
-        ExprKind::Block(block, _) => compile_block(tcx, block),
+        ExprKind::Block(block, label) => {
+            if let Some(label) = label {
+                tcx.sess
+                    .struct_span_warn(label.ident.span, "Labeled blocks are not supported.")
+                    .emit();
+            }
+            compile_block(tcx, block)
+        }
         ExprKind::Assign(left, right, _) => {
             let left = Box::new(compile_expr(tcx, left));
             let right = Box::new(compile_expr(tcx, right));
