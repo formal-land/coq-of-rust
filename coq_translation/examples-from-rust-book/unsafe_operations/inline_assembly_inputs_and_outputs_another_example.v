@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let i := 3 in
     let o := tt in
@@ -14,8 +15,8 @@ Definition main :=
       match (o, 8) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -31,6 +32,6 @@ Definition main :=
           tt
       end in
     tt
-    : unit)).
+  : return_type)).
 
 Module asm := std.arch.asm.

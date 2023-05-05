@@ -4,15 +4,16 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     match LangItem(| Range {| Range.start := 1; Range.end := 101; |} |) with
     | iter =>
       loop
         let '_ :=
           match LangItem(| iter |) with
-          | None => Break
+          | None => M.Break
           | Some {| Some.0 := n; |} =>
-            if ((n.["rem"](| 15 |)).["eq"](| 0 |) : bool) then
+            if (n.["rem"](| 15 |).["eq"](| 0 |) : bool) then
               let '_ :=
                 let '_ :=
                   _crate.io._print(|
@@ -22,7 +23,7 @@ Definition main :=
                 tt in
               tt
             else
-              if ((n.["rem"](| 3 |)).["eq"](| 0 |) : bool) then
+              if (n.["rem"](| 3 |).["eq"](| 0 |) : bool) then
                 let '_ :=
                   let '_ :=
                     _crate.io._print(|
@@ -32,7 +33,7 @@ Definition main :=
                   tt in
                 tt
               else
-                if ((n.["rem"](| 5 |)).["eq"](| 0 |) : bool) then
+                if (n.["rem"](| 5 |).["eq"](| 0 |) : bool) then
                   let '_ :=
                     let '_ :=
                       _crate.io._print(|
@@ -58,4 +59,4 @@ Definition main :=
         from
         for
     end
-    : unit)).
+  : return_type)).

@@ -17,6 +17,7 @@ Module Impl__crate_fmt_Debug_for_Fruit.
   Definition Self := Fruit.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["write_str"](|
         f,
@@ -28,7 +29,7 @@ Module Impl__crate_fmt_Debug_for_Fruit.
         | Fruit.Lemon => "Lemon"
         end
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -40,12 +41,13 @@ Module Impl__crate_fmt_Debug_for_Fruit.
 End Impl__crate_fmt_Debug_for_Fruit.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let apple := Some Fruit.Apple in
     let orange := Some Fruit.Orange in
     let no_fruit := None in
     let first_available_fruit :=
-      (no_fruit.["or"](| orange |)).["or"](| apple |) in
+      no_fruit.["or"](| orange |).["or"](| apple |) in
     let '_ :=
       let '_ :=
         _crate.io._print(|
@@ -57,4 +59,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

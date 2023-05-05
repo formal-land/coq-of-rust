@@ -23,6 +23,7 @@ End Point.
 Definition Point : Set := Point.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let point := {| Point.x := 0; Point.y := 0; Point.z := 0; |} in
     let borrowed_point := point in
@@ -89,4 +90,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

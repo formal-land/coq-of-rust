@@ -15,6 +15,7 @@ Module Impl__crate_fmt_Debug_for_Food.
   Definition Self := Food.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["write_str"](|
         f,
@@ -24,7 +25,7 @@ Module Impl__crate_fmt_Debug_for_Food.
         | Food.Potato => "Potato"
         end
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -48,13 +49,14 @@ Module Impl__crate_fmt_Debug_for_Peeled.
   Definition Self := Peeled.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["debug_tuple_field1_finish"](|
         f,
         "Peeled",
         self.[0]
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -78,13 +80,14 @@ Module Impl__crate_fmt_Debug_for_Chopped.
   Definition Self := Chopped.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["debug_tuple_field1_finish"](|
         f,
         "Chopped",
         self.[0]
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -108,13 +111,14 @@ Module Impl__crate_fmt_Debug_for_Cooked.
   Definition Self := Cooked.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["debug_tuple_field1_finish"](|
         f,
         "Cooked",
         self.[0]
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -126,35 +130,40 @@ Module Impl__crate_fmt_Debug_for_Cooked.
 End Impl__crate_fmt_Debug_for_Cooked.
 
 Definition peel (food : Option Food) :=
+  let return_type := Option Peeled in
   ltac:(function (
     match food with
     | Some food => Some (Peeled.Build_t food)
     | None => None
     end
-    : Option Peeled)).
+  : return_type)).
 
 Definition chop (peeled : Option Peeled) :=
+  let return_type := Option Chopped in
   ltac:(function (
     match peeled with
     | Some Peeled.Build_t food => Some (Chopped.Build_t food)
     | None => None
     end
-    : Option Chopped)).
+  : return_type)).
 
 Definition cook (chopped : Option Chopped) :=
+  let return_type := Option Cooked in
   ltac:(function (
     chopped.["map"](| fun Chopped.Build_t food => Cooked.Build_t food |)
-    : Option Cooked)).
+  : return_type)).
 
 Definition process (food : Option Food) :=
+  let return_type := Option Cooked in
   ltac:(function (
-    ((food.["map"](| fun f => Peeled.Build_t f |)).["map"](|
+    food.["map"](| fun f => Peeled.Build_t f |).["map"](|
       fun Peeled.Build_t f => Chopped.Build_t f
-    |)).["map"](| fun Chopped.Build_t f => Cooked.Build_t f
+    |).["map"](| fun Chopped.Build_t f => Cooked.Build_t f
     |)
-    : Option Cooked)).
+  : return_type)).
 
 Definition eat (food : Option Cooked) :=
+  let return_type := unit in
   ltac:(function (
     match food with
     | Some food =>
@@ -175,9 +184,10 @@ Definition eat (food : Option Cooked) :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let apple := Some Food.Apple in
     let carrot := Some Food.Carrot in
@@ -189,4 +199,4 @@ Definition main :=
     let '_ := eat(| cooked_carrot |) in
     let '_ := eat(| cooked_potato |) in
     tt
-    : unit)).
+  : return_type)).

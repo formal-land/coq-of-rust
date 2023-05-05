@@ -23,6 +23,7 @@ Module Impl__crate_fmt_Debug_for_DoubleError.
   Definition Self := DoubleError.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       match self with
       | DoubleError.EmptyVec =>
@@ -34,7 +35,7 @@ Module Impl__crate_fmt_Debug_for_DoubleError.
           __self_0
         |)
       end
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -49,6 +50,7 @@ Module Impl_fmt_Display_for_DoubleError.
   Definition Self := DoubleError.
   
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
+    let return_type := fmt.Result in
     ltac:(function (
       match self.["deref"](||) with
       | DoubleError.EmptyVec =>
@@ -64,7 +66,7 @@ Module Impl_fmt_Display_for_DoubleError.
           |)
         |)
       end
-      : fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -79,12 +81,13 @@ Module Impl_error_Error_for_DoubleError.
   Definition Self := DoubleError.
   
   Definition source (self : ref Self) :=
+    let return_type := Option (ref TraitObject) in
     ltac:(function (
       match self.["deref"](||) with
       | DoubleError.EmptyVec => None
       | DoubleError.Parse e => Some e
       end
-      : Option (ref TraitObject))).
+    : return_type)).
   
   Global Instance Method_source : Notation.Dot "source" := {
     Notation.dot := source;
@@ -98,7 +101,10 @@ Module Impl_From_for_DoubleError.
   Definition Self := DoubleError.
   
   Definition from (err : ParseIntError) :=
-    ltac:(function (DoubleError.Parse err : DoubleError)).
+    let return_type := DoubleError in
+    ltac:(function (
+      DoubleError.Parse err
+    : return_type)).
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -111,23 +117,24 @@ Module Impl_From_for_DoubleError.
 End Impl_From_for_DoubleError.
 
 Definition double_first (vec : Vec (ref str)) :=
+  let return_type := Result i32 in
   ltac:(function (
     let first :=
-      match
-        LangItem(| (vec.["first"](||)).["ok_or"](| DoubleError.EmptyVec |) |)
+      match LangItem(| vec.["first"](||).["ok_or"](| DoubleError.EmptyVec |) |)
       with
-      | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+      | Break {| Break.0 := residual; |} => M.Return LangItem(| residual |)
       | Continue {| Continue.0 := val; |} => val
       end in
     let parsed :=
       match LangItem(| first.["parse"](||) |) with
-      | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+      | Break {| Break.0 := residual; |} => M.Return LangItem(| residual |)
       | Continue {| Continue.0 := val; |} => val
       end in
-    Ok (2.["mul"](| parsed |))
-    : Result i32)).
+    Ok 2.["mul"](| parsed |)
+  : return_type)).
 
 Definition print (result : Result i32) :=
+  let return_type := unit in
   ltac:(function (
     match result with
     | Ok n =>
@@ -166,9 +173,10 @@ Definition print (result : Result i32) :=
       else
         tt
     end
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let numbers :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ "42"; "93"; "18" ] |)
@@ -182,4 +190,4 @@ Definition main :=
     let '_ := print(| double_first(| empty |) |) in
     let '_ := print(| double_first(| strings |) |) in
     tt
-    : unit)).
+  : return_type)).

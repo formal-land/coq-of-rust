@@ -7,6 +7,7 @@ Module HashMap := std.collections.HashMap.
 Definition HashMap := HashMap.t.
 
 Definition call (number : ref str) :=
+  let return_type := ref str in
   ltac:(function (
     match number with
     | "798-1364" =>
@@ -17,9 +18,10 @@ Definition call (number : ref str) :=
             What can I get for you today?"
     | _ => "Hi! Who is this again?"
     end
-    : ref str)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let contacts := HashMap::["new"](||) in
     let '_ := contacts.["insert"](| "Daniel", "798-1364" |) in
@@ -75,7 +77,7 @@ Definition main :=
       loop
         let '_ :=
           match LangItem(| iter |) with
-          | None => Break
+          | None => M.Break
           | Some {| Some.0 := (contact, number); |} =>
             let '_ :=
               let '_ :=
@@ -96,4 +98,4 @@ Definition main :=
         from
         for
     end
-    : unit)).
+  : return_type)).

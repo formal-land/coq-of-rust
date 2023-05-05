@@ -9,18 +9,21 @@ Module IntoIter := std.vec.IntoIter.
 Definition IntoIter := IntoIter.t.
 
 Definition combine_vecs_explicit_return_type (v : Vec i32) (u : Vec i32) :=
+  let return_type := iter.Cycle (iter.Chain (IntoIter i32) (IntoIter i32)) in
   ltac:(function (
-    ((v.["into_iter"](||)).["chain"](| u.["into_iter"](||) |)).["cycle"](||)
-    : iter.Cycle (iter.Chain (IntoIter i32) (IntoIter i32)))).
+    v.["into_iter"](||).["chain"](| u.["into_iter"](||) |).["cycle"](||)
+  : return_type)).
 
 Definition combine_vecs (v : Vec i32) (u : Vec i32) :=
+  let return_type := OpaqueDef in
   ltac:(function (
-    ((v.["into_iter"](||)).["chain"](| u.["into_iter"](||) |)).["cycle"](||)
-    : OpaqueDef)).
+    v.["into_iter"](||).["chain"](| u.["into_iter"](||) |).["cycle"](||)
+  : return_type)).
 
 Error OpaqueTy.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let v1 :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 1; 2; 3 ] |) |) in
@@ -31,8 +34,8 @@ Definition main :=
       match (Some 1, v3.["next"](||)) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -51,8 +54,8 @@ Definition main :=
       match (Some 2, v3.["next"](||)) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -71,8 +74,8 @@ Definition main :=
       match (Some 3, v3.["next"](||)) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -91,8 +94,8 @@ Definition main :=
       match (Some 4, v3.["next"](||)) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -111,8 +114,8 @@ Definition main :=
       match (Some 5, v3.["next"](||)) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -134,4 +137,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

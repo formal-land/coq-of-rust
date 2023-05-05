@@ -3,10 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main := ltac:(function (tt : unit)).
+Definition main :=
+  let return_type := unit in
+  ltac:(function (
+    tt
+  : return_type)).
 
 Definition foo :=
+  let return_type := Empty_set in
   ltac:(function (
     let '_ := _crate.rt.begin_panic(| "This call never returns." |) in
     tt
-    : Empty_set)).
+  : return_type)).

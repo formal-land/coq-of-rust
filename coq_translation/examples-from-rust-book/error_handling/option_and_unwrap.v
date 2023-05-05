@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition give_adult (drink : Option (ref str)) :=
+  let return_type := unit in
   ltac:(function (
     match drink with
     | Some "lemonade" =>
@@ -31,9 +32,10 @@ Definition give_adult (drink : Option (ref str)) :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).
 
 Definition drink (drink : Option (ref str)) :=
+  let return_type := unit in
   ltac:(function (
     let inside := drink.["unwrap"](||) in
     let '_ :=
@@ -53,9 +55,10 @@ Definition drink (drink : Option (ref str)) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let water := Some "water" in
     let lemonade := Some "lemonade" in
@@ -68,4 +71,4 @@ Definition main :=
     let '_ := drink(| coffee |) in
     let '_ := drink(| nothing |) in
     tt
-    : unit)).
+  : return_type)).

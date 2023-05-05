@@ -4,12 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition call_me {F : Set} `{Fn.Trait unit F} (f : F) :=
+  let return_type := unit in
   ltac:(function (
     let '_ := f(||) in
     tt
-    : unit)).
+  : return_type)).
 
 Definition function :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -19,9 +21,10 @@ Definition function :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let closure :=
       fun  =>
@@ -34,4 +37,4 @@ Definition main :=
     let '_ := call_me(| closure |) in
     let '_ := call_me(| function |) in
     tt
-    : unit)).
+  : return_type)).

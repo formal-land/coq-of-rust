@@ -4,15 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition division (dividend : i32) (divisor : i32) :=
+  let return_type := i32 in
   ltac:(function (
     if (divisor.["eq"](| 0 |) : bool) then
       let '_ := _crate.rt.begin_panic(| "division by zero" |) in
       tt
     else
       dividend.["div"](| divisor |)
-    : i32)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let _x := Box::["new"](| 0 |) in
     let '_ := division(| 3, 0 |) in
@@ -25,4 +27,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

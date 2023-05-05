@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let strings :=
       Slice::["into_vec"](|
@@ -11,10 +12,10 @@ Definition main :=
       |) in
     let errors := _crate.vec.Vec::["new"](||) in
     let numbers :=
-      (((strings.["into_iter"](||)).["map"](| fun s => s.["parse"](||)
-      |)).["filter_map"](|
-        fun r => (r.["map_err"](| fun e => errors.["push"](| e |) |)).["ok"](||)
-      |)).["collect"](||) in
+      strings.["into_iter"](||).["map"](| fun s => s.["parse"](||)
+      |).["filter_map"](|
+        fun r => r.["map_err"](| fun e => errors.["push"](| e |) |).["ok"](||)
+      |).["collect"](||) in
     let '_ :=
       let '_ :=
         _crate.io._print(|
@@ -36,4 +37,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

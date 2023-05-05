@@ -29,11 +29,12 @@ Module Impl__crate_cmp_PartialEq_for_PhantomTuple_A_B.
   Definition Self := PhantomTuple A B.
   
   Definition eq (self : ref Self) (other : ref (PhantomTuple A B)) :=
+    let return_type := bool in
     ltac:(function (
-      ((self.[0]).["eq"](| other.[0] |)).["andb"](|
+      (self.[0]).["eq"](| other.[0] |).["andb"](|
         (self.[1]).["eq"](| other.[1] |)
       |)
-      : bool)).
+    : return_type)).
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -70,11 +71,12 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct_A_B.
   Definition Self := PhantomStruct A B.
   
   Definition eq (self : ref Self) (other : ref (PhantomStruct A B)) :=
+    let return_type := bool in
     ltac:(function (
-      (self.["first"].["eq"](| other.["first"] |)).["andb"](|
+      self.["first"].["eq"](| other.["first"] |).["andb"](|
         self.["phantom"].["eq"](| other.["phantom"] |)
       |)
-      : bool)).
+    : return_type)).
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -86,6 +88,7 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct_A_B.
 End Impl__crate_cmp_PartialEq_for_PhantomStruct_A_B.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let _tuple1 := PhantomTuple.Build_t "Q"%char PhantomData.Build in
     let _tuple2 := PhantomTuple.Build_t "Q"%char PhantomData.Build in
@@ -100,4 +103,4 @@ Definition main :=
         PhantomStruct.phantom := PhantomData.Build;
       |} in
     tt
-    : unit)).
+  : return_type)).

@@ -4,12 +4,19 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition multiply (first : ref i32) (second : ref i32) :=
-  ltac:(function (first.["mul"](| second |) : i32)).
+  let return_type := i32 in
+  ltac:(function (
+    first.["mul"](| second |)
+  : return_type)).
 
 Definition choose_first (first : ref i32) (arg : ref i32) :=
-  ltac:(function (first : ref i32)).
+  let return_type := ref i32 in
+  ltac:(function (
+    first
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let first := 2 in
     let '_ :=
@@ -43,4 +50,4 @@ Definition main :=
         tt in
       tt in
     tt
-    : unit)).
+  : return_type)).

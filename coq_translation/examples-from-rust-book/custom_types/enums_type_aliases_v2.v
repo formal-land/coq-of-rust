@@ -17,12 +17,13 @@ Module ImplVeryVerboseEnumOfThingsToDoWithNumbers.
   Definition Self := VeryVerboseEnumOfThingsToDoWithNumbers.
   
   Definition run (self : ref Self) (x : i32) (y : i32) :=
+    let return_type := i32 in
     ltac:(function (
       match self with
       | ImplSelf.Add => x.["add"](| y |)
       | ImplSelf.Subtract => x.["sub"](| y |)
       end
-      : i32)).
+    : return_type)).
   
   Global Instance Method_run : Notation.Dot "run" := {
     Notation.dot := run;

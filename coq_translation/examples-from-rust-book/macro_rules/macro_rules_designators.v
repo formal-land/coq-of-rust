@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition foo :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -16,9 +17,10 @@ Definition foo :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition bar :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -31,9 +33,10 @@ Definition bar :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ := foo(||) in
     let '_ := bar(||) in
@@ -62,12 +65,11 @@ Definition main :=
               |);
               format_argument::["new_debug"](|
                 let x := 1 in
-                ((x.["mul"](| x |)).["add"](| 2.["mul"](| x |) |)).["sub"](| 1
-                |)
+                x.["mul"](| x |).["add"](| 2.["mul"](| x |) |).["sub"](| 1 |)
               |)
             ]
           |)
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

@@ -3,9 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition add (a : i32) (b : i32) := ltac:(function (a.["add"](| b |) : i32)).
+Definition add (a : i32) (b : i32) :=
+  let return_type := i32 in
+  ltac:(function (
+    a.["add"](| b |)
+  : return_type)).
 
 Definition div (a : i32) (b : i32) :=
+  let return_type := i32 in
   ltac:(function (
     let '_ :=
       if (b.["eq"](| 0 |) : bool) then
@@ -14,4 +19,4 @@ Definition div (a : i32) (b : i32) :=
       else
         tt in
     a.["div"](| b |)
-    : i32)).
+  : return_type)).

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let vec1 :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 1; 2; 3 ] |) |) in
@@ -17,7 +18,7 @@ Definition main :=
 " ],
             [
               format_argument::["new_display"](|
-                (vec1.["iter"](||)).["any"](| fun x => x.["eq"](| 2 |) |)
+                vec1.["iter"](||).["any"](| fun x => x.["eq"](| 2 |) |)
               |)
             ]
           |)
@@ -31,7 +32,7 @@ Definition main :=
 " ],
             [
               format_argument::["new_display"](|
-                (vec2.["into_iter"](||)).["any"](| fun x => x.["eq"](| 2 |) |)
+                vec2.["into_iter"](||).["any"](| fun x => x.["eq"](| 2 |) |)
               |)
             ]
           |)
@@ -67,7 +68,7 @@ Definition main :=
 " ],
             [
               format_argument::["new_display"](|
-                (array1.["iter"](||)).["any"](| fun x => x.["eq"](| 2 |) |)
+                array1.["iter"](||).["any"](| fun x => x.["eq"](| 2 |) |)
               |)
             ]
           |)
@@ -81,11 +82,11 @@ Definition main :=
 " ],
             [
               format_argument::["new_display"](|
-                (array2.["into_iter"](||)).["any"](| fun x => x.["eq"](| 2 |) |)
+                array2.["into_iter"](||).["any"](| fun x => x.["eq"](| 2 |) |)
               |)
             ]
           |)
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

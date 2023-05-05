@@ -7,6 +7,7 @@ Module Rc := std.rc.Rc.
 Definition Rc := Rc.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let rc_examples := "Rc examples".["to_string"](||) in
     let '_ :=
@@ -132,4 +133,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

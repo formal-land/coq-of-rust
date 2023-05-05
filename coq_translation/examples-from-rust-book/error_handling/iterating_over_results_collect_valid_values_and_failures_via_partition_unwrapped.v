@@ -4,21 +4,22 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let strings :=
       Slice::["into_vec"](|
         _crate.boxed.Box::["new"](| [ "tofu"; "93"; "18" ] |)
       |) in
     let '(numbers, errors) :=
-      ((strings.["into_iter"](||)).["map"](| fun s => s.["parse"](||)
-      |)).["partition"](| Result::["is_ok"]
+      strings.["into_iter"](||).["map"](| fun s => s.["parse"](||)
+      |).["partition"](| Result::["is_ok"]
       |) in
     let numbers :=
-      ((numbers.["into_iter"](||)).["map"](| Result::["unwrap"]
-      |)).["collect"](||) in
+      numbers.["into_iter"](||).["map"](| Result::["unwrap"]
+      |).["collect"](||) in
     let errors :=
-      ((errors.["into_iter"](||)).["map"](| Result::["unwrap_err"]
-      |)).["collect"](||) in
+      errors.["into_iter"](||).["map"](| Result::["unwrap_err"]
+      |).["collect"](||) in
     let '_ :=
       let '_ :=
         _crate.io._print(|
@@ -40,4 +41,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

@@ -27,7 +27,9 @@ Module Impl_DoubleDrop_for_U.
   Definition Self := U.
   
   Definition double_drop (self : Self) (Pattern : T) :=
-    ltac:(function (tt : _)).
+    ltac:(function (
+      tt
+    : _)).
   
   Global Instance Method_double_drop : Notation.Dot "double_drop" := {
     Notation.dot := double_drop;
@@ -39,9 +41,10 @@ Module Impl_DoubleDrop_for_U.
 End Impl_DoubleDrop_for_U.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let empty := Empty.Build in
     let null := Null.Build in
     let '_ := empty.["double_drop"](| null |) in
     tt
-    : unit)).
+  : return_type)).

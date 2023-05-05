@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let val := 1.["add"](| 2 |) in
@@ -31,7 +32,7 @@ Definition main :=
           |) in
         tt in
       tt in
-    let val := (2.["mul"](| 3 |)).["add"](| 1 |) in
+    let val := 2.["mul"](| 3 |).["add"](| 1 |) in
     let '_ :=
       let '_ :=
         _crate.io._print(|
@@ -43,4 +44,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

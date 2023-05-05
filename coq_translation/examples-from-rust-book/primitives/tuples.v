@@ -4,10 +4,11 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition reverse (pair : i32 * bool) :=
+  let return_type := bool * i32 in
   ltac:(function (
     let '(int_param, bool_param) := pair in
     (bool_param, int_param)
-    : bool * i32)).
+  : return_type)).
 
 Module Matrix.
   Record t : Set := { _ : f32; _ : f32; _ : f32; _ : f32;}.
@@ -31,6 +32,7 @@ Module Impl__crate_fmt_Debug_for_Matrix.
   Definition Self := Matrix.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["debug_tuple_field4_finish"](|
         f,
@@ -40,7 +42,7 @@ Module Impl__crate_fmt_Debug_for_Matrix.
         self.[2],
         self.[3]
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -52,6 +54,7 @@ Module Impl__crate_fmt_Debug_for_Matrix.
 End Impl__crate_fmt_Debug_for_Matrix.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let long_tuple :=
       (1,
@@ -168,4 +171,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

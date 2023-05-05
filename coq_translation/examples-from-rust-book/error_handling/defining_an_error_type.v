@@ -16,9 +16,10 @@ Module Impl__crate_fmt_Debug_for_DoubleError.
   Definition Self := DoubleError.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["write_str"](| f, "DoubleError" |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -33,7 +34,10 @@ Module Impl__crate_clone_Clone_for_DoubleError.
   Definition Self := DoubleError.
   
   Definition clone (self : ref Self) :=
-    ltac:(function (DoubleError.Build : DoubleError)).
+    let return_type := DoubleError in
+    ltac:(function (
+      DoubleError.Build
+    : return_type)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -48,11 +52,12 @@ Module Impl_fmt_Display_for_DoubleError.
   Definition Self := DoubleError.
   
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
+    let return_type := fmt.Result in
     ltac:(function (
       f.["write_fmt"](|
         format_arguments::["new_const"](| [ "invalid first item to double" ] |)
       |)
-      : fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -64,16 +69,18 @@ Module Impl_fmt_Display_for_DoubleError.
 End Impl_fmt_Display_for_DoubleError.
 
 Definition double_first (vec : Vec (ref str)) :=
+  let return_type := Result i32 in
   ltac:(function (
-    ((vec.["first"](||)).["ok_or"](| DoubleError.Build |)).["and_then"](|
+    vec.["first"](||).["ok_or"](| DoubleError.Build |).["and_then"](|
       fun s =>
-        ((s.["parse"](||)).["map_err"](| fun _ => DoubleError.Build
-        |)).["map"](| fun i => 2.["mul"](| i |)
+        s.["parse"](||).["map_err"](| fun _ => DoubleError.Build |).["map"](|
+          fun i => 2.["mul"](| i |)
         |)
     |)
-    : Result i32)).
+  : return_type)).
 
 Definition print (result : Result i32) :=
+  let return_type := unit in
   ltac:(function (
     match result with
     | Ok n =>
@@ -97,9 +104,10 @@ Definition print (result : Result i32) :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let numbers :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ "42"; "93"; "18" ] |)
@@ -113,4 +121,4 @@ Definition main :=
     let '_ := print(| double_first(| empty |) |) in
     let '_ := print(| double_first(| strings |) |) in
     tt
-    : unit)).
+  : return_type)).

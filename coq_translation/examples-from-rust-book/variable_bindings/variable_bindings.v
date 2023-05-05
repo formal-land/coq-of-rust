@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let an_integer := 1 in
     let a_boolean := true in
@@ -42,4 +43,4 @@ Definition main :=
     let _unused_variable := 3 in
     let _noisy_unused_variable := 2 in
     tt
-    : unit)).
+  : return_type)).

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let color := String::["from"](| "green" |) in
     let print :=
@@ -56,6 +57,6 @@ Definition main :=
         tt in
     let '_ := consume(||) in
     tt
-    : unit)).
+  : return_type)).
 
 Module mem := std.mem.

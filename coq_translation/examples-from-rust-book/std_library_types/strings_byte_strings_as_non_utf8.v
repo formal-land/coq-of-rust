@@ -6,6 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module str := std.str.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let bytestring :=
       [116, 104, 105, 115, 32, 105, 115, 32, 97, 32, 98, 121, 116, 101, 32, 115, 116, 114, 105, 110, 103] in
@@ -85,4 +86,4 @@ Definition main :=
         tt
       end in
     tt
-    : unit)).
+  : return_type)).

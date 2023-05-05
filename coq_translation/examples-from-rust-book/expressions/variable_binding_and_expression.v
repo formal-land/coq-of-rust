@@ -4,10 +4,11 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let x := 5 in
     let '_ := x in
     let '_ := x.["add"](| 1 |) in
     let '_ := 15 in
     tt
-    : unit)).
+  : return_type)).

@@ -7,20 +7,21 @@ Module HashSet := std.collections.HashSet.
 Definition HashSet := HashSet.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let a :=
-      ((Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 1; 2; 3 ] |)
-      |)).["into_iter"](||)).["collect"](||) in
+      Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 1; 2; 3 ] |)
+      |).["into_iter"](||).["collect"](||) in
     let b :=
-      ((Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 2; 3; 4 ] |)
-      |)).["into_iter"](||)).["collect"](||) in
+      Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 2; 3; 4 ] |)
+      |).["into_iter"](||).["collect"](||) in
     let '_ :=
-      if ((a.["insert"](| 4 |)).["not"](||) : bool) then
+      if (a.["insert"](| 4 |).["not"](||) : bool) then
         _crate.panicking.panic(| "assertion failed: a.insert(4)" |)
       else
         tt in
     let '_ :=
-      if ((a.["contains"](| 4 |)).["not"](||) : bool) then
+      if (a.["contains"](| 4 |).["not"](||) : bool) then
         _crate.panicking.panic(| "assertion failed: a.contains(&4)" |)
       else
         tt in
@@ -53,7 +54,7 @@ Definition main :=
 " ],
             [
               format_argument::["new_debug"](|
-                (a.["union"](| b |)).["collect"](||)
+                a.["union"](| b |).["collect"](||)
               |)
             ]
           |)
@@ -67,7 +68,7 @@ Definition main :=
 " ],
             [
               format_argument::["new_debug"](|
-                (a.["difference"](| b |)).["collect"](||)
+                a.["difference"](| b |).["collect"](||)
               |)
             ]
           |)
@@ -81,7 +82,7 @@ Definition main :=
 " ],
             [
               format_argument::["new_debug"](|
-                (a.["intersection"](| b |)).["collect"](||)
+                a.["intersection"](| b |).["collect"](||)
               |)
             ]
           |)
@@ -95,11 +96,11 @@ Definition main :=
 " ],
             [
               format_argument::["new_debug"](|
-                (a.["symmetric_difference"](| b |)).["collect"](||)
+                a.["symmetric_difference"](| b |).["collect"](||)
               |)
             ]
           |)
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

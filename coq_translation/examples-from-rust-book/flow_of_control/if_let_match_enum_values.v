@@ -12,6 +12,7 @@ End Foo.
 Definition Foo := Foo.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let a := Foo.Bar in
     let b := Foo.Baz in
@@ -66,4 +67,4 @@ Definition main :=
       tt
     else
       tt
-    : unit)).
+  : return_type)).

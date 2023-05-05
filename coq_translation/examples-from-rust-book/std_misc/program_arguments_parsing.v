@@ -6,6 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module env := std.env.
 
 Definition increase (number : i32) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -18,9 +19,10 @@ Definition increase (number : i32) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition decrease (number : i32) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -33,9 +35,10 @@ Definition decrease (number : i32) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition help :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -53,11 +56,12 @@ match_args {increase|decrease} <integer>
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
-    let args := (env.args(||)).["collect"](||) in
+    let args := env.args(||).["collect"](||) in
     match args.["len"](||) with
     | 1 =>
       let '_ :=
@@ -104,7 +108,7 @@ Definition main :=
               |) in
             tt in
           let '_ := help(||) in
-          let '_ := Return(| tt |) in
+          let '_ := M.Return tt in
           tt
         end in
       match cmd[RangeFull {|  |}] with
@@ -125,4 +129,4 @@ Definition main :=
       let '_ := help(||) in
       tt
     end
-    : unit)).
+  : return_type)).

@@ -26,12 +26,13 @@ Module Impl__crate_clone_Clone_for_Book.
   Definition Self := Book.
   
   Definition clone (self : ref Self) :=
+    let return_type := Book in
     ltac:(function (
       let '_ := tt in
       let '_ := tt in
       let '_ := tt in
       self.["deref"](||)
-      : Book)).
+    : return_type)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -50,6 +51,7 @@ Module Impl__crate_marker_Copy_for_Book.
 End Impl__crate_marker_Copy_for_Book.
 
 Definition borrow_book (book : ref Book) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -65,9 +67,10 @@ Definition borrow_book (book : ref Book) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition new_edition (book : mut_ref Book) :=
+  let return_type := unit in
   ltac:(function (
     let '_ := assign book.["year"] 2014 in
     let '_ :=
@@ -84,9 +87,10 @@ Definition new_edition (book : mut_ref Book) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let immutabook :=
       {|
@@ -99,4 +103,4 @@ Definition main :=
     let '_ := borrow_book(| mutabook |) in
     let '_ := new_edition(| mutabook |) in
     tt
-    : unit)).
+  : return_type)).

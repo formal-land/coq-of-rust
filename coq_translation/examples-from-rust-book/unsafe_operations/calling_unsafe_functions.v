@@ -6,6 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module slice := std.slice.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let some_vector :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 1; 2; 3; 4 ] |) |) in
@@ -16,8 +17,8 @@ Definition main :=
       match (some_vector.["as_slice"](||), my_slice) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -33,4 +34,4 @@ Definition main :=
           tt
       end in
     tt
-    : unit)).
+  : return_type)).

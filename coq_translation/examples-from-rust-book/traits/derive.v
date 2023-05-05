@@ -23,7 +23,10 @@ Module Impl__crate_cmp_PartialEq_for_Centimeters.
   Definition Self := Centimeters.
   
   Definition eq (self : ref Self) (other : ref Centimeters) :=
-    ltac:(function ((self.[0]).["eq"](| other.[0] |) : bool)).
+    let return_type := bool in
+    ltac:(function (
+      (self.[0]).["eq"](| other.[0] |)
+    : return_type)).
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -38,9 +41,10 @@ Module Impl__crate_cmp_PartialOrd_for_Centimeters.
   Definition Self := Centimeters.
   
   Definition partial_cmp (self : ref Self) (other : ref Centimeters) :=
+    let return_type := _crate.option.Option _crate.cmp.Ordering in
     ltac:(function (
       _crate.cmp.PartialOrd.partial_cmp(| self.[0], other.[0] |)
-      : _crate.option.Option _crate.cmp.Ordering)).
+    : return_type)).
   
   Global Instance Method_partial_cmp : Notation.Dot "partial_cmp" := {
     Notation.dot := partial_cmp;
@@ -64,13 +68,14 @@ Module Impl__crate_fmt_Debug_for_Inches.
   Definition Self := Inches.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["debug_tuple_field1_finish"](|
         f,
         "Inches",
         self.[0]
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -85,10 +90,11 @@ Module ImplInches.
   Definition Self := Inches.
   
   Definition to_centimeters (self : ref Self) :=
+    let return_type := Centimeters in
     ltac:(function (
       let 'Inches.Build_t inches := self in
-      Centimeters.Build_t ((cast inches f64).["mul"](| 3 (* 2.54 *) |))
-      : Centimeters)).
+      Centimeters.Build_t (cast inches f64).["mul"](| 3 (* 2.54 *) |)
+    : return_type)).
   
   Global Instance Method_to_centimeters : Notation.Dot "to_centimeters" := {
     Notation.dot := to_centimeters;
@@ -105,6 +111,7 @@ End Seconds.
 Definition Seconds := Seconds.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let _one_second := Seconds.Build_t 1 in
     let foot := Inches.Build_t 12 in
@@ -120,7 +127,7 @@ Definition main :=
       tt in
     let meter := Centimeters.Build_t 100 (* 100.0 *) in
     let cmp :=
-      if ((foot.["to_centimeters"](||)).["lt"](| meter |) : bool) then
+      if (foot.["to_centimeters"](||).["lt"](| meter |) : bool) then
         "smaller"
       else
         "bigger" in
@@ -135,4 +142,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

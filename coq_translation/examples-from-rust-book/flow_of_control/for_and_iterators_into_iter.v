@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let names :=
       Slice::["into_vec"](|
@@ -14,7 +15,7 @@ Definition main :=
       loop
         let '_ :=
           match LangItem(| iter |) with
-          | None => Break
+          | None => M.Break
           | Some {| Some.0 := name; |} =>
             match name with
             | "Ferris" =>
@@ -42,4 +43,4 @@ Definition main :=
         from
         for
     end
-    : unit)).
+  : return_type)).

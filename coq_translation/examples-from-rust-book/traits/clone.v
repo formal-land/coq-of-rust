@@ -12,9 +12,10 @@ Module Impl__crate_fmt_Debug_for_Unit.
   Definition Self := Unit.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["write_str"](| f, "Unit" |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -29,7 +30,10 @@ Module Impl__crate_clone_Clone_for_Unit.
   Definition Self := Unit.
   
   Definition clone (self : ref Self) :=
-    ltac:(function (self.["deref"](||) : Unit)).
+    let return_type := Unit in
+    ltac:(function (
+      self.["deref"](||)
+    : return_type)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -63,11 +67,12 @@ Module Impl__crate_clone_Clone_for_Pair.
   Definition Self := Pair.
   
   Definition clone (self : ref Self) :=
+    let return_type := Pair in
     ltac:(function (
       Pair.Build_t
-        (_crate.clone.Clone.clone(| self.[0] |))
-        (_crate.clone.Clone.clone(| self.[1] |))
-      : Pair)).
+        _crate.clone.Clone.clone(| self.[0] |)
+        _crate.clone.Clone.clone(| self.[1] |)
+    : return_type)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -82,6 +87,7 @@ Module Impl__crate_fmt_Debug_for_Pair.
   Definition Self := Pair.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["debug_tuple_field2_finish"](|
         f,
@@ -89,7 +95,7 @@ Module Impl__crate_fmt_Debug_for_Pair.
         self.[0],
         self.[1]
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -101,6 +107,7 @@ Module Impl__crate_fmt_Debug_for_Pair.
 End Impl__crate_fmt_Debug_for_Pair.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let unit := Unit.Build in
     let copied_unit := unit in
@@ -124,7 +131,7 @@ Definition main :=
           |)
         |) in
       tt in
-    let pair := Pair.Build_t (Box::["new"](| 1 |)) (Box::["new"](| 2 |)) in
+    let pair := Pair.Build_t Box::["new"](| 1 |) Box::["new"](| 2 |) in
     let '_ :=
       let '_ :=
         _crate.io._print(|
@@ -159,4 +166,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

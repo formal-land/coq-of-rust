@@ -30,7 +30,10 @@ Module my.
     Definition Self := ClosedBox T.
     
     Definition new (contents : T) :=
-      ltac:(function ({| ClosedBox.contents := contents; |} : ClosedBox T)).
+      let return_type := ClosedBox T in
+      ltac:(function (
+        {| ClosedBox.contents := contents; |}
+      : return_type)).
     
     Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
@@ -65,7 +68,10 @@ Module ImplClosedBox T_2.
   Definition Self := ClosedBox T.
   
   Definition new (contents : T) :=
-    ltac:(function ({| ClosedBox.contents := contents; |} : ClosedBox T)).
+    let return_type := ClosedBox T in
+    ltac:(function (
+      {| ClosedBox.contents := contents; |}
+    : return_type)).
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
@@ -73,6 +79,7 @@ Module ImplClosedBox T_2.
 End ImplClosedBox T_2.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let open_box := {| my.OpenBox.contents := "public information"; |} in
     let '_ :=
@@ -87,4 +94,4 @@ Definition main :=
       tt in
     let _closed_box := my.ClosedBox::["new"](| "classified information" |) in
     tt
-    : unit)).
+  : return_type)).

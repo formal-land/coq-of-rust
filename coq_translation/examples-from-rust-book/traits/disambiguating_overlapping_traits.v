@@ -42,7 +42,10 @@ Module Impl_UsernameWidget_for_Form.
   Definition Self := Form.
   
   Definition get (self : ref Self) :=
-    ltac:(function (self.["username"].["clone"](||) : String)).
+    let return_type := String in
+    ltac:(function (
+      self.["username"].["clone"](||)
+    : return_type)).
   
   Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
@@ -56,7 +59,11 @@ End Impl_UsernameWidget_for_Form.
 Module Impl_AgeWidget_for_Form.
   Definition Self := Form.
   
-  Definition get (self : ref Self) := ltac:(function (self.["age"] : u8)).
+  Definition get (self : ref Self) :=
+    let return_type := u8 in
+    ltac:(function (
+      self.["age"]
+    : return_type)).
   
   Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
@@ -68,6 +75,7 @@ Module Impl_AgeWidget_for_Form.
 End Impl_AgeWidget_for_Form.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let form :=
       {| Form.username := "rustacean".["to_owned"](||); Form.age := 28; |} in
@@ -76,8 +84,8 @@ Definition main :=
       match ("rustacean".["to_owned"](||), username) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -97,8 +105,8 @@ Definition main :=
       match (28, age) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -114,4 +122,4 @@ Definition main :=
           tt
       end in
     tt
-    : unit)).
+  : return_type)).

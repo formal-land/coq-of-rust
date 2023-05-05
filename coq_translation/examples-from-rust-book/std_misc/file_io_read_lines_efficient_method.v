@@ -12,6 +12,7 @@ Module Path := std.path.Path.
 Definition Path := Path.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     if (let_if Ok lines := read_lines(| "./hosts" |) : bool) then
       match LangItem(| lines |) with
@@ -19,7 +20,7 @@ Definition main :=
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := line; |} =>
               if (let_if Ok ip := line : bool) then
                 let '_ :=
@@ -42,14 +43,15 @@ Definition main :=
       end
     else
       tt
-    : unit)).
+  : return_type)).
 
 Definition read_lines {P : Set} `{AsRef.Trait Path P} (filename : P) :=
+  let return_type := io.Result (io.Lines (io.BufReader File)) in
   ltac:(function (
     let file :=
       match LangItem(| File::["open"](| filename |) |) with
-      | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+      | Break {| Break.0 := residual; |} => M.Return LangItem(| residual |)
       | Continue {| Continue.0 := val; |} => val
       end in
-    Ok ((io.BufReader::["new"](| file |)).["lines"](||))
-    : io.Result (io.Lines (io.BufReader File)))).
+    Ok io.BufReader::["new"](| file |).["lines"](||)
+  : return_type)).

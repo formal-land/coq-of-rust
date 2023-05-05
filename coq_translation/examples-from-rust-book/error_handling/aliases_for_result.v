@@ -11,16 +11,18 @@ Definition AliasedResult : Set := Result T ParseIntError.
 Definition multiply
     (first_number_str : ref str)
     (second_number_str : ref str) :=
+  let return_type := AliasedResult i32 in
   ltac:(function (
-    (first_number_str.["parse"](||)).["and_then"](|
+    first_number_str.["parse"](||).["and_then"](|
       fun first_number =>
-        (second_number_str.["parse"](||)).["map"](|
+        second_number_str.["parse"](||).["map"](|
           fun second_number => first_number.["mul"](| second_number |)
         |)
     |)
-    : AliasedResult i32)).
+  : return_type)).
 
 Definition print (result : AliasedResult i32) :=
+  let return_type := unit in
   ltac:(function (
     match result with
     | Ok n =>
@@ -44,11 +46,12 @@ Definition print (result : AliasedResult i32) :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ := print(| multiply(| "10", "2" |) |) in
     let '_ := print(| multiply(| "t", "2" |) |) in
     tt
-    : unit)).
+  : return_type)).

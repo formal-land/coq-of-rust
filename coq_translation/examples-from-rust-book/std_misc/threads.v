@@ -8,6 +8,7 @@ Module thread := std.thread.
 Definition NTHREADS : u32 := 10.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let children := _crate.vec.Vec::["new"](||) in
     let '_ :=
@@ -17,7 +18,7 @@ Definition main :=
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := i; |} =>
               let '_ :=
                 children.["push"](|
@@ -47,7 +48,7 @@ Definition main :=
       loop
         let '_ :=
           match LangItem(| iter |) with
-          | None => Break
+          | None => M.Break
           | Some {| Some.0 := child; |} =>
             let '_ := child.["join"](||) in
             tt
@@ -56,4 +57,4 @@ Definition main :=
         from
         for
     end
-    : unit)).
+  : return_type)).

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition function :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -13,10 +14,11 @@ Definition function :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Module cool.
   Definition function :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -27,10 +29,11 @@ Module cool.
           |) in
         tt in
       tt
-      : unit)).
+    : return_type)).
 End cool.
 
 Definition function :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -40,10 +43,11 @@ Definition function :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Module my.
   Definition function :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -53,10 +57,11 @@ Module my.
           |) in
         tt in
       tt
-      : unit)).
+    : return_type)).
   
   Module cool.
     Definition function :=
+      let return_type := unit in
       ltac:(function (
         let '_ :=
           let '_ :=
@@ -68,10 +73,11 @@ Module my.
             |) in
           tt in
         tt
-        : unit)).
+      : return_type)).
   End cool.
   
   Definition indirect_call :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -88,10 +94,11 @@ Module my.
       let '_ := super.function(||) in
       let '_ := root_function(||) in
       tt
-      : unit)).
+    : return_type)).
 End my.
 
 Definition function :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -101,10 +108,11 @@ Definition function :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Module cool.
   Definition function :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -116,10 +124,11 @@ Module cool.
           |) in
         tt in
       tt
-      : unit)).
+    : return_type)).
 End cool.
 
 Definition function :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -130,9 +139,10 @@ Definition function :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition indirect_call :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -149,12 +159,13 @@ Definition indirect_call :=
     let '_ := super.function(||) in
     let '_ := root_function(||) in
     tt
-    : unit)).
+  : return_type)).
 
 Module root_function := crate.cool.function.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ := my.indirect_call(||) in
     tt
-    : unit)).
+  : return_type)).

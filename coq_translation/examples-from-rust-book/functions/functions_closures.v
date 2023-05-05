@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let outer_var := 42 in
     let closure_annotated := fun i => i.["add"](| outer_var |) in
@@ -40,4 +41,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition eat_box_i32 (boxed_i32 : Box i32) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -16,9 +17,10 @@ Definition eat_box_i32 (boxed_i32 : Box i32) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition borrow_i32 (borrowed_i32 : ref i32) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -31,9 +33,10 @@ Definition borrow_i32 (borrowed_i32 : ref i32) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let boxed_i32 := Box::["new"](| 5 |) in
     let stacked_i32 := 6 in
@@ -45,4 +48,4 @@ Definition main :=
       tt in
     let '_ := eat_box_i32(| boxed_i32 |) in
     tt
-    : unit)).
+  : return_type)).

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let pangram := "the quick brown fox jumps over the lazy dog" in
     let '_ :=
@@ -24,12 +25,12 @@ Definition main :=
         |) in
       tt in
     let '_ :=
-      match LangItem(| (pangram.["split_whitespace"](||)).["rev"](||) |) with
+      match LangItem(| pangram.["split_whitespace"](||).["rev"](||) |) with
       | iter =>
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := word; |} =>
               let '_ :=
                 let '_ :=
@@ -47,7 +48,7 @@ Definition main :=
           from
           for
       end in
-    let chars := (pangram.["chars"](||)).["collect"](||) in
+    let chars := pangram.["chars"](||).["collect"](||) in
     let '_ := chars.["sort"](||) in
     let '_ := chars.["dedup"](||) in
     let string := String::["new"](||) in
@@ -57,7 +58,7 @@ Definition main :=
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := c; |} =>
               let '_ := string.["push"](| c |) in
               let '_ := string.["push_str"](| ", " |) in
@@ -102,4 +103,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

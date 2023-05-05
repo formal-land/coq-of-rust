@@ -6,6 +6,7 @@ Import Root.std.prelude.rust_2015.
 Definition message : ref str := "Hello, World!".
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -95,4 +96,4 @@ Definition main :=
             |) in
           tt in
         tt
-    : unit)).
+  : return_type)).

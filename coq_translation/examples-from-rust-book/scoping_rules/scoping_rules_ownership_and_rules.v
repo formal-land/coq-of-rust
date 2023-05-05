@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition destroy_box (c : Box i32) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -16,9 +17,10 @@ Definition destroy_box (c : Box i32) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let x := 5 in
     let y := x in
@@ -49,4 +51,4 @@ Definition main :=
     let b := a in
     let '_ := destroy_box(| b |) in
     tt
-    : unit)).
+  : return_type)).

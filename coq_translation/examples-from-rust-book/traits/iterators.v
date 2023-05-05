@@ -24,12 +24,13 @@ Module Impl_Iterator_for_Fibonacci.
   Definition Item : Set := u32.
   
   Definition next (self : mut_ref Self) :=
+    let return_type := Option ImplSelf.Item in
     ltac:(function (
       let current := self.["curr"] in
       let '_ := assign self.["curr"] self.["next"] in
-      let '_ := assign self.["next"] (current.["add"](| self.["next"] |)) in
+      let '_ := assign self.["next"] current.["add"](| self.["next"] |) in
       Some current
-      : Option ImplSelf.Item)).
+    : return_type)).
   
   Global Instance Method_next : Notation.Dot "next" := {
     Notation.dot := next;
@@ -41,9 +42,13 @@ Module Impl_Iterator_for_Fibonacci.
 End Impl_Iterator_for_Fibonacci.
 
 Definition fibonacci :=
-  ltac:(function ({| Fibonacci.curr := 0; Fibonacci.next := 1; |} : Fibonacci)).
+  let return_type := Fibonacci in
+  ltac:(function (
+    {| Fibonacci.curr := 0; Fibonacci.next := 1; |}
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let sequence := Range {| Range.start := 0; Range.end := 3; |} in
     let '_ :=
@@ -110,7 +115,7 @@ Definition main :=
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := i; |} =>
               let '_ :=
                 let '_ :=
@@ -138,12 +143,12 @@ Definition main :=
         |) in
       tt in
     let '_ :=
-      match LangItem(| (fibonacci(||)).["take"](| 4 |) |) with
+      match LangItem(| fibonacci(||).["take"](| 4 |) |) with
       | iter =>
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := i; |} =>
               let '_ :=
                 let '_ :=
@@ -171,12 +176,12 @@ Definition main :=
         |) in
       tt in
     let '_ :=
-      match LangItem(| ((fibonacci(||)).["skip"](| 4 |)).["take"](| 4 |) |) with
+      match LangItem(| fibonacci(||).["skip"](| 4 |).["take"](| 4 |) |) with
       | iter =>
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := i; |} =>
               let '_ :=
                 let '_ :=
@@ -210,7 +215,7 @@ Definition main :=
       loop
         let '_ :=
           match LangItem(| iter |) with
-          | None => Break
+          | None => M.Break
           | Some {| Some.0 := i; |} =>
             let '_ :=
               let '_ :=
@@ -228,4 +233,4 @@ Definition main :=
         from
         for
     end
-    : unit)).
+  : return_type)).

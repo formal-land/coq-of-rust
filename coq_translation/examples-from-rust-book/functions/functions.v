@@ -4,23 +4,26 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ := fizzbuzz_to(| 100 |) in
     tt
-    : unit)).
+  : return_type)).
 
 Definition is_divisible_by (lhs : u32) (rhs : u32) :=
+  let return_type := bool in
   ltac:(function (
     let '_ :=
       if (rhs.["eq"](| 0 |) : bool) then
-        let '_ := Return(| false |) in
+        let '_ := M.Return false in
         tt
       else
         tt in
-    (lhs.["rem"](| rhs |)).["eq"](| 0 |)
-    : bool)).
+    lhs.["rem"](| rhs |).["eq"](| 0 |)
+  : return_type)).
 
 Definition fizzbuzz (n : u32) :=
+  let return_type := unit in
   ltac:(function (
     if (is_divisible_by(| n, 15 |) : bool) then
       let '_ :=
@@ -62,16 +65,17 @@ Definition fizzbuzz (n : u32) :=
               |) in
             tt in
           tt
-    : unit)).
+  : return_type)).
 
 Definition fizzbuzz_to (n : u32) :=
+  let return_type := unit in
   ltac:(function (
     match LangItem(| LangItem(| 1, n |) |) with
     | iter =>
       loop
         let '_ :=
           match LangItem(| iter |) with
-          | None => Break
+          | None => M.Break
           | Some {| Some.0 := n; |} =>
             let '_ := fizzbuzz(| n |) in
             tt
@@ -80,4 +84,4 @@ Definition fizzbuzz_to (n : u32) :=
         from
         for
     end
-    : unit)).
+  : return_type)).

@@ -16,6 +16,7 @@ Module thread := std.thread.
 Definition NTHREADS : i32 := 3.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '(tx, rx) := mpsc.channel(||) in
     let children := Vec::["new"](||) in
@@ -26,13 +27,13 @@ Definition main :=
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := id; |} =>
               let thread_tx := tx.["clone"](||) in
               let child :=
                 thread.spawn(|
                   fun  =>
-                    let '_ := (thread_tx.["send"](| id |)).["unwrap"](||) in
+                    let '_ := thread_tx.["send"](| id |).["unwrap"](||) in
                     let '_ :=
                       let '_ :=
                         _crate.io._print(|
@@ -60,7 +61,7 @@ Definition main :=
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := _; |} =>
               let '_ := ids.["push"](| rx.["recv"](||) |) in
               tt
@@ -75,10 +76,10 @@ Definition main :=
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := child; |} =>
               let '_ :=
-                (child.["join"](||)).["expect"](|
+                child.["join"](||).["expect"](|
                   "oops! the child thread panicked"
                 |) in
               tt
@@ -98,4 +99,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

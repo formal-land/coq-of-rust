@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let decimal := 65 (* 65.4321 *) in
     let integer := decimal in
@@ -50,7 +51,7 @@ Definition main :=
           format_arguments::["new_v1"](|
             [ "  -1 as a u8 is : "; "
 " ],
-            [ format_argument::["new_display"](| cast (1.["neg"](||)) u8 |) ]
+            [ format_argument::["new_display"](| cast 1.["neg"](||) u8 |) ]
           |)
         |) in
       tt in
@@ -122,7 +123,7 @@ Definition main :=
 " ],
             [
               format_argument::["new_display"](|
-                cast (100 (* 100.0 *).["neg"](||)) u8
+                cast 100 (* 100.0 *).["neg"](||) u8
               |)
             ]
           |)
@@ -160,7 +161,7 @@ Definition main :=
 " ],
             [
               format_argument::["new_display"](|
-                (100 (* 100.0 *).["neg"](||)).["to_int_unchecked"](||)
+                100 (* 100.0 *).["neg"](||).["to_int_unchecked"](||)
               |)
             ]
           |)
@@ -181,4 +182,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

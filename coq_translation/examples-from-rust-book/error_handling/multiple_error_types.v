@@ -4,12 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition double_first (vec : Vec (ref str)) :=
+  let return_type := i32 in
   ltac:(function (
-    let first := (vec.["first"](||)).["unwrap"](||) in
-    2.["mul"](| (first.["parse"](||)).["unwrap"](||) |)
-    : i32)).
+    let first := vec.["first"](||).["unwrap"](||) in
+    2.["mul"](| first.["parse"](||).["unwrap"](||) |)
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let numbers :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ "42"; "93"; "18" ] |)
@@ -50,4 +52,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

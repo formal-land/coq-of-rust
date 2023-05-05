@@ -18,9 +18,10 @@ Module Impl__crate_fmt_Debug_for_EmptyVec.
   Definition Self := EmptyVec.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["write_str"](| f, "EmptyVec" |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -35,7 +36,10 @@ Module Impl__crate_clone_Clone_for_EmptyVec.
   Definition Self := EmptyVec.
   
   Definition clone (self : ref Self) :=
-    ltac:(function (EmptyVec.Build : EmptyVec)).
+    let return_type := EmptyVec in
+    ltac:(function (
+      EmptyVec.Build
+    : return_type)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -50,11 +54,12 @@ Module Impl_fmt_Display_for_EmptyVec.
   Definition Self := EmptyVec.
   
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
+    let return_type := fmt.Result in
     ltac:(function (
       f.["write_fmt"](|
         format_arguments::["new_const"](| [ "invalid first item to double" ] |)
       |)
-      : fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -72,17 +77,19 @@ Module Impl_error_Error_for_EmptyVec.
 End Impl_error_Error_for_EmptyVec.
 
 Definition double_first (vec : Vec (ref str)) :=
+  let return_type := Result i32 in
   ltac:(function (
-    ((vec.["first"](||)).["ok_or_else"](| fun  => EmptyVec.Build.["into"](||)
-    |)).["and_then"](|
+    vec.["first"](||).["ok_or_else"](| fun  => EmptyVec.Build.["into"](||)
+    |).["and_then"](|
       fun s =>
-        ((s.["parse"](||)).["map_err"](| fun e => e.["into"](||) |)).["map"](|
+        s.["parse"](||).["map_err"](| fun e => e.["into"](||) |).["map"](|
           fun i => 2.["mul"](| i |)
         |)
     |)
-    : Result i32)).
+  : return_type)).
 
 Definition print (result : Result i32) :=
+  let return_type := unit in
   ltac:(function (
     match result with
     | Ok n =>
@@ -106,9 +113,10 @@ Definition print (result : Result i32) :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let numbers :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ "42"; "93"; "18" ] |)
@@ -122,4 +130,4 @@ Definition main :=
     let '_ := print(| double_first(| empty |) |) in
     let '_ := print(| double_first(| strings |) |) in
     tt
-    : unit)).
+  : return_type)).

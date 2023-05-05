@@ -7,10 +7,11 @@ Module Path := std.path.Path.
 Definition Path := Path.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let path := Path::["new"](| "." |) in
     let _display := path.["display"](||) in
-    let new_path := (path.["join"](| "a" |)).["join"](| "b" |) in
+    let new_path := path.["join"](| "a" |).["join"](| "b" |) in
     let '_ := new_path.["push"](| "c" |) in
     let '_ := new_path.["push"](| "myfile.tar.gz" |) in
     let '_ := new_path.["set_file_name"](| "package.tgz" |) in
@@ -28,4 +29,4 @@ Definition main :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).

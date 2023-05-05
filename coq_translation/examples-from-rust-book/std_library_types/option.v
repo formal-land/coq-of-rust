@@ -4,14 +4,16 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition checked_division (dividend : i32) (divisor : i32) :=
+  let return_type := Option i32 in
   ltac:(function (
     if (divisor.["eq"](| 0 |) : bool) then
       None
     else
-      Some (dividend.["div"](| divisor |))
-    : Option i32)).
+      Some dividend.["div"](| divisor |)
+  : return_type)).
 
 Definition try_division (dividend : i32) (divisor : i32) :=
+  let return_type := unit in
   ltac:(function (
     match checked_division(| dividend, divisor |) with
     | None =>
@@ -42,9 +44,10 @@ Definition try_division (dividend : i32) (divisor : i32) :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ := try_division(| 4, 2 |) in
     let '_ := try_division(| 1, 0 |) in
@@ -78,4 +81,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

@@ -3,9 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition age := ltac:(function (15 : u32)).
+Definition age :=
+  let return_type := u32 in
+  ltac:(function (
+    15
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -57,4 +62,4 @@ Definition main :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).

@@ -58,7 +58,10 @@ Module ImplSheep.
   Definition Self := Sheep.
   
   Definition is_naked (self : ref Self) :=
-    ltac:(function (self.["naked"] : bool)).
+    let return_type := bool in
+    ltac:(function (
+      self.["naked"]
+    : return_type)).
   
   Global Instance Method_is_naked : Notation.Dot "is_naked" := {
     Notation.dot := is_naked;
@@ -69,26 +72,33 @@ Module Impl_Animal_for_Sheep.
   Definition Self := Sheep.
   
   Definition new (name : ref str) :=
-    ltac:(function ({| Sheep.name := name; Sheep.naked := false; |} : Sheep)).
+    let return_type := Sheep in
+    ltac:(function (
+      {| Sheep.name := name; Sheep.naked := false; |}
+    : return_type)).
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
   Definition name (self : ref Self) :=
-    ltac:(function (self.["name"] : ref str)).
+    let return_type := ref str in
+    ltac:(function (
+      self.["name"]
+    : return_type)).
   
   Global Instance Method_name : Notation.Dot "name" := {
     Notation.dot := name;
   }.
   
   Definition noise (self : ref Self) :=
+    let return_type := ref str in
     ltac:(function (
       if (self.["is_naked"](||) : bool) then
         "baaaaah?"
       else
         "baaaaah!"
-      : ref str)).
+    : return_type)).
   
   Global Instance Method_noise : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -110,7 +120,7 @@ Module Impl_Animal_for_Sheep.
           |) in
         tt in
       tt
-      : _)).
+    : _)).
   
   Global Instance Method_talk : Notation.Dot "talk" := {
     Notation.dot := talk;
@@ -153,7 +163,7 @@ Module ImplSheep_2.
           tt in
         let '_ := assign self.["naked"] true in
         tt
-      : _)).
+    : _)).
   
   Global Instance Method_shear : Notation.Dot "shear" := {
     Notation.dot := shear;
@@ -161,10 +171,11 @@ Module ImplSheep_2.
 End ImplSheep_2.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
-    let dolly := ((Animal.new(| "Dolly" |)) : Sheep) in
+    let dolly := (Animal.new(| "Dolly" |) : Sheep) in
     let '_ := dolly.["talk"](||) in
     let '_ := dolly.["shear"](||) in
     let '_ := dolly.["talk"](||) in
     tt
-    : unit)).
+  : return_type)).

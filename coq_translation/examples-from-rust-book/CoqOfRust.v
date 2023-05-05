@@ -90,12 +90,12 @@ Parameter bang : forall {A : Set}, M A -> A.
 *)
 Notation "e (| e1 , .. , en |)" :=
   (bang ((.. (e e1) ..) en))
-  (at level 40).
+  (at level 0).
 
 (** Particular case when there are no arguments. *)
 Notation "e (||)" :=
   (bang e)
-  (at level 40).
+  (at level 0).
 
 (** Make a monadic translation at the level of a block, following the [bang]
     instruction. *)

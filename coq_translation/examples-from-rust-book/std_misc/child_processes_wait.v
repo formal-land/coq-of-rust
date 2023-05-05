@@ -7,11 +7,12 @@ Module Command := std.process.Command.
 Definition Command := Command.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let child :=
-      (((Command::["new"](| "sleep" |)).["arg"](| "5"
-      |)).["spawn"](||)).["unwrap"](||) in
-    let _result := (child.["wait"](||)).["unwrap"](||) in
+      Command::["new"](| "sleep" |).["arg"](| "5"
+      |).["spawn"](||).["unwrap"](||) in
+    let _result := child.["wait"](||).["unwrap"](||) in
     let '_ :=
       let '_ :=
         _crate.io._print(|
@@ -20,4 +21,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

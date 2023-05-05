@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let n := 5 in
     let '_ :=
@@ -42,7 +43,7 @@ Definition main :=
             tt in
           tt in
     let big_n :=
-      if ((n.["lt"](| 10 |)).["andb"](| n.["gt"](| 10.["neg"](||) |) |) : bool)
+      if (n.["lt"](| 10 |).["andb"](| n.["gt"](| 10.["neg"](||) |) |) : bool)
       then
         let '_ :=
           let '_ :=
@@ -79,4 +80,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

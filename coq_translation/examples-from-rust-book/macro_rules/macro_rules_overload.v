@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -15,8 +16,8 @@ Definition main :=
               format_argument::["new_debug"](| "1i32 + 1 == 2i32" |);
               format_argument::["new_debug"](| "2i32 * 2 == 4i32" |);
               format_argument::["new_debug"](|
-                ((1.["add"](| 1 |)).["eq"](| 2 |)).["andb"](|
-                  (2.["mul"](| 2 |)).["eq"](| 4 |)
+                1.["add"](| 1 |).["eq"](| 2 |).["andb"](|
+                  2.["mul"](| 2 |).["eq"](| 4 |)
                 |)
               |)
             ]
@@ -38,4 +39,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

@@ -20,6 +20,7 @@ End Color.
 Definition Color := Color.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -84,4 +85,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

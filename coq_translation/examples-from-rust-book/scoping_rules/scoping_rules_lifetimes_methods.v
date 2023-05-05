@@ -19,7 +19,7 @@ Module ImplOwner.
     ltac:(function (
       let '_ := (self.[0]).["add_assign"](| 1 |) in
       tt
-      : _)).
+    : _)).
   
   Global Instance Method_add_one : Notation.Dot "add_one" := {
     Notation.dot := add_one;
@@ -38,7 +38,7 @@ Module ImplOwner.
           |) in
         tt in
       tt
-      : _)).
+    : _)).
   
   Global Instance Method_print : Notation.Dot "print" := {
     Notation.dot := print;
@@ -46,9 +46,10 @@ Module ImplOwner.
 End ImplOwner.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let owner := Owner.Build_t 18 in
     let '_ := owner.["add_one"](||) in
     let '_ := owner.["print"](||) in
     tt
-    : unit)).
+  : return_type)).

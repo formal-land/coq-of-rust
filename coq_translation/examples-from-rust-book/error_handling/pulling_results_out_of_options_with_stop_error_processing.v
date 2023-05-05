@@ -7,16 +7,17 @@ Module ParseIntError := std.num.ParseIntError.
 Definition ParseIntError := ParseIntError.t.
 
 Definition double_first (vec : Vec (ref str)) :=
+  let return_type := Result (Option i32) ParseIntError in
   ltac:(function (
     let opt :=
-      (vec.["first"](||)).["map"](|
-        fun first =>
-          (first.["parse"](||)).["map"](| fun n => 2.["mul"](| n |) |)
+      vec.["first"](||).["map"](|
+        fun first => first.["parse"](||).["map"](| fun n => 2.["mul"](| n |) |)
       |) in
     opt.["map_or"](| Ok None, fun r => r.["map"](| Some |) |)
-    : Result (Option i32) ParseIntError)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let numbers :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ "42"; "93"; "18" ] |)
@@ -57,4 +58,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

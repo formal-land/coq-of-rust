@@ -7,12 +7,13 @@ Module ParseIntError := std.num.ParseIntError.
 Definition ParseIntError := ParseIntError.t.
 
 Definition main :=
+  let return_type := Result unit ParseIntError in
   ltac:(function (
     let number_str := "10" in
     let number :=
       match number_str.["parse"](||) with
       | Ok number => number
-      | Err e => Return(| Err e |)
+      | Err e => M.Return (Err e)
       end in
     let '_ :=
       let '_ :=
@@ -25,4 +26,4 @@ Definition main :=
         |) in
       tt in
     Ok tt
-    : Result unit ParseIntError)).
+  : return_type)).

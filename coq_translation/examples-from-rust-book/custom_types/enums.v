@@ -21,6 +21,7 @@ End WebEvent.
 Definition WebEvent := WebEvent.t.
 
 Definition inspect (event : WebEvent) :=
+  let return_type := unit in
   ltac:(function (
     match event with
     | WebEvent.PageLoad =>
@@ -78,12 +79,13 @@ Definition inspect (event : WebEvent) :=
         tt in
       tt
     end
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let pressed := WebEvent.KeyPress "x"%char in
-    let pasted := WebEvent.Paste ("my text".["to_owned"](||)) in
+    let pasted := WebEvent.Paste "my text".["to_owned"](||) in
     let click :=
       WebEvent.Click {| WebEvent.Click.x := 20; WebEvent.Click.y := 80; |} in
     let load := WebEvent.PageLoad in
@@ -94,4 +96,4 @@ Definition main :=
     let '_ := inspect(| load |) in
     let '_ := inspect(| unload |) in
     tt
-    : unit)).
+  : return_type)).

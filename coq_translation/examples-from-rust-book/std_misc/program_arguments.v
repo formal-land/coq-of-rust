@@ -6,8 +6,9 @@ Import Root.std.prelude.rust_2015.
 Module env := std.env.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
-    let args := (env.args(||)).["collect"](||) in
+    let args := env.args(||).["collect"](||) in
     let '_ :=
       let '_ :=
         _crate.io._print(|
@@ -25,7 +26,7 @@ Definition main :=
             [ "I got "; " arguments: "; ".
 " ],
             [
-              format_argument::["new_debug"](| (args.["len"](||)).["sub"](| 1 |)
+              format_argument::["new_debug"](| args.["len"](||).["sub"](| 1 |)
               |);
               format_argument::["new_debug"](|
                 args[RangeFrom {| RangeFrom.start := 1; |}]
@@ -35,4 +36,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

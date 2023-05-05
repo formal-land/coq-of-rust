@@ -3,14 +3,27 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition used_function := ltac:(function (tt : unit)).
+Definition used_function :=
+  let return_type := unit in
+  ltac:(function (
+    tt
+  : return_type)).
 
-Definition unused_function := ltac:(function (tt : unit)).
+Definition unused_function :=
+  let return_type := unit in
+  ltac:(function (
+    tt
+  : return_type)).
 
-Definition noisy_unused_function := ltac:(function (tt : unit)).
+Definition noisy_unused_function :=
+  let return_type := unit in
+  ltac:(function (
+    tt
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ := used_function(||) in
     tt
-    : unit)).
+  : return_type)).

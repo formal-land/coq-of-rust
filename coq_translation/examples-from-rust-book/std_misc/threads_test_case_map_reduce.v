@@ -6,6 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module thread := std.thread.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let data :=
       "86967897737416471853297327050364959
@@ -24,7 +25,7 @@ Definition main :=
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := (i, data_segment); |} =>
               let '_ :=
                 let '_ :=
@@ -44,12 +45,12 @@ Definition main :=
                   thread.spawn(|
                     fun  =>
                       let result :=
-                        ((data_segment.["chars"](||)).["map"](|
+                        data_segment.["chars"](||).["map"](|
                           fun c =>
-                            (c.["to_digit"](| 10 |)).["expect"](|
+                            c.["to_digit"](| 10 |).["expect"](|
                               "should be a digit"
                             |)
-                        |)).["sum"](||) in
+                        |).["sum"](||) in
                       let '_ :=
                         let '_ :=
                           _crate.io._print(|
@@ -73,9 +74,9 @@ Definition main :=
           for
       end in
     let final_result :=
-      ((children.["into_iter"](||)).["map"](|
-        fun c => (c.["join"](||)).["unwrap"](||)
-      |)).["sum"](||) in
+      children.["into_iter"](||).["map"](|
+        fun c => c.["join"](||).["unwrap"](||)
+      |).["sum"](||) in
     let '_ :=
       let '_ :=
         _crate.io._print(|
@@ -87,4 +88,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition print_one (x : ref i32) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -16,15 +17,17 @@ Definition print_one (x : ref i32) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition add_one (x : mut_ref i32) :=
+  let return_type := unit in
   ltac:(function (
-    let '_ := (x.["deref"](||)).["add_assign"](| 1 |) in
+    let '_ := x.["deref"](||).["add_assign"](| 1 |) in
     tt
-    : unit)).
+  : return_type)).
 
 Definition print_multi (x : ref i32) (y : ref i32) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -40,12 +43,16 @@ Definition print_multi (x : ref i32) (y : ref i32) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition pass_x (x : ref i32) (arg : ref i32) :=
-  ltac:(function (x : ref i32)).
+  let return_type := ref i32 in
+  ltac:(function (
+    x
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let x := 7 in
     let y := 9 in
@@ -57,4 +64,4 @@ Definition main :=
     let '_ := add_one(| t |) in
     let '_ := print_one(| t |) in
     tt
-    : unit)).
+  : return_type)).

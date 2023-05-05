@@ -5,6 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module my_mod.
   Definition private_function :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -16,9 +17,10 @@ Module my_mod.
           |) in
         tt in
       tt
-      : unit)).
+    : return_type)).
   
   Definition function :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -29,9 +31,10 @@ Module my_mod.
           |) in
         tt in
       tt
-      : unit)).
+    : return_type)).
   
   Definition indirect_access :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -44,10 +47,11 @@ Module my_mod.
         tt in
       let '_ := private_function(||) in
       tt
-      : unit)).
+    : return_type)).
   
   Module nested.
     Definition function :=
+      let return_type := unit in
       ltac:(function (
         let '_ :=
           let '_ :=
@@ -59,9 +63,10 @@ Module my_mod.
             |) in
           tt in
         tt
-        : unit)).
+      : return_type)).
     
     Definition private_function :=
+      let return_type := unit in
       ltac:(function (
         let '_ :=
           let '_ :=
@@ -73,9 +78,10 @@ Module my_mod.
             |) in
           tt in
         tt
-        : unit)).
+      : return_type)).
     
     Definition public_function_in_my_mod :=
+      let return_type := unit in
       ltac:(function (
         let '_ :=
           let '_ :=
@@ -90,9 +96,10 @@ Module my_mod.
           tt in
         let '_ := public_function_in_nested(||) in
         tt
-        : unit)).
+      : return_type)).
     
     Definition public_function_in_nested :=
+      let return_type := unit in
       ltac:(function (
         let '_ :=
           let '_ :=
@@ -104,9 +111,10 @@ Module my_mod.
             |) in
           tt in
         tt
-        : unit)).
+      : return_type)).
     
     Definition public_function_in_super_mod :=
+      let return_type := unit in
       ltac:(function (
         let '_ :=
           let '_ :=
@@ -118,10 +126,11 @@ Module my_mod.
             |) in
           tt in
         tt
-        : unit)).
+      : return_type)).
   End nested.
   
   Definition call_public_function_in_my_mod :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -139,9 +148,10 @@ Module my_mod.
         tt in
       let '_ := nested.public_function_in_super_mod(||) in
       tt
-      : unit)).
+    : return_type)).
   
   Definition public_function_in_crate :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -153,10 +163,11 @@ Module my_mod.
           |) in
         tt in
       tt
-      : unit)).
+    : return_type)).
   
   Module private_nested.
     Definition function :=
+      let return_type := unit in
       ltac:(function (
         let '_ :=
           let '_ :=
@@ -168,9 +179,10 @@ Module my_mod.
             |) in
           tt in
         tt
-        : unit)).
+      : return_type)).
     
     Definition restricted_function :=
+      let return_type := unit in
       ltac:(function (
         let '_ :=
           let '_ :=
@@ -182,11 +194,12 @@ Module my_mod.
             |) in
           tt in
         tt
-        : unit)).
+      : return_type)).
   End private_nested.
 End my_mod.
 
 Definition private_function :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -198,9 +211,10 @@ Definition private_function :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition function :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -211,9 +225,10 @@ Definition function :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition indirect_access :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -226,10 +241,11 @@ Definition indirect_access :=
       tt in
     let '_ := private_function(||) in
     tt
-    : unit)).
+  : return_type)).
 
 Module nested.
   Definition function :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -241,9 +257,10 @@ Module nested.
           |) in
         tt in
       tt
-      : unit)).
+    : return_type)).
   
   Definition private_function :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -255,9 +272,10 @@ Module nested.
           |) in
         tt in
       tt
-      : unit)).
+    : return_type)).
   
   Definition public_function_in_my_mod :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -271,9 +289,10 @@ Module nested.
         tt in
       let '_ := public_function_in_nested(||) in
       tt
-      : unit)).
+    : return_type)).
   
   Definition public_function_in_nested :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -285,9 +304,10 @@ Module nested.
           |) in
         tt in
       tt
-      : unit)).
+    : return_type)).
   
   Definition public_function_in_super_mod :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -299,10 +319,11 @@ Module nested.
           |) in
         tt in
       tt
-      : unit)).
+    : return_type)).
 End nested.
 
 Definition function :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -314,9 +335,10 @@ Definition function :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition private_function :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -328,9 +350,10 @@ Definition private_function :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition public_function_in_my_mod :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -343,9 +366,10 @@ Definition public_function_in_my_mod :=
       tt in
     let '_ := public_function_in_nested(||) in
     tt
-    : unit)).
+  : return_type)).
 
 Definition public_function_in_nested :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -357,9 +381,10 @@ Definition public_function_in_nested :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition public_function_in_super_mod :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -371,9 +396,10 @@ Definition public_function_in_super_mod :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition call_public_function_in_my_mod :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -391,9 +417,10 @@ Definition call_public_function_in_my_mod :=
       tt in
     let '_ := nested.public_function_in_super_mod(||) in
     tt
-    : unit)).
+  : return_type)).
 
 Definition public_function_in_crate :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -405,10 +432,11 @@ Definition public_function_in_crate :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Module private_nested.
   Definition function :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -420,9 +448,10 @@ Module private_nested.
           |) in
         tt in
       tt
-      : unit)).
+    : return_type)).
   
   Definition restricted_function :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -434,10 +463,11 @@ Module private_nested.
           |) in
         tt in
       tt
-      : unit)).
+    : return_type)).
 End private_nested.
 
 Definition function :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -449,9 +479,10 @@ Definition function :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition restricted_function :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -463,9 +494,10 @@ Definition restricted_function :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition function :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -475,9 +507,10 @@ Definition function :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ := function(||) in
     let '_ := my_mod.function(||) in
@@ -486,4 +519,4 @@ Definition main :=
     let '_ := my_mod.call_public_function_in_my_mod(||) in
     let '_ := my_mod.public_function_in_crate(||) in
     tt
-    : unit)).
+  : return_type)).

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let _mutable_integer := 7 in
     let '_ :=
@@ -11,4 +12,4 @@ Definition main :=
       tt in
     let '_ := assign _mutable_integer 3 in
     tt
-    : unit)).
+  : return_type)).

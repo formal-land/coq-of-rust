@@ -6,6 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module other_function := deeply.nested.function.
 
 Definition function :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -15,11 +16,12 @@ Definition function :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Module deeply.
   Module nested.
     Definition function :=
+      let return_type := unit in
       ltac:(function (
         let '_ :=
           let '_ :=
@@ -31,12 +33,13 @@ Module deeply.
             |) in
           tt in
         tt
-        : unit)).
+      : return_type)).
   End nested.
 End deeply.
 
 Module nested.
   Definition function :=
+    let return_type := unit in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -48,10 +51,11 @@ Module nested.
           |) in
         tt in
       tt
-      : unit)).
+    : return_type)).
 End nested.
 
 Definition function :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -63,9 +67,10 @@ Definition function :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ := other_function(||) in
     let '_ :=
@@ -87,6 +92,6 @@ Definition main :=
       tt in
     let '_ := function(||) in
     tt
-    : unit)).
+  : return_type)).
 
 Module function := crate.deeply.nested.function.

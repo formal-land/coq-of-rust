@@ -3,4 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition main := ltac:(function (tt : unit)).
+Definition main :=
+  let return_type := unit in
+  ltac:(function (
+    tt
+  : return_type)).

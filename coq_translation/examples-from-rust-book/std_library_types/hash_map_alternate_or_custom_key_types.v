@@ -32,11 +32,12 @@ Module Impl__crate_cmp_PartialEq_for_Account.
   Definition Self := Account.
   
   Definition eq (self : ref Self) (other : ref Account) :=
+    let return_type := bool in
     ltac:(function (
-      (self.["username"].["eq"](| other.["username"] |)).["andb"](|
+      self.["username"].["eq"](| other.["username"] |).["andb"](|
         self.["password"].["eq"](| other.["password"] |)
       |)
-      : bool)).
+    : return_type)).
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -58,11 +59,12 @@ Module Impl__crate_cmp_Eq_for_Account.
   Definition Self := Account.
   
   Definition assert_receiver_is_total_eq (self : ref Self) :=
+    let return_type := unit in
     ltac:(function (
       let '_ := tt in
       let '_ := tt in
       tt
-      : unit)).
+    : return_type)).
   
   Global Instance Method_assert_receiver_is_total_eq :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -77,10 +79,11 @@ Module Impl__crate_hash_Hash_for_Account.
   Definition Self := Account.
   
   Definition hash (self : ref Self) (state : mut_ref __H) :=
+    let return_type := unit in
     ltac:(function (
       let '_ := _crate.hash.Hash.hash(| self.["username"], state |) in
       _crate.hash.Hash.hash(| self.["password"], state |)
-      : unit)).
+    : return_type)).
   
   Global Instance Method_hash : Notation.Dot "hash" := {
     Notation.dot := hash;
@@ -112,6 +115,7 @@ Definition try_logon
     (accounts : ref Accounts)
     (username : ref str)
     (password : ref str) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -180,9 +184,10 @@ Definition try_logon
         |) in
       tt
     end
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let accounts := HashMap::["new"](||) in
     let account :=
@@ -197,4 +202,4 @@ Definition main :=
     let '_ := try_logon(| accounts, "j.everyman", "psasword123" |) in
     let '_ := try_logon(| accounts, "j.everyman", "password123" |) in
     tt
-    : unit)).
+  : return_type)).

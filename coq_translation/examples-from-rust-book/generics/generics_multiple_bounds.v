@@ -8,6 +8,7 @@ Definition compare_prints
     `{Debug.Trait T}
     `{Display.Trait T}
     (t : ref T) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -30,7 +31,7 @@ Definition compare_prints
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition compare_types
     {T U : Set}
@@ -38,6 +39,7 @@ Definition compare_types
     `{Debug.Trait U}
     (t : ref T)
     (u : ref U) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -60,9 +62,10 @@ Definition compare_types
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let string := "words" in
     let array := [ 1; 2; 3 ] in
@@ -71,4 +74,4 @@ Definition main :=
     let '_ := compare_prints(| string |) in
     let '_ := compare_types(| array, vec |) in
     tt
-    : unit)).
+  : return_type)).

@@ -18,6 +18,7 @@ Module Impl__crate_fmt_Debug_for_Number.
   Definition Self := Number.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["debug_struct_field1_finish"](|
         f,
@@ -25,7 +26,7 @@ Module Impl__crate_fmt_Debug_for_Number.
         "value",
         self.["value"]
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -40,7 +41,10 @@ Module Impl_From_for_Number.
   Definition Self := Number.
   
   Definition from (item : i32) :=
-    ltac:(function ({| Number.value := item; |} : Self)).
+    let return_type := Self in
+    ltac:(function (
+      {| Number.value := item; |}
+    : return_type)).
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -53,6 +57,7 @@ Module Impl_From_for_Number.
 End Impl_From_for_Number.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let num := Number::["from"](| 30 |) in
     let '_ :=
@@ -66,4 +71,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let number := 4 in
     match number with
@@ -22,4 +23,4 @@ Definition main :=
       tt
     | _ => _crate.panicking.unreachable_display(| "Should never happen." |)
     end
-    : unit)).
+  : return_type)).

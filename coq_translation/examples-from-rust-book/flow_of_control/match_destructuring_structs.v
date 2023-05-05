@@ -19,6 +19,7 @@ End Foo.
 Definition Foo : Set := Foo.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let foo := {| Foo.x := (1, 2); Foo.y := 3; |} in
     match foo with
@@ -56,4 +57,4 @@ Definition main :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).

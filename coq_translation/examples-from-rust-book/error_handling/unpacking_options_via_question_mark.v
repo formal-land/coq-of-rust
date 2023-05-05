@@ -29,10 +29,11 @@ Module Impl__crate_clone_Clone_for_Job.
   Definition Self := Job.
   
   Definition clone (self : ref Self) :=
+    let return_type := Job in
     ltac:(function (
       let '_ := tt in
       self.["deref"](||)
-      : Job)).
+    : return_type)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -69,11 +70,12 @@ Module Impl__crate_clone_Clone_for_PhoneNumber.
   Definition Self := PhoneNumber.
   
   Definition clone (self : ref Self) :=
+    let return_type := PhoneNumber in
     ltac:(function (
       let '_ := tt in
       let '_ := tt in
       self.["deref"](||)
-      : PhoneNumber)).
+    : return_type)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -95,20 +97,21 @@ Module ImplPerson.
   Definition Self := Person.
   
   Definition work_phone_area_code (self : ref Self) :=
+    let return_type := Option u8 in
     ltac:(function (
       match
           LangItem(|
             match LangItem(| self.["job"] |) with
               | Break {| Break.0 := residual; |} =>
-                Return(| LangItem(| residual |) |)
+                M.Return LangItem(| residual |)
               | Continue {| Continue.0 := val; |} => val
               end.["phone_number"]
           |)
         with
-        | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+        | Break {| Break.0 := residual; |} => M.Return LangItem(| residual |)
         | Continue {| Continue.0 := val; |} => val
         end.["area_code"]
-      : Option u8)).
+    : return_type)).
   
   Global Instance Method_work_phone_area_code :
     Notation.Dot "work_phone_area_code" := {
@@ -117,6 +120,7 @@ Module ImplPerson.
 End ImplPerson.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let p :=
       {|
@@ -135,8 +139,8 @@ Definition main :=
       match (p.["work_phone_area_code"](||), Some 61) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -152,4 +156,4 @@ Definition main :=
           tt
       end in
     tt
-    : unit)).
+  : return_type)).

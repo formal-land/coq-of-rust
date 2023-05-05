@@ -9,16 +9,18 @@ Definition ParseIntError := ParseIntError.t.
 Definition multiply
     (first_number_str : ref str)
     (second_number_str : ref str) :=
+  let return_type := Result i32 ParseIntError in
   ltac:(function (
-    (first_number_str.["parse"](||)).["and_then"](|
+    first_number_str.["parse"](||).["and_then"](|
       fun first_number =>
-        (second_number_str.["parse"](||)).["map"](|
+        second_number_str.["parse"](||).["map"](|
           fun second_number => first_number.["mul"](| second_number |)
         |)
     |)
-    : Result i32 ParseIntError)).
+  : return_type)).
 
 Definition print (result : Result i32 ParseIntError) :=
+  let return_type := unit in
   ltac:(function (
     match result with
     | Ok n =>
@@ -42,13 +44,14 @@ Definition print (result : Result i32 ParseIntError) :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let twenty := multiply(| "10", "2" |) in
     let '_ := print(| twenty |) in
     let tt := multiply(| "t", "2" |) in
     let '_ := print(| tt |) in
     tt
-    : unit)).
+  : return_type)).

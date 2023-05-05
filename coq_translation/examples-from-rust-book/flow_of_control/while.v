@@ -4,12 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let n := 1 in
     loop
       (if (n.["lt"](| 101 |) : bool) then
         let '_ :=
-          if ((n.["rem"](| 15 |)).["eq"](| 0 |) : bool) then
+          if (n.["rem"](| 15 |).["eq"](| 0 |) : bool) then
             let '_ :=
               let '_ :=
                 _crate.io._print(|
@@ -19,7 +20,7 @@ Definition main :=
               tt in
             tt
           else
-            if ((n.["rem"](| 3 |)).["eq"](| 0 |) : bool) then
+            if (n.["rem"](| 3 |).["eq"](| 0 |) : bool) then
               let '_ :=
                 let '_ :=
                   _crate.io._print(|
@@ -29,7 +30,7 @@ Definition main :=
                 tt in
               tt
             else
-              if ((n.["rem"](| 5 |)).["eq"](| 0 |) : bool) then
+              if (n.["rem"](| 5 |).["eq"](| 0 |) : bool) then
                 let '_ :=
                   let '_ :=
                     _crate.io._print(|
@@ -53,8 +54,8 @@ Definition main :=
         let '_ := n.["add_assign"](| 1 |) in
         tt
       else
-        let '_ := Break in
+        let '_ := M.Break in
         tt)
       from
       while
-    : unit)).
+  : return_type)).

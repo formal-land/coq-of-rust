@@ -18,6 +18,7 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
   Definition Self := Borrowed.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["debug_struct_field1_finish"](|
         f,
@@ -25,7 +26,7 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
         "x",
         self.["x"]
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -39,7 +40,11 @@ End Impl__crate_fmt_Debug_for_Borrowed.
 Module Impl_Default_for_Borrowed.
   Definition Self := Borrowed.
   
-  Definition default := ltac:(function ({| Self.x := 10; |} : Self)).
+  Definition default :=
+    let return_type := Self in
+    ltac:(function (
+      {| Self.x := 10; |}
+    : return_type)).
   
   Global Instance AssociatedFunction_default :
     Notation.DoubleColon Self "default" := {
@@ -52,6 +57,7 @@ Module Impl_Default_for_Borrowed.
 End Impl_Default_for_Borrowed.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let b := Default.default(||) in
     let '_ :=
@@ -65,4 +71,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

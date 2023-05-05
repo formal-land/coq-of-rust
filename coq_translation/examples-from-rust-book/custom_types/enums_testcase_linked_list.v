@@ -15,32 +15,41 @@ Definition List := List.t.
 Module ImplList.
   Definition Self := List.
   
-  Definition new := ltac:(function (Nil : List)).
+  Definition new :=
+    let return_type := List in
+    ltac:(function (
+      Nil
+    : return_type)).
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
   Definition prepend (self : Self) (elem : u32) :=
-    ltac:(function (Cons elem (Box::["new"](| self |)) : List)).
+    let return_type := List in
+    ltac:(function (
+      Cons elem Box::["new"](| self |)
+    : return_type)).
   
   Global Instance Method_prepend : Notation.Dot "prepend" := {
     Notation.dot := prepend;
   }.
   
   Definition len (self : ref Self) :=
+    let return_type := u32 in
     ltac:(function (
       match self.["deref"](||) with
       | Cons _ tail => 1.["add"](| tail.["len"](||) |)
       | Nil => 0
       end
-      : u32)).
+    : return_type)).
   
   Global Instance Method_len : Notation.Dot "len" := {
     Notation.dot := len;
   }.
   
   Definition stringify (self : ref Self) :=
+    let return_type := String in
     ltac:(function (
       match self.["deref"](||) with
       | Cons head tail =>
@@ -61,7 +70,7 @@ Module ImplList.
           |) in
         res
       end
-      : String)).
+    : return_type)).
   
   Global Instance Method_stringify : Notation.Dot "stringify" := {
     Notation.dot := stringify;
@@ -69,11 +78,12 @@ Module ImplList.
 End ImplList.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let list := List::["new"](||) in
-    let '_ := assign list (list.["prepend"](| 1 |)) in
-    let '_ := assign list (list.["prepend"](| 2 |)) in
-    let '_ := assign list (list.["prepend"](| 3 |)) in
+    let '_ := assign list list.["prepend"](| 1 |) in
+    let '_ := assign list list.["prepend"](| 2 |) in
+    let '_ := assign list list.["prepend"](| 3 |) in
     let '_ :=
       let '_ :=
         _crate.io._print(|
@@ -95,4 +105,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

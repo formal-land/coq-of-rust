@@ -30,7 +30,7 @@ Module Impl_Drop_for_Droppable.
           |) in
         tt in
       tt
-      : _)).
+    : _)).
   
   Global Instance Method_drop : Notation.Dot "drop" := {
     Notation.dot := drop;
@@ -42,6 +42,7 @@ Module Impl_Drop_for_Droppable.
 End Impl_Drop_for_Droppable.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let _a := {| Droppable.name := "a"; |} in
     let '_ :=
@@ -88,4 +89,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

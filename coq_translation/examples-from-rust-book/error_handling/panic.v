@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition drink (beverage : ref str) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       if (beverage.["eq"](| "lemonade" |) : bool) then
@@ -22,11 +23,12 @@ Definition drink (beverage : ref str) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ := drink(| "water" |) in
     let '_ := drink(| "lemonade" |) in
     tt
-    : unit)).
+  : return_type)).

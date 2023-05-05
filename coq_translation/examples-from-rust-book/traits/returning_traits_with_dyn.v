@@ -28,7 +28,11 @@ End Animal.
 Module Impl_Animal_for_Sheep.
   Definition Self := Sheep.
   
-  Definition noise (self : ref Self) := ltac:(function ("baaaaah!" : ref str)).
+  Definition noise (self : ref Self) :=
+    let return_type := ref str in
+    ltac:(function (
+      "baaaaah!"
+    : return_type)).
   
   Global Instance Method_noise : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -42,7 +46,11 @@ End Impl_Animal_for_Sheep.
 Module Impl_Animal_for_Cow.
   Definition Self := Cow.
   
-  Definition noise (self : ref Self) := ltac:(function ("moooooo!" : ref str)).
+  Definition noise (self : ref Self) :=
+    let return_type := ref str in
+    ltac:(function (
+      "moooooo!"
+    : return_type)).
   
   Global Instance Method_noise : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -54,14 +62,16 @@ Module Impl_Animal_for_Cow.
 End Impl_Animal_for_Cow.
 
 Definition random_animal (random_number : f64) :=
+  let return_type := Box TraitObject in
   ltac:(function (
     if (random_number.["lt"](| 1 (* 0.5 *) |) : bool) then
       Box::["new"](| {|  |} |)
     else
       Box::["new"](| {|  |} |)
-    : Box TraitObject)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let random_number := 0 (* 0.234 *) in
     let animal := random_animal(| random_number |) in
@@ -76,4 +86,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

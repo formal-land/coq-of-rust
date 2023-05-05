@@ -12,13 +12,15 @@ Module BufReader := std.io.BufReader.
 Definition BufReader := BufReader.t.
 
 Definition read_lines (filename : String) :=
+  let return_type := io.Lines (BufReader File) in
   ltac:(function (
-    let file := (File::["open"](| filename |)).["unwrap"](||) in
-    let '_ := Return(| (io.BufReader::["new"](| file |)).["lines"](||) |) in
+    let file := File::["open"](| filename |).["unwrap"](||) in
+    let '_ := M.Return io.BufReader::["new"](| file |).["lines"](||) in
     tt
-    : io.Lines (BufReader File))).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let lines := read_lines(| "./hosts".["to_string"](||) |) in
     match LangItem(| lines |) with
@@ -26,7 +28,7 @@ Definition main :=
       loop
         let '_ :=
           match LangItem(| iter |) with
-          | None => Break
+          | None => M.Break
           | Some {| Some.0 := line; |} =>
             let '_ :=
               let '_ :=
@@ -45,4 +47,4 @@ Definition main :=
         from
         for
     end
-    : unit)).
+  : return_type)).

@@ -16,10 +16,11 @@ Module Impl__crate_fmt_Debug_for_Ref_T.
   Definition Self := Ref T.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["debug_tuple_field1_finish"](| f, "Ref", self.[0]
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -31,6 +32,7 @@ Module Impl__crate_fmt_Debug_for_Ref_T.
 End Impl__crate_fmt_Debug_for_Ref_T.
 
 Definition print {T : Set} `{Debug.Trait T} (t : T) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -43,9 +45,10 @@ Definition print {T : Set} `{Debug.Trait T} (t : T) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition print_ref {T : Set} `{Debug.Trait T} (t : ref T) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -58,13 +61,14 @@ Definition print_ref {T : Set} `{Debug.Trait T} (t : ref T) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let x := 7 in
     let ref_x := Ref.Build_t x in
     let '_ := print_ref(| ref_x |) in
     let '_ := print(| ref_x |) in
     tt
-    : unit)).
+  : return_type)).

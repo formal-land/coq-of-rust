@@ -4,12 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let raw_p := 10 in
     let '_ :=
-      if (((raw_p.["deref"](||)).["eq"](| 10 |)).["not"](||) : bool) then
+      if (raw_p.["deref"](||).["eq"](| 10 |).["not"](||) : bool) then
         _crate.panicking.panic(| "assertion failed: *raw_p == 10" |)
       else
         tt in
     tt
-    : unit)).
+  : return_type)).

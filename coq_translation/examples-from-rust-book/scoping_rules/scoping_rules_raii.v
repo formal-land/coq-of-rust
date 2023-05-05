@@ -4,12 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition create_box :=
+  let return_type := unit in
   ltac:(function (
     let _box1 := Box::["new"](| 3 |) in
     tt
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let _box2 := Box::["new"](| 5 |) in
     let '_ :=
@@ -20,7 +22,7 @@ Definition main :=
       loop
         let '_ :=
           match LangItem(| iter |) with
-          | None => Break
+          | None => M.Break
           | Some {| Some.0 := _; |} =>
             let '_ := create_box(||) in
             tt
@@ -29,4 +31,4 @@ Definition main :=
         from
         for
     end
-    : unit)).
+  : return_type)).

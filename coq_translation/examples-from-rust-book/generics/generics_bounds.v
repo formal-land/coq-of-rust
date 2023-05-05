@@ -17,7 +17,10 @@ Module Impl_HasArea_for_Rectangle.
   Definition Self := Rectangle.
   
   Definition area (self : ref Self) :=
-    ltac:(function (self.["length"].["mul"](| self.["height"] |) : f64)).
+    let return_type := f64 in
+    ltac:(function (
+      self.["length"].["mul"](| self.["height"] |)
+    : return_type)).
   
   Global Instance Method_area : Notation.Dot "area" := {
     Notation.dot := area;
@@ -47,6 +50,7 @@ Module Impl__crate_fmt_Debug_for_Rectangle.
   Definition Self := Rectangle.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["debug_struct_field2_finish"](|
         f,
@@ -56,7 +60,7 @@ Module Impl__crate_fmt_Debug_for_Rectangle.
         "height",
         self.["height"]
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -83,6 +87,7 @@ End Triangle.
 Definition Triangle : Set := Triangle.t.
 
 Definition print_debug {T : Set} `{Debug.Trait T} (t : ref T) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -95,12 +100,16 @@ Definition print_debug {T : Set} `{Debug.Trait T} (t : ref T) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition area {T : Set} `{HasArea.Trait T} (t : ref T) :=
-  ltac:(function (t.["area"](||) : f64)).
+  let return_type := f64 in
+  ltac:(function (
+    t.["area"](||)
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let rectangle :=
       {| Rectangle.length := 3 (* 3.0 *); Rectangle.height := 4 (* 4.0 *); |} in
@@ -118,4 +127,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

@@ -29,7 +29,10 @@ Module ImplVal.
   Definition Self := Val.
   
   Definition value (self : ref Self) :=
-    ltac:(function (self.["val"] : ref f64)).
+    let return_type := ref f64 in
+    ltac:(function (
+      self.["val"]
+    : return_type)).
   
   Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
@@ -40,7 +43,10 @@ Module ImplGenVal T.
   Definition Self := GenVal T.
   
   Definition value (self : ref Self) :=
-    ltac:(function (self.["gen_val"] : ref T)).
+    let return_type := ref T in
+    ltac:(function (
+      self.["gen_val"]
+    : return_type)).
   
   Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
@@ -48,6 +54,7 @@ Module ImplGenVal T.
 End ImplGenVal T.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let x := {| Val.val := 3 (* 3.0 *); |} in
     let y := {| GenVal.gen_val := 3; |} in
@@ -65,4 +72,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

@@ -30,7 +30,7 @@ Module Impl_PrintInOption_for_T.
           |) in
         tt in
       tt
-      : _)).
+    : _)).
   
   Global Instance Method_print_in_option : Notation.Dot "print_in_option" := {
     Notation.dot := print_in_option;
@@ -42,9 +42,10 @@ Module Impl_PrintInOption_for_T.
 End Impl_PrintInOption_for_T.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let vec :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 1; 2; 3 ] |) |) in
     let '_ := vec.["print_in_option"](||) in
     tt
-    : unit)).
+  : return_type)).

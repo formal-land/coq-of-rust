@@ -390,10 +390,10 @@ pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             compile_qpath(&tcx, qpath)
         }
         ExprKind::AddrOf(_, _, expr) => Expr::AddrOf(Box::new(compile_expr(tcx, expr))),
-        ExprKind::Break(_, _) => Expr::LocalVar("Break".to_string()),
-        ExprKind::Continue(_) => Expr::LocalVar("Continue".to_string()),
+        ExprKind::Break(_, _) => Expr::LocalVar("M.Break".to_string()),
+        ExprKind::Continue(_) => Expr::LocalVar("M.Continue".to_string()),
         ExprKind::Ret(expr) => {
-            let func = Box::new(Expr::LocalVar("Return".to_string()));
+            let func = Box::new(Expr::LocalVar("M.Return".to_string()));
             let args = vec![match expr {
                 Some(expr) => compile_expr(tcx, expr),
                 None => tt(),
@@ -512,31 +512,41 @@ impl Expr {
             Expr::Literal(literal) => literal_to_doc(with_paren, literal),
             Expr::AddrOf(expr) => expr.to_doc(with_paren),
             Expr::Call {
-                monadic: _monadic,
+                monadic,
                 func,
                 args,
-            } => paren(
-                with_paren,
-                group([
-                    func.to_doc(true),
-                    if args.is_empty() {
-                        text("(||)")
-                    } else {
-                        concat([
-                            text("(|"),
-                            nest([
+            } => {
+                if *monadic {
+                    group([
+                        func.to_doc(true),
+                        if args.is_empty() {
+                            text("(||)")
+                        } else {
+                            concat([
+                                text("(|"),
+                                nest([
+                                    line(),
+                                    intersperse(
+                                        args.iter().map(|arg| arg.to_doc(false)),
+                                        [text(","), line()],
+                                    ),
+                                ]),
                                 line(),
-                                intersperse(
-                                    args.iter().map(|arg| arg.to_doc(false)),
-                                    [text(","), line()],
-                                ),
-                            ]),
+                                text("|)"),
+                            ])
+                        },
+                    ])
+                } else {
+                    paren(
+                        with_paren,
+                        nest([
+                            func.to_doc(true),
                             line(),
-                            text("|)"),
-                        ])
-                    },
-                ]),
-            ),
+                            intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()]),
+                        ]),
+                    )
+                }
+            }
             Expr::Member { object, member } => concat([
                 object.to_doc(true),
                 text(".["),

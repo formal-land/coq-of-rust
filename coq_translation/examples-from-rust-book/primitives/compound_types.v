@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let logical := true in
     let a_float := 1 (* 1.0 *) in
@@ -16,4 +17,4 @@ Definition main :=
     let '_ := assign mutable 21 in
     let mutable := true in
     tt
-    : unit)).
+  : return_type)).

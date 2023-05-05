@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let array := [ 1; 2.["neg"](||); 6 ] in
     match array with
@@ -72,4 +73,4 @@ Definition main :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).

@@ -7,9 +7,14 @@ Module fmt := std.fmt.
 
 Error ForeignMod.
 
-Definition cos (z : Complex) := ltac:(function (ccosf(| z |) : Complex)).
+Definition cos (z : Complex) :=
+  let return_type := Complex in
+  ltac:(function (
+    ccosf(| z |)
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let z :=
       {| Complex.re := 1 (* 1. *).["neg"](||); Complex.im := 0 (* 0. *); |} in
@@ -41,7 +46,7 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Module Complex.
   Record t : Set := {
@@ -62,10 +67,11 @@ Module Impl__crate_clone_Clone_for_Complex.
   Definition Self := Complex.
   
   Definition clone (self : ref Self) :=
+    let return_type := Complex in
     ltac:(function (
       let '_ := tt in
       self.["deref"](||)
-      : Complex)).
+    : return_type)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -87,6 +93,7 @@ Module Impl_fmt_Debug_for_Complex.
   Definition Self := Complex.
   
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
+    let return_type := fmt.Result in
     ltac:(function (
       if (self.["im"].["lt"](| 0 (* 0. *) |) : bool) then
         f.["write_fmt"](|
@@ -108,7 +115,7 @@ Module Impl_fmt_Debug_for_Complex.
             ]
           |)
         |)
-      : fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;

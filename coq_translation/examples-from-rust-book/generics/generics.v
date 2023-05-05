@@ -27,6 +27,7 @@ End SingleGen.
 Definition SingleGen := SingleGen.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let _s := Single.Build_t A.Build in
     let _char := SingleGen.Build_t "a"%char in
@@ -34,4 +35,4 @@ Definition main :=
     let _i32 := SingleGen.Build_t 6 in
     let _char := SingleGen.Build_t "a"%char in
     tt
-    : unit)).
+  : return_type)).

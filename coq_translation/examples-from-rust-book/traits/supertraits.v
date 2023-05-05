@@ -46,6 +46,7 @@ Module CompSciStudent.
 End CompSciStudent.
 
 Definition comp_sci_student_greeting (student : ref TraitObject) :=
+  let return_type := String in
   ltac:(function (
     let res :=
       _crate.fmt.format(|
@@ -65,6 +66,10 @@ Definition comp_sci_student_greeting (student : ref TraitObject) :=
         |)
       |) in
     res
-    : String)).
+  : return_type)).
 
-Definition main := ltac:(function (tt : unit)).
+Definition main :=
+  let return_type := unit in
+  ltac:(function (
+    tt
+  : return_type)).

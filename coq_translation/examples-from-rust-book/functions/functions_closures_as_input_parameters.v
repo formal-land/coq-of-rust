@@ -4,15 +4,20 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition apply {F : Set} `{FnOnce.Trait unit F} (f : F) :=
+  let return_type := unit in
   ltac:(function (
     let '_ := f(||) in
     tt
-    : unit)).
+  : return_type)).
 
 Definition apply_to_3 {F : Set} `{Fn.Trait (i32) F} (f : F) :=
-  ltac:(function (f(| 3 |) : i32)).
+  let return_type := i32 in
+  ltac:(function (
+    f(| 3 |)
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let greeting := "hello" in
     let farewell := "goodbye".["to_owned"](||) in
@@ -61,6 +66,6 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Module mem := std.mem.

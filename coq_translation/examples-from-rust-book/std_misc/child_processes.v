@@ -7,10 +7,11 @@ Module Command := std.process.Command.
 Definition Command := Command.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let output :=
-      (((Command::["new"](| "rustc" |)).["arg"](| "--version"
-      |)).["output"](||)).["unwrap_or_else"](|
+      Command::["new"](| "rustc" |).["arg"](| "--version"
+      |).["output"](||).["unwrap_or_else"](|
         fun e =>
           _crate.rt.panic_fmt(|
             format_arguments::["new_v1"](|
@@ -45,4 +46,4 @@ Definition main :=
           |) in
         tt in
       tt
-    : unit)).
+  : return_type)).

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       loop
@@ -25,7 +26,7 @@ Definition main :=
                   |)
                 |) in
               tt in
-            let '_ := Break in
+            let '_ := M.Break in
             tt
             from
             loop in
@@ -49,4 +50,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

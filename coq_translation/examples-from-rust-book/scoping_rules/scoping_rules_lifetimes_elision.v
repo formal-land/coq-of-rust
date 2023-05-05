@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition elided_input (x : ref i32) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -16,9 +17,10 @@ Definition elided_input (x : ref i32) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition annotated_input (x : ref i32) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -31,13 +33,22 @@ Definition annotated_input (x : ref i32) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
-Definition elided_pass (x : ref i32) := ltac:(function (x : ref i32)).
+Definition elided_pass (x : ref i32) :=
+  let return_type := ref i32 in
+  ltac:(function (
+    x
+  : return_type)).
 
-Definition annotated_pass (x : ref i32) := ltac:(function (x : ref i32)).
+Definition annotated_pass (x : ref i32) :=
+  let return_type := ref i32 in
+  ltac:(function (
+    x
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let x := 3 in
     let '_ := elided_input(| x |) in
@@ -63,4 +74,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

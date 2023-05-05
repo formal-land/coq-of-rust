@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition foo {A : Set} (o : Option A) :=
+  let return_type := unit in
   ltac:(function (
     match o with
     | Some _a =>
@@ -19,56 +20,30 @@ Definition foo {A : Set} (o : Option A) :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).
 
 Module tests.
   Module OpenOptions := std.fs.OpenOptions.
   Definition OpenOptions := OpenOptions.t.
   
   Definition test_file :=
+    let return_type := unit in
     ltac:(function (
       let file :=
-        ((((OpenOptions::["new"](||)).["append"](| true |)).["create"](| true
-        |)).["open"](| "ferris.txt"
-        |)).["expect"](| "Failed to open ferris.txt"
+        OpenOptions::["new"](||).["append"](| true |).["create"](| true
+        |).["open"](| "ferris.txt"
+        |).["expect"](| "Failed to open ferris.txt"
         |) in
       match LangItem(| Range {| Range.start := 0; Range.end := 5; |} |) with
       | iter =>
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := _; |} =>
               let '_ :=
-                (file.["write_all"](| "Ferris
-".["as_bytes"](||)
-                |)).["expect"](| "Could not write to ferris.txt"
-                |) in
-              tt
-            end in
-          tt
-          from
-          for
-      end
-      : unit)).
-  
-  Definition test_file_also :=
-    ltac:(function (
-      let file :=
-        ((((OpenOptions::["new"](||)).["append"](| true |)).["create"](| true
-        |)).["open"](| "ferris.txt"
-        |)).["expect"](| "Failed to open ferris.txt"
-        |) in
-      match LangItem(| Range {| Range.start := 0; Range.end := 5; |} |) with
-      | iter =>
-        loop
-          let '_ :=
-            match LangItem(| iter |) with
-            | None => Break
-            | Some {| Some.0 := _; |} =>
-              let '_ :=
-                (file.["write_all"](| "Corro
-".["as_bytes"](||) |)).["expect"](|
+                file.["write_all"](| "Ferris
+".["as_bytes"](||) |).["expect"](|
                   "Could not write to ferris.txt"
                 |) in
               tt
@@ -77,29 +52,58 @@ Module tests.
           from
           for
       end
-      : unit)).
+    : return_type)).
+  
+  Definition test_file_also :=
+    let return_type := unit in
+    ltac:(function (
+      let file :=
+        OpenOptions::["new"](||).["append"](| true |).["create"](| true
+        |).["open"](| "ferris.txt"
+        |).["expect"](| "Failed to open ferris.txt"
+        |) in
+      match LangItem(| Range {| Range.start := 0; Range.end := 5; |} |) with
+      | iter =>
+        loop
+          let '_ :=
+            match LangItem(| iter |) with
+            | None => M.Break
+            | Some {| Some.0 := _; |} =>
+              let '_ :=
+                file.["write_all"](| "Corro
+".["as_bytes"](||) |).["expect"](|
+                  "Could not write to ferris.txt"
+                |) in
+              tt
+            end in
+          tt
+          from
+          for
+      end
+    : return_type)).
 End tests.
 
 Module OpenOptions := std.fs.OpenOptions.
 Definition OpenOptions := OpenOptions.t.
 
 Definition test_file :=
+  let return_type := unit in
   ltac:(function (
     let file :=
-      ((((OpenOptions::["new"](||)).["append"](| true |)).["create"](| true
-      |)).["open"](| "ferris.txt"
-      |)).["expect"](| "Failed to open ferris.txt"
+      OpenOptions::["new"](||).["append"](| true |).["create"](| true
+      |).["open"](| "ferris.txt"
+      |).["expect"](| "Failed to open ferris.txt"
       |) in
     match LangItem(| Range {| Range.start := 0; Range.end := 5; |} |) with
     | iter =>
       loop
         let '_ :=
           match LangItem(| iter |) with
-          | None => Break
+          | None => M.Break
           | Some {| Some.0 := _; |} =>
             let '_ :=
-              (file.["write_all"](| "Ferris
-".["as_bytes"](||) |)).["expect"](|
+              file.["write_all"](| "Ferris
+".["as_bytes"](||) |).["expect"](|
                 "Could not write to ferris.txt"
               |) in
             tt
@@ -108,25 +112,26 @@ Definition test_file :=
         from
         for
     end
-    : unit)).
+  : return_type)).
 
 Definition test_file_also :=
+  let return_type := unit in
   ltac:(function (
     let file :=
-      ((((OpenOptions::["new"](||)).["append"](| true |)).["create"](| true
-      |)).["open"](| "ferris.txt"
-      |)).["expect"](| "Failed to open ferris.txt"
+      OpenOptions::["new"](||).["append"](| true |).["create"](| true
+      |).["open"](| "ferris.txt"
+      |).["expect"](| "Failed to open ferris.txt"
       |) in
     match LangItem(| Range {| Range.start := 0; Range.end := 5; |} |) with
     | iter =>
       loop
         let '_ :=
           match LangItem(| iter |) with
-          | None => Break
+          | None => M.Break
           | Some {| Some.0 := _; |} =>
             let '_ :=
-              (file.["write_all"](| "Corro
-".["as_bytes"](||) |)).["expect"](|
+              file.["write_all"](| "Corro
+".["as_bytes"](||) |).["expect"](|
                 "Could not write to ferris.txt"
               |) in
             tt
@@ -135,4 +140,4 @@ Definition test_file_also :=
         from
         for
     end
-    : unit)).
+  : return_type)).

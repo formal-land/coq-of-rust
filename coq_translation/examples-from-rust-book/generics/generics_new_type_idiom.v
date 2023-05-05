@@ -25,7 +25,10 @@ Module ImplYears.
   Definition Self := Years.
   
   Definition to_days (self : ref Self) :=
-    ltac:(function (Days.Build_t ((self.[0]).["mul"](| 365 |)) : Days)).
+    let return_type := Days in
+    ltac:(function (
+      Days.Build_t (self.[0]).["mul"](| 365 |)
+    : return_type)).
   
   Global Instance Method_to_days : Notation.Dot "to_days" := {
     Notation.dot := to_days;
@@ -36,7 +39,10 @@ Module ImplDays.
   Definition Self := Days.
   
   Definition to_years (self : ref Self) :=
-    ltac:(function (Years.Build_t ((self.[0]).["div"](| 365 |)) : Years)).
+    let return_type := Years in
+    ltac:(function (
+      Years.Build_t (self.[0]).["div"](| 365 |)
+    : return_type)).
   
   Global Instance Method_to_years : Notation.Dot "to_years" := {
     Notation.dot := to_years;
@@ -44,9 +50,13 @@ Module ImplDays.
 End ImplDays.
 
 Definition old_enough (age : ref Years) :=
-  ltac:(function ((age.[0]).["ge"](| 18 |) : bool)).
+  let return_type := bool in
+  ltac:(function (
+    (age.[0]).["ge"](| 18 |)
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let age := Years.Build_t 5 in
     let age_days := age.["to_days"](||) in
@@ -75,4 +85,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

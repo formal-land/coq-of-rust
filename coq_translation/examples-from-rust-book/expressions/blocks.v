@@ -4,12 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let x := 5 in
     let y :=
       let x_squared := x.["mul"](| x |) in
       let x_cube := x_squared.["mul"](| x |) in
-      (x_cube.["add"](| x_squared |)).["add"](| x |) in
+      x_cube.["add"](| x_squared |).["add"](| x |) in
     let z :=
       let '_ := 2.["mul"](| x |) in
       tt in
@@ -44,4 +45,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

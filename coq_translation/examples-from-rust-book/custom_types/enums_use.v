@@ -18,6 +18,7 @@ End Work.
 Definition Work := Work.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let status := Poor in
     let work := Civilian in
@@ -57,7 +58,7 @@ Definition main :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).
 
 Module Poor := crate.Status.Poor.
 

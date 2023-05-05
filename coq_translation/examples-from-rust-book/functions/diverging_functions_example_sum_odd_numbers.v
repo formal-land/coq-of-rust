@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -16,9 +17,10 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition sum_odd_numbers (up_to : u32) :=
+  let return_type := u32 in
   ltac:(function (
     let acc := 0 in
     let '_ :=
@@ -27,12 +29,12 @@ Definition sum_odd_numbers (up_to : u32) :=
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := i; |} =>
               let addition :=
-                match (i.["rem"](| 2 |)).["eq"](| 1 |) with
+                match i.["rem"](| 2 |).["eq"](| 1 |) with
                 | true => i
-                | false => Continue
+                | false => M.Continue
                 end in
               let '_ := acc.["add_assign"](| addition |) in
               tt
@@ -42,4 +44,4 @@ Definition sum_odd_numbers (up_to : u32) :=
           for
       end in
     acc
-    : u32)).
+  : return_type)).

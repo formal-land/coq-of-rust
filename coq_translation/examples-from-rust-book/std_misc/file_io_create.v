@@ -21,6 +21,7 @@ Module Path := std.path.Path.
 Definition Path := Path.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let path := Path::["new"](| "lorem_ipsum.txt" |) in
     let display := path.["display"](||) in
@@ -60,4 +61,4 @@ Definition main :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).

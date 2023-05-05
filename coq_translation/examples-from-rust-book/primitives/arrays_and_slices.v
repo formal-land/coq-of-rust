@@ -6,6 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module mem := std.mem.
 
 Definition analyze_slice (slice : ref Slice) :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -28,12 +29,13 @@ Definition analyze_slice (slice : ref Slice) :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let xs := [ 1; 2; 3; 4; 5 ] in
-    let ys := Repeat(| 0 |) in
+    let ys := Repeat 0 in
     let '_ :=
       let '_ :=
         _crate.io._print(|
@@ -100,8 +102,8 @@ Definition main :=
       match (empty_array, [ ]) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -120,8 +122,8 @@ Definition main :=
       match (empty_array, [ ][RangeFull {|  |}]) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -138,7 +140,7 @@ Definition main :=
       end in
     match
       LangItem(|
-        Range {| Range.start := 0; Range.end := (xs.["len"](||)).["add"](| 1 |);
+        Range {| Range.start := 0; Range.end := xs.["len"](||).["add"](| 1 |);
         |}
       |)
     with
@@ -146,7 +148,7 @@ Definition main :=
       loop
         let '_ :=
           match LangItem(| iter |) with
-          | None => Break
+          | None => M.Break
           | Some {| Some.0 := i; |} =>
             match xs.["get"](| i |) with
             | Some xval =>
@@ -178,4 +180,4 @@ Definition main :=
         from
         for
     end
-    : unit)).
+  : return_type)).

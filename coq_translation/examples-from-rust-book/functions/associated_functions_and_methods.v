@@ -22,9 +22,10 @@ Module ImplPoint.
   Definition Self := Point.
   
   Definition origin :=
+    let return_type := Point in
     ltac:(function (
       {| Point.y := 0 (* 0.0 *); Point.x := 1 (* 1.0 *); |}
-      : Point)).
+    : return_type)).
   
   Global Instance AssociatedFunction_origin :
     Notation.DoubleColon Self "origin" := {
@@ -32,7 +33,10 @@ Module ImplPoint.
   }.
   
   Definition new (x : f64) (y : f64) :=
-    ltac:(function ({| Point.x := x; Point.y := y; |} : Point)).
+    let return_type := Point in
+    ltac:(function (
+      {| Point.x := x; Point.y := y; |}
+    : return_type)).
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
@@ -57,33 +61,38 @@ Definition Rectangle : Set := Rectangle.t.
 Module ImplRectangle.
   Definition Self := Rectangle.
   
-  Definition get_p1 (self : ref Self) := ltac:(function (self.["p1"] : Point)).
+  Definition get_p1 (self : ref Self) :=
+    let return_type := Point in
+    ltac:(function (
+      self.["p1"]
+    : return_type)).
   
   Global Instance Method_get_p1 : Notation.Dot "get_p1" := {
     Notation.dot := get_p1;
   }.
   
   Definition area (self : ref Self) :=
+    let return_type := f64 in
     ltac:(function (
       let '{| Point.x := x1; Point.y := y1; |} := self.["p1"] in
       let '{| Point.x := x2; Point.y := y2; |} := self.["p2"] in
-      ((x1.["sub"](| x2 |)).["mul"](| y1.["sub"](| y2 |) |)).["abs"](||)
-      : f64)).
+      x1.["sub"](| x2 |).["mul"](| y1.["sub"](| y2 |) |).["abs"](||)
+    : return_type)).
   
   Global Instance Method_area : Notation.Dot "area" := {
     Notation.dot := area;
   }.
   
   Definition perimeter (self : ref Self) :=
+    let return_type := f64 in
     ltac:(function (
       let '{| Point.x := x1; Point.y := y1; |} := self.["p1"] in
       let '{| Point.x := x2; Point.y := y2; |} := self.["p2"] in
       2 (* 2.0 *).["mul"](|
-        ((x1.["sub"](| x2 |)).["abs"](||)).["add"](|
-          (y1.["sub"](| y2 |)).["abs"](||)
+        x1.["sub"](| x2 |).["abs"](||).["add"](| y1.["sub"](| y2 |).["abs"](||)
         |)
       |)
-      : f64)).
+    : return_type)).
   
   Global Instance Method_perimeter : Notation.Dot "perimeter" := {
     Notation.dot := perimeter;
@@ -96,7 +105,7 @@ Module ImplRectangle.
       let '_ := self.["p1"].["y"].["add_assign"](| y |) in
       let '_ := self.["p2"].["y"].["add_assign"](| y |) in
       tt
-      : _)).
+    : _)).
   
   Global Instance Method_translate : Notation.Dot "translate" := {
     Notation.dot := translate;
@@ -135,7 +144,7 @@ Module ImplPair.
           |) in
         tt in
       tt
-      : _)).
+    : _)).
   
   Global Instance Method_destroy : Notation.Dot "destroy" := {
     Notation.dot := destroy;
@@ -143,6 +152,7 @@ Module ImplPair.
 End ImplPair.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let rectangle :=
       {|
@@ -176,7 +186,7 @@ Definition main :=
         Rectangle.p2 := Point::["new"](| 1 (* 1.0 *), 1 (* 1.0 *) |);
       |} in
     let '_ := square.["translate"](| 1 (* 1.0 *), 1 (* 1.0 *) |) in
-    let pair := Pair.Build_t (Box::["new"](| 1 |)) (Box::["new"](| 2 |)) in
+    let pair := Pair.Build_t Box::["new"](| 1 |) Box::["new"](| 2 |) in
     let '_ := pair.["destroy"](||) in
     tt
-    : unit)).
+  : return_type)).

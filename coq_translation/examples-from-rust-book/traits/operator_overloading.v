@@ -24,9 +24,10 @@ Module Impl__crate_fmt_Debug_for_FooBar.
   Definition Self := FooBar.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["write_str"](| f, "FooBar" |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -46,9 +47,10 @@ Module Impl__crate_fmt_Debug_for_BarFoo.
   Definition Self := BarFoo.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["write_str"](| f, "BarFoo" |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -65,6 +67,7 @@ Module Impl_ops_Add_for_Foo.
   Definition Output : Set := FooBar.
   
   Definition add (self : Self) (_rhs : Bar) :=
+    let return_type := FooBar in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -75,7 +78,7 @@ Module Impl_ops_Add_for_Foo.
           |) in
         tt in
       FooBar.Build
-      : FooBar)).
+    : return_type)).
   
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -92,6 +95,7 @@ Module Impl_ops_Add_for_Bar.
   Definition Output : Set := BarFoo.
   
   Definition add (self : Self) (_rhs : Foo) :=
+    let return_type := BarFoo in
     ltac:(function (
       let '_ :=
         let '_ :=
@@ -102,7 +106,7 @@ Module Impl_ops_Add_for_Bar.
           |) in
         tt in
       BarFoo.Build
-      : BarFoo)).
+    : return_type)).
   
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -114,6 +118,7 @@ Module Impl_ops_Add_for_Bar.
 End Impl_ops_Add_for_Bar.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -142,4 +147,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

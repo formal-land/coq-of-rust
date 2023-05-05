@@ -22,10 +22,11 @@ Module Impl__crate_clone_Clone_for_Point.
   Definition Self := Point.
   
   Definition clone (self : ref Self) :=
+    let return_type := Point in
     ltac:(function (
       let '_ := tt in
       self.["deref"](||)
-      : Point)).
+    : return_type)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -44,6 +45,7 @@ Module Impl__crate_marker_Copy_for_Point.
 End Impl__crate_marker_Copy_for_Point.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let c := "Q"%char in
     let ref_c1 := c in
@@ -56,7 +58,7 @@ Definition main :=
 " ],
             [
               format_argument::["new_display"](|
-                (ref_c1.["deref"](||)).["eq"](| ref_c2.["deref"](||) |)
+                ref_c1.["deref"](||).["eq"](| ref_c2.["deref"](||) |)
               |)
             ]
           |)
@@ -69,7 +71,7 @@ Definition main :=
     let mutable_point := point in
     let '_ :=
       let '{| Point.x := _; Point.y := mut_ref_to_y; |} := mutable_point in
-      let '_ := assign (mut_ref_to_y.["deref"](||)) 1 in
+      let '_ := assign mut_ref_to_y.["deref"](||) 1 in
       tt in
     let '_ :=
       let '_ :=
@@ -100,7 +102,7 @@ Definition main :=
     let mutable_tuple := (Box::["new"](| 5 |), 3) in
     let '_ :=
       let '(_, last) := mutable_tuple in
-      let '_ := assign (last.["deref"](||)) 2 in
+      let '_ := assign last.["deref"](||) 2 in
       tt in
     let '_ :=
       let '_ :=
@@ -113,4 +115,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let collected_iterator :=
       Range {| Range.start := 0; Range.end := 10; |}.["collect"](||) in
@@ -90,7 +91,7 @@ Definition main :=
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := x; |} =>
               let '_ :=
                 let '_ :=
@@ -109,12 +110,12 @@ Definition main :=
           for
       end in
     let '_ :=
-      match LangItem(| (xs.["iter"](||)).["enumerate"](||) |) with
+      match LangItem(| xs.["iter"](||).["enumerate"](||) |) with
       | iter =>
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := (i, x); |} =>
               let '_ :=
                 let '_ :=
@@ -141,9 +142,9 @@ Definition main :=
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := x; |} =>
-              let '_ := (x.["deref"](||)).["mul_assign"](| 3 |) in
+              let '_ := x.["deref"](||).["mul_assign"](| 3 |) in
               tt
             end in
           tt
@@ -161,4 +162,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

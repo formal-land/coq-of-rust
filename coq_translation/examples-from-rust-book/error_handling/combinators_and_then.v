@@ -15,6 +15,7 @@ Module Impl__crate_fmt_Debug_for_Food.
   Definition Self := Food.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["write_str"](|
         f,
@@ -24,7 +25,7 @@ Module Impl__crate_fmt_Debug_for_Food.
         | Food.Sushi => "Sushi"
         end
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -47,6 +48,7 @@ Module Impl__crate_fmt_Debug_for_Day.
   Definition Self := Day.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["write_str"](|
         f,
@@ -56,7 +58,7 @@ Module Impl__crate_fmt_Debug_for_Day.
         | Day.Wednesday => "Wednesday"
         end
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -68,22 +70,25 @@ Module Impl__crate_fmt_Debug_for_Day.
 End Impl__crate_fmt_Debug_for_Day.
 
 Definition have_ingredients (food : Food) :=
+  let return_type := Option Food in
   ltac:(function (
     match food with
     | Food.Sushi => None
     | _ => Some food
     end
-    : Option Food)).
+  : return_type)).
 
 Definition have_recipe (food : Food) :=
+  let return_type := Option Food in
   ltac:(function (
     match food with
     | Food.CordonBleu => None
     | _ => Some food
     end
-    : Option Food)).
+  : return_type)).
 
 Definition cookable_v1 (food : Food) :=
+  let return_type := Option Food in
   ltac:(function (
     match have_recipe(| food |) with
     | None => None
@@ -93,14 +98,16 @@ Definition cookable_v1 (food : Food) :=
       | Some food => Some food
       end
     end
-    : Option Food)).
+  : return_type)).
 
 Definition cookable_v2 (food : Food) :=
+  let return_type := Option Food in
   ltac:(function (
-    (have_recipe(| food |)).["and_then"](| have_ingredients |)
-    : Option Food)).
+    have_recipe(| food |).["and_then"](| have_ingredients |)
+  : return_type)).
 
 Definition eat (food : Food) (day : Day) :=
+  let return_type := unit in
   ltac:(function (
     match cookable_v2(| food |) with
     | Some food =>
@@ -127,9 +134,10 @@ Definition eat (food : Food) (day : Day) :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '(cordon_bleu, steak, sushi) :=
       (Food.CordonBleu, Food.Steak, Food.Sushi) in
@@ -137,4 +145,4 @@ Definition main :=
     let '_ := eat(| steak, Day.Tuesday |) in
     let '_ := eat(| sushi, Day.Wednesday |) in
     tt
-    : unit)).
+  : return_type)).

@@ -16,13 +16,14 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
   Definition Self := Borrowed.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["debug_tuple_field1_finish"](|
         f,
         "Borrowed",
         self.[0]
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -52,6 +53,7 @@ Module Impl__crate_fmt_Debug_for_NamedBorrowed.
   Definition Self := NamedBorrowed.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["debug_struct_field2_finish"](|
         f,
@@ -61,7 +63,7 @@ Module Impl__crate_fmt_Debug_for_NamedBorrowed.
         "y",
         self.["y"]
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -83,6 +85,7 @@ Module Impl__crate_fmt_Debug_for_Either.
   Definition Self := Either.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       match self with
       | Either.Num __self_0 =>
@@ -92,7 +95,7 @@ Module Impl__crate_fmt_Debug_for_Either.
         _crate.fmt.Formatter::["debug_tuple_field1_finish"](| f, "Ref", __self_0
         |)
       end
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -104,6 +107,7 @@ Module Impl__crate_fmt_Debug_for_Either.
 End Impl__crate_fmt_Debug_for_Either.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let x := 18 in
     let y := 15 in
@@ -152,4 +156,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

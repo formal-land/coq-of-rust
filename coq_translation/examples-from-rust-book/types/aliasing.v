@@ -10,6 +10,7 @@ Definition Inch : Set := u64.
 Definition U64 : Set := u64.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let nanoseconds := cast 5 U64 in
     let inches := cast 2 U64 in
@@ -29,4 +30,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

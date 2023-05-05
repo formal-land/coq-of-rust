@@ -7,9 +7,14 @@ Definition LANGUAGE : ref str := "Rust".
 
 Definition THRESHOLD : i32 := 10.
 
-Definition is_big (n : i32) := ltac:(function (n.["gt"](| THRESHOLD |) : bool)).
+Definition is_big (n : i32) :=
+  let return_type := bool in
+  ltac:(function (
+    n.["gt"](| THRESHOLD |)
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let n := 16 in
     let '_ :=
@@ -51,4 +56,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

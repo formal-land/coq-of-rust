@@ -16,13 +16,14 @@ Module Impl__crate_fmt_Debug_for_EvenNumber.
   Definition Self := EvenNumber.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["debug_tuple_field1_finish"](|
         f,
         "EvenNumber",
         self.[0]
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -44,7 +45,10 @@ Module Impl__crate_cmp_PartialEq_for_EvenNumber.
   Definition Self := EvenNumber.
   
   Definition eq (self : ref Self) (other : ref EvenNumber) :=
-    ltac:(function ((self.[0]).["eq"](| other.[0] |) : bool)).
+    let return_type := bool in
+    ltac:(function (
+      (self.[0]).["eq"](| other.[0] |)
+    : return_type)).
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -61,12 +65,13 @@ Module Impl_TryFrom_for_EvenNumber.
   Definition Error : Set := unit.
   
   Definition try_from (value : i32) :=
+    let return_type := Result Self ImplSelf.Error in
     ltac:(function (
-      if ((value.["rem"](| 2 |)).["eq"](| 0 |) : bool) then
+      if (value.["rem"](| 2 |).["eq"](| 0 |) : bool) then
         Ok (EvenNumber.Build_t value)
       else
         Err tt
-      : Result Self ImplSelf.Error)).
+    : return_type)).
   
   Global Instance AssociatedFunction_try_from :
     Notation.DoubleColon Self "try_from" := {
@@ -79,13 +84,14 @@ Module Impl_TryFrom_for_EvenNumber.
 End Impl_TryFrom_for_EvenNumber.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       match (EvenNumber::["try_from"](| 8 |), Ok (EvenNumber.Build_t 8)) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -104,8 +110,8 @@ Definition main :=
       match (EvenNumber::["try_from"](| 5 |), Err tt) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -125,8 +131,8 @@ Definition main :=
       match (result, Ok (EvenNumber.Build_t 8)) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -146,8 +152,8 @@ Definition main :=
       match (result, Err tt) with
       | (left_val, right_val) =>
         if
-          (((left_val.["deref"](||)).["eq"](| right_val.["deref"](||)
-          |)).["not"](||)
+          (left_val.["deref"](||).["eq"](| right_val.["deref"](||)
+          |).["not"](||)
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
@@ -163,4 +169,4 @@ Definition main :=
           tt
       end in
     tt
-    : unit)).
+  : return_type)).

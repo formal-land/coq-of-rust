@@ -11,6 +11,7 @@ End Temperature.
 Definition Temperature := Temperature.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let temperature := Temperature.Celsius 35 in
     match temperature with
@@ -55,4 +56,4 @@ Definition main :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).

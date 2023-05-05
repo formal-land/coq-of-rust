@@ -20,6 +20,7 @@ Module Impl_fmt_Display_for_Circle.
   Definition Self := Circle.
   
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) :=
+    let return_type := fmt.Result in
     ltac:(function (
       f.["write_fmt"](|
         format_arguments::["new_v1"](|
@@ -27,7 +28,7 @@ Module Impl_fmt_Display_for_Circle.
           [ format_argument::["new_display"](| self.["radius"] |) ]
         |)
       |)
-      : fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -39,6 +40,7 @@ Module Impl_fmt_Display_for_Circle.
 End Impl_fmt_Display_for_Circle.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let circle := {| Circle.radius := 6; |} in
     let '_ :=
@@ -52,4 +54,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

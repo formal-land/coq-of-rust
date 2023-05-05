@@ -21,10 +21,11 @@ Module Path := std.path.Path.
 Definition Path := Path.t.
 
 Definition cat (path : ref Path) :=
+  let return_type := io.Result String in
   ltac:(function (
     let f :=
       match LangItem(| File::["open"](| path |) |) with
-      | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+      | Break {| Break.0 := residual; |} => M.Return LangItem(| residual |)
       | Continue {| Continue.0 := val; |} => val
       end in
     let s := String::["new"](||) in
@@ -32,31 +33,34 @@ Definition cat (path : ref Path) :=
     | Ok _ => Ok s
     | Err e => Err e
     end
-    : io.Result String)).
+  : return_type)).
 
 Definition echo (s : ref str) (path : ref Path) :=
+  let return_type := io.Result unit in
   ltac:(function (
     let f :=
       match LangItem(| File::["create"](| path |) |) with
-      | Break {| Break.0 := residual; |} => Return(| LangItem(| residual |) |)
+      | Break {| Break.0 := residual; |} => M.Return LangItem(| residual |)
       | Continue {| Continue.0 := val; |} => val
       end in
     f.["write_all"](| s.["as_bytes"](||) |)
-    : io.Result unit)).
+  : return_type)).
 
 Definition touch (path : ref Path) :=
+  let return_type := io.Result unit in
   ltac:(function (
     match
-      (((OpenOptions::["new"](||)).["create"](| true |)).["write"](| true
-      |)).["open"](| path
+      OpenOptions::["new"](||).["create"](| true |).["write"](| true
+      |).["open"](| path
       |)
     with
     | Ok _ => Ok tt
     | Err e => Err e
     end
-    : io.Result unit)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -86,7 +90,7 @@ Definition main :=
         |) in
       tt in
     let '_ :=
-      (echo(| "hello", Path::["new"](| "a/b.txt" |) |)).["unwrap_or_else"](|
+      echo(| "hello", Path::["new"](| "a/b.txt" |) |).["unwrap_or_else"](|
         fun why =>
           let '_ :=
             let '_ :=
@@ -108,7 +112,7 @@ Definition main :=
         |) in
       tt in
     let '_ :=
-      (fs.create_dir_all(| "a/c/d" |)).["unwrap_or_else"](|
+      fs.create_dir_all(| "a/c/d" |).["unwrap_or_else"](|
         fun why =>
           let '_ :=
             let '_ :=
@@ -130,7 +134,7 @@ Definition main :=
         |) in
       tt in
     let '_ :=
-      (touch(| Path::["new"](| "a/c/e.txt" |) |)).["unwrap_or_else"](|
+      touch(| Path::["new"](| "a/c/e.txt" |) |).["unwrap_or_else"](|
         fun why =>
           let '_ :=
             let '_ :=
@@ -154,7 +158,7 @@ Definition main :=
     let '_ :=
       if (true : bool) then
         let '_ :=
-          (unix.fs.symlink(| "../b.txt", "a/c/b.txt" |)).["unwrap_or_else"](|
+          unix.fs.symlink(| "../b.txt", "a/c/b.txt" |).["unwrap_or_else"](|
             fun why =>
               let '_ :=
                 let '_ :=
@@ -225,7 +229,7 @@ Definition main :=
           loop
             let '_ :=
               match LangItem(| iter |) with
-              | None => Break
+              | None => M.Break
               | Some {| Some.0 := path; |} =>
                 let '_ :=
                   let '_ :=
@@ -235,7 +239,7 @@ Definition main :=
 " ],
                         [
                           format_argument::["new_debug"](|
-                            (path.["unwrap"](||)).["path"](||)
+                            path.["unwrap"](||).["path"](||)
                           |)
                         ]
                       |)
@@ -256,7 +260,7 @@ Definition main :=
         |) in
       tt in
     let '_ :=
-      (fs.remove_file(| "a/c/e.txt" |)).["unwrap_or_else"](|
+      fs.remove_file(| "a/c/e.txt" |).["unwrap_or_else"](|
         fun why =>
           let '_ :=
             let '_ :=
@@ -278,7 +282,7 @@ Definition main :=
         |) in
       tt in
     let '_ :=
-      (fs.remove_dir(| "a/c/d" |)).["unwrap_or_else"](|
+      fs.remove_dir(| "a/c/d" |).["unwrap_or_else"](|
         fun why =>
           let '_ :=
             let '_ :=
@@ -293,4 +297,4 @@ Definition main :=
           tt
       |) in
     tt
-    : unit)).
+  : return_type)).

@@ -45,12 +45,19 @@ Module Impl_Blue_for_BlueJay.
 End Impl_Blue_for_BlueJay.
 
 Definition red {T : Set} `{Red.Trait T} (arg : ref T) :=
-  ltac:(function ("red" : ref str)).
+  let return_type := ref str in
+  ltac:(function (
+    "red"
+  : return_type)).
 
 Definition blue {T : Set} `{Blue.Trait T} (arg : ref T) :=
-  ltac:(function ("blue" : ref str)).
+  let return_type := ref str in
+  ltac:(function (
+    "blue"
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let cardinal := Cardinal.Build in
     let blue_jay := BlueJay.Build in
@@ -76,4 +83,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

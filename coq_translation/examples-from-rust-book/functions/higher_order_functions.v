@@ -4,9 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition is_odd (n : u32) :=
-  ltac:(function ((n.["rem"](| 2 |)).["eq"](| 1 |) : bool)).
+  let return_type := bool in
+  ltac:(function (
+    n.["rem"](| 2 |).["eq"](| 1 |)
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -25,11 +29,11 @@ Definition main :=
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := n; |} =>
               let n_squared := n.["mul"](| n |) in
               if (n_squared.["ge"](| upper |) : bool) then
-                let '_ := Break in
+                let '_ := M.Break in
                 tt
               else
                 if (is_odd(| n_squared |) : bool) then
@@ -53,11 +57,10 @@ Definition main :=
         |) in
       tt in
     let sum_of_squared_odd_numbers :=
-      (((RangeFrom {| RangeFrom.start := 0; |}.["map"](|
-        fun n => n.["mul"](| n |)
-      |)).["take_while"](| fun n_squared => n_squared.["lt"](| upper |)
-      |)).["filter"](| fun n_squared => is_odd(| n_squared |)
-      |)).["sum"](||) in
+      RangeFrom {| RangeFrom.start := 0; |}.["map"](| fun n => n.["mul"](| n |)
+      |).["take_while"](| fun n_squared => n_squared.["lt"](| upper |)
+      |).["filter"](| fun n_squared => is_odd(| n_squared |)
+      |).["sum"](||) in
     let '_ :=
       let '_ :=
         _crate.io._print(|
@@ -69,4 +72,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

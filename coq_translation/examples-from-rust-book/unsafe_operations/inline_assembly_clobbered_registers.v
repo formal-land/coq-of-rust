@@ -6,12 +6,13 @@ Import Root.std.prelude.rust_2015.
 Module asm := std.arch.asm.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
-    let name_buf := Repeat(| 0 |) in
+    let name_buf := Repeat 0 in
     let '_ :=
       let '_ := InlineAsm in
       tt in
-    let name := (core.str.from_utf8(| name_buf |)).["unwrap"](||) in
+    let name := core.str.from_utf8(| name_buf |).["unwrap"](||) in
     let '_ :=
       let '_ :=
         _crate.io._print(|
@@ -23,4 +24,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

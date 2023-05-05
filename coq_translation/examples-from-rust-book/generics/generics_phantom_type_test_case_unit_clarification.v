@@ -16,7 +16,10 @@ Module Impl__crate_fmt_Debug_for_Inch.
   Definition Self := Inch.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
-    ltac:(function (_crate.intrinsics.unreachable(||) : _crate.fmt.Result)).
+    let return_type := _crate.fmt.Result in
+    ltac:(function (
+      _crate.intrinsics.unreachable(||)
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -31,7 +34,10 @@ Module Impl__crate_clone_Clone_for_Inch.
   Definition Self := Inch.
   
   Definition clone (self : ref Self) :=
-    ltac:(function (self.["deref"](||) : Inch)).
+    let return_type := Inch in
+    ltac:(function (
+      self.["deref"](||)
+    : return_type)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -59,7 +65,10 @@ Module Impl__crate_fmt_Debug_for_Mm.
   Definition Self := Mm.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
-    ltac:(function (_crate.intrinsics.unreachable(||) : _crate.fmt.Result)).
+    let return_type := _crate.fmt.Result in
+    ltac:(function (
+      _crate.intrinsics.unreachable(||)
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -74,7 +83,10 @@ Module Impl__crate_clone_Clone_for_Mm.
   Definition Self := Mm.
   
   Definition clone (self : ref Self) :=
-    ltac:(function (self.["deref"](||) : Mm)).
+    let return_type := Mm in
+    ltac:(function (
+      self.["deref"](||)
+    : return_type)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -108,6 +120,7 @@ Module Impl__crate_fmt_Debug_for_Length_Unit.
   Definition Self := Length Unit.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["debug_tuple_field2_finish"](|
         f,
@@ -115,7 +128,7 @@ Module Impl__crate_fmt_Debug_for_Length_Unit.
         self.[0],
         self.[1]
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -130,11 +143,12 @@ Module Impl__crate_clone_Clone_for_Length_Unit.
   Definition Self := Length Unit.
   
   Definition clone (self : ref Self) :=
+    let return_type := Length Unit in
     ltac:(function (
       Length.Build_t
-        (_crate.clone.Clone.clone(| self.[0] |))
-        (_crate.clone.Clone.clone(| self.[1] |))
-      : Length Unit)).
+        _crate.clone.Clone.clone(| self.[0] |)
+        _crate.clone.Clone.clone(| self.[1] |)
+    : return_type)).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -158,9 +172,10 @@ Module Impl_Add_for_Length_Unit.
   Definition Output : Set := Length Unit.
   
   Definition add (self : Self) (rhs : Length Unit) :=
+    let return_type := Length Unit in
     ltac:(function (
-      Length.Build_t ((self.[0]).["add"](| rhs.[0] |)) PhantomData.Build
-      : Length Unit)).
+      Length.Build_t (self.[0]).["add"](| rhs.[0] |) PhantomData.Build
+    : return_type)).
   
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -172,6 +187,7 @@ Module Impl_Add_for_Length_Unit.
 End Impl_Add_for_Length_Unit.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let one_foot := Length.Build_t 12 (* 12.0 *) PhantomData.Build in
     let one_meter := Length.Build_t 1000 (* 1000.0 *) PhantomData.Build in
@@ -198,4 +214,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

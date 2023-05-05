@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let _immutable_binding := 1 in
     let mutable_binding := 1 in
@@ -29,4 +30,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

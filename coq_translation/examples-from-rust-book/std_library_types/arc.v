@@ -12,6 +12,7 @@ Module Duration := std.time.Duration.
 Definition Duration := Duration.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let apple := Arc::["new"](| "the same apple" |) in
     let '_ :=
@@ -20,7 +21,7 @@ Definition main :=
         loop
           let '_ :=
             match LangItem(| iter |) with
-            | None => Break
+            | None => M.Break
             | Some {| Some.0 := _; |} =>
               let apple := Arc::["clone"](| apple |) in
               let '_ :=
@@ -46,4 +47,4 @@ Definition main :=
       end in
     let '_ := thread.sleep(| Duration::["from_secs"](| 1 |) |) in
     tt
-    : unit)).
+  : return_type)).

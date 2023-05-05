@@ -3,9 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition some_number := ltac:(function (Some 42 : Option u32)).
+Definition some_number :=
+  let return_type := Option u32 in
+  ltac:(function (
+    Some 42
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     match some_number(||) with
     | Some (42 as n) =>
@@ -30,4 +35,4 @@ Definition main :=
       tt
     | _ => tt
     end
-    : unit)).
+  : return_type)).

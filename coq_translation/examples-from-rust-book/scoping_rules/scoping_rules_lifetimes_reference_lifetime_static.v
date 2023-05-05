@@ -5,9 +5,14 @@ Import Root.std.prelude.rust_2015.
 
 Definition NUM : i32 := 18.
 
-Definition coerce_static (arg : ref i32) := ltac:(function (NUM : ref i32)).
+Definition coerce_static (arg : ref i32) :=
+  let return_type := ref i32 in
+  ltac:(function (
+    NUM
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let static_string := "I'm in read-only memory" in
@@ -47,4 +52,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

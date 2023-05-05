@@ -3,9 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition some_fn := ltac:(function (tt : unit)).
+Definition some_fn :=
+  let return_type := unit in
+  ltac:(function (
+    tt
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let a := some_fn(||) in
     let '_ :=
@@ -16,4 +21,4 @@ Definition main :=
         |)
       |) in
     tt
-    : unit)).
+  : return_type)).

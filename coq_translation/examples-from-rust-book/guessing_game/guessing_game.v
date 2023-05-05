@@ -11,6 +11,7 @@ Definition Ordering := Ordering.t.
 Module Rng := rand.Rng.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -20,7 +21,7 @@ Definition main :=
         |) in
       tt in
     let secret_number :=
-      (rand.thread_rng(||)).["gen_range"](| LangItem(| 1, 100 |) |) in
+      rand.thread_rng(||).["gen_range"](| LangItem(| 1, 100 |) |) in
     loop
       let '_ :=
         let '_ :=
@@ -31,13 +32,12 @@ Definition main :=
         tt in
       let guess := String::["new"](||) in
       let '_ :=
-        ((io.stdin(||)).["read_line"](| guess |)).["expect"](|
-          "Failed to read line"
+        io.stdin(||).["read_line"](| guess |).["expect"](| "Failed to read line"
         |) in
       let guess :=
-        match (guess.["trim"](||)).["parse"](||) with
+        match guess.["trim"](||).["parse"](||) with
         | Ok num => num
-        | Err _ => Continue
+        | Err _ => M.Continue
         end in
       let '_ :=
         let '_ :=
@@ -72,9 +72,9 @@ Definition main :=
 " ] |)
             |) in
           tt in
-        let '_ := Break in
+        let '_ := M.Break in
         tt
       end
       from
       loop
-    : unit)).
+  : return_type)).

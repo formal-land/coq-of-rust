@@ -17,6 +17,7 @@ End Color.
 Definition Color := Color.t.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let color := Color.RGB 122 17 40 in
     let '_ :=
@@ -120,4 +121,4 @@ Definition main :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).

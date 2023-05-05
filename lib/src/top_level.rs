@@ -628,21 +628,27 @@ fn fn_to_doc<'a>(
         ]),
         line(),
         group([
-            text("ltac:(function ("),
-            nest([
-                line_(),
-                body.to_doc(false),
-                line(),
-                nest([
-                    text(":"),
-                    line(),
-                    match ret_ty {
-                        None => text("_"),
-                        Some(ty) => ty.to_doc(false),
-                    },
-                ]),
+            group([
+                match ret_ty {
+                    None => nil(),
+                    Some(ty) => concat([
+                        nest([
+                            text("let return_type :="),
+                            line(),
+                            ty.to_doc(false),
+                            text(" in"),
+                        ]),
+                        hardline(),
+                    ]),
+                },
+                text("ltac:(function ("),
             ]),
-            text("))"),
+            nest([hardline(), body.to_doc(false)]),
+            hardline(),
+            match ret_ty {
+                None => text(": _))"),
+                Some(_) => text(": return_type))"),
+            },
         ]),
         text("."),
     ])

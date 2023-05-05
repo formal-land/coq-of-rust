@@ -16,6 +16,7 @@ Module checked.
     Definition Self := MathError.
     
     Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+      let return_type := _crate.fmt.Result in
       ltac:(function (
         _crate.fmt.Formatter::["write_str"](|
           f,
@@ -25,7 +26,7 @@ Module checked.
           | MathError.NegativeSquareRoot => "NegativeSquareRoot"
           end
         |)
-        : _crate.fmt.Result)).
+      : return_type)).
     
     Global Instance Method_fmt : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -39,28 +40,31 @@ Module checked.
   Definition MathResult : Set := Result f64 MathError.
   
   Definition div (x : f64) (y : f64) :=
+    let return_type := MathResult in
     ltac:(function (
       if (y.["eq"](| 0 (* 0.0 *) |) : bool) then
         Err MathError.DivisionByZero
       else
-        Ok (x.["div"](| y |))
-      : MathResult)).
+        Ok x.["div"](| y |)
+    : return_type)).
   
   Definition sqrt (x : f64) :=
+    let return_type := MathResult in
     ltac:(function (
       if (x.["lt"](| 0 (* 0.0 *) |) : bool) then
         Err MathError.NegativeSquareRoot
       else
-        Ok (x.["sqrt"](||))
-      : MathResult)).
+        Ok x.["sqrt"](||)
+    : return_type)).
   
   Definition ln (x : f64) :=
+    let return_type := MathResult in
     ltac:(function (
       if (x.["le"](| 0 (* 0.0 *) |) : bool) then
         Err MathError.NonPositiveLogarithm
       else
-        Ok (x.["ln"](||))
-      : MathResult)).
+        Ok x.["ln"](||)
+    : return_type)).
 End checked.
 
 Module MathError.
@@ -75,6 +79,7 @@ Module Impl__crate_fmt_Debug_for_MathError.
   Definition Self := MathError.
   
   Definition fmt (self : ref Self) (f : mut_ref _crate.fmt.Formatter) :=
+    let return_type := _crate.fmt.Result in
     ltac:(function (
       _crate.fmt.Formatter::["write_str"](|
         f,
@@ -84,7 +89,7 @@ Module Impl__crate_fmt_Debug_for_MathError.
         | MathError.NegativeSquareRoot => "NegativeSquareRoot"
         end
       |)
-      : _crate.fmt.Result)).
+    : return_type)).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -98,30 +103,34 @@ End Impl__crate_fmt_Debug_for_MathError.
 Definition MathResult : Set := Result f64 MathError.
 
 Definition div (x : f64) (y : f64) :=
+  let return_type := MathResult in
   ltac:(function (
     if (y.["eq"](| 0 (* 0.0 *) |) : bool) then
       Err MathError.DivisionByZero
     else
-      Ok (x.["div"](| y |))
-    : MathResult)).
+      Ok x.["div"](| y |)
+  : return_type)).
 
 Definition sqrt (x : f64) :=
+  let return_type := MathResult in
   ltac:(function (
     if (x.["lt"](| 0 (* 0.0 *) |) : bool) then
       Err MathError.NegativeSquareRoot
     else
-      Ok (x.["sqrt"](||))
-    : MathResult)).
+      Ok x.["sqrt"](||)
+  : return_type)).
 
 Definition ln (x : f64) :=
+  let return_type := MathResult in
   ltac:(function (
     if (x.["le"](| 0 (* 0.0 *) |) : bool) then
       Err MathError.NonPositiveLogarithm
     else
-      Ok (x.["ln"](||))
-    : MathResult)).
+      Ok x.["ln"](||)
+  : return_type)).
 
 Definition op (x : f64) (y : f64) :=
+  let return_type := f64 in
   ltac:(function (
     match checked.div(| x, y |) with
     | Err why =>
@@ -153,9 +162,10 @@ Definition op (x : f64) (y : f64) :=
         end
       end
     end
-    : f64)).
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let '_ :=
       let '_ :=
@@ -172,4 +182,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

@@ -40,23 +40,31 @@ Module Impl_Contains_for_Container.
       (self : ref Self)
       (number_1 : ref i32)
       (number_2 : ref i32) :=
+    let return_type := bool in
     ltac:(function (
-      ((self.[0]).["eq"](| number_1 |)).["andb"](|
-        (self.[1]).["eq"](| number_2 |)
+      (self.[0]).["eq"](| number_1 |).["andb"](| (self.[1]).["eq"](| number_2 |)
       |)
-      : bool)).
+    : return_type)).
   
   Global Instance Method_contains : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
-  Definition first (self : ref Self) := ltac:(function (self.[0] : i32)).
+  Definition first (self : ref Self) :=
+    let return_type := i32 in
+    ltac:(function (
+      self.[0]
+    : return_type)).
   
   Global Instance Method_first : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
-  Definition last (self : ref Self) := ltac:(function (self.[1] : i32)).
+  Definition last (self : ref Self) :=
+    let return_type := i32 in
+    ltac:(function (
+      self.[1]
+    : return_type)).
   
   Global Instance Method_last : Notation.Dot "last" := {
     Notation.dot := last;
@@ -73,11 +81,13 @@ Definition difference
     {A B C : Set}
     `{Contains.Trait A B C}
     (container : ref C) :=
+  let return_type := i32 in
   ltac:(function (
-    (container.["last"](||)).["sub"](| container.["first"](||) |)
-    : i32)).
+    container.["last"](||).["sub"](| container.["first"](||) |)
+  : return_type)).
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let number_1 := 3 in
     let number_2 := 10 in
@@ -129,4 +139,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

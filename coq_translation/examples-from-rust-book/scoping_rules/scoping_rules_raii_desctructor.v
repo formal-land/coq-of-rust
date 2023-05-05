@@ -21,7 +21,7 @@ Module Impl_Drop_for_ToDrop.
           |) in
         tt in
       tt
-      : _)).
+    : _)).
   
   Global Instance Method_drop : Notation.Dot "drop" := {
     Notation.dot := drop;
@@ -33,6 +33,7 @@ Module Impl_Drop_for_ToDrop.
 End Impl_Drop_for_ToDrop.
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let x := ToDrop.Build in
     let '_ :=
@@ -43,4 +44,4 @@ Definition main :=
         |) in
       tt in
     tt
-    : unit)).
+  : return_type)).

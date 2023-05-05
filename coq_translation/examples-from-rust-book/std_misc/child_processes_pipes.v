@@ -15,12 +15,13 @@ Definition PANGRAM : ref str := "the quick brown fox jumped over the lazy dog
 ".
 
 Definition main :=
+  let return_type := unit in
   ltac:(function (
     let process :=
       match
-        (((Command::["new"](| "wc" |)).["stdin"](| Stdio::["piped"](||)
-        |)).["stdout"](| Stdio::["piped"](||)
-        |)).["spawn"](||)
+        Command::["new"](| "wc" |).["stdin"](| Stdio::["piped"](||)
+        |).["stdout"](| Stdio::["piped"](||)
+        |).["spawn"](||)
       with
       | Err why =>
         _crate.rt.panic_fmt(|
@@ -33,7 +34,7 @@ Definition main :=
       end in
     let '_ :=
       match
-        (process.["stdin"].["unwrap"](||)).["write_all"](|
+        process.["stdin"].["unwrap"](||).["write_all"](|
           PANGRAM.["as_bytes"](||)
         |)
       with
@@ -53,7 +54,7 @@ Definition main :=
         tt
       end in
     let s := String::["new"](||) in
-    match (process.["stdout"].["unwrap"](||)).["read_to_string"](| s |) with
+    match process.["stdout"].["unwrap"](||).["read_to_string"](| s |) with
     | Err why =>
       _crate.rt.panic_fmt(|
         format_arguments::["new_v1"](|
@@ -72,4 +73,4 @@ Definition main :=
         |) in
       tt
     end
-    : unit)).
+  : return_type)).
