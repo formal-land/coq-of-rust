@@ -8,7 +8,7 @@ Definition create_fn :=
   ltac:(function (
     let text := "Fn".["to_owned"](||) in
     fun  =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "This is a: "; "
@@ -26,7 +26,7 @@ Definition create_fnmut :=
   ltac:(function (
     let text := "FnMut".["to_owned"](||) in
     fun  =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "This is a: "; "
@@ -44,7 +44,7 @@ Definition create_fnonce :=
   ltac:(function (
     let text := "FnOnce".["to_owned"](||) in
     fun  =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "This is a: "; "
@@ -63,8 +63,8 @@ Definition main :=
     let fn_plain := create_fn(||) in
     let fn_mut := create_fnmut(||) in
     let fn_once := create_fnonce(||) in
-    let '_ := fn_plain(||) in
-    let '_ := fn_mut(||) in
-    let '_ := fn_once(||) in
+    let _ : unit := fn_plain(||) in
+    let _ : unit := fn_mut(||) in
+    let _ : unit := fn_once(||) in
     tt
   : return_type)).

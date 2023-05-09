@@ -50,8 +50,8 @@ Definition main :=
     let c := "Q"%char in
     let ref_c1 := c in
     let ref_c2 := c in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "ref_c1 equals ref_c2: "; "
@@ -69,12 +69,12 @@ Definition main :=
       let '{| Point.x := ref_to_x; Point.y := _; |} := point in
       ref_to_x.["deref"](||) in
     let mutable_point := point in
-    let '_ :=
+    let _ : unit :=
       let '{| Point.x := _; Point.y := mut_ref_to_y; |} := mutable_point in
-      let '_ := assign mut_ref_to_y.["deref"](||) 1 in
+      let _ : unit := assign mut_ref_to_y.["deref"](||) 1 in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "point is ("; ", "; ")
@@ -86,8 +86,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "mutable_point is ("; ", "; ")
@@ -100,12 +100,12 @@ Definition main :=
         |) in
       tt in
     let mutable_tuple := (Box::["new"](| 5 |), 3) in
-    let '_ :=
+    let _ : unit :=
       let '(_, last) := mutable_tuple in
-      let '_ := assign last.["deref"](||) 2 in
+      let _ : unit := assign last.["deref"](||) 2 in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "tuple is "; "

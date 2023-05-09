@@ -10,19 +10,19 @@ Definition main :=
     loop
       (if (let_if Some i := optional : bool) then
         if (i.["gt"](| 9 |) : bool) then
-          let '_ :=
-            let '_ :=
+          let _ : unit :=
+            let _ : unit :=
               _crate.io._print(|
                 format_arguments::["new_const"](| [ "Greater than 9, quit!
 " ]
                 |)
               |) in
             tt in
-          let '_ := assign optional None in
+          let _ : unit := assign optional None in
           tt
         else
-          let '_ :=
-            let '_ :=
+          let _ : unit :=
+            let _ : unit :=
               _crate.io._print(|
                 format_arguments::["new_v1"](|
                   [ "`i` is `"; "`. Try again.
@@ -31,10 +31,10 @@ Definition main :=
                 |)
               |) in
             tt in
-          let '_ := assign optional (Some i.["add"](| 1 |)) in
+          let _ : unit := assign optional (Some i.["add"](| 1 |)) in
           tt
       else
-        let '_ := M.Break in
+        let _ : unit := M.Break in
         tt)
       from
       while

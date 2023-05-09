@@ -32,7 +32,7 @@ Definition main :=
         |)
       | Ok process => process
       end in
-    let '_ :=
+    let _ : unit :=
       match
         process.["stdin"].["unwrap"](||).["write_all"](|
           PANGRAM.["as_bytes"](||)
@@ -46,7 +46,7 @@ Definition main :=
           |)
         |)
       | Ok _ =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "sent pangram to wc
 " ] |)
@@ -63,7 +63,7 @@ Definition main :=
         |)
       |)
     | Ok _ =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "wc responded with:

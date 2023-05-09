@@ -111,7 +111,7 @@ Definition eat (food : Food) (day : Day) :=
   ltac:(function (
     match cookable_v2(| food |) with
     | Some food =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Yay! On "; " we get to eat "; ".
@@ -124,7 +124,7 @@ Definition eat (food : Food) (day : Day) :=
         |) in
       tt
     | None =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Oh no. We don't get to eat on "; "?
@@ -141,8 +141,8 @@ Definition main :=
   ltac:(function (
     let '(cordon_bleu, steak, sushi) :=
       (Food.CordonBleu, Food.Steak, Food.Sushi) in
-    let '_ := eat(| cordon_bleu, Day.Monday |) in
-    let '_ := eat(| steak, Day.Tuesday |) in
-    let '_ := eat(| sushi, Day.Wednesday |) in
+    let _ : unit := eat(| cordon_bleu, Day.Monday |) in
+    let _ : unit := eat(| steak, Day.Tuesday |) in
+    let _ : unit := eat(| sushi, Day.Wednesday |) in
     tt
   : return_type)).

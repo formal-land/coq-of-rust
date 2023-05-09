@@ -75,8 +75,8 @@ Definition main :=
   ltac:(function (
     let random_number := 0 (* 0.234 *) in
     let animal := random_animal(| random_number |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "You've randomly chosen an animal, and it says "; "

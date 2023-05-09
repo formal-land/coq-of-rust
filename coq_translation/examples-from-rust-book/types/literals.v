@@ -11,8 +11,8 @@ Definition main :=
     let z := 3 (* 3 *) in
     let i := 1 in
     let f := 1 (* 1.0 *) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "size of `x` in bytes: "; "
@@ -21,8 +21,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "size of `y` in bytes: "; "
@@ -31,8 +31,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "size of `z` in bytes: "; "
@@ -41,8 +41,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "size of `i` in bytes: "; "
@@ -51,8 +51,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "size of `f` in bytes: "; "

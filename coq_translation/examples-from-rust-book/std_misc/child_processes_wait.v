@@ -13,8 +13,8 @@ Definition main :=
       Command::["new"](| "sleep" |).["arg"](| "5"
       |).["spawn"](||).["unwrap"](||) in
     let _result := child.["wait"](||).["unwrap"](||) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "reached end of main
 " ] |)

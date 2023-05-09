@@ -12,10 +12,10 @@ Definition main :=
       let x_cube := x_squared.["mul"](| x |) in
       x_cube.["add"](| x_squared |).["add"](| x |) in
     let z :=
-      let '_ := 2.["mul"](| x |) in
+      let _ : unit := 2.["mul"](| x |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "x is "; "
@@ -24,8 +24,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "y is "; "
@@ -34,8 +34,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "z is "; "

@@ -9,7 +9,7 @@ Definition main :=
     let color := String::["from"](| "green" |) in
     let print :=
       fun  =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "`color`: "; "
@@ -18,16 +18,16 @@ Definition main :=
             |)
           |) in
         tt in
-    let '_ := print(||) in
+    let _ : unit := print(||) in
     let _reborrow := color in
-    let '_ := print(||) in
+    let _ : unit := print(||) in
     let _color_moved := color in
     let count := 0 in
     let inc :=
       fun  =>
-        let '_ := count.["add_assign"](| 1 |) in
-        let '_ :=
-          let '_ :=
+        let _ : unit := count.["add_assign"](| 1 |) in
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_v1"](|
                 [ "`count`: "; "
@@ -37,14 +37,14 @@ Definition main :=
             |) in
           tt in
         tt in
-    let '_ := inc(||) in
-    let '_ := inc(||) in
+    let _ : unit := inc(||) in
+    let _ : unit := inc(||) in
     let _count_reborrowed := count in
     let movable := Box::["new"](| 3 |) in
     let consume :=
       fun  =>
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_v1"](|
                 [ "`movable`: "; "
@@ -53,9 +53,9 @@ Definition main :=
               |)
             |) in
           tt in
-        let '_ := mem.drop(| movable |) in
+        let _ : unit := mem.drop(| movable |) in
         tt in
-    let '_ := consume(||) in
+    let _ : unit := consume(||) in
     tt
   : return_type)).
 

@@ -93,7 +93,7 @@ Definition print (result : Result i32) :=
   ltac:(function (
     match result with
     | Ok n =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "The first doubled is "; "
@@ -103,7 +103,7 @@ Definition print (result : Result i32) :=
         |) in
       tt
     | Err e =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Error: "; "
@@ -126,8 +126,8 @@ Definition main :=
       Slice::["into_vec"](|
         _crate.boxed.Box::["new"](| [ "tofu"; "93"; "18" ] |)
       |) in
-    let '_ := print(| double_first(| numbers |) |) in
-    let '_ := print(| double_first(| empty |) |) in
-    let '_ := print(| double_first(| strings |) |) in
+    let _ : unit := print(| double_first(| numbers |) |) in
+    let _ : unit := print(| double_first(| empty |) |) in
+    let _ : unit := print(| double_first(| strings |) |) in
     tt
   : return_type)).

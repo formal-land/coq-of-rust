@@ -7,10 +7,10 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let n := 5 in
-    let '_ :=
+    let _ : unit :=
       if (n.["lt"](| 0 |) : bool) then
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_v1"](|
                 [ ""; " is negative" ],
@@ -21,8 +21,8 @@ Definition main :=
         tt
       else
         if (n.["gt"](| 0 |) : bool) then
-          let '_ :=
-            let '_ :=
+          let _ : unit :=
+            let _ : unit :=
               _crate.io._print(|
                 format_arguments::["new_v1"](|
                   [ ""; " is positive" ],
@@ -32,8 +32,8 @@ Definition main :=
             tt in
           tt
         else
-          let '_ :=
-            let '_ :=
+          let _ : unit :=
+            let _ : unit :=
               _crate.io._print(|
                 format_arguments::["new_v1"](|
                   [ ""; " is zero" ],
@@ -45,8 +45,8 @@ Definition main :=
     let big_n :=
       if (n.["lt"](| 10 |).["andb"](| n.["gt"](| 10.["neg"](||) |) |) : bool)
       then
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_const"](|
                 [ ", and is a small number, increase ten-fold
@@ -56,8 +56,8 @@ Definition main :=
           tt in
         10.["mul"](| n |)
       else
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_const"](|
                 [ ", and is a big number, halve the number
@@ -66,8 +66,8 @@ Definition main :=
             |) in
           tt in
         n.["div"](| 2 |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; " -> "; "

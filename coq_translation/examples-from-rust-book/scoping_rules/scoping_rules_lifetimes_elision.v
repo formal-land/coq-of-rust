@@ -6,8 +6,8 @@ Import Root.std.prelude.rust_2015.
 Definition elided_input (x : ref i32) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "`elided_input`: "; "
@@ -22,8 +22,8 @@ Definition elided_input (x : ref i32) :=
 Definition annotated_input (x : ref i32) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "`annotated_input`: "; "
@@ -51,10 +51,10 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let x := 3 in
-    let '_ := elided_input(| x |) in
-    let '_ := annotated_input(| x |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit := elided_input(| x |) in
+    let _ : unit := annotated_input(| x |) in
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "`elided_pass`: "; "
@@ -63,8 +63,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "`annotated_pass`: "; "

@@ -10,8 +10,8 @@ Definition compare_prints
     (t : ref T) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Debug: `"; "`
@@ -20,8 +20,8 @@ Definition compare_prints
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Display: `"; "`
@@ -41,8 +41,8 @@ Definition compare_types
     (u : ref U) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "t: `"; "`
@@ -51,8 +51,8 @@ Definition compare_types
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "u: `"; "`
@@ -71,7 +71,7 @@ Definition main :=
     let array := [ 1; 2; 3 ] in
     let vec :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 1; 2; 3 ] |) |) in
-    let '_ := compare_prints(| string |) in
-    let '_ := compare_types(| array, vec |) in
+    let _ : unit := compare_prints(| string |) in
+    let _ : unit := compare_types(| array, vec |) in
     tt
   : return_type)).

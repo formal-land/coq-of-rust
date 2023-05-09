@@ -6,14 +6,14 @@ Import Root.std.prelude.rust_2015.
 Definition drink (beverage : ref str) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
+    let _ : unit :=
       if (beverage.["eq"](| "lemonade" |) : bool) then
-        let '_ := _crate.rt.begin_panic(| "AAAaaaaa!!!!" |) in
+        let _ : unit := _crate.rt.begin_panic(| "AAAaaaaa!!!!" |) in
         tt
       else
         tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Some refreshing "; " is all I need.
@@ -28,7 +28,7 @@ Definition drink (beverage : ref str) :=
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ := drink(| "water" |) in
-    let '_ := drink(| "lemonade" |) in
+    let _ : unit := drink(| "water" |) in
+    let _ : unit := drink(| "lemonade" |) in
     tt
   : return_type)).

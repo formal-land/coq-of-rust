@@ -36,8 +36,8 @@ Module Animal.
   }.
   Global Instance Method_talk `(Trait) : Notation.Dot "talk" := {
     Notation.dot (self : ref Self) :=
-      (let '_ :=
-        let '_ :=
+      (let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ ""; " says "; "
@@ -106,8 +106,8 @@ Module Impl_Animal_for_Sheep.
   
   Definition talk (self : ref Self) :=
     ltac:(function (
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ ""; " pauses briefly... "; "
@@ -139,8 +139,8 @@ Module ImplSheep_2.
   Definition shear (self : mut_ref Self) :=
     ltac:(function (
       if (self.["is_naked"](||) : bool) then
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_v1"](|
                 [ ""; " is already naked...
@@ -151,8 +151,8 @@ Module ImplSheep_2.
           tt in
         tt
       else
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_v1"](|
                 [ ""; " gets a haircut!
@@ -161,7 +161,7 @@ Module ImplSheep_2.
               |)
             |) in
           tt in
-        let '_ := assign self.["naked"] true in
+        let _ : unit := assign self.["naked"] true in
         tt
     : _)).
   
@@ -174,8 +174,8 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let dolly := (Animal.new(| "Dolly" |) : Sheep) in
-    let '_ := dolly.["talk"](||) in
-    let '_ := dolly.["shear"](||) in
-    let '_ := dolly.["talk"](||) in
+    let _ : unit := dolly.["talk"](||) in
+    let _ : unit := dolly.["shear"](||) in
+    let _ : unit := dolly.["talk"](||) in
     tt
   : return_type)).

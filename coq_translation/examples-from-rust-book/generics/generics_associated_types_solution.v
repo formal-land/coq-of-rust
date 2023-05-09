@@ -103,8 +103,8 @@ Definition main :=
     let number_1 := 3 in
     let number_2 := 10 in
     let container := Container.Build_t number_1 number_2 in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Does container contain "; " and "; ": "; "
@@ -119,8 +119,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "First number: "; "
@@ -129,8 +129,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Last number: "; "
@@ -139,8 +139,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "The difference is: "; "

@@ -8,13 +8,13 @@ Definition foo {A : Set} (o : Option A) :=
   ltac:(function (
     match o with
     | Some _a =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(| format_arguments::["new_const"](| [ "some
 " ] |)
         |) in
       tt
     | None =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(| format_arguments::["new_const"](| [ "nothing
 " ] |)
         |) in
@@ -37,11 +37,11 @@ Module tests.
       match LangItem(| Range {| Range.start := 0; Range.end := 5; |} |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := _; |} =>
-              let '_ :=
+              let _ : unit :=
                 file.["write_all"](| "Ferris
 ".["as_bytes"](||) |).["expect"](|
                   "Could not write to ferris.txt"
@@ -65,11 +65,11 @@ Module tests.
       match LangItem(| Range {| Range.start := 0; Range.end := 5; |} |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := _; |} =>
-              let '_ :=
+              let _ : unit :=
                 file.["write_all"](| "Corro
 ".["as_bytes"](||) |).["expect"](|
                   "Could not write to ferris.txt"
@@ -97,11 +97,11 @@ Definition test_file :=
     match LangItem(| Range {| Range.start := 0; Range.end := 5; |} |) with
     | iter =>
       loop
-        let '_ :=
+        let _ : unit :=
           match LangItem(| iter |) with
           | None => M.Break
           | Some {| Some.0 := _; |} =>
-            let '_ :=
+            let _ : unit :=
               file.["write_all"](| "Ferris
 ".["as_bytes"](||) |).["expect"](|
                 "Could not write to ferris.txt"
@@ -125,11 +125,11 @@ Definition test_file_also :=
     match LangItem(| Range {| Range.start := 0; Range.end := 5; |} |) with
     | iter =>
       loop
-        let '_ :=
+        let _ : unit :=
           match LangItem(| iter |) with
           | None => M.Break
           | Some {| Some.0 := _; |} =>
-            let '_ :=
+            let _ : unit :=
               file.["write_all"](| "Corro
 ".["as_bytes"](||) |).["expect"](|
                 "Could not write to ferris.txt"

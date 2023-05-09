@@ -21,8 +21,8 @@ Definition main :=
       Slice::["into_vec"](|
         _crate.boxed.Box::["new"](| [ "tofu"; "93"; "18" ] |)
       |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "The first doubled is "; "
@@ -31,8 +31,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "The first doubled is "; "
@@ -41,8 +41,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "The first doubled is "; "

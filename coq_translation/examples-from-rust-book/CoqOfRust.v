@@ -40,16 +40,19 @@ Export List.ListNotations.
 Module M.
   (** Monad for impure Rust code. The parameter [R] is for the type of the
       returned value in a block. *)
-  Inductive t (R : Set) : Set -> Set :=
-  | Pure {A : Set} : A -> t R A
-  | Bind {A B : Set} : t R A -> (A -> t R B) -> t R B
-  | Return : R -> t R unit
-  | Break {A : Set} : t R A
-  | Continue {A : Set} : t R A
-  | Panic {A E : Set} : E -> t R A.
+  Inductive t (R A : Set) : Set :=
+  | Pure : A -> t R A
+  | Bind {B : Set} : t R B -> (B -> t R A) -> t R A
+  | FunctionCall : t Empty_set A -> t R A
+  (** This is the Rust's `return`, not the one of the monad *)
+  | Return : R -> t R A
+  | Break : t R A
+  | Continue : t R A
+  | Panic {E : Set} : E -> t R A.
   Arguments Pure {_ _}.
   Arguments Bind {_ _ _}.
-  Arguments Return {_}.
+  Arguments FunctionCall {_ _}.
+  Arguments Return {_ _}.
   Arguments Break {_ _}.
   Arguments Continue {_ _}.
   Arguments Panic {_ _ _}.
@@ -60,20 +63,37 @@ End M.
     from outside of a function. *)
 Definition M : Set -> Set := M.t Empty_set.
 
-(** Monadic notation for [M.t]. *)
+Definition smart_bind {R A B : Set} (e1 : M.t R A) (e2 : A -> M.t R B) :
+  M.t R B :=
+  match e1 with
+  | M.Pure v1 => e2 v1
+  | _ => M.Bind e1 e2
+  end.
+
+(** Monadic notation for [M.t] with [M.Bind]. *)
 Notation "'let*' x ':=' e1 'in' e2" :=
   (M.Bind e1 (fun x => e2))
   (at level 200, x name, e1 at level 100, e2 at level 200).
 
+(** Monadic notation for [M.t] with [smart_bind]. *)
+Notation "'let**' x ':=' e1 'in' e2" :=
+  (smart_bind e1 (fun x => e2))
+  (at level 200, x name, e1 at level 100, e2 at level 200).
+
+(** Bubble up all the [Return] instructions to a sum type with either a success
+    value or a returned value. *)
 Fixpoint run_catch_return {R A : Set} (x : M.t R A) : M (A + R) :=
   match x with
   | M.Pure v => M.Pure (inl v)
   | M.Bind e1 e2 =>
-    let* x := run_catch_return e1 in
+    let** x := run_catch_return e1 in
     match x with
     | inl v => run_catch_return (e2 v)
     | inr return_v => M.Pure (inr return_v)
     end
+  | M.FunctionCall e =>
+    let* x := M.FunctionCall e in
+    M.Pure (inl x)
   | M.Return return_v => M.Pure (inr return_v)
   | M.Break => M.Break
   | M.Continue => M.Continue
@@ -83,31 +103,31 @@ Fixpoint run_catch_return {R A : Set} (x : M.t R A) : M (A + R) :=
 (** Special primitive to help Ltac to make a monadic translation. This primitive
     is an axiom and should be totally removed by our monadic translation, so
     that it is never referenced in the final definitions. *)
-Parameter bang : forall {A : Set}, M A -> A.
+Parameter bang_function_call : forall {A : Set}, M.t Empty_set A -> A.
 
 (** Notation for a function call for a monadic function. We use the [bang]
     operator to retrieve the result in a correct shape (outside of the monad).
 *)
 Notation "e (| e1 , .. , en |)" :=
-  (bang ((.. (e e1) ..) en))
+  (bang_function_call ((.. (e e1) ..) en))
   (at level 0).
 
 (** Particular case when there are no arguments. *)
 Notation "e (||)" :=
-  (bang e)
+  (bang_function_call e)
   (at level 0).
 
-(** Make a monadic translation at the level of a block, following the [bang]
-    instruction. *)
+(** Make a monadic translation at the level of a block, following
+    the [bang_function_call] marker. *)
 Ltac block e :=
   match e with
-  | context ctxt [bang ?x] =>
-    refine (M.Bind _ _); [
+  | context ctxt [bang_function_call ?x] =>
+    refine (M.Bind (M.FunctionCall _) _); [
       block x |
       let v := fresh "v" in
       intro v;
       let y := context ctxt [v] in
-      exact (ltac:(block y))
+      block y
     ]
   | _ => exact e
   end.
@@ -118,7 +138,7 @@ Definition M_function_body (A : Set) : Set := M.t A A.
     and catching the returned value (with the `return` keyword) if any. *)
 Ltac function body :=
   exact (
-    (let* v :=
+    (let** v :=
       run_catch_return ltac:(block (
         M.Pure body : M_function_body _
       )) in
@@ -129,6 +149,9 @@ Ltac function body :=
     (* We precise the type here to avoid having [M.t] when doing [Check] on
        a function definition. *)
   ).
+
+Definition sequence {A : Set} (e1 : unit) (e2 : A) : A :=
+  e2.
 
 Module Notation.
   (** A class to represent the notation [e1.e2]. This is mainly used to call

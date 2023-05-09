@@ -20,8 +20,8 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let color := Color.RGB 122 17 40 in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "What color is it?
 " ] |)
@@ -29,28 +29,28 @@ Definition main :=
       tt in
     match color with
     | Color.Red =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "The color is Red!
 " ] |)
         |) in
       tt
     | Color.Blue =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "The color is Blue!
 " ] |)
         |) in
       tt
     | Color.Green =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "The color is Green!
 " ] |)
         |) in
       tt
     | Color.RGB r g b =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Red: "; ", green: "; ", and blue: "; "!
@@ -64,7 +64,7 @@ Definition main :=
         |) in
       tt
     | Color.HSV h s v =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Hue: "; ", saturation: "; ", value: "; "!
@@ -78,7 +78,7 @@ Definition main :=
         |) in
       tt
     | Color.HSL h s l =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Hue: "; ", saturation: "; ", lightness: "; "!
@@ -92,7 +92,7 @@ Definition main :=
         |) in
       tt
     | Color.CMY c m y =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Cyan: "; ", magenta: "; ", yellow: "; "!
@@ -106,7 +106,7 @@ Definition main :=
         |) in
       tt
     | Color.CMYK c m y k =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Cyan: "; ", magenta: "; ", yellow: "; ", key (black): "; "!

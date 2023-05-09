@@ -7,8 +7,8 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let triple := (0, 2.["neg"](||), 3) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Tell me about "; "
@@ -19,7 +19,7 @@ Definition main :=
       tt in
     match triple with
     | (0, y, z) =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "First is `0`, `y` is "; ", and `z` is "; "
@@ -32,7 +32,7 @@ Definition main :=
         |) in
       tt
     | (1, _, _) =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [ "First is `1` and the rest doesn't matter
@@ -41,7 +41,7 @@ Definition main :=
         |) in
       tt
     | (_, 2) =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [ "last is `2` and the rest doesn't matter
@@ -50,7 +50,7 @@ Definition main :=
         |) in
       tt
     | (3, _, 4) =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [ "First is `3`, last is `4`, and the rest doesn't matter
@@ -59,7 +59,7 @@ Definition main :=
         |) in
       tt
     | _ =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [ "It doesn't matter what they are

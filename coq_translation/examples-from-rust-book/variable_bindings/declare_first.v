@@ -7,12 +7,12 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let a_binding := tt in
-    let '_ :=
+    let _ : unit :=
       let x := 2 in
-      let '_ := assign a_binding x.["mul"](| x |) in
+      let _ : unit := assign a_binding x.["mul"](| x |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "a binding: "; "
@@ -22,9 +22,9 @@ Definition main :=
         |) in
       tt in
     let another_binding := tt in
-    let '_ := assign another_binding 1 in
-    let '_ :=
-      let '_ :=
+    let _ : unit := assign another_binding 1 in
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "another binding: "; "

@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Definition apply {F : Set} `{Fn.Trait unit F} (f : F) :=
   let return_type := unit in
   ltac:(function (
-    let '_ := f(||) in
+    let _ : unit := f(||) in
     tt
   : return_type)).
 
@@ -16,7 +16,7 @@ Definition main :=
     let x := 7 in
     let print :=
       fun  =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ ""; "
@@ -25,6 +25,6 @@ Definition main :=
             |)
           |) in
         tt in
-    let '_ := apply(| print |) in
+    let _ : unit := apply(| print |) in
     tt
   : return_type)).

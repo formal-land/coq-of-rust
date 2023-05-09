@@ -9,8 +9,8 @@ Definition main :=
     let parsed := "5".["parse"](||).["unwrap"](||) in
     let turbo_parsed := "10".["parse"](||).["unwrap"](||) in
     let sum := parsed.["add"](| turbo_parsed |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Sum: "; "

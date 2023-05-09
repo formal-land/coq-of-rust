@@ -26,7 +26,7 @@ Definition print (result : AliasedResult i32) :=
   ltac:(function (
     match result with
     | Ok n =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "n is "; "
@@ -36,7 +36,7 @@ Definition print (result : AliasedResult i32) :=
         |) in
       tt
     | Err e =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Error: "; "
@@ -51,7 +51,7 @@ Definition print (result : AliasedResult i32) :=
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ := print(| multiply(| "10", "2" |) |) in
-    let '_ := print(| multiply(| "t", "2" |) |) in
+    let _ : unit := print(| multiply(| "10", "2" |) |) in
+    let _ : unit := print(| multiply(| "t", "2" |) |) in
     tt
   : return_type)).

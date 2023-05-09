@@ -7,7 +7,7 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let raw_p := 10 in
-    let '_ :=
+    let _ : unit :=
       if (raw_p.["deref"](||).["eq"](| 10 |).["not"](||) : bool) then
         _crate.panicking.panic(| "assertion failed: *raw_p == 10" |)
       else

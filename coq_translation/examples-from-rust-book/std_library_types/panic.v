@@ -7,7 +7,7 @@ Definition division (dividend : i32) (divisor : i32) :=
   let return_type := i32 in
   ltac:(function (
     if (divisor.["eq"](| 0 |) : bool) then
-      let '_ := _crate.rt.begin_panic(| "division by zero" |) in
+      let _ : unit := _crate.rt.begin_panic(| "division by zero" |) in
       tt
     else
       dividend.["div"](| divisor |)
@@ -17,9 +17,9 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let _x := Box::["new"](| 0 |) in
-    let '_ := division(| 3, 0 |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit := division(| 3, 0 |) in
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "This point won't be reached!
 " ]

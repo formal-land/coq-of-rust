@@ -89,8 +89,8 @@ Definition Triangle : Set := Triangle.t.
 Definition print_debug {T : Set} `{Debug.Trait T} (t : ref T) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "
@@ -115,9 +115,9 @@ Definition main :=
       {| Rectangle.length := 3 (* 3.0 *); Rectangle.height := 4 (* 4.0 *); |} in
     let _triangle :=
       {| Triangle.length := 3 (* 3.0 *); Triangle.height := 4 (* 4.0 *); |} in
-    let '_ := print_debug(| rectangle |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit := print_debug(| rectangle |) in
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Area: "; "

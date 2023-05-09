@@ -7,10 +7,10 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let i := 3 in
-    let '_ :=
+    let _ : unit :=
       let borrow1 := i in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "borrow1: "; "
@@ -21,8 +21,8 @@ Definition main :=
         tt in
       tt in
     let borrow2 := i in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "borrow2: "; "

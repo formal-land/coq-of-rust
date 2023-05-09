@@ -3,67 +3,158 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
+Definition foo :=
+  let number := 13 in
+  match number with
+  | 0 =>
+    _crate.io._print(| format_arguments::["new_const"](| [ "A teen" ] |)
+      |)
+  | _ =>
+    _crate.io._print(|
+      format_arguments::["new_const"](| [ "Ain't special" ] |)
+    |)
+  end.
+
+Print foo.
+
+Ltac block1 e :=
+  match e with
+  | context ctxt [bang_function_call ?x] =>
+    refine (M.Bind (M.FunctionCall _) _); [
+      exact x |
+      let v := fresh "v" in
+      intro v;
+      let y := context ctxt [v] in
+      exact y
+    ]
+  (* | _ => exact e *)
+  end.
+
+Definition foo_2 :=
+  let number := 13 in
+  match number with
+  (* | 0 =>
+    ltac:(block1 (
+      _crate.io._print(| format_arguments::["new_const"](| [ "A teen" ] |)
+      |)
+    )) *)
+  | _ =>
+    ltac:(block (M.Pure (
+      _crate.io._print(|
+        format_arguments::["new_const"](| [ "Ain't special" ] |)
+      |)
+    ) : M_function_body _))
+  end.
+
+Print foo_2.
+
+Definition foo_3 :=
+  ltac:(block (M.Pure (
+    let number := 13 in
+    match number with
+    | 0 =>
+      _crate.io._print(| format_arguments::["new_const"](| [ "A teen" ] |)
+      |)
+    | _ =>
+      _crate.io._print(|
+        format_arguments::["new_const"](| [ "Ain't special" ] |)
+      |)
+    end
+  ) : M_function_body _)).
+
+Print foo_3.
+
+Parameter print_number : Z -> M unit.
+
+Definition foo_4 :=
+  ltac:(block (M.Pure (
+    let number := 13 in
+    match number with
+    | 0 =>
+      _crate.io._print(| format_arguments::["new_const"](| [ "A teen" ] |)
+      |)
+    | number =>
+      print_number(| number |)
+    end
+  ) : M_function_body _)).
+
+Print foo_4.
+
+(** Make a monadic translation at the level of a block, following the [bang]
+    instruction. *)
+Ltac block1 e :=
+  match e with
+  | context ctxt [bang ?x] =>
+    refine (smart_bind _ _); [
+      exact x |
+      let v := fresh "v" in
+      intro v;
+      let y := context ctxt [v] in
+      exact y
+    ]
+  (* | _ => exact e *)
+  end.
+
+Ltac block e :=
+  match e with
+  | context ctxt [bang ?x] =>
+    refine (smart_bind _ _); [
+      block x |
+      let v := fresh "v" in
+      intro v;
+      let y := context ctxt [v] in
+      exact (ltac:(block y))
+    ]
+  | _ => exact e
+  end.
+
+Definition M_function_body (A : Set) : Set := M.t A A.
+
+(** A wrapper around a function definition to do both the monadic translation,
+    and catching the returned value (with the `return` keyword) if any. *)
+Ltac function body :=
+  exact (
+    (let* v :=
+      run_catch_return ltac:(block (
+        M.Pure body : M_function_body _
+      )) in
+    match v with
+    | inl v | inr v => M.Pure v
+    end)
+    : M _
+    (* We precise the type here to avoid having [M.t] when doing [Check] on
+        a function definition. *)
+  ).
+
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let number := 13 in
-    let '_ :=
-      let '_ :=
+    M.Pure (bang (R := return_type) match 13 with
+    | _ =>
+      ltac:(block1 (M.Pure (R := return_type) (
+        _crate.io._print(| format_arguments::["new_const"](| [ "A teen" ] |) |)
+      )))
+    (* | _ =>
+      ltac:(block1 (
         _crate.io._print(|
-          format_arguments::["new_v1"](|
-            [ "Tell me about "; "
-" ],
-            [ format_argument::["new_display"](| number |) ]
-          |)
-        |) in
-      tt in
-    let '_ :=
-      match number with
-      | 1 =>
-        let '_ :=
-          _crate.io._print(| format_arguments::["new_const"](| [ "One!
-" ] |)
-          |) in
-        tt
-      | (2|3|5|7|11) =>
-        let '_ :=
-          _crate.io._print(|
-            format_arguments::["new_const"](| [ "This is a prime
-" ] |)
-          |) in
-        tt
-      | (13|14|15|16|17|18|19) =>
-        let '_ :=
-          _crate.io._print(| format_arguments::["new_const"](| [ "A teen
-" ] |)
-          |) in
-        tt
-      | _ =>
-        let '_ :=
-          _crate.io._print(|
-            format_arguments::["new_const"](| [ "Ain't special
-" ] |)
-          |) in
-        tt
-      end in
-    let boolean := true in
-    let binary :=
-      match boolean with
-      | false => 0
-      | true => 1
-      end in
-    let '_ :=
-      let '_ :=
-        _crate.io._print(|
-          format_arguments::["new_v1"](|
-            [ ""; " -> "; "
-" ],
-            [
-              format_argument::["new_display"](| boolean |);
-              format_argument::["new_display"](| binary |)
-            ]
-          |)
-        |) in
-      tt in
-    tt
+          format_arguments::["new_const"](| [ "Ain't special" ] |)
+        |)
+      )) *)
+    end)
   : return_type)).
+
+Print main.
+
+Definition foog :=
+  let x := main(||) in
+  x.
+
+Print foog.
+
+Definition foog2 :=
+  ltac:(block
+    (let x := main(||) in
+    x)
+  ).
+
+Print foog2.

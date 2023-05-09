@@ -12,6 +12,6 @@ Definition main :=
 Definition foo :=
   let return_type := Empty_set in
   ltac:(function (
-    let '_ := _crate.rt.begin_panic(| "This call never returns." |) in
+    let _ : unit := _crate.rt.begin_panic(| "This call never returns." |) in
     tt
   : return_type)).

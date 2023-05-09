@@ -8,14 +8,14 @@ Definition give_adult (drink : Option (ref str)) :=
   ltac:(function (
     match drink with
     | Some "lemonade" =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Yuck! Too sugary.
 " ] |)
         |) in
       tt
     | Some inner =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "? How nice.
@@ -25,7 +25,7 @@ Definition give_adult (drink : Option (ref str)) :=
         |) in
       tt
     | None =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "No drink? Oh well.
 " ] |)
@@ -38,14 +38,14 @@ Definition drink (drink : Option (ref str)) :=
   let return_type := unit in
   ltac:(function (
     let inside := drink.["unwrap"](||) in
-    let '_ :=
+    let _ : unit :=
       if (inside.["eq"](| "lemonade" |) : bool) then
-        let '_ := _crate.rt.begin_panic(| "AAAaaaaa!!!!" |) in
+        let _ : unit := _crate.rt.begin_panic(| "AAAaaaaa!!!!" |) in
         tt
       else
         tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "I love "; "s!!!!!
@@ -63,12 +63,12 @@ Definition main :=
     let water := Some "water" in
     let lemonade := Some "lemonade" in
     let void := None in
-    let '_ := give_adult(| water |) in
-    let '_ := give_adult(| lemonade |) in
-    let '_ := give_adult(| void |) in
+    let _ : unit := give_adult(| water |) in
+    let _ : unit := give_adult(| lemonade |) in
+    let _ : unit := give_adult(| void |) in
     let coffee := Some "coffee" in
     let nothing := None in
-    let '_ := drink(| coffee |) in
-    let '_ := drink(| nothing |) in
+    let _ : unit := drink(| coffee |) in
+    let _ : unit := drink(| nothing |) in
     tt
   : return_type)).

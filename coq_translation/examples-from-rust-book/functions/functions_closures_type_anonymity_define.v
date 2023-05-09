@@ -12,6 +12,6 @@ Definition main :=
 Definition apply {F : Set} `{FnOnce.Trait unit F} (f : F) :=
   let return_type := unit in
   ltac:(function (
-    let '_ := f(||) in
+    let _ : unit := f(||) in
     tt
   : return_type)).

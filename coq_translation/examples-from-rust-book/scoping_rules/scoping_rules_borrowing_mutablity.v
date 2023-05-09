@@ -53,8 +53,8 @@ End Impl__crate_marker_Copy_for_Book.
 Definition borrow_book (book : ref Book) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "I immutably borrowed "; " - "; " edition
@@ -72,9 +72,9 @@ Definition borrow_book (book : ref Book) :=
 Definition new_edition (book : mut_ref Book) :=
   let return_type := unit in
   ltac:(function (
-    let '_ := assign book.["year"] 2014 in
-    let '_ :=
-      let '_ :=
+    let _ : unit := assign book.["year"] 2014 in
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "I mutably borrowed "; " - "; " edition
@@ -99,8 +99,8 @@ Definition main :=
         Book.year := 1979;
       |} in
     let mutabook := immutabook in
-    let '_ := borrow_book(| immutabook |) in
-    let '_ := borrow_book(| mutabook |) in
-    let '_ := new_edition(| mutabook |) in
+    let _ : unit := borrow_book(| immutabook |) in
+    let _ : unit := borrow_book(| mutabook |) in
+    let _ : unit := new_edition(| mutabook |) in
     tt
   : return_type)).

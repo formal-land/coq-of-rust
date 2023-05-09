@@ -22,10 +22,10 @@ Definition main :=
   ltac:(function (
     let status := Poor in
     let work := Civilian in
-    let '_ :=
+    let _ : unit :=
       match status with
       | Rich =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](|
               [ "The rich have lots of money!
@@ -34,7 +34,7 @@ Definition main :=
           |) in
         tt
       | Poor =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "The poor have no money...
 " ]
@@ -44,14 +44,14 @@ Definition main :=
       end in
     match work with
     | Civilian =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Civilians work!
 " ] |)
         |) in
       tt
     | Soldier =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Soldiers fight!
 " ] |)

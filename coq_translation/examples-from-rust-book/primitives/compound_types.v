@@ -12,9 +12,9 @@ Definition main :=
     let default_float := 3 (* 3.0 *) in
     let default_integer := 7 in
     let inferred_type := 12 in
-    let '_ := assign inferred_type 4294967296 in
+    let _ : unit := assign inferred_type 4294967296 in
     let mutable := 12 in
-    let '_ := assign mutable 21 in
+    let _ : unit := assign mutable 21 in
     let mutable := true in
     tt
   : return_type)).

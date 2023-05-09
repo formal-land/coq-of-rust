@@ -20,12 +20,12 @@ Definition main :=
   ltac:(function (
     let '(tx, rx) := mpsc.channel(||) in
     let children := Vec::["new"](||) in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| Range {| Range.start := 0; Range.end := NTHREADS; |} |)
       with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := id; |} =>
@@ -33,9 +33,9 @@ Definition main :=
               let child :=
                 thread.spawn(|
                   fun  =>
-                    let '_ := thread_tx.["send"](| id |).["unwrap"](||) in
-                    let '_ :=
-                      let '_ :=
+                    let _ : unit := thread_tx.["send"](| id |).["unwrap"](||) in
+                    let _ : unit :=
+                      let _ : unit :=
                         _crate.io._print(|
                           format_arguments::["new_v1"](|
                             [ "thread "; " finished
@@ -46,7 +46,7 @@ Definition main :=
                       tt in
                     tt
                 |) in
-              let '_ := children.["push"](| child |) in
+              let _ : unit := children.["push"](| child |) in
               tt
             end in
           tt
@@ -54,31 +54,31 @@ Definition main :=
           for
       end in
     let ids := Vec::["with_capacity"](| cast NTHREADS usize |) in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| Range {| Range.start := 0; Range.end := NTHREADS; |} |)
       with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := _; |} =>
-              let '_ := ids.["push"](| rx.["recv"](||) |) in
+              let _ : unit := ids.["push"](| rx.["recv"](||) |) in
               tt
             end in
           tt
           from
           for
       end in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| children |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := child; |} =>
-              let '_ :=
+              let _ : unit :=
                 child.["join"](||).["expect"](|
                   "oops! the child thread panicked"
                 |) in
@@ -88,8 +88,8 @@ Definition main :=
           from
           for
       end in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "

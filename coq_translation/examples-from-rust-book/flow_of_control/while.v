@@ -9,10 +9,10 @@ Definition main :=
     let n := 1 in
     loop
       (if (n.["lt"](| 101 |) : bool) then
-        let '_ :=
+        let _ : unit :=
           if (n.["rem"](| 15 |).["eq"](| 0 |) : bool) then
-            let '_ :=
-              let '_ :=
+            let _ : unit :=
+              let _ : unit :=
                 _crate.io._print(|
                   format_arguments::["new_const"](| [ "fizzbuzz
 " ] |)
@@ -21,8 +21,8 @@ Definition main :=
             tt
           else
             if (n.["rem"](| 3 |).["eq"](| 0 |) : bool) then
-              let '_ :=
-                let '_ :=
+              let _ : unit :=
+                let _ : unit :=
                   _crate.io._print(|
                     format_arguments::["new_const"](| [ "fizz
 " ] |)
@@ -31,8 +31,8 @@ Definition main :=
               tt
             else
               if (n.["rem"](| 5 |).["eq"](| 0 |) : bool) then
-                let '_ :=
-                  let '_ :=
+                let _ : unit :=
+                  let _ : unit :=
                     _crate.io._print(|
                       format_arguments::["new_const"](| [ "buzz
 " ] |)
@@ -40,8 +40,8 @@ Definition main :=
                   tt in
                 tt
               else
-                let '_ :=
-                  let '_ :=
+                let _ : unit :=
+                  let _ : unit :=
                     _crate.io._print(|
                       format_arguments::["new_v1"](|
                         [ ""; "
@@ -51,10 +51,10 @@ Definition main :=
                     |) in
                   tt in
                 tt in
-        let '_ := n.["add_assign"](| 1 |) in
+        let _ : unit := n.["add_assign"](| 1 |) in
         tt
       else
-        let '_ := M.Break in
+        let _ : unit := M.Break in
         tt)
       from
       while

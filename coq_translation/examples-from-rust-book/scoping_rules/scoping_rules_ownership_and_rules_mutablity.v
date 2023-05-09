@@ -7,8 +7,8 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let immutable_box := Box::["new"](| 5 |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "immutable_box contains "; "
@@ -18,8 +18,8 @@ Definition main :=
         |) in
       tt in
     let mutable_box := immutable_box in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "mutable_box contains "; "
@@ -28,9 +28,9 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ := assign mutable_box.["deref"](||) 4 in
-    let '_ :=
-      let '_ :=
+    let _ : unit := assign mutable_box.["deref"](||) 4 in
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "mutable_box now contains "; "

@@ -6,15 +6,15 @@ Import Root.std.prelude.rust_2015.
 Definition call_me {F : Set} `{Fn.Trait unit F} (f : F) :=
   let return_type := unit in
   ltac:(function (
-    let '_ := f(||) in
+    let _ : unit := f(||) in
     tt
   : return_type)).
 
 Definition function :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "I'm a function!
 " ] |)
@@ -28,13 +28,13 @@ Definition main :=
   ltac:(function (
     let closure :=
       fun  =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "I'm a closure!
 " ] |)
           |) in
         tt in
-    let '_ := call_me(| closure |) in
-    let '_ := call_me(| function |) in
+    let _ : unit := call_me(| closure |) in
+    let _ : unit := call_me(| function |) in
     tt
   : return_type)).

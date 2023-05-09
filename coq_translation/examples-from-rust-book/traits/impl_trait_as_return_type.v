@@ -30,7 +30,7 @@ Definition main :=
     let v2 :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 4; 5 ] |) |) in
     let v3 := combine_vecs(| v1, v2 |) in
-    let '_ :=
+    let _ : unit :=
       match (Some 1, v3.["next"](||)) with
       | (left_val, right_val) =>
         if
@@ -39,7 +39,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),
@@ -50,7 +50,7 @@ Definition main :=
         else
           tt
       end in
-    let '_ :=
+    let _ : unit :=
       match (Some 2, v3.["next"](||)) with
       | (left_val, right_val) =>
         if
@@ -59,7 +59,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),
@@ -70,7 +70,7 @@ Definition main :=
         else
           tt
       end in
-    let '_ :=
+    let _ : unit :=
       match (Some 3, v3.["next"](||)) with
       | (left_val, right_val) =>
         if
@@ -79,7 +79,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),
@@ -90,7 +90,7 @@ Definition main :=
         else
           tt
       end in
-    let '_ :=
+    let _ : unit :=
       match (Some 4, v3.["next"](||)) with
       | (left_val, right_val) =>
         if
@@ -99,7 +99,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),
@@ -110,7 +110,7 @@ Definition main :=
         else
           tt
       end in
-    let '_ :=
+    let _ : unit :=
       match (Some 5, v3.["next"](||)) with
       | (left_val, right_val) =>
         if
@@ -119,7 +119,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),
@@ -130,8 +130,8 @@ Definition main :=
         else
           tt
       end in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(| format_arguments::["new_const"](| [ "all done
 " ] |)
         |) in

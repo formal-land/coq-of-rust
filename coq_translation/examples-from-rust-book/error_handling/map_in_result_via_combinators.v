@@ -24,7 +24,7 @@ Definition print (result : Result i32 ParseIntError) :=
   ltac:(function (
     match result with
     | Ok n =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "n is "; "
@@ -34,7 +34,7 @@ Definition print (result : Result i32 ParseIntError) :=
         |) in
       tt
     | Err e =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Error: "; "
@@ -50,8 +50,8 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let twenty := multiply(| "10", "2" |) in
-    let '_ := print(| twenty |) in
+    let _ : unit := print(| twenty |) in
     let tt := multiply(| "t", "2" |) in
-    let '_ := print(| tt |) in
+    let _ : unit := print(| tt |) in
     tt
   : return_type)).

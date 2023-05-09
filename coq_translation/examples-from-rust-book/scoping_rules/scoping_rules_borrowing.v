@@ -6,8 +6,8 @@ Import Root.std.prelude.rust_2015.
 Definition eat_box_i32 (boxed_i32 : Box i32) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Destroying box that contains "; "
@@ -22,8 +22,8 @@ Definition eat_box_i32 (boxed_i32 : Box i32) :=
 Definition borrow_i32 (borrowed_i32 : ref i32) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "This int is: "; "
@@ -40,12 +40,12 @@ Definition main :=
   ltac:(function (
     let boxed_i32 := Box::["new"](| 5 |) in
     let stacked_i32 := 6 in
-    let '_ := borrow_i32(| boxed_i32 |) in
-    let '_ := borrow_i32(| stacked_i32 |) in
-    let '_ :=
+    let _ : unit := borrow_i32(| boxed_i32 |) in
+    let _ : unit := borrow_i32(| stacked_i32 |) in
+    let _ : unit :=
       let _ref_to_i32 := boxed_i32 in
-      let '_ := borrow_i32(| _ref_to_i32 |) in
+      let _ : unit := borrow_i32(| _ref_to_i32 |) in
       tt in
-    let '_ := eat_box_i32(| boxed_i32 |) in
+    let _ : unit := eat_box_i32(| boxed_i32 |) in
     tt
   : return_type)).

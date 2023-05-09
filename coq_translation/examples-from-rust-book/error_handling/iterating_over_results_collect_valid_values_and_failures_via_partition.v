@@ -14,8 +14,8 @@ Definition main :=
       strings.["into_iter"](||).["map"](| fun s => s.["parse"](||)
       |).["partition"](| Result::["is_ok"]
       |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Numbers: "; "
@@ -24,8 +24,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Errors: "; "

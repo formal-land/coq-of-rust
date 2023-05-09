@@ -11,21 +11,21 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let children := _crate.vec.Vec::["new"](||) in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| Range {| Range.start := 0; Range.end := NTHREADS; |} |)
       with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := i; |} =>
-              let '_ :=
+              let _ : unit :=
                 children.["push"](|
                   thread.spawn(|
                     fun  =>
-                      let '_ :=
-                        let '_ :=
+                      let _ : unit :=
+                        let _ : unit :=
                           _crate.io._print(|
                             format_arguments::["new_v1"](|
                               [ "this is thread number "; "
@@ -46,7 +46,7 @@ Definition main :=
     match LangItem(| children |) with
     | iter =>
       loop
-        let '_ :=
+        let _ : unit :=
           match LangItem(| iter |) with
           | None => M.Break
           | Some {| Some.0 := child; |} =>

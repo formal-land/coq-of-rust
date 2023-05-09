@@ -25,7 +25,7 @@ Definition inspect (event : WebEvent) :=
   ltac:(function (
     match event with
     | WebEvent.PageLoad =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [
@@ -37,14 +37,14 @@ Definition inspect (event : WebEvent) :=
         |) in
       tt
     | WebEvent.PageUnload =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "page unloaded
 " ] |)
         |) in
       tt
     | WebEvent.KeyPress c =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "pressed '"; "'.
@@ -54,7 +54,7 @@ Definition inspect (event : WebEvent) :=
         |) in
       tt
     | WebEvent.Paste s =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "pasted ""; "".
@@ -64,8 +64,8 @@ Definition inspect (event : WebEvent) :=
         |) in
       tt
     | WebEvent.Click {| WebEvent.Click.x := x; WebEvent.Click.y := y; |} =>
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "clicked at x="; ", y="; ".
@@ -90,10 +90,10 @@ Definition main :=
       WebEvent.Click {| WebEvent.Click.x := 20; WebEvent.Click.y := 80; |} in
     let load := WebEvent.PageLoad in
     let unload := WebEvent.PageUnload in
-    let '_ := inspect(| pressed |) in
-    let '_ := inspect(| pasted |) in
-    let '_ := inspect(| click |) in
-    let '_ := inspect(| load |) in
-    let '_ := inspect(| unload |) in
+    let _ : unit := inspect(| pressed |) in
+    let _ : unit := inspect(| pasted |) in
+    let _ : unit := inspect(| click |) in
+    let _ : unit := inspect(| load |) in
+    let _ : unit := inspect(| unload |) in
     tt
   : return_type)).

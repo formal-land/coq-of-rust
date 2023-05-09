@@ -7,9 +7,9 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let _mutable_integer := 7 in
-    let '_ :=
+    let _ : unit :=
       let _mutable_integer := _mutable_integer in
       tt in
-    let '_ := assign _mutable_integer 3 in
+    let _ : unit := assign _mutable_integer 3 in
     tt
   : return_type)).

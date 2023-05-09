@@ -6,19 +6,19 @@ Import Root.std.prelude.rust_2015.
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
+    let _ : unit :=
       loop
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_const"](| [ "Entered the outer loop
 " ] |)
             |) in
           tt in
-        let '_ :=
+        let _ : unit :=
           loop
-            let '_ :=
-              let '_ :=
+            let _ : unit :=
+              let _ : unit :=
                 _crate.io._print(|
                   format_arguments::["new_const"](|
                     [ "Entered the inner loop
@@ -26,12 +26,12 @@ Definition main :=
                   |)
                 |) in
               tt in
-            let '_ := M.Break in
+            let _ : unit := M.Break in
             tt
             from
             loop in
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_const"](|
                 [ "This point will never be reached
@@ -42,8 +42,8 @@ Definition main :=
         tt
         from
         loop in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Exited the outer loop
 " ] |)

@@ -81,7 +81,7 @@ Module Impl__crate_hash_Hash_for_Account.
   Definition hash (self : ref Self) (state : mut_ref __H) :=
     let return_type := unit in
     ltac:(function (
-      let '_ := _crate.hash.Hash.hash(| self.["username"], state |) in
+      let _ : unit := _crate.hash.Hash.hash(| self.["username"], state |) in
       _crate.hash.Hash.hash(| self.["password"], state |)
     : return_type)).
   
@@ -117,8 +117,8 @@ Definition try_logon
     (password : ref str) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Username: "; "
@@ -127,8 +127,8 @@ Definition try_logon
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Password: "; "
@@ -137,8 +137,8 @@ Definition try_logon
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Attempting logon...
 " ] |)
@@ -148,15 +148,15 @@ Definition try_logon
       {| Account.username := username; Account.password := password; |} in
     match accounts.["get"](| logon |) with
     | Some account_info =>
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "Successful logon!
 " ] |)
           |) in
         tt in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "Name: "; "
@@ -165,8 +165,8 @@ Definition try_logon
             |)
           |) in
         tt in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "Email: "; "
@@ -177,7 +177,7 @@ Definition try_logon
         tt in
       tt
     | _ =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Login failed!
 " ] |)
@@ -198,8 +198,8 @@ Definition main :=
         AccountInfo.name := "John Everyman";
         AccountInfo.email := "j.everyman@email.com";
       |} in
-    let '_ := accounts.["insert"](| account, account_info |) in
-    let '_ := try_logon(| accounts, "j.everyman", "psasword123" |) in
-    let '_ := try_logon(| accounts, "j.everyman", "password123" |) in
+    let _ : unit := accounts.["insert"](| account, account_info |) in
+    let _ : unit := try_logon(| accounts, "j.everyman", "psasword123" |) in
+    let _ : unit := try_logon(| accounts, "j.everyman", "password123" |) in
     tt
   : return_type)).

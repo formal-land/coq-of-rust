@@ -48,8 +48,8 @@ Definition main :=
     let no_fruit := None in
     let first_available_fruit :=
       no_fruit.["or"](| orange |).["or"](| apple |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "first_available_fruit: "; "

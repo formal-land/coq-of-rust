@@ -6,10 +6,10 @@ Import Root.std.prelude.rust_2015.
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
+    let _ : unit :=
       let val := 1.["add"](| 2 |) in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "1 + 2 = "; "
@@ -19,10 +19,10 @@ Definition main :=
           |) in
         tt in
       tt in
-    let '_ :=
+    let _ : unit :=
       let val := 3.["add"](| 4 |) in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "3 + 4 = "; "
@@ -33,8 +33,8 @@ Definition main :=
         tt in
       tt in
     let val := 2.["mul"](| 3 |).["add"](| 1 |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "(2 * 3) + 1 = "; "

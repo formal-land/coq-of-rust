@@ -43,8 +43,8 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let circle := {| Circle.radius := 6; |} in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "

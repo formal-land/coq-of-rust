@@ -46,8 +46,8 @@ Definition main :=
     let my_fruit := None in
     let apple := Fruit.Apple in
     let first_available_fruit := my_fruit.["get_or_insert"](| apple |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "my_fruit is: "; "
@@ -56,8 +56,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "first_available_fruit is: "; "

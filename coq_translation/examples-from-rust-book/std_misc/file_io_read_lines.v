@@ -15,7 +15,7 @@ Definition read_lines (filename : String) :=
   let return_type := io.Lines (BufReader File) in
   ltac:(function (
     let file := File::["open"](| filename |).["unwrap"](||) in
-    let '_ := M.Return io.BufReader::["new"](| file |).["lines"](||) in
+    let _ : unit := M.Return io.BufReader::["new"](| file |).["lines"](||) in
     tt
   : return_type)).
 
@@ -26,12 +26,12 @@ Definition main :=
     match LangItem(| lines |) with
     | iter =>
       loop
-        let '_ :=
+        let _ : unit :=
           match LangItem(| iter |) with
           | None => M.Break
           | Some {| Some.0 := line; |} =>
-            let '_ :=
-              let '_ :=
+            let _ : unit :=
+              let _ : unit :=
                 _crate.io._print(|
                   format_arguments::["new_v1"](|
                     [ ""; "

@@ -15,7 +15,7 @@ Definition multiply
       match first_number_str.["parse"](||) with
       | _crate.result.Result.Ok val => val
       | _crate.result.Result.Err err =>
-        let '_ :=
+        let _ : unit :=
           M.Return
             (_crate.result.Result.Err _crate.convert.From.from(| err |)) in
         tt
@@ -24,7 +24,7 @@ Definition multiply
       match second_number_str.["parse"](||) with
       | _crate.result.Result.Ok val => val
       | _crate.result.Result.Err err =>
-        let '_ :=
+        let _ : unit :=
           M.Return
             (_crate.result.Result.Err _crate.convert.From.from(| err |)) in
         tt
@@ -37,7 +37,7 @@ Definition print (result : Result i32 ParseIntError) :=
   ltac:(function (
     match result with
     | Ok n =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "n is "; "
@@ -47,7 +47,7 @@ Definition print (result : Result i32 ParseIntError) :=
         |) in
       tt
     | Err e =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Error: "; "
@@ -62,7 +62,7 @@ Definition print (result : Result i32 ParseIntError) :=
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ := print(| multiply(| "10", "2" |) |) in
-    let '_ := print(| multiply(| "t", "2" |) |) in
+    let _ : unit := print(| multiply(| "10", "2" |) |) in
+    let _ : unit := print(| multiply(| "t", "2" |) |) in
     tt
   : return_type)).

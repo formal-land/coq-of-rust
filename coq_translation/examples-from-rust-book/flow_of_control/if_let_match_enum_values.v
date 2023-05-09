@@ -17,10 +17,10 @@ Definition main :=
     let a := Foo.Bar in
     let b := Foo.Baz in
     let c := Foo.Qux 100 in
-    let '_ :=
+    let _ : unit :=
       if (let_if Foo.Bar := a : bool) then
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_const"](| [ "a is foobar
 " ] |)
@@ -29,10 +29,10 @@ Definition main :=
         tt
       else
         tt in
-    let '_ :=
+    let _ : unit :=
       if (let_if Foo.Bar := b : bool) then
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_const"](| [ "b is foobar
 " ] |)
@@ -41,10 +41,10 @@ Definition main :=
         tt
       else
         tt in
-    let '_ :=
+    let _ : unit :=
       if (let_if Foo.Qux value := c : bool) then
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_v1"](|
                 [ "c is "; "
@@ -57,8 +57,8 @@ Definition main :=
       else
         tt in
     if (let_if Foo.Qux (100 as value) := c : bool) then
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "c is one hundred
 " ] |)

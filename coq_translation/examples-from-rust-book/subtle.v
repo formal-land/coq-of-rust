@@ -83,9 +83,9 @@ Module Impl_From_for_bool.
   Definition from (source : Choice) :=
     let return_type := bool in
     ltac:(function (
-      let '_ :=
+      let _ : unit :=
         if (true : bool) then
-          let '_ :=
+          let _ : unit :=
             if
               ((source.[0]).["eq"](| 0 |).["bitor"](| (source.[0]).["eq"](| 1 |)
               |).["not"](||)
@@ -137,7 +137,7 @@ Module Impl_BitAndAssign_for_Choice.
   
   Definition bitand_assign (self : mut_ref Self) (rhs : Choice) :=
     ltac:(function (
-      let '_ :=
+      let _ : unit :=
         assign self.["deref"](||) self.["deref"](||).["bitand"](| rhs |) in
       tt
     : _)).
@@ -176,7 +176,7 @@ Module Impl_BitOrAssign_for_Choice.
   
   Definition bitor_assign (self : mut_ref Self) (rhs : Choice) :=
     ltac:(function (
-      let '_ :=
+      let _ : unit :=
         assign self.["deref"](||) self.["deref"](||).["bitor"](| rhs |) in
       tt
     : _)).
@@ -215,7 +215,7 @@ Module Impl_BitXorAssign_for_Choice.
   
   Definition bitxor_assign (self : mut_ref Self) (rhs : Choice) :=
     ltac:(function (
-      let '_ :=
+      let _ : unit :=
         assign self.["deref"](||) self.["deref"](||).["bitxor"](| rhs |) in
       tt
     : _)).
@@ -252,9 +252,9 @@ End Impl_Not_for_Choice.
 Definition black_box (input : u8) :=
   let return_type := u8 in
   ltac:(function (
-    let '_ :=
+    let _ : unit :=
       if (true : bool) then
-        let '_ :=
+        let _ : unit :=
           if
             (input.["eq"](| 0 |).["bitor"](| input.["eq"](| 1 |) |).["not"](||)
             : bool)
@@ -311,23 +311,23 @@ Module Impl_ConstantTimeEq_for_Slice.
     let return_type := Choice in
     ltac:(function (
       let len := self.["len"](||) in
-      let '_ :=
+      let _ : unit :=
         if (len.["ne"](| _rhs.["len"](||) |) : bool) then
-          let '_ := M.Return Choice::["from"](| 0 |) in
+          let _ : unit := M.Return Choice::["from"](| 0 |) in
           tt
         else
           tt in
       let x := 1 in
-      let '_ :=
+      let _ : unit :=
         match LangItem(| self.["iter"](||).["zip"](| _rhs.["iter"](||) |) |)
         with
         | iter =>
           loop
-            let '_ :=
+            let _ : unit :=
               match LangItem(| iter |) with
               | None => M.Break
               | Some {| Some.0 := (ai, bi); |} =>
-                let '_ :=
+                let _ : unit :=
                   x.["bitand_assign"](| ai.["ct_eq"](| bi |).["unwrap_u8"](||)
                   |) in
                 tt
@@ -579,7 +579,7 @@ Module ConditionallySelectable.
   Global Instance Method_conditional_assign `(Trait)
     : Notation.Dot "conditional_assign" := {
     Notation.dot (self : mut_ref Self) (other : ref Self) (choice : Choice) :=
-      (let '_ :=
+      (let _ : unit :=
         assign
           self.["deref"](||)
           Self::["conditional_select"](| self, other, choice |) in
@@ -590,8 +590,8 @@ Module ConditionallySelectable.
     : Notation.Dot "conditional_swap" := {
     Notation.dot (a : mut_ref Self) (b : mut_ref Self) (choice : Choice) :=
       (let t := a.["deref"](||) in
-      let '_ := a.["conditional_assign"](| b, choice |) in
-      let '_ := b.["conditional_assign"](| t, choice |) in
+      let _ : unit := a.["conditional_assign"](| b, choice |) in
+      let _ : unit := b.["conditional_assign"](| t, choice |) in
       tt
       : unit);
   }.
@@ -621,7 +621,7 @@ Module Impl_ConditionallySelectable_for_u8.
       (choice : Choice) :=
     ltac:(function (
       let mask := cast (cast choice.["unwrap_u8"](||) i8).["neg"](||) u8 in
-      let '_ :=
+      let _ : unit :=
         self.["deref"](||).["bitxor_assign"](|
           mask.["bitand"](|
             self.["deref"](||).["bitxor"](| other.["deref"](||) |)
@@ -643,8 +643,8 @@ Module Impl_ConditionallySelectable_for_u8.
       let mask := cast (cast choice.["unwrap_u8"](||) i8).["neg"](||) u8 in
       let t :=
         mask.["bitand"](| a.["deref"](||).["bitxor"](| b.["deref"](||) |) |) in
-      let '_ := a.["deref"](||).["bitxor_assign"](| t |) in
-      let '_ := b.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := a.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := b.["deref"](||).["bitxor_assign"](| t |) in
       tt
     : _)).
   
@@ -682,7 +682,7 @@ Module Impl_ConditionallySelectable_for_i8.
       (choice : Choice) :=
     ltac:(function (
       let mask := cast (cast choice.["unwrap_u8"](||) i8).["neg"](||) i8 in
-      let '_ :=
+      let _ : unit :=
         self.["deref"](||).["bitxor_assign"](|
           mask.["bitand"](|
             self.["deref"](||).["bitxor"](| other.["deref"](||) |)
@@ -704,8 +704,8 @@ Module Impl_ConditionallySelectable_for_i8.
       let mask := cast (cast choice.["unwrap_u8"](||) i8).["neg"](||) i8 in
       let t :=
         mask.["bitand"](| a.["deref"](||).["bitxor"](| b.["deref"](||) |) |) in
-      let '_ := a.["deref"](||).["bitxor_assign"](| t |) in
-      let '_ := b.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := a.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := b.["deref"](||).["bitxor_assign"](| t |) in
       tt
     : _)).
   
@@ -743,7 +743,7 @@ Module Impl_ConditionallySelectable_for_u16.
       (choice : Choice) :=
     ltac:(function (
       let mask := cast (cast choice.["unwrap_u8"](||) i16).["neg"](||) u16 in
-      let '_ :=
+      let _ : unit :=
         self.["deref"](||).["bitxor_assign"](|
           mask.["bitand"](|
             self.["deref"](||).["bitxor"](| other.["deref"](||) |)
@@ -765,8 +765,8 @@ Module Impl_ConditionallySelectable_for_u16.
       let mask := cast (cast choice.["unwrap_u8"](||) i16).["neg"](||) u16 in
       let t :=
         mask.["bitand"](| a.["deref"](||).["bitxor"](| b.["deref"](||) |) |) in
-      let '_ := a.["deref"](||).["bitxor_assign"](| t |) in
-      let '_ := b.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := a.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := b.["deref"](||).["bitxor_assign"](| t |) in
       tt
     : _)).
   
@@ -804,7 +804,7 @@ Module Impl_ConditionallySelectable_for_i16.
       (choice : Choice) :=
     ltac:(function (
       let mask := cast (cast choice.["unwrap_u8"](||) i16).["neg"](||) i16 in
-      let '_ :=
+      let _ : unit :=
         self.["deref"](||).["bitxor_assign"](|
           mask.["bitand"](|
             self.["deref"](||).["bitxor"](| other.["deref"](||) |)
@@ -826,8 +826,8 @@ Module Impl_ConditionallySelectable_for_i16.
       let mask := cast (cast choice.["unwrap_u8"](||) i16).["neg"](||) i16 in
       let t :=
         mask.["bitand"](| a.["deref"](||).["bitxor"](| b.["deref"](||) |) |) in
-      let '_ := a.["deref"](||).["bitxor_assign"](| t |) in
-      let '_ := b.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := a.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := b.["deref"](||).["bitxor_assign"](| t |) in
       tt
     : _)).
   
@@ -865,7 +865,7 @@ Module Impl_ConditionallySelectable_for_u32.
       (choice : Choice) :=
     ltac:(function (
       let mask := cast (cast choice.["unwrap_u8"](||) i32).["neg"](||) u32 in
-      let '_ :=
+      let _ : unit :=
         self.["deref"](||).["bitxor_assign"](|
           mask.["bitand"](|
             self.["deref"](||).["bitxor"](| other.["deref"](||) |)
@@ -887,8 +887,8 @@ Module Impl_ConditionallySelectable_for_u32.
       let mask := cast (cast choice.["unwrap_u8"](||) i32).["neg"](||) u32 in
       let t :=
         mask.["bitand"](| a.["deref"](||).["bitxor"](| b.["deref"](||) |) |) in
-      let '_ := a.["deref"](||).["bitxor_assign"](| t |) in
-      let '_ := b.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := a.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := b.["deref"](||).["bitxor_assign"](| t |) in
       tt
     : _)).
   
@@ -926,7 +926,7 @@ Module Impl_ConditionallySelectable_for_i32.
       (choice : Choice) :=
     ltac:(function (
       let mask := cast (cast choice.["unwrap_u8"](||) i32).["neg"](||) i32 in
-      let '_ :=
+      let _ : unit :=
         self.["deref"](||).["bitxor_assign"](|
           mask.["bitand"](|
             self.["deref"](||).["bitxor"](| other.["deref"](||) |)
@@ -948,8 +948,8 @@ Module Impl_ConditionallySelectable_for_i32.
       let mask := cast (cast choice.["unwrap_u8"](||) i32).["neg"](||) i32 in
       let t :=
         mask.["bitand"](| a.["deref"](||).["bitxor"](| b.["deref"](||) |) |) in
-      let '_ := a.["deref"](||).["bitxor_assign"](| t |) in
-      let '_ := b.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := a.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := b.["deref"](||).["bitxor_assign"](| t |) in
       tt
     : _)).
   
@@ -987,7 +987,7 @@ Module Impl_ConditionallySelectable_for_u64.
       (choice : Choice) :=
     ltac:(function (
       let mask := cast (cast choice.["unwrap_u8"](||) i64).["neg"](||) u64 in
-      let '_ :=
+      let _ : unit :=
         self.["deref"](||).["bitxor_assign"](|
           mask.["bitand"](|
             self.["deref"](||).["bitxor"](| other.["deref"](||) |)
@@ -1009,8 +1009,8 @@ Module Impl_ConditionallySelectable_for_u64.
       let mask := cast (cast choice.["unwrap_u8"](||) i64).["neg"](||) u64 in
       let t :=
         mask.["bitand"](| a.["deref"](||).["bitxor"](| b.["deref"](||) |) |) in
-      let '_ := a.["deref"](||).["bitxor_assign"](| t |) in
-      let '_ := b.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := a.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := b.["deref"](||).["bitxor_assign"](| t |) in
       tt
     : _)).
   
@@ -1048,7 +1048,7 @@ Module Impl_ConditionallySelectable_for_i64.
       (choice : Choice) :=
     ltac:(function (
       let mask := cast (cast choice.["unwrap_u8"](||) i64).["neg"](||) i64 in
-      let '_ :=
+      let _ : unit :=
         self.["deref"](||).["bitxor_assign"](|
           mask.["bitand"](|
             self.["deref"](||).["bitxor"](| other.["deref"](||) |)
@@ -1070,8 +1070,8 @@ Module Impl_ConditionallySelectable_for_i64.
       let mask := cast (cast choice.["unwrap_u8"](||) i64).["neg"](||) i64 in
       let t :=
         mask.["bitand"](| a.["deref"](||).["bitxor"](| b.["deref"](||) |) |) in
-      let '_ := a.["deref"](||).["bitxor_assign"](| t |) in
-      let '_ := b.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := a.["deref"](||).["bitxor_assign"](| t |) in
+      let _ : unit := b.["deref"](||).["bitxor_assign"](| t |) in
       tt
     : _)).
   
@@ -1124,7 +1124,7 @@ Module Impl_ConditionallyNegatable_for_T.
   Definition conditional_negate (self : mut_ref Self) (choice : Choice) :=
     ltac:(function (
       let self_neg := (cast self (ref T)).["neg"](||) in
-      let '_ := self.["conditional_assign"](| self_neg, choice |) in
+      let _ : unit := self.["conditional_assign"](| self_neg, choice |) in
       tt
     : _)).
   
@@ -1244,7 +1244,7 @@ Module ImplCtOption T.
   Definition expect (self : Self) (msg : ref str) :=
     let return_type := T in
     ltac:(function (
-      let '_ :=
+      let _ : unit :=
         match (self.["is_some"].["unwrap_u8"](||), 1) with
         | (left_val, right_val) =>
           if
@@ -1253,7 +1253,7 @@ Module ImplCtOption T.
             : bool)
           then
             let kind := _crate.panicking.AssertKind.Eq in
-            let '_ :=
+            let _ : unit :=
               _crate.panicking.assert_failed(|
                 kind,
                 left_val.["deref"](||),
@@ -1278,7 +1278,7 @@ Module ImplCtOption T.
   Definition unwrap (self : Self) :=
     let return_type := T in
     ltac:(function (
-      let '_ :=
+      let _ : unit :=
         match (self.["is_some"].["unwrap_u8"](||), 1) with
         | (left_val, right_val) =>
           if
@@ -1287,7 +1287,7 @@ Module ImplCtOption T.
             : bool)
           then
             let kind := _crate.panicking.AssertKind.Eq in
-            let '_ :=
+            let _ : unit :=
               _crate.panicking.assert_failed(|
                 kind,
                 left_val.["deref"](||),
@@ -1375,7 +1375,7 @@ Module ImplCtOption T.
             self.["is_some"]
           |)
         |) in
-      let '_ := tmp.["is_some"].["bitand_assign"](| self.["is_some"] |) in
+      let _ : unit := tmp.["is_some"].["bitand_assign"](| self.["is_some"] |) in
       tmp
     : return_type)).
   
@@ -1463,27 +1463,27 @@ Module Impl_ConstantTimeGreater_for_u8.
       let gtb := self.["bitand"](| other.["not"](||) |) in
       let ltb := self.["not"](||).["bitand"](| other |) in
       let pow := 1 in
-      let '_ :=
+      let _ : unit :=
         loop
           (if (pow.["lt"](| 8 |) : bool) then
-            let '_ := ltb.["bitor_assign"](| ltb.["shr"](| pow |) |) in
-            let '_ := pow.["add_assign"](| pow |) in
+            let _ : unit := ltb.["bitor_assign"](| ltb.["shr"](| pow |) |) in
+            let _ : unit := pow.["add_assign"](| pow |) in
             tt
           else
-            let '_ := M.Break in
+            let _ : unit := M.Break in
             tt)
           from
           while in
       let bit := gtb.["bitand"](| ltb.["not"](||) |) in
       let pow := 1 in
-      let '_ :=
+      let _ : unit :=
         loop
           (if (pow.["lt"](| 8 |) : bool) then
-            let '_ := bit.["bitor_assign"](| bit.["shr"](| pow |) |) in
-            let '_ := pow.["add_assign"](| pow |) in
+            let _ : unit := bit.["bitor_assign"](| bit.["shr"](| pow |) |) in
+            let _ : unit := pow.["add_assign"](| pow |) in
             tt
           else
-            let '_ := M.Break in
+            let _ : unit := M.Break in
             tt)
           from
           while in
@@ -1508,27 +1508,27 @@ Module Impl_ConstantTimeGreater_for_u16.
       let gtb := self.["bitand"](| other.["not"](||) |) in
       let ltb := self.["not"](||).["bitand"](| other |) in
       let pow := 1 in
-      let '_ :=
+      let _ : unit :=
         loop
           (if (pow.["lt"](| 16 |) : bool) then
-            let '_ := ltb.["bitor_assign"](| ltb.["shr"](| pow |) |) in
-            let '_ := pow.["add_assign"](| pow |) in
+            let _ : unit := ltb.["bitor_assign"](| ltb.["shr"](| pow |) |) in
+            let _ : unit := pow.["add_assign"](| pow |) in
             tt
           else
-            let '_ := M.Break in
+            let _ : unit := M.Break in
             tt)
           from
           while in
       let bit := gtb.["bitand"](| ltb.["not"](||) |) in
       let pow := 1 in
-      let '_ :=
+      let _ : unit :=
         loop
           (if (pow.["lt"](| 16 |) : bool) then
-            let '_ := bit.["bitor_assign"](| bit.["shr"](| pow |) |) in
-            let '_ := pow.["add_assign"](| pow |) in
+            let _ : unit := bit.["bitor_assign"](| bit.["shr"](| pow |) |) in
+            let _ : unit := pow.["add_assign"](| pow |) in
             tt
           else
-            let '_ := M.Break in
+            let _ : unit := M.Break in
             tt)
           from
           while in
@@ -1553,27 +1553,27 @@ Module Impl_ConstantTimeGreater_for_u32.
       let gtb := self.["bitand"](| other.["not"](||) |) in
       let ltb := self.["not"](||).["bitand"](| other |) in
       let pow := 1 in
-      let '_ :=
+      let _ : unit :=
         loop
           (if (pow.["lt"](| 32 |) : bool) then
-            let '_ := ltb.["bitor_assign"](| ltb.["shr"](| pow |) |) in
-            let '_ := pow.["add_assign"](| pow |) in
+            let _ : unit := ltb.["bitor_assign"](| ltb.["shr"](| pow |) |) in
+            let _ : unit := pow.["add_assign"](| pow |) in
             tt
           else
-            let '_ := M.Break in
+            let _ : unit := M.Break in
             tt)
           from
           while in
       let bit := gtb.["bitand"](| ltb.["not"](||) |) in
       let pow := 1 in
-      let '_ :=
+      let _ : unit :=
         loop
           (if (pow.["lt"](| 32 |) : bool) then
-            let '_ := bit.["bitor_assign"](| bit.["shr"](| pow |) |) in
-            let '_ := pow.["add_assign"](| pow |) in
+            let _ : unit := bit.["bitor_assign"](| bit.["shr"](| pow |) |) in
+            let _ : unit := pow.["add_assign"](| pow |) in
             tt
           else
-            let '_ := M.Break in
+            let _ : unit := M.Break in
             tt)
           from
           while in
@@ -1598,27 +1598,27 @@ Module Impl_ConstantTimeGreater_for_u64.
       let gtb := self.["bitand"](| other.["not"](||) |) in
       let ltb := self.["not"](||).["bitand"](| other |) in
       let pow := 1 in
-      let '_ :=
+      let _ : unit :=
         loop
           (if (pow.["lt"](| 64 |) : bool) then
-            let '_ := ltb.["bitor_assign"](| ltb.["shr"](| pow |) |) in
-            let '_ := pow.["add_assign"](| pow |) in
+            let _ : unit := ltb.["bitor_assign"](| ltb.["shr"](| pow |) |) in
+            let _ : unit := pow.["add_assign"](| pow |) in
             tt
           else
-            let '_ := M.Break in
+            let _ : unit := M.Break in
             tt)
           from
           while in
       let bit := gtb.["bitand"](| ltb.["not"](||) |) in
       let pow := 1 in
-      let '_ :=
+      let _ : unit :=
         loop
           (if (pow.["lt"](| 64 |) : bool) then
-            let '_ := bit.["bitor_assign"](| bit.["shr"](| pow |) |) in
-            let '_ := pow.["add_assign"](| pow |) in
+            let _ : unit := bit.["bitor_assign"](| bit.["shr"](| pow |) |) in
+            let _ : unit := pow.["add_assign"](| pow |) in
             tt
           else
-            let '_ := M.Break in
+            let _ : unit := M.Break in
             tt)
           from
           while in

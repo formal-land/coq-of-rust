@@ -62,16 +62,16 @@ Definition touch (path : ref Path) :=
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(| format_arguments::["new_const"](| [ "`mkdir a`
 " ] |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       match fs.create_dir(| "a" |) with
       | Err why =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "! "; "
@@ -82,18 +82,18 @@ Definition main :=
         tt
       | Ok _ => tt
       end in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "`echo hello > a/b.txt`
 " ] |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       echo(| "hello", Path::["new"](| "a/b.txt" |) |).["unwrap_or_else"](|
         fun why =>
-          let '_ :=
-            let '_ :=
+          let _ : unit :=
+            let _ : unit :=
               _crate.io._print(|
                 format_arguments::["new_v1"](|
                   [ "! "; "
@@ -104,18 +104,18 @@ Definition main :=
             tt in
           tt
       |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "`mkdir -p a/c/d`
 " ] |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       fs.create_dir_all(| "a/c/d" |).["unwrap_or_else"](|
         fun why =>
-          let '_ :=
-            let '_ :=
+          let _ : unit :=
+            let _ : unit :=
               _crate.io._print(|
                 format_arguments::["new_v1"](|
                   [ "! "; "
@@ -126,18 +126,18 @@ Definition main :=
             tt in
           tt
       |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "`touch a/c/e.txt`
 " ] |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       touch(| Path::["new"](| "a/c/e.txt" |) |).["unwrap_or_else"](|
         fun why =>
-          let '_ :=
-            let '_ :=
+          let _ : unit :=
+            let _ : unit :=
               _crate.io._print(|
                 format_arguments::["new_v1"](|
                   [ "! "; "
@@ -148,20 +148,20 @@ Definition main :=
             tt in
           tt
       |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "`ln -s ../b.txt a/c/b.txt`
 " ] |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       if (true : bool) then
-        let '_ :=
+        let _ : unit :=
           unix.fs.symlink(| "../b.txt", "a/c/b.txt" |).["unwrap_or_else"](|
             fun why =>
-              let '_ :=
-                let '_ :=
+              let _ : unit :=
+                let _ : unit :=
                   _crate.io._print(|
                     format_arguments::["new_v1"](|
                       [ "! "; "
@@ -175,17 +175,17 @@ Definition main :=
         tt
       else
         tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "`cat a/c/b.txt`
 " ] |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       match cat(| Path::["new"](| "a/c/b.txt" |) |) with
       | Err why =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "! "; "
@@ -195,7 +195,7 @@ Definition main :=
           |) in
         tt
       | Ok s =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "> "; "
@@ -205,16 +205,16 @@ Definition main :=
           |) in
         tt
       end in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(| format_arguments::["new_const"](| [ "`ls a`
 " ] |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       match fs.read_dir(| "a" |) with
       | Err why =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "! "; "
@@ -227,12 +227,12 @@ Definition main :=
         match LangItem(| paths |) with
         | iter =>
           loop
-            let '_ :=
+            let _ : unit :=
               match LangItem(| iter |) with
               | None => M.Break
               | Some {| Some.0 := path; |} =>
-                let '_ :=
-                  let '_ :=
+                let _ : unit :=
+                  let _ : unit :=
                     _crate.io._print(|
                       format_arguments::["new_v1"](|
                         [ "> "; "
@@ -252,18 +252,18 @@ Definition main :=
             for
         end
       end in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "`rm a/c/e.txt`
 " ] |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       fs.remove_file(| "a/c/e.txt" |).["unwrap_or_else"](|
         fun why =>
-          let '_ :=
-            let '_ :=
+          let _ : unit :=
+            let _ : unit :=
               _crate.io._print(|
                 format_arguments::["new_v1"](|
                   [ "! "; "
@@ -274,18 +274,18 @@ Definition main :=
             tt in
           tt
       |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "`rmdir a/c/d`
 " ] |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       fs.remove_dir(| "a/c/d" |).["unwrap_or_else"](|
         fun why =>
-          let '_ :=
-            let '_ :=
+          let _ : unit :=
+            let _ : unit :=
               _crate.io._print(|
                 format_arguments::["new_v1"](|
                   [ "! "; "

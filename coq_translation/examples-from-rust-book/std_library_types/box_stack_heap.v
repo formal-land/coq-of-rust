@@ -118,8 +118,8 @@ Definition main :=
       |) in
     let boxed_point := Box::["new"](| origin(||) |) in
     let box_in_a_box := Box::["new"](| boxed_origin(||) |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Point occupies "; " bytes on the stack
@@ -128,8 +128,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Rectangle occupies "; " bytes on the stack
@@ -141,8 +141,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Boxed point occupies "; " bytes on the stack
@@ -155,8 +155,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Boxed rectangle occupies "; " bytes on the stack
@@ -169,8 +169,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Boxed box occupies "; " bytes on the stack
@@ -184,8 +184,8 @@ Definition main :=
         |) in
       tt in
     let unboxed_point := boxed_point.["deref"](||) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Unboxed point occupies "; " bytes on the stack

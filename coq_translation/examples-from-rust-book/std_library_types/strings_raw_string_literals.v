@@ -7,8 +7,8 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let raw_str := "Escapes don't work here: \x3F \u{211D}" in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "
@@ -18,8 +18,8 @@ Definition main :=
         |) in
       tt in
     let quotes := "And then I said: "There is no escape!"" in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "
@@ -29,8 +29,8 @@ Definition main :=
         |) in
       tt in
     let longer_delimiter := "A string with "# in it. And even "##!" in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "

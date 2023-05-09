@@ -12,8 +12,8 @@ Definition main :=
         Person.age := Box::["new"](| 20 |);
       |} in
     let '{| Person.name := name; Person.age := age; |} := person in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "The person's age is "; "
@@ -22,8 +22,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "The person's name is "; "
@@ -32,8 +32,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "The person's age from person struct is "; "

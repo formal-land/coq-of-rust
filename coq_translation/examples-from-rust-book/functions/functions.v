@@ -6,16 +6,16 @@ Import Root.std.prelude.rust_2015.
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ := fizzbuzz_to(| 100 |) in
+    let _ : unit := fizzbuzz_to(| 100 |) in
     tt
   : return_type)).
 
 Definition is_divisible_by (lhs : u32) (rhs : u32) :=
   let return_type := bool in
   ltac:(function (
-    let '_ :=
+    let _ : unit :=
       if (rhs.["eq"](| 0 |) : bool) then
-        let '_ := M.Return false in
+        let _ : unit := M.Return false in
         tt
       else
         tt in
@@ -26,8 +26,8 @@ Definition fizzbuzz (n : u32) :=
   let return_type := unit in
   ltac:(function (
     if (is_divisible_by(| n, 15 |) : bool) then
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "fizzbuzz
 " ] |)
@@ -36,8 +36,8 @@ Definition fizzbuzz (n : u32) :=
       tt
     else
       if (is_divisible_by(| n, 3 |) : bool) then
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(| format_arguments::["new_const"](| [ "fizz
 " ] |)
             |) in
@@ -45,8 +45,8 @@ Definition fizzbuzz (n : u32) :=
         tt
       else
         if (is_divisible_by(| n, 5 |) : bool) then
-          let '_ :=
-            let '_ :=
+          let _ : unit :=
+            let _ : unit :=
               _crate.io._print(|
                 format_arguments::["new_const"](| [ "buzz
 " ] |)
@@ -54,8 +54,8 @@ Definition fizzbuzz (n : u32) :=
             tt in
           tt
         else
-          let '_ :=
-            let '_ :=
+          let _ : unit :=
+            let _ : unit :=
               _crate.io._print(|
                 format_arguments::["new_v1"](|
                   [ ""; "
@@ -73,11 +73,11 @@ Definition fizzbuzz_to (n : u32) :=
     match LangItem(| LangItem(| 1, n |) |) with
     | iter =>
       loop
-        let '_ :=
+        let _ : unit :=
           match LangItem(| iter |) with
           | None => M.Break
           | Some {| Some.0 := n; |} =>
-            let '_ := fizzbuzz(| n |) in
+            let _ : unit := fizzbuzz(| n |) in
             tt
           end in
         tt

@@ -7,9 +7,9 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let shadowed_binding := 1 in
-    let '_ :=
-      let '_ :=
-        let '_ :=
+    let _ : unit :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "before being shadowed: "; "
@@ -19,8 +19,8 @@ Definition main :=
           |) in
         tt in
       let shadowed_binding := "abc" in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "shadowed in inner block: "; "
@@ -30,8 +30,8 @@ Definition main :=
           |) in
         tt in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "outside inner block: "; "
@@ -41,8 +41,8 @@ Definition main :=
         |) in
       tt in
     let shadowed_binding := 2 in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "shadowed in outer block: "; "

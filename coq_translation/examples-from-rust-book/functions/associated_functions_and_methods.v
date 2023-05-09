@@ -100,10 +100,10 @@ Module ImplRectangle.
   
   Definition translate (self : mut_ref Self) (x : f64) (y : f64) :=
     ltac:(function (
-      let '_ := self.["p1"].["x"].["add_assign"](| x |) in
-      let '_ := self.["p2"].["x"].["add_assign"](| x |) in
-      let '_ := self.["p1"].["y"].["add_assign"](| y |) in
-      let '_ := self.["p2"].["y"].["add_assign"](| y |) in
+      let _ : unit := self.["p1"].["x"].["add_assign"](| x |) in
+      let _ : unit := self.["p2"].["x"].["add_assign"](| x |) in
+      let _ : unit := self.["p1"].["y"].["add_assign"](| y |) in
+      let _ : unit := self.["p2"].["y"].["add_assign"](| y |) in
       tt
     : _)).
   
@@ -130,8 +130,8 @@ Module ImplPair.
   Definition destroy (self : Self) :=
     ltac:(function (
       let 'Pair.Build_t first second := self in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "Destroying Pair("; ", "; ")
@@ -159,8 +159,8 @@ Definition main :=
         Rectangle.p1 := Point::["origin"](||);
         Rectangle.p2 := Point::["new"](| 3 (* 3.0 *), 4 (* 4.0 *) |);
       |} in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Rectangle perimeter: "; "
@@ -170,8 +170,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Rectangle area: "; "
@@ -185,8 +185,8 @@ Definition main :=
         Rectangle.p1 := Point::["origin"](||);
         Rectangle.p2 := Point::["new"](| 1 (* 1.0 *), 1 (* 1.0 *) |);
       |} in
-    let '_ := square.["translate"](| 1 (* 1.0 *), 1 (* 1.0 *) |) in
+    let _ : unit := square.["translate"](| 1 (* 1.0 *), 1 (* 1.0 *) |) in
     let pair := Pair.Build_t Box::["new"](| 1 |) Box::["new"](| 2 |) in
-    let '_ := pair.["destroy"](||) in
+    let _ : unit := pair.["destroy"](||) in
     tt
   : return_type)).

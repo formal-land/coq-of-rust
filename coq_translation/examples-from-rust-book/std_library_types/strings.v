@@ -7,8 +7,8 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let pangram := "the quick brown fox jumps over the lazy dog" in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Pangram: "; "
@@ -17,23 +17,23 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Words in reverse
 " ] |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| pangram.["split_whitespace"](||).["rev"](||) |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := word; |} =>
-              let '_ :=
-                let '_ :=
+              let _ : unit :=
+                let _ : unit :=
                   _crate.io._print(|
                     format_arguments::["new_v1"](|
                       [ "> "; "
@@ -49,19 +49,19 @@ Definition main :=
           for
       end in
     let chars := pangram.["chars"](||).["collect"](||) in
-    let '_ := chars.["sort"](||) in
-    let '_ := chars.["dedup"](||) in
+    let _ : unit := chars.["sort"](||) in
+    let _ : unit := chars.["dedup"](||) in
     let string := String::["new"](||) in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| chars |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := c; |} =>
-              let '_ := string.["push"](| c |) in
-              let '_ := string.["push_str"](| ", " |) in
+              let _ : unit := string.["push"](| c |) in
+              let _ : unit := string.["push_str"](| ", " |) in
               tt
             end in
           tt
@@ -70,8 +70,8 @@ Definition main :=
       end in
     let chars_to_trim := [ " "%char; ","%char ] in
     let trimmed_str := string.["trim_matches"](| chars_to_trim |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Used characters: "; "
@@ -82,8 +82,8 @@ Definition main :=
       tt in
     let alice := String::["from"](| "I like dogs" |) in
     let bob := alice.["replace"](| "dog", "cat" |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Alice says: "; "
@@ -92,8 +92,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Bob says: "; "

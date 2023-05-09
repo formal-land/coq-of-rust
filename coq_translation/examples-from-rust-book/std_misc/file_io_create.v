@@ -51,7 +51,7 @@ Definition main :=
         |)
       |)
     | Ok _ =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "successfully wrote to "; "

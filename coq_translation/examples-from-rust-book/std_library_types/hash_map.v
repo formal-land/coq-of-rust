@@ -24,14 +24,14 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let contacts := HashMap::["new"](||) in
-    let '_ := contacts.["insert"](| "Daniel", "798-1364" |) in
-    let '_ := contacts.["insert"](| "Ashley", "645-7689" |) in
-    let '_ := contacts.["insert"](| "Katie", "435-8291" |) in
-    let '_ := contacts.["insert"](| "Robert", "956-1745" |) in
-    let '_ :=
+    let _ : unit := contacts.["insert"](| "Daniel", "798-1364" |) in
+    let _ : unit := contacts.["insert"](| "Ashley", "645-7689" |) in
+    let _ : unit := contacts.["insert"](| "Katie", "435-8291" |) in
+    let _ : unit := contacts.["insert"](| "Robert", "956-1745" |) in
+    let _ : unit :=
       match contacts.["get"](| "Daniel" |) with
       | Some number =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "Calling Daniel: "; "
@@ -41,7 +41,7 @@ Definition main :=
           |) in
         tt
       | _ =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "Don't have Daniel's number.
 " ]
@@ -49,11 +49,11 @@ Definition main :=
           |) in
         tt
       end in
-    let '_ := contacts.["insert"](| "Daniel", "164-6743" |) in
-    let '_ :=
+    let _ : unit := contacts.["insert"](| "Daniel", "164-6743" |) in
+    let _ : unit :=
       match contacts.["get"](| "Ashley" |) with
       | Some number =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "Calling Ashley: "; "
@@ -63,7 +63,7 @@ Definition main :=
           |) in
         tt
       | _ =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "Don't have Ashley's number.
 " ]
@@ -71,16 +71,16 @@ Definition main :=
           |) in
         tt
       end in
-    let '_ := contacts.["remove"](| "Ashley" |) in
+    let _ : unit := contacts.["remove"](| "Ashley" |) in
     match LangItem(| contacts.["iter"](||) |) with
     | iter =>
       loop
-        let '_ :=
+        let _ : unit :=
           match LangItem(| iter |) with
           | None => M.Break
           | Some {| Some.0 := (contact, number); |} =>
-            let '_ :=
-              let '_ :=
+            let _ : unit :=
+              let _ : unit :=
                 _crate.io._print(|
                   format_arguments::["new_v1"](|
                     [ "Calling "; ": "; "

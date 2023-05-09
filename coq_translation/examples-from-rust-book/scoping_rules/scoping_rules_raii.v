@@ -14,17 +14,17 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let _box2 := Box::["new"](| 5 |) in
-    let '_ :=
+    let _ : unit :=
       let _box3 := Box::["new"](| 4 |) in
       tt in
     match LangItem(| Range {| Range.start := 0; Range.end := 1000; |} |) with
     | iter =>
       loop
-        let '_ :=
+        let _ : unit :=
           match LangItem(| iter |) with
           | None => M.Break
           | Some {| Some.0 := _; |} =>
-            let '_ := create_box(||) in
+            let _ : unit := create_box(||) in
             tt
           end in
         tt

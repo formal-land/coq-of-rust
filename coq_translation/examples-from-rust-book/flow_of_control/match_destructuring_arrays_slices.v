@@ -9,7 +9,7 @@ Definition main :=
     let array := [ 1; 2.["neg"](||); 6 ] in
     match array with
     | _ =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "array[0] = 0, array[1] = "; ", array[2] = "; "
@@ -22,7 +22,7 @@ Definition main :=
         |) in
       tt
     | _ =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "array[0] = 1, array[2] = "; " and array[1] was ignored
@@ -32,7 +32,7 @@ Definition main :=
         |) in
       tt
     | _ =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [
@@ -45,7 +45,7 @@ Definition main :=
         |) in
       tt
     | _ =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "array[0] = 3, array[1] = "; " and the other elements were "; "
@@ -59,7 +59,7 @@ Definition main :=
         |) in
       tt
     | _ =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "array[0] = "; ", middle = "; ", array[2] = "; "

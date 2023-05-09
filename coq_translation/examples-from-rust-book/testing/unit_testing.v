@@ -21,7 +21,7 @@ Module tests.
   Definition test_add :=
     let return_type := unit in
     ltac:(function (
-      let '_ :=
+      let _ : unit :=
         match (add(| 1, 2 |), 3) with
         | (left_val, right_val) =>
           if
@@ -30,7 +30,7 @@ Module tests.
             : bool)
           then
             let kind := _crate.panicking.AssertKind.Eq in
-            let '_ :=
+            let _ : unit :=
               _crate.panicking.assert_failed(|
                 kind,
                 left_val.["deref"](||),
@@ -47,7 +47,7 @@ Module tests.
   Definition test_bad_add :=
     let return_type := unit in
     ltac:(function (
-      let '_ :=
+      let _ : unit :=
         match (bad_add(| 1, 2 |), 3) with
         | (left_val, right_val) =>
           if
@@ -56,7 +56,7 @@ Module tests.
             : bool)
           then
             let kind := _crate.panicking.AssertKind.Eq in
-            let '_ :=
+            let _ : unit :=
               _crate.panicking.assert_failed(|
                 kind,
                 left_val.["deref"](||),
@@ -76,7 +76,7 @@ Import super.
 Definition test_add :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
+    let _ : unit :=
       match (add(| 1, 2 |), 3) with
       | (left_val, right_val) =>
         if
@@ -85,7 +85,7 @@ Definition test_add :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),
@@ -102,7 +102,7 @@ Definition test_add :=
 Definition test_bad_add :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
+    let _ : unit :=
       match (bad_add(| 1, 2 |), 3) with
       | (left_val, right_val) =>
         if
@@ -111,7 +111,7 @@ Definition test_bad_add :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),

@@ -16,8 +16,8 @@ Definition mul (a : u64) (b : u64) :=
   ltac:(function (
     let lo := tt in
     let hi := tt in
-    let '_ :=
-      let '_ := InlineAsm in
+    let _ : unit :=
+      let _ : unit := InlineAsm in
       tt in
     (cast hi u128).["shl"](| 64 |).["add"](| cast lo u128 |)
   : return_type)).

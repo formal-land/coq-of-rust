@@ -10,8 +10,8 @@ Definition main :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 1; 2; 3 ] |) |) in
     let vec2 :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 4; 5; 6 ] |) |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "2 in vec1: "; "
@@ -24,8 +24,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "2 in vec2: "; "
@@ -38,8 +38,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "vec1 len: "; "
@@ -48,8 +48,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "First element of vec1 is: "; "
@@ -60,8 +60,8 @@ Definition main :=
       tt in
     let array1 := [ 1; 2; 3 ] in
     let array2 := [ 4; 5; 6 ] in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "2 in array1: "; "
@@ -74,8 +74,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "2 in array2: "; "

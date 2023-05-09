@@ -19,8 +19,8 @@ Definition main :=
     let z :=
       {| Complex.re := 1 (* 1. *).["neg"](||); Complex.im := 0 (* 0. *); |} in
     let z_sqrt := csqrtf(| z |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "the square root of "; " is "; "
@@ -32,8 +32,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "cos("; ") = "; "

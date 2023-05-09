@@ -7,10 +7,10 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let x := 171 in
-    let '_ :=
-      let '_ := InlineAsm in
+    let _ : unit :=
+      let _ : unit := InlineAsm in
       tt in
-    let '_ :=
+    let _ : unit :=
       match (x, 43947) with
       | (left_val, right_val) =>
         if
@@ -19,7 +19,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),

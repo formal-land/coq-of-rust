@@ -8,10 +8,10 @@ Definition main :=
   ltac:(function (
     let a := 4 in
     let b := 4 in
-    let '_ :=
-      let '_ := InlineAsm in
+    let _ : unit :=
+      let _ : unit := InlineAsm in
       tt in
-    let '_ :=
+    let _ : unit :=
       match (a, 8) with
       | (left_val, right_val) =>
         if
@@ -20,7 +20,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),

@@ -8,8 +8,8 @@ Definition main :=
   ltac:(function (
     let _immutable_binding := 1 in
     let mutable_binding := 1 in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Before mutation: "; "
@@ -18,9 +18,9 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ := mutable_binding.["add_assign"](| 1 |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit := mutable_binding.["add_assign"](| 1 |) in
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "After mutation: "; "

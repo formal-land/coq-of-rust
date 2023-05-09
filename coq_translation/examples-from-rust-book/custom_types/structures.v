@@ -96,8 +96,8 @@ Definition main :=
     let name := String::["from"](| "Peter" |) in
     let age := 27 in
     let peter := {| Person.name := name; Person.age := age; |} in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "
@@ -107,8 +107,8 @@ Definition main :=
         |) in
       tt in
     let point := {| Point.x := 10 (* 10.3 *); Point.y := 0 (* 0.4 *); |} in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "point coordinates: ("; ", "; ")
@@ -121,8 +121,8 @@ Definition main :=
         |) in
       tt in
     let bottom_right := {| Point.x := 5 (* 5.2 *); |} with point in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "second point: ("; ", "; ")
@@ -142,8 +142,8 @@ Definition main :=
       |} in
     let _unit := Unit.Build in
     let pair := Pair.Build_t 1 0 (* 0.1 *) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "pair contains "; " and "; "
@@ -156,8 +156,8 @@ Definition main :=
         |) in
       tt in
     let 'Pair.Build_t integer decimal := pair in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "pair contains "; " and "; "

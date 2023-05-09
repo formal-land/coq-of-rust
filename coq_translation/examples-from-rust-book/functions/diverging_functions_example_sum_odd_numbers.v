@@ -6,8 +6,8 @@ Import Root.std.prelude.rust_2015.
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Sum of odd numbers up to 9 (excluding): "; "
@@ -23,11 +23,11 @@ Definition sum_odd_numbers (up_to : u32) :=
   let return_type := u32 in
   ltac:(function (
     let acc := 0 in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| Range {| Range.start := 0; Range.end := up_to; |} |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := i; |} =>
@@ -36,7 +36,7 @@ Definition sum_odd_numbers (up_to : u32) :=
                 | true => i
                 | false => M.Continue
                 end in
-              let '_ := acc.["add_assign"](| addition |) in
+              let _ : unit := acc.["add_assign"](| addition |) in
               tt
             end in
           tt

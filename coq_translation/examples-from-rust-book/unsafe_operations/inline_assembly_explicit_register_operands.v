@@ -7,7 +7,7 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let cmd := 209 in
-    let '_ := InlineAsm in
+    let _ : unit := InlineAsm in
     tt
   : return_type)).
 

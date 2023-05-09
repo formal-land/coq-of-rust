@@ -7,8 +7,8 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let count := 0 in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Let's count until infinity!
 " ]
@@ -16,22 +16,22 @@ Definition main :=
         |) in
       tt in
     loop
-      let '_ := count.["add_assign"](| 1 |) in
-      let '_ :=
+      let _ : unit := count.["add_assign"](| 1 |) in
+      let _ : unit :=
         if (count.["eq"](| 3 |) : bool) then
-          let '_ :=
-            let '_ :=
+          let _ : unit :=
+            let _ : unit :=
               _crate.io._print(|
                 format_arguments::["new_const"](| [ "three
 " ] |)
               |) in
             tt in
-          let '_ := M.Continue in
+          let _ : unit := M.Continue in
           tt
         else
           tt in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ ""; "
@@ -41,14 +41,14 @@ Definition main :=
           |) in
         tt in
       if (count.["eq"](| 5 |) : bool) then
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_const"](| [ "OK, that's enough
 " ] |)
             |) in
           tt in
-        let '_ := M.Break in
+        let _ : unit := M.Break in
         tt
       else
         tt

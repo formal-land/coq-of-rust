@@ -13,8 +13,8 @@ Module Rng := rand.Rng.
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Guess the number!
 " ] |)
@@ -23,15 +23,15 @@ Definition main :=
     let secret_number :=
       rand.thread_rng(||).["gen_range"](| LangItem(| 1, 100 |) |) in
     loop
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "Please input your guess.
 " ] |)
           |) in
         tt in
       let guess := String::["new"](||) in
-      let '_ :=
+      let _ : unit :=
         io.stdin(||).["read_line"](| guess |).["expect"](| "Failed to read line"
         |) in
       let guess :=
@@ -39,8 +39,8 @@ Definition main :=
         | Ok num => num
         | Err _ => M.Continue
         end in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "You guessed: "; "
@@ -51,28 +51,28 @@ Definition main :=
         tt in
       match guess.["cmp"](| secret_number |) with
       | Ordering.Less =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "Too small!
 " ] |)
           |) in
         tt
       | Ordering.Greater =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "Too big!
 " ] |)
           |) in
         tt
       | Ordering.Equal =>
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_const"](| [ "You win!
 " ] |)
             |) in
           tt in
-        let '_ := M.Break in
+        let _ : unit := M.Break in
         tt
       end
       from

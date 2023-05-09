@@ -9,8 +9,8 @@ Definition main :=
     let outer_var := 42 in
     let closure_annotated := fun i => i.["add"](| outer_var |) in
     let closure_inferred := fun i => i.["add"](| outer_var |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "closure_annotated: "; "
@@ -19,8 +19,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "closure_inferred: "; "
@@ -30,8 +30,8 @@ Definition main :=
         |) in
       tt in
     let one := fun  => 1 in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "closure returning one: "; "

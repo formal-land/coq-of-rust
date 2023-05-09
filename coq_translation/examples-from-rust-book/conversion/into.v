@@ -61,8 +61,8 @@ Definition main :=
   ltac:(function (
     let int := 5 in
     let num := int.["into"](||) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "My number is "; "

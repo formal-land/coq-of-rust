@@ -111,8 +111,8 @@ Definition main :=
   ltac:(function (
     let unit := Unit.Build in
     let copied_unit := unit in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "original: "; "
@@ -121,8 +121,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "copy: "; "
@@ -132,8 +132,8 @@ Definition main :=
         |) in
       tt in
     let pair := Pair.Build_t Box::["new"](| 1 |) Box::["new"](| 2 |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "original: "; "
@@ -143,8 +143,8 @@ Definition main :=
         |) in
       tt in
     let moved_pair := pair in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "moved: "; "
@@ -154,9 +154,9 @@ Definition main :=
         |) in
       tt in
     let cloned_pair := moved_pair.["clone"](||) in
-    let '_ := drop(| moved_pair |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit := drop(| moved_pair |) in
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "clone: "; "

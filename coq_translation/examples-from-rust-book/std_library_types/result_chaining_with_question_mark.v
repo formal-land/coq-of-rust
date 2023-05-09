@@ -95,7 +95,7 @@ Module checked.
           end
         |)
       | Ok value =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ ""; "
@@ -199,7 +199,7 @@ Definition op (x : f64) (y : f64) :=
         end
       |)
     | Ok value =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "
@@ -214,6 +214,6 @@ Definition op (x : f64) (y : f64) :=
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ := checked.op(| 1 (* 1.0 *), 10 (* 10.0 *) |) in
+    let _ : unit := checked.op(| 1 (* 1.0 *), 10 (* 10.0 *) |) in
     tt
   : return_type)).

@@ -19,10 +19,10 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let first := 2 in
-    let '_ :=
+    let _ : unit :=
       let second := 3 in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "The product is "; "
@@ -34,8 +34,8 @@ Definition main :=
             |)
           |) in
         tt in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ ""; " is the first

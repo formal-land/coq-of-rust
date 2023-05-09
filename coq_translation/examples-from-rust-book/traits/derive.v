@@ -115,8 +115,8 @@ Definition main :=
   ltac:(function (
     let _one_second := Seconds.Build_t 1 in
     let foot := Inches.Build_t 12 in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "One foot equals "; "
@@ -131,8 +131,8 @@ Definition main :=
         "smaller"
       else
         "bigger" in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "One foot is "; " than one meter.

@@ -9,12 +9,12 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let name_buf := Repeat 0 in
-    let '_ :=
-      let '_ := InlineAsm in
+    let _ : unit :=
+      let _ : unit := InlineAsm in
       tt in
     let name := core.str.from_utf8(| name_buf |).["unwrap"](||) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "CPU Manufacturer ID: "; "

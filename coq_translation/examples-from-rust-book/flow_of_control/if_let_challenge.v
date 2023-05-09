@@ -14,8 +14,8 @@ Definition main :=
   ltac:(function (
     let a := Foo.Bar in
     if (let_if Foo.Bar := a : bool) then
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "a is foobar
 " ] |)

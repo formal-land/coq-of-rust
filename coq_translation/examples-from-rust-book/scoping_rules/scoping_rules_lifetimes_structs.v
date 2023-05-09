@@ -115,8 +115,8 @@ Definition main :=
     let double := {| NamedBorrowed.x := x; NamedBorrowed.y := y; |} in
     let reference := Either.Ref x in
     let number := Either.Num y in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "x is borrowed in "; "
@@ -125,8 +125,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "x and y are borrowed in "; "
@@ -135,8 +135,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "x is borrowed in "; "
@@ -145,8 +145,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "y is *not* borrowed in "; "

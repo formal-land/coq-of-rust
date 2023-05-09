@@ -8,9 +8,9 @@ Definition main :=
   ltac:(function (
     let elem := 5 in
     let vec := Vec::["new"](||) in
-    let '_ := vec.["push"](| elem |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit := vec.["push"](| elem |) in
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "

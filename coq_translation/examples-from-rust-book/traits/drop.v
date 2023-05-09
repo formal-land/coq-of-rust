@@ -19,8 +19,8 @@ Module Impl_Drop_for_Droppable.
   
   Definition drop (self : mut_ref Self) :=
     ltac:(function (
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "> Dropping "; "
@@ -45,44 +45,44 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let _a := {| Droppable.name := "a"; |} in
-    let '_ :=
+    let _ : unit :=
       let _b := {| Droppable.name := "b"; |} in
-      let '_ :=
+      let _ : unit :=
         let _c := {| Droppable.name := "c"; |} in
         let _d := {| Droppable.name := "d"; |} in
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_const"](| [ "Exiting block B
 " ] |)
             |) in
           tt in
         tt in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "Just exited block B
 " ] |)
           |) in
         tt in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "Exiting block A
 " ] |)
           |) in
         tt in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Just exited block A
 " ] |)
         |) in
       tt in
-    let '_ := drop(| _a |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit := drop(| _a |) in
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "end of the main function
 " ] |)

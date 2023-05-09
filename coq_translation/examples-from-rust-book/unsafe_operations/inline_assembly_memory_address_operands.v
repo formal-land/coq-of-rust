@@ -14,6 +14,6 @@ Module asm := std.arch.asm.
 Definition load_fpu_control_word (control : u16) :=
   let return_type := unit in
   ltac:(function (
-    let '_ := InlineAsm in
+    let _ : unit := InlineAsm in
     tt
   : return_type)).

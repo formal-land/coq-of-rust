@@ -13,13 +13,13 @@ Definition main :=
     match LangItem(| names.["into_iter"](||) |) with
     | iter =>
       loop
-        let '_ :=
+        let _ : unit :=
           match LangItem(| iter |) with
           | None => M.Break
           | Some {| Some.0 := name; |} =>
             match name with
             | "Ferris" =>
-              let '_ :=
+              let _ : unit :=
                 _crate.io._print(|
                   format_arguments::["new_const"](|
                     [ "There is a rustacean among us!
@@ -28,7 +28,7 @@ Definition main :=
                 |) in
               tt
             | _ =>
-              let '_ :=
+              let _ : unit :=
                 _crate.io._print(|
                   format_arguments::["new_v1"](|
                     [ "Hello "; "

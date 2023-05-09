@@ -12,8 +12,8 @@ Definition main :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 4; 5; 6 ] |) |) in
     let iter := vec1.["iter"](||) in
     let into_iter := vec2.["into_iter"](||) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Find 2 in vec1: "; "
@@ -26,8 +26,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Find 2 in vec2: "; "
@@ -42,8 +42,8 @@ Definition main :=
       tt in
     let array1 := [ 1; 2; 3 ] in
     let array2 := [ 4; 5; 6 ] in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Find 2 in array1: "; "
@@ -56,8 +56,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Find 2 in array2: "; "

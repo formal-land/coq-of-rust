@@ -9,8 +9,8 @@ Definition main :=
     let haystack :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 1; 2; 3 ] |) |) in
     let contains := fun needle => haystack.["contains"](| needle |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "
@@ -19,8 +19,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "

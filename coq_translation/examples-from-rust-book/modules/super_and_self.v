@@ -6,8 +6,8 @@ Import Root.std.prelude.rust_2015.
 Definition function :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "called `function()`
 " ] |)
@@ -20,8 +20,8 @@ Module cool.
   Definition function :=
     let return_type := unit in
     ltac:(function (
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "called `cool::function()`
 " ]
@@ -35,8 +35,8 @@ End cool.
 Definition function :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "called `cool::function()`
 " ] |)
@@ -49,8 +49,8 @@ Module my.
   Definition function :=
     let return_type := unit in
     ltac:(function (
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "called `my::function()`
 " ] |)
@@ -63,8 +63,8 @@ Module my.
     Definition function :=
       let return_type := unit in
       ltac:(function (
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_const"](|
                 [ "called `my::cool::function()`
@@ -79,8 +79,8 @@ Module my.
   Definition indirect_call :=
     let return_type := unit in
     ltac:(function (
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](|
               [ "called `my::indirect_call()`, that
@@ -88,11 +88,11 @@ Module my.
             |)
           |) in
         tt in
-      let '_ := self.function(||) in
-      let '_ := function(||) in
-      let '_ := self.cool.function(||) in
-      let '_ := super.function(||) in
-      let '_ := root_function(||) in
+      let _ : unit := self.function(||) in
+      let _ : unit := function(||) in
+      let _ : unit := self.cool.function(||) in
+      let _ : unit := super.function(||) in
+      let _ : unit := root_function(||) in
       tt
     : return_type)).
 End my.
@@ -100,8 +100,8 @@ End my.
 Definition function :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "called `my::function()`
 " ] |)
@@ -114,8 +114,8 @@ Module cool.
   Definition function :=
     let return_type := unit in
     ltac:(function (
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](|
               [ "called `my::cool::function()`
@@ -130,8 +130,8 @@ End cool.
 Definition function :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "called `my::cool::function()`
 " ]
@@ -144,8 +144,8 @@ Definition function :=
 Definition indirect_call :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [ "called `my::indirect_call()`, that
@@ -153,11 +153,11 @@ Definition indirect_call :=
           |)
         |) in
       tt in
-    let '_ := self.function(||) in
-    let '_ := function(||) in
-    let '_ := self.cool.function(||) in
-    let '_ := super.function(||) in
-    let '_ := root_function(||) in
+    let _ : unit := self.function(||) in
+    let _ : unit := function(||) in
+    let _ : unit := self.cool.function(||) in
+    let _ : unit := super.function(||) in
+    let _ : unit := root_function(||) in
     tt
   : return_type)).
 
@@ -166,6 +166,6 @@ Module root_function := crate.cool.function.
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ := my.indirect_call(||) in
+    let _ : unit := my.indirect_call(||) in
     tt
   : return_type)).

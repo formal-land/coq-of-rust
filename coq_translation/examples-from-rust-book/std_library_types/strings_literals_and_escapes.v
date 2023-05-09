@@ -7,8 +7,8 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let byte_escape := "I'm writing Rust!" in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "What are you doing? (\x3F means ?) "; "
@@ -19,8 +19,8 @@ Definition main :=
       tt in
     let unicode_codepoint := String.String "29" "" in
     let character_name := ""DOUBLE-STRUCK CAPITAL R"" in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Unicode character "; " (U+211D) is called "; "
@@ -36,8 +36,8 @@ Definition main :=
       "String literals
                         can span multiple lines.
                         The linebreak and indentation here -><- can be escaped too!" in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "

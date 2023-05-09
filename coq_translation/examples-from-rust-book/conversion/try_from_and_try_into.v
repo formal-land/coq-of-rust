@@ -86,7 +86,7 @@ End Impl_TryFrom_for_EvenNumber.
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
+    let _ : unit :=
       match (EvenNumber::["try_from"](| 8 |), Ok (EvenNumber.Build_t 8)) with
       | (left_val, right_val) =>
         if
@@ -95,7 +95,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),
@@ -106,7 +106,7 @@ Definition main :=
         else
           tt
       end in
-    let '_ :=
+    let _ : unit :=
       match (EvenNumber::["try_from"](| 5 |), Err tt) with
       | (left_val, right_val) =>
         if
@@ -115,7 +115,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),
@@ -127,7 +127,7 @@ Definition main :=
           tt
       end in
     let result := 8.["try_into"](||) in
-    let '_ :=
+    let _ : unit :=
       match (result, Ok (EvenNumber.Build_t 8)) with
       | (left_val, right_val) =>
         if
@@ -136,7 +136,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),
@@ -148,7 +148,7 @@ Definition main :=
           tt
       end in
     let result := 5.["try_into"](||) in
-    let '_ :=
+    let _ : unit :=
       match (result, Err tt) with
       | (left_val, right_val) =>
         if
@@ -157,7 +157,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),

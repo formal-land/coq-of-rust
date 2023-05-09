@@ -20,8 +20,8 @@ Definition main :=
     let errors :=
       errors.["into_iter"](||).["map"](| Result::["unwrap_err"]
       |).["collect"](||) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Numbers: "; "
@@ -30,8 +30,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Errors: "; "

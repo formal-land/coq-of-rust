@@ -69,8 +69,8 @@ Definition main :=
         0 (* 0.2 *),
         "a"%char,
         true) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "long tuple first value: "; "
@@ -79,8 +79,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "long tuple second value: "; "
@@ -90,8 +90,8 @@ Definition main :=
         |) in
       tt in
     let tuple_of_tuples := ((1, 2, 2), (4, 1.["neg"](||)), 2.["neg"](||)) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "tuple of tuples: "; "
@@ -101,8 +101,8 @@ Definition main :=
         |) in
       tt in
     let pair := (1, true) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "pair is "; "
@@ -111,8 +111,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "the reversed pair is "; "
@@ -121,8 +121,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "one element tuple: "; "
@@ -131,8 +131,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "just an integer: "; "
@@ -143,8 +143,8 @@ Definition main :=
       tt in
     let tuple := (1, "hello", 5 (* 4.5 *), true) in
     let '(a, b, c, d) := tuple in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; ", "; ", "; ", "; "
@@ -160,8 +160,8 @@ Definition main :=
       tt in
     let matrix :=
       Matrix.Build_t 1 (* 1.1 *) 1 (* 1.2 *) 2 (* 2.1 *) 2 (* 2.2 *) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "

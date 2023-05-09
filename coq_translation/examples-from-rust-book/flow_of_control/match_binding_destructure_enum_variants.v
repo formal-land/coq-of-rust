@@ -14,7 +14,7 @@ Definition main :=
   ltac:(function (
     match some_number(||) with
     | Some (42 as n) =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "The Answer: "; "!
@@ -24,7 +24,7 @@ Definition main :=
         |) in
       tt
     | Some n =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Not interesting... "; "

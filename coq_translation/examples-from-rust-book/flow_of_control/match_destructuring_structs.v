@@ -24,7 +24,7 @@ Definition main :=
     let foo := {| Foo.x := (1, 2); Foo.y := 3; |} in
     match foo with
     | {| Foo.x := (1, b); Foo.y := y; |} =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "First of x is 1, b = "; ",  y = "; " 
@@ -37,7 +37,7 @@ Definition main :=
         |) in
       tt
     | {| Foo.y := 2; Foo.x := i; |} =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "y is 2, i = "; "
@@ -47,7 +47,7 @@ Definition main :=
         |) in
       tt
     | {| Foo.y := y; |} =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "y = "; ", we don't care about x

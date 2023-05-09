@@ -15,19 +15,19 @@ Definition main :=
     let b :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 2; 3; 4 ] |)
       |).["into_iter"](||).["collect"](||) in
-    let '_ :=
+    let _ : unit :=
       if (a.["insert"](| 4 |).["not"](||) : bool) then
         _crate.panicking.panic(| "assertion failed: a.insert(4)" |)
       else
         tt in
-    let '_ :=
+    let _ : unit :=
       if (a.["contains"](| 4 |).["not"](||) : bool) then
         _crate.panicking.panic(| "assertion failed: a.contains(&4)" |)
       else
         tt in
-    let '_ := b.["insert"](| 5 |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit := b.["insert"](| 5 |) in
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "A: "; "
@@ -36,8 +36,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "B: "; "
@@ -46,8 +46,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Union: "; "
@@ -60,8 +60,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Difference: "; "
@@ -74,8 +74,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Intersection: "; "
@@ -88,8 +88,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Symmetric Difference: "; "

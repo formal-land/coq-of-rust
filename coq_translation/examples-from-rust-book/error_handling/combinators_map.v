@@ -167,7 +167,7 @@ Definition eat (food : Option Cooked) :=
   ltac:(function (
     match food with
     | Some food =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Mmm. I love "; "
@@ -177,7 +177,7 @@ Definition eat (food : Option Cooked) :=
         |) in
       tt
     | None =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Oh no! It wasn't edible.
 " ] |)
@@ -195,8 +195,8 @@ Definition main :=
     let cooked_apple := cook(| chop(| peel(| apple |) |) |) in
     let cooked_carrot := cook(| chop(| peel(| carrot |) |) |) in
     let cooked_potato := process(| potato |) in
-    let '_ := eat(| cooked_apple |) in
-    let '_ := eat(| cooked_carrot |) in
-    let '_ := eat(| cooked_potato |) in
+    let _ : unit := eat(| cooked_apple |) in
+    let _ : unit := eat(| cooked_carrot |) in
+    let _ : unit := eat(| cooked_potato |) in
     tt
   : return_type)).

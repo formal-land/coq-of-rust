@@ -17,7 +17,7 @@ Module ImplOwner.
   
   Definition add_one (self : mut_ref Self) :=
     ltac:(function (
-      let '_ := (self.[0]).["add_assign"](| 1 |) in
+      let _ : unit := (self.[0]).["add_assign"](| 1 |) in
       tt
     : _)).
   
@@ -27,8 +27,8 @@ Module ImplOwner.
   
   Definition print (self : ref Self) :=
     ltac:(function (
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "`print`: "; "
@@ -49,7 +49,7 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let owner := Owner.Build_t 18 in
-    let '_ := owner.["add_one"](||) in
-    let '_ := owner.["print"](||) in
+    let _ : unit := owner.["add_one"](||) in
+    let _ : unit := owner.["print"](||) in
     tt
   : return_type)).

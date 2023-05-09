@@ -34,8 +34,8 @@ End Impl__crate_fmt_Debug_for_Ref_T.
 Definition print {T : Set} `{Debug.Trait T} (t : T) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "`print`: t is "; "
@@ -50,8 +50,8 @@ Definition print {T : Set} `{Debug.Trait T} (t : T) :=
 Definition print_ref {T : Set} `{Debug.Trait T} (t : ref T) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "`print_ref`: t is "; "
@@ -68,7 +68,7 @@ Definition main :=
   ltac:(function (
     let x := 7 in
     let ref_x := Ref.Build_t x in
-    let '_ := print_ref(| ref_x |) in
-    let '_ := print(| ref_x |) in
+    let _ : unit := print_ref(| ref_x |) in
+    let _ : unit := print(| ref_x |) in
     tt
   : return_type)).

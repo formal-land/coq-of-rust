@@ -9,13 +9,13 @@ Definition main :=
     match LangItem(| LangItem(| 1, 100 |) |) with
     | iter =>
       loop
-        let '_ :=
+        let _ : unit :=
           match LangItem(| iter |) with
           | None => M.Break
           | Some {| Some.0 := n; |} =>
             if (n.["rem"](| 15 |).["eq"](| 0 |) : bool) then
-              let '_ :=
-                let '_ :=
+              let _ : unit :=
+                let _ : unit :=
                   _crate.io._print(|
                     format_arguments::["new_const"](| [ "fizzbuzz
 " ] |)
@@ -24,8 +24,8 @@ Definition main :=
               tt
             else
               if (n.["rem"](| 3 |).["eq"](| 0 |) : bool) then
-                let '_ :=
-                  let '_ :=
+                let _ : unit :=
+                  let _ : unit :=
                     _crate.io._print(|
                       format_arguments::["new_const"](| [ "fizz
 " ] |)
@@ -34,8 +34,8 @@ Definition main :=
                 tt
               else
                 if (n.["rem"](| 5 |).["eq"](| 0 |) : bool) then
-                  let '_ :=
-                    let '_ :=
+                  let _ : unit :=
+                    let _ : unit :=
                       _crate.io._print(|
                         format_arguments::["new_const"](| [ "buzz
 " ] |)
@@ -43,8 +43,8 @@ Definition main :=
                     tt in
                   tt
                 else
-                  let '_ :=
-                    let '_ :=
+                  let _ : unit :=
+                    let _ : unit :=
                       _crate.io._print(|
                         format_arguments::["new_v1"](|
                           [ ""; "

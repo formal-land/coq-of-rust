@@ -19,8 +19,8 @@ Module Impl_PrintInOption_for_T.
   
   Definition print_in_option (self : Self) :=
     ltac:(function (
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ ""; "
@@ -46,6 +46,6 @@ Definition main :=
   ltac:(function (
     let vec :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 1; 2; 3 ] |) |) in
-    let '_ := vec.["print_in_option"](||) in
+    let _ : unit := vec.["print_in_option"](||) in
     tt
   : return_type)).

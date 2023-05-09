@@ -22,8 +22,8 @@ Definition main :=
       |) in
     if (output.["status"].["success"](||) : bool) then
       let s := String::["from_utf8_lossy"](| output.["stdout"] |) in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "rustc succeeded and stdout was:
@@ -35,8 +35,8 @@ Definition main :=
       tt
     else
       let s := String::["from_utf8_lossy"](| output.["stderr"] |) in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "rustc failed and stderr was:

@@ -27,8 +27,8 @@ Module Impl_Iterator_for_Fibonacci.
     let return_type := Option ImplSelf.Item in
     ltac:(function (
       let current := self.["curr"] in
-      let '_ := assign self.["curr"] self.["next"] in
-      let '_ := assign self.["next"] current.["add"](| self.["next"] |) in
+      let _ : unit := assign self.["curr"] self.["next"] in
+      let _ : unit := assign self.["next"] current.["add"](| self.["next"] |) in
       Some current
     : return_type)).
   
@@ -51,8 +51,8 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let sequence := Range {| Range.start := 0; Range.end := 3; |} in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [ "Four consecutive `next` calls on 0..3
@@ -60,8 +60,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "> "; "
@@ -70,8 +70,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "> "; "
@@ -80,8 +80,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "> "; "
@@ -90,8 +90,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "> "; "
@@ -100,8 +100,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [ "Iterate through 0..3 using `for`
@@ -109,16 +109,16 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| Range {| Range.start := 0; Range.end := 3; |} |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := i; |} =>
-              let '_ :=
-                let '_ :=
+              let _ : unit :=
+                let _ : unit :=
                   _crate.io._print(|
                     format_arguments::["new_v1"](|
                       [ "> "; "
@@ -133,8 +133,8 @@ Definition main :=
           from
           for
       end in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [ "The first four terms of the Fibonacci sequence are: 
@@ -142,16 +142,16 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| fibonacci(||).["take"](| 4 |) |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := i; |} =>
-              let '_ :=
-                let '_ :=
+              let _ : unit :=
+                let _ : unit :=
                   _crate.io._print(|
                     format_arguments::["new_v1"](|
                       [ "> "; "
@@ -166,8 +166,8 @@ Definition main :=
           from
           for
       end in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [ "The next four terms of the Fibonacci sequence are: 
@@ -175,16 +175,16 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| fibonacci(||).["skip"](| 4 |).["take"](| 4 |) |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := i; |} =>
-              let '_ :=
-                let '_ :=
+              let _ : unit :=
+                let _ : unit :=
                   _crate.io._print(|
                     format_arguments::["new_v1"](|
                       [ "> "; "
@@ -200,8 +200,8 @@ Definition main :=
           for
       end in
     let array := [ 1; 3; 3; 7 ] in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Iterate the following array "; "
@@ -213,12 +213,12 @@ Definition main :=
     match LangItem(| array.["iter"](||) |) with
     | iter =>
       loop
-        let '_ :=
+        let _ : unit :=
           match LangItem(| iter |) with
           | None => M.Break
           | Some {| Some.0 := i; |} =>
-            let '_ :=
-              let '_ :=
+            let _ : unit :=
+              let _ : unit :=
                 _crate.io._print(|
                   format_arguments::["new_v1"](|
                     [ "> "; "

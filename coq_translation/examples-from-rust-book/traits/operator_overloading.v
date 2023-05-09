@@ -69,8 +69,8 @@ Module Impl_ops_Add_for_Foo.
   Definition add (self : Self) (_rhs : Bar) :=
     let return_type := FooBar in
     ltac:(function (
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "> Foo.add(Bar) was called
 " ]
@@ -97,8 +97,8 @@ Module Impl_ops_Add_for_Bar.
   Definition add (self : Self) (_rhs : Foo) :=
     let return_type := BarFoo in
     ltac:(function (
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "> Bar.add(Foo) was called
 " ]
@@ -120,8 +120,8 @@ End Impl_ops_Add_for_Bar.
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Foo + Bar = "; "
@@ -133,8 +133,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Bar + Foo = "; "

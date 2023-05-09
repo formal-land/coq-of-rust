@@ -8,8 +8,8 @@ Definition main :=
   ltac:(function (
     let collected_iterator :=
       Range {| Range.start := 0; Range.end := 10; |}.["collect"](||) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Collected (0..10) into: "; "
@@ -20,8 +20,8 @@ Definition main :=
       tt in
     let xs :=
       Slice::["into_vec"](| _crate.boxed.Box::["new"](| [ 1; 2; 3 ] |) |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Initial vector: "; "
@@ -30,16 +30,16 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Push 4 into the vector
 " ] |)
         |) in
       tt in
-    let '_ := xs.["push"](| 4 |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit := xs.["push"](| 4 |) in
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Vector: "; "
@@ -48,8 +48,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Vector length: "; "
@@ -58,8 +58,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Second element: "; "
@@ -68,8 +68,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Pop last element: "; "
@@ -78,23 +78,23 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Contents of xs:
 " ] |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| xs.["iter"](||) |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := x; |} =>
-              let '_ :=
-                let '_ :=
+              let _ : unit :=
+                let _ : unit :=
                   _crate.io._print(|
                     format_arguments::["new_v1"](|
                       [ "> "; "
@@ -109,16 +109,16 @@ Definition main :=
           from
           for
       end in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| xs.["iter"](||).["enumerate"](||) |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := (i, x); |} =>
-              let '_ :=
-                let '_ :=
+              let _ : unit :=
+                let _ : unit :=
                   _crate.io._print(|
                     format_arguments::["new_v1"](|
                       [ "In position "; " we have value "; "
@@ -136,23 +136,23 @@ Definition main :=
           from
           for
       end in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| xs.["iter_mut"](||) |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := x; |} =>
-              let '_ := x.["deref"](||).["mul_assign"](| 3 |) in
+              let _ : unit := x.["deref"](||).["mul_assign"](| 3 |) in
               tt
             end in
           tt
           from
           for
       end in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Updated vector: "; "

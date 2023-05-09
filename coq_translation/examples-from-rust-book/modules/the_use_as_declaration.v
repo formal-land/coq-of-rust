@@ -8,8 +8,8 @@ Module other_function := deeply.nested.function.
 Definition function :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "called `function()`
 " ] |)
@@ -23,8 +23,8 @@ Module deeply.
     Definition function :=
       let return_type := unit in
       ltac:(function (
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_const"](|
                 [ "called `deeply::nested::function()`
@@ -41,8 +41,8 @@ Module nested.
   Definition function :=
     let return_type := unit in
     ltac:(function (
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](|
               [ "called `deeply::nested::function()`
@@ -57,8 +57,8 @@ End nested.
 Definition function :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [ "called `deeply::nested::function()`
@@ -72,25 +72,25 @@ Definition function :=
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ := other_function(||) in
-    let '_ :=
-      let '_ :=
+    let _ : unit := other_function(||) in
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Entering block
 " ] |)
         |) in
       tt in
-    let '_ :=
-      let '_ := function(||) in
-      let '_ :=
-        let '_ :=
+    let _ : unit :=
+      let _ : unit := function(||) in
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "Leaving block
 " ] |)
           |) in
         tt in
       tt in
-    let '_ := function(||) in
+    let _ : unit := function(||) in
     tt
   : return_type)).
 

@@ -12,14 +12,14 @@ Definition main :=
     let path := Path::["new"](| "." |) in
     let _display := path.["display"](||) in
     let new_path := path.["join"](| "a" |).["join"](| "b" |) in
-    let '_ := new_path.["push"](| "c" |) in
-    let '_ := new_path.["push"](| "myfile.tar.gz" |) in
-    let '_ := new_path.["set_file_name"](| "package.tgz" |) in
+    let _ : unit := new_path.["push"](| "c" |) in
+    let _ : unit := new_path.["push"](| "myfile.tar.gz" |) in
+    let _ : unit := new_path.["set_file_name"](| "package.tgz" |) in
     match new_path.["to_str"](||) with
     | None =>
       _crate.rt.begin_panic(| "new path is not a valid UTF-8 sequence" |)
     | Some s =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "new path is "; "

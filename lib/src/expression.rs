@@ -41,6 +41,10 @@ pub(crate) enum Expr {
         init: Box<Expr>,
         body: Box<Expr>,
     },
+    Sequence {
+        first: Box<Expr>,
+        second: Box<Expr>,
+    },
     Lambda {
         args: Vec<Pattern>,
         body: Box<Expr>,
@@ -468,11 +472,7 @@ fn compile_stmts(tcx: TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir
             rustc_hir::StmtKind::Expr(current_expr) | rustc_hir::StmtKind::Semi(current_expr) => {
                 let first = Box::new(compile_expr(tcx, current_expr));
                 let second = Box::new(compile_stmts(tcx, stmts, expr));
-                Expr::Let {
-                    pat: Pattern::Wild,
-                    init: first,
-                    body: second,
-                }
+                Expr::Sequence { first, second }
             }
         },
         [] => match expr {
@@ -574,6 +574,16 @@ impl Expr {
                 ]),
                 hardline(),
                 body.to_doc(false),
+            ]),
+            Expr::Sequence { first, second } => group([
+                nest([
+                    text("let _ : unit :="),
+                    line(),
+                    first.to_doc(false),
+                    text(" in"),
+                ]),
+                hardline(),
+                second.to_doc(false),
             ]),
             Expr::Lambda { args, body } => paren(
                 with_paren,

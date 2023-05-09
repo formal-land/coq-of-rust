@@ -45,6 +45,6 @@ Definition main :=
   ltac:(function (
     let empty := Empty.Build in
     let null := Null.Build in
-    let '_ := empty.["double_drop"](| null |) in
+    let _ : unit := empty.["double_drop"](| null |) in
     tt
   : return_type)).

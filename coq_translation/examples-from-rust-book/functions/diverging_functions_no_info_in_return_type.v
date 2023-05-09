@@ -13,7 +13,7 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let a := some_fn(||) in
-    let '_ :=
+    let _ : unit :=
       _crate.io._print(|
         format_arguments::["new_const"](|
           [ "This function returns and you can see this line.

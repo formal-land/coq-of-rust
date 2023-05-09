@@ -13,7 +13,7 @@ Definition main :=
     let pointer := some_vector.["as_ptr"](||) in
     let length := some_vector.["len"](||) in
     let my_slice := slice.from_raw_parts(| pointer, length |) in
-    let '_ :=
+    let _ : unit :=
       match (some_vector.["as_slice"](||), my_slice) with
       | (left_val, right_val) =>
         if
@@ -22,7 +22,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),

@@ -58,8 +58,8 @@ Definition main :=
   ltac:(function (
     let x := {| Val.val := 3 (* 3.0 *); |} in
     let y := {| GenVal.gen_val := 3; |} in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; ", "; "

@@ -62,8 +62,8 @@ Definition main :=
     let cardinal := Cardinal.Build in
     let blue_jay := BlueJay.Build in
     let _turkey := Turkey.Build in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "A cardinal is "; "
@@ -72,8 +72,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "A blue jay is "; "

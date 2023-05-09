@@ -12,7 +12,7 @@ Definition main :=
     let index_of_first_even_number :=
       vec.["iter"](||).["position"](| fun x => x.["rem"](| 2 |).["eq"](| 0 |)
       |) in
-    let '_ :=
+    let _ : unit :=
       match (index_of_first_even_number, Some 5) with
       | (left_val, right_val) =>
         if
@@ -21,7 +21,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),
@@ -34,7 +34,7 @@ Definition main :=
       end in
     let index_of_first_negative_number :=
       vec.["into_iter"](||).["position"](| fun x => x.["lt"](| 0 |) |) in
-    let '_ :=
+    let _ : unit :=
       match (index_of_first_negative_number, None) with
       | (left_val, right_val) =>
         if
@@ -43,7 +43,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),

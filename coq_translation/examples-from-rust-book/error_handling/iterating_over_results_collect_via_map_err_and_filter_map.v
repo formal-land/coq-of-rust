@@ -16,8 +16,8 @@ Definition main :=
       |).["filter_map"](|
         fun r => r.["map_err"](| fun e => errors.["push"](| e |) |).["ok"](||)
       |).["collect"](||) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Numbers: "; "
@@ -26,8 +26,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Errors: "; "

@@ -7,10 +7,10 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let reference := 4 in
-    let '_ :=
+    let _ : unit :=
       match reference with
       | val =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "Got a value via destructuring: "; "
@@ -20,10 +20,10 @@ Definition main :=
           |) in
         tt
       end in
-    let '_ :=
+    let _ : unit :=
       match reference.["deref"](||) with
       | val =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "Got a value via dereferencing: "; "
@@ -37,10 +37,10 @@ Definition main :=
     let _is_a_reference := 3 in
     let value := 5 in
     let mut_value := 6 in
-    let '_ :=
+    let _ : unit :=
       match value with
       | r =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "Got a reference to a value: "; "
@@ -52,9 +52,9 @@ Definition main :=
       end in
     match mut_value with
     | m =>
-      let '_ := m.["deref"](||).["add_assign"](| 10 |) in
-      let '_ :=
-        let '_ :=
+      let _ : unit := m.["deref"](||).["add_assign"](| 10 |) in
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "We added 10. `mut_value`: "; "

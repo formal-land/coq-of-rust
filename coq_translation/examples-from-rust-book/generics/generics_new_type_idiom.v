@@ -60,8 +60,8 @@ Definition main :=
   ltac:(function (
     let age := Years.Build_t 5 in
     let age_days := age.["to_days"](||) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Old enough "; "
@@ -70,8 +70,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Old enough "; "

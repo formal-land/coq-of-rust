@@ -193,8 +193,8 @@ Definition main :=
     let one_meter := Length.Build_t 1000 (* 1000.0 *) PhantomData.Build in
     let two_feet := one_foot.["add"](| one_foot |) in
     let two_meters := one_meter.["add"](| one_meter |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "one foot + one_foot = "; " in
@@ -203,8 +203,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "one meter + one_meter = "; " mm

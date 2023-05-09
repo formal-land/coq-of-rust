@@ -8,8 +8,8 @@ Module env := std.env.
 Definition increase (number : i32) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "
@@ -24,8 +24,8 @@ Definition increase (number : i32) :=
 Definition decrease (number : i32) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "
@@ -40,8 +40,8 @@ Definition decrease (number : i32) :=
 Definition help :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [
@@ -64,8 +64,8 @@ Definition main :=
     let args := env.args(||).["collect"](||) in
     match args.["len"](||) with
     | 1 =>
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](|
               [ "My name is 'match_args'. Try passing some arguments!
@@ -77,14 +77,14 @@ Definition main :=
     | 2 =>
       match args[1].["parse"](||) with
       | Ok 42 =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "This is the answer!
 " ] |)
           |) in
         tt
       | _ =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_const"](| [ "This is not the answer.
 " ] |)
@@ -98,8 +98,8 @@ Definition main :=
         match num.["parse"](||) with
         | Ok n => n
         | Err _ =>
-          let '_ :=
-            let '_ :=
+          let _ : unit :=
+            let _ : unit :=
               _crate.io._eprint(|
                 format_arguments::["new_const"](|
                   [ "error: second argument not an integer
@@ -107,26 +107,26 @@ Definition main :=
                 |)
               |) in
             tt in
-          let '_ := help(||) in
-          let '_ := M.Return tt in
+          let _ : unit := help(||) in
+          let _ : unit := M.Return tt in
           tt
         end in
       match cmd[RangeFull {|  |}] with
       | "increase" => increase(| number |)
       | "decrease" => decrease(| number |)
       | _ =>
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._eprint(|
               format_arguments::["new_const"](| [ "error: invalid command
 " ] |)
             |) in
           tt in
-        let '_ := help(||) in
+        let _ : unit := help(||) in
         tt
       end
     | _ =>
-      let '_ := help(||) in
+      let _ : unit := help(||) in
       tt
     end
   : return_type)).

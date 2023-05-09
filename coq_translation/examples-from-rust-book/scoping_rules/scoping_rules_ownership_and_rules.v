@@ -6,8 +6,8 @@ Import Root.std.prelude.rust_2015.
 Definition destroy_box (c : Box i32) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Destroying a box that contains "; "
@@ -24,8 +24,8 @@ Definition main :=
   ltac:(function (
     let x := 5 in
     let y := x in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "x is "; ", and y is "; "
@@ -38,8 +38,8 @@ Definition main :=
         |) in
       tt in
     let a := Box::["new"](| 5 |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "a contains: "; "
@@ -49,6 +49,6 @@ Definition main :=
         |) in
       tt in
     let b := a in
-    let '_ := destroy_box(| b |) in
+    let _ : unit := destroy_box(| b |) in
     tt
   : return_type)).

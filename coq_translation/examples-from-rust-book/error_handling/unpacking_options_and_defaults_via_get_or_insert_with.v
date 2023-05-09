@@ -46,8 +46,8 @@ Definition main :=
     let my_fruit := None in
     let get_lemon_as_fallback :=
       fun  =>
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_const"](|
                 [ "Providing lemon as fallback
@@ -58,8 +58,8 @@ Definition main :=
         Fruit.Lemon in
     let first_available_fruit :=
       my_fruit.["get_or_insert_with"](| get_lemon_as_fallback |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "my_fruit is: "; "
@@ -68,8 +68,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "first_available_fruit is: "; "
@@ -81,8 +81,8 @@ Definition main :=
     let my_apple := Some Fruit.Apple in
     let should_be_apple :=
       my_apple.["get_or_insert_with"](| get_lemon_as_fallback |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "should_be_apple is: "; "
@@ -91,8 +91,8 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "my_apple is unchanged: "; "

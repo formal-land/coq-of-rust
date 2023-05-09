@@ -80,7 +80,7 @@ Definition main :=
     let form :=
       {| Form.username := "rustacean".["to_owned"](||); Form.age := 28; |} in
     let username := UsernameWidget.get(| form |) in
-    let '_ :=
+    let _ : unit :=
       match ("rustacean".["to_owned"](||), username) with
       | (left_val, right_val) =>
         if
@@ -89,7 +89,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),
@@ -101,7 +101,7 @@ Definition main :=
           tt
       end in
     let age := AgeWidget.get(| form |) in
-    let '_ :=
+    let _ : unit :=
       match (28, age) with
       | (left_val, right_val) =>
         if
@@ -110,7 +110,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),

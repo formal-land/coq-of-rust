@@ -12,8 +12,8 @@ Definition is_odd (n : u32) :=
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [ "Find the sum of all the squared odd numbers under 1000
@@ -23,21 +23,21 @@ Definition main :=
       tt in
     let upper := 1000 in
     let acc := 0 in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| RangeFrom {| RangeFrom.start := 0; |} |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := n; |} =>
               let n_squared := n.["mul"](| n |) in
               if (n_squared.["ge"](| upper |) : bool) then
-                let '_ := M.Break in
+                let _ : unit := M.Break in
                 tt
               else
                 if (is_odd(| n_squared |) : bool) then
-                  let '_ := acc.["add_assign"](| n_squared |) in
+                  let _ : unit := acc.["add_assign"](| n_squared |) in
                   tt
                 else
                   tt
@@ -46,8 +46,8 @@ Definition main :=
           from
           for
       end in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "imperative style: "; "
@@ -61,8 +61,8 @@ Definition main :=
       |).["take_while"](| fun n_squared => n_squared.["lt"](| upper |)
       |).["filter"](| fun n_squared => is_odd(| n_squared |)
       |).["sum"](||) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "functional style: "; "

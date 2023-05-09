@@ -12,8 +12,8 @@ Definition age :=
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [ "Tell me what type of person you are
@@ -23,7 +23,7 @@ Definition main :=
       tt in
     match age(||) with
     | 0 =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](|
             [ "I haven't celebrated my first birthday yet
@@ -32,7 +32,7 @@ Definition main :=
         |) in
       tt
     | ((1|2|3|4|5|6|7|8|9|10|11|12) as n) =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "I'm a child of age "; "
@@ -42,7 +42,7 @@ Definition main :=
         |) in
       tt
     | ((13|14|15|16|17|18|19) as n) =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "I'm a teen of age "; "
@@ -52,7 +52,7 @@ Definition main :=
         |) in
       tt
     | n =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "I'm an old person of age "; "

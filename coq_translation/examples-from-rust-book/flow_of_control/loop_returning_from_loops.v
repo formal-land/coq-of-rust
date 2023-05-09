@@ -9,15 +9,15 @@ Definition main :=
     let counter := 0 in
     let result :=
       loop
-        let '_ := counter.["add_assign"](| 1 |) in
+        let _ : unit := counter.["add_assign"](| 1 |) in
         if (counter.["eq"](| 10 |) : bool) then
-          let '_ := M.Break in
+          let _ : unit := M.Break in
           tt
         else
           tt
         from
         loop in
-    let '_ :=
+    let _ : unit :=
       match (result, 20) with
       | (left_val, right_val) =>
         if
@@ -26,7 +26,7 @@ Definition main :=
           : bool)
         then
           let kind := _crate.panicking.AssertKind.Eq in
-          let '_ :=
+          let _ : unit :=
             _crate.panicking.assert_failed(|
               kind,
               left_val.["deref"](||),

@@ -10,8 +10,8 @@ Definition main :=
   ltac:(function (
     let bytestring :=
       [116, 104, 105, 115, 32, 105, 115, 32, 97, 32, 98, 121, 116, 101, 32, 115, 116, 114, 105, 110, 103] in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "A byte string: "; "
@@ -22,8 +22,8 @@ Definition main :=
       tt in
     let escaped :=
       [82, 117, 115, 116, 32, 97, 115, 32, 98, 121, 116, 101, 115] in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Some escaped bytes: "; "
@@ -34,8 +34,8 @@ Definition main :=
       tt in
     let raw_bytestring :=
       [92, 117, 123, 50, 49, 49, 68, 125, 32, 105, 115, 32, 110, 111, 116, 32, 101, 115, 99, 97, 112, 101, 100, 32, 104, 101, 114, 101] in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "
@@ -44,10 +44,10 @@ Definition main :=
           |)
         |) in
       tt in
-    let '_ :=
+    let _ : unit :=
       if (let_if Ok my_str := str.from_utf8(| raw_bytestring |) : bool) then
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_v1"](|
                 [ "And the same as text: '"; "'
@@ -62,10 +62,10 @@ Definition main :=
     let _quotes :=
       [89, 111, 117, 32, 99, 97, 110, 32, 97, 108, 115, 111, 32, 117, 115, 101, 32, 34, 102, 97, 110, 99, 105, 101, 114, 34, 32, 102, 111, 114, 109, 97, 116, 116, 105, 110, 103, 44, 32, 92, 10, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 108, 105, 107, 101, 32, 119, 105, 116, 104, 32, 110, 111, 114, 109, 97, 108, 32, 114, 97, 119, 32, 115, 116, 114, 105, 110, 103, 115] in
     let shift_jis := [130, 230, 130, 168, 130, 177, 130, 187] in
-    let '_ :=
+    let _ : unit :=
       match str.from_utf8(| shift_jis |) with
       | Ok my_str =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "Conversion successful: '"; "'
@@ -75,7 +75,7 @@ Definition main :=
           |) in
         tt
       | Err e =>
-        let '_ :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "Conversion failed: "; "

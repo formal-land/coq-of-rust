@@ -9,13 +9,13 @@ Definition main :=
     let number := 4 in
     match number with
     | i =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(| format_arguments::["new_const"](| [ "Zero
 " ] |)
         |) in
       tt
     | i =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_const"](| [ "Greater than zero
 " ] |)

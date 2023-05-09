@@ -14,10 +14,10 @@ Definition coerce_static (arg : ref i32) :=
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
+    let _ : unit :=
       let static_string := "I'm in read-only memory" in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "static_string: "; "
@@ -27,11 +27,11 @@ Definition main :=
           |) in
         tt in
       tt in
-    let '_ :=
+    let _ : unit :=
       let lifetime_num := 9 in
       let coerced_static := coerce_static(| lifetime_num |) in
-      let '_ :=
-        let '_ :=
+      let _ : unit :=
+        let _ : unit :=
           _crate.io._print(|
             format_arguments::["new_v1"](|
               [ "coerced_static: "; "
@@ -41,8 +41,8 @@ Definition main :=
           |) in
         tt in
       tt in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "NUM: "; " stays accessible!

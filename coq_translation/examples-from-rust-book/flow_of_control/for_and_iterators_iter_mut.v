@@ -10,11 +10,11 @@ Definition main :=
       Slice::["into_vec"](|
         _crate.boxed.Box::["new"](| [ "Bob"; "Frank"; "Ferris" ] |)
       |) in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| names.["iter_mut"](||) |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := name; |} =>
@@ -29,8 +29,8 @@ Definition main :=
           from
           for
       end in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "names: "; "

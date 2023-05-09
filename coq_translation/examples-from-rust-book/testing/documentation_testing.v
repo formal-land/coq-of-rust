@@ -12,9 +12,9 @@ Definition add (a : i32) (b : i32) :=
 Definition div (a : i32) (b : i32) :=
   let return_type := i32 in
   ltac:(function (
-    let '_ :=
+    let _ : unit :=
       if (b.["eq"](| 0 |) : bool) then
-        let '_ := _crate.rt.begin_panic(| "Divide-by-zero error" |) in
+        let _ : unit := _crate.rt.begin_panic(| "Divide-by-zero error" |) in
         tt
       else
         tt in

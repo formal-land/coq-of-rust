@@ -18,13 +18,13 @@ Definition main :=
       match LangItem(| lines |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := line; |} =>
               if (let_if Ok ip := line : bool) then
-                let '_ :=
-                  let '_ :=
+                let _ : unit :=
+                  let _ : unit :=
                     _crate.io._print(|
                       format_arguments::["new_v1"](|
                         [ ""; "

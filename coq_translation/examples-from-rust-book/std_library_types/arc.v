@@ -15,20 +15,20 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let apple := Arc::["new"](| "the same apple" |) in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| Range {| Range.start := 0; Range.end := 10; |} |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := _; |} =>
               let apple := Arc::["clone"](| apple |) in
-              let '_ :=
+              let _ : unit :=
                 thread.spawn(|
                   fun  =>
-                    let '_ :=
-                      let '_ :=
+                    let _ : unit :=
+                      let _ : unit :=
                         _crate.io._print(|
                           format_arguments::["new_v1"](|
                             [ ""; "
@@ -45,6 +45,6 @@ Definition main :=
           from
           for
       end in
-    let '_ := thread.sleep(| Duration::["from_secs"](| 1 |) |) in
+    let _ : unit := thread.sleep(| Duration::["from_secs"](| 1 |) |) in
     tt
   : return_type)).

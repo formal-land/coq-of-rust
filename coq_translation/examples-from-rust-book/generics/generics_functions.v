@@ -53,10 +53,10 @@ Definition generic {T : Set} (_s : SGen T) :=
 Definition main :=
   let return_type := unit in
   ltac:(function (
-    let '_ := reg_fn(| S.Build_t A.Build |) in
-    let '_ := gen_spec_t(| SGen.Build_t A.Build |) in
-    let '_ := gen_spec_i32(| SGen.Build_t 6 |) in
-    let '_ := generic(| SGen.Build_t "a"%char |) in
-    let '_ := generic(| SGen.Build_t "c"%char |) in
+    let _ : unit := reg_fn(| S.Build_t A.Build |) in
+    let _ : unit := gen_spec_t(| SGen.Build_t A.Build |) in
+    let _ : unit := gen_spec_i32(| SGen.Build_t 6 |) in
+    let _ : unit := generic(| SGen.Build_t "a"%char |) in
+    let _ : unit := generic(| SGen.Build_t "c"%char |) in
     tt
   : return_type)).

@@ -19,16 +19,16 @@ Definition main :=
 16278424637452589860345374828574668" in
     let children := _crate.vec.Vec::["new"](||) in
     let chunked_data := data.["split_whitespace"](||) in
-    let '_ :=
+    let _ : unit :=
       match LangItem(| chunked_data.["enumerate"](||) |) with
       | iter =>
         loop
-          let '_ :=
+          let _ : unit :=
             match LangItem(| iter |) with
             | None => M.Break
             | Some {| Some.0 := (i, data_segment); |} =>
-              let '_ :=
-                let '_ :=
+              let _ : unit :=
+                let _ : unit :=
                   _crate.io._print(|
                     format_arguments::["new_v1"](|
                       [ "data segment "; " is ""; ""
@@ -40,7 +40,7 @@ Definition main :=
                     |)
                   |) in
                 tt in
-              let '_ :=
+              let _ : unit :=
                 children.["push"](|
                   thread.spawn(|
                     fun  =>
@@ -51,8 +51,8 @@ Definition main :=
                               "should be a digit"
                             |)
                         |).["sum"](||) in
-                      let '_ :=
-                        let '_ :=
+                      let _ : unit :=
+                        let _ : unit :=
                           _crate.io._print(|
                             format_arguments::["new_v1"](|
                               [ "processed segment "; ", result="; "
@@ -77,8 +77,8 @@ Definition main :=
       children.["into_iter"](||).["map"](|
         fun c => c.["join"](||).["unwrap"](||)
       |).["sum"](||) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Final sum result: "; "

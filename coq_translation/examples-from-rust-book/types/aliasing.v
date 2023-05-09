@@ -14,8 +14,8 @@ Definition main :=
   ltac:(function (
     let nanoseconds := cast 5 U64 in
     let inches := cast 2 U64 in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; " nanoseconds + "; " inches = "; " unit?

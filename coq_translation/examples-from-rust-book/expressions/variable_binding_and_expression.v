@@ -7,8 +7,8 @@ Definition main :=
   let return_type := unit in
   ltac:(function (
     let x := 5 in
-    let '_ := x in
-    let '_ := x.["add"](| 1 |) in
-    let '_ := 15 in
+    let _ : unit := x in
+    let _ : unit := x.["add"](| 1 |) in
+    let _ : unit := 15 in
     tt
   : return_type)).

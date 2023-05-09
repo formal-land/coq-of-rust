@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Definition apply {F : Set} `{FnOnce.Trait unit F} (f : F) :=
   let return_type := unit in
   ltac:(function (
-    let '_ := f(||) in
+    let _ : unit := f(||) in
     tt
   : return_type)).
 
@@ -23,8 +23,8 @@ Definition main :=
     let farewell := "goodbye".["to_owned"](||) in
     let diary :=
       fun  =>
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_v1"](|
                 [ "I said "; ".
@@ -33,9 +33,9 @@ Definition main :=
               |)
             |) in
           tt in
-        let '_ := farewell.["push_str"](| "!!!" |) in
-        let '_ :=
-          let '_ :=
+        let _ : unit := farewell.["push_str"](| "!!!" |) in
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_v1"](|
                 [ "Then I screamed "; ".
@@ -44,19 +44,19 @@ Definition main :=
               |)
             |) in
           tt in
-        let '_ :=
-          let '_ :=
+        let _ : unit :=
+          let _ : unit :=
             _crate.io._print(|
               format_arguments::["new_const"](| [ "Now I can sleep. zzzzz
 " ] |)
             |) in
           tt in
-        let '_ := mem.drop(| farewell |) in
+        let _ : unit := mem.drop(| farewell |) in
         tt in
-    let '_ := apply(| diary |) in
+    let _ : unit := apply(| diary |) in
     let double := fun x => 2.["mul"](| x |) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "3 doubled: "; "

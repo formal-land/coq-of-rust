@@ -14,8 +14,8 @@ Module asm := std.arch.asm.
 Definition foo (arg : i32) :=
   let return_type := i32 in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "arg = "; "
@@ -31,6 +31,6 @@ Definition call_foo (arg : i32) :=
   let return_type := i32 in
   ltac:(function (
     let result := tt in
-    let '_ := InlineAsm in
+    let _ : unit := InlineAsm in
     result
   : return_type)).

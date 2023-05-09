@@ -14,8 +14,8 @@ Definition main :=
       strings.["into_iter"](||).["filter_map"](|
         fun s => s.["parse"](||).["ok"](||)
       |).["collect"](||) in
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "Results: "; "

@@ -16,7 +16,7 @@ Definition main :=
     let temperature := Temperature.Celsius 35 in
     match temperature with
     | Temperature.Celsius t =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "C is above 30 Celsius
@@ -26,7 +26,7 @@ Definition main :=
         |) in
       tt
     | Temperature.Celsius t =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "C is below 30 Celsius
@@ -36,7 +36,7 @@ Definition main :=
         |) in
       tt
     | Temperature.Fahrenheit t =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "F is above 86 Fahrenheit
@@ -46,7 +46,7 @@ Definition main :=
         |) in
       tt
     | Temperature.Fahrenheit t =>
-      let '_ :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ ""; "F is below 86 Fahrenheit

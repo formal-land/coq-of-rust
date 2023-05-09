@@ -6,8 +6,8 @@ Import Root.std.prelude.rust_2015.
 Definition print_one (x : ref i32) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "`print_one`: x is "; "
@@ -22,15 +22,15 @@ Definition print_one (x : ref i32) :=
 Definition add_one (x : mut_ref i32) :=
   let return_type := unit in
   ltac:(function (
-    let '_ := x.["deref"](||).["add_assign"](| 1 |) in
+    let _ : unit := x.["deref"](||).["add_assign"](| 1 |) in
     tt
   : return_type)).
 
 Definition print_multi (x : ref i32) (y : ref i32) :=
   let return_type := unit in
   ltac:(function (
-    let '_ :=
-      let '_ :=
+    let _ : unit :=
+      let _ : unit :=
         _crate.io._print(|
           format_arguments::["new_v1"](|
             [ "`print_multi`: x is "; ", y is "; "
@@ -56,12 +56,12 @@ Definition main :=
   ltac:(function (
     let x := 7 in
     let y := 9 in
-    let '_ := print_one(| x |) in
-    let '_ := print_multi(| x, y |) in
+    let _ : unit := print_one(| x |) in
+    let _ : unit := print_multi(| x, y |) in
     let z := pass_x(| x, y |) in
-    let '_ := print_one(| z |) in
+    let _ : unit := print_one(| z |) in
     let t := 3 in
-    let '_ := add_one(| t |) in
-    let '_ := print_one(| t |) in
+    let _ : unit := add_one(| t |) in
+    let _ : unit := print_one(| t |) in
     tt
   : return_type)).
