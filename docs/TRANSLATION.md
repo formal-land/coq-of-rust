@@ -48,7 +48,18 @@ Module M.
 End M.
 ```
 
+## Expressions, Statements and Blocks relation
+
+In Rust, expressions, statements and block are closely related, because
+a block, which contains a sequence of statements, may return a value,
+and be part of outer expression. So it is like expressions can have
+statements which have expressions on it.
+
+![Expression, statement, block relation](./imgs/expr_block_stmt_rust.png)
+
 ## Expressions
+
+* Reference: https://doc.rust-lang.org/reference/expressions.html
 
 ### Pure expressions
 
@@ -78,6 +89,10 @@ Pure 1
 -------------------------------------------------
 Pure (if [cond] then [then_body] else [else_body])
 ```
+* TODO: In fact if may not be pure because of the _then_ body!?
+  * In coq-of-solidity I had to iterate over the expressions looking
+    for function calls, for other reason, but this can be used in the
+    translation to tell if an if expression is pure or not.
 
 ## Function calls
 
@@ -89,4 +104,20 @@ Pure (if [cond] then [then_body] else [else_body])
 
 Where `f(| ... |)` is a notation in Coq.
 _See [PR 58](https://github.com/formal-land/coq-of-rust/pull/58/files#diff-7333cfd320f9b3335b66aa12653cbe8ae17310ff381a1c00d5c101f8ac412c50R111)_
+
+## Statements
+
+Statements are sequences of expressions that are evaluated in the order they appear
+and that may introduce new names.
+
+From [Rust reference](https://doc.rust-lang.org/reference/statements.html):
+```
+Syntax
+Statement : 
+     ;
+   | Item
+   | LetStatement
+   | ExpressionStatement
+   | MacroInvocationSemi
+``` 
 
