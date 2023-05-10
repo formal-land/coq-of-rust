@@ -17,9 +17,9 @@
 ## Rationale
 Formal verification allows to prevent all bugs in critical software. This is used in aerospace industry for example 🧑‍🚀.
 
-The type system of Rust already offers strong guarantees to avoid bugs that exist in C or Python. We still need to write tests to verify the business rules or the absence of `panic`. Testing is incomplete as it cannot to cover all execution cases.
+The type system of Rust already offers strong guarantees to avoid bugs that exist in C or Python. We still need to write tests to verify the business rules or the absence of `panic`. Testing is incomplete as it cannot cover all execution cases.
 
-With formal verification **we cover all cases** (code 100% bug-free!). We replace the tests by mathematical reasoning on code. You can view it as an extension of the type system, but without restriction on the expressivity.
+With formal verification we cover all cases (code 100% bug-free!). We replace the tests by mathematical reasoning on code. You can view it as an extension of the type system, but without restrictions on the expressivity.
 
 This tool `coq-of-rust` translates Rust programs to the formal verification language Coq to make Rust programs 100% safe 🌙.
 
