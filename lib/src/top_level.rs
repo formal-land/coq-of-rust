@@ -1,16 +1,17 @@
-use std::collections::HashMap;
-
 use crate::expression::*;
 use crate::header::*;
 use crate::path::*;
 use crate::render::*;
 use crate::ty::*;
-
+use rustc_ast::ast::{AttrArgs, AttrKind};
 use rustc_hir::{
     Impl, ImplItemKind, Item, ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind,
     VariantData,
 };
 use rustc_middle::ty::TyCtxt;
+use rustc_span::symbol::sym;
+use std::collections::HashMap;
+use std::string::ToString;
 
 #[derive(Debug)]
 enum TraitItem {
@@ -32,6 +33,7 @@ enum ImplItem {
         ret_ty: Option<CoqType>,
         body: Box<Expr>,
         is_method: bool,
+        is_dead_code: bool,
     },
     Type {
         ty: Box<CoqType>,
@@ -67,6 +69,7 @@ enum TopLevelItem {
         args: Vec<(String, CoqType)>,
         ret_ty: Option<CoqType>,
         body: Box<Expr>,
+        is_dead_code: bool,
     },
     TypeAlias {
         name: String,
@@ -79,6 +82,7 @@ enum TopLevelItem {
     TypeStructStruct {
         name: String,
         fields: Vec<(String, CoqType)>,
+        is_dead_code: bool,
     },
     TypeStructTuple {
         name: String,
@@ -90,6 +94,7 @@ enum TopLevelItem {
     Module {
         name: String,
         body: TopLevel,
+        is_dead_code: bool,
     },
     Impl {
         self_ty: CoqType,
@@ -200,6 +205,38 @@ fn check_if_test_declaration(ty: &Ty) -> bool {
     }
 }
 
+// Function checks if code block is having any `allow` attributes, and if it does,
+// it returns [true] if one of attributes disables "dead_code" lint.
+// Returns [false] if attribute is related to something else
+fn check_dead_code_lint_in_attributes(tcx: &TyCtxt, item: &Item) -> bool {
+    if tcx.has_attr(item.owner_id.to_def_id(), sym::allow) {
+        for attr in tcx.get_attrs(item.owner_id.to_def_id(), sym::allow) {
+            if let AttrKind::Normal(value) = &attr.kind {
+                if let AttrArgs::Delimited(value2) = &value.item.args {
+                    let into_trees = &value2.tokens.trees();
+                    let in_the_tree = into_trees.look_ahead(0);
+                    match in_the_tree {
+                        Some(res) => {
+                            if let rustc_ast::tokenstream::TokenTree::Token(res2, _) = res {
+                                if let rustc_ast::token::TokenKind::Ident(a, _) = res2.kind {
+                                    // since we can have many attributes on top of each piece of code,
+                                    // when we face "dead_code", we return [true] right away,
+                                    // otherwise we keep looking
+                                    if sym::dead_code == a {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        _ => return false,
+                    }
+                }
+            }
+        }
+    }
+    false
+}
+
 /// [compile_top_level_item] compiles hir [Item]s into coq-of-rust (optional)
 /// items.
 /// - See https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/struct.Item.html
@@ -258,6 +295,7 @@ fn compile_top_level_item(
             if check_if_is_test_main_function(tcx, body_id) {
                 return vec![];
             }
+            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(&tcx, item);
             let FnSigAndBody { args, ret_ty, body } =
                 compile_fn_sig_and_body_id(tcx, fn_sig, body_id);
             vec![TopLevelItem::Definition {
@@ -302,10 +340,12 @@ fn compile_top_level_item(
                 args,
                 ret_ty,
                 body,
+                is_dead_code: if_marked_as_dead_code,
             }]
         }
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
+            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(&tcx, item);
             let items = module
                 .item_ids
                 .iter()
@@ -317,6 +357,7 @@ fn compile_top_level_item(
             vec![TopLevelItem::Module {
                 name: item.ident.name.to_string(),
                 body: TopLevel(items),
+                is_dead_code: if_marked_as_dead_code,
             }]
         }
         ItemKind::ForeignMod { .. } => {
@@ -358,32 +399,36 @@ fn compile_top_level_item(
                 })
                 .collect(),
         }],
-        ItemKind::Struct(body, _) => match body {
-            VariantData::Struct(fields, _) => {
-                let fields = fields
-                    .iter()
-                    .map(|field| (field.ident.name.to_string(), compile_type(&tcx, field.ty)))
-                    .collect();
-                vec![TopLevelItem::TypeStructStruct {
-                    name: item.ident.name.to_string(),
-                    fields,
-                }]
-            }
-            VariantData::Tuple(fields, _, _) => {
-                vec![TopLevelItem::TypeStructTuple {
-                    name: item.ident.name.to_string(),
-                    fields: fields
+        ItemKind::Struct(body, _) => {
+            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(&tcx, item);
+            match body {
+                VariantData::Struct(fields, _) => {
+                    let fields = fields
                         .iter()
-                        .map(|field| compile_type(&tcx, field.ty))
-                        .collect(),
-                }]
+                        .map(|field| (field.ident.name.to_string(), compile_type(&tcx, field.ty)))
+                        .collect();
+                    vec![TopLevelItem::TypeStructStruct {
+                        name: item.ident.name.to_string(),
+                        fields,
+                        is_dead_code: if_marked_as_dead_code,
+                    }]
+                }
+                VariantData::Tuple(fields, _, _) => {
+                    vec![TopLevelItem::TypeStructTuple {
+                        name: item.ident.name.to_string(),
+                        fields: fields
+                            .iter()
+                            .map(|field| compile_type(&tcx, field.ty))
+                            .collect(),
+                    }]
+                }
+                VariantData::Unit(_, _) => {
+                    vec![TopLevelItem::TypeStructUnit {
+                        name: item.ident.name.to_string(),
+                    }]
+                }
             }
-            VariantData::Unit(_, _) => {
-                vec![TopLevelItem::TypeStructUnit {
-                    name: item.ident.name.to_string(),
-                }]
-            }
-        },
+        }
         ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
         ItemKind::Trait(_, _, generics, _, items) => {
             vec![TopLevelItem::Trait {
@@ -428,6 +473,7 @@ fn compile_top_level_item(
             items,
             ..
         }) => {
+            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(&tcx, item);
             let generic_tys: Vec<String> = generics
                 .params
                 .iter()
@@ -450,6 +496,7 @@ fn compile_top_level_item(
                                 ret_ty: None,
                                 body: Box::new(compile_expr(tcx, expr)),
                                 is_method,
+                                is_dead_code: if_marked_as_dead_code,
                             }
                         }
                         ImplItemKind::Fn(
@@ -473,6 +520,7 @@ fn compile_top_level_item(
                                 ret_ty,
                                 body: Box::new(compile_expr(tcx, expr)),
                                 is_method,
+                                is_dead_code: if_marked_as_dead_code,
                             }
                         }
                         ImplItemKind::Type(ty) => ImplItem::Type {
@@ -561,86 +609,97 @@ fn fn_to_doc<'a>(
     args: &'a Vec<(String, CoqType)>,
     ret_ty: &'a Option<CoqType>,
     body: &'a Expr,
+    is_dead_code: bool,
 ) -> Doc<'a> {
-    nest([
+    group([
+        if is_dead_code {
+            concat([
+                text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
+                hardline(),
+            ])
+        } else {
+            nil()
+        },
         nest([
-            nest([text("Definition"), line(), text(name)]),
-            match ty_params {
-                None => nil(),
-                Some(ty_params) => {
-                    if ty_params.is_empty() {
-                        nil()
-                    } else {
-                        concat([
-                            line(),
-                            nest([
-                                text("{"),
-                                intersperse(ty_params.iter().map(text), [line()]),
+            nest([
+                nest([text("Definition"), line(), text(name)]),
+                match ty_params {
+                    None => nil(),
+                    Some(ty_params) => {
+                        if ty_params.is_empty() {
+                            nil()
+                        } else {
+                            concat([
                                 line(),
-                                text(": Set}"),
-                            ]),
-                        ])
+                                nest([
+                                    text("{"),
+                                    intersperse(ty_params.iter().map(text), [line()]),
+                                    line(),
+                                    text(": Set}"),
+                                ]),
+                            ])
+                        }
                     }
-                }
-            },
-            line(),
-            match where_predicates {
-                None => nil(),
-                Some(where_predicates) => concat(where_predicates.iter().map(
-                    |WherePredicate {
-                         name,
-                         ty_params,
-                         ty,
-                     }| {
-                        concat([
-                            nest([
-                                text("`{"),
-                                name.to_doc(),
-                                text(".Trait"),
+                },
+                line(),
+                match where_predicates {
+                    None => nil(),
+                    Some(where_predicates) => concat(where_predicates.iter().map(
+                        |WherePredicate {
+                             name,
+                             ty_params,
+                             ty,
+                         }| {
+                            concat([
+                                nest([
+                                    text("`{"),
+                                    name.to_doc(),
+                                    text(".Trait"),
+                                    line(),
+                                    concat(
+                                        ty_params
+                                            .iter()
+                                            .map(|param| concat([param.to_doc(true), line()])),
+                                    ),
+                                    ty.to_doc(true),
+                                    text("}"),
+                                ]),
                                 line(),
-                                concat(
-                                    ty_params
-                                        .iter()
-                                        .map(|param| concat([param.to_doc(true), line()])),
-                                ),
-                                ty.to_doc(true),
-                                text("}"),
-                            ]),
-                            line(),
-                        ])
-                    },
-                )),
-            },
-            if args.is_empty() {
-                text("(_ : unit)")
-            } else {
-                intersperse(
-                    args.iter().map(|(name, ty)| {
-                        nest([
-                            text("("),
-                            text(name),
-                            line(),
-                            text(":"),
-                            line(),
-                            ty.to_doc(false),
-                            text(")"),
-                        ])
-                    }),
-                    [line()],
-                )
-            },
-            match ret_ty {
-                Some(_) => line(),
-                None => nil(),
-            },
-            match ret_ty {
-                Some(ty) => nest([text(":"), line(), ty.to_doc(false), text(" :=")]),
-                None => text(" :="),
-            },
+                            ])
+                        },
+                    )),
+                },
+                if args.is_empty() {
+                    text("(_ : unit)")
+                } else {
+                    intersperse(
+                        args.iter().map(|(name, ty)| {
+                            nest([
+                                text("("),
+                                text(name),
+                                line(),
+                                text(":"),
+                                line(),
+                                ty.to_doc(false),
+                                text(")"),
+                            ])
+                        }),
+                        [line()],
+                    )
+                },
+                match ret_ty {
+                    Some(_) => line(),
+                    None => nil(),
+                },
+                match ret_ty {
+                    Some(ty) => nest([text(":"), line(), ty.to_doc(false), text(" :=")]),
+                    None => text(" :="),
+                },
+            ]),
+            line(),
+            body.to_doc(false),
+            text("."),
         ]),
-        line(),
-        body.to_doc(false),
-        text("."),
     ])
 }
 
@@ -690,8 +749,9 @@ impl ImplItem {
                 ret_ty,
                 body,
                 is_method,
+                is_dead_code,
             } => concat([
-                fn_to_doc(name, None, None, args, ret_ty, body),
+                fn_to_doc(name, None, None, args, ret_ty, body, *is_dead_code),
                 hardline(),
                 hardline(),
                 if *is_method {
@@ -754,6 +814,7 @@ impl TopLevelItem {
                 args,
                 ret_ty,
                 body,
+                is_dead_code,
             } => fn_to_doc(
                 name,
                 Some(ty_params),
@@ -761,8 +822,21 @@ impl TopLevelItem {
                 args,
                 ret_ty,
                 body,
+                *is_dead_code,
             ),
-            TopLevelItem::Module { name, body } => group([
+            TopLevelItem::Module {
+                name,
+                body,
+                is_dead_code,
+            } => group([
+                if *is_dead_code {
+                    concat([
+                        text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
+                        hardline(),
+                    ])
+                } else {
+                    nil()
+                },
                 nest([text("Module"), line(), text(name), text(".")]),
                 nest([hardline(), body.to_doc()]),
                 hardline(),
@@ -887,7 +961,19 @@ impl TopLevelItem {
                     text(".t."),
                 ]),
             ]),
-            TopLevelItem::TypeStructStruct { name, fields } => group([
+            TopLevelItem::TypeStructStruct {
+                name,
+                fields,
+                is_dead_code,
+            } => group([
+                if *is_dead_code {
+                    concat([
+                        text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
+                        hardline(),
+                    ])
+                } else {
+                    nil()
+                },
                 nest([text("Module"), line(), text(name), text(".")]),
                 nest([
                     hardline(),

@@ -34,6 +34,7 @@ Definition gen_spec_i32 (_s : SGen i32) : unit := tt.
 
 Definition generic {T : Set} (_s : SGen T) : unit := tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   reg_fn (S.Build_t A.Build) ;;
   gen_spec_t (SGen.Build_t A.Build) ;;

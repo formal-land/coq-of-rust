@@ -33,6 +33,7 @@ Definition print (result : Result i32 ParseIntError) : unit :=
     tt
   end.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let twenty := multiply "10" "2" in
   print twenty ;;

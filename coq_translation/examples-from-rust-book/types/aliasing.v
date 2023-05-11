@@ -9,6 +9,7 @@ Definition Inch : Set := u64.
 
 Definition U64 : Set := u64.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let nanoseconds := cast 5 U64 in
   let inches := cast 2 U64 in

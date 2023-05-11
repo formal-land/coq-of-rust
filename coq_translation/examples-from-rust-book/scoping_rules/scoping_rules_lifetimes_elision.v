@@ -25,6 +25,7 @@ Definition elided_pass (x : ref i32) : ref i32 := x.
 
 Definition annotated_pass (x : ref i32) : ref i32 := x.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let x := 3 in
   elided_input x ;;

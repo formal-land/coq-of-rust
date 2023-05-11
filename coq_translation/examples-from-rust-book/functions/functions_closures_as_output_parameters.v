@@ -39,6 +39,7 @@ Definition create_fnonce (_ : unit) : OpaqueDef :=
 
 Error OpaqueTy.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let fn_plain := create_fn tt in
   let fn_mut := create_fnmut tt in

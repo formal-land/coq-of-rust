@@ -37,6 +37,7 @@ Module ImplOwner.
   }.
 End ImplOwner.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let owner := Owner.Build_t 18 in
   owner.["add_one"] ;;

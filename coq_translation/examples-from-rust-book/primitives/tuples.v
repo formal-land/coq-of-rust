@@ -49,6 +49,7 @@ Module Impl__crate_fmt_Debug_for_Matrix.
   }.
 End Impl__crate_fmt_Debug_for_Matrix.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let long_tuple :=
     (1,

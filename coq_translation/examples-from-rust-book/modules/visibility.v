@@ -37,6 +37,7 @@ Module my_mod.
       tt ;;
       tt.
     
+    (* #[allow(dead_code)] - function was ignored by the compiler *)
     Definition private_function (_ : unit) : unit :=
       _crate.io._print
         (format_arguments::["new_const"]
@@ -93,6 +94,7 @@ Module my_mod.
     tt.
   
   Module private_nested.
+    (* #[allow(dead_code)] - function was ignored by the compiler *)
     Definition function (_ : unit) : unit :=
       _crate.io._print
         (format_arguments::["new_const"]
@@ -101,6 +103,7 @@ Module my_mod.
       tt ;;
       tt.
     
+    (* #[allow(dead_code)] - function was ignored by the compiler *)
     Definition restricted_function (_ : unit) : unit :=
       _crate.io._print
         (format_arguments::["new_const"]
@@ -144,6 +147,7 @@ Module nested.
     tt ;;
     tt.
   
+  (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition private_function (_ : unit) : unit :=
     _crate.io._print
       (format_arguments::["new_const"]
@@ -186,6 +190,7 @@ Definition function (_ : unit) : unit :=
   tt ;;
   tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition private_function (_ : unit) : unit :=
   _crate.io._print
     (format_arguments::["new_const"]
@@ -240,6 +245,7 @@ Definition public_function_in_crate (_ : unit) : unit :=
   tt.
 
 Module private_nested.
+  (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition function (_ : unit) : unit :=
     _crate.io._print
       (format_arguments::["new_const"]
@@ -248,6 +254,7 @@ Module private_nested.
     tt ;;
     tt.
   
+  (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition restricted_function (_ : unit) : unit :=
     _crate.io._print
       (format_arguments::["new_const"]
@@ -257,6 +264,7 @@ Module private_nested.
     tt.
 End private_nested.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition function (_ : unit) : unit :=
   _crate.io._print
     (format_arguments::["new_const"]
@@ -265,6 +273,7 @@ Definition function (_ : unit) : unit :=
   tt ;;
   tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition restricted_function (_ : unit) : unit :=
   _crate.io._print
     (format_arguments::["new_const"]
@@ -280,6 +289,7 @@ Definition function (_ : unit) : unit :=
   tt ;;
   tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   function tt ;;
   my_mod.function tt ;;

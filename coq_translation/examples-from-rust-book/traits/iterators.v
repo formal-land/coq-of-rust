@@ -41,6 +41,7 @@ End Impl_Iterator_for_Fibonacci.
 Definition fibonacci (_ : unit) : Fibonacci :=
   {| Fibonacci.curr := 0; Fibonacci.next := 1; |}.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let sequence := Range {| Range.start := 0; Range.end := 3; |} in
   _crate.io._print

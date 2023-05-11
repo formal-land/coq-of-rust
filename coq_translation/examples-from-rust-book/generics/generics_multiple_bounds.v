@@ -44,6 +44,7 @@ Definition compare_types
   tt ;;
   tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let string := "words" in
   let array := [ 1; 2; 3 ] in

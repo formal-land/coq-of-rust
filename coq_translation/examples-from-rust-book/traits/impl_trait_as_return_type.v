@@ -19,6 +19,7 @@ Definition combine_vecs (v : Vec i32) (u : Vec i32) : OpaqueDef :=
 
 Error OpaqueTy.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let v1 := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
   let v2 := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 4; 5 ]) in

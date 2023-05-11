@@ -17,6 +17,7 @@ Definition drink (beverage : ref str) : unit :=
   tt ;;
   tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   drink "water" ;;
   drink "lemonade" ;;

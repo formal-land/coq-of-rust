@@ -12,6 +12,7 @@ Definition double_first
   vec.["first"].["map"]
     (fun first => first.["parse"].["map"] (fun n => 2.["mul"] n)).
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let numbers :=
     Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "42"; "93"; "18" ]) in

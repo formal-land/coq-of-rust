@@ -14,6 +14,7 @@ Definition Stdio := Stdio.t.
 Definition PANGRAM : ref str := "the quick brown fox jumped over the lazy dog
 ".
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let process :=
     match

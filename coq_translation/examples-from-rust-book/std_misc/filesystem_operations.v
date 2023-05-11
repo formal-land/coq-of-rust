@@ -48,6 +48,7 @@ Definition touch (path : ref Path) : io.Result unit :=
   | Err e => Err e
   end.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   _crate.io._print (format_arguments::["new_const"] [ "`mkdir a`
 " ]) ;;

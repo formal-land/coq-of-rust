@@ -7,6 +7,7 @@ Definition apply {F : Set} `{Fn.Trait unit F} (f : F) : unit :=
   f tt ;;
   tt.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let x := 7 in
   let print :=

@@ -73,6 +73,7 @@ Definition difference
     : i32 :=
   container.["last"].["sub"] container.["first"].
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let number_1 := 3 in
   let number_2 := 10 in

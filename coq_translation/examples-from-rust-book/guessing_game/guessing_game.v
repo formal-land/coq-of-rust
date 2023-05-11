@@ -10,6 +10,7 @@ Definition Ordering := Ordering.t.
 
 Module Rng := rand.Rng.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   _crate.io._print (format_arguments::["new_const"] [ "Guess the number!
 " ]) ;;

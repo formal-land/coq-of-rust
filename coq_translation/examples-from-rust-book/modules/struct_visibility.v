@@ -72,6 +72,7 @@ Module ImplClosedBox T_2.
   }.
 End ImplClosedBox T_2.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let open_box := {| my.OpenBox.contents := "public information"; |} in
   _crate.io._print

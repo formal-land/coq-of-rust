@@ -5,6 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module slice := std.slice.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let some_vector :=
     Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3; 4 ]) in

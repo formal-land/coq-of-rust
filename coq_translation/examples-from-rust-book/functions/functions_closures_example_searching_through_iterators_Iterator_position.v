@@ -3,6 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let vec :=
     Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 9; 3; 3; 13; 2 ]) in

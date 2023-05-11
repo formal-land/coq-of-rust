@@ -18,6 +18,7 @@ Module Foo.
 End Foo.
 Definition Foo : Set := Foo.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let foo := {| Foo.x := (1, 2); Foo.y := 3; |} in
   match foo with

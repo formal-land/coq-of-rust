@@ -67,6 +67,7 @@ Module Impl__crate_fmt_Debug_for_Rectangle.
   }.
 End Impl__crate_fmt_Debug_for_Rectangle.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Module Triangle.
   Record t : Set := {
     length : f64;
@@ -93,6 +94,7 @@ Definition print_debug {T : Set} `{Debug.Trait T} (t : ref T) : unit :=
 
 Definition area {T : Set} `{HasArea.Trait T} (t : ref T) : f64 := t.["area"].
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let rectangle :=
     {| Rectangle.length := 3 (* 3.0 *); Rectangle.height := 4 (* 4.0 *); |} in

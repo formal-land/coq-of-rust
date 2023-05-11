@@ -59,6 +59,7 @@ Definition random_animal (random_number : f64) : Box TraitObject :=
   else
     Box::["new"] {|  |}.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let random_number := 0 (* 0.234 *) in
   let animal := random_animal random_number in

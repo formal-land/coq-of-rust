@@ -12,6 +12,7 @@ Module Years.
 End Years.
 Definition Years := Years.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let years := Years.Build_t 42 in
   let years_as_primitive_1 := years.[0] in

@@ -7,6 +7,7 @@ Module thread := std.thread.
 
 Definition NTHREADS : u32 := 10.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let children := _crate.vec.Vec::["new"] tt in
   match LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} with

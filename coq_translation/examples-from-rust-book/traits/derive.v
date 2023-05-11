@@ -100,6 +100,7 @@ Module Seconds.
 End Seconds.
 Definition Seconds := Seconds.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let _one_second := Seconds.Build_t 1 in
   let foot := Inches.Build_t 12 in

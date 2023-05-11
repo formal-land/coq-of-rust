@@ -152,6 +152,7 @@ Definition eat (food : Option Cooked) : unit :=
     tt
   end.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let apple := Some Food.Apple in
   let carrot := Some Food.Carrot in

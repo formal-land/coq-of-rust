@@ -135,6 +135,7 @@ Definition op (x : f64) (y : f64) : f64 :=
     end
   end.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   _crate.io._print
     (format_arguments::["new_v1"]

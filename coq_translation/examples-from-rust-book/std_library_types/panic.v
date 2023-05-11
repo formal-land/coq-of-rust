@@ -10,6 +10,7 @@ Definition division (dividend : i32) (divisor : i32) : i32 :=
   else
     dividend.["div"] divisor.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let _x := Box::["new"] 0 in
   division 3 0 ;;

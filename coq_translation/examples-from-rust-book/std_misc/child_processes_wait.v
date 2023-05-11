@@ -6,6 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module Command := std.process.Command.
 Definition Command := Command.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let child := ((Command::["new"] "sleep").["arg"] "5").["spawn"].["unwrap"] in
   let _result := child.["wait"].["unwrap"] in

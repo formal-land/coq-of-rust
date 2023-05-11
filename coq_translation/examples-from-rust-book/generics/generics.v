@@ -26,6 +26,7 @@ Module SingleGen.
 End SingleGen.
 Definition SingleGen := SingleGen.t.
 
+(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let _s := Single.Build_t A.Build in
   let _char := SingleGen.Build_t "a"%char in
