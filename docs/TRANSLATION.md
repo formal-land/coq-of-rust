@@ -218,7 +218,177 @@ Macros are expanded before coq-of-rust run, so we don't need to bother with them
 
 * Reference: https://doc.rust-lang.org/reference/expressions.html
 
-### Pure expressions
+```
+
+
+    Syntax
+    Expression :
+         ExpressionWithoutBlock
+       | ExpressionWithBlock
+
+    ExpressionWithoutBlock :
+       OuterAttribute*†
+       (
+            LiteralExpression
+          | PathExpression
+          | OperatorExpression
+          | GroupedExpression
+          | ArrayExpression
+          | AwaitExpression
+          | IndexExpression
+          | TupleExpression
+          | TupleIndexingExpression
+          | StructExpression
+          | CallExpression
+          | MethodCallExpression
+          | FieldExpression
+          | ClosureExpression
+          | AsyncBlockExpression
+          | ContinueExpression
+          | BreakExpression
+          | RangeExpression
+          | ReturnExpression
+          | UnderscoreExpression
+          | MacroInvocation
+       )
+
+    ExpressionWithBlock :
+       OuterAttribute*†
+       (
+            BlockExpression
+          | UnsafeBlockExpression
+          | LoopExpression
+          | IfExpression
+          | IfLetExpression
+          | MatchExpression
+       )
+```
+### ExpressionWithoutBlock
+
+### The pure rule
+
+Whenever possible the translation should map rust pure expressions
+directly to Coq (wrapped) using the `pure` translation rule below
+
+```
+    [a]
+--------- pure
+  Pure a
+```
+
+#### LiteralExpression
+
+* Use the [pure](#the-pure-rule)
+
+#### PathExpression
+
+@TODO
+
+#### OperatorExpression
+
+@TODO
+
+#### GroupedExpression
+
+@TODO
+
+#### ArrayExpression
+
+@TODO
+
+#### AwaitExpression
+
+@TODO
+
+#### IndexExpression
+
+@TODO
+
+#### TupleExpression
+
+@TODO
+
+#### TupleIndexingExpression
+
+@TODO
+
+#### StructExpression
+
+@TODO
+
+#### CallExpression
+
+@TODO
+
+#### MethodCallExpression
+
+@TODO
+
+#### FieldExpression
+
+@TODO
+
+#### ClosureExpression
+
+@TODO
+
+#### AsyncBlockExpression
+
+@TODO
+
+#### ContinueExpression
+
+@TODO
+
+#### BreakExpression
+
+@TODO
+
+#### RangeExpression
+
+@TODO
+
+#### ReturnExpression
+
+@TODO
+
+#### UnderscoreExpression
+
+@TODO
+
+#### MacroInvocation
+
+@TODO
+
+
+### ExpressionWithBlock
+
+@TODO
+
+#### BlockExpression
+
+@TODO
+
+#### UnsafeBlockExpression
+
+@TODO
+#### LoopExpression
+
+@TODO 
+#### IfExpression
+
+@TODO 
+
+#### IfLetExpression
+
+@TODO
+
+#### MatchExpression
+
+@TODO
+
+
+####  # Pure expressions (@TODO merge this into the expression chapters)
 
 * TODO: 
   * [] Give an explanation of what is pure expressions, and how function calls
@@ -261,3 +431,5 @@ Pure (if [cond] then [then_body] else [else_body])
 
 Where `f(| ... |)` is a notation in Coq.
 _See [PR 58](https://github.com/formal-land/coq-of-rust/pull/58/files#diff-7333cfd320f9b3335b66aa12653cbe8ae17310ff381a1c00d5c101f8ac412c50R111)_
+
+
