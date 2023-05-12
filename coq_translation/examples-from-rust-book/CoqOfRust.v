@@ -37,6 +37,38 @@ Global Open Scope Z_scope.
 
 Export List.ListNotations.
 
+(* @TODO, is okay to put this here? should I put it Notation module?  *)
+(** Notation for a function call. Translated directly to function application
+    for now. It will drive the monadic transformation in near future. *)
+Notation "e (| e1 , .. , en |)" :=
+  ((.. (e e1) ..) en)
+  (at level 0, 
+    only parsing). (* @TODO I use only parsing for debugging. This prevent
+                      the notation to show up in the proof. If we create
+                      a complicate term for a simple notation I think
+                      is better to remove [only parsing], we can diasble
+                      the notation interactively if we want *)
+
+(** Particular case when there are no arguments. *)
+Notation "e (||)" :=
+  (e tt)
+  (at level 0).
+
+(* @TODO some tests, I think we can remove this, 
+   but may be is a good idea to keep it in another file ? *)
+Module Function_notation_test.
+  Context (a b c : Set).
+  Context (f : a -> a).
+  Context (g : a -> b -> c -> a).
+  Context (h : unit -> a).
+  Context (x : a) (y : b) (z : c).
+
+  Goal f(|x|) = f x. Proof. reflexivity. Qed.
+  Goal f(| f(|x|) |) = f (f x). Proof. reflexivity. Qed.
+  Goal g(| f(| x |), y, z |) = g (f x) y z. Proof. reflexivity. Qed.
+  Goal f(|h(||)|) = f (h tt). Proof. reflexivity. Qed.
+End Function_notation_test.
+
 Module Notation.
   (** A class to represent the notation [e1.e2]. This is mainly used to call
       methods, or access to named or indexed fields of structures.
@@ -54,6 +86,7 @@ Module Notation.
     double_colon : T;
   }.
   Arguments double_colon {Kind} type name {T DoubleColon}.
+
 End Notation.
 
 (** Note that we revert the arguments in this notation. *)
