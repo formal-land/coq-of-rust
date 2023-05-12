@@ -1,4 +1,4 @@
-# Translation
+# Translation (WIP)
 
 In this doc we specify how the translation works and the details of
 the translation together with the target language. It should proceed
@@ -73,8 +73,61 @@ statements which have expressions on it.
 
 ![Expression, statement, block relation](./imgs/expr_block_stmt_rust.png)
 
+# Syntax Reference
 
-## Statements
+## Items
+
+Reference: https://doc.rust-lang.org/reference/items.html
+
+```
+Syntax:
+Item:
+     OuterAttribute*
+     VisItem
+   | MacroItem
+
+VisItem:
+   Visibility?
+   (
+        Module
+      | ExternCrate
+      | UseDeclaration
+      | Function
+      | TypeAlias
+      | Struct
+      | Enumeration
+      | Union
+      | ConstantItem
+      | StaticItem
+      | Trait
+      | Implementation
+      | ExternBlock
+   )
+
+MacroItem:
+     MacroInvocationSemi
+   | MacroRulesDefinition
+```
+
+#### Modules
+#### Extern crates
+#### Use declarations
+#### Functions
+#### Type aliases
+#### Structs
+#### Enumerations
+#### Unions
+#### Constant items
+#### Static items
+#### Traits
+#### Implementations
+#### External blocks
+#### Generic parameters
+#### Associated Items
+
+## Statements and expressions 
+
+### Statements
 
 Statements are sequences of expressions that are evaluated in the order they appear
 and that may introduce new names.
@@ -90,11 +143,11 @@ Statement :
    | MacroInvocationSemi
 ``` 
 
-### Item (Statement)
+#### Item (Statement)
 
 @TODO I didn't get what is an item statement yet
 
-### LetStatement
+#### LetStatement
 
 From [Rust reference](https://doc.rust-lang.org/reference/statements.html#let-statements)
 
@@ -104,8 +157,6 @@ LetStatement :
    OuterAttribute* let PatternNoTopAlt ( : Type )? (= Expression † ( else BlockExpression) ? ) ? ;
  † When an else block is specified, the Expression must not be a LazyBooleanExpression, or end with a }.
 ```
-
-@TODO Add the 
 
 `LetStatement` declare variables introducing new names to the
 statements following it. It is possible to use desconstruction
@@ -117,7 +168,6 @@ can be though as an ADT with a single constructor so it has only
 one pattern that a value of such type can match, if the pattern is
 refutable, then the `else` block is mandatory.
 
-From 
 
 ```Rust
 let foo = true;
@@ -176,7 +226,7 @@ Let with pattern and else
 * @TODO: Understand the `let**` notation, I'm just guessing that it
   is the right choice here for now.
 
-### ExpressionStatement
+#### ExpressionStatement
 
 From [Rust reference](https://doc.rust-lang.org/reference/statements.html#expression-statements)
 
@@ -207,14 +257,14 @@ sequence notation `;;`, see
 
 * In this case `a` is not a let statement, if it was then the let statement rule would be used.
 
-### MacroInvocationSemi
+#### MacroInvocationSemi
 
 Macros are expanded before coq-of-rust run, so we don't need to bother with them.
 
 * @TODO is this true?
 
 
-## Expressions
+### Expressions
 
 * Reference: https://doc.rust-lang.org/reference/expressions.html
 
@@ -263,9 +313,9 @@ Macros are expanded before coq-of-rust run, so we don't need to bother with them
           | MatchExpression
        )
 ```
-### ExpressionWithoutBlock
+#### ExpressionWithoutBlock
 
-### The pure rule
+##### The pure rule (@TODO maybe I should move this to another place)
 
 Whenever possible the translation should map rust pure expressions
 directly to Coq (wrapped) using the `pure` translation rule below
@@ -276,160 +326,135 @@ directly to Coq (wrapped) using the `pure` translation rule below
   Pure a
 ```
 
-#### LiteralExpression
+##### LiteralExpression
 
 * Use the [pure](#the-pure-rule)
 
-#### PathExpression
+##### PathExpression
+
+###### Paths refering to types inside traits
+
+`Self` can be ommited during the translation of a path accessing
+a type inside the trait, for example in the code
+
+```Rust
+trait Foo {
+    type Bar;
+    
+    fn func(&self) -> &Self::Bar;
+}
+```
+
+`&Self::Bar` can be translated like this
+
+```
+    [Self::a]
+-------------------
+       [a]
+    
+```
 
 @TODO
 
-#### OperatorExpression
+##### OperatorExpression
 
 @TODO
 
-#### GroupedExpression
+##### GroupedExpression
 
 @TODO
 
-#### ArrayExpression
+##### ArrayExpression
 
 @TODO
 
-#### AwaitExpression
+##### AwaitExpression
 
 @TODO
 
-#### IndexExpression
+##### IndexExpression
 
 @TODO
 
-#### TupleExpression
+##### TupleExpression
 
 @TODO
 
-#### TupleIndexingExpression
+##### TupleIndexingExpression
 
 @TODO
 
-#### StructExpression
+##### StructExpression
 
 @TODO
 
-#### CallExpression
+##### CallExpression
 
 @TODO
 
-#### MethodCallExpression
+##### MethodCallExpression
 
 @TODO
 
-#### FieldExpression
+##### FieldExpression
 
 @TODO
 
-#### ClosureExpression
+##### ClosureExpression
 
 @TODO
 
-#### AsyncBlockExpression
+##### AsyncBlockExpression
 
 @TODO
 
-#### ContinueExpression
+##### ContinueExpression
 
 @TODO
 
-#### BreakExpression
+##### BreakExpression
 
 @TODO
 
-#### RangeExpression
+##### RangeExpression
 
 @TODO
 
-#### ReturnExpression
+##### ReturnExpression
 
 @TODO
 
-#### UnderscoreExpression
+##### UnderscoreExpression
 
 @TODO
 
-#### MacroInvocation
+##### MacroInvocation
 
 @TODO
 
-
-### ExpressionWithBlock
-
-@TODO
-
-#### BlockExpression
+#### ExpressionWithBlock
 
 @TODO
 
-#### UnsafeBlockExpression
+##### BlockExpression
 
 @TODO
-#### LoopExpression
+
+##### UnsafeBlockExpression
+
+@TODO
+##### LoopExpression
 
 @TODO 
-#### IfExpression
+##### IfExpression
 
 @TODO 
 
-#### IfLetExpression
+##### IfLetExpression
 
 @TODO
 
-#### MatchExpression
+##### MatchExpression
 
 @TODO
-
-
-####  # Pure expressions (@TODO merge this into the expression chapters)
-
-* TODO: 
-  * [] Give an explanation of what is pure expressions, and how function calls
-      may not be pure because the can panic
-  * [] Get the name of the AST that we work in the translation (there are multiple
-       for multiple phases.
-  * [] Can we know if an expressions is pure or not from the AST?
-  * [] Should we assume that all funcitions are impure (because they can panic)? By
-       doing so we don't need to inspect the function body to tell if
-       its pure or inpure during the translation.
-
-Pure expressions must be wrapped in `Pure` constructor of [#M](#M)
-
-Examples:
-
-
-```
-  [1]
-------
-Pure 1
-```
-
-```
-   [if cond { then_body } else { else_body }]
--------------------------------------------------
-Pure (if [cond] then [then_body] else [else_body])
-```
-* TODO: In fact if may not be pure because of the _then_ body!?
-  * In coq-of-solidity I had to iterate over the expressions looking
-    for function calls, for other reason, but this can be used in the
-    translation to tell if an if expression is pure or not.
-
-## Function calls
-
-```
-  [f(a, b)]
--------------
- f(|[a] [b]|)
-```
-
-Where `f(| ... |)` is a notation in Coq.
-_See [PR 58](https://github.com/formal-land/coq-of-rust/pull/58/files#diff-7333cfd320f9b3335b66aa12653cbe8ae17310ff381a1c00d5c101f8ac412c50R111)_
-
 
