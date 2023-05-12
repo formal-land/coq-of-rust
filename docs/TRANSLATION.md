@@ -6,17 +6,17 @@ by iterating over the Rust features and specifying the translation
 together with one or more examples of the translation.
 
 ## A note about notation in this document
+
 I use brackets to represent how the translation recurse, together
 with an example in Rust, followed by a horizontal rule, followed
 by an example in Coq. Here is an example. If there are brackets
 ocurring in the expression we may use double brackets for the
 translation flow to avoid confusion.
 
-```
-     [a + 1]
-------------------
-Pure ([a] [+] [1])
-```
+
+         [a + 1]
+    ------------------ rule-foo
+    Pure ([a] [+] [1])
 
 I also use ellipsis `...` to mean the more code that is not significative
 for the current context. If more than one ellipsis is used I number it
@@ -24,7 +24,7 @@ to make each one distinct. For example
 
 ```
      [let foo = bar; ...]
-------------------------------
+------------------------------ rule-bar
    let foo := [bar] in [...]
 ```
 
@@ -32,7 +32,18 @@ to make each one distinct. For example
        [match x { Ctr0 ...0 => ...1 }]
 ---------------------------------------------
     match [x] with [Ctrl0 ...0] => [...1] end
+
 ```
+
+Whe the Coq or Rust code contains brackets `[] `I may use another character
+to avoid confusion, for example, I use braces `{}` in the below example
+
+```
+      { [a, b, ...] }
+-------------------------- array literal
+  [ {a} ; {b} ; {...} ]
+```
+
 
 ## M - The Monad
 
@@ -354,10 +365,196 @@ trait Foo {
     
 ```
 
-@TODO
+###### General rule
+
+There is a notation for path expressions
+
+```coq
+Notation "e1 ::[ e2 ]" := (Notation.double_colon e1 e2)
+  (at level 0).
+```
+
+The path rule, (I'll use `{}` insted of `[]` to reference the
+translation focus, to avoid confusion with the `[]` from the Coq
+notation above
+
+```
+         { a :: ...0 :: ...n }
+--------------------------------------- path 
+   {a} :: { [ ...0 ] } :: { [ ...n ] }
+```
 
 ##### OperatorExpression
 
+Reference: https://doc.rust-lang.org/reference/expressions/operator-expr.html#operator-expressions
+
+```
+Syntax
+OperatorExpression :
+     BorrowExpression
+   | DereferenceExpression
+   | ErrorPropagationExpression
+   | NegationExpression
+   | ArithmeticOrLogicalExpression
+   | ComparisonExpression
+   | LazyBooleanExpression
+   | TypeCastExpression
+   | AssignmentExpression
+   | CompoundAssignmentExpression
+```
+
+@TODO
+
+###### BorrowExpression
+
+
+    Syntax
+    BorrowExpression :
+          (&|&&) Expression
+       | (&|&&) mut Expression
+
+@TODO
+
+###### DereferenceExpression
+
+    Syntax
+    DereferenceExpression :
+       * Expression
+
+@TODO
+
+###### ErrorPropagationExpression
+
+
+    Syntax
+    ErrorPropagationExpression :
+       Expression ?
+
+@TODO
+
+###### NegationExpression
+
+    Syntax
+    NegationExpression :
+          - Expression
+       | ! Expression
+       
+_Note: `-` Only for signed integer types._
+
+@TODO
+
+###### ArithmeticOrLogicalExpression
+
+
+
+    Syntax
+    ArithmeticOrLogicalExpression :
+          Expression + Expression
+       | Expression - Expression
+       | Expression * Expression
+       | Expression / Expression
+       | Expression % Expression
+       | Expression & Expression
+       | Expression | Expression
+       | Expression ^ Expression
+       | Expression << Expression
+       | Expression >> Expression
+
+@TODO Check if we have notations like `a + b` or we use something like  `a.["+"] b`?
+
+###### ComparisonExpression
+
+    Syntax
+    ComparisonExpression :
+          Expression == Expression
+       | Expression != Expression
+       | Expression > Expression
+       | Expression < Expression
+       | Expression >= Expression
+       | Expression <= Expression
+
+@TODO Check if we have notations like `a == b` or we use something like  `a.["=="] b`?
+
+###### LazyBooleanExpression
+
+    Syntax
+    LazyBooleanExpression :
+          Expression || Expression
+       | Expression && Expression
+
+@TODO
+
+###### TypeCastExpression
+
+    Syntax
+    TypeCastExpression :
+       Expression as TypeNoBounds
+       
+_A type cast expression is denoted with the binary operator as._
+
+```rust
+fn average(values: &[f64]) -> f64 {
+    let sum: f64 = sum(values);
+    let size: f64 = len(values) as f64; // <- type cast here!!!
+    sum / size
+}
+```
+
+Casting semantics: https://doc.rust-lang.org/reference/expressions/operator-expr.html#semantics
+
+@TODO
+
+###### AssignmentExpression
+
+    Syntax
+    AssignmentExpression :
+       Expression = Expression
+       
+Reference: https://doc.rust-lang.org/reference/expressions/operator-expr.html#assignment-expressions
+       
+**!!! This is where mutation, state update, writing to memory happpens !!!**
+**!!! It has multiple effects !!!**
+
+> It then has the effect of first dropping the value at the assigned
+> place, unless the place is an uninitialized local variable or an
+> uninitialized field of a local variable. Next it either copies or
+> moves the assigned value to the assigned place.
+
+@TODO Can we safely ignore the moving/copying semantics in Coq side?
+
+@TODO cont.
+
+###### CompoundAssignmentExpression
+
+    Syntax
+    CompoundAssignmentExpression :
+          Expression += Expression
+       | Expression -= Expression
+       | Expression *= Expression
+       | Expression /= Expression
+       | Expression %= Expression
+       | Expression &= Expression
+       | Expression |= Expression
+       | Expression ^= Expression
+       | Expression <<= Expression
+       | Expression >>= Expression
+
+@TODO There is a notation for things like this in coq-of-solidity
+[here](https://gitlab.com/formal-land/coq-of-solidity/-/merge_requests/5/diffs#5e995fb4356288c3002510edf698d704635deae7_53_56).
+It can be adapted to coq-of-rust I think, for an expression `a += b`.
+It works like this: Assumes that `a` and `b` are a `result Z`, then
+unwrap both, `a` and `b`, using the monadic notation, apply `+`
+to the underling values and wrap it again in the monadic type.
+
+```coq
+  Notation "'let?' x += y 'in' z" :=
+    (let? x := (
+       let? x' := x in
+       let? y' := y in
+       Ok (x' + y')) in
+     z)
+      (at level 200, y at level 100, x name).
+```
 @TODO
 
 ##### GroupedExpression
