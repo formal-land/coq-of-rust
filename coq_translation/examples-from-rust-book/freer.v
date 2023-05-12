@@ -516,7 +516,7 @@ Module Rectangle.
       }.
     
     Global Instance Update_p2f : Notation.Dot "p2" := {
-      Notation.dot '(Build_t p1 _) f := Build_t p1 (f p2);
+      Notation.dot '(Build_t p1 p2) f := Build_t p1 (f p2);
       }.
 
     Global Instance Update_p2fg : Notation.Dot "p2" := {
@@ -573,7 +573,7 @@ Definition test_update_rect_inner (r : Rectangle) : Rectangle :=
   r.["p1"] :=u (Point.set_x (const 44)).
 
 Definition test_update_rect_inner3 (r : Rectangle) : Rectangle :=
-  r.["p1"] :=u (Point.set_x (const 44)).
+  r.["p2"] :=u (Point.set_x (const 44)).
 
 (*
 Definition test_update_rect_inner3 (r : Rectangle) : Rectangle :=
@@ -620,9 +620,9 @@ Module ImplRectangle.
  
   Definition translate (x : f64) (y : f64) : EffState Self unit :=
     self <- getEff ;;
-    putEff (Rectangle.set_p1 (Point.set_x (fun v => v + x)) self) ;;
+    putEff (self.["p1"] :=u (Point.set_x (fun v => v + x))) ;;
     self <- getEff ;;
-    putEff (Rectangle.set_p2 (Point.set_x (fun v => v + x)) self) ;;
+    putEff (self.["p2"] :=u (Point.set_x (fun v => v + x))) ;;
     self <- getEff ;;
     putEff (Rectangle.set_p1 (Point.set_y (fun v => v + y)) self) ;;
     self <- getEff ;;
