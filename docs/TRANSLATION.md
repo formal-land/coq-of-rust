@@ -380,8 +380,26 @@ notation above
 
 ```
          { a :: ...0 :: ...n }
---------------------------------------- path 
-   {a} :: { [ ...0 ] } :: { [ ...n ] }
+------------------------------------------- path 
+   {a} ::["{ ...0 }"] } ::["{ ...n }"]
+```
+
+@TODO I'm not conviced that recursing the translation inside a string
+like in `"{ ...0 }"` in this example is a good idea or if it would
+work at all :thinking:. I also don't know how paths shows up the AST,
+maybe doing it in multiple steps is more realistic (but still the same
+problem of `"{ ...0 }"`):
+
+```
+         { a :: ...0 :: ...n }
+------------------------------------------- path-1
+        {a} ::[{ ...0 :: ...n }]
+
+
+           {a} ::[{ ...0 :: ...n }]
+---------------------------------------------- path-2
+        {a} ::[ "{ ...0}" ] ::[ "{ ...n }" ]
+
 ```
 
 ##### OperatorExpression
