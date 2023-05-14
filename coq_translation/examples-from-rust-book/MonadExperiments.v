@@ -1,13 +1,16 @@
 (** Experiments for the definition of a Rust monad. *)
 Require Coq.Lists.List.
+Require Import Coq.ZArith.ZArith.
+From Hammer Require Import Tactics.
 
 Global Set Primitive Projections.
 Global Set Printing Projections.
 Global Open Scope list_scope.
+Global Open Scope Z_scope.
 Import List.ListNotations.
 
 Module State.
-  Class Trait {Self Address : Set} : Type := {
+  Class Trait (Self Address : Set) : Type := {
     get_Set : Address -> Set;
     read (a : Address) : Self -> option (get_Set a);
     write (a : Address) : Self -> get_Set a -> Self;
@@ -16,6 +19,7 @@ Module State.
   Module Valid.
     Record t `(T : Trait) : Prop := {
       same (a : Address) (s : Self) (v : get_Set a) :
+        read a (write a s v) <> None ->
         read a (write a s v) = Some v;
       different (a1 a2 : Address) (s : Self) (v2 : get_Set a2) :
         a1 <> a2 ->
@@ -47,19 +51,24 @@ Module Allocation.
   Definition t (Address : Set) : Set :=
     list (option Address).
 
-  Fixpoint get {Address : Set} (allocation : t Address) (index : nat)
+  Fixpoint get_rev {Address : Set} (allocation : t Address) (index : nat)
     : option Address :=
     match index, allocation with
     | _, [] => None
     | O, Some address :: _ => Some address
     | O, None :: _ => None
-    | S index, _ :: allocation => get allocation index
+    | S index, _ :: allocation => get_rev allocation index
     end.
+
+  Definition get {Address : Set} (allocation : t Address) (index : nat)
+    : option Address :=
+    get_rev (List.rev allocation) index.
+  Arguments get /.
 End Allocation.
 Definition Allocation := Allocation.t.
 
-Module Zone.
-  Class Trait {Self Address : Set} : Type := {
+(* Module Zone.
+  Class Trait (Self Address : Set) : Type := {
     zero : Self;
     add : Self -> Address -> option Self;
     is_in : Address -> Self -> Prop;
@@ -103,28 +112,25 @@ Module Zone.
     end.
   Proof.
   Admitted.
-End Zone.
+End Zone. *)
 
 Module M.
-  Inductive t (A : Set) : Set :=
-  | Pure : A -> t A
-  | Bind {B : Set} : t B -> (B -> t A) -> t A
-  | Loop : t A -> (A -> bool) -> t A
-  | Malloc : (nat -> A) -> t A
-  | Read : nat -> t A
-  | Write : nat -> A -> t A.
-  Arguments Pure {_}.
-  Arguments Bind {_ _}.
-  Arguments Loop {_}.
-  Arguments Malloc {_}.
-  Arguments Read {_}.
-  Arguments Write {_}.
+  Inductive t : Set -> Set :=
+  | Pure {A : Set} : A -> t A
+  | Bind {A B : Set} : t B -> (B -> t A) -> t A
+  | Loop {A : Set} : t A -> (A -> bool) -> t A
+  | Malloc {A : Set} : A -> t nat
+  | Read {A : Set} : nat -> t A
+  | Write {A : Set} : nat -> A -> t unit.
 End M.
 Definition M := M.t.
 
+Notation "'let*' x ':=' e1 'in' e2" :=
+  (M.Bind e1 (fun x => e2))
+  (at level 200, x name, e1 at level 100, e2 at level 200).
+
 Module Run.
-  Inductive t {State Address Zone : Set}
-    `{State.Trait State Address} `{Zone.Trait Zone Address}
+  Inductive t {State Address : Set} `{State.Trait State Address}
     (allocation : Allocation Address) (s : State) :
     forall {A : Set},
     M A -> A -> Allocation Address -> State -> Prop :=
@@ -145,185 +151,160 @@ Module Run.
     t allocation s body v1 allocation1 s1 ->
     is_break v1 = true ->
     t allocation s (M.Loop body is_break) v1 allocation1 s1
-  | Malloc {A : Set} (map : nat -> A) (address : Address) (zone' : Zone) :
+  | Malloc (address : Address) (v : State.get_Set address) :
     let index := List.length allocation in
     let allocation' := Some address :: allocation in
-    Zone.sum allocation' = Some zone' ->
-    t allocation s (M.Malloc map) (map index) allocation' s
+    let s' := State.write address s v in
+    State.read address s = None ->
+    State.read address s' <> None ->
+    t allocation s (M.Malloc v) index allocation' s'
   | Read (index : nat) (address : Address) (v : State.get_Set address) :
     Allocation.get allocation index = Some address ->
     State.read address s = Some v ->
     t allocation s (M.Read index) v allocation s
   | Write (index : nat) (address : Address) (v : State.get_Set address) :
     Allocation.get allocation index = Some address ->
-    t allocation s (M.Write index v) v allocation (State.write address s v).
+    t allocation s (M.Write index v) tt allocation (State.write address s v).
 End Run.
 
-Module Allocator.
-  Record t {State Address Zone : Set} : Type := {
-    read {A : Set} : Address -> State -> A -> Prop;
-    write {A : Set} : Address -> State -> A -> State -> Prop;
-    add : Zone -> Address -> option Zone;
-    is_in : Address -> Zone -> Prop;
+Module Example.
+  (* fn main() {
+    let mut x = 5;
+    let mut y = 10;
+    let mut z = 15;
+    println!("The initial values are: x = {}, y = {}, z = {}", x, y, z);
+    
+    x = 50;
+    y = 100;
+    z = 150;
+    println!("The mutated values are: x = {}, y = {}, z = {}", x, y, z);
+} *)
+
+  Parameter print : Z -> Z -> Z -> M unit.
+
+  Definition main : M Z :=
+    let* x := M.Malloc 5 in
+    let* y := M.Malloc 10 in
+    let* z := M.Malloc 15 in
+    let* v_x := M.Read x in
+    let* v_y := M.Read y in
+    let* v_z := M.Read z in
+    let s1 := v_x + v_y + v_z in
+    let* _ := M.Write x 50 in
+    let* _ := M.Write y 100 in
+    let* _ := M.Write z 150 in
+    let* v_x := M.Read x in
+    let* v_y := M.Read y in
+    let* v_z := M.Read z in
+    let s2 := v_x + v_y + v_z in
+    M.Pure (s1 + s2).
+
+  Module State.
+    Record t : Set := {
+      x : option Z;
+      y : option Z;
+      z : option Z;
+    }.
+
+    Definition init : t := {|
+      x := None;
+      y := None;
+      z := None;
+    |}.
+  End State.
+  Definition State := State.t.
+
+  Module Address.
+    Inductive t : Set :=
+    | X
+    | Y
+    | Z.
+  End Address.
+  Definition Address := Address.t.
+
+  Global Instance State_Trait : State.Trait State Address := {
+    get_Set _ := Z;
+    read address state :=
+      match address with
+      | Address.X => state.(State.x)
+      | Address.Y => state.(State.y)
+      | Address.Z => state.(State.z)
+      end;
+    write address state value :=
+      match address with
+      | Address.X => {| State.x := Some value; State.y := state.(State.y); State.z := state.(State.z) |}
+      | Address.Y => {| State.x := state.(State.x); State.y := Some value; State.z := state.(State.z) |}
+      | Address.Z => {| State.x := state.(State.x); State.y := state.(State.y); State.z := Some value |}
+      end;
   }.
-End Allocator.
 
-Module Pointer.
-  Record t {S A : Set} : Set := {
-    read : S -> A;
-    write : S -> A -> S;
-  }.
-  Arguments t : clear implicits.
-End Pointer.
-Definition Pointer := Pointer.t.
+  (* Global Instance Zone_Trait : Zone.Trait Zone Address := {
+    zero := {| Zone.x := false; Zone.y := false; Zone.z := false |};
+    add zone address :=
+      match address with
+      | Address.X =>
+        if zone.(Zone.x) then
+          None
+        else
+          Some {| Zone.x := true; Zone.y := zone.(Zone.y); Zone.z := zone.(Zone.z) |}
+      | Address.Y =>
+        if zone.(Zone.y) then
+          None
+        else
+          Some {| Zone.x := zone.(Zone.x); Zone.y := true; Zone.z := zone.(Zone.z) |}
+      | Address.Z =>
+        if zone.(Zone.z) then
+          None
+        else
+          Some {| Zone.x := zone.(Zone.x); Zone.y := zone.(Zone.y); Zone.z := true |}
+      end;
+    is_in address zone :=
+      match address with
+      | Address.X => zone.(Zone.x) = true
+      | Address.Y => zone.(Zone.y) = true
+      | Address.Z => zone.(Zone.z) = true
+      end;
+  }. *)
 
-Module PackedPointer.
-  Inductive t : Set :=
-  | Make {S A : Set} : Pointer S A -> t.
-End PackedPointer.
-Definition PackedPointer := PackedPointer.t.
+  Ltac run_malloc a :=
+    match goal with
+    | |- Run.t _ _ (M.Malloc ?value) _ _ _ =>
+      eapply Run.Malloc with (address := a) (v := value)
+    end;
+    [try reflexivity | try discriminate].
 
-Module M.
-  Inductive t (A : Set) : Set :=
-  | Pure : A -> t A
-  | Bind {B : Set} : t B -> (B -> t A) -> t A
-  | Loop : t A -> (A -> bool) -> t A
-  | Malloc : (PackedPointer -> A) -> t A
-  | Read : PackedPointer -> t A
-  | Write : PackedPointer -> A -> t A.
-  Arguments Pure {_}.
-  Arguments Bind {_ _}.
-  Arguments Loop {_}.
-  Arguments Malloc {_}.
-  Arguments Read {_}.
-  Arguments Write {_}.
-End M.
-Definition M := M.t.
+  Ltac run_read :=
+    match goal with
+    | |- Run.t ?allocation ?s (M.Read ?i) _ _ _ =>
+      destruct (Allocation.get allocation i) as [a|] eqn:H_address;
+        [|discriminate];
+      destruct (State.read a s) as [value|] eqn:H_value;
+        [|hauto lq: on];
+      hauto lq: on use: Run.Read
+    end.
 
-Module WriteReadValid.
-  Record t (S A : Set) (allocated : list PackedPointer) : Prop := {
-    write_read_same : forall (p : PackedPointer), List.In p allocated -> forall (s : S) (v : A), p.(Pointer.read) (p.(Pointer.write) s v) = v;
-  }.
-End WriteReadValid.
+  Ltac run_write :=
+    hauto lq: on use: Run.Write.
 
-Module ConstantReadAfterWrite.
-  Inductive t (S A : Set) (p : Pointer S A) : list PackedPointer -> Prop :=
-  | Nil : t S A p []
-  | Cons {B : Set} (p' : Pointer S B) allocated :
-    (forall (s : S) (v : A), p'.(Pointer.read) (p.(Pointer.write) s v) = p'.(Pointer.read) s) ->
-    t S A p allocated ->
-    t S A p (PackedPointer.Make p' :: allocated).
-End ConstantReadAfterWrite.
-
-Module WriteReadSame.
-  Inductive t (S : Set) : list PackedPointer -> Prop :=
-  | Nil : t S []
-  | Cons {A : Set} p allocated :
-    (List.Forall
-      (fun (p' : PackedPointer) =>
-        forall (s : S) (v : A), p'.(Pointer.read) (p.(Pointer.write) s v) = v)
-      allocated
-    ) ->
-    t S allocated ->
-    t S (PackedPointer.Make p :: allocated).
-End WriteReadSame.
-
-Module WriteReadDifferent.
-  Inductive t (S : Set) : list PackedPointer -> Prop :=
-  | Nil : t S []
-  | Cons {A : Set} p allocated :
-    (forall (s : S) (v : A), p.(Pointer.read) (p.(Pointer.write) s v) <> v) ->
-    t S allocated ->
-    t S (PackedPointer.Make p :: allocated).
-End WriteReadDifferent.
-
-Module WellAllocated.
-  Inductive 
-End WellAllocated.
-
-Module Run.
-  Inductive t {S A : Set} (allocated : list PackedPointer) (s : S) : M A -> A -> S -> Prop :=
-  | Pure (v : A) : t s (M.Pure v) v s
-  | Bind {B : Set} (e1 : M B) (e2 : B -> M A) (v1 : B) (v2 : A) (s1 s2 : S):
-    t s e1 v1 s1 ->
-    t s1 (e2 v1) v2 s2 ->
-    t s (M.Bind e1 e2) v2 s2
-  | LoopContinue (body : M A) (is_break : A -> bool) (v1 v2 : A) (s1 s2 : S) :
-    t s body v1 s1 ->
-    is_break v1 = false ->
-    t s1 (M.Loop body is_break) v2 s2 ->
-    t s (M.Loop body is_break) v2 s2
-  | LoopBreak (body : M A) (is_break : A -> bool) (v1 : A) (s1 : S) :
-    t s body v1 s1 ->
-    is_break v1 = true ->
-    t s (M.Loop body is_break) v1 s1
-  | Malloc {B : Set} (map : PackedPointer B -> A) :
-    t s (M.Malloc map) (map (PackedPointer.Make (Pointer.Make (fun s => s) None))) s.
-  | Read (p : Pointer S A) :
-    .
-End Run.
-
-Module Propagate.
-  (* ... *)
-End Propagate.
-
-Module MResult.
-  (** The result of a Rust computation. *)
-  Inductive t (R A : Set) : Set :=
-  | Ok : A -> t R A
-  | Return : R -> t R A
-  | Break : t R A
-  | Continue : t R A
-  | Panic {E : Set} : E -> t R A.
-  Arguments Ok {_ _}.
-  Arguments Return {_ _}.
-  Arguments Break {_ _}.
-  Arguments Continue {_ _}.
-  Arguments Panic {_ _ _}.
-End MResult.
-
-Module M.
-  Inductive t : Set -> Set :=
-  | Pure {A : Set} : A -> t A
-  | Bind {A B : Set} : t A -> (A -> t B) -> t B
-  | Loop {R A : Set} : t (MResult.t R A) -> t (MResult.t R A).
-  Arguments Pure {_}.
-  Arguments Bind {_ _}.
-  Arguments Loop {_ _}.
-End M.
-
-(** The monadic type as we will use it later. We consider the special case where
-    the return type is empty (no possible returns), as that should be the case
-    from outside of a function. *)
-Definition M (A : Set) : Set :=
-  M.t (MResult.t Empty_set A).
-
-Definition pure {R A : Set} (v : A) : M A :=
-  M.Pure (MResult.Ok v).
-
-Fixpoint bind {A B : Set} (x : M A) (f : A -> M B) {struct x} : M B.
-  match x with
-  | M.Pure v =>
-    match v with
-    | MResult.Ok v => f v
-    | MResult.Return r => M.Pure (MResult.Return r)
-    | MResult.Break => M.Pure MResult.Break
-    | MResult.Continue => M.Pure MResult.Continue
-    | MResult.Panic e => M.Pure (MResult.Panic e)
-    end
-  | M.Bind x f => M.Bind x (fun v => bind (f v) f)
-  | M.Loop x => M.Loop (bind x (fun v => match v with
-                                         | MResult.Ok v => f v
-                                         | MResult.Return r => M.Pure (MResult.Return r)
-                                         | MResult.Break => M.Pure MResult.Break
-                                         | MResult.Continue => M.Pure MResult.Continue
-                                         | MResult.Panic e => M.Pure (MResult.Panic e)
-                                         end))
-  end.
-
-(** Monadic notation for [M.t] with [M.Bind]. *)
-Notation "'let*' x ':=' e1 'in' e2" :=
-  (M.Bind e1 (fun x => e2))
-  (at level 200, x name, e1 at level 100, e2 at level 200).
-
-
+  Lemma run_main :
+    exists allocation' state',
+    Run.t [] State.init main 330 allocation' state'.
+  Proof.
+    repeat eexists.
+    unfold main.
+    repeat eapply Run.Bind.
+    { run_malloc Address.X. }
+    { run_malloc Address.Y. }
+    { run_malloc Address.Z. }
+    { run_read. }
+    { run_read. }
+    { run_read. }
+    { run_write. }
+    { run_write. }
+    { run_write. }
+    { run_read. }
+    { run_read. }
+    { run_read. }
+    { apply Run.Pure. }
+  Qed.
+End Example.
