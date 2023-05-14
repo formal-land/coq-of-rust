@@ -1,7 +1,6 @@
 (** Experiments for the definition of a Rust monad. *)
 Require Coq.Lists.List.
 Require Import Coq.ZArith.ZArith.
-From Hammer Require Import Tactics.
 
 Global Set Primitive Projections.
 Global Set Printing Projections.
