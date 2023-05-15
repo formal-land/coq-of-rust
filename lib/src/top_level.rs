@@ -158,7 +158,7 @@ fn compile_fn_sig_and_body_id(
             rustc_hir::FnRetTy::DefaultReturn(_) => Some(CoqType::unit()),
             rustc_hir::FnRetTy::Return(ty) => Some(compile_type(&tcx, ty)),
         },
-        body: Box::new(compile_expr(tcx, expr)),
+        body: Box::new(compile_expr(tcx, expr, &mut FreshVars::new())),
     }
 }
 
@@ -288,7 +288,7 @@ fn compile_top_level_item(
             vec![TopLevelItem::Const {
                 name: item.ident.name.to_string(),
                 ty: Box::new(compile_type(&tcx, ty)),
-                value: Box::new(compile_expr(tcx, value)),
+                value: Box::new(compile_expr(tcx, value, &mut FreshVars::new())),
             }]
         }
         ItemKind::Fn(fn_sig, generics, body_id) => {
@@ -494,7 +494,7 @@ fn compile_top_level_item(
                             ImplItem::Definition {
                                 args: vec![],
                                 ret_ty: None,
-                                body: Box::new(compile_expr(tcx, expr)),
+                                body: Box::new(compile_expr(tcx, expr, &mut FreshVars::new())),
                                 is_method,
                                 is_dead_code: if_marked_as_dead_code,
                             }
@@ -518,7 +518,7 @@ fn compile_top_level_item(
                             ImplItem::Definition {
                                 args: arg_names.zip(arg_tys).collect(),
                                 ret_ty,
-                                body: Box::new(compile_expr(tcx, expr)),
+                                body: Box::new(compile_expr(tcx, expr, &mut FreshVars::new())),
                                 is_method,
                                 is_dead_code: if_marked_as_dead_code,
                             }
