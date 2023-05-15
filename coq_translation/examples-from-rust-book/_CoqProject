@@ -19,6 +19,7 @@ hello_world/hello_world.v
 macro_rules/macro_example.v
 MonadExperiments.v
 primitives/compound_types.v
+RecordUpdate.v
 scoping_rules/scoping_rules_borrowing_aliasing.v
 scoping_rules/scoping_rules_lifetimes_elision.v
 scoping_rules/scoping_rules_lifetimes_functions.v
