@@ -703,6 +703,178 @@ fn fn_to_doc<'a>(
     ])
 }
 
+fn mt_ret_ty(ty: Option<CoqType>) -> Option<CoqType> {
+    match ty {
+        Some(ty) => Some(CoqType::Application {
+            func: Box::new(CoqType::Var(Path::local("M".to_string()))),
+            args: vec![ty],
+        }),
+        None => Some(CoqType::Application {
+            func: Box::new(CoqType::Var(Path::local("M".to_string()))),
+            args: vec![CoqType::unit()],
+        }),
+    }
+}
+
+// @TODO
+fn mt_ty(ty: CoqType) -> CoqType {
+    match ty {
+        CoqType::Application { .. } => ty,
+        CoqType::Var(..) => ty,
+        CoqType::Function { .. } => ty,
+        CoqType::Tuple(..) => ty,
+        CoqType::Array(..) => ty,
+        CoqType::Ref(..) => ty,
+    }
+}
+
+fn mt_impl_item(item: ImplItem) -> ImplItem {
+    match item {
+        ImplItem::Type { .. } => item,
+        ImplItem::Definition {
+            args,
+            ret_ty,
+            body,
+            is_method,
+            is_dead_code,
+        } => ImplItem::Definition {
+            args,
+            ret_ty: mt_ret_ty(ret_ty),
+            body: mt_boxed_expression(body, &mut FreshVars::new()),
+            is_method,
+            is_dead_code,
+        },
+    }
+}
+
+fn mt_impl_items(items: Vec<(String, ImplItem)>) -> Vec<(String, ImplItem)> {
+    items
+        .into_iter()
+        .map(|(s, item)| (s, mt_impl_item(item)))
+        .collect()
+}
+
+fn mt_trait_item(body: TraitItem) -> TraitItem {
+    match body {
+        TraitItem::Definition { ty } => TraitItem::Definition { ty: mt_ty(ty) },
+        TraitItem::Type => TraitItem::Type,
+        TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
+            TraitItem::DefinitionWithDefault {
+                args,
+                ret_ty: mt_ret_ty(ret_ty),
+                body: mt_boxed_expression(body, &mut FreshVars::new()),
+            }
+        }
+    }
+}
+
+fn mt_trait_items(body: Vec<(String, TraitItem)>) -> Vec<(String, TraitItem)> {
+    body.into_iter()
+        .map(|(s, item)| (s, mt_trait_item(item)))
+        .collect()
+}
+
+/// Monad transform for [TopLevelItem]
+fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
+    match item {
+        TopLevelItem::Const { name, ty, value } => TopLevelItem::Const {
+            name,
+            ty,
+            value: mt_boxed_expression(value, &mut FreshVars::new()),
+        },
+        TopLevelItem::Definition {
+            name,
+            ty_params,
+            where_predicates,
+            args,
+            ret_ty,
+            body,
+            is_dead_code,
+        } => TopLevelItem::Definition {
+            name,
+            ty_params,
+            where_predicates,
+            args,
+            ret_ty: mt_ret_ty(ret_ty),
+            body: mt_boxed_expression(body, &mut FreshVars::new()),
+            is_dead_code,
+        },
+        TopLevelItem::TypeAlias { name, ty } => TopLevelItem::TypeAlias { name, ty },
+        TopLevelItem::TypeEnum { name, variants } => TopLevelItem::TypeEnum { name, variants },
+        TopLevelItem::TypeStructStruct {
+            name,
+            fields,
+            is_dead_code,
+        } => TopLevelItem::TypeStructStruct {
+            name,
+            fields,
+            is_dead_code,
+        },
+        TopLevelItem::TypeStructTuple { name, fields } => {
+            TopLevelItem::TypeStructTuple { name, fields }
+        }
+        TopLevelItem::TypeStructUnit { name } => TopLevelItem::TypeStructUnit { name },
+        TopLevelItem::Module {
+            name,
+            body,
+            is_dead_code,
+        } => TopLevelItem::Module {
+            name,
+            body: mt_top_level(body),
+            is_dead_code,
+        },
+        TopLevelItem::Impl {
+            self_ty,
+            counter,
+            items,
+        } => TopLevelItem::Impl {
+            self_ty,
+            counter,
+            items: mt_impl_items(items),
+        },
+        TopLevelItem::Trait {
+            name,
+            ty_params,
+            body,
+        } => TopLevelItem::Trait {
+            name,
+            ty_params,
+            body: mt_trait_items(body),
+        },
+        TopLevelItem::TraitImpl {
+            generic_tys,
+            ty_params,
+            self_ty,
+            of_trait,
+            items,
+            trait_non_default_items,
+        } => TopLevelItem::TraitImpl {
+            generic_tys,
+            ty_params,
+            self_ty,
+            of_trait,
+            items: mt_impl_items(items),
+            trait_non_default_items,
+        },
+        TopLevelItem::Use {
+            name,
+            path,
+            is_glob,
+            is_type,
+        } => TopLevelItem::Use {
+            name,
+            path,
+            is_glob,
+            is_type,
+        },
+        TopLevelItem::Error(err) => TopLevelItem::Error(err),
+    }
+}
+
+pub fn mt_top_level(top_level: TopLevel) -> TopLevel {
+    TopLevel(top_level.0.into_iter().map(mt_top_level_item).collect())
+}
+
 impl ImplItem {
     fn class_instance_to_doc<'a>(
         instance_prefix: &'a str,
