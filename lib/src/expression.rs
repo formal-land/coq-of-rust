@@ -7,6 +7,28 @@ use rustc_ast::LitKind;
 use rustc_hir::{BinOp, BinOpKind, ExprKind, QPath};
 use rustc_middle::ty::TyCtxt;
 
+/// Struct [FreshVars] represents a set of fresh variables
+#[derive(Debug)]
+pub struct FreshVars(u64);
+
+impl Default for FreshVars {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl FreshVars {
+    pub fn new() -> Self {
+        FreshVars(0)
+    }
+
+    fn next(&mut self) -> String {
+        let x = self.0;
+        self.0 += 1;
+        format!("α{}", x)
+    }
+}
+
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
 #[derive(Debug)]
@@ -18,6 +40,7 @@ pub struct MatchArm {
 /// Enum [Expr] represents the AST of rust terms.
 #[derive(Debug)]
 pub(crate) enum Expr {
+    Pure(Box<Expr>),
     LocalVar(String),
     Var(Path),
     AssociatedFunction {
@@ -177,6 +200,297 @@ fn tt() -> Expr {
     Expr::LocalVar("tt".to_string())
 }
 
+/// Receive a list of expression and nest them in
+/// a monadic let. The [ctr] closure is used to
+/// create the body of the deepest let.
+///
+///       mt_letfy([a,b,...], ctr)
+/// ------------------------------------
+///         let* x0 := a in
+///         let* x1 := b in
+///         let* ... in
+///         ctr([x0, x1, ...])
+fn mt_letfy<F>(exprs: Vec<Expr>, ctr: F, fresh_vars: &mut FreshVars) -> Expr
+where
+    F: FnOnce(Vec<Expr>) -> Expr,
+{
+    let mut let_vars: Vec<(Pattern, Expr)> = vec![];
+    let elements = exprs
+        .into_iter()
+        .map(|expr| {
+            let vname = fresh_vars.next();
+            let_vars.push((Pattern::Variable(vname.clone()), expr));
+            Expr::Var(Path::local(vname))
+        })
+        .collect();
+    let init = ctr(elements);
+    let_vars
+        .into_iter()
+        .rev()
+        .fold(init, |acc, (pat, expr)| mt_let("*", pat, expr, acc))
+}
+
+pub fn mt_boxed_expression(mut bexpr: Box<Expr>, fresh_vars: &mut FreshVars) -> Box<Expr> {
+    *bexpr = mt_expression(*bexpr, fresh_vars);
+    bexpr
+}
+
+pub fn mt_expressions(exprs: Vec<Expr>, fresh_vars: &mut FreshVars) -> Vec<Expr> {
+    exprs
+        .into_iter()
+        .map(|expr| mt_expression(expr, fresh_vars))
+        .collect()
+}
+
+/// Monadic transalte function call
+///
+/// f(a, b, ...)
+/// -----------------
+/// let* f' := f in
+/// let* a' := a in
+/// let* b' := b in
+/// ...
+/// f'(a', b', ...)
+fn mt_call(func: Expr, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr {
+    let fname = fresh_vars.next();
+    let nested_lets = mt_letfy(
+        args,
+        |args| Expr::Call {
+            func: Box::new(Expr::Var(Path::local(fname.clone()))),
+            args,
+        },
+        fresh_vars,
+    );
+    mt_let("*", Pattern::Variable(fname), func, nested_lets)
+}
+
+fn pure(e: Expr) -> Expr {
+    Expr::Pure(Box::new(e))
+}
+
+/// Unest lets
+///
+/// let a = (let b = c in d) in e
+/// ----------------------------------
+/// let b = c in
+/// let a = d in
+/// e
+fn mt_let(modifier: &'static str, pat: Pattern, init: Expr, body: Expr) -> Expr {
+    match init {
+        Expr::Let {
+            modifier: "*",
+            pat: inner_pat,
+            init: inner_init,
+            body: inner_body,
+        } if modifier == "*" => mt_let(
+            "*",
+            inner_pat,
+            *inner_init,
+            mt_let("*", pat, *inner_body, body),
+        ),
+        init => Expr::Let {
+            modifier,
+            pat,
+            init: Box::new(init),
+            body: Box::new(body),
+        },
+    }
+}
+
+fn mt_match(scrutinee: Expr, arms: Vec<MatchArm>, fresh_vars: &mut FreshVars) -> Expr {
+    let vname = fresh_vars.next();
+    let pat = Pattern::Variable(vname.clone());
+    Expr::Let {
+        modifier: "*",
+        pat,
+        init: Box::new(scrutinee),
+        body: Box::new(Expr::Match {
+            scrutinee: Box::new(Expr::LocalVar(vname)),
+            arms,
+        }),
+    }
+}
+
+// @TODO finish the translation logic
+/// Monadic transalate an expression
+///
+/// The convention is to do transformation in a deep first fashion, so
+/// all functions dealing with monadic translation expect that their
+/// arguments already have been transformed. Not respecting this rule
+/// may lead to infinite loops because of the mutual recursion between
+/// the functions. In practice this means translating every subexpression
+/// before translating the expression itself.
+pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
+    match expr {
+        Expr::Pure(x) => Expr::Pure(x),
+        Expr::LocalVar(x) => pure(Expr::LocalVar(x)),
+        Expr::Var(x) => pure(Expr::Var(x)),
+        Expr::AssociatedFunction { ty, func } => pure(Expr::AssociatedFunction { ty, func }),
+        Expr::Literal(x) => pure(Expr::Literal(x)),
+        Expr::AddrOf(box_expr) => {
+            // @TODO right now the AddrOf translation does not add
+            // anything during the translation besides this
+            // transformation. I wonder if we should have a
+            // addrof function at Coq side!?
+            let var = fresh_vars.next();
+            Expr::Let {
+                modifier: "*",
+                pat: Pattern::Variable(var.clone()),
+                init: mt_boxed_expression(box_expr, fresh_vars),
+                body: Box::new(pure(Expr::LocalVar(var))),
+            }
+        }
+        Expr::Call { func, args } => mt_call(
+            mt_expression(*func, fresh_vars),
+            mt_expressions(args, fresh_vars),
+            fresh_vars,
+        ),
+        // @TODO I guess method call transformation should be similar to
+        // function application transformation
+        Expr::MethodCall { object, func, args } => {
+            let objname = fresh_vars.next();
+            let args = mt_expressions(args, fresh_vars);
+            let letexpr = mt_letfy(
+                args,
+                |args| Expr::MethodCall {
+                    object: Box::new(Expr::LocalVar(objname.clone())),
+                    func,
+                    args,
+                },
+                fresh_vars,
+            );
+            Expr::Let {
+                modifier: "*",
+                pat: Pattern::Variable(objname),
+                init: mt_boxed_expression(object, fresh_vars),
+                body: Box::new(letexpr),
+            }
+        }
+        Expr::Let {
+            modifier,
+            pat,
+            init,
+            body,
+        } => mt_let(
+            modifier,
+            pat,
+            mt_expression(*init, fresh_vars),
+            mt_expression(*body, fresh_vars),
+        ),
+        Expr::Lambda { args, body } => pure(Expr::Lambda {
+            args,
+            body: mt_boxed_expression(body, fresh_vars),
+        }),
+        Expr::Seq { first, second } => Expr::Let {
+            modifier: "*",
+            pat: Pattern::Variable(String::from("_")),
+            init: mt_boxed_expression(first, fresh_vars),
+            body: { mt_boxed_expression(second, fresh_vars) },
+        },
+        Expr::Cast { expr, ty } => Expr::Cast {
+            expr: mt_boxed_expression(expr, fresh_vars),
+            ty,
+        },
+        Expr::Type { expr, ty } => Expr::Type {
+            expr: mt_boxed_expression(expr, fresh_vars),
+            ty,
+        },
+        Expr::Array { elements } => mt_letfy(
+            mt_expressions(elements, fresh_vars),
+            |elements| pure(Expr::Array { elements }),
+            fresh_vars,
+        ),
+        Expr::Tuple { elements } => mt_letfy(
+            mt_expressions(elements, fresh_vars),
+            |elements| pure(Expr::Tuple { elements }),
+            fresh_vars,
+        ),
+        Expr::LetIf { pat, init } => Expr::LetIf {
+            pat,
+            init: mt_boxed_expression(init, fresh_vars),
+        },
+        Expr::If {
+            condition,
+            success,
+            failure,
+        } => {
+            let vname = fresh_vars.next();
+            Expr::Let {
+                modifier: "*",
+                pat: Pattern::Variable(vname.clone()),
+                init: mt_boxed_expression(condition, fresh_vars),
+                body: Box::new(Expr::If {
+                    condition: Box::new(Expr::LocalVar(vname)),
+                    success: mt_boxed_expression(success, fresh_vars),
+                    failure: mt_boxed_expression(failure, fresh_vars),
+                }),
+            }
+        }
+        Expr::Loop { body, loop_source } => Expr::Loop {
+            body: mt_boxed_expression(body, fresh_vars),
+            loop_source,
+        },
+        Expr::Match { scrutinee, arms } => mt_match(
+            mt_expression(*scrutinee, fresh_vars),
+            arms.into_iter()
+                .map(|arm| MatchArm {
+                    body: mt_expression(arm.body, fresh_vars),
+                    ..arm
+                })
+                .collect(),
+            fresh_vars,
+        ),
+        Expr::Assign { left, right } => Expr::Assign {
+            left: mt_boxed_expression(left, fresh_vars),
+            right: mt_boxed_expression(right, fresh_vars),
+        },
+        Expr::IndexedField { base, index } => Expr::IndexedField {
+            base: mt_boxed_expression(base, fresh_vars),
+            index,
+        },
+        Expr::NamedField { base, name } => Expr::NamedField {
+            base: mt_boxed_expression(base, fresh_vars),
+            name,
+        },
+        Expr::Index { base, index } => Expr::Index {
+            base: mt_boxed_expression(base, fresh_vars),
+            index,
+        },
+        Expr::StructStruct {
+            path,
+            fields,
+            base,
+            struct_or_variant,
+        } => Expr::StructStruct {
+            path,
+            fields: fields
+                .into_iter()
+                .map(|(s, field)| (s, mt_expression(field, fresh_vars)))
+                .collect(),
+            base: base.map(|b| mt_boxed_expression(b, fresh_vars)),
+            struct_or_variant,
+        },
+        Expr::StructTuple { path, fields } => Expr::StructTuple {
+            path,
+            fields: mt_expressions(fields, fresh_vars),
+        },
+        Expr::StructUnit { path } => Expr::StructUnit { path },
+    }
+}
+
+pub(crate) fn mt_stmt(stmt: &Stmt, fresh_vars: &mut FreshVars) -> Stmt {
+    match stmt {
+        Stmt::Expr(e) => Stmt::Expr(Box::new(mt_expression(*e, fresh_vars))),
+        Stmt::Let {
+            is_monadic,
+            pattern,
+            init,
+            body,
+        } => todo!(),
+        Stmt::Sequence(_, _) => todo!(),
+    }
+}
+
 pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
     match &expr.kind {
         ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
@@ -265,6 +579,7 @@ pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         ExprKind::If(condition, success, failure) => {
             let condition = Box::new(compile_expr(tcx, condition));
             let success = Box::new(compile_expr(tcx, success));
+
             let failure = match failure {
                 Some(expr) => Box::new(compile_expr(tcx, expr)),
                 None => Box::new(tt()),
@@ -477,6 +792,7 @@ impl MatchArm {
 impl Expr {
     pub fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
+            Expr::Pure(x) => paren(with_paren, nest([text("Pure "), x.to_doc(false)])),
             Expr::LocalVar(ref name) => text(name),
             Expr::Var(path) => path.to_doc(),
             Expr::AssociatedFunction { ty, func } => nest([
