@@ -831,7 +831,7 @@ impl TopLevelItem {
             } => group([
                 if *is_dead_code {
                     concat([
-                        text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
+                        text("(* #[allow(dead_code)] - module was ignored by the compiler *)"),
                         hardline(),
                     ])
                 } else {
@@ -968,7 +968,7 @@ impl TopLevelItem {
             } => group([
                 if *is_dead_code {
                     concat([
-                        text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
+                        text("(* #[allow(dead_code)] - struct was ignored by the compiler *)"),
                         hardline(),
                     ])
                 } else {

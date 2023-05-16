@@ -1,11 +1,11 @@
 -R . CoqOfRust
 -arg -impredicative-set
 
+std/cmp.v
+std/convert.v
+std/error.v
+std/fmt.v
 lib/lib.v
 std/ops.v
-std/string.v
-std/fmt.v
 std/result.v
-std/cmp.v
-std/error.v
-
+std/string.v
