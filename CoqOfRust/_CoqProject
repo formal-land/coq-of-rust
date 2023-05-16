@@ -1,6 +1,10 @@
 -R . CoqOfRust
 -arg -impredicative-set
 
+std/cmp.v
+std/convert.v
+std/error.v
+std/fmt.v
 lib/lib.v
 std/array.v # Passed
 std/ascii.v # Passed
@@ -23,3 +27,5 @@ std/error.v # Bugs
 # std/iter_type.v # Focus
 # std/iter.v # Focus
 std/default.v
+
+
