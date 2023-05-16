@@ -1,12 +1,36 @@
 Require Import CoqOfRust.lib.lib.
 
+Require Import CoqOfRust.std.option.
+Require Import CoqOfRust.std.marker.
+
+(* ********STRUCTS******** *)
+(* [x] Reverse *)
+(* pub struct Reverse<T>(pub T); *)
+Module Reverse.
+  Record t (T : Set) : Set := { }.
+End Reverse.
+Definition Reverse := Reverse.t.
+
+(* ********ENUMS******** *)
+(* 
+[x] Ordering
+*)
 Module Ordering.
   Inductive t : Set :=
   | Less : t
   | Greater : t
   | Equal : t.
 End Ordering.
+Definition Ordering := Ordering.t.
 
+(* ********TRAITS******** *)
+(* 
+Traits
+[x] Eq
+[x] Ord
+[x] PartialEq
+[x] PartialOrd
+*)
 Module PartialEq.
   Class Trait (Self : Set) (Rhs : option Set) : Set := {
     Rhs := defaultType Rhs Self;
@@ -27,7 +51,7 @@ Module PartialOrd.
   Class Trait (Self : Set) (Rhs : option Set) : Set := {
     Rhs := defaultType Rhs Self;
 
-    partial_cmp : ref Self -> ref Self -> option (Ordering.t);
+    partial_cmp : ref Self -> ref Self -> Option (Ordering);
     lt : ref Self -> ref Rhs -> bool;
     le : ref Self -> ref Rhs -> bool;
     gt : ref Self -> ref Rhs -> bool;
@@ -50,36 +74,46 @@ Module PartialOrd.
     Notation.dot := ge;
   }.
 End PartialOrd.
-(* End Binary Operators *)
 
-(* Unary Operators *)
-Module Neg.
-  Class Trait {Output : Set} (Self : Set) : Set := {
-    Output := Output;
-    neg : Self -> Output;
-    }.
-  Global Instance Method_neg `(Trait) : Notation.Dot "neg" := {
-    Notation.dot := neg;
-  }.
-End Neg.
+(* 
+pub trait Eq: PartialEq<Self> { }
+ *)
+Module Eq.
+  Class Trait (Self : Set) `{PartialEq.Trait Self} : Set := { }.
+End Eq.
 
-Module Not.
-  Class Trait {Output : Set} (Self : Set) : Set := {
-    Output := Output;
-    not : Self -> Output;
-    }.
-  Global Instance Method_snot `(Trait) : Notation.Dot "not" := {
-    Notation.dot := not;
-  }.
-End Not.
+(* 
+pub trait Ord: Eq + PartialOrd<Self> {
+    // Required method
+    fn cmp(&self, other: &Self) -> Ordering;
 
-(* TODO: Finish this module *)
-Module Deref.
-  (* Class Trait {Output : Set} (Self : Set) : Set := {
-    Output := Output;
-    not : Self -> Output;
+    // Provided methods
+    fn max(self, other: Self) -> Self
+       where Self: Sized { ... }
+    fn min(self, other: Self) -> Self
+       where Self: Sized { ... }
+    fn clamp(self, min: Self, max: Self) -> Self
+       where Self: Sized + PartialOrd<Self> { ... }
+}
+*)
+Module Ord. 
+  Class Trait (Self : Set) 
+    `{Eq.Trait Self}
+    `{PartialOrd.Trait Self (Some Self)} :={
+    cmp : ref Self -> ref Self -> Ordering;
+    max : Self -> Self -> Self;
+    min : Self -> Self -> Self;
+    clamp `{PartialOrd.Trait Self (Some Self)} : Self -> Self -> Self;
+
     }.
-  Global Instance Method_snot `(Trait) : Notation.Dot "not" := {
-    Notation.dot := not;
-  }. *)
-End Deref.
+End Ord.
+
+(* ********FUNCTIONS******** *)
+(* 
+[ ] max
+[ ] max_by
+[ ] max_by_key
+[ ] min
+[ ] min_by
+[ ] min_by_key
+*)
