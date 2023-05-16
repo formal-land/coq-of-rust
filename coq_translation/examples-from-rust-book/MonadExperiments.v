@@ -13,7 +13,7 @@ Module State.
   Class Trait (State Address : Set) : Type := {
     get_Set : Address -> Set;
     read (a : Address) : State -> option (get_Set a);
-    write (a : Address) : State -> get_Set a -> State;
+    alloc_write (a : Address) : State -> get_Set a -> option State;
   }.
 
   Module Valid.
@@ -21,18 +21,24 @@ Module State.
         of the type given by the address. A value is [None] while not
         allocated, and [Some] once allocated. It is impossible to free
         allocated values. *)
-    Record t `(T : Trait) : Prop := {
-      (* Read after a [write] used as a successful allocation. *)
-      same_alloc (a : Address) (s : State) (v : get_Set a) :
-        read a (write a s v) <> None ->
-        read a (write a s v) = Some v;
-      (* Read after a [write] on an already allocated address. *)
-      same_write (a : Address) (s : State) (v : get_Set a) :
-        read a s <> None ->
-        read a (write a s v) = Some v;
+    Record t `(Trait) : Prop := {
+      (* [alloc_write] can only fail on new cells *)
+      not_allocated (a : Address) (s : State) (v : get_Set a) :
+        match alloc_write a s v with
+        | Some _ => True
+        | None => read a s = None
+        end;
+      same (a : Address) (s : State) (v : get_Set a) :
+        match alloc_write a s v with
+        | Some s => read a s = Some v
+        | None => True
+        end;
       different (a1 a2 : Address) (s : State) (v2 : get_Set a2) :
         a1 <> a2 ->
-        read a1 (write a2 s v2) = read a1 s;
+        match alloc_write a2 s v2 with
+        | Some s' => read a1 s' = read a1 s
+        | None => True
+        end;
       }.
   End Valid.
 End State.
@@ -127,10 +133,9 @@ Definition alloc `{State.Trait} {R A : Set} (v : A) : Monad R (MutRef A) :=
     match State.read a s with
     | Some _ => RawMonad.Impossible
     | None =>
-      let s := State.write a s v in
-      match State.read a s with
+      match State.alloc_write a s v with
+      | Some s => RawMonad.Pure (inl (MutRef.Make a), s)
       | None => RawMonad.Impossible
-      | Some _ => RawMonad.Pure (inl (MutRef.Make a), s)
       end
     end
   end).
@@ -153,7 +158,11 @@ Definition write `{State.Trait} {R A : Set} (r : MutRef A) (v : A) :
   Monad R unit :=
   fun fuel s =>
   match r, v with
-  | MutRef.Make a, _ => RawMonad.Pure (inl tt, State.write a s v)
+  | MutRef.Make a, _ =>
+    match State.alloc_write a s v with
+    | None => RawMonad.Impossible
+    | Some s => RawMonad.Pure (inl tt, s)
+    end
   end.
 
 Module Example.
@@ -230,14 +239,19 @@ Module Example.
       | Address.Z => s.(State.z)
       | Address.Flag => s.(State.flag)
       end;
-    write a s v :=
-      match a, v with
+    alloc_write a s v :=
+      Some match a, v with
       | Address.X, _ => s <| State.x := Some v |>
       | Address.Y, _ => s <| State.y := Some v |>
       | Address.Z, _ => s <| State.z := Some v |>
       | Address.Flag, _ => s <| State.flag := Some v |>
       end;
   }.
+
+  Lemma State_is_valid : State.Valid.t State_Trait.
+  Proof.
+    constructor; intros; now destruct_all Address.
+  Qed.
 
   Ltac run_address_oracle address :=
     match goal with
