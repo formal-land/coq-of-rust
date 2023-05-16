@@ -1,0 +1,54 @@
+-R . CoqOfRust
+-arg -impredicative-set
+
+lib/lib.v
+std/array.v # Passed
+std/ascii.v # Passed
+std/clone.v # Passed
+std/option.v # Passed
+std/hash.v # Passed
+std/ptr.v # Passed
+std/alloc.v # Passed
+std/pin.v # Passed
+std/cmp.v # Passed
+std/marker.v # Passed
+std/ops.v # Stable, incomplete
+std/string.v # Passed
+std/collections.v # Focus
+std/fmt.v # ?
+std/io.v # Focus
+std/any.v # Passed
+std/result.v # Passed
+std/error.v # Bugged
+std/convert.v # Complete
+# std/iter_type.v 
+# std/iter.v 
+std/default.v # Complete
+std/boxed.v # Complete
+std/time.v # Complete
+std/vec.v # Bugged
+std/task.v # Bugged
+std/sync.v # Empty
+std/cell.v # Bugged
+std/char.v # Empty
+std/assert_matches.v # Complete
+std/async_iter.v # Bugged
+std/thread.v # Complete
+std/rc.v # Complete
+std/intrinsics.v # Complete
+std/backtrace.v # Complete
+std/borrow.v # Complete
+std/env.v # Bugged
+std/future.v # Bugged
+std/slice.v # Empty
+std/fs.v # Complete
+std/hint.v # Complete
+std/ffi.v # Complete
+std/str.v # Empty
+std/num.v # Complete
+std/panic.v # Complete
+std/mem.v # Bugged
+std/arch.v # Bugged
+std/simd.v # Bugged
+std/net.v # Bugged
+std/path.v # Bugged

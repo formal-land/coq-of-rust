@@ -1,0 +1,74 @@
+Require Import CoqOfRust.lib.lib.
+Require Import CoqOfRust.std.task.
+Require Import CoqOfRust.std.pin.
+
+(* ********STRUCTS******** *)
+(*
+[x] Pending
+[x] PollFn
+[x] Ready
+*)
+(* pub struct Pending<T> { /* private fields */ } *)
+Module Pending.
+  Record t (T : Set) : Set := { }.
+End Pending.
+Definition Pending := Pending.t.
+
+(* pub struct PollFn<F> { /* private fields */ } *)
+Module PollFn.
+  Record t (F : Set) : Set := { }.
+End PollFn.
+Definition PollFn := PollFn.t.
+
+(* pub struct Ready<T>(_); *)
+Module Ready.
+  Record t (T : Set): Set := { }.
+End Ready.
+Definition Ready := Ready.t.
+
+(* ********TRAITS******** *)
+(*
+[x] Future
+[?] IntoFuture
+*)
+(* 
+pub trait Future {
+    type Output;
+
+    // Required method
+    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output>;
+}
+*)
+Module Future.
+  Class Trait (Self Output : Set) : Set := { 
+    Output := Output;
+
+    poll : Pin (mut_ref Self) -> mut_ref Context -> Poll Output;
+  }.
+End Future.
+
+(* 
+pub trait IntoFuture {
+    type Output;
+    type IntoFuture: Future<Output = Self::Output>;
+
+    // Required method
+    fn into_future(self) -> Self::IntoFuture;
+}
+*)
+(* BUGGED: How to translate IntoFuture type? *)
+Module IntoFuture.
+  Class Trait (Self Output IntoFuture : Set) : Set := { 
+    Output := Output;
+    IntoFuture := IntoFuture;
+
+    into_future : Self -> IntoFuture;
+  }.
+End IntoFuture.
+
+(* ********FUNCTIONS******** *)
+(*
+[ ] pending
+[ ] poll_fn
+[ ] ready
+*)
