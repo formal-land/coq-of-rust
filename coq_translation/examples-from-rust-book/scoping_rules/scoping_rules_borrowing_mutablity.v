@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
+(* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Book.
   Record t : Set := {
     author : ref str;

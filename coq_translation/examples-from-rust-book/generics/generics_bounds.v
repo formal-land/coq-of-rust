@@ -67,7 +67,7 @@ Module Impl__crate_fmt_Debug_for_Rectangle.
   }.
 End Impl__crate_fmt_Debug_for_Rectangle.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
+(* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Triangle.
   Record t : Set := {
     length : f64;
