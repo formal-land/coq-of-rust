@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module mem := std.mem.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
+(* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Point.
   Record t : Set := {
     x : f64;
@@ -70,7 +70,7 @@ Module Impl__crate_marker_Copy_for_Point.
     _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Point.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
+(* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Rectangle.
   Record t : Set := {
     top_left : Point;
