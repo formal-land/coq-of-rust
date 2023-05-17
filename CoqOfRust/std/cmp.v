@@ -3,7 +3,7 @@ Require Import CoqOfRust.lib.lib.
 Module Ordering.
   Inductive t : Set :=
   | Less : t
-  | Grreater : t
+  | Greater : t
   | Equal : t.
 End Ordering.
 
