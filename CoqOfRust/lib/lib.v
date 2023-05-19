@@ -89,3 +89,5 @@ Definition mut_ref : Set -> Set := ref.
 Definition deref {A : Set} (r : ref A) : A := r.
 
 Parameter eqb : forall {A : Set}, A -> A -> bool.
+
+Definition slice (A : Set) : Set := list A.

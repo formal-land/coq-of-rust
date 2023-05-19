@@ -47,7 +47,6 @@ End Destruct.
     type Discriminant: Clone + Copy + Debug + Eq + PartialEq<Self::Discriminant> + Hash + Send + Sync + Unpin;
 } *)
 Module DiscriminantKind.
-  type Discriminant.
 End DiscriminantKind.
 
 (* pub trait PointerLike { } *)
@@ -79,12 +78,19 @@ where
 { }
 *)
 Module Unsize.
-  Class Trait (Self : Set) (T : Set): Set := { }.
+  Class Trait (Self : Set) (T : Set) : Set := { }.
 End Unsize.
 
 (* pub trait Copy: Clone { } *)
+
+Module Clone.
+  Class Trait (Self : Set) : Set := {
+  }.
+End Clone.
+
 Module Copy.
-  Class Trait (Self : Set) : Set := { }.
+  Class Trait (Self : Set) `{Clone.Trait Self} : Set := {
+  }.
 End Copy.
 
 (* pub unsafe auto trait Send { } *)
