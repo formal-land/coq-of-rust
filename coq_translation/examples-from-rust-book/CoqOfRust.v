@@ -37,6 +37,19 @@ Global Open Scope Z_scope.
 
 Export List.ListNotations.
 
+(** Notation for a function call. Translated directly to function application
+    for now. It will drive the monadic transformation in near future. *)
+Notation "e (| e1 , .. , en |)" :=
+  ((.. (e e1) ..) en)
+  (at level 0, 
+    only parsing).
+
+(** Particular case when there are no arguments. *)
+Notation "e (||)" :=
+  (e tt)
+  (at level 0,
+    only parsing).
+
 Module Notation.
   (** A class to represent the notation [e1.e2]. This is mainly used to call
       methods, or access to named or indexed fields of structures.
