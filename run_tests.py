@@ -10,12 +10,15 @@ import subprocess
 import sys
 
 
-test_folder = "examples-from-rust-book"
+test_folder = "examples"
 
 # For each file recursively in the test folder
 rs_files = []
 for root, _dirs, files in os.walk(test_folder):
-    rs_files += [os.path.join(root, file) for file in files if os.path.splitext(file)[1] == ".rs"]
+    rs_files += [
+        os.path.join(root, file)
+        for file in files if os.path.splitext(file)[1] == ".rs"
+    ]
 
 for index, file in enumerate(rs_files):
     print()

@@ -1,5 +1,5 @@
 warning: Guards on match branches are not supported.
- --> examples-from-rust-book/flow_of_control/match_guards_unreachable.rs:5:9
+ --> examples/flow_of_control/match_guards_unreachable.rs:5:9
   |
 5 |         i if i == 0 => println!("Zero"),
   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -7,7 +7,7 @@ warning: Guards on match branches are not supported.
   = help: Use standalone `if` statements instead.
 
 warning: Guards on match branches are not supported.
- --> examples-from-rust-book/flow_of_control/match_guards_unreachable.rs:6:9
+ --> examples/flow_of_control/match_guards_unreachable.rs:6:9
   |
 6 |         i if i > 0 => println!("Greater than zero"),
   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

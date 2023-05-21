@@ -1,5 +1,5 @@
 error[E0658]: type ascription is experimental
-  --> examples-from-rust-book/traits/traits.rs:70:21
+  --> examples/traits/traits.rs:70:21
    |
 70 |     let mut dolly = Animal::new("Dolly"): Sheep;
    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
