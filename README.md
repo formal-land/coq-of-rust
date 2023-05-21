@@ -46,7 +46,7 @@ cargo coq-of-rust
 Translate the test files (but show the error/warning messages):
 
 ```sh
-cargo run --bin coq-of-rust -- translate --path examples-from-rust-book
+cargo run --bin coq-of-rust -- translate --path examples
 ```
 
 Update the snapshots of the translations of the test files, including the error messages:

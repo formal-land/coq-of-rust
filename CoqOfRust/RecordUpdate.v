@@ -1,3 +1,4 @@
+(** This file adds syntax for update of record fields, in the presence of primitive projections. *)
 (* Modifed from: https://github.com/mit-plv/riscv-coq/blob/3a4ddc56fce50c0167fbe887987086fcc157153c/src/riscv/Utility/RecordSetters.v *)
 
 Require Import Coq.Program.Basics.

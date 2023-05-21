@@ -54,15 +54,16 @@ End ToString.
 
 (* The String type (Struct std::string::String) and it's methods  *)
 Module StringType.
+  Definition from (str_from: str) : String := str_from.
 
+  (* The String type (Struct std::string::String) and it's methods  *)
   (* Converts a &str into a String. *)
- #[export] Instance fromStr : From str String :=
-  {
-    from := fun (str_from: str) => str_from
+  Global Instance FromStr : From str String := {
+    from := from;
   }.
 
  Global Instance Method_from : Notation.DoubleColon String "from" := {
-    Notation.double_colon := StringType.fromStr.(from);
+    Notation.double_colon := from;
   }.
 
  (* @TODO add more methods from (Struct std::string::String) *)

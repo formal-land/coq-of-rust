@@ -28,16 +28,10 @@ jobs:
       run: |
         python run_tests.py
         git -c color.ui=always diff --exit-code
-    - name: Compile new CoqOfRust library
+    - name: Compile Coq translations
       run: |
         cd CoqOfRust
-        coq_makefile -f _CoqProject -o Makefile
-        make
-        cd ../
-    - name: Compile old CoqOfRust file with Rust translations
-      run: |
-        cd coq_translation/examples-from-rust-book
-        coq_makefile -f _CoqProject -o Makefile
+        ./configure.sh
         make
         cd ../..
-    
+
