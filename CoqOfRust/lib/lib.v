@@ -75,6 +75,8 @@ Definition i32 : Set := Z.
 Definition i64 : Set := Z.
 Definition i128 : Set := Z.
 
+Definition usize : Set := Z.
+
 (* We approximate floating point numbers with integers *)
 Definition f32 : Set := Z.
 Definition f64 : Set := Z.

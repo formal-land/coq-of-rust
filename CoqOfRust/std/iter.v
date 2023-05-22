@@ -2,6 +2,14 @@ Require Import CoqOfRust.lib.lib.
 
 (* Require CoqOfRust.std.marker.Sized. *)
 Require CoqOfRust.std.option.
+Notation Option := option.Option.
+
+Require CoqOfRust.std.result.
+Notation Result := result.Result.
+
+(* TODO: After the following file is implemented, check all occurences of IntoIter in this file. *)
+(* Require CoqOfRust.std.array. *)
+(* Notatin IntoIter := array.IntoIter. *)
 
 (* ********STRUCTS******** *)
 (* TODO: Complete the translation for structs *)
@@ -24,7 +32,7 @@ Require CoqOfRust.std.option.
 *)
 
 Module Iterator.
-  Class Trait (self : Set) (Item : Set) := {
+  Class Trait (Self : Set) (Item : Set) := {
     (* TODO: Add the translation for all the functions... *)
 
     (* fn next(&mut self) -> Option<Self::Item>; *)
@@ -34,7 +42,7 @@ Module Iterator.
         &mut self
     ) -> Result<[Self::Item; N], IntoIter<Self::Item, N>>
        where Self: Sized { ... } *)
-    next_chunk : mut_ref Self -> Result (slice Item) (IntoIter Item);
+    (* next_chunk : mut_ref Self -> Result (slice Item) (IntoIter Item); *)
 
   }.
 End Iterator.
@@ -63,7 +71,7 @@ pub trait FromIterator<A>: Sized {
 *)
 Module FromIterator.
   Class Trait (Self : Set) (A : Set) : Set := {
-    from_iter {T : Set} `{IntoIterator.Trait T A} : T -> Self.
+    from_iter {T : Set} `{IntoIterator.Trait T A} : T -> Self;
   }.
 End FromIterator.
 
@@ -85,7 +93,7 @@ pub trait Extend<A> {
 *)
 Module Extend.
   Class Trait (Self : Set) (A : Set) : Set := {
-    extend {T : Set} `{IntoIterator T A} : mut_ref Self -> T -> unit;
+    extend {T : Set} `{IntoIterator.Trait T A} : mut_ref Self -> T -> unit;
     extend_one : mut_ref Self -> A -> unit;
     extend_reserve : mut_ref Self -> usize -> unit;
   }.
@@ -126,28 +134,26 @@ pub trait DoubleEndedIterator: Iterator {
 }
 *)
 Module DoubleEndedIterator.
-  Class Trait (Self : Set) (A : Set) : Set := {
-  (* Issue: Item not provided *)
-    type Item;
+  Class Trait (Self : Set) (A : Set) (Item : Set): Set := {
+    Item := Item;
 
-    next_back : mut_ref Self -> option Item;
+    next_back : mut_ref Self -> Option Item;
     (* How to translate tuple? *)
     advance_back_by : mut_ref Self -> usize -> Result unit usize;
     nth_back : mut_ref Self -> usize -> Option Item;
-    (* How to translate template functions? Can we use where clause in Coq here? *)
-    (* Pretty complicated *)
-    try_nfold : (B: Set) -> mut_ref Self -> B -> F -> R;
-    rfold : (B F : Set) -> Self -> B -> F -> B;
-    rfind : (P : Set) -> mut_ref Self -> P -> Option Item;
+    try_nfold {B F R : Set} : mut_ref Self -> B -> F -> R;
+    rfold {B F : Set} : Self -> B -> F -> B;
+    rfind {P : Set} : mut_ref Self -> P -> Option Item;
   }.
 End DoubleEndedIterator.
 
-Module Product.
+(* Module Product.
   Class Trait (Self : Set) (A : option Set) : Set := {
     A := defaultType A Self;
     (* Issue: Here, I is required to have type of Iterator<Item=A>. But current definition 
       for Iterator.Trait requires more parameters. *)
-    product : {(Iterator.trait A) I} -> I -> Self;
+      (* ISSUE:  Unknown interpretation for notation "{ _ } -> _". *)
+    product : {(Iterator.Trait A) I} -> I -> Self;
   }.
 End Product.
 
@@ -157,7 +163,7 @@ Module Sum.
     (* Same as above *)
     sum : {(Iterator.trait A) I} -> I -> Self;
   }.
-End Sum.
+End Sum. *)
 
 (* 
 pub trait Step: Clone + PartialOrd<Self> + Sized {
@@ -175,11 +181,11 @@ pub trait Step: Clone + PartialOrd<Self> + Sized {
 *)
 Module Step.
   Class Trait (Self : Set) : Set := {
-    steps_between : ref Self -> ref Self -> option usize;
-    forward_checked : Self -> usize -> option Self;
+    steps_between : ref Self -> ref Self -> Option usize;
+    forward_checked : Self -> usize -> Option Self;
     backward_checked : Self -> usize -> Self;
     backward_unchecked : Self -> usize -> Self;
-  }
+  }.
 End Step.
 
 (* 
