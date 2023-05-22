@@ -295,6 +295,55 @@ pub fn mt_expressions(exprs: Vec<Expr>) -> Vec<Expr> {
     exprs.into_iter().map(mt_expression).collect()
 }
 
+/// Monadic transalte function call
+///
+/// MT(f(a, b, ...))
+/// -----------------
+/// let f' = MT(f);
+/// let a' = MT(a);
+/// let b'; = MT(b);
+/// ...
+/// f'(a', b', ...)
+fn mt_call(func: Box<Expr>, args: Vec<Expr>) -> Expr {
+    let mut let_vars: Vec<(Pattern, Expr)> = vec![];
+    // Create one variable for each argument, take
+    // the oportunity to apply mt_expression into it
+    let args = args
+        .into_iter()
+        .map(|expr| {
+            let vname = String::from("_fresh");
+            let_vars.push((Pattern::Variable(vname.clone()), mt_expression(expr)));
+            Expr::Var(Path::local(vname))
+        })
+        .collect();
+    // Create one variable for the function
+    let fname = String::from("_fresh_func");
+    // We're creating a (let ... (let ... (let ... fcall))) expression,
+    // this is the body of the most nested let. It is the function call
+    // with all arguments (including the function itself) bound to variables
+    let fcall = Expr::Call {
+        func: Box::new(Expr::Var(Path::local(fname.clone()))),
+        args,
+    };
+    // the nested lets
+    let nested_lets = let_vars
+        .into_iter()
+        .rev()
+        .fold(fcall, |acc, (pat, expr)| Expr::Let {
+            modifier: "*",
+            pat,
+            init: Box::new(expr),
+            body: Box::new(acc),
+        });
+    // the outter let
+    Expr::Let {
+        modifier: "*",
+        pat: Pattern::Variable(fname),
+        init: mt_boxed_expression(func),
+        body: Box::new(nested_lets),
+    }
+}
+
 // @TODO add the translation logic (right now is just an ineficient identity)
 pub fn mt_expression(expr: Expr) -> Expr {
     match expr {
@@ -303,10 +352,7 @@ pub fn mt_expression(expr: Expr) -> Expr {
         Expr::AssociatedFunction { ty, func } => Expr::AssociatedFunction { ty, func },
         Expr::Literal(x) => Expr::Literal(x),
         Expr::AddrOf(box_expr) => Expr::AddrOf(mt_boxed_expression(box_expr)),
-        Expr::Call { func, args } => Expr::Call {
-            func: mt_boxed_expression(func),
-            args: mt_expressions(args),
-        },
+        Expr::Call { func, args } => mt_call(func, args),
         Expr::MethodCall { object, func, args } => Expr::MethodCall {
             object: mt_boxed_expression(object),
             func,
