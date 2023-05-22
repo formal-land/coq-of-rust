@@ -11,6 +11,12 @@ use rustc_middle::ty::TyCtxt;
 #[derive(Debug)]
 pub struct FreshVars(u64);
 
+impl Default for FreshVars {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl FreshVars {
     pub fn new() -> Self {
         FreshVars(0)
@@ -19,7 +25,7 @@ impl FreshVars {
     fn next(&mut self) -> String {
         let x = self.0;
         self.0 += 1;
-        return format!("α{}", x);
+        format!("α{}", x)
     }
 }
 
@@ -196,7 +202,7 @@ fn tt() -> Expr {
     Expr::LocalVar("tt".to_string())
 }
 
-fn has_calls_or_lets(args: &Vec<Expr>) -> bool {
+fn has_calls_or_lets(args: &[Expr]) -> bool {
     args.iter()
         .any(|expr| (matches!(expr, Expr::Call { .. }) || matches!(expr, Expr::Let { .. })))
 }
@@ -248,7 +254,7 @@ fn monadic_translation(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
                 .collect();
             let fexpr = Expr::Call { func, args };
             // Assemble the (let .. (let .. (let ..))) expression and return
-            let let_expr = let_vars
+            let_vars
                 .into_iter()
                 .rev()
                 .fold(fexpr, move |body, (pat, fcall)| Expr::Let {
@@ -256,8 +262,7 @@ fn monadic_translation(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
                     pat,
                     init: Box::new(fcall),
                     body: Box::new(monadic_translation(body, fresh_vars)), // recurse in the body
-                });
-            let_expr
+                })
         }
         // Nothing to do, just return
         e => e,
