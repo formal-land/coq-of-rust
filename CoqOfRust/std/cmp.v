@@ -1,12 +1,30 @@
 Require Import CoqOfRust.lib.lib.
 
+(* ********STRUCTS******** *)
+(* [ ] Reverse *)
+Module Reverse.
+End Reverse.
+
+(* ********ENUMS******** *)
+(* 
+[x] Ordering
+*)
 Module Ordering.
   Inductive t : Set :=
   | Less : t
-  | Grreater : t
+  | Greater : t
   | Equal : t.
 End Ordering.
+Definition Ordering := Ordering.t.
 
+(* ********TRAITS******** *)
+(* 
+Traits
+[ ] Eq
+[ ] Ord
+[x] PartialEq
+[x] PartialOrd
+*)
 Module PartialEq.
   Class Trait (Self : Set) (Rhs : option Set) : Set := {
     Rhs := defaultType Rhs Self;
@@ -27,7 +45,7 @@ Module PartialOrd.
   Class Trait (Self : Set) (Rhs : option Set) : Set := {
     Rhs := defaultType Rhs Self;
 
-    partial_cmp : ref Self -> ref Self -> option (Ordering.t);
+    partial_cmp : ref Self -> ref Self -> option (Ordering);
     lt : ref Self -> ref Rhs -> bool;
     le : ref Self -> ref Rhs -> bool;
     gt : ref Self -> ref Rhs -> bool;
@@ -51,35 +69,3 @@ Module PartialOrd.
   }.
 End PartialOrd.
 (* End Binary Operators *)
-
-(* Unary Operators *)
-Module Neg.
-  Class Trait {Output : Set} (Self : Set) : Set := {
-    Output := Output;
-    neg : Self -> Output;
-    }.
-  Global Instance Method_neg `(Trait) : Notation.Dot "neg" := {
-    Notation.dot := neg;
-  }.
-End Neg.
-
-Module Not.
-  Class Trait {Output : Set} (Self : Set) : Set := {
-    Output := Output;
-    not : Self -> Output;
-    }.
-  Global Instance Method_snot `(Trait) : Notation.Dot "not" := {
-    Notation.dot := not;
-  }.
-End Not.
-
-(* TODO: Finish this module *)
-Module Deref.
-  (* Class Trait {Output : Set} (Self : Set) : Set := {
-    Output := Output;
-    not : Self -> Output;
-    }.
-  Global Instance Method_snot `(Trait) : Notation.Dot "not" := {
-    Notation.dot := not;
-  }. *)
-End Deref.

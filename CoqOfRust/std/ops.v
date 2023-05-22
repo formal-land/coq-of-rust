@@ -1,5 +1,65 @@
 Require Import CoqOfRust.lib.lib.
 
+(* ********STRUCTS******** *)
+(* 
+[ ] Yeet
+[ ] Range
+[ ] RangeFrom
+[ ] RangeFull
+[ ] RangeInclusive
+[ ] RangeTo
+[ ] RangeToInclusive
+ *)
+
+(* ********ENUMS******** *)
+(* 
+[ ] GeneratorState
+[ ] Bound
+[ ] ControlFlow
+*)
+
+(* ********TRAITS******** *)
+(* 
+[ ] CoerceUnsized
+[ ] DispatchFromDyn
+[ ] FromResidual
+[ ] Generator
+[ ] OneSidedRange
+[ ] Residual
+[ ] Try
+[x] Add
+[x] AddAssign
+[x] BitAnd
+[x] BitAndAssign
+[x] BitOr
+[x] BitOrAssign
+[x] BitXor
+[x] BitXorAssign
+[ ] Dere
+[ ] DerefMut
+[x] Div
+[x] DivAssign
+[ ] Drop
+[ ] Fn
+[ ] FnMut
+[ ] FnOnce
+[ ] Index
+[ ] IndexMut
+[x] Mul	
+[x] MulAssign
+[x] Neg
+[x] Not
+[ ] RangeBounds
+[x] Rem
+[x] RemAssign
+[x] Shl
+[x] ShlAssign
+[x] Shr
+[x] ShrAssign
+[x] Sub
+[x] SubAssign
+*)
+
 (* Binary Operators *)
 Module Add.
   Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
@@ -352,3 +412,52 @@ Module Impl_RemAssign_for_Z.
     rem_assign := rem_assign;
   }.
 End Impl_RemAssign_for_Z.
+
+Module Not.
+  Class Trait {Output : Set} (Self : Set) : Set := {
+    Output := Output;
+    not : Self -> Output;
+    }.
+  Global Instance Method_snot `(Trait) : Notation.Dot "not" := {
+    Notation.dot := not;
+  }.
+End Not.
+
+(* Unary Operators *)
+Module Neg.
+  Class Trait {Output : Set} (Self : Set) : Set := {
+    Output := Output;
+    neg : Self -> Output;
+    }.
+  Global Instance Method_neg `(Trait) : Notation.Dot "neg" := {
+    Notation.dot := neg;
+  }.
+End Neg.
+
+(* 
+pub trait Deref {
+    type Target: ?Sized;
+
+    // Required method
+    fn deref(&self) -> &Self::Target;
+}
+*)
+Module Deref.
+  Class Trait (Self Target : Set) : Set := { 
+    Target := Target;
+    deref : ref Self -> Target; 
+  }.
+End Deref.
+
+(* 
+pub trait DerefMut: Deref {
+    // Required method
+    fn deref_mut(&mut self) -> &mut Self::Target;
+} 
+*)
+Module DerefMut.
+  Class Trait (Self Target : Set) : Set := {
+    Target := Target;
+    deref_mut : mut_ref Self -> Target;
+  }.
+End DerefMut.
