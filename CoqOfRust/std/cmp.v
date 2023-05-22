@@ -1,9 +1,15 @@
 Require Import CoqOfRust.lib.lib.
 
+Require Import CoqOfRust.std.option.
+Require Import CoqOfRust.std.marker.
+
 (* ********STRUCTS******** *)
-(* [ ] Reverse *)
+(* [x] Reverse *)
+(* pub struct Reverse<T>(pub T); *)
 Module Reverse.
+  Record t (T : Set) : Set := { }.
 End Reverse.
+Definition Reverse := Reverse.t.
 
 (* ********ENUMS******** *)
 (* 
@@ -20,8 +26,8 @@ Definition Ordering := Ordering.t.
 (* ********TRAITS******** *)
 (* 
 Traits
-[ ] Eq
-[ ] Ord
+[x] Eq
+[x] Ord
 [x] PartialEq
 [x] PartialOrd
 *)
@@ -45,7 +51,7 @@ Module PartialOrd.
   Class Trait (Self : Set) (Rhs : option Set) : Set := {
     Rhs := defaultType Rhs Self;
 
-    partial_cmp : ref Self -> ref Self -> option (Ordering);
+    partial_cmp : ref Self -> ref Self -> Option (Ordering);
     lt : ref Self -> ref Rhs -> bool;
     le : ref Self -> ref Rhs -> bool;
     gt : ref Self -> ref Rhs -> bool;
@@ -68,4 +74,36 @@ Module PartialOrd.
     Notation.dot := ge;
   }.
 End PartialOrd.
-(* End Binary Operators *)
+
+(* 
+pub trait Eq: PartialEq<Self> { }
+ *)
+Module Eq.
+  Class Trait (Self : Set) `{PartialEq.Trait Self} : Set := { }.
+End Eq.
+
+(* 
+pub trait Ord: Eq + PartialOrd<Self> {
+    // Required method
+    fn cmp(&self, other: &Self) -> Ordering;
+
+    // Provided methods
+    fn max(self, other: Self) -> Self
+       where Self: Sized { ... }
+    fn min(self, other: Self) -> Self
+       where Self: Sized { ... }
+    fn clamp(self, min: Self, max: Self) -> Self
+       where Self: Sized + PartialOrd<Self> { ... }
+}
+*)
+Module Ord. 
+  Class Trait (Self : Set) 
+    `{Eq.Trait Self}
+    `{PartialOrd.Trait Self (Some Self)} :={
+    cmp : ref Self -> ref Self -> Ordering;
+    max `{Sized.Trait Self} : Self -> Self -> Self;
+    min `{Sized.Trait Self} : Self -> Self -> Self;
+    clamp `{Sized.Trait Self} `{PartialOrd.Trait Self (Some Self)} : Self -> Self -> Self;
+
+    }.
+End Ord.
