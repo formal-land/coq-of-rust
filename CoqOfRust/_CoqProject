@@ -2,12 +2,15 @@
 -arg -impredicative-set
 
 lib/lib.v
+std/array.v
+std/ascii.v
+std/clone.v
 std/ops.v
 std/string.v
 std/fmt.v
 std/result.v
 std/cmp.v
 std/error.v
+std/option.v
 std/iter.v
 std/marker.v
-std/result.v

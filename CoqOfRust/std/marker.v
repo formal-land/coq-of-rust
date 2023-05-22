@@ -1,6 +1,6 @@
 Require Import CoqOfRust.lib.lib.
 
-(* Require CoqOfRust.std.clone. *)
+Require Import CoqOfRust.std.clone.
 
 (* 
 Structs: 
@@ -14,7 +14,7 @@ where
          T: ?Sized; 
 *)
 Module PhantomData.
-  Record t : Set := { }.
+  Record t (T : Set) : Set := { }.
 End PhantomData.
 Definition PhantomData := PhantomData.t.
 
@@ -31,7 +31,7 @@ Traits:
 [x] StructuralPartialEq
 [x] Tuple
 [x] Unsize
-[?] Copy	
+[x] Copy	
 [x] Send	
 [x] Sized	
 [x] Sync	
@@ -82,12 +82,6 @@ Module Unsize.
 End Unsize.
 
 (* pub trait Copy: Clone { } *)
-
-Module Clone.
-  Class Trait (Self : Set) : Set := {
-  }.
-End Clone.
-
 Module Copy.
   Class Trait (Self : Set) `{Clone.Trait Self} : Set := {
   }.

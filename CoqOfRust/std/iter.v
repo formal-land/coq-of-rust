@@ -1,14 +1,12 @@
 Require Import CoqOfRust.lib.lib.
 
 (* Require CoqOfRust.std.marker.Sized. *)
-Require CoqOfRust.std.option.
-Notation Option := option.Option.
+Require Import CoqOfRust.std.option.
 
-Require CoqOfRust.std.result.
-Notation Result := result.Result.
+Require Import CoqOfRust.std.result.
 
 (* TODO: After the following file is implemented, check all occurences of IntoIter in this file. *)
-(* Require CoqOfRust.std.array. *)
+(* Require Import CoqOfRust.std.array. *)
 (* Notatin IntoIter := array.IntoIter. *)
 
 (* ********STRUCTS******** *)
@@ -20,12 +18,12 @@ Notation Result := result.Result.
 [ ] Step(Experimental)
 [x] TrustedLen(Experimental)
 [x] TrustedStep(Experimental)
-[ ] DoubleEndedIterator
+[?] DoubleEndedIterator
 [x] ExactSizeIterator
-[ ] Extend
-[?] FromIterator
-[?] FusedIterator
-[?] IntoIterator
+[x] Extend
+[x] FromIterator
+[x] FusedIterator
+[x] IntoIterator
 [ ] Iterator
 [?] Product
 [?] Sum 
@@ -38,11 +36,36 @@ Module Iterator.
     (* fn next(&mut self) -> Option<Self::Item>; *)
     next : mut_ref Self -> Option Item;
 
+    (* NOTE: IntoIter not implemented yet *)
     (* fn next_chunk<const N: usize>(
         &mut self
     ) -> Result<[Self::Item; N], IntoIter<Self::Item, N>>
        where Self: Sized { ... } *)
     (* next_chunk : mut_ref Self -> Result (slice Item) (IntoIter Item); *)
+
+    (* NOTE: tuple not implemented yet *)
+    (* fn size_hint(&self) -> (usize, Option<usize>) { ... } *)
+
+    (* NOTE: Bugged *)
+    (* fn count(self) -> usize
+       where Self: Sized { ... } *)
+    count : Self -> usize;
+
+    (* NOTE: Buggsed, same as above *)
+    (* fn last(self) -> Option<Self::Item>
+       where Self: Sized { ... } *)
+    last : Self -> Option Item;
+
+    (* fn advance_by(&mut self, n: usize) -> Result<(), usize> { ... } *)
+
+    (* fn nth(&mut self, n: usize) -> Option<Self::Item> { ... } *)
+    
+    (* fn step_by(self, step: usize) -> StepBy<Self>
+       where Self: Sized { ... } *)
+    
+    (* fn chain<U>(self, other: U) -> Chain<Self, <U as IntoIterator>::IntoIter>
+       where Self: Sized,
+             U: IntoIterator<Item = Self::Item> { ... } *)
 
   }.
 End Iterator.
@@ -138,8 +161,8 @@ Module DoubleEndedIterator.
     Item := Item;
 
     next_back : mut_ref Self -> Option Item;
-    (* How to translate tuple? *)
-    advance_back_by : mut_ref Self -> usize -> Result unit usize;
+    (* NOTE: How to translate tuple? *)
+    (* advance_back_by : mut_ref Self -> usize -> Result unit usize; *)
     nth_back : mut_ref Self -> usize -> Option Item;
     try_nfold {B F R : Set} : mut_ref Self -> B -> F -> R;
     rfold {B F : Set} : Self -> B -> F -> B;
