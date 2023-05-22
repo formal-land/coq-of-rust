@@ -1,6 +1,9 @@
 Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust.std.clone.
+Require Import CoqOfRust.std.fmt.
+(* ERROR: Circular Dependency *)
+(* Require Import CoqOfRust.std.cmp. *)
 
 (* 
 Structs: 
@@ -42,12 +45,6 @@ Traits:
 Module Destruct.
   Class Trait (Self : Set) : Set := { }.
 End Destruct.
-
-(* pub trait DiscriminantKind {
-    type Discriminant: Clone + Copy + Debug + Eq + PartialEq<Self::Discriminant> + Hash + Send + Sync + Unpin;
-} *)
-Module DiscriminantKind.
-End DiscriminantKind.
 
 (* pub trait PointerLike { } *)
 Module PointerLike.
@@ -106,3 +103,25 @@ End Sized.
 Module Unpin.
   Class Trait (Self : Set) : Set := { }.
 End Unpin.
+
+(* pub trait DiscriminantKind {
+    type Discriminant: Clone + Copy + Debug + Eq + PartialEq<Self::Discriminant> + Hash + Send + Sync + Unpin;
+} *)
+Module DiscriminantKind.
+  Class Trait (Self : Set) 
+    {Discriminant : Set} 
+    (* TODO: add and verify the dependencies, one by one *)
+      `{Clone.Trait Discriminant} 
+      `{Copy.Trait Discriminant} 
+      `{Debug.Trait Discriminant} 
+      (* ERROR: Circular Dependency *)
+      (* `{Eq.Trait Discriminant}  *)
+      (* `{PartialEq.Trait Discriminant Discriminant} *)
+      (* `{Hash.Trait Discriminant} *)
+      (* `{Send.Trait Discriminant} *)
+      (* `{Sync.Trait Discriminant} *)
+      `{Unpin.Trait Discriminant}
+    := {
+  Discriminant := Discriminant;
+}.
+End DiscriminantKind.
