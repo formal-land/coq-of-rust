@@ -99,7 +99,7 @@ fn create_translation_to_coq(input_file_name: PathBuf) -> String {
                 // Step 1 - Compile to top_level
                 let top_level = compile_top_level(tcx);
                 // Step 2 - Monadic Transformation
-                let top_level = monadic_transformation(top_level);
+                let top_level = mt_top_level(top_level);
                 // Step 3 - To string
                 top_level.to_pretty(LINE_WIDTH)
             })

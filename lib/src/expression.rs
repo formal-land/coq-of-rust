@@ -266,6 +266,141 @@ fn monadic_translation(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
     }
 }
 
+pub fn mt_boxed_expression(mut bexpr: Box<Expr>) -> Box<Expr> {
+    *bexpr = mt_expression(*bexpr);
+    bexpr
+}
+
+fn mt_match_arm(arm: MatchArm) -> MatchArm {
+    MatchArm {
+        body: mt_expression(arm.body),
+        ..arm
+    }
+}
+
+fn mt_match_arms(arms: Vec<MatchArm>) -> Vec<MatchArm> {
+    arms.into_iter().map(mt_match_arm).collect()
+}
+
+fn mt_field(field: (String, Expr)) -> (String, Expr) {
+    let (s, val) = field;
+    (s, mt_expression(val))
+}
+
+fn mt_fields(fields: Vec<(String, Expr)>) -> Vec<(String, Expr)> {
+    fields.into_iter().map(mt_field).collect()
+}
+
+pub fn mt_expressions(exprs: Vec<Expr>) -> Vec<Expr> {
+    exprs.into_iter().map(mt_expression).collect()
+}
+
+// @TODO add the translation logic (right now is just an ineficient identity)
+pub fn mt_expression(expr: Expr) -> Expr {
+    match expr {
+        Expr::LocalVar(x) => Expr::LocalVar(x),
+        Expr::Var(x) => Expr::Var(x),
+        Expr::AssociatedFunction { ty, func } => Expr::AssociatedFunction { ty, func },
+        Expr::Literal(x) => Expr::Literal(x),
+        Expr::AddrOf(box_expr) => Expr::AddrOf(mt_boxed_expression(box_expr)),
+        Expr::Call { func, args } => Expr::Call {
+            func: mt_boxed_expression(func),
+            args: mt_expressions(args),
+        },
+        Expr::MethodCall { object, func, args } => Expr::MethodCall {
+            object: mt_boxed_expression(object),
+            func,
+            args: mt_expressions(args),
+        },
+        Expr::Let {
+            modifier,
+            pat,
+            init,
+            body,
+        } => Expr::Let {
+            modifier,
+            pat,
+            init: mt_boxed_expression(init),
+            body: mt_boxed_expression(body),
+        },
+        Expr::Lambda { args, body } => Expr::Lambda {
+            args,
+            body: mt_boxed_expression(body),
+        },
+        Expr::Seq { first, second } => Expr::Seq {
+            first: mt_boxed_expression(first),
+            second: mt_boxed_expression(second),
+        },
+        Expr::Cast { expr, ty } => Expr::Cast {
+            expr: mt_boxed_expression(expr),
+            ty,
+        },
+        Expr::Type { expr, ty } => Expr::Type {
+            expr: mt_boxed_expression(expr),
+            ty,
+        },
+        Expr::Array { elements } => Expr::Array {
+            elements: mt_expressions(elements),
+        },
+        Expr::Tuple { elements } => Expr::Tuple {
+            elements: mt_expressions(elements),
+        },
+        Expr::LetIf { pat, init } => Expr::LetIf {
+            pat,
+            init: mt_boxed_expression(init),
+        },
+        Expr::If {
+            condition,
+            success,
+            failure,
+        } => Expr::If {
+            condition: mt_boxed_expression(condition),
+            success: mt_boxed_expression(success),
+            failure: mt_boxed_expression(failure),
+        },
+        Expr::Loop { body, loop_source } => Expr::Loop {
+            body: mt_boxed_expression(body),
+            loop_source,
+        },
+        Expr::Match { scrutinee, arms } => Expr::Match {
+            scrutinee: mt_boxed_expression(scrutinee),
+            arms: mt_match_arms(arms),
+        },
+        Expr::Assign { left, right } => Expr::Assign {
+            left: mt_boxed_expression(left),
+            right: mt_boxed_expression(right),
+        },
+        Expr::IndexedField { base, index } => Expr::IndexedField {
+            base: mt_boxed_expression(base),
+            index,
+        },
+        Expr::NamedField { base, name } => Expr::NamedField {
+            base: mt_boxed_expression(base),
+            name,
+        },
+        Expr::Index { base, index } => Expr::Index {
+            base: mt_boxed_expression(base),
+            index,
+        },
+        Expr::StructStruct {
+            path,
+            fields,
+            base,
+            struct_or_variant,
+        } => Expr::StructStruct {
+            path,
+            fields: mt_fields(fields),
+            base: base.map(mt_boxed_expression),
+            struct_or_variant,
+        },
+        Expr::StructTuple { path, fields } => Expr::StructTuple {
+            path,
+            fields: mt_expressions(fields),
+        },
+        Expr::StructUnit { path } => Expr::StructUnit { path },
+    }
+}
+
 pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut FreshVars) -> Expr {
     match &expr.kind {
         ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),

@@ -708,6 +708,154 @@ fn fn_to_doc<'a>(
     ])
 }
 
+fn mt_impl_item(item: (String, ImplItem)) -> (String, ImplItem) {
+    let (s, item) = item;
+    match item {
+        ImplItem::Type { ty } => (s, ImplItem::Type { ty }),
+        ImplItem::Definition {
+            args,
+            ret_ty,
+            body,
+            is_method,
+            is_dead_code,
+        } => (
+            s,
+            ImplItem::Definition {
+                args,
+                ret_ty,
+                body: mt_boxed_expression(body),
+                is_method,
+                is_dead_code,
+            },
+        ),
+    }
+}
+
+fn mt_impl_items(items: Vec<(String, ImplItem)>) -> Vec<(String, ImplItem)> {
+    items.into_iter().map(mt_impl_item).collect()
+}
+
+fn mt_trait_item(body: (String, TraitItem)) -> (String, TraitItem) {
+    let (s, body) = body;
+    match body {
+        TraitItem::Definition { ty } => (s, TraitItem::Definition { ty }),
+        TraitItem::Type => (s, TraitItem::Type),
+        TraitItem::DefinitionWithDefault { args, ret_ty, body } => (
+            s,
+            TraitItem::DefinitionWithDefault {
+                args,
+                ret_ty,
+                body: mt_boxed_expression(body),
+            },
+        ),
+    }
+}
+
+fn mt_trait_items(body: Vec<(String, TraitItem)>) -> Vec<(String, TraitItem)> {
+    body.into_iter().map(mt_trait_item).collect()
+}
+
+/// Monad transform for TopLevelItem
+fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
+    match item {
+        TopLevelItem::Const { name, ty, value } => TopLevelItem::Const {
+            name,
+            ty,
+            value: mt_boxed_expression(value),
+        },
+        TopLevelItem::Definition {
+            name,
+            ty_params,
+            where_predicates,
+            args,
+            ret_ty,
+            body,
+            is_dead_code,
+        } => TopLevelItem::Definition {
+            name,
+            ty_params,
+            where_predicates,
+            args,
+            ret_ty, // @TODO do I need to transform the function type also?
+            body: mt_boxed_expression(body),
+            is_dead_code,
+        },
+        TopLevelItem::TypeAlias { name, ty } => TopLevelItem::TypeAlias { name, ty },
+        TopLevelItem::TypeEnum { name, variants } => TopLevelItem::TypeEnum { name, variants },
+        TopLevelItem::TypeStructStruct {
+            name,
+            fields,
+            is_dead_code,
+        } => TopLevelItem::TypeStructStruct {
+            name,
+            fields,
+            is_dead_code,
+        },
+        TopLevelItem::TypeStructTuple { name, fields } => {
+            TopLevelItem::TypeStructTuple { name, fields }
+        }
+        TopLevelItem::TypeStructUnit { name } => TopLevelItem::TypeStructUnit { name },
+        TopLevelItem::Module {
+            name,
+            body,
+            is_dead_code,
+        } => TopLevelItem::Module {
+            name,
+            body: mt_top_level(body),
+            is_dead_code,
+        },
+        TopLevelItem::Impl {
+            self_ty,
+            counter,
+            items,
+        } => TopLevelItem::Impl {
+            self_ty,
+            counter,
+            items: mt_impl_items(items),
+        },
+        TopLevelItem::Trait {
+            name,
+            ty_params,
+            body,
+        } => TopLevelItem::Trait {
+            name,
+            ty_params,
+            body: mt_trait_items(body),
+        },
+        TopLevelItem::TraitImpl {
+            generic_tys,
+            ty_params,
+            self_ty,
+            of_trait,
+            items,
+            trait_non_default_items,
+        } => TopLevelItem::TraitImpl {
+            generic_tys,
+            ty_params,
+            self_ty,
+            of_trait,
+            items: mt_impl_items(items),
+            trait_non_default_items,
+        },
+        TopLevelItem::Use {
+            name,
+            path,
+            is_glob,
+            is_type,
+        } => TopLevelItem::Use {
+            name,
+            path,
+            is_glob,
+            is_type,
+        },
+        TopLevelItem::Error(err) => TopLevelItem::Error(err),
+    }
+}
+
+pub fn mt_top_level(tl: TopLevel) -> TopLevel {
+    TopLevel(tl.0.into_iter().map(mt_top_level_item).collect())
+}
+
 impl ImplItem {
     fn class_instance_to_doc<'a>(
         instance_prefix: &'a str,
