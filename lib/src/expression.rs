@@ -37,12 +37,6 @@ pub struct MatchArm {
     body: Expr,
 }
 
-#[derive(Debug)]
-pub enum LetModifier {
-    NormalLet,
-    MonadicLet,
-}
-
 /// Enum [Expr] represents the AST of rust terms.
 #[derive(Debug)]
 pub enum Expr {
@@ -64,7 +58,9 @@ pub enum Expr {
         args: Vec<Expr>,
     },
     Let {
-        modifier: LetModifier,
+        modifier: &'static str,
+        /// this is appended to the let keyword during the translation
+        /// use "" for normal let, "*" for monadic, etc
         pat: Pattern,
         init: Box<Expr>,
         body: Box<Expr>,
@@ -242,7 +238,7 @@ fn monadic_translation(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
                     }
                     // Handle the let inside arguments
                     Expr::Let {
-                        modifier: LetModifier::MonadicLet,
+                        modifier: "*",
                         pat,
                         init,
                         body,
@@ -259,7 +255,7 @@ fn monadic_translation(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
                 .into_iter()
                 .rev()
                 .fold(fexpr, move |body, (pat, fcall)| Expr::Let {
-                    modifier: LetModifier::MonadicLet,
+                    modifier: "*",
                     pat,
                     init: Box::new(fcall),
                     body: Box::new(monadic_translation(body, fresh_vars)), // recurse in the body
@@ -544,7 +540,7 @@ fn compile_stmts(
                 };
                 let body = Box::new(compile_stmts(tcx, stmts, expr, fresh_vars));
                 Expr::Let {
-                    modifier: LetModifier::NormalLet,
+                    modifier: "",
                     pat,
                     init,
                     body,
@@ -625,10 +621,7 @@ impl Expr {
             } => group([
                 nest([
                     nest([
-                        match modifier {
-                            LetModifier::NormalLet => text("let"),
-                            LetModifier::MonadicLet => text("let*"),
-                        },
+                        text(format!("let{}", modifier)),
                         line(),
                         group([
                             (if !pat.is_single_binding() {
