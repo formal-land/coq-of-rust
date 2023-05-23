@@ -204,6 +204,7 @@ fn has_calls_or_lets(args: &[Expr]) -> bool {
         .any(|expr| (matches!(expr, Expr::Call { .. }) || matches!(expr, Expr::Let { .. })))
 }
 
+/// @TODO REMOVE THIS in favor of mt_expression
 /// Unest nested functionc calls by transforming them
 /// into lets. It should return the same expression if
 /// there is no information to be translated
@@ -345,16 +346,67 @@ fn mt_call(func: Box<Expr>, args: Vec<Expr>) -> Expr {
     }
 }
 
+fn pure(e: Expr) -> Expr {
+    Expr::Pure(Box::new(e))
+}
+
+/// let a = (let b = c in d) in e
+/// ----------------------------------
+/// let b = c in
+/// let a = d in
+/// e
+fn mt_let(modifier: &'static str, pat: Pattern, mut init: Box<Expr>, mut body: Box<Expr>) -> Expr {
+    init = mt_boxed_expression(init);
+    body = mt_boxed_expression(body);
+    match (modifier, *init) {
+        (
+            // I compare both modifier to "*" to make
+            // sure that this is a monadic let
+            "*",
+            Expr::Let {
+                modifier: "*",
+                pat: inner_pat,
+                init: inner_init,
+                body: inner_body,
+            },
+        ) =>
+        // I may do this as mt_expression(Let { ... }), but I know that
+        // the argument is a let so I just call mt_let instead
+        {
+            mt_let(
+                "*",
+                inner_pat,
+                inner_init,
+                Box::new(Expr::Let {
+                    modifier: "*",
+                    pat,
+                    init: inner_body,
+                    body,
+                }),
+            )
+        }
+        (modifier, init) => Expr::Let {
+            modifier,
+            pat,
+            init: Box::new(init), // I would like to avoid this allocation here
+            body,
+        },
+    }
+}
+
 // @TODO add the translation logic (right now is just an ineficient identity)
 pub fn mt_expression(expr: Expr) -> Expr {
     match expr {
         Expr::Pure(x) => Expr::Pure(x),
-        Expr::LocalVar(x) => Expr::LocalVar(x),
-        Expr::Var(x) => Expr::Var(x),
+        Expr::LocalVar(x) => pure(Expr::LocalVar(x)),
+        Expr::Var(x) => pure(Expr::Var(x)),
+        // @TODO how to transform associated function?
         Expr::AssociatedFunction { ty, func } => Expr::AssociatedFunction { ty, func },
-        Expr::Literal(x) => Expr::Literal(x),
-        Expr::AddrOf(box_expr) => Expr::AddrOf(mt_boxed_expression(box_expr)),
+        Expr::Literal(x) => pure(Expr::Literal(x)),
+        Expr::AddrOf(box_expr) => pure(Expr::AddrOf(mt_boxed_expression(box_expr))),
         Expr::Call { func, args } => mt_call(func, args),
+        // @TODO I guess method call transformation should be similar to
+        // function application transformation
         Expr::MethodCall { object, func, args } => Expr::MethodCall {
             object: mt_boxed_expression(object),
             func,
@@ -365,12 +417,7 @@ pub fn mt_expression(expr: Expr) -> Expr {
             pat,
             init,
             body,
-        } => Expr::Let {
-            modifier,
-            pat,
-            init: mt_boxed_expression(init),
-            body: mt_boxed_expression(body),
-        },
+        } => mt_let(modifier, pat, init, body),
         Expr::Lambda { args, body } => Expr::Lambda {
             args,
             body: mt_boxed_expression(body),
