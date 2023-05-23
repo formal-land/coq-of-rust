@@ -319,7 +319,6 @@ pub fn mt_expressions(exprs: Vec<Expr>, fresh_vars: &mut FreshVars) -> Vec<Expr>
 /// ...
 /// f'(a', b', ...)
 fn mt_call(func: Expr, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr {
-    eprintln!("mt_call");
     let mut let_vars: Vec<(Pattern, Expr)> = vec![];
     // Create one variable for the function
     let fname = fresh_vars.next();
@@ -364,7 +363,6 @@ fn mt_let(
     body: Expr,
     fresh_vars: &mut FreshVars,
 ) -> Expr {
-    eprintln!("mt_let");
     match (modifier, init) {
         (
             // I compare both modifier to "*" to make
@@ -419,19 +417,13 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
             pat,
             init,
             body,
-        } => Expr::Let {
+        } => mt_let(
             modifier,
             pat,
-            init,
-            body,
-        },
-        //     mt_let(
-        //     modifier,
-        //     pat,
-        //     mt_boxed_expression(init, fresh_vars),
-        //     mt_boxed_expression(body, fresh_vars),
-        //     fresh_vars,
-        // ),
+            mt_expression(*init, fresh_vars),
+            mt_expression(*body, fresh_vars),
+            fresh_vars,
+        ),
         Expr::Lambda { args, body } => Expr::Lambda {
             args,
             body: mt_boxed_expression(body, fresh_vars),
