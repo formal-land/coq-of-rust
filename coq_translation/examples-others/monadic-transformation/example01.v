@@ -11,17 +11,10 @@ Definition tri (a : u64) (b : u64) (c : u64) : unit := Pure tt.
 Definition main (_ : unit) : unit :=
   let* α0 := Pure id in
   let* α1 := Pure 0 in
-  Pure α0 α1 ;;
-  let* α0 := Pure id in
+  α0 α1 ;;
   let* α2 := Pure id in
-  let* α3 := Pure 0 in
-  let* α1 := Pure α2 α3 in
-  Pure α0 α1 ;;
   let* α0 := Pure id in
-  let* α2 := Pure id in
-  let* α4 := Pure id in
-  let* α5 := Pure 0 in
-  let* α3 := Pure α4 α5 in
-  let* α1 := Pure α2 α3 in
-  Pure α0 α1 ;;
+  let* α1 := Pure 0 in
+  let* α3 := α0 α1 in
+  α2 α3 ;;
   Pure tt.

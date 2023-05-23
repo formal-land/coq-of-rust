@@ -329,10 +329,7 @@ fn mt_call(func: Box<Expr>, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr
         .into_iter()
         .map(|expr| {
             let vname = fresh_vars.next();
-            let_vars.push((
-                Pattern::Variable(vname.clone()),
-                mt_expression(expr, fresh_vars),
-            ));
+            let_vars.push((Pattern::Variable(vname.clone()), expr));
             Expr::Var(Path::local(vname))
         })
         .collect();
@@ -344,23 +341,15 @@ fn mt_call(func: Box<Expr>, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr
         args,
     };
     // the nested lets
-    let nested_lets = let_vars
-        .into_iter()
-        .rev()
-        .fold(fcall, |acc, (pat, expr)| Expr::Let {
-            modifier: "*",
-            pat,
-            init: Box::new(expr),
-            body: Box::new(acc),
-        });
+    let nested_lets = let_vars.into_iter().rev().fold(fcall, |acc, (pat, expr)| {
+        mt_let("*", pat, Box::new(expr), Box::new(acc), fresh_vars)
+    });
     // the outter let
-    mt_expression(
-        Expr::Let {
-            modifier: "*",
-            pat: Pattern::Variable(fname),
-            init: mt_boxed_expression(func, fresh_vars),
-            body: Box::new(nested_lets),
-        },
+    mt_let(
+        "*",
+        Pattern::Variable(fname),
+        func,
+        Box::new(nested_lets),
         fresh_vars,
     )
 }
@@ -377,13 +366,11 @@ fn pure(e: Expr) -> Expr {
 fn mt_let(
     modifier: &'static str,
     pat: Pattern,
-    mut init: Box<Expr>,
-    mut body: Box<Expr>,
+    init: Box<Expr>,
+    body: Box<Expr>,
     fresh_vars: &mut FreshVars,
 ) -> Expr {
     eprintln!("mt_let");
-    init = mt_boxed_expression(init, fresh_vars);
-    body = mt_boxed_expression(body, fresh_vars);
     match (modifier, *init) {
         (
             // I compare both modifier to "*" to make
@@ -395,18 +382,11 @@ fn mt_let(
                 init: inner_init,
                 body: inner_body,
             },
-        ) => mt_expression(
-            Expr::Let {
-                modifier: "*",
-                pat: inner_pat,
-                init: inner_init,
-                body: Box::new(Expr::Let {
-                    modifier: "*",
-                    pat,
-                    init: inner_body,
-                    body,
-                }),
-            },
+        ) => mt_let(
+            "*",
+            inner_pat,
+            mt_boxed_expression(inner_init, fresh_vars),
+            Box::new(mt_let("*", pat, inner_body, body, fresh_vars)),
             fresh_vars,
         ),
         (modifier, init) => Expr::Let {
@@ -428,7 +408,11 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
         Expr::AssociatedFunction { ty, func } => Expr::AssociatedFunction { ty, func },
         Expr::Literal(x) => pure(Expr::Literal(x)),
         Expr::AddrOf(box_expr) => pure(Expr::AddrOf(mt_boxed_expression(box_expr, fresh_vars))),
-        Expr::Call { func, args } => mt_call(func, args, fresh_vars),
+        Expr::Call { func, args } => mt_call(
+            mt_boxed_expression(func, fresh_vars),
+            mt_expressions(args, fresh_vars),
+            fresh_vars,
+        ),
         // @TODO I guess method call transformation should be similar to
         // function application transformation
         Expr::MethodCall { object, func, args } => Expr::MethodCall {
@@ -441,7 +425,19 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
             pat,
             init,
             body,
-        } => mt_let(modifier, pat, init, body, fresh_vars),
+        } => Expr::Let {
+            modifier,
+            pat,
+            init,
+            body,
+        },
+        //     mt_let(
+        //     modifier,
+        //     pat,
+        //     mt_boxed_expression(init, fresh_vars),
+        //     mt_boxed_expression(body, fresh_vars),
+        //     fresh_vars,
+        // ),
         Expr::Lambda { args, body } => Expr::Lambda {
             args,
             body: mt_boxed_expression(body, fresh_vars),
