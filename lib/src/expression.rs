@@ -334,10 +334,10 @@ fn mt_call(func: Box<Expr>, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr
     // We're creating a (let ... (let ... (let ... fcall))) expression,
     // this is the body of the most nested let. It is the function call
     // with all arguments (including the function itself) bound to variables
-    let fcall = Expr::Call {
+    let fcall = pure(Expr::Call {
         func: Box::new(Expr::Var(Path::local(fname.clone()))),
         args,
-    };
+    });
     // the nested lets
     let nested_lets = let_vars
         .into_iter()
@@ -349,12 +349,15 @@ fn mt_call(func: Box<Expr>, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr
             body: Box::new(acc),
         });
     // the outter let
-    Expr::Let {
-        modifier: "*",
-        pat: Pattern::Variable(fname),
-        init: mt_boxed_expression(func, fresh_vars),
-        body: Box::new(nested_lets),
-    }
+    mt_expression(
+        Expr::Let {
+            modifier: "*",
+            pat: Pattern::Variable(fname),
+            init: mt_boxed_expression(func, fresh_vars),
+            body: Box::new(nested_lets),
+        },
+        fresh_vars,
+    )
 }
 
 fn pure(e: Expr) -> Expr {
@@ -386,17 +389,20 @@ fn mt_let(
                 init: inner_init,
                 body: inner_body,
             },
-        ) => Expr::Let {
-            modifier: "*",
-            pat: inner_pat,
-            init: inner_init,
-            body: Box::new(Expr::Let {
+        ) => mt_expression(
+            Expr::Let {
                 modifier: "*",
-                pat,
-                init: inner_body,
-                body,
-            }),
-        },
+                pat: inner_pat,
+                init: inner_init,
+                body: Box::new(Expr::Let {
+                    modifier: "*",
+                    pat,
+                    init: inner_body,
+                    body,
+                }),
+            },
+            fresh_vars,
+        ),
         (modifier, init) => Expr::Let {
             modifier,
             pat,

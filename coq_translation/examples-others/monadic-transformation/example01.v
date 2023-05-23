@@ -9,13 +9,12 @@ Definition tri (a : u64) (b : u64) (c : u64) : unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  let* _x := Pure id in
-  let* _x := Pure 0 in
-  _x _x ;;
-  let* _x := Pure id in
-  let* _x :=
-    let* _x := Pure id in
-    let* _x := Pure 0 in
-    _x _x in
-  _x _x ;;
+  let* α0 := Pure id in
+  let* α1 := Pure 0 in
+  Pure α0 α1 ;;
+  let* α2 := Pure id in
+  let* α4 := Pure id in
+  let* α5 := Pure 0 in
+  let* α3 := Pure α4 α5 in
+  Pure α2 α3 ;;
   Pure tt.
