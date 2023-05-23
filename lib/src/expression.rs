@@ -471,11 +471,19 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
             condition,
             success,
             failure,
-        } => Expr::If {
-            condition: mt_boxed_expression(condition, fresh_vars),
-            success: mt_boxed_expression(success, fresh_vars),
-            failure: mt_boxed_expression(failure, fresh_vars),
-        },
+        } => {
+            let vname = fresh_vars.next();
+            Expr::Let {
+                modifier: "*",
+                pat: Pattern::Variable(vname.clone()),
+                init: mt_boxed_expression(condition, fresh_vars),
+                body: Box::new(Expr::If {
+                    condition: Box::new(Expr::LocalVar(vname)),
+                    success: mt_boxed_expression(success, fresh_vars),
+                    failure: mt_boxed_expression(failure, fresh_vars),
+                }),
+            }
+        }
         Expr::Loop { body, loop_source } => Expr::Loop {
             body: mt_boxed_expression(body, fresh_vars),
             loop_source,
