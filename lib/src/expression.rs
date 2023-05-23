@@ -390,6 +390,20 @@ fn mt_let(
     }
 }
 
+fn mt_match(scrutinee: Expr, arms: Vec<MatchArm>, fresh_vars: &mut FreshVars) -> Expr {
+    let vname = fresh_vars.next();
+    let pat = Pattern::Variable(vname.clone());
+    Expr::Let {
+        modifier: "*",
+        pat,
+        init: Box::new(scrutinee),
+        body: Box::new(Expr::Match {
+            scrutinee: Box::new(Expr::LocalVar(vname)),
+            arms,
+        }),
+    }
+}
+
 // @TODO add the translation logic (right now is just an ineficient identity)
 pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
     match expr {
@@ -466,10 +480,11 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
             body: mt_boxed_expression(body, fresh_vars),
             loop_source,
         },
-        Expr::Match { scrutinee, arms } => Expr::Match {
-            scrutinee: mt_boxed_expression(scrutinee, fresh_vars),
-            arms: mt_match_arms(arms, fresh_vars),
-        },
+        Expr::Match { scrutinee, arms } => mt_match(
+            mt_expression(*scrutinee, fresh_vars),
+            mt_match_arms(arms, fresh_vars),
+            fresh_vars,
+        ),
         Expr::Assign { left, right } => Expr::Assign {
             left: mt_boxed_expression(left, fresh_vars),
             right: mt_boxed_expression(right, fresh_vars),
