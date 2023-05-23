@@ -723,7 +723,7 @@ fn mt_impl_item(item: (String, ImplItem)) -> (String, ImplItem) {
             ImplItem::Definition {
                 args,
                 ret_ty,
-                body: mt_boxed_expression(body),
+                body: mt_boxed_expression(body, &mut FreshVars::new()),
                 is_method,
                 is_dead_code,
             },
@@ -745,7 +745,7 @@ fn mt_trait_item(body: (String, TraitItem)) -> (String, TraitItem) {
             TraitItem::DefinitionWithDefault {
                 args,
                 ret_ty,
-                body: mt_boxed_expression(body),
+                body: mt_boxed_expression(body, &mut FreshVars::new()),
             },
         ),
     }
@@ -761,7 +761,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
         TopLevelItem::Const { name, ty, value } => TopLevelItem::Const {
             name,
             ty,
-            value: mt_boxed_expression(value),
+            value: mt_boxed_expression(value, &mut FreshVars::new()),
         },
         TopLevelItem::Definition {
             name,
@@ -777,7 +777,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             where_predicates,
             args,
             ret_ty, // @TODO do I need to transform the function type also?
-            body: mt_boxed_expression(body),
+            body: mt_boxed_expression(body, &mut FreshVars::new()),
             is_dead_code,
         },
         TopLevelItem::TypeAlias { name, ty } => TopLevelItem::TypeAlias { name, ty },

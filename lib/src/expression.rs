@@ -268,33 +268,41 @@ fn monadic_translation(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
     }
 }
 
-pub fn mt_boxed_expression(mut bexpr: Box<Expr>) -> Box<Expr> {
-    *bexpr = mt_expression(*bexpr);
+pub fn mt_boxed_expression(mut bexpr: Box<Expr>, fresh_vars: &mut FreshVars) -> Box<Expr> {
+    *bexpr = mt_expression(*bexpr, fresh_vars);
     bexpr
 }
 
-fn mt_match_arm(arm: MatchArm) -> MatchArm {
+fn mt_match_arm(arm: MatchArm, fresh_vars: &mut FreshVars) -> MatchArm {
     MatchArm {
-        body: mt_expression(arm.body),
+        body: mt_expression(arm.body, fresh_vars),
         ..arm
     }
 }
 
-fn mt_match_arms(arms: Vec<MatchArm>) -> Vec<MatchArm> {
-    arms.into_iter().map(mt_match_arm).collect()
+fn mt_match_arms(arms: Vec<MatchArm>, fresh_vars: &mut FreshVars) -> Vec<MatchArm> {
+    arms.into_iter()
+        .map(|arm| mt_match_arm(arm, fresh_vars))
+        .collect()
 }
 
-fn mt_field(field: (String, Expr)) -> (String, Expr) {
+fn mt_field(field: (String, Expr), fresh_vars: &mut FreshVars) -> (String, Expr) {
     let (s, val) = field;
-    (s, mt_expression(val))
+    (s, mt_expression(val, fresh_vars))
 }
 
-fn mt_fields(fields: Vec<(String, Expr)>) -> Vec<(String, Expr)> {
-    fields.into_iter().map(mt_field).collect()
+fn mt_fields(fields: Vec<(String, Expr)>, fresh_vars: &mut FreshVars) -> Vec<(String, Expr)> {
+    fields
+        .into_iter()
+        .map(|field| mt_field(field, fresh_vars))
+        .collect()
 }
 
-pub fn mt_expressions(exprs: Vec<Expr>) -> Vec<Expr> {
-    exprs.into_iter().map(mt_expression).collect()
+pub fn mt_expressions(exprs: Vec<Expr>, fresh_vars: &mut FreshVars) -> Vec<Expr> {
+    exprs
+        .into_iter()
+        .map(|expr| mt_expression(expr, fresh_vars))
+        .collect()
 }
 
 /// Monadic transalte function call
@@ -306,20 +314,23 @@ pub fn mt_expressions(exprs: Vec<Expr>) -> Vec<Expr> {
 /// let b'; = MT(b);
 /// ...
 /// f'(a', b', ...)
-fn mt_call(func: Box<Expr>, args: Vec<Expr>) -> Expr {
+fn mt_call(func: Box<Expr>, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr {
     let mut let_vars: Vec<(Pattern, Expr)> = vec![];
+    // Create one variable for the function
+    let fname = fresh_vars.next();
     // Create one variable for each argument, take
     // the oportunity to apply mt_expression into it
     let args = args
         .into_iter()
         .map(|expr| {
-            let vname = String::from("_x");
-            let_vars.push((Pattern::Variable(vname.clone()), mt_expression(expr)));
+            let vname = fresh_vars.next();
+            let_vars.push((
+                Pattern::Variable(vname.clone()),
+                mt_expression(expr, fresh_vars),
+            ));
             Expr::Var(Path::local(vname))
         })
         .collect();
-    // Create one variable for the function
-    let fname = String::from("_x");
     // We're creating a (let ... (let ... (let ... fcall))) expression,
     // this is the body of the most nested let. It is the function call
     // with all arguments (including the function itself) bound to variables
@@ -341,7 +352,7 @@ fn mt_call(func: Box<Expr>, args: Vec<Expr>) -> Expr {
     Expr::Let {
         modifier: "*",
         pat: Pattern::Variable(fname),
-        init: mt_boxed_expression(func),
+        init: mt_boxed_expression(func, fresh_vars),
         body: Box::new(nested_lets),
     }
 }
@@ -355,9 +366,15 @@ fn pure(e: Expr) -> Expr {
 /// let b = c in
 /// let a = d in
 /// e
-fn mt_let(modifier: &'static str, pat: Pattern, mut init: Box<Expr>, mut body: Box<Expr>) -> Expr {
-    init = mt_boxed_expression(init);
-    body = mt_boxed_expression(body);
+fn mt_let(
+    modifier: &'static str,
+    pat: Pattern,
+    mut init: Box<Expr>,
+    mut body: Box<Expr>,
+    fresh_vars: &mut FreshVars,
+) -> Expr {
+    init = mt_boxed_expression(init, fresh_vars);
+    body = mt_boxed_expression(body, fresh_vars);
     match (modifier, *init) {
         (
             // I compare both modifier to "*" to make
@@ -390,7 +407,7 @@ fn mt_let(modifier: &'static str, pat: Pattern, mut init: Box<Expr>, mut body: B
 }
 
 // @TODO add the translation logic (right now is just an ineficient identity)
-pub fn mt_expression(expr: Expr) -> Expr {
+pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
     match expr {
         Expr::Pure(x) => Expr::Pure(x),
         Expr::LocalVar(x) => pure(Expr::LocalVar(x)),
@@ -398,78 +415,78 @@ pub fn mt_expression(expr: Expr) -> Expr {
         // @TODO how to transform associated function?
         Expr::AssociatedFunction { ty, func } => Expr::AssociatedFunction { ty, func },
         Expr::Literal(x) => pure(Expr::Literal(x)),
-        Expr::AddrOf(box_expr) => pure(Expr::AddrOf(mt_boxed_expression(box_expr))),
-        Expr::Call { func, args } => mt_call(func, args),
+        Expr::AddrOf(box_expr) => pure(Expr::AddrOf(mt_boxed_expression(box_expr, fresh_vars))),
+        Expr::Call { func, args } => mt_call(func, args, fresh_vars),
         // @TODO I guess method call transformation should be similar to
         // function application transformation
         Expr::MethodCall { object, func, args } => Expr::MethodCall {
-            object: mt_boxed_expression(object),
+            object: mt_boxed_expression(object, fresh_vars),
             func,
-            args: mt_expressions(args),
+            args: mt_expressions(args, fresh_vars),
         },
         Expr::Let {
             modifier,
             pat,
             init,
             body,
-        } => mt_let(modifier, pat, init, body),
+        } => mt_let(modifier, pat, init, body, fresh_vars),
         Expr::Lambda { args, body } => Expr::Lambda {
             args,
-            body: mt_boxed_expression(body),
+            body: mt_boxed_expression(body, fresh_vars),
         },
         Expr::Seq { first, second } => Expr::Seq {
-            first: mt_boxed_expression(first),
-            second: mt_boxed_expression(second),
+            first: mt_boxed_expression(first, fresh_vars),
+            second: mt_boxed_expression(second, fresh_vars),
         },
         Expr::Cast { expr, ty } => Expr::Cast {
-            expr: mt_boxed_expression(expr),
+            expr: mt_boxed_expression(expr, fresh_vars),
             ty,
         },
         Expr::Type { expr, ty } => Expr::Type {
-            expr: mt_boxed_expression(expr),
+            expr: mt_boxed_expression(expr, fresh_vars),
             ty,
         },
         Expr::Array { elements } => Expr::Array {
-            elements: mt_expressions(elements),
+            elements: mt_expressions(elements, fresh_vars),
         },
         Expr::Tuple { elements } => Expr::Tuple {
-            elements: mt_expressions(elements),
+            elements: mt_expressions(elements, fresh_vars),
         },
         Expr::LetIf { pat, init } => Expr::LetIf {
             pat,
-            init: mt_boxed_expression(init),
+            init: mt_boxed_expression(init, fresh_vars),
         },
         Expr::If {
             condition,
             success,
             failure,
         } => Expr::If {
-            condition: mt_boxed_expression(condition),
-            success: mt_boxed_expression(success),
-            failure: mt_boxed_expression(failure),
+            condition: mt_boxed_expression(condition, fresh_vars),
+            success: mt_boxed_expression(success, fresh_vars),
+            failure: mt_boxed_expression(failure, fresh_vars),
         },
         Expr::Loop { body, loop_source } => Expr::Loop {
-            body: mt_boxed_expression(body),
+            body: mt_boxed_expression(body, fresh_vars),
             loop_source,
         },
         Expr::Match { scrutinee, arms } => Expr::Match {
-            scrutinee: mt_boxed_expression(scrutinee),
-            arms: mt_match_arms(arms),
+            scrutinee: mt_boxed_expression(scrutinee, fresh_vars),
+            arms: mt_match_arms(arms, fresh_vars),
         },
         Expr::Assign { left, right } => Expr::Assign {
-            left: mt_boxed_expression(left),
-            right: mt_boxed_expression(right),
+            left: mt_boxed_expression(left, fresh_vars),
+            right: mt_boxed_expression(right, fresh_vars),
         },
         Expr::IndexedField { base, index } => Expr::IndexedField {
-            base: mt_boxed_expression(base),
+            base: mt_boxed_expression(base, fresh_vars),
             index,
         },
         Expr::NamedField { base, name } => Expr::NamedField {
-            base: mt_boxed_expression(base),
+            base: mt_boxed_expression(base, fresh_vars),
             name,
         },
         Expr::Index { base, index } => Expr::Index {
-            base: mt_boxed_expression(base),
+            base: mt_boxed_expression(base, fresh_vars),
             index,
         },
         Expr::StructStruct {
@@ -479,13 +496,13 @@ pub fn mt_expression(expr: Expr) -> Expr {
             struct_or_variant,
         } => Expr::StructStruct {
             path,
-            fields: mt_fields(fields),
-            base: base.map(mt_boxed_expression),
+            fields: mt_fields(fields, fresh_vars),
+            base: base.map(|b| mt_boxed_expression(b, fresh_vars)),
             struct_or_variant,
         },
         Expr::StructTuple { path, fields } => Expr::StructTuple {
             path,
-            fields: mt_expressions(fields),
+            fields: mt_expressions(fields, fresh_vars),
         },
         Expr::StructUnit { path } => Expr::StructUnit { path },
     }
