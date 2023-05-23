@@ -17,4 +17,11 @@ Definition main (_ : unit) : unit :=
   let* α3 := Pure 0 in
   let* α1 := Pure α2 α3 in
   Pure α0 α1 ;;
+  let* α0 := Pure id in
+  let* α2 := Pure id in
+  let* α4 := Pure id in
+  let* α5 := Pure 0 in
+  let* α3 := Pure α4 α5 in
+  let* α1 := Pure α2 α3 in
+  Pure α0 α1 ;;
   Pure tt.
