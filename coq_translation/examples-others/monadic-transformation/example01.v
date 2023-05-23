@@ -3,23 +3,51 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition id (x : u64) : u64 := x.
+Definition id (x : u64) : u64 := Pure x.
 
-Definition tri (a : u64) (b : u64) (c : u64) : unit := tt.
+Definition tri (a : u64) (b : u64) (c : u64) : unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  id 0 ;;
-  let* α0 := id 0 in
-  id α0 ;;
-  let* α1 := id 0 in
-  let* α2 := id α1 in
-  id α2 ;;
-  let* α3 := id 0 in
-  let* α4 := id α3 in
-  let* α5 := id α4 in
-  id α5 ;;
-  let* α6 := id 1 in
-  let* α7 := id 2 in
-  tri α6 α7 3 ;;
-  tt.
+  let* _fresh_func := Pure id in
+  let* _fresh := Pure 0 in
+  _fresh_func _fresh ;;
+  let* _fresh_func := Pure id in
+  let* _fresh :=
+    let* _fresh_func := Pure id in
+    let* _fresh := Pure 0 in
+    _fresh_func _fresh in
+  _fresh_func _fresh ;;
+  let* _fresh_func := Pure id in
+  let* _fresh :=
+    let* _fresh_func := Pure id in
+    let* _fresh :=
+      let* _fresh_func := Pure id in
+      let* _fresh := Pure 0 in
+      _fresh_func _fresh in
+    _fresh_func _fresh in
+  _fresh_func _fresh ;;
+  let* _fresh_func := Pure id in
+  let* _fresh :=
+    let* _fresh_func := Pure id in
+    let* _fresh :=
+      let* _fresh_func := Pure id in
+      let* _fresh :=
+        let* _fresh_func := Pure id in
+        let* _fresh := Pure 0 in
+        _fresh_func _fresh in
+      _fresh_func _fresh in
+    _fresh_func _fresh in
+  _fresh_func _fresh ;;
+  let* _fresh_func := Pure tri in
+  let* _fresh :=
+    let* _fresh_func := Pure id in
+    let* _fresh := Pure 1 in
+    _fresh_func _fresh in
+  let* _fresh :=
+    let* _fresh_func := Pure id in
+    let* _fresh := Pure 2 in
+    _fresh_func _fresh in
+  let* _fresh := Pure 3 in
+  _fresh_func _fresh _fresh _fresh ;;
+  Pure tt.

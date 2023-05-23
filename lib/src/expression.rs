@@ -811,7 +811,7 @@ impl MatchArm {
 impl Expr {
     pub fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
-            Expr::Pure(x) => x.to_doc(false),
+            Expr::Pure(x) => nest([text("Pure "), x.to_doc(false)]),
             Expr::LocalVar(ref name) => text(name),
             Expr::Var(path) => path.to_doc(),
             Expr::AssociatedFunction { ty, func } => nest([
