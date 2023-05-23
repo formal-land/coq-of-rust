@@ -9,14 +9,85 @@ Require Import CoqOfRust.lib.lib.
 [ ] RangeInclusive
 [ ] RangeTo
 [ ] RangeToInclusive
- *)
+*)
+
+Module Yeet.
+  Record t : Set := { }.
+End Yeet.
+Definition Yeet := Yeet.t.
+
+Module Range.
+  Record t : Set := { }.
+End Range.
+Definition Range := Range.t.
+
+Module RangeFrom.
+  Record t : Set := { }.
+End RangeFrom.
+Definition RangeFrom := RangeFrom.t.
+
+Module RangeFull.
+  Record t : Set := { }.
+End RangeFull.
+Definition RangeFull := RangeFull.t.
+
+Module RangeInclusive.
+  Record t : Set := { }.
+End RangeInclusive.
+Definition RangeInclusive := RangeInclusive.t.
+
+Module RangeTo.
+  Record t : Set := { }.
+End RangeTo.
+Definition RangeTo := RangeTo.t.
+
+Module RangeToInclusive.
+  Record t : Set := { }.
+End RangeToInclusive.
+Definition RangeToInclusive := RangeToInclusive.t.
 
 (* ********ENUMS******** *)
 (* 
-[ ] GeneratorState
-[ ] Bound
-[ ] ControlFlow
+[x] GeneratorState
+[x] Bound
+[?] ControlFlow
 *)
+
+(* 
+pub enum GeneratorState<Y, R> {
+    Yielded(Y),
+    Complete(R),
+} 
+*)
+Module GeneratorState.
+  Inductive t (Y R : Set) : Set :=
+  | Yielded : Y -> t Y R
+  | Complete : R -> t Y R
+  .
+End GeneratorState.
+Definition GeneratorState := GeneratorState.t.
+
+(* 
+pub enum Bound<T> {
+    Included(T),
+    Excluded(T),
+    Unbounded,
+}
+*)
+Module Bound.
+  Inductive t (T : Set) : Set :=
+  | Included : T -> t T
+  | Excluded : T -> t T
+  | Unbounded : t T
+  .
+End Bound.
+Definition Bound := Bound.t.
+
+(* pub enum ControlFlow<B, C = ()> {
+    Continue(C),
+    Break(B),
+} *)
+(* How to translate enum with default type? *)
 
 (* ********TRAITS******** *)
 (* 
@@ -152,6 +223,18 @@ Module DivAssign.
     Notation.dot := div_assign;
   }.
 End DivAssign.
+
+(* 
+pub trait Drop {
+    // Required method
+    fn drop(&mut self);
+}
+*)
+Module Drop.
+  Class Trait (Self : Set) : Set := {
+    drop : mut_ref Self;
+  }.
+End Drop.
 
 Module Rem.
   Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {

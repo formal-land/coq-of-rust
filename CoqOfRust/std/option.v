@@ -41,7 +41,7 @@ Definition IterMut := IterMut.t.
 
 Module Option.
   Inductive t (T : Set) : Set :=
-  | None : t
-  | Some : T ->t.
+  | None : t T
+  | Some : T -> t T.
 End Option.
 Definition Option := Option.t.
