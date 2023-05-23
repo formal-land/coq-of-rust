@@ -363,25 +363,20 @@ fn mt_let(
     body: Expr,
     fresh_vars: &mut FreshVars,
 ) -> Expr {
-    match (modifier, init) {
-        (
-            // I compare both modifier to "*" to make
-            // sure that this is a monadic let
-            "*",
-            Expr::Let {
-                modifier: "*",
-                pat: inner_pat,
-                init: inner_init,
-                body: inner_body,
-            },
-        ) => mt_let(
+    match init {
+        Expr::Let {
+            modifier: "*",
+            pat: inner_pat,
+            init: inner_init,
+            body: inner_body,
+        } => mt_let(
             "*",
             inner_pat,
             mt_expression(*inner_init, fresh_vars),
             mt_let("*", pat, *inner_body, body, fresh_vars),
             fresh_vars,
         ),
-        (modifier, init) => Expr::Let {
+        init => Expr::Let {
             modifier,
             pat,
             init: Box::new(init),
@@ -442,9 +437,11 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
             args,
             body: mt_boxed_expression(body, fresh_vars),
         }),
-        Expr::Seq { first, second } => Expr::Seq {
-            first: mt_boxed_expression(first, fresh_vars),
-            second: {
+        Expr::Seq { first, second } => Expr::Let {
+            modifier: "*",
+            pat: Pattern::Variable(String::from("_")),
+            init: mt_boxed_expression(first, fresh_vars),
+            body: {
                 fresh_vars.reset();
                 mt_boxed_expression(second, fresh_vars)
             },
