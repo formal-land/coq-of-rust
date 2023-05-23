@@ -313,13 +313,13 @@ fn mt_call(func: Box<Expr>, args: Vec<Expr>) -> Expr {
     let args = args
         .into_iter()
         .map(|expr| {
-            let vname = String::from("_fresh");
+            let vname = String::from("_x");
             let_vars.push((Pattern::Variable(vname.clone()), mt_expression(expr)));
             Expr::Var(Path::local(vname))
         })
         .collect();
     // Create one variable for the function
-    let fname = String::from("_fresh_func");
+    let fname = String::from("_x");
     // We're creating a (let ... (let ... (let ... fcall))) expression,
     // this is the body of the most nested let. It is the function call
     // with all arguments (including the function itself) bound to variables
@@ -369,22 +369,17 @@ fn mt_let(modifier: &'static str, pat: Pattern, mut init: Box<Expr>, mut body: B
                 init: inner_init,
                 body: inner_body,
             },
-        ) =>
-        // I may do this as mt_expression(Let { ... }), but I know that
-        // the argument is a let so I just call mt_let instead
-        {
-            mt_let(
-                "*",
-                inner_pat,
-                inner_init,
-                Box::new(Expr::Let {
-                    modifier: "*",
-                    pat,
-                    init: inner_body,
-                    body,
-                }),
-            )
-        }
+        ) => Expr::Let {
+            modifier: "*",
+            pat: inner_pat,
+            init: inner_init,
+            body: Box::new(Expr::Let {
+                modifier: "*",
+                pat,
+                init: inner_body,
+                body,
+            }),
+        },
         (modifier, init) => Expr::Let {
             modifier,
             pat,
