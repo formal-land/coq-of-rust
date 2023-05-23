@@ -318,7 +318,7 @@ pub fn mt_expressions(exprs: Vec<Expr>, fresh_vars: &mut FreshVars) -> Vec<Expr>
 /// let b'; = MT(b);
 /// ...
 /// f'(a', b', ...)
-fn mt_call(func: Box<Expr>, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr {
+fn mt_call(func: Expr, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr {
     eprintln!("mt_call");
     let mut let_vars: Vec<(Pattern, Expr)> = vec![];
     // Create one variable for the function
@@ -342,16 +342,10 @@ fn mt_call(func: Box<Expr>, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr
     };
     // the nested lets
     let nested_lets = let_vars.into_iter().rev().fold(fcall, |acc, (pat, expr)| {
-        mt_let("*", pat, Box::new(expr), Box::new(acc), fresh_vars)
+        mt_let("*", pat, expr, acc, fresh_vars)
     });
     // the outter let
-    mt_let(
-        "*",
-        Pattern::Variable(fname),
-        func,
-        Box::new(nested_lets),
-        fresh_vars,
-    )
+    mt_let("*", Pattern::Variable(fname), func, nested_lets, fresh_vars)
 }
 
 fn pure(e: Expr) -> Expr {
@@ -366,12 +360,12 @@ fn pure(e: Expr) -> Expr {
 fn mt_let(
     modifier: &'static str,
     pat: Pattern,
-    init: Box<Expr>,
-    body: Box<Expr>,
+    init: Expr,
+    body: Expr,
     fresh_vars: &mut FreshVars,
 ) -> Expr {
     eprintln!("mt_let");
-    match (modifier, *init) {
+    match (modifier, init) {
         (
             // I compare both modifier to "*" to make
             // sure that this is a monadic let
@@ -385,15 +379,15 @@ fn mt_let(
         ) => mt_let(
             "*",
             inner_pat,
-            mt_boxed_expression(inner_init, fresh_vars),
-            Box::new(mt_let("*", pat, inner_body, body, fresh_vars)),
+            mt_expression(*inner_init, fresh_vars),
+            mt_let("*", pat, *inner_body, body, fresh_vars),
             fresh_vars,
         ),
         (modifier, init) => Expr::Let {
             modifier,
             pat,
-            init: Box::new(init), // I would like to avoid this allocation here
-            body,
+            init: Box::new(init),
+            body: Box::new(body),
         },
     }
 }
@@ -409,7 +403,7 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
         Expr::Literal(x) => pure(Expr::Literal(x)),
         Expr::AddrOf(box_expr) => pure(Expr::AddrOf(mt_boxed_expression(box_expr, fresh_vars))),
         Expr::Call { func, args } => mt_call(
-            mt_boxed_expression(func, fresh_vars),
+            mt_expression(*func, fresh_vars),
             mt_expressions(args, fresh_vars),
             fresh_vars,
         ),
