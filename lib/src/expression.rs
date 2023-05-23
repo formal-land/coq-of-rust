@@ -326,10 +326,13 @@ fn mt_call(func: Expr, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr {
     // the oportunity to apply mt_expression into it
     let args = args
         .into_iter()
-        .map(|expr| {
-            let vname = fresh_vars.next();
-            let_vars.push((Pattern::Variable(vname.clone()), expr));
-            Expr::Var(Path::local(vname))
+        .map(|expr| match expr {
+            Expr::Pure(expr) => Expr::Pure(expr),
+            expr => {
+                let vname = fresh_vars.next();
+                let_vars.push((Pattern::Variable(vname.clone()), expr));
+                Expr::Var(Path::local(vname))
+            }
         })
         .collect();
     // We're creating a (let ... (let ... (let ... fcall))) expression,
@@ -343,6 +346,7 @@ fn mt_call(func: Expr, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr {
     let nested_lets = let_vars.into_iter().rev().fold(fcall, |acc, (pat, expr)| {
         mt_let("*", pat, expr, acc, fresh_vars)
     });
+    // f(Pure a)
     // the outter let
     mt_let("*", Pattern::Variable(fname), func, nested_lets, fresh_vars)
 }
@@ -826,7 +830,7 @@ impl MatchArm {
 impl Expr {
     pub fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
-            Expr::Pure(x) => nest([text("Pure "), x.to_doc(false)]),
+            Expr::Pure(x) => paren(with_paren, nest([text("Pure "), x.to_doc(false)])),
             Expr::LocalVar(ref name) => text(name),
             Expr::Var(path) => path.to_doc(),
             Expr::AssociatedFunction { ty, func } => nest([
