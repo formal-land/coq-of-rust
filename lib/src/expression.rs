@@ -438,10 +438,10 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
             mt_expression(*body, fresh_vars),
             fresh_vars,
         ),
-        Expr::Lambda { args, body } => Expr::Lambda {
+        Expr::Lambda { args, body } => pure(Expr::Lambda {
             args,
             body: mt_boxed_expression(body, fresh_vars),
-        },
+        }),
         Expr::Seq { first, second } => Expr::Seq {
             first: mt_boxed_expression(first, fresh_vars),
             second: {
