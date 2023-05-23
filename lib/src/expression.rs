@@ -319,6 +319,7 @@ pub fn mt_expressions(exprs: Vec<Expr>, fresh_vars: &mut FreshVars) -> Vec<Expr>
 /// ...
 /// f'(a', b', ...)
 fn mt_call(func: Box<Expr>, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr {
+    eprintln!("mt_call");
     let mut let_vars: Vec<(Pattern, Expr)> = vec![];
     // Create one variable for the function
     let fname = fresh_vars.next();
@@ -338,10 +339,10 @@ fn mt_call(func: Box<Expr>, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr
     // We're creating a (let ... (let ... (let ... fcall))) expression,
     // this is the body of the most nested let. It is the function call
     // with all arguments (including the function itself) bound to variables
-    let fcall = pure(Expr::Call {
+    let fcall = Expr::Call {
         func: Box::new(Expr::Var(Path::local(fname.clone()))),
         args,
-    });
+    };
     // the nested lets
     let nested_lets = let_vars
         .into_iter()
@@ -380,6 +381,7 @@ fn mt_let(
     mut body: Box<Expr>,
     fresh_vars: &mut FreshVars,
 ) -> Expr {
+    eprintln!("mt_let");
     init = mt_boxed_expression(init, fresh_vars);
     body = mt_boxed_expression(body, fresh_vars);
     match (modifier, *init) {
