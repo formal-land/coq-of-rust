@@ -508,21 +508,18 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
     }
 }
 
-pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut FreshVars) -> Expr {
+pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
     match &expr.kind {
         ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
         ExprKind::Array(elements) => {
             let elements = elements
                 .iter()
-                .map(|expr| compile_expr(tcx, expr, _fresh_vars))
+                .map(|expr| compile_expr(tcx, expr))
                 .collect();
             Expr::Array { elements }
         }
         ExprKind::Call(func, args) => {
-            let args = args
-                .iter()
-                .map(|expr| compile_expr(tcx, expr, _fresh_vars))
-                .collect();
+            let args = args.iter().map(|expr| compile_expr(tcx, expr)).collect();
             match func.kind {
                 // Check if we are calling a constructor
                 ExprKind::Path(rustc_hir::QPath::Resolved(
@@ -540,18 +537,15 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut Fresh
                     fields: args,
                 },
                 _ => {
-                    let func = Box::new(compile_expr(tcx, func, _fresh_vars));
+                    let func = Box::new(compile_expr(tcx, func));
                     Expr::Call { func, args }
                 }
             }
         }
         ExprKind::MethodCall(path_segment, object, args, _) => {
-            let object = compile_expr(tcx, object, _fresh_vars);
+            let object = compile_expr(tcx, object);
             let func = path_segment.ident.to_string();
-            let args: Vec<_> = args
-                .iter()
-                .map(|expr| compile_expr(tcx, expr, _fresh_vars))
-                .collect();
+            let args: Vec<_> = args.iter().map(|expr| compile_expr(tcx, expr)).collect();
             Expr::MethodCall {
                 object: Box::new(object),
                 func,
@@ -561,13 +555,13 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut Fresh
         ExprKind::Tup(elements) => {
             let elements = elements
                 .iter()
-                .map(|expr| compile_expr(tcx, expr, _fresh_vars))
+                .map(|expr| compile_expr(tcx, expr))
                 .collect();
             Expr::Tuple { elements }
         }
         ExprKind::Binary(bin_op, expr_left, expr_right) => {
-            let expr_left = compile_expr(tcx, expr_left, _fresh_vars);
-            let expr_right = compile_expr(tcx, expr_right, _fresh_vars);
+            let expr_left = compile_expr(tcx, expr_left);
+            let expr_right = compile_expr(tcx, expr_right);
             let func = compile_bin_op(bin_op);
             Expr::MethodCall {
                 object: Box::new(expr_left),
@@ -576,7 +570,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut Fresh
             }
         }
         ExprKind::Unary(un_op, expr) => {
-            let expr = compile_expr(tcx, expr, _fresh_vars);
+            let expr = compile_expr(tcx, expr);
             let func = compile_un_op(un_op);
             Expr::MethodCall {
                 object: Box::new(expr),
@@ -586,25 +580,25 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut Fresh
         }
         ExprKind::Lit(lit) => Expr::Literal(lit.node.clone()),
         ExprKind::Cast(expr, ty) => Expr::Cast {
-            expr: Box::new(compile_expr(tcx, expr, _fresh_vars)),
+            expr: Box::new(compile_expr(tcx, expr)),
             ty: Box::new(compile_type(&tcx, ty)),
         },
         ExprKind::Type(expr, ty) => Expr::Type {
-            expr: Box::new(compile_expr(tcx, expr, _fresh_vars)),
+            expr: Box::new(compile_expr(tcx, expr)),
             ty: Box::new(compile_type(&tcx, ty)),
         },
-        ExprKind::DropTemps(expr) => compile_expr(tcx, expr, _fresh_vars),
+        ExprKind::DropTemps(expr) => compile_expr(tcx, expr),
         ExprKind::Let(rustc_hir::Let { pat, init, .. }) => {
             let pat = compile_pattern(&tcx, pat);
-            let init = Box::new(compile_expr(tcx, init, _fresh_vars));
+            let init = Box::new(compile_expr(tcx, init));
             Expr::LetIf { pat, init }
         }
         ExprKind::If(condition, success, failure) => {
-            let condition = Box::new(compile_expr(tcx, condition, _fresh_vars));
-            let success = Box::new(compile_expr(tcx, success, _fresh_vars));
+            let condition = Box::new(compile_expr(tcx, condition));
+            let success = Box::new(compile_expr(tcx, success));
 
             let failure = match failure {
-                Some(expr) => Box::new(compile_expr(tcx, expr, _fresh_vars)),
+                Some(expr) => Box::new(compile_expr(tcx, expr)),
                 None => Box::new(tt()),
             };
             Expr::If {
@@ -624,12 +618,12 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut Fresh
             Expr::Loop { body, loop_source }
         }
         ExprKind::Match(scrutinee, arms, _) => {
-            let scrutinee = Box::new(compile_expr(tcx, scrutinee, _fresh_vars));
+            let scrutinee = Box::new(compile_expr(tcx, scrutinee));
             let arms = arms
                 .iter()
                 .map(|arm| {
                     let pat = compile_pattern(&tcx, arm.pat);
-                    let body = compile_expr(tcx, arm.body, _fresh_vars);
+                    let body = compile_expr(tcx, arm.body);
                     if arm.guard.is_some() {
                         tcx.sess
                             .struct_span_warn(
@@ -651,7 +645,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut Fresh
                 .iter()
                 .map(|rustc_hir::Param { pat, .. }| compile_pattern(&tcx, pat))
                 .collect();
-            let body = Box::new(compile_expr(tcx, body.value, _fresh_vars));
+            let body = Box::new(compile_expr(tcx, body.value));
             Expr::Lambda { args, body }
         }
         ExprKind::Block(block, label) => {
@@ -663,14 +657,14 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut Fresh
             compile_block(tcx, block)
         }
         ExprKind::Assign(left, right, _) => {
-            let left = Box::new(compile_expr(tcx, left, _fresh_vars));
-            let right = Box::new(compile_expr(tcx, right, _fresh_vars));
+            let left = Box::new(compile_expr(tcx, left));
+            let right = Box::new(compile_expr(tcx, right));
             Expr::Assign { left, right }
         }
         ExprKind::AssignOp(bin_op, left, right) => {
             let func = compile_assign_bin_op(bin_op);
-            let left = compile_expr(tcx, left, _fresh_vars);
-            let right = compile_expr(tcx, right, _fresh_vars);
+            let left = compile_expr(tcx, left);
+            let right = compile_expr(tcx, right);
             Expr::MethodCall {
                 object: Box::new(left),
                 func,
@@ -678,7 +672,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut Fresh
             }
         }
         ExprKind::Field(base, ident) => {
-            let base = Box::new(compile_expr(tcx, base, _fresh_vars));
+            let base = Box::new(compile_expr(tcx, base));
             let name = ident.name.to_string();
             let index = name.parse::<u32>();
             match index {
@@ -687,8 +681,8 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut Fresh
             }
         }
         ExprKind::Index(base, index) => {
-            let base = Box::new(compile_expr(tcx, base, _fresh_vars));
-            let index = Box::new(compile_expr(tcx, index, _fresh_vars));
+            let base = Box::new(compile_expr(tcx, base));
+            let index = Box::new(compile_expr(tcx, index));
             Expr::Index { base, index }
         }
         ExprKind::Path(qpath) => {
@@ -708,15 +702,13 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut Fresh
             }
             compile_qpath(&tcx, qpath)
         }
-        ExprKind::AddrOf(_, _, expr) => {
-            Expr::AddrOf(Box::new(compile_expr(tcx, expr, _fresh_vars)))
-        }
+        ExprKind::AddrOf(_, _, expr) => Expr::AddrOf(Box::new(compile_expr(tcx, expr))),
         ExprKind::Break(_, _) => Expr::LocalVar("Break".to_string()),
         ExprKind::Continue(_) => Expr::LocalVar("Continue".to_string()),
         ExprKind::Ret(expr) => {
             let func = Box::new(Expr::LocalVar("Return".to_string()));
             let args = match expr {
-                Some(expr) => vec![compile_expr(tcx, expr, _fresh_vars)],
+                Some(expr) => vec![compile_expr(tcx, expr)],
                 None => vec![],
             };
             Expr::Call { func, args }
@@ -728,11 +720,11 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut Fresh
                 .iter()
                 .map(|rustc_hir::ExprField { ident, expr, .. }| {
                     let field = ident.name.to_string();
-                    let expr = compile_expr(tcx, expr, _fresh_vars);
+                    let expr = compile_expr(tcx, expr);
                     (field, expr)
                 })
                 .collect();
-            let base = base.map(|expr| Box::new(compile_expr(tcx, expr, _fresh_vars)));
+            let base = base.map(|expr| Box::new(compile_expr(tcx, expr)));
             let struct_or_variant = StructOrVariant::of_qpath(&tcx, qpath);
             Expr::StructStruct {
                 path,
@@ -742,14 +734,14 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut Fresh
             }
         }
         ExprKind::Repeat(expr, _) => {
-            let expr = compile_expr(tcx, expr, _fresh_vars);
+            let expr = compile_expr(tcx, expr);
             Expr::Call {
                 func: Box::new(Expr::LocalVar("repeat".to_string())),
                 args: vec![expr],
             }
         }
         ExprKind::Yield(expr, _) => {
-            let expr = compile_expr(tcx, expr, _fresh_vars);
+            let expr = compile_expr(tcx, expr);
             Expr::Call {
                 func: Box::new(Expr::LocalVar("yield".to_string())),
                 args: vec![expr],
@@ -766,21 +758,16 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr, _fresh_vars: &mut Fresh
 ///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Block.html
 /// - https://doc.rust-lang.org/reference/statements.html and
 ///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Stmt.html
-fn compile_stmts(
-    tcx: TyCtxt,
-    stmts: &[rustc_hir::Stmt],
-    expr: Option<&rustc_hir::Expr>,
-    fresh_vars: &mut FreshVars,
-) -> Expr {
+fn compile_stmts(tcx: TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir::Expr>) -> Expr {
     match stmts {
         [stmt, stmts @ ..] => match stmt.kind {
             rustc_hir::StmtKind::Local(rustc_hir::Local { pat, init, .. }) => {
                 let pat = compile_pattern(&tcx, pat);
                 let init = match init {
-                    Some(init) => Box::new(compile_expr(tcx, init, fresh_vars)),
+                    Some(init) => Box::new(compile_expr(tcx, init)),
                     None => Box::new(tt()),
                 };
-                let body = Box::new(compile_stmts(tcx, stmts, expr, fresh_vars));
+                let body = Box::new(compile_stmts(tcx, stmts, expr));
                 Expr::Let {
                     modifier: "",
                     pat,
@@ -789,15 +776,15 @@ fn compile_stmts(
                 }
             }
             // We ignore "Item" as we do not know yet how to handle them / what they are for.
-            rustc_hir::StmtKind::Item(_) => compile_stmts(tcx, stmts, expr, fresh_vars),
+            rustc_hir::StmtKind::Item(_) => compile_stmts(tcx, stmts, expr),
             rustc_hir::StmtKind::Expr(current_expr) | rustc_hir::StmtKind::Semi(current_expr) => {
-                let first = Box::new(compile_expr(tcx, current_expr, fresh_vars));
-                let second = Box::new(compile_stmts(tcx, stmts, expr, fresh_vars));
+                let first = Box::new(compile_expr(tcx, current_expr));
+                let second = Box::new(compile_stmts(tcx, stmts, expr));
                 Expr::Seq { first, second }
             }
         },
         [] => match expr {
-            Some(expr) => compile_expr(tcx, expr, fresh_vars),
+            Some(expr) => compile_expr(tcx, expr),
             None => tt(),
         },
     }
@@ -806,8 +793,7 @@ fn compile_stmts(
 /// [compile_block] compiles hir blocks into coq-of-rust
 /// See the doc for [compile_stmts]
 fn compile_block(tcx: TyCtxt, block: &rustc_hir::Block) -> Expr {
-    let mut fresh_vars = FreshVars::new();
-    compile_stmts(tcx, block.stmts, block.expr, &mut fresh_vars)
+    compile_stmts(tcx, block.stmts, block.expr)
 }
 
 impl MatchArm {
