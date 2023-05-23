@@ -40,6 +40,7 @@ pub struct MatchArm {
 /// Enum [Expr] represents the AST of rust terms.
 #[derive(Debug)]
 pub enum Expr {
+    Pure(Box<Expr>),
     LocalVar(String),
     Var(Path),
     AssociatedFunction {
@@ -347,6 +348,7 @@ fn mt_call(func: Box<Expr>, args: Vec<Expr>) -> Expr {
 // @TODO add the translation logic (right now is just an ineficient identity)
 pub fn mt_expression(expr: Expr) -> Expr {
     match expr {
+        Expr::Pure(x) => Expr::Pure(x),
         Expr::LocalVar(x) => Expr::LocalVar(x),
         Expr::Var(x) => Expr::Var(x),
         Expr::AssociatedFunction { ty, func } => Expr::AssociatedFunction { ty, func },
@@ -762,6 +764,7 @@ impl MatchArm {
 impl Expr {
     pub fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
+            Expr::Pure(x) => x.to_doc(false),
             Expr::LocalVar(ref name) => text(name),
             Expr::Var(path) => path.to_doc(),
             Expr::AssociatedFunction { ty, func } => nest([
