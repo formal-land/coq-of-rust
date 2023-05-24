@@ -326,13 +326,10 @@ fn mt_call(func: Expr, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr {
     // the oportunity to apply mt_expression into it
     let args = args
         .into_iter()
-        .map(|expr| match expr {
-            Expr::Pure(expr) => Expr::Pure(expr),
-            expr => {
-                let vname = fresh_vars.next();
-                let_vars.push((Pattern::Variable(vname.clone()), expr));
-                Expr::Var(Path::local(vname))
-            }
+        .map(|expr| {
+            let vname = fresh_vars.next();
+            let_vars.push((Pattern::Variable(vname.clone()), expr));
+            Expr::Var(Path::local(vname))
         })
         .collect();
     // We're creating a (let ... (let ... (let ... fcall))) expression,
