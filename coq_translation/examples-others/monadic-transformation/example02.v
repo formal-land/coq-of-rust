@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let* _ :=
     let* α0 := Pure 1 in
     match α0 with

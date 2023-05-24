@@ -3,12 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition id (x : u64) : u64 := Pure x.
+Definition id (x : u64) : M u64 := Pure x.
 
-Definition tri (a : u64) (b : u64) (c : u64) : unit := Pure tt.
+Definition tri (a : u64) (b : u64) (c : u64) : M unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let* _ :=
     let* α0 := Pure id in
     α0 (Pure 0) in

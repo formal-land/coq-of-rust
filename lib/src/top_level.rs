@@ -708,6 +708,19 @@ fn fn_to_doc<'a>(
     ])
 }
 
+fn mt_ret_ty(ty: Option<CoqType>) -> Option<CoqType> {
+    match ty {
+        Some(ty) => Some(CoqType::Application {
+            func: Box::new(CoqType::Var(Path::local("M".to_string()))),
+            args: vec![ty],
+        }),
+        None => Some(CoqType::Application {
+            func: Box::new(CoqType::Var(Path::local("M".to_string()))),
+            args: vec![CoqType::unit()],
+        }),
+    }
+}
+
 fn mt_impl_item(item: (String, ImplItem)) -> (String, ImplItem) {
     let (s, item) = item;
     match item {
@@ -722,7 +735,7 @@ fn mt_impl_item(item: (String, ImplItem)) -> (String, ImplItem) {
             s,
             ImplItem::Definition {
                 args,
-                ret_ty,
+                ret_ty: mt_ret_ty(ret_ty),
                 body: mt_boxed_expression(body, &mut FreshVars::new()),
                 is_method,
                 is_dead_code,
@@ -744,7 +757,7 @@ fn mt_trait_item(body: (String, TraitItem)) -> (String, TraitItem) {
             s,
             TraitItem::DefinitionWithDefault {
                 args,
-                ret_ty,
+                ret_ty: mt_ret_ty(ret_ty),
                 body: mt_boxed_expression(body, &mut FreshVars::new()),
             },
         ),
@@ -776,7 +789,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             ty_params,
             where_predicates,
             args,
-            ret_ty, // @TODO do I need to transform the function type also?
+            ret_ty: mt_ret_ty(ret_ty),
             body: mt_boxed_expression(body, &mut FreshVars::new()),
             is_dead_code,
         },
