@@ -602,11 +602,6 @@ pub fn compile_top_level(tcx: TyCtxt) -> TopLevel {
     )
 }
 
-pub fn monadic_transformation(tl: TopLevel) -> TopLevel {
-    // @TODO
-    tl
-}
-
 fn fn_to_doc<'a>(
     name: &'a String,
     ty_params: Option<&'a Vec<String>>,
