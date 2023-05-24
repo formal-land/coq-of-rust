@@ -44,9 +44,9 @@ Module M.
   Parameter bind : forall {a b : Set}, M a -> (a -> M b) -> M b.
 
   Module Notations.
-  Notation "'let*' a := b 'in' c" :=
-    (bind b (fun a => c))
-      (at level 200, b at level 100, a name).
+    Notation "'let*' a := b 'in' c" :=
+      (bind b (fun a => c))
+        (at level 200, b at level 100, a name).
   End Notations.
 End M.
 Export M.
