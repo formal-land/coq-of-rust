@@ -27,10 +27,6 @@ impl FreshVars {
         self.0 += 1;
         format!("α{}", x)
     }
-
-    fn reset(&mut self) {
-        self.0 = 0
-    }
 }
 
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
@@ -348,10 +344,7 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
             modifier: "*",
             pat: Pattern::Variable(String::from("_")),
             init: mt_boxed_expression(first, fresh_vars),
-            body: {
-                fresh_vars.reset();
-                mt_boxed_expression(second, fresh_vars)
-            },
+            body: { mt_boxed_expression(second, fresh_vars) },
         },
         Expr::Cast { expr, ty } => Expr::Cast {
             expr: mt_boxed_expression(expr, fresh_vars),
