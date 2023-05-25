@@ -860,8 +860,8 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
     }
 }
 
-pub fn mt_top_level(tl: TopLevel) -> TopLevel {
-    TopLevel(tl.0.into_iter().map(mt_top_level_item).collect())
+pub fn mt_top_level(top_level: TopLevel) -> TopLevel {
+    TopLevel(top_level.0.into_iter().map(mt_top_level_item).collect())
 }
 
 impl ImplItem {
