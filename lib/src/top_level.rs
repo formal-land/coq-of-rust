@@ -716,51 +716,50 @@ fn mt_ret_ty(ty: Option<CoqType>) -> Option<CoqType> {
     }
 }
 
-fn mt_impl_item(item: (String, ImplItem)) -> (String, ImplItem) {
-    let (s, item) = item;
+fn mt_impl_item(item: ImplItem) -> ImplItem {
     match item {
-        ImplItem::Type { ty } => (s, ImplItem::Type { ty }),
+        ImplItem::Type { .. } => item,
         ImplItem::Definition {
             args,
             ret_ty,
             body,
             is_method,
             is_dead_code,
-        } => (
-            s,
-            ImplItem::Definition {
-                args,
-                ret_ty: mt_ret_ty(ret_ty),
-                body: mt_boxed_expression(body, &mut FreshVars::new()),
-                is_method,
-                is_dead_code,
-            },
-        ),
+        } => ImplItem::Definition {
+            args,
+            ret_ty: mt_ret_ty(ret_ty),
+            body: mt_boxed_expression(body, &mut FreshVars::new()),
+            is_method,
+            is_dead_code,
+        },
     }
 }
 
 fn mt_impl_items(items: Vec<(String, ImplItem)>) -> Vec<(String, ImplItem)> {
-    items.into_iter().map(mt_impl_item).collect()
+    items
+        .into_iter()
+        .map(|(s, item)| (s, mt_impl_item(item)))
+        .collect()
 }
 
-fn mt_trait_item(body: (String, TraitItem)) -> (String, TraitItem) {
-    let (s, body) = body;
+fn mt_trait_item(body: TraitItem) -> TraitItem {
     match body {
-        TraitItem::Definition { ty } => (s, TraitItem::Definition { ty }),
-        TraitItem::Type => (s, TraitItem::Type),
-        TraitItem::DefinitionWithDefault { args, ret_ty, body } => (
-            s,
+        TraitItem::Definition { .. } => body,
+        TraitItem::Type => TraitItem::Type,
+        TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
             TraitItem::DefinitionWithDefault {
                 args,
                 ret_ty: mt_ret_ty(ret_ty),
                 body: mt_boxed_expression(body, &mut FreshVars::new()),
-            },
-        ),
+            }
+        }
     }
 }
 
 fn mt_trait_items(body: Vec<(String, TraitItem)>) -> Vec<(String, TraitItem)> {
-    body.into_iter().map(mt_trait_item).collect()
+    body.into_iter()
+        .map(|(s, item)| (s, mt_trait_item(item)))
+        .collect()
 }
 
 /// Monad transform for [TopLevelItem]
