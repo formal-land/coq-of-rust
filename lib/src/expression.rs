@@ -63,9 +63,9 @@ pub enum Expr {
         args: Vec<Expr>,
     },
     Let {
-        modifier: &'static str,
         /// this is appended to the let keyword during the translation
         /// use "" for normal let, "*" for monadic, etc
+        modifier: &'static str,
         pat: Pattern,
         init: Box<Expr>,
         body: Box<Expr>,
