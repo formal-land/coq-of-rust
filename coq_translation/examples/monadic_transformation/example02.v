@@ -22,4 +22,5 @@ Definition main (_ : unit) : unit :=
       if (false : bool) then
         4
       else
-        5.
+        5 ;;
+  tt.
