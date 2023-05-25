@@ -208,31 +208,6 @@ pub fn mt_boxed_expression(mut bexpr: Box<Expr>, fresh_vars: &mut FreshVars) -> 
     bexpr
 }
 
-fn mt_match_arm(arm: MatchArm, fresh_vars: &mut FreshVars) -> MatchArm {
-    MatchArm {
-        body: mt_expression(arm.body, fresh_vars),
-        ..arm
-    }
-}
-
-fn mt_match_arms(arms: Vec<MatchArm>, fresh_vars: &mut FreshVars) -> Vec<MatchArm> {
-    arms.into_iter()
-        .map(|arm| mt_match_arm(arm, fresh_vars))
-        .collect()
-}
-
-fn mt_field(field: (String, Expr), fresh_vars: &mut FreshVars) -> (String, Expr) {
-    let (s, val) = field;
-    (s, mt_expression(val, fresh_vars))
-}
-
-fn mt_fields(fields: Vec<(String, Expr)>, fresh_vars: &mut FreshVars) -> Vec<(String, Expr)> {
-    fields
-        .into_iter()
-        .map(|field| mt_field(field, fresh_vars))
-        .collect()
-}
-
 pub fn mt_expressions(exprs: Vec<Expr>, fresh_vars: &mut FreshVars) -> Vec<Expr> {
     exprs
         .into_iter()
@@ -419,7 +394,12 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
         },
         Expr::Match { scrutinee, arms } => mt_match(
             mt_expression(*scrutinee, fresh_vars),
-            mt_match_arms(arms, fresh_vars),
+            arms.into_iter()
+                .map(|arm| MatchArm {
+                    body: mt_expression(arm.body, fresh_vars),
+                    ..arm
+                })
+                .collect(),
             fresh_vars,
         ),
         Expr::Assign { left, right } => Expr::Assign {
@@ -445,7 +425,10 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
             struct_or_variant,
         } => Expr::StructStruct {
             path,
-            fields: mt_fields(fields, fresh_vars),
+            fields: fields
+                .into_iter()
+                .map(|(s, field)| (s, mt_expression(field, fresh_vars)))
+                .collect(),
             base: base.map(|b| mt_boxed_expression(b, fresh_vars)),
             struct_or_variant,
         },
