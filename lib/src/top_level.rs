@@ -763,7 +763,7 @@ fn mt_trait_items(body: Vec<(String, TraitItem)>) -> Vec<(String, TraitItem)> {
     body.into_iter().map(mt_trait_item).collect()
 }
 
-/// Monad transform for TopLevelItem
+/// Monad transform for [TopLevelItem]
 fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
     match item {
         TopLevelItem::Const { name, ty, value } => TopLevelItem::Const {
