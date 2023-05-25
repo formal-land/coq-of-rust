@@ -225,7 +225,7 @@ fn mt_call(func: Expr, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr {
     // Create one variable for the function
     let fname = fresh_vars.next();
     // Create one variable for each argument, take
-    // the oportunity to apply mt_expression into it
+    // the opportunity to apply mt_expression into it
     let args = args
         .into_iter()
         .map(|expr| {
