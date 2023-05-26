@@ -324,8 +324,7 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
         Expr::Pure(x) => Expr::Pure(x),
         Expr::LocalVar(x) => pure(Expr::LocalVar(x)),
         Expr::Var(x) => pure(Expr::Var(x)),
-        // @TODO how to transform associated function?
-        Expr::AssociatedFunction { ty, func } => Expr::AssociatedFunction { ty, func },
+        Expr::AssociatedFunction { ty, func } => pure(Expr::AssociatedFunction { ty, func }),
         Expr::Literal(x) => pure(Expr::Literal(x)),
         Expr::AddrOf(box_expr) => {
             // @TODO right now the AddrOf translation does not add
