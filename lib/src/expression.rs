@@ -286,13 +286,24 @@ fn mt_let(
             pat: inner_pat,
             init: inner_init,
             body: inner_body,
-        } => mt_let(
-            "*",
-            inner_pat,
-            mt_expression(*inner_init, fresh_vars),
-            mt_let("*", pat, *inner_body, body, fresh_vars),
-            fresh_vars,
-        ),
+        } if modifier == "*" =>
+        // we're parsing a (let x = (let ...) ...) expression
+        // @TODO I had a problem with infinite loop here while doing
+        // the AddrOf translation, this code is delicate. The problem
+        // caractherizes by generating infinite [let] chains
+        // (let ... in (let ... in ...))
+        {
+            mt_let(
+                "*",
+                inner_pat,
+                // if [mt_expression(*inner_init, fresh_vars)] yields
+                // a [let* ...] expression this will recurse. I think
+                // this is the problem causing the infinite loop
+                mt_expression(*inner_init, fresh_vars),
+                mt_let("*", pat, *inner_body, body, fresh_vars),
+                fresh_vars,
+            )
+        }
         init => Expr::Let {
             modifier,
             pat,
@@ -325,7 +336,19 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
         // @TODO how to transform associated function?
         Expr::AssociatedFunction { ty, func } => Expr::AssociatedFunction { ty, func },
         Expr::Literal(x) => pure(Expr::Literal(x)),
-        Expr::AddrOf(box_expr) => pure(Expr::AddrOf(mt_boxed_expression(box_expr, fresh_vars))),
+        Expr::AddrOf(box_expr) => {
+            // @TODO right now the AddrOf translation does not add
+            // anything during the translation besides this
+            // transformation. I wonder if we should have a
+            // addrof function!?
+            let var = fresh_vars.next();
+            Expr::Let {
+                modifier: "*",
+                pat: Pattern::Variable(var.clone()),
+                init: mt_boxed_expression(box_expr, fresh_vars),
+                body: Box::new(pure(Expr::Var(Path::local(var)))),
+            }
+        }
         Expr::Call { func, args } => mt_call(
             mt_expression(*func, fresh_vars),
             mt_expressions(args, fresh_vars),
