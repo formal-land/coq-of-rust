@@ -223,9 +223,10 @@ where
         })
         .collect();
     let init = ctr(elements);
-    let_vars.into_iter().rev().fold(init, |acc, (pat, expr)| {
-        mt_let("*", pat, expr, acc, fresh_vars)
-    })
+    let_vars
+        .into_iter()
+        .rev()
+        .fold(init, |acc, (pat, expr)| mt_let("*", pat, expr, acc))
 }
 
 pub fn mt_boxed_expression(mut bexpr: Box<Expr>, fresh_vars: &mut FreshVars) -> Box<Expr> {
@@ -259,7 +260,7 @@ fn mt_call(func: Expr, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr {
         },
         fresh_vars,
     );
-    mt_let("*", Pattern::Variable(fname), func, nested_lets, fresh_vars)
+    mt_let("*", Pattern::Variable(fname), func, nested_lets)
 }
 
 fn pure(e: Expr) -> Expr {
@@ -273,37 +274,19 @@ fn pure(e: Expr) -> Expr {
 /// let b = c in
 /// let a = d in
 /// e
-fn mt_let(
-    modifier: &'static str,
-    pat: Pattern,
-    init: Expr,
-    body: Expr,
-    fresh_vars: &mut FreshVars,
-) -> Expr {
+fn mt_let(modifier: &'static str, pat: Pattern, init: Expr, body: Expr) -> Expr {
     match init {
         Expr::Let {
             modifier: "*",
             pat: inner_pat,
             init: inner_init,
             body: inner_body,
-        } if modifier == "*" =>
-        // we're parsing a (let x = (let ...) ...) expression
-        // @TODO I had a problem with infinite loop here while doing
-        // the AddrOf translation, this code is delicate. The problem
-        // caractherizes by generating infinite [let] chains
-        // (let ... in (let ... in ...))
-        {
-            mt_let(
-                "*",
-                inner_pat,
-                // if [mt_expression(*inner_init, fresh_vars)] yields
-                // a [let* ...] expression this will recurse. I think
-                // this is the problem causing the infinite loop
-                mt_expression(*inner_init, fresh_vars),
-                mt_let("*", pat, *inner_body, body, fresh_vars),
-                fresh_vars,
-            )
-        }
+        } if modifier == "*" => mt_let(
+            "*",
+            inner_pat,
+            *inner_init,
+            mt_let("*", pat, *inner_body, body),
+        ),
         init => Expr::Let {
             modifier,
             pat,
@@ -327,7 +310,15 @@ fn mt_match(scrutinee: Expr, arms: Vec<MatchArm>, fresh_vars: &mut FreshVars) ->
     }
 }
 
-// @TODO add the translation logic (right now is just an ineficient identity)
+// @TODO finish the translation logic
+/// Monadic transalate an expression
+///
+/// The convention is to do transformation in a deep first fashion, so
+/// all functions dealing with monadic translation expect that their
+/// arguments already have been transformed. Not respecting this rule
+/// may lead to infinite loops because of the mutual recursion between
+/// the functions. In practice this means translating every subexpression
+/// before translating the expression itself.
 pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
     match expr {
         Expr::Pure(x) => Expr::Pure(x),
@@ -340,7 +331,7 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
             // @TODO right now the AddrOf translation does not add
             // anything during the translation besides this
             // transformation. I wonder if we should have a
-            // addrof function!?
+            // addrof function at Coq side!?
             let var = fresh_vars.next();
             Expr::Let {
                 modifier: "*",
@@ -371,7 +362,6 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
             pat,
             mt_expression(*init, fresh_vars),
             mt_expression(*body, fresh_vars),
-            fresh_vars,
         ),
         Expr::Lambda { args, body } => pure(Expr::Lambda {
             args,
