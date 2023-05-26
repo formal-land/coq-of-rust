@@ -199,6 +199,35 @@ fn tt() -> Expr {
     Expr::LocalVar("tt".to_string())
 }
 
+/// Receive a list of expression and nest them in
+/// a monadic let. The [ctr] closure is used to
+/// create the body of the deepest let.
+///
+///       mt_letfy([a,b,...], ctr)
+/// ------------------------------------
+///         let* x0 := a in
+///         let* x1 := b in
+///         let* ... in
+///         ctr([x0, x1, ...])
+fn mt_letfy<F>(exprs: Vec<Expr>, ctr: F, fresh_vars: &mut FreshVars) -> Expr
+where
+    F: FnOnce(Vec<Expr>) -> Expr,
+{
+    let mut let_vars: Vec<(Pattern, Expr)> = vec![];
+    let elements = exprs
+        .into_iter()
+        .map(|expr| {
+            let vname = fresh_vars.next();
+            let_vars.push((Pattern::Variable(vname.clone()), expr));
+            Expr::Var(Path::local(vname))
+        })
+        .collect();
+    let init = ctr(elements);
+    let_vars.into_iter().rev().fold(init, |acc, (pat, expr)| {
+        mt_let("*", pat, expr, acc, fresh_vars)
+    })
+}
+
 pub fn mt_boxed_expression(mut bexpr: Box<Expr>, fresh_vars: &mut FreshVars) -> Box<Expr> {
     *bexpr = mt_expression(*bexpr, fresh_vars);
     bexpr
@@ -213,40 +242,23 @@ pub fn mt_expressions(exprs: Vec<Expr>, fresh_vars: &mut FreshVars) -> Vec<Expr>
 
 /// Monadic transalte function call
 ///
-/// MT(f(a, b, ...))
+/// f(a, b, ...)
 /// -----------------
-/// let f' = MT(f);
-/// let a' = MT(a);
-/// let b'; = MT(b);
+/// let* f' := f in
+/// let* a' := a in
+/// let* b' := b in
 /// ...
 /// f'(a', b', ...)
 fn mt_call(func: Expr, args: Vec<Expr>, fresh_vars: &mut FreshVars) -> Expr {
-    let mut let_vars: Vec<(Pattern, Expr)> = vec![];
-    // Create one variable for the function
     let fname = fresh_vars.next();
-    // Create one variable for each argument, take
-    // the opportunity to apply mt_expression into it
-    let args = args
-        .into_iter()
-        .map(|expr| {
-            let vname = fresh_vars.next();
-            let_vars.push((Pattern::Variable(vname.clone()), expr));
-            Expr::Var(Path::local(vname))
-        })
-        .collect();
-    // We're creating a (let ... (let ... (let ... fcall))) expression,
-    // this is the body of the most nested let. It is the function call
-    // with all arguments (including the function itself) bound to variables
-    let fcall = Expr::Call {
-        func: Box::new(Expr::Var(Path::local(fname.clone()))),
+    let nested_lets = mt_letfy(
         args,
-    };
-    // the nested lets
-    let nested_lets = let_vars.into_iter().rev().fold(fcall, |acc, (pat, expr)| {
-        mt_let("*", pat, expr, acc, fresh_vars)
-    });
-    // f(Pure a)
-    // the outter let
+        |args| Expr::Call {
+            func: Box::new(Expr::Var(Path::local(fname.clone()))),
+            args,
+        },
+        fresh_vars,
+    );
     mt_let("*", Pattern::Variable(fname), func, nested_lets, fresh_vars)
 }
 
@@ -254,6 +266,8 @@ fn pure(e: Expr) -> Expr {
     Expr::Pure(Box::new(e))
 }
 
+/// Unest lets
+///
 /// let a = (let b = c in d) in e
 /// ----------------------------------
 /// let b = c in
@@ -354,12 +368,16 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
             expr: mt_boxed_expression(expr, fresh_vars),
             ty,
         },
-        Expr::Array { elements } => Expr::Array {
-            elements: mt_expressions(elements, fresh_vars),
-        },
-        Expr::Tuple { elements } => Expr::Tuple {
-            elements: mt_expressions(elements, fresh_vars),
-        },
+        Expr::Array { elements } => mt_letfy(
+            mt_expressions(elements, fresh_vars),
+            |elements| pure(Expr::Array { elements }),
+            fresh_vars,
+        ),
+        Expr::Tuple { elements } => mt_letfy(
+            mt_expressions(elements, fresh_vars),
+            |elements| pure(Expr::Tuple { elements }),
+            fresh_vars,
+        ),
         Expr::LetIf { pat, init } => Expr::LetIf {
             pat,
             init: mt_boxed_expression(init, fresh_vars),
