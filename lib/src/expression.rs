@@ -336,7 +336,7 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
                 modifier: "*",
                 pat: Pattern::Variable(var.clone()),
                 init: mt_boxed_expression(box_expr, fresh_vars),
-                body: Box::new(pure(Expr::Var(Path::local(var)))),
+                body: Box::new(pure(Expr::LocalVar(var))),
             }
         }
         Expr::Call { func, args } => mt_call(
@@ -346,11 +346,25 @@ pub fn mt_expression(expr: Expr, fresh_vars: &mut FreshVars) -> Expr {
         ),
         // @TODO I guess method call transformation should be similar to
         // function application transformation
-        Expr::MethodCall { object, func, args } => Expr::MethodCall {
-            object: mt_boxed_expression(object, fresh_vars),
-            func,
-            args: mt_expressions(args, fresh_vars),
-        },
+        Expr::MethodCall { object, func, args } => {
+            let objname = fresh_vars.next();
+            let args = mt_expressions(args, fresh_vars);
+            let letexpr = mt_letfy(
+                args,
+                |args| Expr::MethodCall {
+                    object: Box::new(Expr::LocalVar(objname.clone())),
+                    func,
+                    args,
+                },
+                fresh_vars,
+            );
+            Expr::Let {
+                modifier: "*",
+                pat: Pattern::Variable(objname),
+                init: mt_boxed_expression(object, fresh_vars),
+                body: Box::new(letexpr),
+            }
+        }
         Expr::Let {
             modifier,
             pat,
