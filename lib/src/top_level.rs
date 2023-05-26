@@ -716,6 +716,18 @@ fn mt_ret_ty(ty: Option<CoqType>) -> Option<CoqType> {
     }
 }
 
+// @TODO
+fn mt_ty(ty: CoqType) -> CoqType {
+    match ty {
+        CoqType::Application { .. } => ty,
+        CoqType::Var(..) => ty,
+        CoqType::Function { .. } => ty,
+        CoqType::Tuple(..) => ty,
+        CoqType::Array(..) => ty,
+        CoqType::Ref(..) => ty,
+    }
+}
+
 fn mt_impl_item(item: ImplItem) -> ImplItem {
     match item {
         ImplItem::Type { .. } => item,
@@ -744,7 +756,7 @@ fn mt_impl_items(items: Vec<(String, ImplItem)>) -> Vec<(String, ImplItem)> {
 
 fn mt_trait_item(body: TraitItem) -> TraitItem {
     match body {
-        TraitItem::Definition { .. } => body,
+        TraitItem::Definition { ty } => TraitItem::Definition { ty: mt_ty(ty) },
         TraitItem::Type => TraitItem::Type,
         TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
             TraitItem::DefinitionWithDefault {
