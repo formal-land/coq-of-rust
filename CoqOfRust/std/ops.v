@@ -1,5 +1,59 @@
 Require Import CoqOfRust.lib.lib.
 
+(* ********ENUMS******** *)
+(* 
+[x] GeneratorState
+[x] Bound
+[x] ControlFlow
+*)
+
+(* 
+pub enum GeneratorState<Y, R> {
+    Yielded(Y),
+    Complete(R),
+}
+*)
+Module GeneratorState.
+  Inductive t (Y R : Set) : Set := 
+  | Yielded : Y -> t Y R
+  | Complete : Y -> t Y R
+  .
+End GeneratorState.
+Definition GeneratorState := GeneratorState.t.
+
+(* 
+pub enum Bound<T> {
+    Included(T),
+    Excluded(T),
+    Unbounded,
+}
+*)
+Module Bound.
+  Inductive t (T : Set) : Set := 
+  | Included : T -> t T
+  | Excluded : T -> t T
+  | Unbounded : t T
+  .
+End Bound.
+Definition Bound := Bound.t.
+
+(* BUGGED: How to imeplement default type? *)
+(* 
+pub enum ControlFlow<B, C = ()> {
+    Continue(C),
+    Break(B),
+}
+*)
+Module ControlFlow.
+  Inductive t (B C : Set) : Set := 
+  | Continue : C -> t B C
+  | Break : B -> t B C
+  .
+End ControlFlow.
+Definition ControlFlow := ControlFlow.t.
+
+
+
 (* ********STRUCTS******** *)
 (* 
 [ ] Yeet
@@ -91,8 +145,8 @@ Definition Bound := Bound.t.
 
 (* ********TRAITS******** *)
 (* 
-[ ] CoerceUnsized
-[ ] DispatchFromDyn
+[x] CoerceUnsized
+[x] DispatchFromDyn
 [ ] FromResidual
 [ ] Generator
 [ ] OneSidedRange
@@ -130,6 +184,106 @@ Definition Bound := Bound.t.
 [x] Sub
 [x] SubAssign
 *)
+
+(* 
+pub trait CoerceUnsized<T>
+where
+    T: ?Sized,
+{ }
+*)
+Module CoerseUnsized.
+  Class Trait (Self : Set) (T : Set) : Set := { }.
+End CoerseUnsized.
+
+(* pub trait DispatchFromDyn<T> { } *)
+Module DispatchFromDyn.
+  Class Trait (Self : Set) (T : Set) : Set := { }.
+End DispatchFromDyn.
+
+(* BUGGED: Mutual reference of FromResidual and Try *)
+(* 
+pub trait Try: FromResidual<Self::Residual> {
+    type Output;
+    type Residual;
+
+    // Required methods
+    fn from_output(output: Self::Output) -> Self;
+    fn branch(self) -> ControlFlow<Self::Residual, Self::Output>;
+}
+*)
+Module Try.
+  Class Trait (Self : Set) : Set := { }.
+End Try.
+
+(* BUGGED: Same as above *)
+(* 
+pub trait FromResidual<R = <Self as Try>::Residual> {
+    // Required method
+    fn from_residual(residual: R) -> Self;
+}
+*)
+Module FromResidual.
+  Class Trait (Self : Set) : Set := { }.
+End FromResidual.
+
+(* TODO: Implement GeneratorState Enum *)
+(* 
+pub trait Generator<R = ()> {
+    type Yield;
+    type Return;
+
+    // Required method
+    fn resume(
+        self: Pin<&mut Self>,
+        arg: R
+    ) -> GeneratorState<Self::Yield, Self::Return>;
+}
+*)
+Module Generator.
+  Class Trait (Self : Set) (R : option Set) (Yield Return : Set) : Set := { 
+    R := defaultType unit Self;
+    Yield := Yield;
+    Return := Return;
+
+    resume : Pin (mut_ref Self) -> R -> GeneratorState Yield Return;
+  }.
+End Generator.
+
+(* TODO: Implement Bounds enum *)
+(* 
+pub trait RangeBounds<T>
+where
+    T: ?Sized,
+{
+    // Required methods
+    fn start_bound(&self) -> Bound<&T>;
+    fn end_bound(&self) -> Bound<&T>;
+
+    // Provided method
+    fn contains<U>(&self, item: &U) -> bool
+       where T: PartialOrd<U>,
+             U: PartialOrd<T> + ?Sized { ... }
+}
+*)
+Module RangeBounds.
+  Class Trait (Self : Set) : Set := { }.
+End RangeBounds.
+
+
+(* 
+pub trait OneSidedRange<T>: RangeBounds<T>
+where
+    T: ?Sized,
+{ }
+*)
+Module OneSidedRange.
+  Class Trait (Self : Set) (T : Set)
+  (* BUGGED: How to translate this dependency? *)
+    `{RangeBounds.Trait T OneSidedRange}
+  : Set := { }.
+End OneSidedRange.
+
+
 
 (* Binary Operators *)
 Module Add.
