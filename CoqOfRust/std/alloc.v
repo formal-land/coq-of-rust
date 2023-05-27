@@ -124,7 +124,13 @@ pub unsafe trait GlobalAlloc {
 }
 *)
 Module GlobalAlloc.
-  Class Trait (Self : Set) : Set := { }.
+  Class Trait (Self : Set) : Set := { 
+    alloc : ref Self -> Layout -> mut_deref u8;
+    dealloc : ref Self -> mut_deref u8 -> Layout -> unit;
+
+    alloc_zeroed : ref Self -> Layout -> mut_deref u8;
+    realloc : ref Self -> mut_deref u8 -> Layout -> usize -> mut_deref u8;
+  }.
 End GlobalAlloc.
 
 
