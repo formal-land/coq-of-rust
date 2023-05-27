@@ -1,76 +1,112 @@
 Require Import CoqOfRust.lib.lib.
 
+Require Import CoqOfRust.std.option.
+Require Import CoqOfRust.std.vec.
+
 (* ********STRUCTS******** *)
 (* 
-[ ] ExitStatusErrorE
-[ ] Child
-[ ] ChildStderr
-[ ] ChildStdin
-[ ] ChildStdout
-[ ] Command
-[ ] CommandArgs
-[ ] CommandEnvs
-[ ] ExitCode
-[ ] ExitStatus
-[ ] Output
-[ ] Stdio 
+[x] ExitStatusErrorE
+[x] Child
+[x] ChildStderr
+[x] ChildStdin
+[x] ChildStdout
+[x] Command
+[x] CommandArgs
+[x] CommandEnvs
+[x] ExitCode
+[x] ExitStatus
+[x] Output
+[x] Stdio 
 *)
 
-Module ExitStatusErrorE.
+(* pub struct ExitStatusError(_); *)
+Module ExitStatusError.
   Record t : Set := { }.
-End ExitStatusErrorE.
-Definition ExitStatusErrorE := ExitStatusErrorE.t.
+End ExitStatusError.
+Definition ExitStatusError := ExitStatusError.t.
 
-Module Child.
+(* pub struct ChildStdin { /* private fields */ } *)
+Module ChildStdin.
   Record t : Set := { }.
+End ChildStdin.
+Definition ChildStdin := ChildStdin.t.
+
+(* pub struct ChildStdout { /* private fields */ } *)
+Module ChildStdout.
+  Record t : Set := { }.
+End ChildStdout.
+Definition ChildStdout := ChildStdout.t.
+
+(* pub struct ChildStderr { /* private fields */ } *)
+Module ChildStderr.
+  Record t : Set := { }.
+End ChildStderr.
+Definition ChildStderr := ChildStderr.t.
+
+(* 
+pub struct Child {
+    pub stdin: Option<ChildStdin>,
+    pub stdout: Option<ChildStdout>,
+    pub stderr: Option<ChildStderr>,
+    /* private fields */
+}
+*)
+Module Child.
+  Record t : Set := { 
+    stdin : Option ChildStdin;
+    stdout : Option ChildStdout;
+    stderr : Option ChildStderr;
+  }.
 End Child.
 Definition Child := Child.t.
 
-Module Child.
+(* pub struct ExitCode(_); *)
+Module ExitCode.
   Record t : Set := { }.
-End Child.
-Definition Child := Child.t.
+End ExitCode.
+Definition ExitCode := ExitCode.t.
 
-Module ChildStdin.
+(* pub struct Command { /* private fields */ } *)
+Module Command.
   Record t : Set := { }.
-End ChildStdin.
-Definition ChildStdin := ChildStdin.t.
+End Command.
+Definition Command := Command.t.
 
-Module ChildStdin.
+(* pub struct CommandArgs<'a> { /* private fields */ } *)
+Module CommandArgs.
   Record t : Set := { }.
-End ChildStdin.
-Definition ChildStdin := ChildStdin.t.
+End CommandArgs.
+Definition CommandArgs := CommandArgs.t.
 
-Module ChildStdin.
+(* pub struct CommandEnvs<'a> { /* private fields */ } *)
+Module CommandEnvs.
   Record t : Set := { }.
-End ChildStdin.
-Definition ChildStdin := ChildStdin.t.
+End CommandEnvs.
+Definition CommandEnvs := CommandEnvs.t.
 
-Module ChildStdin.
+(* pub struct ExitStatus(_); *)
+Module ExitStatus.
   Record t : Set := { }.
-End ChildStdin.
-Definition ChildStdin := ChildStdin.t.
+End ExitStatus.
+Definition ExitStatus := ExitStatus.t.
 
-Module ChildStdin.
-  Record t : Set := { }.
-End ChildStdin.
-Definition ChildStdin := ChildStdin.t.
+(* 
+pub struct Output {
+    pub status: ExitStatus,
+    pub stdout: Vec<u8>,
+    pub stderr: Vec<u8>,
+}
+*)
+Module Output.
+  Record t : Set := { 
+    status : ExitStatus;
+    stdout : Vec u8;
+    stderr : Vec u8;
+  }.
+End Output.
+Definition Output := Output.t.
 
-Module ChildStdin.
-  Record t : Set := { }.
-End ChildStdin.
-Definition ChildStdin := ChildStdin.t.
-
-Module ChildStdin.
-  Record t : Set := { }.
-End ChildStdin.
-Definition ChildStdin := ChildStdin.t.
-
-Module ChildStdin.
-  Record t : Set := { }.
-End ChildStdin.
-Definition ChildStdin := ChildStdin.t.
-
+(* pub struct Stdio(_); *)
 Module Stdio.
   Record t : Set := { }.
 End Stdio.
@@ -78,9 +114,17 @@ Definition Stdio := Stdio.t.
  
 
 (* ********TRAITS******** *)
-(* [ ] Termination *)
+(* [x] Termination *)
 
+(* 
+pub trait Termination {
+  // Required method
+  fn report(self) -> ExitCode;
+}
+*)
 Module Termination.
-  Class Trait (Self : Set) : Set := { }.
+  Class Trait (Self : Set) : Set := { 
+    report : Self -> ExitCode;
+  }.
 End Termination.
 
