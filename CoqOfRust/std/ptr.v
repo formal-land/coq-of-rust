@@ -2,7 +2,7 @@ Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust.std.marker.
 Require Import CoqOfRust.std.cmp.
-(* Require Import CoqOfRust.std.hash. *)
+Require Import CoqOfRust.std.hash.
 
 (* ********STRUCTS******** *)
 (* 

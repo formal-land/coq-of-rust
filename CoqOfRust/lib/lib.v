@@ -68,14 +68,14 @@ Definition u16 : Set := Z.
 Definition u32 : Set := Z.
 Definition u64 : Set := Z.
 Definition u128 : Set := Z.
+Definition usize : Set := Z.
 
 Definition i8 : Set := Z.
 Definition i16 : Set := Z.
 Definition i32 : Set := Z.
 Definition i64 : Set := Z.
 Definition i128 : Set := Z.
-
-Definition usize : Set := Z.
+Definition isize : Set := Z.
 
 (* We approximate floating point numbers with integers *)
 Definition f32 : Set := Z.
@@ -87,6 +87,7 @@ Definition String : Set := string.
 
 Definition ref (A : Set) : Set := A.
 Definition mut_ref : Set -> Set := ref.
+Definition mut_deref : Set -> Set.
 
 Definition deref {A : Set} (r : ref A) : A := r.
 

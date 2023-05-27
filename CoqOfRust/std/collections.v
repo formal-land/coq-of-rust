@@ -1,3 +1,6 @@
+Require Import CoqOfRust.lib.lib.
+Require Import CoqOfRust.std.alloc.
+
 (* ********STRUCTS******** *)
 (* 
 [ ] BTreeMap
@@ -10,13 +13,32 @@
 [ ] VecDeque 
 *)
 
+(* NOTE: Bugged: how to translate type param with a default type in this case? *)
+(* 
+pub struct BTreeMap<K, V, A = Global>
+where
+    A: Allocator + Clone,
+{ /* private fields */ }
+*)
 Module BTreeMap.
-  Record t : Set := { }.
+  Record t (K V : Set) (A : option Set) 
+    `{Allocator.Trait A}
+    `{Clone.Trait A}
+    : Set := { }.
 End BTreeMap.
 Definition BTreeMap := BTreeMap.t.
 
+(* 
+pub struct BTreeSet<T, A = Global>
+where
+    A: Allocator + Clone,
+{ /* private fields */ }
+*)
 Module BTreeSet.
-  Record t : Set := { }.
+  Record t (T : Set) (A : option Set) 
+    `{Allocator.Trait A}
+    `{Clone.Trait A}
+    : Set := { }.
 End BTreeSet.
 Definition BTreeSet := BTreeSet.t.
 

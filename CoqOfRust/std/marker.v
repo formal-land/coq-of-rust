@@ -28,7 +28,7 @@ End PhantomPinned.
 (*
 Traits:
 [x] Destruct
-[?] DiscriminantKind
+[ ] DiscriminantKind
 [x] PointerLike
 [x] StructuralEq
 [x] StructuralPartialEq
@@ -104,17 +104,17 @@ Module Unpin.
   Class Trait (Self : Set) : Set := { }.
 End Unpin.
 
+(* NOTE: This trait is ignored *)
 (* pub trait DiscriminantKind {
     type Discriminant: Clone + Copy + Debug + Eq + PartialEq<Self::Discriminant> + Hash + Send + Sync + Unpin;
 } *)
-Module DiscriminantKind.
+(* Module DiscriminantKind.
   Class Trait (Self : Set) 
     {Discriminant : Set} 
-    (* TODO: add and verify the dependencies, one by one *)
       `{Clone.Trait Discriminant} 
       `{Copy.Trait Discriminant} 
       `{Debug.Trait Discriminant} 
-      (* ERROR: Circular Dependency *)
+      (* NOTE: Circular Dependency from cmp.v *)
       (* `{Eq.Trait Discriminant}  *)
       (* `{PartialEq.Trait Discriminant Discriminant} *)
       (* `{Hash.Trait Discriminant} *)
@@ -124,4 +124,4 @@ Module DiscriminantKind.
     := {
   Discriminant := Discriminant;
 }.
-End DiscriminantKind.
+End DiscriminantKind. *)
