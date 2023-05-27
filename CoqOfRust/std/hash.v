@@ -1,18 +1,14 @@
-Require Import CoqOfRust.lib.lib.
-
-Require Import CoqOfRust.std.marker.
-
 (* ********STRUCTS******** *)
 (* 
 [x] BuildHasherDefault
-[x] SipHasher(Deprecated) 
+[ ] SipHasher(Deprecated) 
 *)
 
 (* pub struct BuildHasherDefault<H>(_); *)
-Module BuildHasherDefault.
+Module BuilHasherDefault.
   Record t (H : Set) : Set := { }.
-End BuildHasherDefault.
-Definition BuildHasherDefault := BuildHasherDefault.t.
+End BuilHasherDefault.
+Definition BuilHasherDefault := BuilHasherDefault.t.
 
 
 (* ********TRAITS******** *)
@@ -80,30 +76,6 @@ Module Hasher.
 End Hasher.
 
 (* 
-pub trait Hash {
-    // Required method
-    fn hash<H>(&self, state: &mut H)
-       where H: Hasher;
-
-    // Provided method
-    fn hash_slice<H>(data: &[Self], state: &mut H)
-       where H: Hasher,
-             Self: Sized { ... }
-}
-*)
-Module Hash.
-  Class Trait (Self : Set) : Set := { 
-    hash (H : Set) 
-      `{Hasher.Trait H}
-      : ref Self -> mut_ref H -> unit;
-
-    hash_slice (H : Set) 
-      `{Hasher.Trait H}
-      : ref (list Self) -> mut_ref H;
-  }.
-End Hash.
-
-(* 
 pub trait BuildHasher {
     type Hasher: Hasher;
 
@@ -125,8 +97,35 @@ Module BuilHasher.
       build_hasher : ref Self -> Hasher;
       hash_one (T : Set) 
         `{Hash.Trait T}
+        `{Sized.Trait Self}
         `{Hasher.Trait Hasher}
         : ref Self -> T -> u64;
   }.
 End BuilHasher.
+
+(* 
+pub trait Hash {
+    // Required method
+    fn hash<H>(&self, state: &mut H)
+       where H: Hasher;
+
+    // Provided method
+    fn hash_slice<H>(data: &[Self], state: &mut H)
+       where H: Hasher,
+             Self: Sized { ... }
+}
+*)
+Module Hash.
+  Class Trait (Self : Set) : Set := { 
+    hash (H : Set) 
+      `{Hasher.Trait H}
+      : ref Self -> mut_ref H -> unit;
+
+    hash_slice (H : Set) 
+      `{Hasher.Trait H}
+      `{Sized.Trait Self}
+      : ref (list Self) -> mut_ref H;
+  }.
+End Hash.
+
 
