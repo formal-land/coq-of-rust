@@ -5,19 +5,24 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  let val := 1.["add"] 2 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "1 + 2 = "; "
+  let _ :=
+    let val := 1.["add"] 2 in
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "1 + 2 = "; "
 " ]
-      [ format_argument::["new_display"] val ]) ;;
-  tt ;;
-  tt ;;
+            [ format_argument::["new_display"] val ]) in
+      tt in
+    tt in
   let val := (1.["add"] 2).["mul"] (3.["div"] 4) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "(1 + 2) * (3 / 4) = "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "(1 + 2) * (3 / 4) = "; "
 " ]
-      [ format_argument::["new_display"] val ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] val ]) in
+    tt in
   tt.

@@ -72,7 +72,7 @@ Module Impl__crate_hash_Hash_for_Account.
   Definition Self := Account.
   
   Definition hash (self : ref Self) (state : mut_ref __H) : unit :=
-    _crate.hash.Hash.hash self.["username"] state ;;
+    let _ := _crate.hash.Hash.hash self.["username"] state in
     _crate.hash.Hash.hash self.["password"] state.
   
   Global Instance Method_hash : Notation.Dot "hash" := {
@@ -106,46 +106,59 @@ Definition try_logon
     (username : ref str)
     (password : ref str)
     : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Username: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Username: "; "
 " ]
-      [ format_argument::["new_display"] username ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Password: "; "
+          [ format_argument::["new_display"] username ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Password: "; "
 " ]
-      [ format_argument::["new_display"] password ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_const"] [ "Attempting logon...
-" ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] password ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "Attempting logon...
+" ]) in
+    tt in
   let logon :=
     {| Account.username := username; Account.password := password; |} in
   match accounts.["get"] logon with
   | Some account_info =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "Successful logon!
-" ]) ;;
-    tt ;;
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Name: "; "
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"] [ "Successful logon!
+" ]) in
+      tt in
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "Name: "; "
 " ]
-        [ format_argument::["new_display"] account_info.["name"] ]) ;;
-    tt ;;
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Email: "; "
+            [ format_argument::["new_display"] account_info.["name"] ]) in
+      tt in
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "Email: "; "
 " ]
-        [ format_argument::["new_display"] account_info.["email"] ]) ;;
-    tt ;;
+            [ format_argument::["new_display"] account_info.["email"] ]) in
+      tt in
     tt
   | _ =>
-    _crate.io._print (format_arguments::["new_const"] [ "Login failed!
-" ]) ;;
+    let _ :=
+      _crate.io._print (format_arguments::["new_const"] [ "Login failed!
+" ]) in
     tt
   end.
 
@@ -160,7 +173,7 @@ Definition main (_ : unit) : unit :=
       AccountInfo.name := "John Everyman";
       AccountInfo.email := "j.everyman@email.com";
     |} in
-  accounts.["insert"] account account_info ;;
-  try_logon accounts "j.everyman" "psasword123" ;;
-  try_logon accounts "j.everyman" "password123" ;;
+  let _ := accounts.["insert"] account account_info in
+  let _ := try_logon accounts "j.everyman" "psasword123" in
+  let _ := try_logon accounts "j.everyman" "password123" in
   tt.

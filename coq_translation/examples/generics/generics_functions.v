@@ -36,9 +36,9 @@ Definition generic {T : Set} (_s : SGen T) : unit := tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  reg_fn (S.Build_t A.Build) ;;
-  gen_spec_t (SGen.Build_t A.Build) ;;
-  gen_spec_i32 (SGen.Build_t 6) ;;
-  generic (SGen.Build_t "a"%char) ;;
-  generic (SGen.Build_t "c"%char) ;;
+  let _ := reg_fn (S.Build_t A.Build) in
+  let _ := gen_spec_t (SGen.Build_t A.Build) in
+  let _ := gen_spec_i32 (SGen.Build_t 6) in
+  let _ := generic (SGen.Build_t "a"%char) in
+  let _ := generic (SGen.Build_t "c"%char) in
   tt.

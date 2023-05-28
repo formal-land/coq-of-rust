@@ -46,10 +46,11 @@ Definition main (_ : unit) : unit :=
           format_argument::["new_display"] why
         ])
   | Ok _ =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "successfully wrote to "; "
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "successfully wrote to "; "
 " ]
-        [ format_argument::["new_display"] display ]) ;;
+          [ format_argument::["new_display"] display ]) in
     tt
   end.

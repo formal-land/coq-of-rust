@@ -110,41 +110,56 @@ Definition main (_ : unit) : unit :=
       |} in
   let boxed_point := Box::["new"] (origin tt) in
   let box_in_a_box := Box::["new"] (boxed_origin tt) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Point occupies "; " bytes on the stack
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Point occupies "; " bytes on the stack
 " ]
-      [ format_argument::["new_display"] (mem.size_of_val point) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Rectangle occupies "; " bytes on the stack
+          [ format_argument::["new_display"] (mem.size_of_val point) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Rectangle occupies "; " bytes on the stack
 " ]
-      [ format_argument::["new_display"] (mem.size_of_val rectangle) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Boxed point occupies "; " bytes on the stack
+          [ format_argument::["new_display"] (mem.size_of_val rectangle) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Boxed point occupies "; " bytes on the stack
 " ]
-      [ format_argument::["new_display"] (mem.size_of_val boxed_point) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Boxed rectangle occupies "; " bytes on the stack
+          [ format_argument::["new_display"] (mem.size_of_val boxed_point) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Boxed rectangle occupies "; " bytes on the stack
 " ]
-      [ format_argument::["new_display"] (mem.size_of_val boxed_rectangle) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Boxed box occupies "; " bytes on the stack
+          [ format_argument::["new_display"] (mem.size_of_val boxed_rectangle)
+          ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Boxed box occupies "; " bytes on the stack
 " ]
-      [ format_argument::["new_display"] (mem.size_of_val box_in_a_box) ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] (mem.size_of_val box_in_a_box)
+          ]) in
+    tt in
   let unboxed_point := boxed_point.["deref"] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Unboxed point occupies "; " bytes on the stack
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Unboxed point occupies "; " bytes on the stack
 " ]
-      [ format_argument::["new_display"] (mem.size_of_val unboxed_point) ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] (mem.size_of_val unboxed_point)
+          ]) in
+    tt in
   tt.

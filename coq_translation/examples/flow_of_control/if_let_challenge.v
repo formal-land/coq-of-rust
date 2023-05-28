@@ -13,9 +13,11 @@ Definition Foo := Foo.t.
 Definition main (_ : unit) : unit :=
   let a := Foo.Bar in
   if (let_if Foo.Bar := a : bool) then
-    _crate.io._print (format_arguments::["new_const"] [ "a is foobar
-" ]) ;;
-    tt ;;
+    let _ :=
+      let _ :=
+        _crate.io._print (format_arguments::["new_const"] [ "a is foobar
+" ]) in
+      tt in
     tt
   else
     tt.

@@ -6,50 +6,63 @@ Import Root.std.prelude.rust_2015.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let n := 5 in
-  if (n.["lt"] 0 : bool) then
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; " is negative" ]
-        [ format_argument::["new_display"] n ]) ;;
-    tt ;;
-    tt
-  else
-    if (n.["gt"] 0 : bool) then
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " is positive" ]
-          [ format_argument::["new_display"] n ]) ;;
-      tt ;;
+  let _ :=
+    if (n.["lt"] 0 : bool) then
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_v1"]
+              [ ""; " is negative" ]
+              [ format_argument::["new_display"] n ]) in
+        tt in
       tt
     else
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " is zero" ]
-          [ format_argument::["new_display"] n ]) ;;
-      tt ;;
-      tt ;;
+      if (n.["gt"] 0 : bool) then
+        let _ :=
+          let _ :=
+            _crate.io._print
+              (format_arguments::["new_v1"]
+                [ ""; " is positive" ]
+                [ format_argument::["new_display"] n ]) in
+          tt in
+        tt
+      else
+        let _ :=
+          let _ :=
+            _crate.io._print
+              (format_arguments::["new_v1"]
+                [ ""; " is zero" ]
+                [ format_argument::["new_display"] n ]) in
+          tt in
+        tt in
   let big_n :=
     if ((n.["lt"] 10).["andb"] (n.["gt"] 10.["neg"]) : bool) then
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ ", and is a small number, increase ten-fold
-" ]) ;;
-      tt ;;
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_const"]
+              [ ", and is a small number, increase ten-fold
+" ]) in
+        tt in
       10.["mul"] n
     else
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ ", and is a big number, halve the number
-" ]) ;;
-      tt ;;
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_const"]
+              [ ", and is a big number, halve the number
+" ]) in
+        tt in
       n.["div"] 2 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; " -> "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; " -> "; "
 " ]
-      [
-        format_argument::["new_display"] n;
-        format_argument::["new_display"] big_n
-      ]) ;;
-  tt ;;
+          [
+            format_argument::["new_display"] n;
+            format_argument::["new_display"] big_n
+          ]) in
+    tt in
   tt.

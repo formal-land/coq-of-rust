@@ -6,21 +6,26 @@ Import Root.std.prelude.rust_2015.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let a_binding := tt in
-  let x := 2 in
-  assign a_binding (x.["mul"] x) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "a binding: "; "
+  let _ :=
+    let x := 2 in
+    let _ := assign a_binding (x.["mul"] x) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "a binding: "; "
 " ]
-      [ format_argument::["new_display"] a_binding ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] a_binding ]) in
+    tt in
   let another_binding := tt in
-  assign another_binding 1 ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "another binding: "; "
+  let _ := assign another_binding 1 in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "another binding: "; "
 " ]
-      [ format_argument::["new_display"] another_binding ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] another_binding ]) in
+    tt in
   tt.

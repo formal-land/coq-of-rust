@@ -95,21 +95,23 @@ Definition cookable_v2 (food : Food) : Option Food :=
 Definition eat (food : Food) (day : Day) : unit :=
   match cookable_v2 food with
   | Some food =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Yay! On "; " we get to eat "; ".
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Yay! On "; " we get to eat "; ".
 " ]
-        [
-          format_argument::["new_debug"] day;
-          format_argument::["new_debug"] food
-        ]) ;;
+          [
+            format_argument::["new_debug"] day;
+            format_argument::["new_debug"] food
+          ]) in
     tt
   | None =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Oh no. We don't get to eat on "; "?
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Oh no. We don't get to eat on "; "?
 " ]
-        [ format_argument::["new_debug"] day ]) ;;
+          [ format_argument::["new_debug"] day ]) in
     tt
   end.
 
@@ -117,7 +119,7 @@ Definition eat (food : Food) (day : Day) : unit :=
 Definition main (_ : unit) : unit :=
   let '(cordon_bleu, steak, sushi) :=
     (Food.CordonBleu, Food.Steak, Food.Sushi) in
-  eat cordon_bleu Day.Monday ;;
-  eat steak Day.Tuesday ;;
-  eat sushi Day.Wednesday ;;
+  let _ := eat cordon_bleu Day.Monday in
+  let _ := eat steak Day.Tuesday in
+  let _ := eat sushi Day.Wednesday in
   tt.

@@ -54,10 +54,12 @@ End Impl_Default_for_Borrowed.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let b := Default.default tt in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "b is "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "b is "; "
 " ]
-      [ format_argument::["new_debug"] b ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] b ]) in
+    tt in
   tt.

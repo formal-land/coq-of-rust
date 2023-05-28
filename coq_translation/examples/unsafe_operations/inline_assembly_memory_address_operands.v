@@ -9,5 +9,5 @@ Definition main (_ : unit) : unit := tt.
 Module asm := std.arch.asm.
 
 Definition load_fpu_control_word (control : u16) : unit :=
-  InlineAsm ;;
+  let _ := InlineAsm in
   tt.

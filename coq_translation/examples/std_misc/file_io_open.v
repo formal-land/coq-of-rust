@@ -38,13 +38,14 @@ Definition main (_ : unit) : unit :=
           format_argument::["new_display"] why
         ])
   | Ok _ =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; " contains:
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; " contains:
 " ]
-        [
-          format_argument::["new_display"] display;
-          format_argument::["new_display"] s
-        ]) ;;
+          [
+            format_argument::["new_display"] display;
+            format_argument::["new_display"] s
+          ]) in
     tt
   end.

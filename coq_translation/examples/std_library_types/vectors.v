@@ -7,107 +7,136 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit :=
   let collected_iterator :=
     Range {| Range.start := 0; Range.end := 10; |}.["collect"] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Collected (0..10) into: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Collected (0..10) into: "; "
 " ]
-      [ format_argument::["new_debug"] collected_iterator ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] collected_iterator ]) in
+    tt in
   let xs := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Initial vector: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Initial vector: "; "
 " ]
-      [ format_argument::["new_debug"] xs ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_const"] [ "Push 4 into the vector
-" ]) ;;
-  tt ;;
-  xs.["push"] 4 ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Vector: "; "
+          [ format_argument::["new_debug"] xs ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "Push 4 into the vector
+" ]) in
+    tt in
+  let _ := xs.["push"] 4 in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Vector: "; "
 " ]
-      [ format_argument::["new_debug"] xs ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Vector length: "; "
+          [ format_argument::["new_debug"] xs ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Vector length: "; "
 " ]
-      [ format_argument::["new_display"] xs.["len"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Second element: "; "
+          [ format_argument::["new_display"] xs.["len"] ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Second element: "; "
 " ]
-      [ format_argument::["new_display"] xs[1] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Pop last element: "; "
+          [ format_argument::["new_display"] xs[1] ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Pop last element: "; "
 " ]
-      [ format_argument::["new_debug"] xs.["pop"] ]) ;;
-  tt ;;
-  _crate.io._print (format_arguments::["new_const"] [ "Contents of xs:
-" ]) ;;
-  tt ;;
-  match LangItem xs.["iter"] with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := x; |} =>
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "> "; "
+          [ format_argument::["new_debug"] xs.["pop"] ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "Contents of xs:
+" ]) in
+    tt in
+  let _ :=
+    match LangItem xs.["iter"] with
+    | iter =>
+      loop
+        let _ :=
+          match LangItem iter with
+          | None => Break
+          | Some {| Some.0 := x; |} =>
+            let _ :=
+              let _ :=
+                _crate.io._print
+                  (format_arguments::["new_v1"]
+                    [ "> "; "
 " ]
-            [ format_argument::["new_display"] x ]) ;;
-        tt ;;
+                    [ format_argument::["new_display"] x ]) in
+              tt in
+            tt
+          end in
         tt
-      end ;;
-      tt
-      from
-      for
-  end ;;
-  match LangItem xs.["iter"].["enumerate"] with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := (i, x); |} =>
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "In position "; " we have value "; "
+        from
+        for
+    end in
+  let _ :=
+    match LangItem xs.["iter"].["enumerate"] with
+    | iter =>
+      loop
+        let _ :=
+          match LangItem iter with
+          | None => Break
+          | Some {| Some.0 := (i, x); |} =>
+            let _ :=
+              let _ :=
+                _crate.io._print
+                  (format_arguments::["new_v1"]
+                    [ "In position "; " we have value "; "
 " ]
-            [
-              format_argument::["new_display"] i;
-              format_argument::["new_display"] x
-            ]) ;;
-        tt ;;
+                    [
+                      format_argument::["new_display"] i;
+                      format_argument::["new_display"] x
+                    ]) in
+              tt in
+            tt
+          end in
         tt
-      end ;;
-      tt
-      from
-      for
-  end ;;
-  match LangItem xs.["iter_mut"] with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := x; |} =>
-        x.["deref"].["mul_assign"] 3 ;;
+        from
+        for
+    end in
+  let _ :=
+    match LangItem xs.["iter_mut"] with
+    | iter =>
+      loop
+        let _ :=
+          match LangItem iter with
+          | None => Break
+          | Some {| Some.0 := x; |} =>
+            let _ := x.["deref"].["mul_assign"] 3 in
+            tt
+          end in
         tt
-      end ;;
-      tt
-      from
-      for
-  end ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Updated vector: "; "
+        from
+        for
+    end in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Updated vector: "; "
 " ]
-      [ format_argument::["new_debug"] xs ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] xs ]) in
+    tt in
   tt.

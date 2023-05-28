@@ -8,13 +8,16 @@ Module asm := std.arch.asm.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let name_buf := repeat 0 in
-  InlineAsm ;;
-  tt ;;
+  let _ :=
+    let _ := InlineAsm in
+    tt in
   let name := (core.str.from_utf8 name_buf).["unwrap"] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "CPU Manufacturer ID: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "CPU Manufacturer ID: "; "
 " ]
-      [ format_argument::["new_display"] name ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] name ]) in
+    tt in
   tt.

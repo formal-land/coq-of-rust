@@ -79,11 +79,12 @@ Module checked.
         | MathError.NegativeSquareRoot => "square root of negative number"
         end
     | Ok value =>
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ ""; "
 " ]
-          [ format_argument::["new_display"] value ]) ;;
+            [ format_argument::["new_display"] value ]) in
       tt
     end.
 End checked.
@@ -163,15 +164,16 @@ Definition op (x : f64) (y : f64) : unit :=
       | MathError.NegativeSquareRoot => "square root of negative number"
       end
   | Ok value =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "
 " ]
-        [ format_argument::["new_display"] value ]) ;;
+          [ format_argument::["new_display"] value ]) in
     tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  checked.op 1 (* 1.0 *) 10 (* 10.0 *) ;;
+  let _ := checked.op 1 (* 1.0 *) 10 (* 10.0 *) in
   tt.

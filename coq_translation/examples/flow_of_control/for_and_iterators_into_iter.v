@@ -11,25 +11,28 @@ Definition main (_ : unit) : unit :=
   match LangItem names.["into_iter"] with
   | iter =>
     loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := name; |} =>
-        match name with
-        | "Ferris" =>
-          _crate.io._print
-            (format_arguments::["new_const"]
-              [ "There is a rustacean among us!
-" ]) ;;
-          tt
-        | _ =>
-          _crate.io._print
-            (format_arguments::["new_v1"]
-              [ "Hello "; "
+      let _ :=
+        match LangItem iter with
+        | None => Break
+        | Some {| Some.0 := name; |} =>
+          match name with
+          | "Ferris" =>
+            let _ :=
+              _crate.io._print
+                (format_arguments::["new_const"]
+                  [ "There is a rustacean among us!
+" ]) in
+            tt
+          | _ =>
+            let _ :=
+              _crate.io._print
+                (format_arguments::["new_v1"]
+                  [ "Hello "; "
 " ]
-              [ format_argument::["new_display"] name ]) ;;
-          tt
-        end
-      end ;;
+                  [ format_argument::["new_display"] name ]) in
+            tt
+          end
+        end in
       tt
       from
       for

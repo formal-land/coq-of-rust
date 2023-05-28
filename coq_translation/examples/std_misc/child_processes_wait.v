@@ -10,8 +10,10 @@ Definition Command := Command.t.
 Definition main (_ : unit) : unit :=
   let child := ((Command::["new"] "sleep").["arg"] "5").["spawn"].["unwrap"] in
   let _result := child.["wait"].["unwrap"] in
-  _crate.io._print
-    (format_arguments::["new_const"] [ "reached end of main
-" ]) ;;
-  tt ;;
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "reached end of main
+" ]) in
+    tt in
   tt.

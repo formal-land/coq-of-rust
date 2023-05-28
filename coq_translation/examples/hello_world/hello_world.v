@@ -5,7 +5,9 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  _crate.io._print (format_arguments::["new_const"] [ "Hello World!
-" ]) ;;
-  tt ;;
+  let _ :=
+    let _ :=
+      _crate.io._print (format_arguments::["new_const"] [ "Hello World!
+" ]) in
+    tt in
   tt.

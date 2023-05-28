@@ -14,22 +14,28 @@ Definition main (_ : unit) : unit :=
   let empty := _crate.vec.Vec::["new"] tt in
   let strings :=
     Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ]) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The first doubled is "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "The first doubled is "; "
 " ]
-      [ format_argument::["new_display"] (double_first numbers) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The first doubled is "; "
+          [ format_argument::["new_display"] (double_first numbers) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "The first doubled is "; "
 " ]
-      [ format_argument::["new_display"] (double_first empty) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The first doubled is "; "
+          [ format_argument::["new_display"] (double_first empty) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "The first doubled is "; "
 " ]
-      [ format_argument::["new_display"] (double_first strings) ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] (double_first strings) ]) in
+    tt in
   tt.

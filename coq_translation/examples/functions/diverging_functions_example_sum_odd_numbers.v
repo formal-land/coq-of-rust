@@ -5,32 +5,36 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Sum of odd numbers up to 9 (excluding): "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Sum of odd numbers up to 9 (excluding): "; "
 " ]
-      [ format_argument::["new_display"] (sum_odd_numbers 9) ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] (sum_odd_numbers 9) ]) in
+    tt in
   tt.
 
 Definition sum_odd_numbers (up_to : u32) : u32 :=
   let acc := 0 in
-  match LangItem Range {| Range.start := 0; Range.end := up_to; |} with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := i; |} =>
-        let addition :=
-          match (i.["rem"] 2).["eq"] 1 with
-          | true => i
-          | false => Continue
+  let _ :=
+    match LangItem Range {| Range.start := 0; Range.end := up_to; |} with
+    | iter =>
+      loop
+        let _ :=
+          match LangItem iter with
+          | None => Break
+          | Some {| Some.0 := i; |} =>
+            let addition :=
+              match (i.["rem"] 2).["eq"] 1 with
+              | true => i
+              | false => Continue
+              end in
+            let _ := acc.["add_assign"] addition in
+            tt
           end in
-        acc.["add_assign"] addition ;;
         tt
-      end ;;
-      tt
-      from
-      for
-  end ;;
+        from
+        for
+    end in
   acc.

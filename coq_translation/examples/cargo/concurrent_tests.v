@@ -6,12 +6,13 @@ Import Root.std.prelude.rust_2015.
 Definition foo {A : Set} (o : Option A) : unit :=
   match o with
   | Some _a =>
-    _crate.io._print (format_arguments::["new_const"] [ "some
-" ]) ;;
+    let _ := _crate.io._print (format_arguments::["new_const"] [ "some
+" ]) in
     tt
   | None =>
-    _crate.io._print (format_arguments::["new_const"] [ "nothing
-" ]) ;;
+    let _ :=
+      _crate.io._print (format_arguments::["new_const"] [ "nothing
+" ]) in
     tt
   end.
 
@@ -27,14 +28,16 @@ Module tests.
     match LangItem Range {| Range.start := 0; Range.end := 5; |} with
     | iter =>
       loop
-        match LangItem iter with
-        | None => Break
-        | Some {| Some.0 := _; |} =>
-          (file.["write_all"] "Ferris
+        let _ :=
+          match LangItem iter with
+          | None => Break
+          | Some {| Some.0 := _; |} =>
+            let _ :=
+              (file.["write_all"] "Ferris
 ".["as_bytes"]).["expect"]
-            "Could not write to ferris.txt" ;;
-          tt
-        end ;;
+                "Could not write to ferris.txt" in
+            tt
+          end in
         tt
         from
         for
@@ -48,14 +51,16 @@ Module tests.
     match LangItem Range {| Range.start := 0; Range.end := 5; |} with
     | iter =>
       loop
-        match LangItem iter with
-        | None => Break
-        | Some {| Some.0 := _; |} =>
-          (file.["write_all"] "Corro
+        let _ :=
+          match LangItem iter with
+          | None => Break
+          | Some {| Some.0 := _; |} =>
+            let _ :=
+              (file.["write_all"] "Corro
 ".["as_bytes"]).["expect"]
-            "Could not write to ferris.txt" ;;
-          tt
-        end ;;
+                "Could not write to ferris.txt" in
+            tt
+          end in
         tt
         from
         for
@@ -73,14 +78,16 @@ Definition test_file (_ : unit) : unit :=
   match LangItem Range {| Range.start := 0; Range.end := 5; |} with
   | iter =>
     loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := _; |} =>
-        (file.["write_all"] "Ferris
+      let _ :=
+        match LangItem iter with
+        | None => Break
+        | Some {| Some.0 := _; |} =>
+          let _ :=
+            (file.["write_all"] "Ferris
 ".["as_bytes"]).["expect"]
-          "Could not write to ferris.txt" ;;
-        tt
-      end ;;
+              "Could not write to ferris.txt" in
+          tt
+        end in
       tt
       from
       for
@@ -94,14 +101,16 @@ Definition test_file_also (_ : unit) : unit :=
   match LangItem Range {| Range.start := 0; Range.end := 5; |} with
   | iter =>
     loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := _; |} =>
-        (file.["write_all"] "Corro
+      let _ :=
+        match LangItem iter with
+        | None => Break
+        | Some {| Some.0 := _; |} =>
+          let _ :=
+            (file.["write_all"] "Corro
 ".["as_bytes"]).["expect"]
-          "Could not write to ferris.txt" ;;
-        tt
-      end ;;
+              "Could not write to ferris.txt" in
+          tt
+        end in
       tt
       from
       for

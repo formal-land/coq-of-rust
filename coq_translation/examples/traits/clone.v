@@ -102,38 +102,48 @@ End Impl__crate_fmt_Debug_for_Pair.
 Definition main (_ : unit) : unit :=
   let unit := Unit.Build in
   let copied_unit := unit in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "original: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "original: "; "
 " ]
-      [ format_argument::["new_debug"] unit ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "copy: "; "
+          [ format_argument::["new_debug"] unit ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "copy: "; "
 " ]
-      [ format_argument::["new_debug"] copied_unit ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] copied_unit ]) in
+    tt in
   let pair := Pair.Build_t (Box::["new"] 1) (Box::["new"] 2) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "original: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "original: "; "
 " ]
-      [ format_argument::["new_debug"] pair ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] pair ]) in
+    tt in
   let moved_pair := pair in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "moved: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "moved: "; "
 " ]
-      [ format_argument::["new_debug"] moved_pair ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] moved_pair ]) in
+    tt in
   let cloned_pair := moved_pair.["clone"] in
-  drop moved_pair ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "clone: "; "
+  let _ := drop moved_pair in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "clone: "; "
 " ]
-      [ format_argument::["new_debug"] cloned_pair ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] cloned_pair ]) in
+    tt in
   tt.

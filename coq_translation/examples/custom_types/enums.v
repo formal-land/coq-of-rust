@@ -23,40 +23,48 @@ Definition WebEvent := WebEvent.t.
 Definition inspect (event : WebEvent) : unit :=
   match event with
   | WebEvent.PageLoad =>
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [
-          "page loaded, r" ++
-            String.String "233" ("f" ++ String.String "233" "
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"]
+          [
+            "page loaded, r" ++
+              String.String "233" ("f" ++ String.String "233" "
 ")
-        ]) ;;
+          ]) in
     tt
   | WebEvent.PageUnload =>
-    _crate.io._print (format_arguments::["new_const"] [ "page unloaded
-" ]) ;;
+    let _ :=
+      _crate.io._print (format_arguments::["new_const"] [ "page unloaded
+" ]) in
     tt
   | WebEvent.KeyPress c =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "pressed '"; "'.
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "pressed '"; "'.
 " ]
-        [ format_argument::["new_display"] c ]) ;;
+          [ format_argument::["new_display"] c ]) in
     tt
   | WebEvent.Paste s =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "pasted ""; "".
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "pasted ""; "".
 " ]
-        [ format_argument::["new_display"] s ]) ;;
+          [ format_argument::["new_display"] s ]) in
     tt
   | WebEvent.Click {| WebEvent.Click.x := x; WebEvent.Click.y := y; |} =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "clicked at x="; ", y="; ".
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "clicked at x="; ", y="; ".
 " ]
-        [ format_argument::["new_display"] x; format_argument::["new_display"] y
-        ]) ;;
-    tt ;;
+            [
+              format_argument::["new_display"] x;
+              format_argument::["new_display"] y
+            ]) in
+      tt in
     tt
   end.
 
@@ -68,9 +76,9 @@ Definition main (_ : unit) : unit :=
     WebEvent.Click {| WebEvent.Click.x := 20; WebEvent.Click.y := 80; |} in
   let load := WebEvent.PageLoad in
   let unload := WebEvent.PageUnload in
-  inspect pressed ;;
-  inspect pasted ;;
-  inspect click ;;
-  inspect load ;;
-  inspect unload ;;
+  let _ := inspect pressed in
+  let _ := inspect pasted in
+  let _ := inspect click in
+  let _ := inspect load in
+  let _ := inspect unload in
   tt.

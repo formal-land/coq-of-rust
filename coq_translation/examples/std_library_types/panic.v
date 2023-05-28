@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Definition division (dividend : i32) (divisor : i32) : i32 :=
   if (divisor.["eq"] 0 : bool) then
-    _crate.rt.begin_panic "division by zero" ;;
+    let _ := _crate.rt.begin_panic "division by zero" in
     tt
   else
     dividend.["div"] divisor.
@@ -13,9 +13,11 @@ Definition division (dividend : i32) (divisor : i32) : i32 :=
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let _x := Box::["new"] 0 in
-  division 3 0 ;;
-  _crate.io._print
-    (format_arguments::["new_const"] [ "This point won't be reached!
-" ]) ;;
-  tt ;;
+  let _ := division 3 0 in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "This point won't be reached!
+" ]) in
+    tt in
   tt.

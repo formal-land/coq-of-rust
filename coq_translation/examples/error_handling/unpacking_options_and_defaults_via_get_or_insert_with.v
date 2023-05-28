@@ -44,38 +44,49 @@ Definition main (_ : unit) : unit :=
   let my_fruit := None in
   let get_lemon_as_fallback :=
     fun  =>
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Providing lemon as fallback
-" ]) ;;
-      tt ;;
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_const"]
+              [ "Providing lemon as fallback
+" ]) in
+        tt in
       Fruit.Lemon in
   let first_available_fruit :=
     my_fruit.["get_or_insert_with"] get_lemon_as_fallback in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "my_fruit is: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "my_fruit is: "; "
 " ]
-      [ format_argument::["new_debug"] first_available_fruit ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "first_available_fruit is: "; "
+          [ format_argument::["new_debug"] first_available_fruit ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "first_available_fruit is: "; "
 " ]
-      [ format_argument::["new_debug"] first_available_fruit ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] first_available_fruit ]) in
+    tt in
   let my_apple := Some Fruit.Apple in
   let should_be_apple :=
     my_apple.["get_or_insert_with"] get_lemon_as_fallback in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "should_be_apple is: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "should_be_apple is: "; "
 " ]
-      [ format_argument::["new_debug"] should_be_apple ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "my_apple is unchanged: "; "
+          [ format_argument::["new_debug"] should_be_apple ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "my_apple is unchanged: "; "
 " ]
-      [ format_argument::["new_debug"] my_apple ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] my_apple ]) in
+    tt in
   tt.

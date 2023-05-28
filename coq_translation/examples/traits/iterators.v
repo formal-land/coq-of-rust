@@ -25,8 +25,8 @@ Module Impl_Iterator_for_Fibonacci.
   
   Definition next (self : mut_ref Self) : Option ImplSelf.Item :=
     let current := self.["curr"] in
-    assign self.["curr"] self.["next"] ;;
-    assign self.["next"] (current.["add"] self.["next"]) ;;
+    let _ := assign self.["curr"] self.["next"] in
+    let _ := assign self.["next"] (current.["add"] self.["next"]) in
     Some current.
   
   Global Instance Method_next : Notation.Dot "next" := {
@@ -44,124 +44,158 @@ Definition fibonacci (_ : unit) : Fibonacci :=
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let sequence := Range {| Range.start := 0; Range.end := 3; |} in
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "Four consecutive `next` calls on 0..3
-" ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "> "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"]
+          [ "Four consecutive `next` calls on 0..3
+" ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "> "; "
 " ]
-      [ format_argument::["new_debug"] sequence.["next"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "> "; "
+          [ format_argument::["new_debug"] sequence.["next"] ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "> "; "
 " ]
-      [ format_argument::["new_debug"] sequence.["next"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "> "; "
+          [ format_argument::["new_debug"] sequence.["next"] ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "> "; "
 " ]
-      [ format_argument::["new_debug"] sequence.["next"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "> "; "
+          [ format_argument::["new_debug"] sequence.["next"] ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "> "; "
 " ]
-      [ format_argument::["new_debug"] sequence.["next"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_const"] [ "Iterate through 0..3 using `for`
-" ]) ;;
-  tt ;;
-  match LangItem Range {| Range.start := 0; Range.end := 3; |} with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := i; |} =>
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "> "; "
+          [ format_argument::["new_debug"] sequence.["next"] ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"]
+          [ "Iterate through 0..3 using `for`
+" ]) in
+    tt in
+  let _ :=
+    match LangItem Range {| Range.start := 0; Range.end := 3; |} with
+    | iter =>
+      loop
+        let _ :=
+          match LangItem iter with
+          | None => Break
+          | Some {| Some.0 := i; |} =>
+            let _ :=
+              let _ :=
+                _crate.io._print
+                  (format_arguments::["new_v1"]
+                    [ "> "; "
 " ]
-            [ format_argument::["new_display"] i ]) ;;
-        tt ;;
+                    [ format_argument::["new_display"] i ]) in
+              tt in
+            tt
+          end in
         tt
-      end ;;
-      tt
-      from
-      for
-  end ;;
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "The first four terms of the Fibonacci sequence are: 
-" ]) ;;
-  tt ;;
-  match LangItem ((fibonacci tt).["take"] 4) with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := i; |} =>
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "> "; "
+        from
+        for
+    end in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"]
+          [ "The first four terms of the Fibonacci sequence are: 
+" ]) in
+    tt in
+  let _ :=
+    match LangItem ((fibonacci tt).["take"] 4) with
+    | iter =>
+      loop
+        let _ :=
+          match LangItem iter with
+          | None => Break
+          | Some {| Some.0 := i; |} =>
+            let _ :=
+              let _ :=
+                _crate.io._print
+                  (format_arguments::["new_v1"]
+                    [ "> "; "
 " ]
-            [ format_argument::["new_display"] i ]) ;;
-        tt ;;
+                    [ format_argument::["new_display"] i ]) in
+              tt in
+            tt
+          end in
         tt
-      end ;;
-      tt
-      from
-      for
-  end ;;
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "The next four terms of the Fibonacci sequence are: 
-" ]) ;;
-  tt ;;
-  match LangItem (((fibonacci tt).["skip"] 4).["take"] 4) with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := i; |} =>
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "> "; "
+        from
+        for
+    end in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"]
+          [ "The next four terms of the Fibonacci sequence are: 
+" ]) in
+    tt in
+  let _ :=
+    match LangItem (((fibonacci tt).["skip"] 4).["take"] 4) with
+    | iter =>
+      loop
+        let _ :=
+          match LangItem iter with
+          | None => Break
+          | Some {| Some.0 := i; |} =>
+            let _ :=
+              let _ :=
+                _crate.io._print
+                  (format_arguments::["new_v1"]
+                    [ "> "; "
 " ]
-            [ format_argument::["new_display"] i ]) ;;
-        tt ;;
+                    [ format_argument::["new_display"] i ]) in
+              tt in
+            tt
+          end in
         tt
-      end ;;
-      tt
-      from
-      for
-  end ;;
+        from
+        for
+    end in
   let array := [ 1; 3; 3; 7 ] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Iterate the following array "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Iterate the following array "; "
 " ]
-      [ format_argument::["new_debug"] array ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] array ]) in
+    tt in
   match LangItem array.["iter"] with
   | iter =>
     loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := i; |} =>
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "> "; "
+      let _ :=
+        match LangItem iter with
+        | None => Break
+        | Some {| Some.0 := i; |} =>
+          let _ :=
+            let _ :=
+              _crate.io._print
+                (format_arguments::["new_v1"]
+                  [ "> "; "
 " ]
-            [ format_argument::["new_display"] i ]) ;;
-        tt ;;
-        tt
-      end ;;
+                  [ format_argument::["new_display"] i ]) in
+            tt in
+          tt
+        end in
       tt
       from
       for

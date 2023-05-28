@@ -45,10 +45,12 @@ Definition main (_ : unit) : unit :=
   let orange := Some Fruit.Orange in
   let no_fruit := None in
   let first_available_fruit := (no_fruit.["or"] orange).["or"] apple in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "first_available_fruit: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "first_available_fruit: "; "
 " ]
-      [ format_argument::["new_debug"] first_available_fruit ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] first_available_fruit ]) in
+    tt in
   tt.

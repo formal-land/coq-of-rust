@@ -17,20 +17,23 @@ Definition main (_ : unit) : unit :=
     match LangItem lines with
     | iter =>
       loop
-        match LangItem iter with
-        | None => Break
-        | Some {| Some.0 := line; |} =>
-          if (let_if Ok ip := line : bool) then
-            _crate.io._print
-              (format_arguments::["new_v1"]
-                [ ""; "
+        let _ :=
+          match LangItem iter with
+          | None => Break
+          | Some {| Some.0 := line; |} =>
+            if (let_if Ok ip := line : bool) then
+              let _ :=
+                let _ :=
+                  _crate.io._print
+                    (format_arguments::["new_v1"]
+                      [ ""; "
 " ]
-                [ format_argument::["new_display"] ip ]) ;;
-            tt ;;
-            tt
-          else
-            tt
-        end ;;
+                      [ format_argument::["new_display"] ip ]) in
+                tt in
+              tt
+            else
+              tt
+          end in
         tt
         from
         for

@@ -94,32 +94,38 @@ Definition main (_ : unit) : unit :=
   let name := String::["from"] "Peter" in
   let age := 27 in
   let peter := {| Person.name := name; Person.age := age; |} in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "
 " ]
-      [ format_argument::["new_debug"] peter ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] peter ]) in
+    tt in
   let point := {| Point.x := 10 (* 10.3 *); Point.y := 0 (* 0.4 *); |} in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "point coordinates: ("; ", "; ")
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "point coordinates: ("; ", "; ")
 " ]
-      [
-        format_argument::["new_display"] point.["x"];
-        format_argument::["new_display"] point.["y"]
-      ]) ;;
-  tt ;;
+          [
+            format_argument::["new_display"] point.["x"];
+            format_argument::["new_display"] point.["y"]
+          ]) in
+    tt in
   let bottom_right := {| Point.x := 5 (* 5.2 *); |} with point in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "second point: ("; ", "; ")
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "second point: ("; ", "; ")
 " ]
-      [
-        format_argument::["new_display"] bottom_right.["x"];
-        format_argument::["new_display"] bottom_right.["y"]
-      ]) ;;
-  tt ;;
+          [
+            format_argument::["new_display"] bottom_right.["x"];
+            format_argument::["new_display"] bottom_right.["y"]
+          ]) in
+    tt in
   let '{| Point.x := left_edge; Point.y := top_edge; |} := point in
   let _rectangle :=
     {|
@@ -128,23 +134,27 @@ Definition main (_ : unit) : unit :=
     |} in
   let _unit := Unit.Build in
   let pair := Pair.Build_t 1 0 (* 0.1 *) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "pair contains "; " and "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "pair contains "; " and "; "
 " ]
-      [
-        format_argument::["new_debug"] (pair.[0]);
-        format_argument::["new_debug"] (pair.[1])
-      ]) ;;
-  tt ;;
+          [
+            format_argument::["new_debug"] (pair.[0]);
+            format_argument::["new_debug"] (pair.[1])
+          ]) in
+    tt in
   let 'Pair.Build_t integer decimal := pair in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "pair contains "; " and "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "pair contains "; " and "; "
 " ]
-      [
-        format_argument::["new_debug"] integer;
-        format_argument::["new_debug"] decimal
-      ]) ;;
-  tt ;;
+          [
+            format_argument::["new_debug"] integer;
+            format_argument::["new_debug"] decimal
+          ]) in
+    tt in
   tt.

@@ -12,29 +12,35 @@ Definition is_big (n : i32) : bool := n.["gt"] THRESHOLD.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let n := 16 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "This is "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "This is "; "
 " ]
-      [ format_argument::["new_display"] LANGUAGE ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The threshold is "; "
+          [ format_argument::["new_display"] LANGUAGE ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "The threshold is "; "
 " ]
-      [ format_argument::["new_display"] THRESHOLD ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; " is "; "
+          [ format_argument::["new_display"] THRESHOLD ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; " is "; "
 " ]
-      [
-        format_argument::["new_display"] n;
-        format_argument::["new_display"]
-          (if (is_big n : bool) then
-            "big"
-          else
-            "small")
-      ]) ;;
-  tt ;;
+          [
+            format_argument::["new_display"] n;
+            format_argument::["new_display"]
+              (if (is_big n : bool) then
+                "big"
+              else
+                "small")
+          ]) in
+    tt in
   tt.

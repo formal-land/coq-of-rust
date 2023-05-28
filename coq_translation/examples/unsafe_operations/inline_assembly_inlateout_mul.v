@@ -11,6 +11,7 @@ Module asm := std.arch.asm.
 Definition mul (a : u64) (b : u64) : u128 :=
   let lo := tt in
   let hi := tt in
-  InlineAsm ;;
-  tt ;;
+  let _ :=
+    let _ := InlineAsm in
+    tt in
   ((cast hi u128).["shl"] 64).["add"] (cast lo u128).

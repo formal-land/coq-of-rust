@@ -41,5 +41,5 @@ End Impl_DoubleDrop_for_U.
 Definition main (_ : unit) : unit :=
   let empty := Empty.Build in
   let null := Null.Build in
-  empty.["double_drop"] null ;;
+  let _ := empty.["double_drop"] null in
   tt.

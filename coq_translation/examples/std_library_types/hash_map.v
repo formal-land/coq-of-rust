@@ -20,57 +20,68 @@ Definition call (number : ref str) : ref str :=
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let contacts := HashMap::["new"] tt in
-  contacts.["insert"] "Daniel" "798-1364" ;;
-  contacts.["insert"] "Ashley" "645-7689" ;;
-  contacts.["insert"] "Katie" "435-8291" ;;
-  contacts.["insert"] "Robert" "956-1745" ;;
-  match contacts.["get"] "Daniel" with
-  | Some number =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Calling Daniel: "; "
+  let _ := contacts.["insert"] "Daniel" "798-1364" in
+  let _ := contacts.["insert"] "Ashley" "645-7689" in
+  let _ := contacts.["insert"] "Katie" "435-8291" in
+  let _ := contacts.["insert"] "Robert" "956-1745" in
+  let _ :=
+    match contacts.["get"] "Daniel" with
+    | Some number =>
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "Calling Daniel: "; "
 " ]
-        [ format_argument::["new_display"] (call number) ]) ;;
-    tt
-  | _ =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "Don't have Daniel's number.
-" ]) ;;
-    tt
-  end ;;
-  contacts.["insert"] "Daniel" "164-6743" ;;
-  match contacts.["get"] "Ashley" with
-  | Some number =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Calling Ashley: "; "
+            [ format_argument::["new_display"] (call number) ]) in
+      tt
+    | _ =>
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"]
+            [ "Don't have Daniel's number.
+" ]) in
+      tt
+    end in
+  let _ := contacts.["insert"] "Daniel" "164-6743" in
+  let _ :=
+    match contacts.["get"] "Ashley" with
+    | Some number =>
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "Calling Ashley: "; "
 " ]
-        [ format_argument::["new_display"] (call number) ]) ;;
-    tt
-  | _ =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "Don't have Ashley's number.
-" ]) ;;
-    tt
-  end ;;
-  contacts.["remove"] "Ashley" ;;
+            [ format_argument::["new_display"] (call number) ]) in
+      tt
+    | _ =>
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"]
+            [ "Don't have Ashley's number.
+" ]) in
+      tt
+    end in
+  let _ := contacts.["remove"] "Ashley" in
   match LangItem contacts.["iter"] with
   | iter =>
     loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := (contact, number); |} =>
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "Calling "; ": "; "
+      let _ :=
+        match LangItem iter with
+        | None => Break
+        | Some {| Some.0 := (contact, number); |} =>
+          let _ :=
+            let _ :=
+              _crate.io._print
+                (format_arguments::["new_v1"]
+                  [ "Calling "; ": "; "
 " ]
-            [
-              format_argument::["new_display"] contact;
-              format_argument::["new_display"] (call number)
-            ]) ;;
-        tt ;;
-        tt
-      end ;;
+                  [
+                    format_argument::["new_display"] contact;
+                    format_argument::["new_display"] (call number)
+                  ]) in
+            tt in
+          tt
+        end in
       tt
       from
       for

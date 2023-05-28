@@ -14,27 +14,32 @@ Definition Duration := Duration.t.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let apple := Arc::["new"] "the same apple" in
-  match LangItem Range {| Range.start := 0; Range.end := 10; |} with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := _; |} =>
-        let apple := Arc::["clone"] apple in
-        thread.spawn
-          (fun  =>
-            _crate.io._print
-              (format_arguments::["new_v1"]
-                [ ""; "
+  let _ :=
+    match LangItem Range {| Range.start := 0; Range.end := 10; |} with
+    | iter =>
+      loop
+        let _ :=
+          match LangItem iter with
+          | None => Break
+          | Some {| Some.0 := _; |} =>
+            let apple := Arc::["clone"] apple in
+            let _ :=
+              thread.spawn
+                (fun  =>
+                  let _ :=
+                    let _ :=
+                      _crate.io._print
+                        (format_arguments::["new_v1"]
+                          [ ""; "
 " ]
-                [ format_argument::["new_debug"] apple ]) ;;
-            tt ;;
-            tt) ;;
+                          [ format_argument::["new_debug"] apple ]) in
+                    tt in
+                  tt) in
+            tt
+          end in
         tt
-      end ;;
-      tt
-      from
-      for
-  end ;;
-  thread.sleep (Duration::["from_secs"] 1) ;;
+        from
+        for
+    end in
+  let _ := thread.sleep (Duration::["from_secs"] 1) in
   tt.

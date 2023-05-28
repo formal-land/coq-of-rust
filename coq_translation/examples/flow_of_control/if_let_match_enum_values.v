@@ -16,35 +16,48 @@ Definition main (_ : unit) : unit :=
   let a := Foo.Bar in
   let b := Foo.Baz in
   let c := Foo.Qux 100 in
-  if (let_if Foo.Bar := a : bool) then
-    _crate.io._print (format_arguments::["new_const"] [ "a is foobar
-" ]) ;;
-    tt ;;
-    tt
-  else
-    tt ;;
-  if (let_if Foo.Bar := b : bool) then
-    _crate.io._print (format_arguments::["new_const"] [ "b is foobar
-" ]) ;;
-    tt ;;
-    tt
-  else
-    tt ;;
-  if (let_if Foo.Qux value := c : bool) then
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "c is "; "
+  let _ :=
+    if (let_if Foo.Bar := a : bool) then
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_const"] [ "a is foobar
+" ]) in
+        tt in
+      tt
+    else
+      tt in
+  let _ :=
+    if (let_if Foo.Bar := b : bool) then
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_const"] [ "b is foobar
+" ]) in
+        tt in
+      tt
+    else
+      tt in
+  let _ :=
+    if (let_if Foo.Qux value := c : bool) then
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_v1"]
+              [ "c is "; "
 " ]
-        [ format_argument::["new_display"] value ]) ;;
-    tt ;;
-    tt
-  else
-    tt ;;
+              [ format_argument::["new_display"] value ]) in
+        tt in
+      tt
+    else
+      tt in
   if (let_if Foo.Qux (100 as value) := c : bool) then
-    _crate.io._print
-      (format_arguments::["new_const"] [ "c is one hundred
-" ]) ;;
-    tt ;;
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"] [ "c is one hundred
+" ]) in
+      tt in
     tt
   else
     tt.

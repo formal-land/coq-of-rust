@@ -8,8 +8,9 @@ Definition some_fn (_ : unit) : unit := tt.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let a := some_fn tt in
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "This function returns and you can see this line.
-" ]) ;;
+  let _ :=
+    _crate.io._print
+      (format_arguments::["new_const"]
+        [ "This function returns and you can see this line.
+" ]) in
   tt.

@@ -23,25 +23,30 @@ Definition main (_ : unit) : unit :=
   let foo := {| Foo.x := (1, 2); Foo.y := 3; |} in
   match foo with
   | {| Foo.x := (1, b); Foo.y := y; |} =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "First of x is 1, b = "; ",  y = "; " 
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "First of x is 1, b = "; ",  y = "; " 
 " ]
-        [ format_argument::["new_display"] b; format_argument::["new_display"] y
-        ]) ;;
+          [
+            format_argument::["new_display"] b;
+            format_argument::["new_display"] y
+          ]) in
     tt
   | {| Foo.y := 2; Foo.x := i; |} =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "y is 2, i = "; "
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "y is 2, i = "; "
 " ]
-        [ format_argument::["new_debug"] i ]) ;;
+          [ format_argument::["new_debug"] i ]) in
     tt
   | {| Foo.y := y; |} =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "y = "; ", we don't care about x
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "y = "; ", we don't care about x
 " ]
-        [ format_argument::["new_display"] y ]) ;;
+          [ format_argument::["new_display"] y ]) in
     tt
   end.

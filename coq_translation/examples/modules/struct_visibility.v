@@ -75,11 +75,13 @@ End ImplClosedBox T_2.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let open_box := {| my.OpenBox.contents := "public information"; |} in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The open box contains: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "The open box contains: "; "
 " ]
-      [ format_argument::["new_display"] open_box.["contents"] ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] open_box.["contents"] ]) in
+    tt in
   let _closed_box := my.ClosedBox::["new"] "classified information" in
   tt.

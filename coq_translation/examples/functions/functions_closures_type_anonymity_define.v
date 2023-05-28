@@ -7,5 +7,5 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : unit := tt.
 
 Definition apply {F : Set} `{FnOnce.Trait unit F} (f : F) : unit :=
-  f tt ;;
+  let _ := f tt in
   tt.

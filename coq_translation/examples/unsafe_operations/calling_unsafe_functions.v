@@ -12,17 +12,19 @@ Definition main (_ : unit) : unit :=
   let pointer := some_vector.["as_ptr"] in
   let length := some_vector.["len"] in
   let my_slice := slice.from_raw_parts pointer length in
-  match (some_vector.["as_slice"], my_slice) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
+  let _ :=
+    match (some_vector.["as_slice"], my_slice) with
+    | (left_val, right_val) =>
+      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let _ :=
+          _crate.panicking.assert_failed
+            kind
+            left_val.["deref"]
+            right_val.["deref"]
+            _crate.option.Option.None in
+        tt
+      else
+        tt
+    end in
   tt.

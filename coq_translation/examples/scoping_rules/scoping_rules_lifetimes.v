@@ -6,19 +6,24 @@ Import Root.std.prelude.rust_2015.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let i := 3 in
-  let borrow1 := i in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "borrow1: "; "
+  let _ :=
+    let borrow1 := i in
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "borrow1: "; "
 " ]
-      [ format_argument::["new_display"] borrow1 ]) ;;
-  tt ;;
-  tt ;;
+            [ format_argument::["new_display"] borrow1 ]) in
+      tt in
+    tt in
   let borrow2 := i in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "borrow2: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "borrow2: "; "
 " ]
-      [ format_argument::["new_display"] borrow2 ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] borrow2 ]) in
+    tt in
   tt.

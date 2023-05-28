@@ -50,28 +50,32 @@ Module Impl__crate_marker_Copy_for_Book.
 End Impl__crate_marker_Copy_for_Book.
 
 Definition borrow_book (book : ref Book) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "I immutably borrowed "; " - "; " edition
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "I immutably borrowed "; " - "; " edition
 " ]
-      [
-        format_argument::["new_display"] book.["title"];
-        format_argument::["new_display"] book.["year"]
-      ]) ;;
-  tt ;;
+          [
+            format_argument::["new_display"] book.["title"];
+            format_argument::["new_display"] book.["year"]
+          ]) in
+    tt in
   tt.
 
 Definition new_edition (book : mut_ref Book) : unit :=
-  assign book.["year"] 2014 ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "I mutably borrowed "; " - "; " edition
+  let _ := assign book.["year"] 2014 in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "I mutably borrowed "; " - "; " edition
 " ]
-      [
-        format_argument::["new_display"] book.["title"];
-        format_argument::["new_display"] book.["year"]
-      ]) ;;
-  tt ;;
+          [
+            format_argument::["new_display"] book.["title"];
+            format_argument::["new_display"] book.["year"]
+          ]) in
+    tt in
   tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -83,7 +87,7 @@ Definition main (_ : unit) : unit :=
       Book.year := 1979;
     |} in
   let mutabook := immutabook in
-  borrow_book immutabook ;;
-  borrow_book mutabook ;;
-  new_edition mutabook ;;
+  let _ := borrow_book immutabook in
+  let _ := borrow_book mutabook in
+  let _ := new_edition mutabook in
   tt.

@@ -17,7 +17,7 @@ pub struct MatchArm {
 
 /// Enum [Expr] represents the AST of rust terms.
 #[derive(Debug)]
-pub enum Expr {
+pub(crate) enum Expr {
     LocalVar(String),
     Var(Path),
     AssociatedFunction {
@@ -35,18 +35,9 @@ pub enum Expr {
         func: String,
         args: Vec<Expr>,
     },
-    Let {
-        pat: Pattern,
-        init: Box<Expr>,
-        body: Box<Expr>,
-    },
     Lambda {
         args: Vec<Pattern>,
         body: Box<Expr>,
-    },
-    Seq {
-        first: Box<Expr>,
-        second: Box<Expr>,
     },
     Cast {
         expr: Box<Expr>,
@@ -72,13 +63,14 @@ pub enum Expr {
         failure: Box<Expr>,
     },
     Loop {
-        body: Box<Expr>,
+        body: Box<Stmt>,
         loop_source: String,
     },
     Match {
         scrutinee: Box<Expr>,
         arms: Vec<MatchArm>,
     },
+    Block(Box<Stmt>),
     Assign {
         left: Box<Expr>,
         right: Box<Expr>,
@@ -108,6 +100,18 @@ pub enum Expr {
     StructUnit {
         path: Path,
     },
+}
+
+#[derive(Debug)]
+pub(crate) enum Stmt {
+    Expr(Box<Expr>),
+    Let {
+        is_monadic: bool,
+        pattern: Box<Pattern>,
+        init: Box<Expr>,
+        body: Box<Stmt>,
+    },
+    Sequence(Box<Expr>, Box<Stmt>),
 }
 
 fn compile_bin_op(bin_op: &BinOp) -> String {
@@ -173,7 +177,7 @@ fn tt() -> Expr {
     Expr::LocalVar("tt".to_string())
 }
 
-pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
+pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
     match &expr.kind {
         ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
         ExprKind::Array(elements) => {
@@ -318,7 +322,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
                     .struct_span_warn(label.ident.span, "Labeled blocks are not supported.")
                     .emit();
             }
-            compile_block(tcx, block)
+            Expr::Block(Box::new(compile_block(tcx, block)))
         }
         ExprKind::Assign(left, right, _) => {
             let left = Box::new(compile_expr(tcx, left));
@@ -422,36 +426,41 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
 ///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Block.html
 /// - https://doc.rust-lang.org/reference/statements.html and
 ///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Stmt.html
-fn compile_stmts(tcx: TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir::Expr>) -> Expr {
+fn compile_stmts(tcx: TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir::Expr>) -> Stmt {
     match stmts {
         [stmt, stmts @ ..] => match stmt.kind {
             rustc_hir::StmtKind::Local(rustc_hir::Local { pat, init, .. }) => {
-                let pat = compile_pattern(&tcx, pat);
+                let pattern = Box::new(compile_pattern(&tcx, pat));
                 let init = match init {
                     Some(init) => Box::new(compile_expr(tcx, init)),
                     None => Box::new(tt()),
                 };
                 let body = Box::new(compile_stmts(tcx, stmts, expr));
-                Expr::Let { pat, init, body }
+                Stmt::Let {
+                    is_monadic: false,
+                    pattern,
+                    init,
+                    body,
+                }
             }
             // We ignore "Item" as we do not know yet how to handle them / what they are for.
             rustc_hir::StmtKind::Item(_) => compile_stmts(tcx, stmts, expr),
             rustc_hir::StmtKind::Expr(current_expr) | rustc_hir::StmtKind::Semi(current_expr) => {
                 let first = Box::new(compile_expr(tcx, current_expr));
                 let second = Box::new(compile_stmts(tcx, stmts, expr));
-                Expr::Seq { first, second }
+                Stmt::Sequence(first, second)
             }
         },
-        [] => match expr {
+        [] => Stmt::Expr(Box::new(match expr {
             Some(expr) => compile_expr(tcx, expr),
             None => tt(),
-        },
+        })),
     }
 }
 
 /// [compile_block] compiles hir blocks into coq-of-rust
 /// See the doc for [compile_stmts]
-fn compile_block(tcx: TyCtxt, block: &rustc_hir::Block) -> Expr {
+fn compile_block(tcx: TyCtxt, block: &rustc_hir::Block) -> Stmt {
     compile_stmts(tcx, block.stmts, block.expr)
 }
 
@@ -500,28 +509,6 @@ impl Expr {
                     concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                 ]),
             ),
-            Expr::Let { pat, init, body } => group([
-                nest([
-                    nest([
-                        text("let"),
-                        line(),
-                        group([
-                            (if !pat.is_single_binding() {
-                                text("'")
-                            } else {
-                                nil()
-                            }),
-                            pat.to_doc(),
-                            line(),
-                            text(":="),
-                        ]),
-                    ]),
-                    line(),
-                    group([init.to_doc(false), text(" in")]),
-                ]),
-                hardline(),
-                body.to_doc(false),
-            ]),
             Expr::Lambda { args, body } => paren(
                 with_paren,
                 nest([
@@ -535,11 +522,6 @@ impl Expr {
                     body.to_doc(false),
                 ]),
             ),
-            Expr::Seq { first, second } => group([
-                group([first.to_doc(false), text(" ;;")]),
-                hardline(),
-                second.to_doc(false),
-            ]),
             Expr::Cast { expr, ty } => paren(
                 with_paren,
                 nest([
@@ -621,7 +603,7 @@ impl Expr {
                 nest([
                     text("loop"),
                     line(),
-                    body.to_doc(true),
+                    body.to_doc(),
                     line(),
                     text("from"),
                     line(),
@@ -639,6 +621,7 @@ impl Expr {
                 hardline(),
                 text("end"),
             ]),
+            Expr::Block(stmt) => stmt.to_doc(),
             Expr::Assign { left, right } => paren(
                 with_paren,
                 nest([
@@ -718,6 +701,45 @@ impl Expr {
                 ]),
             ),
             Expr::StructUnit { path } => nest([path.to_doc(), text(".Build")]),
+        }
+    }
+}
+
+impl Stmt {
+    fn to_doc(&self) -> Doc {
+        match self {
+            Stmt::Expr(expr) => expr.to_doc(false),
+            Stmt::Let {
+                is_monadic,
+                pattern,
+                init,
+                body,
+            } => group([
+                nest([
+                    nest([
+                        text("let"),
+                        if *is_monadic { text("*") } else { nil() },
+                        line(),
+                        (if !pattern.is_single_binding() {
+                            text("'")
+                        } else {
+                            nil()
+                        }),
+                        pattern.to_doc(),
+                        text(" :="),
+                    ]),
+                    line(),
+                    init.to_doc(false),
+                    text(" in"),
+                ]),
+                hardline(),
+                body.to_doc(),
+            ]),
+            Stmt::Sequence(first, second) => group([
+                nest([text("let _ :="), line(), first.to_doc(false), text(" in")]),
+                hardline(),
+                second.to_doc(),
+            ]),
         }
     }
 }

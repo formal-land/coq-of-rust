@@ -53,16 +53,20 @@ Definition main (_ : unit) : unit :=
   let cardinal := Cardinal.Build in
   let blue_jay := BlueJay.Build in
   let _turkey := Turkey.Build in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "A cardinal is "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "A cardinal is "; "
 " ]
-      [ format_argument::["new_display"] (red cardinal) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "A blue jay is "; "
+          [ format_argument::["new_display"] (red cardinal) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "A blue jay is "; "
 " ]
-      [ format_argument::["new_display"] (blue blue_jay) ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] (blue blue_jay) ]) in
+    tt in
   tt.

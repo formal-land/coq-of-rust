@@ -6,11 +6,12 @@ Import Root.std.prelude.rust_2015.
 Definition create_fn (_ : unit) : OpaqueDef :=
   let text := "Fn".["to_owned"] in
   fun  =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "This is a: "; "
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "This is a: "; "
 " ]
-        [ format_argument::["new_display"] text ]) ;;
+          [ format_argument::["new_display"] text ]) in
     tt.
 
 Error OpaqueTy.
@@ -18,11 +19,12 @@ Error OpaqueTy.
 Definition create_fnmut (_ : unit) : OpaqueDef :=
   let text := "FnMut".["to_owned"] in
   fun  =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "This is a: "; "
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "This is a: "; "
 " ]
-        [ format_argument::["new_display"] text ]) ;;
+          [ format_argument::["new_display"] text ]) in
     tt.
 
 Error OpaqueTy.
@@ -30,11 +32,12 @@ Error OpaqueTy.
 Definition create_fnonce (_ : unit) : OpaqueDef :=
   let text := "FnOnce".["to_owned"] in
   fun  =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "This is a: "; "
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "This is a: "; "
 " ]
-        [ format_argument::["new_display"] text ]) ;;
+          [ format_argument::["new_display"] text ]) in
     tt.
 
 Error OpaqueTy.
@@ -44,7 +47,7 @@ Definition main (_ : unit) : unit :=
   let fn_plain := create_fn tt in
   let fn_mut := create_fnmut tt in
   let fn_once := create_fnonce tt in
-  fn_plain tt ;;
-  fn_mut tt ;;
-  fn_once tt ;;
+  let _ := fn_plain tt in
+  let _ := fn_mut tt in
+  let _ := fn_once tt in
   tt.

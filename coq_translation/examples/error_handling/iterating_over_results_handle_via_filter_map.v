@@ -10,10 +10,12 @@ Definition main (_ : unit) : unit :=
   let numbers :=
     (strings.["into_iter"].["filter_map"]
         (fun s => s.["parse"].["ok"])).["collect"] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Results: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Results: "; "
 " ]
-      [ format_argument::["new_debug"] numbers ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] numbers ]) in
+    tt in
   tt.

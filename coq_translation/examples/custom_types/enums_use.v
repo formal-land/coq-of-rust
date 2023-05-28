@@ -21,26 +21,34 @@ Definition Work := Work.t.
 Definition main (_ : unit) : unit :=
   let status := Poor in
   let work := Civilian in
-  match status with
-  | Rich =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "The rich have lots of money!
-" ]) ;;
-    tt
-  | Poor =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "The poor have no money...
-" ]) ;;
-    tt
-  end ;;
+  let _ :=
+    match status with
+    | Rich =>
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"]
+            [ "The rich have lots of money!
+" ]) in
+      tt
+    | Poor =>
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"] [ "The poor have no money...
+" ]) in
+      tt
+    end in
   match work with
   | Civilian =>
-    _crate.io._print (format_arguments::["new_const"] [ "Civilians work!
-" ]) ;;
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "Civilians work!
+" ]) in
     tt
   | Soldier =>
-    _crate.io._print (format_arguments::["new_const"] [ "Soldiers fight!
-" ]) ;;
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "Soldiers fight!
+" ]) in
     tt
   end.
 

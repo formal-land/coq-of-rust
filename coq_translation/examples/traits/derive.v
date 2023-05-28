@@ -104,22 +104,26 @@ Definition Seconds := Seconds.t.
 Definition main (_ : unit) : unit :=
   let _one_second := Seconds.Build_t 1 in
   let foot := Inches.Build_t 12 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "One foot equals "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "One foot equals "; "
 " ]
-      [ format_argument::["new_debug"] foot ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] foot ]) in
+    tt in
   let meter := Centimeters.Build_t 100 (* 100.0 *) in
   let cmp :=
     if (foot.["to_centimeters"].["lt"] meter : bool) then
       "smaller"
     else
       "bigger" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "One foot is "; " than one meter.
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "One foot is "; " than one meter.
 " ]
-      [ format_argument::["new_display"] cmp ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] cmp ]) in
+    tt in
   tt.

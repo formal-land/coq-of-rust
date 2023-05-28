@@ -113,26 +113,31 @@ Definition double_first (vec : Vec (ref str)) : Result i32 :=
 Definition print (result : Result i32) : unit :=
   match result with
   | Ok n =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "The first doubled is "; "
-" ]
-        [ format_argument::["new_display"] n ]) ;;
-    tt
-  | Err e =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Error: "; "
-" ]
-        [ format_argument::["new_display"] e ]) ;;
-    tt ;;
-    if (let_if Some source := e.["source"] : bool) then
+    let _ :=
       _crate.io._print
         (format_arguments::["new_v1"]
-          [ "  Caused by: "; "
+          [ "The first doubled is "; "
 " ]
-          [ format_argument::["new_display"] source ]) ;;
-      tt ;;
+          [ format_argument::["new_display"] n ]) in
+    tt
+  | Err e =>
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "Error: "; "
+" ]
+            [ format_argument::["new_display"] e ]) in
+      tt in
+    if (let_if Some source := e.["source"] : bool) then
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_v1"]
+              [ "  Caused by: "; "
+" ]
+              [ format_argument::["new_display"] source ]) in
+        tt in
       tt
     else
       tt
@@ -145,7 +150,7 @@ Definition main (_ : unit) : unit :=
   let empty := _crate.vec.Vec::["new"] tt in
   let strings :=
     Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ]) in
-  print (double_first numbers) ;;
-  print (double_first empty) ;;
-  print (double_first strings) ;;
+  let _ := print (double_first numbers) in
+  let _ := print (double_first empty) in
+  let _ := print (double_first strings) in
   tt.
