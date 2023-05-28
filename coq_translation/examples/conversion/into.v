@@ -55,10 +55,12 @@ End Impl_From_for_Number.
 Definition main (_ : unit) : unit :=
   let int := 5 in
   let num := int.["into"] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "My number is "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "My number is "; "
 " ]
-      [ format_argument::["new_debug"] num ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] num ]) in
+    tt in
   tt.

@@ -84,12 +84,14 @@ End Triangle.
 Definition Triangle : Set := Triangle.t.
 
 Definition print_debug {T : Set} `{Debug.Trait T} (t : ref T) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "
 " ]
-      [ format_argument::["new_debug"] t ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] t ]) in
+    tt in
   tt.
 
 Definition area {T : Set} `{HasArea.Trait T} (t : ref T) : f64 := t.["area"].
@@ -100,11 +102,13 @@ Definition main (_ : unit) : unit :=
     {| Rectangle.length := 3 (* 3.0 *); Rectangle.height := 4 (* 4.0 *); |} in
   let _triangle :=
     {| Triangle.length := 3 (* 3.0 *); Triangle.height := 4 (* 4.0 *); |} in
-  print_debug rectangle ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Area: "; "
+  let _ := print_debug rectangle in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Area: "; "
 " ]
-      [ format_argument::["new_display"] rectangle.["area"] ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] rectangle.["area"] ]) in
+    tt in
   tt.

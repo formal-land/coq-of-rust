@@ -45,25 +45,33 @@ Definition main (_ : unit) : unit :=
   let no_fruit := None in
   let get_kiwi_as_fallback :=
     fun  =>
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Providing kiwi as fallback
-" ]) ;;
-      tt ;;
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_const"]
+              [ "Providing kiwi as fallback
+" ]) in
+        tt in
       Some Fruit.Kiwi in
   let get_lemon_as_fallback :=
     fun  =>
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Providing lemon as fallback
-" ]) ;;
-      tt ;;
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_const"]
+              [ "Providing lemon as fallback
+" ]) in
+        tt in
       Some Fruit.Lemon in
   let first_available_fruit :=
     (no_fruit.["or_else"] get_kiwi_as_fallback).["or_else"]
       get_lemon_as_fallback in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "first_available_fruit: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "first_available_fruit: "; "
 " ]
-      [ format_argument::["new_debug"] first_available_fruit ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] first_available_fruit ]) in
+    tt in
   tt.

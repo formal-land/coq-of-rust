@@ -8,23 +8,29 @@ Definition main (_ : unit) : unit :=
   let outer_var := 42 in
   let closure_annotated := fun i => i.["add"] outer_var in
   let closure_inferred := fun i => i.["add"] outer_var in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "closure_annotated: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "closure_annotated: "; "
 " ]
-      [ format_argument::["new_display"] (closure_annotated 1) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "closure_inferred: "; "
+          [ format_argument::["new_display"] (closure_annotated 1) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "closure_inferred: "; "
 " ]
-      [ format_argument::["new_display"] (closure_inferred 1) ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] (closure_inferred 1) ]) in
+    tt in
   let one := fun  => 1 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "closure returning one: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "closure returning one: "; "
 " ]
-      [ format_argument::["new_display"] (one tt) ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] (one tt) ]) in
+    tt in
   tt.

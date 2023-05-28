@@ -55,6 +55,14 @@ Update the snapshots of the translations of the test files, including the error 
 python run_tests.py
 ```
 
+Compile the Coq files:
+
+```sh
+cd CoqOfRust
+./configure.sh
+make
+```
+
 ## Features
 Note that we are still developing support for most of language constructs of Rust.
 

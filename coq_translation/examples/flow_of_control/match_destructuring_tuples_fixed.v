@@ -6,43 +6,50 @@ Import Root.std.prelude.rust_2015.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let triple := (0, 2.["neg"], 3) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Tell me about "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Tell me about "; "
 " ]
-      [ format_argument::["new_debug"] triple ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] triple ]) in
+    tt in
   match triple with
   | (0, y, z) =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "First is `0`, `y` is "; ", and `z` is "; "
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "First is `0`, `y` is "; ", and `z` is "; "
 " ]
-        [ format_argument::["new_debug"] y; format_argument::["new_debug"] z
-        ]) ;;
+          [ format_argument::["new_debug"] y; format_argument::["new_debug"] z
+          ]) in
     tt
   | (1, _, _) =>
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "First is `1` and the rest doesn't matter
-" ]) ;;
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"]
+          [ "First is `1` and the rest doesn't matter
+" ]) in
     tt
   | (_, 2) =>
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "last is `2` and the rest doesn't matter
-" ]) ;;
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"]
+          [ "last is `2` and the rest doesn't matter
+" ]) in
     tt
   | (3, _, 4) =>
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "First is `3`, last is `4`, and the rest doesn't matter
-" ]) ;;
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"]
+          [ "First is `3`, last is `4`, and the rest doesn't matter
+" ]) in
     tt
   | _ =>
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "It doesn't matter what they are
-" ]) ;;
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"]
+          [ "It doesn't matter what they are
+" ]) in
     tt
   end.

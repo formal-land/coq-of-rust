@@ -6,24 +6,30 @@ Import Root.std.prelude.rust_2015.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let raw_str := "Escapes don't work here: \x3F \u{211D}" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "
 " ]
-      [ format_argument::["new_display"] raw_str ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] raw_str ]) in
+    tt in
   let quotes := "And then I said: "There is no escape!"" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "
 " ]
-      [ format_argument::["new_display"] quotes ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] quotes ]) in
+    tt in
   let longer_delimiter := "A string with "# in it. And even "##!" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "
 " ]
-      [ format_argument::["new_display"] longer_delimiter ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] longer_delimiter ]) in
+    tt in
   tt.

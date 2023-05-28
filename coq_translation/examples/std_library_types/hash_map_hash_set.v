@@ -14,52 +14,68 @@ Definition main (_ : unit) : unit :=
   let b :=
     (Slice::["into_vec"]
           (_crate.boxed.Box::["new"] [ 2; 3; 4 ])).["into_iter"].["collect"] in
-  if ((a.["insert"] 4).["not"] : bool) then
-    _crate.panicking.panic "assertion failed: a.insert(4)"
-  else
-    tt ;;
-  if ((a.["contains"] 4).["not"] : bool) then
-    _crate.panicking.panic "assertion failed: a.contains(&4)"
-  else
-    tt ;;
-  b.["insert"] 5 ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "A: "; "
+  let _ :=
+    if ((a.["insert"] 4).["not"] : bool) then
+      _crate.panicking.panic "assertion failed: a.insert(4)"
+    else
+      tt in
+  let _ :=
+    if ((a.["contains"] 4).["not"] : bool) then
+      _crate.panicking.panic "assertion failed: a.contains(&4)"
+    else
+      tt in
+  let _ := b.["insert"] 5 in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "A: "; "
 " ]
-      [ format_argument::["new_debug"] a ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "B: "; "
+          [ format_argument::["new_debug"] a ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "B: "; "
 " ]
-      [ format_argument::["new_debug"] b ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Union: "; "
+          [ format_argument::["new_debug"] b ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Union: "; "
 " ]
-      [ format_argument::["new_debug"] (a.["union"] b).["collect"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Difference: "; "
+          [ format_argument::["new_debug"] (a.["union"] b).["collect"] ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Difference: "; "
 " ]
-      [ format_argument::["new_debug"] (a.["difference"] b).["collect"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Intersection: "; "
+          [ format_argument::["new_debug"] (a.["difference"] b).["collect"]
+          ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Intersection: "; "
 " ]
-      [ format_argument::["new_debug"] (a.["intersection"] b).["collect"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Symmetric Difference: "; "
+          [ format_argument::["new_debug"] (a.["intersection"] b).["collect"]
+          ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Symmetric Difference: "; "
 " ]
-      [
-        format_argument::["new_debug"]
-          (a.["symmetric_difference"] b).["collect"]
-      ]) ;;
-  tt ;;
+          [
+            format_argument::["new_debug"]
+              (a.["symmetric_difference"] b).["collect"]
+          ]) in
+    tt in
   tt.

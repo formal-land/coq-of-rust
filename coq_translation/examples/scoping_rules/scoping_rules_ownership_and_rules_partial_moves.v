@@ -9,24 +9,30 @@ Definition main (_ : unit) : unit :=
     {| Person.name := String::["from"] "Alice"; Person.age := Box::["new"] 20;
     |} in
   let '{| Person.name := name; Person.age := age; |} := person in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The person's age is "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "The person's age is "; "
 " ]
-      [ format_argument::["new_display"] age ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The person's name is "; "
+          [ format_argument::["new_display"] age ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "The person's name is "; "
 " ]
-      [ format_argument::["new_display"] name ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The person's age from person struct is "; "
+          [ format_argument::["new_display"] name ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "The person's age from person struct is "; "
 " ]
-      [ format_argument::["new_display"] person.["age"] ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] person.["age"] ]) in
+    tt in
   tt.
 
 Module Person.

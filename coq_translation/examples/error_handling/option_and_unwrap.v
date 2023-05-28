@@ -6,37 +6,43 @@ Import Root.std.prelude.rust_2015.
 Definition give_adult (drink : Option (ref str)) : unit :=
   match drink with
   | Some "lemonade" =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "Yuck! Too sugary.
-" ]) ;;
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "Yuck! Too sugary.
+" ]) in
     tt
   | Some inner =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "? How nice.
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "? How nice.
 " ]
-        [ format_argument::["new_display"] inner ]) ;;
+          [ format_argument::["new_display"] inner ]) in
     tt
   | None =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "No drink? Oh well.
-" ]) ;;
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "No drink? Oh well.
+" ]) in
     tt
   end.
 
 Definition drink (drink : Option (ref str)) : unit :=
   let inside := drink.["unwrap"] in
-  if (inside.["eq"] "lemonade" : bool) then
-    _crate.rt.begin_panic "AAAaaaaa!!!!" ;;
-    tt
-  else
-    tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "I love "; "s!!!!!
+  let _ :=
+    if (inside.["eq"] "lemonade" : bool) then
+      let _ := _crate.rt.begin_panic "AAAaaaaa!!!!" in
+      tt
+    else
+      tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "I love "; "s!!!!!
 " ]
-      [ format_argument::["new_display"] inside ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] inside ]) in
+    tt in
   tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -44,11 +50,11 @@ Definition main (_ : unit) : unit :=
   let water := Some "water" in
   let lemonade := Some "lemonade" in
   let void := None in
-  give_adult water ;;
-  give_adult lemonade ;;
-  give_adult void ;;
+  let _ := give_adult water in
+  let _ := give_adult lemonade in
+  let _ := give_adult void in
   let coffee := Some "coffee" in
   let nothing := None in
-  drink coffee ;;
-  drink nothing ;;
+  let _ := drink coffee in
+  let _ := drink nothing in
   tt.

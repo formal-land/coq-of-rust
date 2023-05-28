@@ -14,10 +14,12 @@ Definition main (_ : unit) : Result unit ParseIntError :=
     | Ok number => number
     | Err e => Return (Err e)
     end in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "
 " ]
-      [ format_argument::["new_display"] number ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] number ]) in
+    tt in
   Ok tt.

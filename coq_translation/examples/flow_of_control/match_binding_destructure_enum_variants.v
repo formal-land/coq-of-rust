@@ -9,18 +9,20 @@ Definition some_number (_ : unit) : Option u32 := Some 42.
 Definition main (_ : unit) : unit :=
   match some_number tt with
   | Some (42 as n) =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "The Answer: "; "!
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "The Answer: "; "!
 " ]
-        [ format_argument::["new_display"] n ]) ;;
+          [ format_argument::["new_display"] n ]) in
     tt
   | Some n =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Not interesting... "; "
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Not interesting... "; "
 " ]
-        [ format_argument::["new_display"] n ]) ;;
+          [ format_argument::["new_display"] n ]) in
     tt
   | _ => tt
   end.

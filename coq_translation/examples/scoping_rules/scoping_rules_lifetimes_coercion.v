@@ -11,18 +11,23 @@ Definition choose_first (first : ref i32) (arg : ref i32) : ref i32 := first.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let first := 2 in
-  let second := 3 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The product is "; "
+  let _ :=
+    let second := 3 in
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "The product is "; "
 " ]
-      [ format_argument::["new_display"] (multiply first second) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; " is the first
+            [ format_argument::["new_display"] (multiply first second) ]) in
+      tt in
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ ""; " is the first
 " ]
-      [ format_argument::["new_display"] (choose_first first second) ]) ;;
-  tt ;;
-  tt ;;
+            [ format_argument::["new_display"] (choose_first first second) ]) in
+      tt in
+    tt in
   tt.

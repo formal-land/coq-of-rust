@@ -4,21 +4,25 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition elided_input (x : ref i32) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "`elided_input`: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "`elided_input`: "; "
 " ]
-      [ format_argument::["new_display"] x ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] x ]) in
+    tt in
   tt.
 
 Definition annotated_input (x : ref i32) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "`annotated_input`: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "`annotated_input`: "; "
 " ]
-      [ format_argument::["new_display"] x ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] x ]) in
+    tt in
   tt.
 
 Definition elided_pass (x : ref i32) : ref i32 := x.
@@ -28,18 +32,22 @@ Definition annotated_pass (x : ref i32) : ref i32 := x.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let x := 3 in
-  elided_input x ;;
-  annotated_input x ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "`elided_pass`: "; "
+  let _ := elided_input x in
+  let _ := annotated_input x in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "`elided_pass`: "; "
 " ]
-      [ format_argument::["new_display"] (elided_pass x) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "`annotated_pass`: "; "
+          [ format_argument::["new_display"] (elided_pass x) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "`annotated_pass`: "; "
 " ]
-      [ format_argument::["new_display"] (annotated_pass x) ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] (annotated_pass x) ]) in
+    tt in
   tt.

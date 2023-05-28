@@ -9,18 +9,22 @@ Definition compare_prints
     `{Display.Trait T}
     (t : ref T)
     : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Debug: `"; "`
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Debug: `"; "`
 " ]
-      [ format_argument::["new_debug"] t ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Display: `"; "`
+          [ format_argument::["new_debug"] t ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Display: `"; "`
 " ]
-      [ format_argument::["new_display"] t ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] t ]) in
+    tt in
   tt.
 
 Definition compare_types
@@ -30,18 +34,22 @@ Definition compare_types
     (t : ref T)
     (u : ref U)
     : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "t: `"; "`
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "t: `"; "`
 " ]
-      [ format_argument::["new_debug"] t ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "u: `"; "`
+          [ format_argument::["new_debug"] t ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "u: `"; "`
 " ]
-      [ format_argument::["new_debug"] u ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] u ]) in
+    tt in
   tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -49,6 +57,6 @@ Definition main (_ : unit) : unit :=
   let string := "words" in
   let array := [ 1; 2; 3 ] in
   let vec := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
-  compare_prints string ;;
-  compare_types array vec ;;
+  let _ := compare_prints string in
+  let _ := compare_types array vec in
   tt.

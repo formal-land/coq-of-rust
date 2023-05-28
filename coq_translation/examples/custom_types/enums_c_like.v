@@ -21,48 +21,56 @@ Definition Color := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "zero is "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "zero is "; "
 " ]
-      [ format_argument::["new_display"] (cast Number.Zero i32) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "one is "; "
+          [ format_argument::["new_display"] (cast Number.Zero i32) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "one is "; "
 " ]
-      [ format_argument::["new_display"] (cast Number.One i32) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1_formatted"]
-      [ "roses are #"; "
+          [ format_argument::["new_display"] (cast Number.One i32) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1_formatted"]
+          [ "roses are #"; "
 " ]
-      [ format_argument::["new_lower_hex"] (cast Color.Red i32) ]
-      [
-        format_placeholder::["new"]
-          0
-          " "%char
-          format_alignment::["Unknown"]
-          8
-          format_count::["Implied"]
-          (format_count::["Is"] 6)
-      ]
-      (format_unsafe_arg::["new"] tt)) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1_formatted"]
-      [ "violets are #"; "
+          [ format_argument::["new_lower_hex"] (cast Color.Red i32) ]
+          [
+            format_placeholder::["new"]
+              0
+              " "%char
+              format_alignment::["Unknown"]
+              8
+              format_count::["Implied"]
+              (format_count::["Is"] 6)
+          ]
+          format_unsafe_arg::["new"] tt) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1_formatted"]
+          [ "violets are #"; "
 " ]
-      [ format_argument::["new_lower_hex"] (cast Color.Blue i32) ]
-      [
-        format_placeholder::["new"]
-          0
-          " "%char
-          format_alignment::["Unknown"]
-          8
-          format_count::["Implied"]
-          (format_count::["Is"] 6)
-      ]
-      (format_unsafe_arg::["new"] tt)) ;;
-  tt ;;
+          [ format_argument::["new_lower_hex"] (cast Color.Blue i32) ]
+          [
+            format_placeholder::["new"]
+              0
+              " "%char
+              format_alignment::["Unknown"]
+              8
+              format_count::["Implied"]
+              (format_count::["Is"] 6)
+          ]
+          format_unsafe_arg::["new"] tt) in
+    tt in
   tt.

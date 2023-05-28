@@ -13,7 +13,7 @@ Definition BufReader := BufReader.t.
 
 Definition read_lines (filename : String) : io.Lines (BufReader File) :=
   let file := (File::["open"] filename).["unwrap"] in
-  Return (io.BufReader::["new"] file).["lines"] ;;
+  let _ := Return (io.BufReader::["new"] file).["lines"] in
   tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -22,17 +22,20 @@ Definition main (_ : unit) : unit :=
   match LangItem lines with
   | iter =>
     loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := line; |} =>
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ ""; "
+      let _ :=
+        match LangItem iter with
+        | None => Break
+        | Some {| Some.0 := line; |} =>
+          let _ :=
+            let _ :=
+              _crate.io._print
+                (format_arguments::["new_v1"]
+                  [ ""; "
 " ]
-            [ format_argument::["new_display"] line.["unwrap"] ]) ;;
-        tt ;;
-        tt
-      end ;;
+                  [ format_argument::["new_display"] line.["unwrap"] ]) in
+            tt in
+          tt
+        end in
       tt
       from
       for

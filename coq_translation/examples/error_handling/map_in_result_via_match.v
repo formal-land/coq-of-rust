@@ -22,25 +22,27 @@ Definition multiply
 Definition print (result : Result i32 ParseIntError) : unit :=
   match result with
   | Ok n =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "n is "; "
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "n is "; "
 " ]
-        [ format_argument::["new_display"] n ]) ;;
+          [ format_argument::["new_display"] n ]) in
     tt
   | Err e =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Error: "; "
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Error: "; "
 " ]
-        [ format_argument::["new_display"] e ]) ;;
+          [ format_argument::["new_display"] e ]) in
     tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let twenty := multiply "10" "2" in
-  print twenty ;;
+  let _ := print twenty in
   let tt := multiply "t" "2" in
-  print tt ;;
+  let _ := print tt in
   tt.

@@ -4,23 +4,27 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition call_me {F : Set} `{Fn.Trait unit F} (f : F) : unit :=
-  f tt ;;
+  let _ := f tt in
   tt.
 
 Definition function (_ : unit) : unit :=
-  _crate.io._print (format_arguments::["new_const"] [ "I'm a function!
-" ]) ;;
-  tt ;;
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "I'm a function!
+" ]) in
+    tt in
   tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let closure :=
     fun  =>
-      _crate.io._print
-        (format_arguments::["new_const"] [ "I'm a closure!
-" ]) ;;
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"] [ "I'm a closure!
+" ]) in
       tt in
-  call_me closure ;;
-  call_me function ;;
+  let _ := call_me closure in
+  let _ := call_me function in
   tt.

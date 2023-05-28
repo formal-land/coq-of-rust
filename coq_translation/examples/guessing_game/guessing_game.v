@@ -12,42 +12,54 @@ Module Rng := rand.Rng.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  _crate.io._print (format_arguments::["new_const"] [ "Guess the number!
-" ]) ;;
-  tt ;;
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "Guess the number!
+" ]) in
+    tt in
   let secret_number := (rand.thread_rng tt).["gen_range"] (LangItem 1 100) in
   loop
-    _crate.io._print
-      (format_arguments::["new_const"] [ "Please input your guess.
-" ]) ;;
-    tt ;;
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"] [ "Please input your guess.
+" ]) in
+      tt in
     let guess := String::["new"] tt in
-    ((io.stdin tt).["read_line"] guess).["expect"] "Failed to read line" ;;
+    let _ :=
+      ((io.stdin tt).["read_line"] guess).["expect"] "Failed to read line" in
     let guess :=
       match guess.["trim"].["parse"] with
       | Ok num => num
       | Err _ => Continue
       end in
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "You guessed: "; "
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "You guessed: "; "
 " ]
-        [ format_argument::["new_display"] guess ]) ;;
-    tt ;;
+            [ format_argument::["new_display"] guess ]) in
+      tt in
     match guess.["cmp"] secret_number with
     | Ordering.Less =>
-      _crate.io._print (format_arguments::["new_const"] [ "Too small!
-" ]) ;;
+      let _ :=
+        _crate.io._print (format_arguments::["new_const"] [ "Too small!
+" ]) in
       tt
     | Ordering.Greater =>
-      _crate.io._print (format_arguments::["new_const"] [ "Too big!
-" ]) ;;
+      let _ :=
+        _crate.io._print (format_arguments::["new_const"] [ "Too big!
+" ]) in
       tt
     | Ordering.Equal =>
-      _crate.io._print (format_arguments::["new_const"] [ "You win!
-" ]) ;;
-      tt ;;
-      Break ;;
+      let _ :=
+        let _ :=
+          _crate.io._print (format_arguments::["new_const"] [ "You win!
+" ]) in
+        tt in
+      let _ := Break in
       tt
     end
     from

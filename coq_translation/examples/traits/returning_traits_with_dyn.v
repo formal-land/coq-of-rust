@@ -63,10 +63,12 @@ Definition random_animal (random_number : f64) : Box TraitObject :=
 Definition main (_ : unit) : unit :=
   let random_number := 0 (* 0.234 *) in
   let animal := random_animal random_number in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "You've randomly chosen an animal, and it says "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "You've randomly chosen an animal, and it says "; "
 " ]
-      [ format_argument::["new_display"] animal.["noise"] ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] animal.["noise"] ]) in
+    tt in
   tt.

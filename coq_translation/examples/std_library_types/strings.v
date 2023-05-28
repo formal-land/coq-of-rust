@@ -6,71 +6,88 @@ Import Root.std.prelude.rust_2015.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let pangram := "the quick brown fox jumps over the lazy dog" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Pangram: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Pangram: "; "
 " ]
-      [ format_argument::["new_display"] pangram ]) ;;
-  tt ;;
-  _crate.io._print (format_arguments::["new_const"] [ "Words in reverse
-" ]) ;;
-  tt ;;
-  match LangItem pangram.["split_whitespace"].["rev"] with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := word; |} =>
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "> "; "
+          [ format_argument::["new_display"] pangram ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "Words in reverse
+" ]) in
+    tt in
+  let _ :=
+    match LangItem pangram.["split_whitespace"].["rev"] with
+    | iter =>
+      loop
+        let _ :=
+          match LangItem iter with
+          | None => Break
+          | Some {| Some.0 := word; |} =>
+            let _ :=
+              let _ :=
+                _crate.io._print
+                  (format_arguments::["new_v1"]
+                    [ "> "; "
 " ]
-            [ format_argument::["new_display"] word ]) ;;
-        tt ;;
+                    [ format_argument::["new_display"] word ]) in
+              tt in
+            tt
+          end in
         tt
-      end ;;
-      tt
-      from
-      for
-  end ;;
+        from
+        for
+    end in
   let chars := pangram.["chars"].["collect"] in
-  chars.["sort"] ;;
-  chars.["dedup"] ;;
+  let _ := chars.["sort"] in
+  let _ := chars.["dedup"] in
   let string := String::["new"] tt in
-  match LangItem chars with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := c; |} =>
-        string.["push"] c ;;
-        string.["push_str"] ", " ;;
+  let _ :=
+    match LangItem chars with
+    | iter =>
+      loop
+        let _ :=
+          match LangItem iter with
+          | None => Break
+          | Some {| Some.0 := c; |} =>
+            let _ := string.["push"] c in
+            let _ := string.["push_str"] ", " in
+            tt
+          end in
         tt
-      end ;;
-      tt
-      from
-      for
-  end ;;
+        from
+        for
+    end in
   let chars_to_trim := [ " "%char; ","%char ] in
   let trimmed_str := string.["trim_matches"] chars_to_trim in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Used characters: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Used characters: "; "
 " ]
-      [ format_argument::["new_display"] trimmed_str ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] trimmed_str ]) in
+    tt in
   let alice := String::["from"] "I like dogs" in
   let bob := alice.["replace"] "dog" "cat" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Alice says: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Alice says: "; "
 " ]
-      [ format_argument::["new_display"] alice ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Bob says: "; "
+          [ format_argument::["new_display"] alice ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Bob says: "; "
 " ]
-      [ format_argument::["new_display"] bob ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] bob ]) in
+    tt in
   tt.

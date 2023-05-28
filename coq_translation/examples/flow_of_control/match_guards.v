@@ -15,31 +15,35 @@ Definition main (_ : unit) : unit :=
   let temperature := Temperature.Celsius 35 in
   match temperature with
   | Temperature.Celsius t =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "C is above 30 Celsius
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "C is above 30 Celsius
 " ]
-        [ format_argument::["new_display"] t ]) ;;
+          [ format_argument::["new_display"] t ]) in
     tt
   | Temperature.Celsius t =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "C is below 30 Celsius
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "C is below 30 Celsius
 " ]
-        [ format_argument::["new_display"] t ]) ;;
+          [ format_argument::["new_display"] t ]) in
     tt
   | Temperature.Fahrenheit t =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "F is above 86 Fahrenheit
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "F is above 86 Fahrenheit
 " ]
-        [ format_argument::["new_display"] t ]) ;;
+          [ format_argument::["new_display"] t ]) in
     tt
   | Temperature.Fahrenheit t =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "F is below 86 Fahrenheit
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "F is below 86 Fahrenheit
 " ]
-        [ format_argument::["new_display"] t ]) ;;
+          [ format_argument::["new_display"] t ]) in
     tt
   end.

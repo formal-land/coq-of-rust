@@ -13,20 +13,28 @@ Definition cos (z : Complex) : Complex := ccosf z.
 Definition main (_ : unit) : unit :=
   let z := {| Complex.re := 1 (* 1. *).["neg"]; Complex.im := 0 (* 0. *); |} in
   let z_sqrt := csqrtf z in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "the square root of "; " is "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "the square root of "; " is "; "
 " ]
-      [ format_argument::["new_debug"] z; format_argument::["new_debug"] z_sqrt
-      ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "cos("; ") = "; "
+          [
+            format_argument::["new_debug"] z;
+            format_argument::["new_debug"] z_sqrt
+          ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "cos("; ") = "; "
 " ]
-      [ format_argument::["new_debug"] z; format_argument::["new_debug"] (cos z)
-      ]) ;;
-  tt ;;
+          [
+            format_argument::["new_debug"] z;
+            format_argument::["new_debug"] (cos z)
+          ]) in
+    tt in
   tt.
 
 Module Complex.

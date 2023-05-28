@@ -10,16 +10,20 @@ Definition main (_ : unit) : unit :=
   let '(numbers, errors) :=
     (strings.["into_iter"].["map"] (fun s => s.["parse"])).["partition"]
       Result::["is_ok"] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Numbers: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Numbers: "; "
 " ]
-      [ format_argument::["new_debug"] numbers ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Errors: "; "
+          [ format_argument::["new_debug"] numbers ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Errors: "; "
 " ]
-      [ format_argument::["new_debug"] errors ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] errors ]) in
+    tt in
   tt.

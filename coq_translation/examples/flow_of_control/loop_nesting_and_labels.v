@@ -5,30 +5,41 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  loop
-    _crate.io._print
-      (format_arguments::["new_const"] [ "Entered the outer loop
-" ]) ;;
-    tt ;;
+  let _ :=
     loop
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Entered the inner loop
-" ]) ;;
-      tt ;;
-      Break ;;
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_const"] [ "Entered the outer loop
+" ]) in
+        tt in
+      let _ :=
+        loop
+          let _ :=
+            let _ :=
+              _crate.io._print
+                (format_arguments::["new_const"]
+                  [ "Entered the inner loop
+" ]) in
+            tt in
+          let _ := Break in
+          tt
+          from
+          loop in
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_const"]
+              [ "This point will never be reached
+" ]) in
+        tt in
       tt
       from
-      loop ;;
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "This point will never be reached
-" ]) ;;
-    tt ;;
-    tt
-    from
-    loop ;;
-  _crate.io._print
-    (format_arguments::["new_const"] [ "Exited the outer loop
-" ]) ;;
-  tt ;;
+      loop in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "Exited the outer loop
+" ]) in
+    tt in
   tt.

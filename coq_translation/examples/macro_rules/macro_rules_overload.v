@@ -5,25 +5,29 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; " and "; " is "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; " and "; " is "; "
 " ]
-      [
-        format_argument::["new_debug"] "1i32 + 1 == 2i32";
-        format_argument::["new_debug"] "2i32 * 2 == 4i32";
-        format_argument::["new_debug"]
-          (((1.["add"] 1).["eq"] 2).["andb"] ((2.["mul"] 2).["eq"] 4))
-      ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; " or "; " is "; "
+          [
+            format_argument::["new_debug"] "1i32 + 1 == 2i32";
+            format_argument::["new_debug"] "2i32 * 2 == 4i32";
+            format_argument::["new_debug"]
+              (((1.["add"] 1).["eq"] 2).["andb"] ((2.["mul"] 2).["eq"] 4))
+          ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; " or "; " is "; "
 " ]
-      [
-        format_argument::["new_debug"] "true";
-        format_argument::["new_debug"] "false";
-        format_argument::["new_debug"] (true.["or"] false)
-      ]) ;;
-  tt ;;
+          [
+            format_argument::["new_debug"] "true";
+            format_argument::["new_debug"] "false";
+            format_argument::["new_debug"] (true.["or"] false)
+          ]) in
+    tt in
   tt.

@@ -9,24 +9,30 @@ Definition main (_ : unit) : unit :=
   let a_boolean := true in
   let unit := tt in
   let copied_integer := an_integer in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "An integer: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "An integer: "; "
 " ]
-      [ format_argument::["new_debug"] copied_integer ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "A boolean: "; "
+          [ format_argument::["new_debug"] copied_integer ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "A boolean: "; "
 " ]
-      [ format_argument::["new_debug"] a_boolean ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Meet the unit value: "; "
+          [ format_argument::["new_debug"] a_boolean ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Meet the unit value: "; "
 " ]
-      [ format_argument::["new_debug"] unit ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] unit ]) in
+    tt in
   let _unused_variable := 3 in
   let _noisy_unused_variable := 2 in
   tt.

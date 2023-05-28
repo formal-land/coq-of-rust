@@ -10,23 +10,27 @@ Definition main (_ : unit) : unit :=
     match optional with
     | Some i =>
       if (i.["gt"] 9 : bool) then
-        _crate.io._print
-          (format_arguments::["new_const"] [ "Greater than 9, quit!
-" ]) ;;
-        tt ;;
-        assign optional None ;;
+        let _ :=
+          let _ :=
+            _crate.io._print
+              (format_arguments::["new_const"] [ "Greater than 9, quit!
+" ]) in
+          tt in
+        let _ := assign optional None in
         tt
       else
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "`i` is `"; "`. Try again.
+        let _ :=
+          let _ :=
+            _crate.io._print
+              (format_arguments::["new_v1"]
+                [ "`i` is `"; "`. Try again.
 " ]
-            [ format_argument::["new_debug"] i ]) ;;
-        tt ;;
-        assign optional (Some (i.["add"] 1)) ;;
+                [ format_argument::["new_debug"] i ]) in
+          tt in
+        let _ := assign optional (Some (i.["add"] 1)) in
         tt
     | _ =>
-      Break ;;
+      let _ := Break in
       tt
     end
     from

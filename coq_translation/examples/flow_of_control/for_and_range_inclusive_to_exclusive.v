@@ -8,35 +8,47 @@ Definition main (_ : unit) : unit :=
   match LangItem Range {| Range.start := 1; Range.end := 101; |} with
   | iter =>
     loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := n; |} =>
-        if ((n.["rem"] 15).["eq"] 0 : bool) then
-          _crate.io._print (format_arguments::["new_const"] [ "fizzbuzz
-" ]) ;;
-          tt ;;
-          tt
-        else
-          if ((n.["rem"] 3).["eq"] 0 : bool) then
-            _crate.io._print (format_arguments::["new_const"] [ "fizz
-" ]) ;;
-            tt ;;
+      let _ :=
+        match LangItem iter with
+        | None => Break
+        | Some {| Some.0 := n; |} =>
+          if ((n.["rem"] 15).["eq"] 0 : bool) then
+            let _ :=
+              let _ :=
+                _crate.io._print
+                  (format_arguments::["new_const"] [ "fizzbuzz
+" ]) in
+              tt in
             tt
           else
-            if ((n.["rem"] 5).["eq"] 0 : bool) then
-              _crate.io._print (format_arguments::["new_const"] [ "buzz
-" ]) ;;
-              tt ;;
+            if ((n.["rem"] 3).["eq"] 0 : bool) then
+              let _ :=
+                let _ :=
+                  _crate.io._print
+                    (format_arguments::["new_const"] [ "fizz
+" ]) in
+                tt in
               tt
             else
-              _crate.io._print
-                (format_arguments::["new_v1"]
-                  [ ""; "
+              if ((n.["rem"] 5).["eq"] 0 : bool) then
+                let _ :=
+                  let _ :=
+                    _crate.io._print
+                      (format_arguments::["new_const"] [ "buzz
+" ]) in
+                  tt in
+                tt
+              else
+                let _ :=
+                  let _ :=
+                    _crate.io._print
+                      (format_arguments::["new_v1"]
+                        [ ""; "
 " ]
-                  [ format_argument::["new_display"] n ]) ;;
-              tt ;;
-              tt
-      end ;;
+                        [ format_argument::["new_display"] n ]) in
+                  tt in
+                tt
+        end in
       tt
       from
       for

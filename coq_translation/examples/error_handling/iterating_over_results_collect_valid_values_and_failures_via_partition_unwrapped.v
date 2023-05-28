@@ -14,16 +14,20 @@ Definition main (_ : unit) : unit :=
     (numbers.["into_iter"].["map"] Result::["unwrap"]).["collect"] in
   let errors :=
     (errors.["into_iter"].["map"] Result::["unwrap_err"]).["collect"] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Numbers: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Numbers: "; "
 " ]
-      [ format_argument::["new_debug"] numbers ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Errors: "; "
+          [ format_argument::["new_debug"] numbers ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Errors: "; "
 " ]
-      [ format_argument::["new_debug"] errors ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] errors ]) in
+    tt in
   tt.

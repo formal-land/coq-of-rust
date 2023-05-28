@@ -107,28 +107,36 @@ Definition main (_ : unit) : unit :=
   let double := {| NamedBorrowed.x := x; NamedBorrowed.y := y; |} in
   let reference := Either.Ref x in
   let number := Either.Num y in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "x is borrowed in "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "x is borrowed in "; "
 " ]
-      [ format_argument::["new_debug"] single ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "x and y are borrowed in "; "
+          [ format_argument::["new_debug"] single ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "x and y are borrowed in "; "
 " ]
-      [ format_argument::["new_debug"] double ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "x is borrowed in "; "
+          [ format_argument::["new_debug"] double ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "x is borrowed in "; "
 " ]
-      [ format_argument::["new_debug"] reference ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "y is *not* borrowed in "; "
+          [ format_argument::["new_debug"] reference ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "y is *not* borrowed in "; "
 " ]
-      [ format_argument::["new_debug"] number ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] number ]) in
+    tt in
   tt.

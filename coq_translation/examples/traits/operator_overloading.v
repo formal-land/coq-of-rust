@@ -67,10 +67,12 @@ Module Impl_ops_Add_for_Foo.
   Definition Output : Set := FooBar.
   
   Definition add (self : Self) (_rhs : Bar) : FooBar :=
-    _crate.io._print
-      (format_arguments::["new_const"] [ "> Foo.add(Bar) was called
-" ]) ;;
-    tt ;;
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"] [ "> Foo.add(Bar) was called
+" ]) in
+      tt in
     FooBar.Build.
   
   Global Instance Method_add : Notation.Dot "add" := {
@@ -88,10 +90,12 @@ Module Impl_ops_Add_for_Bar.
   Definition Output : Set := BarFoo.
   
   Definition add (self : Self) (_rhs : Foo) : BarFoo :=
-    _crate.io._print
-      (format_arguments::["new_const"] [ "> Bar.add(Foo) was called
-" ]) ;;
-    tt ;;
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"] [ "> Bar.add(Foo) was called
+" ]) in
+      tt in
     BarFoo.Build.
   
   Global Instance Method_add : Notation.Dot "add" := {
@@ -105,16 +109,20 @@ End Impl_ops_Add_for_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Foo + Bar = "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Foo + Bar = "; "
 " ]
-      [ format_argument::["new_debug"] (Foo.Build.["add"] Bar.Build) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Bar + Foo = "; "
+          [ format_argument::["new_debug"] (Foo.Build.["add"] Bar.Build) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Bar + Foo = "; "
 " ]
-      [ format_argument::["new_debug"] (Bar.Build.["add"] Foo.Build) ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] (Bar.Build.["add"] Foo.Build) ]) in
+    tt in
   tt.

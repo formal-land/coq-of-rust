@@ -5,27 +5,35 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  let val := 1.["add"] 2 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "1 + 2 = "; "
+  let _ :=
+    let val := 1.["add"] 2 in
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "1 + 2 = "; "
 " ]
-      [ format_argument::["new_display"] val ]) ;;
-  tt ;;
-  tt ;;
-  let val := 3.["add"] 4 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "3 + 4 = "; "
+            [ format_argument::["new_display"] val ]) in
+      tt in
+    tt in
+  let _ :=
+    let val := 3.["add"] 4 in
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "3 + 4 = "; "
 " ]
-      [ format_argument::["new_display"] val ]) ;;
-  tt ;;
-  tt ;;
+            [ format_argument::["new_display"] val ]) in
+      tt in
+    tt in
   let val := (2.["mul"] 3).["add"] 1 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "(2 * 3) + 1 = "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "(2 * 3) + 1 = "; "
 " ]
-      [ format_argument::["new_display"] val ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] val ]) in
+    tt in
   tt.

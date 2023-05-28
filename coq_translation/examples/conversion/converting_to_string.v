@@ -37,10 +37,12 @@ End Impl_fmt_Display_for_Circle.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let circle := {| Circle.radius := 6; |} in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "
 " ]
-      [ format_argument::["new_display"] circle.["to_string"] ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] circle.["to_string"] ]) in
+    tt in
   tt.

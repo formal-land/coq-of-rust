@@ -64,69 +64,87 @@ Definition main (_ : unit) : unit :=
       0 (* 0.2 *),
       "a"%char,
       true) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "long tuple first value: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "long tuple first value: "; "
 " ]
-      [ format_argument::["new_display"] (long_tuple.[0]) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "long tuple second value: "; "
+          [ format_argument::["new_display"] (long_tuple.[0]) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "long tuple second value: "; "
 " ]
-      [ format_argument::["new_display"] (long_tuple.[1]) ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] (long_tuple.[1]) ]) in
+    tt in
   let tuple_of_tuples := ((1, 2, 2), (4, 1.["neg"]), 2.["neg"]) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "tuple of tuples: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "tuple of tuples: "; "
 " ]
-      [ format_argument::["new_debug"] tuple_of_tuples ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] tuple_of_tuples ]) in
+    tt in
   let pair := (1, true) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "pair is "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "pair is "; "
 " ]
-      [ format_argument::["new_debug"] pair ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "the reversed pair is "; "
+          [ format_argument::["new_debug"] pair ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "the reversed pair is "; "
 " ]
-      [ format_argument::["new_debug"] (reverse pair) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "one element tuple: "; "
+          [ format_argument::["new_debug"] (reverse pair) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "one element tuple: "; "
 " ]
-      [ format_argument::["new_debug"] (5) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "just an integer: "; "
+          [ format_argument::["new_debug"] (5) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "just an integer: "; "
 " ]
-      [ format_argument::["new_debug"] 5 ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] 5 ]) in
+    tt in
   let tuple := (1, "hello", 5 (* 4.5 *), true) in
   let '(a, b, c, d) := tuple in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; ", "; ", "; ", "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; ", "; ", "; ", "; "
 " ]
-      [
-        format_argument::["new_debug"] a;
-        format_argument::["new_debug"] b;
-        format_argument::["new_debug"] c;
-        format_argument::["new_debug"] d
-      ]) ;;
-  tt ;;
+          [
+            format_argument::["new_debug"] a;
+            format_argument::["new_debug"] b;
+            format_argument::["new_debug"] c;
+            format_argument::["new_debug"] d
+          ]) in
+    tt in
   let matrix :=
     Matrix.Build_t 1 (* 1.1 *) 1 (* 1.2 *) 2 (* 2.1 *) 2 (* 2.2 *) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "
 " ]
-      [ format_argument::["new_debug"] matrix ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] matrix ]) in
+    tt in
   tt.

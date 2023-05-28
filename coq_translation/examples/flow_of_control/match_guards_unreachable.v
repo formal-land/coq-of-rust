@@ -8,13 +8,14 @@ Definition main (_ : unit) : unit :=
   let number := 4 in
   match number with
   | i =>
-    _crate.io._print (format_arguments::["new_const"] [ "Zero
-" ]) ;;
+    let _ := _crate.io._print (format_arguments::["new_const"] [ "Zero
+" ]) in
     tt
   | i =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "Greater than zero
-" ]) ;;
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "Greater than zero
+" ]) in
     tt
   | _ => _crate.panicking.unreachable_display "Should never happen."
   end.

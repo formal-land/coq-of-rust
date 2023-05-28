@@ -36,15 +36,17 @@ Module Animal.
   }.
   Global Instance Method_talk `(Trait) : Notation.Dot "talk" := {
     Notation.dot (self : ref Self) :=
-      (_crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " says "; "
+      (let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_v1"]
+              [ ""; " says "; "
 " ]
-          [
-            format_argument::["new_display"] self.["name"];
-            format_argument::["new_display"] self.["noise"]
-          ]) ;;
-      tt ;;
+              [
+                format_argument::["new_display"] self.["name"];
+                format_argument::["new_display"] self.["noise"]
+              ]) in
+        tt in
       tt
       : unit);
   }.
@@ -87,15 +89,17 @@ Module Impl_Animal_for_Sheep.
   }.
   
   Definition talk (self : ref Self) :=
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; " pauses briefly... "; "
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ ""; " pauses briefly... "; "
 " ]
-        [
-          format_argument::["new_display"] self.["name"];
-          format_argument::["new_display"] self.["noise"]
-        ]) ;;
-    tt ;;
+            [
+              format_argument::["new_display"] self.["name"];
+              format_argument::["new_display"] self.["noise"]
+            ]) in
+      tt in
     tt.
   
   Global Instance Method_talk : Notation.Dot "talk" := {
@@ -114,21 +118,25 @@ Module ImplSheep_2.
   
   Definition shear (self : mut_ref Self) :=
     if (self.["is_naked"] : bool) then
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " is already naked...
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_v1"]
+              [ ""; " is already naked...
 " ]
-          [ format_argument::["new_display"] self.["name"] ]) ;;
-      tt ;;
+              [ format_argument::["new_display"] self.["name"] ]) in
+        tt in
       tt
     else
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " gets a haircut!
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_v1"]
+              [ ""; " gets a haircut!
 " ]
-          [ format_argument::["new_display"] self.["name"] ]) ;;
-      tt ;;
-      assign self.["naked"] true ;;
+              [ format_argument::["new_display"] self.["name"] ]) in
+        tt in
+      let _ := assign self.["naked"] true in
       tt.
   
   Global Instance Method_shear : Notation.Dot "shear" := {
@@ -139,7 +147,7 @@ End ImplSheep_2.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let dolly := ((Animal.new "Dolly") : Sheep) in
-  dolly.["talk"] ;;
-  dolly.["shear"] ;;
-  dolly.["talk"] ;;
+  let _ := dolly.["talk"] in
+  let _ := dolly.["shear"] in
+  let _ := dolly.["talk"] in
   tt.

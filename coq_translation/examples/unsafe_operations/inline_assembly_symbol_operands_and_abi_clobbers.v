@@ -9,15 +9,17 @@ Definition main (_ : unit) : unit := tt.
 Module asm := std.arch.asm.
 
 Definition foo (arg : i32) : i32 :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "arg = "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "arg = "; "
 " ]
-      [ format_argument::["new_display"] arg ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] arg ]) in
+    tt in
   arg.["mul"] 2.
 
 Definition call_foo (arg : i32) : i32 :=
   let result := tt in
-  InlineAsm ;;
+  let _ := InlineAsm in
   result.

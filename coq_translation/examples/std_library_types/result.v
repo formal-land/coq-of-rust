@@ -137,10 +137,13 @@ Definition op (x : f64) (y : f64) : f64 :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "
 " ]
-      [ format_argument::["new_display"] (op 1 (* 1.0 *) 10 (* 10.0 *)) ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] (op 1 (* 1.0 *) 10 (* 10.0 *))
+          ]) in
+    tt in
   tt.

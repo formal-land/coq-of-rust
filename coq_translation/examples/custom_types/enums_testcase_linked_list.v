@@ -64,19 +64,23 @@ End ImplList.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let list := List::["new"] tt in
-  assign list (list.["prepend"] 1) ;;
-  assign list (list.["prepend"] 2) ;;
-  assign list (list.["prepend"] 3) ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "linked list has length: "; "
+  let _ := assign list (list.["prepend"] 1) in
+  let _ := assign list (list.["prepend"] 2) in
+  let _ := assign list (list.["prepend"] 3) in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "linked list has length: "; "
 " ]
-      [ format_argument::["new_display"] list.["len"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
+          [ format_argument::["new_display"] list.["len"] ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "
 " ]
-      [ format_argument::["new_display"] list.["stringify"] ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] list.["stringify"] ]) in
+    tt in
   tt.

@@ -86,33 +86,41 @@ Definition main (_ : unit) : unit :=
   let number_1 := 3 in
   let number_2 := 10 in
   let container := Container.Build_t number_1 number_2 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Does container contain "; " and "; ": "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Does container contain "; " and "; ": "; "
 " ]
-      [
-        format_argument::["new_display"] number_1;
-        format_argument::["new_display"] number_2;
-        format_argument::["new_display"]
-          (container.["contains"] number_1 number_2)
-      ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "First number: "; "
+          [
+            format_argument::["new_display"] number_1;
+            format_argument::["new_display"] number_2;
+            format_argument::["new_display"]
+              (container.["contains"] number_1 number_2)
+          ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "First number: "; "
 " ]
-      [ format_argument::["new_display"] container.["first"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Last number: "; "
+          [ format_argument::["new_display"] container.["first"] ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Last number: "; "
 " ]
-      [ format_argument::["new_display"] container.["last"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The difference is: "; "
+          [ format_argument::["new_display"] container.["last"] ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "The difference is: "; "
 " ]
-      [ format_argument::["new_display"] (difference container) ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] (difference container) ]) in
+    tt in
   tt.

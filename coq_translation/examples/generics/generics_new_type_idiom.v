@@ -49,17 +49,21 @@ Definition old_enough (age : ref Years) : bool := (age.[0]).["ge"] 18.
 Definition main (_ : unit) : unit :=
   let age := Years.Build_t 5 in
   let age_days := age.["to_days"] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Old enough "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Old enough "; "
 " ]
-      [ format_argument::["new_display"] (old_enough age) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Old enough "; "
+          [ format_argument::["new_display"] (old_enough age) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Old enough "; "
 " ]
-      [ format_argument::["new_display"] (old_enough age_days.["to_years"])
-      ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] (old_enough age_days.["to_years"])
+          ]) in
+    tt in
   tt.

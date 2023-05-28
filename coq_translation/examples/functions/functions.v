@@ -5,54 +5,64 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  fizzbuzz_to 100 ;;
+  let _ := fizzbuzz_to 100 in
   tt.
 
 Definition is_divisible_by (lhs : u32) (rhs : u32) : bool :=
-  if (rhs.["eq"] 0 : bool) then
-    Return false ;;
-    tt
-  else
-    tt ;;
+  let _ :=
+    if (rhs.["eq"] 0 : bool) then
+      let _ := Return false in
+      tt
+    else
+      tt in
   (lhs.["rem"] rhs).["eq"] 0.
 
 Definition fizzbuzz (n : u32) : unit :=
   if (is_divisible_by n 15 : bool) then
-    _crate.io._print (format_arguments::["new_const"] [ "fizzbuzz
-" ]) ;;
-    tt ;;
+    let _ :=
+      let _ :=
+        _crate.io._print (format_arguments::["new_const"] [ "fizzbuzz
+" ]) in
+      tt in
     tt
   else
     if (is_divisible_by n 3 : bool) then
-      _crate.io._print (format_arguments::["new_const"] [ "fizz
-" ]) ;;
-      tt ;;
+      let _ :=
+        let _ :=
+          _crate.io._print (format_arguments::["new_const"] [ "fizz
+" ]) in
+        tt in
       tt
     else
       if (is_divisible_by n 5 : bool) then
-        _crate.io._print (format_arguments::["new_const"] [ "buzz
-" ]) ;;
-        tt ;;
+        let _ :=
+          let _ :=
+            _crate.io._print (format_arguments::["new_const"] [ "buzz
+" ]) in
+          tt in
         tt
       else
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ ""; "
+        let _ :=
+          let _ :=
+            _crate.io._print
+              (format_arguments::["new_v1"]
+                [ ""; "
 " ]
-            [ format_argument::["new_display"] n ]) ;;
-        tt ;;
+                [ format_argument::["new_display"] n ]) in
+          tt in
         tt.
 
 Definition fizzbuzz_to (n : u32) : unit :=
   match LangItem (LangItem 1 n) with
   | iter =>
     loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := n; |} =>
-        fizzbuzz n ;;
-        tt
-      end ;;
+      let _ :=
+        match LangItem iter with
+        | None => Break
+        | Some {| Some.0 := n; |} =>
+          let _ := fizzbuzz n in
+          tt
+        end in
       tt
       from
       for

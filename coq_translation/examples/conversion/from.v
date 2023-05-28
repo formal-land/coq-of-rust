@@ -54,10 +54,12 @@ End Impl_From_for_Number.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let num := Number::["from"] 30 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "My number is "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "My number is "; "
 " ]
-      [ format_argument::["new_debug"] num ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] num ]) in
+    tt in
   tt.

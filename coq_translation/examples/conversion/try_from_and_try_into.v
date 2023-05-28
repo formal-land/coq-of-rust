@@ -78,58 +78,66 @@ End Impl_TryFrom_for_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  match (EvenNumber::["try_from"] 8, Ok (EvenNumber.Build_t 8)) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  match (EvenNumber::["try_from"] 5, Err tt) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
+  let _ :=
+    match (EvenNumber::["try_from"] 8, Ok (EvenNumber.Build_t 8)) with
+    | (left_val, right_val) =>
+      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let _ :=
+          _crate.panicking.assert_failed
+            kind
+            left_val.["deref"]
+            right_val.["deref"]
+            _crate.option.Option.None in
+        tt
+      else
+        tt
+    end in
+  let _ :=
+    match (EvenNumber::["try_from"] 5, Err tt) with
+    | (left_val, right_val) =>
+      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let _ :=
+          _crate.panicking.assert_failed
+            kind
+            left_val.["deref"]
+            right_val.["deref"]
+            _crate.option.Option.None in
+        tt
+      else
+        tt
+    end in
   let result := 8.["try_into"] in
-  match (result, Ok (EvenNumber.Build_t 8)) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
+  let _ :=
+    match (result, Ok (EvenNumber.Build_t 8)) with
+    | (left_val, right_val) =>
+      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let _ :=
+          _crate.panicking.assert_failed
+            kind
+            left_val.["deref"]
+            right_val.["deref"]
+            _crate.option.Option.None in
+        tt
+      else
+        tt
+    end in
   let result := 5.["try_into"] in
-  match (result, Err tt) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
+  let _ :=
+    match (result, Err tt) with
+    | (left_val, right_val) =>
+      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let _ :=
+          _crate.panicking.assert_failed
+            kind
+            left_val.["deref"]
+            right_val.["deref"]
+            _crate.option.Option.None in
+        tt
+      else
+        tt
+    end in
   tt.

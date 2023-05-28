@@ -18,19 +18,23 @@ Definition main (_ : unit) : unit :=
             [ format_argument::["new_display"] e ])) in
   if (output.["status"].["success"] : bool) then
     let s := String::["from_utf8_lossy"] output.["stdout"] in
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "rustc succeeded and stdout was:
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "rustc succeeded and stdout was:
 " ]
-        [ format_argument::["new_display"] s ]) ;;
-    tt ;;
+            [ format_argument::["new_display"] s ]) in
+      tt in
     tt
   else
     let s := String::["from_utf8_lossy"] output.["stderr"] in
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "rustc failed and stderr was:
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "rustc failed and stderr was:
 " ]
-        [ format_argument::["new_display"] s ]) ;;
-    tt ;;
+            [ format_argument::["new_display"] s ]) in
+      tt in
     tt.

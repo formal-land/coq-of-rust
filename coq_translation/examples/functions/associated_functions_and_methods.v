@@ -81,10 +81,10 @@ Module ImplRectangle.
   }.
   
   Definition translate (self : mut_ref Self) (x : f64) (y : f64) :=
-    self.["p1"].["x"].["add_assign"] x ;;
-    self.["p2"].["x"].["add_assign"] x ;;
-    self.["p1"].["y"].["add_assign"] y ;;
-    self.["p2"].["y"].["add_assign"] y ;;
+    let _ := self.["p1"].["x"].["add_assign"] x in
+    let _ := self.["p2"].["x"].["add_assign"] x in
+    let _ := self.["p1"].["y"].["add_assign"] y in
+    let _ := self.["p2"].["y"].["add_assign"] y in
     tt.
   
   Global Instance Method_translate : Notation.Dot "translate" := {
@@ -109,15 +109,17 @@ Module ImplPair.
   
   Definition destroy (self : Self) :=
     let 'Pair.Build_t first second := self in
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Destroying Pair("; ", "; ")
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "Destroying Pair("; ", "; ")
 " ]
-        [
-          format_argument::["new_display"] first;
-          format_argument::["new_display"] second
-        ]) ;;
-    tt ;;
+            [
+              format_argument::["new_display"] first;
+              format_argument::["new_display"] second
+            ]) in
+      tt in
     tt.
   
   Global Instance Method_destroy : Notation.Dot "destroy" := {
@@ -132,24 +134,28 @@ Definition main (_ : unit) : unit :=
       Rectangle.p1 := Point::["origin"] tt;
       Rectangle.p2 := Point::["new"] 3 (* 3.0 *) 4 (* 4.0 *);
     |} in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Rectangle perimeter: "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Rectangle perimeter: "; "
 " ]
-      [ format_argument::["new_display"] rectangle.["perimeter"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Rectangle area: "; "
+          [ format_argument::["new_display"] rectangle.["perimeter"] ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Rectangle area: "; "
 " ]
-      [ format_argument::["new_display"] rectangle.["area"] ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] rectangle.["area"] ]) in
+    tt in
   let square :=
     {|
       Rectangle.p1 := Point::["origin"] tt;
       Rectangle.p2 := Point::["new"] 1 (* 1.0 *) 1 (* 1.0 *);
     |} in
-  square.["translate"] 1 (* 1.0 *) 1 (* 1.0 *) ;;
+  let _ := square.["translate"] 1 (* 1.0 *) 1 (* 1.0 *) in
   let pair := Pair.Build_t (Box::["new"] 1) (Box::["new"] 2) in
-  pair.["destroy"] ;;
+  let _ := pair.["destroy"] in
   tt.

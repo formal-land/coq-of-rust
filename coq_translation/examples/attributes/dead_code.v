@@ -12,5 +12,5 @@ Definition noisy_unused_function (_ : unit) : unit := tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  used_function tt ;;
+  let _ := used_function tt in
   tt.

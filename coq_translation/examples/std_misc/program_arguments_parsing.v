@@ -6,35 +6,41 @@ Import Root.std.prelude.rust_2015.
 Module env := std.env.
 
 Definition increase (number : i32) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "
 " ]
-      [ format_argument::["new_display"] (number.["add"] 1) ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] (number.["add"] 1) ]) in
+    tt in
   tt.
 
 Definition decrease (number : i32) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ ""; "
 " ]
-      [ format_argument::["new_display"] (number.["sub"] 1) ]) ;;
-  tt ;;
+          [ format_argument::["new_display"] (number.["sub"] 1) ]) in
+    tt in
   tt.
 
 Definition help (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [
-        "usage:
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"]
+          [
+            "usage:
 match_args <string>
     Check whether given string is the answer.
 match_args {increase|decrease} <integer>
     Increase or decrease given integer by one.
 "
-      ]) ;;
-  tt ;;
+          ]) in
+    tt in
   tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -42,23 +48,27 @@ Definition main (_ : unit) : unit :=
   let args := (env.args tt).["collect"] in
   match args.["len"] with
   | 1 =>
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "My name is 'match_args'. Try passing some arguments!
-" ]) ;;
-    tt ;;
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"]
+            [ "My name is 'match_args'. Try passing some arguments!
+" ]) in
+      tt in
     tt
   | 2 =>
     match args[1].["parse"] with
     | Ok 42 =>
-      _crate.io._print
-        (format_arguments::["new_const"] [ "This is the answer!
-" ]) ;;
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"] [ "This is the answer!
+" ]) in
       tt
     | _ =>
-      _crate.io._print
-        (format_arguments::["new_const"] [ "This is not the answer.
-" ]) ;;
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"] [ "This is not the answer.
+" ]) in
       tt
     end
   | 3 =>
@@ -68,27 +78,31 @@ Definition main (_ : unit) : unit :=
       match num.["parse"] with
       | Ok n => n
       | Err _ =>
-        _crate.io._eprint
-          (format_arguments::["new_const"]
-            [ "error: second argument not an integer
-" ]) ;;
-        tt ;;
-        help tt ;;
-        Return tt ;;
+        let _ :=
+          let _ :=
+            _crate.io._eprint
+              (format_arguments::["new_const"]
+                [ "error: second argument not an integer
+" ]) in
+          tt in
+        let _ := help tt in
+        let _ := Return tt in
         tt
       end in
     match cmd[RangeFull {|  |}] with
     | "increase" => increase number
     | "decrease" => decrease number
     | _ =>
-      _crate.io._eprint
-        (format_arguments::["new_const"] [ "error: invalid command
-" ]) ;;
-      tt ;;
-      help tt ;;
+      let _ :=
+        let _ :=
+          _crate.io._eprint
+            (format_arguments::["new_const"] [ "error: invalid command
+" ]) in
+        tt in
+      let _ := help tt in
       tt
     end
   | _ =>
-    help tt ;;
+    let _ := help tt in
     tt
   end.

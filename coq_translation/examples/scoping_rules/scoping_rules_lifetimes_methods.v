@@ -16,7 +16,7 @@ Module ImplOwner.
   Definition Self := Owner.
   
   Definition add_one (self : mut_ref Self) :=
-    (self.[0]).["add_assign"] 1 ;;
+    let _ := (self.[0]).["add_assign"] 1 in
     tt.
   
   Global Instance Method_add_one : Notation.Dot "add_one" := {
@@ -24,12 +24,14 @@ Module ImplOwner.
   }.
   
   Definition print (self : ref Self) :=
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "`print`: "; "
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_v1"]
+            [ "`print`: "; "
 " ]
-        [ format_argument::["new_display"] (self.[0]) ]) ;;
-    tt ;;
+            [ format_argument::["new_display"] (self.[0]) ]) in
+      tt in
     tt.
   
   Global Instance Method_print : Notation.Dot "print" := {
@@ -40,6 +42,6 @@ End ImplOwner.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let owner := Owner.Build_t 18 in
-  owner.["add_one"] ;;
-  owner.["print"] ;;
+  let _ := owner.["add_one"] in
+  let _ := owner.["print"] in
   tt.

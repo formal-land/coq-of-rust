@@ -70,18 +70,20 @@ Definition double_first (vec : Vec (ref str)) : Result i32 :=
 Definition print (result : Result i32) : unit :=
   match result with
   | Ok n =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "The first doubled is "; "
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "The first doubled is "; "
 " ]
-        [ format_argument::["new_display"] n ]) ;;
+          [ format_argument::["new_display"] n ]) in
     tt
   | Err e =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Error: "; "
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Error: "; "
 " ]
-        [ format_argument::["new_display"] e ]) ;;
+          [ format_argument::["new_display"] e ]) in
     tt
   end.
 
@@ -92,7 +94,7 @@ Definition main (_ : unit) : unit :=
   let empty := _crate.vec.Vec::["new"] tt in
   let strings :=
     Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ]) in
-  print (double_first numbers) ;;
-  print (double_first empty) ;;
-  print (double_first strings) ;;
+  let _ := print (double_first numbers) in
+  let _ := print (double_first empty) in
+  let _ := print (double_first strings) in
   tt.

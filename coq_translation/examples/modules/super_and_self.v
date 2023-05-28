@@ -4,99 +4,121 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"] [ "called `function()`
-" ]) ;;
-  tt ;;
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "called `function()`
+" ]) in
+    tt in
   tt.
 
 Module cool.
   Definition function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"] [ "called `cool::function()`
-" ]) ;;
-    tt ;;
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"] [ "called `cool::function()`
+" ]) in
+      tt in
     tt.
 End cool.
 
 Definition function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"] [ "called `cool::function()`
-" ]) ;;
-  tt ;;
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "called `cool::function()`
+" ]) in
+    tt in
   tt.
 
 Module my.
   Definition function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"] [ "called `my::function()`
-" ]) ;;
-    tt ;;
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"] [ "called `my::function()`
+" ]) in
+      tt in
     tt.
   
   Module cool.
     Definition function (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my::cool::function()`
-" ]) ;;
-      tt ;;
+      let _ :=
+        let _ :=
+          _crate.io._print
+            (format_arguments::["new_const"]
+              [ "called `my::cool::function()`
+" ]) in
+        tt in
       tt.
   End cool.
   
   Definition indirect_call (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my::indirect_call()`, that
-> " ]) ;;
-    tt ;;
-    self.function tt ;;
-    function tt ;;
-    self.cool.function tt ;;
-    super.function tt ;;
-    root_function tt ;;
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"]
+            [ "called `my::indirect_call()`, that
+> " ]) in
+      tt in
+    let _ := self.function tt in
+    let _ := function tt in
+    let _ := self.cool.function tt in
+    let _ := super.function tt in
+    let _ := root_function tt in
     tt.
 End my.
 
 Definition function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"] [ "called `my::function()`
-" ]) ;;
-  tt ;;
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "called `my::function()`
+" ]) in
+    tt in
   tt.
 
 Module cool.
   Definition function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"] [ "called `my::cool::function()`
-" ]) ;;
-    tt ;;
+    let _ :=
+      let _ :=
+        _crate.io._print
+          (format_arguments::["new_const"]
+            [ "called `my::cool::function()`
+" ]) in
+      tt in
     tt.
 End cool.
 
 Definition function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"] [ "called `my::cool::function()`
-" ]) ;;
-  tt ;;
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"]
+          [ "called `my::cool::function()`
+" ]) in
+    tt in
   tt.
 
 Definition indirect_call (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my::indirect_call()`, that
-> " ]) ;;
-  tt ;;
-  self.function tt ;;
-  function tt ;;
-  self.cool.function tt ;;
-  super.function tt ;;
-  root_function tt ;;
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"]
+          [ "called `my::indirect_call()`, that
+> " ]) in
+    tt in
+  let _ := self.function tt in
+  let _ := function tt in
+  let _ := self.cool.function tt in
+  let _ := super.function tt in
+  let _ := root_function tt in
   tt.
 
 Module root_function := crate.cool.function.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
-  my.indirect_call tt ;;
+  let _ := my.indirect_call tt in
   tt.

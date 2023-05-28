@@ -177,16 +177,20 @@ Definition main (_ : unit) : unit :=
   let one_meter := Length.Build_t 1000 (* 1000.0 *) PhantomData.Build in
   let two_feet := one_foot.["add"] one_foot in
   let two_meters := one_meter.["add"] one_meter in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "one foot + one_foot = "; " in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "one foot + one_foot = "; " in
 " ]
-      [ format_argument::["new_debug"] (two_feet.[0]) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "one meter + one_meter = "; " mm
+          [ format_argument::["new_debug"] (two_feet.[0]) ]) in
+    tt in
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "one meter + one_meter = "; " mm
 " ]
-      [ format_argument::["new_debug"] (two_meters.[0]) ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] (two_meters.[0]) ]) in
+    tt in
   tt.

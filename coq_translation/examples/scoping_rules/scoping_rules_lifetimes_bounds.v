@@ -31,27 +31,31 @@ Module Impl__crate_fmt_Debug_for_Ref_T.
 End Impl__crate_fmt_Debug_for_Ref_T.
 
 Definition print {T : Set} `{Debug.Trait T} (t : T) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "`print`: t is "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "`print`: t is "; "
 " ]
-      [ format_argument::["new_debug"] t ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] t ]) in
+    tt in
   tt.
 
 Definition print_ref {T : Set} `{Debug.Trait T} (t : ref T) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "`print_ref`: t is "; "
+  let _ :=
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "`print_ref`: t is "; "
 " ]
-      [ format_argument::["new_debug"] t ]) ;;
-  tt ;;
+          [ format_argument::["new_debug"] t ]) in
+    tt in
   tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : unit :=
   let x := 7 in
   let ref_x := Ref.Build_t x in
-  print_ref ref_x ;;
-  print ref_x ;;
+  let _ := print_ref ref_x in
+  let _ := print ref_x in
   tt.

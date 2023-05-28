@@ -139,16 +139,18 @@ Definition process (food : Option Food) : Option Cooked :=
 Definition eat (food : Option Cooked) : unit :=
   match food with
   | Some food =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Mmm. I love "; "
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_v1"]
+          [ "Mmm. I love "; "
 " ]
-        [ format_argument::["new_debug"] food ]) ;;
+          [ format_argument::["new_debug"] food ]) in
     tt
   | None =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "Oh no! It wasn't edible.
-" ]) ;;
+    let _ :=
+      _crate.io._print
+        (format_arguments::["new_const"] [ "Oh no! It wasn't edible.
+" ]) in
     tt
   end.
 
@@ -160,7 +162,7 @@ Definition main (_ : unit) : unit :=
   let cooked_apple := cook (chop (peel apple)) in
   let cooked_carrot := cook (chop (peel carrot)) in
   let cooked_potato := process potato in
-  eat cooked_apple ;;
-  eat cooked_carrot ;;
-  eat cooked_potato ;;
+  let _ := eat cooked_apple in
+  let _ := eat cooked_carrot in
+  let _ := eat cooked_potato in
   tt.
