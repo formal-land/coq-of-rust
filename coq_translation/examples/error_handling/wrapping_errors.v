@@ -25,11 +25,14 @@ Module Impl__crate_fmt_Debug_for_DoubleError.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     match self with
     | DoubleError.EmptyVec => _crate.fmt.Formatter::["write_str"] f "EmptyVec"
     | DoubleError.Parse __self_0 =>
-      _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Parse" __self_0
+      _crate.fmt.Formatter::["debug_tuple_field1_finish"]
+        f
+        "Parse"
+        (deref __self_0)
     end.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
@@ -44,16 +47,19 @@ End Impl__crate_fmt_Debug_for_DoubleError.
 Module Impl_fmt_Display_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
-    match self.["deref"] with
+  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : M fmt.Result :=
+    let* α0 := self.["deref"] in
+    match α0 with
     | DoubleError.EmptyVec =>
-      f.["write_fmt"]
-        (format_arguments::["new_const"]
-          [ "please use a vector with at least one element" ])
+      let* α0 :=
+        format_arguments::["new_const"]
+          (deref [ "please use a vector with at least one element" ]) in
+      f.["write_fmt"] α0
     | DoubleError.Parse  =>
-      f.["write_fmt"]
-        (format_arguments::["new_const"]
-          [ "the provided string could not be parsed as int" ])
+      let* α0 :=
+        format_arguments::["new_const"]
+          (deref [ "the provided string could not be parsed as int" ]) in
+      f.["write_fmt"] α0
     end.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
@@ -68,9 +74,10 @@ End Impl_fmt_Display_for_DoubleError.
 Module Impl_error_Error_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition source (self : ref Self) : Option (ref TraitObject) :=
-    match self.["deref"] with
-    | DoubleError.EmptyVec => None
+  Definition source (self : ref Self) : M (Option (ref TraitObject)) :=
+    let* α0 := self.["deref"] in
+    match α0 with
+    | DoubleError.EmptyVec => Pure None
     | DoubleError.Parse e => Some e
     end.
   
@@ -85,7 +92,8 @@ End Impl_error_Error_for_DoubleError.
 Module Impl_From_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition from (err : ParseIntError) : DoubleError := DoubleError.Parse err.
+  Definition from (err : ParseIntError) : M DoubleError :=
+    DoubleError.Parse err.
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -97,60 +105,74 @@ Module Impl_From_for_DoubleError.
   }.
 End Impl_From_for_DoubleError.
 
-Definition double_first (vec : Vec (ref str)) : Result i32 :=
-  let first :=
-    match LangItem (vec.["first"].["ok_or"] DoubleError.EmptyVec) with
-    | Break {| Break.0 := residual; |} => Return (LangItem residual)
-    | Continue {| Continue.0 := val; |} => val
+Definition double_first (vec : Vec (ref str)) : M (Result i32) :=
+  let* α0 := vec.["first"] in
+  let* α1 := α0.["ok_or"] DoubleError.EmptyVec in
+  let* α2 := LangItem α1 in
+  let* first :=
+    match α2 with
+    | Break {| Break.0 := residual; |} =>
+      let* α0 := LangItem residual in
+      Return α0
+    | Continue {| Continue.0 := val; |} => Pure val
     end in
-  let parsed :=
-    match LangItem first.["parse"] with
-    | Break {| Break.0 := residual; |} => Return (LangItem residual)
-    | Continue {| Continue.0 := val; |} => val
+  let* α3 := first.["parse"] in
+  let* α4 := LangItem α3 in
+  let* parsed :=
+    match α4 with
+    | Break {| Break.0 := residual; |} =>
+      let* α0 := LangItem residual in
+      Return α0
+    | Continue {| Continue.0 := val; |} => Pure val
     end in
-  Ok (2.["mul"] parsed).
+  let* α5 := 2.["mul"] parsed in
+  Ok α5.
 
-Definition print (result : Result i32) : unit :=
+Definition print (result : Result i32) : M unit :=
   match result with
   | Ok n =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "The first doubled is "; "
-" ]
-          [ format_argument::["new_display"] n ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref n) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "The first doubled is "; "
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | Err e =>
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "Error: "; "
-" ]
-            [ format_argument::["new_display"] e ]) in
-      tt in
-    if (let_if Some source := e.["source"] : bool) then
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_v1"]
-              [ "  Caused by: "; "
-" ]
-              [ format_argument::["new_display"] source ]) in
-        tt in
-      tt
+    let* α0 := format_argument::["new_display"] (deref e) in
+    let* α1 :=
+      format_arguments::["new_v1"] (deref [ "Error: "; "
+" ]) (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    let _ := tt in
+    let* α2 := e.["source"] in
+    let* α3 := let_if Some source := α2 in
+    if (α3 : bool) then
+      let* α0 := format_argument::["new_display"] (deref source) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "  Caused by: "; "
+" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      let _ := tt in
+      Pure tt
     else
-      tt
+      Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let numbers :=
-    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "42"; "93"; "18" ]) in
-  let empty := _crate.vec.Vec::["new"] tt in
-  let strings :=
-    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ]) in
-  let _ := print (double_first numbers) in
-  let _ := print (double_first empty) in
-  let _ := print (double_first strings) in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* α0 := _crate.boxed.Box::["new"] [ "42"; "93"; "18" ] in
+  let* numbers := Slice::["into_vec"] α0 in
+  let* empty := _crate.vec.Vec::["new"] tt in
+  let* α1 := _crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+  let* strings := Slice::["into_vec"] α1 in
+  let* α2 := double_first numbers in
+  let* _ := print α2 in
+  let* α3 := double_first empty in
+  let* _ := print α3 in
+  let* α4 := double_first strings in
+  let* _ := print α4 in
+  Pure tt.

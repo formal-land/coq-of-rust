@@ -4,45 +4,43 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let count := 0 in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Let's count until infinity!
+  let* α0 :=
+    format_arguments::["new_const"]
+      (deref [ "Let's count until infinity!
 " ]) in
-    tt in
+  let* _ := _crate.io._print α0 in
+  let _ := tt in
   loop
-    let _ := count.["add_assign"] 1 in
-    let _ :=
-      if (count.["eq"] 3 : bool) then
-        let _ :=
-          let _ :=
-            _crate.io._print (format_arguments::["new_const"] [ "three
+    let* _ := count.["add_assign"] 1 in
+    let* α0 := count.["eq"] 3 in
+    let* _ :=
+      if (α0 : bool) then
+        let* α0 := format_arguments::["new_const"] (deref [ "three
 " ]) in
-          tt in
+        let* _ := _crate.io._print α0 in
+        let _ := tt in
         let _ := Continue in
-        tt
+        Pure tt
       else
-        tt in
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ ""; "
-" ]
-            [ format_argument::["new_display"] count ]) in
-      tt in
-    if (count.["eq"] 5 : bool) then
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_const"] [ "OK, that's enough
+        Pure tt in
+    let* α1 := format_argument::["new_display"] (deref count) in
+    let* α2 :=
+      format_arguments::["new_v1"] (deref [ ""; "
+" ]) (deref [ α1 ]) in
+    let* _ := _crate.io._print α2 in
+    let _ := tt in
+    let* α3 := count.["eq"] 5 in
+    if (α3 : bool) then
+      let* α0 :=
+        format_arguments::["new_const"] (deref [ "OK, that's enough
 " ]) in
-        tt in
+      let* _ := _crate.io._print α0 in
+      let _ := tt in
       let _ := Break in
-      tt
+      Pure tt
     else
-      tt
+      Pure tt
     from
     loop.

@@ -4,23 +4,20 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let haystack := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
+Definition main (_ : unit) : M unit :=
+  let* α0 := _crate.boxed.Box::["new"] [ 1; 2; 3 ] in
+  let* haystack := Slice::["into_vec"] α0 in
   let contains := fun needle => haystack.["contains"] needle in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "
-" ]
-          [ format_argument::["new_display"] (contains 1) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "
-" ]
-          [ format_argument::["new_display"] (contains 4) ]) in
-    tt in
-  tt.
+  let* α1 := contains (deref 1) in
+  let* α2 := format_argument::["new_display"] (deref α1) in
+  let* α3 := format_arguments::["new_v1"] (deref [ ""; "
+" ]) (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let* α4 := contains (deref 4) in
+  let* α5 := format_argument::["new_display"] (deref α4) in
+  let* α6 := format_arguments::["new_v1"] (deref [ ""; "
+" ]) (deref [ α5 ]) in
+  let* _ := _crate.io._print α6 in
+  let _ := tt in
+  Pure tt.

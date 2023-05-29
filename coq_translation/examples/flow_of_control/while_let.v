@@ -4,32 +4,36 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let optional := Some 0 in
+Definition main (_ : unit) : M unit :=
+  let* optional := Some 0 in
   loop
-    if (let_if Some i := optional : bool) then
-      if (i.["gt"] 9 : bool) then
-        let _ :=
-          let _ :=
-            _crate.io._print
-              (format_arguments::["new_const"] [ "Greater than 9, quit!
+    let* α0 := let_if Some i := optional in
+    if (α0 : bool) then
+      let* α0 := i.["gt"] 9 in
+      if (α0 : bool) then
+        let* α0 :=
+          format_arguments::["new_const"]
+            (deref [ "Greater than 9, quit!
 " ]) in
-          tt in
-        let _ := assign optional None in
-        tt
+        let* _ := _crate.io._print α0 in
+        let _ := tt in
+        let* _ := assign optional None in
+        Pure tt
       else
-        let _ :=
-          let _ :=
-            _crate.io._print
-              (format_arguments::["new_v1"]
-                [ "`i` is `"; "`. Try again.
-" ]
-                [ format_argument::["new_debug"] i ]) in
-          tt in
-        let _ := assign optional (Some (i.["add"] 1)) in
-        tt
+        let* α0 := format_argument::["new_debug"] (deref i) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (deref [ "`i` is `"; "`. Try again.
+" ])
+            (deref [ α0 ]) in
+        let* _ := _crate.io._print α1 in
+        let _ := tt in
+        let* α2 := i.["add"] 1 in
+        let* α3 := Some α2 in
+        let* _ := assign optional α3 in
+        Pure tt
     else
       let _ := Break in
-      tt
+      Pure tt
     from
     while.

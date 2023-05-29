@@ -4,42 +4,41 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let shadowed_binding := 1 in
-  let _ :=
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "before being shadowed: "; "
-" ]
-            [ format_argument::["new_display"] shadowed_binding ]) in
-      tt in
-    let shadowed_binding := "abc" in
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "shadowed in inner block: "; "
-" ]
-            [ format_argument::["new_display"] shadowed_binding ]) in
-      tt in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "outside inner block: "; "
-" ]
-          [ format_argument::["new_display"] shadowed_binding ]) in
-    tt in
+  let* α0 := format_argument::["new_display"] (deref shadowed_binding) in
+  let* α1 :=
+    format_arguments::["new_v1"]
+      (deref [ "before being shadowed: "; "
+" ])
+      (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  let shadowed_binding := "abc" in
+  let* α2 := format_argument::["new_display"] (deref shadowed_binding) in
+  let* α3 :=
+    format_arguments::["new_v1"]
+      (deref [ "shadowed in inner block: "; "
+" ])
+      (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let _ := tt in
+  let* α4 := format_argument::["new_display"] (deref shadowed_binding) in
+  let* α5 :=
+    format_arguments::["new_v1"]
+      (deref [ "outside inner block: "; "
+" ])
+      (deref [ α4 ]) in
+  let* _ := _crate.io._print α5 in
+  let _ := tt in
   let shadowed_binding := 2 in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "shadowed in outer block: "; "
-" ]
-          [ format_argument::["new_display"] shadowed_binding ]) in
-    tt in
-  tt.
+  let* α6 := format_argument::["new_display"] (deref shadowed_binding) in
+  let* α7 :=
+    format_arguments::["new_v1"]
+      (deref [ "shadowed in outer block: "; "
+" ])
+      (deref [ α6 ]) in
+  let* _ := _crate.io._print α7 in
+  let _ := tt in
+  Pure tt.

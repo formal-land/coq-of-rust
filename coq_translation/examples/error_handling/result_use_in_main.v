@@ -7,19 +7,19 @@ Module ParseIntError := std.num.ParseIntError.
 Definition ParseIntError := ParseIntError.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : Result unit ParseIntError :=
+Definition main (_ : unit) : M (Result unit ParseIntError) :=
   let number_str := "10" in
-  let number :=
-    match number_str.["parse"] with
-    | Ok number => number
-    | Err e => Return (Err e)
+  let* α0 := number_str.["parse"] in
+  let* number :=
+    match α0 with
+    | Ok number => Pure number
+    | Err e =>
+      let* α0 := Err e in
+      Return α0
     end in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "
-" ]
-          [ format_argument::["new_display"] number ]) in
-    tt in
+  let* α1 := format_argument::["new_display"] (deref number) in
+  let* α2 := format_arguments::["new_v1"] (deref [ ""; "
+" ]) (deref [ α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
   Ok tt.

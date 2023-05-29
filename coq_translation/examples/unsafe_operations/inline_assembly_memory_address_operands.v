@@ -4,10 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit := tt.
+Definition main (_ : unit) : M unit := Pure tt.
 
 Module asm := std.arch.asm.
 
-Definition load_fpu_control_word (control : u16) : unit :=
+Definition load_fpu_control_word (control : u16) : M unit :=
   let _ := InlineAsm in
-  tt.
+  Pure tt.

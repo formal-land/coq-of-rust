@@ -3,44 +3,42 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition LANGUAGE : ref str := "Rust".
+Definition LANGUAGE : ref str := Pure "Rust".
 
-Definition THRESHOLD : i32 := 10.
+Definition THRESHOLD : i32 := Pure 10.
 
-Definition is_big (n : i32) : bool := n.["gt"] THRESHOLD.
+Definition is_big (n : i32) : M bool := n.["gt"] THRESHOLD.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let n := 16 in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "This is "; "
-" ]
-          [ format_argument::["new_display"] LANGUAGE ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "The threshold is "; "
-" ]
-          [ format_argument::["new_display"] THRESHOLD ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " is "; "
-" ]
-          [
-            format_argument::["new_display"] n;
-            format_argument::["new_display"]
-              (if (is_big n : bool) then
-                "big"
-              else
-                "small")
-          ]) in
-    tt in
-  tt.
+  let* α0 := format_argument::["new_display"] (deref LANGUAGE) in
+  let* α1 :=
+    format_arguments::["new_v1"] (deref [ "This is "; "
+" ]) (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  let* α2 := format_argument::["new_display"] (deref THRESHOLD) in
+  let* α3 :=
+    format_arguments::["new_v1"]
+      (deref [ "The threshold is "; "
+" ])
+      (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let* α4 := format_argument::["new_display"] (deref n) in
+  let* α5 := is_big n in
+  let* α6 :=
+    if (α5 : bool) then
+      Pure "big"
+    else
+      Pure "small" in
+  let* α7 := format_argument::["new_display"] (deref α6) in
+  let* α8 :=
+    format_arguments::["new_v1"]
+      (deref [ ""; " is "; "
+" ])
+      (deref [ α4; α7 ]) in
+  let* _ := _crate.io._print α8 in
+  let _ := tt in
+  Pure tt.

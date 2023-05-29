@@ -11,56 +11,58 @@ Definition Ordering := Ordering.t.
 Module Rng := rand.Rng.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Guess the number!
+Definition main (_ : unit) : M unit :=
+  let* α0 := format_arguments::["new_const"] (deref [ "Guess the number!
 " ]) in
-    tt in
-  let secret_number := (rand.thread_rng tt).["gen_range"] (LangItem 1 100) in
+  let* _ := _crate.io._print α0 in
+  let _ := tt in
+  let* α1 := rand.thread_rng tt in
+  let* α2 := LangItem 1 100 in
+  let* secret_number := α1.["gen_range"] α2 in
   loop
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_const"] [ "Please input your guess.
+    let* α0 :=
+      format_arguments::["new_const"] (deref [ "Please input your guess.
 " ]) in
-      tt in
-    let guess := String::["new"] tt in
-    let _ :=
-      ((io.stdin tt).["read_line"] guess).["expect"] "Failed to read line" in
-    let guess :=
-      match guess.["trim"].["parse"] with
-      | Ok num => num
-      | Err _ => Continue
+    let* _ := _crate.io._print α0 in
+    let _ := tt in
+    let* guess := String::["new"] tt in
+    let* α1 := io.stdin tt in
+    let* α2 := α1.["read_line"] (deref guess) in
+    let* _ := α2.["expect"] "Failed to read line" in
+    let* α3 := guess.["trim"] in
+    let* α4 := α3.["parse"] in
+    let* guess :=
+      match α4 with
+      | Ok num => Pure num
+      | Err _ => Pure Continue
       end in
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "You guessed: "; "
-" ]
-            [ format_argument::["new_display"] guess ]) in
-      tt in
-    match guess.["cmp"] secret_number with
+    let* α5 := format_argument::["new_display"] (deref guess) in
+    let* α6 :=
+      format_arguments::["new_v1"]
+        (deref [ "You guessed: "; "
+" ])
+        (deref [ α5 ]) in
+    let* _ := _crate.io._print α6 in
+    let _ := tt in
+    let* α7 := guess.["cmp"] (deref secret_number) in
+    match α7 with
     | Ordering.Less =>
-      let _ :=
-        _crate.io._print (format_arguments::["new_const"] [ "Too small!
+      let* α0 := format_arguments::["new_const"] (deref [ "Too small!
 " ]) in
-      tt
+      let* _ := _crate.io._print α0 in
+      Pure tt
     | Ordering.Greater =>
-      let _ :=
-        _crate.io._print (format_arguments::["new_const"] [ "Too big!
+      let* α0 := format_arguments::["new_const"] (deref [ "Too big!
 " ]) in
-      tt
+      let* _ := _crate.io._print α0 in
+      Pure tt
     | Ordering.Equal =>
-      let _ :=
-        let _ :=
-          _crate.io._print (format_arguments::["new_const"] [ "You win!
+      let* α0 := format_arguments::["new_const"] (deref [ "You win!
 " ]) in
-        tt in
+      let* _ := _crate.io._print α0 in
+      let _ := tt in
       let _ := Break in
-      tt
+      Pure tt
     end
     from
     loop.

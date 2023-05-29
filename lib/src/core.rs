@@ -100,7 +100,7 @@ fn create_translation_to_coq(input_file_name: PathBuf) -> String {
                 // Step 1 - Compile to top_level
                 let mut top_level = compile_top_level(tcx);
                 // Step 2 - Monadic Transformation
-                if env::var("MONADIC_TRANSLATION").map_or(false, |x| {
+                if env::var("MONADIC_TRANSLATION").map_or(true, |x| {
                     x.parse().expect(&format!(
                         "Error parsing MONADIC_TRANSLATION value \
                          expect 'true' or 'false', found {}",

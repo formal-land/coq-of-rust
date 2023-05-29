@@ -9,36 +9,35 @@ Definition ParseIntError := ParseIntError.t.
 Definition multiply
     (first_number_str : ref str)
     (second_number_str : ref str)
-    : Result i32 ParseIntError :=
-  first_number_str.["parse"].["and_then"]
+    : M (Result i32 ParseIntError) :=
+  let* α0 := first_number_str.["parse"] in
+  α0.["and_then"]
     (fun first_number =>
-      second_number_str.["parse"].["map"]
-        (fun second_number => first_number.["mul"] second_number)).
+      let* α0 := second_number_str.["parse"] in
+      α0.["map"] (fun second_number => first_number.["mul"] second_number)).
 
-Definition print (result : Result i32 ParseIntError) : unit :=
+Definition print (result : Result i32 ParseIntError) : M unit :=
   match result with
   | Ok n =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "n is "; "
-" ]
-          [ format_argument::["new_display"] n ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref n) in
+    let* α1 :=
+      format_arguments::["new_v1"] (deref [ "n is "; "
+" ]) (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | Err e =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Error: "; "
-" ]
-          [ format_argument::["new_display"] e ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref e) in
+    let* α1 :=
+      format_arguments::["new_v1"] (deref [ "Error: "; "
+" ]) (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let twenty := multiply "10" "2" in
-  let _ := print twenty in
-  let tt := multiply "t" "2" in
-  let _ := print tt in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* twenty := multiply "10" "2" in
+  let* _ := print twenty in
+  let* tt := multiply "t" "2" in
+  let* _ := print tt in
+  Pure tt.

@@ -40,20 +40,22 @@ Module Impl_Contains_for_Container.
       (self : ref Self)
       (number_1 : ref i32)
       (number_2 : ref i32)
-      : bool :=
-    ((self.[0]).["eq"] number_1).["andb"] ((self.[1]).["eq"] number_2).
+      : M bool :=
+    let* α0 := (deref (self.[0])).["eq"] number_1 in
+    let* α1 := (deref (self.[1])).["eq"] number_2 in
+    α0.["andb"] α1.
   
   Global Instance Method_contains : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
-  Definition first (self : ref Self) : i32 := self.[0].
+  Definition first (self : ref Self) : M i32 := Pure self.[0].
   
   Global Instance Method_first : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
-  Definition last (self : ref Self) : i32 := self.[1].
+  Definition last (self : ref Self) : M i32 := Pure self.[1].
   
   Global Instance Method_last : Notation.Dot "last" := {
     Notation.dot := last;
@@ -70,49 +72,52 @@ Definition difference
     {A B C : Set}
     `{Contains.Trait A B C}
     (container : ref C)
-    : i32 :=
-  container.["last"].["sub"] container.["first"].
+    : M i32 :=
+  let* α0 := container.["last"] in
+  let* α1 := container.["first"] in
+  α0.["sub"] α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let number_1 := 3 in
   let number_2 := 10 in
   let container := Container.Build_t number_1 number_2 in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Does container contain "; " and "; ": "; "
-" ]
-          [
-            format_argument::["new_display"] number_1;
-            format_argument::["new_display"] number_2;
-            format_argument::["new_display"]
-              (container.["contains"] number_1 number_2)
-          ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "First number: "; "
-" ]
-          [ format_argument::["new_display"] container.["first"] ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Last number: "; "
-" ]
-          [ format_argument::["new_display"] container.["last"] ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "The difference is: "; "
-" ]
-          [ format_argument::["new_display"] (difference container) ]) in
-    tt in
-  tt.
+  let* α0 := format_argument::["new_display"] (deref (deref number_1)) in
+  let* α1 := format_argument::["new_display"] (deref (deref number_2)) in
+  let* α2 := container.["contains"] (deref number_1) (deref number_2) in
+  let* α3 := format_argument::["new_display"] (deref α2) in
+  let* α4 :=
+    format_arguments::["new_v1"]
+      (deref [ "Does container contain "; " and "; ": "; "
+" ])
+      (deref [ α0; α1; α3 ]) in
+  let* _ := _crate.io._print α4 in
+  let _ := tt in
+  let* α5 := container.["first"] in
+  let* α6 := format_argument::["new_display"] (deref α5) in
+  let* α7 :=
+    format_arguments::["new_v1"]
+      (deref [ "First number: "; "
+" ])
+      (deref [ α6 ]) in
+  let* _ := _crate.io._print α7 in
+  let _ := tt in
+  let* α8 := container.["last"] in
+  let* α9 := format_argument::["new_display"] (deref α8) in
+  let* α10 :=
+    format_arguments::["new_v1"]
+      (deref [ "Last number: "; "
+" ])
+      (deref [ α9 ]) in
+  let* _ := _crate.io._print α10 in
+  let _ := tt in
+  let* α11 := difference (deref container) in
+  let* α12 := format_argument::["new_display"] (deref α11) in
+  let* α13 :=
+    format_arguments::["new_v1"]
+      (deref [ "The difference is: "; "
+" ])
+      (deref [ α12 ]) in
+  let* _ := _crate.io._print α13 in
+  let _ := tt in
+  Pure tt.

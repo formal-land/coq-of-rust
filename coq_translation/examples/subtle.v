@@ -25,8 +25,8 @@ End Impl__crate_marker_Copy_for_Choice.
 Module Impl__crate_clone_Clone_for_Choice.
   Definition Self := Choice.
   
-  Definition clone (self : ref Self) : Choice :=
-    let '_ := tt in
+  Definition clone (self : ref Self) : M Choice :=
+    let _ := tt in
     self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -44,8 +44,11 @@ Module Impl__crate_fmt_Debug_for_Choice.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Choice" (self.[0]).
+      : M _crate.fmt.Result :=
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
+      f
+      "Choice"
+      (deref (deref (self.[0]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -59,7 +62,7 @@ End Impl__crate_fmt_Debug_for_Choice.
 Module ImplChoice.
   Definition Self := Choice.
   
-  Definition unwrap_u8 (self : ref Self) : u8 := self.[0].
+  Definition unwrap_u8 (self : ref Self) : M u8 := Pure self.[0].
   
   Global Instance Method_unwrap_u8 : Notation.Dot "unwrap_u8" := {
     Notation.dot := unwrap_u8;
@@ -69,21 +72,22 @@ End ImplChoice.
 Module Impl_From_for_bool.
   Definition Self := bool.
   
-  Definition from (source : Choice) : bool :=
-    let _ :=
+  Definition from (source : Choice) : M bool :=
+    let* _ :=
       if (true : bool) then
-        let _ :=
-          if
-            ((((source.[0]).["eq"] 0).["bitor"] ((source.[0]).["eq"] 1)).["not"]
-            : bool)
-          then
+        let* α0 := (source.[0]).["eq"] 0 in
+        let* α1 := (source.[0]).["eq"] 1 in
+        let* α2 := α0.["bitor"] α1 in
+        let* α3 := α2.["not"] in
+        let* _ :=
+          if (α3 : bool) then
             _crate.panicking.panic
               "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
           else
-            tt in
-        tt
+            Pure tt in
+        Pure tt
       else
-        tt in
+        Pure tt in
     (source.[0]).["ne"] 0.
   
   Global Instance AssociatedFunction_from :
@@ -101,8 +105,9 @@ Module Impl_BitAnd_for_Choice.
   
   Definition Output : Set := Choice.
   
-  Definition bitand (self : Self) (rhs : Choice) : Choice :=
-    ((self.[0]).["bitand"] (rhs.[0])).["into"].
+  Definition bitand (self : Self) (rhs : Choice) : M Choice :=
+    let* α0 := (self.[0]).["bitand"] (rhs.[0]) in
+    α0.["into"].
   
   Global Instance Method_bitand : Notation.Dot "bitand" := {
     Notation.dot := bitand;
@@ -116,9 +121,11 @@ End Impl_BitAnd_for_Choice.
 Module Impl_BitAndAssign_for_Choice.
   Definition Self := Choice.
   
-  Definition bitand_assign (self : mut_ref Self) (rhs : Choice) :=
-    let _ := assign self.["deref"] (self.["deref"].["bitand"] rhs) in
-    tt.
+  Definition bitand_assign (self : mut_ref Self) (rhs : Choice) : M unit :=
+    let* α0 := self.["deref"] in
+    let* α1 := α0.["bitand"] rhs in
+    let* _ := assign self.["deref"] α1 in
+    Pure tt.
   
   Global Instance Method_bitand_assign : Notation.Dot "bitand_assign" := {
     Notation.dot := bitand_assign;
@@ -134,8 +141,9 @@ Module Impl_BitOr_for_Choice.
   
   Definition Output : Set := Choice.
   
-  Definition bitor (self : Self) (rhs : Choice) : Choice :=
-    ((self.[0]).["bitor"] (rhs.[0])).["into"].
+  Definition bitor (self : Self) (rhs : Choice) : M Choice :=
+    let* α0 := (self.[0]).["bitor"] (rhs.[0]) in
+    α0.["into"].
   
   Global Instance Method_bitor : Notation.Dot "bitor" := {
     Notation.dot := bitor;
@@ -149,9 +157,11 @@ End Impl_BitOr_for_Choice.
 Module Impl_BitOrAssign_for_Choice.
   Definition Self := Choice.
   
-  Definition bitor_assign (self : mut_ref Self) (rhs : Choice) :=
-    let _ := assign self.["deref"] (self.["deref"].["bitor"] rhs) in
-    tt.
+  Definition bitor_assign (self : mut_ref Self) (rhs : Choice) : M unit :=
+    let* α0 := self.["deref"] in
+    let* α1 := α0.["bitor"] rhs in
+    let* _ := assign self.["deref"] α1 in
+    Pure tt.
   
   Global Instance Method_bitor_assign : Notation.Dot "bitor_assign" := {
     Notation.dot := bitor_assign;
@@ -167,8 +177,9 @@ Module Impl_BitXor_for_Choice.
   
   Definition Output : Set := Choice.
   
-  Definition bitxor (self : Self) (rhs : Choice) : Choice :=
-    ((self.[0]).["bitxor"] (rhs.[0])).["into"].
+  Definition bitxor (self : Self) (rhs : Choice) : M Choice :=
+    let* α0 := (self.[0]).["bitxor"] (rhs.[0]) in
+    α0.["into"].
   
   Global Instance Method_bitxor : Notation.Dot "bitxor" := {
     Notation.dot := bitxor;
@@ -182,9 +193,11 @@ End Impl_BitXor_for_Choice.
 Module Impl_BitXorAssign_for_Choice.
   Definition Self := Choice.
   
-  Definition bitxor_assign (self : mut_ref Self) (rhs : Choice) :=
-    let _ := assign self.["deref"] (self.["deref"].["bitxor"] rhs) in
-    tt.
+  Definition bitxor_assign (self : mut_ref Self) (rhs : Choice) : M unit :=
+    let* α0 := self.["deref"] in
+    let* α1 := α0.["bitxor"] rhs in
+    let* _ := assign self.["deref"] α1 in
+    Pure tt.
   
   Global Instance Method_bitxor_assign : Notation.Dot "bitxor_assign" := {
     Notation.dot := bitxor_assign;
@@ -200,8 +213,10 @@ Module Impl_Not_for_Choice.
   
   Definition Output : Set := Choice.
   
-  Definition not (self : Self) : Choice :=
-    (1.["bitand"] (self.[0]).["not"]).["into"].
+  Definition not (self : Self) : M Choice :=
+    let* α0 := (self.[0]).["not"] in
+    let* α1 := 1.["bitand"] α0 in
+    α1.["into"].
   
   Global Instance Method_not : Notation.Dot "not" := {
     Notation.dot := not;
@@ -212,24 +227,30 @@ Module Impl_Not_for_Choice.
   }.
 End Impl_Not_for_Choice.
 
-Definition black_box (input : u8) : u8 :=
-  let _ :=
+Definition black_box (input : u8) : M u8 :=
+  let* _ :=
     if (true : bool) then
-      let _ :=
-        if (((input.["eq"] 0).["bitor"] (input.["eq"] 1)).["not"] : bool) then
+      let* α0 := input.["eq"] 0 in
+      let* α1 := input.["eq"] 1 in
+      let* α2 := α0.["bitor"] α1 in
+      let* α3 := α2.["not"] in
+      let* _ :=
+        if (α3 : bool) then
           _crate.panicking.panic
             "assertion failed: (input == 0u8) | (input == 1u8)"
         else
-          tt in
-      tt
+          Pure tt in
+      Pure tt
     else
-      tt in
-  core.ptr.read_volatile (cast input (ref u8)).
+      Pure tt in
+  core.ptr.read_volatile (cast (deref input) (ref u8)).
 
 Module Impl_From_for_Choice.
   Definition Self := Choice.
   
-  Definition from (input : u8) : Choice := Choice.Build_t (black_box input).
+  Definition from (input : u8) : M Choice :=
+    let* α0 := black_box input in
+    Pure Choice.Build_t α0.
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -251,35 +272,46 @@ Module ConstantTimeEq.
   }.
   Global Instance Method_ct_ne `(Trait) : Notation.Dot "ct_ne" := {
     Notation.dot (self : ref Self) (other : ref Self) :=
-      ((self.["ct_eq"] other).["not"]
-      : Choice);
+      (let* α0 := self.["ct_eq"] other in
+      α0.["not"]
+      : M Choice);
   }.
 End ConstantTimeEq.
 
 Module Impl_ConstantTimeEq_for_Slice.
   Definition Self := Slice.
   
-  Definition ct_eq (self : ref Self) (_rhs : ref Slice) : Choice :=
-    let len := self.["len"] in
-    let _ :=
-      if (len.["ne"] _rhs.["len"] : bool) then
-        let _ := Return (Choice::["from"] 0) in
-        tt
+  Definition ct_eq (self : ref Self) (_rhs : ref Slice) : M Choice :=
+    let* len := self.["len"] in
+    let* α0 := _rhs.["len"] in
+    let* α1 := len.["ne"] α0 in
+    let* _ :=
+      if (α1 : bool) then
+        let* α0 := Choice::["from"] 0 in
+        let* _ := Return α0 in
+        Pure tt
       else
-        tt in
+        Pure tt in
     let x := 1 in
-    let _ :=
-      match LangItem (self.["iter"].["zip"] _rhs.["iter"]) with
+    let* α2 := self.["iter"] in
+    let* α3 := _rhs.["iter"] in
+    let* α4 := α2.["zip"] α3 in
+    let* α5 := LangItem α4 in
+    let* _ :=
+      match α5 with
       | iter =>
         loop
-          let _ :=
-            match LangItem iter with
-            | None => Break
+          let* α0 := LangItem (deref iter) in
+          let* _ :=
+            match α0 with
+            | None => Pure Break
             | Some {| Some.0 := (ai, bi); |} =>
-              let _ := x.["bitand_assign"] (ai.["ct_eq"] bi).["unwrap_u8"] in
-              tt
+              let* α0 := ai.["ct_eq"] bi in
+              let* α1 := α0.["unwrap_u8"] in
+              let* _ := x.["bitand_assign"] α1 in
+              Pure tt
             end in
-          tt
+          Pure tt
           from
           for
       end in
@@ -297,8 +329,11 @@ End Impl_ConstantTimeEq_for_Slice.
 Module Impl_ConstantTimeEq_for_Choice.
   Definition Self := Choice.
   
-  Definition ct_eq (self : ref Self) (rhs : ref Choice) : Choice :=
-    (self.["deref"].["bitxor"] rhs.["deref"]).["not"].
+  Definition ct_eq (self : ref Self) (rhs : ref Choice) : M Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := rhs.["deref"] in
+    let* α2 := α0.["bitxor"] α1 in
+    α2.["not"].
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -312,10 +347,14 @@ End Impl_ConstantTimeEq_for_Choice.
 Module Impl_ConstantTimeEq_for_u8.
   Definition Self := u8.
   
-  Definition ct_eq (self : ref Self) (other : ref u8) : Choice :=
-    let x := self.["bitxor"] other in
-    let y := (x.["bitor"] x.["wrapping_neg"]).["shr"] (8.["sub"] 1) in
-    (cast (y.["bitxor"] (cast 1 u8)) u8).["into"].
+  Definition ct_eq (self : ref Self) (other : ref u8) : M Choice :=
+    let* x := self.["bitxor"] other in
+    let* α0 := x.["wrapping_neg"] in
+    let* α1 := x.["bitor"] α0 in
+    let* α2 := 8.["sub"] 1 in
+    let* y := α1.["shr"] α2 in
+    let* α3 := y.["bitxor"] (cast 1 u8) in
+    (cast α3 u8).["into"].
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -329,8 +368,10 @@ End Impl_ConstantTimeEq_for_u8.
 Module Impl_ConstantTimeEq_for_i8.
   Definition Self := i8.
   
-  Definition ct_eq (self : ref Self) (other : ref i8) : Choice :=
-    (cast self.["deref"] u8).["ct_eq"] (cast other.["deref"] u8).
+  Definition ct_eq (self : ref Self) (other : ref i8) : M Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 u8).["ct_eq"] (deref (cast α1 u8)).
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -344,10 +385,14 @@ End Impl_ConstantTimeEq_for_i8.
 Module Impl_ConstantTimeEq_for_u16.
   Definition Self := u16.
   
-  Definition ct_eq (self : ref Self) (other : ref u16) : Choice :=
-    let x := self.["bitxor"] other in
-    let y := (x.["bitor"] x.["wrapping_neg"]).["shr"] (16.["sub"] 1) in
-    (cast (y.["bitxor"] (cast 1 u16)) u8).["into"].
+  Definition ct_eq (self : ref Self) (other : ref u16) : M Choice :=
+    let* x := self.["bitxor"] other in
+    let* α0 := x.["wrapping_neg"] in
+    let* α1 := x.["bitor"] α0 in
+    let* α2 := 16.["sub"] 1 in
+    let* y := α1.["shr"] α2 in
+    let* α3 := y.["bitxor"] (cast 1 u16) in
+    (cast α3 u8).["into"].
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -361,8 +406,10 @@ End Impl_ConstantTimeEq_for_u16.
 Module Impl_ConstantTimeEq_for_i16.
   Definition Self := i16.
   
-  Definition ct_eq (self : ref Self) (other : ref i16) : Choice :=
-    (cast self.["deref"] u16).["ct_eq"] (cast other.["deref"] u16).
+  Definition ct_eq (self : ref Self) (other : ref i16) : M Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 u16).["ct_eq"] (deref (cast α1 u16)).
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -376,10 +423,14 @@ End Impl_ConstantTimeEq_for_i16.
 Module Impl_ConstantTimeEq_for_u32.
   Definition Self := u32.
   
-  Definition ct_eq (self : ref Self) (other : ref u32) : Choice :=
-    let x := self.["bitxor"] other in
-    let y := (x.["bitor"] x.["wrapping_neg"]).["shr"] (32.["sub"] 1) in
-    (cast (y.["bitxor"] (cast 1 u32)) u8).["into"].
+  Definition ct_eq (self : ref Self) (other : ref u32) : M Choice :=
+    let* x := self.["bitxor"] other in
+    let* α0 := x.["wrapping_neg"] in
+    let* α1 := x.["bitor"] α0 in
+    let* α2 := 32.["sub"] 1 in
+    let* y := α1.["shr"] α2 in
+    let* α3 := y.["bitxor"] (cast 1 u32) in
+    (cast α3 u8).["into"].
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -393,8 +444,10 @@ End Impl_ConstantTimeEq_for_u32.
 Module Impl_ConstantTimeEq_for_i32.
   Definition Self := i32.
   
-  Definition ct_eq (self : ref Self) (other : ref i32) : Choice :=
-    (cast self.["deref"] u32).["ct_eq"] (cast other.["deref"] u32).
+  Definition ct_eq (self : ref Self) (other : ref i32) : M Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 u32).["ct_eq"] (deref (cast α1 u32)).
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -408,10 +461,14 @@ End Impl_ConstantTimeEq_for_i32.
 Module Impl_ConstantTimeEq_for_u64.
   Definition Self := u64.
   
-  Definition ct_eq (self : ref Self) (other : ref u64) : Choice :=
-    let x := self.["bitxor"] other in
-    let y := (x.["bitor"] x.["wrapping_neg"]).["shr"] (64.["sub"] 1) in
-    (cast (y.["bitxor"] (cast 1 u64)) u8).["into"].
+  Definition ct_eq (self : ref Self) (other : ref u64) : M Choice :=
+    let* x := self.["bitxor"] other in
+    let* α0 := x.["wrapping_neg"] in
+    let* α1 := x.["bitor"] α0 in
+    let* α2 := 64.["sub"] 1 in
+    let* y := α1.["shr"] α2 in
+    let* α3 := y.["bitxor"] (cast 1 u64) in
+    (cast α3 u8).["into"].
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -425,8 +482,10 @@ End Impl_ConstantTimeEq_for_u64.
 Module Impl_ConstantTimeEq_for_i64.
   Definition Self := i64.
   
-  Definition ct_eq (self : ref Self) (other : ref i64) : Choice :=
-    (cast self.["deref"] u64).["ct_eq"] (cast other.["deref"] u64).
+  Definition ct_eq (self : ref Self) (other : ref i64) : M Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 u64).["ct_eq"] (deref (cast α1 u64)).
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -440,12 +499,16 @@ End Impl_ConstantTimeEq_for_i64.
 Module Impl_ConstantTimeEq_for_usize.
   Definition Self := usize.
   
-  Definition ct_eq (self : ref Self) (other : ref usize) : Choice :=
-    let x := self.["bitxor"] other in
-    let y :=
-      (x.["bitor"] x.["wrapping_neg"]).["shr"]
-        (((Root.core.mem.size_of tt).["mul"] 8).["sub"] 1) in
-    (cast (y.["bitxor"] (cast 1 usize)) u8).["into"].
+  Definition ct_eq (self : ref Self) (other : ref usize) : M Choice :=
+    let* x := self.["bitxor"] other in
+    let* α0 := x.["wrapping_neg"] in
+    let* α1 := x.["bitor"] α0 in
+    let* α2 := Root.core.mem.size_of tt in
+    let* α3 := α2.["mul"] 8 in
+    let* α4 := α3.["sub"] 1 in
+    let* y := α1.["shr"] α4 in
+    let* α5 := y.["bitxor"] (cast 1 usize) in
+    (cast α5 u8).["into"].
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -459,8 +522,10 @@ End Impl_ConstantTimeEq_for_usize.
 Module Impl_ConstantTimeEq_for_isize.
   Definition Self := isize.
   
-  Definition ct_eq (self : ref Self) (other : ref isize) : Choice :=
-    (cast self.["deref"] usize).["ct_eq"] (cast other.["deref"] usize).
+  Definition ct_eq (self : ref Self) (other : ref isize) : M Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 usize).["ct_eq"] (deref (cast α1 usize)).
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -483,21 +548,19 @@ Module ConditionallySelectable.
   Global Instance Method_conditional_assign `(Trait)
     : Notation.Dot "conditional_assign" := {
     Notation.dot (self : mut_ref Self) (other : ref Self) (choice : Choice) :=
-      (let _ :=
-        assign
-          self.["deref"]
-          (Self::["conditional_select"] self other choice) in
-      tt
-      : unit);
+      (let* α0 := Self::["conditional_select"] self other choice in
+      let* _ := assign self.["deref"] α0 in
+      Pure tt
+      : M unit);
   }.
   Global Instance Method_conditional_swap `(Trait)
     : Notation.Dot "conditional_swap" := {
     Notation.dot (a : mut_ref Self) (b : mut_ref Self) (choice : Choice) :=
-      (let t := a.["deref"] in
-      let _ := a.["conditional_assign"] b choice in
-      let _ := b.["conditional_assign"] t choice in
-      tt
-      : unit);
+      (let* t := a.["deref"] in
+      let* _ := a.["conditional_assign"] (deref b) choice in
+      let* _ := b.["conditional_assign"] (deref t) choice in
+      Pure tt
+      : M unit);
   }.
 End ConditionallySelectable.
 
@@ -508,9 +571,13 @@ Module Impl_ConditionallySelectable_for_u8.
       (a : ref Self)
       (b : ref Self)
       (choice : Choice)
-      : Self :=
-    let mask := cast (cast choice.["unwrap_u8"] i8).["neg"] u8 in
-    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
+      : M Self :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i8).["neg"] in
+    let mask := cast α1 u8 in
+    let* α2 := a.["bitxor"] b in
+    let* α3 := mask.["bitand"] α2 in
+    a.["bitxor"] α3.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
@@ -520,12 +587,18 @@ Module Impl_ConditionallySelectable_for_u8.
   Definition conditional_assign
       (self : mut_ref Self)
       (other : ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i8).["neg"] u8 in
-    let _ :=
-      self.["deref"].["bitxor_assign"]
-        (mask.["bitand"] (self.["deref"].["bitxor"] other.["deref"])) in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i8).["neg"] in
+    let mask := cast α1 u8 in
+    let* α2 := self.["deref"] in
+    let* α3 := self.["deref"] in
+    let* α4 := other.["deref"] in
+    let* α5 := α3.["bitxor"] α4 in
+    let* α6 := mask.["bitand"] α5 in
+    let* _ := α2.["bitxor_assign"] α6 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
@@ -535,12 +608,20 @@ Module Impl_ConditionallySelectable_for_u8.
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i8).["neg"] u8 in
-    let t := mask.["bitand"] (a.["deref"].["bitxor"] b.["deref"]) in
-    let _ := a.["deref"].["bitxor_assign"] t in
-    let _ := b.["deref"].["bitxor_assign"] t in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i8).["neg"] in
+    let mask := cast α1 u8 in
+    let* α2 := a.["deref"] in
+    let* α3 := b.["deref"] in
+    let* α4 := α2.["bitxor"] α3 in
+    let* t := mask.["bitand"] α4 in
+    let* α5 := a.["deref"] in
+    let* _ := α5.["bitxor_assign"] t in
+    let* α6 := b.["deref"] in
+    let* _ := α6.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -559,9 +640,13 @@ Module Impl_ConditionallySelectable_for_i8.
       (a : ref Self)
       (b : ref Self)
       (choice : Choice)
-      : Self :=
-    let mask := cast (cast choice.["unwrap_u8"] i8).["neg"] i8 in
-    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
+      : M Self :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i8).["neg"] in
+    let mask := cast α1 i8 in
+    let* α2 := a.["bitxor"] b in
+    let* α3 := mask.["bitand"] α2 in
+    a.["bitxor"] α3.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
@@ -571,12 +656,18 @@ Module Impl_ConditionallySelectable_for_i8.
   Definition conditional_assign
       (self : mut_ref Self)
       (other : ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i8).["neg"] i8 in
-    let _ :=
-      self.["deref"].["bitxor_assign"]
-        (mask.["bitand"] (self.["deref"].["bitxor"] other.["deref"])) in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i8).["neg"] in
+    let mask := cast α1 i8 in
+    let* α2 := self.["deref"] in
+    let* α3 := self.["deref"] in
+    let* α4 := other.["deref"] in
+    let* α5 := α3.["bitxor"] α4 in
+    let* α6 := mask.["bitand"] α5 in
+    let* _ := α2.["bitxor_assign"] α6 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
@@ -586,12 +677,20 @@ Module Impl_ConditionallySelectable_for_i8.
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i8).["neg"] i8 in
-    let t := mask.["bitand"] (a.["deref"].["bitxor"] b.["deref"]) in
-    let _ := a.["deref"].["bitxor_assign"] t in
-    let _ := b.["deref"].["bitxor_assign"] t in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i8).["neg"] in
+    let mask := cast α1 i8 in
+    let* α2 := a.["deref"] in
+    let* α3 := b.["deref"] in
+    let* α4 := α2.["bitxor"] α3 in
+    let* t := mask.["bitand"] α4 in
+    let* α5 := a.["deref"] in
+    let* _ := α5.["bitxor_assign"] t in
+    let* α6 := b.["deref"] in
+    let* _ := α6.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -610,9 +709,13 @@ Module Impl_ConditionallySelectable_for_u16.
       (a : ref Self)
       (b : ref Self)
       (choice : Choice)
-      : Self :=
-    let mask := cast (cast choice.["unwrap_u8"] i16).["neg"] u16 in
-    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
+      : M Self :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i16).["neg"] in
+    let mask := cast α1 u16 in
+    let* α2 := a.["bitxor"] b in
+    let* α3 := mask.["bitand"] α2 in
+    a.["bitxor"] α3.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
@@ -622,12 +725,18 @@ Module Impl_ConditionallySelectable_for_u16.
   Definition conditional_assign
       (self : mut_ref Self)
       (other : ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i16).["neg"] u16 in
-    let _ :=
-      self.["deref"].["bitxor_assign"]
-        (mask.["bitand"] (self.["deref"].["bitxor"] other.["deref"])) in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i16).["neg"] in
+    let mask := cast α1 u16 in
+    let* α2 := self.["deref"] in
+    let* α3 := self.["deref"] in
+    let* α4 := other.["deref"] in
+    let* α5 := α3.["bitxor"] α4 in
+    let* α6 := mask.["bitand"] α5 in
+    let* _ := α2.["bitxor_assign"] α6 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
@@ -637,12 +746,20 @@ Module Impl_ConditionallySelectable_for_u16.
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i16).["neg"] u16 in
-    let t := mask.["bitand"] (a.["deref"].["bitxor"] b.["deref"]) in
-    let _ := a.["deref"].["bitxor_assign"] t in
-    let _ := b.["deref"].["bitxor_assign"] t in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i16).["neg"] in
+    let mask := cast α1 u16 in
+    let* α2 := a.["deref"] in
+    let* α3 := b.["deref"] in
+    let* α4 := α2.["bitxor"] α3 in
+    let* t := mask.["bitand"] α4 in
+    let* α5 := a.["deref"] in
+    let* _ := α5.["bitxor_assign"] t in
+    let* α6 := b.["deref"] in
+    let* _ := α6.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -661,9 +778,13 @@ Module Impl_ConditionallySelectable_for_i16.
       (a : ref Self)
       (b : ref Self)
       (choice : Choice)
-      : Self :=
-    let mask := cast (cast choice.["unwrap_u8"] i16).["neg"] i16 in
-    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
+      : M Self :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i16).["neg"] in
+    let mask := cast α1 i16 in
+    let* α2 := a.["bitxor"] b in
+    let* α3 := mask.["bitand"] α2 in
+    a.["bitxor"] α3.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
@@ -673,12 +794,18 @@ Module Impl_ConditionallySelectable_for_i16.
   Definition conditional_assign
       (self : mut_ref Self)
       (other : ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i16).["neg"] i16 in
-    let _ :=
-      self.["deref"].["bitxor_assign"]
-        (mask.["bitand"] (self.["deref"].["bitxor"] other.["deref"])) in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i16).["neg"] in
+    let mask := cast α1 i16 in
+    let* α2 := self.["deref"] in
+    let* α3 := self.["deref"] in
+    let* α4 := other.["deref"] in
+    let* α5 := α3.["bitxor"] α4 in
+    let* α6 := mask.["bitand"] α5 in
+    let* _ := α2.["bitxor_assign"] α6 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
@@ -688,12 +815,20 @@ Module Impl_ConditionallySelectable_for_i16.
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i16).["neg"] i16 in
-    let t := mask.["bitand"] (a.["deref"].["bitxor"] b.["deref"]) in
-    let _ := a.["deref"].["bitxor_assign"] t in
-    let _ := b.["deref"].["bitxor_assign"] t in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i16).["neg"] in
+    let mask := cast α1 i16 in
+    let* α2 := a.["deref"] in
+    let* α3 := b.["deref"] in
+    let* α4 := α2.["bitxor"] α3 in
+    let* t := mask.["bitand"] α4 in
+    let* α5 := a.["deref"] in
+    let* _ := α5.["bitxor_assign"] t in
+    let* α6 := b.["deref"] in
+    let* _ := α6.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -712,9 +847,13 @@ Module Impl_ConditionallySelectable_for_u32.
       (a : ref Self)
       (b : ref Self)
       (choice : Choice)
-      : Self :=
-    let mask := cast (cast choice.["unwrap_u8"] i32).["neg"] u32 in
-    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
+      : M Self :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i32).["neg"] in
+    let mask := cast α1 u32 in
+    let* α2 := a.["bitxor"] b in
+    let* α3 := mask.["bitand"] α2 in
+    a.["bitxor"] α3.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
@@ -724,12 +863,18 @@ Module Impl_ConditionallySelectable_for_u32.
   Definition conditional_assign
       (self : mut_ref Self)
       (other : ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i32).["neg"] u32 in
-    let _ :=
-      self.["deref"].["bitxor_assign"]
-        (mask.["bitand"] (self.["deref"].["bitxor"] other.["deref"])) in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i32).["neg"] in
+    let mask := cast α1 u32 in
+    let* α2 := self.["deref"] in
+    let* α3 := self.["deref"] in
+    let* α4 := other.["deref"] in
+    let* α5 := α3.["bitxor"] α4 in
+    let* α6 := mask.["bitand"] α5 in
+    let* _ := α2.["bitxor_assign"] α6 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
@@ -739,12 +884,20 @@ Module Impl_ConditionallySelectable_for_u32.
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i32).["neg"] u32 in
-    let t := mask.["bitand"] (a.["deref"].["bitxor"] b.["deref"]) in
-    let _ := a.["deref"].["bitxor_assign"] t in
-    let _ := b.["deref"].["bitxor_assign"] t in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i32).["neg"] in
+    let mask := cast α1 u32 in
+    let* α2 := a.["deref"] in
+    let* α3 := b.["deref"] in
+    let* α4 := α2.["bitxor"] α3 in
+    let* t := mask.["bitand"] α4 in
+    let* α5 := a.["deref"] in
+    let* _ := α5.["bitxor_assign"] t in
+    let* α6 := b.["deref"] in
+    let* _ := α6.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -763,9 +916,13 @@ Module Impl_ConditionallySelectable_for_i32.
       (a : ref Self)
       (b : ref Self)
       (choice : Choice)
-      : Self :=
-    let mask := cast (cast choice.["unwrap_u8"] i32).["neg"] i32 in
-    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
+      : M Self :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i32).["neg"] in
+    let mask := cast α1 i32 in
+    let* α2 := a.["bitxor"] b in
+    let* α3 := mask.["bitand"] α2 in
+    a.["bitxor"] α3.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
@@ -775,12 +932,18 @@ Module Impl_ConditionallySelectable_for_i32.
   Definition conditional_assign
       (self : mut_ref Self)
       (other : ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i32).["neg"] i32 in
-    let _ :=
-      self.["deref"].["bitxor_assign"]
-        (mask.["bitand"] (self.["deref"].["bitxor"] other.["deref"])) in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i32).["neg"] in
+    let mask := cast α1 i32 in
+    let* α2 := self.["deref"] in
+    let* α3 := self.["deref"] in
+    let* α4 := other.["deref"] in
+    let* α5 := α3.["bitxor"] α4 in
+    let* α6 := mask.["bitand"] α5 in
+    let* _ := α2.["bitxor_assign"] α6 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
@@ -790,12 +953,20 @@ Module Impl_ConditionallySelectable_for_i32.
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i32).["neg"] i32 in
-    let t := mask.["bitand"] (a.["deref"].["bitxor"] b.["deref"]) in
-    let _ := a.["deref"].["bitxor_assign"] t in
-    let _ := b.["deref"].["bitxor_assign"] t in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i32).["neg"] in
+    let mask := cast α1 i32 in
+    let* α2 := a.["deref"] in
+    let* α3 := b.["deref"] in
+    let* α4 := α2.["bitxor"] α3 in
+    let* t := mask.["bitand"] α4 in
+    let* α5 := a.["deref"] in
+    let* _ := α5.["bitxor_assign"] t in
+    let* α6 := b.["deref"] in
+    let* _ := α6.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -814,9 +985,13 @@ Module Impl_ConditionallySelectable_for_u64.
       (a : ref Self)
       (b : ref Self)
       (choice : Choice)
-      : Self :=
-    let mask := cast (cast choice.["unwrap_u8"] i64).["neg"] u64 in
-    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
+      : M Self :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i64).["neg"] in
+    let mask := cast α1 u64 in
+    let* α2 := a.["bitxor"] b in
+    let* α3 := mask.["bitand"] α2 in
+    a.["bitxor"] α3.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
@@ -826,12 +1001,18 @@ Module Impl_ConditionallySelectable_for_u64.
   Definition conditional_assign
       (self : mut_ref Self)
       (other : ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i64).["neg"] u64 in
-    let _ :=
-      self.["deref"].["bitxor_assign"]
-        (mask.["bitand"] (self.["deref"].["bitxor"] other.["deref"])) in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i64).["neg"] in
+    let mask := cast α1 u64 in
+    let* α2 := self.["deref"] in
+    let* α3 := self.["deref"] in
+    let* α4 := other.["deref"] in
+    let* α5 := α3.["bitxor"] α4 in
+    let* α6 := mask.["bitand"] α5 in
+    let* _ := α2.["bitxor_assign"] α6 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
@@ -841,12 +1022,20 @@ Module Impl_ConditionallySelectable_for_u64.
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i64).["neg"] u64 in
-    let t := mask.["bitand"] (a.["deref"].["bitxor"] b.["deref"]) in
-    let _ := a.["deref"].["bitxor_assign"] t in
-    let _ := b.["deref"].["bitxor_assign"] t in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i64).["neg"] in
+    let mask := cast α1 u64 in
+    let* α2 := a.["deref"] in
+    let* α3 := b.["deref"] in
+    let* α4 := α2.["bitxor"] α3 in
+    let* t := mask.["bitand"] α4 in
+    let* α5 := a.["deref"] in
+    let* _ := α5.["bitxor_assign"] t in
+    let* α6 := b.["deref"] in
+    let* _ := α6.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -865,9 +1054,13 @@ Module Impl_ConditionallySelectable_for_i64.
       (a : ref Self)
       (b : ref Self)
       (choice : Choice)
-      : Self :=
-    let mask := cast (cast choice.["unwrap_u8"] i64).["neg"] i64 in
-    a.["bitxor"] (mask.["bitand"] (a.["bitxor"] b)).
+      : M Self :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i64).["neg"] in
+    let mask := cast α1 i64 in
+    let* α2 := a.["bitxor"] b in
+    let* α3 := mask.["bitand"] α2 in
+    a.["bitxor"] α3.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
@@ -877,12 +1070,18 @@ Module Impl_ConditionallySelectable_for_i64.
   Definition conditional_assign
       (self : mut_ref Self)
       (other : ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i64).["neg"] i64 in
-    let _ :=
-      self.["deref"].["bitxor_assign"]
-        (mask.["bitand"] (self.["deref"].["bitxor"] other.["deref"])) in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i64).["neg"] in
+    let mask := cast α1 i64 in
+    let* α2 := self.["deref"] in
+    let* α3 := self.["deref"] in
+    let* α4 := other.["deref"] in
+    let* α5 := α3.["bitxor"] α4 in
+    let* α6 := mask.["bitand"] α5 in
+    let* _ := α2.["bitxor_assign"] α6 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
@@ -892,12 +1091,20 @@ Module Impl_ConditionallySelectable_for_i64.
   Definition conditional_swap
       (a : mut_ref Self)
       (b : mut_ref Self)
-      (choice : Choice) :=
-    let mask := cast (cast choice.["unwrap_u8"] i64).["neg"] i64 in
-    let t := mask.["bitand"] (a.["deref"].["bitxor"] b.["deref"]) in
-    let _ := a.["deref"].["bitxor_assign"] t in
-    let _ := b.["deref"].["bitxor_assign"] t in
-    tt.
+      (choice : Choice)
+      : M unit :=
+    let* α0 := choice.["unwrap_u8"] in
+    let* α1 := (cast α0 i64).["neg"] in
+    let mask := cast α1 i64 in
+    let* α2 := a.["deref"] in
+    let* α3 := b.["deref"] in
+    let* α4 := α2.["bitxor"] α3 in
+    let* t := mask.["bitand"] α4 in
+    let* α5 := a.["deref"] in
+    let* _ := α5.["bitxor_assign"] t in
+    let* α6 := b.["deref"] in
+    let* _ := α6.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -916,8 +1123,10 @@ Module Impl_ConditionallySelectable_for_Choice.
       (a : ref Self)
       (b : ref Self)
       (choice : Choice)
-      : Self :=
-    Choice.Build_t (u8::["conditional_select"] (a.[0]) (b.[0]) choice).
+      : M Self :=
+    let* α0 :=
+      u8::["conditional_select"] (deref (a.[0])) (deref (b.[0])) choice in
+    Pure Choice.Build_t α0.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
@@ -943,10 +1152,13 @@ End ConditionallyNegatable.
 Module Impl_ConditionallyNegatable_for_T.
   Definition Self := T.
   
-  Definition conditional_negate (self : mut_ref Self) (choice : Choice) :=
-    let self_neg := (cast self (ref T)).["neg"] in
-    let _ := self.["conditional_assign"] self_neg choice in
-    tt.
+  Definition conditional_negate
+      (self : mut_ref Self)
+      (choice : Choice)
+      : M unit :=
+    let* self_neg := (cast self (ref T)).["neg"] in
+    let* _ := self.["conditional_assign"] (deref self_neg) choice in
+    Pure tt.
   
   Global Instance Method_conditional_negate :
     Notation.Dot "conditional_negate" := {
@@ -976,11 +1188,11 @@ Definition CtOption : Set := CtOption.t.
 Module Impl__crate_clone_Clone_for_CtOption_T.
   Definition Self := CtOption T.
   
-  Definition clone (self : ref Self) : CtOption T :=
-    {|
-      CtOption.value := _crate.clone.Clone.clone self.["value"];
-      CtOption.is_some := _crate.clone.Clone.clone self.["is_some"];
-    |}.
+  Definition clone (self : ref Self) : M (CtOption T) :=
+    Pure {|
+        CtOption.value := _crate.clone.Clone.clone (deref self.["value"]);
+        CtOption.is_some := _crate.clone.Clone.clone (deref self.["is_some"]);
+      |}.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -1004,14 +1216,14 @@ Module Impl__crate_fmt_Debug_for_CtOption_T.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "CtOption"
       "value"
-      self.["value"]
+      (deref self.["value"])
       "is_some"
-      self.["is_some"].
+      (deref (deref self.["is_some"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -1025,11 +1237,14 @@ End Impl__crate_fmt_Debug_for_CtOption_T.
 Module Impl_From_for_Option_T.
   Definition Self := Option T.
   
-  Definition from (source : CtOption T) : Option T :=
-    if (source.["is_some"].["unwrap_u8"].["eq"] 1 : bool) then
+  Definition from (source : CtOption T) : M (Option T) :=
+    let* α0 := source.["is_some"] in
+    let* α1 := α0.["unwrap_u8"] in
+    let* α2 := α1.["eq"] 1 in
+    if (α2 : bool) then
       Option.Some source.["value"]
     else
-      None.
+      Pure None.
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -1044,117 +1259,137 @@ End Impl_From_for_Option_T.
 Module ImplCtOption T.
   Definition Self := CtOption T.
   
-  Definition new (value : T) (is_some : Choice) : CtOption T :=
-    {| CtOption.value := value; CtOption.is_some := is_some; |}.
+  Definition new (value : T) (is_some : Choice) : M (CtOption T) :=
+    Pure {| CtOption.value := value; CtOption.is_some := is_some; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Definition expect (self : Self) (msg : ref str) : T :=
-    let _ :=
-      match (self.["is_some"].["unwrap_u8"], 1) with
+  Definition expect (self : Self) (msg : ref str) : M T :=
+    let* α0 := self.["is_some"].["unwrap_u8"] in
+    let* _ :=
+      match (deref α0, deref 1) with
       | (left_val, right_val) =>
-        if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* α2 := α0.["eq"] α1 in
+        let* α3 := α2.["not"] in
+        if (α3 : bool) then
           let kind := _crate.panicking.AssertKind.Eq in
-          let _ :=
-            _crate.panicking.assert_failed
-              kind
-              left_val.["deref"]
-              right_val.["deref"]
-              (_crate.option.Option.Some
-                (format_arguments::["new_v1"]
-                  [ "" ]
-                  [ format_argument::["new_display"] msg ])) in
-          tt
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          let* α2 := format_argument::["new_display"] (deref msg) in
+          let* α3 :=
+            format_arguments::["new_v1"] (deref [ "" ]) (deref [ α2 ]) in
+          let* α4 := _crate.option.Option.Some α3 in
+          let* _ :=
+            _crate.panicking.assert_failed kind (deref α0) (deref α1) α4 in
+          Pure tt
         else
-          tt
+          Pure tt
       end in
-    self.["value"].
+    Pure self.["value"].
   
   Global Instance Method_expect : Notation.Dot "expect" := {
     Notation.dot := expect;
   }.
   
-  Definition unwrap (self : Self) : T :=
-    let _ :=
-      match (self.["is_some"].["unwrap_u8"], 1) with
+  Definition unwrap (self : Self) : M T :=
+    let* α0 := self.["is_some"].["unwrap_u8"] in
+    let* _ :=
+      match (deref α0, deref 1) with
       | (left_val, right_val) =>
-        if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* α2 := α0.["eq"] α1 in
+        let* α3 := α2.["not"] in
+        if (α3 : bool) then
           let kind := _crate.panicking.AssertKind.Eq in
-          let _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          let* _ :=
             _crate.panicking.assert_failed
               kind
-              left_val.["deref"]
-              right_val.["deref"]
+              (deref α0)
+              (deref α1)
               _crate.option.Option.None in
-          tt
+          Pure tt
         else
-          tt
+          Pure tt
       end in
-    self.["value"].
+    Pure self.["value"].
   
   Global Instance Method_unwrap : Notation.Dot "unwrap" := {
     Notation.dot := unwrap;
   }.
   
-  Definition unwrap_or (self : Self) (def : T) : T :=
-    T::["conditional_select"] def self.["value"] self.["is_some"].
+  Definition unwrap_or (self : Self) (def : T) : M T :=
+    T::["conditional_select"]
+      (deref def)
+      (deref self.["value"])
+      self.["is_some"].
   
   Global Instance Method_unwrap_or : Notation.Dot "unwrap_or" := {
     Notation.dot := unwrap_or;
   }.
   
-  Definition unwrap_or_else (self : Self) (f : F) : T :=
-    T::["conditional_select"] (f tt) self.["value"] self.["is_some"].
+  Definition unwrap_or_else (self : Self) (f : F) : M T :=
+    let* α0 := f tt in
+    T::["conditional_select"]
+      (deref α0)
+      (deref self.["value"])
+      self.["is_some"].
   
   Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {
     Notation.dot := unwrap_or_else;
   }.
   
-  Definition is_some (self : ref Self) : Choice := self.["is_some"].
+  Definition is_some (self : ref Self) : M Choice := Pure self.["is_some"].
   
   Global Instance Method_is_some : Notation.Dot "is_some" := {
     Notation.dot := is_some;
   }.
   
-  Definition is_none (self : ref Self) : Choice := self.["is_some"].["not"].
+  Definition is_none (self : ref Self) : M Choice := self.["is_some"].["not"].
   
   Global Instance Method_is_none : Notation.Dot "is_none" := {
     Notation.dot := is_none;
   }.
   
-  Definition map (self : Self) (f : F) : CtOption U :=
-    CtOption::["new"]
-      (f
-        (T::["conditional_select"]
-          (T::["default"] tt)
-          self.["value"]
-          self.["is_some"]))
-      self.["is_some"].
+  Definition map (self : Self) (f : F) : M (CtOption U) :=
+    let* α0 := T::["default"] tt in
+    let* α1 :=
+      T::["conditional_select"]
+        (deref α0)
+        (deref self.["value"])
+        self.["is_some"] in
+    let* α2 := f α1 in
+    CtOption::["new"] α2 self.["is_some"].
   
   Global Instance Method_map : Notation.Dot "map" := {
     Notation.dot := map;
   }.
   
-  Definition and_then (self : Self) (f : F) : CtOption U :=
-    let tmp :=
-      f
-        (T::["conditional_select"]
-          (T::["default"] tt)
-          self.["value"]
-          self.["is_some"]) in
-    let _ := tmp.["is_some"].["bitand_assign"] self.["is_some"] in
-    tmp.
+  Definition and_then (self : Self) (f : F) : M (CtOption U) :=
+    let* α0 := T::["default"] tt in
+    let* α1 :=
+      T::["conditional_select"]
+        (deref α0)
+        (deref self.["value"])
+        self.["is_some"] in
+    let* tmp := f α1 in
+    let* _ := tmp.["is_some"].["bitand_assign"] self.["is_some"] in
+    Pure tmp.
   
   Global Instance Method_and_then : Notation.Dot "and_then" := {
     Notation.dot := and_then;
   }.
   
-  Definition or_else (self : Self) (f : F) : CtOption T :=
-    let is_none := self.["is_none"] in
-    let f := f tt in
-    Self::["conditional_select"] self f is_none.
+  Definition or_else (self : Self) (f : F) : M (CtOption T) :=
+    let* is_none := self.["is_none"] in
+    let* f := f tt in
+    Self::["conditional_select"] (deref self) (deref f) is_none.
   
   Global Instance Method_or_else : Notation.Dot "or_else" := {
     Notation.dot := or_else;
@@ -1168,10 +1403,18 @@ Module Impl_ConditionallySelectable_for_CtOption_T.
       (a : ref Self)
       (b : ref Self)
       (choice : Choice)
-      : Self :=
-    CtOption::["new"]
-      (T::["conditional_select"] a.["value"] b.["value"] choice)
-      (Choice::["conditional_select"] a.["is_some"] b.["is_some"] choice).
+      : M Self :=
+    let* α0 :=
+      T::["conditional_select"]
+        (deref a.["value"])
+        (deref b.["value"])
+        choice in
+    let* α1 :=
+      Choice::["conditional_select"]
+        (deref a.["is_some"])
+        (deref b.["is_some"])
+        choice in
+    CtOption::["new"] α0 α1.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
@@ -1186,12 +1429,16 @@ End Impl_ConditionallySelectable_for_CtOption_T.
 Module Impl_ConstantTimeEq_for_CtOption_T.
   Definition Self := CtOption T.
   
-  Definition ct_eq (self : ref Self) (rhs : ref (CtOption T)) : Choice :=
-    let a := self.["is_some"] in
-    let b := rhs.["is_some"] in
-    ((a.["bitand"] b).["bitand"]
-        (self.["value"].["ct_eq"] rhs.["value"])).["bitor"]
-      (a.["not"].["bitand"] b.["not"]).
+  Definition ct_eq (self : ref Self) (rhs : ref (CtOption T)) : M Choice :=
+    let* a := self.["is_some"] in
+    let* b := rhs.["is_some"] in
+    let* α0 := a.["bitand"] b in
+    let* α1 := self.["value"].["ct_eq"] (deref rhs.["value"]) in
+    let* α2 := α0.["bitand"] α1 in
+    let* α3 := a.["not"] in
+    let* α4 := b.["not"] in
+    let* α5 := α3.["bitand"] α4 in
+    α2.["bitor"] α5.
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -1215,35 +1462,43 @@ End ConstantTimeGreater.
 Module Impl_ConstantTimeGreater_for_u8.
   Definition Self := u8.
   
-  Definition ct_gt (self : ref Self) (other : ref u8) : Choice :=
-    let gtb := self.["bitand"] other.["not"] in
-    let ltb := self.["not"].["bitand"] other in
+  Definition ct_gt (self : ref Self) (other : ref u8) : M Choice :=
+    let* α0 := other.["not"] in
+    let* gtb := self.["bitand"] α0 in
+    let* α1 := self.["not"] in
+    let* ltb := α1.["bitand"] other in
     let pow := 1 in
-    let _ :=
+    let* _ :=
       loop
-        if (pow.["lt"] 8 : bool) then
-          let _ := ltb.["bitor_assign"] (ltb.["shr"] pow) in
-          let _ := pow.["add_assign"] pow in
-          tt
+        let* α0 := pow.["lt"] 8 in
+        if (α0 : bool) then
+          let* α0 := ltb.["shr"] pow in
+          let* _ := ltb.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
         else
           let _ := Break in
-          tt
+          Pure tt
         from
         while in
-    let bit := gtb.["bitand"] ltb.["not"] in
+    let* α2 := ltb.["not"] in
+    let* bit := gtb.["bitand"] α2 in
     let pow := 1 in
-    let _ :=
+    let* _ :=
       loop
-        if (pow.["lt"] 8 : bool) then
-          let _ := bit.["bitor_assign"] (bit.["shr"] pow) in
-          let _ := pow.["add_assign"] pow in
-          tt
+        let* α0 := pow.["lt"] 8 in
+        if (α0 : bool) then
+          let* α0 := bit.["shr"] pow in
+          let* _ := bit.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
         else
           let _ := Break in
-          tt
+          Pure tt
         from
         while in
-    Choice::["from"] (cast (bit.["bitand"] 1) u8).
+    let* α3 := bit.["bitand"] 1 in
+    Choice::["from"] (cast α3 u8).
   
   Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
@@ -1257,35 +1512,43 @@ End Impl_ConstantTimeGreater_for_u8.
 Module Impl_ConstantTimeGreater_for_u16.
   Definition Self := u16.
   
-  Definition ct_gt (self : ref Self) (other : ref u16) : Choice :=
-    let gtb := self.["bitand"] other.["not"] in
-    let ltb := self.["not"].["bitand"] other in
+  Definition ct_gt (self : ref Self) (other : ref u16) : M Choice :=
+    let* α0 := other.["not"] in
+    let* gtb := self.["bitand"] α0 in
+    let* α1 := self.["not"] in
+    let* ltb := α1.["bitand"] other in
     let pow := 1 in
-    let _ :=
+    let* _ :=
       loop
-        if (pow.["lt"] 16 : bool) then
-          let _ := ltb.["bitor_assign"] (ltb.["shr"] pow) in
-          let _ := pow.["add_assign"] pow in
-          tt
+        let* α0 := pow.["lt"] 16 in
+        if (α0 : bool) then
+          let* α0 := ltb.["shr"] pow in
+          let* _ := ltb.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
         else
           let _ := Break in
-          tt
+          Pure tt
         from
         while in
-    let bit := gtb.["bitand"] ltb.["not"] in
+    let* α2 := ltb.["not"] in
+    let* bit := gtb.["bitand"] α2 in
     let pow := 1 in
-    let _ :=
+    let* _ :=
       loop
-        if (pow.["lt"] 16 : bool) then
-          let _ := bit.["bitor_assign"] (bit.["shr"] pow) in
-          let _ := pow.["add_assign"] pow in
-          tt
+        let* α0 := pow.["lt"] 16 in
+        if (α0 : bool) then
+          let* α0 := bit.["shr"] pow in
+          let* _ := bit.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
         else
           let _ := Break in
-          tt
+          Pure tt
         from
         while in
-    Choice::["from"] (cast (bit.["bitand"] 1) u8).
+    let* α3 := bit.["bitand"] 1 in
+    Choice::["from"] (cast α3 u8).
   
   Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
@@ -1299,35 +1562,43 @@ End Impl_ConstantTimeGreater_for_u16.
 Module Impl_ConstantTimeGreater_for_u32.
   Definition Self := u32.
   
-  Definition ct_gt (self : ref Self) (other : ref u32) : Choice :=
-    let gtb := self.["bitand"] other.["not"] in
-    let ltb := self.["not"].["bitand"] other in
+  Definition ct_gt (self : ref Self) (other : ref u32) : M Choice :=
+    let* α0 := other.["not"] in
+    let* gtb := self.["bitand"] α0 in
+    let* α1 := self.["not"] in
+    let* ltb := α1.["bitand"] other in
     let pow := 1 in
-    let _ :=
+    let* _ :=
       loop
-        if (pow.["lt"] 32 : bool) then
-          let _ := ltb.["bitor_assign"] (ltb.["shr"] pow) in
-          let _ := pow.["add_assign"] pow in
-          tt
+        let* α0 := pow.["lt"] 32 in
+        if (α0 : bool) then
+          let* α0 := ltb.["shr"] pow in
+          let* _ := ltb.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
         else
           let _ := Break in
-          tt
+          Pure tt
         from
         while in
-    let bit := gtb.["bitand"] ltb.["not"] in
+    let* α2 := ltb.["not"] in
+    let* bit := gtb.["bitand"] α2 in
     let pow := 1 in
-    let _ :=
+    let* _ :=
       loop
-        if (pow.["lt"] 32 : bool) then
-          let _ := bit.["bitor_assign"] (bit.["shr"] pow) in
-          let _ := pow.["add_assign"] pow in
-          tt
+        let* α0 := pow.["lt"] 32 in
+        if (α0 : bool) then
+          let* α0 := bit.["shr"] pow in
+          let* _ := bit.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
         else
           let _ := Break in
-          tt
+          Pure tt
         from
         while in
-    Choice::["from"] (cast (bit.["bitand"] 1) u8).
+    let* α3 := bit.["bitand"] 1 in
+    Choice::["from"] (cast α3 u8).
   
   Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
@@ -1341,35 +1612,43 @@ End Impl_ConstantTimeGreater_for_u32.
 Module Impl_ConstantTimeGreater_for_u64.
   Definition Self := u64.
   
-  Definition ct_gt (self : ref Self) (other : ref u64) : Choice :=
-    let gtb := self.["bitand"] other.["not"] in
-    let ltb := self.["not"].["bitand"] other in
+  Definition ct_gt (self : ref Self) (other : ref u64) : M Choice :=
+    let* α0 := other.["not"] in
+    let* gtb := self.["bitand"] α0 in
+    let* α1 := self.["not"] in
+    let* ltb := α1.["bitand"] other in
     let pow := 1 in
-    let _ :=
+    let* _ :=
       loop
-        if (pow.["lt"] 64 : bool) then
-          let _ := ltb.["bitor_assign"] (ltb.["shr"] pow) in
-          let _ := pow.["add_assign"] pow in
-          tt
+        let* α0 := pow.["lt"] 64 in
+        if (α0 : bool) then
+          let* α0 := ltb.["shr"] pow in
+          let* _ := ltb.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
         else
           let _ := Break in
-          tt
+          Pure tt
         from
         while in
-    let bit := gtb.["bitand"] ltb.["not"] in
+    let* α2 := ltb.["not"] in
+    let* bit := gtb.["bitand"] α2 in
     let pow := 1 in
-    let _ :=
+    let* _ :=
       loop
-        if (pow.["lt"] 64 : bool) then
-          let _ := bit.["bitor_assign"] (bit.["shr"] pow) in
-          let _ := pow.["add_assign"] pow in
-          tt
+        let* α0 := pow.["lt"] 64 in
+        if (α0 : bool) then
+          let* α0 := bit.["shr"] pow in
+          let* _ := bit.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
         else
           let _ := Break in
-          tt
+          Pure tt
         from
         while in
-    Choice::["from"] (cast (bit.["bitand"] 1) u8).
+    let* α3 := bit.["bitand"] 1 in
+    Choice::["from"] (cast α3 u8).
   
   Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
@@ -1386,8 +1665,12 @@ Module ConstantTimeLess.
   
   Global Instance Method_ct_lt `(Trait) : Notation.Dot "ct_lt" := {
     Notation.dot (self : ref Self) (other : ref Self) :=
-      ((self.["ct_gt"] other).["not"].["bitand"] (self.["ct_eq"] other).["not"]
-      : Choice);
+      (let* α0 := self.["ct_gt"] other in
+      let* α1 := α0.["not"] in
+      let* α2 := self.["ct_eq"] other in
+      let* α3 := α2.["not"] in
+      α1.["bitand"] α3
+      : M Choice);
   }.
 End ConstantTimeLess.
 

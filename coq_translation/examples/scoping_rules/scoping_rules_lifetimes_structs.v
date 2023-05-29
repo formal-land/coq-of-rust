@@ -18,8 +18,11 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Borrowed" (self.[0]).
+      : M _crate.fmt.Result :=
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
+      f
+      "Borrowed"
+      (deref (deref (self.[0]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -51,14 +54,14 @@ Module Impl__crate_fmt_Debug_for_NamedBorrowed.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "NamedBorrowed"
       "x"
-      self.["x"]
+      (deref self.["x"])
       "y"
-      self.["y"].
+      (deref (deref self.["y"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -82,12 +85,18 @@ Module Impl__crate_fmt_Debug_for_Either.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     match self with
     | Either.Num __self_0 =>
-      _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Num" __self_0
+      _crate.fmt.Formatter::["debug_tuple_field1_finish"]
+        f
+        "Num"
+        (deref __self_0)
     | Either.Ref __self_0 =>
-      _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Ref" __self_0
+      _crate.fmt.Formatter::["debug_tuple_field1_finish"]
+        f
+        "Ref"
+        (deref __self_0)
     end.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
@@ -100,43 +109,43 @@ Module Impl__crate_fmt_Debug_for_Either.
 End Impl__crate_fmt_Debug_for_Either.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let x := 18 in
   let y := 15 in
-  let single := Borrowed.Build_t x in
-  let double := {| NamedBorrowed.x := x; NamedBorrowed.y := y; |} in
-  let reference := Either.Ref x in
-  let number := Either.Num y in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "x is borrowed in "; "
-" ]
-          [ format_argument::["new_debug"] single ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "x and y are borrowed in "; "
-" ]
-          [ format_argument::["new_debug"] double ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "x is borrowed in "; "
-" ]
-          [ format_argument::["new_debug"] reference ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "y is *not* borrowed in "; "
-" ]
-          [ format_argument::["new_debug"] number ]) in
-    tt in
-  tt.
+  let single := Borrowed.Build_t (deref x) in
+  let double := {| NamedBorrowed.x := deref x; NamedBorrowed.y := deref y; |} in
+  let* reference := Either.Ref (deref x) in
+  let* number := Either.Num y in
+  let* α0 := format_argument::["new_debug"] (deref single) in
+  let* α1 :=
+    format_arguments::["new_v1"]
+      (deref [ "x is borrowed in "; "
+" ])
+      (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  let* α2 := format_argument::["new_debug"] (deref double) in
+  let* α3 :=
+    format_arguments::["new_v1"]
+      (deref [ "x and y are borrowed in "; "
+" ])
+      (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let* α4 := format_argument::["new_debug"] (deref reference) in
+  let* α5 :=
+    format_arguments::["new_v1"]
+      (deref [ "x is borrowed in "; "
+" ])
+      (deref [ α4 ]) in
+  let* _ := _crate.io._print α5 in
+  let _ := tt in
+  let* α6 := format_argument::["new_debug"] (deref number) in
+  let* α7 :=
+    format_arguments::["new_v1"]
+      (deref [ "y is *not* borrowed in "; "
+" ])
+      (deref [ α6 ]) in
+  let* _ := _crate.io._print α7 in
+  let _ := tt in
+  Pure tt.

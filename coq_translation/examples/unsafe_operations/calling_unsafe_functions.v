@@ -6,25 +6,32 @@ Import Root.std.prelude.rust_2015.
 Module slice := std.slice.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let some_vector :=
-    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3; 4 ]) in
-  let pointer := some_vector.["as_ptr"] in
-  let length := some_vector.["len"] in
-  let my_slice := slice.from_raw_parts pointer length in
-  let _ :=
-    match (some_vector.["as_slice"], my_slice) with
+Definition main (_ : unit) : M unit :=
+  let* α0 := _crate.boxed.Box::["new"] [ 1; 2; 3; 4 ] in
+  let* some_vector := Slice::["into_vec"] α0 in
+  let* pointer := some_vector.["as_ptr"] in
+  let* length := some_vector.["len"] in
+  let* my_slice := slice.from_raw_parts pointer length in
+  let* α1 := some_vector.["as_slice"] in
+  let* _ :=
+    match (deref α1, deref my_slice) with
     | (left_val, right_val) =>
-      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let _ :=
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* _ :=
           _crate.panicking.assert_failed
             kind
-            left_val.["deref"]
-            right_val.["deref"]
+            (deref α0)
+            (deref α1)
             _crate.option.Option.None in
-        tt
+        Pure tt
       else
-        tt
+        Pure tt
     end in
-  tt.
+  Pure tt.

@@ -4,70 +4,70 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let number := Some 7 in
+Definition main (_ : unit) : M unit :=
+  let* number := Some 7 in
   let letter := None in
   let emoticon := None in
-  let _ :=
-    if (let_if Some i := number : bool) then
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_v1"]
-              [ "Matched "; "!
-" ]
-              [ format_argument::["new_debug"] i ]) in
-        tt in
-      tt
+  let* α0 := let_if Some i := number in
+  let* _ :=
+    if (α0 : bool) then
+      let* α0 := format_argument::["new_debug"] (deref i) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "Matched "; "!
+" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      let _ := tt in
+      Pure tt
     else
-      tt in
-  let _ :=
-    if (let_if Some i := letter : bool) then
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_v1"]
-              [ "Matched "; "!
-" ]
-              [ format_argument::["new_debug"] i ]) in
-        tt in
-      tt
+      Pure tt in
+  let* α1 := let_if Some i := letter in
+  let* _ :=
+    if (α1 : bool) then
+      let* α0 := format_argument::["new_debug"] (deref i) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "Matched "; "!
+" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      let _ := tt in
+      Pure tt
     else
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_const"]
-              [ "Didn't match a number. Let's go with a letter!
+      let* α0 :=
+        format_arguments::["new_const"]
+          (deref [ "Didn't match a number. Let's go with a letter!
 " ]) in
-        tt in
-      tt in
+      let* _ := _crate.io._print α0 in
+      let _ := tt in
+      Pure tt in
   let i_like_letters := false in
-  if (let_if Some i := emoticon : bool) then
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "Matched "; "!
-" ]
-            [ format_argument::["new_debug"] i ]) in
-      tt in
-    tt
+  let* α2 := let_if Some i := emoticon in
+  if (α2 : bool) then
+    let* α0 := format_argument::["new_debug"] (deref i) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "Matched "; "!
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    let _ := tt in
+    Pure tt
   else
     if (i_like_letters : bool) then
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_const"]
-              [ "Didn't match a number. Let's go with a letter!
+      let* α0 :=
+        format_arguments::["new_const"]
+          (deref [ "Didn't match a number. Let's go with a letter!
 " ]) in
-        tt in
-      tt
+      let* _ := _crate.io._print α0 in
+      let _ := tt in
+      Pure tt
     else
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_const"]
-              [ "I don't like letters. Let's go with an emoticon :)!
+      let* α0 :=
+        format_arguments::["new_const"]
+          (deref [ "I don't like letters. Let's go with an emoticon :)!
 " ]) in
-        tt in
-      tt.
+      let* _ := _crate.io._print α0 in
+      let _ := tt in
+      Pure tt.

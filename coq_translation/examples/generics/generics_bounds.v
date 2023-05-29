@@ -16,7 +16,7 @@ End HasArea.
 Module Impl_HasArea_for_Rectangle.
   Definition Self := Rectangle.
   
-  Definition area (self : ref Self) : f64 :=
+  Definition area (self : ref Self) : M f64 :=
     self.["length"].["mul"] self.["height"].
   
   Global Instance Method_area : Notation.Dot "area" := {
@@ -49,14 +49,14 @@ Module Impl__crate_fmt_Debug_for_Rectangle.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Rectangle"
       "length"
-      self.["length"]
+      (deref self.["length"])
       "height"
-      self.["height"].
+      (deref (deref self.["height"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -83,32 +83,28 @@ Module Triangle.
 End Triangle.
 Definition Triangle : Set := Triangle.t.
 
-Definition print_debug {T : Set} `{Debug.Trait T} (t : ref T) : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "
-" ]
-          [ format_argument::["new_debug"] t ]) in
-    tt in
-  tt.
+Definition print_debug {T : Set} `{Debug.Trait T} (t : ref T) : M unit :=
+  let* α0 := format_argument::["new_debug"] (deref t) in
+  let* α1 := format_arguments::["new_v1"] (deref [ ""; "
+" ]) (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  Pure tt.
 
-Definition area {T : Set} `{HasArea.Trait T} (t : ref T) : f64 := t.["area"].
+Definition area {T : Set} `{HasArea.Trait T} (t : ref T) : M f64 := t.["area"].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let rectangle :=
     {| Rectangle.length := 3 (* 3.0 *); Rectangle.height := 4 (* 4.0 *); |} in
   let _triangle :=
     {| Triangle.length := 3 (* 3.0 *); Triangle.height := 4 (* 4.0 *); |} in
-  let _ := print_debug rectangle in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Area: "; "
-" ]
-          [ format_argument::["new_display"] rectangle.["area"] ]) in
-    tt in
-  tt.
+  let* _ := print_debug (deref rectangle) in
+  let* α0 := rectangle.["area"] in
+  let* α1 := format_argument::["new_display"] (deref α0) in
+  let* α2 :=
+    format_arguments::["new_v1"] (deref [ "Area: "; "
+" ]) (deref [ α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  Pure tt.

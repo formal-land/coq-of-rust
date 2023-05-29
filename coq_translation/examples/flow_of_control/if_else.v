@@ -4,65 +4,67 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let n := 5 in
-  let _ :=
-    if (n.["lt"] 0 : bool) then
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_v1"]
-              [ ""; " is negative" ]
-              [ format_argument::["new_display"] n ]) in
-        tt in
-      tt
+  let* α0 := n.["lt"] 0 in
+  let* _ :=
+    if (α0 : bool) then
+      let* α0 := format_argument::["new_display"] (deref n) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ ""; " is negative" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      let _ := tt in
+      Pure tt
     else
-      if (n.["gt"] 0 : bool) then
-        let _ :=
-          let _ :=
-            _crate.io._print
-              (format_arguments::["new_v1"]
-                [ ""; " is positive" ]
-                [ format_argument::["new_display"] n ]) in
-          tt in
-        tt
+      let* α0 := n.["gt"] 0 in
+      if (α0 : bool) then
+        let* α0 := format_argument::["new_display"] (deref n) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (deref [ ""; " is positive" ])
+            (deref [ α0 ]) in
+        let* _ := _crate.io._print α1 in
+        let _ := tt in
+        Pure tt
       else
-        let _ :=
-          let _ :=
-            _crate.io._print
-              (format_arguments::["new_v1"]
-                [ ""; " is zero" ]
-                [ format_argument::["new_display"] n ]) in
-          tt in
-        tt in
-  let big_n :=
-    if ((n.["lt"] 10).["andb"] (n.["gt"] 10.["neg"]) : bool) then
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_const"]
-              [ ", and is a small number, increase ten-fold
+        let* α0 := format_argument::["new_display"] (deref n) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (deref [ ""; " is zero" ])
+            (deref [ α0 ]) in
+        let* _ := _crate.io._print α1 in
+        let _ := tt in
+        Pure tt in
+  let* α1 := n.["lt"] 10 in
+  let* α2 := 10.["neg"] in
+  let* α3 := n.["gt"] α2 in
+  let* α4 := α1.["andb"] α3 in
+  let* big_n :=
+    if (α4 : bool) then
+      let* α0 :=
+        format_arguments::["new_const"]
+          (deref [ ", and is a small number, increase ten-fold
 " ]) in
-        tt in
+      let* _ := _crate.io._print α0 in
+      let _ := tt in
       10.["mul"] n
     else
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_const"]
-              [ ", and is a big number, halve the number
+      let* α0 :=
+        format_arguments::["new_const"]
+          (deref [ ", and is a big number, halve the number
 " ]) in
-        tt in
+      let* _ := _crate.io._print α0 in
+      let _ := tt in
       n.["div"] 2 in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " -> "; "
-" ]
-          [
-            format_argument::["new_display"] n;
-            format_argument::["new_display"] big_n
-          ]) in
-    tt in
-  tt.
+  let* α5 := format_argument::["new_display"] (deref n) in
+  let* α6 := format_argument::["new_display"] (deref big_n) in
+  let* α7 :=
+    format_arguments::["new_v1"]
+      (deref [ ""; " -> "; "
+" ])
+      (deref [ α5; α6 ]) in
+  let* _ := _crate.io._print α7 in
+  let _ := tt in
+  Pure tt.

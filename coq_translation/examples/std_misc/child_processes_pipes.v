@@ -11,50 +11,66 @@ Definition Command := Command.t.
 Module Stdio := std.process.Stdio.
 Definition Stdio := Stdio.t.
 
-Definition PANGRAM : ref str := "the quick brown fox jumped over the lazy dog
+Definition PANGRAM : ref str :=
+  Pure "the quick brown fox jumped over the lazy dog
 ".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let process :=
-    match
-      (((Command::["new"] "wc").["stdin"] (Stdio::["piped"] tt)).["stdout"]
-          (Stdio::["piped"] tt)).["spawn"]
-    with
+Definition main (_ : unit) : M unit :=
+  let* α0 := Command::["new"] "wc" in
+  let* α1 := Stdio::["piped"] tt in
+  let* α2 := α0.["stdin"] α1 in
+  let* α3 := Stdio::["piped"] tt in
+  let* α4 := α2.["stdout"] α3 in
+  let* α5 := α4.["spawn"] in
+  let* process :=
+    match α5 with
     | Err why =>
-      _crate.rt.panic_fmt
-        (format_arguments::["new_v1"]
-          [ "couldn't spawn wc: " ]
-          [ format_argument::["new_display"] why ])
-    | Ok process => process
+      let* α0 := format_argument::["new_display"] (deref why) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "couldn't spawn wc: " ])
+          (deref [ α0 ]) in
+      _crate.rt.panic_fmt α1
+    | Ok process => Pure process
     end in
-  let _ :=
-    match process.["stdin"].["unwrap"].["write_all"] PANGRAM.["as_bytes"] with
+  let* α6 := process.["stdin"].["unwrap"] in
+  let* α7 := PANGRAM.["as_bytes"] in
+  let* α8 := α6.["write_all"] α7 in
+  let* _ :=
+    match α8 with
     | Err why =>
-      _crate.rt.panic_fmt
-        (format_arguments::["new_v1"]
-          [ "couldn't write to wc stdin: " ]
-          [ format_argument::["new_display"] why ])
+      let* α0 := format_argument::["new_display"] (deref why) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "couldn't write to wc stdin: " ])
+          (deref [ α0 ]) in
+      _crate.rt.panic_fmt α1
     | Ok _ =>
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_const"] [ "sent pangram to wc
+      let* α0 :=
+        format_arguments::["new_const"] (deref [ "sent pangram to wc
 " ]) in
-      tt
+      let* _ := _crate.io._print α0 in
+      Pure tt
     end in
-  let s := String::["new"] tt in
-  match process.["stdout"].["unwrap"].["read_to_string"] s with
+  let* s := String::["new"] tt in
+  let* α9 := process.["stdout"].["unwrap"] in
+  let* α10 := α9.["read_to_string"] (deref s) in
+  match α10 with
   | Err why =>
-    _crate.rt.panic_fmt
-      (format_arguments::["new_v1"]
-        [ "couldn't read wc stdout: " ]
-        [ format_argument::["new_display"] why ])
+    let* α0 := format_argument::["new_display"] (deref why) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "couldn't read wc stdout: " ])
+        (deref [ α0 ]) in
+    _crate.rt.panic_fmt α1
   | Ok _ =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "wc responded with:
-" ]
-          [ format_argument::["new_display"] s ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref s) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "wc responded with:
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   end.

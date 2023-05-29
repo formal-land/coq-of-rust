@@ -4,60 +4,62 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let array := [ 1; 2.["neg"]; 6 ] in
+Definition main (_ : unit) : M unit :=
+  let* α0 := 2.["neg"] in
+  let array := [ 1; α0; 6 ] in
   match array with
   | _ =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "array[0] = 0, array[1] = "; ", array[2] = "; "
-" ]
-          [
-            format_argument::["new_display"] second;
-            format_argument::["new_display"] third
-          ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref second) in
+    let* α1 := format_argument::["new_display"] (deref third) in
+    let* α2 :=
+      format_arguments::["new_v1"]
+        (deref [ "array[0] = 0, array[1] = "; ", array[2] = "; "
+" ])
+        (deref [ α0; α1 ]) in
+    let* _ := _crate.io._print α2 in
+    Pure tt
   | _ =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "array[0] = 1, array[2] = "; " and array[1] was ignored
-" ]
-          [ format_argument::["new_display"] third ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref third) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "array[0] = 1, array[2] = "; " and array[1] was ignored
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | _ =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
+    let* α0 := format_argument::["new_display"] (deref second) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref
           [
             "array[0] = -1, array[1] = ";
             " and all the other ones were ignored
 "
-          ]
-          [ format_argument::["new_display"] second ]) in
-    tt
+          ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | _ =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
+    let* α0 := format_argument::["new_display"] (deref second) in
+    let* α1 := format_argument::["new_debug"] (deref tail) in
+    let* α2 :=
+      format_arguments::["new_v1"]
+        (deref
           [ "array[0] = 3, array[1] = "; " and the other elements were "; "
-" ]
-          [
-            format_argument::["new_display"] second;
-            format_argument::["new_debug"] tail
-          ]) in
-    tt
+" ])
+        (deref [ α0; α1 ]) in
+    let* _ := _crate.io._print α2 in
+    Pure tt
   | _ =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "array[0] = "; ", middle = "; ", array[2] = "; "
-" ]
-          [
-            format_argument::["new_display"] first;
-            format_argument::["new_debug"] middle;
-            format_argument::["new_display"] last
-          ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref first) in
+    let* α1 := format_argument::["new_debug"] (deref middle) in
+    let* α2 := format_argument::["new_display"] (deref last) in
+    let* α3 :=
+      format_arguments::["new_v1"]
+        (deref [ "array[0] = "; ", middle = "; ", array[2] = "; "
+" ])
+        (deref [ α0; α1; α2 ]) in
+    let* _ := _crate.io._print α3 in
+    Pure tt
   end.

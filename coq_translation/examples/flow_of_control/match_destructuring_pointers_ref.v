@@ -4,55 +4,60 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let reference := 4 in
-  let _ :=
+Definition main (_ : unit) : M unit :=
+  let reference := deref 4 in
+  let* _ :=
     match reference with
     | val =>
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "Got a value via destructuring: "; "
-" ]
-            [ format_argument::["new_debug"] val ]) in
-      tt
+      let* α0 := format_argument::["new_debug"] (deref val) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "Got a value via destructuring: "; "
+" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      Pure tt
     end in
-  let _ :=
-    match reference.["deref"] with
+  let* α0 := reference.["deref"] in
+  let* _ :=
+    match α0 with
     | val =>
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "Got a value via dereferencing: "; "
-" ]
-            [ format_argument::["new_debug"] val ]) in
-      tt
+      let* α0 := format_argument::["new_debug"] (deref val) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "Got a value via dereferencing: "; "
+" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      Pure tt
     end in
   let _not_a_reference := 3 in
   let _is_a_reference := 3 in
   let value := 5 in
   let mut_value := 6 in
-  let _ :=
+  let* _ :=
     match value with
     | r =>
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "Got a reference to a value: "; "
-" ]
-            [ format_argument::["new_debug"] r ]) in
-      tt
+      let* α0 := format_argument::["new_debug"] (deref r) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "Got a reference to a value: "; "
+" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      Pure tt
     end in
   match mut_value with
   | m =>
-    let _ := m.["deref"].["add_assign"] 10 in
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "We added 10. `mut_value`: "; "
-" ]
-            [ format_argument::["new_debug"] m ]) in
-      tt in
-    tt
+    let* α0 := m.["deref"] in
+    let* _ := α0.["add_assign"] 10 in
+    let* α1 := format_argument::["new_debug"] (deref m) in
+    let* α2 :=
+      format_arguments::["new_v1"]
+        (deref [ "We added 10. `mut_value`: "; "
+" ])
+        (deref [ α1 ]) in
+    let* _ := _crate.io._print α2 in
+    let _ := tt in
+    Pure tt
   end.

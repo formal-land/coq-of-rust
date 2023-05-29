@@ -4,25 +4,24 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let long_lived_binding := 1 in
-  let _ :=
-    let short_lived_binding := 2 in
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "inner short: "; "
-" ]
-            [ format_argument::["new_display"] short_lived_binding ]) in
-      tt in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "outer long: "; "
-" ]
-          [ format_argument::["new_display"] long_lived_binding ]) in
-    tt in
-  tt.
+  let short_lived_binding := 2 in
+  let* α0 := format_argument::["new_display"] (deref short_lived_binding) in
+  let* α1 :=
+    format_arguments::["new_v1"]
+      (deref [ "inner short: "; "
+" ])
+      (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  let _ := tt in
+  let* α2 := format_argument::["new_display"] (deref long_lived_binding) in
+  let* α3 :=
+    format_arguments::["new_v1"]
+      (deref [ "outer long: "; "
+" ])
+      (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  Pure tt.

@@ -4,90 +4,93 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let pangram := "the quick brown fox jumps over the lazy dog" in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Pangram: "; "
-" ]
-          [ format_argument::["new_display"] pangram ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Words in reverse
+  let* α0 := format_argument::["new_display"] (deref pangram) in
+  let* α1 :=
+    format_arguments::["new_v1"] (deref [ "Pangram: "; "
+" ]) (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  let* α2 := format_arguments::["new_const"] (deref [ "Words in reverse
 " ]) in
-    tt in
-  let _ :=
-    match LangItem pangram.["split_whitespace"].["rev"] with
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  let* α3 := pangram.["split_whitespace"] in
+  let* α4 := α3.["rev"] in
+  let* α5 := LangItem α4 in
+  let* _ :=
+    match α5 with
     | iter =>
       loop
-        let _ :=
-          match LangItem iter with
-          | None => Break
+        let* α0 := LangItem (deref iter) in
+        let* _ :=
+          match α0 with
+          | None => Pure Break
           | Some {| Some.0 := word; |} =>
-            let _ :=
-              let _ :=
-                _crate.io._print
-                  (format_arguments::["new_v1"]
-                    [ "> "; "
-" ]
-                    [ format_argument::["new_display"] word ]) in
-              tt in
-            tt
+            let* α0 := format_argument::["new_display"] (deref word) in
+            let* α1 :=
+              format_arguments::["new_v1"]
+                (deref [ "> "; "
+" ])
+                (deref [ α0 ]) in
+            let* _ := _crate.io._print α1 in
+            let _ := tt in
+            Pure tt
           end in
-        tt
+        Pure tt
         from
         for
     end in
-  let chars := pangram.["chars"].["collect"] in
-  let _ := chars.["sort"] in
-  let _ := chars.["dedup"] in
-  let string := String::["new"] tt in
-  let _ :=
-    match LangItem chars with
+  let* α6 := pangram.["chars"] in
+  let* chars := α6.["collect"] in
+  let* _ := chars.["sort"] in
+  let* _ := chars.["dedup"] in
+  let* string := String::["new"] tt in
+  let* α7 := LangItem chars in
+  let* _ :=
+    match α7 with
     | iter =>
       loop
-        let _ :=
-          match LangItem iter with
-          | None => Break
+        let* α0 := LangItem (deref iter) in
+        let* _ :=
+          match α0 with
+          | None => Pure Break
           | Some {| Some.0 := c; |} =>
-            let _ := string.["push"] c in
-            let _ := string.["push_str"] ", " in
-            tt
+            let* _ := string.["push"] c in
+            let* _ := string.["push_str"] ", " in
+            Pure tt
           end in
-        tt
+        Pure tt
         from
         for
     end in
-  let chars_to_trim := [ " "%char; ","%char ] in
-  let trimmed_str := string.["trim_matches"] chars_to_trim in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Used characters: "; "
-" ]
-          [ format_argument::["new_display"] trimmed_str ]) in
-    tt in
-  let alice := String::["from"] "I like dogs" in
-  let bob := alice.["replace"] "dog" "cat" in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Alice says: "; "
-" ]
-          [ format_argument::["new_display"] alice ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Bob says: "; "
-" ]
-          [ format_argument::["new_display"] bob ]) in
-    tt in
-  tt.
+  let chars_to_trim := deref [ " "%char; ","%char ] in
+  let* trimmed_str := string.["trim_matches"] chars_to_trim in
+  let* α8 := format_argument::["new_display"] (deref trimmed_str) in
+  let* α9 :=
+    format_arguments::["new_v1"]
+      (deref [ "Used characters: "; "
+" ])
+      (deref [ α8 ]) in
+  let* _ := _crate.io._print α9 in
+  let _ := tt in
+  let* alice := String::["from"] "I like dogs" in
+  let* bob := alice.["replace"] "dog" "cat" in
+  let* α10 := format_argument::["new_display"] (deref alice) in
+  let* α11 :=
+    format_arguments::["new_v1"]
+      (deref [ "Alice says: "; "
+" ])
+      (deref [ α10 ]) in
+  let* _ := _crate.io._print α11 in
+  let _ := tt in
+  let* α12 := format_argument::["new_display"] (deref bob) in
+  let* α13 :=
+    format_arguments::["new_v1"]
+      (deref [ "Bob says: "; "
+" ])
+      (deref [ α12 ]) in
+  let* _ := _crate.io._print α13 in
+  let _ := tt in
+  Pure tt.

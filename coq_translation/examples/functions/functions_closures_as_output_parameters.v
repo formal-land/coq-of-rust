@@ -3,51 +3,54 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition create_fn (_ : unit) : OpaqueDef :=
-  let text := "Fn".["to_owned"] in
-  fun  =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "This is a: "; "
-" ]
-          [ format_argument::["new_display"] text ]) in
-    tt.
+Definition create_fn (_ : unit) : M OpaqueDef :=
+  let* text := "Fn".["to_owned"] in
+  Pure fun  =>
+      let* α0 := format_argument::["new_display"] (deref text) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "This is a: "; "
+" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      Pure tt.
 
 Error OpaqueTy.
 
-Definition create_fnmut (_ : unit) : OpaqueDef :=
-  let text := "FnMut".["to_owned"] in
-  fun  =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "This is a: "; "
-" ]
-          [ format_argument::["new_display"] text ]) in
-    tt.
+Definition create_fnmut (_ : unit) : M OpaqueDef :=
+  let* text := "FnMut".["to_owned"] in
+  Pure fun  =>
+      let* α0 := format_argument::["new_display"] (deref text) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "This is a: "; "
+" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      Pure tt.
 
 Error OpaqueTy.
 
-Definition create_fnonce (_ : unit) : OpaqueDef :=
-  let text := "FnOnce".["to_owned"] in
-  fun  =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "This is a: "; "
-" ]
-          [ format_argument::["new_display"] text ]) in
-    tt.
+Definition create_fnonce (_ : unit) : M OpaqueDef :=
+  let* text := "FnOnce".["to_owned"] in
+  Pure fun  =>
+      let* α0 := format_argument::["new_display"] (deref text) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "This is a: "; "
+" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      Pure tt.
 
 Error OpaqueTy.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let fn_plain := create_fn tt in
-  let fn_mut := create_fnmut tt in
-  let fn_once := create_fnonce tt in
-  let _ := fn_plain tt in
-  let _ := fn_mut tt in
-  let _ := fn_once tt in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* fn_plain := create_fn tt in
+  let* fn_mut := create_fnmut tt in
+  let* fn_once := create_fnonce tt in
+  let* _ := fn_plain tt in
+  let* _ := fn_mut tt in
+  let* _ := fn_once tt in
+  Pure tt.

@@ -4,35 +4,35 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let names :=
-    Slice::["into_vec"]
-      (_crate.boxed.Box::["new"] [ "Bob"; "Frank"; "Ferris" ]) in
-  let _ :=
-    match LangItem names.["iter_mut"] with
+Definition main (_ : unit) : M unit :=
+  let* α0 := _crate.boxed.Box::["new"] [ "Bob"; "Frank"; "Ferris" ] in
+  let* names := Slice::["into_vec"] α0 in
+  let* α1 := names.["iter_mut"] in
+  let* α2 := LangItem α1 in
+  let* _ :=
+    match α2 with
     | iter =>
       loop
-        let _ :=
-          match LangItem iter with
-          | None => Break
+        let* α0 := LangItem (deref iter) in
+        let* _ :=
+          match α0 with
+          | None => Pure Break
           | Some {| Some.0 := name; |} =>
-            assign
-              name.["deref"]
+            let* α0 :=
               match name with
-              | "Ferris" => "There is a rustacean among us!"
-              | _ => "Hello"
-              end
+              | "Ferris" => Pure "There is a rustacean among us!"
+              | _ => Pure "Hello"
+              end in
+            assign name.["deref"] α0
           end in
-        tt
+        Pure tt
         from
         for
     end in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "names: "; "
-" ]
-          [ format_argument::["new_debug"] names ]) in
-    tt in
-  tt.
+  let* α3 := format_argument::["new_debug"] (deref names) in
+  let* α4 :=
+    format_arguments::["new_v1"] (deref [ "names: "; "
+" ]) (deref [ α3 ]) in
+  let* _ := _crate.io._print α4 in
+  let _ := tt in
+  Pure tt.

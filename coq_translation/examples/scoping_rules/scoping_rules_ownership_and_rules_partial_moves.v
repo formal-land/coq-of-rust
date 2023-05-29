@@ -4,36 +4,36 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let person :=
     {| Person.name := String::["from"] "Alice"; Person.age := Box::["new"] 20;
     |} in
   let '{| Person.name := name; Person.age := age; |} := person in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "The person's age is "; "
-" ]
-          [ format_argument::["new_display"] age ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "The person's name is "; "
-" ]
-          [ format_argument::["new_display"] name ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "The person's age from person struct is "; "
-" ]
-          [ format_argument::["new_display"] person.["age"] ]) in
-    tt in
-  tt.
+  let* α0 := format_argument::["new_display"] (deref age) in
+  let* α1 :=
+    format_arguments::["new_v1"]
+      (deref [ "The person's age is "; "
+" ])
+      (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  let* α2 := format_argument::["new_display"] (deref name) in
+  let* α3 :=
+    format_arguments::["new_v1"]
+      (deref [ "The person's name is "; "
+" ])
+      (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let* α4 := format_argument::["new_display"] (deref person.["age"]) in
+  let* α5 :=
+    format_arguments::["new_v1"]
+      (deref [ "The person's age from person struct is "; "
+" ])
+      (deref [ α4 ]) in
+  let* _ := _crate.io._print α5 in
+  let _ := tt in
+  Pure tt.
 
 Module Person.
   Record t : Set := {
@@ -56,14 +56,14 @@ Module Impl__crate_fmt_Debug_for_Person.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Person"
       "name"
-      self.["name"]
+      (deref self.["name"])
       "age"
-      self.["age"].
+      (deref (deref self.["age"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;

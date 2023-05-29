@@ -11,32 +11,37 @@ Module io := std.io.
 Module BufReader := std.io.BufReader.
 Definition BufReader := BufReader.t.
 
-Definition read_lines (filename : String) : io.Lines (BufReader File) :=
-  let file := (File::["open"] filename).["unwrap"] in
-  let _ := Return (io.BufReader::["new"] file).["lines"] in
-  tt.
+Definition read_lines (filename : String) : M (io.Lines (BufReader File)) :=
+  let* α0 := File::["open"] filename in
+  let* file := α0.["unwrap"] in
+  let* α1 := io.BufReader::["new"] file in
+  let* α2 := α1.["lines"] in
+  let* _ := Return α2 in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let lines := read_lines "./hosts".["to_string"] in
-  match LangItem lines with
+Definition main (_ : unit) : M unit :=
+  let* α0 := "./hosts".["to_string"] in
+  let* lines := read_lines α0 in
+  let* α1 := LangItem lines in
+  match α1 with
   | iter =>
     loop
-      let _ :=
-        match LangItem iter with
-        | None => Break
+      let* α0 := LangItem (deref iter) in
+      let* _ :=
+        match α0 with
+        | None => Pure Break
         | Some {| Some.0 := line; |} =>
-          let _ :=
-            let _ :=
-              _crate.io._print
-                (format_arguments::["new_v1"]
-                  [ ""; "
-" ]
-                  [ format_argument::["new_display"] line.["unwrap"] ]) in
-            tt in
-          tt
+          let* α0 := line.["unwrap"] in
+          let* α1 := format_argument::["new_display"] (deref α0) in
+          let* α2 :=
+            format_arguments::["new_v1"] (deref [ ""; "
+" ]) (deref [ α1 ]) in
+          let* _ := _crate.io._print α2 in
+          let _ := tt in
+          Pure tt
         end in
-      tt
+      Pure tt
       from
       for
   end.

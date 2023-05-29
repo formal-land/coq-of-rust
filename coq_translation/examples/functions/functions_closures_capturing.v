@@ -4,51 +4,52 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let color := String::["from"] "green" in
+Definition main (_ : unit) : M unit :=
+  let* color := String::["from"] "green" in
   let print :=
     fun  =>
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "`color`: "; "
-" ]
-            [ format_argument::["new_display"] color ]) in
-      tt in
-  let _ := print tt in
-  let _reborrow := color in
-  let _ := print tt in
+      let* α0 := format_argument::["new_display"] (deref color) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "`color`: "; "
+" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      Pure tt in
+  let* _ := print tt in
+  let _reborrow := deref color in
+  let* _ := print tt in
   let _color_moved := color in
   let count := 0 in
   let inc :=
     fun  =>
-      let _ := count.["add_assign"] 1 in
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_v1"]
-              [ "`count`: "; "
-" ]
-              [ format_argument::["new_display"] count ]) in
-        tt in
-      tt in
-  let _ := inc tt in
-  let _ := inc tt in
-  let _count_reborrowed := count in
-  let movable := Box::["new"] 3 in
+      let* _ := count.["add_assign"] 1 in
+      let* α0 := format_argument::["new_display"] (deref count) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "`count`: "; "
+" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      let _ := tt in
+      Pure tt in
+  let* _ := inc tt in
+  let* _ := inc tt in
+  let _count_reborrowed := deref count in
+  let* movable := Box::["new"] 3 in
   let consume :=
     fun  =>
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_v1"]
-              [ "`movable`: "; "
-" ]
-              [ format_argument::["new_debug"] movable ]) in
-        tt in
-      let _ := mem.drop movable in
-      tt in
-  let _ := consume tt in
-  tt.
+      let* α0 := format_argument::["new_debug"] (deref movable) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "`movable`: "; "
+" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      let _ := tt in
+      let* _ := mem.drop movable in
+      Pure tt in
+  let* _ := consume tt in
+  Pure tt.
 
 Module mem := std.mem.

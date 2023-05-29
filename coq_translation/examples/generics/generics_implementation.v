@@ -28,7 +28,7 @@ Definition GenVal : Set := GenVal.t.
 Module ImplVal.
   Definition Self := Val.
   
-  Definition value (self : ref Self) : ref f64 := self.["val"].
+  Definition value (self : ref Self) : M (ref f64) := Pure deref self.["val"].
   
   Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
@@ -38,7 +38,7 @@ End ImplVal.
 Module ImplGenVal T.
   Definition Self := GenVal T.
   
-  Definition value (self : ref Self) : ref T := self.["gen_val"].
+  Definition value (self : ref Self) : M (ref T) := Pure deref self.["gen_val"].
   
   Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
@@ -46,18 +46,16 @@ Module ImplGenVal T.
 End ImplGenVal T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let x := {| Val.val := 3 (* 3.0 *); |} in
   let y := {| GenVal.gen_val := 3; |} in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; ", "; "
-" ]
-          [
-            format_argument::["new_display"] x.["value"];
-            format_argument::["new_display"] y.["value"]
-          ]) in
-    tt in
-  tt.
+  let* α0 := x.["value"] in
+  let* α1 := format_argument::["new_display"] (deref α0) in
+  let* α2 := y.["value"] in
+  let* α3 := format_argument::["new_display"] (deref α2) in
+  let* α4 :=
+    format_arguments::["new_v1"] (deref [ ""; ", "; "
+" ]) (deref [ α1; α3 ]) in
+  let* _ := _crate.io._print α4 in
+  let _ := tt in
+  Pure tt.

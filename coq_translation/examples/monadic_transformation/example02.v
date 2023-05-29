@@ -4,23 +4,26 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  match 1 with
-  | 0 => false
-  | _ => true
-  end ;;
-  if (true : bool) then
-    0
-  else
-    1 ;;
-  if (false : bool) then
-    2
-  else
+Definition main (_ : unit) : M unit :=
+  let* _ :=
+    match 1 with
+    | 0 => Pure false
+    | _ => Pure true
+    end in
+  let* _ :=
+    if (true : bool) then
+      Pure 0
+    else
+      Pure 1 in
+  let* _ :=
     if (false : bool) then
-      3
+      Pure 2
     else
       if (false : bool) then
-        4
+        Pure 3
       else
-        5 ;;
-  tt.
+        if (false : bool) then
+          Pure 4
+        else
+          Pure 5 in
+  Pure tt.

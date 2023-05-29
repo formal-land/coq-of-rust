@@ -4,18 +4,20 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let strings :=
-    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ]) in
-  let numbers :=
-    (strings.["into_iter"].["filter_map"]
-        (fun s => s.["parse"].["ok"])).["collect"] in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Results: "; "
-" ]
-          [ format_argument::["new_debug"] numbers ]) in
-    tt in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* α0 := _crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+  let* strings := Slice::["into_vec"] α0 in
+  let* α1 := strings.["into_iter"] in
+  let* α2 :=
+    α1.["filter_map"]
+      (fun s =>
+        let* α0 := s.["parse"] in
+        α0.["ok"]) in
+  let* numbers := α2.["collect"] in
+  let* α3 := format_argument::["new_debug"] (deref numbers) in
+  let* α4 :=
+    format_arguments::["new_v1"] (deref [ "Results: "; "
+" ]) (deref [ α3 ]) in
+  let* _ := _crate.io._print α4 in
+  let _ := tt in
+  Pure tt.

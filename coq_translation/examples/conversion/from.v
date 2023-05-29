@@ -20,12 +20,12 @@ Module Impl__crate_fmt_Debug_for_Number.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.fmt.Formatter::["debug_struct_field1_finish"]
       f
       "Number"
       "value"
-      self.["value"].
+      (deref (deref self.["value"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -39,7 +39,7 @@ End Impl__crate_fmt_Debug_for_Number.
 Module Impl_From_for_Number.
   Definition Self := Number.
   
-  Definition from (item : i32) : Self := {| Number.value := item; |}.
+  Definition from (item : i32) : M Self := Pure {| Number.value := item; |}.
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -52,14 +52,14 @@ Module Impl_From_for_Number.
 End Impl_From_for_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let num := Number::["from"] 30 in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "My number is "; "
-" ]
-          [ format_argument::["new_debug"] num ]) in
-    tt in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* num := Number::["from"] 30 in
+  let* α0 := format_argument::["new_debug"] (deref num) in
+  let* α1 :=
+    format_arguments::["new_v1"]
+      (deref [ "My number is "; "
+" ])
+      (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  Pure tt.

@@ -10,14 +10,14 @@ End Foo.
 Definition Foo := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let a := Foo.Bar in
-  if (let_if Foo.Bar := a : bool) then
-    let _ :=
-      let _ :=
-        _crate.io._print (format_arguments::["new_const"] [ "a is foobar
+  let* α0 := let_if Foo.Bar := a in
+  if (α0 : bool) then
+    let* α0 := format_arguments::["new_const"] (deref [ "a is foobar
 " ]) in
-      tt in
-    tt
+    let* _ := _crate.io._print α0 in
+    let _ := tt in
+    Pure tt
   else
-    tt.
+    Pure tt.

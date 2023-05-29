@@ -3,26 +3,29 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition some_number (_ : unit) : Option u32 := Some 42.
+Definition some_number (_ : unit) : M (Option u32) := Some 42.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  match some_number tt with
+Definition main (_ : unit) : M unit :=
+  let* α0 := some_number tt in
+  match α0 with
   | Some (42 as n) =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "The Answer: "; "!
-" ]
-          [ format_argument::["new_display"] n ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref n) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "The Answer: "; "!
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | Some n =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Not interesting... "; "
-" ]
-          [ format_argument::["new_display"] n ]) in
-    tt
-  | _ => tt
+    let* α0 := format_argument::["new_display"] (deref n) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "Not interesting... "; "
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
+  | _ => Pure tt
   end.

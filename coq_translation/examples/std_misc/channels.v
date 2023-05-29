@@ -13,79 +13,85 @@ Definition Sender := Sender.t.
 
 Module thread := std.thread.
 
-Definition NTHREADS : i32 := 3.
+Definition NTHREADS : i32 := Pure 3.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let '(tx, rx) := mpsc.channel tt in
-  let children := Vec::["new"] tt in
-  let _ :=
-    match LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} with
+Definition main (_ : unit) : M unit :=
+  let* α0 := mpsc.channel tt in
+  let '(tx, rx) := α0 in
+  let* children := Vec::["new"] tt in
+  let* α1 := LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} in
+  let* _ :=
+    match α1 with
     | iter =>
       loop
-        let _ :=
-          match LangItem iter with
-          | None => Break
+        let* α0 := LangItem (deref iter) in
+        let* _ :=
+          match α0 with
+          | None => Pure Break
           | Some {| Some.0 := id; |} =>
-            let thread_tx := tx.["clone"] in
-            let child :=
+            let* thread_tx := tx.["clone"] in
+            let* child :=
               thread.spawn
                 (fun  =>
-                  let _ := (thread_tx.["send"] id).["unwrap"] in
-                  let _ :=
-                    let _ :=
-                      _crate.io._print
-                        (format_arguments::["new_v1"]
-                          [ "thread "; " finished
-" ]
-                          [ format_argument::["new_display"] id ]) in
-                    tt in
-                  tt) in
-            let _ := children.["push"] child in
-            tt
+                  let* α0 := thread_tx.["send"] id in
+                  let* _ := α0.["unwrap"] in
+                  let* α1 := format_argument::["new_display"] (deref id) in
+                  let* α2 :=
+                    format_arguments::["new_v1"]
+                      (deref [ "thread "; " finished
+" ])
+                      (deref [ α1 ]) in
+                  let* _ := _crate.io._print α2 in
+                  let _ := tt in
+                  Pure tt) in
+            let* _ := children.["push"] child in
+            Pure tt
           end in
-        tt
+        Pure tt
         from
         for
     end in
-  let ids := Vec::["with_capacity"] (cast NTHREADS usize) in
-  let _ :=
-    match LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} with
+  let* ids := Vec::["with_capacity"] (cast NTHREADS usize) in
+  let* α2 := LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} in
+  let* _ :=
+    match α2 with
     | iter =>
       loop
-        let _ :=
-          match LangItem iter with
-          | None => Break
+        let* α0 := LangItem (deref iter) in
+        let* _ :=
+          match α0 with
+          | None => Pure Break
           | Some {| Some.0 := _; |} =>
-            let _ := ids.["push"] rx.["recv"] in
-            tt
+            let* α0 := rx.["recv"] in
+            let* _ := ids.["push"] α0 in
+            Pure tt
           end in
-        tt
+        Pure tt
         from
         for
     end in
-  let _ :=
-    match LangItem children with
+  let* α3 := LangItem children in
+  let* _ :=
+    match α3 with
     | iter =>
       loop
-        let _ :=
-          match LangItem iter with
-          | None => Break
+        let* α0 := LangItem (deref iter) in
+        let* _ :=
+          match α0 with
+          | None => Pure Break
           | Some {| Some.0 := child; |} =>
-            let _ :=
-              child.["join"].["expect"] "oops! the child thread panicked" in
-            tt
+            let* α0 := child.["join"] in
+            let* _ := α0.["expect"] "oops! the child thread panicked" in
+            Pure tt
           end in
-        tt
+        Pure tt
         from
         for
     end in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "
-" ]
-          [ format_argument::["new_debug"] ids ]) in
-    tt in
-  tt.
+  let* α4 := format_argument::["new_debug"] (deref ids) in
+  let* α5 := format_arguments::["new_v1"] (deref [ ""; "
+" ]) (deref [ α4 ]) in
+  let* _ := _crate.io._print α5 in
+  let _ := tt in
+  Pure tt.

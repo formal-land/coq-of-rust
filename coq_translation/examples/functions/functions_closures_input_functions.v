@@ -3,28 +3,26 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition call_me {F : Set} `{Fn.Trait unit F} (f : F) : unit :=
-  let _ := f tt in
-  tt.
+Definition call_me {F : Set} `{Fn.Trait unit F} (f : F) : M unit :=
+  let* _ := f tt in
+  Pure tt.
 
-Definition function (_ : unit) : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"] [ "I'm a function!
+Definition function (_ : unit) : M unit :=
+  let* α0 := format_arguments::["new_const"] (deref [ "I'm a function!
 " ]) in
-    tt in
-  tt.
+  let* _ := _crate.io._print α0 in
+  let _ := tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let closure :=
     fun  =>
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_const"] [ "I'm a closure!
+      let* α0 :=
+        format_arguments::["new_const"] (deref [ "I'm a closure!
 " ]) in
-      tt in
-  let _ := call_me closure in
-  let _ := call_me function in
-  tt.
+      let* _ := _crate.io._print α0 in
+      Pure tt in
+  let* _ := call_me closure in
+  let* _ := call_me function in
+  Pure tt.

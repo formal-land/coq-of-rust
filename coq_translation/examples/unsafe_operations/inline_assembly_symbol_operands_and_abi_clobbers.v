@@ -4,22 +4,20 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit := tt.
+Definition main (_ : unit) : M unit := Pure tt.
 
 Module asm := std.arch.asm.
 
-Definition foo (arg : i32) : i32 :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "arg = "; "
-" ]
-          [ format_argument::["new_display"] arg ]) in
-    tt in
+Definition foo (arg : i32) : M i32 :=
+  let* α0 := format_argument::["new_display"] (deref arg) in
+  let* α1 :=
+    format_arguments::["new_v1"] (deref [ "arg = "; "
+" ]) (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
   arg.["mul"] 2.
 
-Definition call_foo (arg : i32) : i32 :=
+Definition call_foo (arg : i32) : M i32 :=
   let result := tt in
   let _ := InlineAsm in
-  result.
+  Pure result.

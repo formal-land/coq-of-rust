@@ -74,7 +74,7 @@ pub(crate) fn compile_qpath(qpath: &QPath) -> Path {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum StructOrVariant {
     Struct,
     Variant,

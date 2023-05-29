@@ -17,16 +17,16 @@ Definition Droppable : Set := Droppable.t.
 Module Impl_Drop_for_Droppable.
   Definition Self := Droppable.
   
-  Definition drop (self : mut_ref Self) :=
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "> Dropping "; "
-" ]
-            [ format_argument::["new_display"] self.["name"] ]) in
-      tt in
-    tt.
+  Definition drop (self : mut_ref Self) : M unit :=
+    let* α0 := format_argument::["new_display"] (deref self.["name"]) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "> Dropping "; "
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    let _ := tt in
+    Pure tt.
   
   Global Instance Method_drop : Notation.Dot "drop" := {
     Notation.dot := drop;
@@ -38,44 +38,35 @@ Module Impl_Drop_for_Droppable.
 End Impl_Drop_for_Droppable.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let _a := {| Droppable.name := "a"; |} in
-  let _ :=
-    let _b := {| Droppable.name := "b"; |} in
-    let _ :=
-      let _c := {| Droppable.name := "c"; |} in
-      let _d := {| Droppable.name := "d"; |} in
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_const"] [ "Exiting block B
+  let _b := {| Droppable.name := "b"; |} in
+  let _c := {| Droppable.name := "c"; |} in
+  let _d := {| Droppable.name := "d"; |} in
+  let* α0 := format_arguments::["new_const"] (deref [ "Exiting block B
 " ]) in
-        tt in
-      tt in
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_const"] [ "Just exited block B
+  let* _ := _crate.io._print α0 in
+  let _ := tt in
+  let _ := tt in
+  let* α1 :=
+    format_arguments::["new_const"] (deref [ "Just exited block B
 " ]) in
-      tt in
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_const"] [ "Exiting block A
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  let* α2 := format_arguments::["new_const"] (deref [ "Exiting block A
 " ]) in
-      tt in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Just exited block A
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  let _ := tt in
+  let* α3 :=
+    format_arguments::["new_const"] (deref [ "Just exited block A
 " ]) in
-    tt in
-  let _ := drop _a in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"] [ "end of the main function
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let* _ := drop _a in
+  let* α4 :=
+    format_arguments::["new_const"] (deref [ "end of the main function
 " ]) in
-    tt in
-  tt.
+  let* _ := _crate.io._print α4 in
+  let _ := tt in
+  Pure tt.

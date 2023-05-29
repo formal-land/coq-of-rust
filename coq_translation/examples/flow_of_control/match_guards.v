@@ -11,39 +11,43 @@ End Temperature.
 Definition Temperature := Temperature.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let temperature := Temperature.Celsius 35 in
+Definition main (_ : unit) : M unit :=
+  let* temperature := Temperature.Celsius 35 in
   match temperature with
   | Temperature.Celsius t =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "C is above 30 Celsius
-" ]
-          [ format_argument::["new_display"] t ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref t) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ ""; "C is above 30 Celsius
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | Temperature.Celsius t =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "C is below 30 Celsius
-" ]
-          [ format_argument::["new_display"] t ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref t) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ ""; "C is below 30 Celsius
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | Temperature.Fahrenheit t =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "F is above 86 Fahrenheit
-" ]
-          [ format_argument::["new_display"] t ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref t) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ ""; "F is above 86 Fahrenheit
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | Temperature.Fahrenheit t =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "F is below 86 Fahrenheit
-" ]
-          [ format_argument::["new_display"] t ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref t) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ ""; "F is below 86 Fahrenheit
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   end.

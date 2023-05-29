@@ -4,24 +4,24 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let _immutable_binding := 1 in
   let mutable_binding := 1 in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Before mutation: "; "
-" ]
-          [ format_argument::["new_display"] mutable_binding ]) in
-    tt in
-  let _ := mutable_binding.["add_assign"] 1 in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "After mutation: "; "
-" ]
-          [ format_argument::["new_display"] mutable_binding ]) in
-    tt in
-  tt.
+  let* α0 := format_argument::["new_display"] (deref mutable_binding) in
+  let* α1 :=
+    format_arguments::["new_v1"]
+      (deref [ "Before mutation: "; "
+" ])
+      (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  let* _ := mutable_binding.["add_assign"] 1 in
+  let* α2 := format_argument::["new_display"] (deref mutable_binding) in
+  let* α3 :=
+    format_arguments::["new_v1"]
+      (deref [ "After mutation: "; "
+" ])
+      (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  Pure tt.

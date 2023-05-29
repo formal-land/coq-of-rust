@@ -4,11 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let raw_p := 10 in
-  let _ :=
-    if ((raw_p.["deref"].["eq"] 10).["not"] : bool) then
+Definition main (_ : unit) : M unit :=
+  let raw_p := deref 10 in
+  let* α0 := raw_p.["deref"] in
+  let* α1 := α0.["eq"] 10 in
+  let* α2 := α1.["not"] in
+  let* _ :=
+    if (α2 : bool) then
       _crate.panicking.panic "assertion failed: *raw_p == 10"
     else
-      tt in
-  tt.
+      Pure tt in
+  Pure tt.

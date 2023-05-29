@@ -28,8 +28,10 @@ End Impl__crate_marker_StructuralPartialEq_for_PhantomTuple_A_B.
 Module Impl__crate_cmp_PartialEq_for_PhantomTuple_A_B.
   Definition Self := PhantomTuple A B.
   
-  Definition eq (self : ref Self) (other : ref (PhantomTuple A B)) : bool :=
-    ((self.[0]).["eq"] (other.[0])).["andb"] ((self.[1]).["eq"] (other.[1])).
+  Definition eq (self : ref Self) (other : ref (PhantomTuple A B)) : M bool :=
+    let* α0 := (self.[0]).["eq"] (other.[0]) in
+    let* α1 := (self.[1]).["eq"] (other.[1]) in
+    α0.["andb"] α1.
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -65,9 +67,10 @@ End Impl__crate_marker_StructuralPartialEq_for_PhantomStruct_A_B.
 Module Impl__crate_cmp_PartialEq_for_PhantomStruct_A_B.
   Definition Self := PhantomStruct A B.
   
-  Definition eq (self : ref Self) (other : ref (PhantomStruct A B)) : bool :=
-    (self.["first"].["eq"] other.["first"]).["andb"]
-      (self.["phantom"].["eq"] other.["phantom"]).
+  Definition eq (self : ref Self) (other : ref (PhantomStruct A B)) : M bool :=
+    let* α0 := self.["first"].["eq"] other.["first"] in
+    let* α1 := self.["phantom"].["eq"] other.["phantom"] in
+    α0.["andb"] α1.
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -79,7 +82,7 @@ Module Impl__crate_cmp_PartialEq_for_PhantomStruct_A_B.
 End Impl__crate_cmp_PartialEq_for_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let _tuple1 := PhantomTuple.Build_t "Q"%char PhantomData.Build in
   let _tuple2 := PhantomTuple.Build_t "Q"%char PhantomData.Build in
   let _struct1 :=
@@ -92,4 +95,4 @@ Definition main (_ : unit) : unit :=
       PhantomStruct.first := "Q"%char;
       PhantomStruct.phantom := PhantomData.Build;
     |} in
-  tt.
+  Pure tt.

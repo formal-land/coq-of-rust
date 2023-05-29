@@ -7,21 +7,24 @@ Module Path := std.path.Path.
 Definition Path := Path.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let path := Path::["new"] "." in
-  let _display := path.["display"] in
-  let new_path := (path.["join"] "a").["join"] "b" in
-  let _ := new_path.["push"] "c" in
-  let _ := new_path.["push"] "myfile.tar.gz" in
-  let _ := new_path.["set_file_name"] "package.tgz" in
-  match new_path.["to_str"] with
+Definition main (_ : unit) : M unit :=
+  let* path := Path::["new"] "." in
+  let* _display := path.["display"] in
+  let* α0 := path.["join"] "a" in
+  let* new_path := α0.["join"] "b" in
+  let* _ := new_path.["push"] "c" in
+  let* _ := new_path.["push"] "myfile.tar.gz" in
+  let* _ := new_path.["set_file_name"] "package.tgz" in
+  let* α1 := new_path.["to_str"] in
+  match α1 with
   | None => _crate.rt.begin_panic "new path is not a valid UTF-8 sequence"
   | Some s =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "new path is "; "
-" ]
-          [ format_argument::["new_display"] s ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref s) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "new path is "; "
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   end.

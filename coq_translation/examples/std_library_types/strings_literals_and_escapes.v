@@ -4,39 +4,34 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let byte_escape := "I'm writing Rust!" in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "What are you doing? (\x3F means ?) "; "
-" ]
-          [ format_argument::["new_display"] byte_escape ]) in
-    tt in
+  let* α0 := format_argument::["new_display"] (deref byte_escape) in
+  let* α1 :=
+    format_arguments::["new_v1"]
+      (deref [ "What are you doing? (\x3F means ?) "; "
+" ])
+      (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
   let unicode_codepoint := String.String "29" "" in
   let character_name := ""DOUBLE-STRUCK CAPITAL R"" in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Unicode character "; " (U+211D) is called "; "
-" ]
-          [
-            format_argument::["new_display"] unicode_codepoint;
-            format_argument::["new_display"] character_name
-          ]) in
-    tt in
+  let* α2 := format_argument::["new_display"] (deref unicode_codepoint) in
+  let* α3 := format_argument::["new_display"] (deref character_name) in
+  let* α4 :=
+    format_arguments::["new_v1"]
+      (deref [ "Unicode character "; " (U+211D) is called "; "
+" ])
+      (deref [ α2; α3 ]) in
+  let* _ := _crate.io._print α4 in
+  let _ := tt in
   let long_string :=
     "String literals
                         can span multiple lines.
                         The linebreak and indentation here -><- can be escaped too!" in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "
-" ]
-          [ format_argument::["new_display"] long_string ]) in
-    tt in
-  tt.
+  let* α5 := format_argument::["new_display"] (deref long_string) in
+  let* α6 := format_arguments::["new_v1"] (deref [ ""; "
+" ]) (deref [ α5 ]) in
+  let* _ := _crate.io._print α6 in
+  let _ := tt in
+  Pure tt.
