@@ -3,66 +3,65 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition checked_division (dividend : i32) (divisor : i32) : Option i32 :=
-  if (divisor.["eq"] 0 : bool) then
-    None
+Definition checked_division (dividend : i32) (divisor : i32) : M (Option i32) :=
+  let* α0 := divisor.["eq"] 0 in
+  if (α0 : bool) then
+    Pure None
   else
-    Some (dividend.["div"] divisor).
+    let* α0 := dividend.["div"] divisor in
+    Some α0.
 
-Definition try_division (dividend : i32) (divisor : i32) : unit :=
-  match checked_division dividend divisor with
+Definition try_division (dividend : i32) (divisor : i32) : M unit :=
+  let* α0 := checked_division dividend divisor in
+  match α0 with
   | None =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " / "; " failed!
-" ]
-          [
-            format_argument::["new_display"] dividend;
-            format_argument::["new_display"] divisor
-          ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref dividend) in
+    let* α1 := format_argument::["new_display"] (deref divisor) in
+    let* α2 :=
+      format_arguments::["new_v1"]
+        (deref [ ""; " / "; " failed!
+" ])
+        (deref [ α0; α1 ]) in
+    let* _ := _crate.io._print α2 in
+    Pure tt
   | Some quotient =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " / "; " = "; "
-" ]
-          [
-            format_argument::["new_display"] dividend;
-            format_argument::["new_display"] divisor;
-            format_argument::["new_display"] quotient
-          ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref dividend) in
+    let* α1 := format_argument::["new_display"] (deref divisor) in
+    let* α2 := format_argument::["new_display"] (deref quotient) in
+    let* α3 :=
+      format_arguments::["new_v1"]
+        (deref [ ""; " / "; " = "; "
+" ])
+        (deref [ α0; α1; α2 ]) in
+    let* _ := _crate.io._print α3 in
+    Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let _ := try_division 4 2 in
-  let _ := try_division 1 0 in
+Definition main (_ : unit) : M unit :=
+  let* _ := try_division 4 2 in
+  let* _ := try_division 1 0 in
   let none := None in
   let _equivalent_none := None in
-  let optional_float := Some 0 (* 0 *) in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " unwraps to "; "
-" ]
-          [
-            format_argument::["new_debug"] optional_float;
-            format_argument::["new_debug"] optional_float.["unwrap"]
-          ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " unwraps to "; "
-" ]
-          [
-            format_argument::["new_debug"] none;
-            format_argument::["new_debug"] none.["unwrap"]
-          ]) in
-    tt in
-  tt.
+  let* optional_float := Some 0 (* 0 *) in
+  let* α0 := format_argument::["new_debug"] (deref optional_float) in
+  let* α1 := optional_float.["unwrap"] in
+  let* α2 := format_argument::["new_debug"] (deref α1) in
+  let* α3 :=
+    format_arguments::["new_v1"]
+      (deref [ ""; " unwraps to "; "
+" ])
+      (deref [ α0; α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let* α4 := format_argument::["new_debug"] (deref none) in
+  let* α5 := none.["unwrap"] in
+  let* α6 := format_argument::["new_debug"] (deref α5) in
+  let* α7 :=
+    format_arguments::["new_v1"]
+      (deref [ ""; " unwraps to "; "
+" ])
+      (deref [ α4; α6 ]) in
+  let* _ := _crate.io._print α7 in
+  let _ := tt in
+  Pure tt.

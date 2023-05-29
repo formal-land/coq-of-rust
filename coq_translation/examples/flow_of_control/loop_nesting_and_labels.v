@@ -4,42 +4,38 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let _ :=
+Definition main (_ : unit) : M unit :=
+  let* _ :=
     loop
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_const"] [ "Entered the outer loop
+      let* α0 :=
+        format_arguments::["new_const"] (deref [ "Entered the outer loop
 " ]) in
-        tt in
-      let _ :=
+      let* _ := _crate.io._print α0 in
+      let _ := tt in
+      let* _ :=
         loop
-          let _ :=
-            let _ :=
-              _crate.io._print
-                (format_arguments::["new_const"]
-                  [ "Entered the inner loop
+          let* α0 :=
+            format_arguments::["new_const"]
+              (deref [ "Entered the inner loop
 " ]) in
-            tt in
+          let* _ := _crate.io._print α0 in
+          let _ := tt in
           let _ := Break in
-          tt
+          Pure tt
           from
           loop in
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_const"]
-              [ "This point will never be reached
+      let* α1 :=
+        format_arguments::["new_const"]
+          (deref [ "This point will never be reached
 " ]) in
-        tt in
-      tt
+      let* _ := _crate.io._print α1 in
+      let _ := tt in
+      Pure tt
       from
       loop in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Exited the outer loop
+  let* α0 :=
+    format_arguments::["new_const"] (deref [ "Exited the outer loop
 " ]) in
-    tt in
-  tt.
+  let* _ := _crate.io._print α0 in
+  let _ := tt in
+  Pure tt.

@@ -4,20 +4,20 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let optional := Some 7 in
-  let _ :=
+Definition main (_ : unit) : M unit :=
+  let* optional := Some 7 in
+  let* _ :=
     match optional with
     | Some i =>
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_v1"]
-              [ "This is a really long string and `"; "`
-" ]
-              [ format_argument::["new_debug"] i ]) in
-        tt in
-      tt
-    | _ => tt
+      let* α0 := format_argument::["new_debug"] (deref i) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "This is a really long string and `"; "`
+" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      let _ := tt in
+      Pure tt
+    | _ => Pure tt
     end in
-  tt.
+  Pure tt.

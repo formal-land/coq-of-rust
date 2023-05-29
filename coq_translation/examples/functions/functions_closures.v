@@ -4,33 +4,36 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let outer_var := 42 in
   let closure_annotated := fun i => i.["add"] outer_var in
   let closure_inferred := fun i => i.["add"] outer_var in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "closure_annotated: "; "
-" ]
-          [ format_argument::["new_display"] (closure_annotated 1) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "closure_inferred: "; "
-" ]
-          [ format_argument::["new_display"] (closure_inferred 1) ]) in
-    tt in
-  let one := fun  => 1 in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "closure returning one: "; "
-" ]
-          [ format_argument::["new_display"] (one tt) ]) in
-    tt in
-  tt.
+  let* α0 := closure_annotated 1 in
+  let* α1 := format_argument::["new_display"] (deref α0) in
+  let* α2 :=
+    format_arguments::["new_v1"]
+      (deref [ "closure_annotated: "; "
+" ])
+      (deref [ α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  let* α3 := closure_inferred 1 in
+  let* α4 := format_argument::["new_display"] (deref α3) in
+  let* α5 :=
+    format_arguments::["new_v1"]
+      (deref [ "closure_inferred: "; "
+" ])
+      (deref [ α4 ]) in
+  let* _ := _crate.io._print α5 in
+  let _ := tt in
+  let one := fun  => Pure 1 in
+  let* α6 := one tt in
+  let* α7 := format_argument::["new_display"] (deref α6) in
+  let* α8 :=
+    format_arguments::["new_v1"]
+      (deref [ "closure returning one: "; "
+" ])
+      (deref [ α7 ]) in
+  let* _ := _crate.io._print α8 in
+  let _ := tt in
+  Pure tt.

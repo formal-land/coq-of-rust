@@ -3,41 +3,39 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition NUM : i32 := 18.
+Definition NUM : i32 := Pure 18.
 
-Definition coerce_static (arg : ref i32) : ref i32 := NUM.
+Definition coerce_static (arg : ref i32) : M (ref i32) := Pure deref NUM.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let _ :=
-    let static_string := "I'm in read-only memory" in
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "static_string: "; "
-" ]
-            [ format_argument::["new_display"] static_string ]) in
-      tt in
-    tt in
-  let _ :=
-    let lifetime_num := 9 in
-    let coerced_static := coerce_static lifetime_num in
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "coerced_static: "; "
-" ]
-            [ format_argument::["new_display"] coerced_static ]) in
-      tt in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "NUM: "; " stays accessible!
-" ]
-          [ format_argument::["new_display"] NUM ]) in
-    tt in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let static_string := "I'm in read-only memory" in
+  let* α0 := format_argument::["new_display"] (deref static_string) in
+  let* α1 :=
+    format_arguments::["new_v1"]
+      (deref [ "static_string: "; "
+" ])
+      (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  let _ := tt in
+  let lifetime_num := 9 in
+  let* coerced_static := coerce_static (deref lifetime_num) in
+  let* α2 := format_argument::["new_display"] (deref coerced_static) in
+  let* α3 :=
+    format_arguments::["new_v1"]
+      (deref [ "coerced_static: "; "
+" ])
+      (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let _ := tt in
+  let* α4 := format_argument::["new_display"] (deref NUM) in
+  let* α5 :=
+    format_arguments::["new_v1"]
+      (deref [ "NUM: "; " stays accessible!
+" ])
+      (deref [ α4 ]) in
+  let* _ := _crate.io._print α5 in
+  let _ := tt in
+  Pure tt.

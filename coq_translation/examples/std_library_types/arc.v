@@ -12,34 +12,37 @@ Module Duration := std.time.Duration.
 Definition Duration := Duration.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let apple := Arc::["new"] "the same apple" in
-  let _ :=
-    match LangItem Range {| Range.start := 0; Range.end := 10; |} with
+Definition main (_ : unit) : M unit :=
+  let* apple := Arc::["new"] "the same apple" in
+  let* α0 := LangItem Range {| Range.start := 0; Range.end := 10; |} in
+  let* _ :=
+    match α0 with
     | iter =>
       loop
-        let _ :=
-          match LangItem iter with
-          | None => Break
+        let* α0 := LangItem (deref iter) in
+        let* _ :=
+          match α0 with
+          | None => Pure Break
           | Some {| Some.0 := _; |} =>
-            let apple := Arc::["clone"] apple in
-            let _ :=
+            let* apple := Arc::["clone"] (deref apple) in
+            let* _ :=
               thread.spawn
                 (fun  =>
-                  let _ :=
-                    let _ :=
-                      _crate.io._print
-                        (format_arguments::["new_v1"]
-                          [ ""; "
-" ]
-                          [ format_argument::["new_debug"] apple ]) in
-                    tt in
-                  tt) in
-            tt
+                  let* α0 := format_argument::["new_debug"] (deref apple) in
+                  let* α1 :=
+                    format_arguments::["new_v1"]
+                      (deref [ ""; "
+" ])
+                      (deref [ α0 ]) in
+                  let* _ := _crate.io._print α1 in
+                  let _ := tt in
+                  Pure tt) in
+            Pure tt
           end in
-        tt
+        Pure tt
         from
         for
     end in
-  let _ := thread.sleep (Duration::["from_secs"] 1) in
-  tt.
+  let* α1 := Duration::["from_secs"] 1 in
+  let* _ := thread.sleep α1 in
+  Pure tt.

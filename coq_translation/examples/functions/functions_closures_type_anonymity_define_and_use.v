@@ -3,21 +3,20 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition apply {F : Set} `{Fn.Trait unit F} (f : F) : unit :=
-  let _ := f tt in
-  tt.
+Definition apply {F : Set} `{Fn.Trait unit F} (f : F) : M unit :=
+  let* _ := f tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let x := 7 in
   let print :=
     fun  =>
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ ""; "
-" ]
-            [ format_argument::["new_display"] x ]) in
-      tt in
-  let _ := apply print in
-  tt.
+      let* α0 := format_argument::["new_display"] (deref x) in
+      let* α1 :=
+        format_arguments::["new_v1"] (deref [ ""; "
+" ]) (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      Pure tt in
+  let* _ := apply print in
+  Pure tt.

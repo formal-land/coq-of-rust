@@ -7,7 +7,7 @@ use rustc_middle::ty::TyCtxt;
 use rustc_span::source_map::Spanned;
 
 /// The enum [Pat] represents the patterns which can be matched
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum Pattern {
     Wild,
     Variable(String),

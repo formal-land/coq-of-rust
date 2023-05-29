@@ -4,6 +4,6 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let x := 1 in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let x := deref 1 in
+  Pure tt.

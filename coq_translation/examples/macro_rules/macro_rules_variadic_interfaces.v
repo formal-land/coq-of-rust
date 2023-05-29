@@ -4,36 +4,31 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let _ :=
-    let val := 1.["add"] 2 in
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "1 + 2 = "; "
-" ]
-            [ format_argument::["new_display"] val ]) in
-      tt in
-    tt in
-  let _ :=
-    let val := 3.["add"] 4 in
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "3 + 4 = "; "
-" ]
-            [ format_argument::["new_display"] val ]) in
-      tt in
-    tt in
-  let val := (2.["mul"] 3).["add"] 1 in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "(2 * 3) + 1 = "; "
-" ]
-          [ format_argument::["new_display"] val ]) in
-    tt in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* val := 1.["add"] 2 in
+  let* α0 := format_argument::["new_display"] (deref val) in
+  let* α1 :=
+    format_arguments::["new_v1"] (deref [ "1 + 2 = "; "
+" ]) (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  let _ := tt in
+  let* val := 3.["add"] 4 in
+  let* α2 := format_argument::["new_display"] (deref val) in
+  let* α3 :=
+    format_arguments::["new_v1"] (deref [ "3 + 4 = "; "
+" ]) (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let _ := tt in
+  let* α4 := 2.["mul"] 3 in
+  let* val := α4.["add"] 1 in
+  let* α5 := format_argument::["new_display"] (deref val) in
+  let* α6 :=
+    format_arguments::["new_v1"]
+      (deref [ "(2 * 3) + 1 = "; "
+" ])
+      (deref [ α5 ]) in
+  let* _ := _crate.io._print α6 in
+  let _ := tt in
+  Pure tt.

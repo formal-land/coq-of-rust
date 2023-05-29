@@ -4,142 +4,140 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let decimal := 65 (* 65.4321 *) in
   let integer := decimal in
   let integer := cast decimal u8 in
   let character := cast integer char in
   let character := cast decimal char in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Casting: "; " -> "; " -> "; "
-" ]
-          [
-            format_argument::["new_display"] decimal;
-            format_argument::["new_display"] integer;
-            format_argument::["new_display"] character
-          ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "1000 as a u16 is: "; "
-" ]
-          [ format_argument::["new_display"] (cast 1000 u16) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "1000 as a u8 is : "; "
-" ]
-          [ format_argument::["new_display"] (cast 1000 u8) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "  -1 as a u8 is : "; "
-" ]
-          [ format_argument::["new_display"] (cast 1.["neg"] u8) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "1000 mod 256 is : "; "
-" ]
-          [ format_argument::["new_display"] (1000.["rem"] 256) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ " 128 as a i16 is: "; "
-" ]
-          [ format_argument::["new_display"] (cast 128 i16) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ " 128 as a i8 is : "; "
-" ]
-          [ format_argument::["new_display"] (cast 128 i8) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "1000 as a u8 is : "; "
-" ]
-          [ format_argument::["new_display"] (cast 1000 u8) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ " 232 as a i8 is : "; "
-" ]
-          [ format_argument::["new_display"] (cast 232 i8) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ " 300.0 as u8 is : "; "
-" ]
-          [ format_argument::["new_display"] (cast 300 (* 300.0 *) u8) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "-100.0 as u8 is : "; "
-" ]
-          [ format_argument::["new_display"] (cast 100 (* 100.0 *).["neg"] u8)
-          ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "   nan as u8 is : "; "
-" ]
-          [ format_argument::["new_display"] (cast f32::["NAN"] u8) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ " 300.0 as u8 is : "; "
-" ]
-          [
-            format_argument::["new_display"]
-              300 (* 300.0 *).["to_int_unchecked"]
-          ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "-100.0 as u8 is : "; "
-" ]
-          [
-            format_argument::["new_display"]
-              100 (* 100.0 *).["neg"].["to_int_unchecked"]
-          ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "   nan as u8 is : "; "
-" ]
-          [ format_argument::["new_display"] f32::["NAN"].["to_int_unchecked"]
-          ]) in
-    tt in
-  tt.
+  let* α0 := format_argument::["new_display"] (deref decimal) in
+  let* α1 := format_argument::["new_display"] (deref integer) in
+  let* α2 := format_argument::["new_display"] (deref character) in
+  let* α3 :=
+    format_arguments::["new_v1"]
+      (deref [ "Casting: "; " -> "; " -> "; "
+" ])
+      (deref [ α0; α1; α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let* α4 := format_argument::["new_display"] (deref (cast 1000 u16)) in
+  let* α5 :=
+    format_arguments::["new_v1"]
+      (deref [ "1000 as a u16 is: "; "
+" ])
+      (deref [ α4 ]) in
+  let* _ := _crate.io._print α5 in
+  let _ := tt in
+  let* α6 := format_argument::["new_display"] (deref (cast 1000 u8)) in
+  let* α7 :=
+    format_arguments::["new_v1"]
+      (deref [ "1000 as a u8 is : "; "
+" ])
+      (deref [ α6 ]) in
+  let* _ := _crate.io._print α7 in
+  let _ := tt in
+  let* α8 := 1.["neg"] in
+  let* α9 := format_argument::["new_display"] (deref (cast α8 u8)) in
+  let* α10 :=
+    format_arguments::["new_v1"]
+      (deref [ "  -1 as a u8 is : "; "
+" ])
+      (deref [ α9 ]) in
+  let* _ := _crate.io._print α10 in
+  let _ := tt in
+  let* α11 := 1000.["rem"] 256 in
+  let* α12 := format_argument::["new_display"] (deref α11) in
+  let* α13 :=
+    format_arguments::["new_v1"]
+      (deref [ "1000 mod 256 is : "; "
+" ])
+      (deref [ α12 ]) in
+  let* _ := _crate.io._print α13 in
+  let _ := tt in
+  let* α14 := format_argument::["new_display"] (deref (cast 128 i16)) in
+  let* α15 :=
+    format_arguments::["new_v1"]
+      (deref [ " 128 as a i16 is: "; "
+" ])
+      (deref [ α14 ]) in
+  let* _ := _crate.io._print α15 in
+  let _ := tt in
+  let* α16 := format_argument::["new_display"] (deref (cast 128 i8)) in
+  let* α17 :=
+    format_arguments::["new_v1"]
+      (deref [ " 128 as a i8 is : "; "
+" ])
+      (deref [ α16 ]) in
+  let* _ := _crate.io._print α17 in
+  let _ := tt in
+  let* α18 := format_argument::["new_display"] (deref (cast 1000 u8)) in
+  let* α19 :=
+    format_arguments::["new_v1"]
+      (deref [ "1000 as a u8 is : "; "
+" ])
+      (deref [ α18 ]) in
+  let* _ := _crate.io._print α19 in
+  let _ := tt in
+  let* α20 := format_argument::["new_display"] (deref (cast 232 i8)) in
+  let* α21 :=
+    format_arguments::["new_v1"]
+      (deref [ " 232 as a i8 is : "; "
+" ])
+      (deref [ α20 ]) in
+  let* _ := _crate.io._print α21 in
+  let _ := tt in
+  let* α22 :=
+    format_argument::["new_display"] (deref (cast 300 (* 300.0 *) u8)) in
+  let* α23 :=
+    format_arguments::["new_v1"]
+      (deref [ " 300.0 as u8 is : "; "
+" ])
+      (deref [ α22 ]) in
+  let* _ := _crate.io._print α23 in
+  let _ := tt in
+  let* α24 := 100 (* 100.0 *).["neg"] in
+  let* α25 := format_argument::["new_display"] (deref (cast α24 u8)) in
+  let* α26 :=
+    format_arguments::["new_v1"]
+      (deref [ "-100.0 as u8 is : "; "
+" ])
+      (deref [ α25 ]) in
+  let* _ := _crate.io._print α26 in
+  let _ := tt in
+  let* α27 := format_argument::["new_display"] (deref (cast f32::["NAN"] u8)) in
+  let* α28 :=
+    format_arguments::["new_v1"]
+      (deref [ "   nan as u8 is : "; "
+" ])
+      (deref [ α27 ]) in
+  let* _ := _crate.io._print α28 in
+  let _ := tt in
+  let* α29 := 300 (* 300.0 *).["to_int_unchecked"] in
+  let* α30 := format_argument::["new_display"] (deref α29) in
+  let* α31 :=
+    format_arguments::["new_v1"]
+      (deref [ " 300.0 as u8 is : "; "
+" ])
+      (deref [ α30 ]) in
+  let* _ := _crate.io._print α31 in
+  let _ := tt in
+  let* α32 := 100 (* 100.0 *).["neg"] in
+  let* α33 := α32.["to_int_unchecked"] in
+  let* α34 := format_argument::["new_display"] (deref α33) in
+  let* α35 :=
+    format_arguments::["new_v1"]
+      (deref [ "-100.0 as u8 is : "; "
+" ])
+      (deref [ α34 ]) in
+  let* _ := _crate.io._print α35 in
+  let _ := tt in
+  let* α36 := f32::["NAN"].["to_int_unchecked"] in
+  let* α37 := format_argument::["new_display"] (deref α36) in
+  let* α38 :=
+    format_arguments::["new_v1"]
+      (deref [ "   nan as u8 is : "; "
+" ])
+      (deref [ α37 ]) in
+  let* _ := _crate.io._print α38 in
+  let _ := tt in
+  Pure tt.

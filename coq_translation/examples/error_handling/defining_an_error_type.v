@@ -18,7 +18,7 @@ Module Impl__crate_fmt_Debug_for_DoubleError.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.fmt.Formatter::["write_str"] f "DoubleError".
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
@@ -33,7 +33,7 @@ End Impl__crate_fmt_Debug_for_DoubleError.
 Module Impl__crate_clone_Clone_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition clone (self : ref Self) : DoubleError := DoubleError.Build.
+  Definition clone (self : ref Self) : M DoubleError := Pure DoubleError.Build.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -47,9 +47,11 @@ End Impl__crate_clone_Clone_for_DoubleError.
 Module Impl_fmt_Display_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
-    f.["write_fmt"]
-      (format_arguments::["new_const"] [ "invalid first item to double" ]).
+  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : M fmt.Result :=
+    let* α0 :=
+      format_arguments::["new_const"]
+        (deref [ "invalid first item to double" ]) in
+    f.["write_fmt"] α0.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -60,40 +62,46 @@ Module Impl_fmt_Display_for_DoubleError.
   }.
 End Impl_fmt_Display_for_DoubleError.
 
-Definition double_first (vec : Vec (ref str)) : Result i32 :=
-  (vec.["first"].["ok_or"] DoubleError.Build).["and_then"]
+Definition double_first (vec : Vec (ref str)) : M (Result i32) :=
+  let* α0 := vec.["first"] in
+  let* α1 := α0.["ok_or"] DoubleError.Build in
+  α1.["and_then"]
     (fun s =>
-      (s.["parse"].["map_err"] (fun _ => DoubleError.Build)).["map"]
-        (fun i => 2.["mul"] i)).
+      let* α0 := s.["parse"] in
+      let* α1 := α0.["map_err"] (fun _ => Pure DoubleError.Build) in
+      α1.["map"] (fun i => 2.["mul"] i)).
 
-Definition print (result : Result i32) : unit :=
+Definition print (result : Result i32) : M unit :=
   match result with
   | Ok n =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "The first doubled is "; "
-" ]
-          [ format_argument::["new_display"] n ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref n) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "The first doubled is "; "
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | Err e =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Error: "; "
-" ]
-          [ format_argument::["new_display"] e ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref e) in
+    let* α1 :=
+      format_arguments::["new_v1"] (deref [ "Error: "; "
+" ]) (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let numbers :=
-    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "42"; "93"; "18" ]) in
-  let empty := _crate.vec.Vec::["new"] tt in
-  let strings :=
-    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ]) in
-  let _ := print (double_first numbers) in
-  let _ := print (double_first empty) in
-  let _ := print (double_first strings) in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* α0 := _crate.boxed.Box::["new"] [ "42"; "93"; "18" ] in
+  let* numbers := Slice::["into_vec"] α0 in
+  let* empty := _crate.vec.Vec::["new"] tt in
+  let* α1 := _crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+  let* strings := Slice::["into_vec"] α1 in
+  let* α2 := double_first numbers in
+  let* _ := print α2 in
+  let* α3 := double_first empty in
+  let* _ := print α3 in
+  let* α4 := double_first strings in
+  let* _ := print α4 in
+  Pure tt.

@@ -8,39 +8,45 @@ Definition ParseIntError := ParseIntError.t.
 
 Definition double_first
     (vec : Vec (ref str))
-    : Option (Result i32 ParseIntError) :=
-  vec.["first"].["map"]
-    (fun first => first.["parse"].["map"] (fun n => 2.["mul"] n)).
+    : M (Option (Result i32 ParseIntError)) :=
+  let* α0 := vec.["first"] in
+  α0.["map"]
+    (fun first =>
+      let* α0 := first.["parse"] in
+      α0.["map"] (fun n => 2.["mul"] n)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let numbers :=
-    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "42"; "93"; "18" ]) in
-  let empty := _crate.vec.Vec::["new"] tt in
-  let strings :=
-    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ]) in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "The first doubled is "; "
-" ]
-          [ format_argument::["new_debug"] (double_first numbers) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "The first doubled is "; "
-" ]
-          [ format_argument::["new_debug"] (double_first empty) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "The first doubled is "; "
-" ]
-          [ format_argument::["new_debug"] (double_first strings) ]) in
-    tt in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* α0 := _crate.boxed.Box::["new"] [ "42"; "93"; "18" ] in
+  let* numbers := Slice::["into_vec"] α0 in
+  let* empty := _crate.vec.Vec::["new"] tt in
+  let* α1 := _crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+  let* strings := Slice::["into_vec"] α1 in
+  let* α2 := double_first numbers in
+  let* α3 := format_argument::["new_debug"] (deref α2) in
+  let* α4 :=
+    format_arguments::["new_v1"]
+      (deref [ "The first doubled is "; "
+" ])
+      (deref [ α3 ]) in
+  let* _ := _crate.io._print α4 in
+  let _ := tt in
+  let* α5 := double_first empty in
+  let* α6 := format_argument::["new_debug"] (deref α5) in
+  let* α7 :=
+    format_arguments::["new_v1"]
+      (deref [ "The first doubled is "; "
+" ])
+      (deref [ α6 ]) in
+  let* _ := _crate.io._print α7 in
+  let _ := tt in
+  let* α8 := double_first strings in
+  let* α9 := format_argument::["new_debug"] (deref α8) in
+  let* α10 :=
+    format_arguments::["new_v1"]
+      (deref [ "The first doubled is "; "
+" ])
+      (deref [ α9 ]) in
+  let* _ := _crate.io._print α10 in
+  let _ := tt in
+  Pure tt.

@@ -4,32 +4,32 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let immutable_box := Box::["new"] 5 in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "immutable_box contains "; "
-" ]
-          [ format_argument::["new_display"] immutable_box ]) in
-    tt in
+Definition main (_ : unit) : M unit :=
+  let* immutable_box := Box::["new"] 5 in
+  let* α0 := format_argument::["new_display"] (deref immutable_box) in
+  let* α1 :=
+    format_arguments::["new_v1"]
+      (deref [ "immutable_box contains "; "
+" ])
+      (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
   let mutable_box := immutable_box in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "mutable_box contains "; "
-" ]
-          [ format_argument::["new_display"] mutable_box ]) in
-    tt in
-  let _ := assign mutable_box.["deref"] 4 in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "mutable_box now contains "; "
-" ]
-          [ format_argument::["new_display"] mutable_box ]) in
-    tt in
-  tt.
+  let* α2 := format_argument::["new_display"] (deref mutable_box) in
+  let* α3 :=
+    format_arguments::["new_v1"]
+      (deref [ "mutable_box contains "; "
+" ])
+      (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let* _ := assign mutable_box.["deref"] 4 in
+  let* α4 := format_argument::["new_display"] (deref mutable_box) in
+  let* α5 :=
+    format_arguments::["new_v1"]
+      (deref [ "mutable_box now contains "; "
+" ])
+      (deref [ α4 ]) in
+  let* _ := _crate.io._print α5 in
+  let _ := tt in
+  Pure tt.

@@ -11,97 +11,144 @@ Definition IntoIter := IntoIter.t.
 Definition combine_vecs_explicit_return_type
     (v : Vec i32)
     (u : Vec i32)
-    : iter.Cycle (iter.Chain (IntoIter i32) (IntoIter i32)) :=
-  (v.["into_iter"].["chain"] u.["into_iter"]).["cycle"].
+    : M (iter.Cycle (iter.Chain (IntoIter i32) (IntoIter i32))) :=
+  let* α0 := v.["into_iter"] in
+  let* α1 := u.["into_iter"] in
+  let* α2 := α0.["chain"] α1 in
+  α2.["cycle"].
 
-Definition combine_vecs (v : Vec i32) (u : Vec i32) : OpaqueDef :=
-  (v.["into_iter"].["chain"] u.["into_iter"]).["cycle"].
+Definition combine_vecs (v : Vec i32) (u : Vec i32) : M OpaqueDef :=
+  let* α0 := v.["into_iter"] in
+  let* α1 := u.["into_iter"] in
+  let* α2 := α0.["chain"] α1 in
+  α2.["cycle"].
 
 Error OpaqueTy.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let v1 := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
-  let v2 := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 4; 5 ]) in
-  let v3 := combine_vecs v1 v2 in
-  let _ :=
-    match (Some 1, v3.["next"]) with
+Definition main (_ : unit) : M unit :=
+  let* α0 := _crate.boxed.Box::["new"] [ 1; 2; 3 ] in
+  let* v1 := Slice::["into_vec"] α0 in
+  let* α1 := _crate.boxed.Box::["new"] [ 4; 5 ] in
+  let* v2 := Slice::["into_vec"] α1 in
+  let* v3 := combine_vecs v1 v2 in
+  let* α2 := Some 1 in
+  let* α3 := v3.["next"] in
+  let* _ :=
+    match (deref α2, deref α3) with
     | (left_val, right_val) =>
-      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let _ :=
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* _ :=
           _crate.panicking.assert_failed
             kind
-            left_val.["deref"]
-            right_val.["deref"]
+            (deref α0)
+            (deref α1)
             _crate.option.Option.None in
-        tt
+        Pure tt
       else
-        tt
+        Pure tt
     end in
-  let _ :=
-    match (Some 2, v3.["next"]) with
+  let* α4 := Some 2 in
+  let* α5 := v3.["next"] in
+  let* _ :=
+    match (deref α4, deref α5) with
     | (left_val, right_val) =>
-      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let _ :=
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* _ :=
           _crate.panicking.assert_failed
             kind
-            left_val.["deref"]
-            right_val.["deref"]
+            (deref α0)
+            (deref α1)
             _crate.option.Option.None in
-        tt
+        Pure tt
       else
-        tt
+        Pure tt
     end in
-  let _ :=
-    match (Some 3, v3.["next"]) with
+  let* α6 := Some 3 in
+  let* α7 := v3.["next"] in
+  let* _ :=
+    match (deref α6, deref α7) with
     | (left_val, right_val) =>
-      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let _ :=
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* _ :=
           _crate.panicking.assert_failed
             kind
-            left_val.["deref"]
-            right_val.["deref"]
+            (deref α0)
+            (deref α1)
             _crate.option.Option.None in
-        tt
+        Pure tt
       else
-        tt
+        Pure tt
     end in
-  let _ :=
-    match (Some 4, v3.["next"]) with
+  let* α8 := Some 4 in
+  let* α9 := v3.["next"] in
+  let* _ :=
+    match (deref α8, deref α9) with
     | (left_val, right_val) =>
-      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let _ :=
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* _ :=
           _crate.panicking.assert_failed
             kind
-            left_val.["deref"]
-            right_val.["deref"]
+            (deref α0)
+            (deref α1)
             _crate.option.Option.None in
-        tt
+        Pure tt
       else
-        tt
+        Pure tt
     end in
-  let _ :=
-    match (Some 5, v3.["next"]) with
+  let* α10 := Some 5 in
+  let* α11 := v3.["next"] in
+  let* _ :=
+    match (deref α10, deref α11) with
     | (left_val, right_val) =>
-      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let _ :=
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* _ :=
           _crate.panicking.assert_failed
             kind
-            left_val.["deref"]
-            right_val.["deref"]
+            (deref α0)
+            (deref α1)
             _crate.option.Option.None in
-        tt
+        Pure tt
       else
-        tt
+        Pure tt
     end in
-  let _ :=
-    let _ :=
-      _crate.io._print (format_arguments::["new_const"] [ "all done
+  let* α12 := format_arguments::["new_const"] (deref [ "all done
 " ]) in
-    tt in
-  tt.
+  let* _ := _crate.io._print α12 in
+  let _ := tt in
+  Pure tt.

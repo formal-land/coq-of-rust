@@ -5,104 +5,102 @@ Import Root.std.prelude.rust_2015.
 
 Module env := std.env.
 
-Definition increase (number : i32) : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "
-" ]
-          [ format_argument::["new_display"] (number.["add"] 1) ]) in
-    tt in
-  tt.
+Definition increase (number : i32) : M unit :=
+  let* α0 := number.["add"] 1 in
+  let* α1 := format_argument::["new_display"] (deref α0) in
+  let* α2 := format_arguments::["new_v1"] (deref [ ""; "
+" ]) (deref [ α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  Pure tt.
 
-Definition decrease (number : i32) : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "
-" ]
-          [ format_argument::["new_display"] (number.["sub"] 1) ]) in
-    tt in
-  tt.
+Definition decrease (number : i32) : M unit :=
+  let* α0 := number.["sub"] 1 in
+  let* α1 := format_argument::["new_display"] (deref α0) in
+  let* α2 := format_arguments::["new_v1"] (deref [ ""; "
+" ]) (deref [ α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  Pure tt.
 
-Definition help (_ : unit) : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [
-            "usage:
+Definition help (_ : unit) : M unit :=
+  let* α0 :=
+    format_arguments::["new_const"]
+      (deref
+        [
+          "usage:
 match_args <string>
     Check whether given string is the answer.
 match_args {increase|decrease} <integer>
     Increase or decrease given integer by one.
 "
-          ]) in
-    tt in
-  tt.
+        ]) in
+  let* _ := _crate.io._print α0 in
+  let _ := tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let args := (env.args tt).["collect"] in
-  match args.["len"] with
+Definition main (_ : unit) : M unit :=
+  let* α0 := env.args tt in
+  let* args := α0.["collect"] in
+  let* α1 := args.["len"] in
+  match α1 with
   | 1 =>
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_const"]
-            [ "My name is 'match_args'. Try passing some arguments!
+    let* α0 :=
+      format_arguments::["new_const"]
+        (deref [ "My name is 'match_args'. Try passing some arguments!
 " ]) in
-      tt in
-    tt
+    let* _ := _crate.io._print α0 in
+    let _ := tt in
+    Pure tt
   | 2 =>
-    match args[1].["parse"] with
+    let* α0 := args[1].["parse"] in
+    match α0 with
     | Ok 42 =>
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_const"] [ "This is the answer!
+      let* α0 :=
+        format_arguments::["new_const"] (deref [ "This is the answer!
 " ]) in
-      tt
+      let* _ := _crate.io._print α0 in
+      Pure tt
     | _ =>
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_const"] [ "This is not the answer.
+      let* α0 :=
+        format_arguments::["new_const"]
+          (deref [ "This is not the answer.
 " ]) in
-      tt
+      let* _ := _crate.io._print α0 in
+      Pure tt
     end
   | 3 =>
-    let cmd := args[1] in
-    let num := args[2] in
-    let number :=
-      match num.["parse"] with
-      | Ok n => n
+    let cmd := deref args[1] in
+    let num := deref args[2] in
+    let* α0 := num.["parse"] in
+    let* number :=
+      match α0 with
+      | Ok n => Pure n
       | Err _ =>
-        let _ :=
-          let _ :=
-            _crate.io._eprint
-              (format_arguments::["new_const"]
-                [ "error: second argument not an integer
+        let* α0 :=
+          format_arguments::["new_const"]
+            (deref [ "error: second argument not an integer
 " ]) in
-          tt in
-        let _ := help tt in
-        let _ := Return tt in
-        tt
+        let* _ := _crate.io._eprint α0 in
+        let _ := tt in
+        let* _ := help tt in
+        let* _ := Return tt in
+        Pure tt
       end in
-    match cmd[RangeFull {|  |}] with
+    match deref cmd[RangeFull {|  |}] with
     | "increase" => increase number
     | "decrease" => decrease number
     | _ =>
-      let _ :=
-        let _ :=
-          _crate.io._eprint
-            (format_arguments::["new_const"] [ "error: invalid command
+      let* α0 :=
+        format_arguments::["new_const"] (deref [ "error: invalid command
 " ]) in
-        tt in
-      let _ := help tt in
-      tt
+      let* _ := _crate.io._eprint α0 in
+      let _ := tt in
+      let* _ := help tt in
+      Pure tt
     end
   | _ =>
-    let _ := help tt in
-    tt
+    let* _ := help tt in
+    Pure tt
   end.

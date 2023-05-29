@@ -3,41 +3,39 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition destroy_box (c : Box i32) : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Destroying a box that contains "; "
-" ]
-          [ format_argument::["new_display"] c ]) in
-    tt in
-  tt.
+Definition destroy_box (c : Box i32) : M unit :=
+  let* α0 := format_argument::["new_display"] (deref c) in
+  let* α1 :=
+    format_arguments::["new_v1"]
+      (deref [ "Destroying a box that contains "; "
+" ])
+      (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let x := 5 in
   let y := x in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "x is "; ", and y is "; "
-" ]
-          [
-            format_argument::["new_display"] x;
-            format_argument::["new_display"] y
-          ]) in
-    tt in
-  let a := Box::["new"] 5 in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "a contains: "; "
-" ]
-          [ format_argument::["new_display"] a ]) in
-    tt in
+  let* α0 := format_argument::["new_display"] (deref x) in
+  let* α1 := format_argument::["new_display"] (deref y) in
+  let* α2 :=
+    format_arguments::["new_v1"]
+      (deref [ "x is "; ", and y is "; "
+" ])
+      (deref [ α0; α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  let* a := Box::["new"] 5 in
+  let* α3 := format_argument::["new_display"] (deref a) in
+  let* α4 :=
+    format_arguments::["new_v1"]
+      (deref [ "a contains: "; "
+" ])
+      (deref [ α3 ]) in
+  let* _ := _crate.io._print α4 in
+  let _ := tt in
   let b := a in
-  let _ := destroy_box b in
-  tt.
+  let* _ := destroy_box b in
+  Pure tt.

@@ -20,65 +20,67 @@ Module WebEvent.
 End WebEvent.
 Definition WebEvent := WebEvent.t.
 
-Definition inspect (event : WebEvent) : unit :=
+Definition inspect (event : WebEvent) : M unit :=
   match event with
   | WebEvent.PageLoad =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"]
+    let* α0 :=
+      format_arguments::["new_const"]
+        (deref
           [
             "page loaded, r" ++
               String.String "233" ("f" ++ String.String "233" "
 ")
           ]) in
-    tt
+    let* _ := _crate.io._print α0 in
+    Pure tt
   | WebEvent.PageUnload =>
-    let _ :=
-      _crate.io._print (format_arguments::["new_const"] [ "page unloaded
+    let* α0 := format_arguments::["new_const"] (deref [ "page unloaded
 " ]) in
-    tt
+    let* _ := _crate.io._print α0 in
+    Pure tt
   | WebEvent.KeyPress c =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "pressed '"; "'.
-" ]
-          [ format_argument::["new_display"] c ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref c) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "pressed '"; "'.
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | WebEvent.Paste s =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "pasted ""; "".
-" ]
-          [ format_argument::["new_display"] s ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref s) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "pasted ""; "".
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | WebEvent.Click {| WebEvent.Click.x := x; WebEvent.Click.y := y; |} =>
-    let _ :=
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "clicked at x="; ", y="; ".
-" ]
-            [
-              format_argument::["new_display"] x;
-              format_argument::["new_display"] y
-            ]) in
-      tt in
-    tt
+    let* α0 := format_argument::["new_display"] (deref x) in
+    let* α1 := format_argument::["new_display"] (deref y) in
+    let* α2 :=
+      format_arguments::["new_v1"]
+        (deref [ "clicked at x="; ", y="; ".
+" ])
+        (deref [ α0; α1 ]) in
+    let* _ := _crate.io._print α2 in
+    let _ := tt in
+    Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let pressed := WebEvent.KeyPress "x"%char in
-  let pasted := WebEvent.Paste "my text".["to_owned"] in
+Definition main (_ : unit) : M unit :=
+  let* pressed := WebEvent.KeyPress "x"%char in
+  let* α0 := "my text".["to_owned"] in
+  let* pasted := WebEvent.Paste α0 in
   let click :=
     WebEvent.Click {| WebEvent.Click.x := 20; WebEvent.Click.y := 80; |} in
   let load := WebEvent.PageLoad in
   let unload := WebEvent.PageUnload in
-  let _ := inspect pressed in
-  let _ := inspect pasted in
-  let _ := inspect click in
-  let _ := inspect load in
-  let _ := inspect unload in
-  tt.
+  let* _ := inspect pressed in
+  let* _ := inspect pasted in
+  let* _ := inspect click in
+  let* _ := inspect load in
+  let* _ := inspect unload in
+  Pure tt.

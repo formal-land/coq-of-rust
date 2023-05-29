@@ -3,85 +3,113 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition add (a : i32) (b : i32) : i32 := a.["add"] b.
+Definition add (a : i32) (b : i32) : M i32 := a.["add"] b.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition bad_add (a : i32) (b : i32) : i32 := a.["sub"] b.
+Definition bad_add (a : i32) (b : i32) : M i32 := a.["sub"] b.
 
 Module tests.
   Import super.
   
-  Definition test_add (_ : unit) : unit :=
-    let _ :=
-      match (add 1 2, 3) with
+  Definition test_add (_ : unit) : M unit :=
+    let* α0 := add 1 2 in
+    let* _ :=
+      match (deref α0, deref 3) with
       | (left_val, right_val) =>
-        if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* α2 := α0.["eq"] α1 in
+        let* α3 := α2.["not"] in
+        if (α3 : bool) then
           let kind := _crate.panicking.AssertKind.Eq in
-          let _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          let* _ :=
             _crate.panicking.assert_failed
               kind
-              left_val.["deref"]
-              right_val.["deref"]
+              (deref α0)
+              (deref α1)
               _crate.option.Option.None in
-          tt
+          Pure tt
         else
-          tt
+          Pure tt
       end in
-    tt.
+    Pure tt.
   
-  Definition test_bad_add (_ : unit) : unit :=
-    let _ :=
-      match (bad_add 1 2, 3) with
+  Definition test_bad_add (_ : unit) : M unit :=
+    let* α0 := bad_add 1 2 in
+    let* _ :=
+      match (deref α0, deref 3) with
       | (left_val, right_val) =>
-        if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* α2 := α0.["eq"] α1 in
+        let* α3 := α2.["not"] in
+        if (α3 : bool) then
           let kind := _crate.panicking.AssertKind.Eq in
-          let _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          let* _ :=
             _crate.panicking.assert_failed
               kind
-              left_val.["deref"]
-              right_val.["deref"]
+              (deref α0)
+              (deref α1)
               _crate.option.Option.None in
-          tt
+          Pure tt
         else
-          tt
+          Pure tt
       end in
-    tt.
+    Pure tt.
 End tests.
 
 Import super.
 
-Definition test_add (_ : unit) : unit :=
-  let _ :=
-    match (add 1 2, 3) with
+Definition test_add (_ : unit) : M unit :=
+  let* α0 := add 1 2 in
+  let* _ :=
+    match (deref α0, deref 3) with
     | (left_val, right_val) =>
-      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let _ :=
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* _ :=
           _crate.panicking.assert_failed
             kind
-            left_val.["deref"]
-            right_val.["deref"]
+            (deref α0)
+            (deref α1)
             _crate.option.Option.None in
-        tt
+        Pure tt
       else
-        tt
+        Pure tt
     end in
-  tt.
+  Pure tt.
 
-Definition test_bad_add (_ : unit) : unit :=
-  let _ :=
-    match (bad_add 1 2, 3) with
+Definition test_bad_add (_ : unit) : M unit :=
+  let* α0 := bad_add 1 2 in
+  let* _ :=
+    match (deref α0, deref 3) with
     | (left_val, right_val) =>
-      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let _ :=
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* _ :=
           _crate.panicking.assert_failed
             kind
-            left_val.["deref"]
-            right_val.["deref"]
+            (deref α0)
+            (deref α1)
             _crate.option.Option.None in
-        tt
+        Pure tt
       else
-        tt
+        Pure tt
     end in
-  tt.
+  Pure tt.

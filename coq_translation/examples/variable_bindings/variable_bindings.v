@@ -4,35 +4,35 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let an_integer := 1 in
   let a_boolean := true in
   let unit := tt in
   let copied_integer := an_integer in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "An integer: "; "
-" ]
-          [ format_argument::["new_debug"] copied_integer ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "A boolean: "; "
-" ]
-          [ format_argument::["new_debug"] a_boolean ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Meet the unit value: "; "
-" ]
-          [ format_argument::["new_debug"] unit ]) in
-    tt in
+  let* α0 := format_argument::["new_debug"] (deref copied_integer) in
+  let* α1 :=
+    format_arguments::["new_v1"]
+      (deref [ "An integer: "; "
+" ])
+      (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  let* α2 := format_argument::["new_debug"] (deref a_boolean) in
+  let* α3 :=
+    format_arguments::["new_v1"]
+      (deref [ "A boolean: "; "
+" ])
+      (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let* α4 := format_argument::["new_debug"] (deref unit) in
+  let* α5 :=
+    format_arguments::["new_v1"]
+      (deref [ "Meet the unit value: "; "
+" ])
+      (deref [ α4 ]) in
+  let* _ := _crate.io._print α5 in
+  let _ := tt in
   let _unused_variable := 3 in
   let _noisy_unused_variable := 2 in
-  tt.
+  Pure tt.

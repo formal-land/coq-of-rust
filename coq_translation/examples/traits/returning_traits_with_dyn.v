@@ -28,7 +28,7 @@ End Animal.
 Module Impl_Animal_for_Sheep.
   Definition Self := Sheep.
   
-  Definition noise (self : ref Self) : ref str := "baaaaah!".
+  Definition noise (self : ref Self) : M (ref str) := Pure "baaaaah!".
   
   Global Instance Method_noise : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -42,7 +42,7 @@ End Impl_Animal_for_Sheep.
 Module Impl_Animal_for_Cow.
   Definition Self := Cow.
   
-  Definition noise (self : ref Self) : ref str := "moooooo!".
+  Definition noise (self : ref Self) : M (ref str) := Pure "moooooo!".
   
   Global Instance Method_noise : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -53,22 +53,24 @@ Module Impl_Animal_for_Cow.
   }.
 End Impl_Animal_for_Cow.
 
-Definition random_animal (random_number : f64) : Box TraitObject :=
-  if (random_number.["lt"] 1 (* 0.5 *) : bool) then
+Definition random_animal (random_number : f64) : M (Box TraitObject) :=
+  let* α0 := random_number.["lt"] 1 (* 0.5 *) in
+  if (α0 : bool) then
     Box::["new"] {|  |}
   else
     Box::["new"] {|  |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let random_number := 0 (* 0.234 *) in
-  let animal := random_animal random_number in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "You've randomly chosen an animal, and it says "; "
-" ]
-          [ format_argument::["new_display"] animal.["noise"] ]) in
-    tt in
-  tt.
+  let* animal := random_animal random_number in
+  let* α0 := animal.["noise"] in
+  let* α1 := format_argument::["new_display"] (deref α0) in
+  let* α2 :=
+    format_arguments::["new_v1"]
+      (deref [ "You've randomly chosen an animal, and it says "; "
+" ])
+      (deref [ α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  Pure tt.

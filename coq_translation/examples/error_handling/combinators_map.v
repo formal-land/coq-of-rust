@@ -17,14 +17,14 @@ Module Impl__crate_fmt_Debug_for_Food.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["write_str"]
-      f
+      : M _crate.fmt.Result :=
+    let* α0 :=
       match self with
-      | Food.Apple => "Apple"
-      | Food.Carrot => "Carrot"
-      | Food.Potato => "Potato"
-      end.
+      | Food.Apple => Pure "Apple"
+      | Food.Carrot => Pure "Carrot"
+      | Food.Potato => Pure "Potato"
+      end in
+    _crate.fmt.Formatter::["write_str"] f α0.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -50,8 +50,11 @@ Module Impl__crate_fmt_Debug_for_Peeled.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Peeled" (self.[0]).
+      : M _crate.fmt.Result :=
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
+      f
+      "Peeled"
+      (deref (deref (self.[0]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -77,8 +80,11 @@ Module Impl__crate_fmt_Debug_for_Chopped.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Chopped" (self.[0]).
+      : M _crate.fmt.Result :=
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
+      f
+      "Chopped"
+      (deref (deref (self.[0]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -104,8 +110,11 @@ Module Impl__crate_fmt_Debug_for_Cooked.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Cooked" (self.[0]).
+      : M _crate.fmt.Result :=
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
+      f
+      "Cooked"
+      (deref (deref (self.[0]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -116,53 +125,58 @@ Module Impl__crate_fmt_Debug_for_Cooked.
   }.
 End Impl__crate_fmt_Debug_for_Cooked.
 
-Definition peel (food : Option Food) : Option Peeled :=
+Definition peel (food : Option Food) : M (Option Peeled) :=
   match food with
   | Some food => Some (Peeled.Build_t food)
-  | None => None
+  | None => Pure None
   end.
 
-Definition chop (peeled : Option Peeled) : Option Chopped :=
+Definition chop (peeled : Option Peeled) : M (Option Chopped) :=
   match peeled with
   | Some Peeled.Build_t food => Some (Chopped.Build_t food)
-  | None => None
+  | None => Pure None
   end.
 
-Definition cook (chopped : Option Chopped) : Option Cooked :=
-  chopped.["map"] (fun Chopped.Build_t food => Cooked.Build_t food).
+Definition cook (chopped : Option Chopped) : M (Option Cooked) :=
+  chopped.["map"] (fun Chopped.Build_t food => Pure Cooked.Build_t food).
 
-Definition process (food : Option Food) : Option Cooked :=
-  ((food.["map"] (fun f => Peeled.Build_t f)).["map"]
-      (fun Peeled.Build_t f => Chopped.Build_t f)).["map"]
-    (fun Chopped.Build_t f => Cooked.Build_t f).
+Definition process (food : Option Food) : M (Option Cooked) :=
+  let* α0 := food.["map"] (fun f => Pure Peeled.Build_t f) in
+  let* α1 := α0.["map"] (fun Peeled.Build_t f => Pure Chopped.Build_t f) in
+  α1.["map"] (fun Chopped.Build_t f => Pure Cooked.Build_t f).
 
-Definition eat (food : Option Cooked) : unit :=
+Definition eat (food : Option Cooked) : M unit :=
   match food with
   | Some food =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Mmm. I love "; "
-" ]
-          [ format_argument::["new_debug"] food ]) in
-    tt
+    let* α0 := format_argument::["new_debug"] (deref food) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "Mmm. I love "; "
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | None =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Oh no! It wasn't edible.
+    let* α0 :=
+      format_arguments::["new_const"] (deref [ "Oh no! It wasn't edible.
 " ]) in
-    tt
+    let* _ := _crate.io._print α0 in
+    Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let apple := Some Food.Apple in
-  let carrot := Some Food.Carrot in
+Definition main (_ : unit) : M unit :=
+  let* apple := Some Food.Apple in
+  let* carrot := Some Food.Carrot in
   let potato := None in
-  let cooked_apple := cook (chop (peel apple)) in
-  let cooked_carrot := cook (chop (peel carrot)) in
-  let cooked_potato := process potato in
-  let _ := eat cooked_apple in
-  let _ := eat cooked_carrot in
-  let _ := eat cooked_potato in
-  tt.
+  let* α0 := peel apple in
+  let* α1 := chop α0 in
+  let* cooked_apple := cook α1 in
+  let* α2 := peel carrot in
+  let* α3 := chop α2 in
+  let* cooked_carrot := cook α3 in
+  let* cooked_potato := process potato in
+  let* _ := eat cooked_apple in
+  let* _ := eat cooked_carrot in
+  let* _ := eat cooked_potato in
+  Pure tt.

@@ -11,34 +11,35 @@ Definition AliasedResult : Set := Result T ParseIntError.
 Definition multiply
     (first_number_str : ref str)
     (second_number_str : ref str)
-    : AliasedResult i32 :=
-  first_number_str.["parse"].["and_then"]
+    : M (AliasedResult i32) :=
+  let* α0 := first_number_str.["parse"] in
+  α0.["and_then"]
     (fun first_number =>
-      second_number_str.["parse"].["map"]
-        (fun second_number => first_number.["mul"] second_number)).
+      let* α0 := second_number_str.["parse"] in
+      α0.["map"] (fun second_number => first_number.["mul"] second_number)).
 
-Definition print (result : AliasedResult i32) : unit :=
+Definition print (result : AliasedResult i32) : M unit :=
   match result with
   | Ok n =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "n is "; "
-" ]
-          [ format_argument::["new_display"] n ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref n) in
+    let* α1 :=
+      format_arguments::["new_v1"] (deref [ "n is "; "
+" ]) (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | Err e =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Error: "; "
-" ]
-          [ format_argument::["new_display"] e ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref e) in
+    let* α1 :=
+      format_arguments::["new_v1"] (deref [ "Error: "; "
+" ]) (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let _ := print (multiply "10" "2") in
-  let _ := print (multiply "t" "2") in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* α0 := multiply "10" "2" in
+  let* _ := print α0 in
+  let* α1 := multiply "t" "2" in
+  let* _ := print α1 in
+  Pure tt.

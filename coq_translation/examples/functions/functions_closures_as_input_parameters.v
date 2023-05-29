@@ -3,53 +3,53 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition apply {F : Set} `{FnOnce.Trait unit F} (f : F) : unit :=
-  let _ := f tt in
-  tt.
+Definition apply {F : Set} `{FnOnce.Trait unit F} (f : F) : M unit :=
+  let* _ := f tt in
+  Pure tt.
 
-Definition apply_to_3 {F : Set} `{Fn.Trait (i32) F} (f : F) : i32 := f 3.
+Definition apply_to_3 {F : Set} `{Fn.Trait (i32) F} (f : F) : M i32 := f 3.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let greeting := "hello" in
-  let farewell := "goodbye".["to_owned"] in
+  let* farewell := "goodbye".["to_owned"] in
   let diary :=
     fun  =>
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_v1"]
-              [ "I said "; ".
-" ]
-              [ format_argument::["new_display"] greeting ]) in
-        tt in
-      let _ := farewell.["push_str"] "!!!" in
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_v1"]
-              [ "Then I screamed "; ".
-" ]
-              [ format_argument::["new_display"] farewell ]) in
-        tt in
-      let _ :=
-        let _ :=
-          _crate.io._print
-            (format_arguments::["new_const"] [ "Now I can sleep. zzzzz
+      let* α0 := format_argument::["new_display"] (deref greeting) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (deref [ "I said "; ".
+" ])
+          (deref [ α0 ]) in
+      let* _ := _crate.io._print α1 in
+      let _ := tt in
+      let* _ := farewell.["push_str"] "!!!" in
+      let* α2 := format_argument::["new_display"] (deref farewell) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (deref [ "Then I screamed "; ".
+" ])
+          (deref [ α2 ]) in
+      let* _ := _crate.io._print α3 in
+      let _ := tt in
+      let* α4 :=
+        format_arguments::["new_const"] (deref [ "Now I can sleep. zzzzz
 " ]) in
-        tt in
-      let _ := mem.drop farewell in
-      tt in
-  let _ := apply diary in
+      let* _ := _crate.io._print α4 in
+      let _ := tt in
+      let* _ := mem.drop farewell in
+      Pure tt in
+  let* _ := apply diary in
   let double := fun x => 2.["mul"] x in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "3 doubled: "; "
-" ]
-          [ format_argument::["new_display"] (apply_to_3 double) ]) in
-    tt in
-  tt.
+  let* α0 := apply_to_3 double in
+  let* α1 := format_argument::["new_display"] (deref α0) in
+  let* α2 :=
+    format_arguments::["new_v1"]
+      (deref [ "3 doubled: "; "
+" ])
+      (deref [ α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  Pure tt.
 
 Module mem := std.mem.

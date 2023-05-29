@@ -44,29 +44,33 @@ Module Impl_Blue_for_BlueJay.
   Global Instance I : Blue.Trait Self := Blue.Build_Class _.
 End Impl_Blue_for_BlueJay.
 
-Definition red {T : Set} `{Red.Trait T} (arg : ref T) : ref str := "red".
+Definition red {T : Set} `{Red.Trait T} (arg : ref T) : M (ref str) :=
+  Pure "red".
 
-Definition blue {T : Set} `{Blue.Trait T} (arg : ref T) : ref str := "blue".
+Definition blue {T : Set} `{Blue.Trait T} (arg : ref T) : M (ref str) :=
+  Pure "blue".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let cardinal := Cardinal.Build in
   let blue_jay := BlueJay.Build in
   let _turkey := Turkey.Build in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "A cardinal is "; "
-" ]
-          [ format_argument::["new_display"] (red cardinal) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "A blue jay is "; "
-" ]
-          [ format_argument::["new_display"] (blue blue_jay) ]) in
-    tt in
-  tt.
+  let* α0 := red (deref cardinal) in
+  let* α1 := format_argument::["new_display"] (deref α0) in
+  let* α2 :=
+    format_arguments::["new_v1"]
+      (deref [ "A cardinal is "; "
+" ])
+      (deref [ α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  let* α3 := blue (deref blue_jay) in
+  let* α4 := format_argument::["new_display"] (deref α3) in
+  let* α5 :=
+    format_arguments::["new_v1"]
+      (deref [ "A blue jay is "; "
+" ])
+      (deref [ α4 ]) in
+  let* _ := _crate.io._print α5 in
+  let _ := tt in
+  Pure tt.

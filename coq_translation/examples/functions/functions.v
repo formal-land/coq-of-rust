@@ -4,66 +4,69 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let _ := fizzbuzz_to 100 in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* _ := fizzbuzz_to 100 in
+  Pure tt.
 
-Definition is_divisible_by (lhs : u32) (rhs : u32) : bool :=
-  let _ :=
-    if (rhs.["eq"] 0 : bool) then
-      let _ := Return false in
-      tt
+Definition is_divisible_by (lhs : u32) (rhs : u32) : M bool :=
+  let* α0 := rhs.["eq"] 0 in
+  let* _ :=
+    if (α0 : bool) then
+      let* _ := Return false in
+      Pure tt
     else
-      tt in
-  (lhs.["rem"] rhs).["eq"] 0.
+      Pure tt in
+  let* α1 := lhs.["rem"] rhs in
+  α1.["eq"] 0.
 
-Definition fizzbuzz (n : u32) : unit :=
-  if (is_divisible_by n 15 : bool) then
-    let _ :=
-      let _ :=
-        _crate.io._print (format_arguments::["new_const"] [ "fizzbuzz
+Definition fizzbuzz (n : u32) : M unit :=
+  let* α0 := is_divisible_by n 15 in
+  if (α0 : bool) then
+    let* α0 := format_arguments::["new_const"] (deref [ "fizzbuzz
 " ]) in
-      tt in
-    tt
+    let* _ := _crate.io._print α0 in
+    let _ := tt in
+    Pure tt
   else
-    if (is_divisible_by n 3 : bool) then
-      let _ :=
-        let _ :=
-          _crate.io._print (format_arguments::["new_const"] [ "fizz
+    let* α0 := is_divisible_by n 3 in
+    if (α0 : bool) then
+      let* α0 := format_arguments::["new_const"] (deref [ "fizz
 " ]) in
-        tt in
-      tt
+      let* _ := _crate.io._print α0 in
+      let _ := tt in
+      Pure tt
     else
-      if (is_divisible_by n 5 : bool) then
-        let _ :=
-          let _ :=
-            _crate.io._print (format_arguments::["new_const"] [ "buzz
+      let* α0 := is_divisible_by n 5 in
+      if (α0 : bool) then
+        let* α0 := format_arguments::["new_const"] (deref [ "buzz
 " ]) in
-          tt in
-        tt
+        let* _ := _crate.io._print α0 in
+        let _ := tt in
+        Pure tt
       else
-        let _ :=
-          let _ :=
-            _crate.io._print
-              (format_arguments::["new_v1"]
-                [ ""; "
-" ]
-                [ format_argument::["new_display"] n ]) in
-          tt in
-        tt.
+        let* α0 := format_argument::["new_display"] (deref n) in
+        let* α1 :=
+          format_arguments::["new_v1"] (deref [ ""; "
+" ]) (deref [ α0 ]) in
+        let* _ := _crate.io._print α1 in
+        let _ := tt in
+        Pure tt.
 
-Definition fizzbuzz_to (n : u32) : unit :=
-  match LangItem (LangItem 1 n) with
+Definition fizzbuzz_to (n : u32) : M unit :=
+  let* α0 := LangItem 1 n in
+  let* α1 := LangItem α0 in
+  match α1 with
   | iter =>
     loop
-      let _ :=
-        match LangItem iter with
-        | None => Break
+      let* α0 := LangItem (deref iter) in
+      let* _ :=
+        match α0 with
+        | None => Pure Break
         | Some {| Some.0 := n; |} =>
-          let _ := fizzbuzz n in
-          tt
+          let* _ := fizzbuzz n in
+          Pure tt
         end in
-      tt
+      Pure tt
       from
       for
   end.

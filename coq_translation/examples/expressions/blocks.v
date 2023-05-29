@@ -4,37 +4,30 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let x := 5 in
-  let y :=
-    let x_squared := x.["mul"] x in
-    let x_cube := x_squared.["mul"] x in
-    (x_cube.["add"] x_squared).["add"] x in
-  let z :=
-    let _ := 2.["mul"] x in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "x is "; "
-" ]
-          [ format_argument::["new_debug"] x ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "y is "; "
-" ]
-          [ format_argument::["new_debug"] y ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "z is "; "
-" ]
-          [ format_argument::["new_debug"] z ]) in
-    tt in
-  tt.
+  let* x_squared := x.["mul"] x in
+  let* x_cube := x_squared.["mul"] x in
+  let* α0 := x_cube.["add"] x_squared in
+  let* y := α0.["add"] x in
+  let* _ := 2.["mul"] x in
+  let z := tt in
+  let* α1 := format_argument::["new_debug"] (deref x) in
+  let* α2 :=
+    format_arguments::["new_v1"] (deref [ "x is "; "
+" ]) (deref [ α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  let* α3 := format_argument::["new_debug"] (deref y) in
+  let* α4 :=
+    format_arguments::["new_v1"] (deref [ "y is "; "
+" ]) (deref [ α3 ]) in
+  let* _ := _crate.io._print α4 in
+  let _ := tt in
+  let* α5 := format_argument::["new_debug"] (deref z) in
+  let* α6 :=
+    format_arguments::["new_v1"] (deref [ "z is "; "
+" ]) (deref [ α5 ]) in
+  let* _ := _crate.io._print α6 in
+  let _ := tt in
+  Pure tt.

@@ -21,8 +21,8 @@ Definition Point : Set := Point.t.
 Module Impl__crate_clone_Clone_for_Point.
   Definition Self := Point.
   
-  Definition clone (self : ref Self) : Point :=
-    let '_ := tt in
+  Definition clone (self : ref Self) : M Point :=
+    let _ := tt in
     self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -42,63 +42,55 @@ Module Impl__crate_marker_Copy_for_Point.
 End Impl__crate_marker_Copy_for_Point.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let c := "Q"%char in
   let ref_c1 := c in
-  let ref_c2 := c in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "ref_c1 equals ref_c2: "; "
-" ]
-          [
-            format_argument::["new_display"]
-              (ref_c1.["deref"].["eq"] ref_c2.["deref"])
-          ]) in
-    tt in
+  let ref_c2 := deref c in
+  let* α0 := ref_c1.["deref"] in
+  let* α1 := ref_c2.["deref"] in
+  let* α2 := α0.["eq"] α1 in
+  let* α3 := format_argument::["new_display"] (deref α2) in
+  let* α4 :=
+    format_arguments::["new_v1"]
+      (deref [ "ref_c1 equals ref_c2: "; "
+" ])
+      (deref [ α3 ]) in
+  let* _ := _crate.io._print α4 in
+  let _ := tt in
   let point := {| Point.x := 0; Point.y := 0; |} in
-  let _copy_of_x :=
-    let '{| Point.x := ref_to_x; Point.y := _; |} := point in
-    ref_to_x.["deref"] in
+  let '{| Point.x := ref_to_x; Point.y := _; |} := point in
+  let* _copy_of_x := ref_to_x.["deref"] in
   let mutable_point := point in
-  let _ :=
-    let '{| Point.x := _; Point.y := mut_ref_to_y; |} := mutable_point in
-    let _ := assign mut_ref_to_y.["deref"] 1 in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "point is ("; ", "; ")
-" ]
-          [
-            format_argument::["new_display"] point.["x"];
-            format_argument::["new_display"] point.["y"]
-          ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "mutable_point is ("; ", "; ")
-" ]
-          [
-            format_argument::["new_display"] mutable_point.["x"];
-            format_argument::["new_display"] mutable_point.["y"]
-          ]) in
-    tt in
-  let mutable_tuple := (Box::["new"] 5, 3) in
-  let _ :=
-    let '(_, last) := mutable_tuple in
-    let _ := assign last.["deref"] 2 in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "tuple is "; "
-" ]
-          [ format_argument::["new_debug"] mutable_tuple ]) in
-    tt in
-  tt.
+  let '{| Point.x := _; Point.y := mut_ref_to_y; |} := mutable_point in
+  let* _ := assign mut_ref_to_y.["deref"] 1 in
+  let _ := tt in
+  let* α5 := format_argument::["new_display"] (deref point.["x"]) in
+  let* α6 := format_argument::["new_display"] (deref point.["y"]) in
+  let* α7 :=
+    format_arguments::["new_v1"]
+      (deref [ "point is ("; ", "; ")
+" ])
+      (deref [ α5; α6 ]) in
+  let* _ := _crate.io._print α7 in
+  let _ := tt in
+  let* α8 := format_argument::["new_display"] (deref mutable_point.["x"]) in
+  let* α9 := format_argument::["new_display"] (deref mutable_point.["y"]) in
+  let* α10 :=
+    format_arguments::["new_v1"]
+      (deref [ "mutable_point is ("; ", "; ")
+" ])
+      (deref [ α8; α9 ]) in
+  let* _ := _crate.io._print α10 in
+  let _ := tt in
+  let* α11 := Box::["new"] 5 in
+  let mutable_tuple := (α11, 3) in
+  let '(_, last) := mutable_tuple in
+  let* _ := assign last.["deref"] 2 in
+  let _ := tt in
+  let* α12 := format_argument::["new_debug"] (deref mutable_tuple) in
+  let* α13 :=
+    format_arguments::["new_v1"] (deref [ "tuple is "; "
+" ]) (deref [ α12 ]) in
+  let* _ := _crate.io._print α13 in
+  let _ := tt in
+  Pure tt.

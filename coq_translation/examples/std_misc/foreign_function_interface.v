@@ -7,35 +7,32 @@ Module fmt := std.fmt.
 
 Error ForeignMod.
 
-Definition cos (z : Complex) : Complex := ccosf z.
+Definition cos (z : Complex) : M Complex := ccosf z.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let z := {| Complex.re := 1 (* 1. *).["neg"]; Complex.im := 0 (* 0. *); |} in
-  let z_sqrt := csqrtf z in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "the square root of "; " is "; "
-" ]
-          [
-            format_argument::["new_debug"] z;
-            format_argument::["new_debug"] z_sqrt
-          ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "cos("; ") = "; "
-" ]
-          [
-            format_argument::["new_debug"] z;
-            format_argument::["new_debug"] (cos z)
-          ]) in
-    tt in
-  tt.
+  let* z_sqrt := csqrtf z in
+  let* α0 := format_argument::["new_debug"] (deref z) in
+  let* α1 := format_argument::["new_debug"] (deref z_sqrt) in
+  let* α2 :=
+    format_arguments::["new_v1"]
+      (deref [ "the square root of "; " is "; "
+" ])
+      (deref [ α0; α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  let* α3 := format_argument::["new_debug"] (deref z) in
+  let* α4 := cos z in
+  let* α5 := format_argument::["new_debug"] (deref α4) in
+  let* α6 :=
+    format_arguments::["new_v1"]
+      (deref [ "cos("; ") = "; "
+" ])
+      (deref [ α3; α5 ]) in
+  let* _ := _crate.io._print α6 in
+  let _ := tt in
+  Pure tt.
 
 Module Complex.
   Record t : Set := {
@@ -55,8 +52,8 @@ Definition Complex : Set := Complex.t.
 Module Impl__crate_clone_Clone_for_Complex.
   Definition Self := Complex.
   
-  Definition clone (self : ref Self) : Complex :=
-    let '_ := tt in
+  Definition clone (self : ref Self) : M Complex :=
+    let _ := tt in
     self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -78,23 +75,25 @@ End Impl__crate_marker_Copy_for_Complex.
 Module Impl_fmt_Debug_for_Complex.
   Definition Self := Complex.
   
-  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : fmt.Result :=
-    if (self.["im"].["lt"] 0 (* 0. *) : bool) then
-      f.["write_fmt"]
-        (format_arguments::["new_v1"]
-          [ ""; "-"; "i" ]
-          [
-            format_argument::["new_display"] self.["re"];
-            format_argument::["new_display"] self.["im"].["neg"]
-          ])
+  Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : M fmt.Result :=
+    let* α0 := self.["im"].["lt"] 0 (* 0. *) in
+    if (α0 : bool) then
+      let* α0 := format_argument::["new_display"] (deref self.["re"]) in
+      let* α1 := self.["im"].["neg"] in
+      let* α2 := format_argument::["new_display"] (deref α1) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (deref [ ""; "-"; "i" ])
+          (deref [ α0; α2 ]) in
+      f.["write_fmt"] α3
     else
-      f.["write_fmt"]
-        (format_arguments::["new_v1"]
-          [ ""; "+"; "i" ]
-          [
-            format_argument::["new_display"] self.["re"];
-            format_argument::["new_display"] self.["im"]
-          ]).
+      let* α0 := format_argument::["new_display"] (deref self.["re"]) in
+      let* α1 := format_argument::["new_display"] (deref self.["im"]) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (deref [ ""; "+"; "i" ])
+          (deref [ α0; α1 ]) in
+      f.["write_fmt"] α2.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;

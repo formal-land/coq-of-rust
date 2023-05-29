@@ -20,57 +20,57 @@ End Color.
 Definition Color := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "zero is "; "
-" ]
-          [ format_argument::["new_display"] (cast Number.Zero i32) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "one is "; "
-" ]
-          [ format_argument::["new_display"] (cast Number.One i32) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1_formatted"]
-          [ "roses are #"; "
-" ]
-          [ format_argument::["new_lower_hex"] (cast Color.Red i32) ]
-          [
-            format_placeholder::["new"]
-              0
-              " "%char
-              format_alignment::["Unknown"]
-              8
-              format_count::["Implied"]
-              (format_count::["Is"] 6)
-          ]
-          format_unsafe_arg::["new"] tt) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1_formatted"]
-          [ "violets are #"; "
-" ]
-          [ format_argument::["new_lower_hex"] (cast Color.Blue i32) ]
-          [
-            format_placeholder::["new"]
-              0
-              " "%char
-              format_alignment::["Unknown"]
-              8
-              format_count::["Implied"]
-              (format_count::["Is"] 6)
-          ]
-          format_unsafe_arg::["new"] tt) in
-    tt in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* α0 := format_argument::["new_display"] (deref (cast Number.Zero i32)) in
+  let* α1 :=
+    format_arguments::["new_v1"] (deref [ "zero is "; "
+" ]) (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  let* α2 := format_argument::["new_display"] (deref (cast Number.One i32)) in
+  let* α3 :=
+    format_arguments::["new_v1"] (deref [ "one is "; "
+" ]) (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let* α4 := format_argument::["new_lower_hex"] (deref (cast Color.Red i32)) in
+  let* α5 := format_count::["Is"] 6 in
+  let* α6 :=
+    format_placeholder::["new"]
+      0
+      " "%char
+      format_alignment::["Unknown"]
+      8
+      format_count::["Implied"]
+      α5 in
+  let* α7 := format_unsafe_arg::["new"] tt in
+  let* α8 :=
+    format_arguments::["new_v1_formatted"]
+      (deref [ "roses are #"; "
+" ])
+      (deref [ α4 ])
+      (deref [ α6 ])
+      α7 in
+  let* _ := _crate.io._print α8 in
+  let _ := tt in
+  let* α9 := format_argument::["new_lower_hex"] (deref (cast Color.Blue i32)) in
+  let* α10 := format_count::["Is"] 6 in
+  let* α11 :=
+    format_placeholder::["new"]
+      0
+      " "%char
+      format_alignment::["Unknown"]
+      8
+      format_count::["Implied"]
+      α10 in
+  let* α12 := format_unsafe_arg::["new"] tt in
+  let* α13 :=
+    format_arguments::["new_v1_formatted"]
+      (deref [ "violets are #"; "
+" ])
+      (deref [ α9 ])
+      (deref [ α11 ])
+      α12 in
+  let* _ := _crate.io._print α13 in
+  let _ := tt in
+  Pure tt.

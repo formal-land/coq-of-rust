@@ -3,61 +3,67 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition is_odd (n : u32) : bool := (n.["rem"] 2).["eq"] 1.
+Definition is_odd (n : u32) : M bool :=
+  let* α0 := n.["rem"] 2 in
+  α0.["eq"] 1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "Find the sum of all the squared odd numbers under 1000
+Definition main (_ : unit) : M unit :=
+  let* α0 :=
+    format_arguments::["new_const"]
+      (deref [ "Find the sum of all the squared odd numbers under 1000
 " ]) in
-    tt in
+  let* _ := _crate.io._print α0 in
+  let _ := tt in
   let upper := 1000 in
   let acc := 0 in
-  let _ :=
-    match LangItem RangeFrom {| RangeFrom.start := 0; |} with
+  let* α1 := LangItem RangeFrom {| RangeFrom.start := 0; |} in
+  let* _ :=
+    match α1 with
     | iter =>
       loop
-        let _ :=
-          match LangItem iter with
-          | None => Break
+        let* α0 := LangItem (deref iter) in
+        let* _ :=
+          match α0 with
+          | None => Pure Break
           | Some {| Some.0 := n; |} =>
-            let n_squared := n.["mul"] n in
-            if (n_squared.["ge"] upper : bool) then
+            let* n_squared := n.["mul"] n in
+            let* α0 := n_squared.["ge"] upper in
+            if (α0 : bool) then
               let _ := Break in
-              tt
+              Pure tt
             else
-              if (is_odd n_squared : bool) then
-                let _ := acc.["add_assign"] n_squared in
-                tt
+              let* α0 := is_odd n_squared in
+              if (α0 : bool) then
+                let* _ := acc.["add_assign"] n_squared in
+                Pure tt
               else
-                tt
+                Pure tt
           end in
-        tt
+        Pure tt
         from
         for
     end in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "imperative style: "; "
-" ]
-          [ format_argument::["new_display"] acc ]) in
-    tt in
-  let sum_of_squared_odd_numbers :=
-    (((RangeFrom {| RangeFrom.start := 0; |}.["map"]
-            (fun n => n.["mul"] n)).["take_while"]
-          (fun n_squared => n_squared.["lt"] upper)).["filter"]
-        (fun n_squared => is_odd n_squared)).["sum"] in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "functional style: "; "
-" ]
-          [ format_argument::["new_display"] sum_of_squared_odd_numbers ]) in
-    tt in
-  tt.
+  let* α2 := format_argument::["new_display"] (deref acc) in
+  let* α3 :=
+    format_arguments::["new_v1"]
+      (deref [ "imperative style: "; "
+" ])
+      (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let* α4 :=
+    RangeFrom {| RangeFrom.start := 0; |}.["map"] (fun n => n.["mul"] n) in
+  let* α5 := α4.["take_while"] (fun n_squared => n_squared.["lt"] upper) in
+  let* α6 := α5.["filter"] (fun n_squared => is_odd n_squared) in
+  let* sum_of_squared_odd_numbers := α6.["sum"] in
+  let* α7 :=
+    format_argument::["new_display"] (deref sum_of_squared_odd_numbers) in
+  let* α8 :=
+    format_arguments::["new_v1"]
+      (deref [ "functional style: "; "
+" ])
+      (deref [ α7 ]) in
+  let* _ := _crate.io._print α8 in
+  let _ := tt in
+  Pure tt.

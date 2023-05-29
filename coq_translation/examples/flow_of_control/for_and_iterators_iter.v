@@ -4,46 +4,47 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let names :=
-    Slice::["into_vec"]
-      (_crate.boxed.Box::["new"] [ "Bob"; "Frank"; "Ferris" ]) in
-  let _ :=
-    match LangItem names.["iter"] with
+Definition main (_ : unit) : M unit :=
+  let* α0 := _crate.boxed.Box::["new"] [ "Bob"; "Frank"; "Ferris" ] in
+  let* names := Slice::["into_vec"] α0 in
+  let* α1 := names.["iter"] in
+  let* α2 := LangItem α1 in
+  let* _ :=
+    match α2 with
     | iter =>
       loop
-        let _ :=
-          match LangItem iter with
-          | None => Break
+        let* α0 := LangItem (deref iter) in
+        let* _ :=
+          match α0 with
+          | None => Pure Break
           | Some {| Some.0 := name; |} =>
             match name with
             | "Ferris" =>
-              let _ :=
-                _crate.io._print
-                  (format_arguments::["new_const"]
-                    [ "There is a rustacean among us!
+              let* α0 :=
+                format_arguments::["new_const"]
+                  (deref [ "There is a rustacean among us!
 " ]) in
-              tt
+              let* _ := _crate.io._print α0 in
+              Pure tt
             | _ =>
-              let _ :=
-                _crate.io._print
-                  (format_arguments::["new_v1"]
-                    [ "Hello "; "
-" ]
-                    [ format_argument::["new_display"] name ]) in
-              tt
+              let* α0 := format_argument::["new_display"] (deref name) in
+              let* α1 :=
+                format_arguments::["new_v1"]
+                  (deref [ "Hello "; "
+" ])
+                  (deref [ α0 ]) in
+              let* _ := _crate.io._print α1 in
+              Pure tt
             end
           end in
-        tt
+        Pure tt
         from
         for
     end in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "names: "; "
-" ]
-          [ format_argument::["new_debug"] names ]) in
-    tt in
-  tt.
+  let* α3 := format_argument::["new_debug"] (deref names) in
+  let* α4 :=
+    format_arguments::["new_v1"] (deref [ "names: "; "
+" ]) (deref [ α3 ]) in
+  let* _ := _crate.io._print α4 in
+  let _ := tt in
+  Pure tt.

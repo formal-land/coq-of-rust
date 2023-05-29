@@ -4,53 +4,51 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let vec1 := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
-  let vec2 := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 4; 5; 6 ]) in
-  let iter := vec1.["iter"] in
-  let into_iter := vec2.["into_iter"] in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Find 2 in vec1: "; "
-" ]
-          [ format_argument::["new_debug"] (iter.["find"] (fun x => x.["eq"] 2))
-          ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Find 2 in vec2: "; "
-" ]
-          [
-            format_argument::["new_debug"]
-              (into_iter.["find"] (fun x => x.["eq"] 2))
-          ]) in
-    tt in
+Definition main (_ : unit) : M unit :=
+  let* α0 := _crate.boxed.Box::["new"] [ 1; 2; 3 ] in
+  let* vec1 := Slice::["into_vec"] α0 in
+  let* α1 := _crate.boxed.Box::["new"] [ 4; 5; 6 ] in
+  let* vec2 := Slice::["into_vec"] α1 in
+  let* iter := vec1.["iter"] in
+  let* into_iter := vec2.["into_iter"] in
+  let* α2 := iter.["find"] (fun x => x.["eq"] 2) in
+  let* α3 := format_argument::["new_debug"] (deref α2) in
+  let* α4 :=
+    format_arguments::["new_v1"]
+      (deref [ "Find 2 in vec1: "; "
+" ])
+      (deref [ α3 ]) in
+  let* _ := _crate.io._print α4 in
+  let _ := tt in
+  let* α5 := into_iter.["find"] (fun x => x.["eq"] 2) in
+  let* α6 := format_argument::["new_debug"] (deref α5) in
+  let* α7 :=
+    format_arguments::["new_v1"]
+      (deref [ "Find 2 in vec2: "; "
+" ])
+      (deref [ α6 ]) in
+  let* _ := _crate.io._print α7 in
+  let _ := tt in
   let array1 := [ 1; 2; 3 ] in
   let array2 := [ 4; 5; 6 ] in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Find 2 in array1: "; "
-" ]
-          [
-            format_argument::["new_debug"]
-              (array1.["iter"].["find"] (fun x => x.["eq"] 2))
-          ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Find 2 in array2: "; "
-" ]
-          [
-            format_argument::["new_debug"]
-              (array2.["into_iter"].["find"] (fun x => x.["eq"] 2))
-          ]) in
-    tt in
-  tt.
+  let* α8 := array1.["iter"] in
+  let* α9 := α8.["find"] (fun x => x.["eq"] 2) in
+  let* α10 := format_argument::["new_debug"] (deref α9) in
+  let* α11 :=
+    format_arguments::["new_v1"]
+      (deref [ "Find 2 in array1: "; "
+" ])
+      (deref [ α10 ]) in
+  let* _ := _crate.io._print α11 in
+  let _ := tt in
+  let* α12 := array2.["into_iter"] in
+  let* α13 := α12.["find"] (fun x => x.["eq"] 2) in
+  let* α14 := format_argument::["new_debug"] (deref α13) in
+  let* α15 :=
+    format_arguments::["new_v1"]
+      (deref [ "Find 2 in array2: "; "
+" ])
+      (deref [ α14 ]) in
+  let* _ := _crate.io._print α15 in
+  let _ := tt in
+  Pure tt.

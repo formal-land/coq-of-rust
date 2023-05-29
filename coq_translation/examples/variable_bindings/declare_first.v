@@ -4,28 +4,28 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let a_binding := tt in
-  let _ :=
-    let x := 2 in
-    let _ := assign a_binding (x.["mul"] x) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "a binding: "; "
-" ]
-          [ format_argument::["new_display"] a_binding ]) in
-    tt in
+  let x := 2 in
+  let* α0 := x.["mul"] x in
+  let* _ := assign a_binding α0 in
+  let _ := tt in
+  let* α1 := format_argument::["new_display"] (deref a_binding) in
+  let* α2 :=
+    format_arguments::["new_v1"]
+      (deref [ "a binding: "; "
+" ])
+      (deref [ α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
   let another_binding := tt in
-  let _ := assign another_binding 1 in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "another binding: "; "
-" ]
-          [ format_argument::["new_display"] another_binding ]) in
-    tt in
-  tt.
+  let* _ := assign another_binding 1 in
+  let* α3 := format_argument::["new_display"] (deref another_binding) in
+  let* α4 :=
+    format_arguments::["new_v1"]
+      (deref [ "another binding: "; "
+" ])
+      (deref [ α3 ]) in
+  let* _ := _crate.io._print α4 in
+  let _ := tt in
+  Pure tt.

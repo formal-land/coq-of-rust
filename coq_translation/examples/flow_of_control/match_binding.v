@@ -3,47 +3,50 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition age (_ : unit) : u32 := 15.
+Definition age (_ : unit) : M u32 := Pure 15.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "Tell me what type of person you are
+Definition main (_ : unit) : M unit :=
+  let* α0 :=
+    format_arguments::["new_const"]
+      (deref [ "Tell me what type of person you are
 " ]) in
-    tt in
-  match age tt with
+  let* _ := _crate.io._print α0 in
+  let _ := tt in
+  let* α1 := age tt in
+  match α1 with
   | 0 =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "I haven't celebrated my first birthday yet
+    let* α0 :=
+      format_arguments::["new_const"]
+        (deref [ "I haven't celebrated my first birthday yet
 " ]) in
-    tt
+    let* _ := _crate.io._print α0 in
+    Pure tt
   | ((1|2|3|4|5|6|7|8|9|10|11|12) as n) =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "I'm a child of age "; "
-" ]
-          [ format_argument::["new_debug"] n ]) in
-    tt
+    let* α0 := format_argument::["new_debug"] (deref n) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "I'm a child of age "; "
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | ((13|14|15|16|17|18|19) as n) =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "I'm a teen of age "; "
-" ]
-          [ format_argument::["new_debug"] n ]) in
-    tt
+    let* α0 := format_argument::["new_debug"] (deref n) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "I'm a teen of age "; "
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | n =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "I'm an old person of age "; "
-" ]
-          [ format_argument::["new_debug"] n ]) in
-    tt
+    let* α0 := format_argument::["new_debug"] (deref n) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "I'm an old person of age "; "
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   end.

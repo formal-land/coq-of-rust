@@ -45,23 +45,27 @@ Module CompSciStudent.
   }.
 End CompSciStudent.
 
-Definition comp_sci_student_greeting (student : ref TraitObject) : String :=
-  let res :=
-    _crate.fmt.format
-      (format_arguments::["new_v1"]
+Definition comp_sci_student_greeting (student : ref TraitObject) : M String :=
+  let* α0 := student.["name"] in
+  let* α1 := format_argument::["new_display"] (deref α0) in
+  let* α2 := student.["university"] in
+  let* α3 := format_argument::["new_display"] (deref α2) in
+  let* α4 := student.["fav_language"] in
+  let* α5 := format_argument::["new_display"] (deref α4) in
+  let* α6 := student.["git_username"] in
+  let* α7 := format_argument::["new_display"] (deref α6) in
+  let* α8 :=
+    format_arguments::["new_v1"]
+      (deref
         [
           "My name is ";
           " and I attend ";
           ". My favorite language is ";
           ". My Git username is "
-        ]
-        [
-          format_argument::["new_display"] student.["name"];
-          format_argument::["new_display"] student.["university"];
-          format_argument::["new_display"] student.["fav_language"];
-          format_argument::["new_display"] student.["git_username"]
-        ]) in
-  res.
+        ])
+      (deref [ α1; α3; α5; α7 ]) in
+  let* res := _crate.fmt.format α8 in
+  Pure res.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit := tt.
+Definition main (_ : unit) : M unit := Pure tt.

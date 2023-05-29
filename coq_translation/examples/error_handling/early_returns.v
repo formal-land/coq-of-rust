@@ -9,41 +9,48 @@ Definition ParseIntError := ParseIntError.t.
 Definition multiply
     (first_number_str : ref str)
     (second_number_str : ref str)
-    : Result i32 ParseIntError :=
-  let first_number :=
-    match first_number_str.["parse"] with
-    | Ok first_number => first_number
-    | Err e => Return (Err e)
+    : M (Result i32 ParseIntError) :=
+  let* α0 := first_number_str.["parse"] in
+  let* first_number :=
+    match α0 with
+    | Ok first_number => Pure first_number
+    | Err e =>
+      let* α0 := Err e in
+      Return α0
     end in
-  let second_number :=
-    match second_number_str.["parse"] with
-    | Ok second_number => second_number
-    | Err e => Return (Err e)
+  let* α1 := second_number_str.["parse"] in
+  let* second_number :=
+    match α1 with
+    | Ok second_number => Pure second_number
+    | Err e =>
+      let* α0 := Err e in
+      Return α0
     end in
-  Ok (first_number.["mul"] second_number).
+  let* α2 := first_number.["mul"] second_number in
+  Ok α2.
 
-Definition print (result : Result i32 ParseIntError) : unit :=
+Definition print (result : Result i32 ParseIntError) : M unit :=
   match result with
   | Ok n =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "n is "; "
-" ]
-          [ format_argument::["new_display"] n ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref n) in
+    let* α1 :=
+      format_arguments::["new_v1"] (deref [ "n is "; "
+" ]) (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | Err e =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Error: "; "
-" ]
-          [ format_argument::["new_display"] e ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref e) in
+    let* α1 :=
+      format_arguments::["new_v1"] (deref [ "Error: "; "
+" ]) (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let _ := print (multiply "10" "2") in
-  let _ := print (multiply "t" "2") in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* α0 := multiply "10" "2" in
+  let* _ := print α0 in
+  let* α1 := multiply "t" "2" in
+  let* _ := print α1 in
+  Pure tt.

@@ -3,55 +3,56 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition foo (_ : unit) : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "You called "; "()
-" ]
-          [ format_argument::["new_debug"] "foo" ]) in
-    tt in
-  tt.
+Definition foo (_ : unit) : M unit :=
+  let* α0 := format_argument::["new_debug"] (deref "foo") in
+  let* α1 :=
+    format_arguments::["new_v1"]
+      (deref [ "You called "; "()
+" ])
+      (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  Pure tt.
 
-Definition bar (_ : unit) : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "You called "; "()
-" ]
-          [ format_argument::["new_debug"] "bar" ]) in
-    tt in
-  tt.
+Definition bar (_ : unit) : M unit :=
+  let* α0 := format_argument::["new_debug"] (deref "bar") in
+  let* α1 :=
+    format_arguments::["new_v1"]
+      (deref [ "You called "; "()
+" ])
+      (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let _ := foo tt in
-  let _ := bar tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " = "; "
-" ]
-          [
-            format_argument::["new_debug"] "1u32 + 1";
-            format_argument::["new_debug"] (1.["add"] 1)
-          ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; " = "; "
-" ]
-          [
-            format_argument::["new_debug"]
-              "{ let x = 1u32; x * x + 2 * x - 1 }";
-            format_argument::["new_debug"]
-              let x := 1 in
-              ((x.["mul"] x).["add"] (2.["mul"] x)).["sub"] 1
-          ]) in
-    tt in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* _ := foo tt in
+  let* _ := bar tt in
+  let* α0 := format_argument::["new_debug"] (deref "1u32 + 1") in
+  let* α1 := 1.["add"] 1 in
+  let* α2 := format_argument::["new_debug"] (deref α1) in
+  let* α3 :=
+    format_arguments::["new_v1"]
+      (deref [ ""; " = "; "
+" ])
+      (deref [ α0; α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  let* α4 :=
+    format_argument::["new_debug"]
+      (deref "{ let x = 1u32; x * x + 2 * x - 1 }") in
+  let x := 1 in
+  let* α5 := x.["mul"] x in
+  let* α6 := 2.["mul"] x in
+  let* α7 := α5.["add"] α6 in
+  let* α8 := α7.["sub"] 1 in
+  let* α9 := format_argument::["new_debug"] (deref α8) in
+  let* α10 :=
+    format_arguments::["new_v1"]
+      (deref [ ""; " = "; "
+" ])
+      (deref [ α4; α9 ]) in
+  let* _ := _crate.io._print α10 in
+  let _ := tt in
+  Pure tt.

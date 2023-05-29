@@ -4,123 +4,134 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "1 + 2 = "; "
-" ]
-          [ format_argument::["new_display"] (1.["add"] 2) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "1 - 2 = "; "
-" ]
-          [ format_argument::["new_display"] (1.["sub"] 2) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "true AND false is "; "
-" ]
-          [ format_argument::["new_display"] (true.["andb"] false) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "true OR false is "; "
-" ]
-          [ format_argument::["new_display"] (true.["or"] false) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "NOT true is "; "
-" ]
-          [ format_argument::["new_display"] true.["not"] ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1_formatted"]
-          [ "0011 AND 0101 is "; "
-" ]
-          [ format_argument::["new_binary"] (3.["bitand"] 5) ]
-          [
-            format_placeholder::["new"]
-              0
-              " "%char
-              format_alignment::["Unknown"]
-              8
-              format_count::["Implied"]
-              (format_count::["Is"] 4)
-          ]
-          format_unsafe_arg::["new"] tt) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1_formatted"]
-          [ "0011 OR 0101 is "; "
-" ]
-          [ format_argument::["new_binary"] (3.["bitor"] 5) ]
-          [
-            format_placeholder::["new"]
-              0
-              " "%char
-              format_alignment::["Unknown"]
-              8
-              format_count::["Implied"]
-              (format_count::["Is"] 4)
-          ]
-          format_unsafe_arg::["new"] tt) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1_formatted"]
-          [ "0011 XOR 0101 is "; "
-" ]
-          [ format_argument::["new_binary"] (3.["bitxor"] 5) ]
-          [
-            format_placeholder::["new"]
-              0
-              " "%char
-              format_alignment::["Unknown"]
-              8
-              format_count::["Implied"]
-              (format_count::["Is"] 4)
-          ]
-          format_unsafe_arg::["new"] tt) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "1 << 5 is "; "
-" ]
-          [ format_argument::["new_display"] (1.["shl"] 5) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "0x80 >> 2 is 0x"; "
-" ]
-          [ format_argument::["new_lower_hex"] (128.["shr"] 2) ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "One million is written as 1000000
-" ]
-          [ ]) in
-    tt in
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* α0 := 1.["add"] 2 in
+  let* α1 := format_argument::["new_display"] (deref α0) in
+  let* α2 :=
+    format_arguments::["new_v1"] (deref [ "1 + 2 = "; "
+" ]) (deref [ α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  let* α3 := 1.["sub"] 2 in
+  let* α4 := format_argument::["new_display"] (deref α3) in
+  let* α5 :=
+    format_arguments::["new_v1"] (deref [ "1 - 2 = "; "
+" ]) (deref [ α4 ]) in
+  let* _ := _crate.io._print α5 in
+  let _ := tt in
+  let* α6 := true.["andb"] false in
+  let* α7 := format_argument::["new_display"] (deref α6) in
+  let* α8 :=
+    format_arguments::["new_v1"]
+      (deref [ "true AND false is "; "
+" ])
+      (deref [ α7 ]) in
+  let* _ := _crate.io._print α8 in
+  let _ := tt in
+  let* α9 := true.["or"] false in
+  let* α10 := format_argument::["new_display"] (deref α9) in
+  let* α11 :=
+    format_arguments::["new_v1"]
+      (deref [ "true OR false is "; "
+" ])
+      (deref [ α10 ]) in
+  let* _ := _crate.io._print α11 in
+  let _ := tt in
+  let* α12 := true.["not"] in
+  let* α13 := format_argument::["new_display"] (deref α12) in
+  let* α14 :=
+    format_arguments::["new_v1"]
+      (deref [ "NOT true is "; "
+" ])
+      (deref [ α13 ]) in
+  let* _ := _crate.io._print α14 in
+  let _ := tt in
+  let* α15 := 3.["bitand"] 5 in
+  let* α16 := format_argument::["new_binary"] (deref α15) in
+  let* α17 := format_count::["Is"] 4 in
+  let* α18 :=
+    format_placeholder::["new"]
+      0
+      " "%char
+      format_alignment::["Unknown"]
+      8
+      format_count::["Implied"]
+      α17 in
+  let* α19 := format_unsafe_arg::["new"] tt in
+  let* α20 :=
+    format_arguments::["new_v1_formatted"]
+      (deref [ "0011 AND 0101 is "; "
+" ])
+      (deref [ α16 ])
+      (deref [ α18 ])
+      α19 in
+  let* _ := _crate.io._print α20 in
+  let _ := tt in
+  let* α21 := 3.["bitor"] 5 in
+  let* α22 := format_argument::["new_binary"] (deref α21) in
+  let* α23 := format_count::["Is"] 4 in
+  let* α24 :=
+    format_placeholder::["new"]
+      0
+      " "%char
+      format_alignment::["Unknown"]
+      8
+      format_count::["Implied"]
+      α23 in
+  let* α25 := format_unsafe_arg::["new"] tt in
+  let* α26 :=
+    format_arguments::["new_v1_formatted"]
+      (deref [ "0011 OR 0101 is "; "
+" ])
+      (deref [ α22 ])
+      (deref [ α24 ])
+      α25 in
+  let* _ := _crate.io._print α26 in
+  let _ := tt in
+  let* α27 := 3.["bitxor"] 5 in
+  let* α28 := format_argument::["new_binary"] (deref α27) in
+  let* α29 := format_count::["Is"] 4 in
+  let* α30 :=
+    format_placeholder::["new"]
+      0
+      " "%char
+      format_alignment::["Unknown"]
+      8
+      format_count::["Implied"]
+      α29 in
+  let* α31 := format_unsafe_arg::["new"] tt in
+  let* α32 :=
+    format_arguments::["new_v1_formatted"]
+      (deref [ "0011 XOR 0101 is "; "
+" ])
+      (deref [ α28 ])
+      (deref [ α30 ])
+      α31 in
+  let* _ := _crate.io._print α32 in
+  let _ := tt in
+  let* α33 := 1.["shl"] 5 in
+  let* α34 := format_argument::["new_display"] (deref α33) in
+  let* α35 :=
+    format_arguments::["new_v1"]
+      (deref [ "1 << 5 is "; "
+" ])
+      (deref [ α34 ]) in
+  let* _ := _crate.io._print α35 in
+  let _ := tt in
+  let* α36 := 128.["shr"] 2 in
+  let* α37 := format_argument::["new_lower_hex"] (deref α36) in
+  let* α38 :=
+    format_arguments::["new_v1"]
+      (deref [ "0x80 >> 2 is 0x"; "
+" ])
+      (deref [ α37 ]) in
+  let* _ := _crate.io._print α38 in
+  let _ := tt in
+  let* α39 :=
+    format_arguments::["new_v1"]
+      (deref [ "One million is written as 1000000
+" ])
+      (deref [ ]) in
+  let* _ := _crate.io._print α39 in
+  let _ := tt in
+  Pure tt.

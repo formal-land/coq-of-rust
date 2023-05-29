@@ -8,24 +8,22 @@ Definition compare_prints
     `{Debug.Trait T}
     `{Display.Trait T}
     (t : ref T)
-    : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Debug: `"; "`
-" ]
-          [ format_argument::["new_debug"] t ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "Display: `"; "`
-" ]
-          [ format_argument::["new_display"] t ]) in
-    tt in
-  tt.
+    : M unit :=
+  let* α0 := format_argument::["new_debug"] (deref t) in
+  let* α1 :=
+    format_arguments::["new_v1"] (deref [ "Debug: `"; "`
+" ]) (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  let* α2 := format_argument::["new_display"] (deref t) in
+  let* α3 :=
+    format_arguments::["new_v1"]
+      (deref [ "Display: `"; "`
+" ])
+      (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  Pure tt.
 
 Definition compare_types
     {T U : Set}
@@ -33,30 +31,27 @@ Definition compare_types
     `{Debug.Trait U}
     (t : ref T)
     (u : ref U)
-    : unit :=
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "t: `"; "`
-" ]
-          [ format_argument::["new_debug"] t ]) in
-    tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "u: `"; "`
-" ]
-          [ format_argument::["new_debug"] u ]) in
-    tt in
-  tt.
+    : M unit :=
+  let* α0 := format_argument::["new_debug"] (deref t) in
+  let* α1 :=
+    format_arguments::["new_v1"] (deref [ "t: `"; "`
+" ]) (deref [ α0 ]) in
+  let* _ := _crate.io._print α1 in
+  let _ := tt in
+  let* α2 := format_argument::["new_debug"] (deref u) in
+  let* α3 :=
+    format_arguments::["new_v1"] (deref [ "u: `"; "`
+" ]) (deref [ α2 ]) in
+  let* _ := _crate.io._print α3 in
+  let _ := tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let string := "words" in
   let array := [ 1; 2; 3 ] in
-  let vec := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
-  let _ := compare_prints string in
-  let _ := compare_types array vec in
-  tt.
+  let* α0 := _crate.boxed.Box::["new"] [ 1; 2; 3 ] in
+  let* vec := Slice::["into_vec"] α0 in
+  let* _ := compare_prints (deref string) in
+  let* _ := compare_types (deref array) (deref vec) in
+  Pure tt.

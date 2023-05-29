@@ -3,14 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition some_fn (_ : unit) : unit := tt.
+Definition some_fn (_ : unit) : M unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let a := some_fn tt in
-  let _ :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "This function returns and you can see this line.
+Definition main (_ : unit) : M unit :=
+  let* a := some_fn tt in
+  let* α0 :=
+    format_arguments::["new_const"]
+      (deref [ "This function returns and you can see this line.
 " ]) in
-  tt.
+  let* _ := _crate.io._print α0 in
+  Pure tt.

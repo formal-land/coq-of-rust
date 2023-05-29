@@ -18,38 +18,37 @@ End Work.
 Definition Work := Work.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let status := Poor in
   let work := Civilian in
-  let _ :=
+  let* _ :=
     match status with
     | Rich =>
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_const"]
-            [ "The rich have lots of money!
+      let* α0 :=
+        format_arguments::["new_const"]
+          (deref [ "The rich have lots of money!
 " ]) in
-      tt
+      let* _ := _crate.io._print α0 in
+      Pure tt
     | Poor =>
-      let _ :=
-        _crate.io._print
-          (format_arguments::["new_const"] [ "The poor have no money...
+      let* α0 :=
+        format_arguments::["new_const"]
+          (deref [ "The poor have no money...
 " ]) in
-      tt
+      let* _ := _crate.io._print α0 in
+      Pure tt
     end in
   match work with
   | Civilian =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Civilians work!
+    let* α0 := format_arguments::["new_const"] (deref [ "Civilians work!
 " ]) in
-    tt
+    let* _ := _crate.io._print α0 in
+    Pure tt
   | Soldier =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Soldiers fight!
+    let* α0 := format_arguments::["new_const"] (deref [ "Soldiers fight!
 " ]) in
-    tt
+    let* _ := _crate.io._print α0 in
+    Pure tt
   end.
 
 Module Poor := crate.Status.Poor.

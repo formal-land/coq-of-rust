@@ -737,13 +737,16 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
             body,
             is_method,
             is_dead_code,
-        } => ImplItem::Definition {
-            args,
-            ret_ty: mt_ret_ty(ret_ty),
-            body: mt_boxed_expression(body, &mut FreshVars::new()),
-            is_method,
-            is_dead_code,
-        },
+        } => {
+            let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
+            ImplItem::Definition {
+                args,
+                ret_ty: mt_ret_ty(ret_ty),
+                body: Box::new(Expr::Block(Box::new(body))),
+                is_method,
+                is_dead_code,
+            }
+        }
     }
 }
 
@@ -759,10 +762,11 @@ fn mt_trait_item(body: TraitItem) -> TraitItem {
         TraitItem::Definition { ty } => TraitItem::Definition { ty: mt_ty(ty) },
         TraitItem::Type => TraitItem::Type,
         TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
+            let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             TraitItem::DefinitionWithDefault {
                 args,
                 ret_ty: mt_ret_ty(ret_ty),
-                body: mt_boxed_expression(body, &mut FreshVars::new()),
+                body: Box::new(Expr::Block(Box::new(body))),
             }
         }
     }
@@ -777,11 +781,14 @@ fn mt_trait_items(body: Vec<(String, TraitItem)>) -> Vec<(String, TraitItem)> {
 /// Monad transform for [TopLevelItem]
 fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
     match item {
-        TopLevelItem::Const { name, ty, value } => TopLevelItem::Const {
-            name,
-            ty,
-            value: mt_boxed_expression(value, &mut FreshVars::new()),
-        },
+        TopLevelItem::Const { name, ty, value } => {
+            let (value, _fresh_vars) = mt_expression(FreshVars::new(), *value);
+            TopLevelItem::Const {
+                name,
+                ty,
+                value: Box::new(Expr::Block(Box::new(value))),
+            }
+        }
         TopLevelItem::Definition {
             name,
             ty_params,
@@ -790,15 +797,18 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             ret_ty,
             body,
             is_dead_code,
-        } => TopLevelItem::Definition {
-            name,
-            ty_params,
-            where_predicates,
-            args,
-            ret_ty: mt_ret_ty(ret_ty),
-            body: mt_boxed_expression(body, &mut FreshVars::new()),
-            is_dead_code,
-        },
+        } => {
+            let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
+            TopLevelItem::Definition {
+                name,
+                ty_params,
+                where_predicates,
+                args,
+                ret_ty: mt_ret_ty(ret_ty),
+                body: Box::new(Expr::Block(Box::new(body))),
+                is_dead_code,
+            }
+        }
         TopLevelItem::TypeAlias { name, ty } => TopLevelItem::TypeAlias { name, ty },
         TopLevelItem::TypeEnum { name, variants } => TopLevelItem::TypeEnum { name, variants },
         TopLevelItem::TypeStructStruct {

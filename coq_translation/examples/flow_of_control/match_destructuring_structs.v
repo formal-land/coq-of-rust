@@ -19,34 +19,35 @@ End Foo.
 Definition Foo : Set := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let foo := {| Foo.x := (1, 2); Foo.y := 3; |} in
   match foo with
   | {| Foo.x := (1, b); Foo.y := y; |} =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "First of x is 1, b = "; ",  y = "; " 
-" ]
-          [
-            format_argument::["new_display"] b;
-            format_argument::["new_display"] y
-          ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref b) in
+    let* α1 := format_argument::["new_display"] (deref y) in
+    let* α2 :=
+      format_arguments::["new_v1"]
+        (deref [ "First of x is 1, b = "; ",  y = "; " 
+" ])
+        (deref [ α0; α1 ]) in
+    let* _ := _crate.io._print α2 in
+    Pure tt
   | {| Foo.y := 2; Foo.x := i; |} =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "y is 2, i = "; "
-" ]
-          [ format_argument::["new_debug"] i ]) in
-    tt
+    let* α0 := format_argument::["new_debug"] (deref i) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "y is 2, i = "; "
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | {| Foo.y := y; |} =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "y = "; ", we don't care about x
-" ]
-          [ format_argument::["new_display"] y ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref y) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ "y = "; ", we don't care about x
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   end.

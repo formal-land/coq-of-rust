@@ -19,16 +19,16 @@ Module Impl__crate_fmt_Debug_for_Fruit.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["write_str"]
-      f
+      : M _crate.fmt.Result :=
+    let* α0 :=
       match self with
-      | Fruit.Apple => "Apple"
-      | Fruit.Orange => "Orange"
-      | Fruit.Banana => "Banana"
-      | Fruit.Kiwi => "Kiwi"
-      | Fruit.Lemon => "Lemon"
-      end.
+      | Fruit.Apple => Pure "Apple"
+      | Fruit.Orange => Pure "Orange"
+      | Fruit.Banana => Pure "Banana"
+      | Fruit.Kiwi => Pure "Kiwi"
+      | Fruit.Lemon => Pure "Lemon"
+      end in
+    _crate.fmt.Formatter::["write_str"] f α0.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -40,17 +40,18 @@ Module Impl__crate_fmt_Debug_for_Fruit.
 End Impl__crate_fmt_Debug_for_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let apple := Some Fruit.Apple in
-  let orange := Some Fruit.Orange in
+Definition main (_ : unit) : M unit :=
+  let* apple := Some Fruit.Apple in
+  let* orange := Some Fruit.Orange in
   let no_fruit := None in
-  let first_available_fruit := (no_fruit.["or"] orange).["or"] apple in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "first_available_fruit: "; "
-" ]
-          [ format_argument::["new_debug"] first_available_fruit ]) in
-    tt in
-  tt.
+  let* α0 := no_fruit.["or"] orange in
+  let* first_available_fruit := α0.["or"] apple in
+  let* α1 := format_argument::["new_debug"] (deref first_available_fruit) in
+  let* α2 :=
+    format_arguments::["new_v1"]
+      (deref [ "first_available_fruit: "; "
+" ])
+      (deref [ α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  Pure tt.

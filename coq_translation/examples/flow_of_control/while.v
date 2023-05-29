@@ -4,51 +4,52 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let n := 1 in
   loop
-    if (n.["lt"] 101 : bool) then
-      let _ :=
-        if ((n.["rem"] 15).["eq"] 0 : bool) then
-          let _ :=
-            let _ :=
-              _crate.io._print
-                (format_arguments::["new_const"] [ "fizzbuzz
+    let* α0 := n.["lt"] 101 in
+    if (α0 : bool) then
+      let* α0 := n.["rem"] 15 in
+      let* α1 := α0.["eq"] 0 in
+      let* _ :=
+        if (α1 : bool) then
+          let* α0 := format_arguments::["new_const"] (deref [ "fizzbuzz
 " ]) in
-            tt in
-          tt
+          let* _ := _crate.io._print α0 in
+          let _ := tt in
+          Pure tt
         else
-          if ((n.["rem"] 3).["eq"] 0 : bool) then
-            let _ :=
-              let _ :=
-                _crate.io._print
-                  (format_arguments::["new_const"] [ "fizz
+          let* α0 := n.["rem"] 3 in
+          let* α1 := α0.["eq"] 0 in
+          if (α1 : bool) then
+            let* α0 := format_arguments::["new_const"] (deref [ "fizz
 " ]) in
-              tt in
-            tt
+            let* _ := _crate.io._print α0 in
+            let _ := tt in
+            Pure tt
           else
-            if ((n.["rem"] 5).["eq"] 0 : bool) then
-              let _ :=
-                let _ :=
-                  _crate.io._print
-                    (format_arguments::["new_const"] [ "buzz
+            let* α0 := n.["rem"] 5 in
+            let* α1 := α0.["eq"] 0 in
+            if (α1 : bool) then
+              let* α0 := format_arguments::["new_const"] (deref [ "buzz
 " ]) in
-                tt in
-              tt
+              let* _ := _crate.io._print α0 in
+              let _ := tt in
+              Pure tt
             else
-              let _ :=
-                let _ :=
-                  _crate.io._print
-                    (format_arguments::["new_v1"]
-                      [ ""; "
-" ]
-                      [ format_argument::["new_display"] n ]) in
-                tt in
-              tt in
-      let _ := n.["add_assign"] 1 in
-      tt
+              let* α0 := format_argument::["new_display"] (deref n) in
+              let* α1 :=
+                format_arguments::["new_v1"]
+                  (deref [ ""; "
+" ])
+                  (deref [ α0 ]) in
+              let* _ := _crate.io._print α1 in
+              let _ := tt in
+              Pure tt in
+      let* _ := n.["add_assign"] 1 in
+      Pure tt
     else
       let _ := Break in
-      tt
+      Pure tt
     from
     while.

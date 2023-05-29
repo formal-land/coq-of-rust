@@ -41,7 +41,7 @@ Definition Form : Set := Form.t.
 Module Impl_UsernameWidget_for_Form.
   Definition Self := Form.
   
-  Definition get (self : ref Self) : String := self.["username"].["clone"].
+  Definition get (self : ref Self) : M String := self.["username"].["clone"].
   
   Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
@@ -55,7 +55,7 @@ End Impl_UsernameWidget_for_Form.
 Module Impl_AgeWidget_for_Form.
   Definition Self := Form.
   
-  Definition get (self : ref Self) : u8 := self.["age"].
+  Definition get (self : ref Self) : M u8 := Pure self.["age"].
   
   Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
@@ -67,39 +67,52 @@ Module Impl_AgeWidget_for_Form.
 End Impl_AgeWidget_for_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let form :=
     {| Form.username := "rustacean".["to_owned"]; Form.age := 28; |} in
-  let username := UsernameWidget.get form in
-  let _ :=
-    match ("rustacean".["to_owned"], username) with
+  let* username := UsernameWidget.get (deref form) in
+  let* α0 := "rustacean".["to_owned"] in
+  let* _ :=
+    match (deref α0, deref username) with
     | (left_val, right_val) =>
-      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let _ :=
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* _ :=
           _crate.panicking.assert_failed
             kind
-            left_val.["deref"]
-            right_val.["deref"]
+            (deref α0)
+            (deref α1)
             _crate.option.Option.None in
-        tt
+        Pure tt
       else
-        tt
+        Pure tt
     end in
-  let age := AgeWidget.get form in
-  let _ :=
-    match (28, age) with
+  let* age := AgeWidget.get (deref form) in
+  let* _ :=
+    match (deref 28, deref age) with
     | (left_val, right_val) =>
-      if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let _ :=
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* _ :=
           _crate.panicking.assert_failed
             kind
-            left_val.["deref"]
-            right_val.["deref"]
+            (deref α0)
+            (deref α1)
             _crate.option.Option.None in
-        tt
+        Pure tt
       else
-        tt
+        Pure tt
     end in
-  tt.
+  Pure tt.

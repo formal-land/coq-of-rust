@@ -13,8 +13,8 @@ End Years.
 Definition Years := Years.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let years := Years.Build_t 42 in
   let years_as_primitive_1 := years.[0] in
   let 'Years.Build_t years_as_primitive_2 := years in
-  tt.
+  Pure tt.

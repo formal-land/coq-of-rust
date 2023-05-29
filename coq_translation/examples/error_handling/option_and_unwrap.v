@@ -3,58 +3,60 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition give_adult (drink : Option (ref str)) : unit :=
+Definition give_adult (drink : Option (ref str)) : M unit :=
   match drink with
   | Some "lemonade" =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Yuck! Too sugary.
+    let* α0 :=
+      format_arguments::["new_const"] (deref [ "Yuck! Too sugary.
 " ]) in
-    tt
+    let* _ := _crate.io._print α0 in
+    Pure tt
   | Some inner =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ ""; "? How nice.
-" ]
-          [ format_argument::["new_display"] inner ]) in
-    tt
+    let* α0 := format_argument::["new_display"] (deref inner) in
+    let* α1 :=
+      format_arguments::["new_v1"]
+        (deref [ ""; "? How nice.
+" ])
+        (deref [ α0 ]) in
+    let* _ := _crate.io._print α1 in
+    Pure tt
   | None =>
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_const"] [ "No drink? Oh well.
+    let* α0 :=
+      format_arguments::["new_const"] (deref [ "No drink? Oh well.
 " ]) in
-    tt
+    let* _ := _crate.io._print α0 in
+    Pure tt
   end.
 
-Definition drink (drink : Option (ref str)) : unit :=
-  let inside := drink.["unwrap"] in
-  let _ :=
-    if (inside.["eq"] "lemonade" : bool) then
-      let _ := _crate.rt.begin_panic "AAAaaaaa!!!!" in
-      tt
+Definition drink (drink : Option (ref str)) : M unit :=
+  let* inside := drink.["unwrap"] in
+  let* α0 := inside.["eq"] "lemonade" in
+  let* _ :=
+    if (α0 : bool) then
+      let* _ := _crate.rt.begin_panic "AAAaaaaa!!!!" in
+      Pure tt
     else
-      tt in
-  let _ :=
-    let _ :=
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "I love "; "s!!!!!
-" ]
-          [ format_argument::["new_display"] inside ]) in
-    tt in
-  tt.
+      Pure tt in
+  let* α1 := format_argument::["new_display"] (deref inside) in
+  let* α2 :=
+    format_arguments::["new_v1"]
+      (deref [ "I love "; "s!!!!!
+" ])
+      (deref [ α1 ]) in
+  let* _ := _crate.io._print α2 in
+  let _ := tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let water := Some "water" in
-  let lemonade := Some "lemonade" in
+Definition main (_ : unit) : M unit :=
+  let* water := Some "water" in
+  let* lemonade := Some "lemonade" in
   let void := None in
-  let _ := give_adult water in
-  let _ := give_adult lemonade in
-  let _ := give_adult void in
-  let coffee := Some "coffee" in
+  let* _ := give_adult water in
+  let* _ := give_adult lemonade in
+  let* _ := give_adult void in
+  let* coffee := Some "coffee" in
   let nothing := None in
-  let _ := drink coffee in
-  let _ := drink nothing in
-  tt.
+  let* _ := drink coffee in
+  let* _ := drink nothing in
+  Pure tt.
