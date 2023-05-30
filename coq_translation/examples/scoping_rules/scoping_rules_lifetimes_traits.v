@@ -25,7 +25,7 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
       f
       "Borrowed"
       "x"
-      (deref (deref self.["x"])).
+      (addr_of (addr_of self.["x"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -39,7 +39,7 @@ End Impl__crate_fmt_Debug_for_Borrowed.
 Module Impl_Default_for_Borrowed.
   Definition Self := Borrowed.
   
-  Definition default (_ : unit) : M Self := Pure {| Self.x := deref 10; |}.
+  Definition default (_ : unit) : M Self := Pure {| Self.x := addr_of 10; |}.
   
   Global Instance AssociatedFunction_default :
     Notation.DoubleColon Self "default" := {
@@ -54,10 +54,14 @@ End Impl_Default_for_Borrowed.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let* b := Default.default tt in
-  let* α0 := format_argument::["new_debug"] (deref b) in
-  let* α1 :=
-    format_arguments::["new_v1"] (deref [ "b is "; "
-" ]) (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of b) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "b is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

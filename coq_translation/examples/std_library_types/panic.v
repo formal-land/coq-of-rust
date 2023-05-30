@@ -15,10 +15,12 @@ Definition division (dividend : i32) (divisor : i32) : M i32 :=
 Definition main (_ : unit) : M unit :=
   let* _x := Box::["new"] 0 in
   let* _ := division 3 0 in
-  let* α0 :=
-    format_arguments::["new_const"]
-      (deref [ "This point won't be reached!
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "This point won't be reached!
 " ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
+      _crate.io._print α0 in
+    Pure tt in
   Pure tt.

@@ -4,35 +4,40 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition eat_box_i32 (boxed_i32 : Box i32) : M unit :=
-  let* α0 := format_argument::["new_display"] (deref boxed_i32) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "Destroying box that contains "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of boxed_i32) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Destroying box that contains "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.
 
 Definition borrow_i32 (borrowed_i32 : ref i32) : M unit :=
-  let* α0 := format_argument::["new_display"] (deref borrowed_i32) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "This int is: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of borrowed_i32) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "This int is: "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let* boxed_i32 := Box::["new"] 5 in
   let stacked_i32 := 6 in
-  let* _ := borrow_i32 (deref boxed_i32) in
-  let* _ := borrow_i32 (deref stacked_i32) in
-  let _ref_to_i32 := deref boxed_i32 in
-  let* _ := borrow_i32 _ref_to_i32 in
-  let _ := tt in
+  let* _ := borrow_i32 (addr_of boxed_i32) in
+  let* _ := borrow_i32 (addr_of stacked_i32) in
+  let* _ :=
+    let _ref_to_i32 := addr_of boxed_i32 in
+    let* _ := borrow_i32 _ref_to_i32 in
+    Pure tt in
   let* _ := eat_box_i32 boxed_i32 in
   Pure tt.

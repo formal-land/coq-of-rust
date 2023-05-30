@@ -3,29 +3,31 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition some_number (_ : unit) : M (Option u32) := Some 42.
+Definition some_number (_ : unit) : M (Option u32) := Pure (Some 42).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let* α0 := some_number tt in
   match α0 with
   | Some (42 as n) =>
-    let* α0 := format_argument::["new_display"] (deref n) in
-    let* α1 :=
-      format_arguments::["new_v1"]
-        (deref [ "The Answer: "; "!
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The Answer: "; "!
 " ])
-        (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   | Some n =>
-    let* α0 := format_argument::["new_display"] (deref n) in
-    let* α1 :=
-      format_arguments::["new_v1"]
-        (deref [ "Not interesting... "; "
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Not interesting... "; "
 " ])
-        (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   | _ => Pure tt
   end.

@@ -6,32 +6,39 @@ Import Root.std.prelude.rust_2015.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let byte_escape := "I'm writing Rust!" in
-  let* α0 := format_argument::["new_display"] (deref byte_escape) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "What are you doing? (\x3F means ?) "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of byte_escape) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "What are you doing? (\x3F means ?) "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let unicode_codepoint := String.String "29" "" in
   let character_name := ""DOUBLE-STRUCK CAPITAL R"" in
-  let* α2 := format_argument::["new_display"] (deref unicode_codepoint) in
-  let* α3 := format_argument::["new_display"] (deref character_name) in
-  let* α4 :=
-    format_arguments::["new_v1"]
-      (deref [ "Unicode character "; " (U+211D) is called "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of unicode_codepoint) in
+      let* α1 := format_argument::["new_display"] (addr_of character_name) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Unicode character "; " (U+211D) is called "; "
 " ])
-      (deref [ α2; α3 ]) in
-  let* _ := _crate.io._print α4 in
-  let _ := tt in
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   let long_string :=
     "String literals
                         can span multiple lines.
                         The linebreak and indentation here -><- can be escaped too!" in
-  let* α5 := format_argument::["new_display"] (deref long_string) in
-  let* α6 := format_arguments::["new_v1"] (deref [ ""; "
-" ]) (deref [ α5 ]) in
-  let* _ := _crate.io._print α6 in
-  let _ := tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of long_string) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

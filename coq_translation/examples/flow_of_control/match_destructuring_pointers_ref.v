@@ -5,30 +5,32 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let reference := deref 4 in
+  let reference := addr_of 4 in
   let* _ :=
     match reference with
     | val =>
-      let* α0 := format_argument::["new_debug"] (deref val) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (deref [ "Got a value via destructuring: "; "
+      let* _ :=
+        let* α0 := format_argument::["new_debug"] (addr_of val) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Got a value via destructuring: "; "
 " ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
       Pure tt
     end in
-  let* α0 := reference.["deref"] in
   let* _ :=
+    let* α0 := reference.["deref"] in
     match α0 with
     | val =>
-      let* α0 := format_argument::["new_debug"] (deref val) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (deref [ "Got a value via dereferencing: "; "
+      let* _ :=
+        let* α0 := format_argument::["new_debug"] (addr_of val) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Got a value via dereferencing: "; "
 " ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
       Pure tt
     end in
   let _not_a_reference := 3 in
@@ -38,26 +40,30 @@ Definition main (_ : unit) : M unit :=
   let* _ :=
     match value with
     | r =>
-      let* α0 := format_argument::["new_debug"] (deref r) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (deref [ "Got a reference to a value: "; "
+      let* _ :=
+        let* α0 := format_argument::["new_debug"] (addr_of r) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Got a reference to a value: "; "
 " ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
       Pure tt
     end in
   match mut_value with
   | m =>
-    let* α0 := m.["deref"] in
-    let* _ := α0.["add_assign"] 10 in
-    let* α1 := format_argument::["new_debug"] (deref m) in
-    let* α2 :=
-      format_arguments::["new_v1"]
-        (deref [ "We added 10. `mut_value`: "; "
+    let* _ :=
+      let* α0 := m.["deref"] in
+      α0.["add_assign"] 10 in
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_debug"] (addr_of m) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "We added 10. `mut_value`: "; "
 " ])
-        (deref [ α1 ]) in
-    let* _ := _crate.io._print α2 in
-    let _ := tt in
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
     Pure tt
   end.

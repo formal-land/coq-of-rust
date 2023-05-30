@@ -64,13 +64,15 @@ Definition random_animal (random_number : f64) : M (Box TraitObject) :=
 Definition main (_ : unit) : M unit :=
   let random_number := 0 (* 0.234 *) in
   let* animal := random_animal random_number in
-  let* α0 := animal.["noise"] in
-  let* α1 := format_argument::["new_display"] (deref α0) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "You've randomly chosen an animal, and it says "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := animal.["noise"] in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "You've randomly chosen an animal, and it says "; "
 " ])
-      (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.

@@ -50,28 +50,32 @@ Module Impl__crate_marker_Copy_for_Book.
 End Impl__crate_marker_Copy_for_Book.
 
 Definition borrow_book (book : ref Book) : M unit :=
-  let* α0 := format_argument::["new_display"] (deref book.["title"]) in
-  let* α1 := format_argument::["new_display"] (deref book.["year"]) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "I immutably borrowed "; " - "; " edition
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
+      let* α1 := format_argument::["new_display"] (addr_of book.["year"]) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "I immutably borrowed "; " - "; " edition
 " ])
-      (deref [ α0; α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.
 
 Definition new_edition (book : mut_ref Book) : M unit :=
   let* _ := assign book.["year"] 2014 in
-  let* α0 := format_argument::["new_display"] (deref book.["title"]) in
-  let* α1 := format_argument::["new_display"] (deref book.["year"]) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "I mutably borrowed "; " - "; " edition
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
+      let* α1 := format_argument::["new_display"] (addr_of book.["year"]) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "I mutably borrowed "; " - "; " edition
 " ])
-      (deref [ α0; α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -83,7 +87,7 @@ Definition main (_ : unit) : M unit :=
       Book.year := 1979;
     |} in
   let mutabook := immutabook in
-  let* _ := borrow_book (deref immutabook) in
-  let* _ := borrow_book (deref mutabook) in
-  let* _ := new_edition (deref mutabook) in
+  let* _ := borrow_book (addr_of immutabook) in
+  let* _ := borrow_book (addr_of mutabook) in
+  let* _ := new_edition (addr_of mutabook) in
   Pure tt.

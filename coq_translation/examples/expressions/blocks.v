@@ -6,28 +6,42 @@ Import Root.std.prelude.rust_2015.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let x := 5 in
-  let* x_squared := x.["mul"] x in
-  let* x_cube := x_squared.["mul"] x in
-  let* α0 := x_cube.["add"] x_squared in
-  let* y := α0.["add"] x in
-  let* _ := 2.["mul"] x in
-  let z := tt in
-  let* α1 := format_argument::["new_debug"] (deref x) in
-  let* α2 :=
-    format_arguments::["new_v1"] (deref [ "x is "; "
-" ]) (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
-  let* α3 := format_argument::["new_debug"] (deref y) in
-  let* α4 :=
-    format_arguments::["new_v1"] (deref [ "y is "; "
-" ]) (deref [ α3 ]) in
-  let* _ := _crate.io._print α4 in
-  let _ := tt in
-  let* α5 := format_argument::["new_debug"] (deref z) in
-  let* α6 :=
-    format_arguments::["new_v1"] (deref [ "z is "; "
-" ]) (deref [ α5 ]) in
-  let* _ := _crate.io._print α6 in
-  let _ := tt in
+  let* y :=
+    let* x_squared := x.["mul"] x in
+    let* x_cube := x_squared.["mul"] x in
+    let* α0 := x_cube.["add"] x_squared in
+    α0.["add"] x in
+  let* z :=
+    let* _ := 2.["mul"] x in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of x) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "x is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of y) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "y is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of z) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "z is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

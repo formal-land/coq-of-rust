@@ -7,143 +7,171 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : M unit :=
   let* collected_iterator :=
     Range {| Range.start := 0; Range.end := 10; |}.["collect"] in
-  let* α0 := format_argument::["new_debug"] (deref collected_iterator) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "Collected (0..10) into: "; "
-" ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let* α2 := _crate.boxed.Box::["new"] [ 1; 2; 3 ] in
-  let* xs := Slice::["into_vec"] α2 in
-  let* α3 := format_argument::["new_debug"] (deref xs) in
-  let* α4 :=
-    format_arguments::["new_v1"]
-      (deref [ "Initial vector: "; "
-" ])
-      (deref [ α3 ]) in
-  let* _ := _crate.io._print α4 in
-  let _ := tt in
-  let* α5 :=
-    format_arguments::["new_const"] (deref [ "Push 4 into the vector
-" ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
-  let* _ := xs.["push"] 4 in
-  let* α6 := format_argument::["new_debug"] (deref xs) in
-  let* α7 :=
-    format_arguments::["new_v1"] (deref [ "Vector: "; "
-" ]) (deref [ α6 ]) in
-  let* _ := _crate.io._print α7 in
-  let _ := tt in
-  let* α8 := xs.["len"] in
-  let* α9 := format_argument::["new_display"] (deref α8) in
-  let* α10 :=
-    format_arguments::["new_v1"]
-      (deref [ "Vector length: "; "
-" ])
-      (deref [ α9 ]) in
-  let* _ := _crate.io._print α10 in
-  let _ := tt in
-  let* α11 := format_argument::["new_display"] (deref xs[1]) in
-  let* α12 :=
-    format_arguments::["new_v1"]
-      (deref [ "Second element: "; "
-" ])
-      (deref [ α11 ]) in
-  let* _ := _crate.io._print α12 in
-  let _ := tt in
-  let* α13 := xs.["pop"] in
-  let* α14 := format_argument::["new_debug"] (deref α13) in
-  let* α15 :=
-    format_arguments::["new_v1"]
-      (deref [ "Pop last element: "; "
-" ])
-      (deref [ α14 ]) in
-  let* _ := _crate.io._print α15 in
-  let _ := tt in
-  let* α16 := format_arguments::["new_const"] (deref [ "Contents of xs:
-" ]) in
-  let* _ := _crate.io._print α16 in
-  let _ := tt in
-  let* α17 := xs.["iter"] in
-  let* α18 := LangItem α17 in
   let* _ :=
-    match α18 with
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of collected_iterator) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Collected (0..10) into: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* xs :=
+    let* α0 := _crate.boxed.Box::["new"] [ 1; 2; 3 ] in
+    Slice::["into_vec"] α0 in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of xs) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Initial vector: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "Push 4 into the vector
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ := xs.["push"] 4 in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of xs) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Vector: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := xs.["len"] in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Vector length: "; "
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of xs[1]) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Second element: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := xs.["pop"] in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Pop last element: "; "
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Contents of xs:
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := xs.["iter"] in
+    let* α1 := LangItem α0 in
+    match α1 with
     | iter =>
       loop
-        let* α0 := LangItem (deref iter) in
         let* _ :=
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := x; |} =>
-            let* α0 := format_argument::["new_display"] (deref x) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (deref [ "> "; "
+            let* _ :=
+              let* _ :=
+                let* α0 := format_argument::["new_display"] (addr_of x) in
+                let* α1 :=
+                  format_arguments::["new_v1"]
+                    (addr_of [ "> "; "
 " ])
-                (deref [ α0 ]) in
-            let* _ := _crate.io._print α1 in
-            let _ := tt in
+                    (addr_of [ α0 ]) in
+                _crate.io._print α1 in
+              Pure tt in
             Pure tt
           end in
         Pure tt
         from
         for
     end in
-  let* α19 := xs.["iter"] in
-  let* α20 := α19.["enumerate"] in
-  let* α21 := LangItem α20 in
   let* _ :=
-    match α21 with
+    let* α0 := xs.["iter"] in
+    let* α1 := α0.["enumerate"] in
+    let* α2 := LangItem α1 in
+    match α2 with
     | iter =>
       loop
-        let* α0 := LangItem (deref iter) in
         let* _ :=
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := (i, x); |} =>
-            let* α0 := format_argument::["new_display"] (deref i) in
-            let* α1 := format_argument::["new_display"] (deref x) in
-            let* α2 :=
-              format_arguments::["new_v1"]
-                (deref [ "In position "; " we have value "; "
+            let* _ :=
+              let* _ :=
+                let* α0 := format_argument::["new_display"] (addr_of i) in
+                let* α1 := format_argument::["new_display"] (addr_of x) in
+                let* α2 :=
+                  format_arguments::["new_v1"]
+                    (addr_of [ "In position "; " we have value "; "
 " ])
-                (deref [ α0; α1 ]) in
-            let* _ := _crate.io._print α2 in
-            let _ := tt in
+                    (addr_of [ α0; α1 ]) in
+                _crate.io._print α2 in
+              Pure tt in
             Pure tt
           end in
         Pure tt
         from
         for
     end in
-  let* α22 := xs.["iter_mut"] in
-  let* α23 := LangItem α22 in
   let* _ :=
-    match α23 with
+    let* α0 := xs.["iter_mut"] in
+    let* α1 := LangItem α0 in
+    match α1 with
     | iter =>
       loop
-        let* α0 := LangItem (deref iter) in
         let* _ :=
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := x; |} =>
-            let* α0 := x.["deref"] in
-            let* _ := α0.["mul_assign"] 3 in
+            let* _ :=
+              let* α0 := x.["deref"] in
+              α0.["mul_assign"] 3 in
             Pure tt
           end in
         Pure tt
         from
         for
     end in
-  let* α24 := format_argument::["new_debug"] (deref xs) in
-  let* α25 :=
-    format_arguments::["new_v1"]
-      (deref [ "Updated vector: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of xs) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Updated vector: "; "
 " ])
-      (deref [ α24 ]) in
-  let* _ := _crate.io._print α25 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

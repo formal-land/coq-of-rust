@@ -5,34 +5,41 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let person :=
-    {| Person.name := String::["from"] "Alice"; Person.age := Box::["new"] 20;
-    |} in
+  let* person :=
+    let* α0 := String::["from"] "Alice" in
+    let* α1 := Box::["new"] 20 in
+    Pure {| Person.name := α0; Person.age := α1; |} in
   let '{| Person.name := name; Person.age := age; |} := person in
-  let* α0 := format_argument::["new_display"] (deref age) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "The person's age is "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of age) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The person's age is "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let* α2 := format_argument::["new_display"] (deref name) in
-  let* α3 :=
-    format_arguments::["new_v1"]
-      (deref [ "The person's name is "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of name) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The person's name is "; "
 " ])
-      (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
-  let* α4 := format_argument::["new_display"] (deref person.["age"]) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "The person's age from person struct is "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of person.["age"]) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The person's age from person struct is "; "
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.
 
 Module Person.
@@ -61,9 +68,9 @@ Module Impl__crate_fmt_Debug_for_Person.
       f
       "Person"
       "name"
-      (deref self.["name"])
+      (addr_of self.["name"])
       "age"
-      (deref (deref self.["age"])).
+      (addr_of (addr_of self.["age"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;

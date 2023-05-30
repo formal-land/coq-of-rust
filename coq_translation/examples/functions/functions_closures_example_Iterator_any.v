@@ -5,67 +5,81 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := _crate.boxed.Box::["new"] [ 1; 2; 3 ] in
-  let* vec1 := Slice::["into_vec"] α0 in
-  let* α1 := _crate.boxed.Box::["new"] [ 4; 5; 6 ] in
-  let* vec2 := Slice::["into_vec"] α1 in
-  let* α2 := vec1.["iter"] in
-  let* α3 := α2.["any"] (fun x => x.["eq"] 2) in
-  let* α4 := format_argument::["new_display"] (deref α3) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "2 in vec1: "; "
+  let* vec1 :=
+    let* α0 := _crate.boxed.Box::["new"] [ 1; 2; 3 ] in
+    Slice::["into_vec"] α0 in
+  let* vec2 :=
+    let* α0 := _crate.boxed.Box::["new"] [ 4; 5; 6 ] in
+    Slice::["into_vec"] α0 in
+  let* _ :=
+    let* _ :=
+      let* α0 := vec1.["iter"] in
+      let* α1 := α0.["any"] (fun x => x.["eq"] 2) in
+      let* α2 := format_argument::["new_display"] (addr_of α1) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "2 in vec1: "; "
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
-  let* α6 := vec2.["into_iter"] in
-  let* α7 := α6.["any"] (fun x => x.["eq"] 2) in
-  let* α8 := format_argument::["new_display"] (deref α7) in
-  let* α9 :=
-    format_arguments::["new_v1"]
-      (deref [ "2 in vec2: "; "
+          (addr_of [ α2 ]) in
+      _crate.io._print α3 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := vec2.["into_iter"] in
+      let* α1 := α0.["any"] (fun x => x.["eq"] 2) in
+      let* α2 := format_argument::["new_display"] (addr_of α1) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "2 in vec2: "; "
 " ])
-      (deref [ α8 ]) in
-  let* _ := _crate.io._print α9 in
-  let _ := tt in
-  let* α10 := vec1.["len"] in
-  let* α11 := format_argument::["new_display"] (deref α10) in
-  let* α12 :=
-    format_arguments::["new_v1"]
-      (deref [ "vec1 len: "; "
+          (addr_of [ α2 ]) in
+      _crate.io._print α3 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := vec1.["len"] in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "vec1 len: "; "
 " ])
-      (deref [ α11 ]) in
-  let* _ := _crate.io._print α12 in
-  let _ := tt in
-  let* α13 := format_argument::["new_display"] (deref vec1[0]) in
-  let* α14 :=
-    format_arguments::["new_v1"]
-      (deref [ "First element of vec1 is: "; "
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of vec1[0]) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "First element of vec1 is: "; "
 " ])
-      (deref [ α13 ]) in
-  let* _ := _crate.io._print α14 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let array1 := [ 1; 2; 3 ] in
   let array2 := [ 4; 5; 6 ] in
-  let* α15 := array1.["iter"] in
-  let* α16 := α15.["any"] (fun x => x.["eq"] 2) in
-  let* α17 := format_argument::["new_display"] (deref α16) in
-  let* α18 :=
-    format_arguments::["new_v1"]
-      (deref [ "2 in array1: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := array1.["iter"] in
+      let* α1 := α0.["any"] (fun x => x.["eq"] 2) in
+      let* α2 := format_argument::["new_display"] (addr_of α1) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "2 in array1: "; "
 " ])
-      (deref [ α17 ]) in
-  let* _ := _crate.io._print α18 in
-  let _ := tt in
-  let* α19 := array2.["into_iter"] in
-  let* α20 := α19.["any"] (fun x => x.["eq"] 2) in
-  let* α21 := format_argument::["new_display"] (deref α20) in
-  let* α22 :=
-    format_arguments::["new_v1"]
-      (deref [ "2 in array2: "; "
+          (addr_of [ α2 ]) in
+      _crate.io._print α3 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := array2.["into_iter"] in
+      let* α1 := α0.["any"] (fun x => x.["eq"] 2) in
+      let* α2 := format_argument::["new_display"] (addr_of α1) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "2 in array2: "; "
 " ])
-      (deref [ α21 ]) in
-  let* _ := _crate.io._print α22 in
-  let _ := tt in
+          (addr_of [ α2 ]) in
+      _crate.io._print α3 in
+    Pure tt in
   Pure tt.

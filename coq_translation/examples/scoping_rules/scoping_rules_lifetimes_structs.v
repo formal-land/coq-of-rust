@@ -22,7 +22,7 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
     _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Borrowed"
-      (deref (deref (self.[0]))).
+      (addr_of (addr_of (self.[0]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -59,9 +59,9 @@ Module Impl__crate_fmt_Debug_for_NamedBorrowed.
       f
       "NamedBorrowed"
       "x"
-      (deref self.["x"])
+      (addr_of self.["x"])
       "y"
-      (deref (deref self.["y"])).
+      (addr_of (addr_of self.["y"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -91,12 +91,12 @@ Module Impl__crate_fmt_Debug_for_Either.
       _crate.fmt.Formatter::["debug_tuple_field1_finish"]
         f
         "Num"
-        (deref __self_0)
+        (addr_of __self_0)
     | Either.Ref __self_0 =>
       _crate.fmt.Formatter::["debug_tuple_field1_finish"]
         f
         "Ref"
-        (deref __self_0)
+        (addr_of __self_0)
     end.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
@@ -112,40 +112,49 @@ End Impl__crate_fmt_Debug_for_Either.
 Definition main (_ : unit) : M unit :=
   let x := 18 in
   let y := 15 in
-  let single := Borrowed.Build_t (deref x) in
-  let double := {| NamedBorrowed.x := deref x; NamedBorrowed.y := deref y; |} in
-  let* reference := Either.Ref (deref x) in
-  let* number := Either.Num y in
-  let* α0 := format_argument::["new_debug"] (deref single) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "x is borrowed in "; "
+  let single := Borrowed.Build_t (addr_of x) in
+  let double :=
+    {| NamedBorrowed.x := addr_of x; NamedBorrowed.y := addr_of y; |} in
+  let reference := Either.Ref (addr_of x) in
+  let number := Either.Num y in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of single) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "x is borrowed in "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let* α2 := format_argument::["new_debug"] (deref double) in
-  let* α3 :=
-    format_arguments::["new_v1"]
-      (deref [ "x and y are borrowed in "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of double) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "x and y are borrowed in "; "
 " ])
-      (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
-  let* α4 := format_argument::["new_debug"] (deref reference) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "x is borrowed in "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of reference) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "x is borrowed in "; "
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
-  let* α6 := format_argument::["new_debug"] (deref number) in
-  let* α7 :=
-    format_arguments::["new_v1"]
-      (deref [ "y is *not* borrowed in "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of number) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "y is *not* borrowed in "; "
 " ])
-      (deref [ α6 ]) in
-  let* _ := _crate.io._print α7 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

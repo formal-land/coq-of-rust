@@ -6,56 +6,61 @@ Import Root.std.prelude.rust_2015.
 Definition give_adult (drink : Option (ref str)) : M unit :=
   match drink with
   | Some "lemonade" =>
-    let* α0 :=
-      format_arguments::["new_const"] (deref [ "Yuck! Too sugary.
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Yuck! Too sugary.
 " ]) in
-    let* _ := _crate.io._print α0 in
+      _crate.io._print α0 in
     Pure tt
   | Some inner =>
-    let* α0 := format_argument::["new_display"] (deref inner) in
-    let* α1 :=
-      format_arguments::["new_v1"]
-        (deref [ ""; "? How nice.
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of inner) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; "? How nice.
 " ])
-        (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   | None =>
-    let* α0 :=
-      format_arguments::["new_const"] (deref [ "No drink? Oh well.
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "No drink? Oh well.
 " ]) in
-    let* _ := _crate.io._print α0 in
+      _crate.io._print α0 in
     Pure tt
   end.
 
 Definition drink (drink : Option (ref str)) : M unit :=
   let* inside := drink.["unwrap"] in
-  let* α0 := inside.["eq"] "lemonade" in
   let* _ :=
+    let* α0 := inside.["eq"] "lemonade" in
     if (α0 : bool) then
       let* _ := _crate.rt.begin_panic "AAAaaaaa!!!!" in
       Pure tt
     else
       Pure tt in
-  let* α1 := format_argument::["new_display"] (deref inside) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "I love "; "s!!!!!
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of inside) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "I love "; "s!!!!!
 " ])
-      (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* water := Some "water" in
-  let* lemonade := Some "lemonade" in
+  let water := Some "water" in
+  let lemonade := Some "lemonade" in
   let void := None in
   let* _ := give_adult water in
   let* _ := give_adult lemonade in
   let* _ := give_adult void in
-  let* coffee := Some "coffee" in
+  let coffee := Some "coffee" in
   let nothing := None in
   let* _ := drink coffee in
   let* _ := drink nothing in

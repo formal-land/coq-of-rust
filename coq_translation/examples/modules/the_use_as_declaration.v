@@ -6,59 +6,74 @@ Import Root.std.prelude.rust_2015.
 Module other_function := deeply.nested.function.
 
 Definition function (_ : unit) : M unit :=
-  let* α0 :=
-    format_arguments::["new_const"] (deref [ "called `function()`
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "called `function()`
 " ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
+      _crate.io._print α0 in
+    Pure tt in
   Pure tt.
 
 Module deeply.
   Module nested.
     Definition function (_ : unit) : M unit :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ "called `deeply::nested::function()`
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "called `deeply::nested::function()`
 " ]) in
-      let* _ := _crate.io._print α0 in
-      let _ := tt in
+          _crate.io._print α0 in
+        Pure tt in
       Pure tt.
   End nested.
 End deeply.
 
 Module nested.
   Definition function (_ : unit) : M unit :=
-    let* α0 :=
-      format_arguments::["new_const"]
-        (deref [ "called `deeply::nested::function()`
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `deeply::nested::function()`
 " ]) in
-    let* _ := _crate.io._print α0 in
-    let _ := tt in
+        _crate.io._print α0 in
+      Pure tt in
     Pure tt.
 End nested.
 
 Definition function (_ : unit) : M unit :=
-  let* α0 :=
-    format_arguments::["new_const"]
-      (deref [ "called `deeply::nested::function()`
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `deeply::nested::function()`
 " ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
+      _crate.io._print α0 in
+    Pure tt in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let* _ := other_function tt in
-  let* α0 := format_arguments::["new_const"] (deref [ "Entering block
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Entering block
 " ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
-  let* _ := function tt in
-  let* α1 := format_arguments::["new_const"] (deref [ "Leaving block
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* _ := function tt in
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"] (addr_of [ "Leaving block
 " ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let _ := tt in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt in
   let* _ := function tt in
   Pure tt.
 

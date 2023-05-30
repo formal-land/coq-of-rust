@@ -41,7 +41,9 @@ Module Impl__crate_cmp_PartialOrd_for_Centimeters.
       (self : ref Self)
       (other : ref Centimeters)
       : M (_crate.option.Option _crate.cmp.Ordering) :=
-    _crate.cmp.PartialOrd.partial_cmp (deref (self.[0])) (deref (other.[0])).
+    _crate.cmp.PartialOrd.partial_cmp
+      (addr_of (self.[0]))
+      (addr_of (other.[0])).
   
   Global Instance Method_partial_cmp : Notation.Dot "partial_cmp" := {
     Notation.dot := partial_cmp;
@@ -71,7 +73,7 @@ Module Impl__crate_fmt_Debug_for_Inches.
     _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Inches"
-      (deref (deref (self.[0]))).
+      (addr_of (addr_of (self.[0]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -88,7 +90,7 @@ Module ImplInches.
   Definition to_centimeters (self : ref Self) : M Centimeters :=
     let 'Inches.Build_t inches := self in
     let* α0 := (cast inches f64).["mul"] 3 (* 2.54 *) in
-    Pure Centimeters.Build_t α0.
+    Pure (Centimeters.Build_t α0).
   
   Global Instance Method_to_centimeters : Notation.Dot "to_centimeters" := {
     Notation.dot := to_centimeters;
@@ -108,28 +110,32 @@ Definition Seconds := Seconds.t.
 Definition main (_ : unit) : M unit :=
   let _one_second := Seconds.Build_t 1 in
   let foot := Inches.Build_t 12 in
-  let* α0 := format_argument::["new_debug"] (deref foot) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "One foot equals "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of foot) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "One foot equals "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let meter := Centimeters.Build_t 100 (* 100.0 *) in
-  let* α2 := foot.["to_centimeters"] in
-  let* α3 := α2.["lt"] meter in
   let* cmp :=
-    if (α3 : bool) then
+    let* α0 := foot.["to_centimeters"] in
+    let* α1 := α0.["lt"] meter in
+    if (α1 : bool) then
       Pure "smaller"
     else
       Pure "bigger" in
-  let* α4 := format_argument::["new_display"] (deref cmp) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "One foot is "; " than one meter.
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of cmp) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "One foot is "; " than one meter.
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

@@ -10,41 +10,45 @@ Definition NTHREADS : u32 := Pure 10.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let* children := _crate.vec.Vec::["new"] tt in
-  let* α0 := LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} in
   let* _ :=
+    let* α0 := LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} in
     match α0 with
     | iter =>
       loop
-        let* α0 := LangItem (deref iter) in
         let* _ :=
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := i; |} =>
-            let* α0 :=
-              thread.spawn
-                (fun  =>
-                  let* α0 := format_argument::["new_display"] (deref i) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (deref [ "this is thread number "; "
+            let* _ :=
+              let* α0 :=
+                thread.spawn
+                  (fun  =>
+                    let* _ :=
+                      let* _ :=
+                        let* α0 :=
+                          format_argument::["new_display"] (addr_of i) in
+                        let* α1 :=
+                          format_arguments::["new_v1"]
+                            (addr_of [ "this is thread number "; "
 " ])
-                      (deref [ α0 ]) in
-                  let* _ := _crate.io._print α1 in
-                  let _ := tt in
-                  Pure tt) in
-            let* _ := children.["push"] α0 in
+                            (addr_of [ α0 ]) in
+                        _crate.io._print α1 in
+                      Pure tt in
+                    Pure tt) in
+              children.["push"] α0 in
             Pure tt
           end in
         Pure tt
         from
         for
     end in
-  let* α1 := LangItem children in
-  match α1 with
+  let* α0 := LangItem children in
+  match α0 with
   | iter =>
     loop
-      let* α0 := LangItem (deref iter) in
       let* _ :=
+        let* α0 := LangItem (addr_of iter) in
         match α0 with
         | None => Pure Break
         | Some {| Some.0 := child; |} =>

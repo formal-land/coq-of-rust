@@ -70,13 +70,13 @@ End Impl__crate_fmt_Debug_for_Day.
 Definition have_ingredients (food : Food) : M (Option Food) :=
   match food with
   | Food.Sushi => Pure None
-  | _ => Some food
+  | _ => Pure (Some food)
   end.
 
 Definition have_recipe (food : Food) : M (Option Food) :=
   match food with
   | Food.CordonBleu => Pure None
-  | _ => Some food
+  | _ => Pure (Some food)
   end.
 
 Definition cookable_v1 (food : Food) : M (Option Food) :=
@@ -87,7 +87,7 @@ Definition cookable_v1 (food : Food) : M (Option Food) :=
     let* α0 := have_ingredients food in
     match α0 with
     | None => Pure None
-    | Some food => Some food
+    | Some food => Pure (Some food)
     end
   end.
 
@@ -99,23 +99,25 @@ Definition eat (food : Food) (day : Day) : M unit :=
   let* α0 := cookable_v2 food in
   match α0 with
   | Some food =>
-    let* α0 := format_argument::["new_debug"] (deref day) in
-    let* α1 := format_argument::["new_debug"] (deref food) in
-    let* α2 :=
-      format_arguments::["new_v1"]
-        (deref [ "Yay! On "; " we get to eat "; ".
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of day) in
+      let* α1 := format_argument::["new_debug"] (addr_of food) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Yay! On "; " we get to eat "; ".
 " ])
-        (deref [ α0; α1 ]) in
-    let* _ := _crate.io._print α2 in
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
     Pure tt
   | None =>
-    let* α0 := format_argument::["new_debug"] (deref day) in
-    let* α1 :=
-      format_arguments::["new_v1"]
-        (deref [ "Oh no. We don't get to eat on "; "?
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of day) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Oh no. We don't get to eat on "; "?
 " ])
-        (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   end.
 

@@ -7,35 +7,45 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : M unit :=
   let* _ :=
     loop
-      let* α0 :=
-        format_arguments::["new_const"] (deref [ "Entered the outer loop
-" ]) in
-      let* _ := _crate.io._print α0 in
-      let _ := tt in
       let* _ :=
-        loop
+        let* _ :=
           let* α0 :=
             format_arguments::["new_const"]
-              (deref [ "Entered the inner loop
+              (addr_of [ "Entered the outer loop
 " ]) in
-          let* _ := _crate.io._print α0 in
-          let _ := tt in
+          _crate.io._print α0 in
+        Pure tt in
+      let* _ :=
+        loop
+          let* _ :=
+            let* _ :=
+              let* α0 :=
+                format_arguments::["new_const"]
+                  (addr_of [ "Entered the inner loop
+" ]) in
+              _crate.io._print α0 in
+            Pure tt in
           let _ := Break in
           Pure tt
           from
           loop in
-      let* α1 :=
-        format_arguments::["new_const"]
-          (deref [ "This point will never be reached
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "This point will never be reached
 " ]) in
-      let* _ := _crate.io._print α1 in
-      let _ := tt in
+          _crate.io._print α0 in
+        Pure tt in
       Pure tt
       from
       loop in
-  let* α0 :=
-    format_arguments::["new_const"] (deref [ "Exited the outer loop
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "Exited the outer loop
 " ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
+      _crate.io._print α0 in
+    Pure tt in
   Pure tt.

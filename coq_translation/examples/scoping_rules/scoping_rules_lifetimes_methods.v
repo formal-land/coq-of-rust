@@ -24,14 +24,16 @@ Module ImplOwner.
   }.
   
   Definition print (self : ref Self) : M unit :=
-    let* α0 := format_argument::["new_display"] (deref (self.[0])) in
-    let* α1 :=
-      format_arguments::["new_v1"]
-        (deref [ "`print`: "; "
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of (self.[0])) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "`print`: "; "
 " ])
-        (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
-    let _ := tt in
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
     Pure tt.
   
   Global Instance Method_print : Notation.Dot "print" := {

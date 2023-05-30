@@ -6,22 +6,29 @@ Import Root.std.prelude.rust_2015.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let long_lived_binding := 1 in
-  let short_lived_binding := 2 in
-  let* α0 := format_argument::["new_display"] (deref short_lived_binding) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "inner short: "; "
+  let* _ :=
+    let short_lived_binding := 2 in
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_argument::["new_display"] (addr_of short_lived_binding) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "inner short: "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let _ := tt in
-  let* α2 := format_argument::["new_display"] (deref long_lived_binding) in
-  let* α3 :=
-    format_arguments::["new_v1"]
-      (deref [ "outer long: "; "
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_display"] (addr_of long_lived_binding) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "outer long: "; "
 " ])
-      (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

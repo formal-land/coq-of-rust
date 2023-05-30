@@ -36,17 +36,19 @@ Module Animal.
   }.
   Global Instance Method_talk `(Trait) : Notation.Dot "talk" := {
     Notation.dot (self : ref Self) :=
-      (let* α0 := self.["name"] in
-      let* α1 := format_argument::["new_display"] (deref α0) in
-      let* α2 := self.["noise"] in
-      let* α3 := format_argument::["new_display"] (deref α2) in
-      let* α4 :=
-        format_arguments::["new_v1"]
-          (deref [ ""; " says "; "
+      (let* _ :=
+        let* _ :=
+          let* α0 := self.["name"] in
+          let* α1 := format_argument::["new_display"] (addr_of α0) in
+          let* α2 := self.["noise"] in
+          let* α3 := format_argument::["new_display"] (addr_of α2) in
+          let* α4 :=
+            format_arguments::["new_v1"]
+              (addr_of [ ""; " says "; "
 " ])
-          (deref [ α1; α3 ]) in
-      let* _ := _crate.io._print α4 in
-      let _ := tt in
+              (addr_of [ α1; α3 ]) in
+          _crate.io._print α4 in
+        Pure tt in
       Pure tt
       : M unit);
   }.
@@ -90,16 +92,18 @@ Module Impl_Animal_for_Sheep.
   }.
   
   Definition talk (self : ref Self) : M unit :=
-    let* α0 := format_argument::["new_display"] (deref self.["name"]) in
-    let* α1 := self.["noise"] in
-    let* α2 := format_argument::["new_display"] (deref α1) in
-    let* α3 :=
-      format_arguments::["new_v1"]
-        (deref [ ""; " pauses briefly... "; "
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
+        let* α1 := self.["noise"] in
+        let* α2 := format_argument::["new_display"] (addr_of α1) in
+        let* α3 :=
+          format_arguments::["new_v1"]
+            (addr_of [ ""; " pauses briefly... "; "
 " ])
-        (deref [ α0; α2 ]) in
-    let* _ := _crate.io._print α3 in
-    let _ := tt in
+            (addr_of [ α0; α2 ]) in
+        _crate.io._print α3 in
+      Pure tt in
     Pure tt.
   
   Global Instance Method_talk : Notation.Dot "talk" := {
@@ -119,25 +123,29 @@ Module ImplSheep_2.
   Definition shear (self : mut_ref Self) : M unit :=
     let* α0 := self.["is_naked"] in
     if (α0 : bool) then
-      let* α0 := self.["name"] in
-      let* α1 := format_argument::["new_display"] (deref α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (deref [ ""; " is already naked...
+      let* _ :=
+        let* _ :=
+          let* α0 := self.["name"] in
+          let* α1 := format_argument::["new_display"] (addr_of α0) in
+          let* α2 :=
+            format_arguments::["new_v1"]
+              (addr_of [ ""; " is already naked...
 " ])
-          (deref [ α1 ]) in
-      let* _ := _crate.io._print α2 in
-      let _ := tt in
+              (addr_of [ α1 ]) in
+          _crate.io._print α2 in
+        Pure tt in
       Pure tt
     else
-      let* α0 := format_argument::["new_display"] (deref self.["name"]) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (deref [ ""; " gets a haircut!
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ ""; " gets a haircut!
 " ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
-      let _ := tt in
+              (addr_of [ α0 ]) in
+          _crate.io._print α1 in
+        Pure tt in
       let* _ := assign self.["naked"] true in
       Pure tt.
   
@@ -148,8 +156,9 @@ End ImplSheep_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := Animal.new "Dolly" in
-  let dolly := (α0 : Sheep) in
+  let* dolly :=
+    let* α0 := Animal.new "Dolly" in
+    Pure (α0 : Sheep) in
   let* _ := dolly.["talk"] in
   let* _ := dolly.["shear"] in
   let* _ := dolly.["talk"] in

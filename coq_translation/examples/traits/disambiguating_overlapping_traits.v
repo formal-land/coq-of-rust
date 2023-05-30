@@ -68,12 +68,13 @@ End Impl_AgeWidget_for_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let form :=
-    {| Form.username := "rustacean".["to_owned"]; Form.age := 28; |} in
-  let* username := UsernameWidget.get (deref form) in
-  let* α0 := "rustacean".["to_owned"] in
+  let* form :=
+    let* α0 := "rustacean".["to_owned"] in
+    Pure {| Form.username := α0; Form.age := 28; |} in
+  let* username := UsernameWidget.get (addr_of form) in
   let* _ :=
-    match (deref α0, deref username) with
+    let* α0 := "rustacean".["to_owned"] in
+    match (addr_of α0, addr_of username) with
     | (left_val, right_val) =>
       let* α0 := left_val.["deref"] in
       let* α1 := right_val.["deref"] in
@@ -81,21 +82,21 @@ Definition main (_ : unit) : M unit :=
       let* α3 := α2.["not"] in
       if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let* α0 := left_val.["deref"] in
-        let* α1 := right_val.["deref"] in
         let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
           _crate.panicking.assert_failed
             kind
-            (deref α0)
-            (deref α1)
+            (addr_of α0)
+            (addr_of α1)
             _crate.option.Option.None in
         Pure tt
       else
         Pure tt
     end in
-  let* age := AgeWidget.get (deref form) in
+  let* age := AgeWidget.get (addr_of form) in
   let* _ :=
-    match (deref 28, deref age) with
+    match (addr_of 28, addr_of age) with
     | (left_val, right_val) =>
       let* α0 := left_val.["deref"] in
       let* α1 := right_val.["deref"] in
@@ -103,13 +104,13 @@ Definition main (_ : unit) : M unit :=
       let* α3 := α2.["not"] in
       if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let* α0 := left_val.["deref"] in
-        let* α1 := right_val.["deref"] in
         let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
           _crate.panicking.assert_failed
             kind
-            (deref α0)
-            (deref α1)
+            (addr_of α0)
+            (addr_of α1)
             _crate.option.Option.None in
         Pure tt
       else

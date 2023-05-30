@@ -19,18 +19,24 @@ Definition multiply
 Definition print (result : Result i32 ParseIntError) : M unit :=
   match result with
   | Ok n =>
-    let* α0 := format_argument::["new_display"] (deref n) in
-    let* α1 :=
-      format_arguments::["new_v1"] (deref [ "n is "; "
-" ]) (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "n is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   | Err e =>
-    let* α0 := format_argument::["new_display"] (deref e) in
-    let* α1 :=
-      format_arguments::["new_v1"] (deref [ "Error: "; "
-" ]) (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of e) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Error: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   end.
 

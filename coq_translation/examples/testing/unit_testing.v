@@ -12,9 +12,9 @@ Module tests.
   Import super.
   
   Definition test_add (_ : unit) : M unit :=
-    let* α0 := add 1 2 in
     let* _ :=
-      match (deref α0, deref 3) with
+      let* α0 := add 1 2 in
+      match (addr_of α0, addr_of 3) with
       | (left_val, right_val) =>
         let* α0 := left_val.["deref"] in
         let* α1 := right_val.["deref"] in
@@ -22,13 +22,13 @@ Module tests.
         let* α3 := α2.["not"] in
         if (α3 : bool) then
           let kind := _crate.panicking.AssertKind.Eq in
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
           let* _ :=
+            let* α0 := left_val.["deref"] in
+            let* α1 := right_val.["deref"] in
             _crate.panicking.assert_failed
               kind
-              (deref α0)
-              (deref α1)
+              (addr_of α0)
+              (addr_of α1)
               _crate.option.Option.None in
           Pure tt
         else
@@ -37,9 +37,9 @@ Module tests.
     Pure tt.
   
   Definition test_bad_add (_ : unit) : M unit :=
-    let* α0 := bad_add 1 2 in
     let* _ :=
-      match (deref α0, deref 3) with
+      let* α0 := bad_add 1 2 in
+      match (addr_of α0, addr_of 3) with
       | (left_val, right_val) =>
         let* α0 := left_val.["deref"] in
         let* α1 := right_val.["deref"] in
@@ -47,13 +47,13 @@ Module tests.
         let* α3 := α2.["not"] in
         if (α3 : bool) then
           let kind := _crate.panicking.AssertKind.Eq in
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
           let* _ :=
+            let* α0 := left_val.["deref"] in
+            let* α1 := right_val.["deref"] in
             _crate.panicking.assert_failed
               kind
-              (deref α0)
-              (deref α1)
+              (addr_of α0)
+              (addr_of α1)
               _crate.option.Option.None in
           Pure tt
         else
@@ -65,9 +65,9 @@ End tests.
 Import super.
 
 Definition test_add (_ : unit) : M unit :=
-  let* α0 := add 1 2 in
   let* _ :=
-    match (deref α0, deref 3) with
+    let* α0 := add 1 2 in
+    match (addr_of α0, addr_of 3) with
     | (left_val, right_val) =>
       let* α0 := left_val.["deref"] in
       let* α1 := right_val.["deref"] in
@@ -75,13 +75,13 @@ Definition test_add (_ : unit) : M unit :=
       let* α3 := α2.["not"] in
       if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let* α0 := left_val.["deref"] in
-        let* α1 := right_val.["deref"] in
         let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
           _crate.panicking.assert_failed
             kind
-            (deref α0)
-            (deref α1)
+            (addr_of α0)
+            (addr_of α1)
             _crate.option.Option.None in
         Pure tt
       else
@@ -90,9 +90,9 @@ Definition test_add (_ : unit) : M unit :=
   Pure tt.
 
 Definition test_bad_add (_ : unit) : M unit :=
-  let* α0 := bad_add 1 2 in
   let* _ :=
-    match (deref α0, deref 3) with
+    let* α0 := bad_add 1 2 in
+    match (addr_of α0, addr_of 3) with
     | (left_val, right_val) =>
       let* α0 := left_val.["deref"] in
       let* α1 := right_val.["deref"] in
@@ -100,13 +100,13 @@ Definition test_bad_add (_ : unit) : M unit :=
       let* α3 := α2.["not"] in
       if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let* α0 := left_val.["deref"] in
-        let* α1 := right_val.["deref"] in
         let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
           _crate.panicking.assert_failed
             kind
-            (deref α0)
-            (deref α1)
+            (addr_of α0)
+            (addr_of α1)
             _crate.option.Option.None in
         Pure tt
       else

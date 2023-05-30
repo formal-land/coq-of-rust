@@ -4,44 +4,53 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition double_first (vec : Vec (ref str)) : M i32 :=
-  let* α0 := vec.["first"] in
-  let* first := α0.["unwrap"] in
-  let* α1 := first.["parse"] in
-  let* α2 := α1.["unwrap"] in
-  2.["mul"] α2.
+  let* first :=
+    let* α0 := vec.["first"] in
+    α0.["unwrap"] in
+  let* α0 := first.["parse"] in
+  let* α1 := α0.["unwrap"] in
+  2.["mul"] α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := _crate.boxed.Box::["new"] [ "42"; "93"; "18" ] in
-  let* numbers := Slice::["into_vec"] α0 in
+  let* numbers :=
+    let* α0 := _crate.boxed.Box::["new"] [ "42"; "93"; "18" ] in
+    Slice::["into_vec"] α0 in
   let* empty := _crate.vec.Vec::["new"] tt in
-  let* α1 := _crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
-  let* strings := Slice::["into_vec"] α1 in
-  let* α2 := double_first numbers in
-  let* α3 := format_argument::["new_display"] (deref α2) in
-  let* α4 :=
-    format_arguments::["new_v1"]
-      (deref [ "The first doubled is "; "
+  let* strings :=
+    let* α0 := _crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+    Slice::["into_vec"] α0 in
+  let* _ :=
+    let* _ :=
+      let* α0 := double_first numbers in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The first doubled is "; "
 " ])
-      (deref [ α3 ]) in
-  let* _ := _crate.io._print α4 in
-  let _ := tt in
-  let* α5 := double_first empty in
-  let* α6 := format_argument::["new_display"] (deref α5) in
-  let* α7 :=
-    format_arguments::["new_v1"]
-      (deref [ "The first doubled is "; "
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := double_first empty in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The first doubled is "; "
 " ])
-      (deref [ α6 ]) in
-  let* _ := _crate.io._print α7 in
-  let _ := tt in
-  let* α8 := double_first strings in
-  let* α9 := format_argument::["new_display"] (deref α8) in
-  let* α10 :=
-    format_arguments::["new_v1"]
-      (deref [ "The first doubled is "; "
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := double_first strings in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The first doubled is "; "
 " ])
-      (deref [ α9 ]) in
-  let* _ := _crate.io._print α10 in
-  let _ := tt in
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.

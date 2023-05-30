@@ -20,21 +20,23 @@ Definition main (_ : unit) : M unit :=
     match α0 with
     | iter =>
       loop
-        let* α0 := LangItem (deref iter) in
         let* _ :=
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := line; |} =>
             let* α0 := let_if Ok ip := line in
             if (α0 : bool) then
-              let* α0 := format_argument::["new_display"] (deref ip) in
-              let* α1 :=
-                format_arguments::["new_v1"]
-                  (deref [ ""; "
+              let* _ :=
+                let* _ :=
+                  let* α0 := format_argument::["new_display"] (addr_of ip) in
+                  let* α1 :=
+                    format_arguments::["new_v1"]
+                      (addr_of [ ""; "
 " ])
-                  (deref [ α0 ]) in
-              let* _ := _crate.io._print α1 in
-              let _ := tt in
+                      (addr_of [ α0 ]) in
+                  _crate.io._print α1 in
+                Pure tt in
               Pure tt
             else
               Pure tt
@@ -51,15 +53,15 @@ Definition read_lines
     `{AsRef.Trait Path P}
     (filename : P)
     : M (io.Result (io.Lines (io.BufReader File))) :=
-  let* α0 := File::["open"] filename in
-  let* α1 := LangItem α0 in
   let* file :=
+    let* α0 := File::["open"] filename in
+    let* α1 := LangItem α0 in
     match α1 with
     | Break {| Break.0 := residual; |} =>
       let* α0 := LangItem residual in
       Return α0
     | Continue {| Continue.0 := val; |} => Pure val
     end in
-  let* α2 := io.BufReader::["new"] file in
-  let* α3 := α2.["lines"] in
-  Ok α3.
+  let* α0 := io.BufReader::["new"] file in
+  let* α1 := α0.["lines"] in
+  Pure (Ok α1).

@@ -33,9 +33,9 @@ Module Impl__crate_fmt_Debug_for_Point.
       f
       "Point"
       "x"
-      (deref self.["x"])
+      (addr_of self.["x"])
       "y"
-      (deref (deref self.["y"])).
+      (addr_of (addr_of self.["y"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -95,76 +95,93 @@ Definition boxed_origin (_ : unit) : M (Box Point) :=
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let* point := origin tt in
-  let rectangle :=
-    {|
-      Rectangle.top_left := origin tt;
-      Rectangle.bottom_right :=
-        {| Point.x := 3 (* 3.0 *); Point.y := 4 (* 4.0 *).["neg"]; |};
-    |} in
+  let* rectangle :=
+    let* α0 := origin tt in
+    let* α1 := 4 (* 4.0 *).["neg"] in
+    Pure
+      {|
+        Rectangle.top_left := α0;
+        Rectangle.bottom_right := {| Point.x := 3 (* 3.0 *); Point.y := α1; |};
+      |} in
   let* boxed_rectangle :=
+    let* α0 := origin tt in
+    let* α1 := 4 (* 4.0 *).["neg"] in
     Box::["new"]
       {|
-        Rectangle.top_left := origin tt;
-        Rectangle.bottom_right :=
-          {| Point.x := 3 (* 3.0 *); Point.y := 4 (* 4.0 *).["neg"]; |};
+        Rectangle.top_left := α0;
+        Rectangle.bottom_right := {| Point.x := 3 (* 3.0 *); Point.y := α1; |};
       |} in
-  let* α0 := origin tt in
-  let* boxed_point := Box::["new"] α0 in
-  let* α1 := boxed_origin tt in
-  let* box_in_a_box := Box::["new"] α1 in
-  let* α2 := mem.size_of_val (deref point) in
-  let* α3 := format_argument::["new_display"] (deref α2) in
-  let* α4 :=
-    format_arguments::["new_v1"]
-      (deref [ "Point occupies "; " bytes on the stack
+  let* boxed_point :=
+    let* α0 := origin tt in
+    Box::["new"] α0 in
+  let* box_in_a_box :=
+    let* α0 := boxed_origin tt in
+    Box::["new"] α0 in
+  let* _ :=
+    let* _ :=
+      let* α0 := mem.size_of_val (addr_of point) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Point occupies "; " bytes on the stack
 " ])
-      (deref [ α3 ]) in
-  let* _ := _crate.io._print α4 in
-  let _ := tt in
-  let* α5 := mem.size_of_val (deref rectangle) in
-  let* α6 := format_argument::["new_display"] (deref α5) in
-  let* α7 :=
-    format_arguments::["new_v1"]
-      (deref [ "Rectangle occupies "; " bytes on the stack
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := mem.size_of_val (addr_of rectangle) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Rectangle occupies "; " bytes on the stack
 " ])
-      (deref [ α6 ]) in
-  let* _ := _crate.io._print α7 in
-  let _ := tt in
-  let* α8 := mem.size_of_val (deref boxed_point) in
-  let* α9 := format_argument::["new_display"] (deref α8) in
-  let* α10 :=
-    format_arguments::["new_v1"]
-      (deref [ "Boxed point occupies "; " bytes on the stack
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := mem.size_of_val (addr_of boxed_point) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Boxed point occupies "; " bytes on the stack
 " ])
-      (deref [ α9 ]) in
-  let* _ := _crate.io._print α10 in
-  let _ := tt in
-  let* α11 := mem.size_of_val (deref boxed_rectangle) in
-  let* α12 := format_argument::["new_display"] (deref α11) in
-  let* α13 :=
-    format_arguments::["new_v1"]
-      (deref [ "Boxed rectangle occupies "; " bytes on the stack
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := mem.size_of_val (addr_of boxed_rectangle) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Boxed rectangle occupies "; " bytes on the stack
 " ])
-      (deref [ α12 ]) in
-  let* _ := _crate.io._print α13 in
-  let _ := tt in
-  let* α14 := mem.size_of_val (deref box_in_a_box) in
-  let* α15 := format_argument::["new_display"] (deref α14) in
-  let* α16 :=
-    format_arguments::["new_v1"]
-      (deref [ "Boxed box occupies "; " bytes on the stack
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := mem.size_of_val (addr_of box_in_a_box) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Boxed box occupies "; " bytes on the stack
 " ])
-      (deref [ α15 ]) in
-  let* _ := _crate.io._print α16 in
-  let _ := tt in
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   let* unboxed_point := boxed_point.["deref"] in
-  let* α17 := mem.size_of_val (deref unboxed_point) in
-  let* α18 := format_argument::["new_display"] (deref α17) in
-  let* α19 :=
-    format_arguments::["new_v1"]
-      (deref [ "Unboxed point occupies "; " bytes on the stack
+  let* _ :=
+    let* _ :=
+      let* α0 := mem.size_of_val (addr_of unboxed_point) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Unboxed point occupies "; " bytes on the stack
 " ])
-      (deref [ α18 ]) in
-  let* _ := _crate.io._print α19 in
-  let _ := tt in
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.

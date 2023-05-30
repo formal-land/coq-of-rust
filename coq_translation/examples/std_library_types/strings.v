@@ -6,54 +6,64 @@ Import Root.std.prelude.rust_2015.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let pangram := "the quick brown fox jumps over the lazy dog" in
-  let* α0 := format_argument::["new_display"] (deref pangram) in
-  let* α1 :=
-    format_arguments::["new_v1"] (deref [ "Pangram: "; "
-" ]) (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let* α2 := format_arguments::["new_const"] (deref [ "Words in reverse
-" ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
-  let* α3 := pangram.["split_whitespace"] in
-  let* α4 := α3.["rev"] in
-  let* α5 := LangItem α4 in
   let* _ :=
-    match α5 with
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of pangram) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Pangram: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Words in reverse
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := pangram.["split_whitespace"] in
+    let* α1 := α0.["rev"] in
+    let* α2 := LangItem α1 in
+    match α2 with
     | iter =>
       loop
-        let* α0 := LangItem (deref iter) in
         let* _ :=
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := word; |} =>
-            let* α0 := format_argument::["new_display"] (deref word) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (deref [ "> "; "
+            let* _ :=
+              let* _ :=
+                let* α0 := format_argument::["new_display"] (addr_of word) in
+                let* α1 :=
+                  format_arguments::["new_v1"]
+                    (addr_of [ "> "; "
 " ])
-                (deref [ α0 ]) in
-            let* _ := _crate.io._print α1 in
-            let _ := tt in
+                    (addr_of [ α0 ]) in
+                _crate.io._print α1 in
+              Pure tt in
             Pure tt
           end in
         Pure tt
         from
         for
     end in
-  let* α6 := pangram.["chars"] in
-  let* chars := α6.["collect"] in
+  let* chars :=
+    let* α0 := pangram.["chars"] in
+    α0.["collect"] in
   let* _ := chars.["sort"] in
   let* _ := chars.["dedup"] in
   let* string := String::["new"] tt in
-  let* α7 := LangItem chars in
   let* _ :=
-    match α7 with
+    let* α0 := LangItem chars in
+    match α0 with
     | iter =>
       loop
-        let* α0 := LangItem (deref iter) in
         let* _ :=
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := c; |} =>
@@ -65,32 +75,38 @@ Definition main (_ : unit) : M unit :=
         from
         for
     end in
-  let chars_to_trim := deref [ " "%char; ","%char ] in
+  let chars_to_trim := addr_of [ " "%char; ","%char ] in
   let* trimmed_str := string.["trim_matches"] chars_to_trim in
-  let* α8 := format_argument::["new_display"] (deref trimmed_str) in
-  let* α9 :=
-    format_arguments::["new_v1"]
-      (deref [ "Used characters: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of trimmed_str) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Used characters: "; "
 " ])
-      (deref [ α8 ]) in
-  let* _ := _crate.io._print α9 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let* alice := String::["from"] "I like dogs" in
   let* bob := alice.["replace"] "dog" "cat" in
-  let* α10 := format_argument::["new_display"] (deref alice) in
-  let* α11 :=
-    format_arguments::["new_v1"]
-      (deref [ "Alice says: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of alice) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Alice says: "; "
 " ])
-      (deref [ α10 ]) in
-  let* _ := _crate.io._print α11 in
-  let _ := tt in
-  let* α12 := format_argument::["new_display"] (deref bob) in
-  let* α13 :=
-    format_arguments::["new_v1"]
-      (deref [ "Bob says: "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of bob) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Bob says: "; "
 " ])
-      (deref [ α12 ]) in
-  let* _ := _crate.io._print α13 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

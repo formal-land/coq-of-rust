@@ -13,15 +13,17 @@ Definition U64 : Set := u64.
 Definition main (_ : unit) : M unit :=
   let nanoseconds := cast 5 U64 in
   let inches := cast 2 U64 in
-  let* α0 := format_argument::["new_display"] (deref nanoseconds) in
-  let* α1 := format_argument::["new_display"] (deref inches) in
-  let* α2 := nanoseconds.["add"] inches in
-  let* α3 := format_argument::["new_display"] (deref α2) in
-  let* α4 :=
-    format_arguments::["new_v1"]
-      (deref [ ""; " nanoseconds + "; " inches = "; " unit?
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of nanoseconds) in
+      let* α1 := format_argument::["new_display"] (addr_of inches) in
+      let* α2 := nanoseconds.["add"] inches in
+      let* α3 := format_argument::["new_display"] (addr_of α2) in
+      let* α4 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; " nanoseconds + "; " inches = "; " unit?
 " ])
-      (deref [ α0; α1; α3 ]) in
-  let* _ := _crate.io._print α4 in
-  let _ := tt in
+          (addr_of [ α0; α1; α3 ]) in
+      _crate.io._print α4 in
+    Pure tt in
   Pure tt.

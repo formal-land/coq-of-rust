@@ -11,27 +11,33 @@ Definition cos (z : Complex) : M Complex := ccosf z.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let z := {| Complex.re := 1 (* 1. *).["neg"]; Complex.im := 0 (* 0. *); |} in
+  let* z :=
+    let* α0 := 1 (* 1. *).["neg"] in
+    Pure {| Complex.re := α0; Complex.im := 0 (* 0. *); |} in
   let* z_sqrt := csqrtf z in
-  let* α0 := format_argument::["new_debug"] (deref z) in
-  let* α1 := format_argument::["new_debug"] (deref z_sqrt) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "the square root of "; " is "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of z) in
+      let* α1 := format_argument::["new_debug"] (addr_of z_sqrt) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "the square root of "; " is "; "
 " ])
-      (deref [ α0; α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
-  let* α3 := format_argument::["new_debug"] (deref z) in
-  let* α4 := cos z in
-  let* α5 := format_argument::["new_debug"] (deref α4) in
-  let* α6 :=
-    format_arguments::["new_v1"]
-      (deref [ "cos("; ") = "; "
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of z) in
+      let* α1 := cos z in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "cos("; ") = "; "
 " ])
-      (deref [ α3; α5 ]) in
-  let* _ := _crate.io._print α6 in
-  let _ := tt in
+          (addr_of [ α0; α2 ]) in
+      _crate.io._print α3 in
+    Pure tt in
   Pure tt.
 
 Module Complex.
@@ -78,21 +84,21 @@ Module Impl_fmt_Debug_for_Complex.
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : M fmt.Result :=
     let* α0 := self.["im"].["lt"] 0 (* 0. *) in
     if (α0 : bool) then
-      let* α0 := format_argument::["new_display"] (deref self.["re"]) in
+      let* α0 := format_argument::["new_display"] (addr_of self.["re"]) in
       let* α1 := self.["im"].["neg"] in
-      let* α2 := format_argument::["new_display"] (deref α1) in
+      let* α2 := format_argument::["new_display"] (addr_of α1) in
       let* α3 :=
         format_arguments::["new_v1"]
-          (deref [ ""; "-"; "i" ])
-          (deref [ α0; α2 ]) in
+          (addr_of [ ""; "-"; "i" ])
+          (addr_of [ α0; α2 ]) in
       f.["write_fmt"] α3
     else
-      let* α0 := format_argument::["new_display"] (deref self.["re"]) in
-      let* α1 := format_argument::["new_display"] (deref self.["im"]) in
+      let* α0 := format_argument::["new_display"] (addr_of self.["re"]) in
+      let* α1 := format_argument::["new_display"] (addr_of self.["im"]) in
       let* α2 :=
         format_arguments::["new_v1"]
-          (deref [ ""; "+"; "i" ])
-          (deref [ α0; α1 ]) in
+          (addr_of [ ""; "+"; "i" ])
+          (addr_of [ α0; α1 ]) in
       f.["write_fmt"] α2.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {

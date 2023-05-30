@@ -4,7 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition LOREM_IPSUM : ref str :=
-  Pure "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+  Pure
+    "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
 consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
@@ -24,37 +25,38 @@ Definition Path := Path.t.
 Definition main (_ : unit) : M unit :=
   let* path := Path::["new"] "lorem_ipsum.txt" in
   let* display := path.["display"] in
-  let* α0 := File::["create"] (deref path) in
   let* file :=
+    let* α0 := File::["create"] (addr_of path) in
     match α0 with
     | Err why =>
-      let* α0 := format_argument::["new_display"] (deref display) in
-      let* α1 := format_argument::["new_display"] (deref why) in
+      let* α0 := format_argument::["new_display"] (addr_of display) in
+      let* α1 := format_argument::["new_display"] (addr_of why) in
       let* α2 :=
         format_arguments::["new_v1"]
-          (deref [ "couldn't create "; ": " ])
-          (deref [ α0; α1 ]) in
+          (addr_of [ "couldn't create "; ": " ])
+          (addr_of [ α0; α1 ]) in
       _crate.rt.panic_fmt α2
     | Ok file => Pure file
     end in
-  let* α1 := LOREM_IPSUM.["as_bytes"] in
-  let* α2 := file.["write_all"] α1 in
-  match α2 with
+  let* α0 := LOREM_IPSUM.["as_bytes"] in
+  let* α1 := file.["write_all"] α0 in
+  match α1 with
   | Err why =>
-    let* α0 := format_argument::["new_display"] (deref display) in
-    let* α1 := format_argument::["new_display"] (deref why) in
+    let* α0 := format_argument::["new_display"] (addr_of display) in
+    let* α1 := format_argument::["new_display"] (addr_of why) in
     let* α2 :=
       format_arguments::["new_v1"]
-        (deref [ "couldn't write to "; ": " ])
-        (deref [ α0; α1 ]) in
+        (addr_of [ "couldn't write to "; ": " ])
+        (addr_of [ α0; α1 ]) in
     _crate.rt.panic_fmt α2
   | Ok _ =>
-    let* α0 := format_argument::["new_display"] (deref display) in
-    let* α1 :=
-      format_arguments::["new_v1"]
-        (deref [ "successfully wrote to "; "
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of display) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "successfully wrote to "; "
 " ])
-        (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   end.

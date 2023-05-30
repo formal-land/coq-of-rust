@@ -6,97 +6,117 @@ Import Root.std.prelude.rust_2015.
 Module env := std.env.
 
 Definition increase (number : i32) : M unit :=
-  let* α0 := number.["add"] 1 in
-  let* α1 := format_argument::["new_display"] (deref α0) in
-  let* α2 := format_arguments::["new_v1"] (deref [ ""; "
-" ]) (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := number.["add"] 1 in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.
 
 Definition decrease (number : i32) : M unit :=
-  let* α0 := number.["sub"] 1 in
-  let* α1 := format_argument::["new_display"] (deref α0) in
-  let* α2 := format_arguments::["new_v1"] (deref [ ""; "
-" ]) (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := number.["sub"] 1 in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.
 
 Definition help (_ : unit) : M unit :=
-  let* α0 :=
-    format_arguments::["new_const"]
-      (deref
-        [
-          "usage:
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of
+            [
+              "usage:
 match_args <string>
     Check whether given string is the answer.
 match_args {increase|decrease} <integer>
     Increase or decrease given integer by one.
 "
-        ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
+            ]) in
+      _crate.io._print α0 in
+    Pure tt in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := env.args tt in
-  let* args := α0.["collect"] in
-  let* α1 := args.["len"] in
-  match α1 with
+  let* args :=
+    let* α0 := env.args tt in
+    α0.["collect"] in
+  let* α0 := args.["len"] in
+  match α0 with
   | 1 =>
-    let* α0 :=
-      format_arguments::["new_const"]
-        (deref [ "My name is 'match_args'. Try passing some arguments!
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of
+              [ "My name is 'match_args'. Try passing some arguments!
 " ]) in
-    let* _ := _crate.io._print α0 in
-    let _ := tt in
+        _crate.io._print α0 in
+      Pure tt in
     Pure tt
   | 2 =>
     let* α0 := args[1].["parse"] in
     match α0 with
     | Ok 42 =>
-      let* α0 :=
-        format_arguments::["new_const"] (deref [ "This is the answer!
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "This is the answer!
 " ]) in
-      let* _ := _crate.io._print α0 in
+        _crate.io._print α0 in
       Pure tt
     | _ =>
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ "This is not the answer.
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "This is not the answer.
 " ]) in
-      let* _ := _crate.io._print α0 in
+        _crate.io._print α0 in
       Pure tt
     end
   | 3 =>
-    let cmd := deref args[1] in
-    let num := deref args[2] in
-    let* α0 := num.["parse"] in
+    let cmd := addr_of args[1] in
+    let num := addr_of args[2] in
     let* number :=
+      let* α0 := num.["parse"] in
       match α0 with
       | Ok n => Pure n
       | Err _ =>
-        let* α0 :=
-          format_arguments::["new_const"]
-            (deref [ "error: second argument not an integer
+        let* _ :=
+          let* _ :=
+            let* α0 :=
+              format_arguments::["new_const"]
+                (addr_of [ "error: second argument not an integer
 " ]) in
-        let* _ := _crate.io._eprint α0 in
-        let _ := tt in
+            _crate.io._eprint α0 in
+          Pure tt in
         let* _ := help tt in
         let* _ := Return tt in
         Pure tt
       end in
-    match deref cmd[RangeFull {|  |}] with
+    match addr_of cmd[RangeFull {|  |}] with
     | "increase" => increase number
     | "decrease" => decrease number
     | _ =>
-      let* α0 :=
-        format_arguments::["new_const"] (deref [ "error: invalid command
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "error: invalid command
 " ]) in
-      let* _ := _crate.io._eprint α0 in
-      let _ := tt in
+          _crate.io._eprint α0 in
+        Pure tt in
       let* _ := help tt in
       Pure tt
     end

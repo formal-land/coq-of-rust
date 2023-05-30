@@ -26,7 +26,7 @@ Module ImplYears.
   
   Definition to_days (self : ref Self) : M Days :=
     let* α0 := (self.[0]).["mul"] 365 in
-    Pure Days.Build_t α0.
+    Pure (Days.Build_t α0).
   
   Global Instance Method_to_days : Notation.Dot "to_days" := {
     Notation.dot := to_days;
@@ -38,7 +38,7 @@ Module ImplDays.
   
   Definition to_years (self : ref Self) : M Years :=
     let* α0 := (self.[0]).["div"] 365 in
-    Pure Years.Build_t α0.
+    Pure (Years.Build_t α0).
   
   Global Instance Method_to_years : Notation.Dot "to_years" := {
     Notation.dot := to_years;
@@ -51,23 +51,27 @@ Definition old_enough (age : ref Years) : M bool := (age.[0]).["ge"] 18.
 Definition main (_ : unit) : M unit :=
   let age := Years.Build_t 5 in
   let* age_days := age.["to_days"] in
-  let* α0 := old_enough (deref age) in
-  let* α1 := format_argument::["new_display"] (deref α0) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "Old enough "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := old_enough (addr_of age) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Old enough "; "
 " ])
-      (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
-  let* α3 := age_days.["to_years"] in
-  let* α4 := old_enough (deref α3) in
-  let* α5 := format_argument::["new_display"] (deref α4) in
-  let* α6 :=
-    format_arguments::["new_v1"]
-      (deref [ "Old enough "; "
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := age_days.["to_years"] in
+      let* α1 := old_enough (addr_of α0) in
+      let* α2 := format_argument::["new_display"] (addr_of α1) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Old enough "; "
 " ])
-      (deref [ α5 ]) in
-  let* _ := _crate.io._print α6 in
-  let _ := tt in
+          (addr_of [ α2 ]) in
+      _crate.io._print α3 in
+    Pure tt in
   Pure tt.

@@ -12,11 +12,12 @@ Definition main (_ : unit) : M unit :=
   let x := 7 in
   let print :=
     fun  =>
-      let* α0 := format_argument::["new_display"] (deref x) in
-      let* α1 :=
-        format_arguments::["new_v1"] (deref [ ""; "
-" ]) (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of x) in
+        let* α1 :=
+          format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+        _crate.io._print α1 in
       Pure tt in
   let* _ := apply print in
   Pure tt.

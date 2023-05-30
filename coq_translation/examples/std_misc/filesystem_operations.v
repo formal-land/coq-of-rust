@@ -21,9 +21,9 @@ Module Path := std.path.Path.
 Definition Path := Path.t.
 
 Definition cat (path : ref Path) : M (io.Result String) :=
-  let* α0 := File::["open"] path in
-  let* α1 := LangItem α0 in
   let* f :=
+    let* α0 := File::["open"] path in
+    let* α1 := LangItem α0 in
     match α1 with
     | Break {| Break.0 := residual; |} =>
       let* α0 := LangItem residual in
@@ -31,24 +31,24 @@ Definition cat (path : ref Path) : M (io.Result String) :=
     | Continue {| Continue.0 := val; |} => Pure val
     end in
   let* s := String::["new"] tt in
-  let* α2 := f.["read_to_string"] (deref s) in
-  match α2 with
-  | Ok _ => Ok s
-  | Err e => Err e
+  let* α0 := f.["read_to_string"] (addr_of s) in
+  match α0 with
+  | Ok _ => Pure (Ok s)
+  | Err e => Pure (Err e)
   end.
 
 Definition echo (s : ref str) (path : ref Path) : M (io.Result unit) :=
-  let* α0 := File::["create"] path in
-  let* α1 := LangItem α0 in
   let* f :=
+    let* α0 := File::["create"] path in
+    let* α1 := LangItem α0 in
     match α1 with
     | Break {| Break.0 := residual; |} =>
       let* α0 := LangItem residual in
       Return α0
     | Continue {| Continue.0 := val; |} => Pure val
     end in
-  let* α2 := s.["as_bytes"] in
-  f.["write_all"] α2.
+  let* α0 := s.["as_bytes"] in
+  f.["write_all"] α0.
 
 Definition touch (path : ref Path) : M (io.Result unit) :=
   let* α0 := OpenOptions::["new"] tt in
@@ -56,163 +56,210 @@ Definition touch (path : ref Path) : M (io.Result unit) :=
   let* α2 := α1.["write"] true in
   let* α3 := α2.["open"] path in
   match α3 with
-  | Ok _ => Ok tt
-  | Err e => Err e
+  | Ok _ => Pure (Ok tt)
+  | Err e => Pure (Err e)
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := format_arguments::["new_const"] (deref [ "`mkdir a`
-" ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
-  let* α1 := fs.create_dir "a" in
   let* _ :=
-    match α1 with
+    let* _ :=
+      let* α0 := format_arguments::["new_const"] (addr_of [ "`mkdir a`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := fs.create_dir "a" in
+    match α0 with
     | Err why =>
-      let* α0 := why.["kind"] in
-      let* α1 := format_argument::["new_debug"] (deref α0) in
-      let* α2 :=
-        format_arguments::["new_v1"] (deref [ "! "; "
-" ]) (deref [ α1 ]) in
-      let* _ := _crate.io._print α2 in
+      let* _ :=
+        let* α0 := why.["kind"] in
+        let* α1 := format_argument::["new_debug"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "! "; "
+" ])
+            (addr_of [ α1 ]) in
+        _crate.io._print α2 in
       Pure tt
     | Ok _ => Pure tt
     end in
-  let* α2 :=
-    format_arguments::["new_const"] (deref [ "`echo hello > a/b.txt`
-" ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
-  let* α3 := Path::["new"] "a/b.txt" in
-  let* α4 := echo "hello" (deref α3) in
   let* _ :=
-    α4.["unwrap_or_else"]
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "`echo hello > a/b.txt`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := Path::["new"] "a/b.txt" in
+    let* α1 := echo "hello" (addr_of α0) in
+    α1.["unwrap_or_else"]
       (fun why =>
-        let* α0 := why.["kind"] in
-        let* α1 := format_argument::["new_debug"] (deref α0) in
-        let* α2 :=
-          format_arguments::["new_v1"] (deref [ "! "; "
-" ]) (deref [ α1 ]) in
-        let* _ := _crate.io._print α2 in
-        let _ := tt in
-        Pure tt) in
-  let* α5 := format_arguments::["new_const"] (deref [ "`mkdir -p a/c/d`
-" ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
-  let* α6 := fs.create_dir_all "a/c/d" in
-  let* _ :=
-    α6.["unwrap_or_else"]
-      (fun why =>
-        let* α0 := why.["kind"] in
-        let* α1 := format_argument::["new_debug"] (deref α0) in
-        let* α2 :=
-          format_arguments::["new_v1"] (deref [ "! "; "
-" ]) (deref [ α1 ]) in
-        let* _ := _crate.io._print α2 in
-        let _ := tt in
-        Pure tt) in
-  let* α7 := format_arguments::["new_const"] (deref [ "`touch a/c/e.txt`
-" ]) in
-  let* _ := _crate.io._print α7 in
-  let _ := tt in
-  let* α8 := Path::["new"] "a/c/e.txt" in
-  let* α9 := touch (deref α8) in
-  let* _ :=
-    α9.["unwrap_or_else"]
-      (fun why =>
-        let* α0 := why.["kind"] in
-        let* α1 := format_argument::["new_debug"] (deref α0) in
-        let* α2 :=
-          format_arguments::["new_v1"] (deref [ "! "; "
-" ]) (deref [ α1 ]) in
-        let* _ := _crate.io._print α2 in
-        let _ := tt in
-        Pure tt) in
-  let* α10 :=
-    format_arguments::["new_const"] (deref [ "`ln -s ../b.txt a/c/b.txt`
-" ]) in
-  let* _ := _crate.io._print α10 in
-  let _ := tt in
-  let* _ :=
-    if (true : bool) then
-      let* α0 := unix.fs.symlink "../b.txt" "a/c/b.txt" in
-      let* _ :=
-        α0.["unwrap_or_else"]
-          (fun why =>
+        let* _ :=
+          let* _ :=
             let* α0 := why.["kind"] in
-            let* α1 := format_argument::["new_debug"] (deref α0) in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
             let* α2 :=
               format_arguments::["new_v1"]
-                (deref [ "! "; "
+                (addr_of [ "! "; "
 " ])
-                (deref [ α1 ]) in
-            let* _ := _crate.io._print α2 in
-            let _ := tt in
+                (addr_of [ α1 ]) in
+            _crate.io._print α2 in
+          Pure tt in
+        Pure tt) in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "`mkdir -p a/c/d`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := fs.create_dir_all "a/c/d" in
+    α0.["unwrap_or_else"]
+      (fun why =>
+        let* _ :=
+          let* _ :=
+            let* α0 := why.["kind"] in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
+            let* α2 :=
+              format_arguments::["new_v1"]
+                (addr_of [ "! "; "
+" ])
+                (addr_of [ α1 ]) in
+            _crate.io._print α2 in
+          Pure tt in
+        Pure tt) in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "`touch a/c/e.txt`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := Path::["new"] "a/c/e.txt" in
+    let* α1 := touch (addr_of α0) in
+    α1.["unwrap_or_else"]
+      (fun why =>
+        let* _ :=
+          let* _ :=
+            let* α0 := why.["kind"] in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
+            let* α2 :=
+              format_arguments::["new_v1"]
+                (addr_of [ "! "; "
+" ])
+                (addr_of [ α1 ]) in
+            _crate.io._print α2 in
+          Pure tt in
+        Pure tt) in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "`ln -s ../b.txt a/c/b.txt`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    if (true : bool) then
+      let* _ :=
+        let* α0 := unix.fs.symlink "../b.txt" "a/c/b.txt" in
+        α0.["unwrap_or_else"]
+          (fun why =>
+            let* _ :=
+              let* _ :=
+                let* α0 := why.["kind"] in
+                let* α1 := format_argument::["new_debug"] (addr_of α0) in
+                let* α2 :=
+                  format_arguments::["new_v1"]
+                    (addr_of [ "! "; "
+" ])
+                    (addr_of [ α1 ]) in
+                _crate.io._print α2 in
+              Pure tt in
             Pure tt) in
       Pure tt
     else
       Pure tt in
-  let* α11 := format_arguments::["new_const"] (deref [ "`cat a/c/b.txt`
-" ]) in
-  let* _ := _crate.io._print α11 in
-  let _ := tt in
-  let* α12 := Path::["new"] "a/c/b.txt" in
-  let* α13 := cat (deref α12) in
   let* _ :=
-    match α13 with
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "`cat a/c/b.txt`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := Path::["new"] "a/c/b.txt" in
+    let* α1 := cat (addr_of α0) in
+    match α1 with
     | Err why =>
-      let* α0 := why.["kind"] in
-      let* α1 := format_argument::["new_debug"] (deref α0) in
-      let* α2 :=
-        format_arguments::["new_v1"] (deref [ "! "; "
-" ]) (deref [ α1 ]) in
-      let* _ := _crate.io._print α2 in
+      let* _ :=
+        let* α0 := why.["kind"] in
+        let* α1 := format_argument::["new_debug"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "! "; "
+" ])
+            (addr_of [ α1 ]) in
+        _crate.io._print α2 in
       Pure tt
     | Ok s =>
-      let* α0 := format_argument::["new_display"] (deref s) in
-      let* α1 :=
-        format_arguments::["new_v1"] (deref [ "> "; "
-" ]) (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of s) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "> "; "
+" ])
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
       Pure tt
     end in
-  let* α14 := format_arguments::["new_const"] (deref [ "`ls a`
-" ]) in
-  let* _ := _crate.io._print α14 in
-  let _ := tt in
-  let* α15 := fs.read_dir "a" in
   let* _ :=
-    match α15 with
+    let* _ :=
+      let* α0 := format_arguments::["new_const"] (addr_of [ "`ls a`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := fs.read_dir "a" in
+    match α0 with
     | Err why =>
-      let* α0 := why.["kind"] in
-      let* α1 := format_argument::["new_debug"] (deref α0) in
-      let* α2 :=
-        format_arguments::["new_v1"] (deref [ "! "; "
-" ]) (deref [ α1 ]) in
-      let* _ := _crate.io._print α2 in
+      let* _ :=
+        let* α0 := why.["kind"] in
+        let* α1 := format_argument::["new_debug"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "! "; "
+" ])
+            (addr_of [ α1 ]) in
+        _crate.io._print α2 in
       Pure tt
     | Ok paths =>
       let* α0 := LangItem paths in
       match α0 with
       | iter =>
         loop
-          let* α0 := LangItem (deref iter) in
           let* _ :=
+            let* α0 := LangItem (addr_of iter) in
             match α0 with
             | None => Pure Break
             | Some {| Some.0 := path; |} =>
-              let* α0 := path.["unwrap"] in
-              let* α1 := α0.["path"] in
-              let* α2 := format_argument::["new_debug"] (deref α1) in
-              let* α3 :=
-                format_arguments::["new_v1"]
-                  (deref [ "> "; "
+              let* _ :=
+                let* _ :=
+                  let* α0 := path.["unwrap"] in
+                  let* α1 := α0.["path"] in
+                  let* α2 := format_argument::["new_debug"] (addr_of α1) in
+                  let* α3 :=
+                    format_arguments::["new_v1"]
+                      (addr_of [ "> "; "
 " ])
-                  (deref [ α2 ]) in
-              let* _ := _crate.io._print α3 in
-              let _ := tt in
+                      (addr_of [ α2 ]) in
+                  _crate.io._print α3 in
+                Pure tt in
               Pure tt
             end in
           Pure tt
@@ -220,36 +267,50 @@ Definition main (_ : unit) : M unit :=
           for
       end
     end in
-  let* α16 := format_arguments::["new_const"] (deref [ "`rm a/c/e.txt`
-" ]) in
-  let* _ := _crate.io._print α16 in
-  let _ := tt in
-  let* α17 := fs.remove_file "a/c/e.txt" in
   let* _ :=
-    α17.["unwrap_or_else"]
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "`rm a/c/e.txt`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := fs.remove_file "a/c/e.txt" in
+    α0.["unwrap_or_else"]
       (fun why =>
-        let* α0 := why.["kind"] in
-        let* α1 := format_argument::["new_debug"] (deref α0) in
-        let* α2 :=
-          format_arguments::["new_v1"] (deref [ "! "; "
-" ]) (deref [ α1 ]) in
-        let* _ := _crate.io._print α2 in
-        let _ := tt in
+        let* _ :=
+          let* _ :=
+            let* α0 := why.["kind"] in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
+            let* α2 :=
+              format_arguments::["new_v1"]
+                (addr_of [ "! "; "
+" ])
+                (addr_of [ α1 ]) in
+            _crate.io._print α2 in
+          Pure tt in
         Pure tt) in
-  let* α18 := format_arguments::["new_const"] (deref [ "`rmdir a/c/d`
-" ]) in
-  let* _ := _crate.io._print α18 in
-  let _ := tt in
-  let* α19 := fs.remove_dir "a/c/d" in
   let* _ :=
-    α19.["unwrap_or_else"]
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "`rmdir a/c/d`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := fs.remove_dir "a/c/d" in
+    α0.["unwrap_or_else"]
       (fun why =>
-        let* α0 := why.["kind"] in
-        let* α1 := format_argument::["new_debug"] (deref α0) in
-        let* α2 :=
-          format_arguments::["new_v1"] (deref [ "! "; "
-" ]) (deref [ α1 ]) in
-        let* _ := _crate.io._print α2 in
-        let _ := tt in
+        let* _ :=
+          let* _ :=
+            let* α0 := why.["kind"] in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
+            let* α2 :=
+              format_arguments::["new_v1"]
+                (addr_of [ "! "; "
+" ])
+                (addr_of [ α1 ]) in
+            _crate.io._print α2 in
+          Pure tt in
         Pure tt) in
   Pure tt.

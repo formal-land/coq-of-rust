@@ -9,48 +9,57 @@ Definition main (_ : unit) : M unit :=
   match α0 with
   | iter =>
     loop
-      let* α0 := LangItem (deref iter) in
       let* _ :=
+        let* α0 := LangItem (addr_of iter) in
         match α0 with
         | None => Pure Break
         | Some {| Some.0 := n; |} =>
           let* α0 := n.["rem"] 15 in
           let* α1 := α0.["eq"] 0 in
           if (α1 : bool) then
-            let* α0 :=
-              format_arguments::["new_const"] (deref [ "fizzbuzz
+            let* _ :=
+              let* _ :=
+                let* α0 :=
+                  format_arguments::["new_const"] (addr_of [ "fizzbuzz
 " ]) in
-            let* _ := _crate.io._print α0 in
-            let _ := tt in
+                _crate.io._print α0 in
+              Pure tt in
             Pure tt
           else
             let* α0 := n.["rem"] 3 in
             let* α1 := α0.["eq"] 0 in
             if (α1 : bool) then
-              let* α0 := format_arguments::["new_const"] (deref [ "fizz
+              let* _ :=
+                let* _ :=
+                  let* α0 :=
+                    format_arguments::["new_const"] (addr_of [ "fizz
 " ]) in
-              let* _ := _crate.io._print α0 in
-              let _ := tt in
+                  _crate.io._print α0 in
+                Pure tt in
               Pure tt
             else
               let* α0 := n.["rem"] 5 in
               let* α1 := α0.["eq"] 0 in
               if (α1 : bool) then
-                let* α0 :=
-                  format_arguments::["new_const"] (deref [ "buzz
+                let* _ :=
+                  let* _ :=
+                    let* α0 :=
+                      format_arguments::["new_const"] (addr_of [ "buzz
 " ]) in
-                let* _ := _crate.io._print α0 in
-                let _ := tt in
+                    _crate.io._print α0 in
+                  Pure tt in
                 Pure tt
               else
-                let* α0 := format_argument::["new_display"] (deref n) in
-                let* α1 :=
-                  format_arguments::["new_v1"]
-                    (deref [ ""; "
+                let* _ :=
+                  let* _ :=
+                    let* α0 := format_argument::["new_display"] (addr_of n) in
+                    let* α1 :=
+                      format_arguments::["new_v1"]
+                        (addr_of [ ""; "
 " ])
-                    (deref [ α0 ]) in
-                let* _ := _crate.io._print α1 in
-                let _ := tt in
+                        (addr_of [ α0 ]) in
+                    _crate.io._print α1 in
+                  Pure tt in
                 Pure tt
         end in
       Pure tt

@@ -8,45 +8,50 @@ Definition main (_ : unit) : M unit :=
   let* color := String::["from"] "green" in
   let print :=
     fun  =>
-      let* α0 := format_argument::["new_display"] (deref color) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (deref [ "`color`: "; "
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of color) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "`color`: "; "
 " ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
       Pure tt in
   let* _ := print tt in
-  let _reborrow := deref color in
+  let _reborrow := addr_of color in
   let* _ := print tt in
   let _color_moved := color in
   let count := 0 in
   let inc :=
     fun  =>
       let* _ := count.["add_assign"] 1 in
-      let* α0 := format_argument::["new_display"] (deref count) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (deref [ "`count`: "; "
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_display"] (addr_of count) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "`count`: "; "
 " ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
-      let _ := tt in
+              (addr_of [ α0 ]) in
+          _crate.io._print α1 in
+        Pure tt in
       Pure tt in
   let* _ := inc tt in
   let* _ := inc tt in
-  let _count_reborrowed := deref count in
+  let _count_reborrowed := addr_of count in
   let* movable := Box::["new"] 3 in
   let consume :=
     fun  =>
-      let* α0 := format_argument::["new_debug"] (deref movable) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (deref [ "`movable`: "; "
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_debug"] (addr_of movable) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "`movable`: "; "
 " ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
-      let _ := tt in
+              (addr_of [ α0 ]) in
+          _crate.io._print α1 in
+        Pure tt in
       let* _ := mem.drop movable in
       Pure tt in
   let* _ := consume tt in

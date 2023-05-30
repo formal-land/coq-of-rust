@@ -5,27 +5,37 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := _crate.boxed.Box::["new"] [ "42"; "tofu"; "93"; "999"; "18" ] in
-  let* strings := Slice::["into_vec"] α0 in
+  let* strings :=
+    let* α0 := _crate.boxed.Box::["new"] [ "42"; "tofu"; "93"; "999"; "18" ] in
+    Slice::["into_vec"] α0 in
   let* errors := _crate.vec.Vec::["new"] tt in
-  let* α1 := strings.["into_iter"] in
-  let* α2 := α1.["map"] (fun s => s.["parse"]) in
-  let* α3 :=
-    α2.["filter_map"]
-      (fun r =>
-        let* α0 := r.["map_err"] (fun e => errors.["push"] e) in
-        α0.["ok"]) in
-  let* numbers := α3.["collect"] in
-  let* α4 := format_argument::["new_debug"] (deref numbers) in
-  let* α5 :=
-    format_arguments::["new_v1"] (deref [ "Numbers: "; "
-" ]) (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
-  let* α6 := format_argument::["new_debug"] (deref errors) in
-  let* α7 :=
-    format_arguments::["new_v1"] (deref [ "Errors: "; "
-" ]) (deref [ α6 ]) in
-  let* _ := _crate.io._print α7 in
-  let _ := tt in
+  let* numbers :=
+    let* α0 := strings.["into_iter"] in
+    let* α1 := α0.["map"] (fun s => s.["parse"]) in
+    let* α2 :=
+      α1.["filter_map"]
+        (fun r =>
+          let* α0 := r.["map_err"] (fun e => errors.["push"] e) in
+          α0.["ok"]) in
+    α2.["collect"] in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of numbers) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Numbers: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of errors) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Errors: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

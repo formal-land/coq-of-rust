@@ -6,65 +6,77 @@ Import Root.std.prelude.rust_2015.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let n := 5 in
-  let* α0 := n.["lt"] 0 in
   let* _ :=
+    let* α0 := n.["lt"] 0 in
     if (α0 : bool) then
-      let* α0 := format_argument::["new_display"] (deref n) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (deref [ ""; " is negative" ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
-      let _ := tt in
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_display"] (addr_of n) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ ""; " is negative" ])
+              (addr_of [ α0 ]) in
+          _crate.io._print α1 in
+        Pure tt in
       Pure tt
     else
       let* α0 := n.["gt"] 0 in
       if (α0 : bool) then
-        let* α0 := format_argument::["new_display"] (deref n) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (deref [ ""; " is positive" ])
-            (deref [ α0 ]) in
-        let* _ := _crate.io._print α1 in
-        let _ := tt in
+        let* _ :=
+          let* _ :=
+            let* α0 := format_argument::["new_display"] (addr_of n) in
+            let* α1 :=
+              format_arguments::["new_v1"]
+                (addr_of [ ""; " is positive" ])
+                (addr_of [ α0 ]) in
+            _crate.io._print α1 in
+          Pure tt in
         Pure tt
       else
-        let* α0 := format_argument::["new_display"] (deref n) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (deref [ ""; " is zero" ])
-            (deref [ α0 ]) in
-        let* _ := _crate.io._print α1 in
-        let _ := tt in
+        let* _ :=
+          let* _ :=
+            let* α0 := format_argument::["new_display"] (addr_of n) in
+            let* α1 :=
+              format_arguments::["new_v1"]
+                (addr_of [ ""; " is zero" ])
+                (addr_of [ α0 ]) in
+            _crate.io._print α1 in
+          Pure tt in
         Pure tt in
-  let* α1 := n.["lt"] 10 in
-  let* α2 := 10.["neg"] in
-  let* α3 := n.["gt"] α2 in
-  let* α4 := α1.["andb"] α3 in
   let* big_n :=
-    if (α4 : bool) then
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ ", and is a small number, increase ten-fold
+    let* α0 := n.["lt"] 10 in
+    let* α1 := 10.["neg"] in
+    let* α2 := n.["gt"] α1 in
+    let* α3 := α0.["andb"] α2 in
+    if (α3 : bool) then
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ ", and is a small number, increase ten-fold
 " ]) in
-      let* _ := _crate.io._print α0 in
-      let _ := tt in
+          _crate.io._print α0 in
+        Pure tt in
       10.["mul"] n
     else
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ ", and is a big number, halve the number
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ ", and is a big number, halve the number
 " ]) in
-      let* _ := _crate.io._print α0 in
-      let _ := tt in
+          _crate.io._print α0 in
+        Pure tt in
       n.["div"] 2 in
-  let* α5 := format_argument::["new_display"] (deref n) in
-  let* α6 := format_argument::["new_display"] (deref big_n) in
-  let* α7 :=
-    format_arguments::["new_v1"]
-      (deref [ ""; " -> "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α1 := format_argument::["new_display"] (addr_of big_n) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; " -> "; "
 " ])
-      (deref [ α5; α6 ]) in
-  let* _ := _crate.io._print α7 in
-  let _ := tt in
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.

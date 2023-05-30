@@ -8,15 +8,19 @@ Definition Command := Command.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := Command::["new"] "sleep" in
-  let* α1 := α0.["arg"] "5" in
-  let* α2 := α1.["spawn"] in
-  let* child := α2.["unwrap"] in
-  let* α3 := child.["wait"] in
-  let* _result := α3.["unwrap"] in
-  let* α4 :=
-    format_arguments::["new_const"] (deref [ "reached end of main
+  let* child :=
+    let* α0 := Command::["new"] "sleep" in
+    let* α1 := α0.["arg"] "5" in
+    let* α2 := α1.["spawn"] in
+    α2.["unwrap"] in
+  let* _result :=
+    let* α0 := child.["wait"] in
+    α0.["unwrap"] in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "reached end of main
 " ]) in
-  let* _ := _crate.io._print α4 in
-  let _ := tt in
+      _crate.io._print α0 in
+    Pure tt in
   Pure tt.

@@ -5,32 +5,34 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := sum_odd_numbers 9 in
-  let* α1 := format_argument::["new_display"] (deref α0) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "Sum of odd numbers up to 9 (excluding): "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := sum_odd_numbers 9 in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Sum of odd numbers up to 9 (excluding): "; "
 " ])
-      (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.
 
 Definition sum_odd_numbers (up_to : u32) : M u32 :=
   let acc := 0 in
-  let* α0 := LangItem Range {| Range.start := 0; Range.end := up_to; |} in
   let* _ :=
+    let* α0 := LangItem Range {| Range.start := 0; Range.end := up_to; |} in
     match α0 with
     | iter =>
       loop
-        let* α0 := LangItem (deref iter) in
         let* _ :=
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := i; |} =>
-            let* α0 := i.["rem"] 2 in
-            let* α1 := α0.["eq"] 1 in
             let* addition :=
+              let* α0 := i.["rem"] 2 in
+              let* α1 := α0.["eq"] 1 in
               match α1 with
               | true => Pure i
               | false => Pure Continue

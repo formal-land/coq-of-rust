@@ -6,38 +6,47 @@ Import Root.std.prelude.rust_2015.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let count := 0 in
-  let* α0 :=
-    format_arguments::["new_const"]
-      (deref [ "Let's count until infinity!
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "Let's count until infinity!
 " ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
+      _crate.io._print α0 in
+    Pure tt in
   loop
     let* _ := count.["add_assign"] 1 in
-    let* α0 := count.["eq"] 3 in
     let* _ :=
+      let* α0 := count.["eq"] 3 in
       if (α0 : bool) then
-        let* α0 := format_arguments::["new_const"] (deref [ "three
+        let* _ :=
+          let* _ :=
+            let* α0 := format_arguments::["new_const"] (addr_of [ "three
 " ]) in
-        let* _ := _crate.io._print α0 in
-        let _ := tt in
+            _crate.io._print α0 in
+          Pure tt in
         let _ := Continue in
         Pure tt
       else
         Pure tt in
-    let* α1 := format_argument::["new_display"] (deref count) in
-    let* α2 :=
-      format_arguments::["new_v1"] (deref [ ""; "
-" ]) (deref [ α1 ]) in
-    let* _ := _crate.io._print α2 in
-    let _ := tt in
-    let* α3 := count.["eq"] 5 in
-    if (α3 : bool) then
-      let* α0 :=
-        format_arguments::["new_const"] (deref [ "OK, that's enough
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of count) in
+        let* α1 :=
+          format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    let* α0 := count.["eq"] 5 in
+    if (α0 : bool) then
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "OK, that's enough
 " ]) in
-      let* _ := _crate.io._print α0 in
-      let _ := tt in
+          _crate.io._print α0 in
+        Pure tt in
       let _ := Break in
       Pure tt
     else

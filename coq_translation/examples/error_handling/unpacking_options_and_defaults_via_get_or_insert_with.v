@@ -44,48 +44,60 @@ Definition main (_ : unit) : M unit :=
   let my_fruit := None in
   let get_lemon_as_fallback :=
     fun  =>
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ "Providing lemon as fallback
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "Providing lemon as fallback
 " ]) in
-      let* _ := _crate.io._print α0 in
-      let _ := tt in
+          _crate.io._print α0 in
+        Pure tt in
       Pure Fruit.Lemon in
   let* first_available_fruit :=
     my_fruit.["get_or_insert_with"] get_lemon_as_fallback in
-  let* α0 := format_argument::["new_debug"] (deref first_available_fruit) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "my_fruit is: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_debug"] (addr_of first_available_fruit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "my_fruit is: "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let* α2 := format_argument::["new_debug"] (deref first_available_fruit) in
-  let* α3 :=
-    format_arguments::["new_v1"]
-      (deref [ "first_available_fruit is: "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_debug"] (addr_of first_available_fruit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "first_available_fruit is: "; "
 " ])
-      (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
-  let* my_apple := Some Fruit.Apple in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let my_apple := Some Fruit.Apple in
   let* should_be_apple :=
     my_apple.["get_or_insert_with"] get_lemon_as_fallback in
-  let* α4 := format_argument::["new_debug"] (deref should_be_apple) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "should_be_apple is: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of should_be_apple) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "should_be_apple is: "; "
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
-  let* α6 := format_argument::["new_debug"] (deref my_apple) in
-  let* α7 :=
-    format_arguments::["new_v1"]
-      (deref [ "my_apple is unchanged: "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of my_apple) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "my_apple is unchanged: "; "
 " ])
-      (deref [ α6 ]) in
-  let* _ := _crate.io._print α7 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.
