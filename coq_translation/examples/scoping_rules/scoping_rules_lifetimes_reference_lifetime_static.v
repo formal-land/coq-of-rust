@@ -5,37 +5,45 @@ Import Root.std.prelude.rust_2015.
 
 Definition NUM : i32 := Pure 18.
 
-Definition coerce_static (arg : ref i32) : M (ref i32) := Pure deref NUM.
+Definition coerce_static (arg : ref i32) : M (ref i32) := Pure (addr_of NUM).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let static_string := "I'm in read-only memory" in
-  let* α0 := format_argument::["new_display"] (deref static_string) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "static_string: "; "
+  let* _ :=
+    let static_string := "I'm in read-only memory" in
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of static_string) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "static_string: "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let _ := tt in
-  let lifetime_num := 9 in
-  let* coerced_static := coerce_static (deref lifetime_num) in
-  let* α2 := format_argument::["new_display"] (deref coerced_static) in
-  let* α3 :=
-    format_arguments::["new_v1"]
-      (deref [ "coerced_static: "; "
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    Pure tt in
+  let* _ :=
+    let lifetime_num := 9 in
+    let* coerced_static := coerce_static (addr_of lifetime_num) in
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of coerced_static) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "coerced_static: "; "
 " ])
-      (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
-  let _ := tt in
-  let* α4 := format_argument::["new_display"] (deref NUM) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "NUM: "; " stays accessible!
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of NUM) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "NUM: "; " stays accessible!
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

@@ -15,38 +15,39 @@ Definition Path := Path.t.
 Definition main (_ : unit) : M unit :=
   let* path := Path::["new"] "hello.txt" in
   let* display := path.["display"] in
-  let* α0 := File::["open"] (deref path) in
   let* file :=
+    let* α0 := File::["open"] (addr_of path) in
     match α0 with
     | Err why =>
-      let* α0 := format_argument::["new_display"] (deref display) in
-      let* α1 := format_argument::["new_display"] (deref why) in
+      let* α0 := format_argument::["new_display"] (addr_of display) in
+      let* α1 := format_argument::["new_display"] (addr_of why) in
       let* α2 :=
         format_arguments::["new_v1"]
-          (deref [ "couldn't open "; ": " ])
-          (deref [ α0; α1 ]) in
+          (addr_of [ "couldn't open "; ": " ])
+          (addr_of [ α0; α1 ]) in
       _crate.rt.panic_fmt α2
     | Ok file => Pure file
     end in
   let* s := String::["new"] tt in
-  let* α1 := file.["read_to_string"] (deref s) in
-  match α1 with
+  let* α0 := file.["read_to_string"] (addr_of s) in
+  match α0 with
   | Err why =>
-    let* α0 := format_argument::["new_display"] (deref display) in
-    let* α1 := format_argument::["new_display"] (deref why) in
+    let* α0 := format_argument::["new_display"] (addr_of display) in
+    let* α1 := format_argument::["new_display"] (addr_of why) in
     let* α2 :=
       format_arguments::["new_v1"]
-        (deref [ "couldn't read "; ": " ])
-        (deref [ α0; α1 ]) in
+        (addr_of [ "couldn't read "; ": " ])
+        (addr_of [ α0; α1 ]) in
     _crate.rt.panic_fmt α2
   | Ok _ =>
-    let* α0 := format_argument::["new_display"] (deref display) in
-    let* α1 := format_argument::["new_display"] (deref s) in
-    let* α2 :=
-      format_arguments::["new_v1"]
-        (deref [ ""; " contains:
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of display) in
+      let* α1 := format_argument::["new_display"] (addr_of s) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; " contains:
 " ])
-        (deref [ α0; α1 ]) in
-    let* _ := _crate.io._print α2 in
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
     Pure tt
   end.

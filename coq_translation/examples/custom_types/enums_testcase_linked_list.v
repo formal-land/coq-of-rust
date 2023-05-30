@@ -23,7 +23,7 @@ Module ImplList.
   
   Definition prepend (self : Self) (elem : u32) : M List :=
     let* α0 := Box::["new"] self in
-    Cons elem α0.
+    Pure (Cons elem α0).
   
   Global Instance Method_prepend : Notation.Dot "prepend" := {
     Notation.dot := prepend;
@@ -46,16 +46,20 @@ Module ImplList.
     let* α0 := self.["deref"] in
     match α0 with
     | Cons head tail =>
-      let* α0 := format_argument::["new_display"] (deref head) in
-      let* α1 := tail.["stringify"] in
-      let* α2 := format_argument::["new_display"] (deref α1) in
-      let* α3 :=
-        format_arguments::["new_v1"] (deref [ ""; ", " ]) (deref [ α0; α2 ]) in
-      let* res := _crate.fmt.format α3 in
+      let* res :=
+        let* α0 := format_argument::["new_display"] (addr_of head) in
+        let* α1 := tail.["stringify"] in
+        let* α2 := format_argument::["new_display"] (addr_of α1) in
+        let* α3 :=
+          format_arguments::["new_v1"]
+            (addr_of [ ""; ", " ])
+            (addr_of [ α0; α2 ]) in
+        _crate.fmt.format α3 in
       Pure res
     | Nil =>
-      let* α0 := format_arguments::["new_const"] (deref [ "Nil" ]) in
-      let* res := _crate.fmt.format α0 in
+      let* res :=
+        let* α0 := format_arguments::["new_const"] (addr_of [ "Nil" ]) in
+        _crate.fmt.format α0 in
       Pure res
     end.
   
@@ -67,25 +71,33 @@ End ImplList.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let* list := List::["new"] tt in
-  let* α0 := list.["prepend"] 1 in
-  let* _ := assign list α0 in
-  let* α1 := list.["prepend"] 2 in
-  let* _ := assign list α1 in
-  let* α2 := list.["prepend"] 3 in
-  let* _ := assign list α2 in
-  let* α3 := list.["len"] in
-  let* α4 := format_argument::["new_display"] (deref α3) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "linked list has length: "; "
+  let* _ :=
+    let* α0 := list.["prepend"] 1 in
+    assign list α0 in
+  let* _ :=
+    let* α0 := list.["prepend"] 2 in
+    assign list α0 in
+  let* _ :=
+    let* α0 := list.["prepend"] 3 in
+    assign list α0 in
+  let* _ :=
+    let* _ :=
+      let* α0 := list.["len"] in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "linked list has length: "; "
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
-  let* α6 := list.["stringify"] in
-  let* α7 := format_argument::["new_display"] (deref α6) in
-  let* α8 := format_arguments::["new_v1"] (deref [ ""; "
-" ]) (deref [ α7 ]) in
-  let* _ := _crate.io._print α8 in
-  let _ := tt in
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := list.["stringify"] in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.

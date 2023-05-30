@@ -41,26 +41,26 @@ Module checked.
   Definition div (x : f64) (y : f64) : M MathResult :=
     let* α0 := y.["eq"] 0 (* 0.0 *) in
     if (α0 : bool) then
-      Err MathError.DivisionByZero
+      Pure (Err MathError.DivisionByZero)
     else
       let* α0 := x.["div"] y in
-      Ok α0.
+      Pure (Ok α0).
   
   Definition sqrt (x : f64) : M MathResult :=
     let* α0 := x.["lt"] 0 (* 0.0 *) in
     if (α0 : bool) then
-      Err MathError.NegativeSquareRoot
+      Pure (Err MathError.NegativeSquareRoot)
     else
       let* α0 := x.["sqrt"] in
-      Ok α0.
+      Pure (Ok α0).
   
   Definition ln (x : f64) : M MathResult :=
     let* α0 := x.["le"] 0 (* 0.0 *) in
     if (α0 : bool) then
-      Err MathError.NonPositiveLogarithm
+      Pure (Err MathError.NonPositiveLogarithm)
     else
       let* α0 := x.["ln"] in
-      Ok α0.
+      Pure (Ok α0).
 End checked.
 
 Module MathError.
@@ -100,47 +100,49 @@ Definition MathResult : Set := Result f64 MathError.
 Definition div (x : f64) (y : f64) : M MathResult :=
   let* α0 := y.["eq"] 0 (* 0.0 *) in
   if (α0 : bool) then
-    Err MathError.DivisionByZero
+    Pure (Err MathError.DivisionByZero)
   else
     let* α0 := x.["div"] y in
-    Ok α0.
+    Pure (Ok α0).
 
 Definition sqrt (x : f64) : M MathResult :=
   let* α0 := x.["lt"] 0 (* 0.0 *) in
   if (α0 : bool) then
-    Err MathError.NegativeSquareRoot
+    Pure (Err MathError.NegativeSquareRoot)
   else
     let* α0 := x.["sqrt"] in
-    Ok α0.
+    Pure (Ok α0).
 
 Definition ln (x : f64) : M MathResult :=
   let* α0 := x.["le"] 0 (* 0.0 *) in
   if (α0 : bool) then
-    Err MathError.NonPositiveLogarithm
+    Pure (Err MathError.NonPositiveLogarithm)
   else
     let* α0 := x.["ln"] in
-    Ok α0.
+    Pure (Ok α0).
 
 Definition op (x : f64) (y : f64) : M f64 :=
   let* α0 := checked.div x y in
   match α0 with
   | Err why =>
-    let* α0 := format_argument::["new_debug"] (deref why) in
-    let* α1 := format_arguments::["new_v1"] (deref [ "" ]) (deref [ α0 ]) in
+    let* α0 := format_argument::["new_debug"] (addr_of why) in
+    let* α1 := format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
     _crate.rt.panic_fmt α1
   | Ok ratio =>
     let* α0 := checked.ln ratio in
     match α0 with
     | Err why =>
-      let* α0 := format_argument::["new_debug"] (deref why) in
-      let* α1 := format_arguments::["new_v1"] (deref [ "" ]) (deref [ α0 ]) in
+      let* α0 := format_argument::["new_debug"] (addr_of why) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
       _crate.rt.panic_fmt α1
     | Ok ln =>
       let* α0 := checked.sqrt ln in
       match α0 with
       | Err why =>
-        let* α0 := format_argument::["new_debug"] (deref why) in
-        let* α1 := format_arguments::["new_v1"] (deref [ "" ]) (deref [ α0 ]) in
+        let* α0 := format_argument::["new_debug"] (addr_of why) in
+        let* α1 :=
+          format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
         _crate.rt.panic_fmt α1
       | Ok sqrt => Pure sqrt
       end
@@ -149,10 +151,13 @@ Definition op (x : f64) (y : f64) : M f64 :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := op 1 (* 1.0 *) 10 (* 10.0 *) in
-  let* α1 := format_argument::["new_display"] (deref α0) in
-  let* α2 := format_arguments::["new_v1"] (deref [ ""; "
-" ]) (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := op 1 (* 1.0 *) 10 (* 10.0 *) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.

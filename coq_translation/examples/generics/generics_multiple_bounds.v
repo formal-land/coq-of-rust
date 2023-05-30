@@ -9,20 +9,26 @@ Definition compare_prints
     `{Display.Trait T}
     (t : ref T)
     : M unit :=
-  let* α0 := format_argument::["new_debug"] (deref t) in
-  let* α1 :=
-    format_arguments::["new_v1"] (deref [ "Debug: `"; "`
-" ]) (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let* α2 := format_argument::["new_display"] (deref t) in
-  let* α3 :=
-    format_arguments::["new_v1"]
-      (deref [ "Display: `"; "`
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Debug: `"; "`
 " ])
-      (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Display: `"; "`
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.
 
 Definition compare_types
@@ -32,26 +38,35 @@ Definition compare_types
     (t : ref T)
     (u : ref U)
     : M unit :=
-  let* α0 := format_argument::["new_debug"] (deref t) in
-  let* α1 :=
-    format_arguments::["new_v1"] (deref [ "t: `"; "`
-" ]) (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let* α2 := format_argument::["new_debug"] (deref u) in
-  let* α3 :=
-    format_arguments::["new_v1"] (deref [ "u: `"; "`
-" ]) (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "t: `"; "`
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of u) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "u: `"; "`
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let string := "words" in
   let array := [ 1; 2; 3 ] in
-  let* α0 := _crate.boxed.Box::["new"] [ 1; 2; 3 ] in
-  let* vec := Slice::["into_vec"] α0 in
-  let* _ := compare_prints (deref string) in
-  let* _ := compare_types (deref array) (deref vec) in
+  let* vec :=
+    let* α0 := _crate.boxed.Box::["new"] [ 1; 2; 3 ] in
+    Slice::["into_vec"] α0 in
+  let* _ := compare_prints (addr_of string) in
+  let* _ := compare_types (addr_of array) (addr_of vec) in
   Pure tt.

@@ -11,16 +11,10 @@ use rustc_middle::ty::TyCtxt;
 
 /// Struct [FreshVars] represents a set of fresh variables
 #[derive(Debug)]
-pub struct FreshVars(u64);
-
-impl Default for FreshVars {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+pub(crate) struct FreshVars(u64);
 
 impl FreshVars {
-    pub fn new() -> Self {
+    pub(crate) fn new() -> Self {
         FreshVars(0)
     }
 
@@ -119,6 +113,7 @@ pub(crate) enum Expr {
     StructTuple {
         path: Path,
         fields: Vec<Expr>,
+        struct_or_variant: StructOrVariant,
     },
     StructUnit {
         path: Path,
@@ -206,31 +201,13 @@ fn pure(e: Expr) -> Stmt {
 fn monadic_let_in_stmt(
     fresh_vars: FreshVars,
     e1: Stmt,
-    var_name: Option<String>,
     f: impl FnOnce(FreshVars, Expr) -> (Stmt, FreshVars),
 ) -> (Stmt, FreshVars) {
     match e1 {
         Stmt::Expr(e) => match *e {
-            Expr::Pure(e) => match var_name {
-                None => f(fresh_vars, *e),
-                Some(var_name) => {
-                    let (body, fresh_vars) = f(fresh_vars, Expr::LocalVar(var_name.clone()));
-                    (
-                        Stmt::Let {
-                            is_monadic: false,
-                            pattern: Box::new(Pattern::Variable(var_name)),
-                            init: e,
-                            body: Box::new(body),
-                        },
-                        fresh_vars,
-                    )
-                }
-            },
+            Expr::Pure(e) => f(fresh_vars, *e),
             _ => {
-                let (var_name, fresh_vars) = match var_name {
-                    None => fresh_vars.next(),
-                    Some(var_name) => (var_name, fresh_vars),
-                };
+                let (var_name, fresh_vars) = fresh_vars.next();
                 let (body, fresh_vars) = f(fresh_vars, Expr::LocalVar(var_name.clone()));
                 (
                     Stmt::Let {
@@ -249,7 +226,7 @@ fn monadic_let_in_stmt(
             init,
             body,
         } => {
-            let (body, fresh_vars) = monadic_let_in_stmt(fresh_vars, *body, var_name, f);
+            let (body, fresh_vars) = monadic_let_in_stmt(fresh_vars, *body, f);
             (
                 Stmt::Let {
                     is_monadic,
@@ -269,17 +246,20 @@ fn monadic_let(
     f: impl FnOnce(FreshVars, Expr) -> (Stmt, FreshVars),
 ) -> (Stmt, FreshVars) {
     let (e1, fresh_vars) = mt_expression(fresh_vars, e1);
-    monadic_let_in_stmt(fresh_vars, e1, None, f)
+    monadic_let_in_stmt(fresh_vars, e1, f)
 }
 
-fn monadic_let_with_name(
+fn monadic_optional_let(
     fresh_vars: FreshVars,
-    e1: Expr,
-    name: String,
-    f: impl FnOnce(FreshVars, Expr) -> (Stmt, FreshVars),
+    e1: Option<Box<Expr>>,
+    f: impl FnOnce(FreshVars, Option<Box<Expr>>) -> (Stmt, FreshVars),
 ) -> (Stmt, FreshVars) {
-    let (e1, fresh_vars) = mt_expression(fresh_vars, e1);
-    monadic_let_in_stmt(fresh_vars, e1, Some(name), f)
+    match e1 {
+        None => f(fresh_vars, None),
+        Some(e1) => monadic_let(fresh_vars, *e1, |fresh_vars, e1| {
+            f(fresh_vars, Some(Box::new(e1)))
+        }),
+    }
 }
 
 fn monadic_lets(
@@ -315,15 +295,9 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
         Expr::Var(_) => (pure(expr), fresh_vars),
         Expr::AssociatedFunction { .. } => (pure(expr), fresh_vars),
         Expr::Literal(_) => (pure(expr), fresh_vars),
-        Expr::AddrOf(e) => {
-            // @TODO right now the AddrOf translation does not add
-            // anything during the translation besides this
-            // transformation. I wonder if we should have a
-            // addrof function at Coq side!?
-            monadic_let(fresh_vars, *e, |fresh_vars, e| {
-                (pure(Expr::AddrOf(Box::new(e))), fresh_vars)
-            })
-        }
+        Expr::AddrOf(e) => monadic_let(fresh_vars, *e, |fresh_vars, e| {
+            (pure(Expr::AddrOf(Box::new(e))), fresh_vars)
+        }),
         Expr::Call { func, args } => monadic_let(fresh_vars, *func, |fresh_vars, func| {
             monadic_lets(
                 fresh_vars,
@@ -339,8 +313,6 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
                 }),
             )
         }),
-        // @TODO I guess method call transformation should be similar to
-        // function application transformation
         Expr::MethodCall { object, func, args } => {
             monadic_let(fresh_vars, *object, |fresh_vars, object| {
                 monadic_lets(
@@ -423,7 +395,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
             )
         }),
         Expr::Loop { body, loop_source } => {
-            let (body, _fresh_vars) = mt_stmt(FreshVars::new(), *body);
+            let body = mt_stmt(*body);
             (
                 Stmt::Expr(Box::new(Expr::Loop {
                     body: Box::new(body),
@@ -453,7 +425,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
                 )
             })
         }
-        Expr::Block(stmt) => mt_stmt(fresh_vars, *stmt),
+        Expr::Block(stmt) => (mt_stmt(*stmt), fresh_vars),
         Expr::Assign { left, right } => monadic_let(fresh_vars, *right, |fresh_vars, right| {
             (
                 Stmt::Expr(Box::new(Expr::Assign {
@@ -491,49 +463,95 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
             )
         }),
         Expr::StructStruct {
-            // path,
-            // fields,
-            // base,
-            // struct_or_variant,
-            ..
+            path,
+            fields,
+            base,
+            struct_or_variant,
         } => {
-            (pure(expr), fresh_vars)
-            // let fields_names: Vec<String> = fields.iter().map(|(name, _)| name.clone()).collect();
-            // let fields_values: Vec<Expr> = fields.iter().map(|(_, field)| field.clone()).collect();
-            // todo!()
-            // monadic_lets(
-            //     fresh_vars,
-            //     fields_values,
-            //     Box::new(|fresh_vars, fields_values| match base {
-            //         None => (
-            //             pure(Expr::StructStruct {
-            //                 path,
-            //                 fields: fields_names
-            //                     .iter()
-            //                     .zip(fields_values.iter())
-            //                     .map(|(name, value)| (name.clone(), value.clone()))
-            //                     .collect(),
-            //                 base,
-            //                 struct_or_variant,
-            //             }),
-            //             fresh_vars,
-            //         ),
-            //         Some(base) => todo!(),
-            //     }),
-            // )
+            let fields_values: Vec<Expr> = fields.iter().map(|(_, field)| field.clone()).collect();
+            monadic_lets(
+                fresh_vars,
+                fields_values,
+                Box::new(move |fresh_vars, fields_values| {
+                    monadic_optional_let(fresh_vars, base, move |fresh_vars, base| {
+                        let fields_names: Vec<String> =
+                            fields.iter().map(|(name, _)| name.clone()).collect();
+                        (
+                            pure(Expr::StructStruct {
+                                path,
+                                fields: fields_names
+                                    .iter()
+                                    .zip(fields_values.iter())
+                                    .map(|(name, value)| (name.clone(), value.clone()))
+                                    .collect(),
+                                base,
+                                struct_or_variant,
+                            }),
+                            fresh_vars,
+                        )
+                    })
+                }),
+            )
         }
-        Expr::StructTuple { path, fields } => monadic_lets(
+        Expr::StructTuple {
+            path,
+            fields,
+            struct_or_variant,
+        } => monadic_lets(
             fresh_vars,
             fields,
-            Box::new(|fresh_vars, fields| (pure(Expr::StructTuple { path, fields }), fresh_vars)),
+            Box::new(|fresh_vars, fields| {
+                (
+                    pure(Expr::StructTuple {
+                        path,
+                        fields,
+                        struct_or_variant,
+                    }),
+                    fresh_vars,
+                )
+            }),
         ),
         Expr::StructUnit { .. } => (pure(expr), fresh_vars),
     }
 }
 
-fn mt_stmt(fresh_vars: FreshVars, stmt: Stmt) -> (Stmt, FreshVars) {
+/// Get the pure part of a statement, if possible, as a statement.
+fn get_pure_from_stmt_as_stmt(statement: Stmt) -> Option<Box<Stmt>> {
+    match statement.clone() {
+        Stmt::Expr(e) => match *e {
+            Expr::Pure(e) => Some(Box::new(Stmt::Expr(e))),
+            _ => None,
+        },
+        Stmt::Let {
+            is_monadic: true, ..
+        } => None,
+        Stmt::Let {
+            is_monadic: false,
+            pattern,
+            init,
+            body,
+        } => match get_pure_from_stmt_as_stmt(*body) {
+            None => None,
+            Some(body) => Some(Box::new(Stmt::Let {
+                is_monadic: false,
+                pattern,
+                init,
+                body,
+            })),
+        },
+    }
+}
+
+fn get_pure_from_stmt_as_expr(statement: Stmt) -> Option<Box<Expr>> {
+    match get_pure_from_stmt_as_stmt(statement) {
+        None => None,
+        Some(statement) => Some(Box::new(Expr::Block(statement))),
+    }
+}
+
+fn mt_stmt(stmt: Stmt) -> Stmt {
     match stmt {
-        Stmt::Expr(e) => mt_expression(fresh_vars, *e),
+        Stmt::Expr(e) => mt_expression(FreshVars::new(), *e).0,
         Stmt::Let {
             is_monadic,
             pattern,
@@ -543,29 +561,22 @@ fn mt_stmt(fresh_vars: FreshVars, stmt: Stmt) -> (Stmt, FreshVars) {
             if is_monadic {
                 panic!("The let statement should not be monadic yet.")
             }
-            let name = match *pattern.clone() {
-                Pattern::Wild => Some("_".to_string()),
-                Pattern::Variable(name) => Some(name),
-                _ => None,
-            };
-            match name {
-                Some(name) => {
-                    monadic_let_with_name(fresh_vars, *init, name, |fresh_vars, _init| {
-                        mt_stmt(fresh_vars, *body)
-                    })
-                }
-                None => monadic_let(fresh_vars, *init, |fresh_vars, init| {
-                    let (body, fresh_vars) = mt_stmt(fresh_vars, *body);
-                    (
-                        Stmt::Let {
-                            is_monadic: false,
-                            pattern,
-                            init: Box::new(init),
-                            body: Box::new(body),
-                        },
-                        fresh_vars,
-                    )
-                }),
+            let (init, _fresh_vars) = mt_expression(FreshVars::new(), *init);
+            let body = Box::new(mt_stmt(*body));
+            let pure_init: Option<Box<Expr>> = get_pure_from_stmt_as_expr(init.clone());
+            match pure_init {
+                Some(pure_init) => Stmt::Let {
+                    is_monadic: false,
+                    pattern,
+                    init: pure_init,
+                    body,
+                },
+                None => Stmt::Let {
+                    is_monadic: true,
+                    pattern,
+                    init: Box::new(Expr::Block(Box::new(init))),
+                    body,
+                },
             }
         }
     }
@@ -585,19 +596,26 @@ pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             let args = args.iter().map(|expr| compile_expr(tcx, expr)).collect();
             match func.kind {
                 // Check if we are calling a constructor
-                ExprKind::Path(rustc_hir::QPath::Resolved(
-                    _,
-                    path @ rustc_hir::Path {
-                        res:
-                            rustc_hir::def::Res::Def(
-                                rustc_hir::def::DefKind::Ctor(rustc_hir::def::CtorOf::Struct, _),
-                                _,
-                            ),
-                        ..
-                    },
-                )) => Expr::StructTuple {
+                ExprKind::Path(
+                    qpath @ rustc_hir::QPath::Resolved(
+                        _,
+                        path @ rustc_hir::Path {
+                            res:
+                                rustc_hir::def::Res::Def(
+                                    rustc_hir::def::DefKind::Ctor(
+                                        rustc_hir::def::CtorOf::Struct
+                                        | rustc_hir::def::CtorOf::Variant,
+                                        _,
+                                    ),
+                                    _,
+                                ),
+                            ..
+                        },
+                    ),
+                ) => Expr::StructTuple {
                     path: compile_path(path),
                     fields: args,
+                    struct_or_variant: StructOrVariant::of_qpath(&tcx, &qpath),
                 },
                 _ => {
                     let func = Box::new(compile_expr(tcx, func));
@@ -877,7 +895,7 @@ impl MatchArm {
 impl Expr {
     pub fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
-            Expr::Pure(x) => paren(with_paren, nest([text("Pure "), x.to_doc(false)])),
+            Expr::Pure(expr) => paren(with_paren, nest([text("Pure"), line(), expr.to_doc(true)])),
             Expr::LocalVar(ref name) => text(name),
             Expr::Var(path) => path.to_doc(),
             Expr::AssociatedFunction { ty, func } => nest([
@@ -887,9 +905,10 @@ impl Expr {
                 text("]"),
             ]),
             Expr::Literal(literal) => literal_to_doc(with_paren, literal),
-            Expr::AddrOf(expr) => {
-                paren(with_paren, nest([text("deref"), line(), expr.to_doc(true)]))
-            }
+            Expr::AddrOf(expr) => paren(
+                with_paren,
+                nest([text("addr_of"), line(), expr.to_doc(true)]),
+            ),
             Expr::Call { func, args } => paren(
                 with_paren,
                 nest([
@@ -1090,11 +1109,18 @@ impl Expr {
                     None => nil(),
                 },
             ]),
-            Expr::StructTuple { path, fields } => paren(
+            Expr::StructTuple {
+                path,
+                fields,
+                struct_or_variant,
+            } => paren(
                 with_paren,
                 nest([
                     path.to_doc(),
-                    text(".Build_t"),
+                    match struct_or_variant {
+                        StructOrVariant::Struct => text(".Build_t"),
+                        StructOrVariant::Variant => nil(),
+                    },
                     line(),
                     if fields.is_empty() {
                         text("tt")

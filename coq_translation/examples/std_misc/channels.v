@@ -17,16 +17,15 @@ Definition NTHREADS : i32 := Pure 3.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := mpsc.channel tt in
-  let '(tx, rx) := α0 in
+  let* '(tx, rx) := mpsc.channel tt in
   let* children := Vec::["new"] tt in
-  let* α1 := LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} in
   let* _ :=
-    match α1 with
+    let* α0 := LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} in
+    match α0 with
     | iter =>
       loop
-        let* α0 := LangItem (deref iter) in
         let* _ :=
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := id; |} =>
@@ -34,16 +33,20 @@ Definition main (_ : unit) : M unit :=
             let* child :=
               thread.spawn
                 (fun  =>
-                  let* α0 := thread_tx.["send"] id in
-                  let* _ := α0.["unwrap"] in
-                  let* α1 := format_argument::["new_display"] (deref id) in
-                  let* α2 :=
-                    format_arguments::["new_v1"]
-                      (deref [ "thread "; " finished
+                  let* _ :=
+                    let* α0 := thread_tx.["send"] id in
+                    α0.["unwrap"] in
+                  let* _ :=
+                    let* _ :=
+                      let* α0 :=
+                        format_argument::["new_display"] (addr_of id) in
+                      let* α1 :=
+                        format_arguments::["new_v1"]
+                          (addr_of [ "thread "; " finished
 " ])
-                      (deref [ α1 ]) in
-                  let* _ := _crate.io._print α2 in
-                  let _ := tt in
+                          (addr_of [ α0 ]) in
+                      _crate.io._print α1 in
+                    Pure tt in
                   Pure tt) in
             let* _ := children.["push"] child in
             Pure tt
@@ -53,45 +56,50 @@ Definition main (_ : unit) : M unit :=
         for
     end in
   let* ids := Vec::["with_capacity"] (cast NTHREADS usize) in
-  let* α2 := LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} in
   let* _ :=
-    match α2 with
+    let* α0 := LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} in
+    match α0 with
     | iter =>
       loop
-        let* α0 := LangItem (deref iter) in
         let* _ :=
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := _; |} =>
-            let* α0 := rx.["recv"] in
-            let* _ := ids.["push"] α0 in
+            let* _ :=
+              let* α0 := rx.["recv"] in
+              ids.["push"] α0 in
             Pure tt
           end in
         Pure tt
         from
         for
     end in
-  let* α3 := LangItem children in
   let* _ :=
-    match α3 with
+    let* α0 := LangItem children in
+    match α0 with
     | iter =>
       loop
-        let* α0 := LangItem (deref iter) in
         let* _ :=
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := child; |} =>
-            let* α0 := child.["join"] in
-            let* _ := α0.["expect"] "oops! the child thread panicked" in
+            let* _ :=
+              let* α0 := child.["join"] in
+              α0.["expect"] "oops! the child thread panicked" in
             Pure tt
           end in
         Pure tt
         from
         for
     end in
-  let* α4 := format_argument::["new_debug"] (deref ids) in
-  let* α5 := format_arguments::["new_v1"] (deref [ ""; "
-" ]) (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of ids) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

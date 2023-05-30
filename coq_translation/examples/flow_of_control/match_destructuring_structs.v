@@ -23,31 +23,34 @@ Definition main (_ : unit) : M unit :=
   let foo := {| Foo.x := (1, 2); Foo.y := 3; |} in
   match foo with
   | {| Foo.x := (1, b); Foo.y := y; |} =>
-    let* α0 := format_argument::["new_display"] (deref b) in
-    let* α1 := format_argument::["new_display"] (deref y) in
-    let* α2 :=
-      format_arguments::["new_v1"]
-        (deref [ "First of x is 1, b = "; ",  y = "; " 
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of b) in
+      let* α1 := format_argument::["new_display"] (addr_of y) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "First of x is 1, b = "; ",  y = "; " 
 " ])
-        (deref [ α0; α1 ]) in
-    let* _ := _crate.io._print α2 in
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
     Pure tt
   | {| Foo.y := 2; Foo.x := i; |} =>
-    let* α0 := format_argument::["new_debug"] (deref i) in
-    let* α1 :=
-      format_arguments::["new_v1"]
-        (deref [ "y is 2, i = "; "
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of i) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "y is 2, i = "; "
 " ])
-        (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   | {| Foo.y := y; |} =>
-    let* α0 := format_argument::["new_display"] (deref y) in
-    let* α1 :=
-      format_arguments::["new_v1"]
-        (deref [ "y = "; ", we don't care about x
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of y) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "y = "; ", we don't care about x
 " ])
-        (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   end.

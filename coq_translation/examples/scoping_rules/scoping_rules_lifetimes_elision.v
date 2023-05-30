@@ -4,25 +4,29 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition elided_input (x : ref i32) : M unit :=
-  let* α0 := format_argument::["new_display"] (deref x) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "`elided_input`: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of x) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "`elided_input`: "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.
 
 Definition annotated_input (x : ref i32) : M unit :=
-  let* α0 := format_argument::["new_display"] (deref x) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "`annotated_input`: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of x) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "`annotated_input`: "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.
 
 Definition elided_pass (x : ref i32) : M (ref i32) := Pure x.
@@ -32,24 +36,28 @@ Definition annotated_pass (x : ref i32) : M (ref i32) := Pure x.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let x := 3 in
-  let* _ := elided_input (deref x) in
-  let* _ := annotated_input (deref x) in
-  let* α0 := elided_pass (deref x) in
-  let* α1 := format_argument::["new_display"] (deref α0) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "`elided_pass`: "; "
+  let* _ := elided_input (addr_of x) in
+  let* _ := annotated_input (addr_of x) in
+  let* _ :=
+    let* _ :=
+      let* α0 := elided_pass (addr_of x) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "`elided_pass`: "; "
 " ])
-      (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
-  let* α3 := annotated_pass (deref x) in
-  let* α4 := format_argument::["new_display"] (deref α3) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "`annotated_pass`: "; "
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := annotated_pass (addr_of x) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "`annotated_pass`: "; "
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.

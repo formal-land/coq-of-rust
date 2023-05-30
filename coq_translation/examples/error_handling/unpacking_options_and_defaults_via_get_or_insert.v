@@ -44,20 +44,26 @@ Definition main (_ : unit) : M unit :=
   let my_fruit := None in
   let apple := Fruit.Apple in
   let* first_available_fruit := my_fruit.["get_or_insert"] apple in
-  let* α0 := format_argument::["new_debug"] (deref first_available_fruit) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "my_fruit is: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_debug"] (addr_of first_available_fruit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "my_fruit is: "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let* α2 := format_argument::["new_debug"] (deref first_available_fruit) in
-  let* α3 :=
-    format_arguments::["new_v1"]
-      (deref [ "first_available_fruit is: "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_debug"] (addr_of first_available_fruit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "first_available_fruit is: "; "
 " ])
-      (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

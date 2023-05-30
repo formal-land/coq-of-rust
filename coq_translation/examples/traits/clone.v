@@ -63,9 +63,9 @@ Module Impl__crate_clone_Clone_for_Pair.
   Definition Self := Pair.
   
   Definition clone (self : ref Self) : M Pair :=
-    let* α0 := _crate.clone.Clone.clone (deref (self.[0])) in
-    let* α1 := _crate.clone.Clone.clone (deref (self.[1])) in
-    Pure Pair.Build_t α0 α1.
+    let* α0 := _crate.clone.Clone.clone (addr_of (self.[0])) in
+    let* α1 := _crate.clone.Clone.clone (addr_of (self.[1])) in
+    Pure (Pair.Build_t α0 α1).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -86,8 +86,8 @@ Module Impl__crate_fmt_Debug_for_Pair.
     _crate.fmt.Formatter::["debug_tuple_field2_finish"]
       f
       "Pair"
-      (deref (self.[0]))
-      (deref (deref (self.[1]))).
+      (addr_of (self.[0]))
+      (addr_of (addr_of (self.[1]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -102,40 +102,61 @@ End Impl__crate_fmt_Debug_for_Pair.
 Definition main (_ : unit) : M unit :=
   let unit := Unit.Build in
   let copied_unit := unit in
-  let* α0 := format_argument::["new_debug"] (deref unit) in
-  let* α1 :=
-    format_arguments::["new_v1"] (deref [ "original: "; "
-" ]) (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let* α2 := format_argument::["new_debug"] (deref copied_unit) in
-  let* α3 :=
-    format_arguments::["new_v1"] (deref [ "copy: "; "
-" ]) (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
-  let* α4 := Box::["new"] 1 in
-  let* α5 := Box::["new"] 2 in
-  let pair := Pair.Build_t α4 α5 in
-  let* α6 := format_argument::["new_debug"] (deref pair) in
-  let* α7 :=
-    format_arguments::["new_v1"] (deref [ "original: "; "
-" ]) (deref [ α6 ]) in
-  let* _ := _crate.io._print α7 in
-  let _ := tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of unit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "original: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of copied_unit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "copy: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* pair :=
+    let* α0 := Box::["new"] 1 in
+    let* α1 := Box::["new"] 2 in
+    Pure (Pair.Build_t α0 α1) in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of pair) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "original: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let moved_pair := pair in
-  let* α8 := format_argument::["new_debug"] (deref moved_pair) in
-  let* α9 :=
-    format_arguments::["new_v1"] (deref [ "moved: "; "
-" ]) (deref [ α8 ]) in
-  let* _ := _crate.io._print α9 in
-  let _ := tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of moved_pair) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "moved: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let* cloned_pair := moved_pair.["clone"] in
   let* _ := drop moved_pair in
-  let* α10 := format_argument::["new_debug"] (deref cloned_pair) in
-  let* α11 :=
-    format_arguments::["new_v1"] (deref [ "clone: "; "
-" ]) (deref [ α10 ]) in
-  let* _ := _crate.io._print α11 in
-  let _ := tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of cloned_pair) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "clone: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

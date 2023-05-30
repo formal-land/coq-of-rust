@@ -6,30 +6,36 @@ Import Root.std.prelude.rust_2015.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let* immutable_box := Box::["new"] 5 in
-  let* α0 := format_argument::["new_display"] (deref immutable_box) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "immutable_box contains "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of immutable_box) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "immutable_box contains "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let mutable_box := immutable_box in
-  let* α2 := format_argument::["new_display"] (deref mutable_box) in
-  let* α3 :=
-    format_arguments::["new_v1"]
-      (deref [ "mutable_box contains "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of mutable_box) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "mutable_box contains "; "
 " ])
-      (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let* _ := assign mutable_box.["deref"] 4 in
-  let* α4 := format_argument::["new_display"] (deref mutable_box) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "mutable_box now contains "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of mutable_box) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "mutable_box now contains "; "
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

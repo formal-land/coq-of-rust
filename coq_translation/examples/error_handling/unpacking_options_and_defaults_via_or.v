@@ -41,17 +41,21 @@ End Impl__crate_fmt_Debug_for_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* apple := Some Fruit.Apple in
-  let* orange := Some Fruit.Orange in
+  let apple := Some Fruit.Apple in
+  let orange := Some Fruit.Orange in
   let no_fruit := None in
-  let* α0 := no_fruit.["or"] orange in
-  let* first_available_fruit := α0.["or"] apple in
-  let* α1 := format_argument::["new_debug"] (deref first_available_fruit) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "first_available_fruit: "; "
+  let* first_available_fruit :=
+    let* α0 := no_fruit.["or"] orange in
+    α0.["or"] apple in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_debug"] (addr_of first_available_fruit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "first_available_fruit: "; "
 " ])
-      (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

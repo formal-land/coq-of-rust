@@ -6,14 +6,16 @@ Import Root.std.prelude.rust_2015.
 Definition foo {A : Set} (o : Option A) : M unit :=
   match o with
   | Some _a =>
-    let* α0 := format_arguments::["new_const"] (deref [ "some
+    let* _ :=
+      let* α0 := format_arguments::["new_const"] (addr_of [ "some
 " ]) in
-    let* _ := _crate.io._print α0 in
+      _crate.io._print α0 in
     Pure tt
   | None =>
-    let* α0 := format_arguments::["new_const"] (deref [ "nothing
+    let* _ :=
+      let* α0 := format_arguments::["new_const"] (addr_of [ "nothing
 " ]) in
-    let* _ := _crate.io._print α0 in
+      _crate.io._print α0 in
     Pure tt
   end.
 
@@ -22,24 +24,26 @@ Module tests.
   Definition OpenOptions := OpenOptions.t.
   
   Definition test_file (_ : unit) : M unit :=
-    let* α0 := OpenOptions::["new"] tt in
-    let* α1 := α0.["append"] true in
-    let* α2 := α1.["create"] true in
-    let* α3 := α2.["open"] "ferris.txt" in
-    let* file := α3.["expect"] "Failed to open ferris.txt" in
-    let* α4 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
-    match α4 with
+    let* file :=
+      let* α0 := OpenOptions::["new"] tt in
+      let* α1 := α0.["append"] true in
+      let* α2 := α1.["create"] true in
+      let* α3 := α2.["open"] "ferris.txt" in
+      α3.["expect"] "Failed to open ferris.txt" in
+    let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
+    match α0 with
     | iter =>
       loop
-        let* α0 := LangItem (deref iter) in
         let* _ :=
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := _; |} =>
-            let* α0 := "Ferris
+            let* _ :=
+              let* α0 := "Ferris
 ".["as_bytes"] in
-            let* α1 := file.["write_all"] α0 in
-            let* _ := α1.["expect"] "Could not write to ferris.txt" in
+              let* α1 := file.["write_all"] α0 in
+              α1.["expect"] "Could not write to ferris.txt" in
             Pure tt
           end in
         Pure tt
@@ -48,24 +52,26 @@ Module tests.
     end.
   
   Definition test_file_also (_ : unit) : M unit :=
-    let* α0 := OpenOptions::["new"] tt in
-    let* α1 := α0.["append"] true in
-    let* α2 := α1.["create"] true in
-    let* α3 := α2.["open"] "ferris.txt" in
-    let* file := α3.["expect"] "Failed to open ferris.txt" in
-    let* α4 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
-    match α4 with
+    let* file :=
+      let* α0 := OpenOptions::["new"] tt in
+      let* α1 := α0.["append"] true in
+      let* α2 := α1.["create"] true in
+      let* α3 := α2.["open"] "ferris.txt" in
+      α3.["expect"] "Failed to open ferris.txt" in
+    let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
+    match α0 with
     | iter =>
       loop
-        let* α0 := LangItem (deref iter) in
         let* _ :=
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := _; |} =>
-            let* α0 := "Corro
+            let* _ :=
+              let* α0 := "Corro
 ".["as_bytes"] in
-            let* α1 := file.["write_all"] α0 in
-            let* _ := α1.["expect"] "Could not write to ferris.txt" in
+              let* α1 := file.["write_all"] α0 in
+              α1.["expect"] "Could not write to ferris.txt" in
             Pure tt
           end in
         Pure tt
@@ -78,24 +84,26 @@ Module OpenOptions := std.fs.OpenOptions.
 Definition OpenOptions := OpenOptions.t.
 
 Definition test_file (_ : unit) : M unit :=
-  let* α0 := OpenOptions::["new"] tt in
-  let* α1 := α0.["append"] true in
-  let* α2 := α1.["create"] true in
-  let* α3 := α2.["open"] "ferris.txt" in
-  let* file := α3.["expect"] "Failed to open ferris.txt" in
-  let* α4 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
-  match α4 with
+  let* file :=
+    let* α0 := OpenOptions::["new"] tt in
+    let* α1 := α0.["append"] true in
+    let* α2 := α1.["create"] true in
+    let* α3 := α2.["open"] "ferris.txt" in
+    α3.["expect"] "Failed to open ferris.txt" in
+  let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
+  match α0 with
   | iter =>
     loop
-      let* α0 := LangItem (deref iter) in
       let* _ :=
+        let* α0 := LangItem (addr_of iter) in
         match α0 with
         | None => Pure Break
         | Some {| Some.0 := _; |} =>
-          let* α0 := "Ferris
+          let* _ :=
+            let* α0 := "Ferris
 ".["as_bytes"] in
-          let* α1 := file.["write_all"] α0 in
-          let* _ := α1.["expect"] "Could not write to ferris.txt" in
+            let* α1 := file.["write_all"] α0 in
+            α1.["expect"] "Could not write to ferris.txt" in
           Pure tt
         end in
       Pure tt
@@ -104,24 +112,26 @@ Definition test_file (_ : unit) : M unit :=
   end.
 
 Definition test_file_also (_ : unit) : M unit :=
-  let* α0 := OpenOptions::["new"] tt in
-  let* α1 := α0.["append"] true in
-  let* α2 := α1.["create"] true in
-  let* α3 := α2.["open"] "ferris.txt" in
-  let* file := α3.["expect"] "Failed to open ferris.txt" in
-  let* α4 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
-  match α4 with
+  let* file :=
+    let* α0 := OpenOptions::["new"] tt in
+    let* α1 := α0.["append"] true in
+    let* α2 := α1.["create"] true in
+    let* α3 := α2.["open"] "ferris.txt" in
+    α3.["expect"] "Failed to open ferris.txt" in
+  let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
+  match α0 with
   | iter =>
     loop
-      let* α0 := LangItem (deref iter) in
       let* _ :=
+        let* α0 := LangItem (addr_of iter) in
         match α0 with
         | None => Pure Break
         | Some {| Some.0 := _; |} =>
-          let* α0 := "Corro
+          let* _ :=
+            let* α0 := "Corro
 ".["as_bytes"] in
-          let* α1 := file.["write_all"] α0 in
-          let* _ := α1.["expect"] "Could not write to ferris.txt" in
+            let* α1 := file.["write_all"] α0 in
+            α1.["expect"] "Could not write to ferris.txt" in
           Pure tt
         end in
       Pure tt

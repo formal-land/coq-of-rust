@@ -41,41 +41,41 @@ Module checked.
   Definition div (x : f64) (y : f64) : M MathResult :=
     let* α0 := y.["eq"] 0 (* 0.0 *) in
     if (α0 : bool) then
-      Err MathError.DivisionByZero
+      Pure (Err MathError.DivisionByZero)
     else
       let* α0 := x.["div"] y in
-      Ok α0.
+      Pure (Ok α0).
   
   Definition sqrt (x : f64) : M MathResult :=
     let* α0 := x.["lt"] 0 (* 0.0 *) in
     if (α0 : bool) then
-      Err MathError.NegativeSquareRoot
+      Pure (Err MathError.NegativeSquareRoot)
     else
       let* α0 := x.["sqrt"] in
-      Ok α0.
+      Pure (Ok α0).
   
   Definition ln (x : f64) : M MathResult :=
     let* α0 := x.["le"] 0 (* 0.0 *) in
     if (α0 : bool) then
-      Err MathError.NonPositiveLogarithm
+      Pure (Err MathError.NonPositiveLogarithm)
     else
       let* α0 := x.["ln"] in
-      Ok α0.
+      Pure (Ok α0).
   
   Definition op_ (x : f64) (y : f64) : M MathResult :=
-    let* α0 := div x y in
-    let* α1 := LangItem α0 in
     let* ratio :=
+      let* α0 := div x y in
+      let* α1 := LangItem α0 in
       match α1 with
       | Break {| Break.0 := residual; |} =>
         let* α0 := LangItem residual in
         Return α0
       | Continue {| Continue.0 := val; |} => Pure val
       end in
-    let* α2 := ln ratio in
-    let* α3 := LangItem α2 in
     let* ln :=
-      match α3 with
+      let* α0 := ln ratio in
+      let* α1 := LangItem α0 in
+      match α1 with
       | Break {| Break.0 := residual; |} =>
         let* α0 := LangItem residual in
         Return α0
@@ -94,13 +94,14 @@ Module checked.
         | MathError.DivisionByZero => Pure "division by zero"
         | MathError.NegativeSquareRoot => Pure "square root of negative number"
         end in
-      _crate.rt.panic_display (deref α0)
+      _crate.rt.panic_display (addr_of α0)
     | Ok value =>
-      let* α0 := format_argument::["new_display"] (deref value) in
-      let* α1 :=
-        format_arguments::["new_v1"] (deref [ ""; "
-" ]) (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of value) in
+        let* α1 :=
+          format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+        _crate.io._print α1 in
       Pure tt
     end.
 End checked.
@@ -142,41 +143,41 @@ Definition MathResult : Set := Result f64 MathError.
 Definition div (x : f64) (y : f64) : M MathResult :=
   let* α0 := y.["eq"] 0 (* 0.0 *) in
   if (α0 : bool) then
-    Err MathError.DivisionByZero
+    Pure (Err MathError.DivisionByZero)
   else
     let* α0 := x.["div"] y in
-    Ok α0.
+    Pure (Ok α0).
 
 Definition sqrt (x : f64) : M MathResult :=
   let* α0 := x.["lt"] 0 (* 0.0 *) in
   if (α0 : bool) then
-    Err MathError.NegativeSquareRoot
+    Pure (Err MathError.NegativeSquareRoot)
   else
     let* α0 := x.["sqrt"] in
-    Ok α0.
+    Pure (Ok α0).
 
 Definition ln (x : f64) : M MathResult :=
   let* α0 := x.["le"] 0 (* 0.0 *) in
   if (α0 : bool) then
-    Err MathError.NonPositiveLogarithm
+    Pure (Err MathError.NonPositiveLogarithm)
   else
     let* α0 := x.["ln"] in
-    Ok α0.
+    Pure (Ok α0).
 
 Definition op_ (x : f64) (y : f64) : M MathResult :=
-  let* α0 := div x y in
-  let* α1 := LangItem α0 in
   let* ratio :=
+    let* α0 := div x y in
+    let* α1 := LangItem α0 in
     match α1 with
     | Break {| Break.0 := residual; |} =>
       let* α0 := LangItem residual in
       Return α0
     | Continue {| Continue.0 := val; |} => Pure val
     end in
-  let* α2 := ln ratio in
-  let* α3 := LangItem α2 in
   let* ln :=
-    match α3 with
+    let* α0 := ln ratio in
+    let* α1 := LangItem α0 in
+    match α1 with
     | Break {| Break.0 := residual; |} =>
       let* α0 := LangItem residual in
       Return α0
@@ -195,13 +196,14 @@ Definition op (x : f64) (y : f64) : M unit :=
       | MathError.DivisionByZero => Pure "division by zero"
       | MathError.NegativeSquareRoot => Pure "square root of negative number"
       end in
-    _crate.rt.panic_display (deref α0)
+    _crate.rt.panic_display (addr_of α0)
   | Ok value =>
-    let* α0 := format_argument::["new_display"] (deref value) in
-    let* α1 :=
-      format_arguments::["new_v1"] (deref [ ""; "
-" ]) (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of value) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   end.
 

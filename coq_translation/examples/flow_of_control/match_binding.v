@@ -7,46 +7,52 @@ Definition age (_ : unit) : M u32 := Pure 15.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 :=
-    format_arguments::["new_const"]
-      (deref [ "Tell me what type of person you are
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "Tell me what type of person you are
 " ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
-  let* α1 := age tt in
-  match α1 with
+      _crate.io._print α0 in
+    Pure tt in
+  let* α0 := age tt in
+  match α0 with
   | 0 =>
-    let* α0 :=
-      format_arguments::["new_const"]
-        (deref [ "I haven't celebrated my first birthday yet
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "I haven't celebrated my first birthday yet
 " ]) in
-    let* _ := _crate.io._print α0 in
+      _crate.io._print α0 in
     Pure tt
   | ((1|2|3|4|5|6|7|8|9|10|11|12) as n) =>
-    let* α0 := format_argument::["new_debug"] (deref n) in
-    let* α1 :=
-      format_arguments::["new_v1"]
-        (deref [ "I'm a child of age "; "
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of n) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "I'm a child of age "; "
 " ])
-        (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   | ((13|14|15|16|17|18|19) as n) =>
-    let* α0 := format_argument::["new_debug"] (deref n) in
-    let* α1 :=
-      format_arguments::["new_v1"]
-        (deref [ "I'm a teen of age "; "
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of n) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "I'm a teen of age "; "
 " ])
-        (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   | n =>
-    let* α0 := format_argument::["new_debug"] (deref n) in
-    let* α1 :=
-      format_arguments::["new_v1"]
-        (deref [ "I'm an old person of age "; "
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of n) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "I'm an old person of age "; "
 " ])
-        (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   end.

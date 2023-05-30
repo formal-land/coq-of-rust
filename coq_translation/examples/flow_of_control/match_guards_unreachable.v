@@ -8,15 +8,17 @@ Definition main (_ : unit) : M unit :=
   let number := 4 in
   match number with
   | i =>
-    let* α0 := format_arguments::["new_const"] (deref [ "Zero
+    let* _ :=
+      let* α0 := format_arguments::["new_const"] (addr_of [ "Zero
 " ]) in
-    let* _ := _crate.io._print α0 in
+      _crate.io._print α0 in
     Pure tt
   | i =>
-    let* α0 :=
-      format_arguments::["new_const"] (deref [ "Greater than zero
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Greater than zero
 " ]) in
-    let* _ := _crate.io._print α0 in
+      _crate.io._print α0 in
     Pure tt
-  | _ => _crate.panicking.unreachable_display (deref "Should never happen.")
+  | _ => _crate.panicking.unreachable_display (addr_of "Should never happen.")
   end.

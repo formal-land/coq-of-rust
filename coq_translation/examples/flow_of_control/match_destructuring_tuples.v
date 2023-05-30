@@ -5,53 +5,62 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := 2.["neg"] in
-  let triple := (0, α0, 3) in
-  let* α1 := format_argument::["new_debug"] (deref triple) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "Tell me about "; "
+  let* triple :=
+    let* α0 := 2.["neg"] in
+    Pure (0, α0, 3) in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of triple) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Tell me about "; "
 " ])
-      (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   match triple with
   | (0, y, z) =>
-    let* α0 := format_argument::["new_debug"] (deref y) in
-    let* α1 := format_argument::["new_debug"] (deref z) in
-    let* α2 :=
-      format_arguments::["new_v1"]
-        (deref [ "First is `0`, `y` is "; ", and `z` is "; "
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of y) in
+      let* α1 := format_argument::["new_debug"] (addr_of z) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "First is `0`, `y` is "; ", and `z` is "; "
 " ])
-        (deref [ α0; α1 ]) in
-    let* _ := _crate.io._print α2 in
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
     Pure tt
   | (1) =>
-    let* α0 :=
-      format_arguments::["new_const"]
-        (deref [ "First is `1` and the rest doesn't matter
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "First is `1` and the rest doesn't matter
 " ]) in
-    let* _ := _crate.io._print α0 in
+      _crate.io._print α0 in
     Pure tt
   | (_, 2) =>
-    let* α0 :=
-      format_arguments::["new_const"]
-        (deref [ "last is `2` and the rest doesn't matter
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "last is `2` and the rest doesn't matter
 " ]) in
-    let* _ := _crate.io._print α0 in
+      _crate.io._print α0 in
     Pure tt
   | (3, 4) =>
-    let* α0 :=
-      format_arguments::["new_const"]
-        (deref [ "First is `3`, last is `4`, and the rest doesn't matter
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of
+            [ "First is `3`, last is `4`, and the rest doesn't matter
 " ]) in
-    let* _ := _crate.io._print α0 in
+      _crate.io._print α0 in
     Pure tt
   | _ =>
-    let* α0 :=
-      format_arguments::["new_const"]
-        (deref [ "It doesn't matter what they are
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "It doesn't matter what they are
 " ]) in
-    let* _ := _crate.io._print α0 in
+      _crate.io._print α0 in
     Pure tt
   end.

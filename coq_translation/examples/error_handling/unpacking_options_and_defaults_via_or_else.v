@@ -41,34 +41,42 @@ End Impl__crate_fmt_Debug_for_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* apple := Some Fruit.Apple in
+  let apple := Some Fruit.Apple in
   let no_fruit := None in
   let get_kiwi_as_fallback :=
     fun  =>
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ "Providing kiwi as fallback
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "Providing kiwi as fallback
 " ]) in
-      let* _ := _crate.io._print α0 in
-      let _ := tt in
-      Some Fruit.Kiwi in
+          _crate.io._print α0 in
+        Pure tt in
+      Pure (Some Fruit.Kiwi) in
   let get_lemon_as_fallback :=
     fun  =>
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ "Providing lemon as fallback
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "Providing lemon as fallback
 " ]) in
-      let* _ := _crate.io._print α0 in
-      let _ := tt in
-      Some Fruit.Lemon in
-  let* α0 := no_fruit.["or_else"] get_kiwi_as_fallback in
-  let* first_available_fruit := α0.["or_else"] get_lemon_as_fallback in
-  let* α1 := format_argument::["new_debug"] (deref first_available_fruit) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "first_available_fruit: "; "
+          _crate.io._print α0 in
+        Pure tt in
+      Pure (Some Fruit.Lemon) in
+  let* first_available_fruit :=
+    let* α0 := no_fruit.["or_else"] get_kiwi_as_fallback in
+    α0.["or_else"] get_lemon_as_fallback in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_debug"] (addr_of first_available_fruit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "first_available_fruit: "; "
 " ])
-      (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

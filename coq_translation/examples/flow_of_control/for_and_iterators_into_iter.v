@@ -5,34 +5,37 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := _crate.boxed.Box::["new"] [ "Bob"; "Frank"; "Ferris" ] in
-  let* names := Slice::["into_vec"] α0 in
-  let* α1 := names.["into_iter"] in
-  let* α2 := LangItem α1 in
-  match α2 with
+  let* names :=
+    let* α0 := _crate.boxed.Box::["new"] [ "Bob"; "Frank"; "Ferris" ] in
+    Slice::["into_vec"] α0 in
+  let* α0 := names.["into_iter"] in
+  let* α1 := LangItem α0 in
+  match α1 with
   | iter =>
     loop
-      let* α0 := LangItem (deref iter) in
       let* _ :=
+        let* α0 := LangItem (addr_of iter) in
         match α0 with
         | None => Pure Break
         | Some {| Some.0 := name; |} =>
           match name with
           | "Ferris" =>
-            let* α0 :=
-              format_arguments::["new_const"]
-                (deref [ "There is a rustacean among us!
+            let* _ :=
+              let* α0 :=
+                format_arguments::["new_const"]
+                  (addr_of [ "There is a rustacean among us!
 " ]) in
-            let* _ := _crate.io._print α0 in
+              _crate.io._print α0 in
             Pure tt
           | _ =>
-            let* α0 := format_argument::["new_display"] (deref name) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (deref [ "Hello "; "
+            let* _ :=
+              let* α0 := format_argument::["new_display"] (addr_of name) in
+              let* α1 :=
+                format_arguments::["new_v1"]
+                  (addr_of [ "Hello "; "
 " ])
-                (deref [ α0 ]) in
-            let* _ := _crate.io._print α1 in
+                  (addr_of [ α0 ]) in
+              _crate.io._print α1 in
             Pure tt
           end
         end in

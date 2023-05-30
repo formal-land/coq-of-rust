@@ -18,7 +18,7 @@ Definition main (_ : unit) : M unit :=
       from
       loop in
   let* _ :=
-    match (deref result, deref 20) with
+    match (addr_of result, addr_of 20) with
     | (left_val, right_val) =>
       let* α0 := left_val.["deref"] in
       let* α1 := right_val.["deref"] in
@@ -26,13 +26,13 @@ Definition main (_ : unit) : M unit :=
       let* α3 := α2.["not"] in
       if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let* α0 := left_val.["deref"] in
-        let* α1 := right_val.["deref"] in
         let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
           _crate.panicking.assert_failed
             kind
-            (deref α0)
-            (deref α1)
+            (addr_of α0)
+            (addr_of α1)
             _crate.option.Option.None in
         Pure tt
       else

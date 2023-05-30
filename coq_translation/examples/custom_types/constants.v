@@ -12,33 +12,41 @@ Definition is_big (n : i32) : M bool := n.["gt"] THRESHOLD.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let n := 16 in
-  let* α0 := format_argument::["new_display"] (deref LANGUAGE) in
-  let* α1 :=
-    format_arguments::["new_v1"] (deref [ "This is "; "
-" ]) (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let* α2 := format_argument::["new_display"] (deref THRESHOLD) in
-  let* α3 :=
-    format_arguments::["new_v1"]
-      (deref [ "The threshold is "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of LANGUAGE) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "This is "; "
 " ])
-      (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
-  let* α4 := format_argument::["new_display"] (deref n) in
-  let* α5 := is_big n in
-  let* α6 :=
-    if (α5 : bool) then
-      Pure "big"
-    else
-      Pure "small" in
-  let* α7 := format_argument::["new_display"] (deref α6) in
-  let* α8 :=
-    format_arguments::["new_v1"]
-      (deref [ ""; " is "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of THRESHOLD) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The threshold is "; "
 " ])
-      (deref [ α4; α7 ]) in
-  let* _ := _crate.io._print α8 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α1 := is_big n in
+      let* α2 :=
+        if (α1 : bool) then
+          Pure "big"
+        else
+          Pure "small" in
+      let* α3 := format_argument::["new_display"] (addr_of α2) in
+      let* α4 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; " is "; "
+" ])
+          (addr_of [ α0; α3 ]) in
+      _crate.io._print α4 in
+    Pure tt in
   Pure tt.

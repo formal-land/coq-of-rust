@@ -52,7 +52,7 @@ Module Impl_fmt_Display_for_EmptyVec.
   Definition fmt (self : ref Self) (f : mut_ref fmt.Formatter) : M fmt.Result :=
     let* α0 :=
       format_arguments::["new_const"]
-        (deref [ "invalid first item to double" ]) in
+        (addr_of [ "invalid first item to double" ]) in
     f.["write_fmt"] α0.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
@@ -82,34 +82,43 @@ Definition double_first (vec : Vec (ref str)) : M (Result i32) :=
 Definition print (result : Result i32) : M unit :=
   match result with
   | Ok n =>
-    let* α0 := format_argument::["new_display"] (deref n) in
-    let* α1 :=
-      format_arguments::["new_v1"]
-        (deref [ "The first doubled is "; "
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The first doubled is "; "
 " ])
-        (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   | Err e =>
-    let* α0 := format_argument::["new_display"] (deref e) in
-    let* α1 :=
-      format_arguments::["new_v1"] (deref [ "Error: "; "
-" ]) (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of e) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Error: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := _crate.boxed.Box::["new"] [ "42"; "93"; "18" ] in
-  let* numbers := Slice::["into_vec"] α0 in
+  let* numbers :=
+    let* α0 := _crate.boxed.Box::["new"] [ "42"; "93"; "18" ] in
+    Slice::["into_vec"] α0 in
   let* empty := _crate.vec.Vec::["new"] tt in
-  let* α1 := _crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
-  let* strings := Slice::["into_vec"] α1 in
-  let* α2 := double_first numbers in
-  let* _ := print α2 in
-  let* α3 := double_first empty in
-  let* _ := print α3 in
-  let* α4 := double_first strings in
-  let* _ := print α4 in
+  let* strings :=
+    let* α0 := _crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+    Slice::["into_vec"] α0 in
+  let* _ :=
+    let* α0 := double_first numbers in
+    print α0 in
+  let* _ :=
+    let* α0 := double_first empty in
+    print α0 in
+  let* _ :=
+    let* α0 := double_first strings in
+    print α0 in
   Pure tt.

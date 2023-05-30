@@ -109,12 +109,7 @@ Parameter axiom : forall {A : Set}, A.
 
 Parameter cast : forall {A : Set}, A -> forall (B : Set), B.
 
-Parameter sequence : forall {A B : Set}, A -> B -> B.
-
-Notation "e1 ;; e2" := (sequence e1 e2)
-  (at level 61, right associativity).
-
-Parameter assign : forall {A : Set}, A -> A -> unit.
+Parameter assign : forall {A : Set}, A -> A -> M unit.
 
 Definition u8 : Set := Z.
 Definition u16 : Set := Z.
@@ -148,15 +143,15 @@ Parameter eqb : forall {A : Set}, A -> A -> bool.
 (** The functions on [Z] should eventually be replaced by functions on the
     corresponding integer types. *)
 Global Instance Method_Z_abs : Notation.Dot "abs" := {
-  Notation.dot := (Z.abs : Z -> Z);
+  Notation.dot (z : Z) := Pure (Z.abs z);
 }.
 
 Global Instance Method_Box_new (A : Set) : Notation.DoubleColon Box "new" := {
-  Notation.double_colon (x : A) := (x : Box A);
+  Notation.double_colon (x : A) := Pure x;
 }.
 
 Global Instance Method_destroy (A : Set) : Notation.Dot "destroy" := {
-  Notation.dot (x : A) := tt;
+  Notation.dot (x : A) := Pure tt;
 }.
 
 Module Root.
@@ -172,7 +167,7 @@ Module std.
   Module string.
     Module ToString.
       Class Trait (Self : Set) : Set := {
-        to_string : ref Self -> String;
+        to_string : ref Self -> M String;
       }.
 
       Global Instance Method_to_string `(Trait) : Notation.Dot "to_string" := {
@@ -206,9 +201,9 @@ Module std.
 
     Module Write.
       Class Trait (Self : Set) : Set := {
-        write_str : mut_ref Self -> ref str -> Result;
-        write_char : mut_ref Self -> char -> Result;
-        write_fmt : mut_ref Self -> Arguments -> Result;
+        write_str : mut_ref Self -> ref str -> M Result;
+        write_char : mut_ref Self -> char -> M Result;
+        write_fmt : mut_ref Self -> Arguments -> M Result;
       }.
 
       Global Instance Method_write_str `(Trait) : Notation.Dot "write_str" := {
@@ -228,7 +223,8 @@ Module std.
     Definition Formatter := Formatter.t.
 
     Module ImplFormatter.
-      Parameter new : forall {W : Set} `{Write.Trait W}, mut_ref W -> Formatter.
+      Parameter new : forall {W : Set} `{Write.Trait W},
+        mut_ref W -> M Formatter.
 
       Global Instance Formatter_new {W : Set} `{Write.Trait W} :
         Notation.DoubleColon Formatter "new" := {
@@ -238,7 +234,7 @@ Module std.
 
     Module Display.
       Class Trait (Self : Set) : Set := {
-        fmt : ref Self -> mut_ref Formatter -> Result;
+        fmt : ref Self -> mut_ref Formatter -> M Result;
       }.
     End Display.
 
@@ -248,49 +244,49 @@ Module std.
 
     Module Debug.
       Class Trait (Self : Set) : Set := {
-        fmt : ref Self -> mut_ref Formatter -> Result;
+        fmt : ref Self -> mut_ref Formatter -> M Result;
       }.
     End Debug.
 
     Module Octal.
       Class Trait (Self : Set) : Set := {
-        fmt : ref Self -> mut_ref Formatter -> Result;
+        fmt : ref Self -> mut_ref Formatter -> M Result;
       }.
     End Octal.
 
     Module LowerHex.
       Class Trait (Self : Set) : Set := {
-        fmt : ref Self -> mut_ref Formatter -> Result;
+        fmt : ref Self -> mut_ref Formatter -> M Result;
       }.
     End LowerHex.
 
     Module UpperHex.
       Class Trait (Self : Set) : Set := {
-        fmt : ref Self -> mut_ref Formatter -> Result;
+        fmt : ref Self -> mut_ref Formatter -> M Result;
       }.
     End UpperHex.
 
     Module Pointer.
       Class Trait (Self : Set) : Set := {
-        fmt : ref Self -> mut_ref Formatter -> Result;
+        fmt : ref Self -> mut_ref Formatter -> M Result;
       }.
     End Pointer.
 
     Module Binary.
       Class Trait (Self : Set) : Set := {
-        fmt : ref Self -> mut_ref Formatter -> Result;
+        fmt : ref Self -> mut_ref Formatter -> M Result;
       }.
     End Binary.
 
     Module LowerExp.
       Class Trait (Self : Set) : Set := {
-        fmt : ref Self -> mut_ref Formatter -> Result;
+        fmt : ref Self -> mut_ref Formatter -> M Result;
       }.
     End LowerExp.
 
     Module UpperExp.
       Class Trait (Self : Set) : Set := {
-        fmt : ref Self -> mut_ref Formatter -> Result;
+        fmt : ref Self -> mut_ref Formatter -> M Result;
       }.
     End UpperExp.
 
@@ -304,7 +300,7 @@ Module std.
 
       Parameter new :
         forall {T : Set},
-        ref T -> (ref T -> mut_ref Formatter -> Result) -> Self.
+        ref T -> (ref T -> mut_ref Formatter -> M Result) -> M Self.
 
       Global Instance ArgumentV1_new {T : Set} :
         Notation.DoubleColon ArgumentV1 "new" := {
@@ -312,7 +308,7 @@ Module std.
       }.
 
       Parameter new_display :
-        forall {T : Set} `{Display.Trait T}, ref T -> Self.
+        forall {T : Set} `{Display.Trait T}, ref T -> M Self.
 
       Global Instance ArgumentV1_new_display {T : Set} `{Display.Trait T} :
         Notation.DoubleColon ArgumentV1 "new_display" := {
@@ -320,7 +316,7 @@ Module std.
       }.
 
       Parameter new_debug :
-        forall {T : Set} `{Debug.Trait T}, ref T -> Self.
+        forall {T : Set} `{Debug.Trait T}, ref T -> M Self.
 
       Global Instance ArgumentV1_new_debug {T : Set} `{Debug.Trait T} :
         Notation.DoubleColon ArgumentV1 "new_debug" := {
@@ -328,7 +324,7 @@ Module std.
       }.
 
       Parameter new_octal :
-        forall {T : Set} `{Octal.Trait T}, ref T -> Self.
+        forall {T : Set} `{Octal.Trait T}, ref T -> M Self.
 
       Global Instance ArgumentV1_new_octal {T : Set} `{Octal.Trait T} :
         Notation.DoubleColon ArgumentV1 "new_octal" := {
@@ -336,7 +332,7 @@ Module std.
       }.
 
       Parameter new_lower_hex :
-        forall {T : Set} `{LowerHex.Trait T}, ref T -> Self.
+        forall {T : Set} `{LowerHex.Trait T}, ref T -> M Self.
 
       Global Instance ArgumentV1_new_lower_hex {T : Set} `{LowerHex.Trait T} :
         Notation.DoubleColon ArgumentV1 "new_lower_hex" := {
@@ -344,7 +340,7 @@ Module std.
       }.
 
       Parameter new_upper_hex :
-        forall {T : Set} `{UpperHex.Trait T}, ref T -> Self.
+        forall {T : Set} `{UpperHex.Trait T}, ref T -> M Self.
 
       Global Instance ArgumentV1_new_upper_hex {T : Set} `{UpperHex.Trait T} :
         Notation.DoubleColon ArgumentV1 "new_upper_hex" := {
@@ -352,7 +348,7 @@ Module std.
       }.
 
       Parameter new_pointer :
-        forall {T : Set} `{Pointer.Trait T}, ref T -> Self.
+        forall {T : Set} `{Pointer.Trait T}, ref T -> M Self.
 
       Global Instance ArgumentV1_new_pointer {T : Set} `{Pointer.Trait T} :
         Notation.DoubleColon ArgumentV1 "new_pointer" := {
@@ -360,7 +356,7 @@ Module std.
       }.
 
       Parameter new_binary :
-        forall {T : Set} `{Binary.Trait T}, ref T -> Self.
+        forall {T : Set} `{Binary.Trait T}, ref T -> M Self.
 
       Global Instance ArgumentV1_new_binary {T : Set} `{Binary.Trait T} :
         Notation.DoubleColon ArgumentV1 "new_binary" := {
@@ -368,7 +364,7 @@ Module std.
       }.
 
       Parameter new_lower_exp :
-        forall {T : Set} `{LowerExp.Trait T}, ref T -> Self.
+        forall {T : Set} `{LowerExp.Trait T}, ref T -> M Self.
 
       Global Instance ArgumentV1_new_lower_exp {T : Set} `{LowerExp.Trait T} :
         Notation.DoubleColon ArgumentV1 "new_lower_exp" := {
@@ -376,7 +372,7 @@ Module std.
       }.
 
       Parameter new_upper_exp :
-        forall {T : Set} `{UpperExp.Trait T}, ref T -> Self.
+        forall {T : Set} `{UpperExp.Trait T}, ref T -> M Self.
 
       Global Instance ArgumentV1_new_upper_exp {T : Set} `{UpperExp.Trait T} :
         Notation.DoubleColon ArgumentV1 "new_upper_exp" := {
@@ -385,7 +381,7 @@ Module std.
     End ImplArgumentV1.
 
     Module ImplArguments.
-      Parameter new_const : ref (list (ref str)) -> Arguments.
+      Parameter new_const : ref (list (ref str)) -> M Arguments.
 
       Global Instance Arguments_new_const :
         Notation.DoubleColon Arguments "new_const" := {
@@ -393,7 +389,7 @@ Module std.
       }.
 
       Parameter new_v1 :
-        ref (list (ref str)) -> ref (list ArgumentV1) -> Arguments.
+        ref (list (ref str)) -> ref (list ArgumentV1) -> M Arguments.
 
       Global Instance Arguments_new_v1 :
         Notation.DoubleColon Arguments "new_v1" := {
@@ -409,7 +405,7 @@ Module std.
     Module rust_2021.
       Module From.
         Class Trait (T : Set) (Self : Set) : Set := {
-          from : T -> Self;
+          from : T -> M Self;
         }.
       End From.
     End rust_2021.
@@ -432,7 +428,7 @@ Module std.
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
-        add : Self -> Rhs -> Output;
+        add : Self -> Rhs -> M Output;
       }.
 
       Global Instance Method_add `(Trait) : Notation.Dot "add" := {
@@ -443,7 +439,7 @@ Module std.
     Module AddAssign.
       Class Trait (Self : Set) (Rhs : option Set) : Set := {
         Rhs := defaultType Rhs Self;
-        add_assign : mut_ref Self -> Rhs -> unit;
+        add_assign : mut_ref Self -> Rhs -> M unit;
       }.
 
       Global Instance Method_add_assign `(Trait) : Notation.Dot "add_assign" := {
@@ -455,7 +451,7 @@ Module std.
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
-        sub : Self -> Rhs -> Output;
+        sub : Self -> Rhs -> M Output;
       }.
 
       Global Instance Method_sub `(Trait) : Notation.Dot "sub" := {
@@ -466,7 +462,7 @@ Module std.
     Module SubAssign.
       Class Trait (Self : Set) (Rhs : option Set) : Set := {
         Rhs := defaultType Rhs Self;
-        sub_assign : mut_ref Self -> Rhs -> unit;
+        sub_assign : mut_ref Self -> Rhs -> M unit;
       }.
 
       Global Instance Method_sub_assign `(Trait) : Notation.Dot "sub_assign" := {
@@ -478,7 +474,7 @@ Module std.
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
-        mul : Self -> Rhs -> Output;
+        mul : Self -> Rhs -> M Output;
       }.
 
       Global Instance Method_mul `(Trait) : Notation.Dot "mul" := {
@@ -489,7 +485,7 @@ Module std.
     Module MulAssign.
       Class Trait (Self : Set) (Rhs : option Set) : Set := {
         Rhs := defaultType Rhs Self;
-        mul_assign : mut_ref Self -> Rhs -> unit;
+        mul_assign : mut_ref Self -> Rhs -> M unit;
       }.
 
       Global Instance Method_mul_assign `(Trait) : Notation.Dot "mul_assign" := {
@@ -501,7 +497,7 @@ Module std.
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
-        div : Self -> Rhs -> Output;
+        div : Self -> Rhs -> M Output;
       }.
 
       Global Instance Method_div `(Trait) : Notation.Dot "div" := {
@@ -512,7 +508,7 @@ Module std.
     Module DivAssign.
       Class Trait (Self : Set) (Rhs : option Set) : Set := {
         Rhs := defaultType Rhs Self;
-        div_assign : mut_ref Self -> Rhs -> unit;
+        div_assign : mut_ref Self -> Rhs -> M unit;
       }.
 
       Global Instance Method_div_assign `(Trait) : Notation.Dot "div_assign" := {
@@ -524,7 +520,7 @@ Module std.
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
-        rem : Self -> Rhs -> Output;
+        rem : Self -> Rhs -> M Output;
       }.
 
       Global Instance Method_rem `(Trait) : Notation.Dot "rem" := {
@@ -535,7 +531,7 @@ Module std.
     Module RemAssign.
       Class Trait (Self : Set) (Rhs : option Set) : Set := {
         Rhs := defaultType Rhs Self;
-        rem_assign : mut_ref Self -> Rhs -> unit;
+        rem_assign : mut_ref Self -> Rhs -> M unit;
       }.
 
       Global Instance Method_rem_assign `(Trait) : Notation.Dot "rem_assign" := {
@@ -547,7 +543,7 @@ Module std.
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
-        bitxor : Self -> Rhs -> Output;
+        bitxor : Self -> Rhs -> M Output;
       }.
 
       Global Instance Method_bitxor `(Trait) : Notation.Dot "bitxor" := {
@@ -558,7 +554,7 @@ Module std.
     Module BitXorAssign.
       Class Trait (Self : Set) (Rhs : option Set) : Set := {
         Rhs := defaultType Rhs Self;
-        bitxor_assign : mut_ref Self -> Rhs -> unit;
+        bitxor_assign : mut_ref Self -> Rhs -> M unit;
       }.
 
       Global Instance Method_bitxor_assign `(Trait) : Notation.Dot "bitxor_assign" := {
@@ -570,7 +566,7 @@ Module std.
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
-        bitand : Self -> Rhs -> Output;
+        bitand : Self -> Rhs -> M Output;
       }.
 
       Global Instance Method_bitand `(Trait) : Notation.Dot "bitand" := {
@@ -581,7 +577,7 @@ Module std.
     Module BitAndAssign.
       Class Trait (Self : Set) (Rhs : option Set) : Set := {
         Rhs := defaultType Rhs Self;
-        bitand_assign : mut_ref Self -> Rhs -> unit;
+        bitand_assign : mut_ref Self -> Rhs -> M unit;
       }.
 
       Global Instance Method_bitand_assign `(Trait) : Notation.Dot "bitand_assign" := {
@@ -593,7 +589,7 @@ Module std.
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
-        bitor : Self -> Rhs -> Output;
+        bitor : Self -> Rhs -> M Output;
       }.
 
       Global Instance Method_bitor `(Trait) : Notation.Dot "bitor" := {
@@ -604,7 +600,7 @@ Module std.
     Module BitOrAssign.
       Class Trait (Self : Set) (Rhs : option Set) : Set := {
         Rhs := defaultType Rhs Self;
-        bitor_assign : mut_ref Self -> Rhs -> unit;
+        bitor_assign : mut_ref Self -> Rhs -> M unit;
       }.
 
       Global Instance Method_bitor_assign `(Trait) : Notation.Dot "bitor_assign" := {
@@ -616,7 +612,7 @@ Module std.
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
-        shl : Self -> Rhs -> Output;
+        shl : Self -> Rhs -> M Output;
       }.
 
       Global Instance Method_shl `(Trait) : Notation.Dot "shl" := {
@@ -627,7 +623,7 @@ Module std.
     Module ShlAssign.
       Class Trait (Self : Set) (Rhs : option Set) : Set := {
         Rhs := defaultType Rhs Self;
-        shl_assign : mut_ref Self -> Rhs -> unit;
+        shl_assign : mut_ref Self -> Rhs -> M unit;
       }.
 
       Global Instance Method_shl_assign `(Trait) : Notation.Dot "shl_assign" := {
@@ -639,7 +635,7 @@ Module std.
       Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
         Output := Output;
         Rhs := defaultType Rhs Self;
-        shr : Self -> Rhs -> Output;
+        shr : Self -> Rhs -> M Output;
       }.
 
       Global Instance Method_shr `(Trait) : Notation.Dot "shr" := {
@@ -650,7 +646,7 @@ Module std.
     Module ShrAssign.
       Class Trait (Self : Set) (Rhs : option Set) : Set := {
         Rhs := defaultType Rhs Self;
-        shr_assign : mut_ref Self -> Rhs -> unit;
+        shr_assign : mut_ref Self -> Rhs -> M unit;
       }.
 
       Global Instance Method_shr_assign `(Trait) : Notation.Dot "shr_assign" := {
@@ -661,7 +657,7 @@ Module std.
     Module Deref.
       Class Trait {Target : Set} (Self : Set) : Set := {
         Target := Target;
-        deref : ref Self -> ref Target;
+        deref : ref Self -> M (ref Target);
       }.
 
       Global Instance Method_deref `(Trait) : Notation.Dot "deref" := {
@@ -672,7 +668,7 @@ Module std.
     Module Neg.
       Class Trait {Output : Set} (Self : Set) : Set := {
         Output := Output;
-        neg : Self -> Output;
+        neg : Self -> M Output;
       }.
 
       Global Instance Method_neg `(Trait) : Notation.Dot "neg" := {
@@ -683,7 +679,7 @@ Module std.
     Module Not.
       Class Trait {Output : Set} (Self : Set) : Set := {
         Output := Output;
-        not : Self -> Output;
+        not : Self -> M Output;
       }.
 
       Global Instance Method_not `(Trait) : Notation.Dot "not" := {
@@ -694,7 +690,7 @@ Module std.
     (* The trait implementations for [Z] are convenient but should be replaced
        by the implementations for the native types eventually. *)
     Module Impl_Add_for_Z.
-      Definition add : Z -> Z -> Z := Z.add.
+      Definition add (z1 z2 : Z) : M Z := Pure (Z.add z1 z2).
 
       Global Instance Method_add : Notation.Dot "add" := {
         Notation.dot := add;
@@ -706,7 +702,7 @@ Module std.
     End Impl_Add_for_Z.
 
     Module Impl_AddAssign_for_Z.
-      Parameter add_assign : mut_ref Z -> Z -> unit.
+      Parameter add_assign : mut_ref Z -> Z -> M unit.
 
       Global Instance Method_add_assign : Notation.Dot "add_assign" := {
         Notation.dot := add_assign;
@@ -718,7 +714,7 @@ Module std.
     End Impl_AddAssign_for_Z.
 
     Module Impl_Sub_for_Z.
-      Definition sub : Z -> Z -> Z := Z.sub.
+      Definition sub (z1 z2 : Z) : M Z := Pure (Z.sub z1 z2).
 
       Global Instance Method_sub : Notation.Dot "sub" := {
         Notation.dot := sub;
@@ -730,7 +726,7 @@ Module std.
     End Impl_Sub_for_Z.
 
     Module Impl_SubAssign_for_Z.
-      Parameter sub_assign : mut_ref Z -> Z -> unit.
+      Parameter sub_assign : mut_ref Z -> Z -> M unit.
 
       Global Instance Method_sub_assign : Notation.Dot "sub_assign" := {
         Notation.dot := sub_assign;
@@ -742,7 +738,7 @@ Module std.
     End Impl_SubAssign_for_Z.
 
     Module Impl_Mul_for_Z.
-      Definition mul : Z -> Z -> Z := Z.mul.
+      Definition mul (z1 z2 : Z) : M Z := Pure (Z.mul z1 z2).
 
       Global Instance Method_mul : Notation.Dot "mul" := {
         Notation.dot := mul;
@@ -754,7 +750,7 @@ Module std.
     End Impl_Mul_for_Z.
 
     Module Impl_MulAssign_for_Z.
-      Parameter mul_assign : mut_ref Z -> Z -> unit.
+      Parameter mul_assign : mut_ref Z -> Z -> M unit.
 
       Global Instance Method_mul_assign : Notation.Dot "mul_assign" := {
         Notation.dot := mul_assign;
@@ -766,7 +762,7 @@ Module std.
     End Impl_MulAssign_for_Z.
 
     Module Impl_Div_for_Z.
-      Definition div : Z -> Z -> Z := Z.div.
+      Definition div (z1 z2 : Z) : M Z := Pure (Z.div z1 z2).
 
       Global Instance Method_div : Notation.Dot "div" := {
         Notation.dot := div;
@@ -778,7 +774,7 @@ Module std.
     End Impl_Div_for_Z.
 
     Module Impl_DivAssign_for_Z.
-      Parameter div_assign : mut_ref Z -> Z -> unit.
+      Parameter div_assign : mut_ref Z -> Z -> M unit.
 
       Global Instance Method_div_assign : Notation.Dot "div_assign" := {
         Notation.dot := div_assign;
@@ -790,7 +786,7 @@ Module std.
     End Impl_DivAssign_for_Z.
 
     Module Impl_Rem_for_Z.
-      Definition rem : Z -> Z -> Z := Z.rem.
+      Definition rem (z1 z2 : Z) : M Z := Pure (Z.rem z1 z2).
 
       Global Instance Method_rem : Notation.Dot "rem" := {
         Notation.dot := rem;
@@ -802,7 +798,7 @@ Module std.
     End Impl_Rem_for_Z.
 
     Module Impl_RemAssign_for_Z.
-      Parameter rem_assign : mut_ref Z -> Z -> unit.
+      Parameter rem_assign : mut_ref Z -> Z -> M unit.
 
       Global Instance Method_rem_assign : Notation.Dot "rem_assign" := {
         Notation.dot := rem_assign;
@@ -814,7 +810,7 @@ Module std.
     End Impl_RemAssign_for_Z.
 
     Module Impl_Neg_for_Z.
-      Definition neg : Z -> Z := Z.opp.
+      Definition neg (z : Z) : M Z := Pure (Z.opp z).
 
       Global Instance Method_neg : Notation.Dot "neg" := {
         Notation.dot := neg;
@@ -826,7 +822,7 @@ Module std.
     End Impl_Neg_for_Z.
 
     Module Impl_Not_for_bool.
-      Definition not : bool -> bool := negb.
+      Definition not (b : bool) : M bool := Pure (negb b).
 
       Global Instance Method_not : Notation.Dot "not" := {
         Notation.dot := not;
@@ -840,7 +836,7 @@ Module std.
     (** For now we implement the dereferencing operator on any types, as the
         identity. *)
     Module Impl_Deref_for_any.
-      Definition deref {A : Set} (x : A) : A := x.
+      Definition deref {A : Set} (x : A) : M A := Pure x.
 
       Global Instance Method_deref (A : Set) : Notation.Dot "deref" := {
         Notation.dot := deref (A := A);
@@ -860,8 +856,8 @@ Module std.
       Class Trait (Self : Set) (Rhs : option Set) : Set := {
         Rhs := defaultType Rhs Self;
 
-        eq : ref Self -> ref Rhs -> bool;
-        ne : ref Self -> ref Rhs -> bool;
+        eq : ref Self -> ref Rhs -> M bool;
+        ne : ref Self -> ref Rhs -> M bool;
       }.
 
       Global Instance Method_eq `(Trait) : Notation.Dot "eq" := { 
@@ -876,11 +872,11 @@ Module std.
       Class Trait (Self : Set) (Rhs : option Set) : Set := {
         Rhs := defaultType Rhs Self;
 
-        partial_cmp : ref Self -> ref Self -> option (Ordering.t);
-        lt : ref Self -> ref Rhs -> bool;
-        le : ref Self -> ref Rhs -> bool;
-        gt : ref Self -> ref Rhs -> bool;
-        ge : ref Self -> ref Rhs -> bool;
+        partial_cmp : ref Self -> ref Self -> M (option (Ordering.t));
+        lt : ref Self -> ref Rhs -> M bool;
+        le : ref Self -> ref Rhs -> M bool;
+        gt : ref Self -> ref Rhs -> M bool;
+        ge : ref Self -> ref Rhs -> M bool;
       }.
 
       Global Instance Method_partial_cmp `(Trait) : Notation.Dot "partial_cmp" := { 
@@ -1095,7 +1091,7 @@ Module _crate.
   Module clone.
     Module Clone.
       Class Trait (Self : Set) : Set := {
-        clone : ref Self -> Self;
+        clone : ref Self -> M Self;
       }.
     End Clone.
   End clone.
@@ -1103,25 +1099,25 @@ Module _crate.
   Module cmp.
     Module Eq.
       Class Trait (Self : Set) : Set := {
-        assert_receiver_is_total_eq : ref Self -> unit;
+        assert_receiver_is_total_eq : ref Self -> M unit;
       }.
     End Eq.
 
     Module PartialEq.
       Class Trait (Self : Set) : Set := {
-        eq : ref Self -> ref Self -> bool;
+        eq : ref Self -> ref Self -> M bool;
       }.
     End PartialEq.
   End cmp.
 
   Module io.
-    Parameter _print : forall {A : Set}, A -> unit.
+    Parameter _print : forall {A : Set}, A -> M unit.
   End io.
 
   Module fmt := std.fmt.
 
   Module log.
-    Parameter sol_log : str -> unit.
+    Parameter sol_log : str -> M unit.
   End log.
 End _crate.
 
@@ -1134,7 +1130,7 @@ Module solana_program.
   Module decode_error.
     Module DecodeError.
       Class Class (E : Set) (Self : Set) : Set := {
-        type_of : unit -> ref str;
+        type_of : unit -> M (ref str);
       }.
     End DecodeError.
   End decode_error.
@@ -1145,7 +1141,7 @@ Module solana_program.
   Module program_error.
     Module PrintProgramError.
       Class Class (Self : Set) : Set := {
-        print : ref Self -> unit;
+        print : ref Self -> M unit;
       }.
     End PrintProgramError.
 
@@ -1185,14 +1181,14 @@ Parameter _num_traits : Set.
 Module _num_traits.
   Module FromPrimitive.
     Class Class (Self : Set) : Set := {
-      from_i64 : i64 -> option Self;
-      from_u64 : u64 -> option Self;
+      from_i64 : i64 -> M (option Self);
+      from_u64 : u64 -> M (option Self);
     }.
   End FromPrimitive.
 End _num_traits.
 
 Module crate.
-  Parameter check_program_account : unit -> unit.
+  Parameter check_program_account : unit -> M unit.
 End crate.
 
 Module rand.
@@ -1204,10 +1200,10 @@ End rand.
 (** For now we assume that all types implement [to_owned] and that this is the
     identity function. *)
 Global Instance Method_to_owned {A : Set} : Notation.Dot "to_owned" := {
-  Notation.dot := (id : A -> A);
+  Notation.dot (x : A) := Pure x;
 }.
 
-Definition deref {A : Set} (r : ref A) : A := r.
+Definition addr_of {A : Set} (v : A) : ref A := v.
 
 (** A LangItem generated by the Rust compiler. *)
 Definition format_argument : Set := std.fmt.ArgumentV1.

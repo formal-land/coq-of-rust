@@ -4,21 +4,23 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition drink (beverage : ref str) : M unit :=
-  let* α0 := beverage.["eq"] "lemonade" in
   let* _ :=
+    let* α0 := beverage.["eq"] "lemonade" in
     if (α0 : bool) then
       let* _ := _crate.rt.begin_panic "AAAaaaaa!!!!" in
       Pure tt
     else
       Pure tt in
-  let* α1 := format_argument::["new_display"] (deref beverage) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "Some refreshing "; " is all I need.
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of beverage) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Some refreshing "; " is all I need.
 " ])
-      (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

@@ -10,49 +10,57 @@ Definition multiply
     (first_number_str : ref str)
     (second_number_str : ref str)
     : M (Result i32 ParseIntError) :=
-  let* α0 := first_number_str.["parse"] in
-  let* α1 := LangItem α0 in
   let* first_number :=
+    let* α0 := first_number_str.["parse"] in
+    let* α1 := LangItem α0 in
     match α1 with
     | Break {| Break.0 := residual; |} =>
       let* α0 := LangItem residual in
       Return α0
     | Continue {| Continue.0 := val; |} => Pure val
     end in
-  let* α2 := second_number_str.["parse"] in
-  let* α3 := LangItem α2 in
   let* second_number :=
-    match α3 with
+    let* α0 := second_number_str.["parse"] in
+    let* α1 := LangItem α0 in
+    match α1 with
     | Break {| Break.0 := residual; |} =>
       let* α0 := LangItem residual in
       Return α0
     | Continue {| Continue.0 := val; |} => Pure val
     end in
-  let* α4 := first_number.["mul"] second_number in
-  Ok α4.
+  let* α0 := first_number.["mul"] second_number in
+  Pure (Ok α0).
 
 Definition print (result : Result i32 ParseIntError) : M unit :=
   match result with
   | Ok n =>
-    let* α0 := format_argument::["new_display"] (deref n) in
-    let* α1 :=
-      format_arguments::["new_v1"] (deref [ "n is "; "
-" ]) (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "n is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   | Err e =>
-    let* α0 := format_argument::["new_display"] (deref e) in
-    let* α1 :=
-      format_arguments::["new_v1"] (deref [ "Error: "; "
-" ]) (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of e) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Error: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
     Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := multiply "10" "2" in
-  let* _ := print α0 in
-  let* α1 := multiply "t" "2" in
-  let* _ := print α1 in
+  let* _ :=
+    let* α0 := multiply "10" "2" in
+    print α0 in
+  let* _ :=
+    let* α0 := multiply "t" "2" in
+    print α0 in
   Pure tt.

@@ -5,30 +5,34 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := format_argument::["new_debug"] (deref "1i32 + 1 == 2i32") in
-  let* α1 := format_argument::["new_debug"] (deref "2i32 * 2 == 4i32") in
-  let* α2 := 1.["add"] 1 in
-  let* α3 := α2.["eq"] 2 in
-  let* α4 := 2.["mul"] 2 in
-  let* α5 := α4.["eq"] 4 in
-  let* α6 := α3.["andb"] α5 in
-  let* α7 := format_argument::["new_debug"] (deref α6) in
-  let* α8 :=
-    format_arguments::["new_v1"]
-      (deref [ ""; " and "; " is "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of "1i32 + 1 == 2i32") in
+      let* α1 := format_argument::["new_debug"] (addr_of "2i32 * 2 == 4i32") in
+      let* α2 := 1.["add"] 1 in
+      let* α3 := α2.["eq"] 2 in
+      let* α4 := 2.["mul"] 2 in
+      let* α5 := α4.["eq"] 4 in
+      let* α6 := α3.["andb"] α5 in
+      let* α7 := format_argument::["new_debug"] (addr_of α6) in
+      let* α8 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; " and "; " is "; "
 " ])
-      (deref [ α0; α1; α7 ]) in
-  let* _ := _crate.io._print α8 in
-  let _ := tt in
-  let* α9 := format_argument::["new_debug"] (deref "true") in
-  let* α10 := format_argument::["new_debug"] (deref "false") in
-  let* α11 := true.["or"] false in
-  let* α12 := format_argument::["new_debug"] (deref α11) in
-  let* α13 :=
-    format_arguments::["new_v1"]
-      (deref [ ""; " or "; " is "; "
+          (addr_of [ α0; α1; α7 ]) in
+      _crate.io._print α8 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of "true") in
+      let* α1 := format_argument::["new_debug"] (addr_of "false") in
+      let* α2 := true.["or"] false in
+      let* α3 := format_argument::["new_debug"] (addr_of α2) in
+      let* α4 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; " or "; " is "; "
 " ])
-      (deref [ α9; α10; α12 ]) in
-  let* _ := _crate.io._print α13 in
-  let _ := tt in
+          (addr_of [ α0; α1; α3 ]) in
+      _crate.io._print α4 in
+    Pure tt in
   Pure tt.

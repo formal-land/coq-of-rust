@@ -4,59 +4,73 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition function (_ : unit) : M unit :=
-  let* α0 :=
-    format_arguments::["new_const"] (deref [ "called `function()`
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "called `function()`
 " ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
+      _crate.io._print α0 in
+    Pure tt in
   Pure tt.
 
 Module cool.
   Definition function (_ : unit) : M unit :=
-    let* α0 :=
-      format_arguments::["new_const"]
-        (deref [ "called `cool::function()`
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `cool::function()`
 " ]) in
-    let* _ := _crate.io._print α0 in
-    let _ := tt in
+        _crate.io._print α0 in
+      Pure tt in
     Pure tt.
 End cool.
 
 Definition function (_ : unit) : M unit :=
-  let* α0 :=
-    format_arguments::["new_const"] (deref [ "called `cool::function()`
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `cool::function()`
 " ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
+      _crate.io._print α0 in
+    Pure tt in
   Pure tt.
 
 Module my.
   Definition function (_ : unit) : M unit :=
-    let* α0 :=
-      format_arguments::["new_const"] (deref [ "called `my::function()`
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `my::function()`
 " ]) in
-    let* _ := _crate.io._print α0 in
-    let _ := tt in
+        _crate.io._print α0 in
+      Pure tt in
     Pure tt.
   
   Module cool.
     Definition function (_ : unit) : M unit :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ "called `my::cool::function()`
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "called `my::cool::function()`
 " ]) in
-      let* _ := _crate.io._print α0 in
-      let _ := tt in
+          _crate.io._print α0 in
+        Pure tt in
       Pure tt.
   End cool.
   
   Definition indirect_call (_ : unit) : M unit :=
-    let* α0 :=
-      format_arguments::["new_const"]
-        (deref [ "called `my::indirect_call()`, that
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `my::indirect_call()`, that
 > " ]) in
-    let* _ := _crate.io._print α0 in
-    let _ := tt in
+        _crate.io._print α0 in
+      Pure tt in
     let* _ := self.function tt in
     let* _ := function tt in
     let* _ := self.cool.function tt in
@@ -66,40 +80,49 @@ Module my.
 End my.
 
 Definition function (_ : unit) : M unit :=
-  let* α0 :=
-    format_arguments::["new_const"] (deref [ "called `my::function()`
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `my::function()`
 " ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
+      _crate.io._print α0 in
+    Pure tt in
   Pure tt.
 
 Module cool.
   Definition function (_ : unit) : M unit :=
-    let* α0 :=
-      format_arguments::["new_const"]
-        (deref [ "called `my::cool::function()`
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `my::cool::function()`
 " ]) in
-    let* _ := _crate.io._print α0 in
-    let _ := tt in
+        _crate.io._print α0 in
+      Pure tt in
     Pure tt.
 End cool.
 
 Definition function (_ : unit) : M unit :=
-  let* α0 :=
-    format_arguments::["new_const"]
-      (deref [ "called `my::cool::function()`
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `my::cool::function()`
 " ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
+      _crate.io._print α0 in
+    Pure tt in
   Pure tt.
 
 Definition indirect_call (_ : unit) : M unit :=
-  let* α0 :=
-    format_arguments::["new_const"]
-      (deref [ "called `my::indirect_call()`, that
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `my::indirect_call()`, that
 > " ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
+      _crate.io._print α0 in
+    Pure tt in
   let* _ := self.function tt in
   let* _ := function tt in
   let* _ := self.cool.function tt in

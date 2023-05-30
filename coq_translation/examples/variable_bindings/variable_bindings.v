@@ -9,30 +9,36 @@ Definition main (_ : unit) : M unit :=
   let a_boolean := true in
   let unit := tt in
   let copied_integer := an_integer in
-  let* α0 := format_argument::["new_debug"] (deref copied_integer) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "An integer: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of copied_integer) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "An integer: "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let* α2 := format_argument::["new_debug"] (deref a_boolean) in
-  let* α3 :=
-    format_arguments::["new_v1"]
-      (deref [ "A boolean: "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of a_boolean) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "A boolean: "; "
 " ])
-      (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
-  let* α4 := format_argument::["new_debug"] (deref unit) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "Meet the unit value: "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of unit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Meet the unit value: "; "
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let _unused_variable := 3 in
   let _noisy_unused_variable := 2 in
   Pure tt.

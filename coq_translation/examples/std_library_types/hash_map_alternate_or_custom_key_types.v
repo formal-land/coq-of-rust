@@ -73,8 +73,8 @@ Module Impl__crate_hash_Hash_for_Account.
   Definition Self := Account.
   
   Definition hash (self : ref Self) (state : mut_ref __H) : M unit :=
-    let* _ := _crate.hash.Hash.hash (deref self.["username"]) state in
-    _crate.hash.Hash.hash (deref self.["password"]) state.
+    let* _ := _crate.hash.Hash.hash (addr_of self.["username"]) state in
+    _crate.hash.Hash.hash (addr_of self.["password"]) state.
   
   Global Instance Method_hash : Notation.Dot "hash" := {
     Notation.dot := hash;
@@ -107,51 +107,74 @@ Definition try_logon
     (username : ref str)
     (password : ref str)
     : M unit :=
-  let* α0 := format_argument::["new_display"] (deref username) in
-  let* α1 :=
-    format_arguments::["new_v1"] (deref [ "Username: "; "
-" ]) (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let* α2 := format_argument::["new_display"] (deref password) in
-  let* α3 :=
-    format_arguments::["new_v1"] (deref [ "Password: "; "
-" ]) (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
-  let* α4 :=
-    format_arguments::["new_const"] (deref [ "Attempting logon...
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of username) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Username: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of password) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Password: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Attempting logon...
 " ]) in
-  let* _ := _crate.io._print α4 in
-  let _ := tt in
+      _crate.io._print α0 in
+    Pure tt in
   let logon :=
     {| Account.username := username; Account.password := password; |} in
-  let* α5 := accounts.["get"] (deref logon) in
-  match α5 with
+  let* α0 := accounts.["get"] (addr_of logon) in
+  match α0 with
   | Some account_info =>
-    let* α0 :=
-      format_arguments::["new_const"] (deref [ "Successful logon!
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"] (addr_of [ "Successful logon!
 " ]) in
-    let* _ := _crate.io._print α0 in
-    let _ := tt in
-    let* α1 := format_argument::["new_display"] (deref account_info.["name"]) in
-    let* α2 :=
-      format_arguments::["new_v1"] (deref [ "Name: "; "
-" ]) (deref [ α1 ]) in
-    let* _ := _crate.io._print α2 in
-    let _ := tt in
-    let* α3 :=
-      format_argument::["new_display"] (deref account_info.["email"]) in
-    let* α4 :=
-      format_arguments::["new_v1"] (deref [ "Email: "; "
-" ]) (deref [ α3 ]) in
-    let* _ := _crate.io._print α4 in
-    let _ := tt in
+        _crate.io._print α0 in
+      Pure tt in
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_argument::["new_display"] (addr_of account_info.["name"]) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Name: "; "
+" ])
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_argument::["new_display"] (addr_of account_info.["email"]) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Email: "; "
+" ])
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
     Pure tt
   | _ =>
-    let* α0 := format_arguments::["new_const"] (deref [ "Login failed!
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Login failed!
 " ]) in
-    let* _ := _crate.io._print α0 in
+      _crate.io._print α0 in
     Pure tt
   end.
 
@@ -167,6 +190,6 @@ Definition main (_ : unit) : M unit :=
       AccountInfo.email := "j.everyman@email.com";
     |} in
   let* _ := accounts.["insert"] account account_info in
-  let* _ := try_logon (deref accounts) "j.everyman" "psasword123" in
-  let* _ := try_logon (deref accounts) "j.everyman" "password123" in
+  let* _ := try_logon (addr_of accounts) "j.everyman" "psasword123" in
+  let* _ := try_logon (addr_of accounts) "j.everyman" "password123" in
   Pure tt.

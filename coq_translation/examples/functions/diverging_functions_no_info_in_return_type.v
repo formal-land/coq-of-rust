@@ -8,9 +8,10 @@ Definition some_fn (_ : unit) : M unit := Pure tt.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let* a := some_fn tt in
-  let* α0 :=
-    format_arguments::["new_const"]
-      (deref [ "This function returns and you can see this line.
+  let* _ :=
+    let* α0 :=
+      format_arguments::["new_const"]
+        (addr_of [ "This function returns and you can see this line.
 " ]) in
-  let* _ := _crate.io._print α0 in
+    _crate.io._print α0 in
   Pure tt.

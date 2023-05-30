@@ -116,15 +116,17 @@ Module ImplPair.
   
   Definition destroy (self : Self) : M unit :=
     let 'Pair.Build_t first second := self in
-    let* α0 := format_argument::["new_display"] (deref first) in
-    let* α1 := format_argument::["new_display"] (deref second) in
-    let* α2 :=
-      format_arguments::["new_v1"]
-        (deref [ "Destroying Pair("; ", "; ")
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of first) in
+        let* α1 := format_argument::["new_display"] (addr_of second) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Destroying Pair("; ", "; ")
 " ])
-        (deref [ α0; α1 ]) in
-    let* _ := _crate.io._print α2 in
-    let _ := tt in
+            (addr_of [ α0; α1 ]) in
+        _crate.io._print α2 in
+      Pure tt in
     Pure tt.
   
   Global Instance Method_destroy : Notation.Dot "destroy" := {
@@ -134,37 +136,40 @@ End ImplPair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let rectangle :=
-    {|
-      Rectangle.p1 := Point::["origin"] tt;
-      Rectangle.p2 := Point::["new"] 3 (* 3.0 *) 4 (* 4.0 *);
-    |} in
-  let* α0 := rectangle.["perimeter"] in
-  let* α1 := format_argument::["new_display"] (deref α0) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "Rectangle perimeter: "; "
+  let* rectangle :=
+    let* α0 := Point::["origin"] tt in
+    let* α1 := Point::["new"] 3 (* 3.0 *) 4 (* 4.0 *) in
+    Pure {| Rectangle.p1 := α0; Rectangle.p2 := α1; |} in
+  let* _ :=
+    let* _ :=
+      let* α0 := rectangle.["perimeter"] in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Rectangle perimeter: "; "
 " ])
-      (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
-  let* α3 := rectangle.["area"] in
-  let* α4 := format_argument::["new_display"] (deref α3) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "Rectangle area: "; "
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := rectangle.["area"] in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Rectangle area: "; "
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
-  let square :=
-    {|
-      Rectangle.p1 := Point::["origin"] tt;
-      Rectangle.p2 := Point::["new"] 1 (* 1.0 *) 1 (* 1.0 *);
-    |} in
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* square :=
+    let* α0 := Point::["origin"] tt in
+    let* α1 := Point::["new"] 1 (* 1.0 *) 1 (* 1.0 *) in
+    Pure {| Rectangle.p1 := α0; Rectangle.p2 := α1; |} in
   let* _ := square.["translate"] 1 (* 1.0 *) 1 (* 1.0 *) in
-  let* α6 := Box::["new"] 1 in
-  let* α7 := Box::["new"] 2 in
-  let pair := Pair.Build_t α6 α7 in
+  let* pair :=
+    let* α0 := Box::["new"] 1 in
+    let* α1 := Box::["new"] 2 in
+    Pure (Pair.Build_t α0 α1) in
   let* _ := pair.["destroy"] in
   Pure tt.

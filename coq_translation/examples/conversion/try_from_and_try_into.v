@@ -22,7 +22,7 @@ Module Impl__crate_fmt_Debug_for_EvenNumber.
     _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "EvenNumber"
-      (deref (deref (self.[0]))).
+      (addr_of (addr_of (self.[0]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -64,9 +64,9 @@ Module Impl_TryFrom_for_EvenNumber.
     let* α0 := value.["rem"] 2 in
     let* α1 := α0.["eq"] 0 in
     if (α1 : bool) then
-      Ok (EvenNumber.Build_t value)
+      Pure (Ok (EvenNumber.Build_t value))
     else
-      Err tt.
+      Pure (Err tt).
   
   Global Instance AssociatedFunction_try_from :
     Notation.DoubleColon Self "try_from" := {
@@ -80,10 +80,9 @@ End Impl_TryFrom_for_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := EvenNumber::["try_from"] 8 in
-  let* α1 := Ok (EvenNumber.Build_t 8) in
   let* _ :=
-    match (deref α0, deref α1) with
+    let* α0 := EvenNumber::["try_from"] 8 in
+    match (addr_of α0, addr_of (Ok (EvenNumber.Build_t 8))) with
     | (left_val, right_val) =>
       let* α0 := left_val.["deref"] in
       let* α1 := right_val.["deref"] in
@@ -91,22 +90,21 @@ Definition main (_ : unit) : M unit :=
       let* α3 := α2.["not"] in
       if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let* α0 := left_val.["deref"] in
-        let* α1 := right_val.["deref"] in
         let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
           _crate.panicking.assert_failed
             kind
-            (deref α0)
-            (deref α1)
+            (addr_of α0)
+            (addr_of α1)
             _crate.option.Option.None in
         Pure tt
       else
         Pure tt
     end in
-  let* α2 := EvenNumber::["try_from"] 5 in
-  let* α3 := Err tt in
   let* _ :=
-    match (deref α2, deref α3) with
+    let* α0 := EvenNumber::["try_from"] 5 in
+    match (addr_of α0, addr_of (Err tt)) with
     | (left_val, right_val) =>
       let* α0 := left_val.["deref"] in
       let* α1 := right_val.["deref"] in
@@ -114,22 +112,21 @@ Definition main (_ : unit) : M unit :=
       let* α3 := α2.["not"] in
       if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let* α0 := left_val.["deref"] in
-        let* α1 := right_val.["deref"] in
         let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
           _crate.panicking.assert_failed
             kind
-            (deref α0)
-            (deref α1)
+            (addr_of α0)
+            (addr_of α1)
             _crate.option.Option.None in
         Pure tt
       else
         Pure tt
     end in
   let* result := 8.["try_into"] in
-  let* α4 := Ok (EvenNumber.Build_t 8) in
   let* _ :=
-    match (deref result, deref α4) with
+    match (addr_of result, addr_of (Ok (EvenNumber.Build_t 8))) with
     | (left_val, right_val) =>
       let* α0 := left_val.["deref"] in
       let* α1 := right_val.["deref"] in
@@ -137,22 +134,21 @@ Definition main (_ : unit) : M unit :=
       let* α3 := α2.["not"] in
       if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let* α0 := left_val.["deref"] in
-        let* α1 := right_val.["deref"] in
         let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
           _crate.panicking.assert_failed
             kind
-            (deref α0)
-            (deref α1)
+            (addr_of α0)
+            (addr_of α1)
             _crate.option.Option.None in
         Pure tt
       else
         Pure tt
     end in
   let* result := 5.["try_into"] in
-  let* α5 := Err tt in
   let* _ :=
-    match (deref result, deref α5) with
+    match (addr_of result, addr_of (Err tt)) with
     | (left_val, right_val) =>
       let* α0 := left_val.["deref"] in
       let* α1 := right_val.["deref"] in
@@ -160,13 +156,13 @@ Definition main (_ : unit) : M unit :=
       let* α3 := α2.["not"] in
       if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let* α0 := left_val.["deref"] in
-        let* α1 := right_val.["deref"] in
         let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
           _crate.panicking.assert_failed
             kind
-            (deref α0)
-            (deref α1)
+            (addr_of α0)
+            (addr_of α1)
             _crate.option.Option.None in
         Pure tt
       else

@@ -24,30 +24,36 @@ Definition main (_ : unit) : M unit :=
   let* _ :=
     match status with
     | Rich =>
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ "The rich have lots of money!
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "The rich have lots of money!
 " ]) in
-      let* _ := _crate.io._print α0 in
+        _crate.io._print α0 in
       Pure tt
     | Poor =>
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ "The poor have no money...
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "The poor have no money...
 " ]) in
-      let* _ := _crate.io._print α0 in
+        _crate.io._print α0 in
       Pure tt
     end in
   match work with
   | Civilian =>
-    let* α0 := format_arguments::["new_const"] (deref [ "Civilians work!
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Civilians work!
 " ]) in
-    let* _ := _crate.io._print α0 in
+      _crate.io._print α0 in
     Pure tt
   | Soldier =>
-    let* α0 := format_arguments::["new_const"] (deref [ "Soldiers fight!
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Soldiers fight!
 " ]) in
-    let* _ := _crate.io._print α0 in
+      _crate.io._print α0 in
     Pure tt
   end.
 

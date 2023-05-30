@@ -5,17 +5,17 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := _crate.boxed.Box::["new"] [ 1; 9; 3; 3; 13; 2 ] in
-  let* vec := Slice::["into_vec"] α0 in
-  let* α1 := vec.["iter"] in
+  let* vec :=
+    let* α0 := _crate.boxed.Box::["new"] [ 1; 9; 3; 3; 13; 2 ] in
+    Slice::["into_vec"] α0 in
   let* index_of_first_even_number :=
-    α1.["position"]
+    let* α0 := vec.["iter"] in
+    α0.["position"]
       (fun x =>
         let* α0 := x.["rem"] 2 in
         α0.["eq"] 0) in
-  let* α2 := Some 5 in
   let* _ :=
-    match (deref index_of_first_even_number, deref α2) with
+    match (addr_of index_of_first_even_number, addr_of (Some 5)) with
     | (left_val, right_val) =>
       let* α0 := left_val.["deref"] in
       let* α1 := right_val.["deref"] in
@@ -23,23 +23,23 @@ Definition main (_ : unit) : M unit :=
       let* α3 := α2.["not"] in
       if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let* α0 := left_val.["deref"] in
-        let* α1 := right_val.["deref"] in
         let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
           _crate.panicking.assert_failed
             kind
-            (deref α0)
-            (deref α1)
+            (addr_of α0)
+            (addr_of α1)
             _crate.option.Option.None in
         Pure tt
       else
         Pure tt
     end in
-  let* α3 := vec.["into_iter"] in
   let* index_of_first_negative_number :=
-    α3.["position"] (fun x => x.["lt"] 0) in
+    let* α0 := vec.["into_iter"] in
+    α0.["position"] (fun x => x.["lt"] 0) in
   let* _ :=
-    match (deref index_of_first_negative_number, deref None) with
+    match (addr_of index_of_first_negative_number, addr_of None) with
     | (left_val, right_val) =>
       let* α0 := left_val.["deref"] in
       let* α1 := right_val.["deref"] in
@@ -47,13 +47,13 @@ Definition main (_ : unit) : M unit :=
       let* α3 := α2.["not"] in
       if (α3 : bool) then
         let kind := _crate.panicking.AssertKind.Eq in
-        let* α0 := left_val.["deref"] in
-        let* α1 := right_val.["deref"] in
         let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
           _crate.panicking.assert_failed
             kind
-            (deref α0)
-            (deref α1)
+            (addr_of α0)
+            (addr_of α1)
             _crate.option.Option.None in
         Pure tt
       else

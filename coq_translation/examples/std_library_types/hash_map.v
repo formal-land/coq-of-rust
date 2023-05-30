@@ -9,10 +9,12 @@ Definition HashMap := HashMap.t.
 Definition call (number : ref str) : M (ref str) :=
   match number with
   | "798-1364" =>
-    Pure "We're sorry, the call cannot be completed as dialed. 
+    Pure
+      "We're sorry, the call cannot be completed as dialed. 
             Please hang up and try again."
   | "645-7689" =>
-    Pure "Hello, this is Mr. Awesome's Pizza. My name is Fred.
+    Pure
+      "Hello, this is Mr. Awesome's Pizza. My name is Fred.
             What can I get for you today?"
   | _ => Pure "Hi! Who is this again?"
   end.
@@ -24,70 +26,76 @@ Definition main (_ : unit) : M unit :=
   let* _ := contacts.["insert"] "Ashley" "645-7689" in
   let* _ := contacts.["insert"] "Katie" "435-8291" in
   let* _ := contacts.["insert"] "Robert" "956-1745" in
-  let* α0 := contacts.["get"] (deref "Daniel") in
   let* _ :=
+    let* α0 := contacts.["get"] (addr_of "Daniel") in
     match α0 with
     | Some number =>
-      let* α0 := call number in
-      let* α1 := format_argument::["new_display"] (deref α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (deref [ "Calling Daniel: "; "
+      let* _ :=
+        let* α0 := call number in
+        let* α1 := format_argument::["new_display"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Calling Daniel: "; "
 " ])
-          (deref [ α1 ]) in
-      let* _ := _crate.io._print α2 in
+            (addr_of [ α1 ]) in
+        _crate.io._print α2 in
       Pure tt
     | _ =>
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ "Don't have Daniel's number.
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "Don't have Daniel's number.
 " ]) in
-      let* _ := _crate.io._print α0 in
+        _crate.io._print α0 in
       Pure tt
     end in
   let* _ := contacts.["insert"] "Daniel" "164-6743" in
-  let* α1 := contacts.["get"] (deref "Ashley") in
   let* _ :=
-    match α1 with
+    let* α0 := contacts.["get"] (addr_of "Ashley") in
+    match α0 with
     | Some number =>
-      let* α0 := call number in
-      let* α1 := format_argument::["new_display"] (deref α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (deref [ "Calling Ashley: "; "
+      let* _ :=
+        let* α0 := call number in
+        let* α1 := format_argument::["new_display"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Calling Ashley: "; "
 " ])
-          (deref [ α1 ]) in
-      let* _ := _crate.io._print α2 in
+            (addr_of [ α1 ]) in
+        _crate.io._print α2 in
       Pure tt
     | _ =>
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ "Don't have Ashley's number.
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "Don't have Ashley's number.
 " ]) in
-      let* _ := _crate.io._print α0 in
+        _crate.io._print α0 in
       Pure tt
     end in
-  let* _ := contacts.["remove"] (deref "Ashley") in
-  let* α2 := contacts.["iter"] in
-  let* α3 := LangItem α2 in
-  match α3 with
+  let* _ := contacts.["remove"] (addr_of "Ashley") in
+  let* α0 := contacts.["iter"] in
+  let* α1 := LangItem α0 in
+  match α1 with
   | iter =>
     loop
-      let* α0 := LangItem (deref iter) in
       let* _ :=
+        let* α0 := LangItem (addr_of iter) in
         match α0 with
         | None => Pure Break
         | Some {| Some.0 := (contact, number); |} =>
-          let* α0 := format_argument::["new_display"] (deref contact) in
-          let* α1 := call number in
-          let* α2 := format_argument::["new_display"] (deref α1) in
-          let* α3 :=
-            format_arguments::["new_v1"]
-              (deref [ "Calling "; ": "; "
+          let* _ :=
+            let* _ :=
+              let* α0 := format_argument::["new_display"] (addr_of contact) in
+              let* α1 := call number in
+              let* α2 := format_argument::["new_display"] (addr_of α1) in
+              let* α3 :=
+                format_arguments::["new_v1"]
+                  (addr_of [ "Calling "; ": "; "
 " ])
-              (deref [ α0; α2 ]) in
-          let* _ := _crate.io._print α3 in
-          let _ := tt in
+                  (addr_of [ α0; α2 ]) in
+              _crate.io._print α3 in
+            Pure tt in
           Pure tt
         end in
       Pure tt

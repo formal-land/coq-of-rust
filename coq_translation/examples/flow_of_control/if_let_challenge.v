@@ -14,10 +14,13 @@ Definition main (_ : unit) : M unit :=
   let a := Foo.Bar in
   let* α0 := let_if Foo.Bar := a in
   if (α0 : bool) then
-    let* α0 := format_arguments::["new_const"] (deref [ "a is foobar
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"] (addr_of [ "a is foobar
 " ]) in
-    let* _ := _crate.io._print α0 in
-    let _ := tt in
+        _crate.io._print α0 in
+      Pure tt in
     Pure tt
   else
     Pure tt.

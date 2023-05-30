@@ -67,12 +67,14 @@ Module Impl_ops_Add_for_Foo.
   Definition Output : Set := FooBar.
   
   Definition add (self : Self) (_rhs : Bar) : M FooBar :=
-    let* α0 :=
-      format_arguments::["new_const"]
-        (deref [ "> Foo.add(Bar) was called
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "> Foo.add(Bar) was called
 " ]) in
-    let* _ := _crate.io._print α0 in
-    let _ := tt in
+        _crate.io._print α0 in
+      Pure tt in
     Pure FooBar.Build.
   
   Global Instance Method_add : Notation.Dot "add" := {
@@ -90,12 +92,14 @@ Module Impl_ops_Add_for_Bar.
   Definition Output : Set := BarFoo.
   
   Definition add (self : Self) (_rhs : Foo) : M BarFoo :=
-    let* α0 :=
-      format_arguments::["new_const"]
-        (deref [ "> Bar.add(Foo) was called
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "> Bar.add(Foo) was called
 " ]) in
-    let* _ := _crate.io._print α0 in
-    let _ := tt in
+        _crate.io._print α0 in
+      Pure tt in
     Pure BarFoo.Build.
   
   Global Instance Method_add : Notation.Dot "add" := {
@@ -109,22 +113,26 @@ End Impl_ops_Add_for_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := Foo.Build.["add"] Bar.Build in
-  let* α1 := format_argument::["new_debug"] (deref α0) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "Foo + Bar = "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := Foo.Build.["add"] Bar.Build in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Foo + Bar = "; "
 " ])
-      (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
-  let* α3 := Bar.Build.["add"] Foo.Build in
-  let* α4 := format_argument::["new_debug"] (deref α3) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "Bar + Foo = "; "
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := Bar.Build.["add"] Foo.Build in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Bar + Foo = "; "
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.

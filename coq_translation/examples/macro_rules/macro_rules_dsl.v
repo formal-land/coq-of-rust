@@ -5,23 +5,31 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* val := 1.["add"] 2 in
-  let* α0 := format_argument::["new_display"] (deref val) in
-  let* α1 :=
-    format_arguments::["new_v1"] (deref [ "1 + 2 = "; "
-" ]) (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let _ := tt in
-  let* α2 := 1.["add"] 2 in
-  let* α3 := 3.["div"] 4 in
-  let* val := α2.["mul"] α3 in
-  let* α4 := format_argument::["new_display"] (deref val) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "(1 + 2) * (3 / 4) = "; "
+  let* _ :=
+    let* val := 1.["add"] 2 in
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of val) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "1 + 2 = "; "
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    Pure tt in
+  let* val :=
+    let* α0 := 1.["add"] 2 in
+    let* α1 := 3.["div"] 4 in
+    α0.["mul"] α1 in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of val) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "(1 + 2) * (3 / 4) = "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

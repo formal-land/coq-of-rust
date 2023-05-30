@@ -32,7 +32,7 @@ Module Impl__crate_fmt_Debug_for_DoubleError.
       _crate.fmt.Formatter::["debug_tuple_field1_finish"]
         f
         "Parse"
-        (deref __self_0)
+        (addr_of __self_0)
     end.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
@@ -53,12 +53,12 @@ Module Impl_fmt_Display_for_DoubleError.
     | DoubleError.EmptyVec =>
       let* α0 :=
         format_arguments::["new_const"]
-          (deref [ "please use a vector with at least one element" ]) in
+          (addr_of [ "please use a vector with at least one element" ]) in
       f.["write_fmt"] α0
     | DoubleError.Parse  =>
       let* α0 :=
         format_arguments::["new_const"]
-          (deref [ "the provided string could not be parsed as int" ]) in
+          (addr_of [ "the provided string could not be parsed as int" ]) in
       f.["write_fmt"] α0
     end.
   
@@ -78,7 +78,7 @@ Module Impl_error_Error_for_DoubleError.
     let* α0 := self.["deref"] in
     match α0 with
     | DoubleError.EmptyVec => Pure None
-    | DoubleError.Parse e => Some e
+    | DoubleError.Parse e => Pure (Some e)
     end.
   
   Global Instance Method_source : Notation.Dot "source" := {
@@ -93,7 +93,7 @@ Module Impl_From_for_DoubleError.
   Definition Self := DoubleError.
   
   Definition from (err : ParseIntError) : M DoubleError :=
-    DoubleError.Parse err.
+    Pure (DoubleError.Parse err).
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -106,57 +106,64 @@ Module Impl_From_for_DoubleError.
 End Impl_From_for_DoubleError.
 
 Definition double_first (vec : Vec (ref str)) : M (Result i32) :=
-  let* α0 := vec.["first"] in
-  let* α1 := α0.["ok_or"] DoubleError.EmptyVec in
-  let* α2 := LangItem α1 in
   let* first :=
+    let* α0 := vec.["first"] in
+    let* α1 := α0.["ok_or"] DoubleError.EmptyVec in
+    let* α2 := LangItem α1 in
     match α2 with
     | Break {| Break.0 := residual; |} =>
       let* α0 := LangItem residual in
       Return α0
     | Continue {| Continue.0 := val; |} => Pure val
     end in
-  let* α3 := first.["parse"] in
-  let* α4 := LangItem α3 in
   let* parsed :=
-    match α4 with
+    let* α0 := first.["parse"] in
+    let* α1 := LangItem α0 in
+    match α1 with
     | Break {| Break.0 := residual; |} =>
       let* α0 := LangItem residual in
       Return α0
     | Continue {| Continue.0 := val; |} => Pure val
     end in
-  let* α5 := 2.["mul"] parsed in
-  Ok α5.
+  let* α0 := 2.["mul"] parsed in
+  Pure (Ok α0).
 
 Definition print (result : Result i32) : M unit :=
   match result with
   | Ok n =>
-    let* α0 := format_argument::["new_display"] (deref n) in
-    let* α1 :=
-      format_arguments::["new_v1"]
-        (deref [ "The first doubled is "; "
-" ])
-        (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
-    Pure tt
-  | Err e =>
-    let* α0 := format_argument::["new_display"] (deref e) in
-    let* α1 :=
-      format_arguments::["new_v1"] (deref [ "Error: "; "
-" ]) (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
-    let _ := tt in
-    let* α2 := e.["source"] in
-    let* α3 := let_if Some source := α2 in
-    if (α3 : bool) then
-      let* α0 := format_argument::["new_display"] (deref source) in
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of n) in
       let* α1 :=
         format_arguments::["new_v1"]
-          (deref [ "  Caused by: "; "
+          (addr_of [ "The first doubled is "; "
 " ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
-      let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt
+  | Err e =>
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of e) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Error: "; "
+" ])
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    let* α0 := e.["source"] in
+    let* α1 := let_if Some source := α0 in
+    if (α1 : bool) then
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_display"] (addr_of source) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "  Caused by: "; "
+" ])
+              (addr_of [ α0 ]) in
+          _crate.io._print α1 in
+        Pure tt in
       Pure tt
     else
       Pure tt
@@ -164,15 +171,20 @@ Definition print (result : Result i32) : M unit :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := _crate.boxed.Box::["new"] [ "42"; "93"; "18" ] in
-  let* numbers := Slice::["into_vec"] α0 in
+  let* numbers :=
+    let* α0 := _crate.boxed.Box::["new"] [ "42"; "93"; "18" ] in
+    Slice::["into_vec"] α0 in
   let* empty := _crate.vec.Vec::["new"] tt in
-  let* α1 := _crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
-  let* strings := Slice::["into_vec"] α1 in
-  let* α2 := double_first numbers in
-  let* _ := print α2 in
-  let* α3 := double_first empty in
-  let* _ := print α3 in
-  let* α4 := double_first strings in
-  let* _ := print α4 in
+  let* strings :=
+    let* α0 := _crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+    Slice::["into_vec"] α0 in
+  let* _ :=
+    let* α0 := double_first numbers in
+    print α0 in
+  let* _ :=
+    let* α0 := double_first empty in
+    print α0 in
+  let* _ :=
+    let* α0 := double_first strings in
+    print α0 in
   Pure tt.

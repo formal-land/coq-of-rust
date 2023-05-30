@@ -6,21 +6,30 @@ Import Root.std.prelude.rust_2015.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let raw_str := "Escapes don't work here: \x3F \u{211D}" in
-  let* α0 := format_argument::["new_display"] (deref raw_str) in
-  let* α1 := format_arguments::["new_v1"] (deref [ ""; "
-" ]) (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of raw_str) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let quotes := "And then I said: "There is no escape!"" in
-  let* α2 := format_argument::["new_display"] (deref quotes) in
-  let* α3 := format_arguments::["new_v1"] (deref [ ""; "
-" ]) (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of quotes) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let longer_delimiter := "A string with "# in it. And even "##!" in
-  let* α4 := format_argument::["new_display"] (deref longer_delimiter) in
-  let* α5 := format_arguments::["new_v1"] (deref [ ""; "
-" ]) (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of longer_delimiter) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

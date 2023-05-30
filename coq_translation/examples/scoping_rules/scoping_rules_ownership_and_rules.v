@@ -4,38 +4,44 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Definition destroy_box (c : Box i32) : M unit :=
-  let* α0 := format_argument::["new_display"] (deref c) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "Destroying a box that contains "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of c) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Destroying a box that contains "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let x := 5 in
   let y := x in
-  let* α0 := format_argument::["new_display"] (deref x) in
-  let* α1 := format_argument::["new_display"] (deref y) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "x is "; ", and y is "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of x) in
+      let* α1 := format_argument::["new_display"] (addr_of y) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "x is "; ", and y is "; "
 " ])
-      (deref [ α0; α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   let* a := Box::["new"] 5 in
-  let* α3 := format_argument::["new_display"] (deref a) in
-  let* α4 :=
-    format_arguments::["new_v1"]
-      (deref [ "a contains: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of a) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "a contains: "; "
 " ])
-      (deref [ α3 ]) in
-  let* _ := _crate.io._print α4 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let b := a in
   let* _ := destroy_box b in
   Pure tt.

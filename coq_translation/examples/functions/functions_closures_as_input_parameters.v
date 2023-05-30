@@ -15,41 +15,50 @@ Definition main (_ : unit) : M unit :=
   let* farewell := "goodbye".["to_owned"] in
   let diary :=
     fun  =>
-      let* α0 := format_argument::["new_display"] (deref greeting) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (deref [ "I said "; ".
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_display"] (addr_of greeting) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "I said "; ".
 " ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
-      let _ := tt in
+              (addr_of [ α0 ]) in
+          _crate.io._print α1 in
+        Pure tt in
       let* _ := farewell.["push_str"] "!!!" in
-      let* α2 := format_argument::["new_display"] (deref farewell) in
-      let* α3 :=
-        format_arguments::["new_v1"]
-          (deref [ "Then I screamed "; ".
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_display"] (addr_of farewell) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "Then I screamed "; ".
 " ])
-          (deref [ α2 ]) in
-      let* _ := _crate.io._print α3 in
-      let _ := tt in
-      let* α4 :=
-        format_arguments::["new_const"] (deref [ "Now I can sleep. zzzzz
+              (addr_of [ α0 ]) in
+          _crate.io._print α1 in
+        Pure tt in
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "Now I can sleep. zzzzz
 " ]) in
-      let* _ := _crate.io._print α4 in
-      let _ := tt in
+          _crate.io._print α0 in
+        Pure tt in
       let* _ := mem.drop farewell in
       Pure tt in
   let* _ := apply diary in
   let double := fun x => 2.["mul"] x in
-  let* α0 := apply_to_3 double in
-  let* α1 := format_argument::["new_display"] (deref α0) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "3 doubled: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := apply_to_3 double in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "3 doubled: "; "
 " ])
-      (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.
 
 Module mem := std.mem.

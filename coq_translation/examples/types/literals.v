@@ -10,49 +10,59 @@ Definition main (_ : unit) : M unit :=
   let z := 3 (* 3 *) in
   let i := 1 in
   let f := 1 (* 1.0 *) in
-  let* α0 := std.mem.size_of_val (deref x) in
-  let* α1 := format_argument::["new_display"] (deref α0) in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "size of `x` in bytes: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := std.mem.size_of_val (addr_of x) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "size of `x` in bytes: "; "
 " ])
-      (deref [ α1 ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
-  let* α3 := std.mem.size_of_val (deref y) in
-  let* α4 := format_argument::["new_display"] (deref α3) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "size of `y` in bytes: "; "
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := std.mem.size_of_val (addr_of y) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "size of `y` in bytes: "; "
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
-  let* α6 := std.mem.size_of_val (deref z) in
-  let* α7 := format_argument::["new_display"] (deref α6) in
-  let* α8 :=
-    format_arguments::["new_v1"]
-      (deref [ "size of `z` in bytes: "; "
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := std.mem.size_of_val (addr_of z) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "size of `z` in bytes: "; "
 " ])
-      (deref [ α7 ]) in
-  let* _ := _crate.io._print α8 in
-  let _ := tt in
-  let* α9 := std.mem.size_of_val (deref i) in
-  let* α10 := format_argument::["new_display"] (deref α9) in
-  let* α11 :=
-    format_arguments::["new_v1"]
-      (deref [ "size of `i` in bytes: "; "
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := std.mem.size_of_val (addr_of i) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "size of `i` in bytes: "; "
 " ])
-      (deref [ α10 ]) in
-  let* _ := _crate.io._print α11 in
-  let _ := tt in
-  let* α12 := std.mem.size_of_val (deref f) in
-  let* α13 := format_argument::["new_display"] (deref α12) in
-  let* α14 :=
-    format_arguments::["new_v1"]
-      (deref [ "size of `f` in bytes: "; "
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := std.mem.size_of_val (addr_of f) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "size of `f` in bytes: "; "
 " ])
-      (deref [ α13 ]) in
-  let* _ := _crate.io._print α14 in
-  let _ := tt in
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   Pure tt.

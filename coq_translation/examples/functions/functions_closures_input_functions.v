@@ -8,20 +8,24 @@ Definition call_me {F : Set} `{Fn.Trait unit F} (f : F) : M unit :=
   Pure tt.
 
 Definition function (_ : unit) : M unit :=
-  let* α0 := format_arguments::["new_const"] (deref [ "I'm a function!
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "I'm a function!
 " ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
+      _crate.io._print α0 in
+    Pure tt in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let closure :=
     fun  =>
-      let* α0 :=
-        format_arguments::["new_const"] (deref [ "I'm a closure!
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"] (addr_of [ "I'm a closure!
 " ]) in
-      let* _ := _crate.io._print α0 in
+        _crate.io._print α0 in
       Pure tt in
   let* _ := call_me closure in
   let* _ := call_me function in

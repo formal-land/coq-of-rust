@@ -7,74 +7,90 @@ Definition message : ref str := Pure "Hello, World!".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := format_argument::["new_display"] (deref message) in
-  let* α1 := format_arguments::["new_v1"] (deref [ ""; "
-" ]) (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let* number := Some 7 in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of message) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let number := Some 7 in
   let letter := None in
   let emoticon := None in
-  let* α2 := let_if Some i := number in
   let* _ :=
-    if (α2 : bool) then
-      let* α0 := format_argument::["new_debug"] (deref i) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (deref [ "Matched "; "!
+    let* α0 := let_if Some i := number in
+    if (α0 : bool) then
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_debug"] (addr_of i) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "Matched "; "!
 " ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
-      let _ := tt in
+              (addr_of [ α0 ]) in
+          _crate.io._print α1 in
+        Pure tt in
       Pure tt
     else
       Pure tt in
-  let* α3 := let_if Some j := letter in
   let* _ :=
-    if (α3 : bool) then
-      let* α0 := format_argument::["new_debug"] (deref j) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (deref [ "Matched "; "!
+    let* α0 := let_if Some j := letter in
+    if (α0 : bool) then
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_debug"] (addr_of j) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "Matched "; "!
 " ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
-      let _ := tt in
+              (addr_of [ α0 ]) in
+          _crate.io._print α1 in
+        Pure tt in
       Pure tt
     else
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ "Didn't match a number. Let's go with a letter!
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "Didn't match a number. Let's go with a letter!
 " ]) in
-      let* _ := _crate.io._print α0 in
-      let _ := tt in
+          _crate.io._print α0 in
+        Pure tt in
       Pure tt in
   let i_like_letters := false in
-  let* α4 := let_if Some i := emoticon in
-  if (α4 : bool) then
-    let* α0 := format_argument::["new_debug"] (deref i) in
-    let* α1 :=
-      format_arguments::["new_v1"]
-        (deref [ "Matched "; "!
+  let* α0 := let_if Some i := emoticon in
+  if (α0 : bool) then
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_debug"] (addr_of i) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Matched "; "!
 " ])
-        (deref [ α0 ]) in
-    let* _ := _crate.io._print α1 in
-    let _ := tt in
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
     Pure tt
   else
     if (i_like_letters : bool) then
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ "Didn't match a number. Let's go with a letter!
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "Didn't match a number. Let's go with a letter!
 " ]) in
-      let* _ := _crate.io._print α0 in
-      let _ := tt in
+          _crate.io._print α0 in
+        Pure tt in
       Pure tt
     else
-      let* α0 :=
-        format_arguments::["new_const"]
-          (deref [ "I don't like letters. Let's go with an emoticon :)!
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of
+                [ "I don't like letters. Let's go with an emoticon :)!
 " ]) in
-      let* _ := _crate.io._print α0 in
-      let _ := tt in
+          _crate.io._print α0 in
+        Pure tt in
       Pure tt.

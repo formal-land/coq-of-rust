@@ -10,14 +10,15 @@ Definition create_box (_ : unit) : M unit :=
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let* _box2 := Box::["new"] 5 in
-  let* _box3 := Box::["new"] 4 in
-  let _ := tt in
+  let* _ :=
+    let* _box3 := Box::["new"] 4 in
+    Pure tt in
   let* α0 := LangItem Range {| Range.start := 0; Range.end := 1000; |} in
   match α0 with
   | iter =>
     loop
-      let* α0 := LangItem (deref iter) in
       let* _ :=
+        let* α0 := LangItem (addr_of iter) in
         match α0 with
         | None => Pure Break
         | Some {| Some.0 := _; |} =>

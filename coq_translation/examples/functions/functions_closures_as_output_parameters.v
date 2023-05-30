@@ -5,43 +5,49 @@ Import Root.std.prelude.rust_2015.
 
 Definition create_fn (_ : unit) : M OpaqueDef :=
   let* text := "Fn".["to_owned"] in
-  Pure fun  =>
-      let* α0 := format_argument::["new_display"] (deref text) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (deref [ "This is a: "; "
+  Pure
+    (fun  =>
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of text) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "This is a: "; "
 " ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
-      Pure tt.
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt).
 
 Error OpaqueTy.
 
 Definition create_fnmut (_ : unit) : M OpaqueDef :=
   let* text := "FnMut".["to_owned"] in
-  Pure fun  =>
-      let* α0 := format_argument::["new_display"] (deref text) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (deref [ "This is a: "; "
+  Pure
+    (fun  =>
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of text) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "This is a: "; "
 " ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
-      Pure tt.
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt).
 
 Error OpaqueTy.
 
 Definition create_fnonce (_ : unit) : M OpaqueDef :=
   let* text := "FnOnce".["to_owned"] in
-  Pure fun  =>
-      let* α0 := format_argument::["new_display"] (deref text) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (deref [ "This is a: "; "
+  Pure
+    (fun  =>
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of text) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "This is a: "; "
 " ])
-          (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
-      Pure tt.
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt).
 
 Error OpaqueTy.
 

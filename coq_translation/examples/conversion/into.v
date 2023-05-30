@@ -25,7 +25,7 @@ Module Impl__crate_fmt_Debug_for_Number.
       f
       "Number"
       "value"
-      (deref (deref self.["value"])).
+      (addr_of (addr_of self.["value"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -55,12 +55,14 @@ End Impl_From_for_Number.
 Definition main (_ : unit) : M unit :=
   let int := 5 in
   let* num := int.["into"] in
-  let* α0 := format_argument::["new_debug"] (deref num) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "My number is "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of num) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "My number is "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

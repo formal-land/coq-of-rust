@@ -5,15 +5,21 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := _crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
-  let* strings := Slice::["into_vec"] α0 in
-  let* α1 := strings.["into_iter"] in
-  let* α2 := α1.["map"] (fun s => s.["parse"]) in
-  let* numbers := α2.["collect"] in
-  let* α3 := format_argument::["new_debug"] (deref numbers) in
-  let* α4 :=
-    format_arguments::["new_v1"] (deref [ "Results: "; "
-" ]) (deref [ α3 ]) in
-  let* _ := _crate.io._print α4 in
-  let _ := tt in
+  let* strings :=
+    let* α0 := _crate.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+    Slice::["into_vec"] α0 in
+  let* numbers :=
+    let* α0 := strings.["into_iter"] in
+    let* α1 := α0.["map"] (fun s => s.["parse"]) in
+    α1.["collect"] in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of numbers) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Results: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

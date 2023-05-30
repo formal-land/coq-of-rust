@@ -7,21 +7,25 @@ Import Root.std.prelude.rust_2015.
 Definition main (_ : unit) : M unit :=
   let _immutable_binding := 1 in
   let mutable_binding := 1 in
-  let* α0 := format_argument::["new_display"] (deref mutable_binding) in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "Before mutation: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of mutable_binding) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Before mutation: "; "
 " ])
-      (deref [ α0 ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let* _ := mutable_binding.["add_assign"] 1 in
-  let* α2 := format_argument::["new_display"] (deref mutable_binding) in
-  let* α3 :=
-    format_arguments::["new_v1"]
-      (deref [ "After mutation: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of mutable_binding) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "After mutation: "; "
 " ])
-      (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

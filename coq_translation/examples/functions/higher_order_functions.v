@@ -9,21 +9,24 @@ Definition is_odd (n : u32) : M bool :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 :=
-    format_arguments::["new_const"]
-      (deref [ "Find the sum of all the squared odd numbers under 1000
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of
+            [ "Find the sum of all the squared odd numbers under 1000
 " ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
+      _crate.io._print α0 in
+    Pure tt in
   let upper := 1000 in
   let acc := 0 in
-  let* α1 := LangItem RangeFrom {| RangeFrom.start := 0; |} in
   let* _ :=
-    match α1 with
+    let* α0 := LangItem RangeFrom {| RangeFrom.start := 0; |} in
+    match α0 with
     | iter =>
       loop
-        let* α0 := LangItem (deref iter) in
         let* _ :=
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := n; |} =>
@@ -44,26 +47,31 @@ Definition main (_ : unit) : M unit :=
         from
         for
     end in
-  let* α2 := format_argument::["new_display"] (deref acc) in
-  let* α3 :=
-    format_arguments::["new_v1"]
-      (deref [ "imperative style: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of acc) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "imperative style: "; "
 " ])
-      (deref [ α2 ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
-  let* α4 :=
-    RangeFrom {| RangeFrom.start := 0; |}.["map"] (fun n => n.["mul"] n) in
-  let* α5 := α4.["take_while"] (fun n_squared => n_squared.["lt"] upper) in
-  let* α6 := α5.["filter"] (fun n_squared => is_odd n_squared) in
-  let* sum_of_squared_odd_numbers := α6.["sum"] in
-  let* α7 :=
-    format_argument::["new_display"] (deref sum_of_squared_odd_numbers) in
-  let* α8 :=
-    format_arguments::["new_v1"]
-      (deref [ "functional style: "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* sum_of_squared_odd_numbers :=
+    let* α0 :=
+      RangeFrom {| RangeFrom.start := 0; |}.["map"] (fun n => n.["mul"] n) in
+    let* α1 := α0.["take_while"] (fun n_squared => n_squared.["lt"] upper) in
+    let* α2 := α1.["filter"] (fun n_squared => is_odd n_squared) in
+    α2.["sum"] in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_display"] (addr_of sum_of_squared_odd_numbers) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "functional style: "; "
 " ])
-      (deref [ α7 ]) in
-  let* _ := _crate.io._print α8 in
-  let _ := tt in
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   Pure tt.

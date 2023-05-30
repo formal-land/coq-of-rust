@@ -15,46 +15,58 @@ Definition Foo := Foo.t.
 Definition main (_ : unit) : M unit :=
   let a := Foo.Bar in
   let b := Foo.Baz in
-  let* c := Foo.Qux 100 in
-  let* α0 := let_if Foo.Bar := a in
+  let c := Foo.Qux 100 in
   let* _ :=
+    let* α0 := let_if Foo.Bar := a in
     if (α0 : bool) then
-      let* α0 := format_arguments::["new_const"] (deref [ "a is foobar
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"] (addr_of [ "a is foobar
 " ]) in
-      let* _ := _crate.io._print α0 in
-      let _ := tt in
+          _crate.io._print α0 in
+        Pure tt in
       Pure tt
     else
       Pure tt in
-  let* α1 := let_if Foo.Bar := b in
   let* _ :=
-    if (α1 : bool) then
-      let* α0 := format_arguments::["new_const"] (deref [ "b is foobar
+    let* α0 := let_if Foo.Bar := b in
+    if (α0 : bool) then
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"] (addr_of [ "b is foobar
 " ]) in
-      let* _ := _crate.io._print α0 in
-      let _ := tt in
+          _crate.io._print α0 in
+        Pure tt in
       Pure tt
     else
       Pure tt in
-  let* α2 := let_if Foo.Qux value := c in
   let* _ :=
-    if (α2 : bool) then
-      let* α0 := format_argument::["new_display"] (deref value) in
-      let* α1 :=
-        format_arguments::["new_v1"] (deref [ "c is "; "
-" ]) (deref [ α0 ]) in
-      let* _ := _crate.io._print α1 in
-      let _ := tt in
+    let* α0 := let_if Foo.Qux value := c in
+    if (α0 : bool) then
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_display"] (addr_of value) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "c is "; "
+" ])
+              (addr_of [ α0 ]) in
+          _crate.io._print α1 in
+        Pure tt in
       Pure tt
     else
       Pure tt in
-  let* α3 := let_if Foo.Qux (100 as value) := c in
-  if (α3 : bool) then
-    let* α0 :=
-      format_arguments::["new_const"] (deref [ "c is one hundred
+  let* α0 := let_if Foo.Qux (100 as value) := c in
+  if (α0 : bool) then
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"] (addr_of [ "c is one hundred
 " ]) in
-    let* _ := _crate.io._print α0 in
-    let _ := tt in
+        _crate.io._print α0 in
+      Pure tt in
     Pure tt
   else
     Pure tt.

@@ -138,7 +138,7 @@ impl Pattern {
     /// Returns wether a pattern is a single binding, to know if we need a quote
     /// in the "let" in Coq.
     pub fn is_single_binding(&self) -> bool {
-        matches!(self, Pattern::Variable(_))
+        matches!(self, Pattern::Variable(_) | Pattern::Wild)
     }
 
     pub fn to_doc(&self) -> Doc {

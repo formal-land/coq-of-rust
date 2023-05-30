@@ -8,77 +8,97 @@ Definition HashSet := HashSet.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := _crate.boxed.Box::["new"] [ 1; 2; 3 ] in
-  let* α1 := Slice::["into_vec"] α0 in
-  let* α2 := α1.["into_iter"] in
-  let* a := α2.["collect"] in
-  let* α3 := _crate.boxed.Box::["new"] [ 2; 3; 4 ] in
-  let* α4 := Slice::["into_vec"] α3 in
-  let* α5 := α4.["into_iter"] in
-  let* b := α5.["collect"] in
-  let* α6 := a.["insert"] 4 in
-  let* α7 := α6.["not"] in
+  let* a :=
+    let* α0 := _crate.boxed.Box::["new"] [ 1; 2; 3 ] in
+    let* α1 := Slice::["into_vec"] α0 in
+    let* α2 := α1.["into_iter"] in
+    α2.["collect"] in
+  let* b :=
+    let* α0 := _crate.boxed.Box::["new"] [ 2; 3; 4 ] in
+    let* α1 := Slice::["into_vec"] α0 in
+    let* α2 := α1.["into_iter"] in
+    α2.["collect"] in
   let* _ :=
-    if (α7 : bool) then
+    let* α0 := a.["insert"] 4 in
+    let* α1 := α0.["not"] in
+    if (α1 : bool) then
       _crate.panicking.panic "assertion failed: a.insert(4)"
     else
       Pure tt in
-  let* α8 := a.["contains"] (deref 4) in
-  let* α9 := α8.["not"] in
   let* _ :=
-    if (α9 : bool) then
+    let* α0 := a.["contains"] (addr_of 4) in
+    let* α1 := α0.["not"] in
+    if (α1 : bool) then
       _crate.panicking.panic "assertion failed: a.contains(&4)"
     else
       Pure tt in
   let* _ := b.["insert"] 5 in
-  let* α10 := format_argument::["new_debug"] (deref a) in
-  let* α11 :=
-    format_arguments::["new_v1"] (deref [ "A: "; "
-" ]) (deref [ α10 ]) in
-  let* _ := _crate.io._print α11 in
-  let _ := tt in
-  let* α12 := format_argument::["new_debug"] (deref b) in
-  let* α13 :=
-    format_arguments::["new_v1"] (deref [ "B: "; "
-" ]) (deref [ α12 ]) in
-  let* _ := _crate.io._print α13 in
-  let _ := tt in
-  let* α14 := a.["union"] (deref b) in
-  let* α15 := α14.["collect"] in
-  let* α16 := format_argument::["new_debug"] (deref α15) in
-  let* α17 :=
-    format_arguments::["new_v1"] (deref [ "Union: "; "
-" ]) (deref [ α16 ]) in
-  let* _ := _crate.io._print α17 in
-  let _ := tt in
-  let* α18 := a.["difference"] (deref b) in
-  let* α19 := α18.["collect"] in
-  let* α20 := format_argument::["new_debug"] (deref α19) in
-  let* α21 :=
-    format_arguments::["new_v1"]
-      (deref [ "Difference: "; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of a) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "A: "; "
 " ])
-      (deref [ α20 ]) in
-  let* _ := _crate.io._print α21 in
-  let _ := tt in
-  let* α22 := a.["intersection"] (deref b) in
-  let* α23 := α22.["collect"] in
-  let* α24 := format_argument::["new_debug"] (deref α23) in
-  let* α25 :=
-    format_arguments::["new_v1"]
-      (deref [ "Intersection: "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of b) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "B: "; "
 " ])
-      (deref [ α24 ]) in
-  let* _ := _crate.io._print α25 in
-  let _ := tt in
-  let* α26 := a.["symmetric_difference"] (deref b) in
-  let* α27 := α26.["collect"] in
-  let* α28 := format_argument::["new_debug"] (deref α27) in
-  let* α29 :=
-    format_arguments::["new_v1"]
-      (deref [ "Symmetric Difference: "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := a.["union"] (addr_of b) in
+      let* α1 := α0.["collect"] in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Union: "; "
 " ])
-      (deref [ α28 ]) in
-  let* _ := _crate.io._print α29 in
-  let _ := tt in
+          (addr_of [ α2 ]) in
+      _crate.io._print α3 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := a.["difference"] (addr_of b) in
+      let* α1 := α0.["collect"] in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Difference: "; "
+" ])
+          (addr_of [ α2 ]) in
+      _crate.io._print α3 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := a.["intersection"] (addr_of b) in
+      let* α1 := α0.["collect"] in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Intersection: "; "
+" ])
+          (addr_of [ α2 ]) in
+      _crate.io._print α3 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := a.["symmetric_difference"] (addr_of b) in
+      let* α1 := α0.["collect"] in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Symmetric Difference: "; "
+" ])
+          (addr_of [ α2 ]) in
+      _crate.io._print α3 in
+    Pure tt in
   Pure tt.

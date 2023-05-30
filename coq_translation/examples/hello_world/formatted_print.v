@@ -5,154 +5,181 @@ Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* α0 := format_arguments::["new_v1"] (deref [ "31 days
-" ]) (deref [ ]) in
-  let* _ := _crate.io._print α0 in
-  let _ := tt in
-  let* α1 :=
-    format_arguments::["new_v1"]
-      (deref [ "Alice, this is Bob. Bob, this is Alice
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_v1"] (addr_of [ "31 days
+" ]) (addr_of [ ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Alice, this is Bob. Bob, this is Alice
 " ])
-      (deref [ ]) in
-  let* _ := _crate.io._print α1 in
-  let _ := tt in
-  let* α2 :=
-    format_arguments::["new_v1"]
-      (deref [ "the quick brown fox jumps over the lazy dog
+          (addr_of [ ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "the quick brown fox jumps over the lazy dog
 " ])
-      (deref [ ]) in
-  let* _ := _crate.io._print α2 in
-  let _ := tt in
-  let* α3 :=
-    format_arguments::["new_v1"]
-      (deref [ "Base 10:               69420
+          (addr_of [ ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Base 10:               69420
 " ])
-      (deref [ ]) in
-  let* _ := _crate.io._print α3 in
-  let _ := tt in
-  let* α4 := format_argument::["new_binary"] (deref 69420) in
-  let* α5 :=
-    format_arguments::["new_v1"]
-      (deref [ "Base 2 (binary):       "; "
+          (addr_of [ ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_binary"] (addr_of 69420) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Base 2 (binary):       "; "
 " ])
-      (deref [ α4 ]) in
-  let* _ := _crate.io._print α5 in
-  let _ := tt in
-  let* α6 := format_argument::["new_octal"] (deref 69420) in
-  let* α7 :=
-    format_arguments::["new_v1"]
-      (deref [ "Base 8 (octal):        "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_octal"] (addr_of 69420) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Base 8 (octal):        "; "
 " ])
-      (deref [ α6 ]) in
-  let* _ := _crate.io._print α7 in
-  let _ := tt in
-  let* α8 := format_argument::["new_lower_hex"] (deref 69420) in
-  let* α9 :=
-    format_arguments::["new_v1"]
-      (deref [ "Base 16 (hexadecimal): "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_lower_hex"] (addr_of 69420) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Base 16 (hexadecimal): "; "
 " ])
-      (deref [ α8 ]) in
-  let* _ := _crate.io._print α9 in
-  let _ := tt in
-  let* α10 := format_argument::["new_upper_hex"] (deref 69420) in
-  let* α11 :=
-    format_arguments::["new_v1"]
-      (deref [ "Base 16 (hexadecimal): "; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_upper_hex"] (addr_of 69420) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Base 16 (hexadecimal): "; "
 " ])
-      (deref [ α10 ]) in
-  let* _ := _crate.io._print α11 in
-  let _ := tt in
-  let* α12 := format_argument::["new_display"] (deref 1) in
-  let* α13 := format_count::["Is"] 5 in
-  let* α14 :=
-    format_placeholder::["new"]
-      0
-      " "%char
-      format_alignment::["Right"]
-      0
-      format_count::["Implied"]
-      α13 in
-  let* α15 := format_unsafe_arg::["new"] tt in
-  let* α16 :=
-    format_arguments::["new_v1_formatted"]
-      (deref [ ""; "
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of 1) in
+      let* α1 := format_count::["Is"] 5 in
+      let* α2 :=
+        format_placeholder::["new"]
+          0
+          " "%char
+          format_alignment::["Right"]
+          0
+          format_count::["Implied"]
+          α1 in
+      let* α3 := format_unsafe_arg::["new"] tt in
+      let* α4 :=
+        format_arguments::["new_v1_formatted"]
+          (addr_of [ ""; "
 " ])
-      (deref [ α12 ])
-      (deref [ α14 ])
-      α15 in
-  let* _ := _crate.io._print α16 in
-  let _ := tt in
-  let* α17 := format_argument::["new_display"] (deref 1) in
-  let* α18 := format_count::["Is"] 5 in
-  let* α19 :=
-    format_placeholder::["new"]
-      0
-      "0"%char
-      format_alignment::["Left"]
-      0
-      format_count::["Implied"]
-      α18 in
-  let* α20 := format_unsafe_arg::["new"] tt in
-  let* α21 :=
-    format_arguments::["new_v1_formatted"]
-      (deref [ ""; "
+          (addr_of [ α0 ])
+          (addr_of [ α2 ])
+          α3 in
+      _crate.io._print α4 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of 1) in
+      let* α1 := format_count::["Is"] 5 in
+      let* α2 :=
+        format_placeholder::["new"]
+          0
+          "0"%char
+          format_alignment::["Left"]
+          0
+          format_count::["Implied"]
+          α1 in
+      let* α3 := format_unsafe_arg::["new"] tt in
+      let* α4 :=
+        format_arguments::["new_v1_formatted"]
+          (addr_of [ ""; "
 " ])
-      (deref [ α17 ])
-      (deref [ α19 ])
-      α20 in
-  let* _ := _crate.io._print α21 in
-  let _ := tt in
-  let* α22 := format_argument::["new_display"] (deref 1) in
-  let* α23 := format_argument::["from_usize"] (deref 5) in
-  let* α24 := format_count::["Param"] 1 in
-  let* α25 :=
-    format_placeholder::["new"]
-      0
-      "0"%char
-      format_alignment::["Right"]
-      0
-      format_count::["Implied"]
-      α24 in
-  let* α26 := format_unsafe_arg::["new"] tt in
-  let* α27 :=
-    format_arguments::["new_v1_formatted"]
-      (deref [ ""; "
+          (addr_of [ α0 ])
+          (addr_of [ α2 ])
+          α3 in
+      _crate.io._print α4 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of 1) in
+      let* α1 := format_argument::["from_usize"] (addr_of 5) in
+      let* α2 := format_count::["Param"] 1 in
+      let* α3 :=
+        format_placeholder::["new"]
+          0
+          "0"%char
+          format_alignment::["Right"]
+          0
+          format_count::["Implied"]
+          α2 in
+      let* α4 := format_unsafe_arg::["new"] tt in
+      let* α5 :=
+        format_arguments::["new_v1_formatted"]
+          (addr_of [ ""; "
 " ])
-      (deref [ α22; α23 ])
-      (deref [ α25 ])
-      α26 in
-  let* _ := _crate.io._print α27 in
-  let _ := tt in
-  let* α28 :=
-    format_arguments::["new_v1"]
-      (deref [ "My name is Bond, James Bond
+          (addr_of [ α0; α1 ])
+          (addr_of [ α3 ])
+          α4 in
+      _crate.io._print α5 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "My name is Bond, James Bond
 " ])
-      (deref [ ]) in
-  let* _ := _crate.io._print α28 in
-  let _ := tt in
+          (addr_of [ ]) in
+      _crate.io._print α0 in
+    Pure tt in
   let number := 1 (* 1.0 *) in
   let width := 5 in
-  let* α29 := format_argument::["new_display"] (deref number) in
-  let* α30 := format_argument::["from_usize"] (deref width) in
-  let* α31 := format_count::["Param"] 1 in
-  let* α32 :=
-    format_placeholder::["new"]
-      0
-      " "%char
-      format_alignment::["Right"]
-      0
-      format_count::["Implied"]
-      α31 in
-  let* α33 := format_unsafe_arg::["new"] tt in
-  let* α34 :=
-    format_arguments::["new_v1_formatted"]
-      (deref [ ""; "
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of number) in
+      let* α1 := format_argument::["from_usize"] (addr_of width) in
+      let* α2 := format_count::["Param"] 1 in
+      let* α3 :=
+        format_placeholder::["new"]
+          0
+          " "%char
+          format_alignment::["Right"]
+          0
+          format_count::["Implied"]
+          α2 in
+      let* α4 := format_unsafe_arg::["new"] tt in
+      let* α5 :=
+        format_arguments::["new_v1_formatted"]
+          (addr_of [ ""; "
 " ])
-      (deref [ α29; α30 ])
-      (deref [ α32 ])
-      α33 in
-  let* _ := _crate.io._print α34 in
-  let _ := tt in
+          (addr_of [ α0; α1 ])
+          (addr_of [ α3 ])
+          α4 in
+      _crate.io._print α5 in
+    Pure tt in
   Pure tt.
 
 Module Structure.
