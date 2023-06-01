@@ -1,10 +1,12 @@
 Require Import CoqOfRust.lib.lib.
+Require Import CoqOfRust.std.pin.
+
 
 (* ********ENUMS******** *)
 (* 
 [x] GeneratorState
 [x] Bound
-[x] ControlFlow
+[] ControlFlow
 *)
 
 (* 
@@ -37,7 +39,6 @@ Module Bound.
 End Bound.
 Definition Bound := Bound.t.
 
-(* BUGGED: How to imeplement default type? *)
 (* 
 pub enum ControlFlow<B, C = ()> {
     Continue(C),
@@ -50,106 +51,95 @@ Module ControlFlow.
   | Break : B -> t B C
   .
 End ControlFlow.
-Definition ControlFlow := ControlFlow.t.
-
-
+Definition ControlFlow (B : Set) (C : option Set) := 
+  ControlFlow.t B (defaultType C unit).
 
 (* ********STRUCTS******** *)
 (* 
-[ ] Yeet
+[x] Yeet
 [ ] Range
 [ ] RangeFrom
-[ ] RangeFull
-[ ] RangeInclusive
+[x] RangeFull
+[x] RangeInclusive
 [ ] RangeTo
 [ ] RangeToInclusive
 *)
 
+(* pub struct Yeet<T>(pub T); *)
 Module Yeet.
-  Record t : Set := { }.
+  Record t (t : Set) : Set := { }.
 End Yeet.
 Definition Yeet := Yeet.t.
 
+(* 
+pub struct Range<Idx> {
+    pub start: Idx,
+    pub end: Idx,
+}
+*)
 Module Range.
-  Record t : Set := { }.
+  Record t (Idx : Set) : Set := { 
+    start : Idx;
+    _end : Idx
+  }.
 End Range.
 Definition Range := Range.t.
 
+(* 
+pub struct RangeFrom<Idx> {
+    pub start: Idx,
+}
+*)
 Module RangeFrom.
-  Record t : Set := { }.
+  Record t (Idx : Set) : Set := { 
+    start : Idx;
+  }.
 End RangeFrom.
 Definition RangeFrom := RangeFrom.t.
 
+(* pub struct RangeFull; *)
 Module RangeFull.
   Record t : Set := { }.
 End RangeFull.
 Definition RangeFull := RangeFull.t.
 
+(* pub struct RangeInclusive<Idx> { /* private fields */ } *)
 Module RangeInclusive.
   Record t : Set := { }.
 End RangeInclusive.
 Definition RangeInclusive := RangeInclusive.t.
 
+(* 
+pub struct RangeTo<Idx> {
+    pub end: Idx,
+}
+*)
 Module RangeTo.
-  Record t : Set := { }.
+  Record t (Idx : Set) : Set := { 
+    _end : Idx;
+  }.
 End RangeTo.
 Definition RangeTo := RangeTo.t.
 
-Module RangeToInclusive.
-  Record t : Set := { }.
-End RangeToInclusive.
-Definition RangeToInclusive := RangeToInclusive.t.
-
-(* ********ENUMS******** *)
 (* 
-[x] GeneratorState
-[x] Bound
-[?] ControlFlow
-*)
-
-(* 
-pub enum GeneratorState<Y, R> {
-    Yielded(Y),
-    Complete(R),
-} 
-*)
-Module GeneratorState.
-  Inductive t (Y R : Set) : Set :=
-  | Yielded : Y -> t Y R
-  | Complete : R -> t Y R
-  .
-End GeneratorState.
-Definition GeneratorState := GeneratorState.t.
-
-(* 
-pub enum Bound<T> {
-    Included(T),
-    Excluded(T),
-    Unbounded,
+pub struct RangeToInclusive<Idx> {
+    pub end: Idx,
 }
 *)
-Module Bound.
-  Inductive t (T : Set) : Set :=
-  | Included : T -> t T
-  | Excluded : T -> t T
-  | Unbounded : t T
-  .
-End Bound.
-Definition Bound := Bound.t.
-
-(* pub enum ControlFlow<B, C = ()> {
-    Continue(C),
-    Break(B),
-} *)
-(* How to translate enum with default type? *)
+Module RangeToInclusive.
+  Record t (Idx : Set) : Set := { 
+    _end : Idx;
+  }.
+End RangeToInclusive.
+Definition RangeToInclusive := RangeToInclusive.t.
 
 (* ********TRAITS******** *)
 (* 
 [x] CoerceUnsized
 [x] DispatchFromDyn
 [ ] FromResidual
-[ ] Generator
-[ ] OneSidedRange
+[x] Generator
+[x] OneSidedRange
 [ ] Residual
 [ ] Try
 [x] Add
@@ -160,21 +150,21 @@ Definition Bound := Bound.t.
 [x] BitOrAssign
 [x] BitXor
 [x] BitXorAssign
-[ ] Dere
-[ ] DerefMut
+[x] Deref
+[x] DerefMut
 [x] Div
 [x] DivAssign
-[ ] Drop
-[ ] Fn
-[ ] FnMut
-[ ] FnOnce
-[ ] Index
-[ ] IndexMut
+[x] Drop
+[?] Fn
+[?] FnMut
+[?] FnOnce
+[x] Index
+[x] IndexMut
 [x] Mul	
 [x] MulAssign
 [x] Neg
 [x] Not
-[ ] RangeBounds
+[x] RangeBounds
 [x] Rem
 [x] RemAssign
 [x] Shl
@@ -226,7 +216,6 @@ Module FromResidual.
   Class Trait (Self : Set) : Set := { }.
 End FromResidual.
 
-(* TODO: Implement GeneratorState Enum *)
 (* 
 pub trait Generator<R = ()> {
     type Yield;
@@ -241,15 +230,13 @@ pub trait Generator<R = ()> {
 *)
 Module Generator.
   Class Trait (Self : Set) (R : option Set) (Yield Return : Set) : Set := { 
-    R := defaultType unit Self;
+    R := defaultType R unit;
     Yield := Yield;
-    Return := Return;
-
+    Return := Return;    
     resume : Pin (mut_ref Self) -> R -> GeneratorState Yield Return;
   }.
 End Generator.
 
-(* TODO: Implement Bounds enum *)
 (* 
 pub trait RangeBounds<T>
 where
@@ -266,7 +253,15 @@ where
 }
 *)
 Module RangeBounds.
-  Class Trait (Self : Set) : Set := { }.
+  Class Trait (Self T : Set) : Set := { 
+    start_bound : ref Self -> Bound (ref T);
+    end_bound : ref Self -> Bound (ref T);
+    (* BUGGED: mutual `where` clause?! *)
+    contains (U : Set) {T : Set}
+      `{PartialOrd.Trait U T}
+      `{PartialOrd.Trait T U}
+      : ref Self -> ref U -> bool;
+  }.
 End RangeBounds.
 
 
@@ -278,12 +273,105 @@ where
 *)
 Module OneSidedRange.
   Class Trait (Self : Set) (T : Set)
-  (* BUGGED: How to translate this dependency? *)
-    `{RangeBounds.Trait T OneSidedRange}
+    `{RangeBounds.Trait Self T}
   : Set := { }.
 End OneSidedRange.
 
+(* 
+pub trait FnOnce<Args>
+where
+    Args: Tuple,
+{
+    type Output;
 
+    // Required method
+    extern "rust-call" fn call_once(self, args: Args) -> Self::Output;
+}
+*)
+Module FnOnce.
+  Class Trait (Self : Set) (Args Output : Set) 
+  `{Tuple.trait Args}
+  : Set := { 
+    call_once : Self -> Args -> Output;
+  }.
+End FnOnce.
+
+(* NOTE: Is this the reason that the Output can be implicit? *)
+(* NOTE: Beware of the arguments for traits, in particular orders and the corresponded params *)
+(* 
+pub trait FnMut<Args>: FnOnce<Args>
+where
+    Args: Tuple,
+{
+    // Required method
+    extern "rust-call" fn call_mut(
+        &mut self,
+        args: Args
+    ) -> Self::Output;
+}
+*)
+Module FnMut.
+  Class Trait (Self : Set) (Args Output : Set) 
+    `{FnOnce.Trait Self Args}
+    (* Note: can we just write `Args : Tuple`? *)
+    `{Tuple.Trait Args}
+  : Set := { 
+    call_mut : mut_ref Self -> Args -> Output;
+  }.
+End FnMut.
+
+
+(* 
+pub trait Fn<Args>: FnMut<Args>
+where
+    Args: Tuple,
+{
+    // Required method
+    extern "rust-call" fn call(&self, args: Args) -> Self::Output;
+}
+*)
+Module Fn.
+  Class Trait (Self : Set) (Args : Set) (Output : Set) 
+    `{Tuple.Trait Args}
+    `{FnMut.Trait Self Args}
+  : Set := { 
+    call : ref Self -> Args -> Output;
+  }.
+End Fn.
+
+(* 
+pub trait Index<Idx>
+where
+    Idx: ?Sized,
+{
+    type Output: ?Sized;
+
+    // Required method
+    fn index(&self, index: Idx) -> &Self::Output;
+}
+*)
+Module Index.
+  Class Trait (Self : Set) (Idx : Set) (Output : Set) : Set := { 
+    index : ref Self -> Idx -> Output;
+  }.
+End Index.
+
+(* 
+pub trait IndexMut<Idx>: Index<Idx>
+where
+    Idx: ?Sized,
+{
+    // Required method
+    fn index_mut(&mut self, index: Idx) -> &mut Self::Output;
+}
+*)
+Module IndexMut.
+  Class Trait (Self : Set) (Idx : Set) 
+    `{Index.Trait Self Idx}
+  : Set := { 
+    index_mut : ref_mut Self -> Idx -> Output;
+  }.
+End IndexMut.
 
 (* Binary Operators *)
 Module Add.
