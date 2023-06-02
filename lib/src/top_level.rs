@@ -627,6 +627,19 @@ fn fn_to_doc<'a>(
         } else {
             nil()
         },
+        // block if..else below is related to compilation of println!
+        // and #[derive(Debug)] for Structs. Printing missing instance
+        // for DoubleColon Class
+        if name == "fmt" {
+            concat([
+                text("Parameter ..."),
+                hardline(),
+                text("Global Instance ..."),
+                hardline(),
+            ])
+        } else {
+            nil()
+        },
         nest([
             nest([
                 nest([text("Definition"), line(), text(name)]),
@@ -1605,6 +1618,7 @@ impl TopLevelItem {
                 items,
                 trait_non_default_items,
             } => {
+                println!("ITEMS {:#?}", items); // @TODO DELETE THIS LINE
                 group([
                     nest([
                         nest([
