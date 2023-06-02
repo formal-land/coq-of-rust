@@ -630,11 +630,15 @@ fn fn_to_doc<'a>(
         // block if..else below is related to compilation of println!
         // and #[derive(Debug)] for Structs. Printing missing instance
         // for DoubleColon Class
+        // @TODO: extend to cover more cases
         if name == "fmt" {
             concat([
-                text("Parameter ..."),
+                text("Parameter "),
+                body.call_func_name(),
+                hardline(),
                 hardline(),
                 text("Global Instance ..."),
+                hardline(),
                 hardline(),
             ])
         } else {

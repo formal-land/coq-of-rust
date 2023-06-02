@@ -1128,6 +1128,20 @@ impl Expr {
             Expr::StructUnit { path } => nest([path.to_doc(), text(".Build")]),
         }
     }
+
+    pub fn associatedFunction_func_to_doc(&self) -> Doc {
+        match self {
+            Expr::AssociatedFunction { ty, func } => nest([text(func)]),
+            _ => nil(),
+        }
+    }
+
+    pub fn call_func_name(&self) -> Doc {
+        match self {
+            Expr::Call { func, args } => func.associatedFunction_func_to_doc(),
+            _ => nil(),
+        }
+    }
 }
 
 impl Stmt {
