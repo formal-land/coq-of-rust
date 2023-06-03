@@ -13,7 +13,7 @@ Definition Sender := Sender.t.
 
 Module thread := std.thread.
 
-Definition NTHREADS : i32 := Pure 3.
+Definition NTHREADS : i32 := run (Pure 3).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
