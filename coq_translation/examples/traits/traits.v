@@ -20,9 +20,9 @@ Definition Sheep : Set := Sheep.t.
 
 Module Animal.
   Class Trait (Self : Set) : Set := {
-    new : (ref str) -> Self;
-    name : (ref Self) -> (ref str);
-    noise : (ref Self) -> (ref str);
+    new : (ref str) -> (M Self);
+    name : (ref Self) -> (M (ref str));
+    noise : (ref Self) -> (M (ref str));
   }.
   
   Global Instance Method_new `(Trait) : Notation.Dot "new" := {

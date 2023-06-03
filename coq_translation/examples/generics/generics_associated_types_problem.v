@@ -17,9 +17,9 @@ Definition Container := Container.t.
 
 Module Contains.
   Class Trait (A B Self : Set) : Set := {
-    contains : (ref Self) -> ((ref A) -> ((ref B) -> bool));
-    first : (ref Self) -> i32;
-    last : (ref Self) -> i32;
+    contains : (ref Self) -> (ref A) -> (ref B) -> (M bool);
+    first : (ref Self) -> (M i32);
+    last : (ref Self) -> (M i32);
   }.
   
   Global Instance Method_contains `(Trait) : Notation.Dot "contains" := {

@@ -19,9 +19,9 @@ Module Contains.
   Class Trait (Self : Set) : Set := {
     A : Set;
     B : Set;
-    contains : (ref Self) -> ((ref ImplSelf.A) -> ((ref ImplSelf.B) -> bool));
-    first : (ref Self) -> i32;
-    last : (ref Self) -> i32;
+    contains : (ref Self) -> (ref ImplSelf.A) -> (ref ImplSelf.B) -> (M bool);
+    first : (ref Self) -> (M i32);
+    last : (ref Self) -> (M i32);
   }.
   
   Global Instance Method_A `(Trait) : Notation.Dot "A" := {

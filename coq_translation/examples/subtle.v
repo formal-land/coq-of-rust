@@ -267,7 +267,7 @@ End Impl_From_for_Choice.
 
 Module ConstantTimeEq.
   Class Trait (Self : Set) : Set := {
-    ct_eq : (ref Self) -> ((ref Self) -> Choice);
+    ct_eq : (ref Self) -> (ref Self) -> (M Choice);
   }.
   
   Global Instance Method_ct_eq `(Trait) : Notation.Dot "ct_eq" := {
@@ -548,7 +548,7 @@ End Impl_ConstantTimeEq_for_isize.
 
 Module ConditionallySelectable.
   Class Trait (Self : Set) : Set := {
-    conditional_select : (ref Self) -> ((ref Self) -> (Choice -> Self));
+    conditional_select : (ref Self) -> (ref Self) -> Choice -> (M Self);
   }.
   
   Global Instance Method_conditional_select `(Trait)
@@ -1207,7 +1207,7 @@ End Impl_ConditionallySelectable_for_Choice.
 
 Module ConditionallyNegatable.
   Class Trait (Self : Set) : Set := {
-    conditional_negate : (mut_ref Self) -> (Choice -> _);
+    conditional_negate : (mut_ref Self) -> Choice -> (M unit);
   }.
   
   Global Instance Method_conditional_negate `(Trait)
@@ -1521,7 +1521,7 @@ End Impl_ConstantTimeEq_for_CtOption_T.
 
 Module ConstantTimeGreater.
   Class Trait (Self : Set) : Set := {
-    ct_gt : (ref Self) -> ((ref Self) -> Choice);
+    ct_gt : (ref Self) -> (ref Self) -> (M Choice);
   }.
   
   Global Instance Method_ct_gt `(Trait) : Notation.Dot "ct_gt" := {

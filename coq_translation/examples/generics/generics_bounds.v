@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module HasArea.
   Class Trait (Self : Set) : Set := {
-    area : (ref Self) -> f64;
+    area : (ref Self) -> (M f64);
   }.
   
   Global Instance Method_area `(Trait) : Notation.Dot "area" := {
