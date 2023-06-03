@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module PrintInOption.
   Class Trait (Self : Set) : Set := {
-    print_in_option : Self -> _;
+    print_in_option : Self -> (M unit);
   }.
   
   Global Instance Method_print_in_option `(Trait)

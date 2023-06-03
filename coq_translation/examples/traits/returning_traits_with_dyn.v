@@ -17,7 +17,7 @@ Definition Cow : Set := Cow.t.
 
 Module Animal.
   Class Trait (Self : Set) : Set := {
-    noise : (ref Self) -> (ref str);
+    noise : (ref Self) -> (M (ref str));
   }.
   
   Global Instance Method_noise `(Trait) : Notation.Dot "noise" := {

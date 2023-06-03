@@ -5,83 +5,114 @@ use rustc_middle::ty::TyCtxt;
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
 pub enum CoqType {
-    Var(Path),
+    Var(Box<Path>),
     Application {
-        func: Box<CoqType>,
-        args: Vec<CoqType>,
+        func: Box<Path>,
+        args: Vec<Box<CoqType>>,
     },
     Function {
-        arg: Box<CoqType>,
+        /// We group together the arguments that are called together, as this
+        /// will be useful for the monadic translation of types later.
+        args: Vec<Box<CoqType>>,
         ret: Box<CoqType>,
     },
-    Tuple(Vec<CoqType>),
+    Tuple(Vec<Box<CoqType>>),
     Array(Box<CoqType>),
     Ref(Box<CoqType>, rustc_hir::Mutability),
 }
 
 impl CoqType {
-    pub fn unit() -> CoqType {
-        CoqType::Var(Path::local("unit".to_string()))
+    pub(crate) fn var(name: String) -> Box<CoqType> {
+        Box::new(CoqType::Var(Box::new(Path::local(name))))
+    }
+
+    pub(crate) fn unit() -> Box<CoqType> {
+        CoqType::var("unit".to_string())
+    }
+
+    pub(crate) fn monad(ty: Box<CoqType>) -> Box<CoqType> {
+        Box::new(CoqType::Application {
+            func: Box::new(Path::local("M".to_string())),
+            args: vec![ty],
+        })
     }
 }
 
-pub fn compile_type(_tcx: &TyCtxt, ty: &Ty) -> CoqType {
+pub(crate) fn mt_ty(ty: Box<CoqType>) -> Box<CoqType> {
+    match *ty {
+        CoqType::Application { func, args } => Box::new(CoqType::Application {
+            func,
+            args: args.into_iter().map(mt_ty).collect(),
+        }),
+        CoqType::Var(..) => ty,
+        CoqType::Function { args, ret } => Box::new(CoqType::Function {
+            args: args.into_iter().map(mt_ty).collect(),
+            ret: CoqType::monad(mt_ty(ret)),
+        }),
+        CoqType::Tuple(tys) => Box::new(CoqType::Tuple(tys.into_iter().map(mt_ty).collect())),
+        CoqType::Array(ty) => Box::new(CoqType::Array(mt_ty(ty))),
+        CoqType::Ref(ty, mutability) => Box::new(CoqType::Ref(mt_ty(ty), mutability)),
+    }
+}
+
+pub fn compile_type(_tcx: &TyCtxt, ty: &Ty) -> Box<CoqType> {
     match &ty.kind {
-        TyKind::Slice(_) => CoqType::Var(Path::local("Slice".to_string())),
-        TyKind::Array(ty, _) => CoqType::Array(Box::new(compile_type(_tcx, ty))),
-        TyKind::Ptr(mut_ty) => CoqType::Ref(Box::new(compile_type(_tcx, mut_ty.ty)), mut_ty.mutbl),
+        TyKind::Slice(_) => CoqType::var("Slice".to_string()),
+        TyKind::Array(ty, _) => Box::new(CoqType::Array(compile_type(_tcx, ty))),
+        TyKind::Ptr(mut_ty) => Box::new(CoqType::Ref(compile_type(_tcx, mut_ty.ty), mut_ty.mutbl)),
         TyKind::Ref(_, mut_ty) => {
-            CoqType::Ref(Box::new(compile_type(_tcx, mut_ty.ty)), mut_ty.mutbl)
+            Box::new(CoqType::Ref(compile_type(_tcx, mut_ty.ty), mut_ty.mutbl))
         }
         TyKind::BareFn(BareFnTy { decl, .. }) => compile_fn_decl(_tcx, decl),
-        TyKind::Never => CoqType::Var(Path::local("Empty_set".to_string())),
-        TyKind::Tup(tys) => CoqType::Tuple(tys.iter().map(|ty| compile_type(_tcx, ty)).collect()),
+        TyKind::Never => CoqType::var("Empty_set".to_string()),
+        TyKind::Tup(tys) => Box::new(CoqType::Tuple(
+            tys.iter().map(|ty| compile_type(_tcx, ty)).collect(),
+        )),
         TyKind::Path(qpath) => {
             let params = match qpath {
                 rustc_hir::QPath::Resolved(_, path) => compile_path_ty_params(_tcx, path),
                 _ => vec![],
             };
+            let qpath = Box::new(compile_qpath(qpath));
             if params.is_empty() {
-                CoqType::Var(compile_qpath(qpath))
+                Box::new(CoqType::Var(qpath))
             } else {
-                CoqType::Application {
-                    func: Box::new(CoqType::Var(compile_qpath(qpath))),
+                Box::new(CoqType::Application {
+                    func: qpath,
                     args: params,
-                }
+                })
             }
         }
-        TyKind::OpaqueDef(_, _, _) => CoqType::Var(Path::local("OpaqueDef".to_string())),
-        TyKind::TraitObject(_, _, _) => CoqType::Var(Path::local("TraitObject".to_string())),
-        TyKind::Typeof(_) => CoqType::Var(Path::local("Typeof".to_string())),
-        TyKind::Infer => CoqType::Var(Path::local("_".to_string())),
-        TyKind::Err(_) => CoqType::Var(Path::local("Error_type".to_string())),
+        TyKind::OpaqueDef(_, _, _) => CoqType::var("OpaqueDef".to_string()),
+        TyKind::TraitObject(_, _, _) => CoqType::var("TraitObject".to_string()),
+        TyKind::Typeof(_) => CoqType::var("Typeof".to_string()),
+        TyKind::Infer => CoqType::var("_".to_string()),
+        TyKind::Err(_) => CoqType::var("Error_type".to_string()),
     }
 }
 
-pub fn compile_fn_ret_ty(tcx: &TyCtxt, fn_ret_ty: &FnRetTy) -> Option<CoqType> {
+pub fn compile_fn_ret_ty(tcx: &TyCtxt, fn_ret_ty: &FnRetTy) -> Box<CoqType> {
     match fn_ret_ty {
-        FnRetTy::DefaultReturn(_) => None,
-        FnRetTy::Return(ty) => Some(compile_type(tcx, ty)),
+        FnRetTy::DefaultReturn(_) => CoqType::unit(),
+        FnRetTy::Return(ty) => compile_type(tcx, ty),
     }
 }
 
 // The type of a function declaration
-pub fn compile_fn_decl(tcx: &TyCtxt, fn_decl: &FnDecl) -> CoqType {
-    let ret_ty = match compile_fn_ret_ty(tcx, &fn_decl.output) {
-        Some(ret_ty) => ret_ty,
-        None => CoqType::Var(Path::local("_".to_string())),
-    };
-    fn_decl
-        .inputs
-        .iter()
-        .rfold(ret_ty, |acc, arg| CoqType::Function {
-            arg: Box::new(compile_type(tcx, arg)),
-            ret: Box::new(acc),
-        })
+pub fn compile_fn_decl(tcx: &TyCtxt, fn_decl: &FnDecl) -> Box<CoqType> {
+    let ret = compile_fn_ret_ty(tcx, &fn_decl.output);
+    Box::new(CoqType::Function {
+        args: fn_decl
+            .inputs
+            .iter()
+            .map(|arg| compile_type(tcx, arg))
+            .collect(),
+        ret,
+    })
 }
 
 // Returns the type parameters on a path
-pub fn compile_path_ty_params(tcx: &TyCtxt, path: &rustc_hir::Path) -> Vec<CoqType> {
+pub fn compile_path_ty_params(tcx: &TyCtxt, path: &rustc_hir::Path) -> Vec<Box<CoqType>> {
     match path.segments.last().unwrap().args {
         Some(args) => args
             .args
@@ -102,17 +133,19 @@ impl CoqType {
             CoqType::Application { func, args } => paren(
                 with_paren,
                 nest([
-                    func.to_doc(true),
+                    func.to_doc(),
                     line(),
                     intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()]),
                 ]),
             ),
-            CoqType::Function { arg, ret } => paren(
+            CoqType::Function { args, ret } => paren(
                 with_paren,
-                nest([
-                    arg.to_doc(true),
-                    line(),
-                    text("->"),
+                group([
+                    intersperse(
+                        args.iter().map(|arg| arg.to_doc(true)),
+                        [text(" ->"), line()],
+                    ),
+                    text(" ->"),
                     line(),
                     ret.to_doc(true),
                 ]),
@@ -153,8 +186,11 @@ impl CoqType {
                 }
                 name
             }
-            CoqType::Function { arg, ret } => {
-                let mut name = arg.to_name();
+            CoqType::Function { args, ret } => {
+                let mut name = "".to_string();
+                for arg in args {
+                    name.push_str(&arg.to_name());
+                }
                 name.push_str("To");
                 name.push_str(&ret.to_name());
                 name

@@ -180,7 +180,7 @@ fn compile_qpath(tcx: &TyCtxt, qpath: &QPath) -> Expr {
     match qpath {
         QPath::Resolved(_, path) => Expr::Var(compile_path(path)),
         QPath::TypeRelative(ty, segment) => {
-            let ty = Box::new(compile_type(tcx, ty));
+            let ty = compile_type(tcx, ty);
             let func = segment.ident.to_string();
             Expr::AssociatedFunction { ty, func }
         }
@@ -230,8 +230,8 @@ fn monadic_let_in_stmt(
             (
                 Stmt::Let {
                     is_monadic,
-                    pattern: pattern,
-                    init: init,
+                    pattern,
+                    init,
                     body: Box::new(body),
                 },
                 fresh_vars,
@@ -517,7 +517,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
 
 /// Get the pure part of a statement, if possible, as a statement.
 fn get_pure_from_stmt_as_stmt(statement: Stmt) -> Option<Box<Stmt>> {
-    match statement.clone() {
+    match statement {
         Stmt::Expr(e) => match *e {
             Expr::Pure(e) => Some(Box::new(Stmt::Expr(e))),
             _ => None,
@@ -530,23 +530,19 @@ fn get_pure_from_stmt_as_stmt(statement: Stmt) -> Option<Box<Stmt>> {
             pattern,
             init,
             body,
-        } => match get_pure_from_stmt_as_stmt(*body) {
-            None => None,
-            Some(body) => Some(Box::new(Stmt::Let {
+        } => get_pure_from_stmt_as_stmt(*body).map(|body| {
+            Box::new(Stmt::Let {
                 is_monadic: false,
                 pattern,
                 init,
                 body,
-            })),
-        },
+            })
+        }),
     }
 }
 
 fn get_pure_from_stmt_as_expr(statement: Stmt) -> Option<Box<Expr>> {
-    match get_pure_from_stmt_as_stmt(statement) {
-        None => None,
-        Some(statement) => Some(Box::new(Expr::Block(statement))),
-    }
+    get_pure_from_stmt_as_stmt(statement).map(|statement| Box::new(Expr::Block(statement)))
 }
 
 fn mt_stmt(stmt: Stmt) -> Stmt {
@@ -662,11 +658,11 @@ pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         ExprKind::Lit(lit) => Expr::Literal(lit.node.clone()),
         ExprKind::Cast(expr, ty) => Expr::Cast {
             expr: Box::new(compile_expr(tcx, expr)),
-            ty: Box::new(compile_type(&tcx, ty)),
+            ty: compile_type(&tcx, ty),
         },
         ExprKind::Type(expr, ty) => Expr::Type {
             expr: Box::new(compile_expr(tcx, expr)),
-            ty: Box::new(compile_type(&tcx, ty)),
+            ty: compile_type(&tcx, ty),
         },
         ExprKind::DropTemps(expr) => compile_expr(tcx, expr),
         ExprKind::Let(rustc_hir::Let { pat, init, .. }) => {

@@ -16,11 +16,11 @@ use std::string::ToString;
 #[derive(Debug)]
 enum TraitItem {
     Definition {
-        ty: CoqType,
+        ty: Box<CoqType>,
     },
     DefinitionWithDefault {
-        args: Vec<(String, CoqType)>,
-        ret_ty: Option<CoqType>,
+        args: Vec<(String, Box<CoqType>)>,
+        ret_ty: Box<CoqType>,
         body: Box<Expr>,
     },
     Type,
@@ -28,9 +28,13 @@ enum TraitItem {
 
 #[derive(Debug)]
 enum ImplItem {
+    Const {
+        body: Box<Expr>,
+        is_dead_code: bool,
+    },
     Definition {
-        args: Vec<(String, CoqType)>,
-        ret_ty: Option<CoqType>,
+        args: Vec<(String, Box<CoqType>)>,
+        ret_ty: Box<CoqType>,
         body: Box<Expr>,
         is_method: bool,
         is_dead_code: bool,
@@ -43,14 +47,14 @@ enum ImplItem {
 #[derive(Debug)]
 struct WherePredicate {
     name: Path,
-    ty_params: Vec<CoqType>,
-    ty: CoqType,
+    ty_params: Vec<Box<CoqType>>,
+    ty: Box<CoqType>,
 }
 
 #[derive(Debug)]
 enum VariantItem {
-    Struct { fields: Vec<(String, CoqType)> },
-    Tuple { tys: Vec<CoqType> },
+    Struct { fields: Vec<(String, Box<CoqType>)> },
+    Tuple { tys: Vec<Box<CoqType>> },
 }
 
 /// Representation of top-level hir [Item]s in coq-of-rust
@@ -66,8 +70,8 @@ enum TopLevelItem {
         name: String,
         ty_params: Vec<String>,
         where_predicates: Vec<WherePredicate>,
-        args: Vec<(String, CoqType)>,
-        ret_ty: Option<CoqType>,
+        args: Vec<(String, Box<CoqType>)>,
+        ret_ty: Box<CoqType>,
         body: Box<Expr>,
         is_dead_code: bool,
     },
@@ -81,12 +85,12 @@ enum TopLevelItem {
     },
     TypeStructStruct {
         name: String,
-        fields: Vec<(String, CoqType)>,
+        fields: Vec<(String, Box<CoqType>)>,
         is_dead_code: bool,
     },
     TypeStructTuple {
         name: String,
-        fields: Vec<CoqType>,
+        fields: Vec<Box<CoqType>>,
     },
     TypeStructUnit {
         name: String,
@@ -97,7 +101,7 @@ enum TopLevelItem {
         is_dead_code: bool,
     },
     Impl {
-        self_ty: CoqType,
+        self_ty: Box<CoqType>,
         /// We use a counter to disambiguate several impls for the same type
         counter: u64,
         items: Vec<(String, ImplItem)>,
@@ -110,8 +114,8 @@ enum TopLevelItem {
     TraitImpl {
         generic_tys: Vec<String>,
         // The boolean is there to indicate if the type parameter has a default
-        ty_params: Vec<(CoqType, bool)>,
-        self_ty: CoqType,
+        ty_params: Vec<(Box<CoqType>, bool)>,
+        self_ty: Box<CoqType>,
         of_trait: Path,
         items: Vec<(String, ImplItem)>,
         trait_non_default_items: Vec<String>,
@@ -129,8 +133,8 @@ enum TopLevelItem {
 pub struct TopLevel(Vec<TopLevelItem>);
 
 struct FnSigAndBody {
-    args: Vec<(String, CoqType)>,
-    ret_ty: Option<CoqType>,
+    args: Vec<(String, Box<CoqType>)>,
+    ret_ty: Box<CoqType>,
     body: Box<Expr>,
 }
 
@@ -155,8 +159,8 @@ fn compile_fn_sig_and_body_id(
             })
             .collect(),
         ret_ty: match fn_sig.decl.output {
-            rustc_hir::FnRetTy::DefaultReturn(_) => Some(CoqType::unit()),
-            rustc_hir::FnRetTy::Return(ty) => Some(compile_type(&tcx, ty)),
+            rustc_hir::FnRetTy::DefaultReturn(_) => CoqType::unit(),
+            rustc_hir::FnRetTy::Return(ty) => compile_type(&tcx, ty),
         },
         body: Box::new(compile_expr(tcx, expr)),
     }
@@ -287,7 +291,7 @@ fn compile_top_level_item(
             let value = tcx.hir().body(*body_id).value;
             vec![TopLevelItem::Const {
                 name: item.ident.name.to_string(),
-                ty: Box::new(compile_type(&tcx, ty)),
+                ty: compile_type(&tcx, ty),
                 value: Box::new(compile_expr(tcx, value)),
             }]
         }
@@ -366,7 +370,7 @@ fn compile_top_level_item(
         ItemKind::GlobalAsm(_) => vec![TopLevelItem::Error("GlobalAsm".to_string())],
         ItemKind::TyAlias(ty, _) => vec![TopLevelItem::TypeAlias {
             name: item.ident.name.to_string(),
-            ty: Box::new(compile_type(&tcx, ty)),
+            ty: compile_type(&tcx, ty),
         }],
         ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
         ItemKind::Enum(enum_def, _) => vec![TopLevelItem::TypeEnum {
@@ -491,11 +495,8 @@ fn compile_top_level_item(
                     let value = match &item.kind {
                         ImplItemKind::Const(_, body_id) => {
                             let expr = tcx.hir().body(*body_id).value;
-                            ImplItem::Definition {
-                                args: vec![],
-                                ret_ty: None,
+                            ImplItem::Const {
                                 body: Box::new(compile_expr(tcx, expr)),
-                                is_method,
                                 is_dead_code: if_marked_as_dead_code,
                             }
                         }
@@ -524,7 +525,7 @@ fn compile_top_level_item(
                             }
                         }
                         ImplItemKind::Type(ty) => ImplItem::Type {
-                            ty: Box::new(compile_type(&tcx, ty)),
+                            ty: compile_type(&tcx, ty),
                         },
                     };
                     (item.ident.name.to_string(), value)
@@ -574,7 +575,7 @@ fn compile_top_level_item(
                     }]
                 }
                 None => {
-                    let entry = impl_counter.entry(self_ty.clone());
+                    let entry = impl_counter.entry(*self_ty.clone());
                     let counter = *entry.and_modify(|counter| *counter += 1).or_insert(1);
 
                     vec![TopLevelItem::Impl {
@@ -606,8 +607,8 @@ fn fn_to_doc<'a>(
     name: &'a String,
     ty_params: Option<&'a Vec<String>>,
     where_predicates: Option<&'a Vec<WherePredicate>>,
-    args: &'a Vec<(String, CoqType)>,
-    ret_ty: &'a Option<CoqType>,
+    args: &'a Vec<(String, Box<CoqType>)>,
+    ret_ty: &'a CoqType,
     body: &'a Expr,
     is_dead_code: bool,
 ) -> Doc<'a> {
@@ -687,14 +688,8 @@ fn fn_to_doc<'a>(
                         [line()],
                     )
                 },
-                match ret_ty {
-                    Some(_) => line(),
-                    None => nil(),
-                },
-                match ret_ty {
-                    Some(ty) => nest([text(":"), line(), ty.to_doc(false), text(" :=")]),
-                    None => text(" :="),
-                },
+                line(),
+                nest([text(":"), line(), ret_ty.to_doc(false), text(" :=")]),
             ]),
             line(),
             body.to_doc(false),
@@ -703,34 +698,15 @@ fn fn_to_doc<'a>(
     ])
 }
 
-fn mt_ret_ty(ty: Option<CoqType>) -> Option<CoqType> {
-    match ty {
-        Some(ty) => Some(CoqType::Application {
-            func: Box::new(CoqType::Var(Path::local("M".to_string()))),
-            args: vec![ty],
-        }),
-        None => Some(CoqType::Application {
-            func: Box::new(CoqType::Var(Path::local("M".to_string()))),
-            args: vec![CoqType::unit()],
-        }),
-    }
-}
-
-// @TODO
-fn mt_ty(ty: CoqType) -> CoqType {
-    match ty {
-        CoqType::Application { .. } => ty,
-        CoqType::Var(..) => ty,
-        CoqType::Function { .. } => ty,
-        CoqType::Tuple(..) => ty,
-        CoqType::Array(..) => ty,
-        CoqType::Ref(..) => ty,
-    }
-}
-
 fn mt_impl_item(item: ImplItem) -> ImplItem {
     match item {
-        ImplItem::Type { .. } => item,
+        ImplItem::Const { body, is_dead_code } => {
+            let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
+            ImplItem::Const {
+                body: Box::new(Expr::Block(Box::new(body))),
+                is_dead_code,
+            }
+        }
         ImplItem::Definition {
             args,
             ret_ty,
@@ -741,12 +717,13 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             ImplItem::Definition {
                 args,
-                ret_ty: mt_ret_ty(ret_ty),
+                ret_ty: CoqType::monad(mt_ty(ret_ty)),
                 body: Box::new(Expr::Block(Box::new(body))),
                 is_method,
                 is_dead_code,
             }
         }
+        ImplItem::Type { .. } => item,
     }
 }
 
@@ -765,7 +742,7 @@ fn mt_trait_item(body: TraitItem) -> TraitItem {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             TraitItem::DefinitionWithDefault {
                 args,
-                ret_ty: mt_ret_ty(ret_ty),
+                ret_ty: CoqType::monad(mt_ty(ret_ty)),
                 body: Box::new(Expr::Block(Box::new(body))),
             }
         }
@@ -804,7 +781,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
                 ty_params,
                 where_predicates,
                 args,
-                ret_ty: mt_ret_ty(ret_ty),
+                ret_ty: CoqType::monad(mt_ty(ret_ty)),
                 body: Box::new(Expr::Block(Box::new(body))),
                 is_dead_code,
             }
@@ -926,6 +903,31 @@ impl ImplItem {
 
     fn to_doc<'a>(&'a self, name: &'a String) -> Doc<'a> {
         match self {
+            ImplItem::Const { body, is_dead_code } => concat([
+                if *is_dead_code {
+                    concat([
+                        text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
+                        hardline(),
+                    ])
+                } else {
+                    nil()
+                },
+                nest([
+                    text("Definition"),
+                    line(),
+                    text(name),
+                    body.to_doc(false),
+                    text("."),
+                ]),
+                hardline(),
+                hardline(),
+                Self::class_instance_to_doc(
+                    "AssociatedFunction",
+                    name,
+                    "Notation.DoubleColon Self",
+                    "Notation.double_colon",
+                ),
+            ]),
             ImplItem::Definition {
                 args,
                 ret_ty,
@@ -1558,23 +1560,15 @@ impl TopLevelItem {
                                                 text(" :="),
                                             ]),
                                             line(),
-                                            match ret_ty {
-                                                Some(_) => text("("),
-                                                None => nil(),
-                                            },
+                                            text("("),
                                             body.to_doc(false),
-                                            match ret_ty {
-                                                Some(ty) => concat([
-                                                    line(),
-                                                    nest([
-                                                        text(":"),
-                                                        line(),
-                                                        ty.to_doc(false),
-                                                        text(")"),
-                                                    ]),
-                                                ]),
-                                                None => nil(),
-                                            },
+                                            line(),
+                                            nest([
+                                                text(":"),
+                                                line(),
+                                                ret_ty.to_doc(false),
+                                                text(")"),
+                                            ]),
                                             text(";"),
                                         ])
                                     }

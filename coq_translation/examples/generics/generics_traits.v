@@ -15,7 +15,7 @@ Definition Null := Null.t.
 
 Module DoubleDrop.
   Class Trait (T Self : Set) : Set := {
-    double_drop : Self -> (T -> _);
+    double_drop : Self -> T -> (M unit);
   }.
   
   Global Instance Method_double_drop `(Trait) : Notation.Dot "double_drop" := {

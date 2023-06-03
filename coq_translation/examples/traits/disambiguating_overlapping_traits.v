@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module UsernameWidget.
   Class Trait (Self : Set) : Set := {
-    get : (ref Self) -> String;
+    get : (ref Self) -> (M String);
   }.
   
   Global Instance Method_get `(Trait) : Notation.Dot "get" := {
@@ -15,7 +15,7 @@ End UsernameWidget.
 
 Module AgeWidget.
   Class Trait (Self : Set) : Set := {
-    get : (ref Self) -> u8;
+    get : (ref Self) -> (M u8);
   }.
   
   Global Instance Method_get `(Trait) : Notation.Dot "get" := {
