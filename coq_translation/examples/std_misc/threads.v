@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module thread := std.thread.
 
-Definition NTHREADS : u32 := Pure 10.
+Definition NTHREADS : u32 := run (Pure 10).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=

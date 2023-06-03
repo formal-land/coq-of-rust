@@ -988,7 +988,15 @@ impl TopLevelItem {
                     text(" :="),
                 ]),
                 line(),
-                value.to_doc(false),
+                nest([
+                    text("run"),
+                    line(),
+                    // We have to force the parenthesis because otherwise they
+                    // are lost when printing a statement in the expression
+                    text("("),
+                    value.to_doc(true),
+                    text(")"),
+                ]),
                 text("."),
             ]),
             TopLevelItem::Definition {
