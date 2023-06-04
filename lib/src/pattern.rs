@@ -7,7 +7,7 @@ use rustc_middle::ty::TyCtxt;
 use rustc_span::source_map::Spanned;
 
 /// The enum [Pat] represents the patterns which can be matched
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum Pattern {
     Wild,
     Variable(String),
@@ -138,7 +138,7 @@ impl Pattern {
     /// Returns wether a pattern is a single binding, to know if we need a quote
     /// in the "let" in Coq.
     pub fn is_single_binding(&self) -> bool {
-        matches!(self, Pattern::Variable(_))
+        matches!(self, Pattern::Variable(_) | Pattern::Wild)
     }
 
     pub fn to_doc(&self) -> Doc {

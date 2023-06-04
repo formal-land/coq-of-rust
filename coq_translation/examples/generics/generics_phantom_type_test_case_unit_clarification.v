@@ -18,7 +18,7 @@ Module Impl__crate_fmt_Debug_for_Inch.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.intrinsics.unreachable tt.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
@@ -33,7 +33,7 @@ End Impl__crate_fmt_Debug_for_Inch.
 Module Impl__crate_clone_Clone_for_Inch.
   Definition Self := Inch.
   
-  Definition clone (self : ref Self) : Inch := self.["deref"].
+  Definition clone (self : ref Self) : M Inch := self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -63,7 +63,7 @@ Module Impl__crate_fmt_Debug_for_Mm.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.intrinsics.unreachable tt.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
@@ -78,7 +78,7 @@ End Impl__crate_fmt_Debug_for_Mm.
 Module Impl__crate_clone_Clone_for_Mm.
   Definition Self := Mm.
   
-  Definition clone (self : ref Self) : Mm := self.["deref"].
+  Definition clone (self : ref Self) : M Mm := self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -114,12 +114,12 @@ Module Impl__crate_fmt_Debug_for_Length_Unit.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.fmt.Formatter::["debug_tuple_field2_finish"]
       f
       "Length"
-      (self.[0])
-      (self.[1]).
+      (addr_of (self.[0]))
+      (addr_of (addr_of (self.[1]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -133,10 +133,10 @@ End Impl__crate_fmt_Debug_for_Length_Unit.
 Module Impl__crate_clone_Clone_for_Length_Unit.
   Definition Self := Length Unit.
   
-  Definition clone (self : ref Self) : Length Unit :=
-    Length.Build_t
-      (_crate.clone.Clone.clone (self.[0]))
-      (_crate.clone.Clone.clone (self.[1])).
+  Definition clone (self : ref Self) : M (Length Unit) :=
+    let* α0 := _crate.clone.Clone.clone (addr_of (self.[0])) in
+    let* α1 := _crate.clone.Clone.clone (addr_of (self.[1])) in
+    Pure (Length.Build_t α0 α1).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -159,8 +159,9 @@ Module Impl_Add_for_Length_Unit.
   
   Definition Output : Set := Length Unit.
   
-  Definition add (self : Self) (rhs : Length Unit) : Length Unit :=
-    Length.Build_t ((self.[0]).["add"] (rhs.[0])) PhantomData.Build.
+  Definition add (self : Self) (rhs : Length Unit) : M (Length Unit) :=
+    let* α0 := (self.[0]).["add"] (rhs.[0]) in
+    Pure (Length.Build_t α0 PhantomData.Build).
   
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -172,21 +173,29 @@ Module Impl_Add_for_Length_Unit.
 End Impl_Add_for_Length_Unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let one_foot := Length.Build_t 12 (* 12.0 *) PhantomData.Build in
   let one_meter := Length.Build_t 1000 (* 1000.0 *) PhantomData.Build in
-  let two_feet := one_foot.["add"] one_foot in
-  let two_meters := one_meter.["add"] one_meter in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "one foot + one_foot = "; " in
-" ]
-      [ format_argument::["new_debug"] (two_feet.[0]) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "one meter + one_meter = "; " mm
-" ]
-      [ format_argument::["new_debug"] (two_meters.[0]) ]) ;;
-  tt ;;
-  tt.
+  let* two_feet := one_foot.["add"] one_foot in
+  let* two_meters := one_meter.["add"] one_meter in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of (two_feet.[0])) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "one foot + one_foot = "; " in
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of (two_meters.[0])) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "one meter + one_meter = "; " mm
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.

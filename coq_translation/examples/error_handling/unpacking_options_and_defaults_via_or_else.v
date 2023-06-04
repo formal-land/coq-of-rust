@@ -19,16 +19,16 @@ Module Impl__crate_fmt_Debug_for_Fruit.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["write_str"]
-      f
+      : M _crate.fmt.Result :=
+    let* α0 :=
       match self with
-      | Fruit.Apple => "Apple"
-      | Fruit.Orange => "Orange"
-      | Fruit.Banana => "Banana"
-      | Fruit.Kiwi => "Kiwi"
-      | Fruit.Lemon => "Lemon"
-      end.
+      | Fruit.Apple => Pure "Apple"
+      | Fruit.Orange => Pure "Orange"
+      | Fruit.Banana => Pure "Banana"
+      | Fruit.Kiwi => Pure "Kiwi"
+      | Fruit.Lemon => Pure "Lemon"
+      end in
+    _crate.fmt.Formatter::["write_str"] f α0.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -40,30 +40,43 @@ Module Impl__crate_fmt_Debug_for_Fruit.
 End Impl__crate_fmt_Debug_for_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let apple := Some Fruit.Apple in
   let no_fruit := None in
   let get_kiwi_as_fallback :=
     fun  =>
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Providing kiwi as fallback
-" ]) ;;
-      tt ;;
-      Some Fruit.Kiwi in
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "Providing kiwi as fallback
+" ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      Pure (Some Fruit.Kiwi) in
   let get_lemon_as_fallback :=
     fun  =>
-      _crate.io._print
-        (format_arguments::["new_const"] [ "Providing lemon as fallback
-" ]) ;;
-      tt ;;
-      Some Fruit.Lemon in
-  let first_available_fruit :=
-    (no_fruit.["or_else"] get_kiwi_as_fallback).["or_else"]
-      get_lemon_as_fallback in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "first_available_fruit: "; "
-" ]
-      [ format_argument::["new_debug"] first_available_fruit ]) ;;
-  tt ;;
-  tt.
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "Providing lemon as fallback
+" ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      Pure (Some Fruit.Lemon) in
+  let* first_available_fruit :=
+    let* α0 := no_fruit.["or_else"] get_kiwi_as_fallback in
+    α0.["or_else"] get_lemon_as_fallback in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_debug"] (addr_of first_available_fruit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "first_available_fruit: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.

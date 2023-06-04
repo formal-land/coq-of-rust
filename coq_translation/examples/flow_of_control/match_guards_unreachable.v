@@ -4,17 +4,21 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let number := 4 in
   match number with
   | i =>
-    _crate.io._print (format_arguments::["new_const"] [ "Zero
-" ]) ;;
-    tt
+    let* _ :=
+      let* α0 := format_arguments::["new_const"] (addr_of [ "Zero
+" ]) in
+      _crate.io._print α0 in
+    Pure tt
   | i =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "Greater than zero
-" ]) ;;
-    tt
-  | _ => _crate.panicking.unreachable_display "Should never happen."
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Greater than zero
+" ]) in
+      _crate.io._print α0 in
+    Pure tt
+  | _ => _crate.panicking.unreachable_display (addr_of "Should never happen.")
   end.

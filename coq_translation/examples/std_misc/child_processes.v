@@ -7,30 +7,43 @@ Module Command := std.process.Command.
 Definition Command := Command.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let output :=
-    ((Command::["new"] "rustc").["arg"]
-          "--version").["output"].["unwrap_or_else"]
+Definition main (_ : unit) : M unit :=
+  let* output :=
+    let* α0 := Command::["new"] "rustc" in
+    let* α1 := α0.["arg"] "--version" in
+    let* α2 := α1.["output"] in
+    α2.["unwrap_or_else"]
       (fun e =>
-        _crate.rt.panic_fmt
-          (format_arguments::["new_v1"]
-            [ "failed to execute process: " ]
-            [ format_argument::["new_display"] e ])) in
-  if (output.["status"].["success"] : bool) then
-    let s := String::["from_utf8_lossy"] output.["stdout"] in
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "rustc succeeded and stdout was:
-" ]
-        [ format_argument::["new_display"] s ]) ;;
-    tt ;;
-    tt
+        let* α0 := format_argument::["new_display"] (addr_of e) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "failed to execute process: " ])
+            (addr_of [ α0 ]) in
+        _crate.rt.panic_fmt α1) in
+  let* α0 := output.["status"].["success"] in
+  if (α0 : bool) then
+    let* s := String::["from_utf8_lossy"] (addr_of output.["stdout"]) in
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of s) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "rustc succeeded and stdout was:
+" ])
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    Pure tt
   else
-    let s := String::["from_utf8_lossy"] output.["stderr"] in
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "rustc failed and stderr was:
-" ]
-        [ format_argument::["new_display"] s ]) ;;
-    tt ;;
-    tt.
+    let* s := String::["from_utf8_lossy"] (addr_of output.["stderr"]) in
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of s) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "rustc failed and stderr was:
+" ])
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    Pure tt.

@@ -4,21 +4,30 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let i := 3 in
-  let borrow1 := i in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "borrow1: "; "
-" ]
-      [ format_argument::["new_display"] borrow1 ]) ;;
-  tt ;;
-  tt ;;
-  let borrow2 := i in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "borrow2: "; "
-" ]
-      [ format_argument::["new_display"] borrow2 ]) ;;
-  tt ;;
-  tt.
+  let* _ :=
+    let borrow1 := addr_of i in
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of borrow1) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "borrow1: "; "
+" ])
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    Pure tt in
+  let borrow2 := addr_of i in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of borrow2) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "borrow2: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.

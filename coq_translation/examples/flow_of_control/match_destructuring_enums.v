@@ -17,81 +17,97 @@ End Color.
 Definition Color := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let color := Color.RGB 122 17 40 in
-  _crate.io._print (format_arguments::["new_const"] [ "What color is it?
-" ]) ;;
-  tt ;;
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "What color is it?
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
   match color with
   | Color.Red =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "The color is Red!
-" ]) ;;
-    tt
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "The color is Red!
+" ]) in
+      _crate.io._print α0 in
+    Pure tt
   | Color.Blue =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "The color is Blue!
-" ]) ;;
-    tt
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "The color is Blue!
+" ]) in
+      _crate.io._print α0 in
+    Pure tt
   | Color.Green =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "The color is Green!
-" ]) ;;
-    tt
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "The color is Green!
+" ]) in
+      _crate.io._print α0 in
+    Pure tt
   | Color.RGB r g b =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Red: "; ", green: "; ", and blue: "; "!
-" ]
-        [
-          format_argument::["new_display"] r;
-          format_argument::["new_display"] g;
-          format_argument::["new_display"] b
-        ]) ;;
-    tt
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of r) in
+      let* α1 := format_argument::["new_display"] (addr_of g) in
+      let* α2 := format_argument::["new_display"] (addr_of b) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Red: "; ", green: "; ", and blue: "; "!
+" ])
+          (addr_of [ α0; α1; α2 ]) in
+      _crate.io._print α3 in
+    Pure tt
   | Color.HSV h s v =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Hue: "; ", saturation: "; ", value: "; "!
-" ]
-        [
-          format_argument::["new_display"] h;
-          format_argument::["new_display"] s;
-          format_argument::["new_display"] v
-        ]) ;;
-    tt
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of h) in
+      let* α1 := format_argument::["new_display"] (addr_of s) in
+      let* α2 := format_argument::["new_display"] (addr_of v) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Hue: "; ", saturation: "; ", value: "; "!
+" ])
+          (addr_of [ α0; α1; α2 ]) in
+      _crate.io._print α3 in
+    Pure tt
   | Color.HSL h s l =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Hue: "; ", saturation: "; ", lightness: "; "!
-" ]
-        [
-          format_argument::["new_display"] h;
-          format_argument::["new_display"] s;
-          format_argument::["new_display"] l
-        ]) ;;
-    tt
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of h) in
+      let* α1 := format_argument::["new_display"] (addr_of s) in
+      let* α2 := format_argument::["new_display"] (addr_of l) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Hue: "; ", saturation: "; ", lightness: "; "!
+" ])
+          (addr_of [ α0; α1; α2 ]) in
+      _crate.io._print α3 in
+    Pure tt
   | Color.CMY c m y =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Cyan: "; ", magenta: "; ", yellow: "; "!
-" ]
-        [
-          format_argument::["new_display"] c;
-          format_argument::["new_display"] m;
-          format_argument::["new_display"] y
-        ]) ;;
-    tt
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of c) in
+      let* α1 := format_argument::["new_display"] (addr_of m) in
+      let* α2 := format_argument::["new_display"] (addr_of y) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Cyan: "; ", magenta: "; ", yellow: "; "!
+" ])
+          (addr_of [ α0; α1; α2 ]) in
+      _crate.io._print α3 in
+    Pure tt
   | Color.CMYK c m y k =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Cyan: "; ", magenta: "; ", yellow: "; ", key (black): "; "!
-" ]
-        [
-          format_argument::["new_display"] c;
-          format_argument::["new_display"] m;
-          format_argument::["new_display"] y;
-          format_argument::["new_display"] k
-        ]) ;;
-    tt
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of c) in
+      let* α1 := format_argument::["new_display"] (addr_of m) in
+      let* α2 := format_argument::["new_display"] (addr_of y) in
+      let* α3 := format_argument::["new_display"] (addr_of k) in
+      let* α4 :=
+        format_arguments::["new_v1"]
+          (addr_of
+            [ "Cyan: "; ", magenta: "; ", yellow: "; ", key (black): "; "!
+" ])
+          (addr_of [ α0; α1; α2; α3 ]) in
+      _crate.io._print α4 in
+    Pure tt
   end.

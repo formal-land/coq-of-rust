@@ -4,25 +4,38 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let strings :=
-    Slice::["into_vec"]
-      (_crate.boxed.Box::["new"] [ "42"; "tofu"; "93"; "999"; "18" ]) in
-  let errors := _crate.vec.Vec::["new"] tt in
-  let numbers :=
-    ((strings.["into_iter"].["map"] (fun s => s.["parse"])).["filter_map"]
+Definition main (_ : unit) : M unit :=
+  let* strings :=
+    let* α0 := _crate.boxed.Box::["new"] [ "42"; "tofu"; "93"; "999"; "18" ] in
+    Slice::["into_vec"] α0 in
+  let* errors := _crate.vec.Vec::["new"] tt in
+  let* numbers :=
+    let* α0 := strings.["into_iter"] in
+    let* α1 := α0.["map"] (fun s => s.["parse"]) in
+    let* α2 :=
+      α1.["filter_map"]
         (fun r =>
-          (r.["map_err"] (fun e => errors.["push"] e)).["ok"])).["collect"] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Numbers: "; "
-" ]
-      [ format_argument::["new_debug"] numbers ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Errors: "; "
-" ]
-      [ format_argument::["new_debug"] errors ]) ;;
-  tt ;;
-  tt.
+          let* α0 := r.["map_err"] (fun e => errors.["push"] e) in
+          α0.["ok"]) in
+    α2.["collect"] in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of numbers) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Numbers: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of errors) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Errors: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.

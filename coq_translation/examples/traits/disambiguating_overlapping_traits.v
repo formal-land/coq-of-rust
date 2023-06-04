@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module UsernameWidget.
   Class Trait (Self : Set) : Set := {
-    get : (ref Self) -> String;
+    get : (ref Self) -> (M String);
   }.
   
   Global Instance Method_get `(Trait) : Notation.Dot "get" := {
@@ -15,7 +15,7 @@ End UsernameWidget.
 
 Module AgeWidget.
   Class Trait (Self : Set) : Set := {
-    get : (ref Self) -> u8;
+    get : (ref Self) -> (M u8);
   }.
   
   Global Instance Method_get `(Trait) : Notation.Dot "get" := {
@@ -41,7 +41,7 @@ Definition Form : Set := Form.t.
 Module Impl_UsernameWidget_for_Form.
   Definition Self := Form.
   
-  Definition get (self : ref Self) : String := self.["username"].["clone"].
+  Definition get (self : ref Self) : M String := self.["username"].["clone"].
   
   Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
@@ -55,7 +55,7 @@ End Impl_UsernameWidget_for_Form.
 Module Impl_AgeWidget_for_Form.
   Definition Self := Form.
   
-  Definition get (self : ref Self) : u8 := self.["age"].
+  Definition get (self : ref Self) : M u8 := Pure self.["age"].
   
   Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
@@ -67,35 +67,53 @@ Module Impl_AgeWidget_for_Form.
 End Impl_AgeWidget_for_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let form :=
-    {| Form.username := "rustacean".["to_owned"]; Form.age := 28; |} in
-  let username := UsernameWidget.get form in
-  match ("rustacean".["to_owned"], username) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  let age := AgeWidget.get form in
-  match (28, age) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* form :=
+    let* α0 := "rustacean".["to_owned"] in
+    Pure {| Form.username := α0; Form.age := 28; |} in
+  let* username := UsernameWidget.get (addr_of form) in
+  let* _ :=
+    let* α0 := "rustacean".["to_owned"] in
+    match (addr_of α0, addr_of username) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          _crate.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            _crate.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  let* age := AgeWidget.get (addr_of form) in
+  let* _ :=
+    match (addr_of 28, addr_of age) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          _crate.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            _crate.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  Pure tt.

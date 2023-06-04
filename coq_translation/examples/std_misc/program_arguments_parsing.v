@@ -5,90 +5,122 @@ Import Root.std.prelude.rust_2015.
 
 Module env := std.env.
 
-Definition increase (number : i32) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] (number.["add"] 1) ]) ;;
-  tt ;;
-  tt.
+Definition increase (number : i32) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := number.["add"] 1 in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  Pure tt.
 
-Definition decrease (number : i32) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] (number.["sub"] 1) ]) ;;
-  tt ;;
-  tt.
+Definition decrease (number : i32) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := number.["sub"] 1 in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  Pure tt.
 
-Definition help (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [
-        "usage:
+Definition help (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of
+            [
+              "usage:
 match_args <string>
     Check whether given string is the answer.
 match_args {increase|decrease} <integer>
     Increase or decrease given integer by one.
 "
-      ]) ;;
-  tt ;;
-  tt.
+            ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let args := (env.args tt).["collect"] in
-  match args.["len"] with
+Definition main (_ : unit) : M unit :=
+  let* args :=
+    let* α0 := env.args tt in
+    α0.["collect"] in
+  let* α0 := args.["len"] in
+  match α0 with
   | 1 =>
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "My name is 'match_args'. Try passing some arguments!
-" ]) ;;
-    tt ;;
-    tt
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of
+              [ "My name is 'match_args'. Try passing some arguments!
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt
   | 2 =>
-    match args[1].["parse"] with
+    let* α0 := args[1].["parse"] in
+    match α0 with
     | Ok 42 =>
-      _crate.io._print
-        (format_arguments::["new_const"] [ "This is the answer!
-" ]) ;;
-      tt
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "This is the answer!
+" ]) in
+        _crate.io._print α0 in
+      Pure tt
     | _ =>
-      _crate.io._print
-        (format_arguments::["new_const"] [ "This is not the answer.
-" ]) ;;
-      tt
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "This is not the answer.
+" ]) in
+        _crate.io._print α0 in
+      Pure tt
     end
   | 3 =>
-    let cmd := args[1] in
-    let num := args[2] in
-    let number :=
-      match num.["parse"] with
-      | Ok n => n
+    let cmd := addr_of args[1] in
+    let num := addr_of args[2] in
+    let* number :=
+      let* α0 := num.["parse"] in
+      match α0 with
+      | Ok n => Pure n
       | Err _ =>
-        _crate.io._eprint
-          (format_arguments::["new_const"]
-            [ "error: second argument not an integer
-" ]) ;;
-        tt ;;
-        help tt ;;
-        Return tt ;;
-        tt
+        let* _ :=
+          let* _ :=
+            let* α0 :=
+              format_arguments::["new_const"]
+                (addr_of [ "error: second argument not an integer
+" ]) in
+            _crate.io._eprint α0 in
+          Pure tt in
+        let* _ := help tt in
+        let* _ := Return tt in
+        Pure tt
       end in
-    match cmd[RangeFull {|  |}] with
+    match addr_of cmd[RangeFull {|  |}] with
     | "increase" => increase number
     | "decrease" => decrease number
     | _ =>
-      _crate.io._eprint
-        (format_arguments::["new_const"] [ "error: invalid command
-" ]) ;;
-      tt ;;
-      help tt ;;
-      tt
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "error: invalid command
+" ]) in
+          _crate.io._eprint α0 in
+        Pure tt in
+      let* _ := help tt in
+      Pure tt
     end
   | _ =>
-    help tt ;;
-    tt
+    let* _ := help tt in
+    Pure tt
   end.

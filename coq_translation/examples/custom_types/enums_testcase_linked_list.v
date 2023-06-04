@@ -15,45 +15,52 @@ Definition List := List.t.
 Module ImplList.
   Definition Self := List.
   
-  Definition new (_ : unit) : List := Nil.
+  Definition new (_ : unit) : M List := Pure Nil.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Definition prepend (self : Self) (elem : u32) : List :=
-    Cons elem (Box::["new"] self).
+  Definition prepend (self : Self) (elem : u32) : M List :=
+    let* α0 := Box::["new"] self in
+    Pure (Cons elem α0).
   
   Global Instance Method_prepend : Notation.Dot "prepend" := {
     Notation.dot := prepend;
   }.
   
-  Definition len (self : ref Self) : u32 :=
-    match self.["deref"] with
-    | Cons _ tail => 1.["add"] tail.["len"]
-    | Nil => 0
+  Definition len (self : ref Self) : M u32 :=
+    let* α0 := self.["deref"] in
+    match α0 with
+    | Cons _ tail =>
+      let* α0 := tail.["len"] in
+      1.["add"] α0
+    | Nil => Pure 0
     end.
   
   Global Instance Method_len : Notation.Dot "len" := {
     Notation.dot := len;
   }.
   
-  Definition stringify (self : ref Self) : String :=
-    match self.["deref"] with
+  Definition stringify (self : ref Self) : M String :=
+    let* α0 := self.["deref"] in
+    match α0 with
     | Cons head tail =>
-      let res :=
-        _crate.fmt.format
-          (format_arguments::["new_v1"]
-            [ ""; ", " ]
-            [
-              format_argument::["new_display"] head;
-              format_argument::["new_display"] tail.["stringify"]
-            ]) in
-      res
+      let* res :=
+        let* α0 := format_argument::["new_display"] (addr_of head) in
+        let* α1 := tail.["stringify"] in
+        let* α2 := format_argument::["new_display"] (addr_of α1) in
+        let* α3 :=
+          format_arguments::["new_v1"]
+            (addr_of [ ""; ", " ])
+            (addr_of [ α0; α2 ]) in
+        _crate.fmt.format α3 in
+      Pure res
     | Nil =>
-      let res :=
-        _crate.fmt.format (format_arguments::["new_const"] [ "Nil" ]) in
-      res
+      let* res :=
+        let* α0 := format_arguments::["new_const"] (addr_of [ "Nil" ]) in
+        _crate.fmt.format α0 in
+      Pure res
     end.
   
   Global Instance Method_stringify : Notation.Dot "stringify" := {
@@ -62,21 +69,35 @@ Module ImplList.
 End ImplList.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let list := List::["new"] tt in
-  assign list (list.["prepend"] 1) ;;
-  assign list (list.["prepend"] 2) ;;
-  assign list (list.["prepend"] 3) ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "linked list has length: "; "
-" ]
-      [ format_argument::["new_display"] list.["len"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] list.["stringify"] ]) ;;
-  tt ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* list := List::["new"] tt in
+  let* _ :=
+    let* α0 := list.["prepend"] 1 in
+    assign list α0 in
+  let* _ :=
+    let* α0 := list.["prepend"] 2 in
+    assign list α0 in
+  let* _ :=
+    let* α0 := list.["prepend"] 3 in
+    assign list α0 in
+  let* _ :=
+    let* _ :=
+      let* α0 := list.["len"] in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "linked list has length: "; "
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := list.["stringify"] in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  Pure tt.

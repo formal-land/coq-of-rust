@@ -4,9 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let x := 5 in
-  x ;;
-  x.["add"] 1 ;;
-  15 ;;
-  tt.
+  let _ := x in
+  let* _ := x.["add"] 1 in
+  let _ := 15 in
+  Pure tt.

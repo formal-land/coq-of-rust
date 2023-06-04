@@ -28,14 +28,14 @@ Module Impl__crate_fmt_Debug_for_Point.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Point"
       "x"
-      self.["x"]
+      (addr_of self.["x"])
       "y"
-      self.["y"].
+      (addr_of (addr_of self.["y"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -50,8 +50,8 @@ Module Impl__crate_clone_Clone_for_Point.
   Definition Self := Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition clone (self : ref Self) : Point :=
-    let '_ := tt in
+  Definition clone (self : ref Self) : M Point :=
+    let _ := tt in
     self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -86,65 +86,102 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
-Definition origin (_ : unit) : Point :=
-  {| Point.x := 0 (* 0.0 *); Point.y := 0 (* 0.0 *); |}.
+Definition origin (_ : unit) : M Point :=
+  Pure {| Point.x := 0 (* 0.0 *); Point.y := 0 (* 0.0 *); |}.
 
-Definition boxed_origin (_ : unit) : Box Point :=
+Definition boxed_origin (_ : unit) : M (Box Point) :=
   Box::["new"] {| Point.x := 0 (* 0.0 *); Point.y := 0 (* 0.0 *); |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let point := origin tt in
-  let rectangle :=
-    {|
-      Rectangle.top_left := origin tt;
-      Rectangle.bottom_right :=
-        {| Point.x := 3 (* 3.0 *); Point.y := 4 (* 4.0 *).["neg"]; |};
-    |} in
-  let boxed_rectangle :=
+Definition main (_ : unit) : M unit :=
+  let* point := origin tt in
+  let* rectangle :=
+    let* α0 := origin tt in
+    let* α1 := 4 (* 4.0 *).["neg"] in
+    Pure
+      {|
+        Rectangle.top_left := α0;
+        Rectangle.bottom_right := {| Point.x := 3 (* 3.0 *); Point.y := α1; |};
+      |} in
+  let* boxed_rectangle :=
+    let* α0 := origin tt in
+    let* α1 := 4 (* 4.0 *).["neg"] in
     Box::["new"]
       {|
-        Rectangle.top_left := origin tt;
-        Rectangle.bottom_right :=
-          {| Point.x := 3 (* 3.0 *); Point.y := 4 (* 4.0 *).["neg"]; |};
+        Rectangle.top_left := α0;
+        Rectangle.bottom_right := {| Point.x := 3 (* 3.0 *); Point.y := α1; |};
       |} in
-  let boxed_point := Box::["new"] (origin tt) in
-  let box_in_a_box := Box::["new"] (boxed_origin tt) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Point occupies "; " bytes on the stack
-" ]
-      [ format_argument::["new_display"] (mem.size_of_val point) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Rectangle occupies "; " bytes on the stack
-" ]
-      [ format_argument::["new_display"] (mem.size_of_val rectangle) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Boxed point occupies "; " bytes on the stack
-" ]
-      [ format_argument::["new_display"] (mem.size_of_val boxed_point) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Boxed rectangle occupies "; " bytes on the stack
-" ]
-      [ format_argument::["new_display"] (mem.size_of_val boxed_rectangle) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Boxed box occupies "; " bytes on the stack
-" ]
-      [ format_argument::["new_display"] (mem.size_of_val box_in_a_box) ]) ;;
-  tt ;;
-  let unboxed_point := boxed_point.["deref"] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Unboxed point occupies "; " bytes on the stack
-" ]
-      [ format_argument::["new_display"] (mem.size_of_val unboxed_point) ]) ;;
-  tt ;;
-  tt.
+  let* boxed_point :=
+    let* α0 := origin tt in
+    Box::["new"] α0 in
+  let* box_in_a_box :=
+    let* α0 := boxed_origin tt in
+    Box::["new"] α0 in
+  let* _ :=
+    let* _ :=
+      let* α0 := mem.size_of_val (addr_of point) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Point occupies "; " bytes on the stack
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := mem.size_of_val (addr_of rectangle) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Rectangle occupies "; " bytes on the stack
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := mem.size_of_val (addr_of boxed_point) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Boxed point occupies "; " bytes on the stack
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := mem.size_of_val (addr_of boxed_rectangle) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Boxed rectangle occupies "; " bytes on the stack
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := mem.size_of_val (addr_of box_in_a_box) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Boxed box occupies "; " bytes on the stack
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* unboxed_point := boxed_point.["deref"] in
+  let* _ :=
+    let* _ :=
+      let* α0 := mem.size_of_val (addr_of unboxed_point) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Unboxed point occupies "; " bytes on the stack
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  Pure tt.

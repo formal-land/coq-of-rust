@@ -4,46 +4,57 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let color := String::["from"] "green" in
+Definition main (_ : unit) : M unit :=
+  let* color := String::["from"] "green" in
   let print :=
     fun  =>
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "`color`: "; "
-" ]
-          [ format_argument::["new_display"] color ]) ;;
-      tt in
-  print tt ;;
-  let _reborrow := color in
-  print tt ;;
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of color) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "`color`: "; "
+" ])
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+  let* _ := print tt in
+  let _reborrow := addr_of color in
+  let* _ := print tt in
   let _color_moved := color in
   let count := 0 in
   let inc :=
     fun  =>
-      count.["add_assign"] 1 ;;
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "`count`: "; "
-" ]
-          [ format_argument::["new_display"] count ]) ;;
-      tt ;;
-      tt in
-  inc tt ;;
-  inc tt ;;
-  let _count_reborrowed := count in
-  let movable := Box::["new"] 3 in
+      let* _ := count.["add_assign"] 1 in
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_display"] (addr_of count) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "`count`: "; "
+" ])
+              (addr_of [ α0 ]) in
+          _crate.io._print α1 in
+        Pure tt in
+      Pure tt in
+  let* _ := inc tt in
+  let* _ := inc tt in
+  let _count_reborrowed := addr_of count in
+  let* movable := Box::["new"] 3 in
   let consume :=
     fun  =>
-      _crate.io._print
-        (format_arguments::["new_v1"]
-          [ "`movable`: "; "
-" ]
-          [ format_argument::["new_debug"] movable ]) ;;
-      tt ;;
-      mem.drop movable ;;
-      tt in
-  consume tt ;;
-  tt.
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_debug"] (addr_of movable) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "`movable`: "; "
+" ])
+              (addr_of [ α0 ]) in
+          _crate.io._print α1 in
+        Pure tt in
+      let* _ := mem.drop movable in
+      Pure tt in
+  let* _ := consume tt in
+  Pure tt.
 
 Module mem := std.mem.

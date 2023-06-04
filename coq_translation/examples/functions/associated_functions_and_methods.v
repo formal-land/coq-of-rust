@@ -21,16 +21,16 @@ Definition Point : Set := Point.t.
 Module ImplPoint.
   Definition Self := Point.
   
-  Definition origin (_ : unit) : Point :=
-    {| Point.y := 0 (* 0.0 *); Point.x := 1 (* 1.0 *); |}.
+  Definition origin (_ : unit) : M Point :=
+    Pure {| Point.y := 0 (* 0.0 *); Point.x := 1 (* 1.0 *); |}.
   
   Global Instance AssociatedFunction_origin :
     Notation.DoubleColon Self "origin" := {
     Notation.double_colon := origin;
   }.
   
-  Definition new (x : f64) (y : f64) : Point :=
-    {| Point.x := x; Point.y := y; |}.
+  Definition new (x : f64) (y : f64) : M Point :=
+    Pure {| Point.x := x; Point.y := y; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
@@ -55,37 +55,44 @@ Definition Rectangle : Set := Rectangle.t.
 Module ImplRectangle.
   Definition Self := Rectangle.
   
-  Definition get_p1 (self : ref Self) : Point := self.["p1"].
+  Definition get_p1 (self : ref Self) : M Point := Pure self.["p1"].
   
   Global Instance Method_get_p1 : Notation.Dot "get_p1" := {
     Notation.dot := get_p1;
   }.
   
-  Definition area (self : ref Self) : f64 :=
+  Definition area (self : ref Self) : M f64 :=
     let '{| Point.x := x1; Point.y := y1; |} := self.["p1"] in
     let '{| Point.x := x2; Point.y := y2; |} := self.["p2"] in
-    ((x1.["sub"] x2).["mul"] (y1.["sub"] y2)).["abs"].
+    let* α0 := x1.["sub"] x2 in
+    let* α1 := y1.["sub"] y2 in
+    let* α2 := α0.["mul"] α1 in
+    α2.["abs"].
   
   Global Instance Method_area : Notation.Dot "area" := {
     Notation.dot := area;
   }.
   
-  Definition perimeter (self : ref Self) : f64 :=
+  Definition perimeter (self : ref Self) : M f64 :=
     let '{| Point.x := x1; Point.y := y1; |} := self.["p1"] in
     let '{| Point.x := x2; Point.y := y2; |} := self.["p2"] in
-    2 (* 2.0 *).["mul"]
-      ((x1.["sub"] x2).["abs"].["add"] (y1.["sub"] y2).["abs"]).
+    let* α0 := x1.["sub"] x2 in
+    let* α1 := α0.["abs"] in
+    let* α2 := y1.["sub"] y2 in
+    let* α3 := α2.["abs"] in
+    let* α4 := α1.["add"] α3 in
+    2 (* 2.0 *).["mul"] α4.
   
   Global Instance Method_perimeter : Notation.Dot "perimeter" := {
     Notation.dot := perimeter;
   }.
   
-  Definition translate (self : mut_ref Self) (x : f64) (y : f64) :=
-    self.["p1"].["x"].["add_assign"] x ;;
-    self.["p2"].["x"].["add_assign"] x ;;
-    self.["p1"].["y"].["add_assign"] y ;;
-    self.["p2"].["y"].["add_assign"] y ;;
-    tt.
+  Definition translate (self : mut_ref Self) (x : f64) (y : f64) : M unit :=
+    let* _ := self.["p1"].["x"].["add_assign"] x in
+    let* _ := self.["p2"].["x"].["add_assign"] x in
+    let* _ := self.["p1"].["y"].["add_assign"] y in
+    let* _ := self.["p2"].["y"].["add_assign"] y in
+    Pure tt.
   
   Global Instance Method_translate : Notation.Dot "translate" := {
     Notation.dot := translate;
@@ -107,18 +114,20 @@ Definition Pair := Pair.t.
 Module ImplPair.
   Definition Self := Pair.
   
-  Definition destroy (self : Self) :=
+  Definition destroy (self : Self) : M unit :=
     let 'Pair.Build_t first second := self in
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Destroying Pair("; ", "; ")
-" ]
-        [
-          format_argument::["new_display"] first;
-          format_argument::["new_display"] second
-        ]) ;;
-    tt ;;
-    tt.
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of first) in
+        let* α1 := format_argument::["new_display"] (addr_of second) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Destroying Pair("; ", "; ")
+" ])
+            (addr_of [ α0; α1 ]) in
+        _crate.io._print α2 in
+      Pure tt in
+    Pure tt.
   
   Global Instance Method_destroy : Notation.Dot "destroy" := {
     Notation.dot := destroy;
@@ -126,30 +135,41 @@ Module ImplPair.
 End ImplPair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let rectangle :=
-    {|
-      Rectangle.p1 := Point::["origin"] tt;
-      Rectangle.p2 := Point::["new"] 3 (* 3.0 *) 4 (* 4.0 *);
-    |} in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Rectangle perimeter: "; "
-" ]
-      [ format_argument::["new_display"] rectangle.["perimeter"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Rectangle area: "; "
-" ]
-      [ format_argument::["new_display"] rectangle.["area"] ]) ;;
-  tt ;;
-  let square :=
-    {|
-      Rectangle.p1 := Point::["origin"] tt;
-      Rectangle.p2 := Point::["new"] 1 (* 1.0 *) 1 (* 1.0 *);
-    |} in
-  square.["translate"] 1 (* 1.0 *) 1 (* 1.0 *) ;;
-  let pair := Pair.Build_t (Box::["new"] 1) (Box::["new"] 2) in
-  pair.["destroy"] ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* rectangle :=
+    let* α0 := Point::["origin"] tt in
+    let* α1 := Point::["new"] 3 (* 3.0 *) 4 (* 4.0 *) in
+    Pure {| Rectangle.p1 := α0; Rectangle.p2 := α1; |} in
+  let* _ :=
+    let* _ :=
+      let* α0 := rectangle.["perimeter"] in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Rectangle perimeter: "; "
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := rectangle.["area"] in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Rectangle area: "; "
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* square :=
+    let* α0 := Point::["origin"] tt in
+    let* α1 := Point::["new"] 1 (* 1.0 *) 1 (* 1.0 *) in
+    Pure {| Rectangle.p1 := α0; Rectangle.p2 := α1; |} in
+  let* _ := square.["translate"] 1 (* 1.0 *) 1 (* 1.0 *) in
+  let* pair :=
+    let* α0 := Box::["new"] 1 in
+    let* α1 := Box::["new"] 2 in
+    Pure (Pair.Build_t α0 α1) in
+  let* _ := pair.["destroy"] in
+  Pure tt.

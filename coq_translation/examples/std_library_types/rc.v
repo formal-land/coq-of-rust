@@ -7,69 +7,118 @@ Module Rc := std.rc.Rc.
 Definition Rc := Rc.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let rc_examples := "Rc examples".["to_string"] in
-  _crate.io._print
-    (format_arguments::["new_const"] [ "--- rc_a is created ---
-" ]) ;;
-  tt ;;
-  let rc_a := Rc::["new"] rc_examples in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Reference Count of rc_a: "; "
-" ]
-      [ format_argument::["new_display"] (Rc::["strong_count"] rc_a) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_const"] [ "--- rc_a is cloned to rc_b ---
-" ]) ;;
-  tt ;;
-  let rc_b := Rc::["clone"] rc_a in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Reference Count of rc_b: "; "
-" ]
-      [ format_argument::["new_display"] (Rc::["strong_count"] rc_b) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Reference Count of rc_a: "; "
-" ]
-      [ format_argument::["new_display"] (Rc::["strong_count"] rc_a) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "rc_a and rc_b are equal: "; "
-" ]
-      [ format_argument::["new_display"] (rc_a.["eq"] rc_b) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Length of the value inside rc_a: "; "
-" ]
-      [ format_argument::["new_display"] rc_a.["len"] ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Value of rc_b: "; "
-" ]
-      [ format_argument::["new_display"] rc_b ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "--- rc_b is dropped out of scope ---
-" ]) ;;
-  tt ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Reference Count of rc_a: "; "
-" ]
-      [ format_argument::["new_display"] (Rc::["strong_count"] rc_a) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "--- rc_a is dropped out of scope ---
-" ]) ;;
-  tt ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* rc_examples := "Rc examples".["to_string"] in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "--- rc_a is created ---
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* rc_a := Rc::["new"] rc_examples in
+  let* _ :=
+    let* _ :=
+      let* α0 := Rc::["strong_count"] (addr_of rc_a) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Reference Count of rc_a: "; "
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "--- rc_a is cloned to rc_b ---
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    let* rc_b := Rc::["clone"] (addr_of rc_a) in
+    let* _ :=
+      let* _ :=
+        let* α0 := Rc::["strong_count"] (addr_of rc_b) in
+        let* α1 := format_argument::["new_display"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Reference Count of rc_b: "; "
+" ])
+            (addr_of [ α1 ]) in
+        _crate.io._print α2 in
+      Pure tt in
+    let* _ :=
+      let* _ :=
+        let* α0 := Rc::["strong_count"] (addr_of rc_a) in
+        let* α1 := format_argument::["new_display"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Reference Count of rc_a: "; "
+" ])
+            (addr_of [ α1 ]) in
+        _crate.io._print α2 in
+      Pure tt in
+    let* _ :=
+      let* _ :=
+        let* α0 := rc_a.["eq"] (addr_of rc_b) in
+        let* α1 := format_argument::["new_display"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "rc_a and rc_b are equal: "; "
+" ])
+            (addr_of [ α1 ]) in
+        _crate.io._print α2 in
+      Pure tt in
+    let* _ :=
+      let* _ :=
+        let* α0 := rc_a.["len"] in
+        let* α1 := format_argument::["new_display"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Length of the value inside rc_a: "; "
+" ])
+            (addr_of [ α1 ]) in
+        _crate.io._print α2 in
+      Pure tt in
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of rc_b) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Value of rc_b: "; "
+" ])
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "--- rc_b is dropped out of scope ---
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := Rc::["strong_count"] (addr_of rc_a) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Reference Count of rc_a: "; "
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "--- rc_a is dropped out of scope ---
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.

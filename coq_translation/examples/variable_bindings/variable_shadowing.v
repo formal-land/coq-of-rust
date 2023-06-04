@@ -4,33 +4,52 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let shadowed_binding := 1 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "before being shadowed: "; "
-" ]
-      [ format_argument::["new_display"] shadowed_binding ]) ;;
-  tt ;;
-  let shadowed_binding := "abc" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "shadowed in inner block: "; "
-" ]
-      [ format_argument::["new_display"] shadowed_binding ]) ;;
-  tt ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "outside inner block: "; "
-" ]
-      [ format_argument::["new_display"] shadowed_binding ]) ;;
-  tt ;;
+  let* _ :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_argument::["new_display"] (addr_of shadowed_binding) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "before being shadowed: "; "
+" ])
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    let shadowed_binding := "abc" in
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_argument::["new_display"] (addr_of shadowed_binding) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "shadowed in inner block: "; "
+" ])
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of shadowed_binding) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "outside inner block: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let shadowed_binding := 2 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "shadowed in outer block: "; "
-" ]
-      [ format_argument::["new_display"] shadowed_binding ]) ;;
-  tt ;;
-  tt.
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of shadowed_binding) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "shadowed in outer block: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.

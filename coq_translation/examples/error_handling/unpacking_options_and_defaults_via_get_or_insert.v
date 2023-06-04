@@ -19,16 +19,16 @@ Module Impl__crate_fmt_Debug_for_Fruit.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["write_str"]
-      f
+      : M _crate.fmt.Result :=
+    let* α0 :=
       match self with
-      | Fruit.Apple => "Apple"
-      | Fruit.Orange => "Orange"
-      | Fruit.Banana => "Banana"
-      | Fruit.Kiwi => "Kiwi"
-      | Fruit.Lemon => "Lemon"
-      end.
+      | Fruit.Apple => Pure "Apple"
+      | Fruit.Orange => Pure "Orange"
+      | Fruit.Banana => Pure "Banana"
+      | Fruit.Kiwi => Pure "Kiwi"
+      | Fruit.Lemon => Pure "Lemon"
+      end in
+    _crate.fmt.Formatter::["write_str"] f α0.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -40,20 +40,30 @@ Module Impl__crate_fmt_Debug_for_Fruit.
 End Impl__crate_fmt_Debug_for_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let my_fruit := None in
   let apple := Fruit.Apple in
-  let first_available_fruit := my_fruit.["get_or_insert"] apple in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "my_fruit is: "; "
-" ]
-      [ format_argument::["new_debug"] first_available_fruit ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "first_available_fruit is: "; "
-" ]
-      [ format_argument::["new_debug"] first_available_fruit ]) ;;
-  tt ;;
-  tt.
+  let* first_available_fruit := my_fruit.["get_or_insert"] apple in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_debug"] (addr_of first_available_fruit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "my_fruit is: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_debug"] (addr_of first_available_fruit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "first_available_fruit is: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.

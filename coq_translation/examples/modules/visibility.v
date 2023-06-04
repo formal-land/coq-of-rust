@@ -4,297 +4,421 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 Module my_mod.
-  Definition private_function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::private_function()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition private_function (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `my_mod::private_function()`
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt.
   
-  Definition function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"] [ "called `my_mod::function()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition function (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `my_mod::function()`
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt.
   
-  Definition indirect_access (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::indirect_access()`, that
-> " ]) ;;
-    tt ;;
-    private_function tt ;;
-    tt.
+  Definition indirect_access (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `my_mod::indirect_access()`, that
+> " ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    let* _ := private_function tt in
+    Pure tt.
   
   Module nested.
-    Definition function (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my_mod::nested::function()`
-" ]) ;;
-      tt ;;
-      tt.
+    Definition function (_ : unit) : M unit :=
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "called `my_mod::nested::function()`
+" ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      Pure tt.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition private_function (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my_mod::nested::private_function()`
-" ]) ;;
-      tt ;;
-      tt.
+    Definition private_function (_ : unit) : M unit :=
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "called `my_mod::nested::private_function()`
+" ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      Pure tt.
     
-    Definition public_function_in_my_mod (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my_mod::nested::public_function_in_my_mod()`, that
+    Definition public_function_in_my_mod (_ : unit) : M unit :=
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of
+                [
+                  "called `my_mod::nested::public_function_in_my_mod()`, that
 > "
-          ]) ;;
-      tt ;;
-      public_function_in_nested tt ;;
-      tt.
+                ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      let* _ := public_function_in_nested tt in
+      Pure tt.
     
-    Definition public_function_in_nested (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my_mod::nested::public_function_in_nested()`
-" ]) ;;
-      tt ;;
-      tt.
+    Definition public_function_in_nested (_ : unit) : M unit :=
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of
+                [ "called `my_mod::nested::public_function_in_nested()`
+" ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      Pure tt.
     
-    Definition public_function_in_super_mod (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my_mod::nested::public_function_in_super_mod()`
-" ]) ;;
-      tt ;;
-      tt.
+    Definition public_function_in_super_mod (_ : unit) : M unit :=
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of
+                [ "called `my_mod::nested::public_function_in_super_mod()`
+"
+                ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      Pure tt.
   End nested.
   
-  Definition call_public_function_in_my_mod (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::call_public_function_in_my_mod()`, that
-> " ]) ;;
-    tt ;;
-    nested.public_function_in_my_mod tt ;;
-    _crate.io._print (format_arguments::["new_const"] [ "> " ]) ;;
-    tt ;;
-    nested.public_function_in_super_mod tt ;;
-    tt.
+  Definition call_public_function_in_my_mod (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of
+              [ "called `my_mod::call_public_function_in_my_mod()`, that
+> "
+              ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    let* _ := nested.public_function_in_my_mod tt in
+    let* _ :=
+      let* _ :=
+        let* α0 := format_arguments::["new_const"] (addr_of [ "> " ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    let* _ := nested.public_function_in_super_mod tt in
+    Pure tt.
   
-  Definition public_function_in_crate (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::public_function_in_crate()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition public_function_in_crate (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `my_mod::public_function_in_crate()`
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt.
   
   Module private_nested.
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition function (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my_mod::private_nested::function()`
-" ]) ;;
-      tt ;;
-      tt.
+    Definition function (_ : unit) : M unit :=
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "called `my_mod::private_nested::function()`
+" ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      Pure tt.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition restricted_function (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `my_mod::private_nested::restricted_function()`
-" ]) ;;
-      tt ;;
-      tt.
+    Definition restricted_function (_ : unit) : M unit :=
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of
+                [ "called `my_mod::private_nested::restricted_function()`
+"
+                ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      Pure tt.
   End private_nested.
 End my_mod.
 
-Definition private_function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::private_function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition private_function (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `my_mod::private_function()`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.
 
-Definition function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"] [ "called `my_mod::function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition function (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `my_mod::function()`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.
 
-Definition indirect_access (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::indirect_access()`, that
-> " ]) ;;
-  tt ;;
-  private_function tt ;;
-  tt.
+Definition indirect_access (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `my_mod::indirect_access()`, that
+> " ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ := private_function tt in
+  Pure tt.
 
 Module nested.
-  Definition function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::nested::function()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition function (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `my_mod::nested::function()`
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition private_function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::nested::private_function()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition private_function (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `my_mod::nested::private_function()`
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt.
   
-  Definition public_function_in_my_mod (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::nested::public_function_in_my_mod()`, that
-> " ]) ;;
-    tt ;;
-    public_function_in_nested tt ;;
-    tt.
+  Definition public_function_in_my_mod (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of
+              [ "called `my_mod::nested::public_function_in_my_mod()`, that
+> "
+              ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    let* _ := public_function_in_nested tt in
+    Pure tt.
   
-  Definition public_function_in_nested (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::nested::public_function_in_nested()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition public_function_in_nested (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of
+              [ "called `my_mod::nested::public_function_in_nested()`
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt.
   
-  Definition public_function_in_super_mod (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::nested::public_function_in_super_mod()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition public_function_in_super_mod (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of
+              [ "called `my_mod::nested::public_function_in_super_mod()`
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt.
 End nested.
 
-Definition function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::nested::function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition function (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `my_mod::nested::function()`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition private_function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::nested::private_function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition private_function (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `my_mod::nested::private_function()`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.
 
-Definition public_function_in_my_mod (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::nested::public_function_in_my_mod()`, that
-> " ]) ;;
-  tt ;;
-  public_function_in_nested tt ;;
-  tt.
+Definition public_function_in_my_mod (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of
+            [ "called `my_mod::nested::public_function_in_my_mod()`, that
+> "
+            ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ := public_function_in_nested tt in
+  Pure tt.
 
-Definition public_function_in_nested (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::nested::public_function_in_nested()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition public_function_in_nested (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of
+            [ "called `my_mod::nested::public_function_in_nested()`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.
 
-Definition public_function_in_super_mod (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::nested::public_function_in_super_mod()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition public_function_in_super_mod (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of
+            [ "called `my_mod::nested::public_function_in_super_mod()`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.
 
-Definition call_public_function_in_my_mod (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::call_public_function_in_my_mod()`, that
-> " ]) ;;
-  tt ;;
-  nested.public_function_in_my_mod tt ;;
-  _crate.io._print (format_arguments::["new_const"] [ "> " ]) ;;
-  tt ;;
-  nested.public_function_in_super_mod tt ;;
-  tt.
+Definition call_public_function_in_my_mod (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of
+            [ "called `my_mod::call_public_function_in_my_mod()`, that
+> " ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ := nested.public_function_in_my_mod tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_arguments::["new_const"] (addr_of [ "> " ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ := nested.public_function_in_super_mod tt in
+  Pure tt.
 
-Definition public_function_in_crate (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::public_function_in_crate()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition public_function_in_crate (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `my_mod::public_function_in_crate()`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.
 
 Module private_nested.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::private_nested::function()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition function (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `my_mod::private_nested::function()`
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition restricted_function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `my_mod::private_nested::restricted_function()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition restricted_function (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of
+              [ "called `my_mod::private_nested::restricted_function()`
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt.
 End private_nested.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::private_nested::function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition function (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `my_mod::private_nested::function()`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition restricted_function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `my_mod::private_nested::restricted_function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition restricted_function (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of
+            [ "called `my_mod::private_nested::restricted_function()`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.
 
-Definition function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"] [ "called `function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition function (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "called `function()`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  function tt ;;
-  my_mod.function tt ;;
-  my_mod.indirect_access tt ;;
-  my_mod.nested.function tt ;;
-  my_mod.call_public_function_in_my_mod tt ;;
-  my_mod.public_function_in_crate tt ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* _ := function tt in
+  let* _ := my_mod.function tt in
+  let* _ := my_mod.indirect_access tt in
+  let* _ := my_mod.nested.function tt in
+  let* _ := my_mod.call_public_function_in_my_mod tt in
+  let* _ := my_mod.public_function_in_crate tt in
+  Pure tt.

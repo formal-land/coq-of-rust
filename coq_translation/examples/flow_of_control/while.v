@@ -4,39 +4,63 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let n := 1 in
   loop
-    (if (n.["lt"] 101 : bool) then
-      if ((n.["rem"] 15).["eq"] 0 : bool) then
-        _crate.io._print (format_arguments::["new_const"] [ "fizzbuzz
-" ]) ;;
-        tt ;;
-        tt
-      else
-        if ((n.["rem"] 3).["eq"] 0 : bool) then
-          _crate.io._print (format_arguments::["new_const"] [ "fizz
-" ]) ;;
-          tt ;;
-          tt
+    let* α0 := n.["lt"] 101 in
+    if (α0 : bool) then
+      let* _ :=
+        let* α0 := n.["rem"] 15 in
+        let* α1 := α0.["eq"] 0 in
+        if (α1 : bool) then
+          let* _ :=
+            let* _ :=
+              let* α0 :=
+                format_arguments::["new_const"] (addr_of [ "fizzbuzz
+" ]) in
+              _crate.io._print α0 in
+            Pure tt in
+          Pure tt
         else
-          if ((n.["rem"] 5).["eq"] 0 : bool) then
-            _crate.io._print (format_arguments::["new_const"] [ "buzz
-" ]) ;;
-            tt ;;
-            tt
+          let* α0 := n.["rem"] 3 in
+          let* α1 := α0.["eq"] 0 in
+          if (α1 : bool) then
+            let* _ :=
+              let* _ :=
+                let* α0 :=
+                  format_arguments::["new_const"] (addr_of [ "fizz
+" ]) in
+                _crate.io._print α0 in
+              Pure tt in
+            Pure tt
           else
-            _crate.io._print
-              (format_arguments::["new_v1"]
-                [ ""; "
-" ]
-                [ format_argument::["new_display"] n ]) ;;
-            tt ;;
-            tt ;;
-      n.["add_assign"] 1 ;;
-      tt
+            let* α0 := n.["rem"] 5 in
+            let* α1 := α0.["eq"] 0 in
+            if (α1 : bool) then
+              let* _ :=
+                let* _ :=
+                  let* α0 :=
+                    format_arguments::["new_const"] (addr_of [ "buzz
+" ]) in
+                  _crate.io._print α0 in
+                Pure tt in
+              Pure tt
+            else
+              let* _ :=
+                let* _ :=
+                  let* α0 := format_argument::["new_display"] (addr_of n) in
+                  let* α1 :=
+                    format_arguments::["new_v1"]
+                      (addr_of [ ""; "
+" ])
+                      (addr_of [ α0 ]) in
+                  _crate.io._print α1 in
+                Pure tt in
+              Pure tt in
+      let* _ := n.["add_assign"] 1 in
+      Pure tt
     else
-      Break ;;
-      tt)
+      let _ := Break in
+      Pure tt
     from
     while.

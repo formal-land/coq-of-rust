@@ -4,31 +4,44 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let x := 5 in
-  let y :=
-    let x_squared := x.["mul"] x in
-    let x_cube := x_squared.["mul"] x in
-    (x_cube.["add"] x_squared).["add"] x in
-  let z :=
-    2.["mul"] x ;;
-    tt in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "x is "; "
-" ]
-      [ format_argument::["new_debug"] x ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "y is "; "
-" ]
-      [ format_argument::["new_debug"] y ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "z is "; "
-" ]
-      [ format_argument::["new_debug"] z ]) ;;
-  tt ;;
-  tt.
+  let* y :=
+    let* x_squared := x.["mul"] x in
+    let* x_cube := x_squared.["mul"] x in
+    let* α0 := x_cube.["add"] x_squared in
+    α0.["add"] x in
+  let* z :=
+    let* _ := 2.["mul"] x in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of x) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "x is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of y) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "y is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of z) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "z is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.

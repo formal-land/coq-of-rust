@@ -5,7 +5,7 @@ Import Root.std.prelude.rust_2015.
 
 Module Person.
   Class Trait (Self : Set) : Set := {
-    name : (ref Self) -> String;
+    name : (ref Self) -> (M String);
   }.
   
   Global Instance Method_name `(Trait) : Notation.Dot "name" := {
@@ -15,7 +15,7 @@ End Person.
 
 Module Student.
   Class Trait (Self : Set) : Set := {
-    university : (ref Self) -> String;
+    university : (ref Self) -> (M String);
   }.
   
   Global Instance Method_university `(Trait) : Notation.Dot "university" := {
@@ -25,7 +25,7 @@ End Student.
 
 Module Programmer.
   Class Trait (Self : Set) : Set := {
-    fav_language : (ref Self) -> String;
+    fav_language : (ref Self) -> (M String);
   }.
   
   Global Instance Method_fav_language `(Trait)
@@ -36,7 +36,7 @@ End Programmer.
 
 Module CompSciStudent.
   Class Trait (Self : Set) : Set := {
-    git_username : (ref Self) -> String;
+    git_username : (ref Self) -> (M String);
   }.
   
   Global Instance Method_git_username `(Trait)
@@ -45,23 +45,28 @@ Module CompSciStudent.
   }.
 End CompSciStudent.
 
-Definition comp_sci_student_greeting (student : ref TraitObject) : String :=
-  let res :=
-    _crate.fmt.format
-      (format_arguments::["new_v1"]
-        [
-          "My name is ";
-          " and I attend ";
-          ". My favorite language is ";
-          ". My Git username is "
-        ]
-        [
-          format_argument::["new_display"] student.["name"];
-          format_argument::["new_display"] student.["university"];
-          format_argument::["new_display"] student.["fav_language"];
-          format_argument::["new_display"] student.["git_username"]
-        ]) in
-  res.
+Definition comp_sci_student_greeting (student : ref TraitObject) : M String :=
+  let* res :=
+    let* α0 := student.["name"] in
+    let* α1 := format_argument::["new_display"] (addr_of α0) in
+    let* α2 := student.["university"] in
+    let* α3 := format_argument::["new_display"] (addr_of α2) in
+    let* α4 := student.["fav_language"] in
+    let* α5 := format_argument::["new_display"] (addr_of α4) in
+    let* α6 := student.["git_username"] in
+    let* α7 := format_argument::["new_display"] (addr_of α6) in
+    let* α8 :=
+      format_arguments::["new_v1"]
+        (addr_of
+          [
+            "My name is ";
+            " and I attend ";
+            ". My favorite language is ";
+            ". My Git username is "
+          ])
+        (addr_of [ α1; α3; α5; α7 ]) in
+    _crate.fmt.format α8 in
+  Pure res.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit := tt.
+Definition main (_ : unit) : M unit := Pure tt.

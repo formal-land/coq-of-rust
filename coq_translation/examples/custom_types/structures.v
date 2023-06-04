@@ -24,14 +24,14 @@ Module Impl__crate_fmt_Debug_for_Person.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Person"
       "name"
-      self.["name"]
+      (addr_of self.["name"])
       "age"
-      self.["age"].
+      (addr_of (addr_of self.["age"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -90,36 +90,44 @@ End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let name := String::["from"] "Peter" in
+Definition main (_ : unit) : M unit :=
+  let* name := String::["from"] "Peter" in
   let age := 27 in
   let peter := {| Person.name := name; Person.age := age; |} in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_debug"] peter ]) ;;
-  tt ;;
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of peter) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let point := {| Point.x := 10 (* 10.3 *); Point.y := 0 (* 0.4 *); |} in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "point coordinates: ("; ", "; ")
-" ]
-      [
-        format_argument::["new_display"] point.["x"];
-        format_argument::["new_display"] point.["y"]
-      ]) ;;
-  tt ;;
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of point.["x"]) in
+      let* α1 := format_argument::["new_display"] (addr_of point.["y"]) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "point coordinates: ("; ", "; ")
+" ])
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   let bottom_right := {| Point.x := 5 (* 5.2 *); |} with point in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "second point: ("; ", "; ")
-" ]
-      [
-        format_argument::["new_display"] bottom_right.["x"];
-        format_argument::["new_display"] bottom_right.["y"]
-      ]) ;;
-  tt ;;
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_display"] (addr_of bottom_right.["x"]) in
+      let* α1 :=
+        format_argument::["new_display"] (addr_of bottom_right.["y"]) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "second point: ("; ", "; ")
+" ])
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   let '{| Point.x := left_edge; Point.y := top_edge; |} := point in
   let _rectangle :=
     {|
@@ -128,23 +136,27 @@ Definition main (_ : unit) : unit :=
     |} in
   let _unit := Unit.Build in
   let pair := Pair.Build_t 1 0 (* 0.1 *) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "pair contains "; " and "; "
-" ]
-      [
-        format_argument::["new_debug"] (pair.[0]);
-        format_argument::["new_debug"] (pair.[1])
-      ]) ;;
-  tt ;;
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of (pair.[0])) in
+      let* α1 := format_argument::["new_debug"] (addr_of (pair.[1])) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "pair contains "; " and "; "
+" ])
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   let 'Pair.Build_t integer decimal := pair in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "pair contains "; " and "; "
-" ]
-      [
-        format_argument::["new_debug"] integer;
-        format_argument::["new_debug"] decimal
-      ]) ;;
-  tt ;;
-  tt.
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of integer) in
+      let* α1 := format_argument::["new_debug"] (addr_of decimal) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "pair contains "; " and "; "
+" ])
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  Pure tt.

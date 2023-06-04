@@ -4,36 +4,52 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let count := 0 in
-  _crate.io._print
-    (format_arguments::["new_const"] [ "Let's count until infinity!
-" ]) ;;
-  tt ;;
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "Let's count until infinity!
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
   loop
-    count.["add_assign"] 1 ;;
-    if (count.["eq"] 3 : bool) then
-      _crate.io._print (format_arguments::["new_const"] [ "three
-" ]) ;;
-      tt ;;
-      Continue ;;
-      tt
+    let* _ := count.["add_assign"] 1 in
+    let* _ :=
+      let* α0 := count.["eq"] 3 in
+      if (α0 : bool) then
+        let* _ :=
+          let* _ :=
+            let* α0 := format_arguments::["new_const"] (addr_of [ "three
+" ]) in
+            _crate.io._print α0 in
+          Pure tt in
+        let _ := Continue in
+        Pure tt
+      else
+        Pure tt in
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of count) in
+        let* α1 :=
+          format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    let* α0 := count.["eq"] 5 in
+    if (α0 : bool) then
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "OK, that's enough
+" ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      let _ := Break in
+      Pure tt
     else
-      tt ;;
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "
-" ]
-        [ format_argument::["new_display"] count ]) ;;
-    tt ;;
-    if (count.["eq"] 5 : bool) then
-      _crate.io._print
-        (format_arguments::["new_const"] [ "OK, that's enough
-" ]) ;;
-      tt ;;
-      Break ;;
-      tt
-    else
-      tt
+      Pure tt
     from
     loop.

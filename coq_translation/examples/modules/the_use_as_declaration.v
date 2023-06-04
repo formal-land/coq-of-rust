@@ -5,55 +5,76 @@ Import Root.std.prelude.rust_2015.
 
 Module other_function := deeply.nested.function.
 
-Definition function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"] [ "called `function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition function (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "called `function()`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.
 
 Module deeply.
   Module nested.
-    Definition function (_ : unit) : unit :=
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "called `deeply::nested::function()`
-" ]) ;;
-      tt ;;
-      tt.
+    Definition function (_ : unit) : M unit :=
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "called `deeply::nested::function()`
+" ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      Pure tt.
   End nested.
 End deeply.
 
 Module nested.
-  Definition function (_ : unit) : unit :=
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "called `deeply::nested::function()`
-" ]) ;;
-    tt ;;
-    tt.
+  Definition function (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `deeply::nested::function()`
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt.
 End nested.
 
-Definition function (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_const"]
-      [ "called `deeply::nested::function()`
-" ]) ;;
-  tt ;;
-  tt.
+Definition function (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `deeply::nested::function()`
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  other_function tt ;;
-  _crate.io._print (format_arguments::["new_const"] [ "Entering block
-" ]) ;;
-  tt ;;
-  function tt ;;
-  _crate.io._print (format_arguments::["new_const"] [ "Leaving block
-" ]) ;;
-  tt ;;
-  tt ;;
-  function tt ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* _ := other_function tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Entering block
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  let* _ :=
+    let* _ := function tt in
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"] (addr_of [ "Leaving block
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt in
+  let* _ := function tt in
+  Pure tt.
 
 Module function := crate.deeply.nested.function.

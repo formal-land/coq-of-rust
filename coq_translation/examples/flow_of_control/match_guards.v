@@ -11,35 +11,47 @@ End Temperature.
 Definition Temperature := Temperature.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let temperature := Temperature.Celsius 35 in
   match temperature with
   | Temperature.Celsius t =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "C is above 30 Celsius
-" ]
-        [ format_argument::["new_display"] t ]) ;;
-    tt
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; "C is above 30 Celsius
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt
   | Temperature.Celsius t =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "C is below 30 Celsius
-" ]
-        [ format_argument::["new_display"] t ]) ;;
-    tt
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; "C is below 30 Celsius
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt
   | Temperature.Fahrenheit t =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "F is above 86 Fahrenheit
-" ]
-        [ format_argument::["new_display"] t ]) ;;
-    tt
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; "F is above 86 Fahrenheit
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt
   | Temperature.Fahrenheit t =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; "F is below 86 Fahrenheit
-" ]
-        [ format_argument::["new_display"] t ]) ;;
-    tt
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; "F is below 86 Fahrenheit
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt
   end.

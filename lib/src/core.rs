@@ -1,6 +1,7 @@
 use crate::top_level::*;
 use rustc_errors::registry;
 use rustc_session::config::{self, CheckCfg};
+use std::env;
 use std::path::PathBuf;
 use std::{fs, path, process, str};
 use walkdir::WalkDir;
@@ -96,7 +97,19 @@ fn create_translation_to_coq(input_file_name: PathBuf) -> String {
     let result = rustc_interface::run_compiler(config, |compiler| {
         compiler.enter(|queries| {
             queries.global_ctxt().unwrap().enter(|tcx| {
-                let top_level = compile_top_level(tcx);
+                // Step 1 - Compile to top_level
+                let mut top_level = compile_top_level(tcx);
+                // Step 2 - Monadic Transformation
+                if env::var("MONADIC_TRANSLATION").map_or(true, |x| {
+                    x.parse().expect(&format!(
+                        "Error parsing MONADIC_TRANSLATION value \
+                         expect 'true' or 'false', found {}",
+                        x
+                    ))
+                }) {
+                    top_level = mt_top_level(top_level);
+                }
+                // Step 3 - To string
                 top_level.to_pretty(LINE_WIDTH)
             })
         })

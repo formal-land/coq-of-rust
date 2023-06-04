@@ -4,26 +4,32 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let raw_str := "Escapes don't work here: \x3F \u{211D}" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] raw_str ]) ;;
-  tt ;;
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of raw_str) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let quotes := "And then I said: "There is no escape!"" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] quotes ]) ;;
-  tt ;;
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of quotes) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let longer_delimiter := "A string with "# in it. And even "##!" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] longer_delimiter ]) ;;
-  tt ;;
-  tt.
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of longer_delimiter) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.

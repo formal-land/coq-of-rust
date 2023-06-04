@@ -4,45 +4,63 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let triple := (0, 2.["neg"], 3) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Tell me about "; "
-" ]
-      [ format_argument::["new_debug"] triple ]) ;;
-  tt ;;
+Definition main (_ : unit) : M unit :=
+  let* triple :=
+    let* α0 := 2.["neg"] in
+    Pure (0, α0, 3) in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of triple) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Tell me about "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   match triple with
   | (0, y, z) =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "First is `0`, `y` is "; ", and `z` is "; "
-" ]
-        [ format_argument::["new_debug"] y; format_argument::["new_debug"] z
-        ]) ;;
-    tt
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of y) in
+      let* α1 := format_argument::["new_debug"] (addr_of z) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "First is `0`, `y` is "; ", and `z` is "; "
+" ])
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt
   | (1, _, _) =>
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "First is `1` and the rest doesn't matter
-" ]) ;;
-    tt
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "First is `1` and the rest doesn't matter
+" ]) in
+      _crate.io._print α0 in
+    Pure tt
   | (_, 2) =>
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "last is `2` and the rest doesn't matter
-" ]) ;;
-    tt
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "last is `2` and the rest doesn't matter
+" ]) in
+      _crate.io._print α0 in
+    Pure tt
   | (3, _, 4) =>
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "First is `3`, last is `4`, and the rest doesn't matter
-" ]) ;;
-    tt
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of
+            [ "First is `3`, last is `4`, and the rest doesn't matter
+" ]) in
+      _crate.io._print α0 in
+    Pure tt
   | _ =>
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "It doesn't matter what they are
-" ]) ;;
-    tt
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "It doesn't matter what they are
+" ]) in
+      _crate.io._print α0 in
+    Pure tt
   end.

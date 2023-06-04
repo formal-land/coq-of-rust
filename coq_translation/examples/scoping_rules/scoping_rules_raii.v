@@ -3,25 +3,29 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition create_box (_ : unit) : unit :=
-  let _box1 := Box::["new"] 3 in
-  tt.
+Definition create_box (_ : unit) : M unit :=
+  let* _box1 := Box::["new"] 3 in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let _box2 := Box::["new"] 5 in
-  let _box3 := Box::["new"] 4 in
-  tt ;;
-  match LangItem Range {| Range.start := 0; Range.end := 1000; |} with
+Definition main (_ : unit) : M unit :=
+  let* _box2 := Box::["new"] 5 in
+  let* _ :=
+    let* _box3 := Box::["new"] 4 in
+    Pure tt in
+  let* α0 := LangItem Range {| Range.start := 0; Range.end := 1000; |} in
+  match α0 with
   | iter =>
     loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := _; |} =>
-        create_box tt ;;
-        tt
-      end ;;
-      tt
+      let* _ :=
+        let* α0 := LangItem (addr_of iter) in
+        match α0 with
+        | None => Pure Break
+        | Some {| Some.0 := _; |} =>
+          let* _ := create_box tt in
+          Pure tt
+        end in
+      Pure tt
       from
       for
   end.

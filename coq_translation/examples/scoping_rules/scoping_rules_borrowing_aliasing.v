@@ -23,53 +23,71 @@ End Point.
 Definition Point : Set := Point.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let point := {| Point.x := 0; Point.y := 0; Point.z := 0; |} in
-  let borrowed_point := point in
-  let another_borrow := point in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Point has coordinates: ("; ", "; ", "; ")
-" ]
-      [
-        format_argument::["new_display"] borrowed_point.["x"];
-        format_argument::["new_display"] another_borrow.["y"];
-        format_argument::["new_display"] point.["z"]
-      ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Point has coordinates: ("; ", "; ", "; ")
-" ]
-      [
-        format_argument::["new_display"] borrowed_point.["x"];
-        format_argument::["new_display"] another_borrow.["y"];
-        format_argument::["new_display"] point.["z"]
-      ]) ;;
-  tt ;;
-  let mutable_borrow := point in
-  assign mutable_borrow.["x"] 5 ;;
-  assign mutable_borrow.["y"] 2 ;;
-  assign mutable_borrow.["z"] 1 ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Point has coordinates: ("; ", "; ", "; ")
-" ]
-      [
-        format_argument::["new_display"] mutable_borrow.["x"];
-        format_argument::["new_display"] mutable_borrow.["y"];
-        format_argument::["new_display"] mutable_borrow.["z"]
-      ]) ;;
-  tt ;;
-  let new_borrowed_point := point in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Point now has coordinates: ("; ", "; ", "; ")
-" ]
-      [
-        format_argument::["new_display"] new_borrowed_point.["x"];
-        format_argument::["new_display"] new_borrowed_point.["y"];
-        format_argument::["new_display"] new_borrowed_point.["z"]
-      ]) ;;
-  tt ;;
-  tt.
+  let borrowed_point := addr_of point in
+  let another_borrow := addr_of point in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_display"] (addr_of borrowed_point.["x"]) in
+      let* α1 :=
+        format_argument::["new_display"] (addr_of another_borrow.["y"]) in
+      let* α2 := format_argument::["new_display"] (addr_of point.["z"]) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Point has coordinates: ("; ", "; ", "; ")
+" ])
+          (addr_of [ α0; α1; α2 ]) in
+      _crate.io._print α3 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_display"] (addr_of borrowed_point.["x"]) in
+      let* α1 :=
+        format_argument::["new_display"] (addr_of another_borrow.["y"]) in
+      let* α2 := format_argument::["new_display"] (addr_of point.["z"]) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Point has coordinates: ("; ", "; ", "; ")
+" ])
+          (addr_of [ α0; α1; α2 ]) in
+      _crate.io._print α3 in
+    Pure tt in
+  let mutable_borrow := addr_of point in
+  let* _ := assign mutable_borrow.["x"] 5 in
+  let* _ := assign mutable_borrow.["y"] 2 in
+  let* _ := assign mutable_borrow.["z"] 1 in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_display"] (addr_of mutable_borrow.["x"]) in
+      let* α1 :=
+        format_argument::["new_display"] (addr_of mutable_borrow.["y"]) in
+      let* α2 :=
+        format_argument::["new_display"] (addr_of mutable_borrow.["z"]) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Point has coordinates: ("; ", "; ", "; ")
+" ])
+          (addr_of [ α0; α1; α2 ]) in
+      _crate.io._print α3 in
+    Pure tt in
+  let new_borrowed_point := addr_of point in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_display"] (addr_of new_borrowed_point.["x"]) in
+      let* α1 :=
+        format_argument::["new_display"] (addr_of new_borrowed_point.["y"]) in
+      let* α2 :=
+        format_argument::["new_display"] (addr_of new_borrowed_point.["z"]) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Point now has coordinates: ("; ", "; ", "; ")
+" ])
+          (addr_of [ α0; α1; α2 ]) in
+      _crate.io._print α3 in
+    Pure tt in
+  Pure tt.

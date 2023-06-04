@@ -4,8 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  _crate.io._print (format_arguments::["new_const"] [ "Hello World!
-" ]) ;;
-  tt ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Hello World!
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.

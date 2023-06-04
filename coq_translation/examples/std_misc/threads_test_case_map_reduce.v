@@ -6,7 +6,7 @@ Import Root.std.prelude.rust_2015.
 Module thread := std.thread.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let data :=
     "86967897737416471853297327050364959
 11861322575564723963297542624962850
@@ -16,53 +16,80 @@ Definition main (_ : unit) : unit :=
 58495327135744041048897885734297812
 69920216438980873548808413720956532
 16278424637452589860345374828574668" in
-  let children := _crate.vec.Vec::["new"] tt in
-  let chunked_data := data.["split_whitespace"] in
-  match LangItem chunked_data.["enumerate"] with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := (i, data_segment); |} =>
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ "data segment "; " is ""; ""
-" ]
-            [
-              format_argument::["new_display"] i;
-              format_argument::["new_display"] data_segment
-            ]) ;;
-        tt ;;
-        children.["push"]
-          (thread.spawn
-            (fun  =>
-              let result :=
-                (data_segment.["chars"].["map"]
-                    (fun c =>
-                      (c.["to_digit"] 10).["expect"]
-                        "should be a digit")).["sum"] in
-              _crate.io._print
-                (format_arguments::["new_v1"]
-                  [ "processed segment "; ", result="; "
-" ]
-                  [
-                    format_argument::["new_display"] i;
-                    format_argument::["new_display"] result
-                  ]) ;;
-              tt ;;
-              result)) ;;
-        tt
-      end ;;
-      tt
-      from
-      for
-  end ;;
-  let final_result :=
-    (children.["into_iter"].["map"] (fun c => c.["join"].["unwrap"])).["sum"] in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Final sum result: "; "
-" ]
-      [ format_argument::["new_display"] final_result ]) ;;
-  tt ;;
-  tt.
+  let* children := _crate.vec.Vec::["new"] tt in
+  let* chunked_data := data.["split_whitespace"] in
+  let* _ :=
+    let* α0 := chunked_data.["enumerate"] in
+    let* α1 := LangItem α0 in
+    match α1 with
+    | iter =>
+      loop
+        let* _ :=
+          let* α0 := LangItem (addr_of iter) in
+          match α0 with
+          | None => Pure Break
+          | Some {| Some.0 := (i, data_segment); |} =>
+            let* _ :=
+              let* _ :=
+                let* α0 := format_argument::["new_display"] (addr_of i) in
+                let* α1 :=
+                  format_argument::["new_display"] (addr_of data_segment) in
+                let* α2 :=
+                  format_arguments::["new_v1"]
+                    (addr_of [ "data segment "; " is ""; ""
+" ])
+                    (addr_of [ α0; α1 ]) in
+                _crate.io._print α2 in
+              Pure tt in
+            let* _ :=
+              let* α0 :=
+                thread.spawn
+                  (fun  =>
+                    let* result :=
+                      let* α0 := data_segment.["chars"] in
+                      let* α1 :=
+                        α0.["map"]
+                          (fun c =>
+                            let* α0 := c.["to_digit"] 10 in
+                            α0.["expect"] "should be a digit") in
+                      α1.["sum"] in
+                    let* _ :=
+                      let* _ :=
+                        let* α0 :=
+                          format_argument::["new_display"] (addr_of i) in
+                        let* α1 :=
+                          format_argument::["new_display"] (addr_of result) in
+                        let* α2 :=
+                          format_arguments::["new_v1"]
+                            (addr_of [ "processed segment "; ", result="; "
+" ])
+                            (addr_of [ α0; α1 ]) in
+                        _crate.io._print α2 in
+                      Pure tt in
+                    Pure result) in
+              children.["push"] α0 in
+            Pure tt
+          end in
+        Pure tt
+        from
+        for
+    end in
+  let* final_result :=
+    let* α0 := children.["into_iter"] in
+    let* α1 :=
+      α0.["map"]
+        (fun c =>
+          let* α0 := c.["join"] in
+          α0.["unwrap"]) in
+    α1.["sum"] in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of final_result) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Final sum result: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.

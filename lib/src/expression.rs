@@ -1,3 +1,5 @@
+use core::panic;
+
 use crate::path::*;
 use crate::pattern::*;
 use crate::render::*;
@@ -7,17 +9,32 @@ use rustc_ast::LitKind;
 use rustc_hir::{BinOp, BinOpKind, ExprKind, QPath};
 use rustc_middle::ty::TyCtxt;
 
+/// Struct [FreshVars] represents a set of fresh variables
+#[derive(Debug)]
+pub(crate) struct FreshVars(u64);
+
+impl FreshVars {
+    pub(crate) fn new() -> Self {
+        FreshVars(0)
+    }
+
+    fn next(&self) -> (String, Self) {
+        (format!("α{}", self.0), FreshVars(self.0 + 1))
+    }
+}
+
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct MatchArm {
     pat: Pattern,
     body: Expr,
 }
 
 /// Enum [Expr] represents the AST of rust terms.
-#[derive(Debug)]
-pub enum Expr {
+#[derive(Clone, Debug)]
+pub(crate) enum Expr {
+    Pure(Box<Expr>),
     LocalVar(String),
     Var(Path),
     AssociatedFunction {
@@ -35,18 +52,9 @@ pub enum Expr {
         func: String,
         args: Vec<Expr>,
     },
-    Let {
-        pat: Pattern,
-        init: Box<Expr>,
-        body: Box<Expr>,
-    },
     Lambda {
         args: Vec<Pattern>,
         body: Box<Expr>,
-    },
-    Seq {
-        first: Box<Expr>,
-        second: Box<Expr>,
     },
     Cast {
         expr: Box<Expr>,
@@ -72,13 +80,14 @@ pub enum Expr {
         failure: Box<Expr>,
     },
     Loop {
-        body: Box<Expr>,
+        body: Box<Stmt>,
         loop_source: String,
     },
     Match {
         scrutinee: Box<Expr>,
         arms: Vec<MatchArm>,
     },
+    Block(Box<Stmt>),
     Assign {
         left: Box<Expr>,
         right: Box<Expr>,
@@ -104,9 +113,21 @@ pub enum Expr {
     StructTuple {
         path: Path,
         fields: Vec<Expr>,
+        struct_or_variant: StructOrVariant,
     },
     StructUnit {
         path: Path,
+    },
+}
+
+#[derive(Clone, Debug)]
+pub(crate) enum Stmt {
+    Expr(Box<Expr>),
+    Let {
+        is_monadic: bool,
+        pattern: Box<Pattern>,
+        init: Box<Expr>,
+        body: Box<Stmt>,
     },
 }
 
@@ -159,7 +180,7 @@ fn compile_qpath(tcx: &TyCtxt, qpath: &QPath) -> Expr {
     match qpath {
         QPath::Resolved(_, path) => Expr::Var(compile_path(path)),
         QPath::TypeRelative(ty, segment) => {
-            let ty = Box::new(compile_type(tcx, ty));
+            let ty = compile_type(tcx, ty);
             let func = segment.ident.to_string();
             Expr::AssociatedFunction { ty, func }
         }
@@ -173,7 +194,391 @@ fn tt() -> Expr {
     Expr::LocalVar("tt".to_string())
 }
 
-pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
+fn pure(e: Expr) -> Stmt {
+    Stmt::Expr(Box::new(Expr::Pure(Box::new(e))))
+}
+
+fn monadic_let_in_stmt(
+    fresh_vars: FreshVars,
+    e1: Stmt,
+    f: impl FnOnce(FreshVars, Expr) -> (Stmt, FreshVars),
+) -> (Stmt, FreshVars) {
+    match e1 {
+        Stmt::Expr(e) => match *e {
+            Expr::Pure(e) => f(fresh_vars, *e),
+            _ => {
+                let (var_name, fresh_vars) = fresh_vars.next();
+                let (body, fresh_vars) = f(fresh_vars, Expr::LocalVar(var_name.clone()));
+                (
+                    Stmt::Let {
+                        is_monadic: true,
+                        pattern: Box::new(Pattern::Variable(var_name)),
+                        init: e,
+                        body: Box::new(body),
+                    },
+                    fresh_vars,
+                )
+            }
+        },
+        Stmt::Let {
+            is_monadic,
+            pattern,
+            init,
+            body,
+        } => {
+            let (body, fresh_vars) = monadic_let_in_stmt(fresh_vars, *body, f);
+            (
+                Stmt::Let {
+                    is_monadic,
+                    pattern,
+                    init,
+                    body: Box::new(body),
+                },
+                fresh_vars,
+            )
+        }
+    }
+}
+
+fn monadic_let(
+    fresh_vars: FreshVars,
+    e1: Expr,
+    f: impl FnOnce(FreshVars, Expr) -> (Stmt, FreshVars),
+) -> (Stmt, FreshVars) {
+    let (e1, fresh_vars) = mt_expression(fresh_vars, e1);
+    monadic_let_in_stmt(fresh_vars, e1, f)
+}
+
+fn monadic_optional_let(
+    fresh_vars: FreshVars,
+    e1: Option<Box<Expr>>,
+    f: impl FnOnce(FreshVars, Option<Box<Expr>>) -> (Stmt, FreshVars),
+) -> (Stmt, FreshVars) {
+    match e1 {
+        None => f(fresh_vars, None),
+        Some(e1) => monadic_let(fresh_vars, *e1, |fresh_vars, e1| {
+            f(fresh_vars, Some(Box::new(e1)))
+        }),
+    }
+}
+
+fn monadic_lets(
+    fresh_vars: FreshVars,
+    es: Vec<Expr>,
+    f: Box<dyn FnOnce(FreshVars, Vec<Expr>) -> (Stmt, FreshVars)>,
+) -> (Stmt, FreshVars) {
+    match &es[..] {
+        [] => f(fresh_vars, vec![]),
+        [e1, es @ ..] => monadic_let(fresh_vars, e1.clone(), |fresh_vars, e1| {
+            monadic_lets(
+                fresh_vars,
+                es.to_vec(),
+                Box::new(|fresh_vars, es| f(fresh_vars, [vec![e1], es].concat())),
+            )
+        }),
+    }
+}
+
+// @TODO finish the translation logic
+/// Monadic translation of an expression
+///
+/// The convention is to do transformation in a deep first fashion, so
+/// all functions dealing with monadic translation expect that their
+/// arguments already have been transformed. Not respecting this rule
+/// may lead to infinite loops because of the mutual recursion between
+/// the functions. In practice this means translating every subexpression
+/// before translating the expression itself.
+pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVars) {
+    match expr {
+        Expr::Pure(_) => panic!("Expressions should not be monadic yet."),
+        Expr::LocalVar(_) => (pure(expr), fresh_vars),
+        Expr::Var(_) => (pure(expr), fresh_vars),
+        Expr::AssociatedFunction { .. } => (pure(expr), fresh_vars),
+        Expr::Literal(_) => (pure(expr), fresh_vars),
+        Expr::AddrOf(e) => monadic_let(fresh_vars, *e, |fresh_vars, e| {
+            (pure(Expr::AddrOf(Box::new(e))), fresh_vars)
+        }),
+        Expr::Call { func, args } => monadic_let(fresh_vars, *func, |fresh_vars, func| {
+            monadic_lets(
+                fresh_vars,
+                args,
+                Box::new(|fresh_vars, args| {
+                    (
+                        Stmt::Expr(Box::new(Expr::Call {
+                            func: Box::new(func),
+                            args,
+                        })),
+                        fresh_vars,
+                    )
+                }),
+            )
+        }),
+        Expr::MethodCall { object, func, args } => {
+            monadic_let(fresh_vars, *object, |fresh_vars, object| {
+                monadic_lets(
+                    fresh_vars,
+                    args,
+                    Box::new(|fresh_vars, args| {
+                        (
+                            Stmt::Expr(Box::new(Expr::MethodCall {
+                                object: Box::new(object),
+                                func,
+                                args,
+                            })),
+                            fresh_vars,
+                        )
+                    }),
+                )
+            })
+        }
+        Expr::Lambda { args, body } => {
+            let (body, _) = mt_expression(FreshVars::new(), *body);
+            (
+                pure(Expr::Lambda {
+                    args,
+                    body: Box::new(Expr::Block(Box::new(body))),
+                }),
+                fresh_vars,
+            )
+        }
+        Expr::Cast { expr, ty } => monadic_let(fresh_vars, *expr, |fresh_vars, expr| {
+            (
+                pure(Expr::Cast {
+                    expr: Box::new(expr),
+                    ty,
+                }),
+                fresh_vars,
+            )
+        }),
+        Expr::Type { expr, ty } => monadic_let(fresh_vars, *expr, |fresh_vars, expr| {
+            (
+                pure(Expr::Type {
+                    expr: Box::new(expr),
+                    ty,
+                }),
+                fresh_vars,
+            )
+        }),
+        Expr::Array { elements } => monadic_lets(
+            fresh_vars,
+            elements,
+            Box::new(|fresh_vars, elements| (pure(Expr::Array { elements }), fresh_vars)),
+        ),
+        Expr::Tuple { elements } => monadic_lets(
+            fresh_vars,
+            elements,
+            Box::new(|fresh_vars, elements| (pure(Expr::Tuple { elements }), fresh_vars)),
+        ),
+        Expr::LetIf { pat, init } => monadic_let(fresh_vars, *init, |fresh_vars, init| {
+            (
+                Stmt::Expr(Box::new(Expr::LetIf {
+                    pat,
+                    init: Box::new(init),
+                })),
+                fresh_vars,
+            )
+        }),
+        Expr::If {
+            condition,
+            success,
+            failure,
+        } => monadic_let(fresh_vars, *condition, |fresh_vars, condition| {
+            let (success, _fresh_vars) = mt_expression(FreshVars::new(), *success);
+            let (failure, _fresh_vars) = mt_expression(FreshVars::new(), *failure);
+            (
+                Stmt::Expr(Box::new(Expr::If {
+                    condition: Box::new(condition),
+                    success: Box::new(Expr::Block(Box::new(success))),
+                    failure: Box::new(Expr::Block(Box::new(failure))),
+                })),
+                fresh_vars,
+            )
+        }),
+        Expr::Loop { body, loop_source } => {
+            let body = mt_stmt(*body);
+            (
+                Stmt::Expr(Box::new(Expr::Loop {
+                    body: Box::new(body),
+                    loop_source,
+                })),
+                fresh_vars,
+            )
+        }
+        Expr::Match { scrutinee, arms } => {
+            monadic_let(fresh_vars, *scrutinee, |fresh_vars, scrutinee| {
+                (
+                    Stmt::Expr(Box::new(Expr::Match {
+                        scrutinee: Box::new(scrutinee),
+                        arms: arms
+                            .iter()
+                            .map(|MatchArm { pat, body }| {
+                                let (body, _fresh_vars) =
+                                    mt_expression(FreshVars::new(), body.clone());
+                                MatchArm {
+                                    pat: pat.clone(),
+                                    body: Expr::Block(Box::new(body)),
+                                }
+                            })
+                            .collect(),
+                    })),
+                    fresh_vars,
+                )
+            })
+        }
+        Expr::Block(stmt) => (mt_stmt(*stmt), fresh_vars),
+        Expr::Assign { left, right } => monadic_let(fresh_vars, *right, |fresh_vars, right| {
+            (
+                Stmt::Expr(Box::new(Expr::Assign {
+                    left,
+                    right: Box::new(right),
+                })),
+                fresh_vars,
+            )
+        }),
+        Expr::IndexedField { base, index } => monadic_let(fresh_vars, *base, |fresh_vars, base| {
+            (
+                pure(Expr::IndexedField {
+                    base: Box::new(base),
+                    index,
+                }),
+                fresh_vars,
+            )
+        }),
+        Expr::NamedField { base, name } => monadic_let(fresh_vars, *base, |fresh_vars, base| {
+            (
+                pure(Expr::NamedField {
+                    base: Box::new(base),
+                    name,
+                }),
+                fresh_vars,
+            )
+        }),
+        Expr::Index { base, index } => monadic_let(fresh_vars, *base, |fresh_vars, base| {
+            (
+                pure(Expr::Index {
+                    base: Box::new(base),
+                    index,
+                }),
+                fresh_vars,
+            )
+        }),
+        Expr::StructStruct {
+            path,
+            fields,
+            base,
+            struct_or_variant,
+        } => {
+            let fields_values: Vec<Expr> = fields.iter().map(|(_, field)| field.clone()).collect();
+            monadic_lets(
+                fresh_vars,
+                fields_values,
+                Box::new(move |fresh_vars, fields_values| {
+                    monadic_optional_let(fresh_vars, base, move |fresh_vars, base| {
+                        let fields_names: Vec<String> =
+                            fields.iter().map(|(name, _)| name.clone()).collect();
+                        (
+                            pure(Expr::StructStruct {
+                                path,
+                                fields: fields_names
+                                    .iter()
+                                    .zip(fields_values.iter())
+                                    .map(|(name, value)| (name.clone(), value.clone()))
+                                    .collect(),
+                                base,
+                                struct_or_variant,
+                            }),
+                            fresh_vars,
+                        )
+                    })
+                }),
+            )
+        }
+        Expr::StructTuple {
+            path,
+            fields,
+            struct_or_variant,
+        } => monadic_lets(
+            fresh_vars,
+            fields,
+            Box::new(|fresh_vars, fields| {
+                (
+                    pure(Expr::StructTuple {
+                        path,
+                        fields,
+                        struct_or_variant,
+                    }),
+                    fresh_vars,
+                )
+            }),
+        ),
+        Expr::StructUnit { .. } => (pure(expr), fresh_vars),
+    }
+}
+
+/// Get the pure part of a statement, if possible, as a statement.
+fn get_pure_from_stmt_as_stmt(statement: Stmt) -> Option<Box<Stmt>> {
+    match statement {
+        Stmt::Expr(e) => match *e {
+            Expr::Pure(e) => Some(Box::new(Stmt::Expr(e))),
+            _ => None,
+        },
+        Stmt::Let {
+            is_monadic: true, ..
+        } => None,
+        Stmt::Let {
+            is_monadic: false,
+            pattern,
+            init,
+            body,
+        } => get_pure_from_stmt_as_stmt(*body).map(|body| {
+            Box::new(Stmt::Let {
+                is_monadic: false,
+                pattern,
+                init,
+                body,
+            })
+        }),
+    }
+}
+
+fn get_pure_from_stmt_as_expr(statement: Stmt) -> Option<Box<Expr>> {
+    get_pure_from_stmt_as_stmt(statement).map(|statement| Box::new(Expr::Block(statement)))
+}
+
+fn mt_stmt(stmt: Stmt) -> Stmt {
+    match stmt {
+        Stmt::Expr(e) => mt_expression(FreshVars::new(), *e).0,
+        Stmt::Let {
+            is_monadic,
+            pattern,
+            init,
+            body,
+        } => {
+            if is_monadic {
+                panic!("The let statement should not be monadic yet.")
+            }
+            let (init, _fresh_vars) = mt_expression(FreshVars::new(), *init);
+            let body = Box::new(mt_stmt(*body));
+            let pure_init: Option<Box<Expr>> = get_pure_from_stmt_as_expr(init.clone());
+            match pure_init {
+                Some(pure_init) => Stmt::Let {
+                    is_monadic: false,
+                    pattern,
+                    init: pure_init,
+                    body,
+                },
+                None => Stmt::Let {
+                    is_monadic: true,
+                    pattern,
+                    init: Box::new(Expr::Block(Box::new(init))),
+                    body,
+                },
+            }
+        }
+    }
+}
+
+pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
     match &expr.kind {
         ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
         ExprKind::Array(elements) => {
@@ -187,19 +592,26 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             let args = args.iter().map(|expr| compile_expr(tcx, expr)).collect();
             match func.kind {
                 // Check if we are calling a constructor
-                ExprKind::Path(rustc_hir::QPath::Resolved(
-                    _,
-                    path @ rustc_hir::Path {
-                        res:
-                            rustc_hir::def::Res::Def(
-                                rustc_hir::def::DefKind::Ctor(rustc_hir::def::CtorOf::Struct, _),
-                                _,
-                            ),
-                        ..
-                    },
-                )) => Expr::StructTuple {
+                ExprKind::Path(
+                    qpath @ rustc_hir::QPath::Resolved(
+                        _,
+                        path @ rustc_hir::Path {
+                            res:
+                                rustc_hir::def::Res::Def(
+                                    rustc_hir::def::DefKind::Ctor(
+                                        rustc_hir::def::CtorOf::Struct
+                                        | rustc_hir::def::CtorOf::Variant,
+                                        _,
+                                    ),
+                                    _,
+                                ),
+                            ..
+                        },
+                    ),
+                ) => Expr::StructTuple {
                     path: compile_path(path),
                     fields: args,
+                    struct_or_variant: StructOrVariant::of_qpath(&tcx, &qpath),
                 },
                 _ => {
                     let func = Box::new(compile_expr(tcx, func));
@@ -246,11 +658,11 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         ExprKind::Lit(lit) => Expr::Literal(lit.node.clone()),
         ExprKind::Cast(expr, ty) => Expr::Cast {
             expr: Box::new(compile_expr(tcx, expr)),
-            ty: Box::new(compile_type(&tcx, ty)),
+            ty: compile_type(&tcx, ty),
         },
         ExprKind::Type(expr, ty) => Expr::Type {
             expr: Box::new(compile_expr(tcx, expr)),
-            ty: Box::new(compile_type(&tcx, ty)),
+            ty: compile_type(&tcx, ty),
         },
         ExprKind::DropTemps(expr) => compile_expr(tcx, expr),
         ExprKind::Let(rustc_hir::Let { pat, init, .. }) => {
@@ -261,6 +673,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         ExprKind::If(condition, success, failure) => {
             let condition = Box::new(compile_expr(tcx, condition));
             let success = Box::new(compile_expr(tcx, success));
+
             let failure = match failure {
                 Some(expr) => Box::new(compile_expr(tcx, expr)),
                 None => Box::new(tt()),
@@ -318,7 +731,7 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
                     .struct_span_warn(label.ident.span, "Labeled blocks are not supported.")
                     .emit();
             }
-            compile_block(tcx, block)
+            Expr::Block(Box::new(compile_block(tcx, block)))
         }
         ExprKind::Assign(left, right, _) => {
             let left = Box::new(compile_expr(tcx, left));
@@ -422,36 +835,46 @@ pub fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
 ///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Block.html
 /// - https://doc.rust-lang.org/reference/statements.html and
 ///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Stmt.html
-fn compile_stmts(tcx: TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir::Expr>) -> Expr {
+fn compile_stmts(tcx: TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir::Expr>) -> Stmt {
     match stmts {
         [stmt, stmts @ ..] => match stmt.kind {
             rustc_hir::StmtKind::Local(rustc_hir::Local { pat, init, .. }) => {
-                let pat = compile_pattern(&tcx, pat);
+                let pattern = Box::new(compile_pattern(&tcx, pat));
                 let init = match init {
                     Some(init) => Box::new(compile_expr(tcx, init)),
                     None => Box::new(tt()),
                 };
                 let body = Box::new(compile_stmts(tcx, stmts, expr));
-                Expr::Let { pat, init, body }
+                Stmt::Let {
+                    is_monadic: false,
+                    pattern,
+                    init,
+                    body,
+                }
             }
             // We ignore "Item" as we do not know yet how to handle them / what they are for.
             rustc_hir::StmtKind::Item(_) => compile_stmts(tcx, stmts, expr),
             rustc_hir::StmtKind::Expr(current_expr) | rustc_hir::StmtKind::Semi(current_expr) => {
                 let first = Box::new(compile_expr(tcx, current_expr));
                 let second = Box::new(compile_stmts(tcx, stmts, expr));
-                Expr::Seq { first, second }
+                Stmt::Let {
+                    is_monadic: false,
+                    pattern: Box::new(Pattern::Wild),
+                    init: first,
+                    body: second,
+                }
             }
         },
-        [] => match expr {
+        [] => Stmt::Expr(Box::new(match expr {
             Some(expr) => compile_expr(tcx, expr),
             None => tt(),
-        },
+        })),
     }
 }
 
 /// [compile_block] compiles hir blocks into coq-of-rust
 /// See the doc for [compile_stmts]
-fn compile_block(tcx: TyCtxt, block: &rustc_hir::Block) -> Expr {
+fn compile_block(tcx: TyCtxt, block: &rustc_hir::Block) -> Stmt {
     compile_stmts(tcx, block.stmts, block.expr)
 }
 
@@ -468,6 +891,7 @@ impl MatchArm {
 impl Expr {
     pub fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
+            Expr::Pure(expr) => paren(with_paren, nest([text("Pure"), line(), expr.to_doc(true)])),
             Expr::LocalVar(ref name) => text(name),
             Expr::Var(path) => path.to_doc(),
             Expr::AssociatedFunction { ty, func } => nest([
@@ -477,7 +901,10 @@ impl Expr {
                 text("]"),
             ]),
             Expr::Literal(literal) => literal_to_doc(with_paren, literal),
-            Expr::AddrOf(expr) => expr.to_doc(with_paren),
+            Expr::AddrOf(expr) => paren(
+                with_paren,
+                nest([text("addr_of"), line(), expr.to_doc(true)]),
+            ),
             Expr::Call { func, args } => paren(
                 with_paren,
                 nest([
@@ -500,28 +927,6 @@ impl Expr {
                     concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                 ]),
             ),
-            Expr::Let { pat, init, body } => group([
-                nest([
-                    nest([
-                        text("let"),
-                        line(),
-                        group([
-                            (if !pat.is_single_binding() {
-                                text("'")
-                            } else {
-                                nil()
-                            }),
-                            pat.to_doc(),
-                            line(),
-                            text(":="),
-                        ]),
-                    ]),
-                    line(),
-                    group([init.to_doc(false), text(" in")]),
-                ]),
-                hardline(),
-                body.to_doc(false),
-            ]),
             Expr::Lambda { args, body } => paren(
                 with_paren,
                 nest([
@@ -535,11 +940,6 @@ impl Expr {
                     body.to_doc(false),
                 ]),
             ),
-            Expr::Seq { first, second } => group([
-                group([first.to_doc(false), text(" ;;")]),
-                hardline(),
-                second.to_doc(false),
-            ]),
             Expr::Cast { expr, ty } => paren(
                 with_paren,
                 nest([
@@ -621,7 +1021,7 @@ impl Expr {
                 nest([
                     text("loop"),
                     line(),
-                    body.to_doc(true),
+                    body.to_doc(),
                     line(),
                     text("from"),
                     line(),
@@ -639,6 +1039,7 @@ impl Expr {
                 hardline(),
                 text("end"),
             ]),
+            Expr::Block(stmt) => stmt.to_doc(),
             Expr::Assign { left, right } => paren(
                 with_paren,
                 nest([
@@ -704,11 +1105,18 @@ impl Expr {
                     None => nil(),
                 },
             ]),
-            Expr::StructTuple { path, fields } => paren(
+            Expr::StructTuple {
+                path,
+                fields,
+                struct_or_variant,
+            } => paren(
                 with_paren,
                 nest([
                     path.to_doc(),
-                    text(".Build_t"),
+                    match struct_or_variant {
+                        StructOrVariant::Struct => text(".Build_t"),
+                        StructOrVariant::Variant => nil(),
+                    },
                     line(),
                     if fields.is_empty() {
                         text("tt")
@@ -718,6 +1126,40 @@ impl Expr {
                 ]),
             ),
             Expr::StructUnit { path } => nest([path.to_doc(), text(".Build")]),
+        }
+    }
+}
+
+impl Stmt {
+    fn to_doc(&self) -> Doc {
+        match self {
+            Stmt::Expr(expr) => expr.to_doc(false),
+            Stmt::Let {
+                is_monadic,
+                pattern,
+                init,
+                body,
+            } => group([
+                nest([
+                    nest([
+                        text("let"),
+                        if *is_monadic { text("*") } else { nil() },
+                        line(),
+                        (if !pattern.is_single_binding() {
+                            text("'")
+                        } else {
+                            nil()
+                        }),
+                        pattern.to_doc(),
+                        text(" :="),
+                    ]),
+                    line(),
+                    init.to_doc(false),
+                    text(" in"),
+                ]),
+                hardline(),
+                body.to_doc(),
+            ]),
         }
     }
 }

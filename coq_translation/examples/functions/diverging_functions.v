@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit := tt.
+Definition main (_ : unit) : M unit := Pure tt.
 
-Definition foo (_ : unit) : Empty_set :=
-  _crate.rt.begin_panic "This call never returns." ;;
-  tt.
+Definition foo (_ : unit) : M Empty_set :=
+  let* _ := _crate.rt.begin_panic "This call never returns." in
+  Pure tt.

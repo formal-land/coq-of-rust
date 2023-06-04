@@ -3,65 +3,94 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition message : ref str := "Hello, World!".
+Definition message : ref str := run (Pure "Hello, World!").
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] message ]) ;;
-  tt ;;
+Definition main (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of message) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let number := Some 7 in
   let letter := None in
   let emoticon := None in
-  if (let_if Some i := number : bool) then
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Matched "; "!
-" ]
-        [ format_argument::["new_debug"] i ]) ;;
-    tt ;;
-    tt
-  else
-    tt ;;
-  if (let_if Some j := letter : bool) then
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Matched "; "!
-" ]
-        [ format_argument::["new_debug"] j ]) ;;
-    tt ;;
-    tt
-  else
-    _crate.io._print
-      (format_arguments::["new_const"]
-        [ "Didn't match a number. Let's go with a letter!
-" ]) ;;
-    tt ;;
-    tt ;;
+  let* _ :=
+    let* α0 := let_if Some i := number in
+    if (α0 : bool) then
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_debug"] (addr_of i) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "Matched "; "!
+" ])
+              (addr_of [ α0 ]) in
+          _crate.io._print α1 in
+        Pure tt in
+      Pure tt
+    else
+      Pure tt in
+  let* _ :=
+    let* α0 := let_if Some j := letter in
+    if (α0 : bool) then
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_debug"] (addr_of j) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "Matched "; "!
+" ])
+              (addr_of [ α0 ]) in
+          _crate.io._print α1 in
+        Pure tt in
+      Pure tt
+    else
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "Didn't match a number. Let's go with a letter!
+" ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      Pure tt in
   let i_like_letters := false in
-  if (let_if Some i := emoticon : bool) then
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Matched "; "!
-" ]
-        [ format_argument::["new_debug"] i ]) ;;
-    tt ;;
-    tt
+  let* α0 := let_if Some i := emoticon in
+  if (α0 : bool) then
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_debug"] (addr_of i) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Matched "; "!
+" ])
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    Pure tt
   else
     if (i_like_letters : bool) then
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "Didn't match a number. Let's go with a letter!
-" ]) ;;
-      tt ;;
-      tt
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "Didn't match a number. Let's go with a letter!
+" ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      Pure tt
     else
-      _crate.io._print
-        (format_arguments::["new_const"]
-          [ "I don't like letters. Let's go with an emoticon :)!
-" ]) ;;
-      tt ;;
-      tt.
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of
+                [ "I don't like letters. Let's go with an emoticon :)!
+" ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      Pure tt.

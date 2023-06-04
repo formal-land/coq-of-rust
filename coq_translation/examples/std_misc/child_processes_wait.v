@@ -7,11 +7,20 @@ Module Command := std.process.Command.
 Definition Command := Command.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let child := ((Command::["new"] "sleep").["arg"] "5").["spawn"].["unwrap"] in
-  let _result := child.["wait"].["unwrap"] in
-  _crate.io._print
-    (format_arguments::["new_const"] [ "reached end of main
-" ]) ;;
-  tt ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* child :=
+    let* α0 := Command::["new"] "sleep" in
+    let* α1 := α0.["arg"] "5" in
+    let* α2 := α1.["spawn"] in
+    α2.["unwrap"] in
+  let* _result :=
+    let* α0 := child.["wait"] in
+    α0.["unwrap"] in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "reached end of main
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.

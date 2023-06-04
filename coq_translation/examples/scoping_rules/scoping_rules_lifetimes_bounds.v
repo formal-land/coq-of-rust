@@ -18,8 +18,11 @@ Module Impl__crate_fmt_Debug_for_Ref_T.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Ref" (self.[0]).
+      : M _crate.fmt.Result :=
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
+      f
+      "Ref"
+      (addr_of (addr_of (self.[0]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -30,28 +33,36 @@ Module Impl__crate_fmt_Debug_for_Ref_T.
   }.
 End Impl__crate_fmt_Debug_for_Ref_T.
 
-Definition print {T : Set} `{Debug.Trait T} (t : T) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "`print`: t is "; "
-" ]
-      [ format_argument::["new_debug"] t ]) ;;
-  tt ;;
-  tt.
+Definition print {T : Set} `{Debug.Trait T} (t : T) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "`print`: t is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.
 
-Definition print_ref {T : Set} `{Debug.Trait T} (t : ref T) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "`print_ref`: t is "; "
-" ]
-      [ format_argument::["new_debug"] t ]) ;;
-  tt ;;
-  tt.
+Definition print_ref {T : Set} `{Debug.Trait T} (t : ref T) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "`print_ref`: t is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let x := 7 in
-  let ref_x := Ref.Build_t x in
-  print_ref ref_x ;;
-  print ref_x ;;
-  tt.
+  let ref_x := Ref.Build_t (addr_of x) in
+  let* _ := print_ref (addr_of ref_x) in
+  let* _ := print ref_x in
+  Pure tt.

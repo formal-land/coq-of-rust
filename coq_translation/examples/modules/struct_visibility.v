@@ -29,8 +29,8 @@ Module my.
   Module ImplClosedBox T.
     Definition Self := ClosedBox T.
     
-    Definition new (contents : T) : ClosedBox T :=
-      {| ClosedBox.contents := contents; |}.
+    Definition new (contents : T) : M (ClosedBox T) :=
+      Pure {| ClosedBox.contents := contents; |}.
     
     Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
@@ -64,8 +64,8 @@ Definition ClosedBox : Set := ClosedBox.t.
 Module ImplClosedBox T_2.
   Definition Self := ClosedBox T.
   
-  Definition new (contents : T) : ClosedBox T :=
-    {| ClosedBox.contents := contents; |}.
+  Definition new (contents : T) : M (ClosedBox T) :=
+    Pure {| ClosedBox.contents := contents; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
@@ -73,13 +73,18 @@ Module ImplClosedBox T_2.
 End ImplClosedBox T_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let open_box := {| my.OpenBox.contents := "public information"; |} in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The open box contains: "; "
-" ]
-      [ format_argument::["new_display"] open_box.["contents"] ]) ;;
-  tt ;;
-  let _closed_box := my.ClosedBox::["new"] "classified information" in
-  tt.
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_display"] (addr_of open_box.["contents"]) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The open box contains: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _closed_box := my.ClosedBox::["new"] "classified information" in
+  Pure tt.

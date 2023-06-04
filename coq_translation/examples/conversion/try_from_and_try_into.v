@@ -18,11 +18,11 @@ Module Impl__crate_fmt_Debug_for_EvenNumber.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "EvenNumber"
-      (self.[0]).
+      (addr_of (addr_of (self.[0]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -43,7 +43,7 @@ End Impl__crate_marker_StructuralPartialEq_for_EvenNumber.
 Module Impl__crate_cmp_PartialEq_for_EvenNumber.
   Definition Self := EvenNumber.
   
-  Definition eq (self : ref Self) (other : ref EvenNumber) : bool :=
+  Definition eq (self : ref Self) (other : ref EvenNumber) : M bool :=
     (self.[0]).["eq"] (other.[0]).
   
   Global Instance Method_eq : Notation.Dot "eq" := {
@@ -60,11 +60,13 @@ Module Impl_TryFrom_for_EvenNumber.
   
   Definition Error : Set := unit.
   
-  Definition try_from (value : i32) : Result Self ImplSelf.Error :=
-    if ((value.["rem"] 2).["eq"] 0 : bool) then
-      Ok (EvenNumber.Build_t value)
+  Definition try_from (value : i32) : M (Result Self ImplSelf.Error) :=
+    let* α0 := value.["rem"] 2 in
+    let* α1 := α0.["eq"] 0 in
+    if (α1 : bool) then
+      Pure (Ok (EvenNumber.Build_t value))
     else
-      Err tt.
+      Pure (Err tt).
   
   Global Instance AssociatedFunction_try_from :
     Notation.DoubleColon Self "try_from" := {
@@ -77,59 +79,93 @@ Module Impl_TryFrom_for_EvenNumber.
 End Impl_TryFrom_for_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  match (EvenNumber::["try_from"] 8, Ok (EvenNumber.Build_t 8)) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  match (EvenNumber::["try_from"] 5, Err tt) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  let result := 8.["try_into"] in
-  match (result, Ok (EvenNumber.Build_t 8)) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  let result := 5.["try_into"] in
-  match (result, Err tt) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* _ :=
+    let* α0 := EvenNumber::["try_from"] 8 in
+    match (addr_of α0, addr_of (Ok (EvenNumber.Build_t 8))) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          _crate.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            _crate.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  let* _ :=
+    let* α0 := EvenNumber::["try_from"] 5 in
+    match (addr_of α0, addr_of (Err tt)) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          _crate.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            _crate.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  let* result := 8.["try_into"] in
+  let* _ :=
+    match (addr_of result, addr_of (Ok (EvenNumber.Build_t 8))) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          _crate.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            _crate.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  let* result := 5.["try_into"] in
+  let* _ :=
+    match (addr_of result, addr_of (Err tt)) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          _crate.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            _crate.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  Pure tt.

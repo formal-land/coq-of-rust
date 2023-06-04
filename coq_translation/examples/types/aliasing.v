@@ -10,17 +10,20 @@ Definition Inch : Set := u64.
 Definition U64 : Set := u64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let nanoseconds := cast 5 U64 in
   let inches := cast 2 U64 in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; " nanoseconds + "; " inches = "; " unit?
-" ]
-      [
-        format_argument::["new_display"] nanoseconds;
-        format_argument::["new_display"] inches;
-        format_argument::["new_display"] (nanoseconds.["add"] inches)
-      ]) ;;
-  tt ;;
-  tt.
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of nanoseconds) in
+      let* α1 := format_argument::["new_display"] (addr_of inches) in
+      let* α2 := nanoseconds.["add"] inches in
+      let* α3 := format_argument::["new_display"] (addr_of α2) in
+      let* α4 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; " nanoseconds + "; " inches = "; " unit?
+" ])
+          (addr_of [ α0; α1; α3 ]) in
+      _crate.io._print α4 in
+    Pure tt in
+  Pure tt.

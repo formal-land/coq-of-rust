@@ -4,30 +4,43 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let person :=
-    {| Person.name := String::["from"] "Alice"; Person.age := Box::["new"] 20;
-    |} in
+Definition main (_ : unit) : M unit :=
+  let* person :=
+    let* α0 := String::["from"] "Alice" in
+    let* α1 := Box::["new"] 20 in
+    Pure {| Person.name := α0; Person.age := α1; |} in
   let '{| Person.name := name; Person.age := age; |} := person in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The person's age is "; "
-" ]
-      [ format_argument::["new_display"] age ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The person's name is "; "
-" ]
-      [ format_argument::["new_display"] name ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "The person's age from person struct is "; "
-" ]
-      [ format_argument::["new_display"] person.["age"] ]) ;;
-  tt ;;
-  tt.
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of age) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The person's age is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of name) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The person's name is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of person.["age"]) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The person's age from person struct is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.
 
 Module Person.
   Record t : Set := {
@@ -50,14 +63,14 @@ Module Impl__crate_fmt_Debug_for_Person.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Person"
       "name"
-      self.["name"]
+      (addr_of self.["name"])
       "age"
-      self.["age"].
+      (addr_of (addr_of self.["age"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;

@@ -4,33 +4,41 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let byte_escape := "I'm writing Rust!" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "What are you doing? (\x3F means ?) "; "
-" ]
-      [ format_argument::["new_display"] byte_escape ]) ;;
-  tt ;;
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of byte_escape) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "What are you doing? (\x3F means ?) "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let unicode_codepoint := String.String "29" "" in
   let character_name := ""DOUBLE-STRUCK CAPITAL R"" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Unicode character "; " (U+211D) is called "; "
-" ]
-      [
-        format_argument::["new_display"] unicode_codepoint;
-        format_argument::["new_display"] character_name
-      ]) ;;
-  tt ;;
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of unicode_codepoint) in
+      let* α1 := format_argument::["new_display"] (addr_of character_name) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Unicode character "; " (U+211D) is called "; "
+" ])
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
   let long_string :=
     "String literals
                         can span multiple lines.
                         The linebreak and indentation here -><- can be escaped too!" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_display"] long_string ]) ;;
-  tt ;;
-  tt.
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of long_string) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.

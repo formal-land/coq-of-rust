@@ -11,85 +11,143 @@ Definition IntoIter := IntoIter.t.
 Definition combine_vecs_explicit_return_type
     (v : Vec i32)
     (u : Vec i32)
-    : iter.Cycle (iter.Chain (IntoIter i32) (IntoIter i32)) :=
-  (v.["into_iter"].["chain"] u.["into_iter"]).["cycle"].
+    : M (iter.Cycle (iter.Chain (IntoIter i32) (IntoIter i32))) :=
+  let* α0 := v.["into_iter"] in
+  let* α1 := u.["into_iter"] in
+  let* α2 := α0.["chain"] α1 in
+  α2.["cycle"].
 
-Definition combine_vecs (v : Vec i32) (u : Vec i32) : OpaqueDef :=
-  (v.["into_iter"].["chain"] u.["into_iter"]).["cycle"].
+Definition combine_vecs (v : Vec i32) (u : Vec i32) : M OpaqueDef :=
+  let* α0 := v.["into_iter"] in
+  let* α1 := u.["into_iter"] in
+  let* α2 := α0.["chain"] α1 in
+  α2.["cycle"].
 
 Error OpaqueTy.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let v1 := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3 ]) in
-  let v2 := Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 4; 5 ]) in
-  let v3 := combine_vecs v1 v2 in
-  match (Some 1, v3.["next"]) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  match (Some 2, v3.["next"]) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  match (Some 3, v3.["next"]) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  match (Some 4, v3.["next"]) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  match (Some 5, v3.["next"]) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  _crate.io._print (format_arguments::["new_const"] [ "all done
-" ]) ;;
-  tt ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* v1 :=
+    let* α0 := _crate.boxed.Box::["new"] [ 1; 2; 3 ] in
+    Slice::["into_vec"] α0 in
+  let* v2 :=
+    let* α0 := _crate.boxed.Box::["new"] [ 4; 5 ] in
+    Slice::["into_vec"] α0 in
+  let* v3 := combine_vecs v1 v2 in
+  let* _ :=
+    let* α0 := v3.["next"] in
+    match (addr_of (Some 1), addr_of α0) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          _crate.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            _crate.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  let* _ :=
+    let* α0 := v3.["next"] in
+    match (addr_of (Some 2), addr_of α0) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          _crate.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            _crate.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  let* _ :=
+    let* α0 := v3.["next"] in
+    match (addr_of (Some 3), addr_of α0) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          _crate.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            _crate.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  let* _ :=
+    let* α0 := v3.["next"] in
+    match (addr_of (Some 4), addr_of α0) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          _crate.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            _crate.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  let* _ :=
+    let* α0 := v3.["next"] in
+    match (addr_of (Some 5), addr_of α0) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          _crate.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            _crate.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_arguments::["new_const"] (addr_of [ "all done
+" ]) in
+      _crate.io._print α0 in
+    Pure tt in
+  Pure tt.

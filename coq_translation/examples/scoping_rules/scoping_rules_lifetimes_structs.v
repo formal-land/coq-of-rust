@@ -18,8 +18,11 @@ Module Impl__crate_fmt_Debug_for_Borrowed.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Borrowed" (self.[0]).
+      : M _crate.fmt.Result :=
+    _crate.fmt.Formatter::["debug_tuple_field1_finish"]
+      f
+      "Borrowed"
+      (addr_of (addr_of (self.[0]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -51,14 +54,14 @@ Module Impl__crate_fmt_Debug_for_NamedBorrowed.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "NamedBorrowed"
       "x"
-      self.["x"]
+      (addr_of self.["x"])
       "y"
-      self.["y"].
+      (addr_of (addr_of self.["y"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -82,12 +85,18 @@ Module Impl__crate_fmt_Debug_for_Either.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     match self with
     | Either.Num __self_0 =>
-      _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Num" __self_0
+      _crate.fmt.Formatter::["debug_tuple_field1_finish"]
+        f
+        "Num"
+        (addr_of __self_0)
     | Either.Ref __self_0 =>
-      _crate.fmt.Formatter::["debug_tuple_field1_finish"] f "Ref" __self_0
+      _crate.fmt.Formatter::["debug_tuple_field1_finish"]
+        f
+        "Ref"
+        (addr_of __self_0)
     end.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
@@ -100,35 +109,52 @@ Module Impl__crate_fmt_Debug_for_Either.
 End Impl__crate_fmt_Debug_for_Either.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let x := 18 in
   let y := 15 in
-  let single := Borrowed.Build_t x in
-  let double := {| NamedBorrowed.x := x; NamedBorrowed.y := y; |} in
-  let reference := Either.Ref x in
+  let single := Borrowed.Build_t (addr_of x) in
+  let double :=
+    {| NamedBorrowed.x := addr_of x; NamedBorrowed.y := addr_of y; |} in
+  let reference := Either.Ref (addr_of x) in
   let number := Either.Num y in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "x is borrowed in "; "
-" ]
-      [ format_argument::["new_debug"] single ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "x and y are borrowed in "; "
-" ]
-      [ format_argument::["new_debug"] double ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "x is borrowed in "; "
-" ]
-      [ format_argument::["new_debug"] reference ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "y is *not* borrowed in "; "
-" ]
-      [ format_argument::["new_debug"] number ]) ;;
-  tt ;;
-  tt.
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of single) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "x is borrowed in "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of double) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "x and y are borrowed in "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of reference) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "x is borrowed in "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of number) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "y is *not* borrowed in "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.

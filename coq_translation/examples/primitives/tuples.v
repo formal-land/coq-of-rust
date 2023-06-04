@@ -3,9 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition reverse (pair : i32 * bool) : bool * i32 :=
+Definition reverse (pair : i32 * bool) : M (bool * i32) :=
   let '(int_param, bool_param) := pair in
-  (bool_param, int_param).
+  Pure (bool_param, int_param).
 
 Module Matrix.
   Record t : Set := { _ : f32; _ : f32; _ : f32; _ : f32;}.
@@ -31,14 +31,14 @@ Module Impl__crate_fmt_Debug_for_Matrix.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
+      : M _crate.fmt.Result :=
     _crate.fmt.Formatter::["debug_tuple_field4_finish"]
       f
       "Matrix"
-      (self.[0])
-      (self.[1])
-      (self.[2])
-      (self.[3]).
+      (addr_of (self.[0]))
+      (addr_of (self.[1]))
+      (addr_of (self.[2]))
+      (addr_of (addr_of (self.[3]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -50,83 +50,113 @@ Module Impl__crate_fmt_Debug_for_Matrix.
 End Impl__crate_fmt_Debug_for_Matrix.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let long_tuple :=
-    (1,
-      2,
-      3,
-      4,
-      1.["neg"],
-      2.["neg"],
-      3.["neg"],
-      4.["neg"],
-      0 (* 0.1 *),
-      0 (* 0.2 *),
-      "a"%char,
-      true) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "long tuple first value: "; "
-" ]
-      [ format_argument::["new_display"] (long_tuple.[0]) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "long tuple second value: "; "
-" ]
-      [ format_argument::["new_display"] (long_tuple.[1]) ]) ;;
-  tt ;;
-  let tuple_of_tuples := ((1, 2, 2), (4, 1.["neg"]), 2.["neg"]) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "tuple of tuples: "; "
-" ]
-      [ format_argument::["new_debug"] tuple_of_tuples ]) ;;
-  tt ;;
+Definition main (_ : unit) : M unit :=
+  let* long_tuple :=
+    let* α0 := 1.["neg"] in
+    let* α1 := 2.["neg"] in
+    let* α2 := 3.["neg"] in
+    let* α3 := 4.["neg"] in
+    Pure
+      (1, 2, 3, 4, α0, α1, α2, α3, 0 (* 0.1 *), 0 (* 0.2 *), "a"%char, true) in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of (long_tuple.[0])) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "long tuple first value: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of (long_tuple.[1])) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "long tuple second value: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* tuple_of_tuples :=
+    let* α0 := 1.["neg"] in
+    let* α1 := 2.["neg"] in
+    Pure ((1, 2, 2), (4, α0), α1) in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of tuple_of_tuples) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "tuple of tuples: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let pair := (1, true) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "pair is "; "
-" ]
-      [ format_argument::["new_debug"] pair ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "the reversed pair is "; "
-" ]
-      [ format_argument::["new_debug"] (reverse pair) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "one element tuple: "; "
-" ]
-      [ format_argument::["new_debug"] (5) ]) ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "just an integer: "; "
-" ]
-      [ format_argument::["new_debug"] 5 ]) ;;
-  tt ;;
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of pair) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "pair is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := reverse pair in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "the reversed pair is "; "
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of (5)) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "one element tuple: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of 5) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "just an integer: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
   let tuple := (1, "hello", 5 (* 4.5 *), true) in
   let '(a, b, c, d) := tuple in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; ", "; ", "; ", "; "
-" ]
-      [
-        format_argument::["new_debug"] a;
-        format_argument::["new_debug"] b;
-        format_argument::["new_debug"] c;
-        format_argument::["new_debug"] d
-      ]) ;;
-  tt ;;
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of a) in
+      let* α1 := format_argument::["new_debug"] (addr_of b) in
+      let* α2 := format_argument::["new_debug"] (addr_of c) in
+      let* α3 := format_argument::["new_debug"] (addr_of d) in
+      let* α4 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; ", "; ", "; ", "; "
+" ])
+          (addr_of [ α0; α1; α2; α3 ]) in
+      _crate.io._print α4 in
+    Pure tt in
   let matrix :=
     Matrix.Build_t 1 (* 1.1 *) 1 (* 1.2 *) 2 (* 2.1 *) 2 (* 2.2 *) in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ ""; "
-" ]
-      [ format_argument::["new_debug"] matrix ]) ;;
-  tt ;;
-  tt.
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of matrix) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.

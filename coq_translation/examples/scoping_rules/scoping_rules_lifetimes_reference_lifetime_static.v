@@ -3,33 +3,47 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition NUM : i32 := 18.
+Definition NUM : i32 := run (Pure 18).
 
-Definition coerce_static (arg : ref i32) : ref i32 := NUM.
+Definition coerce_static (arg : ref i32) : M (ref i32) := Pure (addr_of NUM).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let static_string := "I'm in read-only memory" in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "static_string: "; "
-" ]
-      [ format_argument::["new_display"] static_string ]) ;;
-  tt ;;
-  tt ;;
-  let lifetime_num := 9 in
-  let coerced_static := coerce_static lifetime_num in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "coerced_static: "; "
-" ]
-      [ format_argument::["new_display"] coerced_static ]) ;;
-  tt ;;
-  tt ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "NUM: "; " stays accessible!
-" ]
-      [ format_argument::["new_display"] NUM ]) ;;
-  tt ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* _ :=
+    let static_string := "I'm in read-only memory" in
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of static_string) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "static_string: "; "
+" ])
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    Pure tt in
+  let* _ :=
+    let lifetime_num := 9 in
+    let* coerced_static := coerce_static (addr_of lifetime_num) in
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of coerced_static) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "coerced_static: "; "
+" ])
+            (addr_of [ α0 ]) in
+        _crate.io._print α1 in
+      Pure tt in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of NUM) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "NUM: "; " stays accessible!
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.

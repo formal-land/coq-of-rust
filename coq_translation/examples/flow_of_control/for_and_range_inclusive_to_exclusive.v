@@ -4,40 +4,65 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  match LangItem Range {| Range.start := 1; Range.end := 101; |} with
+Definition main (_ : unit) : M unit :=
+  let* α0 := LangItem Range {| Range.start := 1; Range.end := 101; |} in
+  match α0 with
   | iter =>
     loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := n; |} =>
-        if ((n.["rem"] 15).["eq"] 0 : bool) then
-          _crate.io._print (format_arguments::["new_const"] [ "fizzbuzz
-" ]) ;;
-          tt ;;
-          tt
-        else
-          if ((n.["rem"] 3).["eq"] 0 : bool) then
-            _crate.io._print (format_arguments::["new_const"] [ "fizz
-" ]) ;;
-            tt ;;
-            tt
+      let* _ :=
+        let* α0 := LangItem (addr_of iter) in
+        match α0 with
+        | None => Pure Break
+        | Some {| Some.0 := n; |} =>
+          let* α0 := n.["rem"] 15 in
+          let* α1 := α0.["eq"] 0 in
+          if (α1 : bool) then
+            let* _ :=
+              let* _ :=
+                let* α0 :=
+                  format_arguments::["new_const"] (addr_of [ "fizzbuzz
+" ]) in
+                _crate.io._print α0 in
+              Pure tt in
+            Pure tt
           else
-            if ((n.["rem"] 5).["eq"] 0 : bool) then
-              _crate.io._print (format_arguments::["new_const"] [ "buzz
-" ]) ;;
-              tt ;;
-              tt
+            let* α0 := n.["rem"] 3 in
+            let* α1 := α0.["eq"] 0 in
+            if (α1 : bool) then
+              let* _ :=
+                let* _ :=
+                  let* α0 :=
+                    format_arguments::["new_const"] (addr_of [ "fizz
+" ]) in
+                  _crate.io._print α0 in
+                Pure tt in
+              Pure tt
             else
-              _crate.io._print
-                (format_arguments::["new_v1"]
-                  [ ""; "
-" ]
-                  [ format_argument::["new_display"] n ]) ;;
-              tt ;;
-              tt
-      end ;;
-      tt
+              let* α0 := n.["rem"] 5 in
+              let* α1 := α0.["eq"] 0 in
+              if (α1 : bool) then
+                let* _ :=
+                  let* _ :=
+                    let* α0 :=
+                      format_arguments::["new_const"] (addr_of [ "buzz
+" ]) in
+                    _crate.io._print α0 in
+                  Pure tt in
+                Pure tt
+              else
+                let* _ :=
+                  let* _ :=
+                    let* α0 := format_argument::["new_display"] (addr_of n) in
+                    let* α1 :=
+                      format_arguments::["new_v1"]
+                        (addr_of [ ""; "
+" ])
+                        (addr_of [ α0 ]) in
+                    _crate.io._print α1 in
+                  Pure tt in
+                Pure tt
+        end in
+      Pure tt
       from
       for
   end.

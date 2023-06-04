@@ -27,10 +27,10 @@ Module Impl__crate_clone_Clone_for_Book.
   Definition Self := Book.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition clone (self : ref Self) : Book :=
-    let '_ := tt in
-    let '_ := tt in
-    let '_ := tt in
+  Definition clone (self : ref Self) : M Book :=
+    let _ := tt in
+    let _ := tt in
+    let _ := tt in
     self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -49,33 +49,37 @@ Module Impl__crate_marker_Copy_for_Book.
     _crate.marker.Copy.Build_Class _.
 End Impl__crate_marker_Copy_for_Book.
 
-Definition borrow_book (book : ref Book) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "I immutably borrowed "; " - "; " edition
-" ]
-      [
-        format_argument::["new_display"] book.["title"];
-        format_argument::["new_display"] book.["year"]
-      ]) ;;
-  tt ;;
-  tt.
+Definition borrow_book (book : ref Book) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
+      let* α1 := format_argument::["new_display"] (addr_of book.["year"]) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "I immutably borrowed "; " - "; " edition
+" ])
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  Pure tt.
 
-Definition new_edition (book : mut_ref Book) : unit :=
-  assign book.["year"] 2014 ;;
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "I mutably borrowed "; " - "; " edition
-" ]
-      [
-        format_argument::["new_display"] book.["title"];
-        format_argument::["new_display"] book.["year"]
-      ]) ;;
-  tt ;;
-  tt.
+Definition new_edition (book : mut_ref Book) : M unit :=
+  let* _ := assign book.["year"] 2014 in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
+      let* α1 := format_argument::["new_display"] (addr_of book.["year"]) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "I mutably borrowed "; " - "; " edition
+" ])
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let immutabook :=
     {|
       Book.author := "Douglas Hofstadter";
@@ -83,7 +87,7 @@ Definition main (_ : unit) : unit :=
       Book.year := 1979;
     |} in
   let mutabook := immutabook in
-  borrow_book immutabook ;;
-  borrow_book mutabook ;;
-  new_edition mutabook ;;
-  tt.
+  let* _ := borrow_book (addr_of immutabook) in
+  let* _ := borrow_book (addr_of mutabook) in
+  let* _ := new_edition (addr_of mutabook) in
+  Pure tt.

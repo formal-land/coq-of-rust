@@ -11,29 +11,44 @@ Module io := std.io.
 Module BufReader := std.io.BufReader.
 Definition BufReader := BufReader.t.
 
-Definition read_lines (filename : String) : io.Lines (BufReader File) :=
-  let file := (File::["open"] filename).["unwrap"] in
-  Return (io.BufReader::["new"] file).["lines"] ;;
-  tt.
+Definition read_lines (filename : String) : M (io.Lines (BufReader File)) :=
+  let* file :=
+    let* α0 := File::["open"] filename in
+    α0.["unwrap"] in
+  let* _ :=
+    let* α0 := io.BufReader::["new"] file in
+    let* α1 := α0.["lines"] in
+    Return α1 in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let lines := read_lines "./hosts".["to_string"] in
-  match LangItem lines with
+Definition main (_ : unit) : M unit :=
+  let* lines :=
+    let* α0 := "./hosts".["to_string"] in
+    read_lines α0 in
+  let* α0 := LangItem lines in
+  match α0 with
   | iter =>
     loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := line; |} =>
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ ""; "
-" ]
-            [ format_argument::["new_display"] line.["unwrap"] ]) ;;
-        tt ;;
-        tt
-      end ;;
-      tt
+      let* _ :=
+        let* α0 := LangItem (addr_of iter) in
+        match α0 with
+        | None => Pure Break
+        | Some {| Some.0 := line; |} =>
+          let* _ :=
+            let* _ :=
+              let* α0 := line.["unwrap"] in
+              let* α1 := format_argument::["new_display"] (addr_of α0) in
+              let* α2 :=
+                format_arguments::["new_v1"]
+                  (addr_of [ ""; "
+" ])
+                  (addr_of [ α1 ]) in
+              _crate.io._print α2 in
+            Pure tt in
+          Pure tt
+        end in
+      Pure tt
       from
       for
   end.

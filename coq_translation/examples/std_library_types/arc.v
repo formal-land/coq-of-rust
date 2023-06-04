@@ -12,29 +12,41 @@ Module Duration := std.time.Duration.
 Definition Duration := Duration.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let apple := Arc::["new"] "the same apple" in
-  match LangItem Range {| Range.start := 0; Range.end := 10; |} with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := _; |} =>
-        let apple := Arc::["clone"] apple in
-        thread.spawn
-          (fun  =>
-            _crate.io._print
-              (format_arguments::["new_v1"]
-                [ ""; "
-" ]
-                [ format_argument::["new_debug"] apple ]) ;;
-            tt ;;
-            tt) ;;
-        tt
-      end ;;
-      tt
-      from
-      for
-  end ;;
-  thread.sleep (Duration::["from_secs"] 1) ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* apple := Arc::["new"] "the same apple" in
+  let* _ :=
+    let* α0 := LangItem Range {| Range.start := 0; Range.end := 10; |} in
+    match α0 with
+    | iter =>
+      loop
+        let* _ :=
+          let* α0 := LangItem (addr_of iter) in
+          match α0 with
+          | None => Pure Break
+          | Some {| Some.0 := _; |} =>
+            let* apple := Arc::["clone"] (addr_of apple) in
+            let* _ :=
+              thread.spawn
+                (fun  =>
+                  let* _ :=
+                    let* _ :=
+                      let* α0 :=
+                        format_argument::["new_debug"] (addr_of apple) in
+                      let* α1 :=
+                        format_arguments::["new_v1"]
+                          (addr_of [ ""; "
+" ])
+                          (addr_of [ α0 ]) in
+                      _crate.io._print α1 in
+                    Pure tt in
+                  Pure tt) in
+            Pure tt
+          end in
+        Pure tt
+        from
+        for
+    end in
+  let* _ :=
+    let* α0 := Duration::["from_secs"] 1 in
+    thread.sleep α0 in
+  Pure tt.

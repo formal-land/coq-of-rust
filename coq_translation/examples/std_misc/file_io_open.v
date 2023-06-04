@@ -12,39 +12,42 @@ Module Path := std.path.Path.
 Definition Path := Path.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let path := Path::["new"] "hello.txt" in
-  let display := path.["display"] in
-  let file :=
-    match File::["open"] path with
+Definition main (_ : unit) : M unit :=
+  let* path := Path::["new"] "hello.txt" in
+  let* display := path.["display"] in
+  let* file :=
+    let* α0 := File::["open"] (addr_of path) in
+    match α0 with
     | Err why =>
-      _crate.rt.panic_fmt
-        (format_arguments::["new_v1"]
-          [ "couldn't open "; ": " ]
-          [
-            format_argument::["new_display"] display;
-            format_argument::["new_display"] why
-          ])
-    | Ok file => file
+      let* α0 := format_argument::["new_display"] (addr_of display) in
+      let* α1 := format_argument::["new_display"] (addr_of why) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "couldn't open "; ": " ])
+          (addr_of [ α0; α1 ]) in
+      _crate.rt.panic_fmt α2
+    | Ok file => Pure file
     end in
-  let s := String::["new"] tt in
-  match file.["read_to_string"] s with
+  let* s := String::["new"] tt in
+  let* α0 := file.["read_to_string"] (addr_of s) in
+  match α0 with
   | Err why =>
-    _crate.rt.panic_fmt
-      (format_arguments::["new_v1"]
-        [ "couldn't read "; ": " ]
-        [
-          format_argument::["new_display"] display;
-          format_argument::["new_display"] why
-        ])
+    let* α0 := format_argument::["new_display"] (addr_of display) in
+    let* α1 := format_argument::["new_display"] (addr_of why) in
+    let* α2 :=
+      format_arguments::["new_v1"]
+        (addr_of [ "couldn't read "; ": " ])
+        (addr_of [ α0; α1 ]) in
+    _crate.rt.panic_fmt α2
   | Ok _ =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ ""; " contains:
-" ]
-        [
-          format_argument::["new_display"] display;
-          format_argument::["new_display"] s
-        ]) ;;
-    tt
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of display) in
+      let* α1 := format_argument::["new_display"] (addr_of s) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; " contains:
+" ])
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt
   end.

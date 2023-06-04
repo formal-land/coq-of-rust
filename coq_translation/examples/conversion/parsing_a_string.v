@@ -4,14 +4,22 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let parsed := "5".["parse"].["unwrap"] in
-  let turbo_parsed := "10".["parse"].["unwrap"] in
-  let sum := parsed.["add"] turbo_parsed in
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Sum: "; "
-" ]
-      [ format_argument::["new_debug"] sum ]) ;;
-  tt ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* parsed :=
+    let* α0 := "5".["parse"] in
+    α0.["unwrap"] in
+  let* turbo_parsed :=
+    let* α0 := "10".["parse"] in
+    α0.["unwrap"] in
+  let* sum := parsed.["add"] turbo_parsed in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of sum) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Sum: "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.

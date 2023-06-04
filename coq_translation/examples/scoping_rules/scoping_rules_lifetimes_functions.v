@@ -3,40 +3,50 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Definition print_one (x : ref i32) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "`print_one`: x is "; "
-" ]
-      [ format_argument::["new_display"] x ]) ;;
-  tt ;;
-  tt.
+Definition print_one (x : ref i32) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of x) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "`print_one`: x is "; "
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt in
+  Pure tt.
 
-Definition add_one (x : mut_ref i32) : unit :=
-  x.["deref"].["add_assign"] 1 ;;
-  tt.
+Definition add_one (x : mut_ref i32) : M unit :=
+  let* _ :=
+    let* α0 := x.["deref"] in
+    α0.["add_assign"] 1 in
+  Pure tt.
 
-Definition print_multi (x : ref i32) (y : ref i32) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "`print_multi`: x is "; ", y is "; "
-" ]
-      [ format_argument::["new_display"] x; format_argument::["new_display"] y
-      ]) ;;
-  tt ;;
-  tt.
+Definition print_multi (x : ref i32) (y : ref i32) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of x) in
+      let* α1 := format_argument::["new_display"] (addr_of y) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "`print_multi`: x is "; ", y is "; "
+" ])
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  Pure tt.
 
-Definition pass_x (x : ref i32) (arg : ref i32) : ref i32 := x.
+Definition pass_x (x : ref i32) (arg : ref i32) : M (ref i32) := Pure x.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let x := 7 in
   let y := 9 in
-  print_one x ;;
-  print_multi x y ;;
-  let z := pass_x x y in
-  print_one z ;;
+  let* _ := print_one (addr_of x) in
+  let* _ := print_multi (addr_of x) (addr_of y) in
+  let* z := pass_x (addr_of x) (addr_of y) in
+  let* _ := print_one z in
   let t := 3 in
-  add_one t ;;
-  print_one t ;;
-  tt.
+  let* _ := add_one (addr_of t) in
+  let* _ := print_one (addr_of t) in
+  Pure tt.

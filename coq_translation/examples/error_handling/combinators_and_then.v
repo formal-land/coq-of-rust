@@ -17,14 +17,14 @@ Module Impl__crate_fmt_Debug_for_Food.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["write_str"]
-      f
+      : M _crate.fmt.Result :=
+    let* α0 :=
       match self with
-      | Food.CordonBleu => "CordonBleu"
-      | Food.Steak => "Steak"
-      | Food.Sushi => "Sushi"
-      end.
+      | Food.CordonBleu => Pure "CordonBleu"
+      | Food.Steak => Pure "Steak"
+      | Food.Sushi => Pure "Sushi"
+      end in
+    _crate.fmt.Formatter::["write_str"] f α0.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -49,14 +49,14 @@ Module Impl__crate_fmt_Debug_for_Day.
   Definition fmt
       (self : ref Self)
       (f : mut_ref _crate.fmt.Formatter)
-      : _crate.fmt.Result :=
-    _crate.fmt.Formatter::["write_str"]
-      f
+      : M _crate.fmt.Result :=
+    let* α0 :=
       match self with
-      | Day.Monday => "Monday"
-      | Day.Tuesday => "Tuesday"
-      | Day.Wednesday => "Wednesday"
-      end.
+      | Day.Monday => Pure "Monday"
+      | Day.Tuesday => Pure "Tuesday"
+      | Day.Wednesday => Pure "Wednesday"
+      end in
+    _crate.fmt.Formatter::["write_str"] f α0.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -67,57 +67,65 @@ Module Impl__crate_fmt_Debug_for_Day.
   }.
 End Impl__crate_fmt_Debug_for_Day.
 
-Definition have_ingredients (food : Food) : Option Food :=
+Definition have_ingredients (food : Food) : M (Option Food) :=
   match food with
-  | Food.Sushi => None
-  | _ => Some food
+  | Food.Sushi => Pure None
+  | _ => Pure (Some food)
   end.
 
-Definition have_recipe (food : Food) : Option Food :=
+Definition have_recipe (food : Food) : M (Option Food) :=
   match food with
-  | Food.CordonBleu => None
-  | _ => Some food
+  | Food.CordonBleu => Pure None
+  | _ => Pure (Some food)
   end.
 
-Definition cookable_v1 (food : Food) : Option Food :=
-  match have_recipe food with
-  | None => None
+Definition cookable_v1 (food : Food) : M (Option Food) :=
+  let* α0 := have_recipe food in
+  match α0 with
+  | None => Pure None
   | Some food =>
-    match have_ingredients food with
-    | None => None
-    | Some food => Some food
+    let* α0 := have_ingredients food in
+    match α0 with
+    | None => Pure None
+    | Some food => Pure (Some food)
     end
   end.
 
-Definition cookable_v2 (food : Food) : Option Food :=
-  (have_recipe food).["and_then"] have_ingredients.
+Definition cookable_v2 (food : Food) : M (Option Food) :=
+  let* α0 := have_recipe food in
+  α0.["and_then"] have_ingredients.
 
-Definition eat (food : Food) (day : Day) : unit :=
-  match cookable_v2 food with
+Definition eat (food : Food) (day : Day) : M unit :=
+  let* α0 := cookable_v2 food in
+  match α0 with
   | Some food =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Yay! On "; " we get to eat "; ".
-" ]
-        [
-          format_argument::["new_debug"] day;
-          format_argument::["new_debug"] food
-        ]) ;;
-    tt
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of day) in
+      let* α1 := format_argument::["new_debug"] (addr_of food) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Yay! On "; " we get to eat "; ".
+" ])
+          (addr_of [ α0; α1 ]) in
+      _crate.io._print α2 in
+    Pure tt
   | None =>
-    _crate.io._print
-      (format_arguments::["new_v1"]
-        [ "Oh no. We don't get to eat on "; "?
-" ]
-        [ format_argument::["new_debug"] day ]) ;;
-    tt
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of day) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Oh no. We don't get to eat on "; "?
+" ])
+          (addr_of [ α0 ]) in
+      _crate.io._print α1 in
+    Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let '(cordon_bleu, steak, sushi) :=
     (Food.CordonBleu, Food.Steak, Food.Sushi) in
-  eat cordon_bleu Day.Monday ;;
-  eat steak Day.Tuesday ;;
-  eat sushi Day.Wednesday ;;
-  tt.
+  let* _ := eat cordon_bleu Day.Monday in
+  let* _ := eat steak Day.Tuesday in
+  let* _ := eat sushi Day.Wednesday in
+  Pure tt.

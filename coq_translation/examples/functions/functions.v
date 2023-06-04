@@ -4,56 +4,79 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  fizzbuzz_to 100 ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* _ := fizzbuzz_to 100 in
+  Pure tt.
 
-Definition is_divisible_by (lhs : u32) (rhs : u32) : bool :=
-  if (rhs.["eq"] 0 : bool) then
-    Return false ;;
-    tt
-  else
-    tt ;;
-  (lhs.["rem"] rhs).["eq"] 0.
-
-Definition fizzbuzz (n : u32) : unit :=
-  if (is_divisible_by n 15 : bool) then
-    _crate.io._print (format_arguments::["new_const"] [ "fizzbuzz
-" ]) ;;
-    tt ;;
-    tt
-  else
-    if (is_divisible_by n 3 : bool) then
-      _crate.io._print (format_arguments::["new_const"] [ "fizz
-" ]) ;;
-      tt ;;
-      tt
+Definition is_divisible_by (lhs : u32) (rhs : u32) : M bool :=
+  let* _ :=
+    let* α0 := rhs.["eq"] 0 in
+    if (α0 : bool) then
+      let* _ := Return false in
+      Pure tt
     else
-      if (is_divisible_by n 5 : bool) then
-        _crate.io._print (format_arguments::["new_const"] [ "buzz
-" ]) ;;
-        tt ;;
-        tt
-      else
-        _crate.io._print
-          (format_arguments::["new_v1"]
-            [ ""; "
-" ]
-            [ format_argument::["new_display"] n ]) ;;
-        tt ;;
-        tt.
+      Pure tt in
+  let* α0 := lhs.["rem"] rhs in
+  α0.["eq"] 0.
 
-Definition fizzbuzz_to (n : u32) : unit :=
-  match LangItem (LangItem 1 n) with
+Definition fizzbuzz (n : u32) : M unit :=
+  let* α0 := is_divisible_by n 15 in
+  if (α0 : bool) then
+    let* _ :=
+      let* _ :=
+        let* α0 := format_arguments::["new_const"] (addr_of [ "fizzbuzz
+" ]) in
+        _crate.io._print α0 in
+      Pure tt in
+    Pure tt
+  else
+    let* α0 := is_divisible_by n 3 in
+    if (α0 : bool) then
+      let* _ :=
+        let* _ :=
+          let* α0 := format_arguments::["new_const"] (addr_of [ "fizz
+" ]) in
+          _crate.io._print α0 in
+        Pure tt in
+      Pure tt
+    else
+      let* α0 := is_divisible_by n 5 in
+      if (α0 : bool) then
+        let* _ :=
+          let* _ :=
+            let* α0 := format_arguments::["new_const"] (addr_of [ "buzz
+" ]) in
+            _crate.io._print α0 in
+          Pure tt in
+        Pure tt
+      else
+        let* _ :=
+          let* _ :=
+            let* α0 := format_argument::["new_display"] (addr_of n) in
+            let* α1 :=
+              format_arguments::["new_v1"]
+                (addr_of [ ""; "
+" ])
+                (addr_of [ α0 ]) in
+            _crate.io._print α1 in
+          Pure tt in
+        Pure tt.
+
+Definition fizzbuzz_to (n : u32) : M unit :=
+  let* α0 := LangItem 1 n in
+  let* α1 := LangItem α0 in
+  match α1 with
   | iter =>
     loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := n; |} =>
-        fizzbuzz n ;;
-        tt
-      end ;;
-      tt
+      let* _ :=
+        let* α0 := LangItem (addr_of iter) in
+        match α0 with
+        | None => Pure Break
+        | Some {| Some.0 := n; |} =>
+          let* _ := fizzbuzz n in
+          Pure tt
+        end in
+      Pure tt
       from
       for
   end.

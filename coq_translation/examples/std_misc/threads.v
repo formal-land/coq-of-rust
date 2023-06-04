@@ -5,43 +5,57 @@ Import Root.std.prelude.rust_2015.
 
 Module thread := std.thread.
 
-Definition NTHREADS : u32 := 10.
+Definition NTHREADS : u32 := run (Pure 10).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let children := _crate.vec.Vec::["new"] tt in
-  match LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} with
+Definition main (_ : unit) : M unit :=
+  let* children := _crate.vec.Vec::["new"] tt in
+  let* _ :=
+    let* α0 := LangItem Range {| Range.start := 0; Range.end := NTHREADS; |} in
+    match α0 with
+    | iter =>
+      loop
+        let* _ :=
+          let* α0 := LangItem (addr_of iter) in
+          match α0 with
+          | None => Pure Break
+          | Some {| Some.0 := i; |} =>
+            let* _ :=
+              let* α0 :=
+                thread.spawn
+                  (fun  =>
+                    let* _ :=
+                      let* _ :=
+                        let* α0 :=
+                          format_argument::["new_display"] (addr_of i) in
+                        let* α1 :=
+                          format_arguments::["new_v1"]
+                            (addr_of [ "this is thread number "; "
+" ])
+                            (addr_of [ α0 ]) in
+                        _crate.io._print α1 in
+                      Pure tt in
+                    Pure tt) in
+              children.["push"] α0 in
+            Pure tt
+          end in
+        Pure tt
+        from
+        for
+    end in
+  let* α0 := LangItem children in
+  match α0 with
   | iter =>
     loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := i; |} =>
-        children.["push"]
-          (thread.spawn
-            (fun  =>
-              _crate.io._print
-                (format_arguments::["new_v1"]
-                  [ "this is thread number "; "
-" ]
-                  [ format_argument::["new_display"] i ]) ;;
-              tt ;;
-              tt)) ;;
-        tt
-      end ;;
-      tt
-      from
-      for
-  end ;;
-  match LangItem children with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := child; |} =>
-        let '_ := child.["join"] in
-        tt
-      end ;;
-      tt
+      let* _ :=
+        let* α0 := LangItem (addr_of iter) in
+        match α0 with
+        | None => Pure Break
+        | Some {| Some.0 := child; |} =>
+          let* _ := child.["join"] in
+          Pure tt
+        end in
+      Pure tt
       from
       for
   end.

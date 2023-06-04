@@ -6,23 +6,33 @@ Import Root.std.prelude.rust_2015.
 Module slice := std.slice.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  let some_vector :=
-    Slice::["into_vec"] (_crate.boxed.Box::["new"] [ 1; 2; 3; 4 ]) in
-  let pointer := some_vector.["as_ptr"] in
-  let length := some_vector.["len"] in
-  let my_slice := slice.from_raw_parts pointer length in
-  match (some_vector.["as_slice"], my_slice) with
-  | (left_val, right_val) =>
-    if ((left_val.["deref"].["eq"] right_val.["deref"]).["not"] : bool) then
-      let kind := _crate.panicking.AssertKind.Eq in
-      _crate.panicking.assert_failed
-        kind
-        left_val.["deref"]
-        right_val.["deref"]
-        _crate.option.Option.None ;;
-      tt
-    else
-      tt
-  end ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* some_vector :=
+    let* α0 := _crate.boxed.Box::["new"] [ 1; 2; 3; 4 ] in
+    Slice::["into_vec"] α0 in
+  let* pointer := some_vector.["as_ptr"] in
+  let* length := some_vector.["len"] in
+  let* my_slice := slice.from_raw_parts pointer length in
+  let* _ :=
+    let* α0 := some_vector.["as_slice"] in
+    match (addr_of α0, addr_of my_slice) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := _crate.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          _crate.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            _crate.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  Pure tt.

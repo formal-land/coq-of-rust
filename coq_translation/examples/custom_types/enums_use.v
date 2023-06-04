@@ -18,30 +18,43 @@ End Work.
 Definition Work := Work.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
+Definition main (_ : unit) : M unit :=
   let status := Poor in
   let work := Civilian in
-  match status with
-  | Rich =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "The rich have lots of money!
-" ]) ;;
-    tt
-  | Poor =>
-    _crate.io._print
-      (format_arguments::["new_const"] [ "The poor have no money...
-" ]) ;;
-    tt
-  end ;;
+  let* _ :=
+    match status with
+    | Rich =>
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "The rich have lots of money!
+" ]) in
+        _crate.io._print α0 in
+      Pure tt
+    | Poor =>
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "The poor have no money...
+" ]) in
+        _crate.io._print α0 in
+      Pure tt
+    end in
   match work with
   | Civilian =>
-    _crate.io._print (format_arguments::["new_const"] [ "Civilians work!
-" ]) ;;
-    tt
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Civilians work!
+" ]) in
+      _crate.io._print α0 in
+    Pure tt
   | Soldier =>
-    _crate.io._print (format_arguments::["new_const"] [ "Soldiers fight!
-" ]) ;;
-    tt
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Soldiers fight!
+" ]) in
+      _crate.io._print α0 in
+    Pure tt
   end.
 
 Module Poor := crate.Status.Poor.

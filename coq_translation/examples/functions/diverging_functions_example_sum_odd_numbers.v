@@ -4,33 +4,44 @@ Require Import CoqOfRust.CoqOfRust.
 Import Root.std.prelude.rust_2015.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : unit :=
-  _crate.io._print
-    (format_arguments::["new_v1"]
-      [ "Sum of odd numbers up to 9 (excluding): "; "
-" ]
-      [ format_argument::["new_display"] (sum_odd_numbers 9) ]) ;;
-  tt ;;
-  tt.
+Definition main (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := sum_odd_numbers 9 in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Sum of odd numbers up to 9 (excluding): "; "
+" ])
+          (addr_of [ α1 ]) in
+      _crate.io._print α2 in
+    Pure tt in
+  Pure tt.
 
-Definition sum_odd_numbers (up_to : u32) : u32 :=
+Definition sum_odd_numbers (up_to : u32) : M u32 :=
   let acc := 0 in
-  match LangItem Range {| Range.start := 0; Range.end := up_to; |} with
-  | iter =>
-    loop
-      match LangItem iter with
-      | None => Break
-      | Some {| Some.0 := i; |} =>
-        let addition :=
-          match (i.["rem"] 2).["eq"] 1 with
-          | true => i
-          | false => Continue
+  let* _ :=
+    let* α0 := LangItem Range {| Range.start := 0; Range.end := up_to; |} in
+    match α0 with
+    | iter =>
+      loop
+        let* _ :=
+          let* α0 := LangItem (addr_of iter) in
+          match α0 with
+          | None => Pure Break
+          | Some {| Some.0 := i; |} =>
+            let* addition :=
+              let* α0 := i.["rem"] 2 in
+              let* α1 := α0.["eq"] 1 in
+              match α1 with
+              | true => Pure i
+              | false => Pure Continue
+              end in
+            let* _ := acc.["add_assign"] addition in
+            Pure tt
           end in
-        acc.["add_assign"] addition ;;
-        tt
-      end ;;
-      tt
-      from
-      for
-  end ;;
-  acc.
+        Pure tt
+        from
+        for
+    end in
+  Pure acc.
