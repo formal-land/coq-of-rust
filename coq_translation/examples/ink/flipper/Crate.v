@@ -3,7 +3,126 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import std.prelude.rust_2021.
 
+(* @TODO Double check this in [CoqOfRust] *)
+Parameter usize : Set.
+
+Module Root.
+  Module ink.
+    Module storage.
+      Module traits.
+        Module AutoStorableHint.
+          Parameter Type_ : Set.
+        End AutoStorableHint.
+      End traits.
+    End storage.
+
+    Module env.
+      Parameter DefaultEnvironment : Set.
+
+      Module ContractEnv.
+        Class Trait (Self : Set) : Set := {
+            (* ??? *)
+          }.
+        
+        Parameter Env : Set.
+      End ContractEnv.
+      Module Environment.
+        Parameter AccountId : Set.
+        Parameter Balance : Set.
+        Parameter Hash : Set.
+        Parameter Timestamp : Set.
+        Parameter BlockNumber : Set.
+        Parameter ChainExtension : Set.
+        Parameter MAX_EVENT_TOPICS : M usize.
+      End Environment.
+    End env.
+    Module reflect.
+      Module ConstructorOutput.
+        Parameter Error : Set.
+        (* @TODO Not sure about this, it is a guess *)
+        Parameter IS_RESULT : unit -> unit -> bool.
+      End ConstructorOutput.
+
+      Module DispatchableConstructorInfo.
+        Class Trait (Self : Set) (a b : Set) : Set := {
+          IS_RESULT : unit -> unit -> bool;
+          CALLABLE : a -> b;
+          PAYABLE : bool;
+          SELECTOR : list Z;
+          LABEL : string;
+        }.
+      End DispatchableConstructorInfo.
+
+      Module DispatchableMessageInfo.
+     (* : unit -> ImplFlipper.Self -> unit -> bool *)
+        (* @TODO I added [a] and [b], to accomodate the
+         CALLABLE types, I need a beter unserstanding of
+         what is happening here *)
+        Class Trait Self (a b : Set) := {
+            CALLABLE : unit -> Self -> a -> b;
+            MUTATES : unit -> bool;
+            PAYABLE : unit -> bool;
+            SELECTOR : unit -> list Z;
+            LABEL : unit -> string;
+          }.
+      End DispatchableMessageInfo.
+    End reflect.
+    Module codegen.
+      Module ContractCallBuilder.
+        Parameter Type_ : Set.
+      End ContractCallBuilder.
+    End codegen.
+  End ink.
+End Root.
+
 Module flipper.
+  Module Flipper.
+    Record t : Set := {
+      value : Root.ink.storage.traits.AutoStorableHint.Type_;
+    }.
+    
+    Global Instance Get_value : Notation.Dot "value" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End Flipper.
+  Definition Flipper : Set := Flipper.t.
+
+  Module ImplFlipper.
+    Definition Self := Flipper.
+
+    (* @TODO added by hand *)
+    Definition new (x : Root.ink.storage.traits.AutoStorableHint.Type_) : Self := Flipper.Build_t x.
+
+    (* @TODO added by hand *)
+    Parameter new_default : unit -> Flipper.
+
+    (* @TODO added by hand *)
+    Parameter flip : Self -> Self.
+
+    (* @TODO added by hand *)
+    Parameter get : Self -> bool.
+    
+    (* @TODO added by hand *)
+    Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+      Notation.double_colon := new;
+    }.
+
+    (* @TODO added by hand *)
+    Global Instance AssociatedFunction_new_default : Notation.DoubleColon Self "new_default" := {
+      Notation.double_colon := new_default;
+    }.
+
+    (* @TODO added by hand *)
+    Global Instance AssociatedFunction_flip : Notation.DoubleColon Self "flip" := {
+      Notation.double_colon := flip;
+    }.
+
+    (* @TODO added by hand *)
+    Global Instance AssociatedFunction_get : Notation.DoubleColon Self "get" := {
+      Notation.double_colon := get;
+    }.
+  End ImplFlipper.
+
   Module Impl_Root_ink_env_ContractEnv_for_Flipper.
     Definition Self := Flipper.
     
@@ -30,34 +149,23 @@ Module flipper.
   Definition MAX_EVENT_TOPICS : usize :=
     run (Root.ink.env.Environment.MAX_EVENT_TOPICS).
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Module Flipper.
-    Record t : Set := {
-      value : Root.ink.storage.traits.AutoStorableHint.Type;
-    }.
-    
-    Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-  End Flipper.
-  Definition Flipper : Set := Flipper.t.
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
-  
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
   Module Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Flipper.
     Definition Self := Flipper.
@@ -70,45 +178,55 @@ Module flipper.
     
     Definition Error : Set := Root.ink.reflect.ConstructorOutput.Error.
     
-    Definition IS_RESULTRoot.ink.reflect.ConstructorOutput.IS_RESULT.
+    Definition IS_RESULT := Root.ink.reflect.ConstructorOutput.IS_RESULT.
     
     Global Instance AssociatedFunction_IS_RESULT :
       Notation.DoubleColon Self "IS_RESULT" := {
       Notation.double_colon := IS_RESULT;
     }.
     
-    Definition CALLABLEfun __ink_binding_0 => Flipper::["new"] __ink_binding_0.
+    Definition CALLABLE := fun __ink_binding_0 => Flipper::["new"] __ink_binding_0.
     
     Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
-    
-    Definition PAYABLEfalse.
-    
+
+    (* @TODO check this in the translation *)
+    (* Definition PAYABLEfalse. I'm having multiple cases like this *)
+    (* Update
+
+     These where [Definition PAYABLE (_ : unit) := false]
+     before. I tested the translation of [fn foo() -> bool { false }]
+     and it works fine, I don't know why this is happening.
+     *)
+    Definition PAYABLE := false.
+
     Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition SELECTOR[ 155; 174; 157; 94 ].
+    Definition SELECTOR := [ 155; 174; 157; 94 ].
     
     Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition LABEL"new".
+    Definition LABEL := "new".
     
     Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
+
+    Check Root.ink.reflect.DispatchableConstructorInfo.Trait.
     
     Global Instance I
         :
         Root.ink.reflect.DispatchableConstructorInfo.Trait
-        Self :=
+        Self Root.ink.storage.traits.AutoStorableHint.Type_ ImplFlipper.Self :=
       {
       Root.ink.reflect.DispatchableConstructorInfo.IS_RESULT := IS_RESULT;
       Root.ink.reflect.DispatchableConstructorInfo.CALLABLE := CALLABLE;
@@ -118,7 +236,7 @@ Module flipper.
     }.
   End Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Flipper.
   
-  Module Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Flipper.
+  Module Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Flipper_2.
     Definition Self := Flipper.
     
     Definition Input : Set := unit.
@@ -129,35 +247,35 @@ Module flipper.
     
     Definition Error : Set := Root.ink.reflect.ConstructorOutput.Error.
     
-    Definition IS_RESULTRoot.ink.reflect.ConstructorOutput.IS_RESULT.
+    Definition IS_RESULT := Root.ink.reflect.ConstructorOutput.IS_RESULT.
     
     Global Instance AssociatedFunction_IS_RESULT :
       Notation.DoubleColon Self "IS_RESULT" := {
       Notation.double_colon := IS_RESULT;
     }.
     
-    Definition CALLABLEfun _ => Flipper::["new_default"] tt.
+    Definition CALLABLE := fun _ : Root.ink.storage.traits.AutoStorableHint.Type_ => Flipper::["new_default"] tt.
     
     Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition PAYABLEfalse.
-    
+    Definition PAYABLE := false.
+
     Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition SELECTOR[ 97; 239; 126; 62 ].
+    Definition SELECTOR := [ 97; 239; 126; 62 ].
     
     Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition LABEL"new_default".
+    Definition LABEL := "new_default".
     
     Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
@@ -167,7 +285,7 @@ Module flipper.
     Global Instance I
         :
         Root.ink.reflect.DispatchableConstructorInfo.Trait
-        Self :=
+        Self Root.ink.storage.traits.AutoStorableHint.Type_ Self :=
       {
       Root.ink.reflect.DispatchableConstructorInfo.IS_RESULT := IS_RESULT;
       Root.ink.reflect.DispatchableConstructorInfo.CALLABLE := CALLABLE;
@@ -175,7 +293,7 @@ Module flipper.
       Root.ink.reflect.DispatchableConstructorInfo.SELECTOR := SELECTOR;
       Root.ink.reflect.DispatchableConstructorInfo.LABEL := LABEL;
     }.
-  End Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Flipper.
+  End Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Flipper_2.
   
   Module Impl_Root_ink_reflect_DispatchableMessageInfo_for_Flipper.
     Definition Self := Flipper.
@@ -186,14 +304,15 @@ Module flipper.
     
     Definition Storage : Set := Flipper.
     
-    Definition CALLABLEfun storage _ => Flipper::["flip"] storage.
+    Definition CALLABLE := fun storage (_ : Root.ink.storage.traits.AutoStorableHint.Type_) => Flipper::["flip"] storage.
     
     Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition SELECTOR[ 99; 58; 165; 81 ].
+    Definition SELECTOR := [ 99; 58; 165; 81 ].
+    (* wip *)
     
     Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
