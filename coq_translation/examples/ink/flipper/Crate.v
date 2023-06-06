@@ -2,8 +2,127 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Import std.prelude.rust_2021.
+(** Axiomatization of ink deps *)
+
+(* @TODO Double check this in [CoqOfRust] *)
+Parameter usize : Set.
+
+Module Root.
+  Module ink.
+    Module storage.
+      Module traits.
+        Module AutoStorableHint.
+          Parameter Type_ : Set.
+        End AutoStorableHint.
+      End traits.
+    End storage.
+
+    Module env.
+      Parameter DefaultEnvironment : Set.
+
+      Module ContractEnv.
+        Class Trait (Self : Set) : Set := {
+            (* ??? *)
+          }.
+        
+        Parameter Env : Set.
+      End ContractEnv.
+      Module Environment.
+        Parameter AccountId : Set.
+        Parameter Balance : Set.
+        Parameter Hash : Set.
+        Parameter Timestamp : Set.
+        Parameter BlockNumber : Set.
+        Parameter ChainExtension : Set.
+        Parameter MAX_EVENT_TOPICS : M usize.
+      End Environment.
+    End env.
+    Module reflect.
+      Module ConstructorOutput.
+        Parameter Error : Set.
+        (* @TODO Not sure about this, it is a guess *)
+        Parameter IS_RESULT : unit -> bool.
+      End ConstructorOutput.
+
+      Module DispatchableConstructorInfo.
+        Class Trait (Self : Set) : Set := {
+          IS_RESULT : unit -> bool;
+          CALLABLE : Root.ink.storage.traits.AutoStorableHint.Type_ -> Self;
+          PAYABLE : bool;
+          SELECTOR : list Z;
+          LABEL : string;
+        }.
+      End DispatchableConstructorInfo.
+
+      Module DispatchableMessageInfo.
+     (* : unit -> ImplFlipper.Self -> unit -> bool *)
+        Class Trait Self (a : Set) := {
+            CALLABLE : Self -> Root.ink.storage.traits.AutoStorableHint.Type_ -> a;
+            MUTATES : bool;
+            PAYABLE : bool;
+            SELECTOR : list Z;
+            LABEL : string;
+          }.
+      End DispatchableMessageInfo.
+    End reflect.
+    Module codegen.
+      Module ContractCallBuilder.
+        Parameter Type_ : Set.
+      End ContractCallBuilder.
+    End codegen.
+  End ink.
+End Root.
 
 Module flipper.
+  (* I had to move this up *)
+  Module Flipper.
+    Record t : Set := {
+      value : Root.ink.storage.traits.AutoStorableHint.Type_;
+        (* I have to put _ after Type because Type is reserved in Coq *)
+    }.
+    
+    Global Instance Get_value : Notation.Dot "value" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End Flipper.
+  Definition Flipper : Set := Flipper.t.
+
+  Module ImplFlipper.
+    Definition Self := Flipper.
+
+    (* @TODO added by hand *)
+    Definition new (x : Root.ink.storage.traits.AutoStorableHint.Type_) : Self := Flipper.Build_t x.
+
+    (* @TODO added by hand *)
+    Parameter new_default : unit -> Flipper.
+
+    (* @TODO added by hand *)
+    Parameter flip : Self -> Self.
+
+    (* @TODO added by hand *)
+    Parameter get : Self -> bool.
+    
+    (* @TODO added by hand *)
+    Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+      Notation.double_colon := new;
+    }.
+
+    (* @TODO added by hand *)
+    Global Instance AssociatedFunction_new_default : Notation.DoubleColon Self "new_default" := {
+      Notation.double_colon := new_default;
+    }.
+
+    (* @TODO added by hand *)
+    Global Instance AssociatedFunction_flip : Notation.DoubleColon Self "flip" := {
+      Notation.double_colon := flip;
+    }.
+
+    (* @TODO added by hand *)
+    Global Instance AssociatedFunction_get : Notation.DoubleColon Self "get" := {
+      Notation.double_colon := get;
+    }.
+  End ImplFlipper.
+
   Module Impl_Root_ink_env_ContractEnv_for_Flipper.
     Definition Self := Flipper.
     
@@ -30,34 +149,23 @@ Module flipper.
   Definition MAX_EVENT_TOPICS : usize :=
     run (Root.ink.env.Environment.MAX_EVENT_TOPICS).
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Module Flipper.
-    Record t : Set := {
-      value : Root.ink.storage.traits.AutoStorableHint.Type;
-    }.
-    
-    Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-  End Flipper.
-  Definition Flipper : Set := Flipper.t.
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
-  
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
   Module Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Flipper.
     Definition Self := Flipper.
@@ -118,8 +226,9 @@ Module flipper.
       Root.ink.reflect.DispatchableConstructorInfo.LABEL := LABEL;
     }.
   End Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Flipper.
-  
-  Module Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Flipper.
+
+  (* @TODO it generated a module with the same name, I added _2 to the end  *)
+  Module Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Flipper_2.
     Definition Self := Flipper.
     
     Definition Input : Set := unit.
@@ -137,7 +246,7 @@ Module flipper.
       Notation.double_colon := IS_RESULT;
     }.
     
-    Definition CALLABLE := fun _ => Flipper::["new_default"] tt.
+    Definition CALLABLE := fun (_ : Root.ink.storage.traits.AutoStorableHint.Type_) => Flipper::["new_default"] tt.
     
     Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
@@ -176,7 +285,7 @@ Module flipper.
       Root.ink.reflect.DispatchableConstructorInfo.SELECTOR := SELECTOR;
       Root.ink.reflect.DispatchableConstructorInfo.LABEL := LABEL;
     }.
-  End Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Flipper.
+  End Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Flipper_2.
   
   Module Impl_Root_ink_reflect_DispatchableMessageInfo_for_Flipper.
     Definition Self := Flipper.
@@ -187,7 +296,7 @@ Module flipper.
     
     Definition Storage : Set := Flipper.
     
-    Definition CALLABLE := fun storage _ => Flipper::["flip"] storage.
+    Definition CALLABLE := fun storage (_ : Root.ink.storage.traits.AutoStorableHint.Type_) => Flipper::["flip"] storage.
     
     Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
@@ -222,7 +331,7 @@ Module flipper.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I : Root.ink.reflect.DispatchableMessageInfo.Trait Self := {
+    Global Instance I : Root.ink.reflect.DispatchableMessageInfo.Trait Self Self := {
       Root.ink.reflect.DispatchableMessageInfo.CALLABLE := CALLABLE;
       Root.ink.reflect.DispatchableMessageInfo.MUTATES := MUTATES;
       Root.ink.reflect.DispatchableMessageInfo.PAYABLE := PAYABLE;
@@ -231,7 +340,7 @@ Module flipper.
     }.
   End Impl_Root_ink_reflect_DispatchableMessageInfo_for_Flipper.
   
-  Module Impl_Root_ink_reflect_DispatchableMessageInfo_for_Flipper.
+  Module Impl_Root_ink_reflect_DispatchableMessageInfo_for_Flipper_2.
     Definition Self := Flipper.
     
     Definition Input : Set := unit.
@@ -240,7 +349,7 @@ Module flipper.
     
     Definition Storage : Set := Flipper.
     
-    Definition CALLABLE := fun storage _ => Flipper::["get"] storage.
+    Definition CALLABLE := fun storage (_ : Root.ink.storage.traits.AutoStorableHint.Type_) => Flipper::["get"] storage.
     
     Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
@@ -275,26 +384,26 @@ Module flipper.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I : Root.ink.reflect.DispatchableMessageInfo.Trait Self := {
+    Global Instance I : Root.ink.reflect.DispatchableMessageInfo.Trait Self bool := {
       Root.ink.reflect.DispatchableMessageInfo.CALLABLE := CALLABLE;
       Root.ink.reflect.DispatchableMessageInfo.MUTATES := MUTATES;
       Root.ink.reflect.DispatchableMessageInfo.PAYABLE := PAYABLE;
       Root.ink.reflect.DispatchableMessageInfo.SELECTOR := SELECTOR;
       Root.ink.reflect.DispatchableMessageInfo.LABEL := LABEL;
     }.
-  End Impl_Root_ink_reflect_DispatchableMessageInfo_for_Flipper.
+  End Impl_Root_ink_reflect_DispatchableMessageInfo_for_Flipper_2.
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
   Module FlipperRef.
     Record t : Set := {
-      inner : Root.ink.codegen.ContractCallBuilder.Type;
+      inner : Root.ink.codegen.ContractCallBuilder.Type_;
     }.
     
     Global Instance Get_inner : Notation.Dot "inner" := {
@@ -306,15 +415,29 @@ Module flipper.
   Module Impl__crate_fmt_Debug_for_FlipperRef.
     Definition Self := FlipperRef.
     
+    (* @TODO added by hand *)
+    Parameter debug_struct_field1_finish :
+      mut_ref _crate.fmt.Formatter
+      -> String
+      -> String
+      -> Root.ink.codegen.ContractCallBuilder.Type_
+      -> _crate.fmt.Result.
+
+    (* @TODO added by hand *)
+    Global Instance AssociatedFunction_debug_struct_fields1_finish_method  :
+      Notation.DoubleColon _crate.fmt.Formatter "debug_struct_field1_finish" := {
+        Notation.double_colon := debug_struct_field1_finish;
+      }.
+
     Definition fmt
         (self : ref Self)
         (f : mut_ref _crate.fmt.Formatter)
-        : _crate.fmt.Result :=
-      _crate.fmt.Formatter::["debug_struct_field1_finish"]
+        : M _crate.fmt.Result :=
+      Pure (_crate.fmt.Formatter::["debug_struct_field1_finish"]
         f
         "FlipperRef"
         "inner"
-        (addr_of (addr_of self.["inner"])).
+        (addr_of (addr_of self.["inner"]))).
     
     Global Instance Method_fmt : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -325,13 +448,26 @@ Module flipper.
     }.
   End Impl__crate_fmt_Debug_for_FlipperRef.
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
   Module Impl__crate_hash_Hash_for_FlipperRef.
     Definition Self := FlipperRef.
     
+    Parameter __H : Set.        (* ??? added by hand, was missing below *)
+
+    (* @TODO add hash Trait *)
+    Module _crate.
+      Module hash.
+        Module Hash.
+          Class Trait (Self : Set) : Set := {
+              hash : Root.ink.codegen.ContractCallBuilder.Type_ -> mut_ref __H -> unit
+            }.
+        End Hash.
+      End hash.
+    End _crate.
+
     Definition hash (self : ref Self) (state : mut_ref __H) : unit :=
       _crate.hash.Hash.hash (addr_of self.["inner"]) state.
     
