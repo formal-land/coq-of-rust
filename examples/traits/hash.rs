@@ -1,5 +1,3 @@
-// https://doc.rust-lang.org/std/hash/index.html
-
 use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
 
