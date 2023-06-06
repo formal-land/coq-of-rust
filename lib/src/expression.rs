@@ -1129,16 +1129,16 @@ impl Expr {
         }
     }
 
-    pub fn associatedFunction_func_to_doc(&self) -> Doc {
+    pub fn associated_function_func_to_doc(&self) -> Doc {
         match self {
-            Expr::AssociatedFunction { ty, func } => nest([text(func)]),
+            Expr::AssociatedFunction { func, .. } => nest([text(func)]),
             _ => nil(),
         }
     }
 
     pub fn call_func_name(&self) -> Doc {
         match self {
-            Expr::Call { func, args } => func.associatedFunction_func_to_doc(),
+            Expr::Call { func, .. } => func.associated_function_func_to_doc(),
             _ => nil(),
         }
     }

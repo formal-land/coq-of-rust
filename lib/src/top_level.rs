@@ -618,6 +618,11 @@ fn fn_to_doc<'a>(
     body: &'a Expr,
     is_dead_code: bool,
 ) -> Doc<'a> {
+    println!("ty_params: {:#?}", ty_params);
+    println!("where_predicates: {:#?}", where_predicates);
+    println!("args: {:#?}", args);
+    println!("ret_ty: {:#?}", ret_ty);
+    println!("body: {:#?}", body);
     group([
         if is_dead_code {
             concat([
@@ -635,6 +640,7 @@ fn fn_to_doc<'a>(
             concat([
                 text("Parameter "),
                 body.call_func_name(),
+                text(" : "),
                 hardline(),
                 hardline(),
                 text("Global Instance ..."),
@@ -1622,7 +1628,6 @@ impl TopLevelItem {
                 items,
                 trait_non_default_items,
             } => {
-                println!("ITEMS {:#?}", items); // @TODO DELETE THIS LINE
                 group([
                     nest([
                         nest([
