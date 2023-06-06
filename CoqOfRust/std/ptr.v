@@ -55,7 +55,7 @@ Module Pointee.
   `{Send.Trait Metadata}
   `{Sync.Trait Metadata}
   `{Ord.Trait Metadata}
-  (* `{Hash.Trait Metadata} *)
+  `{Hash.Trait Metadata}
   `{Unpin.Trait Metadata}
   : Set := { }.
 End Pointee.

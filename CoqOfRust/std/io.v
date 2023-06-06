@@ -1,3 +1,5 @@
+Require Import CoqOfRust.lib.lib.
+
 (* ********STRUCTS******** *)
 (* 
 [ ] BorrowedBuf

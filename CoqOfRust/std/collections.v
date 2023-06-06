@@ -1,19 +1,20 @@
 Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust.std.alloc.
+Require Import CoqOfRust.std.clone.
 
 (* ********STRUCTS******** *)
 (* 
 [ ] BTreeMap
 [ ] BTreeSet
-[ ] BinaryHeap
+[x] BinaryHeap
 [ ] HashMap
 [ ] HashSet
-[ ] LinkedList
-[ ] TryReserveError
-[ ] VecDeque 
+[x] LinkedList
+[x] TryReserveError
+[x] VecDeque 
 *)
 
-(* NOTE: Bugged: how to translate type param with a default type in this case? *)
+(* TODO: Add dependency for Global *)
 (* 
 pub struct BTreeMap<K, V, A = Global>
 where
@@ -21,13 +22,15 @@ where
 { /* private fields */ }
 *)
 Module BTreeMap.
-  Record t (K V : Set) (A : option Set) 
-    `{Allocator.Trait A}
-    `{Clone.Trait A}
+  Record t (K V A : Set)
+    (* `{Allocator.Trait A} *)
+    (* `{Clone.Trait A} *)
     : Set := { }.
 End BTreeMap.
-Definition BTreeMap := BTreeMap.t.
+Definition BTreeMap (K V : Set) (A : option Set) := 
+  BTreeMap.t K V (defaultType A Global).
 
+(* TODO: Add dependency for Global *)
 (* 
 pub struct BTreeSet<T, A = Global>
 where
@@ -35,30 +38,38 @@ where
 { /* private fields */ }
 *)
 Module BTreeSet.
-  Record t (T : Set) (A : option Set) 
-    `{Allocator.Trait A}
-    `{Clone.Trait A}
+  Record t (T A : Set)
+    (* `{Allocator.Trait A} *)
+    (* `{Clone.Trait A} *)
     : Set := { }.
 End BTreeSet.
-Definition BTreeSet := BTreeSet.t.
+Definition BTreeSet (T : Set) (A : option Set) := BTreeSet.t T (defaultType A Global).
 
+(* pub struct BinaryHeap<T> { /* private fields */ } *)
 Module BinaryHeap.
-  Record t : Set := { }.
+  Record t (T : Set) : Set := { }.
 End BinaryHeap.
 Definition BinaryHeap := BinaryHeap.t.
 
+(* TODO: Add dependency *)
+(* pub struct HashMap<K, V, S = RandomState> { /* private fields */ } *)
 Module HashMap.
-  Record t : Set := { }.
+  Record t (K V S : Set) : Set := { }.
 End HashMap.
-Definition HashMap := HashMap.t.
+(* Definition HashMap (K V : Set) (S : option Set) := 
+  HashMap.t K V (defaultType S RandomState). *)
 
+(* TODO: Add dependency *)
+(* pub struct HashSet<T, S = RandomState> { /* private fields */ } *)
 Module HashSet.
-  Record t : Set := { }.
+  Record t (T : Set) : Set := { }.
 End HashSet.
-Definition HashSet := HashSet.t.
+(* Definition HashSet (T : Set) (S : option Set) := 
+  HashSet.t T (defaultType S RandomState). *)
 
+(* pub struct LinkedList<T> { /* private fields */ } *)
 Module LinkedList.
-  Record t : Set := { }.
+  Record t (T : Set) : Set := { }.
 End LinkedList.
 Definition LinkedList := LinkedList.t.
 

@@ -40,10 +40,10 @@ Parameter step_by `{Sized.Trait Self} : Self -> usize -> StepBy Self.
 (* fn chain<U>(self, other: U) -> Chain<Self, <U as IntoIterator>::IntoIter>
     where Self: Sized,
           U: IntoIterator<Item = Self::Item> { ... } *)
-(* chain {U : Set} 
-  `{Sized.Trait Self} 
-  `{IntoIterator.Trait U (Some Item)} :
-  Chain Self (?); *)
+  chain {U : Set} 
+    `{Sized.Trait Self} 
+    `{IntoIterator.Trait U (Some Item)} :
+    Chain Self U.((IntoIterator.Trait).IntoIter);
 
 (* fn zip<U>(self, other: U) -> Zip<Self, <U as IntoIterator>::IntoIter>
     where Self: Sized,

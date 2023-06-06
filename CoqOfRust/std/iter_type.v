@@ -10,22 +10,9 @@ Require Import CoqOfRust.std.marker.
 Require Import CoqOfRust.std.clone.
 Require Import CoqOfRust.std.cmp.
 
-(* Require Import CoqOfRust.std.iter_type. *)
-
-(* [x] Iterator(Required part) *)
-
-(* NOTE: The Iterator trait has to be put at the first place because most structs depend on this trait. *)
-Module Iterator.
-  Class Trait (Self : Set) (Item : Set) := {
-    (* TODO: Add the translation for all the functions... *)
-
-    (* fn next(&mut self) -> Option<Self::Item>; *)
-    next : mut_ref Self -> Option Item;
-
-  }.
-End Iterator.
 
 (* ********TRAITS******** *)
+
 (* 
 [x] Step(Experimental)
 [x] TrustedLen(Experimental)
@@ -40,6 +27,16 @@ End Iterator.
 [x] Product
 [x] Sum 
 *)
+
+(* NOTE: The Iterator trait has to be put at the first place because most structs depend on this trait. *)
+Module Iterator.
+  Class Trait (Self : Set) (Item : Set) := {
+    Item := Item;
+
+    (* fn next(&mut self) -> Option<Self::Item>; *)
+    next : mut_ref Self -> Option Item;
+  }.
+End Iterator.
 
 
 (* pub trait IntoIterator {

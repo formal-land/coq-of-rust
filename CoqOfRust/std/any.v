@@ -13,14 +13,14 @@ End Demand.
 Definition Demand := Demand.t.
 
 (* pub struct TypeId { /* private fields */ } *)
-Module TypeIdd.
+Module TypeId.
   Record t : Set := { }.
-End TypeIdd.
-Definition TypeIdd := TypeIdd.t.
+End TypeId.
+Definition TypeId := TypeId.t.
 
 (* ********TRAIT******** *)
 (* 
-[ ] Provider
+[x] Provider
 [x] Any 
 *)
 
@@ -32,7 +32,7 @@ pub trait Provider {
 *)
 Module Provider.
   Class Trait (Self : Set) : Set := { 
-    (* BUGGED: How to translate this function? *)
+    provide : ref Self -> mut_ref Demand;
   }.
 End Provider.
 

@@ -108,18 +108,23 @@ End Unpin.
 (* pub trait DiscriminantKind {
     type Discriminant: Clone + Copy + Debug + Eq + PartialEq<Self::Discriminant> + Hash + Send + Sync + Unpin;
 } *)
+Module DiscriminantKind.
+  Class Trait (Self : Set) (Discriminant : Set): Set := { 
+    Discriminant := Discriminant;
+  }.
+End DiscriminantKind.
+
 (* Module DiscriminantKind.
   Class Trait (Self : Set) 
     {Discriminant : Set} 
       `{Clone.Trait Discriminant} 
       `{Copy.Trait Discriminant} 
       `{Debug.Trait Discriminant} 
-      (* NOTE: Circular Dependency from cmp.v *)
-      (* `{Eq.Trait Discriminant}  *)
-      (* `{PartialEq.Trait Discriminant Discriminant} *)
-      (* `{Hash.Trait Discriminant} *)
-      (* `{Send.Trait Discriminant} *)
-      (* `{Sync.Trait Discriminant} *)
+      `{Eq.Trait Discriminant} 
+      `{PartialEq.Trait Discriminant Discriminant}
+      `{Hash.Trait Discriminant}
+      `{Send.Trait Discriminant}
+      `{Sync.Trait Discriminant}
       `{Unpin.Trait Discriminant}
     := {
   Discriminant := Discriminant;

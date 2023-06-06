@@ -2,15 +2,24 @@
 -arg -impredicative-set
 
 lib/lib.v
-std/array.v
-std/ascii.v
-std/clone.v
-std/ops.v
-std/string.v
-std/fmt.v
-std/result.v
-std/cmp.v
-std/error.v
-std/option.v
-std/iter.v
-std/marker.v
+std/array.v # Passed
+std/ascii.v # Passed
+std/clone.v # Passed
+std/option.v # Passed
+std/hash.v # Passed
+std/ptr.v # Passed
+std/alloc.v # Passed
+std/pin.v # Complete
+std/cmp.v # Passed
+std/marker.v # Passed
+std/ops.v # Focus
+std/string.v # Passed
+std/collections.v # Focus
+std/fmt.v # ?
+std/io.v 
+std/any.v 
+std/result.v # Passed
+std/error.v # Bugs
+# std/iter_type.v # Focus
+# std/iter.v # Focus
+std/default.v

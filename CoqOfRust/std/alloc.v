@@ -2,6 +2,7 @@ Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust.std.ptr.
 Require Import CoqOfRust.std.result.
+Require Import CoqOfRust.std.marker.
 
 (* *******STRUCTS******** *)
 (* 
@@ -40,7 +41,7 @@ Definition System := System.t.
 (* ********TRAITS******** *)
 (* 
 [x] Allocator
-[ ] GlobalAlloc
+[x] GlobalAlloc
 *)
 
 (* 
@@ -125,11 +126,10 @@ pub unsafe trait GlobalAlloc {
 *)
 Module GlobalAlloc.
   Class Trait (Self : Set) : Set := { 
-    alloc : ref Self -> Layout -> mut_deref u8;
-    dealloc : ref Self -> mut_deref u8 -> Layout -> unit;
-
-    alloc_zeroed : ref Self -> Layout -> mut_deref u8;
-    realloc : ref Self -> mut_deref u8 -> Layout -> usize -> mut_deref u8;
+    alloc : ref Self -> Layout -> mut_ref u8;
+    dealloc : ref Self -> mut_ref u8 -> Layout -> unit;
+    alloc_zeroed : ref Self -> Layout -> mut_ref u8;
+    realloc : ref Self -> mut_ref u8 -> Layout -> usize -> mut_ref u8;
   }.
 End GlobalAlloc.
 

@@ -1,5 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 
+Require Import CoqOfRust.std.marker.
+
 (* ********STRUCTS******** *)
 (* 
 [x] BuildHasherDefault
@@ -7,10 +9,10 @@ Require Import CoqOfRust.lib.lib.
 *)
 
 (* pub struct BuildHasherDefault<H>(_); *)
-Module BuilHasherDefault.
+Module BuildHasherDefault.
   Record t (H : Set) : Set := { }.
-End BuilHasherDefault.
-Definition BuilHasherDefault := BuilHasherDefault.t.
+End BuildHasherDefault.
+Definition BuildHasherDefault := BuildHasherDefault.t.
 
 
 (* ********TRAITS******** *)
@@ -78,6 +80,31 @@ Module Hasher.
 End Hasher.
 
 (* 
+pub trait Hash {
+    // Required method
+    fn hash<H>(&self, state: &mut H)
+       where H: Hasher;
+
+    // Provided method
+    fn hash_slice<H>(data: &[Self], state: &mut H)
+       where H: Hasher,
+             Self: Sized { ... }
+}
+*)
+Module Hash.
+  Class Trait (Self : Set) : Set := { 
+    hash (H : Set) 
+      `{Hasher.Trait H}
+      : ref Self -> mut_ref H -> unit;
+
+    hash_slice (H : Set) 
+      `{Hasher.Trait H}
+      `{Sized.Trait Self}
+      : ref (list Self) -> mut_ref H;
+  }.
+End Hash.
+
+(* 
 pub trait BuildHasher {
     type Hasher: Hasher;
 
@@ -104,30 +131,4 @@ Module BuilHasher.
         : ref Self -> T -> u64;
   }.
 End BuilHasher.
-
-(* 
-pub trait Hash {
-    // Required method
-    fn hash<H>(&self, state: &mut H)
-       where H: Hasher;
-
-    // Provided method
-    fn hash_slice<H>(data: &[Self], state: &mut H)
-       where H: Hasher,
-             Self: Sized { ... }
-}
-*)
-Module Hash.
-  Class Trait (Self : Set) : Set := { 
-    hash (H : Set) 
-      `{Hasher.Trait H}
-      : ref Self -> mut_ref H -> unit;
-
-    hash_slice (H : Set) 
-      `{Hasher.Trait H}
-      `{Sized.Trait Self}
-      : ref (list Self) -> mut_ref H;
-  }.
-End Hash.
-
 

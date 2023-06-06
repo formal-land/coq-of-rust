@@ -1,12 +1,14 @@
 Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust.std.pin.
+Require Import CoqOfRust.std.cmp.
+Require Import CoqOfRust.std.marker.
 
 
 (* ********ENUMS******** *)
 (* 
 [x] GeneratorState
 [x] Bound
-[] ControlFlow
+[x] ControlFlow
 *)
 
 (* 
@@ -57,12 +59,12 @@ Definition ControlFlow (B : Set) (C : option Set) :=
 (* ********STRUCTS******** *)
 (* 
 [x] Yeet
-[ ] Range
-[ ] RangeFrom
+[x] Range
+[x] RangeFrom
 [x] RangeFull
 [x] RangeInclusive
-[ ] RangeTo
-[ ] RangeToInclusive
+[x] RangeTo
+[x] RangeToInclusive
 *)
 
 (* pub struct Yeet<T>(pub T); *)
@@ -105,7 +107,7 @@ Definition RangeFull := RangeFull.t.
 
 (* pub struct RangeInclusive<Idx> { /* private fields */ } *)
 Module RangeInclusive.
-  Record t : Set := { }.
+  Record t (Idx : Set): Set := { }.
 End RangeInclusive.
 Definition RangeInclusive := RangeInclusive.t.
 
@@ -256,10 +258,9 @@ Module RangeBounds.
   Class Trait (Self T : Set) : Set := { 
     start_bound : ref Self -> Bound (ref T);
     end_bound : ref Self -> Bound (ref T);
-    (* BUGGED: mutual `where` clause?! *)
     contains (U : Set) {T : Set}
-      `{PartialOrd.Trait U T}
-      `{PartialOrd.Trait T U}
+      `{PartialOrd.Trait U (Some T)}
+      `{PartialOrd.Trait T (Some U)}
       : ref Self -> ref U -> bool;
   }.
 End RangeBounds.
@@ -290,7 +291,7 @@ where
 *)
 Module FnOnce.
   Class Trait (Self : Set) (Args Output : Set) 
-  `{Tuple.trait Args}
+  `{Tuple.Trait Args}
   : Set := { 
     call_once : Self -> Args -> Output;
   }.
@@ -369,7 +370,7 @@ Module IndexMut.
   Class Trait (Self : Set) (Idx : Set) 
     `{Index.Trait Self Idx}
   : Set := { 
-    index_mut : ref_mut Self -> Idx -> Output;
+    index_mut : mut_ref Self -> Idx -> Output;
   }.
 End IndexMut.
 
