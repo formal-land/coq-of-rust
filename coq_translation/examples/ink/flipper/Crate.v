@@ -457,7 +457,7 @@ Module flipper.
     
     Parameter __H : Set.        (* ??? added by hand, was missing below *)
 
-    (* @TODO add hash Trait *)
+     (* @TODO add hash Trait *)
     Module _crate.
       Module hash.
         Module Hash.

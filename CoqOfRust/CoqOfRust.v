@@ -114,6 +114,9 @@ Parameter cast : forall {A : Set}, A -> forall (B : Set), B.
 
 Parameter assign : forall {A : Set}, A -> A -> M unit.
 
+Definition usize : Set := Z.
+Definition isize : Set := Z.
+
 Definition u8 : Set := Z.
 Definition u16 : Set := Z.
 Definition u32 : Set := Z.

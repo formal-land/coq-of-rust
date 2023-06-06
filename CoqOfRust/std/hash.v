@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust.std.marker.
+=======
+Require Import CoqOfRust.CoqOfRust.
+>>>>>>> 05e9d64 (WIP make hash trait work)
 
 (* ********STRUCTS******** *)
 (* 
@@ -79,6 +83,31 @@ Module Hasher.
   }.
 End Hasher.
 
+
+(* 
+pub trait Hash {
+    // Required method
+    fn hash<H>(&self, state: &mut H)
+       where H: Hasher;
+
+    // Provided method
+    fn hash_slice<H>(data: &[Self], state: &mut H)
+       where H: Hasher,
+             Self: Sized { ... }
+}
+*)
+Module Hash.
+  Class Trait (Self : Set) : Set := { 
+    hash (H : Set) 
+      `{Hasher.Trait H}
+      : ref Self -> mut_ref H -> unit;
+
+    hash_slice (H : Set) 
+      `{Hasher.Trait H}
+      `{Sized.Trait Self}
+      : ref (list Self) -> mut_ref H;
+  }.
+End Hash.
 (* 
 pub trait Hash {
     // Required method
@@ -131,4 +160,3 @@ Module BuilHasher.
         : ref Self -> T -> u64;
   }.
 End BuilHasher.
-

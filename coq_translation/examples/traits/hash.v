@@ -3,6 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
+(* @TODO try the below  *)
+(* https://github.com/formal-land/coq-of-rust/pull/68/files#diff-14f096c87ab35bcd78063190141ce38a9e068e9233e7cac0ad1ce31bce83adcc *)
+
 Module std.
   Module collections.
     Module hash_map.
