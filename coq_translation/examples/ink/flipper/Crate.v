@@ -70,35 +70,36 @@ Module flipper.
     
     Definition Error : Set := Root.ink.reflect.ConstructorOutput.Error.
     
-    Definition IS_RESULTRoot.ink.reflect.ConstructorOutput.IS_RESULT.
+    Definition IS_RESULT := Root.ink.reflect.ConstructorOutput.IS_RESULT.
     
     Global Instance AssociatedFunction_IS_RESULT :
       Notation.DoubleColon Self "IS_RESULT" := {
       Notation.double_colon := IS_RESULT;
     }.
     
-    Definition CALLABLEfun __ink_binding_0 => Flipper::["new"] __ink_binding_0.
+    Definition
+      CALLABLE := fun __ink_binding_0 => Flipper::["new"] __ink_binding_0.
     
     Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition PAYABLEfalse.
+    Definition PAYABLE := false.
     
     Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition SELECTOR[ 155; 174; 157; 94 ].
+    Definition SELECTOR := [ 155; 174; 157; 94 ].
     
     Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition LABEL"new".
+    Definition LABEL := "new".
     
     Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
@@ -129,35 +130,35 @@ Module flipper.
     
     Definition Error : Set := Root.ink.reflect.ConstructorOutput.Error.
     
-    Definition IS_RESULTRoot.ink.reflect.ConstructorOutput.IS_RESULT.
+    Definition IS_RESULT := Root.ink.reflect.ConstructorOutput.IS_RESULT.
     
     Global Instance AssociatedFunction_IS_RESULT :
       Notation.DoubleColon Self "IS_RESULT" := {
       Notation.double_colon := IS_RESULT;
     }.
     
-    Definition CALLABLEfun _ => Flipper::["new_default"] tt.
+    Definition CALLABLE := fun _ => Flipper::["new_default"] tt.
     
     Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition PAYABLEfalse.
+    Definition PAYABLE := false.
     
     Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition SELECTOR[ 97; 239; 126; 62 ].
+    Definition SELECTOR := [ 97; 239; 126; 62 ].
     
     Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition LABEL"new_default".
+    Definition LABEL := "new_default".
     
     Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
@@ -186,35 +187,35 @@ Module flipper.
     
     Definition Storage : Set := Flipper.
     
-    Definition CALLABLEfun storage _ => Flipper::["flip"] storage.
+    Definition CALLABLE := fun storage _ => Flipper::["flip"] storage.
     
     Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition SELECTOR[ 99; 58; 165; 81 ].
+    Definition SELECTOR := [ 99; 58; 165; 81 ].
     
     Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLEfalse.
+    Definition PAYABLE := false.
     
     Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition MUTATEStrue.
+    Definition MUTATES := true.
     
     Global Instance AssociatedFunction_MUTATES :
       Notation.DoubleColon Self "MUTATES" := {
       Notation.double_colon := MUTATES;
     }.
     
-    Definition LABEL"flip".
+    Definition LABEL := "flip".
     
     Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
@@ -239,35 +240,35 @@ Module flipper.
     
     Definition Storage : Set := Flipper.
     
-    Definition CALLABLEfun storage _ => Flipper::["get"] storage.
+    Definition CALLABLE := fun storage _ => Flipper::["get"] storage.
     
     Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition SELECTOR[ 47; 134; 91; 217 ].
+    Definition SELECTOR := [ 47; 134; 91; 217 ].
     
     Global Instance AssociatedFunction_SELECTOR :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLEfalse.
+    Definition PAYABLE := false.
     
     Global Instance AssociatedFunction_PAYABLE :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition MUTATESfalse.
+    Definition MUTATES := false.
     
     Global Instance AssociatedFunction_MUTATES :
       Notation.DoubleColon Self "MUTATES" := {
       Notation.double_colon := MUTATES;
     }.
     
-    Definition LABEL"get".
+    Definition LABEL := "get".
     
     Global Instance AssociatedFunction_LABEL :
       Notation.DoubleColon Self "LABEL" := {
@@ -669,7 +670,7 @@ Definition _ : unit := run (tt).
 Module Impl_Root_ink_storage_traits_StorageKey_for_Flipper.
   Definition Self := Flipper.
   
-  Definition KEYRoot.ink.storage.traits.StorageKey.KEY.
+  Definition KEY := Root.ink.storage.traits.StorageKey.KEY.
   
   Global Instance AssociatedFunction_KEY : Notation.DoubleColon Self "KEY" := {
     Notation.double_colon := KEY;
@@ -780,7 +781,7 @@ Definition _ : unit := run (tt).
 Module Impl_Root_ink_reflect_ContractName_for_Flipper.
   Definition Self := Flipper.
   
-  Definition NAME"Flipper".
+  Definition NAME := "Flipper".
   
   Global Instance AssociatedFunction_NAME :
     Notation.DoubleColon Self "NAME" := {
@@ -841,35 +842,36 @@ Module Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Flipper.
   
   Definition Error : Set := Root.ink.reflect.ConstructorOutput.Error.
   
-  Definition IS_RESULTRoot.ink.reflect.ConstructorOutput.IS_RESULT.
+  Definition IS_RESULT := Root.ink.reflect.ConstructorOutput.IS_RESULT.
   
   Global Instance AssociatedFunction_IS_RESULT :
     Notation.DoubleColon Self "IS_RESULT" := {
     Notation.double_colon := IS_RESULT;
   }.
   
-  Definition CALLABLEfun __ink_binding_0 => Flipper::["new"] __ink_binding_0.
+  Definition
+    CALLABLE := fun __ink_binding_0 => Flipper::["new"] __ink_binding_0.
   
   Global Instance AssociatedFunction_CALLABLE :
     Notation.DoubleColon Self "CALLABLE" := {
     Notation.double_colon := CALLABLE;
   }.
   
-  Definition PAYABLEfalse.
+  Definition PAYABLE := false.
   
   Global Instance AssociatedFunction_PAYABLE :
     Notation.DoubleColon Self "PAYABLE" := {
     Notation.double_colon := PAYABLE;
   }.
   
-  Definition SELECTOR[ 155; 174; 157; 94 ].
+  Definition SELECTOR := [ 155; 174; 157; 94 ].
   
   Global Instance AssociatedFunction_SELECTOR :
     Notation.DoubleColon Self "SELECTOR" := {
     Notation.double_colon := SELECTOR;
   }.
   
-  Definition LABEL"new".
+  Definition LABEL := "new".
   
   Global Instance AssociatedFunction_LABEL :
     Notation.DoubleColon Self "LABEL" := {
@@ -897,35 +899,35 @@ Module Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Flipper.
   
   Definition Error : Set := Root.ink.reflect.ConstructorOutput.Error.
   
-  Definition IS_RESULTRoot.ink.reflect.ConstructorOutput.IS_RESULT.
+  Definition IS_RESULT := Root.ink.reflect.ConstructorOutput.IS_RESULT.
   
   Global Instance AssociatedFunction_IS_RESULT :
     Notation.DoubleColon Self "IS_RESULT" := {
     Notation.double_colon := IS_RESULT;
   }.
   
-  Definition CALLABLEfun _ => Flipper::["new_default"] tt.
+  Definition CALLABLE := fun _ => Flipper::["new_default"] tt.
   
   Global Instance AssociatedFunction_CALLABLE :
     Notation.DoubleColon Self "CALLABLE" := {
     Notation.double_colon := CALLABLE;
   }.
   
-  Definition PAYABLEfalse.
+  Definition PAYABLE := false.
   
   Global Instance AssociatedFunction_PAYABLE :
     Notation.DoubleColon Self "PAYABLE" := {
     Notation.double_colon := PAYABLE;
   }.
   
-  Definition SELECTOR[ 97; 239; 126; 62 ].
+  Definition SELECTOR := [ 97; 239; 126; 62 ].
   
   Global Instance AssociatedFunction_SELECTOR :
     Notation.DoubleColon Self "SELECTOR" := {
     Notation.double_colon := SELECTOR;
   }.
   
-  Definition LABEL"new_default".
+  Definition LABEL := "new_default".
   
   Global Instance AssociatedFunction_LABEL :
     Notation.DoubleColon Self "LABEL" := {
@@ -951,35 +953,35 @@ Module Impl_Root_ink_reflect_DispatchableMessageInfo_for_Flipper.
   
   Definition Storage : Set := Flipper.
   
-  Definition CALLABLEfun storage _ => Flipper::["flip"] storage.
+  Definition CALLABLE := fun storage _ => Flipper::["flip"] storage.
   
   Global Instance AssociatedFunction_CALLABLE :
     Notation.DoubleColon Self "CALLABLE" := {
     Notation.double_colon := CALLABLE;
   }.
   
-  Definition SELECTOR[ 99; 58; 165; 81 ].
+  Definition SELECTOR := [ 99; 58; 165; 81 ].
   
   Global Instance AssociatedFunction_SELECTOR :
     Notation.DoubleColon Self "SELECTOR" := {
     Notation.double_colon := SELECTOR;
   }.
   
-  Definition PAYABLEfalse.
+  Definition PAYABLE := false.
   
   Global Instance AssociatedFunction_PAYABLE :
     Notation.DoubleColon Self "PAYABLE" := {
     Notation.double_colon := PAYABLE;
   }.
   
-  Definition MUTATEStrue.
+  Definition MUTATES := true.
   
   Global Instance AssociatedFunction_MUTATES :
     Notation.DoubleColon Self "MUTATES" := {
     Notation.double_colon := MUTATES;
   }.
   
-  Definition LABEL"flip".
+  Definition LABEL := "flip".
   
   Global Instance AssociatedFunction_LABEL :
     Notation.DoubleColon Self "LABEL" := {
@@ -1004,35 +1006,35 @@ Module Impl_Root_ink_reflect_DispatchableMessageInfo_for_Flipper.
   
   Definition Storage : Set := Flipper.
   
-  Definition CALLABLEfun storage _ => Flipper::["get"] storage.
+  Definition CALLABLE := fun storage _ => Flipper::["get"] storage.
   
   Global Instance AssociatedFunction_CALLABLE :
     Notation.DoubleColon Self "CALLABLE" := {
     Notation.double_colon := CALLABLE;
   }.
   
-  Definition SELECTOR[ 47; 134; 91; 217 ].
+  Definition SELECTOR := [ 47; 134; 91; 217 ].
   
   Global Instance AssociatedFunction_SELECTOR :
     Notation.DoubleColon Self "SELECTOR" := {
     Notation.double_colon := SELECTOR;
   }.
   
-  Definition PAYABLEfalse.
+  Definition PAYABLE := false.
   
   Global Instance AssociatedFunction_PAYABLE :
     Notation.DoubleColon Self "PAYABLE" := {
     Notation.double_colon := PAYABLE;
   }.
   
-  Definition MUTATESfalse.
+  Definition MUTATES := false.
   
   Global Instance AssociatedFunction_MUTATES :
     Notation.DoubleColon Self "MUTATES" := {
     Notation.double_colon := MUTATES;
   }.
   
-  Definition LABEL"get".
+  Definition LABEL := "get".
   
   Global Instance AssociatedFunction_LABEL :
     Notation.DoubleColon Self "LABEL" := {
@@ -2198,7 +2200,7 @@ Module
     Impl_Root_ink_env_call_ConstructorReturnType_for_Root_core_result_Result_Flipper_E.
   Definition Self := Root.core.result.Result Flipper E.
   
-  Definition IS_RESULTtrue.
+  Definition IS_RESULT := true.
   
   Global Instance AssociatedFunction_IS_RESULT :
     Notation.DoubleColon Self "IS_RESULT" := {
