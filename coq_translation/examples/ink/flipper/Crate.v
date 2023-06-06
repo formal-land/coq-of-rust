@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Import std.prelude.rust_2021.
+
+Require Import CoqOfRust.std.hash.
 (** Axiomatization of ink deps *)
 
-(* @TODO Double check this in [CoqOfRust] *)
-Parameter usize : Set.
 
 Module Root.
   Module ink.
@@ -457,19 +457,12 @@ Module flipper.
     
     Parameter __H : Set.        (* ??? added by hand, was missing below *)
 
-    (* @TODO add hash Trait *)
     Module _crate.
-      Module hash.
-        Module Hash.
-          Class Trait (Self : Set) : Set := {
-              hash : Root.ink.codegen.ContractCallBuilder.Type_ -> mut_ref __H -> unit
-            }.
-        End Hash.
-      End hash.
+      Module hash := std.hash.
     End _crate.
 
     Definition hash (self : ref Self) (state : mut_ref __H) : unit :=
-      _crate.hash.Hash.hash (addr_of self.["inner"]) state.
+      _crate.hash.Hash.hash _ (addr_of self.["inner"]) state.
     
     Global Instance Method_hash : Notation.Dot "hash" := {
       Notation.dot := hash;

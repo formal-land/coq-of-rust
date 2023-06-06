@@ -1,3 +1,5 @@
+Require Import CoqOfRust.CoqOfRust.
+
 (* ********STRUCTS******** *)
 (* 
 [x] BuildHasherDefault
@@ -26,7 +28,7 @@ pub trait Hasher {
 Module Hasher.
   Class Trait (Self : Set) : Set := {
   (* fn finish(&self) -> u64; *)
-  finish : ref Self -> u64;
+  finish : ref Self -> M u64;
 
   (* fn write(&mut self, bytes: &[u8]); *)
   write : mut_ref Self -> ref (list u8) -> unit;
@@ -73,7 +75,38 @@ Module Hasher.
   (* fn write_str(&mut self, s: &str) { ... } *)
   write_str : mut_ref Self -> ref str;
   }.
+
+  (* @TODO add Dot and DotNotation instances *)
 End Hasher.
+
+
+(* 
+pub trait Hash {
+    // Required method
+    fn hash<H>(&self, state: &mut H)
+       where H: Hasher;
+
+    // Provided method
+    fn hash_slice<H>(data: &[Self], state: &mut H)
+       where H: Hasher,
+             Self: Sized { ... }
+}
+*)
+Module Hash.
+  Class Trait (Self : Set) : Set := { 
+    hash {H : Set} 
+      `{Hasher : Hasher.Trait H}
+      : ref Self -> mut_ref H -> M unit;
+
+      (* @TODO add Dot and DotNotation instances *)
+
+    (* hash_slice (H : Set)  *)
+    (*   `{Hasher.Trait H} *)
+    (*   (* `{Sized.Trait Self} *) *)
+    (*   : ref (list Self) -> M (mut_ref H); *)
+
+  }.
+End Hash.
 
 (* 
 pub trait BuildHasher {
@@ -97,35 +130,18 @@ Module BuilHasher.
       build_hasher : ref Self -> Hasher;
       hash_one (T : Set) 
         `{Hash.Trait T}
-        `{Sized.Trait Self}
+        (* `{Sized.Trait Self} *)
         `{Hasher.Trait Hasher}
         : ref Self -> T -> u64;
   }.
 End BuilHasher.
 
-(* 
-pub trait Hash {
-    // Required method
-    fn hash<H>(&self, state: &mut H)
-       where H: Hasher;
-
-    // Provided method
-    fn hash_slice<H>(data: &[Self], state: &mut H)
-       where H: Hasher,
-             Self: Sized { ... }
-}
-*)
-Module Hash.
-  Class Trait (Self : Set) : Set := { 
-    hash (H : Set) 
-      `{Hasher.Trait H}
-      : ref Self -> mut_ref H -> unit;
-
-    hash_slice (H : Set) 
-      `{Hasher.Trait H}
-      `{Sized.Trait Self}
-      : ref (list Self) -> mut_ref H;
-  }.
-End Hash.
-
+(** Hash implementation for primitive types *)
+Global Instance Hash_for_unit : Hash.Trait unit. Admitted.
+Global Instance Hash_for_bool : Hash.Trait unit. Admitted.
+Global Instance Hash_for_i32 : Hash.Trait i32. Admitted.
+Global Instance Hash_for_u32 : Hash.Trait u32. Admitted.
+Global Instance Hash_for_String : Hash.Trait String. Admitted.
+Global Instance Hash_for_i64 : Hash.Trait i64. Admitted.
+Global Instance Hash_for_u64 : Hash.Trait u64. Admitted.
 
