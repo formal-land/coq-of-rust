@@ -633,14 +633,16 @@ fn fn_to_doc<'a>(
             nil()
         },
         // block if..else below is related to compilation of println!
-        // and #[derive(Debug)] for Structs. Printing missing instance
-        // for DoubleColon Class
-        // @TODO: extend to cover more cases
+        // and #[derive(Debug)] for Structs.
+        // Printing missing instance for DoubleColon Class (as Parameter)
         if name == "fmt" {
             concat([
-                text("Parameter "),
-                body.call_func_name(),
-                text(" : "),
+                text("Parameter99999 "),
+                body.parameter_for_fmt1(),
+                text(" -> "),
+                line(),
+                ret_ty.to_doc(false),
+                text("."),
                 hardline(),
                 hardline(),
                 text("Global Instance ..."),

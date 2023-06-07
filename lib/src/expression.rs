@@ -1129,16 +1129,46 @@ impl Expr {
         }
     }
 
-    pub fn associated_function_func_to_doc(&self) -> Doc {
+    // @TODO: maybe there is another way to solve the problem.
+    // Converts to Coq type
+    pub fn to_type(&self) -> Doc {
         match self {
-            Expr::AssociatedFunction { func, .. } => nest([text(func)]),
+            Expr::Literal(_) => text("String"),
+            // Expr::Var(path) => nil(), // path.to_doc(),
+            _ => text("TYPE_HERE"),
+            // Expr::AddrOf(expr) => paren(
+            //     with_paren,
+            //     nest([text("addr_of"), line(), expr.to_doc(true)]),
+            // ),
+        }
+    }
+
+    // All the functions starting from "parameter_for_fmt" are for
+    // printing Parameter and DoubleColon Instance for function,
+    // in fmt Definition (...crate_fmt_Debug...)
+    // get the name and arg_types of the associated function
+    pub fn parameter_for_fmt1(&self) -> Doc {
+        match self {
+            Expr::Block(bx) => bx.parameter_for_fmt(),
             _ => nil(),
         }
     }
 
-    pub fn call_func_name(&self) -> Doc {
+    pub fn parameter_for_fmt_print_name(&self) -> Doc {
         match self {
-            Expr::Call { func, .. } => func.associated_function_func_to_doc(),
+            Expr::AssociatedFunction { ty, func } => text(func),
+            _ => nil(),
+        }
+    }
+
+    // get the name and the arg_types of the associated function match step2
+    pub fn parameter_for_fmt2(&self) -> Doc {
+        match self {
+            Expr::Call { func, args } => nest([
+                func.parameter_for_fmt_print_name(),
+                text(" : "),
+                intersperse(args.iter().map(|arg| arg.to_type()), [line()]),
+            ]),
             _ => nil(),
         }
     }
@@ -1174,6 +1204,13 @@ impl Stmt {
                 hardline(),
                 body.to_doc(),
             ]),
+        }
+    }
+
+    pub fn parameter_for_fmt(&self) -> Doc {
+        match self {
+            Stmt::Expr(expr) => expr.parameter_for_fmt2(),
+            _ => nil(),
         }
     }
 }
