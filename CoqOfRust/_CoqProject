@@ -13,11 +13,11 @@ std/alloc.v # Passed
 std/pin.v # Passed
 std/cmp.v # Passed
 std/marker.v # Passed
-std/ops.v # LARGE FILE. Bugged: as clause, mutual definitions
+std/ops.v # Bugged: as clause, mutual definitions
 std/string.v # Passed
 std/collections.v # FOCUS: LARGE FILE. Bugged: defaultType with `where` clause
-std/fmt.v # LARGE FILE. To be restructured
-std/io.v # LARGE FILE
+std/fmt.v # FOCUS: LARGE FILE. To be restructured
+std/io.v # Complete
 std/any.v # Passed
 std/result.v # Passed
 std/error.v # Bugged : unfamiliar type definitions
@@ -48,7 +48,7 @@ std/slice.v # Bugged: monad function dependency
 std/fs.v # Complete
 std/hint.v # Complete
 std/ffi.v # Complete
-std/str.v # LARGE FILE. Bugged: defaultType with where clause, type def with type
+std/str.v # Bugged: defaultType with where clause, type def with type
 std/num.v # Complete
 std/panic.v # Complete
 std/mem.v # Bugged: unfamiliar trait definition; union type
