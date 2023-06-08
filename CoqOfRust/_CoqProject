@@ -13,11 +13,11 @@ std/alloc.v # Passed
 std/pin.v # Passed
 std/cmp.v # Passed
 std/marker.v # Passed
-std/ops.v # Stable, incomplete
+std/ops.v # Incomplete. Bugged: as clause
 std/string.v # Passed
-std/collections.v # FOCUS: LARGE FILE
-std/fmt.v # FOCUS: Large file to be restructured
-std/io.v # FOCUS: LARGE FILE
+std/collections.v # LARGE FILE
+std/fmt.v # LARGE FILE. To be restructured
+std/io.v # LARGE FILE
 std/any.v # Passed
 std/result.v # Passed
 std/error.v # Bugged : unfamiliar type definitions
@@ -32,7 +32,7 @@ std/boxed.v # Complete
 std/time.v # Complete
 std/vec.v # Bugged: defaultType combined with `where` clause, and `iter` dependency
 std/task.v # Complete
-std/sync.v # FOCUS: LARGE FILE with bugs
+std/sync.v # Bugged: monad function dependency
 std/cell.v # Bugged: monad function dependency
 std/char.v # Bugged: `iter` dependency
 std/assert_matches.v # Complete
@@ -41,21 +41,21 @@ std/thread.v # Complete
 std/rc.v # Complete
 std/intrinsics.v # Complete
 std/backtrace.v # Complete
-std/borrow.v # Complete
-std/env.v # Incomplete
+std/borrow.v # Bugged: unfamiliar param definition
+std/env.v # Complete
 std/future.v # Complete
 std/slice.v # Bugged: monad function dependency
 std/fs.v # Complete
 std/hint.v # Complete
 std/ffi.v # Complete
-std/str.v # FOCUS: EMPTY LARGE FILE
+std/str.v # EMPTY LARGE FILE
 std/num.v # Complete
 std/panic.v # Complete
 std/mem.v # Bugged: unfamiliar trait definition; union type
 std/arch.v # Complete
-std/simd.v # In Progress
+std/simd.v # FOCUS: LARGE FILE
 std/net.v # Bugged: `iter` dependency
 std/path.v # Complete
-std/os.v # FOCUS: LARGE FILE
+std/os.v # LARGE FILE
 std/prelude.v # Complete
 std/primitive.v # Complete
