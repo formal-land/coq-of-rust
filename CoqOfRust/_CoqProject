@@ -20,7 +20,7 @@ std/fmt.v # FOCUS: Large file to be restructured
 std/io.v # FOCUS: LARGE FILE
 std/any.v # Passed
 std/result.v # Passed
-std/error.v # Bugged
+std/error.v # Bugged : unfamiliar type definitions
 std/convert.v # Complete
 
 # NOTE: Below two files are having `as` clause issue
@@ -30,32 +30,32 @@ std/convert.v # Complete
 std/default.v # Complete
 std/boxed.v # Complete
 std/time.v # Complete
-std/vec.v # Bugged
-std/task.v # Bugged
+std/vec.v # Bugged: defaultType combined with `where` clause, and `iter` dependency
+std/task.v # Complete
 std/sync.v # FOCUS: LARGE FILE with bugs
-std/cell.v # Bugged
-std/char.v # Bugged
+std/cell.v # Bugged: monad function dependency
+std/char.v # Bugged: `iter` dependency
 std/assert_matches.v # Complete
-std/async_iter.v # Bugged
+std/async_iter.v # Complete
 std/thread.v # Complete
 std/rc.v # Complete
 std/intrinsics.v # Complete
 std/backtrace.v # Complete
 std/borrow.v # Complete
-std/env.v # Bugged
-std/future.v # Bugged
-std/slice.v # Bugged
+std/env.v # Incomplete
+std/future.v # Complete
+std/slice.v # Bugged: monad function dependency
 std/fs.v # Complete
 std/hint.v # Complete
 std/ffi.v # Complete
 std/str.v # FOCUS: EMPTY LARGE FILE
 std/num.v # Complete
 std/panic.v # Complete
-std/mem.v # Bugged
+std/mem.v # Bugged: unfamiliar trait definition; union type
 std/arch.v # Complete
 std/simd.v # In Progress
-std/net.v # Bugged
-std/path.v # Bugged
+std/net.v # Bugged: `iter` dependency
+std/path.v # Complete
 std/os.v # FOCUS: LARGE FILE
 std/prelude.v # Complete
 std/primitive.v # Complete

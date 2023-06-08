@@ -13,6 +13,7 @@ Require Import CoqOfRust.std.alloc.
 *)
 
 (* BUGGED: defaultType + where clause *)
+(* Do we make a match clause in the definition to resolve this issue? *)
 (* 
 pub struct DrainFilter<'a, T, F, A = Global>
 where

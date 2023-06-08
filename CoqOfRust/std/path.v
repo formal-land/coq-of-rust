@@ -63,11 +63,10 @@ Definition StripPrefixError := StripPrefixError.t.
 
 (* ********ENUMS******** *)
 (*
-[?] Component
-[?] Prefix
+[x] Component
+[x] Prefix
 *)
 
-(* BUGGED: How to translate item with params? *)
 (* 
 pub enum Component<'a> {
     Prefix(PrefixComponent<'a>),
@@ -79,16 +78,15 @@ pub enum Component<'a> {
 *)
 Module Component.
   Inductive t : Set := 
-  | Prefix
-  | RootDir
-  | CurDir
-  | ParentDir
-  | Normal
+  | Prefix : PrefixComponent -> t
+  | RootDir : t
+  | CurDir : t
+  | ParentDir : t
+  | Normal : ref OsStr -> t
   .
 End Component.
 Definition Component := Component.t.
 
-(* BUGGED: same as above *)
 (* 
 pub enum Prefix<'a> {
     Verbatim(&'a OsStr),
@@ -101,12 +99,12 @@ pub enum Prefix<'a> {
 *)
 Module Prefix.
   Inductive t : Set := 
-  | Verbatim
-  | VerbatimUNC
-  | VerbatimDisk
-  | DeviceNS
-  | UNC
-  | Disk
+  | Verbatim : ref OsStr -> t
+  | VerbatimUNC : ref OsStr -> ref OsStr -> t
+  | VerbatimDisk : u8 -> t
+  | DeviceNS : ref OsStr -> t
+  | UNC : ref OsStr -> ref OsStr -> t
+  | Disk : u8 -> t
   .
 End Prefix.
 Definition Prefix := Prefix.t.

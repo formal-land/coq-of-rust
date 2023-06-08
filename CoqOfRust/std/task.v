@@ -1,5 +1,5 @@
 Require Import CoqOfRust.lib.lib.
-(* Require Import CoqOfRust.std.sync. *)
+Require Import CoqOfRust.std.sync.
 
 (* ********STRUCTS******** *)
 (* 
@@ -58,9 +58,8 @@ End Poll.
 Definition Poll := Poll.t.
 
 (* ********TRAITS******** *)
-(* [ ] Wake *)
+(* [x] Wake *)
 
-(* TODO: Add dependency *)
 (* 
 pub trait Wake {
     // Required method

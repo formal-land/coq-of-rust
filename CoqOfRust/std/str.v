@@ -30,7 +30,6 @@ Module pattern.
   
 End pattern.
 
-
 (* ********STRUCTS******** *)
 (*
 [ ] Utf8Chunk

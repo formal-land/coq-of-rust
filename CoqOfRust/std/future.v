@@ -29,7 +29,7 @@ Definition Ready := Ready.t.
 (* ********TRAITS******** *)
 (*
 [x] Future
-[?] IntoFuture
+[x] IntoFuture
 *)
 (* 
 pub trait Future {
@@ -56,9 +56,11 @@ pub trait IntoFuture {
     fn into_future(self) -> Self::IntoFuture;
 }
 *)
-(* BUGGED: How to translate IntoFuture type? *)
+(* NOTE: The syntax for Future trait is weird. It looks like a defaultType but it isn't *)
 Module IntoFuture.
-  Class Trait (Self Output IntoFuture : Set) : Set := { 
+  Class Trait (Self Output IntoFuture : Set) 
+    `{Future.Trait IntoFuture Output}
+  : Set := { 
     Output := Output;
     IntoFuture := IntoFuture;
 

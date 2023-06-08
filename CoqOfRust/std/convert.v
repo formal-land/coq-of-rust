@@ -22,7 +22,7 @@ Definition Infallible := Infallible.t.
 [x] TryInto 
 *)
 
-(* TODO: What is the Sealed trait?! *)
+(* NOTE: Sealed trait is not supported to be translated *)
 (* pub trait FloatToInt<Int>: Sealed + Sized { } *)
 Module FloatToInt.
   Class Trait (Self Int : Set) 

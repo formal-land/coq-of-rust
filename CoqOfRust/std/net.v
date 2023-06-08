@@ -79,9 +79,9 @@ Definition UdpSocket := UdpSocket.t.
 (* ********ENUMS******** *)
 (*
 [x] Ipv6MulticastScope
-[?] IpAddr
+[x] IpAddr
 [x] Shutdown
-[?] SocketAddr
+[x] SocketAddr
 *)
 (* 
 pub enum Ipv6MulticastScope {
@@ -107,13 +107,19 @@ Module Ipv6MulticastScope.
 End Ipv6MulticastScope.
 Definition Ipv6MulticastScope := Ipv6MulticastScope.t.
 
-(* BUGGED: How to translate this enum? *)
 (* 
 pub enum IpAddr {
-    V4(Ipv4Addr),
-    V6(Ipv6Addr),
+  V4(Ipv4Addr),
+  V6(Ipv6Addr),
 }
 *)
+Module IpAddr.
+  Inductive t : Set := 
+  | V4 : Ipv4Addr -> t
+  | V6 : Ipv6Addr -> t
+  .
+End IpAddr.
+Definition IpAddr := IpAddr.t.
 
 (* 
 pub enum Shutdown {
@@ -131,13 +137,19 @@ Module Shutdown.
 End Shutdown.
 Definition Shutdown := Shutdown.t.
 
-(* BUGGED: How to translate this enum? *)
 (* 
 pub enum SocketAddr {
-    V4(SocketAddrV4),
-    V6(SocketAddrV6),
+  V4(SocketAddrV4),
+  V6(SocketAddrV6),
 }
 *)
+Module SocketAddr.
+  Inductive t : Set := 
+  | V4 : SocketAddrV4 -> t
+  | V6 : SocketAddrV6 -> t
+  .
+End SocketAddr.
+Definition SocketAddr := SocketAddr.t.
 
 (* ********TRAITS******** *)
 (*
@@ -151,7 +163,7 @@ pub trait ToSocketAddrs {
     fn to_socket_addrs(&self) -> Result<Self::Iter>;
 }
 *)
-(* BUGGED: How to translate Iter? *)
+(* BUGGED: Iterator dependency *)
 Module ToSocketAddrs.
   Class Trait (Self Iter : Set) : Set := { 
     Iter := Iter;

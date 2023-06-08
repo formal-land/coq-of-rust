@@ -1,6 +1,5 @@
 Require Import CoqOfRust.lib.lib.
-(* Require Import CoqOfRust.std.ffi. *)
-
+Require Import CoqOfRust.std.ffi.
 
 (* ********MODULES******** *)
 (*
@@ -69,12 +68,19 @@ Definition VarsOs := VarsOs.t.
 
 (* ********ENUMS******** *)
 (*
-[ ] VarError
+[x] VarError
 *)
+
 (* 
 pub enum VarError {
     NotPresent,
     NotUnicode(OsString),
 }
 *)
-(* BUGGED: How to translate NotUnicode? *)
+Module VarError.
+  Inductive t : Set := 
+  | NotPresent : t
+  | NotUnicode : OsString -> t
+  .
+End VarError.
+Definition VarError := VarError.t.

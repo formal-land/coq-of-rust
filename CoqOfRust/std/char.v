@@ -3,15 +3,15 @@ Require Import CoqOfRust.lib.lib.
 (* ********STRUCTS******** *)
 (* 
 [x] CharTryFromError
-[x] DecodeUtf16
+[?] DecodeUtf16
 [x] DecodeUtf16Error
 [x] EscapeDebug
 [x] EscapeDefault
-[ ] EscapeUnicode
-[ ] ParseCharError
-[ ] ToLowercase
-[ ] ToUppercase
-[ ] TryFromCharError
+[x] EscapeUnicode
+[x] ParseCharError
+[x] ToLowercase
+[x] ToUppercase
+[x] TryFromCharError
 *)
 
 (* pub struct CharTryFromError(_); *)

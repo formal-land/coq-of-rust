@@ -298,18 +298,20 @@ Definition Simd := Simd.t.
 
 (* ********ENUMS******** *)
 (*
-[?] Which
+[x] Which
 *)
 
-(* BUGGED: enum with param *)
 (* 
 pub enum Which {
-    First(usize),
-    Second(usize),
+  First(usize),
+  Second(usize),
 }
 *)
 Module Which.
-  Inductive t : Set := .
+  Inductive t : Set := 
+  | First : usize -> t
+  | Second : usize -> t
+  .
 End Which.
 Definition Which := Which.t.
 
