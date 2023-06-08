@@ -14,9 +14,9 @@ std/cmp.v # Passed
 std/marker.v # Passed
 std/ops.v # Stable, incomplete
 std/string.v # Passed
-std/collections.v # Focus
-std/fmt.v # ?
-std/io.v # Focus
+std/collections.v # FOCUS: LARGE FILE
+std/fmt.v # FOCUS: Large file to be restructured
+std/io.v # FOCUS: LARGE FILE
 std/any.v # Passed
 std/result.v # Passed
 std/error.v # Bugged
@@ -28,7 +28,7 @@ std/boxed.v # Complete
 std/time.v # Complete
 std/vec.v # Bugged
 std/task.v # Bugged
-std/sync.v # Empty
+std/sync.v # FOCUS: LARGE FILE with bugs
 std/cell.v # Bugged
 std/char.v # Empty
 std/assert_matches.v # Complete
@@ -44,11 +44,14 @@ std/slice.v # Empty
 std/fs.v # Complete
 std/hint.v # Complete
 std/ffi.v # Complete
-std/str.v # Empty
+std/str.v # FOCUS: EMPTY LARGE FILE
 std/num.v # Complete
 std/panic.v # Complete
 std/mem.v # Bugged
-std/arch.v # Bugged
-std/simd.v # Bugged
+std/arch.v # Empty
+std/simd.v # Empty
 std/net.v # Bugged
 std/path.v # Bugged
+std/os.v # FOCUS: LARGE FILE
+std/prelude.v # Empty
+std/primitive.v # Empty

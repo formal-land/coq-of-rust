@@ -2,7 +2,9 @@ Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust.std.convert.
 
 (* ********TYPE DEFS******** *)
-(* ParseError:	A type alias for Infallible. *)
+(* 
+[ ] ParseError
+*)
 (* Notation ParseError := Infallible. *)
 
 (* ********STRUCTS******** *)

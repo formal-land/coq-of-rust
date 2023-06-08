@@ -16,7 +16,7 @@ Definition FromIter := FromIter.t.
 
 (* ********TRAITS******** *)
 (* 
-[?] AsyncIterator
+[x] AsyncIterator
 *)
 (* 
 pub trait AsyncIterator {

@@ -60,10 +60,6 @@ Module ThreadId.
 End ThreadId.
 Definition ThreadId := ThreadId.t.
 
-
-
-
-
 (* ********FUNCTIONS******** *)
 (* 
 [ ] available_parallelism
