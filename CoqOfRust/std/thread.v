@@ -67,10 +67,10 @@ Definition ThreadId := ThreadId.t.
 [ ] panicking
 [ ] park
 [ ] park_timeout
-[ ] park_timeout_msDeprecated
+[x] park_timeout_ms(Deprecated)
 [ ] scope
 [ ] sleep
-[ ] sleep_msDeprecated
+[x] sleep_ms(Deprecated)
 [ ] spawn
 [ ] yield_now	
 *)

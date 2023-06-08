@@ -108,7 +108,6 @@ Module Ord.
     }.
 End Ord.
 
-
 (* ********FUNCTIONS******** *)
 (* 
 [ ] max

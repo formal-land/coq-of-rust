@@ -85,7 +85,7 @@ Definition ReadDir := ReadDir.t.
 [ ] remove_file
 [ ] rename
 [ ] set_permissions
-[ ] soft_linkDeprecated
+[x] soft_link(Deprecated)
 [ ] symlink_metadata
 [ ] write
 *)

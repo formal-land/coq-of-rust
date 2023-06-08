@@ -5,7 +5,7 @@ Require Import CoqOfRust.std.marker.
 (* ********STRUCTS******** *)
 (* 
 [x] BuildHasherDefault
-[ ] SipHasher(Deprecated) 
+[x] SipHasher(Deprecated) 
 *)
 
 (* pub struct BuildHasherDefault<H>(_); *)
