@@ -21,6 +21,7 @@ std/any.v # Passed
 std/result.v # Passed
 std/error.v # Bugged
 std/convert.v # Complete
+# NOTE: Below two files are having `as` clause issue
 # std/iter_type.v 
 # std/iter.v 
 std/default.v # Complete
@@ -30,7 +31,7 @@ std/vec.v # Bugged
 std/task.v # Bugged
 std/sync.v # FOCUS: LARGE FILE with bugs
 std/cell.v # Bugged
-std/char.v # Empty
+std/char.v # Bugged
 std/assert_matches.v # Complete
 std/async_iter.v # Bugged
 std/thread.v # Complete
@@ -40,7 +41,7 @@ std/backtrace.v # Complete
 std/borrow.v # Complete
 std/env.v # Bugged
 std/future.v # Bugged
-std/slice.v # Empty
+std/slice.v # Bugged
 std/fs.v # Complete
 std/hint.v # Complete
 std/ffi.v # Complete
