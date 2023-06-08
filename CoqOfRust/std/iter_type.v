@@ -182,7 +182,6 @@ Module Step.
   Class Trait (Self : Set) 
     `{Clone.Trait Self}
     `{PartialOrd.Trait Self (Some Self)}
-    `{Sized.Trait Self}
   : Set := {
     steps_between : ref Self -> ref Self -> Option usize;
     forward_checked : Self -> usize -> Option Self;

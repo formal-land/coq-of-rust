@@ -99,7 +99,6 @@ Module Hash.
 
     hash_slice (H : Set) 
       `{Hasher.Trait H}
-      `{Sized.Trait Self}
       : ref (list Self) -> mut_ref H;
   }.
 End Hash.
@@ -126,7 +125,6 @@ Module BuilHasher.
       build_hasher : ref Self -> Hasher;
       hash_one (T : Set) 
         `{Hash.Trait T}
-        `{Sized.Trait Self}
         `{Hasher.Trait Hasher}
         : ref Self -> T -> u64;
   }.

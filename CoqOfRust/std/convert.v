@@ -25,9 +25,7 @@ Definition Infallible := Infallible.t.
 (* NOTE: Sealed trait is not supported to be translated *)
 (* pub trait FloatToInt<Int>: Sealed + Sized { } *)
 Module FloatToInt.
-  Class Trait (Self Int : Set) 
-    `{Sized.Trait Self}
-  : Set := { }.
+  Class Trait (Self Int : Set) : Set := { }.
 End FloatToInt.
 
 (* 
@@ -67,10 +65,9 @@ pub trait From<T>: Sized {
 }
 *)
 Module From.
-  Class Trait (Self T : Set) 
-    `{Sized.Trait Self} : Set := { 
-      from : T -> Self;
-    }.
+  Class Trait (Self T : Set) : Set := { 
+    from : T -> Self;
+  }.
 End From.
 
 (* 

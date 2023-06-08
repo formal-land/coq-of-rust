@@ -101,9 +101,9 @@ Module Ord.
     `{Eq.Trait Self}
     `{PartialOrd.Trait Self (Some Self)} :={
     cmp : ref Self -> ref Self -> Ordering;
-    max `{Sized.Trait Self} : Self -> Self -> Self;
-    min `{Sized.Trait Self} : Self -> Self -> Self;
-    clamp `{Sized.Trait Self} `{PartialOrd.Trait Self (Some Self)} : Self -> Self -> Self;
+    max : Self -> Self -> Self;
+    min : Self -> Self -> Self;
+    clamp `{PartialOrd.Trait Self (Some Self)} : Self -> Self -> Self;
 
     }.
 End Ord.
