@@ -53,5 +53,5 @@ std/simd.v # Empty
 std/net.v # Bugged
 std/path.v # Bugged
 std/os.v # FOCUS: LARGE FILE
-std/prelude.v # Empty
-std/primitive.v # Empty
+std/prelude.v # Complete
+std/primitive.v # Complete
