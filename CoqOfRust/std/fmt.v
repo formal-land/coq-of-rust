@@ -2,6 +2,39 @@ Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust.std.result.
 Require Import CoqOfRust.std.string.
 
+
+(* 
+Structs
+Arguments	This structure represents a safely precompiled version of a format string and its arguments. This cannot be generated at runtime because it cannot safely be done, so no constructors are given and the fields are private to prevent modification.
+DebugList	A struct to help with fmt::Debug implementations.
+DebugMap	A struct to help with fmt::Debug implementations.
+DebugSet	A struct to help with fmt::Debug implementations.
+DebugStruct	A struct to help with fmt::Debug implementations.
+DebugTuple	A struct to help with fmt::Debug implementations.
+Error	The error type which is returned from formatting a message into a stream.
+Formatter	Configuration for formatting.
+Enums
+Alignment	Possible alignments returned by Formatter::align
+Traits
+Binary	b formatting.
+Debug	? formatting.
+Display	Format trait for an empty format, {}.
+LowerExp	e formatting.
+LowerHex	x formatting.
+Octal	o formatting.
+Pointer	p formatting.
+UpperExp	E formatting.
+UpperHex	X formatting.
+Write	A trait for writing or formatting into Unicode-accepting buffers or streams.
+Functions
+format	The format function takes an Arguments struct and returns the resulting formatted string.
+write	The write function takes an output stream, and an Arguments struct that can be precompiled with the format_args! macro.
+Type Definitions
+Result	The type returned by formatter methods.
+Derive Macros
+Debug	Derive macro generating an impl of the trait Debug.
+*)
+
 Parameter Alignment : Set.
 
 Parameter Error : Set.

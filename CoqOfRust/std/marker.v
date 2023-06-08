@@ -2,7 +2,7 @@ Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust.std.clone.
 Require Import CoqOfRust.std.fmt.
-(* ERROR: Circular Dependency *)
+(* BUGGED: Circular Dependency *)
 (* Require Import CoqOfRust.std.cmp. *)
 
 (* 

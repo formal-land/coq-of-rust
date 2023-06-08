@@ -13,7 +13,7 @@ Definition Infallible := Infallible.t.
 
 (* ********TRAITS******** *)
 (* 
-[?] FloatToInt
+[x] FloatToInt
 [x] AsMut
 [x] AsRef
 [x] From
@@ -22,7 +22,6 @@ Definition Infallible := Infallible.t.
 [x] TryInto 
 *)
 
-(* NOTE: Sealed trait is not supported to be translated *)
 (* pub trait FloatToInt<Int>: Sealed + Sized { } *)
 Module FloatToInt.
   Class Trait (Self Int : Set) : Set := { }.

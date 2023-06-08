@@ -157,9 +157,9 @@ Definition RangeToInclusive := RangeToInclusive.t.
 [x] Div
 [x] DivAssign
 [x] Drop
-[?] Fn
-[?] FnMut
-[?] FnOnce
+[x] Fn
+[x] FnMut
+[x] FnOnce
 [x] Index
 [x] IndexMut
 [x] Mul	

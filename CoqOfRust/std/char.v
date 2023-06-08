@@ -1,4 +1,6 @@
 Require Import CoqOfRust.lib.lib.
+(* Require Import CoqOfRust.std.iter. *)
+
 
 (* ********STRUCTS******** *)
 (* 
@@ -20,7 +22,7 @@ Module CharTryFromError.
 End CharTryFromError.
 Definition CharTryFromError := CharTryFromError.t.
 
-(* BUGGED: Implement Iterator first *)
+(* BUGGED: Iterator dependency *)
 (* 
 pub struct DecodeUtf16<I>
 where
