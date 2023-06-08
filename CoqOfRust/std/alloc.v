@@ -103,7 +103,6 @@ Module Allocator.
        where Self: Sized { ... }
     *)
     by_ref 
-      `{Sized.Trait Self}
     : ref Self -> ref Self;
   }.
 End Allocator.

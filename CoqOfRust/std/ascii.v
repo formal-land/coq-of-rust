@@ -29,6 +29,8 @@ pub trait AsciiExt {
 *)
 Module AsciiExt.
   Class Trait (Self : Set) (Owned : Set): Set := {
+    Owned := Owned;
+
     is_ascii : ref Self -> bool;
     to_ascii_uppercase : ref Self -> Owned;
     to_ascii_lowercase : ref Self -> Owned;
