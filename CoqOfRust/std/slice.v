@@ -345,9 +345,9 @@ Definition Windows := Windows.t.
 
 (* ********TRAITS******** *)
 (*
-[ ] Concat
-[ ] Join
-[ ] SliceIndex
+[x] Concat
+[x] Join
+[x] SliceIndex
 *)
 (* 
 pub trait Concat<Item>
@@ -386,7 +386,6 @@ Module Join.
   }.
 End Join.
 
-(* BUGGED: What is the Sealed type? *)
 (* 
 pub unsafe trait SliceIndex<T>: Sealed
 where

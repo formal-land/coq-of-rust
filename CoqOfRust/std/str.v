@@ -1,5 +1,36 @@
 Require Import CoqOfRust.lib.lib.
 
+(* ********MODULES******** *)
+(*
+[ ] pattern
+*)
+Module pattern.
+  (* ********STRUCTS******** *)
+  (*
+  [ ] CharArrayRefSearcher
+  [ ] CharArraySearcher
+  [ ] CharPredicateSearcher
+  [ ] CharSearcher
+  [ ] CharSliceSearcher
+  [ ] StrSearcher
+  *)
+  
+  (* ********ENUMS******** *)
+  (*
+  [ ] SearchStep
+  *)
+
+  (* ********TRAITS******** *)
+  (*
+  [ ] DoubleEndedSearcher
+  [ ] Pattern
+  [ ] ReverseSearcher
+  [ ] Searcher
+  *)
+  
+End pattern.
+
+
 (* ********STRUCTS******** *)
 (*
 [ ] Utf8Chunk

@@ -1,6 +1,7 @@
 -R . CoqOfRust
 -arg -impredicative-set
 
+# NOTE: The order of the files could be critical as there are dependency issues
 lib/lib.v
 std/array.v # Passed
 std/ascii.v # Passed
@@ -21,9 +22,11 @@ std/any.v # Passed
 std/result.v # Passed
 std/error.v # Bugged
 std/convert.v # Complete
+
 # NOTE: Below two files are having `as` clause issue
 # std/iter_type.v 
 # std/iter.v 
+
 std/default.v # Complete
 std/boxed.v # Complete
 std/time.v # Complete

@@ -2,7 +2,7 @@ Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust.std.marker.
 
-(* ********TRAIT******** *)
+(* ********TRAITS******** *)
 (* 
 [x] Default
 *)
