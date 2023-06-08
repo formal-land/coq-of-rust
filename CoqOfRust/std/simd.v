@@ -10,19 +10,19 @@ Should we translate Sealed traits?
 
 (* ********TRAITS******** *)
 (*
-[ ] MaskElement
-[ ] SimdElement
-[ ] SimdFloat
-[ ] SimdInt
-[ ] SimdOrd
-[ ] SimdPartialEq
-[ ] SimdPartialOrd
-[ ] SimdUint
-[ ] StdFloat
-[ ] SupportedLaneCount
-[ ] Swizzle
-[ ] Swizzle2
-[ ] ToBitMask
+[?] MaskElement
+[?] SimdElement
+[x] SimdFloat
+[x] SimdInt
+[x] SimdOrd
+[x] SimdPartialEq
+[x] SimdPartialOrd
+[x] SimdUint
+[x] StdFloat
+[x] SupportedLaneCount
+[?] Swizzle
+[?] Swizzle2
+[x] ToBitMask
 *)
 
 (* BUGGED: Mutual Reference with MaskElement *)
@@ -39,7 +39,7 @@ Module SimdElement.
   }.
 End SimdElement.
 
-
+(* NOTE: Sealed trait ignored *)
 (* pub unsafe trait MaskElement: SimdElement + Sealed { } *)
 Module MaskElement.
   Class Trait (Self : Set) 
@@ -65,29 +65,64 @@ Module SimdFloat.
     Bits := Bits;
 
     (* 
-    fn to_bits(self) -> Self::Bits;
+    fn to_bits(self) -> Self::Bits; 
     fn from_bits(bits: Self::Bits) -> Self;
-    fn abs(self) -> Self;
-    fn recip(self) -> Self;
+    *)
+    to_bits : Self -> Bits;
+    from_bits : Bits -> Self;
+
+    (* 
+    fn abs(self) -> Self; 
+    fn recip(self) -> Self; 
     fn to_degrees(self) -> Self;
     fn to_radians(self) -> Self;
-    fn is_sign_positive(self) -> Self::Mask;
+    *)
+    abs : Self -> Self;
+    recip : Self -> Self;
+    to_degrees : Self -> Self;
+    to_radians : Self -> Self;
+
+    (* 
+    fn is_sign_positive(self) -> Self::Mask; 
     fn is_sign_negative(self) -> Self::Mask;
-    fn is_nan(self) -> Self::Mask;
+    fn is_nan(self) -> Self::Mask; 
     fn is_infinite(self) -> Self::Mask;
     fn is_finite(self) -> Self::Mask;
     fn is_subnormal(self) -> Self::Mask;
     fn is_normal(self) -> Self::Mask;
-    fn signum(self) -> Self;
+    *)
+    is_sign_positive : Self -> Mask;
+    is_sign_negative : Self -> Mask;
+    is_nan : Self -> Mask;
+    is_infinite : Self -> Mask;
+    is_finite : Self -> Mask;
+    is_subnormal : Self -> Mask;
+    is_normal : Self -> Mask;
+
+    (* fn signum(self) -> Self; *)
+    signum : Self -> Self;
+
+    (* 
     fn copysign(self, sign: Self) -> Self;
     fn simd_min(self, other: Self) -> Self;
     fn simd_max(self, other: Self) -> Self;
     fn simd_clamp(self, min: Self, max: Self) -> Self;
+    *)
+    copysign : Self -> Self -> Self;
+    simd_min : Self -> Self -> Self;
+    simd_max : Self -> Self -> Self;
+    simd_clamp : Self -> Self -> Self -> Self;
+
+    (* 
     fn reduce_sum(self) -> Self::Scalar;
     fn reduce_product(self) -> Self::Scalar;
     fn reduce_max(self) -> Self::Scalar;
     fn reduce_min(self) -> Self::Scalar;
     *)
+    reduce_sum : Self -> Scalar;
+    reduce_product : Self -> Scalar;
+    reduce_max : Self -> Scalar;
+    reduce_min : Self -> Scalar;
   }.
 End SimdFloat.
 
@@ -105,15 +140,31 @@ Class Trait (Self Mask Scalar : Set)
 : Set := { 
   Mask := Mask;
   Scalar := Scalar;
+
   (* 
   fn saturating_add(self, second: Self) -> Self;
   fn saturating_sub(self, second: Self) -> Self;
   fn abs(self) -> Self;
   fn saturating_abs(self) -> Self;
   fn saturating_neg(self) -> Self;
+  *)
+  saturating_add : Self -> Self -> Self;
+  saturating_sub : Self -> Self -> Self;
+  abs : Self -> Self;
+  saturating_abs : Self -> Self;
+  saturating_neg : Self -> Self;
+
+  (* 
   fn is_positive(self) -> Self::Mask;
   fn is_negative(self) -> Self::Mask;
-  fn signum(self) -> Self;
+  *)
+  is_positive : Self -> Mask;
+  is_negative : Self -> Mask;
+
+  (* fn signum(self) -> Self; *)
+  signum : Self -> Self;
+
+  (* 
   fn reduce_sum(self) -> Self::Scalar;
   fn reduce_product(self) -> Self::Scalar;
   fn reduce_max(self) -> Self::Scalar;
@@ -122,6 +173,13 @@ Class Trait (Self Mask Scalar : Set)
   fn reduce_or(self) -> Self::Scalar;
   fn reduce_xor(self) -> Self::Scalar;
   *)
+  reduce_sum : Self -> Scalar;
+  reduce_product : Self -> Scalar;
+  reduce_max : Self -> Scalar;
+  reduce_min : Self -> Scalar;
+  reduce_and : Self -> Scalar;
+  reduce_or : Self -> Scalar;
+  reduce_xor : Self -> Scalar;
 }.
 End SimdInt.
 
@@ -142,7 +200,6 @@ Module SimdPartialEq.
     simd_ne : Self -> Self -> Mask;
   }.
 End SimdPartialEq.
-
 
 (* 
 pub trait SimdPartialOrd: SimdPartialEq {
@@ -198,7 +255,23 @@ pub trait SimdUint: Copy + Sealed {
     fn reduce_xor(self) -> Self::Scalar;
 }
 *)
+Module SimdUint.
+  Class Trait (Self Scalar : Set) 
+    `{Copy.Trait Self}
+  : Set := { 
+  saturating_add : Self -> Self -> Self;
+  saturating_sub : Self -> Self -> Self;
+  reduce_sum : Self -> Scalar;
+  reduce_product : Self -> Scalar;
+  reduce_max : Self -> Scalar;
+  reduce_min : Self -> Scalar;
+  reduce_and : Self -> Scalar;
+  reduce_or : Self -> Scalar;
+  reduce_xor : Self -> Scalar;
+  }.
+End SimdUint.
 
+(* NOTE: Sealed and Sized trait ignored *)
 (* 
 pub trait StdFloat: Sealed + Sized {
     // Required method
@@ -213,10 +286,24 @@ pub trait StdFloat: Sealed + Sized {
     fn trunc(self) -> Self { ... }
 }
 *)
+Module StdFloat.
+  Class Trait (Self : Set) : Set := { 
+    fract : Self -> Self;
+    mul_add : Self -> Self -> Self -> Self;
+    sqrt : Self -> Self;
+    ceil : Self -> Self;
+    floor : Self -> Self;
+    round : Self -> Self;
+    trunc : Self -> Self;
+  }.
+End StdFloat.
 
+(* NOTE: Sealed trait ignored *)
 (* pub trait SupportedLaneCount: Sealed { } *)
+Module SupportedLaneCount.
+  Class Trait (Self : Set) : Set := { }.
+End SupportedLaneCount.
 
-(* BUGGED: Mutual Reference? To be checked *)
 (* 
 pub trait Swizzle<const INPUT_LANES: usize, const OUTPUT_LANES: usize> {
     const INDEX: [usize; OUTPUT_LANES];
@@ -228,6 +315,17 @@ pub trait Swizzle<const INPUT_LANES: usize, const OUTPUT_LANES: usize> {
              LaneCount<OUTPUT_LANES>: SupportedLaneCount { ... }
 }
 *)
+Module Swizzle.
+  Class Trait (Self : Set) (INPUT_LANES OUTPUT_LANES : usize) : Set := { 
+  (* Bugged: how to define INDEX? *)
+  (* I think this kind of const is supposed to be used by implementations that needs to use this trait *)
+  swizzle (T : Set) 
+    `{SimdElement.Trait T}
+    `{SupportedLaneCount.Trait (LandCount INPUT_LANES)}
+    `{SupportedLaneCount.Trait (LandCount OUTPUT_LANES)}
+  : Simd T INPUT_LANES -> Simd T OUTPUT_LANES;
+  }.
+End Swizzle.
 
 (* 
 pub trait Swizzle2<const INPUT_LANES: usize, const OUTPUT_LANES: usize> {
@@ -243,7 +341,19 @@ pub trait Swizzle2<const INPUT_LANES: usize, const OUTPUT_LANES: usize> {
              LaneCount<OUTPUT_LANES>: SupportedLaneCount { ... }
 }
 *)
+Module Swizzle2.
+  Class Trait (Self : Set) (INPUT_LANES OUTPUT_LANES : usize) : Set := { 
+    (* BUGGED: how to define INDEX? *)
 
+    swizzle2 (T : Set) 
+      `{SimdElement.Trait T}
+      `{SupportedLaneCount.Trait (LaneCount INPUT_LANES)}
+      `{SupportedLaneCount.Trait (LaneCount OUTPUT_LANES)}
+    : Simd T INPUT_LANES -> Simd T INPUT_LANES -> Simd T OUTPUT_LANES;
+  }.
+End Swizzle2.
+
+(* NOTE: Sealed trait ignored *)
 (* 
 pub trait ToBitMask: Sealed {
     type BitMask;
@@ -253,6 +363,15 @@ pub trait ToBitMask: Sealed {
     fn from_bitmask(bitmask: Self::BitMask) -> Self;
 }
 *)
+Module ToBitMask.
+  Class Trait (Self BitMask : Set) : Set := { 
+    BitMask := BitMask;
+
+    to_bitmask : Self -> BitMask;
+    from_bitmask : BitMask -> Self;
+  }.
+End ToBitMask.
+
 
 
 (* ********STRUCTS******** *)

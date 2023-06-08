@@ -53,9 +53,9 @@ std/num.v # Complete
 std/panic.v # Complete
 std/mem.v # Bugged: unfamiliar trait definition; union type
 std/arch.v # Complete
-std/simd.v # FOCUS: LARGE FILE
+std/simd.v # Bugged: mutual reference, unusual const definition
 std/net.v # Bugged: `iter` dependency
 std/path.v # Complete
-std/os.v # LARGE FILE
+std/os.v # EMPTY LARGE FILE
 std/prelude.v # Complete
 std/primitive.v # Complete
