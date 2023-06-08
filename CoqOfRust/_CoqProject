@@ -49,8 +49,8 @@ std/str.v # FOCUS: EMPTY LARGE FILE
 std/num.v # Complete
 std/panic.v # Complete
 std/mem.v # Bugged
-std/arch.v # Empty
-std/simd.v # Empty
+std/arch.v # Complete
+std/simd.v # In Progress
 std/net.v # Bugged
 std/path.v # Bugged
 std/os.v # FOCUS: LARGE FILE
