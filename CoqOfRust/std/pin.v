@@ -1,6 +1,6 @@
 Require Import CoqOfRust.lib.lib.
 
-(* ********STRUCT******** *)
+(* ********STRUCTS******** *)
 (* pub struct Pin<P> { /* private fields */ } *)
 Module Pin.
   Record t (P : Set) : Set := { }.

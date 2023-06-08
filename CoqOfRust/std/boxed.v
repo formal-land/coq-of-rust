@@ -2,7 +2,7 @@ Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust.std.alloc.
 
-(* ********STRUCT******** *)
+(* ********STRUCTS******** *)
 (* 
   [x] Box
 *)

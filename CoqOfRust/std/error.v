@@ -4,7 +4,7 @@ Require Import CoqOfRust.std.fmt.
 Require Import CoqOfRust.std.option.
 Require Import CoqOfRust.std.box.
 
-(* ********TRAIT******** *)
+(* ********TRAITS******** *)
 (* 
 [ ] Error
 *)
@@ -31,7 +31,7 @@ Module Error.
   }.
 End Error.
 
-(* ********STRUCT******** *)
+(* ********STRUCTS******** *)
 (* 
 [x] Report
 *)

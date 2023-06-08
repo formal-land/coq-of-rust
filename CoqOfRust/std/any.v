@@ -1,6 +1,6 @@
 Require Import CoqOfRust.lib.lib.
 
-(* ********STRUCT******** *)
+(* ********STRUCTS******** *)
 (* 
 [x] Demand
 [x] TypeId 
@@ -18,7 +18,7 @@ Module TypeId.
 End TypeId.
 Definition TypeId := TypeId.t.
 
-(* ********TRAIT******** *)
+(* ********TRAITS******** *)
 (* 
 [x] Provider
 [x] Any 
