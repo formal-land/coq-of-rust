@@ -86,8 +86,7 @@ pub trait Extend<A> {
 }
 *)
 Module Extend.
-  Class Trait (Self : Set) (A : Set) : Set := {
-  (* NOTE: Important for reference *)
+  Class Trait (Self : Set) (A : Set) : Set := {  
     extend {T : Set} `{IntoIterator.Trait T A} : mut_ref Self -> T -> unit;
     extend_one : mut_ref Self -> A -> unit;
     extend_reserve : mut_ref Self -> usize -> unit;

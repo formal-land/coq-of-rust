@@ -7,7 +7,6 @@ Require Import CoqOfRust.std.marker.
 [x] Default
 *)
 
-(* NOTE: Can we utilize this trait to translate those type params with default type? *)
 (* 
 pub trait Default: Sized {
     // Required method

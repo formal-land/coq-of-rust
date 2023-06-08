@@ -264,7 +264,7 @@ End BinaryHeap.
 Definition BinaryHeap := BinaryHeap.t.
 
 (* TODO: Add dependency *)
-(* NOTE: RandomState comes from the hash_map submodule. We have to put submods before these files *)
+(* BUGGED: RandomState comes from the hash_map submodule. We have to put submods before these files *)
 (* pub struct HashMap<K, V, S = RandomState> { /* private fields */ } *)
 Module HashMap.
   Record t (K V S : Set) : Set := { }.

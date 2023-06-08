@@ -20,11 +20,11 @@ Parameter size_hint : mut_ref Self -> usize * (Option usize).
 
 (* fn count(self) -> usize
     where Self: Sized { ... } *)
-Parameter count `{Sized.Trait Self} : Self -> usize.
+Parameter count : Self -> usize.
 
 (* fn last(self) -> Option<Self::Item>
     where Self: Sized { ... } *)
-Parameter last `{Sized.Trait Self} : Self -> Option Item.
+Parameter last : Self -> Option Item.
 
 (* fn advance_by(&mut self, n: usize) -> Result<(), usize> { ... } *)
 Parameter advance_by : mut_ref Self -> usize -> Result unit usize.
@@ -35,13 +35,12 @@ Parameter nth : mut_ref Self -> usize -> Option Item.
 (* TODO: implement StepBy struct in iter.v *)
 (* fn step_by(self, step: usize) -> StepBy<Self>
     where Self: Sized { ... } *)
-Parameter step_by `{Sized.Trait Self} : Self -> usize -> StepBy Self.
+Parameter step_by : Self -> usize -> StepBy Self.
 
 (* fn chain<U>(self, other: U) -> Chain<Self, <U as IntoIterator>::IntoIter>
     where Self: Sized,
           U: IntoIterator<Item = Self::Item> { ... } *)
   chain {U : Set} 
-    `{Sized.Trait Self} 
     `{IntoIterator.Trait U (Some Item)} :
     Chain Self U.((IntoIterator.Trait).IntoIter);
 
@@ -50,7 +49,6 @@ Parameter step_by `{Sized.Trait Self} : Self -> usize -> StepBy Self.
           U: IntoIterator { ... } *)
 (* NOTE: Wrong translation? *)
 Parameter zip {U : Set} 
-  `{Sized.Trait Self}
   `{IntoIterator.Trait U}
 : Self -> U -> Zip Self U.((IntoIterator.Trait).IntoIter).
 

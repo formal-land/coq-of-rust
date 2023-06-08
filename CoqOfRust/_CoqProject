@@ -13,7 +13,7 @@ std/alloc.v # Passed
 std/pin.v # Passed
 std/cmp.v # Passed
 std/marker.v # Passed
-std/ops.v # Incomplete. Bugged: as clause
+std/ops.v # Incomplete. Bugged: as clause, mutual definitions
 std/string.v # Passed
 std/collections.v # LARGE FILE
 std/fmt.v # LARGE FILE. To be restructured
@@ -48,7 +48,7 @@ std/slice.v # Bugged: monad function dependency
 std/fs.v # Complete
 std/hint.v # Complete
 std/ffi.v # Complete
-std/str.v # EMPTY LARGE FILE
+std/str.v # FOCUS: LARGE FILE
 std/num.v # Complete
 std/panic.v # Complete
 std/mem.v # Bugged: unfamiliar trait definition; union type
@@ -56,6 +56,6 @@ std/arch.v # Complete
 std/simd.v # Bugged: mutual reference, unusual const definition
 std/net.v # Bugged: `iter` dependency
 std/path.v # Complete
-std/os.v # EMPTY LARGE FILE
+std/os.v # FOCUS: LARGE FILE
 std/prelude.v # Complete
 std/primitive.v # Complete

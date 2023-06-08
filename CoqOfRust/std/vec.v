@@ -13,6 +13,7 @@ Require Import CoqOfRust.std.alloc.
 *)
 
 (* BUGGED: defaultType + where clause *)
+(* BUGGED: monad function dependency *)
 (* Do we make a match clause in the definition to resolve this issue? *)
 (* 
 pub struct DrainFilter<'a, T, F, A = Global>
@@ -25,6 +26,12 @@ Module DrainFilter.
   Record t (T F A): Set := { }.
 End DrainFilter.
 Definition DrainFilter (T F : Set) (A : option Set) := DrainFilter.t T F (defaultType A Global).
+  (* 
+  let A_type := (defaultType A Global) in
+  let traits 
+    `{Allocator.Trait A_type} 
+    := unit in
+    DrainFilter.t T F A_type. *)
 
 (* BUGGED: same as above *)
 (* 
@@ -38,6 +45,12 @@ Module Drain.
   Record t (T A) : Set := { }.
 End Drain.
 Definition Drain (T : Set) (A : option Set) := Drain.t T (defaultType A Global).
+  (* 
+  let A_type := (defaultType A Global) in
+  let traits 
+    `{Allocator.Trait A_type} 
+    := unit in
+    Drain.t T A_type. *)
 
 (* BUGGED: same as above *)
 (* 
@@ -50,8 +63,15 @@ Module IntoIter.
   Record t (T A : Set) : Set := { }.
 End IntoIter.
 Definition IntoIter (T : Set) (A : option Set) := IntoIter.t T (defaultType A Global).
+  (* 
+  let A_type := (defaultType A Global) in
+  let traits 
+    `{Allocator.Trait A_type} 
+    := unit in
+    IntoIter.t T A_type. *)
 
 (* BUGGED: same as above *)
+(* BUGGED: Iterator dependency *)
 (* 
 pub struct Splice<'a, I, A = Global>
 where
@@ -75,3 +95,9 @@ Module Vec.
   Record t (T A : Set): Set := { }.
 End Vec.
 Definition Vec (T : Set) (A : option Set) := Vec.t T (defaultType A Global).
+  (* 
+  let A_type := (defaultType A Global) in
+  let traits 
+    `{Allocator.Trait A_type} 
+    := unit in
+    Vec.t T A_type. *)
