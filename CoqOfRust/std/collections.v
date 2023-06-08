@@ -7,7 +7,7 @@ Require Import CoqOfRust.std.cmp.
 (* ********MODULES******** *)
 (* 
 [x] binary_heap
-[ ] btree_map
+[x] btree_map
 [ ] btree_set
 [ ] hash_map
 [ ] hash_set
@@ -90,21 +90,21 @@ Module btree_map.
   (* 
   [x] Cursor
   [x] CursorMut
-  [ ] DrainFilter
-  [ ] OccupiedError
-  [ ] BTreeMap
-  [ ] IntoIter
-  [ ] IntoKeys
-  [ ] IntoValues
-  [ ] Iter
-  [ ] IterMut
-  [ ] Keys
-  [ ] OccupiedEntry
-  [ ] Range	
-  [ ] RangeMut
-  [ ] VacantEntry
-  [ ] Values
-  [ ] ValuesMut
+  [?] DrainFilter
+  [?] OccupiedError
+  [?] BTreeMap
+  [?] IntoIter
+  [?] IntoKeys
+  [?] IntoValues
+  [x] Iter
+  [x] IterMut
+  [x] Keys
+  [?] OccupiedEntry
+  [x] Range	
+  [x] RangeMut
+  [?] VacantEntry
+  [x] Values
+  [x] ValuesMut
   *)
 
   (* 
@@ -132,6 +132,7 @@ Module btree_map.
   Definition CursorMut (K V : Set) (A : option Set) := 
     CursorMut.t K V (defaultType A Global).
 
+  (* BUGGED: defaultType with `where` clause *)
   (* 
   pub struct DrainFilter<'a, K, V, F, A = Global>
   where
@@ -139,7 +140,12 @@ Module btree_map.
       F: 'a + FnMut(&K, &mut V) -> bool,
   { /* private fields */ }
   *)
-
+  Module DrainFilter.
+    Record t (K V F A : Set) : Set := { }.
+  End DrainFilter.
+  Definition DrainFilter (K V F : Set) (A : option Set) := DrainFilter.t K V F (defaultType A Global).
+  
+  (* BUGGED: same as above *)
   (* 
   pub struct OccupiedError<'a, K, V, A = Global>
   where
@@ -151,6 +157,154 @@ Module btree_map.
       pub value: V,
   }
   *)
+  Module OccupiedError.
+    Record t (K V A : Set) : Set := { 
+      entry : OccupiedEntry K V (Some A);
+      value : V;
+    }.
+  End OccupiedError.
+  Definition OccupiedError (K V : Set) (A : option Set) := 
+    OccupiedError.t K V (defaultType A Global).
+  
+  (* BUGGED: same as above *)
+  (* 
+  pub struct BTreeMap<K, V, A = Global>
+  where
+      A: Allocator + Clone,
+  { /* private fields */ }
+  *)
+  Module BTreeMap.
+    Record t (K V A : Set) : Set := { }.
+  End BTreeMap.
+  Definition BTreeMap (K V : Set) (A : option Set) := BTreeMap.t K V (defaultType A Global).
+
+  (* BUGGED: same as above *)
+  (* 
+  pub struct IntoIter<K, V, A = Global>
+  where
+      A: Allocator + Clone,
+  { /* private fields */ }
+  *)
+  Module IntoIter.
+    Record t (K V A : Set) : Set := { }.
+  End IntoIter.
+  Definition IntoIter (K V : Set) (A : option Set) := IntoIter.t K V (defaultType A Global).
+
+  (* BUGGED: same as above *)
+  (* 
+  pub struct IntoKeys<K, V, A = Global>
+  where
+      A: Allocator + Clone,
+  { /* private fields */ }
+  *)
+  Module IntoKeys.
+    Record t (K V A : Set) : Set := { }.
+  End IntoKeys.
+  Definition IntoKeys (K V : Set) (A : option Set) := IntoKeys.t K V (defaultType A Global).
+
+  (* BUGGED: same as above *)
+  (* 
+  pub struct IntoValues<K, V, A = Global>
+  where
+      A: Allocator + Clone,
+  { /* private fields */ }
+  *)
+  Module IntoValues.
+    Record t (K V A : Set) : Set := { }.
+  End IntoValues.
+  Definition IntoValues (K V : Set) (A : option Set) := IntoValues.t K V (defaultType A Global).
+
+  (* 
+  pub struct Iter<'a, K, V>
+  where
+      K: 'a,
+      V: 'a,
+  { /* private fields */ }
+  *)
+  Module Iter.
+    Record t (K V : Set) : Set := { }.
+  End Iter.
+  Definition Iter := Iter.t.
+  
+  (* 
+  pub struct IterMut<'a, K, V>
+  where
+      K: 'a,
+      V: 'a,
+  { /* private fields */ }
+  *)
+  Module IterMut.
+    Record t (K V : Set) : Set := { }.
+  End IterMut.
+  Definition IterMut := IterMut.t.
+  
+  (* pub struct Keys<'a, K, V> { /* private fields */ } *)
+  Module Keys.
+    Record t (K V : Set) : Set := { }.
+  End Keys.
+  Definition Keys := Keys.t.
+
+  (* BUGGED: same as above *)
+  (* 
+  pub struct OccupiedEntry<'a, K, V, A = Global>
+  where
+      A: Allocator + Clone,
+  { /* private fields */ }
+  *)
+  Module OccupiedEntry.
+    Record t (K V A : Set) : Set := { }.
+  End OccupiedEntry.
+  Definition OccupiedEntry (K V : Set) (A : option Set) := OccupiedEntry.t K V (defaultType A Global).
+  
+  (* 
+  pub struct Range<'a, K, V>
+  where
+      K: 'a,
+      V: 'a,
+  { /* private fields */ }
+  *)
+  Module Range.
+    Record t (K V : Set) : Set := { }.
+  End Range.
+  Definition Range := Range.t.
+
+  (* 
+  pub struct RangeMut<'a, K, V>
+  where
+      K: 'a,
+      V: 'a,
+  { /* private fields */ }
+  *)
+  Module RangeMut.
+    Record t (K V : Set) : Set := { }.
+  End RangeMut.
+  Definition RangeMut := RangeMut.t.
+  
+  (* BUGGED: same as above *)
+  (* 
+  pub struct VacantEntry<'a, K, V, A = Global>
+  where
+      A: Allocator + Clone,
+  { /* private fields */ }
+  *)
+  Module VacantEntry.
+    Record t (K V A : Set) : Set := { }.
+  End VacantEntry.
+  Definition VacantEntry (K V : Set) (A : option Set) := VacantEntry.t K V (defaultType A Global).
+  
+  (* pub struct Values<'a, K, V> { /* private fields */ } *)
+  Module Values.
+    Record t (K V : Set) : Set := { }.
+  End Values.
+  Definition Values := Values.t.
+  
+  (* pub struct ValuesMut<'a, K, V> { /* private fields */ } *)
+  Module ValuesMut.
+    Record t (K V : Set) : Set := { }.
+  End ValuesMut.
+  Definition ValuesMut := ValuesMut.t.
+  
+  
   
   
 
