@@ -1147,7 +1147,7 @@ impl Expr {
     // printing Parameter and DoubleColon Instance for function,
     // in fmt Definition (...crate_fmt_Debug...)
     // get the name and arg_types of the associated function
-    pub fn parameter_for_fmt1(&self) -> Doc {
+    pub fn parameter_name_for_fmt(&self) -> Doc {
         // @TODO DELETE THIS FUNC, rewriting it in top_level
         match self {
             Expr::Block(bx) => bx.parameter_for_fmt(),
@@ -1165,10 +1165,10 @@ impl Expr {
     // get the name and the arg_types of the associated function match step2
     pub fn parameter_for_fmt2(&self) -> Doc {
         match self {
-            Expr::Call { func, args } => nest([
+            Expr::Call { func, args: _ } => nest([
                 func.parameter_for_fmt_print_name(),
                 text(" : "),
-                intersperse(args.iter().map(|arg| arg.to_type()), [line()]),
+                // intersperse(args.iter().map(|arg| arg.to_type()), [line()]),
             ]),
             _ => nil(),
         }

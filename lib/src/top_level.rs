@@ -618,11 +618,11 @@ fn fn_to_doc<'a>(
     body: &'a Expr,
     is_dead_code: bool,
 ) -> Doc<'a> {
-    println!("ty_params: {:#?}", ty_params);
-    println!("where_predicates: {:#?}", where_predicates);
-    println!("args: {:#?}", args);
-    println!("ret_ty: {:#?}", ret_ty);
-    println!("body: {:#?}", body);
+    // println!("ty_params: {:#?}", ty_params);
+    // println!("where_predicates: {:#?}", where_predicates);
+    // println!("args: {:#?}", args);
+    // println!("ret_ty: {:#?}", ret_ty);
+    // println!("body: {:#?}", body);
     group([
         if is_dead_code {
             concat([
@@ -632,12 +632,23 @@ fn fn_to_doc<'a>(
         } else {
             nil()
         },
-        // Printing instance of DoubleColon Class
+        // Printing instance of DoubleColon Class for [f]
         // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
         if name == "fmt" {
             concat([
                 text("Parameter99999 "),
-                body.parameter_for_fmt1(),
+                body.parameter_name_for_fmt(),
+                // get type of argument named f
+                // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
+                concat(args.iter().map(
+                    |(name, ty)| {
+                        if name == "f" {
+                            ty.to_doc(false)
+                        } else {
+                            nil()
+                        }
+                    },
+                )),
                 text(" -> "),
                 line(),
                 ret_ty.to_doc(false),
@@ -932,6 +943,10 @@ impl ImplItem {
     }
 
     fn to_doc<'a>(&'a self, name: &'a String) -> Doc<'a> {
+        println!(
+            "===================== ImplItem ========================: {:#?}",
+            self
+        );
         match self {
             ImplItem::Const { body, is_dead_code } => concat([
                 if *is_dead_code {
@@ -1007,6 +1022,10 @@ impl ImplItem {
 
 impl TopLevelItem {
     fn to_doc(&self) -> Doc {
+        println!(
+            "===================== TopLevelItem ========================: {:#?}",
+            self
+        );
         match self {
             TopLevelItem::Const { name, ty, value } => nest([
                 nest([
@@ -1775,6 +1794,11 @@ impl TopLevelItem {
 
 impl TopLevel {
     fn to_doc(&self) -> Doc {
+        // check if there is a Debug Trait implementation in the code (#[derive(Debug)])
+        // for a TopLevelItem::TypeStructStruct (@TODO extend to cover more cases)
+        // if "yes" - get both TopLevelItems (Struct itself and TraitImpl for it)
+        // in order to have all required data for printing instance for DoubleColon Class
+
         intersperse(
             self.0.iter().map(|item| item.to_doc()),
             [hardline(), hardline()],
