@@ -10,9 +10,9 @@ Require Import CoqOfRust.std.cmp.
 [x] btree_map
 [x] btree_set
 [x] hash_map
-[ ] hash_set
-[ ] linked_list
-[ ] vec_deque 
+[x] hash_set
+[x] linked_list
+[x] vec_deque 
 *)
 
 Module binary_heap.
@@ -635,43 +635,234 @@ End hash_map.
 Module hash_set.
   (* ********STRUCTS******** *)
   (*
-  [ ] DrainFilter
-  [ ] Difference
-  [ ] Drain
-  [ ] HashSet
-  [ ] Intersection
-  [ ] IntoIter
-  [ ] Iter
-  [ ] SymmetricDifference
-  [ ] Union
+  [?] DrainFilter
+  [x] Difference
+  [x] Drain
+  [x] HashSet
+  [x] Intersection
+  [x] IntoIter
+  [x] Iter
+  [x] SymmetricDifference
+  [x] Union
   *)
+
+  (* BUGGED: monad function dependency *)
+  (* 
+  pub struct DrainFilter<'a, K, F>
+  where
+      F: FnMut(&K) -> bool,
+  { /* private fields */ }
+  *)
+  Module DrainFilter.
+    Record t (K F : Set) : Set := { }.
+  End DrainFilter.
+  Definition DrainFilter := DrainFilter.t.
+
+  (* pub struct Difference<'a, T: 'a, S: 'a> { /* private fields */ } *)
+  Module Difference.
+    Record t (T S : Set) : Set := { }.
+  End Difference.
+  Definition Difference := Difference.t.
   
+  (* pub struct Drain<'a, K: 'a> { /* private fields */ } *)
+  Module Drain.
+    Record t (K : Set) : Set := { }.
+  End Drain.
+  Definition Drain := Drain.t.
+
+  (* TODO: refere to RandomState in hash_map *)
+  (* pub struct HashSet<T, S = RandomState> { /* private fields */ } *)
+  Module HashSet.
+    Record t (T S : Set) : Set := { }.
+  End HashSet.
+  Definition HashSet T (option S) := HashSet.t T (defaultType S RandomState).
+
+  (* pub struct Intersection<'a, T: 'a, S: 'a> { /* private fields */ } *)
+  Module Intersection.
+    Record t (T S : Set) : Set := { }.
+  End Intersection.
+  Definition Intersection := Intersection.t.
+  
+  (* pub struct IntoIter<K> { /* private fields */ } *)
+  Module IntoIter.
+    Record t (K : Set) : Set := { }.
+  End IntoIter.
+  Definition IntoIter := IntoIter.t.
+  
+  (* pub struct Iter<'a, K: 'a> { /* private fields */ } *)
+  Module Iter.
+    Record t (K : Set) : Set := { }.
+  End Iter.
+  Definition Iter := Iter.t.
+  
+  (* pub struct SymmetricDifference<'a, T: 'a, S: 'a> { /* private fields */ } *)
+  Module SymmetricDifference.
+    Record t (T S : Set) : Set := { }.
+  End SymmetricDifference.
+  Definition SymmetricDifference := SymmetricDifference.t.
+  
+  (* pub struct Union<'a, T: 'a, S: 'a> { /* private fields */ } *)
+  Module Union.
+    Record t (T S : Set) : Set := { }.
+  End Union.
+  Definition Union := Union.t.
 
 End hash_set.
 
 Module linked_list.
   (* ********STRUCTS******** *)
   (*
-  [ ] Cursor
-  [ ] CursorMut
-  [ ] DrainFilter
-  [ ] IntoIter
-  [ ] Iter
-  [ ] IterMut
-  [ ] LinkedList
+  [x] Cursor
+  [x] CursorMut
+  [?] DrainFilter
+  [x] IntoIter
+  [x] Iter
+  [x] IterMut
+  [x] LinkedList
   *)
+
+  (* 
+  pub struct Cursor<'a, T>
+  where
+      T: 'a,
+  { /* private fields */ }
+  *)
+  Module Cursor.
+    Record t (T : Set) : Set := { }.
+  End Cursor.
+  Definition Cursor := Cursor.t.
+  
+  (* 
+  pub struct CursorMut<'a, T>
+  where
+      T: 'a,
+  { /* private fields */ }
+  *)
+  Module CursorMut.
+    Record t (T : Set) : Set := { }.
+  End CursorMut.
+  Definition CursorMut := CursorMut.t.
+  
+  (* BUGGED: monad function dependency *)
+  (* 
+  pub struct DrainFilter<'a, T, F>
+  where
+      T: 'a,
+      F: 'a + FnMut(&mut T) -> bool,
+  { /* private fields */ }
+  *)
+  Module DrainFilter.
+    Record t (T F : Set) : Set := { }.
+  End DrainFilter.
+  Definition DrainFilter := DrainFilter.t.
+
+  (* pub struct IntoIter<T> { /* private fields */ } *)
+  Module IntoIter.
+    Record t (T : Set) : Set := { }.
+  End IntoIter.
+  Definition IntoIter := IntoIter.t.
+  
+  (* 
+  pub struct Iter<'a, T>
+  where
+      T: 'a,
+  { /* private fields */ }
+  *)
+  Module Iter.
+    Record t (T : Set) : Set := { }.
+  End Iter.
+  Definition Iter := Iter.t.
+
+  (* 
+  pub struct IterMut<'a, T>
+  where
+      T: 'a,
+  { /* private fields */ }
+  *)
+  Module IterMut.
+    Record t (T : Set) : Set := { }.
+  End IterMut.
+  Definition IterMut := IterMut.t.
+  
+  (* pub struct LinkedList<T> { /* private fields */ } *)
+  Module LinkedList.
+    Record t (T : Set) : Set := { }.
+  End LinkedList.
+  Definition LinkedList := LinkedList.t.
   
 End linked_list.
 
 Module vec_deque.
   (* ********STRUCTS******** *)
   (*
-  [ ] Drain
-  [ ] IntoIter
-  [ ] Iter
-  [ ] IterMut
-  [ ] VecDeque
+  [?] Drain
+  [?] IntoIter
+  [x] Iter
+  [x] IterMut
+  [?] VecDeque
   *)
+
+  (* BUGGED: defaultType with where clause *)
+  (* 
+  pub struct Drain<'a, T, A = Global>
+  where
+      T: 'a,
+      A: Allocator,
+  { /* private fields */ }
+  *)
+  Module Drain.
+    Record t (T A : Set) : Set := { }.
+  End Drain.
+  Definition Drain (T : Set) (A : option Set) := Drain.t T (defaultType A Global).
+
+  (* BUGGED: same as above *)
+  (* 
+  pub struct IntoIter<T, A = Global>
+  where
+      A: Allocator,
+  { /* private fields */ }
+  *)
+  Module IntoIter.
+    Record t (T A : Set) : Set := { }.
+  End IntoIter.
+  Definition IntoIter (T : Set) (A : option Set) := IntoIter.t T (defaultType A Global).
+
+  (* 
+  pub struct Iter<'a, T>
+  where
+      T: 'a,
+  { /* private fields */ }
+  *)
+  Module Iter.
+    Record t (T : Set) : Set := { }.
+  End Iter.
+  Definition Iter := Iter.t.
+  
+  (* 
+  pub struct IterMut<'a, T>
+  where
+      T: 'a,
+  { /* private fields */ }
+  *)
+  Module IterMut.
+    Record t (T : Set) : Set := { }.
+  End IterMut.
+  Definition IterMut := IterMut.t.
+  
+  (* BUGGED: same as above *)
+  (* 
+  pub struct VecDeque<T, A = Global>
+  where
+      A: Allocator,
+  { /* private fields */ }
+  *)
+  Module VecDeque.
+    Record t (T A : Set) : Set := { }.
+  End VecDeque.
+  Definition VecDeque (T : Set) (A : option Set) := VecDeque.t T (defaultType A Global).
+  
+  
+  
   
 End vec_deque.
 
