@@ -1798,7 +1798,28 @@ impl TopLevel {
         // for a TopLevelItem::TypeStructStruct (@TODO extend to cover more cases)
         // if "yes" - get both TopLevelItems (Struct itself and TraitImpl for it)
         // in order to have all required data for printing instance for DoubleColon Class
+        // NATALIE ADDED BELOW
+        let derive_debug_for_struct = self.0.iter().map(|item| match item {
+            TopLevelItem::TraitImpl {
+                generic_tys: _,
+                ty_params: _,
+                self_ty,
+                of_trait,
+                items,
+                trait_non_default_items: _,
+            } => {
+                if of_trait.to_name() == "_crate.fmt.Debug" {
+                    println!("DA");
+                    ("found", text("placeholder"))
+                } else {
+                    println!("NET");
+                    ("not_found", text("placehoilder"))
+                }
+            }
+            _ => ("not_found", text("placehoilder")),
+        });
 
+        // NATALIE ADDED ABOWE
         intersperse(
             self.0.iter().map(|item| item.to_doc()),
             [hardline(), hardline()],
