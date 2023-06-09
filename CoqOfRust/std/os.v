@@ -2,6 +2,8 @@ Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust.std.result.
 Require Import CoqOfRust.std.process.
 Require Import CoqOfRust.std.vec.
+Require Import CoqOfRust.std.fs.
+
 
 (* ********MODULES******** *)
 (*
@@ -9,7 +11,7 @@ Require Import CoqOfRust.std.vec.
 [x] linux
 [x] raw
 [x] unix
-[ ] wasi
+[x] wasi
 [ ] windows
 *)
 
@@ -766,24 +768,435 @@ End unix.
 Module wasi.
   (* ********MODULES******** *)
   (*
-  [ ] fs
-  [ ] net
-  [ ] ffi
-  [ ] io
-  [ ] prelude
+  [x] fs
+  [x] net
+  [x] ffi
+  [x] io
+  [x] prelude
   *)
+  Module fs.
+    (* ********TRAITS******** *)
+    (*
+    [x] DirEntryExt
+    [x] FileExt
+    [x] FileTypeExt
+    [x] MetadataExt
+    [x] OpenOptionsExt
+    *)
+
+    (* 
+    pub trait DirEntryExt {
+        // Required method
+        fn ino(&self) -> u64;
+    }
+    *)
+    Module DirEntryExt.
+      Class Trait (Self : Set) : Set := {
+        ino : ref Self -> u64;
+      }.
+    End DirEntryExt.
+    
+
+    (* 
+    pub trait FileExt {
+      //...
+    }
+    *)
+    Module FileExt.
+      Class Trait (Self : Set) : Set := { 
+        (* 
+        fn read_vectored_at(
+            &self,
+            bufs: &mut [IoSliceMut<'_>],
+            offset: u64
+        ) -> Result<usize>;
+        *)
+        read_vectored_at : ref Self -> mut_ref (slice IoSliceMut) -> u64 -> Result usize;
+
+        (* 
+        fn write_vectored_at(
+            &self,
+            bufs: &[IoSlice<'_>],
+            offset: u64
+        ) -> Result<usize>;
+        *)
+        write_vectored_at : ref Self -> mut_ref (slice IoSliceMut) -> u64 -> Result usize;
+
+        (* 
+        fn tell(&self) -> Result<u64>;
+        fn fdstat_set_flags(&self, flags: u16) -> Result<()>;
+        fn fdstat_set_rights(&self, rights: u64, inheriting: u64) -> Result<()>;
+        fn advise(&self, offset: u64, len: u64, advice: u8) -> Result<()>;
+        fn allocate(&self, offset: u64, len: u64) -> Result<()>;
+        fn create_directory<P: AsRef<Path>>(&self, dir: P) -> Result<()>;
+        fn read_link<P: AsRef<Path>>(&self, path: P) -> Result<PathBuf>;
+        *)
+        tell : ref Self -> Result u64;
+        fdstat_set_flags : ref Self -> u16 -> Result unit;
+        fdstat_set_rights : ref Self -> u64 -> u64 -> Result unit;
+        advise : ref Self -> u64 -> u64 -> u8 -> Result unit;
+        allocate : ref Self -> u64 -> u64 -> Result unit;
+        create_directory (P : Set) `{AsRef.Trait P Path} : ref Self -> P -> Result unit;
+        read_link (P : Set) `{AsRef.Trait P Path}: ref Self -> P -> Result PathBuf;
+
+      (* 
+      fn metadata_at<P: AsRef<Path>>(
+          &self,
+          lookup_flags: u32,
+          path: P
+      ) -> Result<Metadata>;
+      *)
+      metadata_at (P : Set) `{AsRef.Trait P Path}: ref Self -> u32 -> P -> Result Metadata;
+
+      (* 
+      fn remove_file<P: AsRef<Path>>(&self, path: P) -> Result<()>;
+      fn remove_directory<P: AsRef<Path>>(&self, path: P) -> Result<()>;
+      *)
+      remove_file (P : Set) `{AsRef.Trait P Path} : ref Self -> P -> Result unit;
+      remove_directory (P : Set) `{AsRef.Trait P Path} : ref Self -> P -> Result unit;
+
+      (* 
+      fn read_at(&self, buf: &mut [u8], offset: u64) -> Result<usize> { ... }
+      fn read_exact_at(&self, buf: &mut [u8], offset: u64) -> Result<()> { ... }
+      fn write_at(&self, buf: &[u8], offset: u64) -> Result<usize> { ... }
+      fn write_all_at(&self, buf: &[u8], offset: u64) -> Result<()> { ... }
+      *)
+      read_at : ref Self -> mut_ref (slice u8) -> u64 -> Result usize;
+      read_exact_at : ref Self -> mut_ref (slice u8) -> u64 -> Result unit;
+      write_at : ref Self -> ref (slice u8) -> u64 -> Result usize;
+      write_all_at : ref Self -> ref (slice u8) -> u64 -> Result unit;
+    }.
+    End FileExt.
+    
+
+    (* 
+    pub trait FileTypeExt {
+        // Required methods
+        fn is_block_device(&self) -> bool;
+        fn is_char_device(&self) -> bool;
+        fn is_socket_dgram(&self) -> bool;
+        fn is_socket_stream(&self) -> bool;
+
+        // Provided method
+        fn is_socket(&self) -> bool { ... }
+    }
+    *)
+    Module FileTypeExt.
+      Class Trait (Self : Set) : Set := { 
+        is_block_device : ref Self -> bool;
+        is_char_device : ref Self -> bool;
+        is_socket_dgram : ref Self -> bool;
+        is_socket_stream : ref Self -> bool;
+        is_socket : ref Self -> bool;
+      }.
+    End FileTypeExt.
+    
+
+    (* 
+    pub trait MetadataExt {
+        // Required methods
+        fn dev(&self) -> u64;
+        fn ino(&self) -> u64;
+        fn nlink(&self) -> u64;
+        fn size(&self) -> u64;
+        fn atim(&self) -> u64;
+        fn mtim(&self) -> u64;
+        fn ctim(&self) -> u64;
+    }
+    *)
+    Module MetadataExt.
+      Class Trait (Self : Set) : Set := { 
+        dev: ref Self -> u64;
+        ino: ref Self -> u64;
+        nlink: ref Self -> u64;
+        size: ref Self -> u64;
+        atim: ref Self -> u64;
+        mtim: ref Self -> u64;
+        ctim: ref Self -> u64;
+      }.
+    End MetadataExt.
+
+    (* 
+    pub trait OpenOptionsExt {
+        // Required methods
+        fn lookup_flags(&mut self, flags: u32) -> &mut Self;
+        fn directory(&mut self, dir: bool) -> &mut Self;
+        fn dsync(&mut self, dsync: bool) -> &mut Self;
+        fn nonblock(&mut self, nonblock: bool) -> &mut Self;
+        fn rsync(&mut self, rsync: bool) -> &mut Self;
+        fn sync(&mut self, sync: bool) -> &mut Self;
+        fn fs_rights_base(&mut self, rights: u64) -> &mut Self;
+        fn fs_rights_inheriting(&mut self, rights: u64) -> &mut Self;
+        fn open_at<P: AsRef<Path>>(&self, file: &File, path: P) -> Result<File>;
+    }
+    *)
+    Module OpenOptionsExt.
+      Class Trait (Self : Set) : Set := { 
+        lookup_flags : mut_ref Self -> u32 -> mut_ref Self;
+        directory : mut_ref Self -> bool -> mut_ref Self;
+        dsync : mut_ref Self -> bool -> mut_ref Self;
+        nonblock : mut_ref Self -> bool -> mut_ref Self;
+        rsync : mut_ref Self -> bool -> mut_ref Self;
+        sync : mut_ref Self -> bool -> mut_ref Self;
+        fs_rights_base : mut_ref Self -> u64 -> mut_ref Self;
+        fs_rights_inheriting : mut_ref Self -> u64 -> mut_ref Self;
+        open_at (P : Set) `{AsRef.Trait P Path} : mut_ref Self -> ref File -> P -> Result File;
+      }.
+    End OpenOptionsExt.
+
+    (* ********FUNCTIONS******** *)
+    (*
+    [ ] link
+    [ ] rename
+    [ ] symlink
+    [ ] symlink_path
+    *)
+    
+    
+  End fs.
+  
+  Module net.
+    (* ********TRAITS******** *)
+    (*
+    [x] TcpListenerExt
+    *)
+    (* 
+    pub trait TcpListenerExt {
+        // Required method
+        fn sock_accept(&self, flags: u16) -> Result<u32>;
+    }
+    *)
+    Module TcpListenerExt.
+      Class Trait (Self : Set) : Set := { 
+        sock_accept : ref Self -> u16 -> Result u32;
+      }.
+    End TcpListenerExt.
+
+  End net.
+  
+  Module ffi.
+    (* ********TRAITS******** *)
+    (*
+    [x] OsStrExt
+    [x] OsStringExt
+    *)
+
+    (* 
+    pub trait OsStrExt: Sealed {
+        // Required methods
+        fn from_bytes(slice: &[u8]) -> &Self;
+        fn as_bytes(&self) -> &[u8];
+    }
+    *)
+    Module OsStrExt.
+      Class Trait (Self : Set) : Set := { 
+        from_bytes : ref (slice u8) -> ref Self;
+        as_bytes : ref Self -> ref (slice u8);
+      }.
+    End OsStrExt.
+
+    (* 
+    pub trait OsStringExt: Sealed {
+        // Required methods
+        fn from_vec(vec: Vec<u8>) -> Self;
+        fn into_vec(self) -> Vec<u8>;
+    }
+    *)
+    Module OsStringExt.
+      Class Trait (Self : Set) : Set := { 
+        from_vec : Vec u8 -> Self;
+        into_vec : Self -> Vec u8;
+      }.
+    End OsStringExt.
+    
+  End ffi.
+  
+  Module io.
+    (* ********RE-EXPORTS******** *)
+    (*
+    [ ] crate::os::fd::*
+    *)
+  End io.
+  
+  Module prelude.
+    (* ********RE-EXPORTS******** *)
+    (*
+    [ ] super::ffi::OsStrExt
+    [ ] super::ffi::OsStringExt
+    [ ] super::fs::FileTypeExt
+    [ ] super::fs::DirEntryExt
+    [ ] super::fs::FileExt
+    [ ] super::fs::MetadataExt
+    [ ] super::fs::OpenOptionsExt
+    [ ] super::io::AsFd
+    [ ] super::io::AsRawFd
+    [ ] super::io::BorrowedFd
+    [ ] super::io::FromRawFd
+    [ ] super::io::IntoRawFd
+    [ ] super::io::OwnedFd
+    [ ] super::io::RawFd
+    *)
+  End prelude.
+  
   
 End wasi.
 
 Module windows.
   (* ********MODULES******** *)
   (*
-  [ ] ffi
+  [x] ffi
   [ ] fs
   [ ] io
-  [ ] prelude
+  [x] prelude
   [ ] process
-  [ ] raw
-  [ ] thread
+  [x] raw
+  [x] thread
   *)
+  Module ffi.
+    (* ********STRUCTS******** *)
+    (*
+    [x] EncodeWide
+    *)
+
+    (* pub struct EncodeWide<'a> { /* private fields */ } *)
+    Module EncodeWide.
+      Record t : Set := { }.
+    End EncodeWide.
+    Definition EncodeWide := EncodeWide.t.
+    
+    (* ********TRAITS******** *)
+    (*
+    [x] OsStrExt
+    [x] OsStringExt
+    *)
+    
+    (* 
+    pub trait OsStrExt: Sealed {
+        // Required method
+        fn encode_wide(&self) -> EncodeWide<'_>;
+    }
+    *)
+    Module OsStrExt.
+      Class Trait (Self : Set) : Set := { 
+        encode_wide : ref Self -> EncodeWide;
+      }.
+    End OsStrExt.
+    
+    (* 
+    pub trait OsStringExt: Sealed {
+        // Required method
+        fn from_wide(wide: &[u16]) -> Self;
+    }
+    *)
+    Module OsStringExt.
+      Class Trait (Self : Set) : Set := { 
+        from_wide : ref (slice u16) -> Self;
+      }.
+    End OsStringExt.
+    
+    
+    
+  End ffi.
+  
+  Module fs.
+    (* ********TRAITS******** *)
+    (*
+    [ ] FileExt
+    [ ] FileTypeExt
+    [ ] MetadataExt
+    [ ] OpenOptionsExt
+    *)
+
+    (* ********FUNCTIONS******** *)
+    (*
+    [ ] symlink_dir
+    [ ] symlink_file
+    *)
+    
+  End fs.
+  
+  Module io.
+    (* ********STRUCTS******** *)
+    (*
+    [ ] BorrowedHandle
+    [ ] BorrowedSocket
+    [ ] HandleOrInvalid
+    [ ] HandleOrNull
+    [ ] InvalidHandleError
+    [ ] NullHandleError
+    [ ] OwnedHandle
+    [ ] OwnedSocket
+    *)
+
+    (* ********TRAITS******** *)
+    (*
+    [ ] AsHandle
+    [ ] AsRawHandle
+    [ ] AsRawSocket
+    [ ] AsSocket
+    [ ] FromRawHandle
+    [ ] FromRawSocket
+    [ ] IntoRawHandle
+    [ ] IntoRawSocket
+    *)
+    
+    (* ********TYPE DEFINITIONS******** *)
+    (*
+    [ ] RawHandle
+    [ ] RawSocket
+    *)
+    
+    
+  End io.
+  
+  Module prelude.
+    (* ********RE-EXPORTS******** *)
+    (*
+    [ ] super::ffi::OsStrExt
+    [ ] super::ffi::OsStringExt
+    [ ] super::fs::FileExt
+    [ ] super::fs::MetadataExt
+    [ ] super::fs::OpenOptionsExt
+    [ ] super::io::AsHandle
+    [ ] super::io::AsSocket
+    [ ] super::io::BorrowedHandle
+    [ ] super::io::BorrowedSocket
+    [ ] super::io::FromRawHandle
+    [ ] super::io::FromRawSocket
+    [ ] super::io::HandleOrInvalid
+    [ ] super::io::IntoRawHandle
+    [ ] super::io::IntoRawSocket
+    [ ] super::io::OwnedHandle
+    [ ] super::io::OwnedSocket
+    [ ] super::io::AsRawHandle
+    [ ] super::io::AsRawSocket
+    [ ] super::io::RawHandle
+    [ ] super::io::RawSocket
+    *)
+    
+  End prelude.
+  
+  Module process.
+    (* ********TRAITS******** *)
+    (*
+    [ ] ChildExt
+    [ ] ExitCodeExt
+    [ ] CommandExt
+    [ ] ExitStatusExt
+    *)
+    
+  End process.
+  
+  Module raw.
+    (* ********TYPE DEFINITIONS******** *)
+    (*
+    [ ] HANDLE
+    [ ] SOCKET
+    *)
+    
+  End raw.
+  
+  Module thread.
+  End thread.
+  
 End windows.
