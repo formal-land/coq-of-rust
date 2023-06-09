@@ -1134,7 +1134,7 @@ impl Expr {
     pub fn to_type(&self) -> Doc {
         match self {
             Expr::Literal(_) => text("String"),
-            // Expr::Var(path) => nil(), // path.to_doc(),
+            Expr::Var(path) => path.to_doc(),
             _ => text("TYPE_HERE"),
             // Expr::AddrOf(expr) => paren(
             //     with_paren,
@@ -1148,6 +1148,7 @@ impl Expr {
     // in fmt Definition (...crate_fmt_Debug...)
     // get the name and arg_types of the associated function
     pub fn parameter_for_fmt1(&self) -> Doc {
+        // @TODO DELETE THIS FUNC, rewriting it in top_level
         match self {
             Expr::Block(bx) => bx.parameter_for_fmt(),
             _ => nil(),
@@ -1156,7 +1157,7 @@ impl Expr {
 
     pub fn parameter_for_fmt_print_name(&self) -> Doc {
         match self {
-            Expr::AssociatedFunction { ty, func } => text(func),
+            Expr::AssociatedFunction { ty: _, func } => text(func),
             _ => nil(),
         }
     }

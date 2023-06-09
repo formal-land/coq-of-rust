@@ -632,9 +632,8 @@ fn fn_to_doc<'a>(
         } else {
             nil()
         },
-        // block if..else below is related to compilation of println!
-        // and #[derive(Debug)] for Structs.
-        // Printing missing instance for DoubleColon Class (as Parameter)
+        // Printing instance of DoubleColon Class
+        // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
         if name == "fmt" {
             concat([
                 text("Parameter99999 "),
