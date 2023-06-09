@@ -8,8 +8,8 @@ Require Import CoqOfRust.std.cmp.
 (* 
 [x] binary_heap
 [x] btree_map
-[ ] btree_set
-[ ] hash_map
+[x] btree_set
+[x] hash_map
 [ ] hash_set
 [ ] linked_list
 [ ] vec_deque 
@@ -317,57 +317,362 @@ End btree_map.
 Module btree_set.
   (* ********STRUCTS******** *)
   (* 
-  [ ] DrainFilter
-  [ ] BTreeSet
-  [ ] Difference
-  [ ] Intersection
-  [ ] IntoIter
-  [ ] Iter
-  [ ] Range
-  [ ] SymmetricDifference
-  [ ] Union
+  [?] DrainFilter
+  [?] BTreeSet
+  [?] Difference
+  [?] Intersection
+  [?] IntoIter
+  [x] Iter
+  [x] Range
+  [x] SymmetricDifference
+  [x] Union
   *)
+  (* BUGGED: defaultType with as, monad dependency *)
+  (* 
+  pub struct DrainFilter<'a, T, F, A = Global>
+  where
+      A: Allocator + Clone,
+      T: 'a,
+      F: 'a + FnMut(&T) -> bool,
+  { /* private fields */ }
+  *)
+  Module DrainFilter.
+    Record t (T F A : Set) : Set := { }.
+  End DrainFilter.
+  Definition DrainFilter (T F : Set) (A : option Set) := DrainFilter.t T F (defaultType A Global).
+
+  (* BUGGED: defaultType with as clause *)
+  (* 
+  pub struct BTreeSet<T, A = Global>
+  where
+      A: Allocator + Clone,
+  { /* private fields */ }
+  *)
+  Module BTreeSet.
+    Record t (T A : Set) : Set := { }.
+  End BTreeSet.
+  Definition BTreeSet (T : Set) (A : option Set) := BTreeSet.t T (defaultType A Global).
+
+  (* BUGGED: same as above *)
+  (* 
+  pub struct Difference<'a, T, A = Global>
+  where
+      T: 'a,
+      A: Allocator + Clone,
+  { /* private fields */ }
+  *)
+  Module Difference.
+    Record t (T A : Set) : Set := { }.
+  End Difference.
+  Definition Difference (T : Set) (A : option Set) := Difference.t T (defaultType A Global).
+
+  (* BUGGED: same as above *)
+  (* 
+  pub struct Intersection<'a, T, A = Global>
+  where
+      T: 'a,
+      A: Allocator + Clone,
+  { /* private fields */ }
+  *)
+  Module Intersection.
+    Record t (T A : Set) : Set := { }.
+  End Intersection.
+  Definition Intersection (T : Set) (A : option Set) := Intersection.t T (defaultType A Global).
+
+  (* BUGGED: same as above *)
+  (* 
+  pub struct IntoIter<T, A = Global>
+  where
+      A: Allocator + Clone,
+  { /* private fields */ }
+  *)
+  Module IntoIter.
+    Record t (T A : Set) : Set := { }.
+  End IntoIter.
+  Definition IntoIter (T : Set) (A : option Set) := IntoIter.t T (defaultType A Global).
+  
+  (* 
+  pub struct Iter<'a, T>
+  where
+      T: 'a,
+  { /* private fields */ }
+  *)
+  Module Iter.
+    Record t (T : Set) : Set := { }.
+  End Iter.
+  Definition Iter := Iter.t.
+  
+  (* 
+  pub struct Range<'a, T>
+  where
+      T: 'a,
+  { /* private fields */ }
+  *)
+  Module Range.
+    Record t (T : Set) : Set := { }.
+  End Range.
+  Definition Range := Range.t.
+  
+  (* 
+  pub struct SymmetricDifference<'a, T>(_)
+  where
+          T: 'a;
+  *)
+  Module SymmetricDifference.
+    Record t (T : Set) : Set := { }.
+  End SymmetricDifference.
+  Definition SymmetricDifference := SymmetricDifference.t.
+  
+  (* 
+  pub struct Union<'a, T>(_)
+  where
+          T: 'a;
+  *)
+  Module Union.
+    Record t (T : Set) : Set := { }.
+  End Union.
+  Definition Union := Union.t.
 End btree_set.
 
 Module hash_map.
   (* ********STRUCTS******** *)
   (* 
-  [ ] DrainFilter
-  [ ] OccupiedError
-  [ ] RawEntryBuilder
-  [ ] RawEntryBuilderMut
-  [ ] RawOccupiedEntryMut
-  [ ] RawVacantEntryMut
-  [ ] DefaultHasher
-  [ ] Drain
-  [ ] HashMap
-  [ ] IntoIter
-  [ ] IntoKeys
-  [ ] IntoValues
-  [ ] Iter
-  [ ] IterMut
-  [ ] Keys
-  [ ] OccupiedEntry
-  [ ] RandomState
-  [ ] VacantEntry
-  [ ] Values
-  [ ] ValuesMut
+  [?] DrainFilter
+  [?] OccupiedError
+  [x] RawEntryBuilder
+  [x] RawEntryBuilderMut
+  [x] RawOccupiedEntryMut
+  [x] RawVacantEntryMut
+  [x] DefaultHasher
+  [x] Drain
+  [x] HashMap
+  [x] IntoIter
+  [x] IntoKeys
+  [x] IntoValues
+  [x] Iter
+  [x] IterMut
+  [x] Keys
+  [x] OccupiedEntry
+  [x] RandomState
+  [x] VacantEntry
+  [x] Values
+  [x] ValuesMut
   *)
+
+  (* BUGGED: monad function dependency *)
+  (* 
+  pub struct DrainFilter<'a, K, V, F>
+  where
+      F: FnMut(&K, &mut V) -> bool,
+  { /* private fields */ }
+  *)
+  Module DrainFilter.
+    Record t (K V F : Set) : Set := { }.
+  End DrainFilter.
+  Definition DrainFilter := DrainFilter.t.
+
+  (* BUGGED: struct with type *)
+  (* 
+  pub struct OccupiedError<'a, K: 'a, V: 'a> {
+      pub entry: OccupiedEntry<'a, K, V>,
+      pub value: V,
+  }
+  *)
+  Module OccupiedError.
+    Record t (K V : Set) : Set := { 
+      entry : t;
+      value : t;
+    }.
+  End OccupiedError.
+  Definition OccupiedError := OccupiedError.t.
+
+  (* pub struct RawEntryBuilder<'a, K: 'a, V: 'a, S: 'a> { /* private fields */ } *)
+  Module RawEntryBuilder.
+    Record t (K V S : Set) : Set := { }.
+  End RawEntryBuilder.
+  Definition RawEntryBuilder := RawEntryBuilder.t.
+  
+  (* pub struct RawEntryBuilderMut<'a, K: 'a, V: 'a, S: 'a> { /* private fields */ } *)
+  Module RawEntryBuilderMut.
+    Record t (K V S : Set) : Set := { }.
+  End RawEntryBuilderMut.
+  Definition RawEntryBuilderMut := RawEntryBuilderMut.t.
+
+  (* pub struct RawOccupiedEntryMut<'a, K: 'a, V: 'a, S: 'a> { /* private fields */ } *)
+  Module RawOccupiedEntryMut.
+    Record t (K V S : Set) : Set := { }.
+  End RawOccupiedEntryMut.
+  Definition RawOccupiedEntryMut := RawOccupiedEntryMut.t.
+  
+  (* pub struct RawVacantEntryMut<'a, K: 'a, V: 'a, S: 'a> { /* private fields */ } *)
+  Module RawVacantEntryMut.
+    Record t (K V S : Set) : Set := { }.
+  End RawVacantEntryMut.
+  Definition RawVacantEntryMut := RawVacantEntryMut.t.
+
+  (* pub struct DefaultHasher(_); *)
+  Module DefaultHasher.
+    Record t : Set := { }.
+  End DefaultHasher.
+  Definition DefaultHasher := DefaultHasher.t.
+  
+  (* pub struct Drain<'a, K: 'a, V: 'a> { /* private fields */ } *)
+  Module Drain.
+    Record t (K V : Set) : Set := { }.
+  End Drain.
+  Definition Drain := Drain.t.
+  
+  (* pub struct RandomState { /* private fields */ } *)
+  Module RandomState.
+    Record t : Set := { }.
+  End RandomState.
+  Definition RandomState := RandomState.t.
+
+  (* pub struct HashMap<K, V, S = RandomState> { /* private fields */ } *)
+  Module HashMap.
+    Record t (K V S : Set) : Set := { }.
+  End HashMap.
+  Definition HashMap K V (option S) := 
+    HashMap.t K V (defaultType S RandomState).
+
+  (* pub struct IntoIter<K, V> { /* private fields */ } *)
+  Module IntoIter.
+    Record t (K V : Set) : Set := { }.
+  End IntoIter.
+  Definition IntoIter := IntoIter.t.
+  
+  (* pub struct IntoKeys<K, V> { /* private fields */ } *)
+  Module IntoKeys.
+    Record t (K V : Set) : Set := { }.
+  End IntoKeys.
+  Definition IntoKeys := IntoKeys.t.
+  
+  (* pub struct IntoValues<K, V> { /* private fields */ } *)
+  Module IntoValues.
+    Record t (K V : Set) : Set := { }.
+  End IntoValues.
+  Definition IntoValues := IntoValues.t.
+  
+  (* pub struct Iter<'a, K: 'a, V: 'a> { /* private fields */ } *)
+  Module Iter.
+    Record t (K V : Set) : Set := { }.
+  End Iter.
+  Definition Iter := Iter.t.
+
+  (* pub struct IterMut<'a, K: 'a, V: 'a> { /* private fields */ } *)
+  Module IterMut.
+    Record t (K V : Set) : Set := { }.
+  End IterMut.
+  Definition IterMut := IterMut.t.
+  
+  (* pub struct Keys<'a, K: 'a, V: 'a> { /* private fields */ } *)
+  Module Keys.
+    Record t (K V : Set) : Set := { }.
+  End Keys.
+  Definition Keys := Keys.t.
+  
+  (* pub struct OccupiedEntry<'a, K: 'a, V: 'a> { /* private fields */ } *)
+  Module OccupiedEntry.
+    Record t (K V : Set) : Set := { }.
+  End OccupiedEntry.
+  Definition OccupiedEntry := OccupiedEntry.t.
+  
+  (* pub struct VacantEntry<'a, K: 'a, V: 'a> { /* private fields */ } *)
+  Module VacantEntry.
+    Record t (K V : Set) : Set := { }.
+  End VacantEntry.
+  Definition VacantEntry := VacantEntry.t.
+  
+  (* pub struct Values<'a, K: 'a, V: 'a> { /* private fields */ } *)
+  Module Values.
+    Record t (K V : Set) : Set := { }.
+  End Values.
+  Definition Values := Values.t.
+  
+  (* pub struct ValuesMut<'a, K: 'a, V: 'a> { /* private fields */ } *)
+  Module ValuesMut.
+    Record t (K V : Set) : Set := { }.
+  End ValuesMut.
+  Definition ValuesMut := ValuesMut.t.
 
   (* ********ENUMS******** *)
   (* 
-  [ ] RawEntryMut
-  [ ] Entry
+  [?] RawEntryMut
+  [?] Entry
   *)
+
+  (* BUGGED: enum with param *)
+  (* 
+  pub enum RawEntryMut<'a, K: 'a, V: 'a, S: 'a> {
+      Occupied(RawOccupiedEntryMut<'a, K, V, S>),
+      Vacant(RawVacantEntryMut<'a, K, V, S>),
+  }
+  *)
+  Module RawEntryMut.
+    Inductive t (K V S : Set) : Set := 
+    | Occupied 
+    | Vacant
+    .
+  End RawEntryMut.
+  Definition RawEntryMut := RawEntryMut.t.
+
+  (* 
+  pub enum Entry<'a, K: 'a, V: 'a> {
+      Occupied(OccupiedEntry<'a, K, V>),
+      Vacant(VacantEntry<'a, K, V>),
+  }
+  *)
+  Module Entry.
+    Inductive t (K V S : Set) : Set := 
+    | Occupied
+    | Vacant
+    .
+  End Entry.
+  Definition Entry := Entry.t.
+  
 End hash_map.
 
 Module hash_set.
+  (* ********STRUCTS******** *)
+  (*
+  [ ] DrainFilter
+  [ ] Difference
+  [ ] Drain
+  [ ] HashSet
+  [ ] Intersection
+  [ ] IntoIter
+  [ ] Iter
+  [ ] SymmetricDifference
+  [ ] Union
+  *)
+  
+
 End hash_set.
 
 Module linked_list.
+  (* ********STRUCTS******** *)
+  (*
+  [ ] Cursor
+  [ ] CursorMut
+  [ ] DrainFilter
+  [ ] IntoIter
+  [ ] Iter
+  [ ] IterMut
+  [ ] LinkedList
+  *)
+  
 End linked_list.
 
 Module vec_deque.
+  (* ********STRUCTS******** *)
+  (*
+  [ ] Drain
+  [ ] IntoIter
+  [ ] Iter
+  [ ] IterMut
+  [ ] VecDeque
+  *)
+  
 End vec_deque.
 
 (* ********STRUCTS******** *)
@@ -449,3 +754,8 @@ Module VecDeque.
   Record t : Set := { }.
 End VecDeque.
 Definition VecDeque := VecDeque.t.
+
+(* ********ENUMS******** *)
+(*
+[ ] TryReserveErrorKind
+*)
