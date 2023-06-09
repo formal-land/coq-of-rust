@@ -1045,8 +1045,8 @@ Module windows.
   (* ********MODULES******** *)
   (*
   [x] ffi
-  [ ] fs
-  [ ] io
+  [x] fs
+  [x] io
   [x] prelude
   [ ] process
   [x] raw
@@ -1101,11 +1101,84 @@ Module windows.
   Module fs.
     (* ********TRAITS******** *)
     (*
-    [ ] FileExt
-    [ ] FileTypeExt
-    [ ] MetadataExt
-    [ ] OpenOptionsExt
+    [x] FileExt
+    [x] FileTypeExt
+    [x] MetadataExt
+    [x] OpenOptionsExt
     *)
+    (* 
+    pub trait FileExt {
+        // Required methods
+        fn seek_read(&self, buf: &mut [u8], offset: u64) -> Result<usize>;
+        fn seek_write(&self, buf: &[u8], offset: u64) -> Result<usize>;
+    }
+    *)
+    Module FileExt.
+      Class Trait (Self : Set) : Set := { 
+        seek_read : ref Self -> ref_mut (slice u8) -> u64 -> Result usize;
+        seek_write : ref Self -> ref (slice u8) -> u64 -> Result usize;
+      }.
+    End FileExt.
+
+    (* 
+    pub trait FileTypeExt: Sealed {
+        // Required methods
+        fn is_symlink_dir(&self) -> bool;
+        fn is_symlink_file(&self) -> bool;
+    }
+    *)
+    Module FileTypeExt.
+      Class Trait (Self : Set) : Set := {
+        is_symlink_dir: ref Self -> bool;
+        is_symlink_file: ref Self -> bool;
+      }.
+    End FileTypeExt.
+
+    (* 
+    pub trait MetadataExt {
+        // Required methods
+        fn file_attributes(&self) -> u32;
+        fn creation_time(&self) -> u64;
+        fn last_access_time(&self) -> u64;
+        fn last_write_time(&self) -> u64;
+        fn file_size(&self) -> u64;
+        fn volume_serial_number(&self) -> Option<u32>;
+        fn number_of_links(&self) -> Option<u32>;
+        fn file_index(&self) -> Option<u64>;
+    }
+    *)
+    Module MetadataExt.
+      Class Trait (Self : Set) : Set := {
+        file_attributes : ref Self -> u32;
+        creation_time : ref Self -> u64;
+        last_access_time : ref Self -> u64;
+        last_write_time : ref Self -> u64;
+        file_size : ref Self -> u64;
+        volume_serial_number: ref Self -> Option u32;
+        number_of_links: ref Self -> Option u32;
+        file_index: ref Self -> Option u64;
+      }.
+    End MetadataExt.
+    
+    (* 
+    pub trait OpenOptionsExt {
+        // Required methods
+        fn access_mode(&mut self, access: u32) -> &mut Self;
+        fn share_mode(&mut self, val: u32) -> &mut Self;
+        fn custom_flags(&mut self, flags: u32) -> &mut Self;
+        fn attributes(&mut self, val: u32) -> &mut Self;
+        fn security_qos_flags(&mut self, flags: u32) -> &mut Self;
+    }
+    *)
+    Module OpenOptionsExt.
+      Class Trait (Self : Set) : Set := {
+        access_mode : mut_ref Self -> u32 -> mut_ref Self;
+        share_mode : mut_ref Self -> u32 -> mut_ref Self;
+        custom_flags : mut_ref Self -> u32 -> mut_ref Self;
+        attributes : mut_ref Self -> u32 -> mut_ref Self;
+        security_qos_flags : mut_ref Self -> u32 -> mut_ref Self;
+      }.
+    End OpenOptionsExt.
 
     (* ********FUNCTIONS******** *)
     (*
@@ -1118,15 +1191,81 @@ Module windows.
   Module io.
     (* ********STRUCTS******** *)
     (*
-    [ ] BorrowedHandle
-    [ ] BorrowedSocket
-    [ ] HandleOrInvalid
-    [ ] HandleOrNull
-    [ ] InvalidHandleError
-    [ ] NullHandleError
-    [ ] OwnedHandle
-    [ ] OwnedSocket
+    [x] BorrowedHandle
+    [x] BorrowedSocket
+    [x] HandleOrInvalid
+    [x] HandleOrNull
+    [x] InvalidHandleError
+    [x] NullHandleError
+    [x] OwnedHandle
+    [x] OwnedSocket
     *)
+
+    (* 
+    #[repr(transparent)]
+    pub struct BorrowedHandle<'handle> { /* private fields */ } 
+    *)
+    Module BorrowedHandle.
+      Record t : Set := { }.
+    End BorrowedHandle.
+    Definition BorrowedHandle := BorrowedHandle.t.
+    
+    (* 
+    #[repr(transparent)]
+    pub struct BorrowedSocket<'socket> { /* private fields */ }
+    *)
+    Module BorrowedSocket.
+      Record t : Set := { }.
+    End BorrowedSocket.
+    Definition BorrowedSocket := BorrowedSocket.t.
+    
+    (* 
+    #[repr(transparent)]
+    pub struct HandleOrInvalid(_);
+    *)
+    Module HandleOrInvalid.
+      Record t : Set := { }.
+    End HandleOrInvalid.
+    Definition HandleOrInvalid := HandleOrInvalid.t.
+    
+    (* 
+    #[repr(transparent)]
+    pub struct HandleOrNull(_);
+    *)
+    Module HandleOrNull.
+      Record t : Set := { }.
+    End HandleOrNull.
+    Definition HandleOrNull := HandleOrNull.t.
+    
+    (* pub struct InvalidHandleError(_); *)
+    Module InvalidHandleError.
+      Record t : Set := { }.
+    End InvalidHandleError.
+    Definition InvalidHandleError := InvalidHandleError.t.
+    
+    (* pub struct NullHandleError(_); *)
+    Module NullHandleError.
+      Record t : Set := { }.
+    End NullHandleError.
+    Definition NullHandleError := NullHandleError.t.
+    
+    (* 
+    #[repr(transparent)]
+    pub struct OwnedHandle { /* private fields */ }
+    *)
+    Module OwnedHandle.
+      Record t : Set := { }.
+    End OwnedHandle.
+    Definition OwnedHandle := OwnedHandle.t.
+    
+    (* 
+    #[repr(transparent)]
+    pub struct OwnedSocket { /* private fields */ }
+    *)
+    Module OwnedSocket.
+      Record t : Set := { }.
+    End OwnedSocket.
+    Definition OwnedSocket := OwnedSocket.t.
 
     (* ********TRAITS******** *)
     (*
@@ -1139,13 +1278,108 @@ Module windows.
     [ ] IntoRawHandle
     [ ] IntoRawSocket
     *)
+
+    (* 
+    pub trait AsHandle {
+        // Required method
+        fn as_handle(&self) -> BorrowedHandle<'_>;
+    }
+    *)
+    Module AsHandle.
+      Class Trait (Self : Set) : Set := {
+        as_handle : ref Self -> BorrowedHandle;
+      }.
+    End AsHandle.
+
+    (* 
+    pub trait AsRawHandle {
+        // Required method
+        fn as_raw_handle(&self) -> RawHandle;
+    }
+    *)
+    Module AsRawHandle.
+      Class Trait (Self : Set) : Set := {
+        as_raw_handle : ref Self -> RawHandle;
+      }.
+    End AsRawHandle.
+
+    (* 
+    pub trait AsRawSocket {
+        // Required method
+        fn as_raw_socket(&self) -> RawSocket;
+    }
+    *)
+    Module AsRawSocket.
+      Class Trait (Self : Set) : Set := {
+        as_raw_socket : ref Self -> RawSocket;
+      }.
+    End AsRawSocket.
+
+    (* 
+    pub trait AsSocket {
+        // Required method
+        fn as_socket(&self) -> BorrowedSocket<'_>;
+    }
+    *)
+    Module AsSocket.
+      Class Trait (Self : Set) : Set := {
+        as_socket : ref Self -> BorrowedSocket;
+      }.
+    End AsSocket.
+    
+    (* 
+    pub trait FromRawHandle {
+        // Required method
+        unsafe fn from_raw_handle(handle: RawHandle) -> Self;
+    }
+    *)
+    Module FromRawHandle.
+      Class Trait (Self : Set) : Set := {
+        from_raw_handle : RawHandle -> Self;
+      }.
+    End FromRawHandle.
+
+    (* 
+    pub trait FromRawSocket {
+        // Required method
+        unsafe fn from_raw_socket(sock: RawSocket) -> Self;
+    }
+    *)
+    Module FromRawSocket.
+      Class Trait (Self : Set) : Set := {
+        from_raw_socket : RawSocket -> Self;
+      }.
+    End FromRawSocket.
+    
+    (* 
+    pub trait IntoRawHandle {
+        // Required method
+        fn into_raw_handle(self) -> RawHandle;
+    }
+    *)
+    Module IntoRawHandle.
+      Class Trait (Self : Set) : Set := {
+        into_raw_handle : Self -> RawHandle;
+      }.
+    End IntoRawHandle.
+    
+    (* 
+    pub trait IntoRawSocket {
+        // Required method
+        fn into_raw_socket(self) -> RawSocket;
+    }
+    *)
+    Module IntoRawSocket.
+      Class Trait (Self : Set) : Set := {
+        into_raw_socket : Self -> RawSocket;
+      }.
+    End IntoRawSocket.
     
     (* ********TYPE DEFINITIONS******** *)
     (*
     [ ] RawHandle
     [ ] RawSocket
     *)
-    
     
   End io.
   
@@ -1184,6 +1418,63 @@ Module windows.
     [ ] CommandExt
     [ ] ExitStatusExt
     *)
+
+    (* 
+    pub trait ChildExt: Sealed {
+        // Required method
+        fn main_thread_handle(&self) -> BorrowedHandle<'_>;
+    }
+    *)
+    Module ChildExt.
+      Class Trait (Self : Set) : Set := {
+        main_thread_handle : ref Self -> BorrowedHandle;
+      }.
+    End ChildExt.
+
+    (* 
+    pub trait ExitCodeExt: Sealed {
+        // Required method
+        fn from_raw(raw: u32) -> Self;
+    }
+    *)
+    Module ExitCodeExt.
+      Class Trait (Self : Set) : Set := {
+        from_raw : u32 -> Self;
+      }.
+    End ExitCodeExt.
+
+    (* 
+    pub trait CommandExt: Sealed {
+        // Required methods
+        fn creation_flags(&mut self, flags: u32) -> &mut Command;
+        fn force_quotes(&mut self, enabled: bool) -> &mut Command;
+        fn raw_arg<S: AsRef<OsStr>>(
+            &mut self,
+            text_to_append_as_is: S
+        ) -> &mut Command;
+        fn async_pipes(&mut self, always_async: bool) -> &mut Command;
+    }
+    *)
+    Module CommandExt.
+      Class Trait (Self : Set) : Set := {
+        creation_flags : mut_ref Self -> u32 -> mut_ref Command;
+        force_quotes : mut_ref Self -> bool -> mut_ref Command;
+        raw_arg (S : Set) `{AsRef.Trait S OsStr} : mut_ref Self -> S -> mut_ref Command;
+        async_pipes : mut_ref Self -> bool -> mut_ref Command;
+      }.
+    End CommandExt.
+
+    (* 
+    pub trait ExitStatusExt: Sealed {
+        // Required method
+        fn from_raw(raw: u32) -> Self;
+    }
+    *)
+    Module ExitStatusExt.
+      Class Trait (Self : Set) : Set := {
+      from_raw : u32 -> Self;
+      }.
+    End ExitStatusExt.
     
   End process.
   

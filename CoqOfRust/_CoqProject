@@ -56,6 +56,6 @@ std/arch.v # Complete
 std/simd.v # Bugged: mutual reference, unusual const definition
 std/net.v # Bugged: `iter` dependency
 std/path.v # Complete
-std/os.v # FOCUS: LARGE FILE
+std/os.v # Bugged: large file with varied bugs
 std/prelude.v # Complete
 std/primitive.v # Complete
