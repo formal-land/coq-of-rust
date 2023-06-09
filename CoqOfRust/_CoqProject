@@ -13,9 +13,9 @@ std/alloc.v # Passed
 std/pin.v # Passed
 std/cmp.v # Passed
 std/marker.v # Passed
-std/ops.v # Bugged: as clause, mutual definitions
+std/ops.v # Bugged: `as` clause, mutual reference
 std/string.v # Passed
-std/collections.v # FOCUS: LARGE FILE. Bugged: defaultType with `where` clause
+std/collections.v # Severely Bugged
 std/fmt.v # Complete
 std/io.v # Complete
 std/any.v # Passed
@@ -56,6 +56,6 @@ std/arch.v # Complete
 std/simd.v # Bugged: mutual reference, unusual const definition
 std/net.v # Bugged: `iter` dependency
 std/path.v # Complete
-std/os.v # LARGE FILE
+std/os.v # FOCUS: LARGE FILE
 std/prelude.v # Complete
 std/primitive.v # Complete

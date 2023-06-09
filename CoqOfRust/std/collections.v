@@ -91,18 +91,18 @@ Module btree_map.
   [x] Cursor
   [x] CursorMut
   [?] DrainFilter
-  [?] OccupiedError
-  [?] BTreeMap
-  [?] IntoIter
-  [?] IntoKeys
-  [?] IntoValues
+  [x] OccupiedError
+  [x] BTreeMap
+  [x] IntoIter
+  [x] IntoKeys
+  [x] IntoValues
   [x] Iter
   [x] IterMut
   [x] Keys
-  [?] OccupiedEntry
+  [x] OccupiedEntry
   [x] Range	
   [x] RangeMut
-  [?] VacantEntry
+  [x] VacantEntry
   [x] Values
   [x] ValuesMut
   *)
@@ -132,7 +132,7 @@ Module btree_map.
   Definition CursorMut (K V : Set) (A : option Set) := 
     CursorMut.t K V (defaultType A Global).
 
-  (* BUGGED: defaultType with `where` clause *)
+  (* BUGGED: monad function dependency *)
   (* 
   pub struct DrainFilter<'a, K, V, F, A = Global>
   where
@@ -141,11 +141,13 @@ Module btree_map.
   { /* private fields */ }
   *)
   Module DrainFilter.
-    Record t (K V F A : Set) : Set := { }.
+    Record t (K V F A : Set) 
+      `{Allocator.Trait A}
+      `{Clone.Trait A}
+    : Set := { }.
   End DrainFilter.
   Definition DrainFilter (K V F : Set) (A : option Set) := DrainFilter.t K V F (defaultType A Global).
   
-  (* BUGGED: same as above *)
   (* 
   pub struct OccupiedError<'a, K, V, A = Global>
   where
@@ -158,7 +160,10 @@ Module btree_map.
   }
   *)
   Module OccupiedError.
-    Record t (K V A : Set) : Set := { 
+    Record t (K V A : Set) 
+      `{Allocator.Trait A}
+      `{Clone.Trait A}
+    : Set := { 
       entry : OccupiedEntry K V (Some A);
       value : V;
     }.
@@ -166,7 +171,6 @@ Module btree_map.
   Definition OccupiedError (K V : Set) (A : option Set) := 
     OccupiedError.t K V (defaultType A Global).
   
-  (* BUGGED: same as above *)
   (* 
   pub struct BTreeMap<K, V, A = Global>
   where
@@ -174,11 +178,13 @@ Module btree_map.
   { /* private fields */ }
   *)
   Module BTreeMap.
-    Record t (K V A : Set) : Set := { }.
+    Record t (K V A : Set) 
+      `{Allocator.Trait A}
+      `{Clone.Trait A}
+    : Set := { }.
   End BTreeMap.
   Definition BTreeMap (K V : Set) (A : option Set) := BTreeMap.t K V (defaultType A Global).
 
-  (* BUGGED: same as above *)
   (* 
   pub struct IntoIter<K, V, A = Global>
   where
@@ -186,11 +192,13 @@ Module btree_map.
   { /* private fields */ }
   *)
   Module IntoIter.
-    Record t (K V A : Set) : Set := { }.
+    Record t (K V A : Set) 
+      `{Allocator.Trait A}
+      `{Clone.Trait A}
+    : Set := { }.
   End IntoIter.
   Definition IntoIter (K V : Set) (A : option Set) := IntoIter.t K V (defaultType A Global).
 
-  (* BUGGED: same as above *)
   (* 
   pub struct IntoKeys<K, V, A = Global>
   where
@@ -198,11 +206,13 @@ Module btree_map.
   { /* private fields */ }
   *)
   Module IntoKeys.
-    Record t (K V A : Set) : Set := { }.
+    Record t (K V A : Set) 
+      `{Allocator.Trait A}
+      `{Clone.Trait A}
+    : Set := { }.
   End IntoKeys.
   Definition IntoKeys (K V : Set) (A : option Set) := IntoKeys.t K V (defaultType A Global).
 
-  (* BUGGED: same as above *)
   (* 
   pub struct IntoValues<K, V, A = Global>
   where
@@ -210,7 +220,10 @@ Module btree_map.
   { /* private fields */ }
   *)
   Module IntoValues.
-    Record t (K V A : Set) : Set := { }.
+    Record t (K V A : Set) 
+      `{Allocator.Trait A}
+      `{Clone.Trait A}
+    : Set := { }.
   End IntoValues.
   Definition IntoValues (K V : Set) (A : option Set) := IntoValues.t K V (defaultType A Global).
 
@@ -244,7 +257,6 @@ Module btree_map.
   End Keys.
   Definition Keys := Keys.t.
 
-  (* BUGGED: same as above *)
   (* 
   pub struct OccupiedEntry<'a, K, V, A = Global>
   where
@@ -252,7 +264,10 @@ Module btree_map.
   { /* private fields */ }
   *)
   Module OccupiedEntry.
-    Record t (K V A : Set) : Set := { }.
+    Record t (K V A : Set) 
+      `{Allocator.Trait A}
+      `{Clone.Trait A}
+    : Set := { }.
   End OccupiedEntry.
   Definition OccupiedEntry (K V : Set) (A : option Set) := OccupiedEntry.t K V (defaultType A Global).
   
@@ -280,7 +295,6 @@ Module btree_map.
   End RangeMut.
   Definition RangeMut := RangeMut.t.
   
-  (* BUGGED: same as above *)
   (* 
   pub struct VacantEntry<'a, K, V, A = Global>
   where
@@ -288,7 +302,10 @@ Module btree_map.
   { /* private fields */ }
   *)
   Module VacantEntry.
-    Record t (K V A : Set) : Set := { }.
+    Record t (K V A : Set) 
+      `{Allocator.Trait A}
+      `{Clone.Trait A}
+    : Set := { }.
   End VacantEntry.
   Definition VacantEntry (K V : Set) (A : option Set) := VacantEntry.t K V (defaultType A Global).
   
@@ -304,30 +321,50 @@ Module btree_map.
   End ValuesMut.
   Definition ValuesMut := ValuesMut.t.
   
-  
-  
-  
-
   (* ********ENUMS******** *)
   (* 
-  [ ] Entry
+  [?] Entry
   *)
+
+  (* BUGGED: same as above *)
+  (* 
+  pub enum Entry<'a, K, V, A = Global>
+  where
+      K: 'a,
+      V: 'a,
+      A: Allocator + Clone,
+  {
+      Vacant(VacantEntry<'a, K, V, A>),
+      Occupied(OccupiedEntry<'a, K, V, A>),
+  }
+  *)
+  Module Entry.
+    Inductive t (K V A : Set) 
+      `{Allocator.Trait A}
+      `{Clone.Trait A}
+    : Set := 
+    | Vacant
+    | Occupied
+    .
+  End Entry.
+  Definition Entry (K V : Set) (A : option Set): = Entry.t K V (defaultType A Global).
+  
 End btree_map.
 
 Module btree_set.
   (* ********STRUCTS******** *)
   (* 
   [?] DrainFilter
-  [?] BTreeSet
-  [?] Difference
-  [?] Intersection
-  [?] IntoIter
+  [x] BTreeSet
+  [x] Difference
+  [x] Intersection
+  [x] IntoIter
   [x] Iter
   [x] Range
   [x] SymmetricDifference
   [x] Union
   *)
-  (* BUGGED: defaultType with as, monad dependency *)
+  (* BUGGED: monad dependency *)
   (* 
   pub struct DrainFilter<'a, T, F, A = Global>
   where
@@ -337,11 +374,13 @@ Module btree_set.
   { /* private fields */ }
   *)
   Module DrainFilter.
-    Record t (T F A : Set) : Set := { }.
+    Record t (T F A : Set) 
+      `{Allocator.Trait A}
+      `{Clone.Trait A}
+    : Set := { }.
   End DrainFilter.
   Definition DrainFilter (T F : Set) (A : option Set) := DrainFilter.t T F (defaultType A Global).
 
-  (* BUGGED: defaultType with as clause *)
   (* 
   pub struct BTreeSet<T, A = Global>
   where
@@ -349,11 +388,13 @@ Module btree_set.
   { /* private fields */ }
   *)
   Module BTreeSet.
-    Record t (T A : Set) : Set := { }.
+    Record t (T A : Set) 
+      `{Allocator.Trait A}
+      `{Clone.Trait A}
+    : Set := { }.
   End BTreeSet.
   Definition BTreeSet (T : Set) (A : option Set) := BTreeSet.t T (defaultType A Global).
 
-  (* BUGGED: same as above *)
   (* 
   pub struct Difference<'a, T, A = Global>
   where
@@ -362,11 +403,13 @@ Module btree_set.
   { /* private fields */ }
   *)
   Module Difference.
-    Record t (T A : Set) : Set := { }.
+    Record t (T A : Set) 
+      `{Allocator.Trait A}
+      `{Clone.Trait A}
+    : Set := { }.
   End Difference.
   Definition Difference (T : Set) (A : option Set) := Difference.t T (defaultType A Global).
 
-  (* BUGGED: same as above *)
   (* 
   pub struct Intersection<'a, T, A = Global>
   where
@@ -375,11 +418,13 @@ Module btree_set.
   { /* private fields */ }
   *)
   Module Intersection.
-    Record t (T A : Set) : Set := { }.
+    Record t (T A : Set) 
+      `{Allocator.Trait A}
+      `{Clone.Trait A}
+    : Set := { }.
   End Intersection.
   Definition Intersection (T : Set) (A : option Set) := Intersection.t T (defaultType A Global).
 
-  (* BUGGED: same as above *)
   (* 
   pub struct IntoIter<T, A = Global>
   where
@@ -387,7 +432,10 @@ Module btree_set.
   { /* private fields */ }
   *)
   Module IntoIter.
-    Record t (T A : Set) : Set := { }.
+    Record t (T A : Set) 
+      `{Allocator.Trait A}
+      `{Clone.Trait A}
+    : Set := { }.
   End IntoIter.
   Definition IntoIter (T : Set) (A : option Set) := IntoIter.t T (defaultType A Global).
   
@@ -438,7 +486,7 @@ Module hash_map.
   (* ********STRUCTS******** *)
   (* 
   [?] DrainFilter
-  [?] OccupiedError
+  [x] OccupiedError
   [x] RawEntryBuilder
   [x] RawEntryBuilderMut
   [x] RawOccupiedEntryMut
@@ -471,7 +519,6 @@ Module hash_map.
   End DrainFilter.
   Definition DrainFilter := DrainFilter.t.
 
-  (* BUGGED: struct with type *)
   (* 
   pub struct OccupiedError<'a, K: 'a, V: 'a> {
       pub entry: OccupiedEntry<'a, K, V>,
@@ -480,8 +527,8 @@ Module hash_map.
   *)
   Module OccupiedError.
     Record t (K V : Set) : Set := { 
-      entry : t;
-      value : t;
+      entry : OccupiedEntry K V;
+      value : V;
     }.
   End OccupiedError.
   Definition OccupiedError := OccupiedError.t.
@@ -795,14 +842,13 @@ End linked_list.
 Module vec_deque.
   (* ********STRUCTS******** *)
   (*
-  [?] Drain
-  [?] IntoIter
+  [x] Drain
+  [x] IntoIter
   [x] Iter
   [x] IterMut
-  [?] VecDeque
+  [x] VecDeque
   *)
 
-  (* BUGGED: defaultType with where clause *)
   (* 
   pub struct Drain<'a, T, A = Global>
   where
@@ -811,11 +857,10 @@ Module vec_deque.
   { /* private fields */ }
   *)
   Module Drain.
-    Record t (T A : Set) : Set := { }.
+    Record t (T A : Set) `{Allocator.Trait A} : Set := { }.
   End Drain.
   Definition Drain (T : Set) (A : option Set) := Drain.t T (defaultType A Global).
 
-  (* BUGGED: same as above *)
   (* 
   pub struct IntoIter<T, A = Global>
   where
@@ -823,7 +868,7 @@ Module vec_deque.
   { /* private fields */ }
   *)
   Module IntoIter.
-    Record t (T A : Set) : Set := { }.
+    Record t (T A : Set) `{Allocator.Trait A} : Set := { }.
   End IntoIter.
   Definition IntoIter (T : Set) (A : option Set) := IntoIter.t T (defaultType A Global).
 
@@ -849,7 +894,6 @@ Module vec_deque.
   End IterMut.
   Definition IterMut := IterMut.t.
   
-  (* BUGGED: same as above *)
   (* 
   pub struct VecDeque<T, A = Global>
   where
@@ -857,12 +901,9 @@ Module vec_deque.
   { /* private fields */ }
   *)
   Module VecDeque.
-    Record t (T A : Set) : Set := { }.
+    Record t (T A : Set) `{Allocator.Trait A} : Set := { }.
   End VecDeque.
   Definition VecDeque (T : Set) (A : option Set) := VecDeque.t T (defaultType A Global).
-  
-  
-  
   
 End vec_deque.
 
@@ -871,8 +912,8 @@ End vec_deque.
 [x] BTreeMap
 [x] BTreeSet
 [x] BinaryHeap
-[ ] HashMap
-[ ] HashSet
+[x] HashMap
+[x] HashSet
 [x] LinkedList
 [x] TryReserveError
 [x] VecDeque 
@@ -913,22 +954,21 @@ Module BinaryHeap.
 End BinaryHeap.
 Definition BinaryHeap := BinaryHeap.t.
 
-(* TODO: Add dependency *)
-(* BUGGED: RandomState comes from the hash_map submodule. We have to put submods before these files *)
+(* TODO: Add dependency from HashMap *)
 (* pub struct HashMap<K, V, S = RandomState> { /* private fields */ } *)
 Module HashMap.
   Record t (K V S : Set) : Set := { }.
 End HashMap.
-(* Definition HashMap (K V : Set) (S : option Set) := 
-  HashMap.t K V (defaultType S RandomState). *)
+Definition HashMap (K V : Set) (S : option Set) := 
+  HashMap.t K V (defaultType S RandomState).
 
 (* TODO: Add dependency *)
 (* pub struct HashSet<T, S = RandomState> { /* private fields */ } *)
 Module HashSet.
   Record t (T : Set) : Set := { }.
 End HashSet.
-(* Definition HashSet (T : Set) (S : option Set) := 
-  HashSet.t T (defaultType S RandomState). *)
+Definition HashSet (T : Set) (S : option Set) := 
+  HashSet.t T (defaultType S RandomState).
 
 (* pub struct LinkedList<T> { /* private fields */ } *)
 Module LinkedList.
@@ -948,5 +988,16 @@ Definition VecDeque := VecDeque.t.
 
 (* ********ENUMS******** *)
 (*
-[ ] TryReserveErrorKind
+[?] TryReserveErrorKind
+*)
+
+(* BUGGED: unfamiliar enum *)
+(* 
+pub enum TryReserveErrorKind {
+    CapacityOverflow,
+    AllocError {
+        layout: Layout,
+        /* private fields */
+    },
+}
 *)
