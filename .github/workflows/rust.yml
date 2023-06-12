@@ -33,4 +33,11 @@ jobs:
         cd CoqOfRust
         ./configure.sh
         make
+        cd ../
+    - name: Compile old CoqOfRust file with Rust translations
+      run: |
+        cd CoqOfRust
+        ./configure.sh
+        make
         cd ../..
+    
