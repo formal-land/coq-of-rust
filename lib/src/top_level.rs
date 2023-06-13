@@ -916,6 +916,7 @@ impl ImplItem {
                     text("Definition"),
                     line(),
                     text(name),
+                    text(" := "),
                     body.to_doc(false),
                     text("."),
                 ]),
