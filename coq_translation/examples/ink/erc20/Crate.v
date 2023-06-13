@@ -3,7 +3,101 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import std.prelude.rust_2021.
 
+Module Root.
+  Module ink.
+    Module storage.
+      Module traits.
+        Module AutoStorableHint.
+          Parameter Type_ : Set.
+        End AutoStorableHint.
+      End traits.
+    End storage.
+
+    Module env.
+      Parameter DefaultEnvironment : Set.
+
+      Module ContractEnv.
+        Class Trait (Self : Set) : Set := {
+            (* ??? *)
+          }.
+        
+        Parameter Env : Set.
+      End ContractEnv.
+      Module Environment.
+        Parameter AccountId : Set.
+        Parameter Balance : Set.
+        Parameter Hash : Set.
+        Parameter Timestamp : Set.
+        Parameter BlockNumber : Set.
+        Parameter ChainExtension : Set.
+        Parameter MAX_EVENT_TOPICS : M usize.
+      End Environment.
+    End env.
+    Module reflect.
+      Module ConstructorOutput.
+        Parameter Error : Set.
+        (* @TODO Not sure about this, it is a guess *)
+        Parameter IS_RESULT : unit -> bool.
+      End ConstructorOutput.
+
+      Module DispatchableConstructorInfo.
+        Class Trait (Self : Set) : Set := {
+          IS_RESULT : unit -> bool;
+          CALLABLE : Root.ink.storage.traits.AutoStorableHint.Type_ -> Self;
+          PAYABLE : bool;
+          SELECTOR : list Z;
+          LABEL : string;
+        }.
+      End DispatchableConstructorInfo.
+
+      Module DispatchableMessageInfo.
+     (* : unit -> ImplFlipper.Self -> unit -> bool *)
+        Class Trait Self (a : Set) := {
+            CALLABLE : Self -> Root.ink.storage.traits.AutoStorableHint.Type_ -> a;
+            MUTATES : bool;
+            PAYABLE : bool;
+            SELECTOR : list Z;
+            LABEL : string;
+          }.
+      End DispatchableMessageInfo.
+    End reflect.
+    Module codegen.
+      Module ContractCallBuilder.
+        Parameter Type_ : Set.
+      End ContractCallBuilder.
+
+      Parameter EventTopics : Set.
+      Module EventLenTopics.
+        Parameter Type_ : Set.
+        
+        Class Trait (Self : Set) : Set := {
+          }.
+      End EventLenTopics.
+      Definition EventLenTopics := EventLenTopics.Type_.
+    End codegen.
+  End ink.
+End Root.
+
 Module erc20.
+  Module Erc20.
+    Record t : Set := {
+      total_supply : Root.ink.storage.traits.AutoStorableHint.Type_;
+      balances : Root.ink.storage.traits.AutoStorableHint.Type_;
+      allowances : Root.ink.storage.traits.AutoStorableHint.Type_;
+    }.
+    
+    Global Instance Get_total_supply : Notation.Dot "total_supply" := {
+      Notation.dot '(Build_t x0 _ _) := x0;
+    }.
+    Global Instance Get_balances : Notation.Dot "balances" := {
+      Notation.dot '(Build_t _ x1 _) := x1;
+    }.
+    Global Instance Get_allowances : Notation.Dot "allowances" := {
+      Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+  End Erc20.
+  Definition Erc20 : Set := Erc20.t.
+  
   Module Impl_Root_ink_env_ContractEnv_for_Erc20.
     Definition Self := Erc20.
     
@@ -30,105 +124,46 @@ Module erc20.
   Definition MAX_EVENT_TOPICS : usize :=
     run (Root.ink.env.Environment.MAX_EVENT_TOPICS).
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Module Erc20.
-    Record t : Set := {
-      total_supply : Root.ink.storage.traits.AutoStorableHint.Type;
-      balances : Root.ink.storage.traits.AutoStorableHint.Type;
-      allowances : Root.ink.storage.traits.AutoStorableHint.Type;
-    }.
-    
-    Global Instance Get_total_supply : Notation.Dot "total_supply" := {
-      Notation.dot '(Build_t x0 _ _) := x0;
-    }.
-    Global Instance Get_balances : Notation.Dot "balances" := {
-      Notation.dot '(Build_t _ x1 _) := x1;
-    }.
-    Global Instance Get_allowances : Notation.Dot "allowances" := {
-      Notation.dot '(Build_t _ _ x2) := x2;
-    }.
-  End Erc20.
-  Definition Erc20 : Set := Erc20.t.
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
-  
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
   Module Impl__crate_default_Default_for_Erc20.
     Definition Self := Erc20.
+
+    (* depends on create default *)
+    (* Definition default (_ : unit) : Erc20 := *)
+    (*   {| *)
+    (*     Erc20.total_supply := _crate.default.Default.default tt; *)
+    (*     Erc20.balances := _crate.default.Default.default tt; *)
+    (*     Erc20.allowances := _crate.default.Default.default tt; *)
+    (*   |}. *)
     
-    Definition default (_ : unit) : Erc20 :=
-      {|
-        Erc20.total_supply := _crate.default.Default.default tt;
-        Erc20.balances := _crate.default.Default.default tt;
-        Erc20.allowances := _crate.default.Default.default tt;
-      |}.
+    (* Global Instance AssociatedFunction_default : *)
+    (*   Notation.DoubleColon Self "default" := { *)
+    (*   Notation.double_colon := default; *)
+    (* }. *)
     
-    Global Instance AssociatedFunction_default :
-      Notation.DoubleColon Self "default" := {
-      Notation.double_colon := default;
-    }.
-    
-    Global Instance I : _crate.default.Default.Trait Self := {
-      _crate.default.Default.default := default;
-    }.
+    (* Global Instance I : _crate.default.Default.Trait Self := { *)
+    (*   _crate.default.Default.default := default; *)
+    (* }. *)
   End Impl__crate_default_Default_for_Erc20.
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
-  
-  Module __ink_EventBase.
-    Inductive t : Set :=
-    | Transfer (_ : Transfer)
-    | Approval (_ : Approval).
-  End __ink_EventBase.
-  Definition __ink_EventBase := __ink_EventBase.t.
-  
-  Definition _ : unit := run (tt).
-  
-  Definition _ : unit := run (tt).
-  
-  Definition _ : unit := run (tt).
-  
-  Definition _ : unit := run (tt).
-  
-  Definition _ : unit := run (tt).
-  
-  Definition _ : unit := run (tt).
-  
-  Module Impl_Root_ink_codegen_EventLenTopics_for_Transfer.
-    Definition Self := Transfer.
-    
-    Definition LenTopics : Set := Root.ink.codegen.EventTopics.
-    
-    Global Instance I : Root.ink.codegen.EventLenTopics.Trait Self := {
-    }.
-  End Impl_Root_ink_codegen_EventLenTopics_for_Transfer.
-  
-  Definition _ : unit := run ((Root.ink.codegen.utils.consume_type tt)).
-  
-  Module Impl_Root_ink_codegen_EventLenTopics_for_Approval.
-    Definition Self := Approval.
-    
-    Definition LenTopics : Set := Root.ink.codegen.EventTopics.
-    
-    Global Instance I : Root.ink.codegen.EventLenTopics.Trait Self := {
-    }.
-  End Impl_Root_ink_codegen_EventLenTopics_for_Approval.
-  
-  Definition _ : unit := run ((Root.ink.codegen.utils.consume_type tt)).
+  (* Definition _ : unit := run (tt). *)
   
   Module Transfer.
     Record t : Set := {
@@ -148,11 +183,7 @@ Module erc20.
     }.
   End Transfer.
   Definition Transfer : Set := Transfer.t.
-  
-  Definition _ : unit := run (tt).
-  
-  Definition _ : unit := run (tt).
-  
+
   Module Approval.
     Record t : Set := {
       owner : AccountId;
@@ -171,14 +202,60 @@ Module erc20.
     }.
   End Approval.
   Definition Approval : Set := Approval.t.
+
+  Module __ink_EventBase.
+    Inductive t : Set :=
+    | Transfer (_ : Transfer)
+    | Approval (_ : Approval).
+  End __ink_EventBase.
+  Definition __ink_EventBase := __ink_EventBase.t.
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
   
-  Definition _ : unit := run (tt).
+  (* Definition _ : unit := run (tt). *)
+  
+  (* Definition _ : unit := run (tt). *)
+  
+  (* Definition _ : unit := run (tt). *)
+  
+  Module Impl_Root_ink_codegen_EventLenTopics_for_Transfer.
+    Definition Self := Transfer.
+    
+    Definition LenTopics : Set := Root.ink.codegen.EventTopics.
+    
+    Global Instance I : Root.ink.codegen.EventLenTopics.Trait Self := {
+    }.
+  End Impl_Root_ink_codegen_EventLenTopics_for_Transfer.
+  
+  (* Definition _ : unit := run ((Root.ink.codegen.utils.consume_type tt)). *)
+  
+  Module Impl_Root_ink_codegen_EventLenTopics_for_Approval.
+    Definition Self := Approval.
+    
+    Definition LenTopics : Set := Root.ink.codegen.EventTopics.
+    
+    Global Instance I : Root.ink.codegen.EventLenTopics.Trait Self := {
+    }.
+  End Impl_Root_ink_codegen_EventLenTopics_for_Approval.
+  
+  (* Definition _ : unit := run ((Root.ink.codegen.utils.consume_type tt)). *)
+  
+  (* Definition _ : unit := run (tt). *)
+  
+  (* Definition _ : unit := run (tt). *)
+  
+  
+  (* Definition _ : unit := run (tt). *)
+  
+  (* Definition _ : unit := run (tt). *)
+  
+  (* Definition _ : unit := run (tt). *)
+  
+  (* Definition _ : unit := run (tt). *)
   
   Module Impl_Root_ink_reflect_DispatchableConstructorInfo_for_Erc20.
     Definition Self := Erc20.
@@ -197,9 +274,11 @@ Module erc20.
       Notation.DoubleColon Self "IS_RESULT" := {
       Notation.double_colon := IS_RESULT;
     }.
+
+    Global Instance Erc20_new_method : Notation.DoubleColon Erc20 "new" (T := unit -> M Erc20). Admitted.
     
     Definition
-      CALLABLE := fun __ink_binding_0 => Erc20::["new"] __ink_binding_0.
+      CALLABLE := fun (__ink_binding_0 : _) => Erc20::["new"] __ink_binding_0.
     
     Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
