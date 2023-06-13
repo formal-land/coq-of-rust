@@ -12,7 +12,7 @@ End Null.
 Definition Null := Null.t.
 
 Module DoubleDrop.
-  Class Trait (T Self : Set) : Set := {
+  Class Trait (Self : Set) {T : Set} : Set := {
     double_drop : Self -> T -> (M unit);
   }.
   
@@ -22,6 +22,9 @@ Module DoubleDrop.
 End DoubleDrop.
 
 Module Impl_generics_traits_DoubleDrop_for_U.
+Section Impl_generics_traits_DoubleDrop_for_U.
+  Context {T U : Set}.
+  
   Definition Self := U.
   
   Definition double_drop (self : Self) (Pattern : T) : M unit := Pure tt.
@@ -30,9 +33,10 @@ Module Impl_generics_traits_DoubleDrop_for_U.
     Notation.dot := double_drop;
   }.
   
-  Global Instance I T U : generics_traits.DoubleDrop.Trait Self T := {
+  Global Instance I : generics_traits.DoubleDrop.Trait Self (T : T) := {
     generics_traits.DoubleDrop.double_drop := double_drop;
   }.
+End Impl_generics_traits_DoubleDrop_for_U.
 End Impl_generics_traits_DoubleDrop_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

@@ -14,15 +14,24 @@ End PhantomTuple.
 Definition PhantomTuple := PhantomTuple.t.
 
 Module
-    Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
+  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
+Section
+  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
+  Context {A B : Set}.
+  
   Definition Self := generics_phantom_type.PhantomTuple A B.
   
-  Global Instance I A B : core.marker.StructuralPartialEq.Trait Self :=
+  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
     core.marker.StructuralPartialEq.Build_Trait _.
+End
+  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 End
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
+Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
+  Context {A B : Set}.
+  
   Definition Self := generics_phantom_type.PhantomTuple A B.
   
   Definition eq
@@ -37,9 +46,10 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
     Notation.dot := eq;
   }.
   
-  Global Instance I A B : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self := {
     core.cmp.PartialEq.eq := eq;
   }.
+End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module PhantomStruct.
@@ -58,15 +68,24 @@ End PhantomStruct.
 Definition PhantomStruct : Set := PhantomStruct.t.
 
 Module
-    Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
+  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
+Section
+  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
+  Context {A B : Set}.
+  
   Definition Self := generics_phantom_type.PhantomStruct A B.
   
-  Global Instance I A B : core.marker.StructuralPartialEq.Trait Self :=
+  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
     core.marker.StructuralPartialEq.Build_Trait _.
+End
+  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 End
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
+Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
+  Context {A B : Set}.
+  
   Definition Self := generics_phantom_type.PhantomStruct A B.
   
   Definition eq
@@ -81,9 +100,10 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
     Notation.dot := eq;
   }.
   
-  Global Instance I A B : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self := {
     core.cmp.PartialEq.eq := eq;
   }.
+End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

@@ -13,6 +13,9 @@ Module PrintInOption.
 End PrintInOption.
 
 Module Impl_generics_where_clauses_PrintInOption_for_T.
+Section Impl_generics_where_clauses_PrintInOption_for_T.
+  Context {T : Set}.
+  
   Definition Self := T.
   
   Definition print_in_option (self : Self) : M unit :=
@@ -32,9 +35,10 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
     Notation.dot := print_in_option;
   }.
   
-  Global Instance I T : generics_where_clauses.PrintInOption.Trait Self := {
+  Global Instance I : generics_where_clauses.PrintInOption.Trait Self := {
     generics_where_clauses.PrintInOption.print_in_option := print_in_option;
   }.
+End Impl_generics_where_clauses_PrintInOption_for_T.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

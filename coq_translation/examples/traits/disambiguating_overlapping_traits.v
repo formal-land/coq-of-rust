@@ -37,7 +37,7 @@ End Form.
 Definition Form : Set := Form.t.
 
 Module
-    Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
+  Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
   Definition Self := disambiguating_overlapping_traits.Form.
   
   Definition get (self : ref Self) : M alloc.string.String :=
@@ -56,7 +56,7 @@ End
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
 Module
-    Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
+  Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
   Definition Self := disambiguating_overlapping_traits.Form.
   
   Definition get (self : ref Self) : M u8 := Pure self.["age"].

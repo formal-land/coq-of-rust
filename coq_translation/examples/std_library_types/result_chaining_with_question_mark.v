@@ -11,7 +11,7 @@ Module checked.
   Definition MathError := MathError.t.
   
   Module
-      Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+    Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
     Definition Self := result_chaining_with_question_mark.checked.MathError.
     
     Definition fmt
@@ -145,7 +145,7 @@ End MathError.
 Definition MathError := MathError.t.
 
 Module
-    Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   Definition Self := result_chaining_with_question_mark.checked.MathError.
   
   Definition fmt

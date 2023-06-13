@@ -17,7 +17,7 @@ End Account.
 Definition Account : Set := Account.t.
 
 Module
-    Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
+  Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -26,7 +26,7 @@ End
   Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module
-    Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
+  Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
   Definition eq
@@ -47,7 +47,7 @@ Module
 End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module
-    Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
+  Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
   Global Instance I : core.marker.StructuralEq.Trait Self :=

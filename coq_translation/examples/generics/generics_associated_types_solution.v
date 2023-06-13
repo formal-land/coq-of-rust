@@ -34,7 +34,7 @@ Module Contains.
 End Contains.
 
 Module
-    Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
+  Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
   Definition Self := generics_associated_types_solution.Container.
   
   Definition A : Set := i32.

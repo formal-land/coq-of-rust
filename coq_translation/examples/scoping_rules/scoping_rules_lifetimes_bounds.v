@@ -11,6 +11,9 @@ End Ref.
 Definition Ref := Ref.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
+Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
+  Context {T : Set}.
+  
   Definition Self := scoping_rules_lifetimes_bounds.Ref T.
   
   Definition fmt
@@ -26,9 +29,10 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
     Notation.dot := fmt;
   }.
   
-  Global Instance I T : core.fmt.Debug.Trait Self := {
+  Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
+End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
 Definition print {T : Set} `{core.fmt.Debug.Trait T} (t : T) : M unit :=

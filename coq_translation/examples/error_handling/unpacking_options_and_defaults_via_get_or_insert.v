@@ -12,7 +12,7 @@ End Fruit.
 Definition Fruit := Fruit.t.
 
 Module
-    Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
+  Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
   Definition Self := unpacking_options_and_defaults_via_get_or_insert.Fruit.
   
   Definition fmt

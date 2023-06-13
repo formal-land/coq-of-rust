@@ -1437,13 +1437,31 @@ impl TopLevelItem {
                             line(),
                             nest([
                                 text("("),
-                                concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
                                 text("Self"),
                                 line(),
                                 text(":"),
                                 line(),
                                 text("Set"),
                                 text(")"),
+                                if ty_params.is_empty() {
+                                    nil()
+                                } else {
+                                    concat([
+                                        line(),
+                                        nest([
+                                            text("{"),
+                                            concat(
+                                                ty_params
+                                                    .iter()
+                                                    .map(|ty| concat([text(ty), line()])),
+                                            ),
+                                            text(":"),
+                                            line(),
+                                            text("Set"),
+                                            text("}"),
+                                        ]),
+                                    ])
+                                },
                             ]),
                             intersperse(
                                 body.iter().map(|(item_name, item)| match item {
@@ -1606,18 +1624,47 @@ impl TopLevelItem {
                 items,
                 trait_non_default_items,
             } => {
+                let module_name = format!("Impl_{}_for_{}", of_trait.to_name(), self_ty.to_name());
                 group([
+                    nest([text("Module"), line(), text(module_name.clone()), text(".")]),
+                    if generic_tys.is_empty() {
+                        nil()
+                    } else {
+                        concat([
+                            hardline(),
+                            nest([
+                                text("Section"),
+                                line(),
+                                text(module_name.clone()),
+                                text("."),
+                            ]),
+                        ])
+                    },
                     nest([
-                        nest([
-                            text("Module"),
-                            line(),
-                            text("Impl_"),
-                            text(of_trait.to_name()),
-                            text("_for_"),
-                            text(self_ty.to_name()),
-                            text("."),
-                        ]),
                         hardline(),
+                        if generic_tys.is_empty() {
+                            nil()
+                        } else {
+                            concat([
+                                nest([
+                                    text("Context"),
+                                    line(),
+                                    nest([
+                                        text("{"),
+                                        concat(
+                                            generic_tys.iter().map(|ty| concat([text(ty), line()])),
+                                        ),
+                                        text(":"),
+                                        line(),
+                                        text("Set"),
+                                        text("}"),
+                                    ]),
+                                    text("."),
+                                ]),
+                                hardline(),
+                                hardline(),
+                            ])
+                        },
                         nest([
                             text("Definition"),
                             line(),
@@ -1635,23 +1682,16 @@ impl TopLevelItem {
                         })),
                         nest([
                             nest([
-                                text("Global Instance I"),
+                                nest([text("Global Instance"), line(), text("I")]),
+                                text(" :"),
+                                line(),
+                                nest([of_trait.to_doc(), text(".Trait"), line(), text("Self")]),
                                 concat(
                                     generic_tys
                                         .iter()
-                                        .map(|generic_ty| concat([line(), text(generic_ty)])),
-                                ),
-                                text(" :"),
-                                line(),
-                                nest([
-                                    of_trait.to_doc(),
-                                    text(".Trait"),
-                                    line(),
-                                    text("Self"),
-                                    concat(ty_params.iter().map(|(ty_param, has_default)| {
-                                        concat([
-                                            line(),
-                                            (if *has_default {
+                                        .map(text)
+                                        .zip(ty_params.iter().map(|(ty_param, has_default)| {
+                                            if *has_default {
                                                 nest([
                                                     text("(Some"),
                                                     line(),
@@ -1660,10 +1700,23 @@ impl TopLevelItem {
                                                 ])
                                             } else {
                                                 ty_param.to_doc(false)
-                                            }),
-                                        ])
-                                    })),
-                                ]),
+                                            }
+                                        }))
+                                        .map(|(generic_ty_doc, ty_param_doc)| {
+                                            concat([
+                                                line(),
+                                                nest([
+                                                    text("("),
+                                                    generic_ty_doc,
+                                                    line(),
+                                                    text(":"),
+                                                    line(),
+                                                    ty_param_doc,
+                                                    text(")"),
+                                                ]),
+                                            ])
+                                        }),
+                                ),
                             ]),
                             text(" :="),
                             line(),
@@ -1695,15 +1748,15 @@ impl TopLevelItem {
                         },
                     ]),
                     hardline(),
-                    nest([
-                        text("End"),
-                        line(),
-                        text("Impl_"),
-                        text(of_trait.to_name()),
-                        text("_for_"),
-                        text(self_ty.to_name()),
-                        text("."),
-                    ]),
+                    if generic_tys.is_empty() {
+                        nil()
+                    } else {
+                        concat([
+                            nest([text("End"), line(), text(module_name.clone()), text(".")]),
+                            hardline(),
+                        ])
+                    },
+                    nest([text("End"), line(), text(module_name), text(".")]),
                 ])
             }
             TopLevelItem::Error(message) => nest([text("Error"), line(), text(message), text(".")]),

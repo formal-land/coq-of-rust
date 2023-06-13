@@ -80,9 +80,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
     Notation.dot := add;
   }.
   
-  Global Instance I :
-      core.ops.arith.Add.Trait Self (Some operator_overloading.Bar) :=
-    {
+  Global Instance I : core.ops.arith.Add.Trait Self := {
     core.ops.arith.Add.add := add;
   }.
 End Impl_core_ops_arith_Add_for_operator_overloading_Foo.
@@ -110,9 +108,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
     Notation.dot := add;
   }.
   
-  Global Instance I :
-      core.ops.arith.Add.Trait Self (Some operator_overloading.Foo) :=
-    {
+  Global Instance I : core.ops.arith.Add.Trait Self := {
     core.ops.arith.Add.add := add;
   }.
 End Impl_core_ops_arith_Add_for_operator_overloading_Bar.

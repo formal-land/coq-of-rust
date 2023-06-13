@@ -135,7 +135,7 @@ Module erc20.
   Definition Approval : Set := Approval.t.
   
   Module
-      Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
+    Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
     
     Definition Input : Set := erc20.erc20.Balance.
@@ -197,7 +197,7 @@ Module erc20.
     Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
   
   Module
-      Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
     
     Definition Input : Set := unit.
@@ -255,7 +255,7 @@ Module erc20.
   End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
   Module
-      Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
     
     Definition Input : Set := erc20.erc20.AccountId.
@@ -314,7 +314,7 @@ Module erc20.
   End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
   Module
-      Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
     
     Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.AccountId.
@@ -376,7 +376,7 @@ Module erc20.
   End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
   Module
-      Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
     
     Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.Balance.
@@ -438,7 +438,7 @@ Module erc20.
   End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
   Module
-      Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
     
     Definition Input : Set := erc20.erc20.AccountId * erc20.erc20.Balance.
@@ -500,7 +500,7 @@ Module erc20.
   End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
   Module
-      Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
+    Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
     
     Definition Input : Set :=
@@ -959,7 +959,7 @@ Module erc20.
   End Impl_erc20_erc20_Erc20Ref.
   
   Module
-      Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
+    Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition from_account_id (account_id : erc20.erc20.AccountId) : M Self :=
@@ -972,10 +972,7 @@ Module erc20.
       Notation.double_colon := from_account_id;
     }.
     
-    Global Instance I :
-        ink_env.call.create_builder.FromAccountId.Trait
-          Self
-          erc20.erc20.Environment :=
+    Global Instance I : ink_env.call.create_builder.FromAccountId.Trait Self :=
       {
       ink_env.call.create_builder.FromAccountId.from_account_id
         :=
@@ -993,9 +990,7 @@ Module erc20.
       Notation.dot := to_account_id;
     }.
     
-    Global Instance I :
-        ink.contract_ref.ToAccountId.Trait Self erc20.erc20.Environment :=
-      {
+    Global Instance I : ink.contract_ref.ToAccountId.Trait Self := {
       ink.contract_ref.ToAccountId.to_account_id := to_account_id;
     }.
   End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
@@ -1010,7 +1005,7 @@ Module erc20.
       Notation.dot := as_ref;
     }.
     
-    Global Instance I : core.convert.AsRef.Trait Self erc20.erc20.AccountId := {
+    Global Instance I : core.convert.AsRef.Trait Self := {
       core.convert.AsRef.as_ref := as_ref;
     }.
   End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
@@ -1027,7 +1022,7 @@ Module erc20.
       Notation.dot := as_mut;
     }.
     
-    Global Instance I : core.convert.AsMut.Trait Self erc20.erc20.AccountId := {
+    Global Instance I : core.convert.AsMut.Trait Self := {
       core.convert.AsMut.as_mut := as_mut;
     }.
   End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
@@ -1189,17 +1184,21 @@ End Erc20.
 Definition Erc20 : Set := Erc20.t.
 
 Module Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
+Section Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
+  Context {__ink_generic_salt : Set}.
+  
   Definition Self := erc20.erc20.Erc20.
   
   Definition Type : Set := erc20.erc20.Erc20.
   
   Definition PreferredKey : Set := ink_storage_traits.impls.AutoKey.
   
-  Global Instance I
-      __ink_generic_salt :
-      ink_storage_traits.storage.StorableHint.Trait Self __ink_generic_salt :=
+  Global Instance I :
+      ink_storage_traits.storage.StorableHint.Trait Self
+      (__ink_generic_salt : __ink_generic_salt) :=
     {
   }.
+End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
 End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
 
 Module Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
@@ -1458,7 +1457,7 @@ Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
 End Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
 
 Module
-    Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
+  Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
   Definition Self := ink.env_access.EnvAccess erc20.erc20.Environment.
   
   Definition emit_event (self : Self) (event : E) : M unit :=
@@ -1471,9 +1470,7 @@ Module
     Notation.dot := emit_event;
   }.
   
-  Global Instance I :
-      ink.codegen.event.emit.EmitEvent.Trait Self erc20.erc20.Erc20 :=
-    {
+  Global Instance I : ink.codegen.event.emit.EmitEvent.Trait Self := {
     ink.codegen.event.emit.EmitEvent.emit_event := emit_event;
   }.
 End
@@ -1519,7 +1516,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
 
 Module
-    Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
   
   Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
@@ -1635,7 +1632,7 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self erc20.erc20.Transfer := {
+  Global Instance I : core.convert.From.Trait Self := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
@@ -1651,7 +1648,7 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self erc20.erc20.Approval := {
+  Global Instance I : core.convert.From.Trait Self := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
@@ -1663,7 +1660,7 @@ End __ink_UndefinedAmountOfTopics.
 Definition __ink_UndefinedAmountOfTopics := __ink_UndefinedAmountOfTopics.t.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_erc20_erc20_____ink_UndefinedAmountOfTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_erc20_erc20_____ink_UndefinedAmountOfTopics.
   Definition Self := erc20.erc20._.__ink_UndefinedAmountOfTopics.
   
   Definition AMOUNT := Pure 0.
@@ -2032,7 +2029,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
 End Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
 
 Module
-    Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
+  Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
   Definition Input : Set := erc20.erc20.Balance.
@@ -2450,7 +2447,7 @@ End __ink_ConstructorDecoder.
 Definition __ink_ConstructorDecoder := __ink_ConstructorDecoder.t.
 
 Module
-    Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
+  Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
   Definition Self := erc20.erc20._.__ink_ConstructorDecoder.
   
   Definition decode_dispatch
@@ -2506,7 +2503,7 @@ Definition CONSTRUCTOR_0 : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableConstructorInfo.SELECTOR).
 
 Module
-    Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_ConstructorDecoder.
+  Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_ConstructorDecoder.
   Definition Self := erc20.erc20._.__ink_ConstructorDecoder.
   
   Definition decode
@@ -2527,7 +2524,7 @@ End
   Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_ConstructorDecoder.
 
 Module
-    Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_ConstructorDecoder.
+  Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_ConstructorDecoder.
   Definition Self := erc20.erc20._.__ink_ConstructorDecoder.
   
   Definition execute_dispatchable
@@ -2597,7 +2594,7 @@ End
   Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_ConstructorDecoder.
 
 Module
-    Impl_ink_reflect_dispatch_ContractConstructorDecoder_for_erc20_erc20_Erc20.
+  Impl_ink_reflect_dispatch_ContractConstructorDecoder_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
   Definition Type : Set := erc20.erc20._.__ink_ConstructorDecoder.
@@ -2620,7 +2617,7 @@ End __ink_MessageDecoder.
 Definition __ink_MessageDecoder := __ink_MessageDecoder.t.
 
 Module
-    Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
+  Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
   Definition Self := erc20.erc20._.__ink_MessageDecoder.
   
   Definition decode_dispatch
@@ -2771,7 +2768,7 @@ Definition MESSAGE_5 : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR).
 
 Module
-    Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_MessageDecoder.
+  Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_MessageDecoder.
   Definition Self := erc20.erc20._.__ink_MessageDecoder.
   
   Definition decode
@@ -2804,7 +2801,7 @@ Definition push_contract
     Pure tt.
 
 Module
-    Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_MessageDecoder.
+  Impl_ink_reflect_dispatch_ExecuteDispatchable_for_erc20_erc20_____ink_MessageDecoder.
   Definition Self := erc20.erc20._.__ink_MessageDecoder.
   
   Definition execute_dispatchable
@@ -3520,7 +3517,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
 End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
 
 Module
-    Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
@@ -3675,7 +3672,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
 End Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
 
 Module
-    Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20___CallBuilder.
+  Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition layout
@@ -3717,7 +3714,7 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20___CallBuilder.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20___CallBuilder.
 
 Module
-    Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20___CallBuilder.
+  Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition from_account_id (account_id : erc20.erc20.AccountId) : M Self :=
@@ -3728,11 +3725,7 @@ Module
     Notation.double_colon := from_account_id;
   }.
   
-  Global Instance I :
-      ink_env.call.create_builder.FromAccountId.Trait
-        Self
-        erc20.erc20.Environment :=
-    {
+  Global Instance I : ink_env.call.create_builder.FromAccountId.Trait Self := {
     ink_env.call.create_builder.FromAccountId.from_account_id
       :=
       from_account_id;
@@ -3750,9 +3743,7 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
     Notation.dot := to_account_id;
   }.
   
-  Global Instance I :
-      ink.contract_ref.ToAccountId.Trait Self erc20.erc20.Environment :=
-    {
+  Global Instance I : ink.contract_ref.ToAccountId.Trait Self := {
     ink.contract_ref.ToAccountId.to_account_id := to_account_id;
   }.
 End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
@@ -3767,7 +3758,7 @@ Module Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
     Notation.dot := as_ref;
   }.
   
-  Global Instance I : core.convert.AsRef.Trait Self erc20.erc20.AccountId := {
+  Global Instance I : core.convert.AsRef.Trait Self := {
     core.convert.AsRef.as_ref := as_ref;
   }.
 End Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
@@ -3782,7 +3773,7 @@ Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
     Notation.dot := as_mut;
   }.
   
-  Global Instance I : core.convert.AsMut.Trait Self erc20.erc20.AccountId := {
+  Global Instance I : core.convert.AsMut.Trait Self := {
     core.convert.AsMut.as_mut := as_mut;
   }.
 End Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
@@ -4229,7 +4220,7 @@ Module Impl_ink_env_contract_ContractReference_for_erc20_erc20_Erc20.
 End Impl_ink_env_contract_ContractReference_for_erc20_erc20_Erc20.
 
 Module
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_erc20_erc20_Erc20.
+  Impl_ink_env_call_create_builder_ConstructorReturnType_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
   Definition Output : Set := erc20.erc20.Erc20Ref.
@@ -4244,9 +4235,7 @@ Module
   }.
   
   Global Instance I :
-      ink_env.call.create_builder.ConstructorReturnType.Trait
-        Self
-        erc20.erc20.Erc20Ref :=
+      ink_env.call.create_builder.ConstructorReturnType.Trait Self :=
     {
     ink_env.call.create_builder.ConstructorReturnType.ok := ok;
   }.
@@ -4254,7 +4243,11 @@ End
   Impl_ink_env_call_create_builder_ConstructorReturnType_for_erc20_erc20_Erc20.
 
 Module
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
+  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
+Section
+  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
+  Context {E : Set}.
+  
   Definition Self := core.result.Result erc20.erc20.Erc20 E.
   
   Definition IS_RESULT := Pure true.
@@ -4284,14 +4277,14 @@ Module
     Notation.double_colon := err;
   }.
   
-  Global Instance I
-      E :
-      ink_env.call.create_builder.ConstructorReturnType.Trait
-        Self
-        erc20.erc20.Erc20Ref :=
+  Global Instance I :
+      ink_env.call.create_builder.ConstructorReturnType.Trait Self
+      (E : erc20.erc20.Erc20Ref) :=
     {
     ink_env.call.create_builder.ConstructorReturnType.ok := ok;
   }.
+End
+  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
 End
   Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
 
@@ -4579,7 +4572,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
 End Impl_erc20_erc20_Erc20Ref_2.
 
 Module
-    Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
+  Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition Builder : Set :=
@@ -4621,11 +4614,7 @@ Module Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
     Notation.double_colon := from_account_id;
   }.
   
-  Global Instance I :
-      ink_env.call.create_builder.FromAccountId.Trait
-        Self
-        erc20.erc20.Environment :=
-    {
+  Global Instance I : ink_env.call.create_builder.FromAccountId.Trait Self := {
     ink_env.call.create_builder.FromAccountId.from_account_id
       :=
       from_account_id;
@@ -4642,9 +4631,7 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
     Notation.dot := to_account_id;
   }.
   
-  Global Instance I :
-      ink.contract_ref.ToAccountId.Trait Self erc20.erc20.Environment :=
-    {
+  Global Instance I : ink.contract_ref.ToAccountId.Trait Self := {
     ink.contract_ref.ToAccountId.to_account_id := to_account_id;
   }.
 End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
@@ -4659,7 +4646,7 @@ Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
     Notation.dot := as_ref;
   }.
   
-  Global Instance I : core.convert.AsRef.Trait Self erc20.erc20.AccountId := {
+  Global Instance I : core.convert.AsRef.Trait Self := {
     core.convert.AsRef.as_ref := as_ref;
   }.
 End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
@@ -4674,7 +4661,7 @@ Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
     Notation.dot := as_mut;
   }.
   
-  Global Instance I : core.convert.AsMut.Trait Self erc20.erc20.AccountId := {
+  Global Instance I : core.convert.AsMut.Trait Self := {
     core.convert.AsMut.as_mut := as_mut;
   }.
 End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.

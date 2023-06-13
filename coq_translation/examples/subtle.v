@@ -90,7 +90,7 @@ Module Impl_core_convert_From_for_bool.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self subtle.Choice := {
+  Global Instance I : core.convert.From.Trait Self := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_bool.
@@ -264,7 +264,7 @@ Module Impl_core_convert_From_for_subtle_Choice.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self u8 := {
+  Global Instance I : core.convert.From.Trait Self := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_subtle_Choice.
@@ -286,6 +286,9 @@ Module ConstantTimeEq.
 End ConstantTimeEq.
 
 Module Impl_subtle_ConstantTimeEq_for_Slice.
+Section Impl_subtle_ConstantTimeEq_for_Slice.
+  Context {T : Set}.
+  
   Definition Self := Slice.
   
   Definition ct_eq (self : ref Self) (_rhs : ref Slice) : M subtle.Choice :=
@@ -330,9 +333,10 @@ Module Impl_subtle_ConstantTimeEq_for_Slice.
     Notation.dot := ct_eq;
   }.
   
-  Global Instance I T : subtle.ConstantTimeEq.Trait Self := {
+  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
   }.
+End Impl_subtle_ConstantTimeEq_for_Slice.
 End Impl_subtle_ConstantTimeEq_for_Slice.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
@@ -1230,6 +1234,9 @@ Module ConditionallyNegatable.
 End ConditionallyNegatable.
 
 Module Impl_subtle_ConditionallyNegatable_for_T.
+Section Impl_subtle_ConditionallyNegatable_for_T.
+  Context {T : Set}.
+  
   Definition Self := T.
   
   Definition conditional_negate
@@ -1245,9 +1252,10 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
     Notation.dot := conditional_negate;
   }.
   
-  Global Instance I T : subtle.ConditionallyNegatable.Trait Self := {
+  Global Instance I : subtle.ConditionallyNegatable.Trait Self := {
     subtle.ConditionallyNegatable.conditional_negate := conditional_negate;
   }.
+End Impl_subtle_ConditionallyNegatable_for_T.
 End Impl_subtle_ConditionallyNegatable_for_T.
 
 Module CtOption.
@@ -1266,6 +1274,9 @@ End CtOption.
 Definition CtOption : Set := CtOption.t.
 
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
+Section Impl_core_clone_Clone_for_subtle_CtOption_T.
+  Context {T : Set}.
+  
   Definition Self := subtle.CtOption T.
   
   Definition clone (self : ref Self) : M (subtle.CtOption T) :=
@@ -1277,19 +1288,27 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
     Notation.dot := clone;
   }.
   
-  Global Instance I T : core.clone.Clone.Trait Self := {
+  Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
 End Impl_core_clone_Clone_for_subtle_CtOption_T.
+End Impl_core_clone_Clone_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_for_subtle_CtOption_T.
+Section Impl_core_marker_Copy_for_subtle_CtOption_T.
+  Context {T : Set}.
+  
   Definition Self := subtle.CtOption T.
   
-  Global Instance I T : core.marker.Copy.Trait Self :=
+  Global Instance I : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Trait _.
+End Impl_core_marker_Copy_for_subtle_CtOption_T.
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
+Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
+  Context {T : Set}.
+  
   Definition Self := subtle.CtOption T.
   
   Definition fmt
@@ -1308,12 +1327,16 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
     Notation.dot := fmt;
   }.
   
-  Global Instance I T : core.fmt.Debug.Trait Self := {
+  Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
+End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_for_core_option_Option_T.
+Section Impl_core_convert_From_for_core_option_Option_T.
+  Context {T : Set}.
+  
   Definition Self := core.option.Option T.
   
   Definition from (source : subtle.CtOption T) : M (core.option.Option T) :=
@@ -1330,9 +1353,10 @@ Module Impl_core_convert_From_for_core_option_Option_T.
     Notation.double_colon := from;
   }.
   
-  Global Instance I T : core.convert.From.Trait Self subtle.CtOption T := {
+  Global Instance I : core.convert.From.Trait Self (T : subtle.CtOption T) := {
     core.convert.From.from := from;
   }.
+End Impl_core_convert_From_for_core_option_Option_T.
 End Impl_core_convert_From_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T.
@@ -1486,6 +1510,9 @@ Module Impl_subtle_CtOption_T.
 End Impl_subtle_CtOption_T.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
+Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
+  Context {T : Set}.
+  
   Definition Self := subtle.CtOption T.
   
   Definition conditional_select
@@ -1510,12 +1537,16 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
     Notation.double_colon := conditional_select;
   }.
   
-  Global Instance I T : subtle.ConditionallySelectable.Trait Self := {
+  Global Instance I : subtle.ConditionallySelectable.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
   }.
 End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
+End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
+Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
+  Context {T : Set}.
+  
   Definition Self := subtle.CtOption T.
   
   Definition ct_eq
@@ -1536,9 +1567,10 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
     Notation.dot := ct_eq;
   }.
   
-  Global Instance I T : subtle.ConstantTimeEq.Trait Self := {
+  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
   }.
+End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 Module ConstantTimeGreater.

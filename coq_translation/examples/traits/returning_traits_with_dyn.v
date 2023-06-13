@@ -24,7 +24,7 @@ Module Animal.
 End Animal.
 
 Module
-    Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
+  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
   Definition Self := returning_traits_with_dyn.Sheep.
   
   Definition noise (self : ref Self) : M (ref str) := Pure "baaaaah!".

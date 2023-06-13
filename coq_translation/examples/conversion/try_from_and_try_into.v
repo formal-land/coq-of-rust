@@ -32,7 +32,7 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 
 Module
-    Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
+  Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
   Definition Self := try_from_and_try_into.EvenNumber.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -78,7 +78,7 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
     Notation.double_colon := try_from;
   }.
   
-  Global Instance I : core.convert.TryFrom.Trait Self i32 := {
+  Global Instance I : core.convert.TryFrom.Trait Self := {
     core.convert.TryFrom.try_from := try_from;
   }.
 End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
