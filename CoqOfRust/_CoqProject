@@ -36,6 +36,7 @@
 ./examples/scoping_rules/scoping_rules_lifetimes_reference_lifetime_static.v
 ./examples/scoping_rules/scoping_rules_lifetimes.v
 ./examples/scoping_rules/scoping_rules_ownership_and_rules.v
+./examples/traits/hash.v
 ./examples/traits/operator_overloading.v
 ./examples/traits/traits.v
 ./examples/types/aliasing.v
