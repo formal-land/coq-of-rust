@@ -578,7 +578,7 @@ fn mt_stmt(stmt: Stmt) -> Stmt {
     }
 }
 
-pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
+pub(crate) fn compile_expr(tcx: &TyCtxt, expr: &rustc_hir::Expr) -> Expr {
     match &expr.kind {
         ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
         ExprKind::Array(elements) => {
@@ -611,7 +611,7 @@ pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
                 ) => Expr::StructTuple {
                     path: compile_path(path),
                     fields: args,
-                    struct_or_variant: StructOrVariant::of_qpath(&tcx, &qpath),
+                    struct_or_variant: StructOrVariant::of_qpath(tcx, &qpath),
                 },
                 _ => {
                     let func = Box::new(compile_expr(tcx, func));
@@ -658,15 +658,15 @@ pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
         ExprKind::Lit(lit) => Expr::Literal(lit.node.clone()),
         ExprKind::Cast(expr, ty) => Expr::Cast {
             expr: Box::new(compile_expr(tcx, expr)),
-            ty: compile_type(&tcx, ty),
+            ty: compile_type(tcx, ty),
         },
         ExprKind::Type(expr, ty) => Expr::Type {
             expr: Box::new(compile_expr(tcx, expr)),
-            ty: compile_type(&tcx, ty),
+            ty: compile_type(tcx, ty),
         },
         ExprKind::DropTemps(expr) => compile_expr(tcx, expr),
         ExprKind::Let(rustc_hir::Let { pat, init, .. }) => {
-            let pat = compile_pattern(&tcx, pat);
+            let pat = compile_pattern(tcx, pat);
             let init = Box::new(compile_expr(tcx, init));
             Expr::LetIf { pat, init }
         }
@@ -699,7 +699,7 @@ pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             let arms = arms
                 .iter()
                 .map(|arm| {
-                    let pat = compile_pattern(&tcx, arm.pat);
+                    let pat = compile_pattern(tcx, arm.pat);
                     let body = compile_expr(tcx, arm.body);
                     if arm.guard.is_some() {
                         tcx.sess
@@ -720,7 +720,7 @@ pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
             let args = body
                 .params
                 .iter()
-                .map(|rustc_hir::Param { pat, .. }| compile_pattern(&tcx, pat))
+                .map(|rustc_hir::Param { pat, .. }| compile_pattern(tcx, pat))
                 .collect();
             let body = Box::new(compile_expr(tcx, body.value));
             Expr::Lambda { args, body }
@@ -777,7 +777,7 @@ pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
                     };
                 }
             }
-            compile_qpath(&tcx, qpath)
+            compile_qpath(tcx, qpath)
         }
         ExprKind::AddrOf(_, _, expr) => Expr::AddrOf(Box::new(compile_expr(tcx, expr))),
         ExprKind::Break(_, _) => Expr::LocalVar("Break".to_string()),
@@ -802,7 +802,7 @@ pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
                 })
                 .collect();
             let base = base.map(|expr| Box::new(compile_expr(tcx, expr)));
-            let struct_or_variant = StructOrVariant::of_qpath(&tcx, qpath);
+            let struct_or_variant = StructOrVariant::of_qpath(tcx, qpath);
             Expr::StructStruct {
                 path,
                 fields,
@@ -835,11 +835,11 @@ pub(crate) fn compile_expr(tcx: TyCtxt, expr: &rustc_hir::Expr) -> Expr {
 ///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Block.html
 /// - https://doc.rust-lang.org/reference/statements.html and
 ///   https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/hir/struct.Stmt.html
-fn compile_stmts(tcx: TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir::Expr>) -> Stmt {
+fn compile_stmts(tcx: &TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir::Expr>) -> Stmt {
     match stmts {
         [stmt, stmts @ ..] => match stmt.kind {
             rustc_hir::StmtKind::Local(rustc_hir::Local { pat, init, .. }) => {
-                let pattern = Box::new(compile_pattern(&tcx, pat));
+                let pattern = Box::new(compile_pattern(tcx, pat));
                 let init = match init {
                     Some(init) => Box::new(compile_expr(tcx, init)),
                     None => Box::new(tt()),
@@ -874,7 +874,7 @@ fn compile_stmts(tcx: TyCtxt, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir
 
 /// [compile_block] compiles hir blocks into coq-of-rust
 /// See the doc for [compile_stmts]
-fn compile_block(tcx: TyCtxt, block: &rustc_hir::Block) -> Stmt {
+fn compile_block(tcx: &TyCtxt, block: &rustc_hir::Block) -> Stmt {
     compile_stmts(tcx, block.stmts, block.expr)
 }
 
