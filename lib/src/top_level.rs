@@ -139,7 +139,7 @@ struct FnSigAndBody {
 }
 
 fn compile_fn_sig_and_body_id(
-    tcx: TyCtxt,
+    tcx: &TyCtxt,
     fn_sig: &rustc_hir::FnSig<'_>,
     body_id: &rustc_hir::BodyId,
 ) -> FnSigAndBody {
@@ -155,12 +155,12 @@ fn compile_fn_sig_and_body_id(
                     PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
                     _ => "arg".to_string(),
                 };
-                (name, compile_type(&tcx, ty))
+                (name, compile_type(tcx, ty))
             })
             .collect(),
         ret_ty: match fn_sig.decl.output {
             rustc_hir::FnRetTy::DefaultReturn(_) => CoqType::unit(),
-            rustc_hir::FnRetTy::Return(ty) => compile_type(&tcx, ty),
+            rustc_hir::FnRetTy::Return(ty) => compile_type(tcx, ty),
         },
         body: Box::new(compile_expr(tcx, expr)),
     }
@@ -168,7 +168,7 @@ fn compile_fn_sig_and_body_id(
 
 /// Check if the function body is actually the main test function calling to all
 /// tests in the file. If so, we do not want to compile it.
-fn check_if_is_test_main_function(tcx: TyCtxt, body_id: &rustc_hir::BodyId) -> bool {
+fn check_if_is_test_main_function(tcx: &TyCtxt, body_id: &rustc_hir::BodyId) -> bool {
     let body = tcx.hir().body(*body_id);
     let expr = body.value;
     match expr.kind {
@@ -249,7 +249,7 @@ fn check_dead_code_lint_in_attributes(tcx: &TyCtxt, item: &Item) -> bool {
 /// - Method [body] allows retrievient the body of an identifier [body_id] in an
 ///   hir environment [hir]
 fn compile_top_level_item(
-    tcx: TyCtxt,
+    tcx: &TyCtxt,
     impl_counter: &mut HashMap<CoqType, u64>,
     item: &Item,
 ) -> Vec<TopLevelItem> {
@@ -291,7 +291,7 @@ fn compile_top_level_item(
             let value = tcx.hir().body(*body_id).value;
             vec![TopLevelItem::Const {
                 name: item.ident.name.to_string(),
-                ty: compile_type(&tcx, ty),
+                ty: compile_type(tcx, ty),
                 value: Box::new(compile_expr(tcx, value)),
             }]
         }
@@ -299,7 +299,7 @@ fn compile_top_level_item(
             if check_if_is_test_main_function(tcx, body_id) {
                 return vec![];
             }
-            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(&tcx, item);
+            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let FnSigAndBody { args, ret_ty, body } =
                 compile_fn_sig_and_body_id(tcx, fn_sig, body_id);
             vec![TopLevelItem::Definition {
@@ -325,7 +325,7 @@ fn compile_top_level_item(
                                         let path = trait_ref.trait_ref.path;
                                         Some((
                                             compile_path(path),
-                                            compile_path_ty_params(&tcx, path),
+                                            compile_path_ty_params(tcx, path),
                                         ))
                                     }
                                     _ => None,
@@ -334,7 +334,7 @@ fn compile_top_level_item(
                                 .map(|(name, ty_params)| WherePredicate {
                                     name,
                                     ty_params,
-                                    ty: compile_type(&tcx, predicate.bounded_ty),
+                                    ty: compile_type(tcx, predicate.bounded_ty),
                                 })
                                 .collect()
                         }
@@ -349,7 +349,7 @@ fn compile_top_level_item(
         }
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
-            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(&tcx, item);
+            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let items = module
                 .item_ids
                 .iter()
@@ -370,7 +370,7 @@ fn compile_top_level_item(
         ItemKind::GlobalAsm(_) => vec![TopLevelItem::Error("GlobalAsm".to_string())],
         ItemKind::TyAlias(ty, _) => vec![TopLevelItem::TypeAlias {
             name: item.ident.name.to_string(),
-            ty: compile_type(&tcx, ty),
+            ty: compile_type(tcx, ty),
         }],
         ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
         ItemKind::Enum(enum_def, _) => vec![TopLevelItem::TypeEnum {
@@ -384,16 +384,14 @@ fn compile_top_level_item(
                         VariantData::Struct(fields, _) => {
                             let fields = fields
                                 .iter()
-                                .map(|field| {
-                                    (field.ident.to_string(), compile_type(&tcx, field.ty))
-                                })
+                                .map(|field| (field.ident.to_string(), compile_type(tcx, field.ty)))
                                 .collect();
                             VariantItem::Struct { fields }
                         }
                         VariantData::Tuple(fields, _, _) => {
                             let tys = fields
                                 .iter()
-                                .map(|field| compile_type(&tcx, field.ty))
+                                .map(|field| compile_type(tcx, field.ty))
                                 .collect();
                             VariantItem::Tuple { tys }
                         }
@@ -404,12 +402,12 @@ fn compile_top_level_item(
                 .collect(),
         }],
         ItemKind::Struct(body, _) => {
-            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(&tcx, item);
+            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             match body {
                 VariantData::Struct(fields, _) => {
                     let fields = fields
                         .iter()
-                        .map(|field| (field.ident.name.to_string(), compile_type(&tcx, field.ty)))
+                        .map(|field| (field.ident.name.to_string(), compile_type(tcx, field.ty)))
                         .collect();
                     vec![TopLevelItem::TypeStructStruct {
                         name: item.ident.name.to_string(),
@@ -422,7 +420,7 @@ fn compile_top_level_item(
                         name: item.ident.name.to_string(),
                         fields: fields
                             .iter()
-                            .map(|field| compile_type(&tcx, field.ty))
+                            .map(|field| compile_type(tcx, field.ty))
                             .collect(),
                     }]
                 }
@@ -448,11 +446,11 @@ fn compile_top_level_item(
                         let item = tcx.hir().trait_item(item.id);
                         let body = match &item.kind {
                             TraitItemKind::Const(ty, _) => TraitItem::Definition {
-                                ty: compile_type(&tcx, ty),
+                                ty: compile_type(tcx, ty),
                             },
                             TraitItemKind::Fn(fn_sig, trait_fn) => match trait_fn {
                                 TraitFn::Required(_) => TraitItem::Definition {
-                                    ty: compile_fn_decl(&tcx, fn_sig.decl),
+                                    ty: compile_fn_decl(tcx, fn_sig.decl),
                                 },
                                 TraitFn::Provided(body_id) => {
                                     let FnSigAndBody { args, ret_ty, body } =
@@ -477,7 +475,7 @@ fn compile_top_level_item(
             items,
             ..
         }) => {
-            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(&tcx, item);
+            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let generic_tys: Vec<String> = generics
                 .params
                 .iter()
@@ -513,8 +511,8 @@ fn compile_top_level_item(
                                     _ => "Pattern".to_string(),
                                 }
                             });
-                            let arg_tys = inputs.iter().map(|ty| compile_type(&tcx, ty));
-                            let ret_ty = compile_fn_ret_ty(&tcx, output);
+                            let arg_tys = inputs.iter().map(|ty| compile_type(tcx, ty));
+                            let ret_ty = compile_fn_ret_ty(tcx, output);
                             let expr = tcx.hir().body(*body_id).value;
                             ImplItem::Definition {
                                 args: arg_names.zip(arg_tys).collect(),
@@ -525,19 +523,19 @@ fn compile_top_level_item(
                             }
                         }
                         ImplItemKind::Type(ty) => ImplItem::Type {
-                            ty: compile_type(&tcx, ty),
+                            ty: compile_type(tcx, ty),
                         },
                     };
                     (item.ident.name.to_string(), value)
                 })
                 .collect();
-            let self_ty = compile_type(&tcx, self_ty);
+            let self_ty = compile_type(tcx, self_ty);
             match of_trait {
                 Some(trait_ref) => {
                     let trait_non_default_items = tcx
                         .associated_items(trait_ref.trait_def_id().unwrap())
                         .in_definition_order()
-                        .filter(|item| !item.defaultness(tcx).has_value())
+                        .filter(|item| !item.defaultness(*tcx).has_value())
                         .filter(|item| item.kind != rustc_middle::ty::AssocKind::Type)
                         .map(|item| item.name.to_string())
                         .collect();
@@ -560,7 +558,7 @@ fn compile_top_level_item(
                     // part of the list of type parameters.
                     type_params_default_status.remove(0);
 
-                    let ty_params = compile_path_ty_params(&tcx, trait_ref.path);
+                    let ty_params = compile_path_ty_params(tcx, trait_ref.path);
 
                     vec![TopLevelItem::TraitImpl {
                         generic_tys,
@@ -589,7 +587,7 @@ fn compile_top_level_item(
     }
 }
 
-pub fn compile_top_level(tcx: TyCtxt) -> TopLevel {
+fn compile_top_level(tcx: &TyCtxt) -> TopLevel {
     let mut impl_counter = HashMap::new();
 
     TopLevel(
@@ -601,6 +599,14 @@ pub fn compile_top_level(tcx: TyCtxt) -> TopLevel {
             })
             .collect(),
     )
+}
+
+const LINE_WIDTH: usize = 80;
+
+pub fn top_level_to_coq(tcx: &TyCtxt) -> String {
+    let top_level = compile_top_level(tcx);
+    let top_level = mt_top_level(top_level);
+    top_level.to_pretty(LINE_WIDTH)
 }
 
 fn fn_to_doc<'a>(

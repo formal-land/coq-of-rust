@@ -6,7 +6,6 @@ use rustc_interface::{interface::Compiler, Queries};
 
 use crate::options::Options;
 
-use crate::core::*;
 use crate::top_level::*;
 
 pub struct ToCoq {
@@ -27,10 +26,10 @@ impl Callbacks for ToCoq {
     ) -> Compilation {
         queries.global_ctxt().unwrap();
 
-        let output = queries.global_ctxt().unwrap().enter(|tcx| {
-            let top_level = compile_top_level(tcx);
-            top_level.to_pretty(LINE_WIDTH)
-        });
+        let output = queries
+            .global_ctxt()
+            .unwrap()
+            .enter(|ctxt| top_level_to_coq(&ctxt));
         let mut file = File::create(&self.opts.output_file).unwrap();
         file.write_all(output.as_bytes()).unwrap();
 
