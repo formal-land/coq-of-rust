@@ -150,6 +150,7 @@ examples/traits/clone.v
 examples/traits/derive.v
 examples/traits/disambiguating_overlapping_traits.v
 examples/traits/drop.v
+examples/traits/hash.v
 examples/traits/impl_trait_as_return_type.v
 examples/traits/iterators.v
 examples/traits/returning_traits_with_dyn.v

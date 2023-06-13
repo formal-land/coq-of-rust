@@ -2,7 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
-Import std.hash.
 
 Module DefaultHasher := std.collections.hash_map.DefaultHasher.
 Definition DefaultHasher := DefaultHasher.t.
@@ -13,7 +12,7 @@ Module Person.
     name : String;
     phone : u64;
   }.
-
+  
   Global Instance Get_id : Notation.Dot "id" := {
     Notation.dot '(Build_t x0 _ _) := x0;
   }.
@@ -28,16 +27,16 @@ Definition Person : Set := Person.t.
 
 Module Impl__crate_hash_Hash_for_Person.
   Definition Self := Person.
-
-  Definition hash (__H : Set) `(_crate.hash.Hasher.Trait __H) (self : ref Self) (state : mut_ref __H) : M unit :=
+  
+  Definition hash (self : ref Self) (state : mut_ref __H) : M unit :=
     let* _ := _crate.hash.Hash.hash (addr_of self.["id"]) state in
     let* _ := _crate.hash.Hash.hash (addr_of self.["name"]) state in
     _crate.hash.Hash.hash (addr_of self.["phone"]) state.
-
+  
   Global Instance Method_hash : Notation.Dot "hash" := {
     Notation.dot := hash;
   }.
-
+  
   Global Instance I : _crate.hash.Hash.Trait Self := {
     _crate.hash.Hash.hash := hash;
   }.
