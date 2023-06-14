@@ -8,7 +8,7 @@ use std::{
 fn main() {
     let args = Args::parse_from(std::env::args().skip(1));
 
-    let creusot_rustc_path = std::env::current_exe()
+    let coq_of_rust_rustc_path = std::env::current_exe()
         .expect("current executable path invalid")
         .with_file_name("coq-of-rust-rustc");
 
@@ -21,7 +21,7 @@ fn main() {
     let mut cmd = Command::new(cargo_path);
     cmd.arg(cargo_cmd)
         .args(args.rust_flags)
-        .env("RUSTC_WRAPPER", creusot_rustc_path)
+        .env("RUSTC_WRAPPER", coq_of_rust_rustc_path)
         .env("CARGO_COQ_OF_RUST", "1");
 
     cmd.env(
