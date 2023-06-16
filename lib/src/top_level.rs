@@ -943,10 +943,10 @@ impl ImplItem {
     }
 
     fn to_doc<'a>(&'a self, name: &'a String) -> Doc<'a> {
-        println!(
-            "===================== ImplItem ========================: {:#?}",
-            self
-        );
+        // println!(
+        //     "===================== ImplItem ========================: {:#?}",
+        //     self
+        // );
         match self {
             ImplItem::Const { body, is_dead_code } => concat([
                 if *is_dead_code {
@@ -1022,10 +1022,10 @@ impl ImplItem {
 
 impl TopLevelItem {
     fn to_doc(&self) -> Doc {
-        println!(
-            "===================== TopLevelItem ========================: {:#?}",
-            self
-        );
+        // println!(
+        //     "===================== TopLevelItem ========================: {:#?}",
+        //     self
+        // );
         match self {
             TopLevelItem::Const { name, ty, value } => nest([
                 nest([
@@ -1799,32 +1799,146 @@ impl TopLevel {
         // if "yes" - get both TopLevelItems (Struct itself and TraitImpl for it)
         // in order to have all required data for printing instance for DoubleColon Class
         // NATALIE ADDED BELOW
-        let derive_debug_for_struct = self.0.iter().map(|item| match item {
-            TopLevelItem::TraitImpl {
-                generic_tys: _,
-                ty_params: _,
-                self_ty,
-                of_trait,
-                items,
-                trait_non_default_items: _,
-            } => {
-                if of_trait.to_name() == "_crate.fmt.Debug" {
-                    println!("DA");
-                    ("found", text("placeholder"))
-                } else {
-                    println!("NET");
-                    ("not_found", text("placehoilder"))
-                }
-            }
-            _ => ("not_found", text("placehoilder")),
-        });
+        println!("OOOOOOOOIIIIIIIIUUUUUUUUYYYYYYYY");
+        let derive_debug_for_struct = self.0.iter().map(|item| // match item {
+        //     TopLevelItem::TraitImpl {
+        //         generic_tys: _,
+        //         ty_params: _,
+        //         self_ty,
+        //         of_trait,
+        //         items,
+        //         trait_non_default_items: _,
+        //     } => {
+        //         println!("OF_TRAIT_TO_NAME{}", of_trait.to_name());
+        //         if of_trait.to_name() == "_crate.fmt.Debug" {
+        //             println!("DA");
+        //             ("found", text("placeholder"))
+        //         } else {
+        //             println!("NET");
+        //             ("not_found", text("placehoilder"))
+        //         }
+        //     }
+        //     _ => {
+        //         print!("WE NEVER GOT THERE");
+        //         ("not_found", text("placehoilder"))
+        //     }
+							// }
+	println!("ITEM============: {:#?}", item));
 
         // NATALIE ADDED ABOWE
         intersperse(
-            self.0.iter().map(|item| item.to_doc()),
+            self.0.iter().map(|item| {
+                // if item is DeriveDebug, get struct's fields
+                match item {
+                    TopLevelItem::TraitImpl {
+                        generic_tys: _,
+                        ty_params: _,
+                        self_ty,
+                        of_trait,
+                        items,
+                        trait_non_default_items: _,
+                    } =>
+                    // if item is DeriveDebug we are getting missing datatypes for Struct, and
+                    // printing DoubleColon instance for fmt function
+                    {
+                        println!("OF_TRAIT_TO_NAME: {}", of_trait.to_name());
+                        println!("SELF_TY: {:#?}", self_ty.to_name());
+                        // @TODO. DeriveDebug (add code to support more traits)
+                        if of_trait.to_name() == "_crate_fmt_Debug" {
+                            self.0.iter().map(|item_ins| match item_ins {
+                                TopLevelItem::TypeStructStruct {
+                                    name,
+                                    fields: _,
+                                    is_dead_code: _,
+                                } => {
+                                    if *name == self_ty.to_name() {
+                                        println!("OUR STRUCT, USE item_ins ")
+                                    } else {
+                                        println!("this is different struct, not ours")
+                                    }
+                                }
+                                _ => println!("It was not struct"),
+                            });
+                            println!("DA");
+                            // add structs types here (for printing)
+                            item.to_doc()
+                        } else {
+                            println!("@TODO more cases (only Derive debug for Struct supported)");
+                            item.to_doc()
+                        }
+                    }
+                    _ => {
+                        // if no DeriveDebug - we just convert item to doc
+                        item.to_doc()
+                    }
+                }
+            }),
             [hardline(), hardline()],
         )
     }
+
+    // ========================== EXAMPLE ==================================
+    // 	fn check_dead_code_lint_in_attributes(tcx: &TyCtxt, item: &Item) -> bool {
+    // if tcx.has_attr(item.owner_id.to_def_id(), sym::allow) {
+    //     for attr in tcx.get_attrs(item.owner_id.to_def_id(), sym::allow) {
+    //         if let AttrKind::Normal(value) = &attr.kind {
+    //             if let AttrArgs::Delimited(value2) = &value.item.args {
+    //                 let into_trees = &value2.tokens.trees();
+    //                 let in_the_tree = into_trees.look_ahead(0);
+    //                 match in_the_tree {
+    //                     Some(res) => {
+    //                         if let rustc_ast::tokenstream::TokenTree::Token(res2, _) = res {
+    //                             if let rustc_ast::token::TokenKind::Ident(a, _) = res2.kind {
+    //                                 // since we can have many attributes on top of each piece of code,
+    //                                 // when we face "dead_code", we return [true] right away,
+    //                                 // otherwise we keep looking
+    //                                 if sym::dead_code == a {
+    //                                     return true;
+    //                                 }
+    //                             }
+    //                         }
+    //                     }
+    //                     _ => return false,
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    // false
+    // 	}
+    // ================================
+    //	===================EXAMPLE ABOWE=========================
+
+    // function to get Name of struct and Struct itself (for which deriveDebug is called)
+    // fn get_data_trait_debug(&self) -> ((), ()) {
+    //     let p = self.0.iter().map(|item| match item {
+    //         TopLevelItem::TraitImpl {
+    //             generic_tys: _,
+    //             ty_params: _,
+    //             self_ty,
+    //             of_trait,
+    //             items,
+    //             trait_non_default_items: _,
+    //         } => {
+    //             println!("OF_TRAIT_TO_NAME{}", of_trait.to_name());
+    //             if of_trait.to_name() == "_crate_fmt_Debug" {
+    //                 println!("DA");
+    //                 ((), ())
+    //                 // ("found", "placeholder")
+    //             } else {
+    //                 println!("NET");
+    //                 // ("not found", "placeholder")
+    //                 ((), ())
+    //             }
+    //         }
+    //         _ => {
+    //             println!("WE NEVER GOT THERE");
+    //             ((), ())
+    //         }
+    //     });
+    //     //        p
+    //     ((), ())
+    // }
 
     pub fn to_pretty(&self, width: usize) -> String {
         let mut w = Vec::new();
