@@ -3,12 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module ParseIntError := std.num.ParseIntError.
-Definition ParseIntError := ParseIntError.t.
-
 Definition double_first
     (vec : Vec (ref str))
-    : M (Option (Result i32 ParseIntError)) :=
+    : M (Option (Result i32 std.num.ParseIntError)) :=
   let* α0 := vec.["first"] in
   α0.["map"]
     (fun first =>

@@ -3,9 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module HashMap := std.collections.HashMap.
-Definition HashMap := HashMap.t.
-
 Definition call (number : ref str) : M (ref str) :=
   match number with
   | "798-1364" =>
@@ -21,7 +18,7 @@ Definition call (number : ref str) : M (ref str) :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* contacts := HashMap::["new"] tt in
+  let* contacts := std.collections.HashMap::["new"] tt in
   let* _ := contacts.["insert"] "Daniel" "798-1364" in
   let* _ := contacts.["insert"] "Ashley" "645-7689" in
   let* _ := contacts.["insert"] "Katie" "435-8291" in

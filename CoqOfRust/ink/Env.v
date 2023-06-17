@@ -4,30 +4,6 @@ Require Import CoqOfRust.CoqOfRust.
 Import std.prelude.rust_2021.
 
 Module api.
-  Module ReturnFlags := crate.backend.ReturnFlags.
-  Definition ReturnFlags := ReturnFlags.t.
-  
-  Module Call := crate.call.Call.
-  Definition Call := Call.t.
-  
-  Module CallParams := crate.call.CallParams.
-  Definition CallParams := CallParams.t.
-  
-  Module CreateParams := crate.call.CreateParams.
-  Definition CreateParams := CreateParams.t.
-  
-  Module DelegateCall := crate.call.DelegateCall.
-  Definition DelegateCall := DelegateCall.t.
-  
-  Module EnvInstance := crate.engine.EnvInstance.
-  Definition EnvInstance := EnvInstance.t.
-  
-  Module Gas := crate.types.Gas.
-  Definition Gas := Gas.t.
-  
-  Module Result := crate.Result.
-  Definition Result := Result.t.
-  
   Definition caller
       {E : Set}
       `{Environment.Trait E}
@@ -46,12 +22,16 @@ Module api.
   Definition weight_to_fee
       {E : Set}
       `{Environment.Trait E}
-      (gas : Gas)
+      (gas : crate.types.Gas)
       : M ImplE.Balance :=
     OnInstance.on_instance
       (fun instance => TypedEnvBackend.weight_to_fee instance gas).
   
-  Definition gas_left {E : Set} `{Environment.Trait E} (_ : unit) : M Gas :=
+  Definition gas_left
+      {E : Set}
+      `{Environment.Trait E}
+      (_ : unit)
+      : M crate.types.Gas :=
     OnInstance.on_instance (fun instance => TypedEnvBackend.gas_left instance).
   
   Definition block_timestamp
@@ -118,7 +98,7 @@ Module api.
       `{scale.Encode.Trait K}
       `{Storable.Trait R}
       (key : ref K)
-      : M (Result (Option R)) :=
+      : M (crate.Result (Option R)) :=
     OnInstance.on_instance
       (fun instance => EnvBackend.get_contract_storage instance key).
   
@@ -127,7 +107,7 @@ Module api.
       `{scale.Encode.Trait K}
       `{Storable.Trait R}
       (key : ref K)
-      : M (Result (Option R)) :=
+      : M (crate.Result (Option R)) :=
     OnInstance.on_instance
       (fun instance => EnvBackend.take_contract_storage instance key).
   
@@ -152,8 +132,8 @@ Module api.
       `{Environment.Trait E}
       `{scale.Encode.Trait Args}
       `{scale.Decode.Trait R}
-      (params : ref (CallParams E (Call E) Args R))
-      : M (Result (ink_primitives.MessageResult R)) :=
+      (params : ref (crate.call.CallParams E (crate.call.Call E) Args R))
+      : M (crate.Result (ink_primitives.MessageResult R)) :=
     OnInstance.on_instance
       (fun instance => TypedEnvBackend.invoke_contract instance params).
   
@@ -162,8 +142,10 @@ Module api.
       `{Environment.Trait E}
       `{scale.Encode.Trait Args}
       `{scale.Decode.Trait R}
-      (params : ref (CallParams E (DelegateCall E) Args R))
-      : M (Result R) :=
+      (params
+        :
+        ref (crate.call.CallParams E (crate.call.DelegateCall E) Args R))
+      : M (crate.Result R) :=
     OnInstance.on_instance
       (fun instance =>
         TypedEnvBackend.invoke_contract_delegate instance params).
@@ -175,10 +157,10 @@ Module api.
       `{scale.Encode.Trait Args}
       `{AsRef.Trait Slice Salt}
       `{ConstructorReturnType.Trait ContractRef R}
-      (params : ref (CreateParams E ContractRef Args Salt R))
+      (params : ref (crate.call.CreateParams E ContractRef Args Salt R))
       :
         M
-          (Result
+          (crate.Result
             (ink_primitives.ConstructorResult ConstructorReturnType.Output)) :=
     OnInstance.on_instance
       (fun instance => TypedEnvBackend.instantiate_contract instance params).
@@ -196,7 +178,7 @@ Module api.
       `{Environment.Trait E}
       (destination : ImplE.AccountId)
       (value : ImplE.Balance)
-      : M (Result unit) :=
+      : M (crate.Result unit) :=
     OnInstance.on_instance
       (fun instance => TypedEnvBackend.transfer instance destination value).
   
@@ -204,13 +186,13 @@ Module api.
       {T : Set}
       `{scale.Decode.Trait T}
       (_ : unit)
-      : M (Result T) :=
+      : M (crate.Result T) :=
     OnInstance.on_instance (fun instance => EnvBackend.decode_input instance).
   
   Definition return_value
       {R : Set}
       `{scale.Encode.Trait R}
-      (return_flags : ReturnFlags)
+      (return_flags : crate.backend.ReturnFlags)
       (return_value : ref R)
       : M Empty_set :=
     OnInstance.on_instance
@@ -244,7 +226,7 @@ Module api.
       (signature : ref list u8)
       (message_hash : ref list u8)
       (output : mut_ref list u8)
-      : M (Result unit) :=
+      : M (crate.Result unit) :=
     OnInstance.on_instance
       (fun instance =>
         instance.["ecdsa_recover"] signature message_hash output).
@@ -252,7 +234,7 @@ Module api.
   Definition ecdsa_to_eth_address
       (pubkey : ref list u8)
       (output : mut_ref list u8)
-      : M (Result unit) :=
+      : M (crate.Result unit) :=
     OnInstance.on_instance
       (fun instance => instance.["ecdsa_to_eth_address"] pubkey output).
   
@@ -268,7 +250,7 @@ Module api.
       {E : Set}
       `{Environment.Trait E}
       (account : ref ImplE.AccountId)
-      : M (Result ImplE.Hash) :=
+      : M (crate.Result ImplE.Hash) :=
     OnInstance.on_instance
       (fun instance => TypedEnvBackend.code_hash instance account).
   
@@ -276,7 +258,7 @@ Module api.
       {E : Set}
       `{Environment.Trait E}
       (_ : unit)
-      : M (Result ImplE.Hash) :=
+      : M (crate.Result ImplE.Hash) :=
     OnInstance.on_instance
       (fun instance => TypedEnvBackend.own_code_hash instance).
   
@@ -288,7 +270,7 @@ Module api.
     OnInstance.on_instance
       (fun instance => TypedEnvBackend.caller_is_origin instance).
   
-  Definition set_code_hash (code_hash : ref list u8) : M (Result unit) :=
+  Definition set_code_hash (code_hash : ref list u8) : M (crate.Result unit) :=
     OnInstance.on_instance
       (fun instance => instance.["set_code_hash"] code_hash).
   
@@ -296,7 +278,7 @@ Module api.
       {E : Set}
       `{Environment.Trait E}
       (code_hash : ref ImplE.Hash)
-      : M (Result unit) :=
+      : M (crate.Result unit) :=
     OnInstance.on_instance
       (fun instance =>
         let* α0 := code_hash.["as_ref"] in
@@ -305,36 +287,12 @@ Module api.
   Definition call_runtime
       {E Call : Set}
       `{Environment.Trait E}
-      `{scale.Encode.Trait Call}
-      (call : ref Call)
-      : M (Result unit) :=
+      `{scale.Encode.Trait crate.call.Call}
+      (call : ref crate.call.Call)
+      : M (crate.Result unit) :=
     OnInstance.on_instance
       (fun instance => TypedEnvBackend.call_runtime instance call).
 End api.
-
-Module ReturnFlags := crate.backend.ReturnFlags.
-Definition ReturnFlags := ReturnFlags.t.
-
-Module Call := crate.call.Call.
-Definition Call := Call.t.
-
-Module CallParams := crate.call.CallParams.
-Definition CallParams := CallParams.t.
-
-Module CreateParams := crate.call.CreateParams.
-Definition CreateParams := CreateParams.t.
-
-Module DelegateCall := crate.call.DelegateCall.
-Definition DelegateCall := DelegateCall.t.
-
-Module EnvInstance := crate.engine.EnvInstance.
-Definition EnvInstance := EnvInstance.t.
-
-Module Gas := crate.types.Gas.
-Definition Gas := Gas.t.
-
-Module Result := crate.Result.
-Definition Result := Result.t.
 
 Definition caller
     {E : Set}
@@ -354,12 +312,16 @@ Definition transferred_value
 Definition weight_to_fee
     {E : Set}
     `{Environment.Trait E}
-    (gas : Gas)
+    (gas : crate.types.Gas)
     : M ImplE.Balance :=
   OnInstance.on_instance
     (fun instance => TypedEnvBackend.weight_to_fee instance gas).
 
-Definition gas_left {E : Set} `{Environment.Trait E} (_ : unit) : M Gas :=
+Definition gas_left
+    {E : Set}
+    `{Environment.Trait E}
+    (_ : unit)
+    : M crate.types.Gas :=
   OnInstance.on_instance (fun instance => TypedEnvBackend.gas_left instance).
 
 Definition block_timestamp
@@ -425,7 +387,7 @@ Definition get_contract_storage
     `{scale.Encode.Trait K}
     `{Storable.Trait R}
     (key : ref K)
-    : M (Result (Option R)) :=
+    : M (crate.Result (Option R)) :=
   OnInstance.on_instance
     (fun instance => EnvBackend.get_contract_storage instance key).
 
@@ -434,7 +396,7 @@ Definition take_contract_storage
     `{scale.Encode.Trait K}
     `{Storable.Trait R}
     (key : ref K)
-    : M (Result (Option R)) :=
+    : M (crate.Result (Option R)) :=
   OnInstance.on_instance
     (fun instance => EnvBackend.take_contract_storage instance key).
 
@@ -459,8 +421,8 @@ Definition invoke_contract
     `{Environment.Trait E}
     `{scale.Encode.Trait Args}
     `{scale.Decode.Trait R}
-    (params : ref (CallParams E (Call E) Args R))
-    : M (Result (ink_primitives.MessageResult R)) :=
+    (params : ref (crate.call.CallParams E (crate.call.Call E) Args R))
+    : M (crate.Result (ink_primitives.MessageResult R)) :=
   OnInstance.on_instance
     (fun instance => TypedEnvBackend.invoke_contract instance params).
 
@@ -469,8 +431,8 @@ Definition invoke_contract_delegate
     `{Environment.Trait E}
     `{scale.Encode.Trait Args}
     `{scale.Decode.Trait R}
-    (params : ref (CallParams E (DelegateCall E) Args R))
-    : M (Result R) :=
+    (params : ref (crate.call.CallParams E (crate.call.DelegateCall E) Args R))
+    : M (crate.Result R) :=
   OnInstance.on_instance
     (fun instance => TypedEnvBackend.invoke_contract_delegate instance params).
 
@@ -481,10 +443,10 @@ Definition instantiate_contract
     `{scale.Encode.Trait Args}
     `{AsRef.Trait Slice Salt}
     `{ConstructorReturnType.Trait ContractRef R}
-    (params : ref (CreateParams E ContractRef Args Salt R))
+    (params : ref (crate.call.CreateParams E ContractRef Args Salt R))
     :
       M
-        (Result
+        (crate.Result
           (ink_primitives.ConstructorResult ConstructorReturnType.Output)) :=
   OnInstance.on_instance
     (fun instance => TypedEnvBackend.instantiate_contract instance params).
@@ -502,7 +464,7 @@ Definition transfer
     `{Environment.Trait E}
     (destination : ImplE.AccountId)
     (value : ImplE.Balance)
-    : M (Result unit) :=
+    : M (crate.Result unit) :=
   OnInstance.on_instance
     (fun instance => TypedEnvBackend.transfer instance destination value).
 
@@ -510,13 +472,13 @@ Definition decode_input
     {T : Set}
     `{scale.Decode.Trait T}
     (_ : unit)
-    : M (Result T) :=
+    : M (crate.Result T) :=
   OnInstance.on_instance (fun instance => EnvBackend.decode_input instance).
 
 Definition return_value
     {R : Set}
     `{scale.Encode.Trait R}
-    (return_flags : ReturnFlags)
+    (return_flags : crate.backend.ReturnFlags)
     (return_value : ref R)
     : M Empty_set :=
   OnInstance.on_instance
@@ -549,14 +511,14 @@ Definition ecdsa_recover
     (signature : ref list u8)
     (message_hash : ref list u8)
     (output : mut_ref list u8)
-    : M (Result unit) :=
+    : M (crate.Result unit) :=
   OnInstance.on_instance
     (fun instance => instance.["ecdsa_recover"] signature message_hash output).
 
 Definition ecdsa_to_eth_address
     (pubkey : ref list u8)
     (output : mut_ref list u8)
-    : M (Result unit) :=
+    : M (crate.Result unit) :=
   OnInstance.on_instance
     (fun instance => instance.["ecdsa_to_eth_address"] pubkey output).
 
@@ -572,7 +534,7 @@ Definition code_hash
     {E : Set}
     `{Environment.Trait E}
     (account : ref ImplE.AccountId)
-    : M (Result ImplE.Hash) :=
+    : M (crate.Result ImplE.Hash) :=
   OnInstance.on_instance
     (fun instance => TypedEnvBackend.code_hash instance account).
 
@@ -580,7 +542,7 @@ Definition own_code_hash
     {E : Set}
     `{Environment.Trait E}
     (_ : unit)
-    : M (Result ImplE.Hash) :=
+    : M (crate.Result ImplE.Hash) :=
   OnInstance.on_instance
     (fun instance => TypedEnvBackend.own_code_hash instance).
 
@@ -592,14 +554,14 @@ Definition caller_is_origin
   OnInstance.on_instance
     (fun instance => TypedEnvBackend.caller_is_origin instance).
 
-Definition set_code_hash (code_hash : ref list u8) : M (Result unit) :=
+Definition set_code_hash (code_hash : ref list u8) : M (crate.Result unit) :=
   OnInstance.on_instance (fun instance => instance.["set_code_hash"] code_hash).
 
 Definition set_code_hash2
     {E : Set}
     `{Environment.Trait E}
     (code_hash : ref ImplE.Hash)
-    : M (Result unit) :=
+    : M (crate.Result unit) :=
   OnInstance.on_instance
     (fun instance =>
       let* α0 := code_hash.["as_ref"] in
@@ -608,9 +570,9 @@ Definition set_code_hash2
 Definition call_runtime
     {E Call : Set}
     `{Environment.Trait E}
-    `{scale.Encode.Trait Call}
-    (call : ref Call)
-    : M (Result unit) :=
+    `{scale.Encode.Trait crate.call.Call}
+    (call : ref crate.call.Call)
+    : M (crate.Result unit) :=
   OnInstance.on_instance
     (fun instance => TypedEnvBackend.call_runtime instance call).
 
@@ -879,21 +841,6 @@ Module Impl_Saturating_for_T.
 End Impl_Saturating_for_T.
 
 Module backend.
-  Module Call := crate.call.Call.
-  Definition Call := Call.t.
-  
-  Module CallParams := crate.call.CallParams.
-  Definition CallParams := CallParams.t.
-  
-  Module CreateParams := crate.call.CreateParams.
-  Definition CreateParams := CreateParams.t.
-  
-  Module DelegateCall := crate.call.DelegateCall.
-  Definition DelegateCall := DelegateCall.t.
-  
-  Module Result := crate.Result.
-  Definition Result := Result.t.
-  
   Module ReturnFlags.
     Record t : Set := {
       value : u32;
@@ -905,12 +852,12 @@ Module backend.
   End ReturnFlags.
   Definition ReturnFlags : Set := ReturnFlags.t.
   
-  Module Impl__crate_default_Default_for_ReturnFlags.
-    Definition Self := ReturnFlags.
+  Module Impl__crate_default_Default_for_crate_backend_ReturnFlags.
+    Definition Self := crate.backend.ReturnFlags.
     
-    Definition default (_ : unit) : M ReturnFlags :=
+    Definition default (_ : unit) : M crate.backend.ReturnFlags :=
       let* α0 := _crate.default.Default.default tt in
-      Pure {| ReturnFlags.value := α0; |}.
+      Pure {| crate.backend.ReturnFlags.value := α0; |}.
     
     Global Instance AssociatedFunction_default :
       Notation.DoubleColon Self "default" := {
@@ -920,10 +867,10 @@ Module backend.
     Global Instance I : _crate.default.Default.Trait Self := {
       _crate.default.Default.default := default;
     }.
-  End Impl__crate_default_Default_for_ReturnFlags.
+  End Impl__crate_default_Default_for_crate_backend_ReturnFlags.
   
-  Module ImplReturnFlags.
-    Definition Self := ReturnFlags.
+  Module Implcrate.backend.ReturnFlags.
+    Definition Self := crate.backend.ReturnFlags.
     
     Definition new_with_reverted (has_reverted : bool) : M Self :=
       let* α0 := Self::["default"] tt in
@@ -947,7 +894,7 @@ Module backend.
     Global Instance Method_set_reverted : Notation.Dot "set_reverted" := {
       Notation.dot := set_reverted;
     }.
-  End ImplReturnFlags.
+  End Implcrate.backend.ReturnFlags.
   
   Module CallFlags.
     Record t : Set := {
@@ -1139,14 +1086,16 @@ Module backend.
         (mut_ref Self) -> (ref K) -> (ref V) -> (M (Option u32));
       get_contract_storage
         :
-        (mut_ref Self) -> (ref K) -> (M (Result (Option R)));
+        (mut_ref Self) -> (ref K) -> (M (crate.Result (Option R)));
       take_contract_storage
         :
-        (mut_ref Self) -> (ref K) -> (M (Result (Option R)));
+        (mut_ref Self) -> (ref K) -> (M (crate.Result (Option R)));
       contains_contract_storage : (mut_ref Self) -> (ref K) -> (M (Option u32));
       clear_contract_storage : (mut_ref Self) -> (ref K) -> (M (Option u32));
-      decode_input : (mut_ref Self) -> (M (Result T));
-      return_value : (mut_ref Self) -> ReturnFlags -> (ref R) -> (M Empty_set);
+      decode_input : (mut_ref Self) -> (M (crate.Result T));
+      return_value
+        :
+        (mut_ref Self) -> crate.backend.ReturnFlags -> (ref R) -> (M Empty_set);
       debug_message : (mut_ref Self) -> (ref str) -> (M unit);
       hash_bytes
         :
@@ -1160,13 +1109,13 @@ Module backend.
         (ref list u8) ->
         (ref list u8) ->
         (mut_ref list u8) ->
-        (M (Result unit));
+        (M (crate.Result unit));
       ecdsa_to_eth_address
         :
         (mut_ref Self) ->
         (ref list u8) ->
         (mut_ref list u8) ->
-        (M (Result unit));
+        (M (crate.Result unit));
       call_chain_extension
         :
         (mut_ref Self) ->
@@ -1175,7 +1124,7 @@ Module backend.
         F ->
         D ->
         (M (Root.core.result.Result T E));
-      set_code_hash : (mut_ref Self) -> (ref Slice) -> (M (Result unit));
+      set_code_hash : (mut_ref Self) -> (ref Slice) -> (M (crate.Result unit));
     }.
     
     Global Instance Method_set_contract_storage `(Trait)
@@ -1250,31 +1199,38 @@ Module backend.
       invoke_contract
         :
         (mut_ref Self) ->
-        (ref (CallParams E (Call E) Args R)) ->
-        (M (Result (ink_primitives.MessageResult R)));
+        (ref (crate.call.CallParams E (crate.call.Call E) Args R)) ->
+        (M (crate.Result (ink_primitives.MessageResult R)));
       invoke_contract_delegate
         :
         (mut_ref Self) ->
-        (ref (CallParams E (DelegateCall E) Args R)) ->
-        (M (Result R));
+        (ref (crate.call.CallParams E (crate.call.DelegateCall E) Args R)) ->
+        (M (crate.Result R));
       instantiate_contract
         :
         (mut_ref Self) ->
-        (ref (CreateParams E ContractRef Args Salt R)) ->
+        (ref (crate.call.CreateParams E ContractRef Args Salt R)) ->
         (M
-          (Result
+          (crate.Result
             (ink_primitives.ConstructorResult ConstructorReturnType.Output)));
       terminate_contract : (mut_ref Self) -> ImplE.AccountId -> (M Empty_set);
       transfer
         :
-        (mut_ref Self) -> ImplE.AccountId -> ImplE.Balance -> (M (Result unit));
+        (mut_ref Self) ->
+        ImplE.AccountId ->
+        ImplE.Balance ->
+        (M (crate.Result unit));
       is_contract : (mut_ref Self) -> (ref ImplE.AccountId) -> (M bool);
       caller_is_origin : (mut_ref Self) -> (M bool);
       code_hash
         :
-        (mut_ref Self) -> (ref ImplE.AccountId) -> (M (Result ImplE.Hash));
-      own_code_hash : (mut_ref Self) -> (M (Result ImplE.Hash));
-      call_runtime : (mut_ref Self) -> (ref Call) -> (M (Result unit));
+        (mut_ref Self) ->
+        (ref ImplE.AccountId) ->
+        (M (crate.Result ImplE.Hash));
+      own_code_hash : (mut_ref Self) -> (M (crate.Result ImplE.Hash));
+      call_runtime
+        :
+        (mut_ref Self) -> (ref crate.call.Call) -> (M (crate.Result unit));
     }.
     
     Global Instance Method_caller `(Trait) : Notation.Dot "caller" := {
@@ -1353,21 +1309,6 @@ Module backend.
   End TypedEnvBackend.
 End backend.
 
-Module Call := crate.call.Call.
-Definition Call := Call.t.
-
-Module CallParams := crate.call.CallParams.
-Definition CallParams := CallParams.t.
-
-Module CreateParams := crate.call.CreateParams.
-Definition CreateParams := CreateParams.t.
-
-Module DelegateCall := crate.call.DelegateCall.
-Definition DelegateCall := DelegateCall.t.
-
-Module Result := crate.Result.
-Definition Result := Result.t.
-
 Module ReturnFlags.
   Record t : Set := {
     value : u32;
@@ -1379,12 +1320,12 @@ Module ReturnFlags.
 End ReturnFlags.
 Definition ReturnFlags : Set := ReturnFlags.t.
 
-Module Impl__crate_default_Default_for_ReturnFlags.
-  Definition Self := ReturnFlags.
+Module Impl__crate_default_Default_for_crate_backend_ReturnFlags.
+  Definition Self := crate.backend.ReturnFlags.
   
-  Definition default (_ : unit) : M ReturnFlags :=
+  Definition default (_ : unit) : M crate.backend.ReturnFlags :=
     let* α0 := _crate.default.Default.default tt in
-    Pure {| ReturnFlags.value := α0; |}.
+    Pure {| crate.backend.ReturnFlags.value := α0; |}.
   
   Global Instance AssociatedFunction_default :
     Notation.DoubleColon Self "default" := {
@@ -1394,10 +1335,10 @@ Module Impl__crate_default_Default_for_ReturnFlags.
   Global Instance I : _crate.default.Default.Trait Self := {
     _crate.default.Default.default := default;
   }.
-End Impl__crate_default_Default_for_ReturnFlags.
+End Impl__crate_default_Default_for_crate_backend_ReturnFlags.
 
-Module ImplReturnFlags_2.
-  Definition Self := ReturnFlags.
+Module Implcrate.backend.ReturnFlags_2.
+  Definition Self := crate.backend.ReturnFlags.
   
   Definition new_with_reverted (has_reverted : bool) : M Self :=
     let* α0 := Self::["default"] tt in
@@ -1421,7 +1362,7 @@ Module ImplReturnFlags_2.
   Global Instance Method_set_reverted : Notation.Dot "set_reverted" := {
     Notation.dot := set_reverted;
   }.
-End ImplReturnFlags_2.
+End Implcrate.backend.ReturnFlags_2.
 
 Module CallFlags.
   Record t : Set := {
@@ -1605,14 +1546,18 @@ Module EnvBackend.
     set_contract_storage
       :
       (mut_ref Self) -> (ref K) -> (ref V) -> (M (Option u32));
-    get_contract_storage : (mut_ref Self) -> (ref K) -> (M (Result (Option R)));
+    get_contract_storage
+      :
+      (mut_ref Self) -> (ref K) -> (M (crate.Result (Option R)));
     take_contract_storage
       :
-      (mut_ref Self) -> (ref K) -> (M (Result (Option R)));
+      (mut_ref Self) -> (ref K) -> (M (crate.Result (Option R)));
     contains_contract_storage : (mut_ref Self) -> (ref K) -> (M (Option u32));
     clear_contract_storage : (mut_ref Self) -> (ref K) -> (M (Option u32));
-    decode_input : (mut_ref Self) -> (M (Result T));
-    return_value : (mut_ref Self) -> ReturnFlags -> (ref R) -> (M Empty_set);
+    decode_input : (mut_ref Self) -> (M (crate.Result T));
+    return_value
+      :
+      (mut_ref Self) -> crate.backend.ReturnFlags -> (ref R) -> (M Empty_set);
     debug_message : (mut_ref Self) -> (ref str) -> (M unit);
     hash_bytes
       :
@@ -1626,10 +1571,13 @@ Module EnvBackend.
       (ref list u8) ->
       (ref list u8) ->
       (mut_ref list u8) ->
-      (M (Result unit));
+      (M (crate.Result unit));
     ecdsa_to_eth_address
       :
-      (mut_ref Self) -> (ref list u8) -> (mut_ref list u8) -> (M (Result unit));
+      (mut_ref Self) ->
+      (ref list u8) ->
+      (mut_ref list u8) ->
+      (M (crate.Result unit));
     call_chain_extension
       :
       (mut_ref Self) ->
@@ -1638,7 +1586,7 @@ Module EnvBackend.
       F ->
       D ->
       (M (Root.core.result.Result T E));
-    set_code_hash : (mut_ref Self) -> (ref Slice) -> (M (Result unit));
+    set_code_hash : (mut_ref Self) -> (ref Slice) -> (M (crate.Result unit));
   }.
   
   Global Instance Method_set_contract_storage `(Trait)
@@ -1713,31 +1661,36 @@ Module TypedEnvBackend.
     invoke_contract
       :
       (mut_ref Self) ->
-      (ref (CallParams E (Call E) Args R)) ->
-      (M (Result (ink_primitives.MessageResult R)));
+      (ref (crate.call.CallParams E (crate.call.Call E) Args R)) ->
+      (M (crate.Result (ink_primitives.MessageResult R)));
     invoke_contract_delegate
       :
       (mut_ref Self) ->
-      (ref (CallParams E (DelegateCall E) Args R)) ->
-      (M (Result R));
+      (ref (crate.call.CallParams E (crate.call.DelegateCall E) Args R)) ->
+      (M (crate.Result R));
     instantiate_contract
       :
       (mut_ref Self) ->
-      (ref (CreateParams E ContractRef Args Salt R)) ->
+      (ref (crate.call.CreateParams E ContractRef Args Salt R)) ->
       (M
-        (Result
+        (crate.Result
           (ink_primitives.ConstructorResult ConstructorReturnType.Output)));
     terminate_contract : (mut_ref Self) -> ImplE.AccountId -> (M Empty_set);
     transfer
       :
-      (mut_ref Self) -> ImplE.AccountId -> ImplE.Balance -> (M (Result unit));
+      (mut_ref Self) ->
+      ImplE.AccountId ->
+      ImplE.Balance ->
+      (M (crate.Result unit));
     is_contract : (mut_ref Self) -> (ref ImplE.AccountId) -> (M bool);
     caller_is_origin : (mut_ref Self) -> (M bool);
     code_hash
       :
-      (mut_ref Self) -> (ref ImplE.AccountId) -> (M (Result ImplE.Hash));
-    own_code_hash : (mut_ref Self) -> (M (Result ImplE.Hash));
-    call_runtime : (mut_ref Self) -> (ref Call) -> (M (Result unit));
+      (mut_ref Self) -> (ref ImplE.AccountId) -> (M (crate.Result ImplE.Hash));
+    own_code_hash : (mut_ref Self) -> (M (crate.Result ImplE.Hash));
+    call_runtime
+      :
+      (mut_ref Self) -> (ref crate.call.Call) -> (M (crate.Result unit));
   }.
   
   Global Instance Method_caller `(Trait) : Notation.Dot "caller" := {
@@ -1816,40 +1769,13 @@ End TypedEnvBackend.
 
 Module call.
   Module call_builder.
-    Module CallFlags := crate.backend.CallFlags.
-    Definition CallFlags := CallFlags.t.
-    
-    Module EmptyArgumentList := crate.call.utils.EmptyArgumentList.
-    Definition EmptyArgumentList := EmptyArgumentList.t.
-    
-    Module ReturnType := crate.call.utils.ReturnType.
-    Definition ReturnType := ReturnType.t.
-    
-    Module Set := crate.call.utils.Set.
-    Definition Set := Set.t.
-    
-    Module Unset := crate.call.utils.Unset.
-    Definition Unset := Unset.t.
-    
-    Module ExecutionInput := crate.call.ExecutionInput.
-    Definition ExecutionInput := ExecutionInput.t.
-    
-    Module Gas := crate.types.Gas.
-    Definition Gas := Gas.t.
-    
-    Module Error := crate.Error.
-    Definition Error := Error.t.
-    
-    Module PhantomData := core.marker.PhantomData.
-    Definition PhantomData := PhantomData.t.
-    
     Module CallParams.
       Record t : Set := {
         call_type : CallType;
-        call_flags : CallFlags;
-        _return_type : ReturnType R;
-        exec_input : ExecutionInput Args;
-        _phantom : PhantomData ( -> E);
+        call_flags : crate.backend.CallFlags;
+        _return_type : crate.call.utils.ReturnType R;
+        exec_input : crate.call.ExecutionInput Args;
+        _phantom : core.marker.PhantomData ( -> E);
       }.
       
       Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -1870,8 +1796,8 @@ Module call.
     End CallParams.
     Definition CallParams : Set := CallParams.t.
     
-    Module Impl__crate_fmt_Debug_for_CallParams_E_CallType_Args_R.
-      Definition Self := CallParams E CallType Args R.
+    Module Impl__crate_fmt_Debug_for_crate_call_CallParams_E_CallType_Args_R.
+      Definition Self := crate.call.CallParams E CallType Args R.
       
       Definition fmt
           (self : ref Self)
@@ -1898,28 +1824,32 @@ Module call.
       Global Instance I E CallType Args R : _crate.fmt.Debug.Trait Self := {
         _crate.fmt.Debug.fmt := fmt;
       }.
-    End Impl__crate_fmt_Debug_for_CallParams_E_CallType_Args_R.
+    End Impl__crate_fmt_Debug_for_crate_call_CallParams_E_CallType_Args_R.
     
-    Module ImplCallParams E CallType Args R.
-      Definition Self := CallParams E CallType Args R.
+    Module Implcrate.call.CallParams E CallType Args R.
+      Definition Self := crate.call.CallParams E CallType Args R.
       
-      Definition call_flags (self : ref Self) : M (ref CallFlags) :=
+      Definition call_flags
+          (self : ref Self)
+          : M (ref crate.backend.CallFlags) :=
         Pure (addr_of self.["call_flags"]).
       
       Global Instance Method_call_flags : Notation.Dot "call_flags" := {
         Notation.dot := call_flags;
       }.
       
-      Definition exec_input (self : ref Self) : M (ref (ExecutionInput Args)) :=
+      Definition exec_input
+          (self : ref Self)
+          : M (ref (crate.call.ExecutionInput Args)) :=
         Pure (addr_of self.["exec_input"]).
       
       Global Instance Method_exec_input : Notation.Dot "exec_input" := {
         Notation.dot := exec_input;
       }.
-    End ImplCallParams E CallType Args R.
+    End Implcrate.call.CallParams E CallType Args R.
     
-    Module ImplCallParams E (Call E) Args R.
-      Definition Self := CallParams E (Call E) Args R.
+    Module Implcrate.call.CallParams E (crate.call.Call E) Args R.
+      Definition Self := crate.call.CallParams E (crate.call.Call E) Args R.
       
       Definition callee (self : ref Self) : M (ref ImplE.AccountId) :=
         Pure (addr_of self.["call_type"].["callee"]).
@@ -1928,7 +1858,7 @@ Module call.
         Notation.dot := callee;
       }.
       
-      Definition gas_limit (self : ref Self) : M Gas :=
+      Definition gas_limit (self : ref Self) : M crate.types.Gas :=
         Pure self.["call_type"].["gas_limit"].
       
       Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
@@ -1942,10 +1872,13 @@ Module call.
         Notation.Dot "transferred_value" := {
         Notation.dot := transferred_value;
       }.
-    End ImplCallParams E (Call E) Args R.
+    End Implcrate.call.CallParams E (crate.call.Call E) Args R.
     
-    Module ImplCallParams E (DelegateCall E) Args R.
-      Definition Self := CallParams E (DelegateCall E) Args R.
+    Module Implcrate.call.CallParams E (crate.call.DelegateCall E) Args R.
+      Definition
+        Self
+        :=
+        crate.call.CallParams E (crate.call.DelegateCall E) Args R.
       
       Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
         Pure (addr_of self.["call_type"].["code_hash"]).
@@ -1953,10 +1886,10 @@ Module call.
       Global Instance Method_code_hash : Notation.Dot "code_hash" := {
         Notation.dot := code_hash;
       }.
-    End ImplCallParams E (DelegateCall E) Args R.
+    End Implcrate.call.CallParams E (crate.call.DelegateCall E) Args R.
     
-    Module ImplCallParams E (Call E) Args R_2.
-      Definition Self := CallParams E (Call E) Args R.
+    Module Implcrate.call.CallParams E (crate.call.Call E) Args R_2.
+      Definition Self := crate.call.CallParams E (crate.call.Call E) Args R.
       
       Definition invoke (self : ref Self) : M R :=
         let* α0 := crate.invoke_contract self in
@@ -1984,16 +1917,19 @@ Module call.
       
       Definition try_invoke
           (self : ref Self)
-          : M (Result (ink_primitives.MessageResult R) crate.Error) :=
+          : M (crate.Result (ink_primitives.MessageResult R) crate.Error) :=
         crate.invoke_contract self.
       
       Global Instance Method_try_invoke : Notation.Dot "try_invoke" := {
         Notation.dot := try_invoke;
       }.
-    End ImplCallParams E (Call E) Args R_2.
+    End Implcrate.call.CallParams E (crate.call.Call E) Args R_2.
     
-    Module ImplCallParams E (DelegateCall E) Args R_2.
-      Definition Self := CallParams E (DelegateCall E) Args R.
+    Module Implcrate.call.CallParams E (crate.call.DelegateCall E) Args R_2.
+      Definition
+        Self
+        :=
+        crate.call.CallParams E (crate.call.DelegateCall E) Args R.
       
       Definition invoke (self : ref Self) : M R :=
         let* α0 := crate.invoke_contract_delegate self in
@@ -2010,13 +1946,15 @@ Module call.
         Notation.dot := invoke;
       }.
       
-      Definition try_invoke (self : ref Self) : M (Result R crate.Error) :=
+      Definition try_invoke
+          (self : ref Self)
+          : M (crate.Result R crate.Error) :=
         crate.invoke_contract_delegate self.
       
       Global Instance Method_try_invoke : Notation.Dot "try_invoke" := {
         Notation.dot := try_invoke;
       }.
-    End ImplCallParams E (DelegateCall E) Args R_2.
+    End Implcrate.call.CallParams E (crate.call.DelegateCall E) Args R_2.
     
     Definition build_call
         {E : Set}
@@ -2026,9 +1964,10 @@ Module call.
           M
             (CallBuilder
               E
-              (Unset (Call E))
-              (Unset (ExecutionInput EmptyArgumentList))
-              (Unset (ReturnType unit))) :=
+              (crate.call.utils.Unset (crate.call.Call E))
+              (crate.call.utils.Unset
+                (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+              (crate.call.utils.Unset (crate.call.utils.ReturnType unit))) :=
       let* α0 := Default.default tt in
       let* α1 := Default.default tt in
       let* α2 := Default.default tt in
@@ -2046,7 +1985,7 @@ Module call.
     Module Call.
       Record t : Set := {
         callee : ImplE.AccountId;
-        gas_limit : Gas;
+        gas_limit : crate.types.Gas;
         transferred_value : ImplE.Balance;
       }.
       
@@ -2063,19 +2002,19 @@ Module call.
     End Call.
     Definition Call : Set := Call.t.
     
-    Module Impl__crate_clone_Clone_for_Call_E.
-      Definition Self := Call E.
+    Module Impl__crate_clone_Clone_for_crate_call_Call_E.
+      Definition Self := crate.call.Call E.
       
-      Definition clone (self : ref Self) : M (Call E) :=
+      Definition clone (self : ref Self) : M (crate.call.Call E) :=
         let* α0 := _crate.clone.Clone.clone (addr_of self.["callee"]) in
         let* α1 := _crate.clone.Clone.clone (addr_of self.["gas_limit"]) in
         let* α2 :=
           _crate.clone.Clone.clone (addr_of self.["transferred_value"]) in
         Pure
           {|
-            Call.callee := α0;
-            Call.gas_limit := α1;
-            Call.transferred_value := α2;
+            crate.call.Call.callee := α0;
+            crate.call.Call.gas_limit := α1;
+            crate.call.Call.transferred_value := α2;
           |}.
       
       Global Instance Method_clone : Notation.Dot "clone" := {
@@ -2085,10 +2024,10 @@ Module call.
       Global Instance I E : _crate.clone.Clone.Trait Self := {
         _crate.clone.Clone.clone := clone;
       }.
-    End Impl__crate_clone_Clone_for_Call_E.
+    End Impl__crate_clone_Clone_for_crate_call_Call_E.
     
-    Module ImplCall E.
-      Definition Self := Call E.
+    Module Implcrate.call.Call E.
+      Definition Self := crate.call.Call E.
       
       Definition new (callee : ImplE.AccountId) : M Self :=
         let* α0 := Default.default tt in
@@ -2104,17 +2043,20 @@ Module call.
         Notation.DoubleColon Self "new" := {
         Notation.double_colon := new;
       }.
-    End ImplCall E.
+    End Implcrate.call.Call E.
     
-    Module ImplCall E_2.
-      Definition Self := Call E.
+    Module Implcrate.call.Call E_2.
+      Definition Self := crate.call.Call E.
       
-      Definition gas_limit (self : Self) (gas_limit : Gas) : M Self :=
+      Definition gas_limit
+          (self : Self)
+          (gas_limit : crate.types.Gas)
+          : M Self :=
         Pure
           {|
-            Call.callee := self.["callee"];
-            Call.gas_limit := gas_limit;
-            Call.transferred_value := self.["transferred_value"];
+            crate.call.Call.callee := self.["callee"];
+            crate.call.Call.gas_limit := gas_limit;
+            crate.call.Call.transferred_value := self.["transferred_value"];
           |}.
       
       Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
@@ -2127,16 +2069,16 @@ Module call.
           : M Self :=
         Pure
           {|
-            Call.callee := self.["callee"];
-            Call.gas_limit := self.["gas_limit"];
-            Call.transferred_value := transferred_value;
+            crate.call.Call.callee := self.["callee"];
+            crate.call.Call.gas_limit := self.["gas_limit"];
+            crate.call.Call.transferred_value := transferred_value;
           |}.
       
       Global Instance Method_transferred_value :
         Notation.Dot "transferred_value" := {
         Notation.dot := transferred_value;
       }.
-    End ImplCall E_2.
+    End Implcrate.call.Call E_2.
     
     Module DelegateCall.
       Record t : Set := {
@@ -2149,36 +2091,36 @@ Module call.
     End DelegateCall.
     Definition DelegateCall : Set := DelegateCall.t.
     
-    Module ImplDelegateCall E.
-      Definition Self := DelegateCall E.
+    Module Implcrate.call.DelegateCall E.
+      Definition Self := crate.call.DelegateCall E.
       
       Definition new (code_hash : ImplE.Hash) : M Self :=
-        Pure {| DelegateCall.code_hash := code_hash; |}.
+        Pure {| crate.call.DelegateCall.code_hash := code_hash; |}.
       
       Global Instance AssociatedFunction_new :
         Notation.DoubleColon Self "new" := {
         Notation.double_colon := new;
       }.
-    End ImplDelegateCall E.
+    End Implcrate.call.DelegateCall E.
     
-    Module ImplDelegateCall E_2.
-      Definition Self := DelegateCall E.
+    Module Implcrate.call.DelegateCall E_2.
+      Definition Self := crate.call.DelegateCall E.
       
       Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
-        Pure {| DelegateCall.code_hash := code_hash; |}.
+        Pure {| crate.call.DelegateCall.code_hash := code_hash; |}.
       
       Global Instance Method_code_hash : Notation.Dot "code_hash" := {
         Notation.dot := code_hash;
       }.
-    End ImplDelegateCall E_2.
+    End Implcrate.call.DelegateCall E_2.
     
     Module CallBuilder.
       Record t : Set := {
         call_type : CallType;
-        call_flags : CallFlags;
+        call_flags : crate.backend.CallFlags;
         exec_input : Args;
         return_type : RetType;
-        _phantom : PhantomData ( -> E);
+        _phantom : core.marker.PhantomData ( -> E);
       }.
       
       Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -2236,17 +2178,20 @@ Module call.
       }.
     End Impl__crate_clone_Clone_for_CallBuilder_E_CallType_Args_RetType.
     
-    Module ImplCallBuilder E (Unset CallType) Args RetType.
-      Definition Self := CallBuilder E (Unset CallType) Args RetType.
+    Module ImplCallBuilder E (crate.call.utils.Unset CallType) Args RetType.
+      Definition
+        Self
+        :=
+        CallBuilder E (crate.call.utils.Unset CallType) Args RetType.
       
       Definition call_type
           (self : Self)
           (call_type : NewCallType)
-          : M (CallBuilder E (Set NewCallType) Args RetType) :=
+          : M (CallBuilder E (crate.call.utils.Set NewCallType) Args RetType) :=
         let* α0 := Default.default tt in
         Pure
           {|
-            CallBuilder.call_type := Set.Build_t call_type;
+            CallBuilder.call_type := crate.call.utils.Set.Build_t call_type;
             CallBuilder.call_flags := self.["call_flags"];
             CallBuilder.exec_input := self.["exec_input"];
             CallBuilder.return_type := self.["return_type"];
@@ -2256,14 +2201,14 @@ Module call.
       Global Instance Method_call_type : Notation.Dot "call_type" := {
         Notation.dot := call_type;
       }.
-    End ImplCallBuilder E (Unset CallType) Args RetType.
+    End ImplCallBuilder E (crate.call.utils.Unset CallType) Args RetType.
     
     Module ImplCallBuilder E CallType Args RetType.
       Definition Self := CallBuilder E CallType Args RetType.
       
       Definition call_flags
           (self : Self)
-          (call_flags : CallFlags)
+          (call_flags : crate.backend.CallFlags)
           : M (CallBuilder E CallType Args RetType) :=
         let* α0 := Default.default tt in
         Pure
@@ -2280,12 +2225,30 @@ Module call.
       }.
     End ImplCallBuilder E CallType Args RetType.
     
-    Module ImplCallBuilder E CallType Args (Unset (ReturnType unit)).
-      Definition Self := CallBuilder E CallType Args (Unset (ReturnType unit)).
+    Module
+      ImplCallBuilder
+        E
+        CallType
+        Args
+        (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
+      Definition
+        Self
+        :=
+        CallBuilder
+          E
+          CallType
+          Args
+          (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
       
       Definition returns
           (self : Self)
-          : M (CallBuilder E CallType Args (Set (ReturnType R))) :=
+          :
+            M
+              (CallBuilder
+                E
+                CallType
+                Args
+                (crate.call.utils.Set (crate.call.utils.ReturnType R))) :=
         let* α0 := Default.default tt in
         let* α1 := Default.default tt in
         Pure
@@ -2293,20 +2256,26 @@ Module call.
             CallBuilder.call_type := self.["call_type"];
             CallBuilder.call_flags := self.["call_flags"];
             CallBuilder.exec_input := self.["exec_input"];
-            CallBuilder.return_type := Set.Build_t α0;
+            CallBuilder.return_type := crate.call.utils.Set.Build_t α0;
             CallBuilder._phantom := α1;
           |}.
       
       Global Instance Method_returns : Notation.Dot "returns" := {
         Notation.dot := returns;
       }.
-    End ImplCallBuilder E CallType Args (Unset (ReturnType unit)).
+    End
+      ImplCallBuilder
+        E
+        CallType
+        Args
+        (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
     
     Module
       ImplCallBuilder
         E
         CallType
-        (Unset (ExecutionInput EmptyArgumentList))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
         RetType.
       Definition
         Self
@@ -2314,19 +2283,26 @@ Module call.
         CallBuilder
           E
           CallType
-          (Unset (ExecutionInput EmptyArgumentList))
+          (crate.call.utils.Unset
+            (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
           RetType.
       
       Definition exec_input
           (self : Self)
-          (exec_input : ExecutionInput Args)
-          : M (CallBuilder E CallType (Set (ExecutionInput Args)) RetType) :=
+          (exec_input : crate.call.ExecutionInput Args)
+          :
+            M
+              (CallBuilder
+                E
+                CallType
+                (crate.call.utils.Set (crate.call.ExecutionInput Args))
+                RetType) :=
         let* α0 := Default.default tt in
         Pure
           {|
             CallBuilder.call_type := self.["call_type"];
             CallBuilder.call_flags := self.["call_flags"];
-            CallBuilder.exec_input := Set.Build_t exec_input;
+            CallBuilder.exec_input := crate.call.utils.Set.Build_t exec_input;
             CallBuilder.return_type := self.["return_type"];
             CallBuilder._phantom := α0;
           |}.
@@ -2338,21 +2314,31 @@ Module call.
       ImplCallBuilder
         E
         CallType
-        (Unset (ExecutionInput EmptyArgumentList))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
         RetType.
     
-    Module ImplCallBuilder E (Unset CallType) Args RetType_2.
-      Definition Self := CallBuilder E (Unset CallType) Args RetType.
+    Module ImplCallBuilder E (crate.call.utils.Unset CallType) Args RetType_2.
+      Definition
+        Self
+        :=
+        CallBuilder E (crate.call.utils.Unset CallType) Args RetType.
       
       Definition call
           (self : Self)
           (callee : ImplE.AccountId)
-          : M (CallBuilder E (Set (Call E)) Args RetType) :=
-        let* α0 := Call::["new"] callee in
+          :
+            M
+              (CallBuilder
+                E
+                (crate.call.utils.Set (crate.call.Call E))
+                Args
+                RetType) :=
+        let* α0 := crate.call.Call::["new"] callee in
         let* α1 := Default.default tt in
         Pure
           {|
-            CallBuilder.call_type := Set.Build_t α0;
+            CallBuilder.call_type := crate.call.utils.Set.Build_t α0;
             CallBuilder.call_flags := self.["call_flags"];
             CallBuilder.exec_input := self.["exec_input"];
             CallBuilder.return_type := self.["return_type"];
@@ -2366,12 +2352,18 @@ Module call.
       Definition delegate
           (self : Self)
           (code_hash : ImplE.Hash)
-          : M (CallBuilder E (Set (DelegateCall E)) Args RetType) :=
-        let* α0 := DelegateCall::["new"] code_hash in
+          :
+            M
+              (CallBuilder
+                E
+                (crate.call.utils.Set (crate.call.DelegateCall E))
+                Args
+                RetType) :=
+        let* α0 := crate.call.DelegateCall::["new"] code_hash in
         let* α1 := Default.default tt in
         Pure
           {|
-            CallBuilder.call_type := Set.Build_t α0;
+            CallBuilder.call_type := crate.call.utils.Set.Build_t α0;
             CallBuilder.call_flags := self.["call_flags"];
             CallBuilder.exec_input := self.["exec_input"];
             CallBuilder.return_type := self.["return_type"];
@@ -2381,22 +2373,30 @@ Module call.
       Global Instance Method_delegate : Notation.Dot "delegate" := {
         Notation.dot := delegate;
       }.
-    End ImplCallBuilder E (Unset CallType) Args RetType_2.
+    End ImplCallBuilder E (crate.call.utils.Unset CallType) Args RetType_2.
     
-    Module ImplCallBuilder E (Set (Call E)) Args RetType.
-      Definition Self := CallBuilder E (Set (Call E)) Args RetType.
+    Module
+      ImplCallBuilder E (crate.call.utils.Set (crate.call.Call E)) Args RetType.
+      Definition
+        Self
+        :=
+        CallBuilder E (crate.call.utils.Set (crate.call.Call E)) Args RetType.
       
-      Definition gas_limit (self : Self) (gas_limit : Gas) : M Self :=
+      Definition gas_limit
+          (self : Self)
+          (gas_limit : crate.types.Gas)
+          : M Self :=
         let* call_type := self.["call_type"].["value"] in
         let* α0 := Default.default tt in
         Pure
           {|
             CallBuilder.call_type :=
-              Set.Build_t
+              crate.call.utils.Set.Build_t
                 {|
-                  Call.callee := call_type.["callee"];
-                  Call.gas_limit := gas_limit;
-                  Call.transferred_value := call_type.["transferred_value"];
+                  crate.call.Call.callee := call_type.["callee"];
+                  crate.call.Call.gas_limit := gas_limit;
+                  crate.call.Call.transferred_value :=
+                    call_type.["transferred_value"];
                 |};
             CallBuilder.call_flags := self.["call_flags"];
             CallBuilder.exec_input := self.["exec_input"];
@@ -2417,11 +2417,11 @@ Module call.
         Pure
           {|
             CallBuilder.call_type :=
-              Set.Build_t
+              crate.call.utils.Set.Build_t
                 {|
-                  Call.callee := call_type.["callee"];
-                  Call.gas_limit := call_type.["gas_limit"];
-                  Call.transferred_value := transferred_value;
+                  crate.call.Call.callee := call_type.["callee"];
+                  crate.call.Call.gas_limit := call_type.["gas_limit"];
+                  crate.call.Call.transferred_value := transferred_value;
                 |};
             CallBuilder.call_flags := self.["call_flags"];
             CallBuilder.exec_input := self.["exec_input"];
@@ -2433,17 +2433,31 @@ Module call.
         Notation.Dot "transferred_value" := {
         Notation.dot := transferred_value;
       }.
-    End ImplCallBuilder E (Set (Call E)) Args RetType.
+    End
+      ImplCallBuilder E (crate.call.utils.Set (crate.call.Call E)) Args RetType.
     
-    Module ImplCallBuilder E (Set (DelegateCall E)) Args RetType.
-      Definition Self := CallBuilder E (Set (DelegateCall E)) Args RetType.
+    Module
+      ImplCallBuilder
+        E
+        (crate.call.utils.Set (crate.call.DelegateCall E))
+        Args
+        RetType.
+      Definition
+        Self
+        :=
+        CallBuilder
+          E
+          (crate.call.utils.Set (crate.call.DelegateCall E))
+          Args
+          RetType.
       
       Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
         let* α0 := Default.default tt in
         Pure
           {|
             CallBuilder.call_type :=
-              Set.Build_t {| DelegateCall.code_hash := code_hash; |};
+              crate.call.utils.Set.Build_t
+                {| crate.call.DelegateCall.code_hash := code_hash; |};
             CallBuilder.call_flags := self.["call_flags"];
             CallBuilder.exec_input := self.["exec_input"];
             CallBuilder.return_type := self.["return_type"];
@@ -2453,36 +2467,41 @@ Module call.
       Global Instance Method_code_hash : Notation.Dot "code_hash" := {
         Notation.dot := code_hash;
       }.
-    End ImplCallBuilder E (Set (DelegateCall E)) Args RetType.
+    End
+      ImplCallBuilder
+        E
+        (crate.call.utils.Set (crate.call.DelegateCall E))
+        Args
+        RetType.
     
     Module
       ImplCallBuilder
         E
-        (Set (Call E))
-        (Set (ExecutionInput Args))
-        (Set (ReturnType RetType)).
+        (crate.call.utils.Set (crate.call.Call E))
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
       Definition
         Self
         :=
         CallBuilder
           E
-          (Set (Call E))
-          (Set (ExecutionInput Args))
-          (Set (ReturnType RetType)).
+          (crate.call.utils.Set (crate.call.Call E))
+          (crate.call.utils.Set (crate.call.ExecutionInput Args))
+          (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
       
       Definition params
           (self : Self)
-          : M (CallParams E (Call E) Args RetType) :=
+          : M (crate.call.CallParams E (crate.call.Call E) Args RetType) :=
         let* α0 := self.["call_type"].["value"] in
         let* α1 := Default.default tt in
         let* α2 := self.["exec_input"].["value"] in
         Pure
           {|
-            CallParams.call_type := α0;
-            CallParams.call_flags := self.["call_flags"];
-            CallParams._return_type := α1;
-            CallParams.exec_input := α2;
-            CallParams._phantom := self.["_phantom"];
+            crate.call.CallParams.call_type := α0;
+            crate.call.CallParams.call_flags := self.["call_flags"];
+            crate.call.CallParams._return_type := α1;
+            crate.call.CallParams.exec_input := α2;
+            crate.call.CallParams._phantom := self.["_phantom"];
           |}.
       
       Global Instance Method_params : Notation.Dot "params" := {
@@ -2491,38 +2510,44 @@ Module call.
     End
       ImplCallBuilder
         E
-        (Set (Call E))
-        (Set (ExecutionInput Args))
-        (Set (ReturnType RetType)).
+        (crate.call.utils.Set (crate.call.Call E))
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
     
     Module
       ImplCallBuilder
         E
-        (Set (DelegateCall E))
-        (Set (ExecutionInput Args))
-        (Set (ReturnType RetType)).
+        (crate.call.utils.Set (crate.call.DelegateCall E))
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
       Definition
         Self
         :=
         CallBuilder
           E
-          (Set (DelegateCall E))
-          (Set (ExecutionInput Args))
-          (Set (ReturnType RetType)).
+          (crate.call.utils.Set (crate.call.DelegateCall E))
+          (crate.call.utils.Set (crate.call.ExecutionInput Args))
+          (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
       
       Definition params
           (self : Self)
-          : M (CallParams E (DelegateCall E) Args RetType) :=
+          :
+            M
+              (crate.call.CallParams
+                E
+                (crate.call.DelegateCall E)
+                Args
+                RetType) :=
         let* α0 := self.["call_type"].["value"] in
         let* α1 := Default.default tt in
         let* α2 := self.["exec_input"].["value"] in
         Pure
           {|
-            CallParams.call_type := α0;
-            CallParams.call_flags := self.["call_flags"];
-            CallParams._return_type := α1;
-            CallParams.exec_input := α2;
-            CallParams._phantom := self.["_phantom"];
+            crate.call.CallParams.call_type := α0;
+            crate.call.CallParams.call_flags := self.["call_flags"];
+            crate.call.CallParams._return_type := α1;
+            crate.call.CallParams.exec_input := α2;
+            crate.call.CallParams._phantom := self.["_phantom"];
           |}.
       
       Global Instance Method_params : Notation.Dot "params" := {
@@ -2531,38 +2556,46 @@ Module call.
     End
       ImplCallBuilder
         E
-        (Set (DelegateCall E))
-        (Set (ExecutionInput Args))
-        (Set (ReturnType RetType)).
+        (crate.call.utils.Set (crate.call.DelegateCall E))
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
     
     Module
       ImplCallBuilder
         E
-        (Set (Call E))
-        (Unset (ExecutionInput EmptyArgumentList))
-        (Unset RetType).
+        (crate.call.utils.Set (crate.call.Call E))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+        (crate.call.utils.Unset RetType).
       Definition
         Self
         :=
         CallBuilder
           E
-          (Set (Call E))
-          (Unset (ExecutionInput EmptyArgumentList))
-          (Unset RetType).
+          (crate.call.utils.Set (crate.call.Call E))
+          (crate.call.utils.Unset
+            (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+          (crate.call.utils.Unset RetType).
       
       Definition params
           (self : Self)
-          : M (CallParams E (Call E) EmptyArgumentList unit) :=
+          :
+            M
+              (crate.call.CallParams
+                E
+                (crate.call.Call E)
+                crate.call.utils.EmptyArgumentList
+                unit) :=
         let* α0 := self.["call_type"].["value"] in
         let* α1 := Default.default tt in
         let* α2 := Default.default tt in
         Pure
           {|
-            CallParams.call_type := α0;
-            CallParams.call_flags := self.["call_flags"];
-            CallParams._return_type := α1;
-            CallParams.exec_input := α2;
-            CallParams._phantom := self.["_phantom"];
+            crate.call.CallParams.call_type := α0;
+            crate.call.CallParams.call_flags := self.["call_flags"];
+            crate.call.CallParams._return_type := α1;
+            crate.call.CallParams.exec_input := α2;
+            crate.call.CallParams._phantom := self.["_phantom"];
           |}.
       
       Global Instance Method_params : Notation.Dot "params" := {
@@ -2571,38 +2604,47 @@ Module call.
     End
       ImplCallBuilder
         E
-        (Set (Call E))
-        (Unset (ExecutionInput EmptyArgumentList))
-        (Unset RetType).
+        (crate.call.utils.Set (crate.call.Call E))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+        (crate.call.utils.Unset RetType).
     
     Module
       ImplCallBuilder
         E
-        (Set (DelegateCall E))
-        (Unset (ExecutionInput EmptyArgumentList))
-        (Unset RetType).
+        (crate.call.utils.Set (crate.call.DelegateCall E))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+        (crate.call.utils.Unset RetType).
       Definition
         Self
         :=
         CallBuilder
           E
-          (Set (DelegateCall E))
-          (Unset (ExecutionInput EmptyArgumentList))
-          (Unset RetType).
+          (crate.call.utils.Set (crate.call.DelegateCall E))
+          (crate.call.utils.Unset
+            (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+          (crate.call.utils.Unset RetType).
       
       Definition params
           (self : Self)
-          : M (CallParams E (DelegateCall E) EmptyArgumentList unit) :=
+          :
+            M
+              (crate.call.CallParams
+                E
+                (crate.call.DelegateCall E)
+                crate.call.utils.EmptyArgumentList
+                unit) :=
         let* α0 := self.["call_type"].["value"] in
         let* α1 := Default.default tt in
         let* α2 := Default.default tt in
         Pure
           {|
-            CallParams.call_type := α0;
-            CallParams.call_flags := self.["call_flags"];
-            CallParams._return_type := α1;
-            CallParams.exec_input := α2;
-            CallParams._phantom := self.["_phantom"];
+            crate.call.CallParams.call_type := α0;
+            crate.call.CallParams.call_flags := self.["call_flags"];
+            crate.call.CallParams._return_type := α1;
+            crate.call.CallParams.exec_input := α2;
+            crate.call.CallParams._phantom := self.["_phantom"];
           |}.
       
       Global Instance Method_params : Notation.Dot "params" := {
@@ -2611,24 +2653,27 @@ Module call.
     End
       ImplCallBuilder
         E
-        (Set (DelegateCall E))
-        (Unset (ExecutionInput EmptyArgumentList))
-        (Unset RetType).
+        (crate.call.utils.Set (crate.call.DelegateCall E))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+        (crate.call.utils.Unset RetType).
     
     Module
       ImplCallBuilder
         E
-        (Set (Call E))
-        (Unset (ExecutionInput EmptyArgumentList))
-        (Unset (ReturnType unit)).
+        (crate.call.utils.Set (crate.call.Call E))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+        (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
       Definition
         Self
         :=
         CallBuilder
           E
-          (Set (Call E))
-          (Unset (ExecutionInput EmptyArgumentList))
-          (Unset (ReturnType unit)).
+          (crate.call.utils.Set (crate.call.Call E))
+          (crate.call.utils.Unset
+            (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+          (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
       
       Definition invoke (self : Self) : M unit :=
         let* α0 := self.["params"] in
@@ -2640,7 +2685,7 @@ Module call.
       
       Definition try_invoke
           (self : Self)
-          : M (Result (ink_primitives.MessageResult unit) Error) :=
+          : M (crate.Result (ink_primitives.MessageResult unit) crate.Error) :=
         let* α0 := self.["params"] in
         α0.["try_invoke"].
       
@@ -2650,24 +2695,27 @@ Module call.
     End
       ImplCallBuilder
         E
-        (Set (Call E))
-        (Unset (ExecutionInput EmptyArgumentList))
-        (Unset (ReturnType unit)).
+        (crate.call.utils.Set (crate.call.Call E))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+        (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
     
     Module
       ImplCallBuilder
         E
-        (Set (DelegateCall E))
-        (Unset (ExecutionInput EmptyArgumentList))
-        (Unset (ReturnType unit)).
+        (crate.call.utils.Set (crate.call.DelegateCall E))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+        (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
       Definition
         Self
         :=
         CallBuilder
           E
-          (Set (DelegateCall E))
-          (Unset (ExecutionInput EmptyArgumentList))
-          (Unset (ReturnType unit)).
+          (crate.call.utils.Set (crate.call.DelegateCall E))
+          (crate.call.utils.Unset
+            (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+          (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
       
       Definition invoke (self : Self) : M unit :=
         let* α0 := self.["params"] in
@@ -2677,7 +2725,7 @@ Module call.
         Notation.dot := invoke;
       }.
       
-      Definition try_invoke (self : Self) : M (Result unit Error) :=
+      Definition try_invoke (self : Self) : M (crate.Result unit crate.Error) :=
         let* α0 := self.["params"] in
         α0.["try_invoke"].
       
@@ -2687,24 +2735,25 @@ Module call.
     End
       ImplCallBuilder
         E
-        (Set (DelegateCall E))
-        (Unset (ExecutionInput EmptyArgumentList))
-        (Unset (ReturnType unit)).
+        (crate.call.utils.Set (crate.call.DelegateCall E))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+        (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
     
     Module
       ImplCallBuilder
         E
-        (Set (Call E))
-        (Set (ExecutionInput Args))
-        (Set (ReturnType R)).
+        (crate.call.utils.Set (crate.call.Call E))
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set (crate.call.utils.ReturnType R)).
       Definition
         Self
         :=
         CallBuilder
           E
-          (Set (Call E))
-          (Set (ExecutionInput Args))
-          (Set (ReturnType R)).
+          (crate.call.utils.Set (crate.call.Call E))
+          (crate.call.utils.Set (crate.call.ExecutionInput Args))
+          (crate.call.utils.Set (crate.call.utils.ReturnType R)).
       
       Definition invoke (self : Self) : M R :=
         let* α0 := self.["params"] in
@@ -2716,7 +2765,7 @@ Module call.
       
       Definition try_invoke
           (self : Self)
-          : M (Result (ink_primitives.MessageResult R) Error) :=
+          : M (crate.Result (ink_primitives.MessageResult R) crate.Error) :=
         let* α0 := self.["params"] in
         α0.["try_invoke"].
       
@@ -2726,24 +2775,24 @@ Module call.
     End
       ImplCallBuilder
         E
-        (Set (Call E))
-        (Set (ExecutionInput Args))
-        (Set (ReturnType R)).
+        (crate.call.utils.Set (crate.call.Call E))
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set (crate.call.utils.ReturnType R)).
     
     Module
       ImplCallBuilder
         E
-        (Set (DelegateCall E))
-        (Set (ExecutionInput Args))
-        (Set (ReturnType R)).
+        (crate.call.utils.Set (crate.call.DelegateCall E))
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set (crate.call.utils.ReturnType R)).
       Definition
         Self
         :=
         CallBuilder
           E
-          (Set (DelegateCall E))
-          (Set (ExecutionInput Args))
-          (Set (ReturnType R)).
+          (crate.call.utils.Set (crate.call.DelegateCall E))
+          (crate.call.utils.Set (crate.call.ExecutionInput Args))
+          (crate.call.utils.Set (crate.call.utils.ReturnType R)).
       
       Definition invoke (self : Self) : M R :=
         let* α0 := self.["params"] in
@@ -2753,7 +2802,7 @@ Module call.
         Notation.dot := invoke;
       }.
       
-      Definition try_invoke (self : Self) : M (Result R Error) :=
+      Definition try_invoke (self : Self) : M (crate.Result R crate.Error) :=
         let* α0 := self.["params"] in
         α0.["try_invoke"].
       
@@ -2763,17 +2812,14 @@ Module call.
     End
       ImplCallBuilder
         E
-        (Set (DelegateCall E))
-        (Set (ExecutionInput Args))
-        (Set (ReturnType R)).
+        (crate.call.utils.Set (crate.call.DelegateCall E))
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set (crate.call.utils.ReturnType R)).
   End call_builder.
   
   Module common.
-    Module PhantomData := core.marker.PhantomData.
-    Definition PhantomData := PhantomData.t.
-    
     Module ReturnType.
-      Record t : Set := { _ : PhantomData ( -> T);}.
+      Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
       
       Global Instance Get_0 : Notation.Dot 0 := {
         Notation.dot '(Build_t x0) := x0;
@@ -2781,8 +2827,8 @@ Module call.
     End ReturnType.
     Definition ReturnType := ReturnType.t.
     
-    Module Impl__crate_fmt_Debug_for_ReturnType_T.
-      Definition Self := ReturnType T.
+    Module Impl__crate_fmt_Debug_for_crate_call_utils_ReturnType_T.
+      Definition Self := crate.call.utils.ReturnType T.
       
       Definition fmt
           (self : ref Self)
@@ -2800,10 +2846,10 @@ Module call.
       Global Instance I T : _crate.fmt.Debug.Trait Self := {
         _crate.fmt.Debug.fmt := fmt;
       }.
-    End Impl__crate_fmt_Debug_for_ReturnType_T.
+    End Impl__crate_fmt_Debug_for_crate_call_utils_ReturnType_T.
     
-    Module Impl_Clone_for_ReturnType_T.
-      Definition Self := ReturnType T.
+    Module Impl_Clone_for_crate_call_utils_ReturnType_T.
+      Definition Self := crate.call.utils.ReturnType T.
       
       Definition clone (self : ref Self) : M Self :=
         let* α0 := Default.default tt in
@@ -2816,16 +2862,16 @@ Module call.
       Global Instance I T : Clone.Trait Self := {
         Clone.clone := clone;
       }.
-    End Impl_Clone_for_ReturnType_T.
+    End Impl_Clone_for_crate_call_utils_ReturnType_T.
     
-    Module Impl_Copy_for_ReturnType_T.
-      Definition Self := ReturnType T.
+    Module Impl_Copy_for_crate_call_utils_ReturnType_T.
+      Definition Self := crate.call.utils.ReturnType T.
       
       Global Instance I T : Copy.Trait Self := Copy.Build_Class _.
-    End Impl_Copy_for_ReturnType_T.
+    End Impl_Copy_for_crate_call_utils_ReturnType_T.
     
-    Module Impl_Default_for_ReturnType_T.
-      Definition Self := ReturnType T.
+    Module Impl_Default_for_crate_call_utils_ReturnType_T.
+      Definition Self := crate.call.utils.ReturnType T.
       
       Definition default (_ : unit) : M Self :=
         let* α0 := Default.default tt in
@@ -2839,7 +2885,7 @@ Module call.
       Global Instance I T : Default.Trait Self := {
         Default.default := default;
       }.
-    End Impl_Default_for_ReturnType_T.
+    End Impl_Default_for_crate_call_utils_ReturnType_T.
     
     Module Set.
       Record t : Set := { _ : T;}.
@@ -2850,8 +2896,8 @@ Module call.
     End Set.
     Definition Set := Set.t.
     
-    Module Impl__crate_fmt_Debug_for_Set_T.
-      Definition Self := Set T.
+    Module Impl__crate_fmt_Debug_for_crate_call_utils_Set_T.
+      Definition Self := crate.call.utils.Set T.
       
       Definition fmt
           (self : ref Self)
@@ -2869,21 +2915,21 @@ Module call.
       Global Instance I T : _crate.fmt.Debug.Trait Self := {
         _crate.fmt.Debug.fmt := fmt;
       }.
-    End Impl__crate_fmt_Debug_for_Set_T.
+    End Impl__crate_fmt_Debug_for_crate_call_utils_Set_T.
     
-    Module Impl__crate_marker_Copy_for_Set_T.
-      Definition Self := Set T.
+    Module Impl__crate_marker_Copy_for_crate_call_utils_Set_T.
+      Definition Self := crate.call.utils.Set T.
       
       Global Instance I T : _crate.marker.Copy.Trait Self :=
         _crate.marker.Copy.Build_Class _.
-    End Impl__crate_marker_Copy_for_Set_T.
+    End Impl__crate_marker_Copy_for_crate_call_utils_Set_T.
     
-    Module Impl__crate_clone_Clone_for_Set_T.
-      Definition Self := Set T.
+    Module Impl__crate_clone_Clone_for_crate_call_utils_Set_T.
+      Definition Self := crate.call.utils.Set T.
       
-      Definition clone (self : ref Self) : M (Set T) :=
+      Definition clone (self : ref Self) : M (crate.call.utils.Set T) :=
         let* α0 := _crate.clone.Clone.clone (addr_of (self.[0])) in
-        Pure (Set.Build_t α0).
+        Pure (crate.call.utils.Set.Build_t α0).
       
       Global Instance Method_clone : Notation.Dot "clone" := {
         Notation.dot := clone;
@@ -2892,20 +2938,20 @@ Module call.
       Global Instance I T : _crate.clone.Clone.Trait Self := {
         _crate.clone.Clone.clone := clone;
       }.
-    End Impl__crate_clone_Clone_for_Set_T.
+    End Impl__crate_clone_Clone_for_crate_call_utils_Set_T.
     
-    Module ImplSet T.
-      Definition Self := Set T.
+    Module Implcrate.call.utils.Set T.
+      Definition Self := crate.call.utils.Set T.
       
       Definition value (self : Self) : M T := Pure (self.[0]).
       
       Global Instance Method_value : Notation.Dot "value" := {
         Notation.dot := value;
       }.
-    End ImplSet T.
+    End Implcrate.call.utils.Set T.
     
     Module Unset.
-      Record t : Set := { _ : PhantomData ( -> T);}.
+      Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
       
       Global Instance Get_0 : Notation.Dot 0 := {
         Notation.dot '(Build_t x0) := x0;
@@ -2913,8 +2959,8 @@ Module call.
     End Unset.
     Definition Unset := Unset.t.
     
-    Module Impl__crate_fmt_Debug_for_Unset_T.
-      Definition Self := Unset T.
+    Module Impl__crate_fmt_Debug_for_crate_call_utils_Unset_T.
+      Definition Self := crate.call.utils.Unset T.
       
       Definition fmt
           (self : ref Self)
@@ -2932,10 +2978,10 @@ Module call.
       Global Instance I T : _crate.fmt.Debug.Trait Self := {
         _crate.fmt.Debug.fmt := fmt;
       }.
-    End Impl__crate_fmt_Debug_for_Unset_T.
+    End Impl__crate_fmt_Debug_for_crate_call_utils_Unset_T.
     
-    Module Impl_Clone_for_Unset_T.
-      Definition Self := Unset T.
+    Module Impl_Clone_for_crate_call_utils_Unset_T.
+      Definition Self := crate.call.utils.Unset T.
       
       Definition clone (self : ref Self) : M Self :=
         let* α0 := Default.default tt in
@@ -2948,16 +2994,16 @@ Module call.
       Global Instance I T : Clone.Trait Self := {
         Clone.clone := clone;
       }.
-    End Impl_Clone_for_Unset_T.
+    End Impl_Clone_for_crate_call_utils_Unset_T.
     
-    Module Impl_Copy_for_Unset_T.
-      Definition Self := Unset T.
+    Module Impl_Copy_for_crate_call_utils_Unset_T.
+      Definition Self := crate.call.utils.Unset T.
       
       Global Instance I T : Copy.Trait Self := Copy.Build_Class _.
-    End Impl_Copy_for_Unset_T.
+    End Impl_Copy_for_crate_call_utils_Unset_T.
     
-    Module Impl_Default_for_Unset_T.
-      Definition Self := Unset T.
+    Module Impl_Default_for_crate_call_utils_Unset_T.
+      Definition Self := crate.call.utils.Unset T.
       
       Definition default (_ : unit) : M Self :=
         let* α0 := Default.default tt in
@@ -2971,7 +3017,7 @@ Module call.
       Global Instance I T : Default.Trait Self := {
         Default.default := default;
       }.
-    End Impl_Default_for_Unset_T.
+    End Impl_Default_for_crate_call_utils_Unset_T.
     
     Module Unwrap.
       Class Trait (Self : Set) : Set := {
@@ -2988,8 +3034,8 @@ Module call.
       }.
     End Unwrap.
     
-    Module Impl_Unwrap_for_Unset_T.
-      Definition Self := Unset T.
+    Module Impl_Unwrap_for_crate_call_utils_Unset_T.
+      Definition Self := crate.call.utils.Unset T.
       
       Definition Output : Set := T.
       
@@ -3003,10 +3049,10 @@ Module call.
       Global Instance I T : Unwrap.Trait Self := {
         Unwrap.unwrap_or_else := unwrap_or_else;
       }.
-    End Impl_Unwrap_for_Unset_T.
+    End Impl_Unwrap_for_crate_call_utils_Unset_T.
     
-    Module Impl_Unwrap_for_Set_T.
-      Definition Self := Set T.
+    Module Impl_Unwrap_for_crate_call_utils_Set_T.
+      Definition Self := crate.call.utils.Set T.
       
       Definition Output : Set := T.
       
@@ -3023,34 +3069,10 @@ Module call.
       Global Instance I T : Unwrap.Trait Self := {
         Unwrap.unwrap_or_else := unwrap_or_else;
       }.
-    End Impl_Unwrap_for_Set_T.
+    End Impl_Unwrap_for_crate_call_utils_Set_T.
   End common.
   
   Module create_builder.
-    Module EmptyArgumentList := crate.call.utils.EmptyArgumentList.
-    Definition EmptyArgumentList := EmptyArgumentList.t.
-    
-    Module ReturnType := crate.call.utils.ReturnType.
-    Definition ReturnType := ReturnType.t.
-    
-    Module Set := crate.call.utils.Set.
-    Definition Set := Set.t.
-    
-    Module Unset := crate.call.utils.Unset.
-    Definition Unset := Unset.t.
-    
-    Module ExecutionInput := crate.call.ExecutionInput.
-    Definition ExecutionInput := ExecutionInput.t.
-    
-    Module Selector := crate.call.Selector.
-    Definition Selector := Selector.t.
-    
-    Module Error := crate.Error.
-    Definition Error := Error.t.
-    
-    Module PhantomData := core.marker.PhantomData.
-    Definition PhantomData := PhantomData.t.
-    
     Module state.
       Module Salt.
         Inductive t : Set :=
@@ -3155,10 +3177,10 @@ Module call.
         code_hash : ImplE.Hash;
         gas_limit : u64;
         endowment : ImplE.Balance;
-        exec_input : ExecutionInput Args;
+        exec_input : crate.call.ExecutionInput Args;
         salt_bytes : Salt;
-        _return_type : ReturnType R;
-        _phantom : PhantomData ( -> ContractRef);
+        _return_type : crate.call.utils.ReturnType R;
+        _phantom : core.marker.PhantomData ( -> ContractRef);
       }.
       
       Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -3185,8 +3207,9 @@ Module call.
     End CreateParams.
     Definition CreateParams : Set := CreateParams.t.
     
-    Module Impl__crate_fmt_Debug_for_CreateParams_E_ContractRef_Args_Salt_R.
-      Definition Self := CreateParams E ContractRef Args Salt R.
+    Module
+        Impl__crate_fmt_Debug_for_crate_call_CreateParams_E_ContractRef_Args_Salt_R.
+      Definition Self := crate.call.CreateParams E ContractRef Args Salt R.
       
       Definition fmt
           (self : ref Self)
@@ -3236,10 +3259,11 @@ Module call.
         {
         _crate.fmt.Debug.fmt := fmt;
       }.
-    End Impl__crate_fmt_Debug_for_CreateParams_E_ContractRef_Args_Salt_R.
+    End
+      Impl__crate_fmt_Debug_for_crate_call_CreateParams_E_ContractRef_Args_Salt_R.
     
-    Module ImplCreateParams E ContractRef Args Salt R.
-      Definition Self := CreateParams E ContractRef Args Salt R.
+    Module Implcrate.call.CreateParams E ContractRef Args Salt R.
+      Definition Self := crate.call.CreateParams E ContractRef Args Salt R.
       
       Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
         Pure (addr_of self.["code_hash"]).
@@ -3261,7 +3285,9 @@ Module call.
         Notation.dot := endowment;
       }.
       
-      Definition exec_input (self : ref Self) : M (ref (ExecutionInput Args)) :=
+      Definition exec_input
+          (self : ref Self)
+          : M (ref (crate.call.ExecutionInput Args)) :=
         Pure (addr_of self.["exec_input"]).
       
       Global Instance Method_exec_input : Notation.Dot "exec_input" := {
@@ -3270,7 +3296,7 @@ Module call.
       
       Definition update_selector
           (self : mut_ref Self)
-          (selector : Selector)
+          (selector : crate.call.Selector)
           : M unit :=
         self.["exec_input"].["update_selector"] selector.
       
@@ -3278,10 +3304,10 @@ Module call.
         Notation.Dot "update_selector" := {
         Notation.dot := update_selector;
       }.
-    End ImplCreateParams E ContractRef Args Salt R.
+    End Implcrate.call.CreateParams E ContractRef Args Salt R.
     
-    Module ImplCreateParams E ContractRef Args Salt R_2.
-      Definition Self := CreateParams E ContractRef Args Salt R.
+    Module Implcrate.call.CreateParams E ContractRef Args Salt R_2.
+      Definition Self := crate.call.CreateParams E ContractRef Args Salt R.
       
       Definition salt_bytes (self : ref Self) : M (ref Salt) :=
         Pure (addr_of self.["salt_bytes"]).
@@ -3289,10 +3315,10 @@ Module call.
       Global Instance Method_salt_bytes : Notation.Dot "salt_bytes" := {
         Notation.dot := salt_bytes;
       }.
-    End ImplCreateParams E ContractRef Args Salt R_2.
+    End Implcrate.call.CreateParams E ContractRef Args Salt R_2.
     
-    Module ImplCreateParams E ContractRef Args Salt R_3.
-      Definition Self := CreateParams E ContractRef Args Salt R.
+    Module Implcrate.call.CreateParams E ContractRef Args Salt R_3.
+      Definition Self := crate.call.CreateParams E ContractRef Args Salt R.
       
       Definition instantiate
           (self : ref Self)
@@ -3324,7 +3350,7 @@ Module call.
           (self : ref Self)
           :
             M
-              (Result
+              (crate.Result
                 (ink_primitives.ConstructorResult ConstructorReturnType.Output)
                 crate.Error) :=
         crate.instantiate_contract self.
@@ -3333,7 +3359,7 @@ Module call.
         Notation.Dot "try_instantiate" := {
         Notation.dot := try_instantiate;
       }.
-    End ImplCreateParams E ContractRef Args Salt R_3.
+    End Implcrate.call.CreateParams E ContractRef Args Salt R_3.
     
     Module CreateBuilder.
       Record t : Set := {
@@ -3343,7 +3369,7 @@ Module call.
         exec_input : Args;
         salt : Salt;
         return_type : RetType;
-        _phantom : PhantomData ( -> (E * ContractRef));
+        _phantom : core.marker.PhantomData ( -> (E * ContractRef));
       }.
       
       Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -3379,12 +3405,13 @@ Module call.
             (CreateBuilder
               ContractEnv.Env
               ContractRef
-              (Unset Environment.Hash)
-              (Unset u64)
-              (Unset Environment.Balance)
-              (Unset (ExecutionInput EmptyArgumentList))
-              (Unset state.Salt)
-              (Unset (ReturnType unit))) :=
+              (crate.call.utils.Unset Environment.Hash)
+              (crate.call.utils.Unset u64)
+              (crate.call.utils.Unset Environment.Balance)
+              (crate.call.utils.Unset
+                (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+              (crate.call.utils.Unset state.Salt)
+              (crate.call.utils.Unset (crate.call.utils.ReturnType unit))) :=
       let* α0 := Default.default tt in
       let* α1 := Default.default tt in
       let* α2 := Default.default tt in
@@ -3407,7 +3434,7 @@ Module call.
       ImplCreateBuilder
         E
         ContractRef
-        (Unset ImplE.Hash)
+        (crate.call.utils.Unset ImplE.Hash)
         GasLimit
         Endowment
         Args
@@ -3419,7 +3446,7 @@ Module call.
         CreateBuilder
           E
           ContractRef
-          (Unset ImplE.Hash)
+          (crate.call.utils.Unset ImplE.Hash)
           GasLimit
           Endowment
           Args
@@ -3434,7 +3461,7 @@ Module call.
               (CreateBuilder
                 E
                 ContractRef
-                (Set ImplE.Hash)
+                (crate.call.utils.Set ImplE.Hash)
                 GasLimit
                 Endowment
                 Args
@@ -3443,7 +3470,7 @@ Module call.
         let* α0 := Default.default tt in
         Pure
           {|
-            CreateBuilder.code_hash := Set.Build_t code_hash;
+            CreateBuilder.code_hash := crate.call.utils.Set.Build_t code_hash;
             CreateBuilder.gas_limit := self.["gas_limit"];
             CreateBuilder.endowment := self.["endowment"];
             CreateBuilder.exec_input := self.["exec_input"];
@@ -3459,7 +3486,7 @@ Module call.
       ImplCreateBuilder
         E
         ContractRef
-        (Unset ImplE.Hash)
+        (crate.call.utils.Unset ImplE.Hash)
         GasLimit
         Endowment
         Args
@@ -3471,7 +3498,7 @@ Module call.
         E
         ContractRef
         CodeHash
-        (Unset u64)
+        (crate.call.utils.Unset u64)
         Endowment
         Args
         Salt
@@ -3483,7 +3510,7 @@ Module call.
           E
           ContractRef
           CodeHash
-          (Unset u64)
+          (crate.call.utils.Unset u64)
           Endowment
           Args
           Salt
@@ -3498,7 +3525,7 @@ Module call.
                 E
                 ContractRef
                 CodeHash
-                (Set u64)
+                (crate.call.utils.Set u64)
                 Endowment
                 Args
                 Salt
@@ -3507,7 +3534,7 @@ Module call.
         Pure
           {|
             CreateBuilder.code_hash := self.["code_hash"];
-            CreateBuilder.gas_limit := Set.Build_t gas_limit;
+            CreateBuilder.gas_limit := crate.call.utils.Set.Build_t gas_limit;
             CreateBuilder.endowment := self.["endowment"];
             CreateBuilder.exec_input := self.["exec_input"];
             CreateBuilder.salt := self.["salt"];
@@ -3523,7 +3550,7 @@ Module call.
         E
         ContractRef
         CodeHash
-        (Unset u64)
+        (crate.call.utils.Unset u64)
         Endowment
         Args
         Salt
@@ -3535,7 +3562,7 @@ Module call.
         ContractRef
         CodeHash
         GasLimit
-        (Unset ImplE.Balance)
+        (crate.call.utils.Unset ImplE.Balance)
         Args
         Salt
         RetType.
@@ -3547,7 +3574,7 @@ Module call.
           ContractRef
           CodeHash
           GasLimit
-          (Unset ImplE.Balance)
+          (crate.call.utils.Unset ImplE.Balance)
           Args
           Salt
           RetType.
@@ -3562,7 +3589,7 @@ Module call.
                 ContractRef
                 CodeHash
                 GasLimit
-                (Set ImplE.Balance)
+                (crate.call.utils.Set ImplE.Balance)
                 Args
                 Salt
                 RetType) :=
@@ -3571,7 +3598,7 @@ Module call.
           {|
             CreateBuilder.code_hash := self.["code_hash"];
             CreateBuilder.gas_limit := self.["gas_limit"];
-            CreateBuilder.endowment := Set.Build_t endowment;
+            CreateBuilder.endowment := crate.call.utils.Set.Build_t endowment;
             CreateBuilder.exec_input := self.["exec_input"];
             CreateBuilder.salt := self.["salt"];
             CreateBuilder.return_type := self.["return_type"];
@@ -3587,7 +3614,7 @@ Module call.
         ContractRef
         CodeHash
         GasLimit
-        (Unset ImplE.Balance)
+        (crate.call.utils.Unset ImplE.Balance)
         Args
         Salt
         RetType.
@@ -3599,7 +3626,8 @@ Module call.
         CodeHash
         GasLimit
         Endowment
-        (Unset (ExecutionInput EmptyArgumentList))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
         Salt
         RetType.
       Definition
@@ -3611,13 +3639,14 @@ Module call.
           CodeHash
           GasLimit
           Endowment
-          (Unset (ExecutionInput EmptyArgumentList))
+          (crate.call.utils.Unset
+            (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
           Salt
           RetType.
       
       Definition exec_input
           (self : Self)
-          (exec_input : ExecutionInput Args)
+          (exec_input : crate.call.ExecutionInput Args)
           :
             M
               (CreateBuilder
@@ -3626,7 +3655,7 @@ Module call.
                 CodeHash
                 GasLimit
                 Endowment
-                (Set (ExecutionInput Args))
+                (crate.call.utils.Set (crate.call.ExecutionInput Args))
                 Salt
                 RetType) :=
         let* α0 := Default.default tt in
@@ -3635,7 +3664,7 @@ Module call.
             CreateBuilder.code_hash := self.["code_hash"];
             CreateBuilder.gas_limit := self.["gas_limit"];
             CreateBuilder.endowment := self.["endowment"];
-            CreateBuilder.exec_input := Set.Build_t exec_input;
+            CreateBuilder.exec_input := crate.call.utils.Set.Build_t exec_input;
             CreateBuilder.salt := self.["salt"];
             CreateBuilder.return_type := self.["return_type"];
             CreateBuilder._phantom := α0;
@@ -3651,7 +3680,8 @@ Module call.
         CodeHash
         GasLimit
         Endowment
-        (Unset (ExecutionInput EmptyArgumentList))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
         Salt
         RetType.
     
@@ -3663,7 +3693,7 @@ Module call.
         GasLimit
         Endowment
         Args
-        (Unset state.Salt)
+        (crate.call.utils.Unset state.Salt)
         RetType.
       Definition
         Self
@@ -3675,7 +3705,7 @@ Module call.
           GasLimit
           Endowment
           Args
-          (Unset state.Salt)
+          (crate.call.utils.Unset state.Salt)
           RetType.
       
       Definition salt_bytes
@@ -3690,7 +3720,7 @@ Module call.
                 GasLimit
                 Endowment
                 Args
-                (Set Salt)
+                (crate.call.utils.Set Salt)
                 RetType) :=
         let* α0 := Default.default tt in
         Pure
@@ -3699,7 +3729,7 @@ Module call.
             CreateBuilder.gas_limit := self.["gas_limit"];
             CreateBuilder.endowment := self.["endowment"];
             CreateBuilder.exec_input := self.["exec_input"];
-            CreateBuilder.salt := Set.Build_t salt;
+            CreateBuilder.salt := crate.call.utils.Set.Build_t salt;
             CreateBuilder.return_type := self.["return_type"];
             CreateBuilder._phantom := α0;
           |}.
@@ -3715,7 +3745,7 @@ Module call.
         GasLimit
         Endowment
         Args
-        (Unset state.Salt)
+        (crate.call.utils.Unset state.Salt)
         RetType.
     
     Module
@@ -3727,7 +3757,7 @@ Module call.
         Endowment
         Args
         Salt
-        (Unset (ReturnType unit)).
+        (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
       Definition
         Self
         :=
@@ -3739,7 +3769,7 @@ Module call.
           Endowment
           Args
           Salt
-          (Unset (ReturnType unit)).
+          (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
       
       Definition returns
           (self : Self)
@@ -3753,7 +3783,7 @@ Module call.
                 Endowment
                 Args
                 Salt
-                (Set (ReturnType R))) :=
+                (crate.call.utils.Set (crate.call.utils.ReturnType R))) :=
         let* α0 := Default.default tt in
         let* α1 := Default.default tt in
         Pure
@@ -3763,7 +3793,7 @@ Module call.
             CreateBuilder.endowment := self.["endowment"];
             CreateBuilder.exec_input := self.["exec_input"];
             CreateBuilder.salt := self.["salt"];
-            CreateBuilder.return_type := Set.Build_t α0;
+            CreateBuilder.return_type := crate.call.utils.Set.Build_t α0;
             CreateBuilder._phantom := α1;
           |}.
       
@@ -3779,34 +3809,34 @@ Module call.
         Endowment
         Args
         Salt
-        (Unset (ReturnType unit)).
+        (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
     
     Module
       ImplCreateBuilder
         E
         ContractRef
-        (Set ImplE.Hash)
+        (crate.call.utils.Set ImplE.Hash)
         GasLimit
-        (Set ImplE.Balance)
-        (Set (ExecutionInput Args))
-        (Set Salt)
-        (Set (ReturnType RetType)).
+        (crate.call.utils.Set ImplE.Balance)
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set Salt)
+        (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
       Definition
         Self
         :=
         CreateBuilder
           E
           ContractRef
-          (Set ImplE.Hash)
+          (crate.call.utils.Set ImplE.Hash)
           GasLimit
-          (Set ImplE.Balance)
-          (Set (ExecutionInput Args))
-          (Set Salt)
-          (Set (ReturnType RetType)).
+          (crate.call.utils.Set ImplE.Balance)
+          (crate.call.utils.Set (crate.call.ExecutionInput Args))
+          (crate.call.utils.Set Salt)
+          (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
       
       Definition params
           (self : Self)
-          : M (CreateParams E ContractRef Args Salt RetType) :=
+          : M (crate.call.CreateParams E ContractRef Args Salt RetType) :=
         let* α0 := self.["code_hash"].["value"] in
         let* α1 := self.["gas_limit"].["unwrap_or_else"] (fun  => Pure 0) in
         let* α2 := self.["endowment"].["value"] in
@@ -3816,13 +3846,13 @@ Module call.
         let* α6 := Default.default tt in
         Pure
           {|
-            CreateParams.code_hash := α0;
-            CreateParams.gas_limit := α1;
-            CreateParams.endowment := α2;
-            CreateParams.exec_input := α3;
-            CreateParams.salt_bytes := α4;
-            CreateParams._return_type := α5;
-            CreateParams._phantom := α6;
+            crate.call.CreateParams.code_hash := α0;
+            crate.call.CreateParams.gas_limit := α1;
+            crate.call.CreateParams.endowment := α2;
+            crate.call.CreateParams.exec_input := α3;
+            crate.call.CreateParams.salt_bytes := α4;
+            crate.call.CreateParams._return_type := α5;
+            crate.call.CreateParams._phantom := α6;
           |}.
       
       Global Instance Method_params : Notation.Dot "params" := {
@@ -3832,35 +3862,35 @@ Module call.
       ImplCreateBuilder
         E
         ContractRef
-        (Set ImplE.Hash)
+        (crate.call.utils.Set ImplE.Hash)
         GasLimit
-        (Set ImplE.Balance)
-        (Set (ExecutionInput Args))
-        (Set Salt)
-        (Set (ReturnType RetType)).
+        (crate.call.utils.Set ImplE.Balance)
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set Salt)
+        (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
     
     Module
       ImplCreateBuilder
         E
         ContractRef
-        (Set ImplE.Hash)
+        (crate.call.utils.Set ImplE.Hash)
         GasLimit
-        (Set ImplE.Balance)
-        (Set (ExecutionInput Args))
-        (Set Salt)
-        (Set (ReturnType RetType))_2.
+        (crate.call.utils.Set ImplE.Balance)
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set Salt)
+        (crate.call.utils.Set (crate.call.utils.ReturnType RetType))_2.
       Definition
         Self
         :=
         CreateBuilder
           E
           ContractRef
-          (Set ImplE.Hash)
+          (crate.call.utils.Set ImplE.Hash)
           GasLimit
-          (Set ImplE.Balance)
-          (Set (ExecutionInput Args))
-          (Set Salt)
-          (Set (ReturnType RetType)).
+          (crate.call.utils.Set ImplE.Balance)
+          (crate.call.utils.Set (crate.call.ExecutionInput Args))
+          (crate.call.utils.Set Salt)
+          (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
       
       Definition instantiate (self : Self) : M ConstructorReturnType.Output :=
         let* α0 := self.["params"] in
@@ -3874,9 +3904,9 @@ Module call.
           (self : Self)
           :
             M
-              (Result
+              (crate.Result
                 (ink_primitives.ConstructorResult ConstructorReturnType.Output)
-                Error) :=
+                crate.Error) :=
         let* α0 := self.["params"] in
         α0.["try_instantiate"].
       
@@ -3888,21 +3918,18 @@ Module call.
       ImplCreateBuilder
         E
         ContractRef
-        (Set ImplE.Hash)
+        (crate.call.utils.Set ImplE.Hash)
         GasLimit
-        (Set ImplE.Balance)
-        (Set (ExecutionInput Args))
-        (Set Salt)
-        (Set (ReturnType RetType))_2.
+        (crate.call.utils.Set ImplE.Balance)
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set Salt)
+        (crate.call.utils.Set (crate.call.utils.ReturnType RetType))_2.
   End create_builder.
   
   Module execution_input.
-    Module Selector := crate.call.Selector.
-    Definition Selector := Selector.t.
-    
     Module ExecutionInput.
       Record t : Set := {
-        selector : Selector;
+        selector : crate.call.Selector;
         args : Args;
       }.
       
@@ -3915,13 +3942,17 @@ Module call.
     End ExecutionInput.
     Definition ExecutionInput : Set := ExecutionInput.t.
     
-    Module Impl__crate_clone_Clone_for_ExecutionInput_Args.
-      Definition Self := ExecutionInput Args.
+    Module Impl__crate_clone_Clone_for_crate_call_ExecutionInput_Args.
+      Definition Self := crate.call.ExecutionInput Args.
       
-      Definition clone (self : ref Self) : M (ExecutionInput Args) :=
+      Definition clone (self : ref Self) : M (crate.call.ExecutionInput Args) :=
         let* α0 := _crate.clone.Clone.clone (addr_of self.["selector"]) in
         let* α1 := _crate.clone.Clone.clone (addr_of self.["args"]) in
-        Pure {| ExecutionInput.selector := α0; ExecutionInput.args := α1; |}.
+        Pure
+          {|
+            crate.call.ExecutionInput.selector := α0;
+            crate.call.ExecutionInput.args := α1;
+          |}.
       
       Global Instance Method_clone : Notation.Dot "clone" := {
         Notation.dot := clone;
@@ -3930,15 +3961,19 @@ Module call.
       Global Instance I Args : _crate.clone.Clone.Trait Self := {
         _crate.clone.Clone.clone := clone;
       }.
-    End Impl__crate_clone_Clone_for_ExecutionInput_Args.
+    End Impl__crate_clone_Clone_for_crate_call_ExecutionInput_Args.
     
-    Module Impl__crate_default_Default_for_ExecutionInput_Args.
-      Definition Self := ExecutionInput Args.
+    Module Impl__crate_default_Default_for_crate_call_ExecutionInput_Args.
+      Definition Self := crate.call.ExecutionInput Args.
       
-      Definition default (_ : unit) : M (ExecutionInput Args) :=
+      Definition default (_ : unit) : M (crate.call.ExecutionInput Args) :=
         let* α0 := _crate.default.Default.default tt in
         let* α1 := _crate.default.Default.default tt in
-        Pure {| ExecutionInput.selector := α0; ExecutionInput.args := α1; |}.
+        Pure
+          {|
+            crate.call.ExecutionInput.selector := α0;
+            crate.call.ExecutionInput.args := α1;
+          |}.
       
       Global Instance AssociatedFunction_default :
         Notation.DoubleColon Self "default" := {
@@ -3948,10 +3983,10 @@ Module call.
       Global Instance I Args : _crate.default.Default.Trait Self := {
         _crate.default.Default.default := default;
       }.
-    End Impl__crate_default_Default_for_ExecutionInput_Args.
+    End Impl__crate_default_Default_for_crate_call_ExecutionInput_Args.
     
-    Module Impl__crate_fmt_Debug_for_ExecutionInput_Args.
-      Definition Self := ExecutionInput Args.
+    Module Impl__crate_fmt_Debug_for_crate_call_ExecutionInput_Args.
+      Definition Self := crate.call.ExecutionInput Args.
       
       Definition fmt
           (self : ref Self)
@@ -3972,12 +4007,15 @@ Module call.
       Global Instance I Args : _crate.fmt.Debug.Trait Self := {
         _crate.fmt.Debug.fmt := fmt;
       }.
-    End Impl__crate_fmt_Debug_for_ExecutionInput_Args.
+    End Impl__crate_fmt_Debug_for_crate_call_ExecutionInput_Args.
     
-    Module ImplExecutionInput EmptyArgumentList.
-      Definition Self := ExecutionInput EmptyArgumentList.
+    Module Implcrate.call.ExecutionInput crate.call.utils.EmptyArgumentList.
+      Definition
+        Self
+        :=
+        crate.call.ExecutionInput crate.call.utils.EmptyArgumentList.
       
-      Definition new (selector : Selector) : M Self :=
+      Definition new (selector : crate.call.Selector) : M Self :=
         let* α0 := ArgumentList::["empty"] tt in
         Pure {| Self.selector := selector; Self.args := α0; |}.
       
@@ -3989,44 +4027,52 @@ Module call.
       Definition push_arg
           (self : Self)
           (arg : T)
-          : M (ExecutionInput (ArgumentList (Argument T) EmptyArgumentList)) :=
+          :
+            M
+              (crate.call.ExecutionInput
+                (ArgumentList
+                  (Argument T)
+                  crate.call.utils.EmptyArgumentList)) :=
         let* α0 := self.["args"].["push_arg"] arg in
         Pure
           {|
-            ExecutionInput.selector := self.["selector"];
-            ExecutionInput.args := α0;
+            crate.call.ExecutionInput.selector := self.["selector"];
+            crate.call.ExecutionInput.args := α0;
           |}.
       
       Global Instance Method_push_arg : Notation.Dot "push_arg" := {
         Notation.dot := push_arg;
       }.
-    End ImplExecutionInput EmptyArgumentList.
+    End Implcrate.call.ExecutionInput crate.call.utils.EmptyArgumentList.
     
-    Module ImplExecutionInput (ArgumentList (Argument Head) Rest).
-      Definition Self := ExecutionInput (ArgumentList (Argument Head) Rest).
+    Module Implcrate.call.ExecutionInput (ArgumentList (Argument Head) Rest).
+      Definition
+        Self
+        :=
+        crate.call.ExecutionInput (ArgumentList (Argument Head) Rest).
       
       Definition push_arg
           (self : Self)
           (arg : T)
-          : M (ExecutionInput (ArgsList T (ArgsList Head Rest))) :=
+          : M (crate.call.ExecutionInput (ArgsList T (ArgsList Head Rest))) :=
         let* α0 := self.["args"].["push_arg"] arg in
         Pure
           {|
-            ExecutionInput.selector := self.["selector"];
-            ExecutionInput.args := α0;
+            crate.call.ExecutionInput.selector := self.["selector"];
+            crate.call.ExecutionInput.args := α0;
           |}.
       
       Global Instance Method_push_arg : Notation.Dot "push_arg" := {
         Notation.dot := push_arg;
       }.
-    End ImplExecutionInput (ArgumentList (Argument Head) Rest).
+    End Implcrate.call.ExecutionInput (ArgumentList (Argument Head) Rest).
     
-    Module ImplExecutionInput Args.
-      Definition Self := ExecutionInput Args.
+    Module Implcrate.call.ExecutionInput Args.
+      Definition Self := crate.call.ExecutionInput Args.
       
       Definition update_selector
           (self : mut_ref Self)
-          (selector : Selector)
+          (selector : crate.call.Selector)
           : M unit :=
         let* _ := assign self.["selector"] selector in
         Pure tt.
@@ -4035,7 +4081,7 @@ Module call.
         Notation.Dot "update_selector" := {
         Notation.dot := update_selector;
       }.
-    End ImplExecutionInput Args.
+    End Implcrate.call.ExecutionInput Args.
     
     Module ArgumentList.
       Record t : Set := {
@@ -4229,10 +4275,10 @@ Module call.
     Definition EmptyArgumentList : Set :=
       ArgumentList ArgumentListEnd ArgumentListEnd.
     
-    Module ImplEmptyArgumentList.
-      Definition Self := EmptyArgumentList.
+    Module Implcrate.call.utils.EmptyArgumentList.
+      Definition Self := crate.call.utils.EmptyArgumentList.
       
-      Definition empty (_ : unit) : M EmptyArgumentList :=
+      Definition empty (_ : unit) : M crate.call.utils.EmptyArgumentList :=
         Pure
           {|
             ArgumentList.head := ArgumentListEnd.Build;
@@ -4254,7 +4300,7 @@ Module call.
       Global Instance Method_push_arg : Notation.Dot "push_arg" := {
         Notation.dot := push_arg;
       }.
-    End ImplEmptyArgumentList.
+    End Implcrate.call.utils.EmptyArgumentList.
     
     Module ImplArgumentList (Argument Head) Rest.
       Definition Self := ArgumentList (Argument Head) Rest.
@@ -4292,8 +4338,8 @@ Module call.
       }.
     End Impl_scale_Encode_for_Argument_T.
     
-    Module Impl_scale_Encode_for_EmptyArgumentList.
-      Definition Self := EmptyArgumentList.
+    Module Impl_scale_Encode_for_crate_call_utils_EmptyArgumentList.
+      Definition Self := crate.call.utils.EmptyArgumentList.
       
       Definition size_hint (self : ref Self) : M usize := Pure 0.
       
@@ -4310,7 +4356,7 @@ Module call.
       
       Global Instance I : scale.Encode.Trait Self := {
       }.
-    End Impl_scale_Encode_for_EmptyArgumentList.
+    End Impl_scale_Encode_for_crate_call_utils_EmptyArgumentList.
     
     Module Impl_scale_Encode_for_ArgumentList_Argument_Head_Rest.
       Definition Self := ArgumentList (Argument Head) Rest.
@@ -4337,8 +4383,8 @@ Module call.
       }.
     End Impl_scale_Encode_for_ArgumentList_Argument_Head_Rest.
     
-    Module Impl_scale_Encode_for_ExecutionInput_Args.
-      Definition Self := ExecutionInput Args.
+    Module Impl_scale_Encode_for_crate_call_ExecutionInput_Args.
+      Definition Self := crate.call.ExecutionInput Args.
       
       Definition size_hint (self : ref Self) : M usize :=
         let* α0 := scale.Encode.size_hint (addr_of self.["selector"]) in
@@ -4360,7 +4406,7 @@ Module call.
       
       Global Instance I Args : scale.Encode.Trait Self := {
       }.
-    End Impl_scale_Encode_for_ExecutionInput_Args.
+    End Impl_scale_Encode_for_crate_call_ExecutionInput_Args.
   End execution_input.
   
   Module selector.
@@ -4377,12 +4423,12 @@ Module call.
     End Selector.
     Definition Selector : Set := Selector.t.
     
-    Module Impl__crate_default_Default_for_Selector.
-      Definition Self := Selector.
+    Module Impl__crate_default_Default_for_crate_call_Selector.
+      Definition Self := crate.call.Selector.
       
-      Definition default (_ : unit) : M Selector :=
+      Definition default (_ : unit) : M crate.call.Selector :=
         let* α0 := _crate.default.Default.default tt in
-        Pure {| Selector.bytes := α0; |}.
+        Pure {| crate.call.Selector.bytes := α0; |}.
       
       Global Instance AssociatedFunction_default :
         Notation.DoubleColon Self "default" := {
@@ -4392,10 +4438,10 @@ Module call.
       Global Instance I : _crate.default.Default.Trait Self := {
         _crate.default.Default.default := default;
       }.
-    End Impl__crate_default_Default_for_Selector.
+    End Impl__crate_default_Default_for_crate_call_Selector.
     
-    Module Impl__crate_fmt_Debug_for_Selector.
-      Definition Self := Selector.
+    Module Impl__crate_fmt_Debug_for_crate_call_Selector.
+      Definition Self := crate.call.Selector.
       
       Definition fmt
           (self : ref Self)
@@ -4414,19 +4460,19 @@ Module call.
       Global Instance I : _crate.fmt.Debug.Trait Self := {
         _crate.fmt.Debug.fmt := fmt;
       }.
-    End Impl__crate_fmt_Debug_for_Selector.
+    End Impl__crate_fmt_Debug_for_crate_call_Selector.
     
-    Module Impl__crate_marker_Copy_for_Selector.
-      Definition Self := Selector.
+    Module Impl__crate_marker_Copy_for_crate_call_Selector.
+      Definition Self := crate.call.Selector.
       
       Global Instance I : _crate.marker.Copy.Trait Self :=
         _crate.marker.Copy.Build_Class _.
-    End Impl__crate_marker_Copy_for_Selector.
+    End Impl__crate_marker_Copy_for_crate_call_Selector.
     
-    Module Impl__crate_clone_Clone_for_Selector.
-      Definition Self := Selector.
+    Module Impl__crate_clone_Clone_for_crate_call_Selector.
+      Definition Self := crate.call.Selector.
       
-      Definition clone (self : ref Self) : M Selector :=
+      Definition clone (self : ref Self) : M crate.call.Selector :=
         let _ := tt in
         self.["deref"].
       
@@ -4437,19 +4483,22 @@ Module call.
       Global Instance I : _crate.clone.Clone.Trait Self := {
         _crate.clone.Clone.clone := clone;
       }.
-    End Impl__crate_clone_Clone_for_Selector.
+    End Impl__crate_clone_Clone_for_crate_call_Selector.
     
-    Module Impl__crate_marker_StructuralPartialEq_for_Selector.
-      Definition Self := Selector.
+    Module Impl__crate_marker_StructuralPartialEq_for_crate_call_Selector.
+      Definition Self := crate.call.Selector.
       
       Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
         _crate.marker.StructuralPartialEq.Build_Class _.
-    End Impl__crate_marker_StructuralPartialEq_for_Selector.
+    End Impl__crate_marker_StructuralPartialEq_for_crate_call_Selector.
     
-    Module Impl__crate_cmp_PartialEq_for_Selector.
-      Definition Self := Selector.
+    Module Impl__crate_cmp_PartialEq_for_crate_call_Selector.
+      Definition Self := crate.call.Selector.
       
-      Definition eq (self : ref Self) (other : ref Selector) : M bool :=
+      Definition eq
+          (self : ref Self)
+          (other : ref crate.call.Selector)
+          : M bool :=
         self.["bytes"].["eq"] other.["bytes"].
       
       Global Instance Method_eq : Notation.Dot "eq" := {
@@ -4459,17 +4508,17 @@ Module call.
       Global Instance I : _crate.cmp.PartialEq.Trait Self := {
         _crate.cmp.PartialEq.eq := eq;
       }.
-    End Impl__crate_cmp_PartialEq_for_Selector.
+    End Impl__crate_cmp_PartialEq_for_crate_call_Selector.
     
-    Module Impl__crate_marker_StructuralEq_for_Selector.
-      Definition Self := Selector.
+    Module Impl__crate_marker_StructuralEq_for_crate_call_Selector.
+      Definition Self := crate.call.Selector.
       
       Global Instance I : _crate.marker.StructuralEq.Trait Self :=
         _crate.marker.StructuralEq.Build_Class _.
-    End Impl__crate_marker_StructuralEq_for_Selector.
+    End Impl__crate_marker_StructuralEq_for_crate_call_Selector.
     
-    Module Impl__crate_cmp_Eq_for_Selector.
-      Definition Self := Selector.
+    Module Impl__crate_cmp_Eq_for_crate_call_Selector.
+      Definition Self := crate.call.Selector.
       
       Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
         let _ := tt in
@@ -4482,13 +4531,13 @@ Module call.
       
       Global Instance I : _crate.cmp.Eq.Trait Self := {
       }.
-    End Impl__crate_cmp_Eq_for_Selector.
+    End Impl__crate_cmp_Eq_for_crate_call_Selector.
     
-    Module Impl_Root_core_convert_From_for_Selector.
-      Definition Self := Selector.
+    Module Impl_Root_core_convert_From_for_crate_call_Selector.
+      Definition Self := crate.call.Selector.
       
-      Definition from (original : list u8) : M Selector :=
-        Pure {| Selector.bytes := original; |}.
+      Definition from (original : list u8) : M crate.call.Selector :=
+        Pure {| crate.call.Selector.bytes := original; |}.
       
       Global Instance AssociatedFunction_from :
         Notation.DoubleColon Self "from" := {
@@ -4498,14 +4547,14 @@ Module call.
       Global Instance I : Root.core.convert.From.Trait Self list u8 := {
         Root.core.convert.From.from := from;
       }.
-    End Impl_Root_core_convert_From_for_Selector.
+    End Impl_Root_core_convert_From_for_crate_call_Selector.
     
     Definition _ : unit := run (Pure tt).
     
     Definition _ : unit := run (Pure tt).
     
-    Module ImplSelector.
-      Definition Self := Selector.
+    Module Implcrate.call.Selector.
+      Definition Self := crate.call.Selector.
       
       Definition new (bytes : list u8) : M Self :=
         Pure {| Self.bytes := bytes; |}.
@@ -4520,101 +4569,28 @@ Module call.
       Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
         Notation.dot := to_bytes;
       }.
-    End ImplSelector.
+    End Implcrate.call.Selector.
   End selector.
   
   Module utils.
-    Module ReturnType := super.common.ReturnType.
-    Definition ReturnType := ReturnType.t.
     
-    Module Set := super.common.Set.
-    Definition Set := Set.t.
-    
-    Module Unset := super.common.Unset.
-    Definition Unset := Unset.t.
-    
-    Module ArgsList := super.execution_input.ArgsList.
-    Definition ArgsList := ArgsList.t.
-    
-    Module Argument := super.execution_input.Argument.
-    Definition Argument := Argument.t.
-    
-    Module ArgumentList := super.execution_input.ArgumentList.
-    Definition ArgumentList := ArgumentList.t.
-    
-    Module ArgumentListEnd := super.execution_input.ArgumentListEnd.
-    Definition ArgumentListEnd := ArgumentListEnd.t.
-    
-    Module EmptyArgumentList := super.execution_input.EmptyArgumentList.
-    Definition EmptyArgumentList := EmptyArgumentList.t.
   End utils.
   
   Module build_call := self.call_builder.build_call.
   
-  Module Call := self.call_builder.Call.
-  Definition Call := Call.t.
-  
-  Module CallBuilder := self.call_builder.CallBuilder.
-  Definition CallBuilder := CallBuilder.t.
-  
-  Module CallParams := self.call_builder.CallParams.
-  Definition CallParams := CallParams.t.
-  
-  Module DelegateCall := self.call_builder.DelegateCall.
-  Definition DelegateCall := DelegateCall.t.
-  
   Module build_create := self.create_builder.build_create.
   
   Module state := self.create_builder.state.
-  
-  Module CreateBuilder := self.create_builder.CreateBuilder.
-  Definition CreateBuilder := CreateBuilder.t.
-  
-  Module CreateParams := self.create_builder.CreateParams.
-  Definition CreateParams := CreateParams.t.
-  
-  Module ExecutionInput := self.execution_input.ExecutionInput.
-  Definition ExecutionInput := ExecutionInput.t.
-  
-  Module Selector := self.selector.Selector.
-  Definition Selector := Selector.t.
 End call.
 
 Module call_builder.
-  Module CallFlags := crate.backend.CallFlags.
-  Definition CallFlags := CallFlags.t.
-  
-  Module EmptyArgumentList := crate.call.utils.EmptyArgumentList.
-  Definition EmptyArgumentList := EmptyArgumentList.t.
-  
-  Module ReturnType := crate.call.utils.ReturnType.
-  Definition ReturnType := ReturnType.t.
-  
-  Module Set := crate.call.utils.Set.
-  Definition Set := Set.t.
-  
-  Module Unset := crate.call.utils.Unset.
-  Definition Unset := Unset.t.
-  
-  Module ExecutionInput := crate.call.ExecutionInput.
-  Definition ExecutionInput := ExecutionInput.t.
-  
-  Module Gas := crate.types.Gas.
-  Definition Gas := Gas.t.
-  
-  Module Error := crate.Error.
-  Definition Error := Error.t.
-  
-  Module PhantomData := core.marker.PhantomData.
-  Definition PhantomData := PhantomData.t.
-  
   Module CallParams.
     Record t : Set := {
       call_type : CallType;
-      call_flags : CallFlags;
-      _return_type : ReturnType R;
-      exec_input : ExecutionInput Args;
-      _phantom : PhantomData ( -> E);
+      call_flags : crate.backend.CallFlags;
+      _return_type : crate.call.utils.ReturnType R;
+      exec_input : crate.call.ExecutionInput Args;
+      _phantom : core.marker.PhantomData ( -> E);
     }.
     
     Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -4635,8 +4611,9 @@ Module call_builder.
   End CallParams.
   Definition CallParams : Set := CallParams.t.
   
-  Module Impl__crate_fmt_Debug_for_CallParams_E_CallType_Args_R.
-    Definition Self := CallParams E CallType Args R.
+  Module
+      Impl__crate_fmt_Debug_for_self_call_builder_CallParams_E_CallType_Args_R.
+    Definition Self := self.call_builder.CallParams E CallType Args R.
     
     Definition fmt
         (self : ref Self)
@@ -4663,28 +4640,33 @@ Module call_builder.
     Global Instance I E CallType Args R : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_CallParams_E_CallType_Args_R.
+  End Impl__crate_fmt_Debug_for_self_call_builder_CallParams_E_CallType_Args_R.
   
-  Module ImplCallParams E CallType Args R_2.
-    Definition Self := CallParams E CallType Args R.
+  Module Implself.call_builder.CallParams E CallType Args R.
+    Definition Self := self.call_builder.CallParams E CallType Args R.
     
-    Definition call_flags (self : ref Self) : M (ref CallFlags) :=
+    Definition call_flags (self : ref Self) : M (ref crate.backend.CallFlags) :=
       Pure (addr_of self.["call_flags"]).
     
     Global Instance Method_call_flags : Notation.Dot "call_flags" := {
       Notation.dot := call_flags;
     }.
     
-    Definition exec_input (self : ref Self) : M (ref (ExecutionInput Args)) :=
+    Definition exec_input
+        (self : ref Self)
+        : M (ref (crate.call.ExecutionInput Args)) :=
       Pure (addr_of self.["exec_input"]).
     
     Global Instance Method_exec_input : Notation.Dot "exec_input" := {
       Notation.dot := exec_input;
     }.
-  End ImplCallParams E CallType Args R_2.
+  End Implself.call_builder.CallParams E CallType Args R.
   
-  Module ImplCallParams E (Call E) Args R_3.
-    Definition Self := CallParams E (Call E) Args R.
+  Module Implself.call_builder.CallParams E (self.call_builder.Call E) Args R.
+    Definition
+      Self
+      :=
+      self.call_builder.CallParams E (self.call_builder.Call E) Args R.
     
     Definition callee (self : ref Self) : M (ref ImplE.AccountId) :=
       Pure (addr_of self.["call_type"].["callee"]).
@@ -4693,7 +4675,7 @@ Module call_builder.
       Notation.dot := callee;
     }.
     
-    Definition gas_limit (self : ref Self) : M Gas :=
+    Definition gas_limit (self : ref Self) : M crate.types.Gas :=
       Pure self.["call_type"].["gas_limit"].
     
     Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
@@ -4707,10 +4689,18 @@ Module call_builder.
       Notation.Dot "transferred_value" := {
       Notation.dot := transferred_value;
     }.
-  End ImplCallParams E (Call E) Args R_3.
+  End Implself.call_builder.CallParams E (self.call_builder.Call E) Args R.
   
-  Module ImplCallParams E (DelegateCall E) Args R_3.
-    Definition Self := CallParams E (DelegateCall E) Args R.
+  Module
+    Implself.call_builder.CallParams
+      E
+      (self.call_builder.DelegateCall E)
+      Args
+      R.
+    Definition
+      Self
+      :=
+      self.call_builder.CallParams E (self.call_builder.DelegateCall E) Args R.
     
     Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
       Pure (addr_of self.["call_type"].["code_hash"]).
@@ -4718,10 +4708,18 @@ Module call_builder.
     Global Instance Method_code_hash : Notation.Dot "code_hash" := {
       Notation.dot := code_hash;
     }.
-  End ImplCallParams E (DelegateCall E) Args R_3.
+  End
+    Implself.call_builder.CallParams
+      E
+      (self.call_builder.DelegateCall E)
+      Args
+      R.
   
-  Module ImplCallParams E (Call E) Args R_4.
-    Definition Self := CallParams E (Call E) Args R.
+  Module Implself.call_builder.CallParams E (self.call_builder.Call E) Args R_2.
+    Definition
+      Self
+      :=
+      self.call_builder.CallParams E (self.call_builder.Call E) Args R.
     
     Definition invoke (self : ref Self) : M R :=
       let* α0 := crate.invoke_contract self in
@@ -4749,16 +4747,24 @@ Module call_builder.
     
     Definition try_invoke
         (self : ref Self)
-        : M (Result (ink_primitives.MessageResult R) crate.Error) :=
+        : M (crate.Result (ink_primitives.MessageResult R) crate.Error) :=
       crate.invoke_contract self.
     
     Global Instance Method_try_invoke : Notation.Dot "try_invoke" := {
       Notation.dot := try_invoke;
     }.
-  End ImplCallParams E (Call E) Args R_4.
+  End Implself.call_builder.CallParams E (self.call_builder.Call E) Args R_2.
   
-  Module ImplCallParams E (DelegateCall E) Args R_4.
-    Definition Self := CallParams E (DelegateCall E) Args R.
+  Module
+    Implself.call_builder.CallParams
+      E
+      (self.call_builder.DelegateCall E)
+      Args
+      R_2.
+    Definition
+      Self
+      :=
+      self.call_builder.CallParams E (self.call_builder.DelegateCall E) Args R.
     
     Definition invoke (self : ref Self) : M R :=
       let* α0 := crate.invoke_contract_delegate self in
@@ -4775,13 +4781,18 @@ Module call_builder.
       Notation.dot := invoke;
     }.
     
-    Definition try_invoke (self : ref Self) : M (Result R crate.Error) :=
+    Definition try_invoke (self : ref Self) : M (crate.Result R crate.Error) :=
       crate.invoke_contract_delegate self.
     
     Global Instance Method_try_invoke : Notation.Dot "try_invoke" := {
       Notation.dot := try_invoke;
     }.
-  End ImplCallParams E (DelegateCall E) Args R_4.
+  End
+    Implself.call_builder.CallParams
+      E
+      (self.call_builder.DelegateCall E)
+      Args
+      R_2.
   
   Definition build_call
       {E : Set}
@@ -4789,11 +4800,12 @@ Module call_builder.
       (_ : unit)
       :
         M
-          (CallBuilder
+          (self.call_builder.CallBuilder
             E
-            (Unset (Call E))
-            (Unset (ExecutionInput EmptyArgumentList))
-            (Unset (ReturnType unit))) :=
+            (crate.call.utils.Unset (self.call_builder.Call E))
+            (crate.call.utils.Unset
+              (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+            (crate.call.utils.Unset (crate.call.utils.ReturnType unit))) :=
     let* α0 := Default.default tt in
     let* α1 := Default.default tt in
     let* α2 := Default.default tt in
@@ -4801,17 +4813,17 @@ Module call_builder.
     let* α4 := Default.default tt in
     Pure
       {|
-        CallBuilder.call_type := α0;
-        CallBuilder.call_flags := α1;
-        CallBuilder.exec_input := α2;
-        CallBuilder.return_type := α3;
-        CallBuilder._phantom := α4;
+        self.call_builder.CallBuilder.call_type := α0;
+        self.call_builder.CallBuilder.call_flags := α1;
+        self.call_builder.CallBuilder.exec_input := α2;
+        self.call_builder.CallBuilder.return_type := α3;
+        self.call_builder.CallBuilder._phantom := α4;
       |}.
   
   Module Call.
     Record t : Set := {
       callee : ImplE.AccountId;
-      gas_limit : Gas;
+      gas_limit : crate.types.Gas;
       transferred_value : ImplE.Balance;
     }.
     
@@ -4828,19 +4840,19 @@ Module call_builder.
   End Call.
   Definition Call : Set := Call.t.
   
-  Module Impl__crate_clone_Clone_for_Call_E.
-    Definition Self := Call E.
+  Module Impl__crate_clone_Clone_for_self_call_builder_Call_E.
+    Definition Self := self.call_builder.Call E.
     
-    Definition clone (self : ref Self) : M (Call E) :=
+    Definition clone (self : ref Self) : M (self.call_builder.Call E) :=
       let* α0 := _crate.clone.Clone.clone (addr_of self.["callee"]) in
       let* α1 := _crate.clone.Clone.clone (addr_of self.["gas_limit"]) in
       let* α2 :=
         _crate.clone.Clone.clone (addr_of self.["transferred_value"]) in
       Pure
         {|
-          Call.callee := α0;
-          Call.gas_limit := α1;
-          Call.transferred_value := α2;
+          self.call_builder.Call.callee := α0;
+          self.call_builder.Call.gas_limit := α1;
+          self.call_builder.Call.transferred_value := α2;
         |}.
     
     Global Instance Method_clone : Notation.Dot "clone" := {
@@ -4850,10 +4862,10 @@ Module call_builder.
     Global Instance I E : _crate.clone.Clone.Trait Self := {
       _crate.clone.Clone.clone := clone;
     }.
-  End Impl__crate_clone_Clone_for_Call_E.
+  End Impl__crate_clone_Clone_for_self_call_builder_Call_E.
   
-  Module ImplCall E_3.
-    Definition Self := Call E.
+  Module Implself.call_builder.Call E.
+    Definition Self := self.call_builder.Call E.
     
     Definition new (callee : ImplE.AccountId) : M Self :=
       let* α0 := Default.default tt in
@@ -4869,17 +4881,18 @@ Module call_builder.
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
-  End ImplCall E_3.
+  End Implself.call_builder.Call E.
   
-  Module ImplCall E_4.
-    Definition Self := Call E.
+  Module Implself.call_builder.Call E_2.
+    Definition Self := self.call_builder.Call E.
     
-    Definition gas_limit (self : Self) (gas_limit : Gas) : M Self :=
+    Definition gas_limit (self : Self) (gas_limit : crate.types.Gas) : M Self :=
       Pure
         {|
-          Call.callee := self.["callee"];
-          Call.gas_limit := gas_limit;
-          Call.transferred_value := self.["transferred_value"];
+          self.call_builder.Call.callee := self.["callee"];
+          self.call_builder.Call.gas_limit := gas_limit;
+          self.call_builder.Call.transferred_value :=
+            self.["transferred_value"];
         |}.
     
     Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
@@ -4892,16 +4905,16 @@ Module call_builder.
         : M Self :=
       Pure
         {|
-          Call.callee := self.["callee"];
-          Call.gas_limit := self.["gas_limit"];
-          Call.transferred_value := transferred_value;
+          self.call_builder.Call.callee := self.["callee"];
+          self.call_builder.Call.gas_limit := self.["gas_limit"];
+          self.call_builder.Call.transferred_value := transferred_value;
         |}.
     
     Global Instance Method_transferred_value :
       Notation.Dot "transferred_value" := {
       Notation.dot := transferred_value;
     }.
-  End ImplCall E_4.
+  End Implself.call_builder.Call E_2.
   
   Module DelegateCall.
     Record t : Set := {
@@ -4914,36 +4927,36 @@ Module call_builder.
   End DelegateCall.
   Definition DelegateCall : Set := DelegateCall.t.
   
-  Module ImplDelegateCall E_3.
-    Definition Self := DelegateCall E.
+  Module Implself.call_builder.DelegateCall E.
+    Definition Self := self.call_builder.DelegateCall E.
     
     Definition new (code_hash : ImplE.Hash) : M Self :=
-      Pure {| DelegateCall.code_hash := code_hash; |}.
+      Pure {| self.call_builder.DelegateCall.code_hash := code_hash; |}.
     
     Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
-  End ImplDelegateCall E_3.
+  End Implself.call_builder.DelegateCall E.
   
-  Module ImplDelegateCall E_4.
-    Definition Self := DelegateCall E.
+  Module Implself.call_builder.DelegateCall E_2.
+    Definition Self := self.call_builder.DelegateCall E.
     
     Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
-      Pure {| DelegateCall.code_hash := code_hash; |}.
+      Pure {| self.call_builder.DelegateCall.code_hash := code_hash; |}.
     
     Global Instance Method_code_hash : Notation.Dot "code_hash" := {
       Notation.dot := code_hash;
     }.
-  End ImplDelegateCall E_4.
+  End Implself.call_builder.DelegateCall E_2.
   
   Module CallBuilder.
     Record t : Set := {
       call_type : CallType;
-      call_flags : CallFlags;
+      call_flags : crate.backend.CallFlags;
       exec_input : Args;
       return_type : RetType;
-      _phantom : PhantomData ( -> E);
+      _phantom : core.marker.PhantomData ( -> E);
     }.
     
     Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -4964,12 +4977,13 @@ Module call_builder.
   End CallBuilder.
   Definition CallBuilder : Set := CallBuilder.t.
   
-  Module Impl__crate_clone_Clone_for_CallBuilder_E_CallType_Args_RetType.
-    Definition Self := CallBuilder E CallType Args RetType.
+  Module
+      Impl__crate_clone_Clone_for_self_call_builder_CallBuilder_E_CallType_Args_RetType.
+    Definition Self := self.call_builder.CallBuilder E CallType Args RetType.
     
     Definition clone
         (self : ref Self)
-        : M (CallBuilder E CallType Args RetType) :=
+        : M (self.call_builder.CallBuilder E CallType Args RetType) :=
       let* α0 := _crate.clone.Clone.clone (addr_of self.["call_type"]) in
       let* α1 := _crate.clone.Clone.clone (addr_of self.["call_flags"]) in
       let* α2 := _crate.clone.Clone.clone (addr_of self.["exec_input"]) in
@@ -4977,11 +4991,11 @@ Module call_builder.
       let* α4 := _crate.clone.Clone.clone (addr_of self.["_phantom"]) in
       Pure
         {|
-          CallBuilder.call_type := α0;
-          CallBuilder.call_flags := α1;
-          CallBuilder.exec_input := α2;
-          CallBuilder.return_type := α3;
-          CallBuilder._phantom := α4;
+          self.call_builder.CallBuilder.call_type := α0;
+          self.call_builder.CallBuilder.call_flags := α1;
+          self.call_builder.CallBuilder.exec_input := α2;
+          self.call_builder.CallBuilder.return_type := α3;
+          self.call_builder.CallBuilder._phantom := α4;
         |}.
     
     Global Instance Method_clone : Notation.Dot "clone" := {
@@ -4992,125 +5006,207 @@ Module call_builder.
       {
       _crate.clone.Clone.clone := clone;
     }.
-  End Impl__crate_clone_Clone_for_CallBuilder_E_CallType_Args_RetType.
+  End
+    Impl__crate_clone_Clone_for_self_call_builder_CallBuilder_E_CallType_Args_RetType.
   
-  Module ImplCallBuilder E (Unset CallType) Args RetType_3.
-    Definition Self := CallBuilder E (Unset CallType) Args RetType.
+  Module
+    Implself.call_builder.CallBuilder
+      E
+      (crate.call.utils.Unset CallType)
+      Args
+      RetType.
+    Definition
+      Self
+      :=
+      self.call_builder.CallBuilder
+        E
+        (crate.call.utils.Unset CallType)
+        Args
+        RetType.
     
     Definition call_type
         (self : Self)
         (call_type : NewCallType)
-        : M (CallBuilder E (Set NewCallType) Args RetType) :=
+        :
+          M
+            (self.call_builder.CallBuilder
+              E
+              (crate.call.utils.Set NewCallType)
+              Args
+              RetType) :=
       let* α0 := Default.default tt in
       Pure
         {|
-          CallBuilder.call_type := Set.Build_t call_type;
-          CallBuilder.call_flags := self.["call_flags"];
-          CallBuilder.exec_input := self.["exec_input"];
-          CallBuilder.return_type := self.["return_type"];
-          CallBuilder._phantom := α0;
+          self.call_builder.CallBuilder.call_type :=
+            crate.call.utils.Set.Build_t call_type;
+          self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+          self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+          self.call_builder.CallBuilder.return_type := self.["return_type"];
+          self.call_builder.CallBuilder._phantom := α0;
         |}.
     
     Global Instance Method_call_type : Notation.Dot "call_type" := {
       Notation.dot := call_type;
     }.
-  End ImplCallBuilder E (Unset CallType) Args RetType_3.
+  End
+    Implself.call_builder.CallBuilder
+      E
+      (crate.call.utils.Unset CallType)
+      Args
+      RetType.
   
-  Module ImplCallBuilder E CallType Args RetType_2.
-    Definition Self := CallBuilder E CallType Args RetType.
+  Module Implself.call_builder.CallBuilder E CallType Args RetType.
+    Definition Self := self.call_builder.CallBuilder E CallType Args RetType.
     
     Definition call_flags
         (self : Self)
-        (call_flags : CallFlags)
-        : M (CallBuilder E CallType Args RetType) :=
+        (call_flags : crate.backend.CallFlags)
+        : M (self.call_builder.CallBuilder E CallType Args RetType) :=
       let* α0 := Default.default tt in
       Pure
         {|
-          CallBuilder.call_type := self.["call_type"];
-          CallBuilder.call_flags := call_flags;
-          CallBuilder.exec_input := self.["exec_input"];
-          CallBuilder.return_type := self.["return_type"];
-          CallBuilder._phantom := α0;
+          self.call_builder.CallBuilder.call_type := self.["call_type"];
+          self.call_builder.CallBuilder.call_flags := call_flags;
+          self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+          self.call_builder.CallBuilder.return_type := self.["return_type"];
+          self.call_builder.CallBuilder._phantom := α0;
         |}.
     
     Global Instance Method_call_flags : Notation.Dot "call_flags" := {
       Notation.dot := call_flags;
     }.
-  End ImplCallBuilder E CallType Args RetType_2.
+  End Implself.call_builder.CallBuilder E CallType Args RetType.
   
-  Module ImplCallBuilder E CallType Args (Unset (ReturnType unit))_2.
-    Definition Self := CallBuilder E CallType Args (Unset (ReturnType unit)).
+  Module
+    Implself.call_builder.CallBuilder
+      E
+      CallType
+      Args
+      (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
+    Definition
+      Self
+      :=
+      self.call_builder.CallBuilder
+        E
+        CallType
+        Args
+        (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
     
     Definition returns
         (self : Self)
-        : M (CallBuilder E CallType Args (Set (ReturnType R))) :=
+        :
+          M
+            (self.call_builder.CallBuilder
+              E
+              CallType
+              Args
+              (crate.call.utils.Set (crate.call.utils.ReturnType R))) :=
       let* α0 := Default.default tt in
       let* α1 := Default.default tt in
       Pure
         {|
-          CallBuilder.call_type := self.["call_type"];
-          CallBuilder.call_flags := self.["call_flags"];
-          CallBuilder.exec_input := self.["exec_input"];
-          CallBuilder.return_type := Set.Build_t α0;
-          CallBuilder._phantom := α1;
+          self.call_builder.CallBuilder.call_type := self.["call_type"];
+          self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+          self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+          self.call_builder.CallBuilder.return_type :=
+            crate.call.utils.Set.Build_t α0;
+          self.call_builder.CallBuilder._phantom := α1;
         |}.
     
     Global Instance Method_returns : Notation.Dot "returns" := {
       Notation.dot := returns;
     }.
-  End ImplCallBuilder E CallType Args (Unset (ReturnType unit))_2.
-  
-  Module
-    ImplCallBuilder
+  End
+    Implself.call_builder.CallBuilder
       E
       CallType
-      (Unset (ExecutionInput EmptyArgumentList))
-      RetType_2.
+      Args
+      (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
+  
+  Module
+    Implself.call_builder.CallBuilder
+      E
+      CallType
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      RetType.
     Definition
       Self
       :=
-      CallBuilder E CallType (Unset (ExecutionInput EmptyArgumentList)) RetType.
+      self.call_builder.CallBuilder
+        E
+        CallType
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+        RetType.
     
     Definition exec_input
         (self : Self)
-        (exec_input : ExecutionInput Args)
-        : M (CallBuilder E CallType (Set (ExecutionInput Args)) RetType) :=
+        (exec_input : crate.call.ExecutionInput Args)
+        :
+          M
+            (self.call_builder.CallBuilder
+              E
+              CallType
+              (crate.call.utils.Set (crate.call.ExecutionInput Args))
+              RetType) :=
       let* α0 := Default.default tt in
       Pure
         {|
-          CallBuilder.call_type := self.["call_type"];
-          CallBuilder.call_flags := self.["call_flags"];
-          CallBuilder.exec_input := Set.Build_t exec_input;
-          CallBuilder.return_type := self.["return_type"];
-          CallBuilder._phantom := α0;
+          self.call_builder.CallBuilder.call_type := self.["call_type"];
+          self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+          self.call_builder.CallBuilder.exec_input :=
+            crate.call.utils.Set.Build_t exec_input;
+          self.call_builder.CallBuilder.return_type := self.["return_type"];
+          self.call_builder.CallBuilder._phantom := α0;
         |}.
     
     Global Instance Method_exec_input : Notation.Dot "exec_input" := {
       Notation.dot := exec_input;
     }.
   End
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
       CallType
-      (Unset (ExecutionInput EmptyArgumentList))
-      RetType_2.
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      RetType.
   
-  Module ImplCallBuilder E (Unset CallType) Args RetType_4.
-    Definition Self := CallBuilder E (Unset CallType) Args RetType.
+  Module
+    Implself.call_builder.CallBuilder
+      E
+      (crate.call.utils.Unset CallType)
+      Args
+      RetType_2.
+    Definition
+      Self
+      :=
+      self.call_builder.CallBuilder
+        E
+        (crate.call.utils.Unset CallType)
+        Args
+        RetType.
     
     Definition call
         (self : Self)
         (callee : ImplE.AccountId)
-        : M (CallBuilder E (Set (Call E)) Args RetType) :=
-      let* α0 := Call::["new"] callee in
+        :
+          M
+            (self.call_builder.CallBuilder
+              E
+              (crate.call.utils.Set (self.call_builder.Call E))
+              Args
+              RetType) :=
+      let* α0 := self.call_builder.Call::["new"] callee in
       let* α1 := Default.default tt in
       Pure
         {|
-          CallBuilder.call_type := Set.Build_t α0;
-          CallBuilder.call_flags := self.["call_flags"];
-          CallBuilder.exec_input := self.["exec_input"];
-          CallBuilder.return_type := self.["return_type"];
-          CallBuilder._phantom := α1;
+          self.call_builder.CallBuilder.call_type :=
+            crate.call.utils.Set.Build_t α0;
+          self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+          self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+          self.call_builder.CallBuilder.return_type := self.["return_type"];
+          self.call_builder.CallBuilder._phantom := α1;
         |}.
     
     Global Instance Method_call : Notation.Dot "call" := {
@@ -5120,42 +5216,67 @@ Module call_builder.
     Definition delegate
         (self : Self)
         (code_hash : ImplE.Hash)
-        : M (CallBuilder E (Set (DelegateCall E)) Args RetType) :=
-      let* α0 := DelegateCall::["new"] code_hash in
+        :
+          M
+            (self.call_builder.CallBuilder
+              E
+              (crate.call.utils.Set (self.call_builder.DelegateCall E))
+              Args
+              RetType) :=
+      let* α0 := self.call_builder.DelegateCall::["new"] code_hash in
       let* α1 := Default.default tt in
       Pure
         {|
-          CallBuilder.call_type := Set.Build_t α0;
-          CallBuilder.call_flags := self.["call_flags"];
-          CallBuilder.exec_input := self.["exec_input"];
-          CallBuilder.return_type := self.["return_type"];
-          CallBuilder._phantom := α1;
+          self.call_builder.CallBuilder.call_type :=
+            crate.call.utils.Set.Build_t α0;
+          self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+          self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+          self.call_builder.CallBuilder.return_type := self.["return_type"];
+          self.call_builder.CallBuilder._phantom := α1;
         |}.
     
     Global Instance Method_delegate : Notation.Dot "delegate" := {
       Notation.dot := delegate;
     }.
-  End ImplCallBuilder E (Unset CallType) Args RetType_4.
+  End
+    Implself.call_builder.CallBuilder
+      E
+      (crate.call.utils.Unset CallType)
+      Args
+      RetType_2.
   
-  Module ImplCallBuilder E (Set (Call E)) Args RetType_2.
-    Definition Self := CallBuilder E (Set (Call E)) Args RetType.
+  Module
+    Implself.call_builder.CallBuilder
+      E
+      (crate.call.utils.Set (self.call_builder.Call E))
+      Args
+      RetType.
+    Definition
+      Self
+      :=
+      self.call_builder.CallBuilder
+        E
+        (crate.call.utils.Set (self.call_builder.Call E))
+        Args
+        RetType.
     
-    Definition gas_limit (self : Self) (gas_limit : Gas) : M Self :=
+    Definition gas_limit (self : Self) (gas_limit : crate.types.Gas) : M Self :=
       let* call_type := self.["call_type"].["value"] in
       let* α0 := Default.default tt in
       Pure
         {|
-          CallBuilder.call_type :=
-            Set.Build_t
+          self.call_builder.CallBuilder.call_type :=
+            crate.call.utils.Set.Build_t
               {|
-                Call.callee := call_type.["callee"];
-                Call.gas_limit := gas_limit;
-                Call.transferred_value := call_type.["transferred_value"];
+                self.call_builder.Call.callee := call_type.["callee"];
+                self.call_builder.Call.gas_limit := gas_limit;
+                self.call_builder.Call.transferred_value :=
+                  call_type.["transferred_value"];
               |};
-          CallBuilder.call_flags := self.["call_flags"];
-          CallBuilder.exec_input := self.["exec_input"];
-          CallBuilder.return_type := self.["return_type"];
-          CallBuilder._phantom := α0;
+          self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+          self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+          self.call_builder.CallBuilder.return_type := self.["return_type"];
+          self.call_builder.CallBuilder._phantom := α0;
         |}.
     
     Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
@@ -5170,217 +5291,274 @@ Module call_builder.
       let* α0 := Default.default tt in
       Pure
         {|
-          CallBuilder.call_type :=
-            Set.Build_t
+          self.call_builder.CallBuilder.call_type :=
+            crate.call.utils.Set.Build_t
               {|
-                Call.callee := call_type.["callee"];
-                Call.gas_limit := call_type.["gas_limit"];
-                Call.transferred_value := transferred_value;
+                self.call_builder.Call.callee := call_type.["callee"];
+                self.call_builder.Call.gas_limit := call_type.["gas_limit"];
+                self.call_builder.Call.transferred_value := transferred_value;
               |};
-          CallBuilder.call_flags := self.["call_flags"];
-          CallBuilder.exec_input := self.["exec_input"];
-          CallBuilder.return_type := self.["return_type"];
-          CallBuilder._phantom := α0;
+          self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+          self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+          self.call_builder.CallBuilder.return_type := self.["return_type"];
+          self.call_builder.CallBuilder._phantom := α0;
         |}.
     
     Global Instance Method_transferred_value :
       Notation.Dot "transferred_value" := {
       Notation.dot := transferred_value;
     }.
-  End ImplCallBuilder E (Set (Call E)) Args RetType_2.
+  End
+    Implself.call_builder.CallBuilder
+      E
+      (crate.call.utils.Set (self.call_builder.Call E))
+      Args
+      RetType.
   
-  Module ImplCallBuilder E (Set (DelegateCall E)) Args RetType_2.
-    Definition Self := CallBuilder E (Set (DelegateCall E)) Args RetType.
+  Module
+    Implself.call_builder.CallBuilder
+      E
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      Args
+      RetType.
+    Definition
+      Self
+      :=
+      self.call_builder.CallBuilder
+        E
+        (crate.call.utils.Set (self.call_builder.DelegateCall E))
+        Args
+        RetType.
     
     Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
       let* α0 := Default.default tt in
       Pure
         {|
-          CallBuilder.call_type :=
-            Set.Build_t {| DelegateCall.code_hash := code_hash; |};
-          CallBuilder.call_flags := self.["call_flags"];
-          CallBuilder.exec_input := self.["exec_input"];
-          CallBuilder.return_type := self.["return_type"];
-          CallBuilder._phantom := α0;
+          self.call_builder.CallBuilder.call_type :=
+            crate.call.utils.Set.Build_t
+              {| self.call_builder.DelegateCall.code_hash := code_hash; |};
+          self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+          self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+          self.call_builder.CallBuilder.return_type := self.["return_type"];
+          self.call_builder.CallBuilder._phantom := α0;
         |}.
     
     Global Instance Method_code_hash : Notation.Dot "code_hash" := {
       Notation.dot := code_hash;
     }.
-  End ImplCallBuilder E (Set (DelegateCall E)) Args RetType_2.
+  End
+    Implself.call_builder.CallBuilder
+      E
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      Args
+      RetType.
   
   Module
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (Call E))
-      (Set (ExecutionInput Args))
-      (Set (ReturnType RetType))_2.
+      (crate.call.utils.Set (self.call_builder.Call E))
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
     Definition
       Self
       :=
-      CallBuilder
+      self.call_builder.CallBuilder
         E
-        (Set (Call E))
-        (Set (ExecutionInput Args))
-        (Set (ReturnType RetType)).
+        (crate.call.utils.Set (self.call_builder.Call E))
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
     
-    Definition params (self : Self) : M (CallParams E (Call E) Args RetType) :=
+    Definition params
+        (self : Self)
+        :
+          M
+            (self.call_builder.CallParams
+              E
+              (self.call_builder.Call E)
+              Args
+              RetType) :=
       let* α0 := self.["call_type"].["value"] in
       let* α1 := Default.default tt in
       let* α2 := self.["exec_input"].["value"] in
       Pure
         {|
-          CallParams.call_type := α0;
-          CallParams.call_flags := self.["call_flags"];
-          CallParams._return_type := α1;
-          CallParams.exec_input := α2;
-          CallParams._phantom := self.["_phantom"];
+          self.call_builder.CallParams.call_type := α0;
+          self.call_builder.CallParams.call_flags := self.["call_flags"];
+          self.call_builder.CallParams._return_type := α1;
+          self.call_builder.CallParams.exec_input := α2;
+          self.call_builder.CallParams._phantom := self.["_phantom"];
         |}.
     
     Global Instance Method_params : Notation.Dot "params" := {
       Notation.dot := params;
     }.
   End
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (Call E))
-      (Set (ExecutionInput Args))
-      (Set (ReturnType RetType))_2.
+      (crate.call.utils.Set (self.call_builder.Call E))
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
   
   Module
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (DelegateCall E))
-      (Set (ExecutionInput Args))
-      (Set (ReturnType RetType))_2.
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
     Definition
       Self
       :=
-      CallBuilder
+      self.call_builder.CallBuilder
         E
-        (Set (DelegateCall E))
-        (Set (ExecutionInput Args))
-        (Set (ReturnType RetType)).
+        (crate.call.utils.Set (self.call_builder.DelegateCall E))
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
     
     Definition params
         (self : Self)
-        : M (CallParams E (DelegateCall E) Args RetType) :=
+        :
+          M
+            (self.call_builder.CallParams
+              E
+              (self.call_builder.DelegateCall E)
+              Args
+              RetType) :=
       let* α0 := self.["call_type"].["value"] in
       let* α1 := Default.default tt in
       let* α2 := self.["exec_input"].["value"] in
       Pure
         {|
-          CallParams.call_type := α0;
-          CallParams.call_flags := self.["call_flags"];
-          CallParams._return_type := α1;
-          CallParams.exec_input := α2;
-          CallParams._phantom := self.["_phantom"];
+          self.call_builder.CallParams.call_type := α0;
+          self.call_builder.CallParams.call_flags := self.["call_flags"];
+          self.call_builder.CallParams._return_type := α1;
+          self.call_builder.CallParams.exec_input := α2;
+          self.call_builder.CallParams._phantom := self.["_phantom"];
         |}.
     
     Global Instance Method_params : Notation.Dot "params" := {
       Notation.dot := params;
     }.
   End
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (DelegateCall E))
-      (Set (ExecutionInput Args))
-      (Set (ReturnType RetType))_2.
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
   
   Module
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (Call E))
-      (Unset (ExecutionInput EmptyArgumentList))
-      (Unset RetType)_2.
+      (crate.call.utils.Set (self.call_builder.Call E))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      (crate.call.utils.Unset RetType).
     Definition
       Self
       :=
-      CallBuilder
+      self.call_builder.CallBuilder
         E
-        (Set (Call E))
-        (Unset (ExecutionInput EmptyArgumentList))
-        (Unset RetType).
+        (crate.call.utils.Set (self.call_builder.Call E))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+        (crate.call.utils.Unset RetType).
     
     Definition params
         (self : Self)
-        : M (CallParams E (Call E) EmptyArgumentList unit) :=
+        :
+          M
+            (self.call_builder.CallParams
+              E
+              (self.call_builder.Call E)
+              crate.call.utils.EmptyArgumentList
+              unit) :=
       let* α0 := self.["call_type"].["value"] in
       let* α1 := Default.default tt in
       let* α2 := Default.default tt in
       Pure
         {|
-          CallParams.call_type := α0;
-          CallParams.call_flags := self.["call_flags"];
-          CallParams._return_type := α1;
-          CallParams.exec_input := α2;
-          CallParams._phantom := self.["_phantom"];
+          self.call_builder.CallParams.call_type := α0;
+          self.call_builder.CallParams.call_flags := self.["call_flags"];
+          self.call_builder.CallParams._return_type := α1;
+          self.call_builder.CallParams.exec_input := α2;
+          self.call_builder.CallParams._phantom := self.["_phantom"];
         |}.
     
     Global Instance Method_params : Notation.Dot "params" := {
       Notation.dot := params;
     }.
   End
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (Call E))
-      (Unset (ExecutionInput EmptyArgumentList))
-      (Unset RetType)_2.
+      (crate.call.utils.Set (self.call_builder.Call E))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      (crate.call.utils.Unset RetType).
   
   Module
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (DelegateCall E))
-      (Unset (ExecutionInput EmptyArgumentList))
-      (Unset RetType)_2.
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      (crate.call.utils.Unset RetType).
     Definition
       Self
       :=
-      CallBuilder
+      self.call_builder.CallBuilder
         E
-        (Set (DelegateCall E))
-        (Unset (ExecutionInput EmptyArgumentList))
-        (Unset RetType).
+        (crate.call.utils.Set (self.call_builder.DelegateCall E))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+        (crate.call.utils.Unset RetType).
     
     Definition params
         (self : Self)
-        : M (CallParams E (DelegateCall E) EmptyArgumentList unit) :=
+        :
+          M
+            (self.call_builder.CallParams
+              E
+              (self.call_builder.DelegateCall E)
+              crate.call.utils.EmptyArgumentList
+              unit) :=
       let* α0 := self.["call_type"].["value"] in
       let* α1 := Default.default tt in
       let* α2 := Default.default tt in
       Pure
         {|
-          CallParams.call_type := α0;
-          CallParams.call_flags := self.["call_flags"];
-          CallParams._return_type := α1;
-          CallParams.exec_input := α2;
-          CallParams._phantom := self.["_phantom"];
+          self.call_builder.CallParams.call_type := α0;
+          self.call_builder.CallParams.call_flags := self.["call_flags"];
+          self.call_builder.CallParams._return_type := α1;
+          self.call_builder.CallParams.exec_input := α2;
+          self.call_builder.CallParams._phantom := self.["_phantom"];
         |}.
     
     Global Instance Method_params : Notation.Dot "params" := {
       Notation.dot := params;
     }.
   End
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (DelegateCall E))
-      (Unset (ExecutionInput EmptyArgumentList))
-      (Unset RetType)_2.
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      (crate.call.utils.Unset RetType).
   
   Module
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (Call E))
-      (Unset (ExecutionInput EmptyArgumentList))
-      (Unset (ReturnType unit))_2.
+      (crate.call.utils.Set (self.call_builder.Call E))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
     Definition
       Self
       :=
-      CallBuilder
+      self.call_builder.CallBuilder
         E
-        (Set (Call E))
-        (Unset (ExecutionInput EmptyArgumentList))
-        (Unset (ReturnType unit)).
+        (crate.call.utils.Set (self.call_builder.Call E))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+        (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
     
     Definition invoke (self : Self) : M unit :=
       let* α0 := self.["params"] in
@@ -5392,7 +5570,7 @@ Module call_builder.
     
     Definition try_invoke
         (self : Self)
-        : M (Result (ink_primitives.MessageResult unit) Error) :=
+        : M (crate.Result (ink_primitives.MessageResult unit) crate.Error) :=
       let* α0 := self.["params"] in
       α0.["try_invoke"].
     
@@ -5400,26 +5578,29 @@ Module call_builder.
       Notation.dot := try_invoke;
     }.
   End
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (Call E))
-      (Unset (ExecutionInput EmptyArgumentList))
-      (Unset (ReturnType unit))_2.
+      (crate.call.utils.Set (self.call_builder.Call E))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
   
   Module
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (DelegateCall E))
-      (Unset (ExecutionInput EmptyArgumentList))
-      (Unset (ReturnType unit))_2.
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
     Definition
       Self
       :=
-      CallBuilder
+      self.call_builder.CallBuilder
         E
-        (Set (DelegateCall E))
-        (Unset (ExecutionInput EmptyArgumentList))
-        (Unset (ReturnType unit)).
+        (crate.call.utils.Set (self.call_builder.DelegateCall E))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+        (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
     
     Definition invoke (self : Self) : M unit :=
       let* α0 := self.["params"] in
@@ -5429,7 +5610,7 @@ Module call_builder.
       Notation.dot := invoke;
     }.
     
-    Definition try_invoke (self : Self) : M (Result unit Error) :=
+    Definition try_invoke (self : Self) : M (crate.Result unit crate.Error) :=
       let* α0 := self.["params"] in
       α0.["try_invoke"].
     
@@ -5437,26 +5618,27 @@ Module call_builder.
       Notation.dot := try_invoke;
     }.
   End
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (DelegateCall E))
-      (Unset (ExecutionInput EmptyArgumentList))
-      (Unset (ReturnType unit))_2.
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
   
   Module
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (Call E))
-      (Set (ExecutionInput Args))
-      (Set (ReturnType R))_2.
+      (crate.call.utils.Set (self.call_builder.Call E))
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set (crate.call.utils.ReturnType R)).
     Definition
       Self
       :=
-      CallBuilder
+      self.call_builder.CallBuilder
         E
-        (Set (Call E))
-        (Set (ExecutionInput Args))
-        (Set (ReturnType R)).
+        (crate.call.utils.Set (self.call_builder.Call E))
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set (crate.call.utils.ReturnType R)).
     
     Definition invoke (self : Self) : M R :=
       let* α0 := self.["params"] in
@@ -5468,7 +5650,7 @@ Module call_builder.
     
     Definition try_invoke
         (self : Self)
-        : M (Result (ink_primitives.MessageResult R) Error) :=
+        : M (crate.Result (ink_primitives.MessageResult R) crate.Error) :=
       let* α0 := self.["params"] in
       α0.["try_invoke"].
     
@@ -5476,26 +5658,26 @@ Module call_builder.
       Notation.dot := try_invoke;
     }.
   End
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (Call E))
-      (Set (ExecutionInput Args))
-      (Set (ReturnType R))_2.
+      (crate.call.utils.Set (self.call_builder.Call E))
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set (crate.call.utils.ReturnType R)).
   
   Module
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (DelegateCall E))
-      (Set (ExecutionInput Args))
-      (Set (ReturnType R))_2.
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set (crate.call.utils.ReturnType R)).
     Definition
       Self
       :=
-      CallBuilder
+      self.call_builder.CallBuilder
         E
-        (Set (DelegateCall E))
-        (Set (ExecutionInput Args))
-        (Set (ReturnType R)).
+        (crate.call.utils.Set (self.call_builder.DelegateCall E))
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set (crate.call.utils.ReturnType R)).
     
     Definition invoke (self : Self) : M R :=
       let* α0 := self.["params"] in
@@ -5505,7 +5687,7 @@ Module call_builder.
       Notation.dot := invoke;
     }.
     
-    Definition try_invoke (self : Self) : M (Result R Error) :=
+    Definition try_invoke (self : Self) : M (crate.Result R crate.Error) :=
       let* α0 := self.["params"] in
       α0.["try_invoke"].
     
@@ -5513,47 +5695,20 @@ Module call_builder.
       Notation.dot := try_invoke;
     }.
   End
-    ImplCallBuilder
+    Implself.call_builder.CallBuilder
       E
-      (Set (DelegateCall E))
-      (Set (ExecutionInput Args))
-      (Set (ReturnType R))_2.
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set (crate.call.utils.ReturnType R)).
 End call_builder.
-
-Module CallFlags := crate.backend.CallFlags.
-Definition CallFlags := CallFlags.t.
-
-Module EmptyArgumentList := crate.call.utils.EmptyArgumentList.
-Definition EmptyArgumentList := EmptyArgumentList.t.
-
-Module ReturnType := crate.call.utils.ReturnType.
-Definition ReturnType := ReturnType.t.
-
-Module Set := crate.call.utils.Set.
-Definition Set := Set.t.
-
-Module Unset := crate.call.utils.Unset.
-Definition Unset := Unset.t.
-
-Module ExecutionInput := crate.call.ExecutionInput.
-Definition ExecutionInput := ExecutionInput.t.
-
-Module Gas := crate.types.Gas.
-Definition Gas := Gas.t.
-
-Module Error := crate.Error.
-Definition Error := Error.t.
-
-Module PhantomData := core.marker.PhantomData.
-Definition PhantomData := PhantomData.t.
 
 Module CallParams.
   Record t : Set := {
     call_type : CallType;
-    call_flags : CallFlags;
-    _return_type : ReturnType R;
-    exec_input : ExecutionInput Args;
-    _phantom : PhantomData ( -> E);
+    call_flags : crate.backend.CallFlags;
+    _return_type : crate.call.utils.ReturnType R;
+    exec_input : crate.call.ExecutionInput Args;
+    _phantom : core.marker.PhantomData ( -> E);
   }.
   
   Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -5574,8 +5729,8 @@ Module CallParams.
 End CallParams.
 Definition CallParams : Set := CallParams.t.
 
-Module Impl__crate_fmt_Debug_for_CallParams_E_CallType_Args_R.
-  Definition Self := CallParams E CallType Args R.
+Module Impl__crate_fmt_Debug_for_self_call_builder_CallParams_E_CallType_Args_R.
+  Definition Self := self.call_builder.CallParams E CallType Args R.
   
   Definition fmt
       (self : ref Self)
@@ -5602,28 +5757,33 @@ Module Impl__crate_fmt_Debug_for_CallParams_E_CallType_Args_R.
   Global Instance I E CallType Args R : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_CallParams_E_CallType_Args_R.
+End Impl__crate_fmt_Debug_for_self_call_builder_CallParams_E_CallType_Args_R.
 
-Module ImplCallParams E CallType Args R_3.
-  Definition Self := CallParams E CallType Args R.
+Module Implself.call_builder.CallParams E CallType Args R_2.
+  Definition Self := self.call_builder.CallParams E CallType Args R.
   
-  Definition call_flags (self : ref Self) : M (ref CallFlags) :=
+  Definition call_flags (self : ref Self) : M (ref crate.backend.CallFlags) :=
     Pure (addr_of self.["call_flags"]).
   
   Global Instance Method_call_flags : Notation.Dot "call_flags" := {
     Notation.dot := call_flags;
   }.
   
-  Definition exec_input (self : ref Self) : M (ref (ExecutionInput Args)) :=
+  Definition exec_input
+      (self : ref Self)
+      : M (ref (crate.call.ExecutionInput Args)) :=
     Pure (addr_of self.["exec_input"]).
   
   Global Instance Method_exec_input : Notation.Dot "exec_input" := {
     Notation.dot := exec_input;
   }.
-End ImplCallParams E CallType Args R_3.
+End Implself.call_builder.CallParams E CallType Args R_2.
 
-Module ImplCallParams E (Call E) Args R_5.
-  Definition Self := CallParams E (Call E) Args R.
+Module Implself.call_builder.CallParams E (self.call_builder.Call E) Args R_3.
+  Definition
+    Self
+    :=
+    self.call_builder.CallParams E (self.call_builder.Call E) Args R.
   
   Definition callee (self : ref Self) : M (ref ImplE.AccountId) :=
     Pure (addr_of self.["call_type"].["callee"]).
@@ -5632,7 +5792,7 @@ Module ImplCallParams E (Call E) Args R_5.
     Notation.dot := callee;
   }.
   
-  Definition gas_limit (self : ref Self) : M Gas :=
+  Definition gas_limit (self : ref Self) : M crate.types.Gas :=
     Pure self.["call_type"].["gas_limit"].
   
   Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
@@ -5646,10 +5806,18 @@ Module ImplCallParams E (Call E) Args R_5.
     Notation.Dot "transferred_value" := {
     Notation.dot := transferred_value;
   }.
-End ImplCallParams E (Call E) Args R_5.
+End Implself.call_builder.CallParams E (self.call_builder.Call E) Args R_3.
 
-Module ImplCallParams E (DelegateCall E) Args R_5.
-  Definition Self := CallParams E (DelegateCall E) Args R.
+Module
+  Implself.call_builder.CallParams
+    E
+    (self.call_builder.DelegateCall E)
+    Args
+    R_3.
+  Definition
+    Self
+    :=
+    self.call_builder.CallParams E (self.call_builder.DelegateCall E) Args R.
   
   Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
     Pure (addr_of self.["call_type"].["code_hash"]).
@@ -5657,10 +5825,18 @@ Module ImplCallParams E (DelegateCall E) Args R_5.
   Global Instance Method_code_hash : Notation.Dot "code_hash" := {
     Notation.dot := code_hash;
   }.
-End ImplCallParams E (DelegateCall E) Args R_5.
+End
+  Implself.call_builder.CallParams
+    E
+    (self.call_builder.DelegateCall E)
+    Args
+    R_3.
 
-Module ImplCallParams E (Call E) Args R_6.
-  Definition Self := CallParams E (Call E) Args R.
+Module Implself.call_builder.CallParams E (self.call_builder.Call E) Args R_4.
+  Definition
+    Self
+    :=
+    self.call_builder.CallParams E (self.call_builder.Call E) Args R.
   
   Definition invoke (self : ref Self) : M R :=
     let* α0 := crate.invoke_contract self in
@@ -5688,16 +5864,24 @@ Module ImplCallParams E (Call E) Args R_6.
   
   Definition try_invoke
       (self : ref Self)
-      : M (Result (ink_primitives.MessageResult R) crate.Error) :=
+      : M (crate.Result (ink_primitives.MessageResult R) crate.Error) :=
     crate.invoke_contract self.
   
   Global Instance Method_try_invoke : Notation.Dot "try_invoke" := {
     Notation.dot := try_invoke;
   }.
-End ImplCallParams E (Call E) Args R_6.
+End Implself.call_builder.CallParams E (self.call_builder.Call E) Args R_4.
 
-Module ImplCallParams E (DelegateCall E) Args R_6.
-  Definition Self := CallParams E (DelegateCall E) Args R.
+Module
+  Implself.call_builder.CallParams
+    E
+    (self.call_builder.DelegateCall E)
+    Args
+    R_4.
+  Definition
+    Self
+    :=
+    self.call_builder.CallParams E (self.call_builder.DelegateCall E) Args R.
   
   Definition invoke (self : ref Self) : M R :=
     let* α0 := crate.invoke_contract_delegate self in
@@ -5714,13 +5898,18 @@ Module ImplCallParams E (DelegateCall E) Args R_6.
     Notation.dot := invoke;
   }.
   
-  Definition try_invoke (self : ref Self) : M (Result R crate.Error) :=
+  Definition try_invoke (self : ref Self) : M (crate.Result R crate.Error) :=
     crate.invoke_contract_delegate self.
   
   Global Instance Method_try_invoke : Notation.Dot "try_invoke" := {
     Notation.dot := try_invoke;
   }.
-End ImplCallParams E (DelegateCall E) Args R_6.
+End
+  Implself.call_builder.CallParams
+    E
+    (self.call_builder.DelegateCall E)
+    Args
+    R_4.
 
 Definition build_call
     {E : Set}
@@ -5728,11 +5917,12 @@ Definition build_call
     (_ : unit)
     :
       M
-        (CallBuilder
+        (self.call_builder.CallBuilder
           E
-          (Unset (Call E))
-          (Unset (ExecutionInput EmptyArgumentList))
-          (Unset (ReturnType unit))) :=
+          (crate.call.utils.Unset (self.call_builder.Call E))
+          (crate.call.utils.Unset
+            (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+          (crate.call.utils.Unset (crate.call.utils.ReturnType unit))) :=
   let* α0 := Default.default tt in
   let* α1 := Default.default tt in
   let* α2 := Default.default tt in
@@ -5740,17 +5930,17 @@ Definition build_call
   let* α4 := Default.default tt in
   Pure
     {|
-      CallBuilder.call_type := α0;
-      CallBuilder.call_flags := α1;
-      CallBuilder.exec_input := α2;
-      CallBuilder.return_type := α3;
-      CallBuilder._phantom := α4;
+      self.call_builder.CallBuilder.call_type := α0;
+      self.call_builder.CallBuilder.call_flags := α1;
+      self.call_builder.CallBuilder.exec_input := α2;
+      self.call_builder.CallBuilder.return_type := α3;
+      self.call_builder.CallBuilder._phantom := α4;
     |}.
 
 Module Call.
   Record t : Set := {
     callee : ImplE.AccountId;
-    gas_limit : Gas;
+    gas_limit : crate.types.Gas;
     transferred_value : ImplE.Balance;
   }.
   
@@ -5766,15 +5956,18 @@ Module Call.
 End Call.
 Definition Call : Set := Call.t.
 
-Module Impl__crate_clone_Clone_for_Call_E.
-  Definition Self := Call E.
+Module Impl__crate_clone_Clone_for_self_call_builder_Call_E.
+  Definition Self := self.call_builder.Call E.
   
-  Definition clone (self : ref Self) : M (Call E) :=
+  Definition clone (self : ref Self) : M (self.call_builder.Call E) :=
     let* α0 := _crate.clone.Clone.clone (addr_of self.["callee"]) in
     let* α1 := _crate.clone.Clone.clone (addr_of self.["gas_limit"]) in
     let* α2 := _crate.clone.Clone.clone (addr_of self.["transferred_value"]) in
     Pure
-      {| Call.callee := α0; Call.gas_limit := α1; Call.transferred_value := α2;
+      {|
+        self.call_builder.Call.callee := α0;
+        self.call_builder.Call.gas_limit := α1;
+        self.call_builder.Call.transferred_value := α2;
       |}.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -5784,10 +5977,10 @@ Module Impl__crate_clone_Clone_for_Call_E.
   Global Instance I E : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_Call_E.
+End Impl__crate_clone_Clone_for_self_call_builder_Call_E.
 
-Module ImplCall E_5.
-  Definition Self := Call E.
+Module Implself.call_builder.Call E_3.
+  Definition Self := self.call_builder.Call E.
   
   Definition new (callee : ImplE.AccountId) : M Self :=
     let* α0 := Default.default tt in
@@ -5802,17 +5995,17 @@ Module ImplCall E_5.
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
-End ImplCall E_5.
+End Implself.call_builder.Call E_3.
 
-Module ImplCall E_6.
-  Definition Self := Call E.
+Module Implself.call_builder.Call E_4.
+  Definition Self := self.call_builder.Call E.
   
-  Definition gas_limit (self : Self) (gas_limit : Gas) : M Self :=
+  Definition gas_limit (self : Self) (gas_limit : crate.types.Gas) : M Self :=
     Pure
       {|
-        Call.callee := self.["callee"];
-        Call.gas_limit := gas_limit;
-        Call.transferred_value := self.["transferred_value"];
+        self.call_builder.Call.callee := self.["callee"];
+        self.call_builder.Call.gas_limit := gas_limit;
+        self.call_builder.Call.transferred_value := self.["transferred_value"];
       |}.
   
   Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
@@ -5825,16 +6018,16 @@ Module ImplCall E_6.
       : M Self :=
     Pure
       {|
-        Call.callee := self.["callee"];
-        Call.gas_limit := self.["gas_limit"];
-        Call.transferred_value := transferred_value;
+        self.call_builder.Call.callee := self.["callee"];
+        self.call_builder.Call.gas_limit := self.["gas_limit"];
+        self.call_builder.Call.transferred_value := transferred_value;
       |}.
   
   Global Instance Method_transferred_value :
     Notation.Dot "transferred_value" := {
     Notation.dot := transferred_value;
   }.
-End ImplCall E_6.
+End Implself.call_builder.Call E_4.
 
 Module DelegateCall.
   Record t : Set := {
@@ -5847,35 +6040,35 @@ Module DelegateCall.
 End DelegateCall.
 Definition DelegateCall : Set := DelegateCall.t.
 
-Module ImplDelegateCall E_5.
-  Definition Self := DelegateCall E.
+Module Implself.call_builder.DelegateCall E_3.
+  Definition Self := self.call_builder.DelegateCall E.
   
   Definition new (code_hash : ImplE.Hash) : M Self :=
-    Pure {| DelegateCall.code_hash := code_hash; |}.
+    Pure {| self.call_builder.DelegateCall.code_hash := code_hash; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
-End ImplDelegateCall E_5.
+End Implself.call_builder.DelegateCall E_3.
 
-Module ImplDelegateCall E_6.
-  Definition Self := DelegateCall E.
+Module Implself.call_builder.DelegateCall E_4.
+  Definition Self := self.call_builder.DelegateCall E.
   
   Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
-    Pure {| DelegateCall.code_hash := code_hash; |}.
+    Pure {| self.call_builder.DelegateCall.code_hash := code_hash; |}.
   
   Global Instance Method_code_hash : Notation.Dot "code_hash" := {
     Notation.dot := code_hash;
   }.
-End ImplDelegateCall E_6.
+End Implself.call_builder.DelegateCall E_4.
 
 Module CallBuilder.
   Record t : Set := {
     call_type : CallType;
-    call_flags : CallFlags;
+    call_flags : crate.backend.CallFlags;
     exec_input : Args;
     return_type : RetType;
-    _phantom : PhantomData ( -> E);
+    _phantom : core.marker.PhantomData ( -> E);
   }.
   
   Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -5896,12 +6089,13 @@ Module CallBuilder.
 End CallBuilder.
 Definition CallBuilder : Set := CallBuilder.t.
 
-Module Impl__crate_clone_Clone_for_CallBuilder_E_CallType_Args_RetType.
-  Definition Self := CallBuilder E CallType Args RetType.
+Module
+    Impl__crate_clone_Clone_for_self_call_builder_CallBuilder_E_CallType_Args_RetType.
+  Definition Self := self.call_builder.CallBuilder E CallType Args RetType.
   
   Definition clone
       (self : ref Self)
-      : M (CallBuilder E CallType Args RetType) :=
+      : M (self.call_builder.CallBuilder E CallType Args RetType) :=
     let* α0 := _crate.clone.Clone.clone (addr_of self.["call_type"]) in
     let* α1 := _crate.clone.Clone.clone (addr_of self.["call_flags"]) in
     let* α2 := _crate.clone.Clone.clone (addr_of self.["exec_input"]) in
@@ -5909,11 +6103,11 @@ Module Impl__crate_clone_Clone_for_CallBuilder_E_CallType_Args_RetType.
     let* α4 := _crate.clone.Clone.clone (addr_of self.["_phantom"]) in
     Pure
       {|
-        CallBuilder.call_type := α0;
-        CallBuilder.call_flags := α1;
-        CallBuilder.exec_input := α2;
-        CallBuilder.return_type := α3;
-        CallBuilder._phantom := α4;
+        self.call_builder.CallBuilder.call_type := α0;
+        self.call_builder.CallBuilder.call_flags := α1;
+        self.call_builder.CallBuilder.exec_input := α2;
+        self.call_builder.CallBuilder.return_type := α3;
+        self.call_builder.CallBuilder._phantom := α4;
       |}.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -5923,125 +6117,207 @@ Module Impl__crate_clone_Clone_for_CallBuilder_E_CallType_Args_RetType.
   Global Instance I E CallType Args RetType : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_CallBuilder_E_CallType_Args_RetType.
+End
+  Impl__crate_clone_Clone_for_self_call_builder_CallBuilder_E_CallType_Args_RetType.
 
-Module ImplCallBuilder E (Unset CallType) Args RetType_5.
-  Definition Self := CallBuilder E (Unset CallType) Args RetType.
+Module
+  Implself.call_builder.CallBuilder
+    E
+    (crate.call.utils.Unset CallType)
+    Args
+    RetType_3.
+  Definition
+    Self
+    :=
+    self.call_builder.CallBuilder
+      E
+      (crate.call.utils.Unset CallType)
+      Args
+      RetType.
   
   Definition call_type
       (self : Self)
       (call_type : NewCallType)
-      : M (CallBuilder E (Set NewCallType) Args RetType) :=
+      :
+        M
+          (self.call_builder.CallBuilder
+            E
+            (crate.call.utils.Set NewCallType)
+            Args
+            RetType) :=
     let* α0 := Default.default tt in
     Pure
       {|
-        CallBuilder.call_type := Set.Build_t call_type;
-        CallBuilder.call_flags := self.["call_flags"];
-        CallBuilder.exec_input := self.["exec_input"];
-        CallBuilder.return_type := self.["return_type"];
-        CallBuilder._phantom := α0;
+        self.call_builder.CallBuilder.call_type :=
+          crate.call.utils.Set.Build_t call_type;
+        self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+        self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+        self.call_builder.CallBuilder.return_type := self.["return_type"];
+        self.call_builder.CallBuilder._phantom := α0;
       |}.
   
   Global Instance Method_call_type : Notation.Dot "call_type" := {
     Notation.dot := call_type;
   }.
-End ImplCallBuilder E (Unset CallType) Args RetType_5.
+End
+  Implself.call_builder.CallBuilder
+    E
+    (crate.call.utils.Unset CallType)
+    Args
+    RetType_3.
 
-Module ImplCallBuilder E CallType Args RetType_3.
-  Definition Self := CallBuilder E CallType Args RetType.
+Module Implself.call_builder.CallBuilder E CallType Args RetType_2.
+  Definition Self := self.call_builder.CallBuilder E CallType Args RetType.
   
   Definition call_flags
       (self : Self)
-      (call_flags : CallFlags)
-      : M (CallBuilder E CallType Args RetType) :=
+      (call_flags : crate.backend.CallFlags)
+      : M (self.call_builder.CallBuilder E CallType Args RetType) :=
     let* α0 := Default.default tt in
     Pure
       {|
-        CallBuilder.call_type := self.["call_type"];
-        CallBuilder.call_flags := call_flags;
-        CallBuilder.exec_input := self.["exec_input"];
-        CallBuilder.return_type := self.["return_type"];
-        CallBuilder._phantom := α0;
+        self.call_builder.CallBuilder.call_type := self.["call_type"];
+        self.call_builder.CallBuilder.call_flags := call_flags;
+        self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+        self.call_builder.CallBuilder.return_type := self.["return_type"];
+        self.call_builder.CallBuilder._phantom := α0;
       |}.
   
   Global Instance Method_call_flags : Notation.Dot "call_flags" := {
     Notation.dot := call_flags;
   }.
-End ImplCallBuilder E CallType Args RetType_3.
+End Implself.call_builder.CallBuilder E CallType Args RetType_2.
 
-Module ImplCallBuilder E CallType Args (Unset (ReturnType unit))_3.
-  Definition Self := CallBuilder E CallType Args (Unset (ReturnType unit)).
+Module
+  Implself.call_builder.CallBuilder
+    E
+    CallType
+    Args
+    (crate.call.utils.Unset (crate.call.utils.ReturnType unit))_2.
+  Definition
+    Self
+    :=
+    self.call_builder.CallBuilder
+      E
+      CallType
+      Args
+      (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
   
   Definition returns
       (self : Self)
-      : M (CallBuilder E CallType Args (Set (ReturnType R))) :=
+      :
+        M
+          (self.call_builder.CallBuilder
+            E
+            CallType
+            Args
+            (crate.call.utils.Set (crate.call.utils.ReturnType R))) :=
     let* α0 := Default.default tt in
     let* α1 := Default.default tt in
     Pure
       {|
-        CallBuilder.call_type := self.["call_type"];
-        CallBuilder.call_flags := self.["call_flags"];
-        CallBuilder.exec_input := self.["exec_input"];
-        CallBuilder.return_type := Set.Build_t α0;
-        CallBuilder._phantom := α1;
+        self.call_builder.CallBuilder.call_type := self.["call_type"];
+        self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+        self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+        self.call_builder.CallBuilder.return_type :=
+          crate.call.utils.Set.Build_t α0;
+        self.call_builder.CallBuilder._phantom := α1;
       |}.
   
   Global Instance Method_returns : Notation.Dot "returns" := {
     Notation.dot := returns;
   }.
-End ImplCallBuilder E CallType Args (Unset (ReturnType unit))_3.
-
-Module
-  ImplCallBuilder
+End
+  Implself.call_builder.CallBuilder
     E
     CallType
-    (Unset (ExecutionInput EmptyArgumentList))
-    RetType_3.
+    Args
+    (crate.call.utils.Unset (crate.call.utils.ReturnType unit))_2.
+
+Module
+  Implself.call_builder.CallBuilder
+    E
+    CallType
+    (crate.call.utils.Unset
+      (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+    RetType_2.
   Definition
     Self
     :=
-    CallBuilder E CallType (Unset (ExecutionInput EmptyArgumentList)) RetType.
+    self.call_builder.CallBuilder
+      E
+      CallType
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      RetType.
   
   Definition exec_input
       (self : Self)
-      (exec_input : ExecutionInput Args)
-      : M (CallBuilder E CallType (Set (ExecutionInput Args)) RetType) :=
+      (exec_input : crate.call.ExecutionInput Args)
+      :
+        M
+          (self.call_builder.CallBuilder
+            E
+            CallType
+            (crate.call.utils.Set (crate.call.ExecutionInput Args))
+            RetType) :=
     let* α0 := Default.default tt in
     Pure
       {|
-        CallBuilder.call_type := self.["call_type"];
-        CallBuilder.call_flags := self.["call_flags"];
-        CallBuilder.exec_input := Set.Build_t exec_input;
-        CallBuilder.return_type := self.["return_type"];
-        CallBuilder._phantom := α0;
+        self.call_builder.CallBuilder.call_type := self.["call_type"];
+        self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+        self.call_builder.CallBuilder.exec_input :=
+          crate.call.utils.Set.Build_t exec_input;
+        self.call_builder.CallBuilder.return_type := self.["return_type"];
+        self.call_builder.CallBuilder._phantom := α0;
       |}.
   
   Global Instance Method_exec_input : Notation.Dot "exec_input" := {
     Notation.dot := exec_input;
   }.
 End
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
     CallType
-    (Unset (ExecutionInput EmptyArgumentList))
-    RetType_3.
+    (crate.call.utils.Unset
+      (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+    RetType_2.
 
-Module ImplCallBuilder E (Unset CallType) Args RetType_6.
-  Definition Self := CallBuilder E (Unset CallType) Args RetType.
+Module
+  Implself.call_builder.CallBuilder
+    E
+    (crate.call.utils.Unset CallType)
+    Args
+    RetType_4.
+  Definition
+    Self
+    :=
+    self.call_builder.CallBuilder
+      E
+      (crate.call.utils.Unset CallType)
+      Args
+      RetType.
   
   Definition call
       (self : Self)
       (callee : ImplE.AccountId)
-      : M (CallBuilder E (Set (Call E)) Args RetType) :=
-    let* α0 := Call::["new"] callee in
+      :
+        M
+          (self.call_builder.CallBuilder
+            E
+            (crate.call.utils.Set (self.call_builder.Call E))
+            Args
+            RetType) :=
+    let* α0 := self.call_builder.Call::["new"] callee in
     let* α1 := Default.default tt in
     Pure
       {|
-        CallBuilder.call_type := Set.Build_t α0;
-        CallBuilder.call_flags := self.["call_flags"];
-        CallBuilder.exec_input := self.["exec_input"];
-        CallBuilder.return_type := self.["return_type"];
-        CallBuilder._phantom := α1;
+        self.call_builder.CallBuilder.call_type :=
+          crate.call.utils.Set.Build_t α0;
+        self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+        self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+        self.call_builder.CallBuilder.return_type := self.["return_type"];
+        self.call_builder.CallBuilder._phantom := α1;
       |}.
   
   Global Instance Method_call : Notation.Dot "call" := {
@@ -6051,42 +6327,67 @@ Module ImplCallBuilder E (Unset CallType) Args RetType_6.
   Definition delegate
       (self : Self)
       (code_hash : ImplE.Hash)
-      : M (CallBuilder E (Set (DelegateCall E)) Args RetType) :=
-    let* α0 := DelegateCall::["new"] code_hash in
+      :
+        M
+          (self.call_builder.CallBuilder
+            E
+            (crate.call.utils.Set (self.call_builder.DelegateCall E))
+            Args
+            RetType) :=
+    let* α0 := self.call_builder.DelegateCall::["new"] code_hash in
     let* α1 := Default.default tt in
     Pure
       {|
-        CallBuilder.call_type := Set.Build_t α0;
-        CallBuilder.call_flags := self.["call_flags"];
-        CallBuilder.exec_input := self.["exec_input"];
-        CallBuilder.return_type := self.["return_type"];
-        CallBuilder._phantom := α1;
+        self.call_builder.CallBuilder.call_type :=
+          crate.call.utils.Set.Build_t α0;
+        self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+        self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+        self.call_builder.CallBuilder.return_type := self.["return_type"];
+        self.call_builder.CallBuilder._phantom := α1;
       |}.
   
   Global Instance Method_delegate : Notation.Dot "delegate" := {
     Notation.dot := delegate;
   }.
-End ImplCallBuilder E (Unset CallType) Args RetType_6.
+End
+  Implself.call_builder.CallBuilder
+    E
+    (crate.call.utils.Unset CallType)
+    Args
+    RetType_4.
 
-Module ImplCallBuilder E (Set (Call E)) Args RetType_3.
-  Definition Self := CallBuilder E (Set (Call E)) Args RetType.
+Module
+  Implself.call_builder.CallBuilder
+    E
+    (crate.call.utils.Set (self.call_builder.Call E))
+    Args
+    RetType_2.
+  Definition
+    Self
+    :=
+    self.call_builder.CallBuilder
+      E
+      (crate.call.utils.Set (self.call_builder.Call E))
+      Args
+      RetType.
   
-  Definition gas_limit (self : Self) (gas_limit : Gas) : M Self :=
+  Definition gas_limit (self : Self) (gas_limit : crate.types.Gas) : M Self :=
     let* call_type := self.["call_type"].["value"] in
     let* α0 := Default.default tt in
     Pure
       {|
-        CallBuilder.call_type :=
-          Set.Build_t
+        self.call_builder.CallBuilder.call_type :=
+          crate.call.utils.Set.Build_t
             {|
-              Call.callee := call_type.["callee"];
-              Call.gas_limit := gas_limit;
-              Call.transferred_value := call_type.["transferred_value"];
+              self.call_builder.Call.callee := call_type.["callee"];
+              self.call_builder.Call.gas_limit := gas_limit;
+              self.call_builder.Call.transferred_value :=
+                call_type.["transferred_value"];
             |};
-        CallBuilder.call_flags := self.["call_flags"];
-        CallBuilder.exec_input := self.["exec_input"];
-        CallBuilder.return_type := self.["return_type"];
-        CallBuilder._phantom := α0;
+        self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+        self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+        self.call_builder.CallBuilder.return_type := self.["return_type"];
+        self.call_builder.CallBuilder._phantom := α0;
       |}.
   
   Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
@@ -6101,217 +6402,274 @@ Module ImplCallBuilder E (Set (Call E)) Args RetType_3.
     let* α0 := Default.default tt in
     Pure
       {|
-        CallBuilder.call_type :=
-          Set.Build_t
+        self.call_builder.CallBuilder.call_type :=
+          crate.call.utils.Set.Build_t
             {|
-              Call.callee := call_type.["callee"];
-              Call.gas_limit := call_type.["gas_limit"];
-              Call.transferred_value := transferred_value;
+              self.call_builder.Call.callee := call_type.["callee"];
+              self.call_builder.Call.gas_limit := call_type.["gas_limit"];
+              self.call_builder.Call.transferred_value := transferred_value;
             |};
-        CallBuilder.call_flags := self.["call_flags"];
-        CallBuilder.exec_input := self.["exec_input"];
-        CallBuilder.return_type := self.["return_type"];
-        CallBuilder._phantom := α0;
+        self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+        self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+        self.call_builder.CallBuilder.return_type := self.["return_type"];
+        self.call_builder.CallBuilder._phantom := α0;
       |}.
   
   Global Instance Method_transferred_value :
     Notation.Dot "transferred_value" := {
     Notation.dot := transferred_value;
   }.
-End ImplCallBuilder E (Set (Call E)) Args RetType_3.
+End
+  Implself.call_builder.CallBuilder
+    E
+    (crate.call.utils.Set (self.call_builder.Call E))
+    Args
+    RetType_2.
 
-Module ImplCallBuilder E (Set (DelegateCall E)) Args RetType_3.
-  Definition Self := CallBuilder E (Set (DelegateCall E)) Args RetType.
+Module
+  Implself.call_builder.CallBuilder
+    E
+    (crate.call.utils.Set (self.call_builder.DelegateCall E))
+    Args
+    RetType_2.
+  Definition
+    Self
+    :=
+    self.call_builder.CallBuilder
+      E
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      Args
+      RetType.
   
   Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
     let* α0 := Default.default tt in
     Pure
       {|
-        CallBuilder.call_type :=
-          Set.Build_t {| DelegateCall.code_hash := code_hash; |};
-        CallBuilder.call_flags := self.["call_flags"];
-        CallBuilder.exec_input := self.["exec_input"];
-        CallBuilder.return_type := self.["return_type"];
-        CallBuilder._phantom := α0;
+        self.call_builder.CallBuilder.call_type :=
+          crate.call.utils.Set.Build_t
+            {| self.call_builder.DelegateCall.code_hash := code_hash; |};
+        self.call_builder.CallBuilder.call_flags := self.["call_flags"];
+        self.call_builder.CallBuilder.exec_input := self.["exec_input"];
+        self.call_builder.CallBuilder.return_type := self.["return_type"];
+        self.call_builder.CallBuilder._phantom := α0;
       |}.
   
   Global Instance Method_code_hash : Notation.Dot "code_hash" := {
     Notation.dot := code_hash;
   }.
-End ImplCallBuilder E (Set (DelegateCall E)) Args RetType_3.
+End
+  Implself.call_builder.CallBuilder
+    E
+    (crate.call.utils.Set (self.call_builder.DelegateCall E))
+    Args
+    RetType_2.
 
 Module
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (Call E))
-    (Set (ExecutionInput Args))
-    (Set (ReturnType RetType))_3.
+    (crate.call.utils.Set (self.call_builder.Call E))
+    (crate.call.utils.Set (crate.call.ExecutionInput Args))
+    (crate.call.utils.Set (crate.call.utils.ReturnType RetType))_2.
   Definition
     Self
     :=
-    CallBuilder
+    self.call_builder.CallBuilder
       E
-      (Set (Call E))
-      (Set (ExecutionInput Args))
-      (Set (ReturnType RetType)).
+      (crate.call.utils.Set (self.call_builder.Call E))
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
   
-  Definition params (self : Self) : M (CallParams E (Call E) Args RetType) :=
+  Definition params
+      (self : Self)
+      :
+        M
+          (self.call_builder.CallParams
+            E
+            (self.call_builder.Call E)
+            Args
+            RetType) :=
     let* α0 := self.["call_type"].["value"] in
     let* α1 := Default.default tt in
     let* α2 := self.["exec_input"].["value"] in
     Pure
       {|
-        CallParams.call_type := α0;
-        CallParams.call_flags := self.["call_flags"];
-        CallParams._return_type := α1;
-        CallParams.exec_input := α2;
-        CallParams._phantom := self.["_phantom"];
+        self.call_builder.CallParams.call_type := α0;
+        self.call_builder.CallParams.call_flags := self.["call_flags"];
+        self.call_builder.CallParams._return_type := α1;
+        self.call_builder.CallParams.exec_input := α2;
+        self.call_builder.CallParams._phantom := self.["_phantom"];
       |}.
   
   Global Instance Method_params : Notation.Dot "params" := {
     Notation.dot := params;
   }.
 End
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (Call E))
-    (Set (ExecutionInput Args))
-    (Set (ReturnType RetType))_3.
+    (crate.call.utils.Set (self.call_builder.Call E))
+    (crate.call.utils.Set (crate.call.ExecutionInput Args))
+    (crate.call.utils.Set (crate.call.utils.ReturnType RetType))_2.
 
 Module
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (DelegateCall E))
-    (Set (ExecutionInput Args))
-    (Set (ReturnType RetType))_3.
+    (crate.call.utils.Set (self.call_builder.DelegateCall E))
+    (crate.call.utils.Set (crate.call.ExecutionInput Args))
+    (crate.call.utils.Set (crate.call.utils.ReturnType RetType))_2.
   Definition
     Self
     :=
-    CallBuilder
+    self.call_builder.CallBuilder
       E
-      (Set (DelegateCall E))
-      (Set (ExecutionInput Args))
-      (Set (ReturnType RetType)).
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
   
   Definition params
       (self : Self)
-      : M (CallParams E (DelegateCall E) Args RetType) :=
+      :
+        M
+          (self.call_builder.CallParams
+            E
+            (self.call_builder.DelegateCall E)
+            Args
+            RetType) :=
     let* α0 := self.["call_type"].["value"] in
     let* α1 := Default.default tt in
     let* α2 := self.["exec_input"].["value"] in
     Pure
       {|
-        CallParams.call_type := α0;
-        CallParams.call_flags := self.["call_flags"];
-        CallParams._return_type := α1;
-        CallParams.exec_input := α2;
-        CallParams._phantom := self.["_phantom"];
+        self.call_builder.CallParams.call_type := α0;
+        self.call_builder.CallParams.call_flags := self.["call_flags"];
+        self.call_builder.CallParams._return_type := α1;
+        self.call_builder.CallParams.exec_input := α2;
+        self.call_builder.CallParams._phantom := self.["_phantom"];
       |}.
   
   Global Instance Method_params : Notation.Dot "params" := {
     Notation.dot := params;
   }.
 End
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (DelegateCall E))
-    (Set (ExecutionInput Args))
-    (Set (ReturnType RetType))_3.
+    (crate.call.utils.Set (self.call_builder.DelegateCall E))
+    (crate.call.utils.Set (crate.call.ExecutionInput Args))
+    (crate.call.utils.Set (crate.call.utils.ReturnType RetType))_2.
 
 Module
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (Call E))
-    (Unset (ExecutionInput EmptyArgumentList))
-    (Unset RetType)_3.
+    (crate.call.utils.Set (self.call_builder.Call E))
+    (crate.call.utils.Unset
+      (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+    (crate.call.utils.Unset RetType)_2.
   Definition
     Self
     :=
-    CallBuilder
+    self.call_builder.CallBuilder
       E
-      (Set (Call E))
-      (Unset (ExecutionInput EmptyArgumentList))
-      (Unset RetType).
+      (crate.call.utils.Set (self.call_builder.Call E))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      (crate.call.utils.Unset RetType).
   
   Definition params
       (self : Self)
-      : M (CallParams E (Call E) EmptyArgumentList unit) :=
+      :
+        M
+          (self.call_builder.CallParams
+            E
+            (self.call_builder.Call E)
+            crate.call.utils.EmptyArgumentList
+            unit) :=
     let* α0 := self.["call_type"].["value"] in
     let* α1 := Default.default tt in
     let* α2 := Default.default tt in
     Pure
       {|
-        CallParams.call_type := α0;
-        CallParams.call_flags := self.["call_flags"];
-        CallParams._return_type := α1;
-        CallParams.exec_input := α2;
-        CallParams._phantom := self.["_phantom"];
+        self.call_builder.CallParams.call_type := α0;
+        self.call_builder.CallParams.call_flags := self.["call_flags"];
+        self.call_builder.CallParams._return_type := α1;
+        self.call_builder.CallParams.exec_input := α2;
+        self.call_builder.CallParams._phantom := self.["_phantom"];
       |}.
   
   Global Instance Method_params : Notation.Dot "params" := {
     Notation.dot := params;
   }.
 End
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (Call E))
-    (Unset (ExecutionInput EmptyArgumentList))
-    (Unset RetType)_3.
+    (crate.call.utils.Set (self.call_builder.Call E))
+    (crate.call.utils.Unset
+      (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+    (crate.call.utils.Unset RetType)_2.
 
 Module
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (DelegateCall E))
-    (Unset (ExecutionInput EmptyArgumentList))
-    (Unset RetType)_3.
+    (crate.call.utils.Set (self.call_builder.DelegateCall E))
+    (crate.call.utils.Unset
+      (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+    (crate.call.utils.Unset RetType)_2.
   Definition
     Self
     :=
-    CallBuilder
+    self.call_builder.CallBuilder
       E
-      (Set (DelegateCall E))
-      (Unset (ExecutionInput EmptyArgumentList))
-      (Unset RetType).
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      (crate.call.utils.Unset RetType).
   
   Definition params
       (self : Self)
-      : M (CallParams E (DelegateCall E) EmptyArgumentList unit) :=
+      :
+        M
+          (self.call_builder.CallParams
+            E
+            (self.call_builder.DelegateCall E)
+            crate.call.utils.EmptyArgumentList
+            unit) :=
     let* α0 := self.["call_type"].["value"] in
     let* α1 := Default.default tt in
     let* α2 := Default.default tt in
     Pure
       {|
-        CallParams.call_type := α0;
-        CallParams.call_flags := self.["call_flags"];
-        CallParams._return_type := α1;
-        CallParams.exec_input := α2;
-        CallParams._phantom := self.["_phantom"];
+        self.call_builder.CallParams.call_type := α0;
+        self.call_builder.CallParams.call_flags := self.["call_flags"];
+        self.call_builder.CallParams._return_type := α1;
+        self.call_builder.CallParams.exec_input := α2;
+        self.call_builder.CallParams._phantom := self.["_phantom"];
       |}.
   
   Global Instance Method_params : Notation.Dot "params" := {
     Notation.dot := params;
   }.
 End
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (DelegateCall E))
-    (Unset (ExecutionInput EmptyArgumentList))
-    (Unset RetType)_3.
+    (crate.call.utils.Set (self.call_builder.DelegateCall E))
+    (crate.call.utils.Unset
+      (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+    (crate.call.utils.Unset RetType)_2.
 
 Module
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (Call E))
-    (Unset (ExecutionInput EmptyArgumentList))
-    (Unset (ReturnType unit))_3.
+    (crate.call.utils.Set (self.call_builder.Call E))
+    (crate.call.utils.Unset
+      (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+    (crate.call.utils.Unset (crate.call.utils.ReturnType unit))_2.
   Definition
     Self
     :=
-    CallBuilder
+    self.call_builder.CallBuilder
       E
-      (Set (Call E))
-      (Unset (ExecutionInput EmptyArgumentList))
-      (Unset (ReturnType unit)).
+      (crate.call.utils.Set (self.call_builder.Call E))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
   
   Definition invoke (self : Self) : M unit :=
     let* α0 := self.["params"] in
@@ -6323,7 +6681,7 @@ Module
   
   Definition try_invoke
       (self : Self)
-      : M (Result (ink_primitives.MessageResult unit) Error) :=
+      : M (crate.Result (ink_primitives.MessageResult unit) crate.Error) :=
     let* α0 := self.["params"] in
     α0.["try_invoke"].
   
@@ -6331,26 +6689,29 @@ Module
     Notation.dot := try_invoke;
   }.
 End
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (Call E))
-    (Unset (ExecutionInput EmptyArgumentList))
-    (Unset (ReturnType unit))_3.
+    (crate.call.utils.Set (self.call_builder.Call E))
+    (crate.call.utils.Unset
+      (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+    (crate.call.utils.Unset (crate.call.utils.ReturnType unit))_2.
 
 Module
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (DelegateCall E))
-    (Unset (ExecutionInput EmptyArgumentList))
-    (Unset (ReturnType unit))_3.
+    (crate.call.utils.Set (self.call_builder.DelegateCall E))
+    (crate.call.utils.Unset
+      (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+    (crate.call.utils.Unset (crate.call.utils.ReturnType unit))_2.
   Definition
     Self
     :=
-    CallBuilder
+    self.call_builder.CallBuilder
       E
-      (Set (DelegateCall E))
-      (Unset (ExecutionInput EmptyArgumentList))
-      (Unset (ReturnType unit)).
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+      (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
   
   Definition invoke (self : Self) : M unit :=
     let* α0 := self.["params"] in
@@ -6360,7 +6721,7 @@ Module
     Notation.dot := invoke;
   }.
   
-  Definition try_invoke (self : Self) : M (Result unit Error) :=
+  Definition try_invoke (self : Self) : M (crate.Result unit crate.Error) :=
     let* α0 := self.["params"] in
     α0.["try_invoke"].
   
@@ -6368,26 +6729,27 @@ Module
     Notation.dot := try_invoke;
   }.
 End
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (DelegateCall E))
-    (Unset (ExecutionInput EmptyArgumentList))
-    (Unset (ReturnType unit))_3.
+    (crate.call.utils.Set (self.call_builder.DelegateCall E))
+    (crate.call.utils.Unset
+      (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+    (crate.call.utils.Unset (crate.call.utils.ReturnType unit))_2.
 
 Module
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (Call E))
-    (Set (ExecutionInput Args))
-    (Set (ReturnType R))_3.
+    (crate.call.utils.Set (self.call_builder.Call E))
+    (crate.call.utils.Set (crate.call.ExecutionInput Args))
+    (crate.call.utils.Set (crate.call.utils.ReturnType R))_2.
   Definition
     Self
     :=
-    CallBuilder
+    self.call_builder.CallBuilder
       E
-      (Set (Call E))
-      (Set (ExecutionInput Args))
-      (Set (ReturnType R)).
+      (crate.call.utils.Set (self.call_builder.Call E))
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set (crate.call.utils.ReturnType R)).
   
   Definition invoke (self : Self) : M R :=
     let* α0 := self.["params"] in
@@ -6399,7 +6761,7 @@ Module
   
   Definition try_invoke
       (self : Self)
-      : M (Result (ink_primitives.MessageResult R) Error) :=
+      : M (crate.Result (ink_primitives.MessageResult R) crate.Error) :=
     let* α0 := self.["params"] in
     α0.["try_invoke"].
   
@@ -6407,26 +6769,26 @@ Module
     Notation.dot := try_invoke;
   }.
 End
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (Call E))
-    (Set (ExecutionInput Args))
-    (Set (ReturnType R))_3.
+    (crate.call.utils.Set (self.call_builder.Call E))
+    (crate.call.utils.Set (crate.call.ExecutionInput Args))
+    (crate.call.utils.Set (crate.call.utils.ReturnType R))_2.
 
 Module
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (DelegateCall E))
-    (Set (ExecutionInput Args))
-    (Set (ReturnType R))_3.
+    (crate.call.utils.Set (self.call_builder.DelegateCall E))
+    (crate.call.utils.Set (crate.call.ExecutionInput Args))
+    (crate.call.utils.Set (crate.call.utils.ReturnType R))_2.
   Definition
     Self
     :=
-    CallBuilder
+    self.call_builder.CallBuilder
       E
-      (Set (DelegateCall E))
-      (Set (ExecutionInput Args))
-      (Set (ReturnType R)).
+      (crate.call.utils.Set (self.call_builder.DelegateCall E))
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set (crate.call.utils.ReturnType R)).
   
   Definition invoke (self : Self) : M R :=
     let* α0 := self.["params"] in
@@ -6436,7 +6798,7 @@ Module
     Notation.dot := invoke;
   }.
   
-  Definition try_invoke (self : Self) : M (Result R Error) :=
+  Definition try_invoke (self : Self) : M (crate.Result R crate.Error) :=
     let* α0 := self.["params"] in
     α0.["try_invoke"].
   
@@ -6444,18 +6806,15 @@ Module
     Notation.dot := try_invoke;
   }.
 End
-  ImplCallBuilder
+  Implself.call_builder.CallBuilder
     E
-    (Set (DelegateCall E))
-    (Set (ExecutionInput Args))
-    (Set (ReturnType R))_3.
+    (crate.call.utils.Set (self.call_builder.DelegateCall E))
+    (crate.call.utils.Set (crate.call.ExecutionInput Args))
+    (crate.call.utils.Set (crate.call.utils.ReturnType R))_2.
 
 Module common.
-  Module PhantomData := core.marker.PhantomData.
-  Definition PhantomData := PhantomData.t.
-  
   Module ReturnType.
-    Record t : Set := { _ : PhantomData ( -> T);}.
+    Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
     
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
@@ -6463,8 +6822,8 @@ Module common.
   End ReturnType.
   Definition ReturnType := ReturnType.t.
   
-  Module Impl__crate_fmt_Debug_for_ReturnType_T.
-    Definition Self := ReturnType T.
+  Module Impl__crate_fmt_Debug_for_crate_call_utils_ReturnType_T.
+    Definition Self := crate.call.utils.ReturnType T.
     
     Definition fmt
         (self : ref Self)
@@ -6482,10 +6841,10 @@ Module common.
     Global Instance I T : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_ReturnType_T.
+  End Impl__crate_fmt_Debug_for_crate_call_utils_ReturnType_T.
   
-  Module Impl_Clone_for_ReturnType_T.
-    Definition Self := ReturnType T.
+  Module Impl_Clone_for_crate_call_utils_ReturnType_T.
+    Definition Self := crate.call.utils.ReturnType T.
     
     Definition clone (self : ref Self) : M Self :=
       let* α0 := Default.default tt in
@@ -6498,16 +6857,16 @@ Module common.
     Global Instance I T : Clone.Trait Self := {
       Clone.clone := clone;
     }.
-  End Impl_Clone_for_ReturnType_T.
+  End Impl_Clone_for_crate_call_utils_ReturnType_T.
   
-  Module Impl_Copy_for_ReturnType_T.
-    Definition Self := ReturnType T.
+  Module Impl_Copy_for_crate_call_utils_ReturnType_T.
+    Definition Self := crate.call.utils.ReturnType T.
     
     Global Instance I T : Copy.Trait Self := Copy.Build_Class _.
-  End Impl_Copy_for_ReturnType_T.
+  End Impl_Copy_for_crate_call_utils_ReturnType_T.
   
-  Module Impl_Default_for_ReturnType_T.
-    Definition Self := ReturnType T.
+  Module Impl_Default_for_crate_call_utils_ReturnType_T.
+    Definition Self := crate.call.utils.ReturnType T.
     
     Definition default (_ : unit) : M Self :=
       let* α0 := Default.default tt in
@@ -6521,7 +6880,7 @@ Module common.
     Global Instance I T : Default.Trait Self := {
       Default.default := default;
     }.
-  End Impl_Default_for_ReturnType_T.
+  End Impl_Default_for_crate_call_utils_ReturnType_T.
   
   Module Set.
     Record t : Set := { _ : T;}.
@@ -6532,8 +6891,8 @@ Module common.
   End Set.
   Definition Set := Set.t.
   
-  Module Impl__crate_fmt_Debug_for_Set_T.
-    Definition Self := Set T.
+  Module Impl__crate_fmt_Debug_for_crate_call_utils_Set_T.
+    Definition Self := crate.call.utils.Set T.
     
     Definition fmt
         (self : ref Self)
@@ -6551,21 +6910,21 @@ Module common.
     Global Instance I T : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_Set_T.
+  End Impl__crate_fmt_Debug_for_crate_call_utils_Set_T.
   
-  Module Impl__crate_marker_Copy_for_Set_T.
-    Definition Self := Set T.
+  Module Impl__crate_marker_Copy_for_crate_call_utils_Set_T.
+    Definition Self := crate.call.utils.Set T.
     
     Global Instance I T : _crate.marker.Copy.Trait Self :=
       _crate.marker.Copy.Build_Class _.
-  End Impl__crate_marker_Copy_for_Set_T.
+  End Impl__crate_marker_Copy_for_crate_call_utils_Set_T.
   
-  Module Impl__crate_clone_Clone_for_Set_T.
-    Definition Self := Set T.
+  Module Impl__crate_clone_Clone_for_crate_call_utils_Set_T.
+    Definition Self := crate.call.utils.Set T.
     
-    Definition clone (self : ref Self) : M (Set T) :=
+    Definition clone (self : ref Self) : M (crate.call.utils.Set T) :=
       let* α0 := _crate.clone.Clone.clone (addr_of (self.[0])) in
-      Pure (Set.Build_t α0).
+      Pure (crate.call.utils.Set.Build_t α0).
     
     Global Instance Method_clone : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -6574,20 +6933,20 @@ Module common.
     Global Instance I T : _crate.clone.Clone.Trait Self := {
       _crate.clone.Clone.clone := clone;
     }.
-  End Impl__crate_clone_Clone_for_Set_T.
+  End Impl__crate_clone_Clone_for_crate_call_utils_Set_T.
   
-  Module ImplSet T_2.
-    Definition Self := Set T.
+  Module Implcrate.call.utils.Set T_2.
+    Definition Self := crate.call.utils.Set T.
     
     Definition value (self : Self) : M T := Pure (self.[0]).
     
     Global Instance Method_value : Notation.Dot "value" := {
       Notation.dot := value;
     }.
-  End ImplSet T_2.
+  End Implcrate.call.utils.Set T_2.
   
   Module Unset.
-    Record t : Set := { _ : PhantomData ( -> T);}.
+    Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
     
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
@@ -6595,8 +6954,8 @@ Module common.
   End Unset.
   Definition Unset := Unset.t.
   
-  Module Impl__crate_fmt_Debug_for_Unset_T.
-    Definition Self := Unset T.
+  Module Impl__crate_fmt_Debug_for_crate_call_utils_Unset_T.
+    Definition Self := crate.call.utils.Unset T.
     
     Definition fmt
         (self : ref Self)
@@ -6614,10 +6973,10 @@ Module common.
     Global Instance I T : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_Unset_T.
+  End Impl__crate_fmt_Debug_for_crate_call_utils_Unset_T.
   
-  Module Impl_Clone_for_Unset_T.
-    Definition Self := Unset T.
+  Module Impl_Clone_for_crate_call_utils_Unset_T.
+    Definition Self := crate.call.utils.Unset T.
     
     Definition clone (self : ref Self) : M Self :=
       let* α0 := Default.default tt in
@@ -6630,16 +6989,16 @@ Module common.
     Global Instance I T : Clone.Trait Self := {
       Clone.clone := clone;
     }.
-  End Impl_Clone_for_Unset_T.
+  End Impl_Clone_for_crate_call_utils_Unset_T.
   
-  Module Impl_Copy_for_Unset_T.
-    Definition Self := Unset T.
+  Module Impl_Copy_for_crate_call_utils_Unset_T.
+    Definition Self := crate.call.utils.Unset T.
     
     Global Instance I T : Copy.Trait Self := Copy.Build_Class _.
-  End Impl_Copy_for_Unset_T.
+  End Impl_Copy_for_crate_call_utils_Unset_T.
   
-  Module Impl_Default_for_Unset_T.
-    Definition Self := Unset T.
+  Module Impl_Default_for_crate_call_utils_Unset_T.
+    Definition Self := crate.call.utils.Unset T.
     
     Definition default (_ : unit) : M Self :=
       let* α0 := Default.default tt in
@@ -6653,7 +7012,7 @@ Module common.
     Global Instance I T : Default.Trait Self := {
       Default.default := default;
     }.
-  End Impl_Default_for_Unset_T.
+  End Impl_Default_for_crate_call_utils_Unset_T.
   
   Module Unwrap.
     Class Trait (Self : Set) : Set := {
@@ -6670,8 +7029,8 @@ Module common.
     }.
   End Unwrap.
   
-  Module Impl_Unwrap_for_Unset_T.
-    Definition Self := Unset T.
+  Module Impl_Unwrap_for_crate_call_utils_Unset_T.
+    Definition Self := crate.call.utils.Unset T.
     
     Definition Output : Set := T.
     
@@ -6684,10 +7043,10 @@ Module common.
     Global Instance I T : Unwrap.Trait Self := {
       Unwrap.unwrap_or_else := unwrap_or_else;
     }.
-  End Impl_Unwrap_for_Unset_T.
+  End Impl_Unwrap_for_crate_call_utils_Unset_T.
   
-  Module Impl_Unwrap_for_Set_T.
-    Definition Self := Set T.
+  Module Impl_Unwrap_for_crate_call_utils_Set_T.
+    Definition Self := crate.call.utils.Set T.
     
     Definition Output : Set := T.
     
@@ -6701,14 +7060,11 @@ Module common.
     Global Instance I T : Unwrap.Trait Self := {
       Unwrap.unwrap_or_else := unwrap_or_else;
     }.
-  End Impl_Unwrap_for_Set_T.
+  End Impl_Unwrap_for_crate_call_utils_Set_T.
 End common.
 
-Module PhantomData := core.marker.PhantomData.
-Definition PhantomData := PhantomData.t.
-
 Module ReturnType.
-  Record t : Set := { _ : PhantomData ( -> T);}.
+  Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
@@ -6716,8 +7072,8 @@ Module ReturnType.
 End ReturnType.
 Definition ReturnType := ReturnType.t.
 
-Module Impl__crate_fmt_Debug_for_ReturnType_T.
-  Definition Self := ReturnType T.
+Module Impl__crate_fmt_Debug_for_crate_call_utils_ReturnType_T.
+  Definition Self := crate.call.utils.ReturnType T.
   
   Definition fmt
       (self : ref Self)
@@ -6735,10 +7091,10 @@ Module Impl__crate_fmt_Debug_for_ReturnType_T.
   Global Instance I T : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_ReturnType_T.
+End Impl__crate_fmt_Debug_for_crate_call_utils_ReturnType_T.
 
-Module Impl_Clone_for_ReturnType_T.
-  Definition Self := ReturnType T.
+Module Impl_Clone_for_crate_call_utils_ReturnType_T.
+  Definition Self := crate.call.utils.ReturnType T.
   
   Definition clone (self : ref Self) : M Self :=
     let* α0 := Default.default tt in
@@ -6751,16 +7107,16 @@ Module Impl_Clone_for_ReturnType_T.
   Global Instance I T : Clone.Trait Self := {
     Clone.clone := clone;
   }.
-End Impl_Clone_for_ReturnType_T.
+End Impl_Clone_for_crate_call_utils_ReturnType_T.
 
-Module Impl_Copy_for_ReturnType_T.
-  Definition Self := ReturnType T.
+Module Impl_Copy_for_crate_call_utils_ReturnType_T.
+  Definition Self := crate.call.utils.ReturnType T.
   
   Global Instance I T : Copy.Trait Self := Copy.Build_Class _.
-End Impl_Copy_for_ReturnType_T.
+End Impl_Copy_for_crate_call_utils_ReturnType_T.
 
-Module Impl_Default_for_ReturnType_T.
-  Definition Self := ReturnType T.
+Module Impl_Default_for_crate_call_utils_ReturnType_T.
+  Definition Self := crate.call.utils.ReturnType T.
   
   Definition default (_ : unit) : M Self :=
     let* α0 := Default.default tt in
@@ -6774,7 +7130,7 @@ Module Impl_Default_for_ReturnType_T.
   Global Instance I T : Default.Trait Self := {
     Default.default := default;
   }.
-End Impl_Default_for_ReturnType_T.
+End Impl_Default_for_crate_call_utils_ReturnType_T.
 
 Module Set.
   Record t : Set := { _ : T;}.
@@ -6785,8 +7141,8 @@ Module Set.
 End Set.
 Definition Set := Set.t.
 
-Module Impl__crate_fmt_Debug_for_Set_T.
-  Definition Self := Set T.
+Module Impl__crate_fmt_Debug_for_crate_call_utils_Set_T.
+  Definition Self := crate.call.utils.Set T.
   
   Definition fmt
       (self : ref Self)
@@ -6804,21 +7160,21 @@ Module Impl__crate_fmt_Debug_for_Set_T.
   Global Instance I T : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_Set_T.
+End Impl__crate_fmt_Debug_for_crate_call_utils_Set_T.
 
-Module Impl__crate_marker_Copy_for_Set_T.
-  Definition Self := Set T.
+Module Impl__crate_marker_Copy_for_crate_call_utils_Set_T.
+  Definition Self := crate.call.utils.Set T.
   
   Global Instance I T : _crate.marker.Copy.Trait Self :=
     _crate.marker.Copy.Build_Class _.
-End Impl__crate_marker_Copy_for_Set_T.
+End Impl__crate_marker_Copy_for_crate_call_utils_Set_T.
 
-Module Impl__crate_clone_Clone_for_Set_T.
-  Definition Self := Set T.
+Module Impl__crate_clone_Clone_for_crate_call_utils_Set_T.
+  Definition Self := crate.call.utils.Set T.
   
-  Definition clone (self : ref Self) : M (Set T) :=
+  Definition clone (self : ref Self) : M (crate.call.utils.Set T) :=
     let* α0 := _crate.clone.Clone.clone (addr_of (self.[0])) in
-    Pure (Set.Build_t α0).
+    Pure (crate.call.utils.Set.Build_t α0).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -6827,20 +7183,20 @@ Module Impl__crate_clone_Clone_for_Set_T.
   Global Instance I T : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_Set_T.
+End Impl__crate_clone_Clone_for_crate_call_utils_Set_T.
 
-Module ImplSet T_3.
-  Definition Self := Set T.
+Module Implcrate.call.utils.Set T_3.
+  Definition Self := crate.call.utils.Set T.
   
   Definition value (self : Self) : M T := Pure (self.[0]).
   
   Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
   }.
-End ImplSet T_3.
+End Implcrate.call.utils.Set T_3.
 
 Module Unset.
-  Record t : Set := { _ : PhantomData ( -> T);}.
+  Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
@@ -6848,8 +7204,8 @@ Module Unset.
 End Unset.
 Definition Unset := Unset.t.
 
-Module Impl__crate_fmt_Debug_for_Unset_T.
-  Definition Self := Unset T.
+Module Impl__crate_fmt_Debug_for_crate_call_utils_Unset_T.
+  Definition Self := crate.call.utils.Unset T.
   
   Definition fmt
       (self : ref Self)
@@ -6867,10 +7223,10 @@ Module Impl__crate_fmt_Debug_for_Unset_T.
   Global Instance I T : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_Unset_T.
+End Impl__crate_fmt_Debug_for_crate_call_utils_Unset_T.
 
-Module Impl_Clone_for_Unset_T.
-  Definition Self := Unset T.
+Module Impl_Clone_for_crate_call_utils_Unset_T.
+  Definition Self := crate.call.utils.Unset T.
   
   Definition clone (self : ref Self) : M Self :=
     let* α0 := Default.default tt in
@@ -6883,16 +7239,16 @@ Module Impl_Clone_for_Unset_T.
   Global Instance I T : Clone.Trait Self := {
     Clone.clone := clone;
   }.
-End Impl_Clone_for_Unset_T.
+End Impl_Clone_for_crate_call_utils_Unset_T.
 
-Module Impl_Copy_for_Unset_T.
-  Definition Self := Unset T.
+Module Impl_Copy_for_crate_call_utils_Unset_T.
+  Definition Self := crate.call.utils.Unset T.
   
   Global Instance I T : Copy.Trait Self := Copy.Build_Class _.
-End Impl_Copy_for_Unset_T.
+End Impl_Copy_for_crate_call_utils_Unset_T.
 
-Module Impl_Default_for_Unset_T.
-  Definition Self := Unset T.
+Module Impl_Default_for_crate_call_utils_Unset_T.
+  Definition Self := crate.call.utils.Unset T.
   
   Definition default (_ : unit) : M Self :=
     let* α0 := Default.default tt in
@@ -6906,7 +7262,7 @@ Module Impl_Default_for_Unset_T.
   Global Instance I T : Default.Trait Self := {
     Default.default := default;
   }.
-End Impl_Default_for_Unset_T.
+End Impl_Default_for_crate_call_utils_Unset_T.
 
 Module Unwrap.
   Class Trait (Self : Set) : Set := {
@@ -6923,8 +7279,8 @@ Module Unwrap.
   }.
 End Unwrap.
 
-Module Impl_Unwrap_for_Unset_T.
-  Definition Self := Unset T.
+Module Impl_Unwrap_for_crate_call_utils_Unset_T.
+  Definition Self := crate.call.utils.Unset T.
   
   Definition Output : Set := T.
   
@@ -6937,10 +7293,10 @@ Module Impl_Unwrap_for_Unset_T.
   Global Instance I T : Unwrap.Trait Self := {
     Unwrap.unwrap_or_else := unwrap_or_else;
   }.
-End Impl_Unwrap_for_Unset_T.
+End Impl_Unwrap_for_crate_call_utils_Unset_T.
 
-Module Impl_Unwrap_for_Set_T.
-  Definition Self := Set T.
+Module Impl_Unwrap_for_crate_call_utils_Set_T.
+  Definition Self := crate.call.utils.Set T.
   
   Definition Output : Set := T.
   
@@ -6954,33 +7310,9 @@ Module Impl_Unwrap_for_Set_T.
   Global Instance I T : Unwrap.Trait Self := {
     Unwrap.unwrap_or_else := unwrap_or_else;
   }.
-End Impl_Unwrap_for_Set_T.
+End Impl_Unwrap_for_crate_call_utils_Set_T.
 
 Module create_builder.
-  Module EmptyArgumentList := crate.call.utils.EmptyArgumentList.
-  Definition EmptyArgumentList := EmptyArgumentList.t.
-  
-  Module ReturnType := crate.call.utils.ReturnType.
-  Definition ReturnType := ReturnType.t.
-  
-  Module Set := crate.call.utils.Set.
-  Definition Set := Set.t.
-  
-  Module Unset := crate.call.utils.Unset.
-  Definition Unset := Unset.t.
-  
-  Module ExecutionInput := crate.call.ExecutionInput.
-  Definition ExecutionInput := ExecutionInput.t.
-  
-  Module Selector := crate.call.Selector.
-  Definition Selector := Selector.t.
-  
-  Module Error := crate.Error.
-  Definition Error := Error.t.
-  
-  Module PhantomData := core.marker.PhantomData.
-  Definition PhantomData := PhantomData.t.
-  
   Module state.
     Module Salt.
       Inductive t : Set :=
@@ -7083,10 +7415,10 @@ Module create_builder.
       code_hash : ImplE.Hash;
       gas_limit : u64;
       endowment : ImplE.Balance;
-      exec_input : ExecutionInput Args;
+      exec_input : crate.call.ExecutionInput Args;
       salt_bytes : Salt;
-      _return_type : ReturnType R;
-      _phantom : PhantomData ( -> ContractRef);
+      _return_type : crate.call.utils.ReturnType R;
+      _phantom : core.marker.PhantomData ( -> ContractRef);
     }.
     
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -7113,8 +7445,12 @@ Module create_builder.
   End CreateParams.
   Definition CreateParams : Set := CreateParams.t.
   
-  Module Impl__crate_fmt_Debug_for_CreateParams_E_ContractRef_Args_Salt_R.
-    Definition Self := CreateParams E ContractRef Args Salt R.
+  Module
+      Impl__crate_fmt_Debug_for_self_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
+    Definition
+      Self
+      :=
+      self.create_builder.CreateParams E ContractRef Args Salt R.
     
     Definition fmt
         (self : ref Self)
@@ -7156,10 +7492,14 @@ Module create_builder.
       {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_CreateParams_E_ContractRef_Args_Salt_R.
+  End
+    Impl__crate_fmt_Debug_for_self_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
   
-  Module ImplCreateParams E ContractRef Args Salt R_4.
-    Definition Self := CreateParams E ContractRef Args Salt R.
+  Module Implself.create_builder.CreateParams E ContractRef Args Salt R.
+    Definition
+      Self
+      :=
+      self.create_builder.CreateParams E ContractRef Args Salt R.
     
     Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
       Pure (addr_of self.["code_hash"]).
@@ -7181,7 +7521,9 @@ Module create_builder.
       Notation.dot := endowment;
     }.
     
-    Definition exec_input (self : ref Self) : M (ref (ExecutionInput Args)) :=
+    Definition exec_input
+        (self : ref Self)
+        : M (ref (crate.call.ExecutionInput Args)) :=
       Pure (addr_of self.["exec_input"]).
     
     Global Instance Method_exec_input : Notation.Dot "exec_input" := {
@@ -7190,17 +7532,20 @@ Module create_builder.
     
     Definition update_selector
         (self : mut_ref Self)
-        (selector : Selector)
+        (selector : crate.call.Selector)
         : M unit :=
       self.["exec_input"].["update_selector"] selector.
     
     Global Instance Method_update_selector : Notation.Dot "update_selector" := {
       Notation.dot := update_selector;
     }.
-  End ImplCreateParams E ContractRef Args Salt R_4.
+  End Implself.create_builder.CreateParams E ContractRef Args Salt R.
   
-  Module ImplCreateParams E ContractRef Args Salt R_5.
-    Definition Self := CreateParams E ContractRef Args Salt R.
+  Module Implself.create_builder.CreateParams E ContractRef Args Salt R_2.
+    Definition
+      Self
+      :=
+      self.create_builder.CreateParams E ContractRef Args Salt R.
     
     Definition salt_bytes (self : ref Self) : M (ref Salt) :=
       Pure (addr_of self.["salt_bytes"]).
@@ -7208,10 +7553,13 @@ Module create_builder.
     Global Instance Method_salt_bytes : Notation.Dot "salt_bytes" := {
       Notation.dot := salt_bytes;
     }.
-  End ImplCreateParams E ContractRef Args Salt R_5.
+  End Implself.create_builder.CreateParams E ContractRef Args Salt R_2.
   
-  Module ImplCreateParams E ContractRef Args Salt R_6.
-    Definition Self := CreateParams E ContractRef Args Salt R.
+  Module Implself.create_builder.CreateParams E ContractRef Args Salt R_3.
+    Definition
+      Self
+      :=
+      self.create_builder.CreateParams E ContractRef Args Salt R.
     
     Definition instantiate (self : ref Self) : M ConstructorReturnType.Output :=
       let* α0 := crate.instantiate_contract self in
@@ -7241,7 +7589,7 @@ Module create_builder.
         (self : ref Self)
         :
           M
-            (Result
+            (crate.Result
               (ink_primitives.ConstructorResult ConstructorReturnType.Output)
               crate.Error) :=
       crate.instantiate_contract self.
@@ -7249,7 +7597,7 @@ Module create_builder.
     Global Instance Method_try_instantiate : Notation.Dot "try_instantiate" := {
       Notation.dot := try_instantiate;
     }.
-  End ImplCreateParams E ContractRef Args Salt R_6.
+  End Implself.create_builder.CreateParams E ContractRef Args Salt R_3.
   
   Module CreateBuilder.
     Record t : Set := {
@@ -7259,7 +7607,7 @@ Module create_builder.
       exec_input : Args;
       salt : Salt;
       return_type : RetType;
-      _phantom : PhantomData ( -> (E * ContractRef));
+      _phantom : core.marker.PhantomData ( -> (E * ContractRef));
     }.
     
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -7292,15 +7640,16 @@ Module create_builder.
       (_ : unit)
       :
         M
-          (CreateBuilder
+          (self.create_builder.CreateBuilder
             ContractEnv.Env
             ContractRef
-            (Unset Environment.Hash)
-            (Unset u64)
-            (Unset Environment.Balance)
-            (Unset (ExecutionInput EmptyArgumentList))
-            (Unset state.Salt)
-            (Unset (ReturnType unit))) :=
+            (crate.call.utils.Unset Environment.Hash)
+            (crate.call.utils.Unset u64)
+            (crate.call.utils.Unset Environment.Balance)
+            (crate.call.utils.Unset
+              (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+            (crate.call.utils.Unset state.Salt)
+            (crate.call.utils.Unset (crate.call.utils.ReturnType unit))) :=
     let* α0 := Default.default tt in
     let* α1 := Default.default tt in
     let* α2 := Default.default tt in
@@ -7310,32 +7659,32 @@ Module create_builder.
     let* α6 := Default.default tt in
     Pure
       {|
-        CreateBuilder.code_hash := α0;
-        CreateBuilder.gas_limit := α1;
-        CreateBuilder.endowment := α2;
-        CreateBuilder.exec_input := α3;
-        CreateBuilder.salt := α4;
-        CreateBuilder.return_type := α5;
-        CreateBuilder._phantom := α6;
+        self.create_builder.CreateBuilder.code_hash := α0;
+        self.create_builder.CreateBuilder.gas_limit := α1;
+        self.create_builder.CreateBuilder.endowment := α2;
+        self.create_builder.CreateBuilder.exec_input := α3;
+        self.create_builder.CreateBuilder.salt := α4;
+        self.create_builder.CreateBuilder.return_type := α5;
+        self.create_builder.CreateBuilder._phantom := α6;
       |}.
   
   Module
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
-      (Unset ImplE.Hash)
+      (crate.call.utils.Unset ImplE.Hash)
       GasLimit
       Endowment
       Args
       Salt
-      RetType_2.
+      RetType.
     Definition
       Self
       :=
-      CreateBuilder
+      self.create_builder.CreateBuilder
         E
         ContractRef
-        (Unset ImplE.Hash)
+        (crate.call.utils.Unset ImplE.Hash)
         GasLimit
         Endowment
         Args
@@ -7347,10 +7696,10 @@ Module create_builder.
         (code_hash : ImplE.Hash)
         :
           M
-            (CreateBuilder
+            (self.create_builder.CreateBuilder
               E
               ContractRef
-              (Set ImplE.Hash)
+              (crate.call.utils.Set ImplE.Hash)
               GasLimit
               Endowment
               Args
@@ -7359,47 +7708,48 @@ Module create_builder.
       let* α0 := Default.default tt in
       Pure
         {|
-          CreateBuilder.code_hash := Set.Build_t code_hash;
-          CreateBuilder.gas_limit := self.["gas_limit"];
-          CreateBuilder.endowment := self.["endowment"];
-          CreateBuilder.exec_input := self.["exec_input"];
-          CreateBuilder.salt := self.["salt"];
-          CreateBuilder.return_type := self.["return_type"];
-          CreateBuilder._phantom := α0;
+          self.create_builder.CreateBuilder.code_hash :=
+            crate.call.utils.Set.Build_t code_hash;
+          self.create_builder.CreateBuilder.gas_limit := self.["gas_limit"];
+          self.create_builder.CreateBuilder.endowment := self.["endowment"];
+          self.create_builder.CreateBuilder.exec_input := self.["exec_input"];
+          self.create_builder.CreateBuilder.salt := self.["salt"];
+          self.create_builder.CreateBuilder.return_type := self.["return_type"];
+          self.create_builder.CreateBuilder._phantom := α0;
         |}.
     
     Global Instance Method_code_hash : Notation.Dot "code_hash" := {
       Notation.dot := code_hash;
     }.
   End
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
-      (Unset ImplE.Hash)
+      (crate.call.utils.Unset ImplE.Hash)
       GasLimit
       Endowment
       Args
       Salt
-      RetType_2.
+      RetType.
   
   Module
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
-      (Unset u64)
+      (crate.call.utils.Unset u64)
       Endowment
       Args
       Salt
-      RetType_2.
+      RetType.
     Definition
       Self
       :=
-      CreateBuilder
+      self.create_builder.CreateBuilder
         E
         ContractRef
         CodeHash
-        (Unset u64)
+        (crate.call.utils.Unset u64)
         Endowment
         Args
         Salt
@@ -7410,11 +7760,11 @@ Module create_builder.
         (gas_limit : u64)
         :
           M
-            (CreateBuilder
+            (self.create_builder.CreateBuilder
               E
               ContractRef
               CodeHash
-              (Set u64)
+              (crate.call.utils.Set u64)
               Endowment
               Args
               Salt
@@ -7422,48 +7772,49 @@ Module create_builder.
       let* α0 := Default.default tt in
       Pure
         {|
-          CreateBuilder.code_hash := self.["code_hash"];
-          CreateBuilder.gas_limit := Set.Build_t gas_limit;
-          CreateBuilder.endowment := self.["endowment"];
-          CreateBuilder.exec_input := self.["exec_input"];
-          CreateBuilder.salt := self.["salt"];
-          CreateBuilder.return_type := self.["return_type"];
-          CreateBuilder._phantom := α0;
+          self.create_builder.CreateBuilder.code_hash := self.["code_hash"];
+          self.create_builder.CreateBuilder.gas_limit :=
+            crate.call.utils.Set.Build_t gas_limit;
+          self.create_builder.CreateBuilder.endowment := self.["endowment"];
+          self.create_builder.CreateBuilder.exec_input := self.["exec_input"];
+          self.create_builder.CreateBuilder.salt := self.["salt"];
+          self.create_builder.CreateBuilder.return_type := self.["return_type"];
+          self.create_builder.CreateBuilder._phantom := α0;
         |}.
     
     Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot := gas_limit;
     }.
   End
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
-      (Unset u64)
+      (crate.call.utils.Unset u64)
       Endowment
       Args
       Salt
-      RetType_2.
+      RetType.
   
   Module
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
       GasLimit
-      (Unset ImplE.Balance)
+      (crate.call.utils.Unset ImplE.Balance)
       Args
       Salt
-      RetType_2.
+      RetType.
     Definition
       Self
       :=
-      CreateBuilder
+      self.create_builder.CreateBuilder
         E
         ContractRef
         CodeHash
         GasLimit
-        (Unset ImplE.Balance)
+        (crate.call.utils.Unset ImplE.Balance)
         Args
         Salt
         RetType.
@@ -7473,125 +7824,130 @@ Module create_builder.
         (endowment : ImplE.Balance)
         :
           M
-            (CreateBuilder
+            (self.create_builder.CreateBuilder
               E
               ContractRef
               CodeHash
               GasLimit
-              (Set ImplE.Balance)
+              (crate.call.utils.Set ImplE.Balance)
               Args
               Salt
               RetType) :=
       let* α0 := Default.default tt in
       Pure
         {|
-          CreateBuilder.code_hash := self.["code_hash"];
-          CreateBuilder.gas_limit := self.["gas_limit"];
-          CreateBuilder.endowment := Set.Build_t endowment;
-          CreateBuilder.exec_input := self.["exec_input"];
-          CreateBuilder.salt := self.["salt"];
-          CreateBuilder.return_type := self.["return_type"];
-          CreateBuilder._phantom := α0;
+          self.create_builder.CreateBuilder.code_hash := self.["code_hash"];
+          self.create_builder.CreateBuilder.gas_limit := self.["gas_limit"];
+          self.create_builder.CreateBuilder.endowment :=
+            crate.call.utils.Set.Build_t endowment;
+          self.create_builder.CreateBuilder.exec_input := self.["exec_input"];
+          self.create_builder.CreateBuilder.salt := self.["salt"];
+          self.create_builder.CreateBuilder.return_type := self.["return_type"];
+          self.create_builder.CreateBuilder._phantom := α0;
         |}.
     
     Global Instance Method_endowment : Notation.Dot "endowment" := {
       Notation.dot := endowment;
     }.
   End
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
       GasLimit
-      (Unset ImplE.Balance)
+      (crate.call.utils.Unset ImplE.Balance)
       Args
       Salt
-      RetType_2.
+      RetType.
   
   Module
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
       GasLimit
       Endowment
-      (Unset (ExecutionInput EmptyArgumentList))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
       Salt
-      RetType_2.
+      RetType.
     Definition
       Self
       :=
-      CreateBuilder
+      self.create_builder.CreateBuilder
         E
         ContractRef
         CodeHash
         GasLimit
         Endowment
-        (Unset (ExecutionInput EmptyArgumentList))
+        (crate.call.utils.Unset
+          (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
         Salt
         RetType.
     
     Definition exec_input
         (self : Self)
-        (exec_input : ExecutionInput Args)
+        (exec_input : crate.call.ExecutionInput Args)
         :
           M
-            (CreateBuilder
+            (self.create_builder.CreateBuilder
               E
               ContractRef
               CodeHash
               GasLimit
               Endowment
-              (Set (ExecutionInput Args))
+              (crate.call.utils.Set (crate.call.ExecutionInput Args))
               Salt
               RetType) :=
       let* α0 := Default.default tt in
       Pure
         {|
-          CreateBuilder.code_hash := self.["code_hash"];
-          CreateBuilder.gas_limit := self.["gas_limit"];
-          CreateBuilder.endowment := self.["endowment"];
-          CreateBuilder.exec_input := Set.Build_t exec_input;
-          CreateBuilder.salt := self.["salt"];
-          CreateBuilder.return_type := self.["return_type"];
-          CreateBuilder._phantom := α0;
+          self.create_builder.CreateBuilder.code_hash := self.["code_hash"];
+          self.create_builder.CreateBuilder.gas_limit := self.["gas_limit"];
+          self.create_builder.CreateBuilder.endowment := self.["endowment"];
+          self.create_builder.CreateBuilder.exec_input :=
+            crate.call.utils.Set.Build_t exec_input;
+          self.create_builder.CreateBuilder.salt := self.["salt"];
+          self.create_builder.CreateBuilder.return_type := self.["return_type"];
+          self.create_builder.CreateBuilder._phantom := α0;
         |}.
     
     Global Instance Method_exec_input : Notation.Dot "exec_input" := {
       Notation.dot := exec_input;
     }.
   End
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
       GasLimit
       Endowment
-      (Unset (ExecutionInput EmptyArgumentList))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
       Salt
-      RetType_2.
+      RetType.
   
   Module
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
       GasLimit
       Endowment
       Args
-      (Unset state.Salt)
-      RetType_2.
+      (crate.call.utils.Unset state.Salt)
+      RetType.
     Definition
       Self
       :=
-      CreateBuilder
+      self.create_builder.CreateBuilder
         E
         ContractRef
         CodeHash
         GasLimit
         Endowment
         Args
-        (Unset state.Salt)
+        (crate.call.utils.Unset state.Salt)
         RetType.
     
     Definition salt_bytes
@@ -7599,43 +7955,44 @@ Module create_builder.
         (salt : Salt)
         :
           M
-            (CreateBuilder
+            (self.create_builder.CreateBuilder
               E
               ContractRef
               CodeHash
               GasLimit
               Endowment
               Args
-              (Set Salt)
+              (crate.call.utils.Set Salt)
               RetType) :=
       let* α0 := Default.default tt in
       Pure
         {|
-          CreateBuilder.code_hash := self.["code_hash"];
-          CreateBuilder.gas_limit := self.["gas_limit"];
-          CreateBuilder.endowment := self.["endowment"];
-          CreateBuilder.exec_input := self.["exec_input"];
-          CreateBuilder.salt := Set.Build_t salt;
-          CreateBuilder.return_type := self.["return_type"];
-          CreateBuilder._phantom := α0;
+          self.create_builder.CreateBuilder.code_hash := self.["code_hash"];
+          self.create_builder.CreateBuilder.gas_limit := self.["gas_limit"];
+          self.create_builder.CreateBuilder.endowment := self.["endowment"];
+          self.create_builder.CreateBuilder.exec_input := self.["exec_input"];
+          self.create_builder.CreateBuilder.salt :=
+            crate.call.utils.Set.Build_t salt;
+          self.create_builder.CreateBuilder.return_type := self.["return_type"];
+          self.create_builder.CreateBuilder._phantom := α0;
         |}.
     
     Global Instance Method_salt_bytes : Notation.Dot "salt_bytes" := {
       Notation.dot := salt_bytes;
     }.
   End
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
       GasLimit
       Endowment
       Args
-      (Unset state.Salt)
-      RetType_2.
+      (crate.call.utils.Unset state.Salt)
+      RetType.
   
   Module
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
@@ -7643,11 +8000,11 @@ Module create_builder.
       Endowment
       Args
       Salt
-      (Unset (ReturnType unit))_2.
+      (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
     Definition
       Self
       :=
-      CreateBuilder
+      self.create_builder.CreateBuilder
         E
         ContractRef
         CodeHash
@@ -7655,13 +8012,13 @@ Module create_builder.
         Endowment
         Args
         Salt
-        (Unset (ReturnType unit)).
+        (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
     
     Definition returns
         (self : Self)
         :
           M
-            (CreateBuilder
+            (self.create_builder.CreateBuilder
               E
               ContractRef
               CodeHash
@@ -7669,25 +8026,26 @@ Module create_builder.
               Endowment
               Args
               Salt
-              (Set (ReturnType R))) :=
+              (crate.call.utils.Set (crate.call.utils.ReturnType R))) :=
       let* α0 := Default.default tt in
       let* α1 := Default.default tt in
       Pure
         {|
-          CreateBuilder.code_hash := self.["code_hash"];
-          CreateBuilder.gas_limit := self.["gas_limit"];
-          CreateBuilder.endowment := self.["endowment"];
-          CreateBuilder.exec_input := self.["exec_input"];
-          CreateBuilder.salt := self.["salt"];
-          CreateBuilder.return_type := Set.Build_t α0;
-          CreateBuilder._phantom := α1;
+          self.create_builder.CreateBuilder.code_hash := self.["code_hash"];
+          self.create_builder.CreateBuilder.gas_limit := self.["gas_limit"];
+          self.create_builder.CreateBuilder.endowment := self.["endowment"];
+          self.create_builder.CreateBuilder.exec_input := self.["exec_input"];
+          self.create_builder.CreateBuilder.salt := self.["salt"];
+          self.create_builder.CreateBuilder.return_type :=
+            crate.call.utils.Set.Build_t α0;
+          self.create_builder.CreateBuilder._phantom := α1;
         |}.
     
     Global Instance Method_returns : Notation.Dot "returns" := {
       Notation.dot := returns;
     }.
   End
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
@@ -7695,34 +8053,41 @@ Module create_builder.
       Endowment
       Args
       Salt
-      (Unset (ReturnType unit))_2.
+      (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
   
   Module
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
-      (Set ImplE.Hash)
+      (crate.call.utils.Set ImplE.Hash)
       GasLimit
-      (Set ImplE.Balance)
-      (Set (ExecutionInput Args))
-      (Set Salt)
-      (Set (ReturnType RetType))_3.
+      (crate.call.utils.Set ImplE.Balance)
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set Salt)
+      (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
     Definition
       Self
       :=
-      CreateBuilder
+      self.create_builder.CreateBuilder
         E
         ContractRef
-        (Set ImplE.Hash)
+        (crate.call.utils.Set ImplE.Hash)
         GasLimit
-        (Set ImplE.Balance)
-        (Set (ExecutionInput Args))
-        (Set Salt)
-        (Set (ReturnType RetType)).
+        (crate.call.utils.Set ImplE.Balance)
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set Salt)
+        (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
     
     Definition params
         (self : Self)
-        : M (CreateParams E ContractRef Args Salt RetType) :=
+        :
+          M
+            (self.create_builder.CreateParams
+              E
+              ContractRef
+              Args
+              Salt
+              RetType) :=
       let* α0 := self.["code_hash"].["value"] in
       let* α1 := self.["gas_limit"].["unwrap_or_else"] (fun  => Pure 0) in
       let* α2 := self.["endowment"].["value"] in
@@ -7732,51 +8097,51 @@ Module create_builder.
       let* α6 := Default.default tt in
       Pure
         {|
-          CreateParams.code_hash := α0;
-          CreateParams.gas_limit := α1;
-          CreateParams.endowment := α2;
-          CreateParams.exec_input := α3;
-          CreateParams.salt_bytes := α4;
-          CreateParams._return_type := α5;
-          CreateParams._phantom := α6;
+          self.create_builder.CreateParams.code_hash := α0;
+          self.create_builder.CreateParams.gas_limit := α1;
+          self.create_builder.CreateParams.endowment := α2;
+          self.create_builder.CreateParams.exec_input := α3;
+          self.create_builder.CreateParams.salt_bytes := α4;
+          self.create_builder.CreateParams._return_type := α5;
+          self.create_builder.CreateParams._phantom := α6;
         |}.
     
     Global Instance Method_params : Notation.Dot "params" := {
       Notation.dot := params;
     }.
   End
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
-      (Set ImplE.Hash)
+      (crate.call.utils.Set ImplE.Hash)
       GasLimit
-      (Set ImplE.Balance)
-      (Set (ExecutionInput Args))
-      (Set Salt)
-      (Set (ReturnType RetType))_3.
+      (crate.call.utils.Set ImplE.Balance)
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set Salt)
+      (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
   
   Module
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
-      (Set ImplE.Hash)
+      (crate.call.utils.Set ImplE.Hash)
       GasLimit
-      (Set ImplE.Balance)
-      (Set (ExecutionInput Args))
-      (Set Salt)
-      (Set (ReturnType RetType))_4.
+      (crate.call.utils.Set ImplE.Balance)
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set Salt)
+      (crate.call.utils.Set (crate.call.utils.ReturnType RetType))_2.
     Definition
       Self
       :=
-      CreateBuilder
+      self.create_builder.CreateBuilder
         E
         ContractRef
-        (Set ImplE.Hash)
+        (crate.call.utils.Set ImplE.Hash)
         GasLimit
-        (Set ImplE.Balance)
-        (Set (ExecutionInput Args))
-        (Set Salt)
-        (Set (ReturnType RetType)).
+        (crate.call.utils.Set ImplE.Balance)
+        (crate.call.utils.Set (crate.call.ExecutionInput Args))
+        (crate.call.utils.Set Salt)
+        (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
     
     Definition instantiate (self : Self) : M ConstructorReturnType.Output :=
       let* α0 := self.["params"] in
@@ -7790,9 +8155,9 @@ Module create_builder.
         (self : Self)
         :
           M
-            (Result
+            (crate.Result
               (ink_primitives.ConstructorResult ConstructorReturnType.Output)
-              Error) :=
+              crate.Error) :=
       let* α0 := self.["params"] in
       α0.["try_instantiate"].
     
@@ -7800,40 +8165,16 @@ Module create_builder.
       Notation.dot := try_instantiate;
     }.
   End
-    ImplCreateBuilder
+    Implself.create_builder.CreateBuilder
       E
       ContractRef
-      (Set ImplE.Hash)
+      (crate.call.utils.Set ImplE.Hash)
       GasLimit
-      (Set ImplE.Balance)
-      (Set (ExecutionInput Args))
-      (Set Salt)
-      (Set (ReturnType RetType))_4.
+      (crate.call.utils.Set ImplE.Balance)
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set Salt)
+      (crate.call.utils.Set (crate.call.utils.ReturnType RetType))_2.
 End create_builder.
-
-Module EmptyArgumentList := crate.call.utils.EmptyArgumentList.
-Definition EmptyArgumentList := EmptyArgumentList.t.
-
-Module ReturnType := crate.call.utils.ReturnType.
-Definition ReturnType := ReturnType.t.
-
-Module Set := crate.call.utils.Set.
-Definition Set := Set.t.
-
-Module Unset := crate.call.utils.Unset.
-Definition Unset := Unset.t.
-
-Module ExecutionInput := crate.call.ExecutionInput.
-Definition ExecutionInput := ExecutionInput.t.
-
-Module Selector := crate.call.Selector.
-Definition Selector := Selector.t.
-
-Module Error := crate.Error.
-Definition Error := Error.t.
-
-Module PhantomData := core.marker.PhantomData.
-Definition PhantomData := PhantomData.t.
 
 Module state.
   Module Salt.
@@ -7942,10 +8283,10 @@ Module CreateParams.
     code_hash : ImplE.Hash;
     gas_limit : u64;
     endowment : ImplE.Balance;
-    exec_input : ExecutionInput Args;
+    exec_input : crate.call.ExecutionInput Args;
     salt_bytes : Salt;
-    _return_type : ReturnType R;
-    _phantom : PhantomData ( -> ContractRef);
+    _return_type : crate.call.utils.ReturnType R;
+    _phantom : core.marker.PhantomData ( -> ContractRef);
   }.
   
   Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -7972,8 +8313,9 @@ Module CreateParams.
 End CreateParams.
 Definition CreateParams : Set := CreateParams.t.
 
-Module Impl__crate_fmt_Debug_for_CreateParams_E_ContractRef_Args_Salt_R.
-  Definition Self := CreateParams E ContractRef Args Salt R.
+Module
+    Impl__crate_fmt_Debug_for_self_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
+  Definition Self := self.create_builder.CreateParams E ContractRef Args Salt R.
   
   Definition fmt
       (self : ref Self)
@@ -8014,10 +8356,11 @@ Module Impl__crate_fmt_Debug_for_CreateParams_E_ContractRef_Args_Salt_R.
   Global Instance I E ContractRef Args Salt R : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_CreateParams_E_ContractRef_Args_Salt_R.
+End
+  Impl__crate_fmt_Debug_for_self_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
 
-Module ImplCreateParams E ContractRef Args Salt R_7.
-  Definition Self := CreateParams E ContractRef Args Salt R.
+Module Implself.create_builder.CreateParams E ContractRef Args Salt R_4.
+  Definition Self := self.create_builder.CreateParams E ContractRef Args Salt R.
   
   Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
     Pure (addr_of self.["code_hash"]).
@@ -8039,7 +8382,9 @@ Module ImplCreateParams E ContractRef Args Salt R_7.
     Notation.dot := endowment;
   }.
   
-  Definition exec_input (self : ref Self) : M (ref (ExecutionInput Args)) :=
+  Definition exec_input
+      (self : ref Self)
+      : M (ref (crate.call.ExecutionInput Args)) :=
     Pure (addr_of self.["exec_input"]).
   
   Global Instance Method_exec_input : Notation.Dot "exec_input" := {
@@ -8048,17 +8393,17 @@ Module ImplCreateParams E ContractRef Args Salt R_7.
   
   Definition update_selector
       (self : mut_ref Self)
-      (selector : Selector)
+      (selector : crate.call.Selector)
       : M unit :=
     self.["exec_input"].["update_selector"] selector.
   
   Global Instance Method_update_selector : Notation.Dot "update_selector" := {
     Notation.dot := update_selector;
   }.
-End ImplCreateParams E ContractRef Args Salt R_7.
+End Implself.create_builder.CreateParams E ContractRef Args Salt R_4.
 
-Module ImplCreateParams E ContractRef Args Salt R_8.
-  Definition Self := CreateParams E ContractRef Args Salt R.
+Module Implself.create_builder.CreateParams E ContractRef Args Salt R_5.
+  Definition Self := self.create_builder.CreateParams E ContractRef Args Salt R.
   
   Definition salt_bytes (self : ref Self) : M (ref Salt) :=
     Pure (addr_of self.["salt_bytes"]).
@@ -8066,10 +8411,10 @@ Module ImplCreateParams E ContractRef Args Salt R_8.
   Global Instance Method_salt_bytes : Notation.Dot "salt_bytes" := {
     Notation.dot := salt_bytes;
   }.
-End ImplCreateParams E ContractRef Args Salt R_8.
+End Implself.create_builder.CreateParams E ContractRef Args Salt R_5.
 
-Module ImplCreateParams E ContractRef Args Salt R_9.
-  Definition Self := CreateParams E ContractRef Args Salt R.
+Module Implself.create_builder.CreateParams E ContractRef Args Salt R_6.
+  Definition Self := self.create_builder.CreateParams E ContractRef Args Salt R.
   
   Definition instantiate (self : ref Self) : M ConstructorReturnType.Output :=
     let* α0 := crate.instantiate_contract self in
@@ -8099,7 +8444,7 @@ Module ImplCreateParams E ContractRef Args Salt R_9.
       (self : ref Self)
       :
         M
-          (Result
+          (crate.Result
             (ink_primitives.ConstructorResult ConstructorReturnType.Output)
             crate.Error) :=
     crate.instantiate_contract self.
@@ -8107,7 +8452,7 @@ Module ImplCreateParams E ContractRef Args Salt R_9.
   Global Instance Method_try_instantiate : Notation.Dot "try_instantiate" := {
     Notation.dot := try_instantiate;
   }.
-End ImplCreateParams E ContractRef Args Salt R_9.
+End Implself.create_builder.CreateParams E ContractRef Args Salt R_6.
 
 Module CreateBuilder.
   Record t : Set := {
@@ -8117,7 +8462,7 @@ Module CreateBuilder.
     exec_input : Args;
     salt : Salt;
     return_type : RetType;
-    _phantom : PhantomData ( -> (E * ContractRef));
+    _phantom : core.marker.PhantomData ( -> (E * ContractRef));
   }.
   
   Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -8150,15 +8495,16 @@ Definition build_create
     (_ : unit)
     :
       M
-        (CreateBuilder
+        (self.create_builder.CreateBuilder
           ContractEnv.Env
           ContractRef
-          (Unset Environment.Hash)
-          (Unset u64)
-          (Unset Environment.Balance)
-          (Unset (ExecutionInput EmptyArgumentList))
-          (Unset state.Salt)
-          (Unset (ReturnType unit))) :=
+          (crate.call.utils.Unset Environment.Hash)
+          (crate.call.utils.Unset u64)
+          (crate.call.utils.Unset Environment.Balance)
+          (crate.call.utils.Unset
+            (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
+          (crate.call.utils.Unset state.Salt)
+          (crate.call.utils.Unset (crate.call.utils.ReturnType unit))) :=
   let* α0 := Default.default tt in
   let* α1 := Default.default tt in
   let* α2 := Default.default tt in
@@ -8168,32 +8514,32 @@ Definition build_create
   let* α6 := Default.default tt in
   Pure
     {|
-      CreateBuilder.code_hash := α0;
-      CreateBuilder.gas_limit := α1;
-      CreateBuilder.endowment := α2;
-      CreateBuilder.exec_input := α3;
-      CreateBuilder.salt := α4;
-      CreateBuilder.return_type := α5;
-      CreateBuilder._phantom := α6;
+      self.create_builder.CreateBuilder.code_hash := α0;
+      self.create_builder.CreateBuilder.gas_limit := α1;
+      self.create_builder.CreateBuilder.endowment := α2;
+      self.create_builder.CreateBuilder.exec_input := α3;
+      self.create_builder.CreateBuilder.salt := α4;
+      self.create_builder.CreateBuilder.return_type := α5;
+      self.create_builder.CreateBuilder._phantom := α6;
     |}.
 
 Module
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
-    (Unset ImplE.Hash)
+    (crate.call.utils.Unset ImplE.Hash)
     GasLimit
     Endowment
     Args
     Salt
-    RetType_3.
+    RetType_2.
   Definition
     Self
     :=
-    CreateBuilder
+    self.create_builder.CreateBuilder
       E
       ContractRef
-      (Unset ImplE.Hash)
+      (crate.call.utils.Unset ImplE.Hash)
       GasLimit
       Endowment
       Args
@@ -8205,10 +8551,10 @@ Module
       (code_hash : ImplE.Hash)
       :
         M
-          (CreateBuilder
+          (self.create_builder.CreateBuilder
             E
             ContractRef
-            (Set ImplE.Hash)
+            (crate.call.utils.Set ImplE.Hash)
             GasLimit
             Endowment
             Args
@@ -8217,47 +8563,48 @@ Module
     let* α0 := Default.default tt in
     Pure
       {|
-        CreateBuilder.code_hash := Set.Build_t code_hash;
-        CreateBuilder.gas_limit := self.["gas_limit"];
-        CreateBuilder.endowment := self.["endowment"];
-        CreateBuilder.exec_input := self.["exec_input"];
-        CreateBuilder.salt := self.["salt"];
-        CreateBuilder.return_type := self.["return_type"];
-        CreateBuilder._phantom := α0;
+        self.create_builder.CreateBuilder.code_hash :=
+          crate.call.utils.Set.Build_t code_hash;
+        self.create_builder.CreateBuilder.gas_limit := self.["gas_limit"];
+        self.create_builder.CreateBuilder.endowment := self.["endowment"];
+        self.create_builder.CreateBuilder.exec_input := self.["exec_input"];
+        self.create_builder.CreateBuilder.salt := self.["salt"];
+        self.create_builder.CreateBuilder.return_type := self.["return_type"];
+        self.create_builder.CreateBuilder._phantom := α0;
       |}.
   
   Global Instance Method_code_hash : Notation.Dot "code_hash" := {
     Notation.dot := code_hash;
   }.
 End
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
-    (Unset ImplE.Hash)
+    (crate.call.utils.Unset ImplE.Hash)
     GasLimit
     Endowment
     Args
     Salt
-    RetType_3.
+    RetType_2.
 
 Module
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
     CodeHash
-    (Unset u64)
+    (crate.call.utils.Unset u64)
     Endowment
     Args
     Salt
-    RetType_3.
+    RetType_2.
   Definition
     Self
     :=
-    CreateBuilder
+    self.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
-      (Unset u64)
+      (crate.call.utils.Unset u64)
       Endowment
       Args
       Salt
@@ -8268,11 +8615,11 @@ Module
       (gas_limit : u64)
       :
         M
-          (CreateBuilder
+          (self.create_builder.CreateBuilder
             E
             ContractRef
             CodeHash
-            (Set u64)
+            (crate.call.utils.Set u64)
             Endowment
             Args
             Salt
@@ -8280,48 +8627,49 @@ Module
     let* α0 := Default.default tt in
     Pure
       {|
-        CreateBuilder.code_hash := self.["code_hash"];
-        CreateBuilder.gas_limit := Set.Build_t gas_limit;
-        CreateBuilder.endowment := self.["endowment"];
-        CreateBuilder.exec_input := self.["exec_input"];
-        CreateBuilder.salt := self.["salt"];
-        CreateBuilder.return_type := self.["return_type"];
-        CreateBuilder._phantom := α0;
+        self.create_builder.CreateBuilder.code_hash := self.["code_hash"];
+        self.create_builder.CreateBuilder.gas_limit :=
+          crate.call.utils.Set.Build_t gas_limit;
+        self.create_builder.CreateBuilder.endowment := self.["endowment"];
+        self.create_builder.CreateBuilder.exec_input := self.["exec_input"];
+        self.create_builder.CreateBuilder.salt := self.["salt"];
+        self.create_builder.CreateBuilder.return_type := self.["return_type"];
+        self.create_builder.CreateBuilder._phantom := α0;
       |}.
   
   Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
     Notation.dot := gas_limit;
   }.
 End
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
     CodeHash
-    (Unset u64)
+    (crate.call.utils.Unset u64)
     Endowment
     Args
     Salt
-    RetType_3.
+    RetType_2.
 
 Module
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
     CodeHash
     GasLimit
-    (Unset ImplE.Balance)
+    (crate.call.utils.Unset ImplE.Balance)
     Args
     Salt
-    RetType_3.
+    RetType_2.
   Definition
     Self
     :=
-    CreateBuilder
+    self.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
       GasLimit
-      (Unset ImplE.Balance)
+      (crate.call.utils.Unset ImplE.Balance)
       Args
       Salt
       RetType.
@@ -8331,125 +8679,130 @@ Module
       (endowment : ImplE.Balance)
       :
         M
-          (CreateBuilder
+          (self.create_builder.CreateBuilder
             E
             ContractRef
             CodeHash
             GasLimit
-            (Set ImplE.Balance)
+            (crate.call.utils.Set ImplE.Balance)
             Args
             Salt
             RetType) :=
     let* α0 := Default.default tt in
     Pure
       {|
-        CreateBuilder.code_hash := self.["code_hash"];
-        CreateBuilder.gas_limit := self.["gas_limit"];
-        CreateBuilder.endowment := Set.Build_t endowment;
-        CreateBuilder.exec_input := self.["exec_input"];
-        CreateBuilder.salt := self.["salt"];
-        CreateBuilder.return_type := self.["return_type"];
-        CreateBuilder._phantom := α0;
+        self.create_builder.CreateBuilder.code_hash := self.["code_hash"];
+        self.create_builder.CreateBuilder.gas_limit := self.["gas_limit"];
+        self.create_builder.CreateBuilder.endowment :=
+          crate.call.utils.Set.Build_t endowment;
+        self.create_builder.CreateBuilder.exec_input := self.["exec_input"];
+        self.create_builder.CreateBuilder.salt := self.["salt"];
+        self.create_builder.CreateBuilder.return_type := self.["return_type"];
+        self.create_builder.CreateBuilder._phantom := α0;
       |}.
   
   Global Instance Method_endowment : Notation.Dot "endowment" := {
     Notation.dot := endowment;
   }.
 End
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
     CodeHash
     GasLimit
-    (Unset ImplE.Balance)
+    (crate.call.utils.Unset ImplE.Balance)
     Args
     Salt
-    RetType_3.
+    RetType_2.
 
 Module
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
     CodeHash
     GasLimit
     Endowment
-    (Unset (ExecutionInput EmptyArgumentList))
+    (crate.call.utils.Unset
+      (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
     Salt
-    RetType_3.
+    RetType_2.
   Definition
     Self
     :=
-    CreateBuilder
+    self.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
       GasLimit
       Endowment
-      (Unset (ExecutionInput EmptyArgumentList))
+      (crate.call.utils.Unset
+        (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
       Salt
       RetType.
   
   Definition exec_input
       (self : Self)
-      (exec_input : ExecutionInput Args)
+      (exec_input : crate.call.ExecutionInput Args)
       :
         M
-          (CreateBuilder
+          (self.create_builder.CreateBuilder
             E
             ContractRef
             CodeHash
             GasLimit
             Endowment
-            (Set (ExecutionInput Args))
+            (crate.call.utils.Set (crate.call.ExecutionInput Args))
             Salt
             RetType) :=
     let* α0 := Default.default tt in
     Pure
       {|
-        CreateBuilder.code_hash := self.["code_hash"];
-        CreateBuilder.gas_limit := self.["gas_limit"];
-        CreateBuilder.endowment := self.["endowment"];
-        CreateBuilder.exec_input := Set.Build_t exec_input;
-        CreateBuilder.salt := self.["salt"];
-        CreateBuilder.return_type := self.["return_type"];
-        CreateBuilder._phantom := α0;
+        self.create_builder.CreateBuilder.code_hash := self.["code_hash"];
+        self.create_builder.CreateBuilder.gas_limit := self.["gas_limit"];
+        self.create_builder.CreateBuilder.endowment := self.["endowment"];
+        self.create_builder.CreateBuilder.exec_input :=
+          crate.call.utils.Set.Build_t exec_input;
+        self.create_builder.CreateBuilder.salt := self.["salt"];
+        self.create_builder.CreateBuilder.return_type := self.["return_type"];
+        self.create_builder.CreateBuilder._phantom := α0;
       |}.
   
   Global Instance Method_exec_input : Notation.Dot "exec_input" := {
     Notation.dot := exec_input;
   }.
 End
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
     CodeHash
     GasLimit
     Endowment
-    (Unset (ExecutionInput EmptyArgumentList))
+    (crate.call.utils.Unset
+      (crate.call.ExecutionInput crate.call.utils.EmptyArgumentList))
     Salt
-    RetType_3.
+    RetType_2.
 
 Module
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
     CodeHash
     GasLimit
     Endowment
     Args
-    (Unset state.Salt)
-    RetType_3.
+    (crate.call.utils.Unset state.Salt)
+    RetType_2.
   Definition
     Self
     :=
-    CreateBuilder
+    self.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
       GasLimit
       Endowment
       Args
-      (Unset state.Salt)
+      (crate.call.utils.Unset state.Salt)
       RetType.
   
   Definition salt_bytes
@@ -8457,43 +8810,44 @@ Module
       (salt : Salt)
       :
         M
-          (CreateBuilder
+          (self.create_builder.CreateBuilder
             E
             ContractRef
             CodeHash
             GasLimit
             Endowment
             Args
-            (Set Salt)
+            (crate.call.utils.Set Salt)
             RetType) :=
     let* α0 := Default.default tt in
     Pure
       {|
-        CreateBuilder.code_hash := self.["code_hash"];
-        CreateBuilder.gas_limit := self.["gas_limit"];
-        CreateBuilder.endowment := self.["endowment"];
-        CreateBuilder.exec_input := self.["exec_input"];
-        CreateBuilder.salt := Set.Build_t salt;
-        CreateBuilder.return_type := self.["return_type"];
-        CreateBuilder._phantom := α0;
+        self.create_builder.CreateBuilder.code_hash := self.["code_hash"];
+        self.create_builder.CreateBuilder.gas_limit := self.["gas_limit"];
+        self.create_builder.CreateBuilder.endowment := self.["endowment"];
+        self.create_builder.CreateBuilder.exec_input := self.["exec_input"];
+        self.create_builder.CreateBuilder.salt :=
+          crate.call.utils.Set.Build_t salt;
+        self.create_builder.CreateBuilder.return_type := self.["return_type"];
+        self.create_builder.CreateBuilder._phantom := α0;
       |}.
   
   Global Instance Method_salt_bytes : Notation.Dot "salt_bytes" := {
     Notation.dot := salt_bytes;
   }.
 End
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
     CodeHash
     GasLimit
     Endowment
     Args
-    (Unset state.Salt)
-    RetType_3.
+    (crate.call.utils.Unset state.Salt)
+    RetType_2.
 
 Module
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
     CodeHash
@@ -8501,11 +8855,11 @@ Module
     Endowment
     Args
     Salt
-    (Unset (ReturnType unit))_3.
+    (crate.call.utils.Unset (crate.call.utils.ReturnType unit))_2.
   Definition
     Self
     :=
-    CreateBuilder
+    self.create_builder.CreateBuilder
       E
       ContractRef
       CodeHash
@@ -8513,13 +8867,13 @@ Module
       Endowment
       Args
       Salt
-      (Unset (ReturnType unit)).
+      (crate.call.utils.Unset (crate.call.utils.ReturnType unit)).
   
   Definition returns
       (self : Self)
       :
         M
-          (CreateBuilder
+          (self.create_builder.CreateBuilder
             E
             ContractRef
             CodeHash
@@ -8527,25 +8881,26 @@ Module
             Endowment
             Args
             Salt
-            (Set (ReturnType R))) :=
+            (crate.call.utils.Set (crate.call.utils.ReturnType R))) :=
     let* α0 := Default.default tt in
     let* α1 := Default.default tt in
     Pure
       {|
-        CreateBuilder.code_hash := self.["code_hash"];
-        CreateBuilder.gas_limit := self.["gas_limit"];
-        CreateBuilder.endowment := self.["endowment"];
-        CreateBuilder.exec_input := self.["exec_input"];
-        CreateBuilder.salt := self.["salt"];
-        CreateBuilder.return_type := Set.Build_t α0;
-        CreateBuilder._phantom := α1;
+        self.create_builder.CreateBuilder.code_hash := self.["code_hash"];
+        self.create_builder.CreateBuilder.gas_limit := self.["gas_limit"];
+        self.create_builder.CreateBuilder.endowment := self.["endowment"];
+        self.create_builder.CreateBuilder.exec_input := self.["exec_input"];
+        self.create_builder.CreateBuilder.salt := self.["salt"];
+        self.create_builder.CreateBuilder.return_type :=
+          crate.call.utils.Set.Build_t α0;
+        self.create_builder.CreateBuilder._phantom := α1;
       |}.
   
   Global Instance Method_returns : Notation.Dot "returns" := {
     Notation.dot := returns;
   }.
 End
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
     CodeHash
@@ -8553,34 +8908,34 @@ End
     Endowment
     Args
     Salt
-    (Unset (ReturnType unit))_3.
+    (crate.call.utils.Unset (crate.call.utils.ReturnType unit))_2.
 
 Module
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
-    (Set ImplE.Hash)
+    (crate.call.utils.Set ImplE.Hash)
     GasLimit
-    (Set ImplE.Balance)
-    (Set (ExecutionInput Args))
-    (Set Salt)
-    (Set (ReturnType RetType))_5.
+    (crate.call.utils.Set ImplE.Balance)
+    (crate.call.utils.Set (crate.call.ExecutionInput Args))
+    (crate.call.utils.Set Salt)
+    (crate.call.utils.Set (crate.call.utils.ReturnType RetType))_3.
   Definition
     Self
     :=
-    CreateBuilder
+    self.create_builder.CreateBuilder
       E
       ContractRef
-      (Set ImplE.Hash)
+      (crate.call.utils.Set ImplE.Hash)
       GasLimit
-      (Set ImplE.Balance)
-      (Set (ExecutionInput Args))
-      (Set Salt)
-      (Set (ReturnType RetType)).
+      (crate.call.utils.Set ImplE.Balance)
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set Salt)
+      (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
   
   Definition params
       (self : Self)
-      : M (CreateParams E ContractRef Args Salt RetType) :=
+      : M (self.create_builder.CreateParams E ContractRef Args Salt RetType) :=
     let* α0 := self.["code_hash"].["value"] in
     let* α1 := self.["gas_limit"].["unwrap_or_else"] (fun  => Pure 0) in
     let* α2 := self.["endowment"].["value"] in
@@ -8590,51 +8945,51 @@ Module
     let* α6 := Default.default tt in
     Pure
       {|
-        CreateParams.code_hash := α0;
-        CreateParams.gas_limit := α1;
-        CreateParams.endowment := α2;
-        CreateParams.exec_input := α3;
-        CreateParams.salt_bytes := α4;
-        CreateParams._return_type := α5;
-        CreateParams._phantom := α6;
+        self.create_builder.CreateParams.code_hash := α0;
+        self.create_builder.CreateParams.gas_limit := α1;
+        self.create_builder.CreateParams.endowment := α2;
+        self.create_builder.CreateParams.exec_input := α3;
+        self.create_builder.CreateParams.salt_bytes := α4;
+        self.create_builder.CreateParams._return_type := α5;
+        self.create_builder.CreateParams._phantom := α6;
       |}.
   
   Global Instance Method_params : Notation.Dot "params" := {
     Notation.dot := params;
   }.
 End
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
-    (Set ImplE.Hash)
+    (crate.call.utils.Set ImplE.Hash)
     GasLimit
-    (Set ImplE.Balance)
-    (Set (ExecutionInput Args))
-    (Set Salt)
-    (Set (ReturnType RetType))_5.
+    (crate.call.utils.Set ImplE.Balance)
+    (crate.call.utils.Set (crate.call.ExecutionInput Args))
+    (crate.call.utils.Set Salt)
+    (crate.call.utils.Set (crate.call.utils.ReturnType RetType))_3.
 
 Module
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
-    (Set ImplE.Hash)
+    (crate.call.utils.Set ImplE.Hash)
     GasLimit
-    (Set ImplE.Balance)
-    (Set (ExecutionInput Args))
-    (Set Salt)
-    (Set (ReturnType RetType))_6.
+    (crate.call.utils.Set ImplE.Balance)
+    (crate.call.utils.Set (crate.call.ExecutionInput Args))
+    (crate.call.utils.Set Salt)
+    (crate.call.utils.Set (crate.call.utils.ReturnType RetType))_4.
   Definition
     Self
     :=
-    CreateBuilder
+    self.create_builder.CreateBuilder
       E
       ContractRef
-      (Set ImplE.Hash)
+      (crate.call.utils.Set ImplE.Hash)
       GasLimit
-      (Set ImplE.Balance)
-      (Set (ExecutionInput Args))
-      (Set Salt)
-      (Set (ReturnType RetType)).
+      (crate.call.utils.Set ImplE.Balance)
+      (crate.call.utils.Set (crate.call.ExecutionInput Args))
+      (crate.call.utils.Set Salt)
+      (crate.call.utils.Set (crate.call.utils.ReturnType RetType)).
   
   Definition instantiate (self : Self) : M ConstructorReturnType.Output :=
     let* α0 := self.["params"] in
@@ -8648,9 +9003,9 @@ Module
       (self : Self)
       :
         M
-          (Result
+          (crate.Result
             (ink_primitives.ConstructorResult ConstructorReturnType.Output)
-            Error) :=
+            crate.Error) :=
     let* α0 := self.["params"] in
     α0.["try_instantiate"].
   
@@ -8658,23 +9013,20 @@ Module
     Notation.dot := try_instantiate;
   }.
 End
-  ImplCreateBuilder
+  Implself.create_builder.CreateBuilder
     E
     ContractRef
-    (Set ImplE.Hash)
+    (crate.call.utils.Set ImplE.Hash)
     GasLimit
-    (Set ImplE.Balance)
-    (Set (ExecutionInput Args))
-    (Set Salt)
-    (Set (ReturnType RetType))_6.
+    (crate.call.utils.Set ImplE.Balance)
+    (crate.call.utils.Set (crate.call.ExecutionInput Args))
+    (crate.call.utils.Set Salt)
+    (crate.call.utils.Set (crate.call.utils.ReturnType RetType))_4.
 
 Module execution_input.
-  Module Selector := crate.call.Selector.
-  Definition Selector := Selector.t.
-  
   Module ExecutionInput.
     Record t : Set := {
-      selector : Selector;
+      selector : crate.call.Selector;
       args : Args;
     }.
     
@@ -8687,13 +9039,17 @@ Module execution_input.
   End ExecutionInput.
   Definition ExecutionInput : Set := ExecutionInput.t.
   
-  Module Impl__crate_clone_Clone_for_ExecutionInput_Args.
-    Definition Self := ExecutionInput Args.
+  Module Impl__crate_clone_Clone_for_crate_call_ExecutionInput_Args.
+    Definition Self := crate.call.ExecutionInput Args.
     
-    Definition clone (self : ref Self) : M (ExecutionInput Args) :=
+    Definition clone (self : ref Self) : M (crate.call.ExecutionInput Args) :=
       let* α0 := _crate.clone.Clone.clone (addr_of self.["selector"]) in
       let* α1 := _crate.clone.Clone.clone (addr_of self.["args"]) in
-      Pure {| ExecutionInput.selector := α0; ExecutionInput.args := α1; |}.
+      Pure
+        {|
+          crate.call.ExecutionInput.selector := α0;
+          crate.call.ExecutionInput.args := α1;
+        |}.
     
     Global Instance Method_clone : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -8702,15 +9058,19 @@ Module execution_input.
     Global Instance I Args : _crate.clone.Clone.Trait Self := {
       _crate.clone.Clone.clone := clone;
     }.
-  End Impl__crate_clone_Clone_for_ExecutionInput_Args.
+  End Impl__crate_clone_Clone_for_crate_call_ExecutionInput_Args.
   
-  Module Impl__crate_default_Default_for_ExecutionInput_Args.
-    Definition Self := ExecutionInput Args.
+  Module Impl__crate_default_Default_for_crate_call_ExecutionInput_Args.
+    Definition Self := crate.call.ExecutionInput Args.
     
-    Definition default (_ : unit) : M (ExecutionInput Args) :=
+    Definition default (_ : unit) : M (crate.call.ExecutionInput Args) :=
       let* α0 := _crate.default.Default.default tt in
       let* α1 := _crate.default.Default.default tt in
-      Pure {| ExecutionInput.selector := α0; ExecutionInput.args := α1; |}.
+      Pure
+        {|
+          crate.call.ExecutionInput.selector := α0;
+          crate.call.ExecutionInput.args := α1;
+        |}.
     
     Global Instance AssociatedFunction_default :
       Notation.DoubleColon Self "default" := {
@@ -8720,10 +9080,10 @@ Module execution_input.
     Global Instance I Args : _crate.default.Default.Trait Self := {
       _crate.default.Default.default := default;
     }.
-  End Impl__crate_default_Default_for_ExecutionInput_Args.
+  End Impl__crate_default_Default_for_crate_call_ExecutionInput_Args.
   
-  Module Impl__crate_fmt_Debug_for_ExecutionInput_Args.
-    Definition Self := ExecutionInput Args.
+  Module Impl__crate_fmt_Debug_for_crate_call_ExecutionInput_Args.
+    Definition Self := crate.call.ExecutionInput Args.
     
     Definition fmt
         (self : ref Self)
@@ -8744,13 +9104,16 @@ Module execution_input.
     Global Instance I Args : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_ExecutionInput_Args.
+  End Impl__crate_fmt_Debug_for_crate_call_ExecutionInput_Args.
   
-  Module ImplExecutionInput EmptyArgumentList_2.
-    Definition Self := ExecutionInput EmptyArgumentList.
+  Module Implcrate.call.ExecutionInput crate.call.utils.EmptyArgumentList_2.
+    Definition
+      Self
+      :=
+      crate.call.ExecutionInput crate.call.utils.EmptyArgumentList.
     
-    Definition new (selector : Selector) : M Self :=
-      let* α0 := ArgumentList::["empty"] tt in
+    Definition new (selector : crate.call.Selector) : M Self :=
+      let* α0 := super.execution_input.ArgumentList::["empty"] tt in
       Pure {| Self.selector := selector; Self.args := α0; |}.
     
     Global Instance AssociatedFunction_new :
@@ -8761,44 +9124,68 @@ Module execution_input.
     Definition push_arg
         (self : Self)
         (arg : T)
-        : M (ExecutionInput (ArgumentList (Argument T) EmptyArgumentList)) :=
+        :
+          M
+            (crate.call.ExecutionInput
+              (super.execution_input.ArgumentList
+                (super.execution_input.Argument T)
+                crate.call.utils.EmptyArgumentList)) :=
       let* α0 := self.["args"].["push_arg"] arg in
       Pure
         {|
-          ExecutionInput.selector := self.["selector"];
-          ExecutionInput.args := α0;
+          crate.call.ExecutionInput.selector := self.["selector"];
+          crate.call.ExecutionInput.args := α0;
         |}.
     
     Global Instance Method_push_arg : Notation.Dot "push_arg" := {
       Notation.dot := push_arg;
     }.
-  End ImplExecutionInput EmptyArgumentList_2.
+  End Implcrate.call.ExecutionInput crate.call.utils.EmptyArgumentList_2.
   
-  Module ImplExecutionInput (ArgumentList (Argument Head) Rest)_2.
-    Definition Self := ExecutionInput (ArgumentList (Argument Head) Rest).
+  Module
+    Implcrate.call.ExecutionInput
+      (super.execution_input.ArgumentList
+        (super.execution_input.Argument Head)
+        Rest).
+    Definition
+      Self
+      :=
+      crate.call.ExecutionInput
+        (super.execution_input.ArgumentList
+          (super.execution_input.Argument Head)
+          Rest).
     
     Definition push_arg
         (self : Self)
         (arg : T)
-        : M (ExecutionInput (ArgsList T (ArgsList Head Rest))) :=
+        :
+          M
+            (crate.call.ExecutionInput
+              (super.execution_input.ArgsList
+                T
+                (super.execution_input.ArgsList Head Rest))) :=
       let* α0 := self.["args"].["push_arg"] arg in
       Pure
         {|
-          ExecutionInput.selector := self.["selector"];
-          ExecutionInput.args := α0;
+          crate.call.ExecutionInput.selector := self.["selector"];
+          crate.call.ExecutionInput.args := α0;
         |}.
     
     Global Instance Method_push_arg : Notation.Dot "push_arg" := {
       Notation.dot := push_arg;
     }.
-  End ImplExecutionInput (ArgumentList (Argument Head) Rest)_2.
+  End
+    Implcrate.call.ExecutionInput
+      (super.execution_input.ArgumentList
+        (super.execution_input.Argument Head)
+        Rest).
   
-  Module ImplExecutionInput Args_2.
-    Definition Self := ExecutionInput Args.
+  Module Implcrate.call.ExecutionInput Args_2.
+    Definition Self := crate.call.ExecutionInput Args.
     
     Definition update_selector
         (self : mut_ref Self)
-        (selector : Selector)
+        (selector : crate.call.Selector)
         : M unit :=
       let* _ := assign self.["selector"] selector in
       Pure tt.
@@ -8806,7 +9193,7 @@ Module execution_input.
     Global Instance Method_update_selector : Notation.Dot "update_selector" := {
       Notation.dot := update_selector;
     }.
-  End ImplExecutionInput Args_2.
+  End Implcrate.call.ExecutionInput Args_2.
   
   Module ArgumentList.
     Record t : Set := {
@@ -8823,13 +9210,20 @@ Module execution_input.
   End ArgumentList.
   Definition ArgumentList : Set := ArgumentList.t.
   
-  Module Impl__crate_clone_Clone_for_ArgumentList_Head_Rest.
-    Definition Self := ArgumentList Head Rest.
+  Module
+      Impl__crate_clone_Clone_for_super_execution_input_ArgumentList_Head_Rest.
+    Definition Self := super.execution_input.ArgumentList Head Rest.
     
-    Definition clone (self : ref Self) : M (ArgumentList Head Rest) :=
+    Definition clone
+        (self : ref Self)
+        : M (super.execution_input.ArgumentList Head Rest) :=
       let* α0 := _crate.clone.Clone.clone (addr_of self.["head"]) in
       let* α1 := _crate.clone.Clone.clone (addr_of self.["rest"]) in
-      Pure {| ArgumentList.head := α0; ArgumentList.rest := α1; |}.
+      Pure
+        {|
+          super.execution_input.ArgumentList.head := α0;
+          super.execution_input.ArgumentList.rest := α1;
+        |}.
     
     Global Instance Method_clone : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -8838,15 +9232,22 @@ Module execution_input.
     Global Instance I Head Rest : _crate.clone.Clone.Trait Self := {
       _crate.clone.Clone.clone := clone;
     }.
-  End Impl__crate_clone_Clone_for_ArgumentList_Head_Rest.
+  End Impl__crate_clone_Clone_for_super_execution_input_ArgumentList_Head_Rest.
   
-  Module Impl__crate_default_Default_for_ArgumentList_Head_Rest.
-    Definition Self := ArgumentList Head Rest.
+  Module
+      Impl__crate_default_Default_for_super_execution_input_ArgumentList_Head_Rest.
+    Definition Self := super.execution_input.ArgumentList Head Rest.
     
-    Definition default (_ : unit) : M (ArgumentList Head Rest) :=
+    Definition default
+        (_ : unit)
+        : M (super.execution_input.ArgumentList Head Rest) :=
       let* α0 := _crate.default.Default.default tt in
       let* α1 := _crate.default.Default.default tt in
-      Pure {| ArgumentList.head := α0; ArgumentList.rest := α1; |}.
+      Pure
+        {|
+          super.execution_input.ArgumentList.head := α0;
+          super.execution_input.ArgumentList.rest := α1;
+        |}.
     
     Global Instance AssociatedFunction_default :
       Notation.DoubleColon Self "default" := {
@@ -8856,10 +9257,11 @@ Module execution_input.
     Global Instance I Head Rest : _crate.default.Default.Trait Self := {
       _crate.default.Default.default := default;
     }.
-  End Impl__crate_default_Default_for_ArgumentList_Head_Rest.
+  End
+    Impl__crate_default_Default_for_super_execution_input_ArgumentList_Head_Rest.
   
-  Module Impl__crate_fmt_Debug_for_ArgumentList_Head_Rest.
-    Definition Self := ArgumentList Head Rest.
+  Module Impl__crate_fmt_Debug_for_super_execution_input_ArgumentList_Head_Rest.
+    Definition Self := super.execution_input.ArgumentList Head Rest.
     
     Definition fmt
         (self : ref Self)
@@ -8880,9 +9282,12 @@ Module execution_input.
     Global Instance I Head Rest : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_ArgumentList_Head_Rest.
+  End Impl__crate_fmt_Debug_for_super_execution_input_ArgumentList_Head_Rest.
   
-  Definition ArgsList : Set := ArgumentList (Argument Head) Rest.
+  Definition ArgsList : Set :=
+    super.execution_input.ArgumentList
+      (super.execution_input.Argument Head)
+      Rest.
   
   Module Argument.
     Record t : Set := {
@@ -8895,12 +9300,12 @@ Module execution_input.
   End Argument.
   Definition Argument : Set := Argument.t.
   
-  Module Impl__crate_clone_Clone_for_Argument_T.
-    Definition Self := Argument T.
+  Module Impl__crate_clone_Clone_for_super_execution_input_Argument_T.
+    Definition Self := super.execution_input.Argument T.
     
-    Definition clone (self : ref Self) : M (Argument T) :=
+    Definition clone (self : ref Self) : M (super.execution_input.Argument T) :=
       let* α0 := _crate.clone.Clone.clone (addr_of self.["arg"]) in
-      Pure {| Argument.arg := α0; |}.
+      Pure {| super.execution_input.Argument.arg := α0; |}.
     
     Global Instance Method_clone : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -8909,10 +9314,10 @@ Module execution_input.
     Global Instance I T : _crate.clone.Clone.Trait Self := {
       _crate.clone.Clone.clone := clone;
     }.
-  End Impl__crate_clone_Clone_for_Argument_T.
+  End Impl__crate_clone_Clone_for_super_execution_input_Argument_T.
   
-  Module Impl__crate_fmt_Debug_for_Argument_T.
-    Definition Self := Argument T.
+  Module Impl__crate_fmt_Debug_for_super_execution_input_Argument_T.
+    Definition Self := super.execution_input.Argument T.
     
     Definition fmt
         (self : ref Self)
@@ -8931,10 +9336,10 @@ Module execution_input.
     Global Instance I T : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_Argument_T.
+  End Impl__crate_fmt_Debug_for_super_execution_input_Argument_T.
   
-  Module ImplArgument T_2.
-    Definition Self := Argument T.
+  Module Implsuper.execution_input.Argument T.
+    Definition Self := super.execution_input.Argument T.
     
     Definition new (arg : T) : M Self := Pure {| Self.arg := arg; |}.
     
@@ -8942,18 +9347,20 @@ Module execution_input.
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
-  End ImplArgument T_2.
+  End Implsuper.execution_input.Argument T.
   
   Module ArgumentListEnd.
     Inductive t : Set := Build.
   End ArgumentListEnd.
   Definition ArgumentListEnd := ArgumentListEnd.t.
   
-  Module Impl__crate_clone_Clone_for_ArgumentListEnd.
-    Definition Self := ArgumentListEnd.
+  Module Impl__crate_clone_Clone_for_super_execution_input_ArgumentListEnd.
+    Definition Self := super.execution_input.ArgumentListEnd.
     
-    Definition clone (self : ref Self) : M ArgumentListEnd :=
-      Pure ArgumentListEnd.Build.
+    Definition clone
+        (self : ref Self)
+        : M super.execution_input.ArgumentListEnd :=
+      Pure super.execution_input.ArgumentListEnd.Build.
     
     Global Instance Method_clone : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -8962,12 +9369,13 @@ Module execution_input.
     Global Instance I : _crate.clone.Clone.Trait Self := {
       _crate.clone.Clone.clone := clone;
     }.
-  End Impl__crate_clone_Clone_for_ArgumentListEnd.
+  End Impl__crate_clone_Clone_for_super_execution_input_ArgumentListEnd.
   
-  Module Impl__crate_default_Default_for_ArgumentListEnd.
-    Definition Self := ArgumentListEnd.
+  Module Impl__crate_default_Default_for_super_execution_input_ArgumentListEnd.
+    Definition Self := super.execution_input.ArgumentListEnd.
     
-    Definition default (_ : unit) : M ArgumentListEnd := Pure {|  |}.
+    Definition default (_ : unit) : M super.execution_input.ArgumentListEnd :=
+      Pure {|  |}.
     
     Global Instance AssociatedFunction_default :
       Notation.DoubleColon Self "default" := {
@@ -8977,10 +9385,10 @@ Module execution_input.
     Global Instance I : _crate.default.Default.Trait Self := {
       _crate.default.Default.default := default;
     }.
-  End Impl__crate_default_Default_for_ArgumentListEnd.
+  End Impl__crate_default_Default_for_super_execution_input_ArgumentListEnd.
   
-  Module Impl__crate_fmt_Debug_for_ArgumentListEnd.
-    Definition Self := ArgumentListEnd.
+  Module Impl__crate_fmt_Debug_for_super_execution_input_ArgumentListEnd.
+    Definition Self := super.execution_input.ArgumentListEnd.
     
     Definition fmt
         (self : ref Self)
@@ -8995,19 +9403,23 @@ Module execution_input.
     Global Instance I : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_ArgumentListEnd.
+  End Impl__crate_fmt_Debug_for_super_execution_input_ArgumentListEnd.
   
   Definition EmptyArgumentList : Set :=
-    ArgumentList ArgumentListEnd ArgumentListEnd.
+    super.execution_input.ArgumentList
+      super.execution_input.ArgumentListEnd
+      super.execution_input.ArgumentListEnd.
   
-  Module ImplEmptyArgumentList_2.
-    Definition Self := EmptyArgumentList.
+  Module Implcrate.call.utils.EmptyArgumentList_2.
+    Definition Self := crate.call.utils.EmptyArgumentList.
     
-    Definition empty (_ : unit) : M EmptyArgumentList :=
+    Definition empty (_ : unit) : M crate.call.utils.EmptyArgumentList :=
       Pure
         {|
-          ArgumentList.head := ArgumentListEnd.Build;
-          ArgumentList.rest := ArgumentListEnd.Build;
+          super.execution_input.ArgumentList.head :=
+            super.execution_input.ArgumentListEnd.Build;
+          super.execution_input.ArgumentList.rest :=
+            super.execution_input.ArgumentListEnd.Build;
         |}.
     
     Global Instance AssociatedFunction_empty :
@@ -9018,32 +9430,59 @@ Module execution_input.
     Definition push_arg
         (self : Self)
         (arg : T)
-        : M (ArgumentList (Argument T) Self) :=
-      let* α0 := Argument::["new"] arg in
-      Pure {| ArgumentList.head := α0; ArgumentList.rest := self; |}.
+        :
+          M
+            (super.execution_input.ArgumentList
+              (super.execution_input.Argument T)
+              Self) :=
+      let* α0 := super.execution_input.Argument::["new"] arg in
+      Pure
+        {|
+          super.execution_input.ArgumentList.head := α0;
+          super.execution_input.ArgumentList.rest := self;
+        |}.
     
     Global Instance Method_push_arg : Notation.Dot "push_arg" := {
       Notation.dot := push_arg;
     }.
-  End ImplEmptyArgumentList_2.
+  End Implcrate.call.utils.EmptyArgumentList_2.
   
-  Module ImplArgumentList (Argument Head) Rest_2.
-    Definition Self := ArgumentList (Argument Head) Rest.
+  Module
+    Implsuper.execution_input.ArgumentList
+      (super.execution_input.Argument Head)
+      Rest.
+    Definition
+      Self
+      :=
+      super.execution_input.ArgumentList
+        (super.execution_input.Argument Head)
+        Rest.
     
     Definition push_arg
         (self : Self)
         (arg : T)
-        : M (ArgumentList (Argument T) Self) :=
-      let* α0 := Argument::["new"] arg in
-      Pure {| ArgumentList.head := α0; ArgumentList.rest := self; |}.
+        :
+          M
+            (super.execution_input.ArgumentList
+              (super.execution_input.Argument T)
+              Self) :=
+      let* α0 := super.execution_input.Argument::["new"] arg in
+      Pure
+        {|
+          super.execution_input.ArgumentList.head := α0;
+          super.execution_input.ArgumentList.rest := self;
+        |}.
     
     Global Instance Method_push_arg : Notation.Dot "push_arg" := {
       Notation.dot := push_arg;
     }.
-  End ImplArgumentList (Argument Head) Rest_2.
+  End
+    Implsuper.execution_input.ArgumentList
+      (super.execution_input.Argument Head)
+      Rest.
   
-  Module Impl_scale_Encode_for_Argument_T.
-    Definition Self := Argument T.
+  Module Impl_scale_Encode_for_super_execution_input_Argument_T.
+    Definition Self := super.execution_input.Argument T.
     
     Definition size_hint (self : ref Self) : M usize :=
       scale.Encode.size_hint (addr_of self.["arg"]).
@@ -9061,10 +9500,10 @@ Module execution_input.
     
     Global Instance I T : scale.Encode.Trait Self := {
     }.
-  End Impl_scale_Encode_for_Argument_T.
+  End Impl_scale_Encode_for_super_execution_input_Argument_T.
   
-  Module Impl_scale_Encode_for_EmptyArgumentList.
-    Definition Self := EmptyArgumentList.
+  Module Impl_scale_Encode_for_crate_call_utils_EmptyArgumentList.
+    Definition Self := crate.call.utils.EmptyArgumentList.
     
     Definition size_hint (self : ref Self) : M usize := Pure 0.
     
@@ -9081,10 +9520,16 @@ Module execution_input.
     
     Global Instance I : scale.Encode.Trait Self := {
     }.
-  End Impl_scale_Encode_for_EmptyArgumentList.
+  End Impl_scale_Encode_for_crate_call_utils_EmptyArgumentList.
   
-  Module Impl_scale_Encode_for_ArgumentList_Argument_Head_Rest.
-    Definition Self := ArgumentList (Argument Head) Rest.
+  Module
+      Impl_scale_Encode_for_super_execution_input_ArgumentList_super_execution_input_Argument_Head_Rest.
+    Definition
+      Self
+      :=
+      super.execution_input.ArgumentList
+        (super.execution_input.Argument Head)
+        Rest.
     
     Definition size_hint (self : ref Self) : M usize :=
       let* α0 := scale.Encode.size_hint (addr_of self.["head"]) in
@@ -9106,10 +9551,11 @@ Module execution_input.
     
     Global Instance I Head Rest : scale.Encode.Trait Self := {
     }.
-  End Impl_scale_Encode_for_ArgumentList_Argument_Head_Rest.
+  End
+    Impl_scale_Encode_for_super_execution_input_ArgumentList_super_execution_input_Argument_Head_Rest.
   
-  Module Impl_scale_Encode_for_ExecutionInput_Args.
-    Definition Self := ExecutionInput Args.
+  Module Impl_scale_Encode_for_crate_call_ExecutionInput_Args.
+    Definition Self := crate.call.ExecutionInput Args.
     
     Definition size_hint (self : ref Self) : M usize :=
       let* α0 := scale.Encode.size_hint (addr_of self.["selector"]) in
@@ -9131,15 +9577,12 @@ Module execution_input.
     
     Global Instance I Args : scale.Encode.Trait Self := {
     }.
-  End Impl_scale_Encode_for_ExecutionInput_Args.
+  End Impl_scale_Encode_for_crate_call_ExecutionInput_Args.
 End execution_input.
-
-Module Selector := crate.call.Selector.
-Definition Selector := Selector.t.
 
 Module ExecutionInput.
   Record t : Set := {
-    selector : Selector;
+    selector : crate.call.Selector;
     args : Args;
   }.
   
@@ -9152,13 +9595,17 @@ Module ExecutionInput.
 End ExecutionInput.
 Definition ExecutionInput : Set := ExecutionInput.t.
 
-Module Impl__crate_clone_Clone_for_ExecutionInput_Args.
-  Definition Self := ExecutionInput Args.
+Module Impl__crate_clone_Clone_for_crate_call_ExecutionInput_Args.
+  Definition Self := crate.call.ExecutionInput Args.
   
-  Definition clone (self : ref Self) : M (ExecutionInput Args) :=
+  Definition clone (self : ref Self) : M (crate.call.ExecutionInput Args) :=
     let* α0 := _crate.clone.Clone.clone (addr_of self.["selector"]) in
     let* α1 := _crate.clone.Clone.clone (addr_of self.["args"]) in
-    Pure {| ExecutionInput.selector := α0; ExecutionInput.args := α1; |}.
+    Pure
+      {|
+        crate.call.ExecutionInput.selector := α0;
+        crate.call.ExecutionInput.args := α1;
+      |}.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -9167,15 +9614,19 @@ Module Impl__crate_clone_Clone_for_ExecutionInput_Args.
   Global Instance I Args : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_ExecutionInput_Args.
+End Impl__crate_clone_Clone_for_crate_call_ExecutionInput_Args.
 
-Module Impl__crate_default_Default_for_ExecutionInput_Args.
-  Definition Self := ExecutionInput Args.
+Module Impl__crate_default_Default_for_crate_call_ExecutionInput_Args.
+  Definition Self := crate.call.ExecutionInput Args.
   
-  Definition default (_ : unit) : M (ExecutionInput Args) :=
+  Definition default (_ : unit) : M (crate.call.ExecutionInput Args) :=
     let* α0 := _crate.default.Default.default tt in
     let* α1 := _crate.default.Default.default tt in
-    Pure {| ExecutionInput.selector := α0; ExecutionInput.args := α1; |}.
+    Pure
+      {|
+        crate.call.ExecutionInput.selector := α0;
+        crate.call.ExecutionInput.args := α1;
+      |}.
   
   Global Instance AssociatedFunction_default :
     Notation.DoubleColon Self "default" := {
@@ -9185,10 +9636,10 @@ Module Impl__crate_default_Default_for_ExecutionInput_Args.
   Global Instance I Args : _crate.default.Default.Trait Self := {
     _crate.default.Default.default := default;
   }.
-End Impl__crate_default_Default_for_ExecutionInput_Args.
+End Impl__crate_default_Default_for_crate_call_ExecutionInput_Args.
 
-Module Impl__crate_fmt_Debug_for_ExecutionInput_Args.
-  Definition Self := ExecutionInput Args.
+Module Impl__crate_fmt_Debug_for_crate_call_ExecutionInput_Args.
+  Definition Self := crate.call.ExecutionInput Args.
   
   Definition fmt
       (self : ref Self)
@@ -9209,13 +9660,16 @@ Module Impl__crate_fmt_Debug_for_ExecutionInput_Args.
   Global Instance I Args : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_ExecutionInput_Args.
+End Impl__crate_fmt_Debug_for_crate_call_ExecutionInput_Args.
 
-Module ImplExecutionInput EmptyArgumentList_3.
-  Definition Self := ExecutionInput EmptyArgumentList.
+Module Implcrate.call.ExecutionInput crate.call.utils.EmptyArgumentList_3.
+  Definition
+    Self
+    :=
+    crate.call.ExecutionInput crate.call.utils.EmptyArgumentList.
   
-  Definition new (selector : Selector) : M Self :=
-    let* α0 := ArgumentList::["empty"] tt in
+  Definition new (selector : crate.call.Selector) : M Self :=
+    let* α0 := super.execution_input.ArgumentList::["empty"] tt in
     Pure {| Self.selector := selector; Self.args := α0; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
@@ -9225,44 +9679,68 @@ Module ImplExecutionInput EmptyArgumentList_3.
   Definition push_arg
       (self : Self)
       (arg : T)
-      : M (ExecutionInput (ArgumentList (Argument T) EmptyArgumentList)) :=
+      :
+        M
+          (crate.call.ExecutionInput
+            (super.execution_input.ArgumentList
+              (super.execution_input.Argument T)
+              crate.call.utils.EmptyArgumentList)) :=
     let* α0 := self.["args"].["push_arg"] arg in
     Pure
       {|
-        ExecutionInput.selector := self.["selector"];
-        ExecutionInput.args := α0;
+        crate.call.ExecutionInput.selector := self.["selector"];
+        crate.call.ExecutionInput.args := α0;
       |}.
   
   Global Instance Method_push_arg : Notation.Dot "push_arg" := {
     Notation.dot := push_arg;
   }.
-End ImplExecutionInput EmptyArgumentList_3.
+End Implcrate.call.ExecutionInput crate.call.utils.EmptyArgumentList_3.
 
-Module ImplExecutionInput (ArgumentList (Argument Head) Rest)_3.
-  Definition Self := ExecutionInput (ArgumentList (Argument Head) Rest).
+Module
+  Implcrate.call.ExecutionInput
+    (super.execution_input.ArgumentList
+      (super.execution_input.Argument Head)
+      Rest)_2.
+  Definition
+    Self
+    :=
+    crate.call.ExecutionInput
+      (super.execution_input.ArgumentList
+        (super.execution_input.Argument Head)
+        Rest).
   
   Definition push_arg
       (self : Self)
       (arg : T)
-      : M (ExecutionInput (ArgsList T (ArgsList Head Rest))) :=
+      :
+        M
+          (crate.call.ExecutionInput
+            (super.execution_input.ArgsList
+              T
+              (super.execution_input.ArgsList Head Rest))) :=
     let* α0 := self.["args"].["push_arg"] arg in
     Pure
       {|
-        ExecutionInput.selector := self.["selector"];
-        ExecutionInput.args := α0;
+        crate.call.ExecutionInput.selector := self.["selector"];
+        crate.call.ExecutionInput.args := α0;
       |}.
   
   Global Instance Method_push_arg : Notation.Dot "push_arg" := {
     Notation.dot := push_arg;
   }.
-End ImplExecutionInput (ArgumentList (Argument Head) Rest)_3.
+End
+  Implcrate.call.ExecutionInput
+    (super.execution_input.ArgumentList
+      (super.execution_input.Argument Head)
+      Rest)_2.
 
-Module ImplExecutionInput Args_3.
-  Definition Self := ExecutionInput Args.
+Module Implcrate.call.ExecutionInput Args_3.
+  Definition Self := crate.call.ExecutionInput Args.
   
   Definition update_selector
       (self : mut_ref Self)
-      (selector : Selector)
+      (selector : crate.call.Selector)
       : M unit :=
     let* _ := assign self.["selector"] selector in
     Pure tt.
@@ -9270,7 +9748,7 @@ Module ImplExecutionInput Args_3.
   Global Instance Method_update_selector : Notation.Dot "update_selector" := {
     Notation.dot := update_selector;
   }.
-End ImplExecutionInput Args_3.
+End Implcrate.call.ExecutionInput Args_3.
 
 Module ArgumentList.
   Record t : Set := {
@@ -9287,13 +9765,19 @@ Module ArgumentList.
 End ArgumentList.
 Definition ArgumentList : Set := ArgumentList.t.
 
-Module Impl__crate_clone_Clone_for_ArgumentList_Head_Rest.
-  Definition Self := ArgumentList Head Rest.
+Module Impl__crate_clone_Clone_for_super_execution_input_ArgumentList_Head_Rest.
+  Definition Self := super.execution_input.ArgumentList Head Rest.
   
-  Definition clone (self : ref Self) : M (ArgumentList Head Rest) :=
+  Definition clone
+      (self : ref Self)
+      : M (super.execution_input.ArgumentList Head Rest) :=
     let* α0 := _crate.clone.Clone.clone (addr_of self.["head"]) in
     let* α1 := _crate.clone.Clone.clone (addr_of self.["rest"]) in
-    Pure {| ArgumentList.head := α0; ArgumentList.rest := α1; |}.
+    Pure
+      {|
+        super.execution_input.ArgumentList.head := α0;
+        super.execution_input.ArgumentList.rest := α1;
+      |}.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -9302,15 +9786,22 @@ Module Impl__crate_clone_Clone_for_ArgumentList_Head_Rest.
   Global Instance I Head Rest : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_ArgumentList_Head_Rest.
+End Impl__crate_clone_Clone_for_super_execution_input_ArgumentList_Head_Rest.
 
-Module Impl__crate_default_Default_for_ArgumentList_Head_Rest.
-  Definition Self := ArgumentList Head Rest.
+Module
+    Impl__crate_default_Default_for_super_execution_input_ArgumentList_Head_Rest.
+  Definition Self := super.execution_input.ArgumentList Head Rest.
   
-  Definition default (_ : unit) : M (ArgumentList Head Rest) :=
+  Definition default
+      (_ : unit)
+      : M (super.execution_input.ArgumentList Head Rest) :=
     let* α0 := _crate.default.Default.default tt in
     let* α1 := _crate.default.Default.default tt in
-    Pure {| ArgumentList.head := α0; ArgumentList.rest := α1; |}.
+    Pure
+      {|
+        super.execution_input.ArgumentList.head := α0;
+        super.execution_input.ArgumentList.rest := α1;
+      |}.
   
   Global Instance AssociatedFunction_default :
     Notation.DoubleColon Self "default" := {
@@ -9320,10 +9811,11 @@ Module Impl__crate_default_Default_for_ArgumentList_Head_Rest.
   Global Instance I Head Rest : _crate.default.Default.Trait Self := {
     _crate.default.Default.default := default;
   }.
-End Impl__crate_default_Default_for_ArgumentList_Head_Rest.
+End
+  Impl__crate_default_Default_for_super_execution_input_ArgumentList_Head_Rest.
 
-Module Impl__crate_fmt_Debug_for_ArgumentList_Head_Rest.
-  Definition Self := ArgumentList Head Rest.
+Module Impl__crate_fmt_Debug_for_super_execution_input_ArgumentList_Head_Rest.
+  Definition Self := super.execution_input.ArgumentList Head Rest.
   
   Definition fmt
       (self : ref Self)
@@ -9344,9 +9836,10 @@ Module Impl__crate_fmt_Debug_for_ArgumentList_Head_Rest.
   Global Instance I Head Rest : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_ArgumentList_Head_Rest.
+End Impl__crate_fmt_Debug_for_super_execution_input_ArgumentList_Head_Rest.
 
-Definition ArgsList : Set := ArgumentList (Argument Head) Rest.
+Definition ArgsList : Set :=
+  super.execution_input.ArgumentList (super.execution_input.Argument Head) Rest.
 
 Module Argument.
   Record t : Set := {
@@ -9359,12 +9852,12 @@ Module Argument.
 End Argument.
 Definition Argument : Set := Argument.t.
 
-Module Impl__crate_clone_Clone_for_Argument_T.
-  Definition Self := Argument T.
+Module Impl__crate_clone_Clone_for_super_execution_input_Argument_T.
+  Definition Self := super.execution_input.Argument T.
   
-  Definition clone (self : ref Self) : M (Argument T) :=
+  Definition clone (self : ref Self) : M (super.execution_input.Argument T) :=
     let* α0 := _crate.clone.Clone.clone (addr_of self.["arg"]) in
-    Pure {| Argument.arg := α0; |}.
+    Pure {| super.execution_input.Argument.arg := α0; |}.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -9373,10 +9866,10 @@ Module Impl__crate_clone_Clone_for_Argument_T.
   Global Instance I T : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_Argument_T.
+End Impl__crate_clone_Clone_for_super_execution_input_Argument_T.
 
-Module Impl__crate_fmt_Debug_for_Argument_T.
-  Definition Self := Argument T.
+Module Impl__crate_fmt_Debug_for_super_execution_input_Argument_T.
+  Definition Self := super.execution_input.Argument T.
   
   Definition fmt
       (self : ref Self)
@@ -9395,28 +9888,30 @@ Module Impl__crate_fmt_Debug_for_Argument_T.
   Global Instance I T : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_Argument_T.
+End Impl__crate_fmt_Debug_for_super_execution_input_Argument_T.
 
-Module ImplArgument T_3.
-  Definition Self := Argument T.
+Module Implsuper.execution_input.Argument T_2.
+  Definition Self := super.execution_input.Argument T.
   
   Definition new (arg : T) : M Self := Pure {| Self.arg := arg; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
-End ImplArgument T_3.
+End Implsuper.execution_input.Argument T_2.
 
 Module ArgumentListEnd.
   Inductive t : Set := Build.
 End ArgumentListEnd.
 Definition ArgumentListEnd := ArgumentListEnd.t.
 
-Module Impl__crate_clone_Clone_for_ArgumentListEnd.
-  Definition Self := ArgumentListEnd.
+Module Impl__crate_clone_Clone_for_super_execution_input_ArgumentListEnd.
+  Definition Self := super.execution_input.ArgumentListEnd.
   
-  Definition clone (self : ref Self) : M ArgumentListEnd :=
-    Pure ArgumentListEnd.Build.
+  Definition clone
+      (self : ref Self)
+      : M super.execution_input.ArgumentListEnd :=
+    Pure super.execution_input.ArgumentListEnd.Build.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -9425,12 +9920,13 @@ Module Impl__crate_clone_Clone_for_ArgumentListEnd.
   Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_ArgumentListEnd.
+End Impl__crate_clone_Clone_for_super_execution_input_ArgumentListEnd.
 
-Module Impl__crate_default_Default_for_ArgumentListEnd.
-  Definition Self := ArgumentListEnd.
+Module Impl__crate_default_Default_for_super_execution_input_ArgumentListEnd.
+  Definition Self := super.execution_input.ArgumentListEnd.
   
-  Definition default (_ : unit) : M ArgumentListEnd := Pure {|  |}.
+  Definition default (_ : unit) : M super.execution_input.ArgumentListEnd :=
+    Pure {|  |}.
   
   Global Instance AssociatedFunction_default :
     Notation.DoubleColon Self "default" := {
@@ -9440,10 +9936,10 @@ Module Impl__crate_default_Default_for_ArgumentListEnd.
   Global Instance I : _crate.default.Default.Trait Self := {
     _crate.default.Default.default := default;
   }.
-End Impl__crate_default_Default_for_ArgumentListEnd.
+End Impl__crate_default_Default_for_super_execution_input_ArgumentListEnd.
 
-Module Impl__crate_fmt_Debug_for_ArgumentListEnd.
-  Definition Self := ArgumentListEnd.
+Module Impl__crate_fmt_Debug_for_super_execution_input_ArgumentListEnd.
+  Definition Self := super.execution_input.ArgumentListEnd.
   
   Definition fmt
       (self : ref Self)
@@ -9458,19 +9954,23 @@ Module Impl__crate_fmt_Debug_for_ArgumentListEnd.
   Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_ArgumentListEnd.
+End Impl__crate_fmt_Debug_for_super_execution_input_ArgumentListEnd.
 
 Definition EmptyArgumentList : Set :=
-  ArgumentList ArgumentListEnd ArgumentListEnd.
+  super.execution_input.ArgumentList
+    super.execution_input.ArgumentListEnd
+    super.execution_input.ArgumentListEnd.
 
-Module ImplEmptyArgumentList_3.
-  Definition Self := EmptyArgumentList.
+Module Implcrate.call.utils.EmptyArgumentList_3.
+  Definition Self := crate.call.utils.EmptyArgumentList.
   
-  Definition empty (_ : unit) : M EmptyArgumentList :=
+  Definition empty (_ : unit) : M crate.call.utils.EmptyArgumentList :=
     Pure
       {|
-        ArgumentList.head := ArgumentListEnd.Build;
-        ArgumentList.rest := ArgumentListEnd.Build;
+        super.execution_input.ArgumentList.head :=
+          super.execution_input.ArgumentListEnd.Build;
+        super.execution_input.ArgumentList.rest :=
+          super.execution_input.ArgumentListEnd.Build;
       |}.
   
   Global Instance AssociatedFunction_empty :
@@ -9481,32 +9981,59 @@ Module ImplEmptyArgumentList_3.
   Definition push_arg
       (self : Self)
       (arg : T)
-      : M (ArgumentList (Argument T) Self) :=
-    let* α0 := Argument::["new"] arg in
-    Pure {| ArgumentList.head := α0; ArgumentList.rest := self; |}.
+      :
+        M
+          (super.execution_input.ArgumentList
+            (super.execution_input.Argument T)
+            Self) :=
+    let* α0 := super.execution_input.Argument::["new"] arg in
+    Pure
+      {|
+        super.execution_input.ArgumentList.head := α0;
+        super.execution_input.ArgumentList.rest := self;
+      |}.
   
   Global Instance Method_push_arg : Notation.Dot "push_arg" := {
     Notation.dot := push_arg;
   }.
-End ImplEmptyArgumentList_3.
+End Implcrate.call.utils.EmptyArgumentList_3.
 
-Module ImplArgumentList (Argument Head) Rest_3.
-  Definition Self := ArgumentList (Argument Head) Rest.
+Module
+  Implsuper.execution_input.ArgumentList
+    (super.execution_input.Argument Head)
+    Rest_2.
+  Definition
+    Self
+    :=
+    super.execution_input.ArgumentList
+      (super.execution_input.Argument Head)
+      Rest.
   
   Definition push_arg
       (self : Self)
       (arg : T)
-      : M (ArgumentList (Argument T) Self) :=
-    let* α0 := Argument::["new"] arg in
-    Pure {| ArgumentList.head := α0; ArgumentList.rest := self; |}.
+      :
+        M
+          (super.execution_input.ArgumentList
+            (super.execution_input.Argument T)
+            Self) :=
+    let* α0 := super.execution_input.Argument::["new"] arg in
+    Pure
+      {|
+        super.execution_input.ArgumentList.head := α0;
+        super.execution_input.ArgumentList.rest := self;
+      |}.
   
   Global Instance Method_push_arg : Notation.Dot "push_arg" := {
     Notation.dot := push_arg;
   }.
-End ImplArgumentList (Argument Head) Rest_3.
+End
+  Implsuper.execution_input.ArgumentList
+    (super.execution_input.Argument Head)
+    Rest_2.
 
-Module Impl_scale_Encode_for_Argument_T.
-  Definition Self := Argument T.
+Module Impl_scale_Encode_for_super_execution_input_Argument_T.
+  Definition Self := super.execution_input.Argument T.
   
   Definition size_hint (self : ref Self) : M usize :=
     scale.Encode.size_hint (addr_of self.["arg"]).
@@ -9524,10 +10051,10 @@ Module Impl_scale_Encode_for_Argument_T.
   
   Global Instance I T : scale.Encode.Trait Self := {
   }.
-End Impl_scale_Encode_for_Argument_T.
+End Impl_scale_Encode_for_super_execution_input_Argument_T.
 
-Module Impl_scale_Encode_for_EmptyArgumentList.
-  Definition Self := EmptyArgumentList.
+Module Impl_scale_Encode_for_crate_call_utils_EmptyArgumentList.
+  Definition Self := crate.call.utils.EmptyArgumentList.
   
   Definition size_hint (self : ref Self) : M usize := Pure 0.
   
@@ -9544,10 +10071,16 @@ Module Impl_scale_Encode_for_EmptyArgumentList.
   
   Global Instance I : scale.Encode.Trait Self := {
   }.
-End Impl_scale_Encode_for_EmptyArgumentList.
+End Impl_scale_Encode_for_crate_call_utils_EmptyArgumentList.
 
-Module Impl_scale_Encode_for_ArgumentList_Argument_Head_Rest.
-  Definition Self := ArgumentList (Argument Head) Rest.
+Module
+    Impl_scale_Encode_for_super_execution_input_ArgumentList_super_execution_input_Argument_Head_Rest.
+  Definition
+    Self
+    :=
+    super.execution_input.ArgumentList
+      (super.execution_input.Argument Head)
+      Rest.
   
   Definition size_hint (self : ref Self) : M usize :=
     let* α0 := scale.Encode.size_hint (addr_of self.["head"]) in
@@ -9569,10 +10102,11 @@ Module Impl_scale_Encode_for_ArgumentList_Argument_Head_Rest.
   
   Global Instance I Head Rest : scale.Encode.Trait Self := {
   }.
-End Impl_scale_Encode_for_ArgumentList_Argument_Head_Rest.
+End
+  Impl_scale_Encode_for_super_execution_input_ArgumentList_super_execution_input_Argument_Head_Rest.
 
-Module Impl_scale_Encode_for_ExecutionInput_Args.
-  Definition Self := ExecutionInput Args.
+Module Impl_scale_Encode_for_crate_call_ExecutionInput_Args.
+  Definition Self := crate.call.ExecutionInput Args.
   
   Definition size_hint (self : ref Self) : M usize :=
     let* α0 := scale.Encode.size_hint (addr_of self.["selector"]) in
@@ -9594,7 +10128,7 @@ Module Impl_scale_Encode_for_ExecutionInput_Args.
   
   Global Instance I Args : scale.Encode.Trait Self := {
   }.
-End Impl_scale_Encode_for_ExecutionInput_Args.
+End Impl_scale_Encode_for_crate_call_ExecutionInput_Args.
 
 Module selector.
   Module From := derive_more.From.
@@ -9610,12 +10144,12 @@ Module selector.
   End Selector.
   Definition Selector : Set := Selector.t.
   
-  Module Impl__crate_default_Default_for_Selector.
-    Definition Self := Selector.
+  Module Impl__crate_default_Default_for_crate_call_Selector.
+    Definition Self := crate.call.Selector.
     
-    Definition default (_ : unit) : M Selector :=
+    Definition default (_ : unit) : M crate.call.Selector :=
       let* α0 := _crate.default.Default.default tt in
-      Pure {| Selector.bytes := α0; |}.
+      Pure {| crate.call.Selector.bytes := α0; |}.
     
     Global Instance AssociatedFunction_default :
       Notation.DoubleColon Self "default" := {
@@ -9625,10 +10159,10 @@ Module selector.
     Global Instance I : _crate.default.Default.Trait Self := {
       _crate.default.Default.default := default;
     }.
-  End Impl__crate_default_Default_for_Selector.
+  End Impl__crate_default_Default_for_crate_call_Selector.
   
-  Module Impl__crate_fmt_Debug_for_Selector.
-    Definition Self := Selector.
+  Module Impl__crate_fmt_Debug_for_crate_call_Selector.
+    Definition Self := crate.call.Selector.
     
     Definition fmt
         (self : ref Self)
@@ -9647,19 +10181,19 @@ Module selector.
     Global Instance I : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_Selector.
+  End Impl__crate_fmt_Debug_for_crate_call_Selector.
   
-  Module Impl__crate_marker_Copy_for_Selector.
-    Definition Self := Selector.
+  Module Impl__crate_marker_Copy_for_crate_call_Selector.
+    Definition Self := crate.call.Selector.
     
     Global Instance I : _crate.marker.Copy.Trait Self :=
       _crate.marker.Copy.Build_Class _.
-  End Impl__crate_marker_Copy_for_Selector.
+  End Impl__crate_marker_Copy_for_crate_call_Selector.
   
-  Module Impl__crate_clone_Clone_for_Selector.
-    Definition Self := Selector.
+  Module Impl__crate_clone_Clone_for_crate_call_Selector.
+    Definition Self := crate.call.Selector.
     
-    Definition clone (self : ref Self) : M Selector :=
+    Definition clone (self : ref Self) : M crate.call.Selector :=
       let _ := tt in
       self.["deref"].
     
@@ -9670,19 +10204,22 @@ Module selector.
     Global Instance I : _crate.clone.Clone.Trait Self := {
       _crate.clone.Clone.clone := clone;
     }.
-  End Impl__crate_clone_Clone_for_Selector.
+  End Impl__crate_clone_Clone_for_crate_call_Selector.
   
-  Module Impl__crate_marker_StructuralPartialEq_for_Selector.
-    Definition Self := Selector.
+  Module Impl__crate_marker_StructuralPartialEq_for_crate_call_Selector.
+    Definition Self := crate.call.Selector.
     
     Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
       _crate.marker.StructuralPartialEq.Build_Class _.
-  End Impl__crate_marker_StructuralPartialEq_for_Selector.
+  End Impl__crate_marker_StructuralPartialEq_for_crate_call_Selector.
   
-  Module Impl__crate_cmp_PartialEq_for_Selector.
-    Definition Self := Selector.
+  Module Impl__crate_cmp_PartialEq_for_crate_call_Selector.
+    Definition Self := crate.call.Selector.
     
-    Definition eq (self : ref Self) (other : ref Selector) : M bool :=
+    Definition eq
+        (self : ref Self)
+        (other : ref crate.call.Selector)
+        : M bool :=
       self.["bytes"].["eq"] other.["bytes"].
     
     Global Instance Method_eq : Notation.Dot "eq" := {
@@ -9692,17 +10229,17 @@ Module selector.
     Global Instance I : _crate.cmp.PartialEq.Trait Self := {
       _crate.cmp.PartialEq.eq := eq;
     }.
-  End Impl__crate_cmp_PartialEq_for_Selector.
+  End Impl__crate_cmp_PartialEq_for_crate_call_Selector.
   
-  Module Impl__crate_marker_StructuralEq_for_Selector.
-    Definition Self := Selector.
+  Module Impl__crate_marker_StructuralEq_for_crate_call_Selector.
+    Definition Self := crate.call.Selector.
     
     Global Instance I : _crate.marker.StructuralEq.Trait Self :=
       _crate.marker.StructuralEq.Build_Class _.
-  End Impl__crate_marker_StructuralEq_for_Selector.
+  End Impl__crate_marker_StructuralEq_for_crate_call_Selector.
   
-  Module Impl__crate_cmp_Eq_for_Selector.
-    Definition Self := Selector.
+  Module Impl__crate_cmp_Eq_for_crate_call_Selector.
+    Definition Self := crate.call.Selector.
     
     Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
       let _ := tt in
@@ -9715,13 +10252,13 @@ Module selector.
     
     Global Instance I : _crate.cmp.Eq.Trait Self := {
     }.
-  End Impl__crate_cmp_Eq_for_Selector.
+  End Impl__crate_cmp_Eq_for_crate_call_Selector.
   
-  Module Impl_Root_core_convert_From_for_Selector.
-    Definition Self := Selector.
+  Module Impl_Root_core_convert_From_for_crate_call_Selector.
+    Definition Self := crate.call.Selector.
     
-    Definition from (original : list u8) : M Selector :=
-      Pure {| Selector.bytes := original; |}.
+    Definition from (original : list u8) : M crate.call.Selector :=
+      Pure {| crate.call.Selector.bytes := original; |}.
     
     Global Instance AssociatedFunction_from :
       Notation.DoubleColon Self "from" := {
@@ -9731,14 +10268,14 @@ Module selector.
     Global Instance I : Root.core.convert.From.Trait Self list u8 := {
       Root.core.convert.From.from := from;
     }.
-  End Impl_Root_core_convert_From_for_Selector.
+  End Impl_Root_core_convert_From_for_crate_call_Selector.
   
   Definition _ : unit := run (Pure tt).
   
   Definition _ : unit := run (Pure tt).
   
-  Module ImplSelector_2.
-    Definition Self := Selector.
+  Module Implcrate.call.Selector_2.
+    Definition Self := crate.call.Selector.
     
     Definition new (bytes : list u8) : M Self :=
       Pure {| Self.bytes := bytes; |}.
@@ -9753,7 +10290,7 @@ Module selector.
     Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
       Notation.dot := to_bytes;
     }.
-  End ImplSelector_2.
+  End Implcrate.call.Selector_2.
 End selector.
 
 Module From := derive_more.From.
@@ -9769,12 +10306,12 @@ Module Selector.
 End Selector.
 Definition Selector : Set := Selector.t.
 
-Module Impl__crate_default_Default_for_Selector.
-  Definition Self := Selector.
+Module Impl__crate_default_Default_for_crate_call_Selector.
+  Definition Self := crate.call.Selector.
   
-  Definition default (_ : unit) : M Selector :=
+  Definition default (_ : unit) : M crate.call.Selector :=
     let* α0 := _crate.default.Default.default tt in
-    Pure {| Selector.bytes := α0; |}.
+    Pure {| crate.call.Selector.bytes := α0; |}.
   
   Global Instance AssociatedFunction_default :
     Notation.DoubleColon Self "default" := {
@@ -9784,10 +10321,10 @@ Module Impl__crate_default_Default_for_Selector.
   Global Instance I : _crate.default.Default.Trait Self := {
     _crate.default.Default.default := default;
   }.
-End Impl__crate_default_Default_for_Selector.
+End Impl__crate_default_Default_for_crate_call_Selector.
 
-Module Impl__crate_fmt_Debug_for_Selector.
-  Definition Self := Selector.
+Module Impl__crate_fmt_Debug_for_crate_call_Selector.
+  Definition Self := crate.call.Selector.
   
   Definition fmt
       (self : ref Self)
@@ -9806,19 +10343,19 @@ Module Impl__crate_fmt_Debug_for_Selector.
   Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_Selector.
+End Impl__crate_fmt_Debug_for_crate_call_Selector.
 
-Module Impl__crate_marker_Copy_for_Selector.
-  Definition Self := Selector.
+Module Impl__crate_marker_Copy_for_crate_call_Selector.
+  Definition Self := crate.call.Selector.
   
   Global Instance I : _crate.marker.Copy.Trait Self :=
     _crate.marker.Copy.Build_Class _.
-End Impl__crate_marker_Copy_for_Selector.
+End Impl__crate_marker_Copy_for_crate_call_Selector.
 
-Module Impl__crate_clone_Clone_for_Selector.
-  Definition Self := Selector.
+Module Impl__crate_clone_Clone_for_crate_call_Selector.
+  Definition Self := crate.call.Selector.
   
-  Definition clone (self : ref Self) : M Selector :=
+  Definition clone (self : ref Self) : M crate.call.Selector :=
     let _ := tt in
     self.["deref"].
   
@@ -9829,19 +10366,19 @@ Module Impl__crate_clone_Clone_for_Selector.
   Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_Selector.
+End Impl__crate_clone_Clone_for_crate_call_Selector.
 
-Module Impl__crate_marker_StructuralPartialEq_for_Selector.
-  Definition Self := Selector.
+Module Impl__crate_marker_StructuralPartialEq_for_crate_call_Selector.
+  Definition Self := crate.call.Selector.
   
   Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
-End Impl__crate_marker_StructuralPartialEq_for_Selector.
+End Impl__crate_marker_StructuralPartialEq_for_crate_call_Selector.
 
-Module Impl__crate_cmp_PartialEq_for_Selector.
-  Definition Self := Selector.
+Module Impl__crate_cmp_PartialEq_for_crate_call_Selector.
+  Definition Self := crate.call.Selector.
   
-  Definition eq (self : ref Self) (other : ref Selector) : M bool :=
+  Definition eq (self : ref Self) (other : ref crate.call.Selector) : M bool :=
     self.["bytes"].["eq"] other.["bytes"].
   
   Global Instance Method_eq : Notation.Dot "eq" := {
@@ -9851,17 +10388,17 @@ Module Impl__crate_cmp_PartialEq_for_Selector.
   Global Instance I : _crate.cmp.PartialEq.Trait Self := {
     _crate.cmp.PartialEq.eq := eq;
   }.
-End Impl__crate_cmp_PartialEq_for_Selector.
+End Impl__crate_cmp_PartialEq_for_crate_call_Selector.
 
-Module Impl__crate_marker_StructuralEq_for_Selector.
-  Definition Self := Selector.
+Module Impl__crate_marker_StructuralEq_for_crate_call_Selector.
+  Definition Self := crate.call.Selector.
   
   Global Instance I : _crate.marker.StructuralEq.Trait Self :=
     _crate.marker.StructuralEq.Build_Class _.
-End Impl__crate_marker_StructuralEq_for_Selector.
+End Impl__crate_marker_StructuralEq_for_crate_call_Selector.
 
-Module Impl__crate_cmp_Eq_for_Selector.
-  Definition Self := Selector.
+Module Impl__crate_cmp_Eq_for_crate_call_Selector.
+  Definition Self := crate.call.Selector.
   
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let _ := tt in
@@ -9874,13 +10411,13 @@ Module Impl__crate_cmp_Eq_for_Selector.
   
   Global Instance I : _crate.cmp.Eq.Trait Self := {
   }.
-End Impl__crate_cmp_Eq_for_Selector.
+End Impl__crate_cmp_Eq_for_crate_call_Selector.
 
-Module Impl_Root_core_convert_From_for_Selector.
-  Definition Self := Selector.
+Module Impl_Root_core_convert_From_for_crate_call_Selector.
+  Definition Self := crate.call.Selector.
   
-  Definition from (original : list u8) : M Selector :=
-    Pure {| Selector.bytes := original; |}.
+  Definition from (original : list u8) : M crate.call.Selector :=
+    Pure {| crate.call.Selector.bytes := original; |}.
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -9890,12 +10427,12 @@ Module Impl_Root_core_convert_From_for_Selector.
   Global Instance I : Root.core.convert.From.Trait Self list u8 := {
     Root.core.convert.From.from := from;
   }.
-End Impl_Root_core_convert_From_for_Selector.
+End Impl_Root_core_convert_From_for_crate_call_Selector.
 
 Definition _ : unit := run (Pure tt).
 
-Module Impl_Root_scale_Decode_for_Selector.
-  Definition Self := Selector.
+Module Impl_Root_scale_Decode_for_crate_call_Selector.
+  Definition Self := crate.call.Selector.
   
   Definition decode
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
@@ -9908,7 +10445,7 @@ Module Impl_Root_scale_Decode_for_Selector.
         Return (Root.core.result.Result.Err α0)
       | Root.core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
       end in
-    Pure (Root.core.result.Result.Ok {| Selector.bytes := α0; |}).
+    Pure (Root.core.result.Result.Ok {| crate.call.Selector.bytes := α0; |}).
   
   Global Instance AssociatedFunction_decode :
     Notation.DoubleColon Self "decode" := {
@@ -9918,12 +10455,12 @@ Module Impl_Root_scale_Decode_for_Selector.
   Global Instance I : Root.scale.Decode.Trait Self := {
     Root.scale.Decode.decode := decode;
   }.
-End Impl_Root_scale_Decode_for_Selector.
+End Impl_Root_scale_Decode_for_crate_call_Selector.
 
 Definition _ : unit := run (Pure tt).
 
-Module Impl_Root_scale_Encode_for_Selector.
-  Definition Self := Selector.
+Module Impl_Root_scale_Encode_for_crate_call_Selector.
+  Definition Self := crate.call.Selector.
   
   Definition encode_to
       (self : ref Self)
@@ -9955,17 +10492,17 @@ Module Impl_Root_scale_Encode_for_Selector.
   
   Global Instance I : Root.scale.Encode.Trait Self := {
   }.
-End Impl_Root_scale_Encode_for_Selector.
+End Impl_Root_scale_Encode_for_crate_call_Selector.
 
-Module Impl_Root_scale_EncodeLike_for_Selector.
-  Definition Self := Selector.
+Module Impl_Root_scale_EncodeLike_for_crate_call_Selector.
+  Definition Self := crate.call.Selector.
   
   Global Instance I : Root.scale.EncodeLike.Trait Self :=
     Root.scale.EncodeLike.Build_Class _.
-End Impl_Root_scale_EncodeLike_for_Selector.
+End Impl_Root_scale_EncodeLike_for_crate_call_Selector.
 
-Module ImplSelector_3.
-  Definition Self := Selector.
+Module Implcrate.call.Selector_3.
+  Definition Self := crate.call.Selector.
   
   Definition new (bytes : list u8) : M Self := Pure {| Self.bytes := bytes; |}.
   
@@ -9978,98 +10515,22 @@ Module ImplSelector_3.
   Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
     Notation.dot := to_bytes;
   }.
-End ImplSelector_3.
+End Implcrate.call.Selector_3.
 
 Module utils.
-  Module ReturnType := super.common.ReturnType.
-  Definition ReturnType := ReturnType.t.
   
-  Module Set := super.common.Set.
-  Definition Set := Set.t.
-  
-  Module Unset := super.common.Unset.
-  Definition Unset := Unset.t.
-  
-  Module ArgsList := super.execution_input.ArgsList.
-  Definition ArgsList := ArgsList.t.
-  
-  Module Argument := super.execution_input.Argument.
-  Definition Argument := Argument.t.
-  
-  Module ArgumentList := super.execution_input.ArgumentList.
-  Definition ArgumentList := ArgumentList.t.
-  
-  Module ArgumentListEnd := super.execution_input.ArgumentListEnd.
-  Definition ArgumentListEnd := ArgumentListEnd.t.
-  
-  Module EmptyArgumentList := super.execution_input.EmptyArgumentList.
-  Definition EmptyArgumentList := EmptyArgumentList.t.
 End utils.
 
-Module ReturnType := super.common.ReturnType.
-Definition ReturnType := ReturnType.t.
-
-Module Set := super.common.Set.
-Definition Set := Set.t.
-
-Module Unset := super.common.Unset.
-Definition Unset := Unset.t.
-
-Module ArgsList := super.execution_input.ArgsList.
-Definition ArgsList := ArgsList.t.
-
-Module Argument := super.execution_input.Argument.
-Definition Argument := Argument.t.
-
-Module ArgumentList := super.execution_input.ArgumentList.
-Definition ArgumentList := ArgumentList.t.
-
-Module ArgumentListEnd := super.execution_input.ArgumentListEnd.
-Definition ArgumentListEnd := ArgumentListEnd.t.
-
-Module EmptyArgumentList := super.execution_input.EmptyArgumentList.
-Definition EmptyArgumentList := EmptyArgumentList.t.
-
 Module build_call := self.call_builder.build_call.
-
-Module Call := self.call_builder.Call.
-Definition Call := Call.t.
-
-Module CallBuilder := self.call_builder.CallBuilder.
-Definition CallBuilder := CallBuilder.t.
-
-Module CallParams := self.call_builder.CallParams.
-Definition CallParams := CallParams.t.
-
-Module DelegateCall := self.call_builder.DelegateCall.
-Definition DelegateCall := DelegateCall.t.
 
 Module build_create := self.create_builder.build_create.
 
 Module state := self.create_builder.state.
 
-Module CreateBuilder := self.create_builder.CreateBuilder.
-Definition CreateBuilder := CreateBuilder.t.
-
-Module CreateParams := self.create_builder.CreateParams.
-Definition CreateParams := CreateParams.t.
-
-Module ExecutionInput := self.execution_input.ExecutionInput.
-Definition ExecutionInput := ExecutionInput.t.
-
-Module Selector := self.selector.Selector.
-Definition Selector := Selector.t.
-
 Module chain_extension.
-  Module EnvInstance := crate.engine.EnvInstance.
-  Definition EnvInstance := EnvInstance.t.
-  
-  Module PhantomData := core.marker.PhantomData.
-  Definition PhantomData := PhantomData.t.
-  
   Module FromStatusCode.
     Class Trait (Self : Set) : Set := {
-      from_status_code : u32 -> (M (Result unit Self));
+      from_status_code : u32 -> (M (crate.Result unit Self));
     }.
     
     Global Instance Method_from_status_code `(Trait)
@@ -10081,7 +10542,7 @@ Module chain_extension.
   Module ChainExtensionMethod.
     Record t : Set := {
       func_id : u32;
-      state : PhantomData ( -> (I * O * ErrorCode));
+      state : core.marker.PhantomData ( -> (I * O * ErrorCode));
     }.
     
     Global Instance Get_func_id : Notation.Dot "func_id" := {
@@ -10197,9 +10658,6 @@ Module chain_extension.
   End ImplChainExtensionMethod I O unit.
   
   Module state.
-    Module PhantomData := core.marker.PhantomData.
-    Definition PhantomData := PhantomData.t.
-    
     Module IgnoreErrorCode.
       Inductive t : Set :=
       .
@@ -10226,7 +10684,7 @@ Module chain_extension.
     
     Module HandleErrorCode.
       Record t : Set := {
-        error_code : PhantomData ( -> T);
+        error_code : core.marker.PhantomData ( -> T);
       }.
       
       Global Instance Get_error_code : Notation.Dot "error_code" := {
@@ -10267,7 +10725,7 @@ Module chain_extension.
     Definition call
         (self : Self)
         (input : ref I)
-        : M (Result IsResultType.Ok IsResultType.Err) :=
+        : M (crate.Result IsResultType.Ok IsResultType.Err) :=
       OnInstance.on_instance
         (fun instance =>
           EnvBackend.call_chain_extension
@@ -10290,7 +10748,7 @@ Module chain_extension.
     Definition call
         (self : Self)
         (input : ref I)
-        : M (Result IsResultType.Ok IsResultType.Err) :=
+        : M (crate.Result IsResultType.Ok IsResultType.Err) :=
       OnInstance.on_instance
         (fun instance =>
           EnvBackend.call_chain_extension
@@ -10313,7 +10771,10 @@ Module chain_extension.
       :=
       ChainExtensionMethod I O (state.HandleErrorCode ErrorCode).
     
-    Definition call (self : Self) (input : ref I) : M (Result O ErrorCode) :=
+    Definition call
+        (self : Self)
+        (input : ref I)
+        : M (crate.Result O ErrorCode) :=
       OnInstance.on_instance
         (fun instance =>
           EnvBackend.call_chain_extension
@@ -10372,15 +10833,15 @@ Module chain_extension.
     }.
   End IsResultType.
   
-  Module Impl_private_IsResultTypeSealed_for_Result_T_E.
-    Definition Self := Result T E.
+  Module Impl_private_IsResultTypeSealed_for_crate_Result_T_E.
+    Definition Self := crate.Result T E.
     
     Global Instance I T E : private.IsResultTypeSealed.Trait Self :=
       private.IsResultTypeSealed.Build_Class _.
-  End Impl_private_IsResultTypeSealed_for_Result_T_E.
+  End Impl_private_IsResultTypeSealed_for_crate_Result_T_E.
   
-  Module Impl_IsResultType_for_Result_T_E.
-    Definition Self := Result T E.
+  Module Impl_IsResultType_for_crate_Result_T_E.
+    Definition Self := crate.Result T E.
     
     Definition Ok : Set := T.
     
@@ -10388,7 +10849,7 @@ Module chain_extension.
     
     Global Instance I T E : IsResultType.Trait Self := {
     }.
-  End Impl_IsResultType_for_Result_T_E.
+  End Impl_IsResultType_for_crate_Result_T_E.
   
   Module private.
     Module IsResultTypeSealed.
@@ -10400,15 +10861,9 @@ Module chain_extension.
   End private.
 End chain_extension.
 
-Module EnvInstance := crate.engine.EnvInstance.
-Definition EnvInstance := EnvInstance.t.
-
-Module PhantomData := core.marker.PhantomData.
-Definition PhantomData := PhantomData.t.
-
 Module FromStatusCode.
   Class Trait (Self : Set) : Set := {
-    from_status_code : u32 -> (M (Result unit Self));
+    from_status_code : u32 -> (M (crate.Result unit Self));
   }.
   
   Global Instance Method_from_status_code `(Trait)
@@ -10420,7 +10875,7 @@ End FromStatusCode.
 Module ChainExtensionMethod.
   Record t : Set := {
     func_id : u32;
-    state : PhantomData ( -> (I * O * ErrorCode));
+    state : core.marker.PhantomData ( -> (I * O * ErrorCode));
   }.
   
   Global Instance Get_func_id : Notation.Dot "func_id" := {
@@ -10536,9 +10991,6 @@ Module ImplChainExtensionMethod I O unit_2.
 End ImplChainExtensionMethod I O unit_2.
 
 Module state.
-  Module PhantomData := core.marker.PhantomData.
-  Definition PhantomData := PhantomData.t.
-  
   Module IgnoreErrorCode.
     Inductive t : Set :=
     .
@@ -10565,7 +11017,7 @@ Module state.
   
   Module HandleErrorCode.
     Record t : Set := {
-      error_code : PhantomData ( -> T);
+      error_code : core.marker.PhantomData ( -> T);
     }.
     
     Global Instance Get_error_code : Notation.Dot "error_code" := {
@@ -10597,9 +11049,6 @@ Module state.
   End Impl__crate_fmt_Debug_for_HandleErrorCode_T.
 End state.
 
-Module PhantomData := core.marker.PhantomData.
-Definition PhantomData := PhantomData.t.
-
 Module IgnoreErrorCode.
   Inductive t : Set :=
   .
@@ -10626,7 +11075,7 @@ End Impl__crate_fmt_Debug_for_IgnoreErrorCode.
 
 Module HandleErrorCode.
   Record t : Set := {
-    error_code : PhantomData ( -> T);
+    error_code : core.marker.PhantomData ( -> T);
   }.
   
   Global Instance Get_error_code : Notation.Dot "error_code" := {
@@ -10663,7 +11112,7 @@ Module ImplChainExtensionMethod I O (state.HandleErrorCode ErrorCode)_3.
   Definition call
       (self : Self)
       (input : ref I)
-      : M (Result IsResultType.Ok IsResultType.Err) :=
+      : M (crate.Result IsResultType.Ok IsResultType.Err) :=
     OnInstance.on_instance
       (fun instance =>
         EnvBackend.call_chain_extension
@@ -10686,7 +11135,7 @@ Module ImplChainExtensionMethod I O state.IgnoreErrorCode_3.
   Definition call
       (self : Self)
       (input : ref I)
-      : M (Result IsResultType.Ok IsResultType.Err) :=
+      : M (crate.Result IsResultType.Ok IsResultType.Err) :=
     OnInstance.on_instance
       (fun instance =>
         EnvBackend.call_chain_extension
@@ -10706,7 +11155,10 @@ End ImplChainExtensionMethod I O state.IgnoreErrorCode_3.
 Module ImplChainExtensionMethod I O (state.HandleErrorCode ErrorCode)_4.
   Definition Self := ChainExtensionMethod I O (state.HandleErrorCode ErrorCode).
   
-  Definition call (self : Self) (input : ref I) : M (Result O ErrorCode) :=
+  Definition call
+      (self : Self)
+      (input : ref I)
+      : M (crate.Result O ErrorCode) :=
     OnInstance.on_instance
       (fun instance =>
         EnvBackend.call_chain_extension
@@ -10765,15 +11217,15 @@ Module IsResultType.
   }.
 End IsResultType.
 
-Module Impl_private_IsResultTypeSealed_for_Result_T_E.
-  Definition Self := Result T E.
+Module Impl_private_IsResultTypeSealed_for_crate_Result_T_E.
+  Definition Self := crate.Result T E.
   
   Global Instance I T E : private.IsResultTypeSealed.Trait Self :=
     private.IsResultTypeSealed.Build_Class _.
-End Impl_private_IsResultTypeSealed_for_Result_T_E.
+End Impl_private_IsResultTypeSealed_for_crate_Result_T_E.
 
-Module Impl_IsResultType_for_Result_T_E.
-  Definition Self := Result T E.
+Module Impl_IsResultType_for_crate_Result_T_E.
+  Definition Self := crate.Result T E.
   
   Definition Ok : Set := T.
   
@@ -10781,7 +11233,7 @@ Module Impl_IsResultType_for_Result_T_E.
   
   Global Instance I T E : IsResultType.Trait Self := {
   }.
-End Impl_IsResultType_for_Result_T_E.
+End Impl_IsResultType_for_crate_Result_T_E.
 
 Module private.
   Module IsResultTypeSealed.
@@ -10842,22 +11294,7 @@ Module ContractReference.
 End ContractReference.
 
 Module engine.
-  Module EnvError := crate.Error.
-  Definition EnvError := EnvError.t.
-  
-  Module Error := crate.Error.
-  Definition Error := Error.t.
-  
-  Module EnvResult := crate.Result.
-  Definition EnvResult := EnvResult.t.
-  
   Module cfg_if := cfg_if.cfg_if.
-  
-  Module ConstructorResult := ink_primitives.ConstructorResult.
-  Definition ConstructorResult := ConstructorResult.t.
-  
-  Module LangError := ink_primitives.LangError.
-  Definition LangError := LangError.t.
   
   Module OnInstance.
     Class Trait (Self : Set) : Set := {
@@ -10872,17 +11309,11 @@ Module engine.
   
   Module off_chain.
     Module call_data.
-      Module Selector := crate.call.Selector.
-      Definition Selector := Selector.t.
-      
       Module vec := ink_prelude.vec.
-      
-      Module Vec := ink_prelude.vec.Vec.
-      Definition Vec := Vec.t.
       
       Module CallData.
         Record t : Set := {
-          bytes : Vec u8;
+          bytes : ink_prelude.vec.Vec u8;
         }.
         
         Global Instance Get_bytes : Notation.Dot "bytes" := {
@@ -10977,7 +11408,7 @@ Module engine.
       Module ImplCallData.
         Definition Self := CallData.
         
-        Definition new (selector : Selector) : M Self :=
+        Definition new (selector : crate.call.Selector) : M Self :=
           let* bytes := selector.["to_bytes"] in
           let* α0 :=
             _crate.boxed.Box::["new"]
@@ -10997,7 +11428,7 @@ Module engine.
           Notation.dot := push_arg;
         }.
         
-        Definition selector (self : ref Self) : M Selector :=
+        Definition selector (self : ref Self) : M crate.call.Selector :=
           let* _ :=
             if (true : bool) then
               let* _ :=
@@ -11088,7 +11519,7 @@ Module engine.
             let* α0 := input.["remaining_len"] in
             let* α1 := α0.["unwrap_or"] None in
             α1.["unwrap_or"] 0 in
-          let* bytes := Vec::["with_capacity"] remaining_len in
+          let* bytes := ink_prelude.vec.Vec::["with_capacity"] remaining_len in
           let* _ :=
             loop
               let* α0 := input.["read_byte"] in
@@ -11125,51 +11556,12 @@ Module engine.
     End call_data.
     
     Module impls.
-      Module EnvInstance := super.EnvInstance.
-      Definition EnvInstance := EnvInstance.t.
-      
-      Module Call := crate.call.Call.
-      Definition Call := Call.t.
-      
-      Module CallParams := crate.call.CallParams.
-      Definition CallParams := CallParams.t.
-      
-      Module CreateParams := crate.call.CreateParams.
-      Definition CreateParams := CreateParams.t.
-      
-      Module DelegateCall := crate.call.DelegateCall.
-      Definition DelegateCall := DelegateCall.t.
-      
-      Module Blake2x128 := crate.hash.Blake2x128.
-      Definition Blake2x128 := Blake2x128.t.
-      
-      Module Blake2x256 := crate.hash.Blake2x256.
-      Definition Blake2x256 := Blake2x256.t.
-      
-      Module Keccak256 := crate.hash.Keccak256.
-      Definition Keccak256 := Keccak256.t.
-      
-      Module Sha2x256 := crate.hash.Sha2x256.
-      Definition Sha2x256 := Sha2x256.t.
-      
-      Module Error := crate.Error.
-      Definition Error := Error.t.
-      
-      Module Result := crate.Result.
-      Definition Result := Result.t.
-      
-      Module ReturnFlags := crate.ReturnFlags.
-      Definition ReturnFlags := ReturnFlags.t.
-      
       Module ext := ink_engine.ext.
-      
-      Module Engine := ink_engine.ext.Engine.
-      Definition Engine := Engine.t.
       
       Definition BUFFER_SIZE : usize := run (1.["shl"] 14).
       
-      Module Impl_CryptoHash_for_Blake2x128.
-        Definition Self := Blake2x128.
+      Module Impl_CryptoHash_for_crate_hash_Blake2x128.
+        Definition Self := crate.hash.Blake2x128.
         
         Definition hash
             (input : ref Slice)
@@ -11185,7 +11577,7 @@ Module engine.
                     Range.end := offset.["add"] 16;
                   |}] in
             as_array slice in
-          let* _ := Engine::["hash_blake2_128"] input output in
+          let* _ := ink_engine.ext.Engine::["hash_blake2_128"] input output in
           Pure tt.
         
         Global Instance AssociatedFunction_hash :
@@ -11196,10 +11588,10 @@ Module engine.
         Global Instance I : CryptoHash.Trait Self := {
           CryptoHash.hash := hash;
         }.
-      End Impl_CryptoHash_for_Blake2x128.
+      End Impl_CryptoHash_for_crate_hash_Blake2x128.
       
-      Module Impl_CryptoHash_for_Blake2x256.
-        Definition Self := Blake2x256.
+      Module Impl_CryptoHash_for_crate_hash_Blake2x256.
+        Definition Self := crate.hash.Blake2x256.
         
         Definition hash
             (input : ref Slice)
@@ -11215,7 +11607,7 @@ Module engine.
                     Range.end := offset.["add"] 32;
                   |}] in
             as_array slice in
-          let* _ := Engine::["hash_blake2_256"] input output in
+          let* _ := ink_engine.ext.Engine::["hash_blake2_256"] input output in
           Pure tt.
         
         Global Instance AssociatedFunction_hash :
@@ -11226,10 +11618,10 @@ Module engine.
         Global Instance I : CryptoHash.Trait Self := {
           CryptoHash.hash := hash;
         }.
-      End Impl_CryptoHash_for_Blake2x256.
+      End Impl_CryptoHash_for_crate_hash_Blake2x256.
       
-      Module Impl_CryptoHash_for_Sha2x256.
-        Definition Self := Sha2x256.
+      Module Impl_CryptoHash_for_crate_hash_Sha2x256.
+        Definition Self := crate.hash.Sha2x256.
         
         Definition hash
             (input : ref Slice)
@@ -11245,7 +11637,7 @@ Module engine.
                     Range.end := offset.["add"] 32;
                   |}] in
             as_array slice in
-          let* _ := Engine::["hash_sha2_256"] input output in
+          let* _ := ink_engine.ext.Engine::["hash_sha2_256"] input output in
           Pure tt.
         
         Global Instance AssociatedFunction_hash :
@@ -11256,10 +11648,10 @@ Module engine.
         Global Instance I : CryptoHash.Trait Self := {
           CryptoHash.hash := hash;
         }.
-      End Impl_CryptoHash_for_Sha2x256.
+      End Impl_CryptoHash_for_crate_hash_Sha2x256.
       
-      Module Impl_CryptoHash_for_Keccak256.
-        Definition Self := Keccak256.
+      Module Impl_CryptoHash_for_crate_hash_Keccak256.
+        Definition Self := crate.hash.Keccak256.
         
         Definition hash
             (input : ref Slice)
@@ -11275,7 +11667,7 @@ Module engine.
                     Range.end := offset.["add"] 32;
                   |}] in
             as_array slice in
-          let* _ := Engine::["hash_keccak_256"] input output in
+          let* _ := ink_engine.ext.Engine::["hash_keccak_256"] input output in
           Pure tt.
         
         Global Instance AssociatedFunction_hash :
@@ -11286,7 +11678,7 @@ Module engine.
         Global Instance I : CryptoHash.Trait Self := {
           CryptoHash.hash := hash;
         }.
-      End Impl_CryptoHash_for_Keccak256.
+      End Impl_CryptoHash_for_crate_hash_Keccak256.
       
       Module Impl_From_for_crate_Error.
         Definition Self := crate.Error.
@@ -11319,7 +11711,7 @@ Module engine.
       
       Module TopicsBuilder.
         Record t : Set := {
-          topics : Vec (Vec u8);
+          topics : ink_prelude.vec.Vec (ink_prelude.vec.Vec u8);
         }.
         
         Global Instance Get_topics : Notation.Dot "topics" := {
@@ -11348,7 +11740,7 @@ Module engine.
       Module Impl_TopicsBuilderBackend_for_TopicsBuilder.
         Definition Self := TopicsBuilder.
         
-        Definition Output : Set := Vec u8.
+        Definition Output : Set := ink_prelude.vec.Vec u8.
         
         Definition expect
             (self : mut_ref Self)
@@ -11425,7 +11817,7 @@ Module engine.
         }.
         
         Definition output (self : Self) : M ImplSelf.Output :=
-          let* all := Vec::["new"] tt in
+          let* all := ink_prelude.vec.Vec::["new"] tt in
           let* topics_len_compact :=
             let* α0 := self.["topics"].["len"] in
             Pure (addr_of (scale.Compact.Build_t (cast α0 u32))) in
@@ -11451,13 +11843,15 @@ Module engine.
         }.
       End Impl_TopicsBuilderBackend_for_TopicsBuilder.
       
-      Module ImplEnvInstance.
-        Definition Self := EnvInstance.
+      Module Implsuper.EnvInstance.
+        Definition Self := super.EnvInstance.
         
         Definition get_property
             (self : mut_ref Self)
-            (ext_fn : (ref Engine) -> (mut_ref (mut_ref Slice)) -> unit)
-            : M (Result T) :=
+            (ext_fn
+              :
+              (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit)
+            : M (crate.Result T) :=
           let* full_scope := repeat 0 in
           let full_scope := addr_of (addr_of full_scope[RangeFull {|  |}]) in
           let* _ := ext_fn (addr_of self.["engine"]) full_scope in
@@ -11469,10 +11863,10 @@ Module engine.
         Global Instance Method_get_property : Notation.Dot "get_property" := {
           Notation.dot := get_property;
         }.
-      End ImplEnvInstance.
+      End Implsuper.EnvInstance.
       
-      Module Impl_EnvBackend_for_EnvInstance.
-        Definition Self := EnvInstance.
+      Module Impl_EnvBackend_for_super_EnvInstance.
+        Definition Self := super.EnvInstance.
         
         Definition set_contract_storage
             (self : mut_ref Self)
@@ -11494,7 +11888,7 @@ Module engine.
         Definition get_contract_storage
             (self : mut_ref Self)
             (key : ref K)
-            : M (Result (Option R)) :=
+            : M (crate.Result (Option R)) :=
           let* output := repeat 0 in
           let* _ :=
             let* α0 := key.["encode"] in
@@ -11531,7 +11925,7 @@ Module engine.
         Definition take_contract_storage
             (self : mut_ref Self)
             (key : ref K)
-            : M (Result (Option R)) :=
+            : M (crate.Result (Option R)) :=
           let* output := repeat 0 in
           let* _ :=
             let* α0 := key.["encode"] in
@@ -11589,7 +11983,7 @@ Module engine.
           Notation.dot := clear_contract_storage;
         }.
         
-        Definition decode_input (self : mut_ref Self) : M (Result T) :=
+        Definition decode_input (self : mut_ref Self) : M (crate.Result T) :=
           let* α0 :=
             format_arguments::["new_v1"]
               (addr_of
@@ -11605,7 +11999,7 @@ Module engine.
         
         Definition return_value
             (self : mut_ref Self)
-            (_flags : ReturnFlags)
+            (_flags : crate.ReturnFlags)
             (_return_value : ref R)
             : M Empty_set :=
           let* α0 :=
@@ -11661,7 +12055,7 @@ Module engine.
             (signature : ref list u8)
             (message_hash : ref list u8)
             (output : mut_ref list u8)
-            : M (Result unit) :=
+            : M (crate.Result unit) :=
           let* recovery_byte :=
             let* α0 := signature[64].["gt"] 26 in
             if (α0 : bool) then
@@ -11721,7 +12115,7 @@ Module engine.
             (self : mut_ref Self)
             (pubkey : ref list u8)
             (output : mut_ref list u8)
-            : M (Result unit) :=
+            : M (crate.Result unit) :=
           let* pk :=
             let* α0 := secp256k1.PublicKey::["from_slice"] pubkey in
             let* α1 :=
@@ -11736,7 +12130,7 @@ Module engine.
           let* uncompressed := pk.["serialize_uncompressed"] in
           let* hash := HashOutput.Type::["default"] tt in
           let* _ :=
-            Keccak256::["hash"]
+            crate.hash.Keccak256::["hash"]
               (addr_of uncompressed[RangeFrom {| RangeFrom.start := 1; |}])
               (addr_of hash) in
           let* _ :=
@@ -11807,7 +12201,7 @@ Module engine.
         Definition set_code_hash
             (self : mut_ref Self)
             (_code_hash : ref Slice)
-            : M (Result unit) :=
+            : M (crate.Result unit) :=
           let* α0 :=
             format_arguments::["new_v1"]
               (addr_of
@@ -11837,13 +12231,13 @@ Module engine.
           EnvBackend.call_chain_extension := call_chain_extension;
           EnvBackend.set_code_hash := set_code_hash;
         }.
-      End Impl_EnvBackend_for_EnvInstance.
+      End Impl_EnvBackend_for_super_EnvInstance.
       
-      Module Impl_TypedEnvBackend_for_EnvInstance.
-        Definition Self := EnvInstance.
+      Module Impl_TypedEnvBackend_for_super_EnvInstance.
+        Definition Self := super.EnvInstance.
         
         Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
-          let* α0 := self.["get_property"] Engine::["caller"] in
+          let* α0 := self.["get_property"] ink_engine.ext.Engine::["caller"] in
           α0.["unwrap_or_else"]
             (fun error =>
               let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -11858,7 +12252,9 @@ Module engine.
         }.
         
         Definition transferred_value (self : mut_ref Self) : M ImplE.Balance :=
-          let* α0 := self.["get_property"] Engine::["value_transferred"] in
+          let* α0 :=
+            self.["get_property"]
+              ink_engine.ext.Engine::["value_transferred"] in
           α0.["unwrap_or_else"]
             (fun error =>
               let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -11874,7 +12270,8 @@ Module engine.
         }.
         
         Definition gas_left (self : mut_ref Self) : M u64 :=
-          let* α0 := self.["get_property"] Engine::["gas_left"] in
+          let* α0 :=
+            self.["get_property"] ink_engine.ext.Engine::["gas_left"] in
           α0.["unwrap_or_else"]
             (fun error =>
               let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -11889,7 +12286,8 @@ Module engine.
         }.
         
         Definition block_timestamp (self : mut_ref Self) : M ImplE.Timestamp :=
-          let* α0 := self.["get_property"] Engine::["block_timestamp"] in
+          let* α0 :=
+            self.["get_property"] ink_engine.ext.Engine::["block_timestamp"] in
           α0.["unwrap_or_else"]
             (fun error =>
               let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -11905,7 +12303,7 @@ Module engine.
         }.
         
         Definition account_id (self : mut_ref Self) : M ImplE.AccountId :=
-          let* α0 := self.["get_property"] Engine::["address"] in
+          let* α0 := self.["get_property"] ink_engine.ext.Engine::["address"] in
           α0.["unwrap_or_else"]
             (fun error =>
               let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -11920,7 +12318,7 @@ Module engine.
         }.
         
         Definition balance (self : mut_ref Self) : M ImplE.Balance :=
-          let* α0 := self.["get_property"] Engine::["balance"] in
+          let* α0 := self.["get_property"] ink_engine.ext.Engine::["balance"] in
           α0.["unwrap_or_else"]
             (fun error =>
               let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -11935,7 +12333,8 @@ Module engine.
         }.
         
         Definition block_number (self : mut_ref Self) : M ImplE.BlockNumber :=
-          let* α0 := self.["get_property"] Engine::["block_number"] in
+          let* α0 :=
+            self.["get_property"] ink_engine.ext.Engine::["block_number"] in
           α0.["unwrap_or_else"]
             (fun error =>
               let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -11950,7 +12349,8 @@ Module engine.
         }.
         
         Definition minimum_balance (self : mut_ref Self) : M ImplE.Balance :=
-          let* α0 := self.["get_property"] Engine::["minimum_balance"] in
+          let* α0 :=
+            self.["get_property"] ink_engine.ext.Engine::["minimum_balance"] in
           α0.["unwrap_or_else"]
             (fun error =>
               let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -11985,8 +12385,8 @@ Module engine.
         
         Definition invoke_contract
             (self : mut_ref Self)
-            (params : ref (CallParams E (Call E) Args R))
-            : M (Result (ink_primitives.MessageResult R)) :=
+            (params : ref (crate.call.CallParams E (crate.call.Call E) Args R))
+            : M (crate.Result (ink_primitives.MessageResult R)) :=
           let* _gas_limit := params.["gas_limit"] in
           let* _callee := params.["callee"] in
           let* _call_flags :=
@@ -12010,8 +12410,10 @@ Module engine.
         
         Definition invoke_contract_delegate
             (self : mut_ref Self)
-            (params : ref (CallParams E (DelegateCall E) Args R))
-            : M (Result R) :=
+            (params
+              :
+              ref (crate.call.CallParams E (crate.call.DelegateCall E) Args R))
+            : M (crate.Result R) :=
           let* _code_hash := params.["code_hash"] in
           let* α0 :=
             format_arguments::["new_v1"]
@@ -12029,10 +12431,10 @@ Module engine.
         
         Definition instantiate_contract
             (self : mut_ref Self)
-            (params : ref (CreateParams E ContractRef Args Salt R))
+            (params : ref (crate.call.CreateParams E ContractRef Args Salt R))
             :
               M
-                (Result
+                (crate.Result
                   (ink_primitives.ConstructorResult
                     ConstructorReturnType.Output)) :=
           let* _code_hash := params.["code_hash"] in
@@ -12070,7 +12472,7 @@ Module engine.
             (self : mut_ref Self)
             (destination : ImplE.AccountId)
             (value : ImplE.Balance)
-            : M (Result unit) :=
+            : M (crate.Result unit) :=
           let* enc_destination :=
             let* α0 := scale.Encode.encode (addr_of destination) in
             Pure (addr_of α0[RangeFull {|  |}]) in
@@ -12137,7 +12539,7 @@ Module engine.
         Definition code_hash
             (self : mut_ref Self)
             (_account : ref ImplE.AccountId)
-            : M (Result ImplE.Hash) :=
+            : M (crate.Result ImplE.Hash) :=
           let* α0 :=
             format_arguments::["new_v1"]
               (addr_of
@@ -12153,7 +12555,7 @@ Module engine.
         
         Definition own_code_hash
             (self : mut_ref Self)
-            : M (Result ImplE.Hash) :=
+            : M (crate.Result ImplE.Hash) :=
           let* α0 :=
             format_arguments::["new_v1"]
               (addr_of
@@ -12169,8 +12571,8 @@ Module engine.
         
         Definition call_runtime
             (self : mut_ref Self)
-            (_call : ref Call)
-            : M (Result unit) :=
+            (_call : ref crate.call.Call)
+            : M (crate.Result unit) :=
           let* α0 :=
             format_arguments::["new_v1"]
               (addr_of
@@ -12206,26 +12608,14 @@ Module engine.
           TypedEnvBackend.own_code_hash := own_code_hash;
           TypedEnvBackend.call_runtime := call_runtime;
         }.
-      End Impl_TypedEnvBackend_for_EnvInstance.
+      End Impl_TypedEnvBackend_for_super_EnvInstance.
     End impls.
     
     Module test_api.
-      Module EnvInstance := super.EnvInstance.
-      Definition EnvInstance := EnvInstance.t.
-      
-      Module Result := crate.Result.
-      Definition Result := Result.t.
-      
-      Module RecordedDebugMessages := ink_engine.test_api.RecordedDebugMessages.
-      Definition RecordedDebugMessages := RecordedDebugMessages.t.
-      
-      Module CallData := super.call_data.CallData.
-      Definition CallData := CallData.t.
-      
       Module EmittedEvent.
         Record t : Set := {
-          topics : Vec (Vec u8);
-          data : Vec u8;
+          topics : ink_prelude.vec.Vec (ink_prelude.vec.Vec u8);
+          data : ink_prelude.vec.Vec u8;
         }.
         
         Global Instance Get_topics : Notation.Dot "topics" := {
@@ -12271,7 +12661,7 @@ Module engine.
           {T : Set}
           `{Environment.Trait T}
           (account_id : ImplT.AccountId)
-          : M (Result ImplT.Balance) :=
+          : M (crate.Result ImplT.Balance) :=
         OnInstance.on_instance
           (fun instance =>
             let* α0 := scale.Encode.encode (addr_of account_id) in
@@ -12290,7 +12680,9 @@ Module engine.
               instance.["engine"].["chain_extension_handler"].["register"] α0 in
             Pure tt).
       
-      Definition recorded_debug_messages (_ : unit) : M RecordedDebugMessages :=
+      Definition recorded_debug_messages
+          (_ : unit)
+          : M ink_engine.test_api.RecordedDebugMessages :=
         OnInstance.on_instance
           (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
       
@@ -12443,7 +12835,7 @@ Module engine.
           {T : Set}
           `{Environment.Trait T}
           (account_id : ref ImplT.AccountId)
-          : M (Result usize) :=
+          : M (crate.Result usize) :=
         OnInstance.on_instance
           (fun instance =>
             let* α0 := scale.Encode.encode (addr_of account_id) in
@@ -12477,7 +12869,7 @@ Module engine.
           `{FnOnce.Trait ((DefaultAccounts T)) F}
           `{From.Trait list u8 Environment.AccountId}
           (f : F)
-          : M (Result unit) :=
+          : M (crate.Result unit) :=
         let* default_accounts := default_accounts tt in
         let* _ :=
           OnInstance.on_instance
@@ -12673,26 +13065,14 @@ Module engine.
     End test_api.
     
     Module types.
-      Module EmittedEvent := super.test_api.EmittedEvent.
-      Definition EmittedEvent := EmittedEvent.t.
-      
-      Module AccountError := super.AccountError.
-      Definition AccountError := AccountError.t.
-      
-      Module Error := super.Error.
-      Definition Error := Error.t.
-      
-      Module OffChainError := super.OffChainError.
-      Definition OffChainError := OffChainError.t.
-      
-      Module Impl_From_for_EmittedEvent.
-        Definition Self := EmittedEvent.
+      Module Impl_From_for_super_test_api_EmittedEvent.
+        Definition Self := super.test_api.EmittedEvent.
         
         Definition from (evt : ink_engine.test_api.EmittedEvent) : M Self :=
           Pure
             {|
-              EmittedEvent.topics := evt.["topics"];
-              EmittedEvent.data := evt.["data"];
+              super.test_api.EmittedEvent.topics := evt.["topics"];
+              super.test_api.EmittedEvent.data := evt.["data"];
             |}.
         
         Global Instance AssociatedFunction_from :
@@ -12704,10 +13084,10 @@ Module engine.
           {
           From.from := from;
         }.
-      End Impl_From_for_EmittedEvent.
+      End Impl_From_for_super_test_api_EmittedEvent.
       
-      Module Impl_From_for_Error.
-        Definition Self := Error.
+      Module Impl_From_for_super_Error.
+        Definition Self := super.Error.
         
         Definition from (err : ink_engine.Error) : M Self :=
           let* e :=
@@ -12732,10 +13112,10 @@ Module engine.
         Global Instance I : From.Trait Self ink_engine.Error := {
           From.from := from;
         }.
-      End Impl_From_for_Error.
+      End Impl_From_for_super_Error.
       
-      Module Impl_From_for_AccountError.
-        Definition Self := AccountError.
+      Module Impl_From_for_super_AccountError.
+        Definition Self := super.AccountError.
         
         Definition from (err : ink_engine.AccountError) : M Self :=
           match err with
@@ -12754,10 +13134,10 @@ Module engine.
         Global Instance I : From.Trait Self ink_engine.AccountError := {
           From.from := from;
         }.
-      End Impl_From_for_AccountError.
+      End Impl_From_for_super_AccountError.
       
-      Module Impl_From_for_Error.
-        Definition Self := Error.
+      Module Impl_From_for_super_Error.
+        Definition Self := super.Error.
         
         Definition from (account_error : ink_engine.AccountError) : M Self :=
           let* α0 := account_error.["into"] in
@@ -12771,23 +13151,14 @@ Module engine.
         Global Instance I : From.Trait Self ink_engine.AccountError := {
           From.from := from;
         }.
-      End Impl_From_for_Error.
+      End Impl_From_for_super_Error.
     End types.
-    
-    Module CallData := call_data.CallData.
-    Definition CallData := CallData.t.
-    
-    Module Error := crate.Error.
-    Definition Error := Error.t.
     
     Module From := derive_more.From.
     
-    Module Engine := ink_engine.ext.Engine.
-    Definition Engine := Engine.t.
-    
     Module EnvInstance.
       Record t : Set := {
-        engine : Engine;
+        engine : ink_engine.ext.Engine;
       }.
       
       Global Instance Get_engine : Notation.Dot "engine" := {
@@ -12796,8 +13167,8 @@ Module engine.
     End EnvInstance.
     Definition EnvInstance : Set := EnvInstance.t.
     
-    Module Impl_OnInstance_for_EnvInstance.
-      Definition Self := EnvInstance.
+    Module Impl_OnInstance_for_super_EnvInstance.
+      Definition Self := super.EnvInstance.
       
       Definition on_instance (f : F) : M R :=
         INSTANCE.["with"]
@@ -12813,19 +13184,19 @@ Module engine.
       Global Instance I : OnInstance.Trait Self := {
         OnInstance.on_instance := on_instance;
       }.
-    End Impl_OnInstance_for_EnvInstance.
+    End Impl_OnInstance_for_super_EnvInstance.
     
     Module OffChainError.
       Inductive t : Set :=
-      | Account (_ : AccountError)
+      | Account (_ : super.AccountError)
       | UninitializedBlocks
       | UninitializedExecutionContext
       | UnregisteredChainExtension.
     End OffChainError.
     Definition OffChainError := OffChainError.t.
     
-    Module Impl__crate_fmt_Debug_for_OffChainError.
-      Definition Self := OffChainError.
+    Module Impl__crate_fmt_Debug_for_super_OffChainError.
+      Definition Self := super.OffChainError.
       
       Definition fmt
           (self : ref Self)
@@ -12852,12 +13223,12 @@ Module engine.
       Global Instance I : _crate.fmt.Debug.Trait Self := {
         _crate.fmt.Debug.fmt := fmt;
       }.
-    End Impl__crate_fmt_Debug_for_OffChainError.
+    End Impl__crate_fmt_Debug_for_super_OffChainError.
     
-    Module Impl_Root_core_convert_From_for_OffChainError.
-      Definition Self := OffChainError.
+    Module Impl_Root_core_convert_From_for_super_OffChainError.
+      Definition Self := super.OffChainError.
       
-      Definition from (original : AccountError) : M OffChainError :=
+      Definition from (original : super.AccountError) : M super.OffChainError :=
         Pure (OffChainError.Account original).
       
       Global Instance AssociatedFunction_from :
@@ -12865,22 +13236,30 @@ Module engine.
         Notation.double_colon := from;
       }.
       
-      Global Instance I : Root.core.convert.From.Trait Self AccountError := {
+      Global Instance I
+          :
+          Root.core.convert.From.Trait
+          Self
+          super.AccountError :=
+        {
         Root.core.convert.From.from := from;
       }.
-    End Impl_Root_core_convert_From_for_OffChainError.
+    End Impl_Root_core_convert_From_for_super_OffChainError.
     
-    Module Impl__crate_marker_StructuralPartialEq_for_OffChainError.
-      Definition Self := OffChainError.
+    Module Impl__crate_marker_StructuralPartialEq_for_super_OffChainError.
+      Definition Self := super.OffChainError.
       
       Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
         _crate.marker.StructuralPartialEq.Build_Class _.
-    End Impl__crate_marker_StructuralPartialEq_for_OffChainError.
+    End Impl__crate_marker_StructuralPartialEq_for_super_OffChainError.
     
-    Module Impl__crate_cmp_PartialEq_for_OffChainError.
-      Definition Self := OffChainError.
+    Module Impl__crate_cmp_PartialEq_for_super_OffChainError.
+      Definition Self := super.OffChainError.
       
-      Definition eq (self : ref Self) (other : ref OffChainError) : M bool :=
+      Definition eq
+          (self : ref Self)
+          (other : ref super.OffChainError)
+          : M bool :=
         let* __self_tag := _crate.intrinsics.discriminant_value self in
         let* __arg1_tag := _crate.intrinsics.discriminant_value other in
         let* α0 := __self_tag.["eq"] __arg1_tag in
@@ -12901,17 +13280,17 @@ Module engine.
       Global Instance I : _crate.cmp.PartialEq.Trait Self := {
         _crate.cmp.PartialEq.eq := eq;
       }.
-    End Impl__crate_cmp_PartialEq_for_OffChainError.
+    End Impl__crate_cmp_PartialEq_for_super_OffChainError.
     
-    Module Impl__crate_marker_StructuralEq_for_OffChainError.
-      Definition Self := OffChainError.
+    Module Impl__crate_marker_StructuralEq_for_super_OffChainError.
+      Definition Self := super.OffChainError.
       
       Global Instance I : _crate.marker.StructuralEq.Trait Self :=
         _crate.marker.StructuralEq.Build_Class _.
-    End Impl__crate_marker_StructuralEq_for_OffChainError.
+    End Impl__crate_marker_StructuralEq_for_super_OffChainError.
     
-    Module Impl__crate_cmp_Eq_for_OffChainError.
-      Definition Self := OffChainError.
+    Module Impl__crate_cmp_Eq_for_super_OffChainError.
+      Definition Self := super.OffChainError.
       
       Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
         let _ := tt in
@@ -12924,18 +13303,18 @@ Module engine.
       
       Global Instance I : _crate.cmp.Eq.Trait Self := {
       }.
-    End Impl__crate_cmp_Eq_for_OffChainError.
+    End Impl__crate_cmp_Eq_for_super_OffChainError.
     
     Module AccountError.
       Inductive t : Set :=
       | Decoding (_ : scale.Error)
       | UnexpectedUserAccount
-      | NoAccountForId (_ : Vec u8).
+      | NoAccountForId (_ : ink_prelude.vec.Vec u8).
     End AccountError.
     Definition AccountError := AccountError.t.
     
-    Module Impl__crate_fmt_Debug_for_AccountError.
-      Definition Self := AccountError.
+    Module Impl__crate_fmt_Debug_for_super_AccountError.
+      Definition Self := super.AccountError.
       
       Definition fmt
           (self : ref Self)
@@ -12963,12 +13342,12 @@ Module engine.
       Global Instance I : _crate.fmt.Debug.Trait Self := {
         _crate.fmt.Debug.fmt := fmt;
       }.
-    End Impl__crate_fmt_Debug_for_AccountError.
+    End Impl__crate_fmt_Debug_for_super_AccountError.
     
-    Module Impl_Root_core_convert_From_for_AccountError.
-      Definition Self := AccountError.
+    Module Impl_Root_core_convert_From_for_super_AccountError.
+      Definition Self := super.AccountError.
       
-      Definition from (original : scale.Error) : M AccountError :=
+      Definition from (original : scale.Error) : M super.AccountError :=
         Pure (AccountError.Decoding original).
       
       Global Instance AssociatedFunction_from :
@@ -12979,19 +13358,22 @@ Module engine.
       Global Instance I : Root.core.convert.From.Trait Self scale.Error := {
         Root.core.convert.From.from := from;
       }.
-    End Impl_Root_core_convert_From_for_AccountError.
+    End Impl_Root_core_convert_From_for_super_AccountError.
     
-    Module Impl__crate_marker_StructuralPartialEq_for_AccountError.
-      Definition Self := AccountError.
+    Module Impl__crate_marker_StructuralPartialEq_for_super_AccountError.
+      Definition Self := super.AccountError.
       
       Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
         _crate.marker.StructuralPartialEq.Build_Class _.
-    End Impl__crate_marker_StructuralPartialEq_for_AccountError.
+    End Impl__crate_marker_StructuralPartialEq_for_super_AccountError.
     
-    Module Impl__crate_cmp_PartialEq_for_AccountError.
-      Definition Self := AccountError.
+    Module Impl__crate_cmp_PartialEq_for_super_AccountError.
+      Definition Self := super.AccountError.
       
-      Definition eq (self : ref Self) (other : ref AccountError) : M bool :=
+      Definition eq
+          (self : ref Self)
+          (other : ref super.AccountError)
+          : M bool :=
         let* __self_tag := _crate.intrinsics.discriminant_value self in
         let* __arg1_tag := _crate.intrinsics.discriminant_value other in
         let* α0 := __self_tag.["eq"] __arg1_tag in
@@ -13019,17 +13401,17 @@ Module engine.
       Global Instance I : _crate.cmp.PartialEq.Trait Self := {
         _crate.cmp.PartialEq.eq := eq;
       }.
-    End Impl__crate_cmp_PartialEq_for_AccountError.
+    End Impl__crate_cmp_PartialEq_for_super_AccountError.
     
-    Module Impl__crate_marker_StructuralEq_for_AccountError.
-      Definition Self := AccountError.
+    Module Impl__crate_marker_StructuralEq_for_super_AccountError.
+      Definition Self := super.AccountError.
       
       Global Instance I : _crate.marker.StructuralEq.Trait Self :=
         _crate.marker.StructuralEq.Build_Class _.
-    End Impl__crate_marker_StructuralEq_for_AccountError.
+    End Impl__crate_marker_StructuralEq_for_super_AccountError.
     
-    Module Impl__crate_cmp_Eq_for_AccountError.
-      Definition Self := AccountError.
+    Module Impl__crate_cmp_Eq_for_super_AccountError.
+      Definition Self := super.AccountError.
       
       Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
         let _ := tt in
@@ -13043,11 +13425,8 @@ Module engine.
       
       Global Instance I : _crate.cmp.Eq.Trait Self := {
       }.
-    End Impl__crate_cmp_Eq_for_AccountError.
+    End Impl__crate_cmp_Eq_for_super_AccountError.
   End off_chain.
-  
-  Module EnvInstance := self.off_chain.EnvInstance.
-  Definition EnvInstance := EnvInstance.t.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition decode_instantiate_result
@@ -13056,10 +13435,13 @@ Module engine.
       `{crate.Environment.Trait E}
       `{FromAccountId.Trait E ContractRef}
       `{ConstructorReturnType.Trait ContractRef R}
-      (instantiate_result : EnvResult unit)
+      (instantiate_result : crate.Result unit)
       (out_address : mut_ref I)
       (out_return_value : mut_ref I)
-      : M (EnvResult (ConstructorResult ConstructorReturnType.Output)) :=
+      :
+        M
+          (crate.Result
+            (ink_primitives.ConstructorResult ConstructorReturnType.Output)) :=
     match instantiate_result with
     | Ok () =>
       let* account_id :=
@@ -13086,7 +13468,10 @@ Module engine.
       `{FromAccountId.Trait E ContractRef}
       `{ConstructorReturnType.Trait ContractRef R}
       (out_return_value : mut_ref I)
-      : M (EnvResult (ConstructorResult ConstructorReturnType.Output)) :=
+      :
+        M
+          (crate.Result
+            (ink_primitives.ConstructorResult ConstructorReturnType.Output)) :=
     let* constructor_result_variant :=
       let* α0 := out_return_value.["read_byte"] in
       let* α1 := LangItem α0 in
@@ -13170,22 +13555,7 @@ Module engine.
     end.
 End engine.
 
-Module EnvError := crate.Error.
-Definition EnvError := EnvError.t.
-
-Module Error := crate.Error.
-Definition Error := Error.t.
-
-Module EnvResult := crate.Result.
-Definition EnvResult := EnvResult.t.
-
 Module cfg_if := cfg_if.cfg_if.
-
-Module ConstructorResult := ink_primitives.ConstructorResult.
-Definition ConstructorResult := ConstructorResult.t.
-
-Module LangError := ink_primitives.LangError.
-Definition LangError := LangError.t.
 
 Module OnInstance.
   Class Trait (Self : Set) : Set := {
@@ -13199,17 +13569,11 @@ End OnInstance.
 
 Module off_chain.
   Module call_data.
-    Module Selector := crate.call.Selector.
-    Definition Selector := Selector.t.
-    
     Module vec := ink_prelude.vec.
-    
-    Module Vec := ink_prelude.vec.Vec.
-    Definition Vec := Vec.t.
     
     Module CallData.
       Record t : Set := {
-        bytes : Vec u8;
+        bytes : ink_prelude.vec.Vec u8;
       }.
       
       Global Instance Get_bytes : Notation.Dot "bytes" := {
@@ -13218,8 +13582,8 @@ Module off_chain.
     End CallData.
     Definition CallData : Set := CallData.t.
     
-    Module Impl__crate_fmt_Debug_for_CallData.
-      Definition Self := CallData.
+    Module Impl__crate_fmt_Debug_for_call_data_CallData.
+      Definition Self := call_data.CallData.
       
       Definition fmt
           (self : ref Self)
@@ -13238,14 +13602,14 @@ Module off_chain.
       Global Instance I : _crate.fmt.Debug.Trait Self := {
         _crate.fmt.Debug.fmt := fmt;
       }.
-    End Impl__crate_fmt_Debug_for_CallData.
+    End Impl__crate_fmt_Debug_for_call_data_CallData.
     
-    Module Impl__crate_clone_Clone_for_CallData.
-      Definition Self := CallData.
+    Module Impl__crate_clone_Clone_for_call_data_CallData.
+      Definition Self := call_data.CallData.
       
-      Definition clone (self : ref Self) : M CallData :=
+      Definition clone (self : ref Self) : M call_data.CallData :=
         let* α0 := _crate.clone.Clone.clone (addr_of self.["bytes"]) in
-        Pure {| CallData.bytes := α0; |}.
+        Pure {| call_data.CallData.bytes := α0; |}.
       
       Global Instance Method_clone : Notation.Dot "clone" := {
         Notation.dot := clone;
@@ -13254,19 +13618,22 @@ Module off_chain.
       Global Instance I : _crate.clone.Clone.Trait Self := {
         _crate.clone.Clone.clone := clone;
       }.
-    End Impl__crate_clone_Clone_for_CallData.
+    End Impl__crate_clone_Clone_for_call_data_CallData.
     
-    Module Impl__crate_marker_StructuralPartialEq_for_CallData.
-      Definition Self := CallData.
+    Module Impl__crate_marker_StructuralPartialEq_for_call_data_CallData.
+      Definition Self := call_data.CallData.
       
       Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
         _crate.marker.StructuralPartialEq.Build_Class _.
-    End Impl__crate_marker_StructuralPartialEq_for_CallData.
+    End Impl__crate_marker_StructuralPartialEq_for_call_data_CallData.
     
-    Module Impl__crate_cmp_PartialEq_for_CallData.
-      Definition Self := CallData.
+    Module Impl__crate_cmp_PartialEq_for_call_data_CallData.
+      Definition Self := call_data.CallData.
       
-      Definition eq (self : ref Self) (other : ref CallData) : M bool :=
+      Definition eq
+          (self : ref Self)
+          (other : ref call_data.CallData)
+          : M bool :=
         self.["bytes"].["eq"] other.["bytes"].
       
       Global Instance Method_eq : Notation.Dot "eq" := {
@@ -13276,17 +13643,17 @@ Module off_chain.
       Global Instance I : _crate.cmp.PartialEq.Trait Self := {
         _crate.cmp.PartialEq.eq := eq;
       }.
-    End Impl__crate_cmp_PartialEq_for_CallData.
+    End Impl__crate_cmp_PartialEq_for_call_data_CallData.
     
-    Module Impl__crate_marker_StructuralEq_for_CallData.
-      Definition Self := CallData.
+    Module Impl__crate_marker_StructuralEq_for_call_data_CallData.
+      Definition Self := call_data.CallData.
       
       Global Instance I : _crate.marker.StructuralEq.Trait Self :=
         _crate.marker.StructuralEq.Build_Class _.
-    End Impl__crate_marker_StructuralEq_for_CallData.
+    End Impl__crate_marker_StructuralEq_for_call_data_CallData.
     
-    Module Impl__crate_cmp_Eq_for_CallData.
-      Definition Self := CallData.
+    Module Impl__crate_cmp_Eq_for_call_data_CallData.
+      Definition Self := call_data.CallData.
       
       Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
         let _ := tt in
@@ -13299,12 +13666,12 @@ Module off_chain.
       
       Global Instance I : _crate.cmp.Eq.Trait Self := {
       }.
-    End Impl__crate_cmp_Eq_for_CallData.
+    End Impl__crate_cmp_Eq_for_call_data_CallData.
     
-    Module ImplCallData_2.
-      Definition Self := CallData.
+    Module Implcall_data.CallData.
+      Definition Self := call_data.CallData.
       
-      Definition new (selector : Selector) : M Self :=
+      Definition new (selector : crate.call.Selector) : M Self :=
         let* bytes := selector.["to_bytes"] in
         let* α0 :=
           _crate.boxed.Box::["new"]
@@ -13324,7 +13691,7 @@ Module off_chain.
         Notation.dot := push_arg;
       }.
       
-      Definition selector (self : ref Self) : M Selector :=
+      Definition selector (self : ref Self) : M crate.call.Selector :=
         let* _ :=
           if (true : bool) then
             let* _ :=
@@ -13377,10 +13744,10 @@ Module off_chain.
       Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
         Notation.dot := to_bytes;
       }.
-    End ImplCallData_2.
+    End Implcall_data.CallData.
     
-    Module Impl_scale_Encode_for_CallData.
-      Definition Self := CallData.
+    Module Impl_scale_Encode_for_call_data_CallData.
+      Definition Self := call_data.CallData.
       
       Definition size_hint (self : ref Self) : M usize :=
         self.["bytes"].["len"].
@@ -13401,10 +13768,10 @@ Module off_chain.
       
       Global Instance I : scale.Encode.Trait Self := {
       }.
-    End Impl_scale_Encode_for_CallData.
+    End Impl_scale_Encode_for_call_data_CallData.
     
-    Module Impl_scale_Decode_for_CallData.
-      Definition Self := CallData.
+    Module Impl_scale_Decode_for_call_data_CallData.
+      Definition Self := call_data.CallData.
       
       Definition decode
           (input : mut_ref I)
@@ -13413,7 +13780,7 @@ Module off_chain.
           let* α0 := input.["remaining_len"] in
           let* α1 := α0.["unwrap_or"] None in
           α1.["unwrap_or"] 0 in
-        let* bytes := Vec::["with_capacity"] remaining_len in
+        let* bytes := ink_prelude.vec.Vec::["with_capacity"] remaining_len in
         let* _ :=
           loop
             let* α0 := input.["read_byte"] in
@@ -13445,55 +13812,16 @@ Module off_chain.
       Global Instance I : scale.Decode.Trait Self := {
         scale.Decode.decode := decode;
       }.
-    End Impl_scale_Decode_for_CallData.
+    End Impl_scale_Decode_for_call_data_CallData.
   End call_data.
   
   Module impls.
-    Module EnvInstance := super.EnvInstance.
-    Definition EnvInstance := EnvInstance.t.
-    
-    Module Call := crate.call.Call.
-    Definition Call := Call.t.
-    
-    Module CallParams := crate.call.CallParams.
-    Definition CallParams := CallParams.t.
-    
-    Module CreateParams := crate.call.CreateParams.
-    Definition CreateParams := CreateParams.t.
-    
-    Module DelegateCall := crate.call.DelegateCall.
-    Definition DelegateCall := DelegateCall.t.
-    
-    Module Blake2x128 := crate.hash.Blake2x128.
-    Definition Blake2x128 := Blake2x128.t.
-    
-    Module Blake2x256 := crate.hash.Blake2x256.
-    Definition Blake2x256 := Blake2x256.t.
-    
-    Module Keccak256 := crate.hash.Keccak256.
-    Definition Keccak256 := Keccak256.t.
-    
-    Module Sha2x256 := crate.hash.Sha2x256.
-    Definition Sha2x256 := Sha2x256.t.
-    
-    Module Error := crate.Error.
-    Definition Error := Error.t.
-    
-    Module Result := crate.Result.
-    Definition Result := Result.t.
-    
-    Module ReturnFlags := crate.ReturnFlags.
-    Definition ReturnFlags := ReturnFlags.t.
-    
     Module ext := ink_engine.ext.
-    
-    Module Engine := ink_engine.ext.Engine.
-    Definition Engine := Engine.t.
     
     Definition BUFFER_SIZE : usize := run (1.["shl"] 14).
     
-    Module Impl_CryptoHash_for_Blake2x128.
-      Definition Self := Blake2x128.
+    Module Impl_CryptoHash_for_crate_hash_Blake2x128.
+      Definition Self := crate.hash.Blake2x128.
       
       Definition hash
           (input : ref Slice)
@@ -13509,7 +13837,7 @@ Module off_chain.
                   Range.end := offset.["add"] 16;
                 |}] in
           as_array slice in
-        let* _ := Engine::["hash_blake2_128"] input output in
+        let* _ := ink_engine.ext.Engine::["hash_blake2_128"] input output in
         Pure tt.
       
       Global Instance AssociatedFunction_hash :
@@ -13520,10 +13848,10 @@ Module off_chain.
       Global Instance I : CryptoHash.Trait Self := {
         CryptoHash.hash := hash;
       }.
-    End Impl_CryptoHash_for_Blake2x128.
+    End Impl_CryptoHash_for_crate_hash_Blake2x128.
     
-    Module Impl_CryptoHash_for_Blake2x256.
-      Definition Self := Blake2x256.
+    Module Impl_CryptoHash_for_crate_hash_Blake2x256.
+      Definition Self := crate.hash.Blake2x256.
       
       Definition hash
           (input : ref Slice)
@@ -13539,7 +13867,7 @@ Module off_chain.
                   Range.end := offset.["add"] 32;
                 |}] in
           as_array slice in
-        let* _ := Engine::["hash_blake2_256"] input output in
+        let* _ := ink_engine.ext.Engine::["hash_blake2_256"] input output in
         Pure tt.
       
       Global Instance AssociatedFunction_hash :
@@ -13550,10 +13878,10 @@ Module off_chain.
       Global Instance I : CryptoHash.Trait Self := {
         CryptoHash.hash := hash;
       }.
-    End Impl_CryptoHash_for_Blake2x256.
+    End Impl_CryptoHash_for_crate_hash_Blake2x256.
     
-    Module Impl_CryptoHash_for_Sha2x256.
-      Definition Self := Sha2x256.
+    Module Impl_CryptoHash_for_crate_hash_Sha2x256.
+      Definition Self := crate.hash.Sha2x256.
       
       Definition hash
           (input : ref Slice)
@@ -13569,7 +13897,7 @@ Module off_chain.
                   Range.end := offset.["add"] 32;
                 |}] in
           as_array slice in
-        let* _ := Engine::["hash_sha2_256"] input output in
+        let* _ := ink_engine.ext.Engine::["hash_sha2_256"] input output in
         Pure tt.
       
       Global Instance AssociatedFunction_hash :
@@ -13580,10 +13908,10 @@ Module off_chain.
       Global Instance I : CryptoHash.Trait Self := {
         CryptoHash.hash := hash;
       }.
-    End Impl_CryptoHash_for_Sha2x256.
+    End Impl_CryptoHash_for_crate_hash_Sha2x256.
     
-    Module Impl_CryptoHash_for_Keccak256.
-      Definition Self := Keccak256.
+    Module Impl_CryptoHash_for_crate_hash_Keccak256.
+      Definition Self := crate.hash.Keccak256.
       
       Definition hash
           (input : ref Slice)
@@ -13599,7 +13927,7 @@ Module off_chain.
                   Range.end := offset.["add"] 32;
                 |}] in
           as_array slice in
-        let* _ := Engine::["hash_keccak_256"] input output in
+        let* _ := ink_engine.ext.Engine::["hash_keccak_256"] input output in
         Pure tt.
       
       Global Instance AssociatedFunction_hash :
@@ -13610,7 +13938,7 @@ Module off_chain.
       Global Instance I : CryptoHash.Trait Self := {
         CryptoHash.hash := hash;
       }.
-    End Impl_CryptoHash_for_Keccak256.
+    End Impl_CryptoHash_for_crate_hash_Keccak256.
     
     Module Impl_From_for_crate_Error.
       Definition Self := crate.Error.
@@ -13643,7 +13971,7 @@ Module off_chain.
     
     Module TopicsBuilder.
       Record t : Set := {
-        topics : Vec (Vec u8);
+        topics : ink_prelude.vec.Vec (ink_prelude.vec.Vec u8);
       }.
       
       Global Instance Get_topics : Notation.Dot "topics" := {
@@ -13672,7 +14000,7 @@ Module off_chain.
     Module Impl_TopicsBuilderBackend_for_TopicsBuilder.
       Definition Self := TopicsBuilder.
       
-      Definition Output : Set := Vec u8.
+      Definition Output : Set := ink_prelude.vec.Vec u8.
       
       Definition expect
           (self : mut_ref Self)
@@ -13745,7 +14073,7 @@ Module off_chain.
       }.
       
       Definition output (self : Self) : M ImplSelf.Output :=
-        let* all := Vec::["new"] tt in
+        let* all := ink_prelude.vec.Vec::["new"] tt in
         let* topics_len_compact :=
           let* α0 := self.["topics"].["len"] in
           Pure (addr_of (scale.Compact.Build_t (cast α0 u32))) in
@@ -13771,13 +14099,15 @@ Module off_chain.
       }.
     End Impl_TopicsBuilderBackend_for_TopicsBuilder.
     
-    Module ImplEnvInstance_2.
-      Definition Self := EnvInstance.
+    Module Implsuper.EnvInstance_2.
+      Definition Self := super.EnvInstance.
       
       Definition get_property
           (self : mut_ref Self)
-          (ext_fn : (ref Engine) -> (mut_ref (mut_ref Slice)) -> unit)
-          : M (Result T) :=
+          (ext_fn
+            :
+            (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit)
+          : M (crate.Result T) :=
         let* full_scope := repeat 0 in
         let full_scope := addr_of (addr_of full_scope[RangeFull {|  |}]) in
         let* _ := ext_fn (addr_of self.["engine"]) full_scope in
@@ -13789,10 +14119,10 @@ Module off_chain.
       Global Instance Method_get_property : Notation.Dot "get_property" := {
         Notation.dot := get_property;
       }.
-    End ImplEnvInstance_2.
+    End Implsuper.EnvInstance_2.
     
-    Module Impl_EnvBackend_for_EnvInstance.
-      Definition Self := EnvInstance.
+    Module Impl_EnvBackend_for_super_EnvInstance.
+      Definition Self := super.EnvInstance.
       
       Definition set_contract_storage
           (self : mut_ref Self)
@@ -13814,7 +14144,7 @@ Module off_chain.
       Definition get_contract_storage
           (self : mut_ref Self)
           (key : ref K)
-          : M (Result (Option R)) :=
+          : M (crate.Result (Option R)) :=
         let* output := repeat 0 in
         let* _ :=
           let* α0 := key.["encode"] in
@@ -13851,7 +14181,7 @@ Module off_chain.
       Definition take_contract_storage
           (self : mut_ref Self)
           (key : ref K)
-          : M (Result (Option R)) :=
+          : M (crate.Result (Option R)) :=
         let* output := repeat 0 in
         let* _ :=
           let* α0 := key.["encode"] in
@@ -13909,7 +14239,7 @@ Module off_chain.
         Notation.dot := clear_contract_storage;
       }.
       
-      Definition decode_input (self : mut_ref Self) : M (Result T) :=
+      Definition decode_input (self : mut_ref Self) : M (crate.Result T) :=
         let* α0 :=
           format_arguments::["new_v1"]
             (addr_of
@@ -13924,7 +14254,7 @@ Module off_chain.
       
       Definition return_value
           (self : mut_ref Self)
-          (_flags : ReturnFlags)
+          (_flags : crate.ReturnFlags)
           (_return_value : ref R)
           : M Empty_set :=
         let* α0 :=
@@ -13980,7 +14310,7 @@ Module off_chain.
           (signature : ref list u8)
           (message_hash : ref list u8)
           (output : mut_ref list u8)
-          : M (Result unit) :=
+          : M (crate.Result unit) :=
         let* recovery_byte :=
           let* α0 := signature[64].["gt"] 26 in
           if (α0 : bool) then
@@ -14040,7 +14370,7 @@ Module off_chain.
           (self : mut_ref Self)
           (pubkey : ref list u8)
           (output : mut_ref list u8)
-          : M (Result unit) :=
+          : M (crate.Result unit) :=
         let* pk :=
           let* α0 := secp256k1.PublicKey::["from_slice"] pubkey in
           let* α1 := α0.["map_err"] (fun _ => Pure Error.EcdsaRecoveryFailed) in
@@ -14054,7 +14384,7 @@ Module off_chain.
         let* uncompressed := pk.["serialize_uncompressed"] in
         let* hash := HashOutput.Type::["default"] tt in
         let* _ :=
-          Keccak256::["hash"]
+          crate.hash.Keccak256::["hash"]
             (addr_of uncompressed[RangeFrom {| RangeFrom.start := 1; |}])
             (addr_of hash) in
         let* _ :=
@@ -14124,7 +14454,7 @@ Module off_chain.
       Definition set_code_hash
           (self : mut_ref Self)
           (_code_hash : ref Slice)
-          : M (Result unit) :=
+          : M (crate.Result unit) :=
         let* α0 :=
           format_arguments::["new_v1"]
             (addr_of
@@ -14154,13 +14484,13 @@ Module off_chain.
         EnvBackend.call_chain_extension := call_chain_extension;
         EnvBackend.set_code_hash := set_code_hash;
       }.
-    End Impl_EnvBackend_for_EnvInstance.
+    End Impl_EnvBackend_for_super_EnvInstance.
     
-    Module Impl_TypedEnvBackend_for_EnvInstance.
-      Definition Self := EnvInstance.
+    Module Impl_TypedEnvBackend_for_super_EnvInstance.
+      Definition Self := super.EnvInstance.
       
       Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
-        let* α0 := self.["get_property"] Engine::["caller"] in
+        let* α0 := self.["get_property"] ink_engine.ext.Engine::["caller"] in
         α0.["unwrap_or_else"]
           (fun error =>
             let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -14175,7 +14505,8 @@ Module off_chain.
       }.
       
       Definition transferred_value (self : mut_ref Self) : M ImplE.Balance :=
-        let* α0 := self.["get_property"] Engine::["value_transferred"] in
+        let* α0 :=
+          self.["get_property"] ink_engine.ext.Engine::["value_transferred"] in
         α0.["unwrap_or_else"]
           (fun error =>
             let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -14191,7 +14522,7 @@ Module off_chain.
       }.
       
       Definition gas_left (self : mut_ref Self) : M u64 :=
-        let* α0 := self.["get_property"] Engine::["gas_left"] in
+        let* α0 := self.["get_property"] ink_engine.ext.Engine::["gas_left"] in
         α0.["unwrap_or_else"]
           (fun error =>
             let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -14206,7 +14537,8 @@ Module off_chain.
       }.
       
       Definition block_timestamp (self : mut_ref Self) : M ImplE.Timestamp :=
-        let* α0 := self.["get_property"] Engine::["block_timestamp"] in
+        let* α0 :=
+          self.["get_property"] ink_engine.ext.Engine::["block_timestamp"] in
         α0.["unwrap_or_else"]
           (fun error =>
             let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -14222,7 +14554,7 @@ Module off_chain.
       }.
       
       Definition account_id (self : mut_ref Self) : M ImplE.AccountId :=
-        let* α0 := self.["get_property"] Engine::["address"] in
+        let* α0 := self.["get_property"] ink_engine.ext.Engine::["address"] in
         α0.["unwrap_or_else"]
           (fun error =>
             let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -14237,7 +14569,7 @@ Module off_chain.
       }.
       
       Definition balance (self : mut_ref Self) : M ImplE.Balance :=
-        let* α0 := self.["get_property"] Engine::["balance"] in
+        let* α0 := self.["get_property"] ink_engine.ext.Engine::["balance"] in
         α0.["unwrap_or_else"]
           (fun error =>
             let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -14252,7 +14584,8 @@ Module off_chain.
       }.
       
       Definition block_number (self : mut_ref Self) : M ImplE.BlockNumber :=
-        let* α0 := self.["get_property"] Engine::["block_number"] in
+        let* α0 :=
+          self.["get_property"] ink_engine.ext.Engine::["block_number"] in
         α0.["unwrap_or_else"]
           (fun error =>
             let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -14267,7 +14600,8 @@ Module off_chain.
       }.
       
       Definition minimum_balance (self : mut_ref Self) : M ImplE.Balance :=
-        let* α0 := self.["get_property"] Engine::["minimum_balance"] in
+        let* α0 :=
+          self.["get_property"] ink_engine.ext.Engine::["minimum_balance"] in
         α0.["unwrap_or_else"]
           (fun error =>
             let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -14302,8 +14636,8 @@ Module off_chain.
       
       Definition invoke_contract
           (self : mut_ref Self)
-          (params : ref (CallParams E (Call E) Args R))
-          : M (Result (ink_primitives.MessageResult R)) :=
+          (params : ref (crate.call.CallParams E (crate.call.Call E) Args R))
+          : M (crate.Result (ink_primitives.MessageResult R)) :=
         let* _gas_limit := params.["gas_limit"] in
         let* _callee := params.["callee"] in
         let* _call_flags :=
@@ -14327,8 +14661,10 @@ Module off_chain.
       
       Definition invoke_contract_delegate
           (self : mut_ref Self)
-          (params : ref (CallParams E (DelegateCall E) Args R))
-          : M (Result R) :=
+          (params
+            :
+            ref (crate.call.CallParams E (crate.call.DelegateCall E) Args R))
+          : M (crate.Result R) :=
         let* _code_hash := params.["code_hash"] in
         let* α0 :=
           format_arguments::["new_v1"]
@@ -14346,10 +14682,10 @@ Module off_chain.
       
       Definition instantiate_contract
           (self : mut_ref Self)
-          (params : ref (CreateParams E ContractRef Args Salt R))
+          (params : ref (crate.call.CreateParams E ContractRef Args Salt R))
           :
             M
-              (Result
+              (crate.Result
                 (ink_primitives.ConstructorResult
                   ConstructorReturnType.Output)) :=
         let* _code_hash := params.["code_hash"] in
@@ -14387,7 +14723,7 @@ Module off_chain.
           (self : mut_ref Self)
           (destination : ImplE.AccountId)
           (value : ImplE.Balance)
-          : M (Result unit) :=
+          : M (crate.Result unit) :=
         let* enc_destination :=
           let* α0 := scale.Encode.encode (addr_of destination) in
           Pure (addr_of α0[RangeFull {|  |}]) in
@@ -14454,7 +14790,7 @@ Module off_chain.
       Definition code_hash
           (self : mut_ref Self)
           (_account : ref ImplE.AccountId)
-          : M (Result ImplE.Hash) :=
+          : M (crate.Result ImplE.Hash) :=
         let* α0 :=
           format_arguments::["new_v1"]
             (addr_of
@@ -14468,7 +14804,9 @@ Module off_chain.
         Notation.dot := code_hash;
       }.
       
-      Definition own_code_hash (self : mut_ref Self) : M (Result ImplE.Hash) :=
+      Definition own_code_hash
+          (self : mut_ref Self)
+          : M (crate.Result ImplE.Hash) :=
         let* α0 :=
           format_arguments::["new_v1"]
             (addr_of
@@ -14484,8 +14822,8 @@ Module off_chain.
       
       Definition call_runtime
           (self : mut_ref Self)
-          (_call : ref Call)
-          : M (Result unit) :=
+          (_call : ref crate.call.Call)
+          : M (crate.Result unit) :=
         let* α0 :=
           format_arguments::["new_v1"]
             (addr_of
@@ -14521,26 +14859,14 @@ Module off_chain.
         TypedEnvBackend.own_code_hash := own_code_hash;
         TypedEnvBackend.call_runtime := call_runtime;
       }.
-    End Impl_TypedEnvBackend_for_EnvInstance.
+    End Impl_TypedEnvBackend_for_super_EnvInstance.
   End impls.
   
   Module test_api.
-    Module EnvInstance := super.EnvInstance.
-    Definition EnvInstance := EnvInstance.t.
-    
-    Module Result := crate.Result.
-    Definition Result := Result.t.
-    
-    Module RecordedDebugMessages := ink_engine.test_api.RecordedDebugMessages.
-    Definition RecordedDebugMessages := RecordedDebugMessages.t.
-    
-    Module CallData := super.call_data.CallData.
-    Definition CallData := CallData.t.
-    
     Module EmittedEvent.
       Record t : Set := {
-        topics : Vec (Vec u8);
-        data : Vec u8;
+        topics : ink_prelude.vec.Vec (ink_prelude.vec.Vec u8);
+        data : ink_prelude.vec.Vec u8;
       }.
       
       Global Instance Get_topics : Notation.Dot "topics" := {
@@ -14552,13 +14878,17 @@ Module off_chain.
     End EmittedEvent.
     Definition EmittedEvent : Set := EmittedEvent.t.
     
-    Module Impl__crate_clone_Clone_for_EmittedEvent.
-      Definition Self := EmittedEvent.
+    Module Impl__crate_clone_Clone_for_super_test_api_EmittedEvent.
+      Definition Self := super.test_api.EmittedEvent.
       
-      Definition clone (self : ref Self) : M EmittedEvent :=
+      Definition clone (self : ref Self) : M super.test_api.EmittedEvent :=
         let* α0 := _crate.clone.Clone.clone (addr_of self.["topics"]) in
         let* α1 := _crate.clone.Clone.clone (addr_of self.["data"]) in
-        Pure {| EmittedEvent.topics := α0; EmittedEvent.data := α1; |}.
+        Pure
+          {|
+            super.test_api.EmittedEvent.topics := α0;
+            super.test_api.EmittedEvent.data := α1;
+          |}.
       
       Global Instance Method_clone : Notation.Dot "clone" := {
         Notation.dot := clone;
@@ -14567,7 +14897,7 @@ Module off_chain.
       Global Instance I : _crate.clone.Clone.Trait Self := {
         _crate.clone.Clone.clone := clone;
       }.
-    End Impl__crate_clone_Clone_for_EmittedEvent.
+    End Impl__crate_clone_Clone_for_super_test_api_EmittedEvent.
     
     Definition set_account_balance
         {T : Set}
@@ -14586,7 +14916,7 @@ Module off_chain.
         {T : Set}
         `{Environment.Trait T}
         (account_id : ImplT.AccountId)
-        : M (Result ImplT.Balance) :=
+        : M (crate.Result ImplT.Balance) :=
       OnInstance.on_instance
         (fun instance =>
           let* α0 := scale.Encode.encode (addr_of account_id) in
@@ -14605,7 +14935,9 @@ Module off_chain.
             instance.["engine"].["chain_extension_handler"].["register"] α0 in
           Pure tt).
     
-    Definition recorded_debug_messages (_ : unit) : M RecordedDebugMessages :=
+    Definition recorded_debug_messages
+        (_ : unit)
+        : M ink_engine.test_api.RecordedDebugMessages :=
       OnInstance.on_instance
         (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
     
@@ -14757,7 +15089,7 @@ Module off_chain.
         {T : Set}
         `{Environment.Trait T}
         (account_id : ref ImplT.AccountId)
-        : M (Result usize) :=
+        : M (crate.Result usize) :=
       OnInstance.on_instance
         (fun instance =>
           let* α0 := scale.Encode.encode (addr_of account_id) in
@@ -14791,7 +15123,7 @@ Module off_chain.
         `{FnOnce.Trait ((DefaultAccounts T)) F}
         `{From.Trait list u8 Environment.AccountId}
         (f : F)
-        : M (Result unit) :=
+        : M (crate.Result unit) :=
       let* default_accounts := default_accounts tt in
       let* _ :=
         OnInstance.on_instance
@@ -14987,26 +15319,14 @@ Module off_chain.
   End test_api.
   
   Module types.
-    Module EmittedEvent := super.test_api.EmittedEvent.
-    Definition EmittedEvent := EmittedEvent.t.
-    
-    Module AccountError := super.AccountError.
-    Definition AccountError := AccountError.t.
-    
-    Module Error := super.Error.
-    Definition Error := Error.t.
-    
-    Module OffChainError := super.OffChainError.
-    Definition OffChainError := OffChainError.t.
-    
-    Module Impl_From_for_EmittedEvent.
-      Definition Self := EmittedEvent.
+    Module Impl_From_for_super_test_api_EmittedEvent.
+      Definition Self := super.test_api.EmittedEvent.
       
       Definition from (evt : ink_engine.test_api.EmittedEvent) : M Self :=
         Pure
           {|
-            EmittedEvent.topics := evt.["topics"];
-            EmittedEvent.data := evt.["data"];
+            super.test_api.EmittedEvent.topics := evt.["topics"];
+            super.test_api.EmittedEvent.data := evt.["data"];
           |}.
       
       Global Instance AssociatedFunction_from :
@@ -15017,10 +15337,10 @@ Module off_chain.
       Global Instance I : From.Trait Self ink_engine.test_api.EmittedEvent := {
         From.from := from;
       }.
-    End Impl_From_for_EmittedEvent.
+    End Impl_From_for_super_test_api_EmittedEvent.
     
-    Module Impl_From_for_Error.
-      Definition Self := Error.
+    Module Impl_From_for_super_Error.
+      Definition Self := super.Error.
       
       Definition from (err : ink_engine.Error) : M Self :=
         let* e :=
@@ -15045,10 +15365,10 @@ Module off_chain.
       Global Instance I : From.Trait Self ink_engine.Error := {
         From.from := from;
       }.
-    End Impl_From_for_Error.
+    End Impl_From_for_super_Error.
     
-    Module Impl_From_for_AccountError.
-      Definition Self := AccountError.
+    Module Impl_From_for_super_AccountError.
+      Definition Self := super.AccountError.
       
       Definition from (err : ink_engine.AccountError) : M Self :=
         match err with
@@ -15067,10 +15387,10 @@ Module off_chain.
       Global Instance I : From.Trait Self ink_engine.AccountError := {
         From.from := from;
       }.
-    End Impl_From_for_AccountError.
+    End Impl_From_for_super_AccountError.
     
-    Module Impl_From_for_Error.
-      Definition Self := Error.
+    Module Impl_From_for_super_Error.
+      Definition Self := super.Error.
       
       Definition from (account_error : ink_engine.AccountError) : M Self :=
         let* α0 := account_error.["into"] in
@@ -15084,23 +15404,14 @@ Module off_chain.
       Global Instance I : From.Trait Self ink_engine.AccountError := {
         From.from := from;
       }.
-    End Impl_From_for_Error.
+    End Impl_From_for_super_Error.
   End types.
-  
-  Module CallData := call_data.CallData.
-  Definition CallData := CallData.t.
-  
-  Module Error := crate.Error.
-  Definition Error := Error.t.
   
   Module From := derive_more.From.
   
-  Module Engine := ink_engine.ext.Engine.
-  Definition Engine := Engine.t.
-  
   Module EnvInstance.
     Record t : Set := {
-      engine : Engine;
+      engine : ink_engine.ext.Engine;
     }.
     
     Global Instance Get_engine : Notation.Dot "engine" := {
@@ -15109,8 +15420,8 @@ Module off_chain.
   End EnvInstance.
   Definition EnvInstance : Set := EnvInstance.t.
   
-  Module Impl_OnInstance_for_EnvInstance.
-    Definition Self := EnvInstance.
+  Module Impl_OnInstance_for_super_EnvInstance.
+    Definition Self := super.EnvInstance.
     
     Definition on_instance (f : F) : M R :=
       INSTANCE.["with"]
@@ -15126,19 +15437,19 @@ Module off_chain.
     Global Instance I : OnInstance.Trait Self := {
       OnInstance.on_instance := on_instance;
     }.
-  End Impl_OnInstance_for_EnvInstance.
+  End Impl_OnInstance_for_super_EnvInstance.
   
   Module OffChainError.
     Inductive t : Set :=
-    | Account (_ : AccountError)
+    | Account (_ : super.AccountError)
     | UninitializedBlocks
     | UninitializedExecutionContext
     | UnregisteredChainExtension.
   End OffChainError.
   Definition OffChainError := OffChainError.t.
   
-  Module Impl__crate_fmt_Debug_for_OffChainError.
-    Definition Self := OffChainError.
+  Module Impl__crate_fmt_Debug_for_super_OffChainError.
+    Definition Self := super.OffChainError.
     
     Definition fmt
         (self : ref Self)
@@ -15165,12 +15476,12 @@ Module off_chain.
     Global Instance I : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_OffChainError.
+  End Impl__crate_fmt_Debug_for_super_OffChainError.
   
-  Module Impl_Root_core_convert_From_for_OffChainError.
-    Definition Self := OffChainError.
+  Module Impl_Root_core_convert_From_for_super_OffChainError.
+    Definition Self := super.OffChainError.
     
-    Definition from (original : AccountError) : M OffChainError :=
+    Definition from (original : super.AccountError) : M super.OffChainError :=
       Pure (OffChainError.Account original).
     
     Global Instance AssociatedFunction_from :
@@ -15178,22 +15489,26 @@ Module off_chain.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : Root.core.convert.From.Trait Self AccountError := {
+    Global Instance I : Root.core.convert.From.Trait Self super.AccountError :=
+      {
       Root.core.convert.From.from := from;
     }.
-  End Impl_Root_core_convert_From_for_OffChainError.
+  End Impl_Root_core_convert_From_for_super_OffChainError.
   
-  Module Impl__crate_marker_StructuralPartialEq_for_OffChainError.
-    Definition Self := OffChainError.
+  Module Impl__crate_marker_StructuralPartialEq_for_super_OffChainError.
+    Definition Self := super.OffChainError.
     
     Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
       _crate.marker.StructuralPartialEq.Build_Class _.
-  End Impl__crate_marker_StructuralPartialEq_for_OffChainError.
+  End Impl__crate_marker_StructuralPartialEq_for_super_OffChainError.
   
-  Module Impl__crate_cmp_PartialEq_for_OffChainError.
-    Definition Self := OffChainError.
+  Module Impl__crate_cmp_PartialEq_for_super_OffChainError.
+    Definition Self := super.OffChainError.
     
-    Definition eq (self : ref Self) (other : ref OffChainError) : M bool :=
+    Definition eq
+        (self : ref Self)
+        (other : ref super.OffChainError)
+        : M bool :=
       let* __self_tag := _crate.intrinsics.discriminant_value self in
       let* __arg1_tag := _crate.intrinsics.discriminant_value other in
       let* α0 := __self_tag.["eq"] __arg1_tag in
@@ -15214,17 +15529,17 @@ Module off_chain.
     Global Instance I : _crate.cmp.PartialEq.Trait Self := {
       _crate.cmp.PartialEq.eq := eq;
     }.
-  End Impl__crate_cmp_PartialEq_for_OffChainError.
+  End Impl__crate_cmp_PartialEq_for_super_OffChainError.
   
-  Module Impl__crate_marker_StructuralEq_for_OffChainError.
-    Definition Self := OffChainError.
+  Module Impl__crate_marker_StructuralEq_for_super_OffChainError.
+    Definition Self := super.OffChainError.
     
     Global Instance I : _crate.marker.StructuralEq.Trait Self :=
       _crate.marker.StructuralEq.Build_Class _.
-  End Impl__crate_marker_StructuralEq_for_OffChainError.
+  End Impl__crate_marker_StructuralEq_for_super_OffChainError.
   
-  Module Impl__crate_cmp_Eq_for_OffChainError.
-    Definition Self := OffChainError.
+  Module Impl__crate_cmp_Eq_for_super_OffChainError.
+    Definition Self := super.OffChainError.
     
     Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
       let _ := tt in
@@ -15237,18 +15552,18 @@ Module off_chain.
     
     Global Instance I : _crate.cmp.Eq.Trait Self := {
     }.
-  End Impl__crate_cmp_Eq_for_OffChainError.
+  End Impl__crate_cmp_Eq_for_super_OffChainError.
   
   Module AccountError.
     Inductive t : Set :=
     | Decoding (_ : scale.Error)
     | UnexpectedUserAccount
-    | NoAccountForId (_ : Vec u8).
+    | NoAccountForId (_ : ink_prelude.vec.Vec u8).
   End AccountError.
   Definition AccountError := AccountError.t.
   
-  Module Impl__crate_fmt_Debug_for_AccountError.
-    Definition Self := AccountError.
+  Module Impl__crate_fmt_Debug_for_super_AccountError.
+    Definition Self := super.AccountError.
     
     Definition fmt
         (self : ref Self)
@@ -15276,12 +15591,12 @@ Module off_chain.
     Global Instance I : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_AccountError.
+  End Impl__crate_fmt_Debug_for_super_AccountError.
   
-  Module Impl_Root_core_convert_From_for_AccountError.
-    Definition Self := AccountError.
+  Module Impl_Root_core_convert_From_for_super_AccountError.
+    Definition Self := super.AccountError.
     
-    Definition from (original : scale.Error) : M AccountError :=
+    Definition from (original : scale.Error) : M super.AccountError :=
       Pure (AccountError.Decoding original).
     
     Global Instance AssociatedFunction_from :
@@ -15292,19 +15607,19 @@ Module off_chain.
     Global Instance I : Root.core.convert.From.Trait Self scale.Error := {
       Root.core.convert.From.from := from;
     }.
-  End Impl_Root_core_convert_From_for_AccountError.
+  End Impl_Root_core_convert_From_for_super_AccountError.
   
-  Module Impl__crate_marker_StructuralPartialEq_for_AccountError.
-    Definition Self := AccountError.
+  Module Impl__crate_marker_StructuralPartialEq_for_super_AccountError.
+    Definition Self := super.AccountError.
     
     Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
       _crate.marker.StructuralPartialEq.Build_Class _.
-  End Impl__crate_marker_StructuralPartialEq_for_AccountError.
+  End Impl__crate_marker_StructuralPartialEq_for_super_AccountError.
   
-  Module Impl__crate_cmp_PartialEq_for_AccountError.
-    Definition Self := AccountError.
+  Module Impl__crate_cmp_PartialEq_for_super_AccountError.
+    Definition Self := super.AccountError.
     
-    Definition eq (self : ref Self) (other : ref AccountError) : M bool :=
+    Definition eq (self : ref Self) (other : ref super.AccountError) : M bool :=
       let* __self_tag := _crate.intrinsics.discriminant_value self in
       let* __arg1_tag := _crate.intrinsics.discriminant_value other in
       let* α0 := __self_tag.["eq"] __arg1_tag in
@@ -15332,17 +15647,17 @@ Module off_chain.
     Global Instance I : _crate.cmp.PartialEq.Trait Self := {
       _crate.cmp.PartialEq.eq := eq;
     }.
-  End Impl__crate_cmp_PartialEq_for_AccountError.
+  End Impl__crate_cmp_PartialEq_for_super_AccountError.
   
-  Module Impl__crate_marker_StructuralEq_for_AccountError.
-    Definition Self := AccountError.
+  Module Impl__crate_marker_StructuralEq_for_super_AccountError.
+    Definition Self := super.AccountError.
     
     Global Instance I : _crate.marker.StructuralEq.Trait Self :=
       _crate.marker.StructuralEq.Build_Class _.
-  End Impl__crate_marker_StructuralEq_for_AccountError.
+  End Impl__crate_marker_StructuralEq_for_super_AccountError.
   
-  Module Impl__crate_cmp_Eq_for_AccountError.
-    Definition Self := AccountError.
+  Module Impl__crate_cmp_Eq_for_super_AccountError.
+    Definition Self := super.AccountError.
     
     Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
       let _ := tt in
@@ -15356,21 +15671,15 @@ Module off_chain.
     
     Global Instance I : _crate.cmp.Eq.Trait Self := {
     }.
-  End Impl__crate_cmp_Eq_for_AccountError.
+  End Impl__crate_cmp_Eq_for_super_AccountError.
 End off_chain.
 
 Module call_data.
-  Module Selector := crate.call.Selector.
-  Definition Selector := Selector.t.
-  
   Module vec := ink_prelude.vec.
-  
-  Module Vec := ink_prelude.vec.Vec.
-  Definition Vec := Vec.t.
   
   Module CallData.
     Record t : Set := {
-      bytes : Vec u8;
+      bytes : ink_prelude.vec.Vec u8;
     }.
     
     Global Instance Get_bytes : Notation.Dot "bytes" := {
@@ -15379,8 +15688,8 @@ Module call_data.
   End CallData.
   Definition CallData : Set := CallData.t.
   
-  Module Impl__crate_fmt_Debug_for_CallData.
-    Definition Self := CallData.
+  Module Impl__crate_fmt_Debug_for_call_data_CallData.
+    Definition Self := call_data.CallData.
     
     Definition fmt
         (self : ref Self)
@@ -15399,14 +15708,14 @@ Module call_data.
     Global Instance I : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_CallData.
+  End Impl__crate_fmt_Debug_for_call_data_CallData.
   
-  Module Impl__crate_clone_Clone_for_CallData.
-    Definition Self := CallData.
+  Module Impl__crate_clone_Clone_for_call_data_CallData.
+    Definition Self := call_data.CallData.
     
-    Definition clone (self : ref Self) : M CallData :=
+    Definition clone (self : ref Self) : M call_data.CallData :=
       let* α0 := _crate.clone.Clone.clone (addr_of self.["bytes"]) in
-      Pure {| CallData.bytes := α0; |}.
+      Pure {| call_data.CallData.bytes := α0; |}.
     
     Global Instance Method_clone : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -15415,19 +15724,19 @@ Module call_data.
     Global Instance I : _crate.clone.Clone.Trait Self := {
       _crate.clone.Clone.clone := clone;
     }.
-  End Impl__crate_clone_Clone_for_CallData.
+  End Impl__crate_clone_Clone_for_call_data_CallData.
   
-  Module Impl__crate_marker_StructuralPartialEq_for_CallData.
-    Definition Self := CallData.
+  Module Impl__crate_marker_StructuralPartialEq_for_call_data_CallData.
+    Definition Self := call_data.CallData.
     
     Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
       _crate.marker.StructuralPartialEq.Build_Class _.
-  End Impl__crate_marker_StructuralPartialEq_for_CallData.
+  End Impl__crate_marker_StructuralPartialEq_for_call_data_CallData.
   
-  Module Impl__crate_cmp_PartialEq_for_CallData.
-    Definition Self := CallData.
+  Module Impl__crate_cmp_PartialEq_for_call_data_CallData.
+    Definition Self := call_data.CallData.
     
-    Definition eq (self : ref Self) (other : ref CallData) : M bool :=
+    Definition eq (self : ref Self) (other : ref call_data.CallData) : M bool :=
       self.["bytes"].["eq"] other.["bytes"].
     
     Global Instance Method_eq : Notation.Dot "eq" := {
@@ -15437,17 +15746,17 @@ Module call_data.
     Global Instance I : _crate.cmp.PartialEq.Trait Self := {
       _crate.cmp.PartialEq.eq := eq;
     }.
-  End Impl__crate_cmp_PartialEq_for_CallData.
+  End Impl__crate_cmp_PartialEq_for_call_data_CallData.
   
-  Module Impl__crate_marker_StructuralEq_for_CallData.
-    Definition Self := CallData.
+  Module Impl__crate_marker_StructuralEq_for_call_data_CallData.
+    Definition Self := call_data.CallData.
     
     Global Instance I : _crate.marker.StructuralEq.Trait Self :=
       _crate.marker.StructuralEq.Build_Class _.
-  End Impl__crate_marker_StructuralEq_for_CallData.
+  End Impl__crate_marker_StructuralEq_for_call_data_CallData.
   
-  Module Impl__crate_cmp_Eq_for_CallData.
-    Definition Self := CallData.
+  Module Impl__crate_cmp_Eq_for_call_data_CallData.
+    Definition Self := call_data.CallData.
     
     Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
       let _ := tt in
@@ -15460,12 +15769,12 @@ Module call_data.
     
     Global Instance I : _crate.cmp.Eq.Trait Self := {
     }.
-  End Impl__crate_cmp_Eq_for_CallData.
+  End Impl__crate_cmp_Eq_for_call_data_CallData.
   
-  Module ImplCallData_3.
-    Definition Self := CallData.
+  Module Implcall_data.CallData_2.
+    Definition Self := call_data.CallData.
     
-    Definition new (selector : Selector) : M Self :=
+    Definition new (selector : crate.call.Selector) : M Self :=
       let* bytes := selector.["to_bytes"] in
       let* α0 :=
         _crate.boxed.Box::["new"] [ bytes[0]; bytes[1]; bytes[2]; bytes[3] ] in
@@ -15484,7 +15793,7 @@ Module call_data.
       Notation.dot := push_arg;
     }.
     
-    Definition selector (self : ref Self) : M Selector :=
+    Definition selector (self : ref Self) : M crate.call.Selector :=
       let* _ :=
         if (true : bool) then
           let* _ :=
@@ -15537,10 +15846,10 @@ Module call_data.
     Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
       Notation.dot := to_bytes;
     }.
-  End ImplCallData_3.
+  End Implcall_data.CallData_2.
   
-  Module Impl_scale_Encode_for_CallData.
-    Definition Self := CallData.
+  Module Impl_scale_Encode_for_call_data_CallData.
+    Definition Self := call_data.CallData.
     
     Definition size_hint (self : ref Self) : M usize := self.["bytes"].["len"].
     
@@ -15560,10 +15869,10 @@ Module call_data.
     
     Global Instance I : scale.Encode.Trait Self := {
     }.
-  End Impl_scale_Encode_for_CallData.
+  End Impl_scale_Encode_for_call_data_CallData.
   
-  Module Impl_scale_Decode_for_CallData.
-    Definition Self := CallData.
+  Module Impl_scale_Decode_for_call_data_CallData.
+    Definition Self := call_data.CallData.
     
     Definition decode
         (input : mut_ref I)
@@ -15572,7 +15881,7 @@ Module call_data.
         let* α0 := input.["remaining_len"] in
         let* α1 := α0.["unwrap_or"] None in
         α1.["unwrap_or"] 0 in
-      let* bytes := Vec::["with_capacity"] remaining_len in
+      let* bytes := ink_prelude.vec.Vec::["with_capacity"] remaining_len in
       let* _ :=
         loop
           let* α0 := input.["read_byte"] in
@@ -15604,20 +15913,14 @@ Module call_data.
     Global Instance I : scale.Decode.Trait Self := {
       scale.Decode.decode := decode;
     }.
-  End Impl_scale_Decode_for_CallData.
+  End Impl_scale_Decode_for_call_data_CallData.
 End call_data.
-
-Module Selector := crate.call.Selector.
-Definition Selector := Selector.t.
 
 Module vec := ink_prelude.vec.
 
-Module Vec := ink_prelude.vec.Vec.
-Definition Vec := Vec.t.
-
 Module CallData.
   Record t : Set := {
-    bytes : Vec u8;
+    bytes : ink_prelude.vec.Vec u8;
   }.
   
   Global Instance Get_bytes : Notation.Dot "bytes" := {
@@ -15626,8 +15929,8 @@ Module CallData.
 End CallData.
 Definition CallData : Set := CallData.t.
 
-Module Impl__crate_fmt_Debug_for_CallData.
-  Definition Self := CallData.
+Module Impl__crate_fmt_Debug_for_call_data_CallData.
+  Definition Self := call_data.CallData.
   
   Definition fmt
       (self : ref Self)
@@ -15646,14 +15949,14 @@ Module Impl__crate_fmt_Debug_for_CallData.
   Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_CallData.
+End Impl__crate_fmt_Debug_for_call_data_CallData.
 
-Module Impl__crate_clone_Clone_for_CallData.
-  Definition Self := CallData.
+Module Impl__crate_clone_Clone_for_call_data_CallData.
+  Definition Self := call_data.CallData.
   
-  Definition clone (self : ref Self) : M CallData :=
+  Definition clone (self : ref Self) : M call_data.CallData :=
     let* α0 := _crate.clone.Clone.clone (addr_of self.["bytes"]) in
-    Pure {| CallData.bytes := α0; |}.
+    Pure {| call_data.CallData.bytes := α0; |}.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -15662,19 +15965,19 @@ Module Impl__crate_clone_Clone_for_CallData.
   Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_CallData.
+End Impl__crate_clone_Clone_for_call_data_CallData.
 
-Module Impl__crate_marker_StructuralPartialEq_for_CallData.
-  Definition Self := CallData.
+Module Impl__crate_marker_StructuralPartialEq_for_call_data_CallData.
+  Definition Self := call_data.CallData.
   
   Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
-End Impl__crate_marker_StructuralPartialEq_for_CallData.
+End Impl__crate_marker_StructuralPartialEq_for_call_data_CallData.
 
-Module Impl__crate_cmp_PartialEq_for_CallData.
-  Definition Self := CallData.
+Module Impl__crate_cmp_PartialEq_for_call_data_CallData.
+  Definition Self := call_data.CallData.
   
-  Definition eq (self : ref Self) (other : ref CallData) : M bool :=
+  Definition eq (self : ref Self) (other : ref call_data.CallData) : M bool :=
     self.["bytes"].["eq"] other.["bytes"].
   
   Global Instance Method_eq : Notation.Dot "eq" := {
@@ -15684,17 +15987,17 @@ Module Impl__crate_cmp_PartialEq_for_CallData.
   Global Instance I : _crate.cmp.PartialEq.Trait Self := {
     _crate.cmp.PartialEq.eq := eq;
   }.
-End Impl__crate_cmp_PartialEq_for_CallData.
+End Impl__crate_cmp_PartialEq_for_call_data_CallData.
 
-Module Impl__crate_marker_StructuralEq_for_CallData.
-  Definition Self := CallData.
+Module Impl__crate_marker_StructuralEq_for_call_data_CallData.
+  Definition Self := call_data.CallData.
   
   Global Instance I : _crate.marker.StructuralEq.Trait Self :=
     _crate.marker.StructuralEq.Build_Class _.
-End Impl__crate_marker_StructuralEq_for_CallData.
+End Impl__crate_marker_StructuralEq_for_call_data_CallData.
 
-Module Impl__crate_cmp_Eq_for_CallData.
-  Definition Self := CallData.
+Module Impl__crate_cmp_Eq_for_call_data_CallData.
+  Definition Self := call_data.CallData.
   
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let _ := tt in
@@ -15707,12 +16010,12 @@ Module Impl__crate_cmp_Eq_for_CallData.
   
   Global Instance I : _crate.cmp.Eq.Trait Self := {
   }.
-End Impl__crate_cmp_Eq_for_CallData.
+End Impl__crate_cmp_Eq_for_call_data_CallData.
 
-Module ImplCallData_4.
-  Definition Self := CallData.
+Module Implcall_data.CallData_3.
+  Definition Self := call_data.CallData.
   
-  Definition new (selector : Selector) : M Self :=
+  Definition new (selector : crate.call.Selector) : M Self :=
     let* bytes := selector.["to_bytes"] in
     let* α0 :=
       _crate.boxed.Box::["new"] [ bytes[0]; bytes[1]; bytes[2]; bytes[3] ] in
@@ -15730,7 +16033,7 @@ Module ImplCallData_4.
     Notation.dot := push_arg;
   }.
   
-  Definition selector (self : ref Self) : M Selector :=
+  Definition selector (self : ref Self) : M crate.call.Selector :=
     let* _ :=
       if (true : bool) then
         let* _ :=
@@ -15783,10 +16086,10 @@ Module ImplCallData_4.
   Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
     Notation.dot := to_bytes;
   }.
-End ImplCallData_4.
+End Implcall_data.CallData_3.
 
-Module Impl_scale_Encode_for_CallData.
-  Definition Self := CallData.
+Module Impl_scale_Encode_for_call_data_CallData.
+  Definition Self := call_data.CallData.
   
   Definition size_hint (self : ref Self) : M usize := self.["bytes"].["len"].
   
@@ -15806,10 +16109,10 @@ Module Impl_scale_Encode_for_CallData.
   
   Global Instance I : scale.Encode.Trait Self := {
   }.
-End Impl_scale_Encode_for_CallData.
+End Impl_scale_Encode_for_call_data_CallData.
 
-Module Impl_scale_Decode_for_CallData.
-  Definition Self := CallData.
+Module Impl_scale_Decode_for_call_data_CallData.
+  Definition Self := call_data.CallData.
   
   Definition decode
       (input : mut_ref I)
@@ -15818,7 +16121,7 @@ Module Impl_scale_Decode_for_CallData.
       let* α0 := input.["remaining_len"] in
       let* α1 := α0.["unwrap_or"] None in
       α1.["unwrap_or"] 0 in
-    let* bytes := Vec::["with_capacity"] remaining_len in
+    let* bytes := ink_prelude.vec.Vec::["with_capacity"] remaining_len in
     let* _ :=
       loop
         let* α0 := input.["read_byte"] in
@@ -15850,54 +16153,15 @@ Module Impl_scale_Decode_for_CallData.
   Global Instance I : scale.Decode.Trait Self := {
     scale.Decode.decode := decode;
   }.
-End Impl_scale_Decode_for_CallData.
+End Impl_scale_Decode_for_call_data_CallData.
 
 Module impls.
-  Module EnvInstance := super.EnvInstance.
-  Definition EnvInstance := EnvInstance.t.
-  
-  Module Call := crate.call.Call.
-  Definition Call := Call.t.
-  
-  Module CallParams := crate.call.CallParams.
-  Definition CallParams := CallParams.t.
-  
-  Module CreateParams := crate.call.CreateParams.
-  Definition CreateParams := CreateParams.t.
-  
-  Module DelegateCall := crate.call.DelegateCall.
-  Definition DelegateCall := DelegateCall.t.
-  
-  Module Blake2x128 := crate.hash.Blake2x128.
-  Definition Blake2x128 := Blake2x128.t.
-  
-  Module Blake2x256 := crate.hash.Blake2x256.
-  Definition Blake2x256 := Blake2x256.t.
-  
-  Module Keccak256 := crate.hash.Keccak256.
-  Definition Keccak256 := Keccak256.t.
-  
-  Module Sha2x256 := crate.hash.Sha2x256.
-  Definition Sha2x256 := Sha2x256.t.
-  
-  Module Error := crate.Error.
-  Definition Error := Error.t.
-  
-  Module Result := crate.Result.
-  Definition Result := Result.t.
-  
-  Module ReturnFlags := crate.ReturnFlags.
-  Definition ReturnFlags := ReturnFlags.t.
-  
   Module ext := ink_engine.ext.
-  
-  Module Engine := ink_engine.ext.Engine.
-  Definition Engine := Engine.t.
   
   Definition BUFFER_SIZE : usize := run (1.["shl"] 14).
   
-  Module Impl_CryptoHash_for_Blake2x128.
-    Definition Self := Blake2x128.
+  Module Impl_CryptoHash_for_crate_hash_Blake2x128.
+    Definition Self := crate.hash.Blake2x128.
     
     Definition hash
         (input : ref Slice)
@@ -15913,7 +16177,7 @@ Module impls.
                 Range.end := offset.["add"] 16;
               |}] in
         as_array slice in
-      let* _ := Engine::["hash_blake2_128"] input output in
+      let* _ := ink_engine.ext.Engine::["hash_blake2_128"] input output in
       Pure tt.
     
     Global Instance AssociatedFunction_hash :
@@ -15924,10 +16188,10 @@ Module impls.
     Global Instance I : CryptoHash.Trait Self := {
       CryptoHash.hash := hash;
     }.
-  End Impl_CryptoHash_for_Blake2x128.
+  End Impl_CryptoHash_for_crate_hash_Blake2x128.
   
-  Module Impl_CryptoHash_for_Blake2x256.
-    Definition Self := Blake2x256.
+  Module Impl_CryptoHash_for_crate_hash_Blake2x256.
+    Definition Self := crate.hash.Blake2x256.
     
     Definition hash
         (input : ref Slice)
@@ -15943,7 +16207,7 @@ Module impls.
                 Range.end := offset.["add"] 32;
               |}] in
         as_array slice in
-      let* _ := Engine::["hash_blake2_256"] input output in
+      let* _ := ink_engine.ext.Engine::["hash_blake2_256"] input output in
       Pure tt.
     
     Global Instance AssociatedFunction_hash :
@@ -15954,10 +16218,10 @@ Module impls.
     Global Instance I : CryptoHash.Trait Self := {
       CryptoHash.hash := hash;
     }.
-  End Impl_CryptoHash_for_Blake2x256.
+  End Impl_CryptoHash_for_crate_hash_Blake2x256.
   
-  Module Impl_CryptoHash_for_Sha2x256.
-    Definition Self := Sha2x256.
+  Module Impl_CryptoHash_for_crate_hash_Sha2x256.
+    Definition Self := crate.hash.Sha2x256.
     
     Definition hash
         (input : ref Slice)
@@ -15973,7 +16237,7 @@ Module impls.
                 Range.end := offset.["add"] 32;
               |}] in
         as_array slice in
-      let* _ := Engine::["hash_sha2_256"] input output in
+      let* _ := ink_engine.ext.Engine::["hash_sha2_256"] input output in
       Pure tt.
     
     Global Instance AssociatedFunction_hash :
@@ -15984,10 +16248,10 @@ Module impls.
     Global Instance I : CryptoHash.Trait Self := {
       CryptoHash.hash := hash;
     }.
-  End Impl_CryptoHash_for_Sha2x256.
+  End Impl_CryptoHash_for_crate_hash_Sha2x256.
   
-  Module Impl_CryptoHash_for_Keccak256.
-    Definition Self := Keccak256.
+  Module Impl_CryptoHash_for_crate_hash_Keccak256.
+    Definition Self := crate.hash.Keccak256.
     
     Definition hash
         (input : ref Slice)
@@ -16003,7 +16267,7 @@ Module impls.
                 Range.end := offset.["add"] 32;
               |}] in
         as_array slice in
-      let* _ := Engine::["hash_keccak_256"] input output in
+      let* _ := ink_engine.ext.Engine::["hash_keccak_256"] input output in
       Pure tt.
     
     Global Instance AssociatedFunction_hash :
@@ -16014,7 +16278,7 @@ Module impls.
     Global Instance I : CryptoHash.Trait Self := {
       CryptoHash.hash := hash;
     }.
-  End Impl_CryptoHash_for_Keccak256.
+  End Impl_CryptoHash_for_crate_hash_Keccak256.
   
   Module Impl_From_for_crate_Error.
     Definition Self := crate.Error.
@@ -16047,7 +16311,7 @@ Module impls.
   
   Module TopicsBuilder.
     Record t : Set := {
-      topics : Vec (Vec u8);
+      topics : ink_prelude.vec.Vec (ink_prelude.vec.Vec u8);
     }.
     
     Global Instance Get_topics : Notation.Dot "topics" := {
@@ -16076,7 +16340,7 @@ Module impls.
   Module Impl_TopicsBuilderBackend_for_TopicsBuilder.
     Definition Self := TopicsBuilder.
     
-    Definition Output : Set := Vec u8.
+    Definition Output : Set := ink_prelude.vec.Vec u8.
     
     Definition expect
         (self : mut_ref Self)
@@ -16149,7 +16413,7 @@ Module impls.
     }.
     
     Definition output (self : Self) : M ImplSelf.Output :=
-      let* all := Vec::["new"] tt in
+      let* all := ink_prelude.vec.Vec::["new"] tt in
       let* topics_len_compact :=
         let* α0 := self.["topics"].["len"] in
         Pure (addr_of (scale.Compact.Build_t (cast α0 u32))) in
@@ -16175,13 +16439,15 @@ Module impls.
     }.
   End Impl_TopicsBuilderBackend_for_TopicsBuilder.
   
-  Module ImplEnvInstance_3.
-    Definition Self := EnvInstance.
+  Module Implsuper.EnvInstance_3.
+    Definition Self := super.EnvInstance.
     
     Definition get_property
         (self : mut_ref Self)
-        (ext_fn : (ref Engine) -> (mut_ref (mut_ref Slice)) -> unit)
-        : M (Result T) :=
+        (ext_fn
+          :
+          (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit)
+        : M (crate.Result T) :=
       let* full_scope := repeat 0 in
       let full_scope := addr_of (addr_of full_scope[RangeFull {|  |}]) in
       let* _ := ext_fn (addr_of self.["engine"]) full_scope in
@@ -16192,10 +16458,10 @@ Module impls.
     Global Instance Method_get_property : Notation.Dot "get_property" := {
       Notation.dot := get_property;
     }.
-  End ImplEnvInstance_3.
+  End Implsuper.EnvInstance_3.
   
-  Module Impl_EnvBackend_for_EnvInstance.
-    Definition Self := EnvInstance.
+  Module Impl_EnvBackend_for_super_EnvInstance.
+    Definition Self := super.EnvInstance.
     
     Definition set_contract_storage
         (self : mut_ref Self)
@@ -16217,7 +16483,7 @@ Module impls.
     Definition get_contract_storage
         (self : mut_ref Self)
         (key : ref K)
-        : M (Result (Option R)) :=
+        : M (crate.Result (Option R)) :=
       let* output := repeat 0 in
       let* _ :=
         let* α0 := key.["encode"] in
@@ -16254,7 +16520,7 @@ Module impls.
     Definition take_contract_storage
         (self : mut_ref Self)
         (key : ref K)
-        : M (Result (Option R)) :=
+        : M (crate.Result (Option R)) :=
       let* output := repeat 0 in
       let* _ :=
         let* α0 := key.["encode"] in
@@ -16312,7 +16578,7 @@ Module impls.
       Notation.dot := clear_contract_storage;
     }.
     
-    Definition decode_input (self : mut_ref Self) : M (Result T) :=
+    Definition decode_input (self : mut_ref Self) : M (crate.Result T) :=
       let* α0 :=
         format_arguments::["new_v1"]
           (addr_of
@@ -16326,7 +16592,7 @@ Module impls.
     
     Definition return_value
         (self : mut_ref Self)
-        (_flags : ReturnFlags)
+        (_flags : crate.ReturnFlags)
         (_return_value : ref R)
         : M Empty_set :=
       let* α0 :=
@@ -16382,7 +16648,7 @@ Module impls.
         (signature : ref list u8)
         (message_hash : ref list u8)
         (output : mut_ref list u8)
-        : M (Result unit) :=
+        : M (crate.Result unit) :=
       let* recovery_byte :=
         let* α0 := signature[64].["gt"] 26 in
         if (α0 : bool) then
@@ -16441,7 +16707,7 @@ Module impls.
         (self : mut_ref Self)
         (pubkey : ref list u8)
         (output : mut_ref list u8)
-        : M (Result unit) :=
+        : M (crate.Result unit) :=
       let* pk :=
         let* α0 := secp256k1.PublicKey::["from_slice"] pubkey in
         let* α1 := α0.["map_err"] (fun _ => Pure Error.EcdsaRecoveryFailed) in
@@ -16455,7 +16721,7 @@ Module impls.
       let* uncompressed := pk.["serialize_uncompressed"] in
       let* hash := HashOutput.Type::["default"] tt in
       let* _ :=
-        Keccak256::["hash"]
+        crate.hash.Keccak256::["hash"]
           (addr_of uncompressed[RangeFrom {| RangeFrom.start := 1; |}])
           (addr_of hash) in
       let* _ :=
@@ -16524,7 +16790,7 @@ Module impls.
     Definition set_code_hash
         (self : mut_ref Self)
         (_code_hash : ref Slice)
-        : M (Result unit) :=
+        : M (crate.Result unit) :=
       let* α0 :=
         format_arguments::["new_v1"]
           (addr_of
@@ -16554,13 +16820,13 @@ Module impls.
       EnvBackend.call_chain_extension := call_chain_extension;
       EnvBackend.set_code_hash := set_code_hash;
     }.
-  End Impl_EnvBackend_for_EnvInstance.
+  End Impl_EnvBackend_for_super_EnvInstance.
   
-  Module Impl_TypedEnvBackend_for_EnvInstance.
-    Definition Self := EnvInstance.
+  Module Impl_TypedEnvBackend_for_super_EnvInstance.
+    Definition Self := super.EnvInstance.
     
     Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
-      let* α0 := self.["get_property"] Engine::["caller"] in
+      let* α0 := self.["get_property"] ink_engine.ext.Engine::["caller"] in
       α0.["unwrap_or_else"]
         (fun error =>
           let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -16575,7 +16841,8 @@ Module impls.
     }.
     
     Definition transferred_value (self : mut_ref Self) : M ImplE.Balance :=
-      let* α0 := self.["get_property"] Engine::["value_transferred"] in
+      let* α0 :=
+        self.["get_property"] ink_engine.ext.Engine::["value_transferred"] in
       α0.["unwrap_or_else"]
         (fun error =>
           let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -16591,7 +16858,7 @@ Module impls.
     }.
     
     Definition gas_left (self : mut_ref Self) : M u64 :=
-      let* α0 := self.["get_property"] Engine::["gas_left"] in
+      let* α0 := self.["get_property"] ink_engine.ext.Engine::["gas_left"] in
       α0.["unwrap_or_else"]
         (fun error =>
           let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -16606,7 +16873,8 @@ Module impls.
     }.
     
     Definition block_timestamp (self : mut_ref Self) : M ImplE.Timestamp :=
-      let* α0 := self.["get_property"] Engine::["block_timestamp"] in
+      let* α0 :=
+        self.["get_property"] ink_engine.ext.Engine::["block_timestamp"] in
       α0.["unwrap_or_else"]
         (fun error =>
           let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -16621,7 +16889,7 @@ Module impls.
     }.
     
     Definition account_id (self : mut_ref Self) : M ImplE.AccountId :=
-      let* α0 := self.["get_property"] Engine::["address"] in
+      let* α0 := self.["get_property"] ink_engine.ext.Engine::["address"] in
       α0.["unwrap_or_else"]
         (fun error =>
           let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -16636,7 +16904,7 @@ Module impls.
     }.
     
     Definition balance (self : mut_ref Self) : M ImplE.Balance :=
-      let* α0 := self.["get_property"] Engine::["balance"] in
+      let* α0 := self.["get_property"] ink_engine.ext.Engine::["balance"] in
       α0.["unwrap_or_else"]
         (fun error =>
           let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -16651,7 +16919,8 @@ Module impls.
     }.
     
     Definition block_number (self : mut_ref Self) : M ImplE.BlockNumber :=
-      let* α0 := self.["get_property"] Engine::["block_number"] in
+      let* α0 :=
+        self.["get_property"] ink_engine.ext.Engine::["block_number"] in
       α0.["unwrap_or_else"]
         (fun error =>
           let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -16666,7 +16935,8 @@ Module impls.
     }.
     
     Definition minimum_balance (self : mut_ref Self) : M ImplE.Balance :=
-      let* α0 := self.["get_property"] Engine::["minimum_balance"] in
+      let* α0 :=
+        self.["get_property"] ink_engine.ext.Engine::["minimum_balance"] in
       α0.["unwrap_or_else"]
         (fun error =>
           let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -16700,8 +16970,8 @@ Module impls.
     
     Definition invoke_contract
         (self : mut_ref Self)
-        (params : ref (CallParams E (Call E) Args R))
-        : M (Result (ink_primitives.MessageResult R)) :=
+        (params : ref (crate.call.CallParams E (crate.call.Call E) Args R))
+        : M (crate.Result (ink_primitives.MessageResult R)) :=
       let* _gas_limit := params.["gas_limit"] in
       let* _callee := params.["callee"] in
       let* _call_flags :=
@@ -16724,8 +16994,10 @@ Module impls.
     
     Definition invoke_contract_delegate
         (self : mut_ref Self)
-        (params : ref (CallParams E (DelegateCall E) Args R))
-        : M (Result R) :=
+        (params
+          :
+          ref (crate.call.CallParams E (crate.call.DelegateCall E) Args R))
+        : M (crate.Result R) :=
       let* _code_hash := params.["code_hash"] in
       let* α0 :=
         format_arguments::["new_v1"]
@@ -16743,10 +17015,10 @@ Module impls.
     
     Definition instantiate_contract
         (self : mut_ref Self)
-        (params : ref (CreateParams E ContractRef Args Salt R))
+        (params : ref (crate.call.CreateParams E ContractRef Args Salt R))
         :
           M
-            (Result
+            (crate.Result
               (ink_primitives.ConstructorResult
                 ConstructorReturnType.Output)) :=
       let* _code_hash := params.["code_hash"] in
@@ -16784,7 +17056,7 @@ Module impls.
         (self : mut_ref Self)
         (destination : ImplE.AccountId)
         (value : ImplE.Balance)
-        : M (Result unit) :=
+        : M (crate.Result unit) :=
       let* enc_destination :=
         let* α0 := scale.Encode.encode (addr_of destination) in
         Pure (addr_of α0[RangeFull {|  |}]) in
@@ -16851,7 +17123,7 @@ Module impls.
     Definition code_hash
         (self : mut_ref Self)
         (_account : ref ImplE.AccountId)
-        : M (Result ImplE.Hash) :=
+        : M (crate.Result ImplE.Hash) :=
       let* α0 :=
         format_arguments::["new_v1"]
           (addr_of
@@ -16865,7 +17137,9 @@ Module impls.
       Notation.dot := code_hash;
     }.
     
-    Definition own_code_hash (self : mut_ref Self) : M (Result ImplE.Hash) :=
+    Definition own_code_hash
+        (self : mut_ref Self)
+        : M (crate.Result ImplE.Hash) :=
       let* α0 :=
         format_arguments::["new_v1"]
           (addr_of
@@ -16881,8 +17155,8 @@ Module impls.
     
     Definition call_runtime
         (self : mut_ref Self)
-        (_call : ref Call)
-        : M (Result unit) :=
+        (_call : ref crate.call.Call)
+        : M (crate.Result unit) :=
       let* α0 :=
         format_arguments::["new_v1"]
           (addr_of
@@ -16918,54 +17192,15 @@ Module impls.
       TypedEnvBackend.own_code_hash := own_code_hash;
       TypedEnvBackend.call_runtime := call_runtime;
     }.
-  End Impl_TypedEnvBackend_for_EnvInstance.
+  End Impl_TypedEnvBackend_for_super_EnvInstance.
 End impls.
-
-Module EnvInstance := super.EnvInstance.
-Definition EnvInstance := EnvInstance.t.
-
-Module Call := crate.call.Call.
-Definition Call := Call.t.
-
-Module CallParams := crate.call.CallParams.
-Definition CallParams := CallParams.t.
-
-Module CreateParams := crate.call.CreateParams.
-Definition CreateParams := CreateParams.t.
-
-Module DelegateCall := crate.call.DelegateCall.
-Definition DelegateCall := DelegateCall.t.
-
-Module Blake2x128 := crate.hash.Blake2x128.
-Definition Blake2x128 := Blake2x128.t.
-
-Module Blake2x256 := crate.hash.Blake2x256.
-Definition Blake2x256 := Blake2x256.t.
-
-Module Keccak256 := crate.hash.Keccak256.
-Definition Keccak256 := Keccak256.t.
-
-Module Sha2x256 := crate.hash.Sha2x256.
-Definition Sha2x256 := Sha2x256.t.
-
-Module Error := crate.Error.
-Definition Error := Error.t.
-
-Module Result := crate.Result.
-Definition Result := Result.t.
-
-Module ReturnFlags := crate.ReturnFlags.
-Definition ReturnFlags := ReturnFlags.t.
 
 Module ext := ink_engine.ext.
 
-Module Engine := ink_engine.ext.Engine.
-Definition Engine := Engine.t.
-
 Definition BUFFER_SIZE : usize := run (1.["shl"] 14).
 
-Module Impl_CryptoHash_for_Blake2x128.
-  Definition Self := Blake2x128.
+Module Impl_CryptoHash_for_crate_hash_Blake2x128.
+  Definition Self := crate.hash.Blake2x128.
   
   Definition hash
       (input : ref Slice)
@@ -16978,7 +17213,7 @@ Module Impl_CryptoHash_for_Blake2x128.
           output[Range {| Range.start := offset; Range.end := offset.["add"] 16;
             |}] in
       as_array slice in
-    let* _ := Engine::["hash_blake2_128"] input output in
+    let* _ := ink_engine.ext.Engine::["hash_blake2_128"] input output in
     Pure tt.
   
   Global Instance AssociatedFunction_hash :
@@ -16989,7 +17224,7 @@ Module Impl_CryptoHash_for_Blake2x128.
   Global Instance I : CryptoHash.Trait Self := {
     CryptoHash.hash := hash;
   }.
-End Impl_CryptoHash_for_Blake2x128.
+End Impl_CryptoHash_for_crate_hash_Blake2x128.
 
 Definition OutputType : Set := list u8.
 
@@ -17033,8 +17268,8 @@ Definition as_array {T : Set} (slice : mut_ref Slice) : M (mut_ref list T) :=
   let* α1 := (cast α0 (mut_ref list _)).["deref"] in
   Pure (addr_of α1).
 
-Module Impl_CryptoHash_for_Blake2x256.
-  Definition Self := Blake2x256.
+Module Impl_CryptoHash_for_crate_hash_Blake2x256.
+  Definition Self := crate.hash.Blake2x256.
   
   Definition hash
       (input : ref Slice)
@@ -17047,7 +17282,7 @@ Module Impl_CryptoHash_for_Blake2x256.
           output[Range {| Range.start := offset; Range.end := offset.["add"] 32;
             |}] in
       as_array slice in
-    let* _ := Engine::["hash_blake2_256"] input output in
+    let* _ := ink_engine.ext.Engine::["hash_blake2_256"] input output in
     Pure tt.
   
   Global Instance AssociatedFunction_hash :
@@ -17058,7 +17293,7 @@ Module Impl_CryptoHash_for_Blake2x256.
   Global Instance I : CryptoHash.Trait Self := {
     CryptoHash.hash := hash;
   }.
-End Impl_CryptoHash_for_Blake2x256.
+End Impl_CryptoHash_for_crate_hash_Blake2x256.
 
 Definition OutputType : Set := list u8.
 
@@ -17102,8 +17337,8 @@ Definition as_array {T : Set} (slice : mut_ref Slice) : M (mut_ref list T) :=
   let* α1 := (cast α0 (mut_ref list _)).["deref"] in
   Pure (addr_of α1).
 
-Module Impl_CryptoHash_for_Sha2x256.
-  Definition Self := Sha2x256.
+Module Impl_CryptoHash_for_crate_hash_Sha2x256.
+  Definition Self := crate.hash.Sha2x256.
   
   Definition hash
       (input : ref Slice)
@@ -17116,7 +17351,7 @@ Module Impl_CryptoHash_for_Sha2x256.
           output[Range {| Range.start := offset; Range.end := offset.["add"] 32;
             |}] in
       as_array slice in
-    let* _ := Engine::["hash_sha2_256"] input output in
+    let* _ := ink_engine.ext.Engine::["hash_sha2_256"] input output in
     Pure tt.
   
   Global Instance AssociatedFunction_hash :
@@ -17127,7 +17362,7 @@ Module Impl_CryptoHash_for_Sha2x256.
   Global Instance I : CryptoHash.Trait Self := {
     CryptoHash.hash := hash;
   }.
-End Impl_CryptoHash_for_Sha2x256.
+End Impl_CryptoHash_for_crate_hash_Sha2x256.
 
 Definition OutputType : Set := list u8.
 
@@ -17171,8 +17406,8 @@ Definition as_array {T : Set} (slice : mut_ref Slice) : M (mut_ref list T) :=
   let* α1 := (cast α0 (mut_ref list _)).["deref"] in
   Pure (addr_of α1).
 
-Module Impl_CryptoHash_for_Keccak256.
-  Definition Self := Keccak256.
+Module Impl_CryptoHash_for_crate_hash_Keccak256.
+  Definition Self := crate.hash.Keccak256.
   
   Definition hash
       (input : ref Slice)
@@ -17185,7 +17420,7 @@ Module Impl_CryptoHash_for_Keccak256.
           output[Range {| Range.start := offset; Range.end := offset.["add"] 32;
             |}] in
       as_array slice in
-    let* _ := Engine::["hash_keccak_256"] input output in
+    let* _ := ink_engine.ext.Engine::["hash_keccak_256"] input output in
     Pure tt.
   
   Global Instance AssociatedFunction_hash :
@@ -17196,7 +17431,7 @@ Module Impl_CryptoHash_for_Keccak256.
   Global Instance I : CryptoHash.Trait Self := {
     CryptoHash.hash := hash;
   }.
-End Impl_CryptoHash_for_Keccak256.
+End Impl_CryptoHash_for_crate_hash_Keccak256.
 
 Definition OutputType : Set := list u8.
 
@@ -17271,7 +17506,7 @@ End Impl_From_for_crate_Error.
 
 Module TopicsBuilder.
   Record t : Set := {
-    topics : Vec (Vec u8);
+    topics : ink_prelude.vec.Vec (ink_prelude.vec.Vec u8);
   }.
   
   Global Instance Get_topics : Notation.Dot "topics" := {
@@ -17300,7 +17535,7 @@ End Impl__crate_default_Default_for_TopicsBuilder.
 Module Impl_TopicsBuilderBackend_for_TopicsBuilder.
   Definition Self := TopicsBuilder.
   
-  Definition Output : Set := Vec u8.
+  Definition Output : Set := ink_prelude.vec.Vec u8.
   
   Definition expect (self : mut_ref Self) (_expected_topics : usize) : M unit :=
     Pure tt.
@@ -17367,7 +17602,7 @@ Module Impl_TopicsBuilderBackend_for_TopicsBuilder.
   }.
   
   Definition output (self : Self) : M ImplSelf.Output :=
-    let* all := Vec::["new"] tt in
+    let* all := ink_prelude.vec.Vec::["new"] tt in
     let* topics_len_compact :=
       let* α0 := self.["topics"].["len"] in
       Pure (addr_of (scale.Compact.Build_t (cast α0 u32))) in
@@ -17393,13 +17628,15 @@ Module Impl_TopicsBuilderBackend_for_TopicsBuilder.
   }.
 End Impl_TopicsBuilderBackend_for_TopicsBuilder.
 
-Module ImplEnvInstance_4.
-  Definition Self := EnvInstance.
+Module Implsuper.EnvInstance_4.
+  Definition Self := super.EnvInstance.
   
   Definition get_property
       (self : mut_ref Self)
-      (ext_fn : (ref Engine) -> (mut_ref (mut_ref Slice)) -> unit)
-      : M (Result T) :=
+      (ext_fn
+        :
+        (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit)
+      : M (crate.Result T) :=
     let* full_scope := repeat 0 in
     let full_scope := addr_of (addr_of full_scope[RangeFull {|  |}]) in
     let* _ := ext_fn (addr_of self.["engine"]) full_scope in
@@ -17410,10 +17647,10 @@ Module ImplEnvInstance_4.
   Global Instance Method_get_property : Notation.Dot "get_property" := {
     Notation.dot := get_property;
   }.
-End ImplEnvInstance_4.
+End Implsuper.EnvInstance_4.
 
-Module Impl_EnvBackend_for_EnvInstance.
-  Definition Self := EnvInstance.
+Module Impl_EnvBackend_for_super_EnvInstance.
+  Definition Self := super.EnvInstance.
   
   Definition set_contract_storage
       (self : mut_ref Self)
@@ -17433,7 +17670,7 @@ Module Impl_EnvBackend_for_EnvInstance.
   Definition get_contract_storage
       (self : mut_ref Self)
       (key : ref K)
-      : M (Result (Option R)) :=
+      : M (crate.Result (Option R)) :=
     let* output := repeat 0 in
     let* _ :=
       let* α0 := key.["encode"] in
@@ -17469,7 +17706,7 @@ Module Impl_EnvBackend_for_EnvInstance.
   Definition take_contract_storage
       (self : mut_ref Self)
       (key : ref K)
-      : M (Result (Option R)) :=
+      : M (crate.Result (Option R)) :=
     let* output := repeat 0 in
     let* _ :=
       let* α0 := key.["encode"] in
@@ -17526,7 +17763,7 @@ Module Impl_EnvBackend_for_EnvInstance.
     Notation.dot := clear_contract_storage;
   }.
   
-  Definition decode_input (self : mut_ref Self) : M (Result T) :=
+  Definition decode_input (self : mut_ref Self) : M (crate.Result T) :=
     let* α0 :=
       format_arguments::["new_v1"]
         (addr_of
@@ -17540,7 +17777,7 @@ Module Impl_EnvBackend_for_EnvInstance.
   
   Definition return_value
       (self : mut_ref Self)
-      (_flags : ReturnFlags)
+      (_flags : crate.ReturnFlags)
       (_return_value : ref R)
       : M Empty_set :=
     let* α0 :=
@@ -17593,7 +17830,7 @@ Module Impl_EnvBackend_for_EnvInstance.
       (signature : ref list u8)
       (message_hash : ref list u8)
       (output : mut_ref list u8)
-      : M (Result unit) :=
+      : M (crate.Result unit) :=
     let* recovery_byte :=
       let* α0 := signature[64].["gt"] 26 in
       if (α0 : bool) then
@@ -17652,7 +17889,7 @@ Module Impl_EnvBackend_for_EnvInstance.
       (self : mut_ref Self)
       (pubkey : ref list u8)
       (output : mut_ref list u8)
-      : M (Result unit) :=
+      : M (crate.Result unit) :=
     let* pk :=
       let* α0 := secp256k1.PublicKey::["from_slice"] pubkey in
       let* α1 := α0.["map_err"] (fun _ => Pure Error.EcdsaRecoveryFailed) in
@@ -17666,7 +17903,7 @@ Module Impl_EnvBackend_for_EnvInstance.
     let* uncompressed := pk.["serialize_uncompressed"] in
     let* hash := HashOutput.Type::["default"] tt in
     let* _ :=
-      Keccak256::["hash"]
+      crate.hash.Keccak256::["hash"]
         (addr_of uncompressed[RangeFrom {| RangeFrom.start := 1; |}])
         (addr_of hash) in
     let* _ :=
@@ -17735,7 +17972,7 @@ Module Impl_EnvBackend_for_EnvInstance.
   Definition set_code_hash
       (self : mut_ref Self)
       (_code_hash : ref Slice)
-      : M (Result unit) :=
+      : M (crate.Result unit) :=
     let* α0 :=
       format_arguments::["new_v1"]
         (addr_of
@@ -17765,24 +18002,15 @@ Module Impl_EnvBackend_for_EnvInstance.
     EnvBackend.call_chain_extension := call_chain_extension;
     EnvBackend.set_code_hash := set_code_hash;
   }.
-End Impl_EnvBackend_for_EnvInstance.
-
-Module RecoverableSignature := secp256k1.ecdsa.RecoverableSignature.
-Definition RecoverableSignature := RecoverableSignature.t.
-
-Module RecoveryId := secp256k1.ecdsa.RecoveryId.
-Definition RecoveryId := RecoveryId.t.
-
-Module Message := secp256k1.Message.
-Definition Message := Message.t.
+End Impl_EnvBackend_for_super_EnvInstance.
 
 Module SECP256K1 := secp256k1.SECP256K1.
 
-Module Impl_TypedEnvBackend_for_EnvInstance.
-  Definition Self := EnvInstance.
+Module Impl_TypedEnvBackend_for_super_EnvInstance.
+  Definition Self := super.EnvInstance.
   
   Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
-    let* α0 := self.["get_property"] Engine::["caller"] in
+    let* α0 := self.["get_property"] ink_engine.ext.Engine::["caller"] in
     α0.["unwrap_or_else"]
       (fun error =>
         let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -17797,7 +18025,8 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
   }.
   
   Definition transferred_value (self : mut_ref Self) : M ImplE.Balance :=
-    let* α0 := self.["get_property"] Engine::["value_transferred"] in
+    let* α0 :=
+      self.["get_property"] ink_engine.ext.Engine::["value_transferred"] in
     α0.["unwrap_or_else"]
       (fun error =>
         let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -17813,7 +18042,7 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
   }.
   
   Definition gas_left (self : mut_ref Self) : M u64 :=
-    let* α0 := self.["get_property"] Engine::["gas_left"] in
+    let* α0 := self.["get_property"] ink_engine.ext.Engine::["gas_left"] in
     α0.["unwrap_or_else"]
       (fun error =>
         let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -17828,7 +18057,8 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
   }.
   
   Definition block_timestamp (self : mut_ref Self) : M ImplE.Timestamp :=
-    let* α0 := self.["get_property"] Engine::["block_timestamp"] in
+    let* α0 :=
+      self.["get_property"] ink_engine.ext.Engine::["block_timestamp"] in
     α0.["unwrap_or_else"]
       (fun error =>
         let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -17843,7 +18073,7 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
   }.
   
   Definition account_id (self : mut_ref Self) : M ImplE.AccountId :=
-    let* α0 := self.["get_property"] Engine::["address"] in
+    let* α0 := self.["get_property"] ink_engine.ext.Engine::["address"] in
     α0.["unwrap_or_else"]
       (fun error =>
         let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -17858,7 +18088,7 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
   }.
   
   Definition balance (self : mut_ref Self) : M ImplE.Balance :=
-    let* α0 := self.["get_property"] Engine::["balance"] in
+    let* α0 := self.["get_property"] ink_engine.ext.Engine::["balance"] in
     α0.["unwrap_or_else"]
       (fun error =>
         let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -17873,7 +18103,7 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
   }.
   
   Definition block_number (self : mut_ref Self) : M ImplE.BlockNumber :=
-    let* α0 := self.["get_property"] Engine::["block_number"] in
+    let* α0 := self.["get_property"] ink_engine.ext.Engine::["block_number"] in
     α0.["unwrap_or_else"]
       (fun error =>
         let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -17888,7 +18118,8 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
   }.
   
   Definition minimum_balance (self : mut_ref Self) : M ImplE.Balance :=
-    let* α0 := self.["get_property"] Engine::["minimum_balance"] in
+    let* α0 :=
+      self.["get_property"] ink_engine.ext.Engine::["minimum_balance"] in
     α0.["unwrap_or_else"]
       (fun error =>
         let* α0 := format_argument::["new_debug"] (addr_of error) in
@@ -17922,8 +18153,8 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
   
   Definition invoke_contract
       (self : mut_ref Self)
-      (params : ref (CallParams E (Call E) Args R))
-      : M (Result (ink_primitives.MessageResult R)) :=
+      (params : ref (crate.call.CallParams E (crate.call.Call E) Args R))
+      : M (crate.Result (ink_primitives.MessageResult R)) :=
     let* _gas_limit := params.["gas_limit"] in
     let* _callee := params.["callee"] in
     let* _call_flags :=
@@ -17946,8 +18177,10 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
   
   Definition invoke_contract_delegate
       (self : mut_ref Self)
-      (params : ref (CallParams E (DelegateCall E) Args R))
-      : M (Result R) :=
+      (params
+        :
+        ref (crate.call.CallParams E (crate.call.DelegateCall E) Args R))
+      : M (crate.Result R) :=
     let* _code_hash := params.["code_hash"] in
     let* α0 :=
       format_arguments::["new_v1"]
@@ -17965,10 +18198,10 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
   
   Definition instantiate_contract
       (self : mut_ref Self)
-      (params : ref (CreateParams E ContractRef Args Salt R))
+      (params : ref (crate.call.CreateParams E ContractRef Args Salt R))
       :
         M
-          (Result
+          (crate.Result
             (ink_primitives.ConstructorResult ConstructorReturnType.Output)) :=
     let* _code_hash := params.["code_hash"] in
     let* _gas_limit := params.["gas_limit"] in
@@ -18005,7 +18238,7 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
       (self : mut_ref Self)
       (destination : ImplE.AccountId)
       (value : ImplE.Balance)
-      : M (Result unit) :=
+      : M (crate.Result unit) :=
     let* enc_destination :=
       let* α0 := scale.Encode.encode (addr_of destination) in
       Pure (addr_of α0[RangeFull {|  |}]) in
@@ -18071,7 +18304,7 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
   Definition code_hash
       (self : mut_ref Self)
       (_account : ref ImplE.AccountId)
-      : M (Result ImplE.Hash) :=
+      : M (crate.Result ImplE.Hash) :=
     let* α0 :=
       format_arguments::["new_v1"]
         (addr_of
@@ -18085,7 +18318,9 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
     Notation.dot := code_hash;
   }.
   
-  Definition own_code_hash (self : mut_ref Self) : M (Result ImplE.Hash) :=
+  Definition own_code_hash
+      (self : mut_ref Self)
+      : M (crate.Result ImplE.Hash) :=
     let* α0 :=
       format_arguments::["new_v1"]
         (addr_of
@@ -18101,8 +18336,8 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
   
   Definition call_runtime
       (self : mut_ref Self)
-      (_call : ref Call)
-      : M (Result unit) :=
+      (_call : ref crate.call.Call)
+      : M (crate.Result unit) :=
     let* α0 :=
       format_arguments::["new_v1"]
         (addr_of
@@ -18138,25 +18373,13 @@ Module Impl_TypedEnvBackend_for_EnvInstance.
     TypedEnvBackend.own_code_hash := own_code_hash;
     TypedEnvBackend.call_runtime := call_runtime;
   }.
-End Impl_TypedEnvBackend_for_EnvInstance.
+End Impl_TypedEnvBackend_for_super_EnvInstance.
 
 Module test_api.
-  Module EnvInstance := super.EnvInstance.
-  Definition EnvInstance := EnvInstance.t.
-  
-  Module Result := crate.Result.
-  Definition Result := Result.t.
-  
-  Module RecordedDebugMessages := ink_engine.test_api.RecordedDebugMessages.
-  Definition RecordedDebugMessages := RecordedDebugMessages.t.
-  
-  Module CallData := super.call_data.CallData.
-  Definition CallData := CallData.t.
-  
   Module EmittedEvent.
     Record t : Set := {
-      topics : Vec (Vec u8);
-      data : Vec u8;
+      topics : ink_prelude.vec.Vec (ink_prelude.vec.Vec u8);
+      data : ink_prelude.vec.Vec u8;
     }.
     
     Global Instance Get_topics : Notation.Dot "topics" := {
@@ -18168,13 +18391,17 @@ Module test_api.
   End EmittedEvent.
   Definition EmittedEvent : Set := EmittedEvent.t.
   
-  Module Impl__crate_clone_Clone_for_EmittedEvent.
-    Definition Self := EmittedEvent.
+  Module Impl__crate_clone_Clone_for_super_test_api_EmittedEvent.
+    Definition Self := super.test_api.EmittedEvent.
     
-    Definition clone (self : ref Self) : M EmittedEvent :=
+    Definition clone (self : ref Self) : M super.test_api.EmittedEvent :=
       let* α0 := _crate.clone.Clone.clone (addr_of self.["topics"]) in
       let* α1 := _crate.clone.Clone.clone (addr_of self.["data"]) in
-      Pure {| EmittedEvent.topics := α0; EmittedEvent.data := α1; |}.
+      Pure
+        {|
+          super.test_api.EmittedEvent.topics := α0;
+          super.test_api.EmittedEvent.data := α1;
+        |}.
     
     Global Instance Method_clone : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -18183,7 +18410,7 @@ Module test_api.
     Global Instance I : _crate.clone.Clone.Trait Self := {
       _crate.clone.Clone.clone := clone;
     }.
-  End Impl__crate_clone_Clone_for_EmittedEvent.
+  End Impl__crate_clone_Clone_for_super_test_api_EmittedEvent.
   
   Definition set_account_balance
       {T : Set}
@@ -18202,7 +18429,7 @@ Module test_api.
       {T : Set}
       `{Environment.Trait T}
       (account_id : ImplT.AccountId)
-      : M (Result ImplT.Balance) :=
+      : M (crate.Result ImplT.Balance) :=
     OnInstance.on_instance
       (fun instance =>
         let* α0 := scale.Encode.encode (addr_of account_id) in
@@ -18221,7 +18448,9 @@ Module test_api.
           instance.["engine"].["chain_extension_handler"].["register"] α0 in
         Pure tt).
   
-  Definition recorded_debug_messages (_ : unit) : M RecordedDebugMessages :=
+  Definition recorded_debug_messages
+      (_ : unit)
+      : M ink_engine.test_api.RecordedDebugMessages :=
     OnInstance.on_instance
       (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
   
@@ -18373,7 +18602,7 @@ Module test_api.
       {T : Set}
       `{Environment.Trait T}
       (account_id : ref ImplT.AccountId)
-      : M (Result usize) :=
+      : M (crate.Result usize) :=
     OnInstance.on_instance
       (fun instance =>
         let* α0 := scale.Encode.encode (addr_of account_id) in
@@ -18407,7 +18636,7 @@ Module test_api.
       `{FnOnce.Trait ((DefaultAccounts T)) F}
       `{From.Trait list u8 Environment.AccountId}
       (f : F)
-      : M (Result unit) :=
+      : M (crate.Result unit) :=
     let* default_accounts := default_accounts tt in
     let* _ :=
       OnInstance.on_instance
@@ -18600,22 +18829,10 @@ Module test_api.
     Pure tt.
 End test_api.
 
-Module EnvInstance := super.EnvInstance.
-Definition EnvInstance := EnvInstance.t.
-
-Module Result := crate.Result.
-Definition Result := Result.t.
-
-Module RecordedDebugMessages := ink_engine.test_api.RecordedDebugMessages.
-Definition RecordedDebugMessages := RecordedDebugMessages.t.
-
-Module CallData := super.call_data.CallData.
-Definition CallData := CallData.t.
-
 Module EmittedEvent.
   Record t : Set := {
-    topics : Vec (Vec u8);
-    data : Vec u8;
+    topics : ink_prelude.vec.Vec (ink_prelude.vec.Vec u8);
+    data : ink_prelude.vec.Vec u8;
   }.
   
   Global Instance Get_topics : Notation.Dot "topics" := {
@@ -18627,13 +18844,17 @@ Module EmittedEvent.
 End EmittedEvent.
 Definition EmittedEvent : Set := EmittedEvent.t.
 
-Module Impl__crate_clone_Clone_for_EmittedEvent.
-  Definition Self := EmittedEvent.
+Module Impl__crate_clone_Clone_for_super_test_api_EmittedEvent.
+  Definition Self := super.test_api.EmittedEvent.
   
-  Definition clone (self : ref Self) : M EmittedEvent :=
+  Definition clone (self : ref Self) : M super.test_api.EmittedEvent :=
     let* α0 := _crate.clone.Clone.clone (addr_of self.["topics"]) in
     let* α1 := _crate.clone.Clone.clone (addr_of self.["data"]) in
-    Pure {| EmittedEvent.topics := α0; EmittedEvent.data := α1; |}.
+    Pure
+      {|
+        super.test_api.EmittedEvent.topics := α0;
+        super.test_api.EmittedEvent.data := α1;
+      |}.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -18642,7 +18863,7 @@ Module Impl__crate_clone_Clone_for_EmittedEvent.
   Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_EmittedEvent.
+End Impl__crate_clone_Clone_for_super_test_api_EmittedEvent.
 
 Definition set_account_balance
     {T : Set}
@@ -18661,7 +18882,7 @@ Definition get_account_balance
     {T : Set}
     `{Environment.Trait T}
     (account_id : ImplT.AccountId)
-    : M (Result ImplT.Balance) :=
+    : M (crate.Result ImplT.Balance) :=
   OnInstance.on_instance
     (fun instance =>
       let* α0 := scale.Encode.encode (addr_of account_id) in
@@ -18680,7 +18901,9 @@ Definition register_chain_extension
         instance.["engine"].["chain_extension_handler"].["register"] α0 in
       Pure tt).
 
-Definition recorded_debug_messages (_ : unit) : M RecordedDebugMessages :=
+Definition recorded_debug_messages
+    (_ : unit)
+    : M ink_engine.test_api.RecordedDebugMessages :=
   OnInstance.on_instance
     (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
 
@@ -18828,7 +19051,7 @@ Definition count_used_storage_cells
     {T : Set}
     `{Environment.Trait T}
     (account_id : ref ImplT.AccountId)
-    : M (Result usize) :=
+    : M (crate.Result usize) :=
   OnInstance.on_instance
     (fun instance =>
       let* α0 := scale.Encode.encode (addr_of account_id) in
@@ -18862,7 +19085,7 @@ Definition run_test
     `{FnOnce.Trait ((DefaultAccounts T)) F}
     `{From.Trait list u8 Environment.AccountId}
     (f : F)
-    : M (Result unit) :=
+    : M (crate.Result unit) :=
   let* default_accounts := default_accounts tt in
   let* _ :=
     OnInstance.on_instance
@@ -19055,26 +19278,14 @@ Definition assert_contract_termination
   Pure tt.
 
 Module types.
-  Module EmittedEvent := super.test_api.EmittedEvent.
-  Definition EmittedEvent := EmittedEvent.t.
-  
-  Module AccountError := super.AccountError.
-  Definition AccountError := AccountError.t.
-  
-  Module Error := super.Error.
-  Definition Error := Error.t.
-  
-  Module OffChainError := super.OffChainError.
-  Definition OffChainError := OffChainError.t.
-  
-  Module Impl_From_for_EmittedEvent.
-    Definition Self := EmittedEvent.
+  Module Impl_From_for_super_test_api_EmittedEvent.
+    Definition Self := super.test_api.EmittedEvent.
     
     Definition from (evt : ink_engine.test_api.EmittedEvent) : M Self :=
       Pure
         {|
-          EmittedEvent.topics := evt.["topics"];
-          EmittedEvent.data := evt.["data"];
+          super.test_api.EmittedEvent.topics := evt.["topics"];
+          super.test_api.EmittedEvent.data := evt.["data"];
         |}.
     
     Global Instance AssociatedFunction_from :
@@ -19085,10 +19296,10 @@ Module types.
     Global Instance I : From.Trait Self ink_engine.test_api.EmittedEvent := {
       From.from := from;
     }.
-  End Impl_From_for_EmittedEvent.
+  End Impl_From_for_super_test_api_EmittedEvent.
   
-  Module Impl_From_for_Error.
-    Definition Self := Error.
+  Module Impl_From_for_super_Error.
+    Definition Self := super.Error.
     
     Definition from (err : ink_engine.Error) : M Self :=
       let* e :=
@@ -19113,10 +19324,10 @@ Module types.
     Global Instance I : From.Trait Self ink_engine.Error := {
       From.from := from;
     }.
-  End Impl_From_for_Error.
+  End Impl_From_for_super_Error.
   
-  Module Impl_From_for_AccountError.
-    Definition Self := AccountError.
+  Module Impl_From_for_super_AccountError.
+    Definition Self := super.AccountError.
     
     Definition from (err : ink_engine.AccountError) : M Self :=
       match err with
@@ -19135,10 +19346,10 @@ Module types.
     Global Instance I : From.Trait Self ink_engine.AccountError := {
       From.from := from;
     }.
-  End Impl_From_for_AccountError.
+  End Impl_From_for_super_AccountError.
   
-  Module Impl_From_for_Error.
-    Definition Self := Error.
+  Module Impl_From_for_super_Error.
+    Definition Self := super.Error.
     
     Definition from (account_error : ink_engine.AccountError) : M Self :=
       let* α0 := account_error.["into"] in
@@ -19152,29 +19363,17 @@ Module types.
     Global Instance I : From.Trait Self ink_engine.AccountError := {
       From.from := from;
     }.
-  End Impl_From_for_Error.
+  End Impl_From_for_super_Error.
 End types.
 
-Module EmittedEvent := super.test_api.EmittedEvent.
-Definition EmittedEvent := EmittedEvent.t.
-
-Module AccountError := super.AccountError.
-Definition AccountError := AccountError.t.
-
-Module Error := super.Error.
-Definition Error := Error.t.
-
-Module OffChainError := super.OffChainError.
-Definition OffChainError := OffChainError.t.
-
-Module Impl_From_for_EmittedEvent.
-  Definition Self := EmittedEvent.
+Module Impl_From_for_super_test_api_EmittedEvent.
+  Definition Self := super.test_api.EmittedEvent.
   
   Definition from (evt : ink_engine.test_api.EmittedEvent) : M Self :=
     Pure
       {|
-        EmittedEvent.topics := evt.["topics"];
-        EmittedEvent.data := evt.["data"];
+        super.test_api.EmittedEvent.topics := evt.["topics"];
+        super.test_api.EmittedEvent.data := evt.["data"];
       |}.
   
   Global Instance AssociatedFunction_from :
@@ -19185,10 +19384,10 @@ Module Impl_From_for_EmittedEvent.
   Global Instance I : From.Trait Self ink_engine.test_api.EmittedEvent := {
     From.from := from;
   }.
-End Impl_From_for_EmittedEvent.
+End Impl_From_for_super_test_api_EmittedEvent.
 
-Module Impl_From_for_Error.
-  Definition Self := Error.
+Module Impl_From_for_super_Error.
+  Definition Self := super.Error.
   
   Definition from (err : ink_engine.Error) : M Self :=
     let* e :=
@@ -19213,10 +19412,10 @@ Module Impl_From_for_Error.
   Global Instance I : From.Trait Self ink_engine.Error := {
     From.from := from;
   }.
-End Impl_From_for_Error.
+End Impl_From_for_super_Error.
 
-Module Impl_From_for_AccountError.
-  Definition Self := AccountError.
+Module Impl_From_for_super_AccountError.
+  Definition Self := super.AccountError.
   
   Definition from (err : ink_engine.AccountError) : M Self :=
     match err with
@@ -19235,10 +19434,10 @@ Module Impl_From_for_AccountError.
   Global Instance I : From.Trait Self ink_engine.AccountError := {
     From.from := from;
   }.
-End Impl_From_for_AccountError.
+End Impl_From_for_super_AccountError.
 
-Module Impl_From_for_Error.
-  Definition Self := Error.
+Module Impl_From_for_super_Error.
+  Definition Self := super.Error.
   
   Definition from (account_error : ink_engine.AccountError) : M Self :=
     let* α0 := account_error.["into"] in
@@ -19252,22 +19451,13 @@ Module Impl_From_for_Error.
   Global Instance I : From.Trait Self ink_engine.AccountError := {
     From.from := from;
   }.
-End Impl_From_for_Error.
-
-Module CallData := call_data.CallData.
-Definition CallData := CallData.t.
-
-Module Error := crate.Error.
-Definition Error := Error.t.
+End Impl_From_for_super_Error.
 
 Module From := derive_more.From.
 
-Module Engine := ink_engine.ext.Engine.
-Definition Engine := Engine.t.
-
 Module EnvInstance.
   Record t : Set := {
-    engine : Engine;
+    engine : ink_engine.ext.Engine;
   }.
   
   Global Instance Get_engine : Notation.Dot "engine" := {
@@ -19276,8 +19466,8 @@ Module EnvInstance.
 End EnvInstance.
 Definition EnvInstance : Set := EnvInstance.t.
 
-Module Impl_OnInstance_for_EnvInstance.
-  Definition Self := EnvInstance.
+Module Impl_OnInstance_for_super_EnvInstance.
+  Definition Self := super.EnvInstance.
   
   Definition on_instance (f : F) : M R :=
     INSTANCE.["with"]
@@ -19293,24 +19483,23 @@ Module Impl_OnInstance_for_EnvInstance.
   Global Instance I : OnInstance.Trait Self := {
     OnInstance.on_instance := on_instance;
   }.
-End Impl_OnInstance_for_EnvInstance.
+End Impl_OnInstance_for_super_EnvInstance.
 
-Module RefCell := core.cell.RefCell.
-Definition RefCell := RefCell.t.
-
-Definition INSTANCE : _crate.thread.LocalKey (RefCell EnvInstance) :=
+Definition
+    INSTANCE :
+    _crate.thread.LocalKey (core.cell.RefCell super.EnvInstance) :=
   run (_crate.thread.LocalKey::["new"] __getit).
 
-Definition __init (_ : unit) : M (RefCell EnvInstance) :=
-  let* α0 := Engine::["new"] tt in
-  RefCell::["new"] {| EnvInstance.engine := α0; |}.
+Definition __init (_ : unit) : M (core.cell.RefCell super.EnvInstance) :=
+  let* α0 := ink_engine.ext.Engine::["new"] tt in
+  core.cell.RefCell::["new"] {| super.EnvInstance.engine := α0; |}.
 
 Definition __getit
     (init
       :
       _crate.option.Option
-        (mut_ref (_crate.option.Option (RefCell EnvInstance))))
-    : M (_crate.option.Option (ref (RefCell EnvInstance))) :=
+        (mut_ref (_crate.option.Option (core.cell.RefCell super.EnvInstance))))
+    : M (_crate.option.Option (ref (core.cell.RefCell super.EnvInstance))) :=
   __KEY.["get"]
     (fun  =>
       let* _ :=
@@ -19339,20 +19528,25 @@ Definition __getit
           Pure tt in
       __init tt).
 
-Definition __KEY : _crate.thread.local_impl.Key (RefCell EnvInstance) :=
-  run ((_crate.thread.local_impl.Key (RefCell EnvInstance))::["new"] tt).
+Definition
+    __KEY :
+    _crate.thread.local_impl.Key (core.cell.RefCell super.EnvInstance) :=
+  run
+    ((_crate.thread.local_impl.Key
+          (core.cell.RefCell super.EnvInstance))::["new"]
+      tt).
 
 Module OffChainError.
   Inductive t : Set :=
-  | Account (_ : AccountError)
+  | Account (_ : super.AccountError)
   | UninitializedBlocks
   | UninitializedExecutionContext
   | UnregisteredChainExtension.
 End OffChainError.
 Definition OffChainError := OffChainError.t.
 
-Module Impl__crate_fmt_Debug_for_OffChainError.
-  Definition Self := OffChainError.
+Module Impl__crate_fmt_Debug_for_super_OffChainError.
+  Definition Self := super.OffChainError.
   
   Definition fmt
       (self : ref Self)
@@ -19379,12 +19573,12 @@ Module Impl__crate_fmt_Debug_for_OffChainError.
   Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_OffChainError.
+End Impl__crate_fmt_Debug_for_super_OffChainError.
 
-Module Impl_Root_core_convert_From_for_OffChainError.
-  Definition Self := OffChainError.
+Module Impl_Root_core_convert_From_for_super_OffChainError.
+  Definition Self := super.OffChainError.
   
-  Definition from (original : AccountError) : M OffChainError :=
+  Definition from (original : super.AccountError) : M super.OffChainError :=
     Pure (OffChainError.Account original).
   
   Global Instance AssociatedFunction_from :
@@ -19392,22 +19586,22 @@ Module Impl_Root_core_convert_From_for_OffChainError.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : Root.core.convert.From.Trait Self AccountError := {
+  Global Instance I : Root.core.convert.From.Trait Self super.AccountError := {
     Root.core.convert.From.from := from;
   }.
-End Impl_Root_core_convert_From_for_OffChainError.
+End Impl_Root_core_convert_From_for_super_OffChainError.
 
-Module Impl__crate_marker_StructuralPartialEq_for_OffChainError.
-  Definition Self := OffChainError.
+Module Impl__crate_marker_StructuralPartialEq_for_super_OffChainError.
+  Definition Self := super.OffChainError.
   
   Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
-End Impl__crate_marker_StructuralPartialEq_for_OffChainError.
+End Impl__crate_marker_StructuralPartialEq_for_super_OffChainError.
 
-Module Impl__crate_cmp_PartialEq_for_OffChainError.
-  Definition Self := OffChainError.
+Module Impl__crate_cmp_PartialEq_for_super_OffChainError.
+  Definition Self := super.OffChainError.
   
-  Definition eq (self : ref Self) (other : ref OffChainError) : M bool :=
+  Definition eq (self : ref Self) (other : ref super.OffChainError) : M bool :=
     let* __self_tag := _crate.intrinsics.discriminant_value self in
     let* __arg1_tag := _crate.intrinsics.discriminant_value other in
     let* α0 := __self_tag.["eq"] __arg1_tag in
@@ -19428,17 +19622,17 @@ Module Impl__crate_cmp_PartialEq_for_OffChainError.
   Global Instance I : _crate.cmp.PartialEq.Trait Self := {
     _crate.cmp.PartialEq.eq := eq;
   }.
-End Impl__crate_cmp_PartialEq_for_OffChainError.
+End Impl__crate_cmp_PartialEq_for_super_OffChainError.
 
-Module Impl__crate_marker_StructuralEq_for_OffChainError.
-  Definition Self := OffChainError.
+Module Impl__crate_marker_StructuralEq_for_super_OffChainError.
+  Definition Self := super.OffChainError.
   
   Global Instance I : _crate.marker.StructuralEq.Trait Self :=
     _crate.marker.StructuralEq.Build_Class _.
-End Impl__crate_marker_StructuralEq_for_OffChainError.
+End Impl__crate_marker_StructuralEq_for_super_OffChainError.
 
-Module Impl__crate_cmp_Eq_for_OffChainError.
-  Definition Self := OffChainError.
+Module Impl__crate_cmp_Eq_for_super_OffChainError.
+  Definition Self := super.OffChainError.
   
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let _ := tt in
@@ -19451,18 +19645,18 @@ Module Impl__crate_cmp_Eq_for_OffChainError.
   
   Global Instance I : _crate.cmp.Eq.Trait Self := {
   }.
-End Impl__crate_cmp_Eq_for_OffChainError.
+End Impl__crate_cmp_Eq_for_super_OffChainError.
 
 Module AccountError.
   Inductive t : Set :=
   | Decoding (_ : scale.Error)
   | UnexpectedUserAccount
-  | NoAccountForId (_ : Vec u8).
+  | NoAccountForId (_ : ink_prelude.vec.Vec u8).
 End AccountError.
 Definition AccountError := AccountError.t.
 
-Module Impl__crate_fmt_Debug_for_AccountError.
-  Definition Self := AccountError.
+Module Impl__crate_fmt_Debug_for_super_AccountError.
+  Definition Self := super.AccountError.
   
   Definition fmt
       (self : ref Self)
@@ -19490,12 +19684,12 @@ Module Impl__crate_fmt_Debug_for_AccountError.
   Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_AccountError.
+End Impl__crate_fmt_Debug_for_super_AccountError.
 
-Module Impl_Root_core_convert_From_for_AccountError.
-  Definition Self := AccountError.
+Module Impl_Root_core_convert_From_for_super_AccountError.
+  Definition Self := super.AccountError.
   
-  Definition from (original : scale.Error) : M AccountError :=
+  Definition from (original : scale.Error) : M super.AccountError :=
     Pure (AccountError.Decoding original).
   
   Global Instance AssociatedFunction_from :
@@ -19506,19 +19700,19 @@ Module Impl_Root_core_convert_From_for_AccountError.
   Global Instance I : Root.core.convert.From.Trait Self scale.Error := {
     Root.core.convert.From.from := from;
   }.
-End Impl_Root_core_convert_From_for_AccountError.
+End Impl_Root_core_convert_From_for_super_AccountError.
 
-Module Impl__crate_marker_StructuralPartialEq_for_AccountError.
-  Definition Self := AccountError.
+Module Impl__crate_marker_StructuralPartialEq_for_super_AccountError.
+  Definition Self := super.AccountError.
   
   Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
-End Impl__crate_marker_StructuralPartialEq_for_AccountError.
+End Impl__crate_marker_StructuralPartialEq_for_super_AccountError.
 
-Module Impl__crate_cmp_PartialEq_for_AccountError.
-  Definition Self := AccountError.
+Module Impl__crate_cmp_PartialEq_for_super_AccountError.
+  Definition Self := super.AccountError.
   
-  Definition eq (self : ref Self) (other : ref AccountError) : M bool :=
+  Definition eq (self : ref Self) (other : ref super.AccountError) : M bool :=
     let* __self_tag := _crate.intrinsics.discriminant_value self in
     let* __arg1_tag := _crate.intrinsics.discriminant_value other in
     let* α0 := __self_tag.["eq"] __arg1_tag in
@@ -19546,17 +19740,17 @@ Module Impl__crate_cmp_PartialEq_for_AccountError.
   Global Instance I : _crate.cmp.PartialEq.Trait Self := {
     _crate.cmp.PartialEq.eq := eq;
   }.
-End Impl__crate_cmp_PartialEq_for_AccountError.
+End Impl__crate_cmp_PartialEq_for_super_AccountError.
 
-Module Impl__crate_marker_StructuralEq_for_AccountError.
-  Definition Self := AccountError.
+Module Impl__crate_marker_StructuralEq_for_super_AccountError.
+  Definition Self := super.AccountError.
   
   Global Instance I : _crate.marker.StructuralEq.Trait Self :=
     _crate.marker.StructuralEq.Build_Class _.
-End Impl__crate_marker_StructuralEq_for_AccountError.
+End Impl__crate_marker_StructuralEq_for_super_AccountError.
 
-Module Impl__crate_cmp_Eq_for_AccountError.
-  Definition Self := AccountError.
+Module Impl__crate_cmp_Eq_for_super_AccountError.
+  Definition Self := super.AccountError.
   
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let _ := tt in
@@ -19570,10 +19764,7 @@ Module Impl__crate_cmp_Eq_for_AccountError.
   
   Global Instance I : _crate.cmp.Eq.Trait Self := {
   }.
-End Impl__crate_cmp_Eq_for_AccountError.
-
-Module EnvInstance := self.off_chain.EnvInstance.
-Definition EnvInstance := EnvInstance.t.
+End Impl__crate_cmp_Eq_for_super_AccountError.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition decode_instantiate_result
@@ -19582,10 +19773,13 @@ Definition decode_instantiate_result
     `{crate.Environment.Trait E}
     `{FromAccountId.Trait E ContractRef}
     `{ConstructorReturnType.Trait ContractRef R}
-    (instantiate_result : EnvResult unit)
+    (instantiate_result : crate.Result unit)
     (out_address : mut_ref I)
     (out_return_value : mut_ref I)
-    : M (EnvResult (ConstructorResult ConstructorReturnType.Output)) :=
+    :
+      M
+        (crate.Result
+          (ink_primitives.ConstructorResult ConstructorReturnType.Output)) :=
   match instantiate_result with
   | Ok () =>
     let* account_id :=
@@ -19612,7 +19806,10 @@ Definition decode_instantiate_err
     `{FromAccountId.Trait E ContractRef}
     `{ConstructorReturnType.Trait ContractRef R}
     (out_return_value : mut_ref I)
-    : M (EnvResult (ConstructorResult ConstructorReturnType.Output)) :=
+    :
+      M
+        (crate.Result
+          (ink_primitives.ConstructorResult ConstructorReturnType.Output)) :=
   let* constructor_result_variant :=
     let* α0 := out_return_value.["read_byte"] in
     let* α1 := LangItem α0 in
@@ -19698,13 +19895,10 @@ Definition decode_instantiate_err
 Module error.
   Module From := derive_more.From.
   
-  Module OffChainError := crate.engine.off_chain.OffChainError.
-  Definition OffChainError := OffChainError.t.
-  
   Module Error.
     Inductive t : Set :=
     | Decode (_ : scale.Error)
-    | OffChain (_ : OffChainError)
+    | OffChain (_ : crate.engine.off_chain.OffChainError)
     | CalleeTrapped
     | CalleeReverted
     | KeyNotFound
@@ -19720,8 +19914,8 @@ Module error.
   End Error.
   Definition Error := Error.t.
   
-  Module Impl__crate_fmt_Debug_for_Error.
-    Definition Self := Error.
+  Module Impl__crate_fmt_Debug_for_crate_Error.
+    Definition Self := crate.Error.
     
     Definition fmt
         (self : ref Self)
@@ -19768,12 +19962,12 @@ Module error.
     Global Instance I : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_Error.
+  End Impl__crate_fmt_Debug_for_crate_Error.
   
-  Module Impl_Root_core_convert_From_for_Error.
-    Definition Self := Error.
+  Module Impl_Root_core_convert_From_for_crate_Error.
+    Definition Self := crate.Error.
     
-    Definition from (original : scale.Error) : M Error :=
+    Definition from (original : scale.Error) : M crate.Error :=
       Pure (Error.Decode original).
     
     Global Instance AssociatedFunction_from :
@@ -19784,12 +19978,14 @@ Module error.
     Global Instance I : Root.core.convert.From.Trait Self scale.Error := {
       Root.core.convert.From.from := from;
     }.
-  End Impl_Root_core_convert_From_for_Error.
+  End Impl_Root_core_convert_From_for_crate_Error.
   
-  Module Impl_Root_core_convert_From_for_Error.
-    Definition Self := Error.
+  Module Impl_Root_core_convert_From_for_crate_Error.
+    Definition Self := crate.Error.
     
-    Definition from (original : OffChainError) : M Error :=
+    Definition from
+        (original : crate.engine.off_chain.OffChainError)
+        : M crate.Error :=
       Pure (Error.OffChain original).
     
     Global Instance AssociatedFunction_from :
@@ -19797,22 +19993,27 @@ Module error.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : Root.core.convert.From.Trait Self OffChainError := {
+    Global Instance I
+        :
+        Root.core.convert.From.Trait
+        Self
+        crate.engine.off_chain.OffChainError :=
+      {
       Root.core.convert.From.from := from;
     }.
-  End Impl_Root_core_convert_From_for_Error.
+  End Impl_Root_core_convert_From_for_crate_Error.
   
-  Module Impl__crate_marker_StructuralPartialEq_for_Error.
-    Definition Self := Error.
+  Module Impl__crate_marker_StructuralPartialEq_for_crate_Error.
+    Definition Self := crate.Error.
     
     Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
       _crate.marker.StructuralPartialEq.Build_Class _.
-  End Impl__crate_marker_StructuralPartialEq_for_Error.
+  End Impl__crate_marker_StructuralPartialEq_for_crate_Error.
   
-  Module Impl__crate_cmp_PartialEq_for_Error.
-    Definition Self := Error.
+  Module Impl__crate_cmp_PartialEq_for_crate_Error.
+    Definition Self := crate.Error.
     
-    Definition eq (self : ref Self) (other : ref Error) : M bool :=
+    Definition eq (self : ref Self) (other : ref crate.Error) : M bool :=
       let* __self_tag := _crate.intrinsics.discriminant_value self in
       let* __arg1_tag := _crate.intrinsics.discriminant_value other in
       let* α0 := __self_tag.["eq"] __arg1_tag in
@@ -19837,17 +20038,17 @@ Module error.
     Global Instance I : _crate.cmp.PartialEq.Trait Self := {
       _crate.cmp.PartialEq.eq := eq;
     }.
-  End Impl__crate_cmp_PartialEq_for_Error.
+  End Impl__crate_cmp_PartialEq_for_crate_Error.
   
-  Module Impl__crate_marker_StructuralEq_for_Error.
-    Definition Self := Error.
+  Module Impl__crate_marker_StructuralEq_for_crate_Error.
+    Definition Self := crate.Error.
     
     Global Instance I : _crate.marker.StructuralEq.Trait Self :=
       _crate.marker.StructuralEq.Build_Class _.
-  End Impl__crate_marker_StructuralEq_for_Error.
+  End Impl__crate_marker_StructuralEq_for_crate_Error.
   
-  Module Impl__crate_cmp_Eq_for_Error.
-    Definition Self := Error.
+  Module Impl__crate_cmp_Eq_for_crate_Error.
+    Definition Self := crate.Error.
     
     Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
       let _ := tt in
@@ -19861,20 +20062,17 @@ Module error.
     
     Global Instance I : _crate.cmp.Eq.Trait Self := {
     }.
-  End Impl__crate_cmp_Eq_for_Error.
+  End Impl__crate_cmp_Eq_for_crate_Error.
   
-  Definition Result : Set := core.result.Result T Error.
+  Definition Result : Set := core.result.Result T crate.Error.
 End error.
 
 Module From := derive_more.From.
 
-Module OffChainError := crate.engine.off_chain.OffChainError.
-Definition OffChainError := OffChainError.t.
-
 Module Error.
   Inductive t : Set :=
   | Decode (_ : scale.Error)
-  | OffChain (_ : OffChainError)
+  | OffChain (_ : crate.engine.off_chain.OffChainError)
   | CalleeTrapped
   | CalleeReverted
   | KeyNotFound
@@ -19890,8 +20088,8 @@ Module Error.
 End Error.
 Definition Error := Error.t.
 
-Module Impl__crate_fmt_Debug_for_Error.
-  Definition Self := Error.
+Module Impl__crate_fmt_Debug_for_crate_Error.
+  Definition Self := crate.Error.
   
   Definition fmt
       (self : ref Self)
@@ -19937,12 +20135,12 @@ Module Impl__crate_fmt_Debug_for_Error.
   Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_Error.
+End Impl__crate_fmt_Debug_for_crate_Error.
 
-Module Impl_Root_core_convert_From_for_Error.
-  Definition Self := Error.
+Module Impl_Root_core_convert_From_for_crate_Error.
+  Definition Self := crate.Error.
   
-  Definition from (original : scale.Error) : M Error :=
+  Definition from (original : scale.Error) : M crate.Error :=
     Pure (Error.Decode original).
   
   Global Instance AssociatedFunction_from :
@@ -19953,12 +20151,14 @@ Module Impl_Root_core_convert_From_for_Error.
   Global Instance I : Root.core.convert.From.Trait Self scale.Error := {
     Root.core.convert.From.from := from;
   }.
-End Impl_Root_core_convert_From_for_Error.
+End Impl_Root_core_convert_From_for_crate_Error.
 
-Module Impl_Root_core_convert_From_for_Error.
-  Definition Self := Error.
+Module Impl_Root_core_convert_From_for_crate_Error.
+  Definition Self := crate.Error.
   
-  Definition from (original : OffChainError) : M Error :=
+  Definition from
+      (original : crate.engine.off_chain.OffChainError)
+      : M crate.Error :=
     Pure (Error.OffChain original).
   
   Global Instance AssociatedFunction_from :
@@ -19966,22 +20166,27 @@ Module Impl_Root_core_convert_From_for_Error.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : Root.core.convert.From.Trait Self OffChainError := {
+  Global Instance I
+      :
+      Root.core.convert.From.Trait
+      Self
+      crate.engine.off_chain.OffChainError :=
+    {
     Root.core.convert.From.from := from;
   }.
-End Impl_Root_core_convert_From_for_Error.
+End Impl_Root_core_convert_From_for_crate_Error.
 
-Module Impl__crate_marker_StructuralPartialEq_for_Error.
-  Definition Self := Error.
+Module Impl__crate_marker_StructuralPartialEq_for_crate_Error.
+  Definition Self := crate.Error.
   
   Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
-End Impl__crate_marker_StructuralPartialEq_for_Error.
+End Impl__crate_marker_StructuralPartialEq_for_crate_Error.
 
-Module Impl__crate_cmp_PartialEq_for_Error.
-  Definition Self := Error.
+Module Impl__crate_cmp_PartialEq_for_crate_Error.
+  Definition Self := crate.Error.
   
-  Definition eq (self : ref Self) (other : ref Error) : M bool :=
+  Definition eq (self : ref Self) (other : ref crate.Error) : M bool :=
     let* __self_tag := _crate.intrinsics.discriminant_value self in
     let* __arg1_tag := _crate.intrinsics.discriminant_value other in
     let* α0 := __self_tag.["eq"] __arg1_tag in
@@ -20006,17 +20211,17 @@ Module Impl__crate_cmp_PartialEq_for_Error.
   Global Instance I : _crate.cmp.PartialEq.Trait Self := {
     _crate.cmp.PartialEq.eq := eq;
   }.
-End Impl__crate_cmp_PartialEq_for_Error.
+End Impl__crate_cmp_PartialEq_for_crate_Error.
 
-Module Impl__crate_marker_StructuralEq_for_Error.
-  Definition Self := Error.
+Module Impl__crate_marker_StructuralEq_for_crate_Error.
+  Definition Self := crate.Error.
   
   Global Instance I : _crate.marker.StructuralEq.Trait Self :=
     _crate.marker.StructuralEq.Build_Class _.
-End Impl__crate_marker_StructuralEq_for_Error.
+End Impl__crate_marker_StructuralEq_for_crate_Error.
 
-Module Impl__crate_cmp_Eq_for_Error.
-  Definition Self := Error.
+Module Impl__crate_cmp_Eq_for_crate_Error.
+  Definition Self := crate.Error.
   
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let _ := tt in
@@ -20030,9 +20235,9 @@ Module Impl__crate_cmp_Eq_for_Error.
   
   Global Instance I : _crate.cmp.Eq.Trait Self := {
   }.
-End Impl__crate_cmp_Eq_for_Error.
+End Impl__crate_cmp_Eq_for_crate_Error.
 
-Definition Result : Set := core.result.Result T Error.
+Definition Result : Set := core.result.Result T crate.Error.
 
 Module hash.
   Module HashOutput.
@@ -20061,8 +20266,8 @@ Module hash.
   End Sha2x256.
   Definition Sha2x256 := Sha2x256.t.
   
-  Module Impl__crate_fmt_Debug_for_Sha2x256.
-    Definition Self := Sha2x256.
+  Module Impl__crate_fmt_Debug_for_crate_hash_Sha2x256.
+    Definition Self := crate.hash.Sha2x256.
     
     Definition fmt
         (self : ref Self)
@@ -20077,19 +20282,20 @@ Module hash.
     Global Instance I : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_Sha2x256.
+  End Impl__crate_fmt_Debug_for_crate_hash_Sha2x256.
   
-  Module Impl__crate_marker_Copy_for_Sha2x256.
-    Definition Self := Sha2x256.
+  Module Impl__crate_marker_Copy_for_crate_hash_Sha2x256.
+    Definition Self := crate.hash.Sha2x256.
     
     Global Instance I : _crate.marker.Copy.Trait Self :=
       _crate.marker.Copy.Build_Class _.
-  End Impl__crate_marker_Copy_for_Sha2x256.
+  End Impl__crate_marker_Copy_for_crate_hash_Sha2x256.
   
-  Module Impl__crate_clone_Clone_for_Sha2x256.
-    Definition Self := Sha2x256.
+  Module Impl__crate_clone_Clone_for_crate_hash_Sha2x256.
+    Definition Self := crate.hash.Sha2x256.
     
-    Definition clone (self : ref Self) : M Sha2x256 := self.["deref"].
+    Definition clone (self : ref Self) : M crate.hash.Sha2x256 :=
+      self.["deref"].
     
     Global Instance Method_clone : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -20098,19 +20304,22 @@ Module hash.
     Global Instance I : _crate.clone.Clone.Trait Self := {
       _crate.clone.Clone.clone := clone;
     }.
-  End Impl__crate_clone_Clone_for_Sha2x256.
+  End Impl__crate_clone_Clone_for_crate_hash_Sha2x256.
   
-  Module Impl__crate_marker_StructuralPartialEq_for_Sha2x256.
-    Definition Self := Sha2x256.
+  Module Impl__crate_marker_StructuralPartialEq_for_crate_hash_Sha2x256.
+    Definition Self := crate.hash.Sha2x256.
     
     Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
       _crate.marker.StructuralPartialEq.Build_Class _.
-  End Impl__crate_marker_StructuralPartialEq_for_Sha2x256.
+  End Impl__crate_marker_StructuralPartialEq_for_crate_hash_Sha2x256.
   
-  Module Impl__crate_cmp_PartialEq_for_Sha2x256.
-    Definition Self := Sha2x256.
+  Module Impl__crate_cmp_PartialEq_for_crate_hash_Sha2x256.
+    Definition Self := crate.hash.Sha2x256.
     
-    Definition eq (self : ref Self) (other : ref Sha2x256) : M bool :=
+    Definition eq
+        (self : ref Self)
+        (other : ref crate.hash.Sha2x256)
+        : M bool :=
       _crate.intrinsics.unreachable tt.
     
     Global Instance Method_eq : Notation.Dot "eq" := {
@@ -20120,17 +20329,17 @@ Module hash.
     Global Instance I : _crate.cmp.PartialEq.Trait Self := {
       _crate.cmp.PartialEq.eq := eq;
     }.
-  End Impl__crate_cmp_PartialEq_for_Sha2x256.
+  End Impl__crate_cmp_PartialEq_for_crate_hash_Sha2x256.
   
-  Module Impl__crate_marker_StructuralEq_for_Sha2x256.
-    Definition Self := Sha2x256.
+  Module Impl__crate_marker_StructuralEq_for_crate_hash_Sha2x256.
+    Definition Self := crate.hash.Sha2x256.
     
     Global Instance I : _crate.marker.StructuralEq.Trait Self :=
       _crate.marker.StructuralEq.Build_Class _.
-  End Impl__crate_marker_StructuralEq_for_Sha2x256.
+  End Impl__crate_marker_StructuralEq_for_crate_hash_Sha2x256.
   
-  Module Impl__crate_cmp_Eq_for_Sha2x256.
-    Definition Self := Sha2x256.
+  Module Impl__crate_cmp_Eq_for_crate_hash_Sha2x256.
+    Definition Self := crate.hash.Sha2x256.
     
     Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
       Pure tt.
@@ -20142,7 +20351,7 @@ Module hash.
     
     Global Instance I : _crate.cmp.Eq.Trait Self := {
     }.
-  End Impl__crate_cmp_Eq_for_Sha2x256.
+  End Impl__crate_cmp_Eq_for_crate_hash_Sha2x256.
   
   Module Keccak256.
     Inductive t : Set :=
@@ -20150,8 +20359,8 @@ Module hash.
   End Keccak256.
   Definition Keccak256 := Keccak256.t.
   
-  Module Impl__crate_fmt_Debug_for_Keccak256.
-    Definition Self := Keccak256.
+  Module Impl__crate_fmt_Debug_for_crate_hash_Keccak256.
+    Definition Self := crate.hash.Keccak256.
     
     Definition fmt
         (self : ref Self)
@@ -20166,19 +20375,20 @@ Module hash.
     Global Instance I : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_Keccak256.
+  End Impl__crate_fmt_Debug_for_crate_hash_Keccak256.
   
-  Module Impl__crate_marker_Copy_for_Keccak256.
-    Definition Self := Keccak256.
+  Module Impl__crate_marker_Copy_for_crate_hash_Keccak256.
+    Definition Self := crate.hash.Keccak256.
     
     Global Instance I : _crate.marker.Copy.Trait Self :=
       _crate.marker.Copy.Build_Class _.
-  End Impl__crate_marker_Copy_for_Keccak256.
+  End Impl__crate_marker_Copy_for_crate_hash_Keccak256.
   
-  Module Impl__crate_clone_Clone_for_Keccak256.
-    Definition Self := Keccak256.
+  Module Impl__crate_clone_Clone_for_crate_hash_Keccak256.
+    Definition Self := crate.hash.Keccak256.
     
-    Definition clone (self : ref Self) : M Keccak256 := self.["deref"].
+    Definition clone (self : ref Self) : M crate.hash.Keccak256 :=
+      self.["deref"].
     
     Global Instance Method_clone : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -20187,19 +20397,22 @@ Module hash.
     Global Instance I : _crate.clone.Clone.Trait Self := {
       _crate.clone.Clone.clone := clone;
     }.
-  End Impl__crate_clone_Clone_for_Keccak256.
+  End Impl__crate_clone_Clone_for_crate_hash_Keccak256.
   
-  Module Impl__crate_marker_StructuralPartialEq_for_Keccak256.
-    Definition Self := Keccak256.
+  Module Impl__crate_marker_StructuralPartialEq_for_crate_hash_Keccak256.
+    Definition Self := crate.hash.Keccak256.
     
     Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
       _crate.marker.StructuralPartialEq.Build_Class _.
-  End Impl__crate_marker_StructuralPartialEq_for_Keccak256.
+  End Impl__crate_marker_StructuralPartialEq_for_crate_hash_Keccak256.
   
-  Module Impl__crate_cmp_PartialEq_for_Keccak256.
-    Definition Self := Keccak256.
+  Module Impl__crate_cmp_PartialEq_for_crate_hash_Keccak256.
+    Definition Self := crate.hash.Keccak256.
     
-    Definition eq (self : ref Self) (other : ref Keccak256) : M bool :=
+    Definition eq
+        (self : ref Self)
+        (other : ref crate.hash.Keccak256)
+        : M bool :=
       _crate.intrinsics.unreachable tt.
     
     Global Instance Method_eq : Notation.Dot "eq" := {
@@ -20209,17 +20422,17 @@ Module hash.
     Global Instance I : _crate.cmp.PartialEq.Trait Self := {
       _crate.cmp.PartialEq.eq := eq;
     }.
-  End Impl__crate_cmp_PartialEq_for_Keccak256.
+  End Impl__crate_cmp_PartialEq_for_crate_hash_Keccak256.
   
-  Module Impl__crate_marker_StructuralEq_for_Keccak256.
-    Definition Self := Keccak256.
+  Module Impl__crate_marker_StructuralEq_for_crate_hash_Keccak256.
+    Definition Self := crate.hash.Keccak256.
     
     Global Instance I : _crate.marker.StructuralEq.Trait Self :=
       _crate.marker.StructuralEq.Build_Class _.
-  End Impl__crate_marker_StructuralEq_for_Keccak256.
+  End Impl__crate_marker_StructuralEq_for_crate_hash_Keccak256.
   
-  Module Impl__crate_cmp_Eq_for_Keccak256.
-    Definition Self := Keccak256.
+  Module Impl__crate_cmp_Eq_for_crate_hash_Keccak256.
+    Definition Self := crate.hash.Keccak256.
     
     Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
       Pure tt.
@@ -20231,7 +20444,7 @@ Module hash.
     
     Global Instance I : _crate.cmp.Eq.Trait Self := {
     }.
-  End Impl__crate_cmp_Eq_for_Keccak256.
+  End Impl__crate_cmp_Eq_for_crate_hash_Keccak256.
   
   Module Blake2x256.
     Inductive t : Set :=
@@ -20239,8 +20452,8 @@ Module hash.
   End Blake2x256.
   Definition Blake2x256 := Blake2x256.t.
   
-  Module Impl__crate_fmt_Debug_for_Blake2x256.
-    Definition Self := Blake2x256.
+  Module Impl__crate_fmt_Debug_for_crate_hash_Blake2x256.
+    Definition Self := crate.hash.Blake2x256.
     
     Definition fmt
         (self : ref Self)
@@ -20255,19 +20468,20 @@ Module hash.
     Global Instance I : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_Blake2x256.
+  End Impl__crate_fmt_Debug_for_crate_hash_Blake2x256.
   
-  Module Impl__crate_marker_Copy_for_Blake2x256.
-    Definition Self := Blake2x256.
+  Module Impl__crate_marker_Copy_for_crate_hash_Blake2x256.
+    Definition Self := crate.hash.Blake2x256.
     
     Global Instance I : _crate.marker.Copy.Trait Self :=
       _crate.marker.Copy.Build_Class _.
-  End Impl__crate_marker_Copy_for_Blake2x256.
+  End Impl__crate_marker_Copy_for_crate_hash_Blake2x256.
   
-  Module Impl__crate_clone_Clone_for_Blake2x256.
-    Definition Self := Blake2x256.
+  Module Impl__crate_clone_Clone_for_crate_hash_Blake2x256.
+    Definition Self := crate.hash.Blake2x256.
     
-    Definition clone (self : ref Self) : M Blake2x256 := self.["deref"].
+    Definition clone (self : ref Self) : M crate.hash.Blake2x256 :=
+      self.["deref"].
     
     Global Instance Method_clone : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -20276,19 +20490,22 @@ Module hash.
     Global Instance I : _crate.clone.Clone.Trait Self := {
       _crate.clone.Clone.clone := clone;
     }.
-  End Impl__crate_clone_Clone_for_Blake2x256.
+  End Impl__crate_clone_Clone_for_crate_hash_Blake2x256.
   
-  Module Impl__crate_marker_StructuralPartialEq_for_Blake2x256.
-    Definition Self := Blake2x256.
+  Module Impl__crate_marker_StructuralPartialEq_for_crate_hash_Blake2x256.
+    Definition Self := crate.hash.Blake2x256.
     
     Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
       _crate.marker.StructuralPartialEq.Build_Class _.
-  End Impl__crate_marker_StructuralPartialEq_for_Blake2x256.
+  End Impl__crate_marker_StructuralPartialEq_for_crate_hash_Blake2x256.
   
-  Module Impl__crate_cmp_PartialEq_for_Blake2x256.
-    Definition Self := Blake2x256.
+  Module Impl__crate_cmp_PartialEq_for_crate_hash_Blake2x256.
+    Definition Self := crate.hash.Blake2x256.
     
-    Definition eq (self : ref Self) (other : ref Blake2x256) : M bool :=
+    Definition eq
+        (self : ref Self)
+        (other : ref crate.hash.Blake2x256)
+        : M bool :=
       _crate.intrinsics.unreachable tt.
     
     Global Instance Method_eq : Notation.Dot "eq" := {
@@ -20298,17 +20515,17 @@ Module hash.
     Global Instance I : _crate.cmp.PartialEq.Trait Self := {
       _crate.cmp.PartialEq.eq := eq;
     }.
-  End Impl__crate_cmp_PartialEq_for_Blake2x256.
+  End Impl__crate_cmp_PartialEq_for_crate_hash_Blake2x256.
   
-  Module Impl__crate_marker_StructuralEq_for_Blake2x256.
-    Definition Self := Blake2x256.
+  Module Impl__crate_marker_StructuralEq_for_crate_hash_Blake2x256.
+    Definition Self := crate.hash.Blake2x256.
     
     Global Instance I : _crate.marker.StructuralEq.Trait Self :=
       _crate.marker.StructuralEq.Build_Class _.
-  End Impl__crate_marker_StructuralEq_for_Blake2x256.
+  End Impl__crate_marker_StructuralEq_for_crate_hash_Blake2x256.
   
-  Module Impl__crate_cmp_Eq_for_Blake2x256.
-    Definition Self := Blake2x256.
+  Module Impl__crate_cmp_Eq_for_crate_hash_Blake2x256.
+    Definition Self := crate.hash.Blake2x256.
     
     Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
       Pure tt.
@@ -20320,7 +20537,7 @@ Module hash.
     
     Global Instance I : _crate.cmp.Eq.Trait Self := {
     }.
-  End Impl__crate_cmp_Eq_for_Blake2x256.
+  End Impl__crate_cmp_Eq_for_crate_hash_Blake2x256.
   
   Module Blake2x128.
     Inductive t : Set :=
@@ -20328,8 +20545,8 @@ Module hash.
   End Blake2x128.
   Definition Blake2x128 := Blake2x128.t.
   
-  Module Impl__crate_fmt_Debug_for_Blake2x128.
-    Definition Self := Blake2x128.
+  Module Impl__crate_fmt_Debug_for_crate_hash_Blake2x128.
+    Definition Self := crate.hash.Blake2x128.
     
     Definition fmt
         (self : ref Self)
@@ -20344,19 +20561,20 @@ Module hash.
     Global Instance I : _crate.fmt.Debug.Trait Self := {
       _crate.fmt.Debug.fmt := fmt;
     }.
-  End Impl__crate_fmt_Debug_for_Blake2x128.
+  End Impl__crate_fmt_Debug_for_crate_hash_Blake2x128.
   
-  Module Impl__crate_marker_Copy_for_Blake2x128.
-    Definition Self := Blake2x128.
+  Module Impl__crate_marker_Copy_for_crate_hash_Blake2x128.
+    Definition Self := crate.hash.Blake2x128.
     
     Global Instance I : _crate.marker.Copy.Trait Self :=
       _crate.marker.Copy.Build_Class _.
-  End Impl__crate_marker_Copy_for_Blake2x128.
+  End Impl__crate_marker_Copy_for_crate_hash_Blake2x128.
   
-  Module Impl__crate_clone_Clone_for_Blake2x128.
-    Definition Self := Blake2x128.
+  Module Impl__crate_clone_Clone_for_crate_hash_Blake2x128.
+    Definition Self := crate.hash.Blake2x128.
     
-    Definition clone (self : ref Self) : M Blake2x128 := self.["deref"].
+    Definition clone (self : ref Self) : M crate.hash.Blake2x128 :=
+      self.["deref"].
     
     Global Instance Method_clone : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -20365,19 +20583,22 @@ Module hash.
     Global Instance I : _crate.clone.Clone.Trait Self := {
       _crate.clone.Clone.clone := clone;
     }.
-  End Impl__crate_clone_Clone_for_Blake2x128.
+  End Impl__crate_clone_Clone_for_crate_hash_Blake2x128.
   
-  Module Impl__crate_marker_StructuralPartialEq_for_Blake2x128.
-    Definition Self := Blake2x128.
+  Module Impl__crate_marker_StructuralPartialEq_for_crate_hash_Blake2x128.
+    Definition Self := crate.hash.Blake2x128.
     
     Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
       _crate.marker.StructuralPartialEq.Build_Class _.
-  End Impl__crate_marker_StructuralPartialEq_for_Blake2x128.
+  End Impl__crate_marker_StructuralPartialEq_for_crate_hash_Blake2x128.
   
-  Module Impl__crate_cmp_PartialEq_for_Blake2x128.
-    Definition Self := Blake2x128.
+  Module Impl__crate_cmp_PartialEq_for_crate_hash_Blake2x128.
+    Definition Self := crate.hash.Blake2x128.
     
-    Definition eq (self : ref Self) (other : ref Blake2x128) : M bool :=
+    Definition eq
+        (self : ref Self)
+        (other : ref crate.hash.Blake2x128)
+        : M bool :=
       _crate.intrinsics.unreachable tt.
     
     Global Instance Method_eq : Notation.Dot "eq" := {
@@ -20387,17 +20608,17 @@ Module hash.
     Global Instance I : _crate.cmp.PartialEq.Trait Self := {
       _crate.cmp.PartialEq.eq := eq;
     }.
-  End Impl__crate_cmp_PartialEq_for_Blake2x128.
+  End Impl__crate_cmp_PartialEq_for_crate_hash_Blake2x128.
   
-  Module Impl__crate_marker_StructuralEq_for_Blake2x128.
-    Definition Self := Blake2x128.
+  Module Impl__crate_marker_StructuralEq_for_crate_hash_Blake2x128.
+    Definition Self := crate.hash.Blake2x128.
     
     Global Instance I : _crate.marker.StructuralEq.Trait Self :=
       _crate.marker.StructuralEq.Build_Class _.
-  End Impl__crate_marker_StructuralEq_for_Blake2x128.
+  End Impl__crate_marker_StructuralEq_for_crate_hash_Blake2x128.
   
-  Module Impl__crate_cmp_Eq_for_Blake2x128.
-    Definition Self := Blake2x128.
+  Module Impl__crate_cmp_Eq_for_crate_hash_Blake2x128.
+    Definition Self := crate.hash.Blake2x128.
     
     Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
       Pure tt.
@@ -20409,7 +20630,7 @@ Module hash.
     
     Global Instance I : _crate.cmp.Eq.Trait Self := {
     }.
-  End Impl__crate_cmp_Eq_for_Blake2x128.
+  End Impl__crate_cmp_Eq_for_crate_hash_Blake2x128.
   
   Module private.
     Module Sealed.
@@ -20420,69 +20641,69 @@ Module hash.
     End Sealed.
   End private.
   
-  Module Impl_private_Sealed_for_Sha2x256.
-    Definition Self := Sha2x256.
+  Module Impl_private_Sealed_for_crate_hash_Sha2x256.
+    Definition Self := crate.hash.Sha2x256.
     
     Global Instance I : private.Sealed.Trait Self :=
       private.Sealed.Build_Class _.
-  End Impl_private_Sealed_for_Sha2x256.
+  End Impl_private_Sealed_for_crate_hash_Sha2x256.
   
-  Module Impl_private_Sealed_for_Keccak256.
-    Definition Self := Keccak256.
+  Module Impl_private_Sealed_for_crate_hash_Keccak256.
+    Definition Self := crate.hash.Keccak256.
     
     Global Instance I : private.Sealed.Trait Self :=
       private.Sealed.Build_Class _.
-  End Impl_private_Sealed_for_Keccak256.
+  End Impl_private_Sealed_for_crate_hash_Keccak256.
   
-  Module Impl_private_Sealed_for_Blake2x256.
-    Definition Self := Blake2x256.
+  Module Impl_private_Sealed_for_crate_hash_Blake2x256.
+    Definition Self := crate.hash.Blake2x256.
     
     Global Instance I : private.Sealed.Trait Self :=
       private.Sealed.Build_Class _.
-  End Impl_private_Sealed_for_Blake2x256.
+  End Impl_private_Sealed_for_crate_hash_Blake2x256.
   
-  Module Impl_private_Sealed_for_Blake2x128.
-    Definition Self := Blake2x128.
+  Module Impl_private_Sealed_for_crate_hash_Blake2x128.
+    Definition Self := crate.hash.Blake2x128.
     
     Global Instance I : private.Sealed.Trait Self :=
       private.Sealed.Build_Class _.
-  End Impl_private_Sealed_for_Blake2x128.
+  End Impl_private_Sealed_for_crate_hash_Blake2x128.
   
-  Module Impl_HashOutput_for_Sha2x256.
-    Definition Self := Sha2x256.
+  Module Impl_HashOutput_for_crate_hash_Sha2x256.
+    Definition Self := crate.hash.Sha2x256.
     
     Definition Type : Set := list u8.
     
     Global Instance I : HashOutput.Trait Self := {
     }.
-  End Impl_HashOutput_for_Sha2x256.
+  End Impl_HashOutput_for_crate_hash_Sha2x256.
   
-  Module Impl_HashOutput_for_Keccak256.
-    Definition Self := Keccak256.
+  Module Impl_HashOutput_for_crate_hash_Keccak256.
+    Definition Self := crate.hash.Keccak256.
     
     Definition Type : Set := list u8.
     
     Global Instance I : HashOutput.Trait Self := {
     }.
-  End Impl_HashOutput_for_Keccak256.
+  End Impl_HashOutput_for_crate_hash_Keccak256.
   
-  Module Impl_HashOutput_for_Blake2x256.
-    Definition Self := Blake2x256.
+  Module Impl_HashOutput_for_crate_hash_Blake2x256.
+    Definition Self := crate.hash.Blake2x256.
     
     Definition Type : Set := list u8.
     
     Global Instance I : HashOutput.Trait Self := {
     }.
-  End Impl_HashOutput_for_Blake2x256.
+  End Impl_HashOutput_for_crate_hash_Blake2x256.
   
-  Module Impl_HashOutput_for_Blake2x128.
-    Definition Self := Blake2x128.
+  Module Impl_HashOutput_for_crate_hash_Blake2x128.
+    Definition Self := crate.hash.Blake2x128.
     
     Definition Type : Set := list u8.
     
     Global Instance I : HashOutput.Trait Self := {
     }.
-  End Impl_HashOutput_for_Blake2x128.
+  End Impl_HashOutput_for_crate_hash_Blake2x128.
 End hash.
 
 Module HashOutput.
@@ -20511,8 +20732,8 @@ Module Sha2x256.
 End Sha2x256.
 Definition Sha2x256 := Sha2x256.t.
 
-Module Impl__crate_fmt_Debug_for_Sha2x256.
-  Definition Self := Sha2x256.
+Module Impl__crate_fmt_Debug_for_crate_hash_Sha2x256.
+  Definition Self := crate.hash.Sha2x256.
   
   Definition fmt
       (self : ref Self)
@@ -20527,19 +20748,19 @@ Module Impl__crate_fmt_Debug_for_Sha2x256.
   Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_Sha2x256.
+End Impl__crate_fmt_Debug_for_crate_hash_Sha2x256.
 
-Module Impl__crate_marker_Copy_for_Sha2x256.
-  Definition Self := Sha2x256.
+Module Impl__crate_marker_Copy_for_crate_hash_Sha2x256.
+  Definition Self := crate.hash.Sha2x256.
   
   Global Instance I : _crate.marker.Copy.Trait Self :=
     _crate.marker.Copy.Build_Class _.
-End Impl__crate_marker_Copy_for_Sha2x256.
+End Impl__crate_marker_Copy_for_crate_hash_Sha2x256.
 
-Module Impl__crate_clone_Clone_for_Sha2x256.
-  Definition Self := Sha2x256.
+Module Impl__crate_clone_Clone_for_crate_hash_Sha2x256.
+  Definition Self := crate.hash.Sha2x256.
   
-  Definition clone (self : ref Self) : M Sha2x256 := self.["deref"].
+  Definition clone (self : ref Self) : M crate.hash.Sha2x256 := self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -20548,19 +20769,19 @@ Module Impl__crate_clone_Clone_for_Sha2x256.
   Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_Sha2x256.
+End Impl__crate_clone_Clone_for_crate_hash_Sha2x256.
 
-Module Impl__crate_marker_StructuralPartialEq_for_Sha2x256.
-  Definition Self := Sha2x256.
+Module Impl__crate_marker_StructuralPartialEq_for_crate_hash_Sha2x256.
+  Definition Self := crate.hash.Sha2x256.
   
   Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
-End Impl__crate_marker_StructuralPartialEq_for_Sha2x256.
+End Impl__crate_marker_StructuralPartialEq_for_crate_hash_Sha2x256.
 
-Module Impl__crate_cmp_PartialEq_for_Sha2x256.
-  Definition Self := Sha2x256.
+Module Impl__crate_cmp_PartialEq_for_crate_hash_Sha2x256.
+  Definition Self := crate.hash.Sha2x256.
   
-  Definition eq (self : ref Self) (other : ref Sha2x256) : M bool :=
+  Definition eq (self : ref Self) (other : ref crate.hash.Sha2x256) : M bool :=
     _crate.intrinsics.unreachable tt.
   
   Global Instance Method_eq : Notation.Dot "eq" := {
@@ -20570,17 +20791,17 @@ Module Impl__crate_cmp_PartialEq_for_Sha2x256.
   Global Instance I : _crate.cmp.PartialEq.Trait Self := {
     _crate.cmp.PartialEq.eq := eq;
   }.
-End Impl__crate_cmp_PartialEq_for_Sha2x256.
+End Impl__crate_cmp_PartialEq_for_crate_hash_Sha2x256.
 
-Module Impl__crate_marker_StructuralEq_for_Sha2x256.
-  Definition Self := Sha2x256.
+Module Impl__crate_marker_StructuralEq_for_crate_hash_Sha2x256.
+  Definition Self := crate.hash.Sha2x256.
   
   Global Instance I : _crate.marker.StructuralEq.Trait Self :=
     _crate.marker.StructuralEq.Build_Class _.
-End Impl__crate_marker_StructuralEq_for_Sha2x256.
+End Impl__crate_marker_StructuralEq_for_crate_hash_Sha2x256.
 
-Module Impl__crate_cmp_Eq_for_Sha2x256.
-  Definition Self := Sha2x256.
+Module Impl__crate_cmp_Eq_for_crate_hash_Sha2x256.
+  Definition Self := crate.hash.Sha2x256.
   
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit := Pure tt.
   
@@ -20591,7 +20812,7 @@ Module Impl__crate_cmp_Eq_for_Sha2x256.
   
   Global Instance I : _crate.cmp.Eq.Trait Self := {
   }.
-End Impl__crate_cmp_Eq_for_Sha2x256.
+End Impl__crate_cmp_Eq_for_crate_hash_Sha2x256.
 
 Module Keccak256.
   Inductive t : Set :=
@@ -20599,8 +20820,8 @@ Module Keccak256.
 End Keccak256.
 Definition Keccak256 := Keccak256.t.
 
-Module Impl__crate_fmt_Debug_for_Keccak256.
-  Definition Self := Keccak256.
+Module Impl__crate_fmt_Debug_for_crate_hash_Keccak256.
+  Definition Self := crate.hash.Keccak256.
   
   Definition fmt
       (self : ref Self)
@@ -20615,19 +20836,19 @@ Module Impl__crate_fmt_Debug_for_Keccak256.
   Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_Keccak256.
+End Impl__crate_fmt_Debug_for_crate_hash_Keccak256.
 
-Module Impl__crate_marker_Copy_for_Keccak256.
-  Definition Self := Keccak256.
+Module Impl__crate_marker_Copy_for_crate_hash_Keccak256.
+  Definition Self := crate.hash.Keccak256.
   
   Global Instance I : _crate.marker.Copy.Trait Self :=
     _crate.marker.Copy.Build_Class _.
-End Impl__crate_marker_Copy_for_Keccak256.
+End Impl__crate_marker_Copy_for_crate_hash_Keccak256.
 
-Module Impl__crate_clone_Clone_for_Keccak256.
-  Definition Self := Keccak256.
+Module Impl__crate_clone_Clone_for_crate_hash_Keccak256.
+  Definition Self := crate.hash.Keccak256.
   
-  Definition clone (self : ref Self) : M Keccak256 := self.["deref"].
+  Definition clone (self : ref Self) : M crate.hash.Keccak256 := self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -20636,19 +20857,19 @@ Module Impl__crate_clone_Clone_for_Keccak256.
   Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_Keccak256.
+End Impl__crate_clone_Clone_for_crate_hash_Keccak256.
 
-Module Impl__crate_marker_StructuralPartialEq_for_Keccak256.
-  Definition Self := Keccak256.
+Module Impl__crate_marker_StructuralPartialEq_for_crate_hash_Keccak256.
+  Definition Self := crate.hash.Keccak256.
   
   Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
-End Impl__crate_marker_StructuralPartialEq_for_Keccak256.
+End Impl__crate_marker_StructuralPartialEq_for_crate_hash_Keccak256.
 
-Module Impl__crate_cmp_PartialEq_for_Keccak256.
-  Definition Self := Keccak256.
+Module Impl__crate_cmp_PartialEq_for_crate_hash_Keccak256.
+  Definition Self := crate.hash.Keccak256.
   
-  Definition eq (self : ref Self) (other : ref Keccak256) : M bool :=
+  Definition eq (self : ref Self) (other : ref crate.hash.Keccak256) : M bool :=
     _crate.intrinsics.unreachable tt.
   
   Global Instance Method_eq : Notation.Dot "eq" := {
@@ -20658,17 +20879,17 @@ Module Impl__crate_cmp_PartialEq_for_Keccak256.
   Global Instance I : _crate.cmp.PartialEq.Trait Self := {
     _crate.cmp.PartialEq.eq := eq;
   }.
-End Impl__crate_cmp_PartialEq_for_Keccak256.
+End Impl__crate_cmp_PartialEq_for_crate_hash_Keccak256.
 
-Module Impl__crate_marker_StructuralEq_for_Keccak256.
-  Definition Self := Keccak256.
+Module Impl__crate_marker_StructuralEq_for_crate_hash_Keccak256.
+  Definition Self := crate.hash.Keccak256.
   
   Global Instance I : _crate.marker.StructuralEq.Trait Self :=
     _crate.marker.StructuralEq.Build_Class _.
-End Impl__crate_marker_StructuralEq_for_Keccak256.
+End Impl__crate_marker_StructuralEq_for_crate_hash_Keccak256.
 
-Module Impl__crate_cmp_Eq_for_Keccak256.
-  Definition Self := Keccak256.
+Module Impl__crate_cmp_Eq_for_crate_hash_Keccak256.
+  Definition Self := crate.hash.Keccak256.
   
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit := Pure tt.
   
@@ -20679,7 +20900,7 @@ Module Impl__crate_cmp_Eq_for_Keccak256.
   
   Global Instance I : _crate.cmp.Eq.Trait Self := {
   }.
-End Impl__crate_cmp_Eq_for_Keccak256.
+End Impl__crate_cmp_Eq_for_crate_hash_Keccak256.
 
 Module Blake2x256.
   Inductive t : Set :=
@@ -20687,8 +20908,8 @@ Module Blake2x256.
 End Blake2x256.
 Definition Blake2x256 := Blake2x256.t.
 
-Module Impl__crate_fmt_Debug_for_Blake2x256.
-  Definition Self := Blake2x256.
+Module Impl__crate_fmt_Debug_for_crate_hash_Blake2x256.
+  Definition Self := crate.hash.Blake2x256.
   
   Definition fmt
       (self : ref Self)
@@ -20703,19 +20924,20 @@ Module Impl__crate_fmt_Debug_for_Blake2x256.
   Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_Blake2x256.
+End Impl__crate_fmt_Debug_for_crate_hash_Blake2x256.
 
-Module Impl__crate_marker_Copy_for_Blake2x256.
-  Definition Self := Blake2x256.
+Module Impl__crate_marker_Copy_for_crate_hash_Blake2x256.
+  Definition Self := crate.hash.Blake2x256.
   
   Global Instance I : _crate.marker.Copy.Trait Self :=
     _crate.marker.Copy.Build_Class _.
-End Impl__crate_marker_Copy_for_Blake2x256.
+End Impl__crate_marker_Copy_for_crate_hash_Blake2x256.
 
-Module Impl__crate_clone_Clone_for_Blake2x256.
-  Definition Self := Blake2x256.
+Module Impl__crate_clone_Clone_for_crate_hash_Blake2x256.
+  Definition Self := crate.hash.Blake2x256.
   
-  Definition clone (self : ref Self) : M Blake2x256 := self.["deref"].
+  Definition clone (self : ref Self) : M crate.hash.Blake2x256 :=
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -20724,19 +20946,22 @@ Module Impl__crate_clone_Clone_for_Blake2x256.
   Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_Blake2x256.
+End Impl__crate_clone_Clone_for_crate_hash_Blake2x256.
 
-Module Impl__crate_marker_StructuralPartialEq_for_Blake2x256.
-  Definition Self := Blake2x256.
+Module Impl__crate_marker_StructuralPartialEq_for_crate_hash_Blake2x256.
+  Definition Self := crate.hash.Blake2x256.
   
   Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
-End Impl__crate_marker_StructuralPartialEq_for_Blake2x256.
+End Impl__crate_marker_StructuralPartialEq_for_crate_hash_Blake2x256.
 
-Module Impl__crate_cmp_PartialEq_for_Blake2x256.
-  Definition Self := Blake2x256.
+Module Impl__crate_cmp_PartialEq_for_crate_hash_Blake2x256.
+  Definition Self := crate.hash.Blake2x256.
   
-  Definition eq (self : ref Self) (other : ref Blake2x256) : M bool :=
+  Definition eq
+      (self : ref Self)
+      (other : ref crate.hash.Blake2x256)
+      : M bool :=
     _crate.intrinsics.unreachable tt.
   
   Global Instance Method_eq : Notation.Dot "eq" := {
@@ -20746,17 +20971,17 @@ Module Impl__crate_cmp_PartialEq_for_Blake2x256.
   Global Instance I : _crate.cmp.PartialEq.Trait Self := {
     _crate.cmp.PartialEq.eq := eq;
   }.
-End Impl__crate_cmp_PartialEq_for_Blake2x256.
+End Impl__crate_cmp_PartialEq_for_crate_hash_Blake2x256.
 
-Module Impl__crate_marker_StructuralEq_for_Blake2x256.
-  Definition Self := Blake2x256.
+Module Impl__crate_marker_StructuralEq_for_crate_hash_Blake2x256.
+  Definition Self := crate.hash.Blake2x256.
   
   Global Instance I : _crate.marker.StructuralEq.Trait Self :=
     _crate.marker.StructuralEq.Build_Class _.
-End Impl__crate_marker_StructuralEq_for_Blake2x256.
+End Impl__crate_marker_StructuralEq_for_crate_hash_Blake2x256.
 
-Module Impl__crate_cmp_Eq_for_Blake2x256.
-  Definition Self := Blake2x256.
+Module Impl__crate_cmp_Eq_for_crate_hash_Blake2x256.
+  Definition Self := crate.hash.Blake2x256.
   
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit := Pure tt.
   
@@ -20767,7 +20992,7 @@ Module Impl__crate_cmp_Eq_for_Blake2x256.
   
   Global Instance I : _crate.cmp.Eq.Trait Self := {
   }.
-End Impl__crate_cmp_Eq_for_Blake2x256.
+End Impl__crate_cmp_Eq_for_crate_hash_Blake2x256.
 
 Module Blake2x128.
   Inductive t : Set :=
@@ -20775,8 +21000,8 @@ Module Blake2x128.
 End Blake2x128.
 Definition Blake2x128 := Blake2x128.t.
 
-Module Impl__crate_fmt_Debug_for_Blake2x128.
-  Definition Self := Blake2x128.
+Module Impl__crate_fmt_Debug_for_crate_hash_Blake2x128.
+  Definition Self := crate.hash.Blake2x128.
   
   Definition fmt
       (self : ref Self)
@@ -20791,19 +21016,20 @@ Module Impl__crate_fmt_Debug_for_Blake2x128.
   Global Instance I : _crate.fmt.Debug.Trait Self := {
     _crate.fmt.Debug.fmt := fmt;
   }.
-End Impl__crate_fmt_Debug_for_Blake2x128.
+End Impl__crate_fmt_Debug_for_crate_hash_Blake2x128.
 
-Module Impl__crate_marker_Copy_for_Blake2x128.
-  Definition Self := Blake2x128.
+Module Impl__crate_marker_Copy_for_crate_hash_Blake2x128.
+  Definition Self := crate.hash.Blake2x128.
   
   Global Instance I : _crate.marker.Copy.Trait Self :=
     _crate.marker.Copy.Build_Class _.
-End Impl__crate_marker_Copy_for_Blake2x128.
+End Impl__crate_marker_Copy_for_crate_hash_Blake2x128.
 
-Module Impl__crate_clone_Clone_for_Blake2x128.
-  Definition Self := Blake2x128.
+Module Impl__crate_clone_Clone_for_crate_hash_Blake2x128.
+  Definition Self := crate.hash.Blake2x128.
   
-  Definition clone (self : ref Self) : M Blake2x128 := self.["deref"].
+  Definition clone (self : ref Self) : M crate.hash.Blake2x128 :=
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -20812,19 +21038,22 @@ Module Impl__crate_clone_Clone_for_Blake2x128.
   Global Instance I : _crate.clone.Clone.Trait Self := {
     _crate.clone.Clone.clone := clone;
   }.
-End Impl__crate_clone_Clone_for_Blake2x128.
+End Impl__crate_clone_Clone_for_crate_hash_Blake2x128.
 
-Module Impl__crate_marker_StructuralPartialEq_for_Blake2x128.
-  Definition Self := Blake2x128.
+Module Impl__crate_marker_StructuralPartialEq_for_crate_hash_Blake2x128.
+  Definition Self := crate.hash.Blake2x128.
   
   Global Instance I : _crate.marker.StructuralPartialEq.Trait Self :=
     _crate.marker.StructuralPartialEq.Build_Class _.
-End Impl__crate_marker_StructuralPartialEq_for_Blake2x128.
+End Impl__crate_marker_StructuralPartialEq_for_crate_hash_Blake2x128.
 
-Module Impl__crate_cmp_PartialEq_for_Blake2x128.
-  Definition Self := Blake2x128.
+Module Impl__crate_cmp_PartialEq_for_crate_hash_Blake2x128.
+  Definition Self := crate.hash.Blake2x128.
   
-  Definition eq (self : ref Self) (other : ref Blake2x128) : M bool :=
+  Definition eq
+      (self : ref Self)
+      (other : ref crate.hash.Blake2x128)
+      : M bool :=
     _crate.intrinsics.unreachable tt.
   
   Global Instance Method_eq : Notation.Dot "eq" := {
@@ -20834,17 +21063,17 @@ Module Impl__crate_cmp_PartialEq_for_Blake2x128.
   Global Instance I : _crate.cmp.PartialEq.Trait Self := {
     _crate.cmp.PartialEq.eq := eq;
   }.
-End Impl__crate_cmp_PartialEq_for_Blake2x128.
+End Impl__crate_cmp_PartialEq_for_crate_hash_Blake2x128.
 
-Module Impl__crate_marker_StructuralEq_for_Blake2x128.
-  Definition Self := Blake2x128.
+Module Impl__crate_marker_StructuralEq_for_crate_hash_Blake2x128.
+  Definition Self := crate.hash.Blake2x128.
   
   Global Instance I : _crate.marker.StructuralEq.Trait Self :=
     _crate.marker.StructuralEq.Build_Class _.
-End Impl__crate_marker_StructuralEq_for_Blake2x128.
+End Impl__crate_marker_StructuralEq_for_crate_hash_Blake2x128.
 
-Module Impl__crate_cmp_Eq_for_Blake2x128.
-  Definition Self := Blake2x128.
+Module Impl__crate_cmp_Eq_for_crate_hash_Blake2x128.
+  Definition Self := crate.hash.Blake2x128.
   
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit := Pure tt.
   
@@ -20855,7 +21084,7 @@ Module Impl__crate_cmp_Eq_for_Blake2x128.
   
   Global Instance I : _crate.cmp.Eq.Trait Self := {
   }.
-End Impl__crate_cmp_Eq_for_Blake2x128.
+End Impl__crate_cmp_Eq_for_crate_hash_Blake2x128.
 
 Module private.
   Module Sealed.
@@ -20873,65 +21102,65 @@ Module Sealed.
   Global Set Primitive Projections.
 End Sealed.
 
-Module Impl_private_Sealed_for_Sha2x256.
-  Definition Self := Sha2x256.
+Module Impl_private_Sealed_for_crate_hash_Sha2x256.
+  Definition Self := crate.hash.Sha2x256.
   
   Global Instance I : private.Sealed.Trait Self := private.Sealed.Build_Class _.
-End Impl_private_Sealed_for_Sha2x256.
+End Impl_private_Sealed_for_crate_hash_Sha2x256.
 
-Module Impl_private_Sealed_for_Keccak256.
-  Definition Self := Keccak256.
+Module Impl_private_Sealed_for_crate_hash_Keccak256.
+  Definition Self := crate.hash.Keccak256.
   
   Global Instance I : private.Sealed.Trait Self := private.Sealed.Build_Class _.
-End Impl_private_Sealed_for_Keccak256.
+End Impl_private_Sealed_for_crate_hash_Keccak256.
 
-Module Impl_private_Sealed_for_Blake2x256.
-  Definition Self := Blake2x256.
+Module Impl_private_Sealed_for_crate_hash_Blake2x256.
+  Definition Self := crate.hash.Blake2x256.
   
   Global Instance I : private.Sealed.Trait Self := private.Sealed.Build_Class _.
-End Impl_private_Sealed_for_Blake2x256.
+End Impl_private_Sealed_for_crate_hash_Blake2x256.
 
-Module Impl_private_Sealed_for_Blake2x128.
-  Definition Self := Blake2x128.
+Module Impl_private_Sealed_for_crate_hash_Blake2x128.
+  Definition Self := crate.hash.Blake2x128.
   
   Global Instance I : private.Sealed.Trait Self := private.Sealed.Build_Class _.
-End Impl_private_Sealed_for_Blake2x128.
+End Impl_private_Sealed_for_crate_hash_Blake2x128.
 
-Module Impl_HashOutput_for_Sha2x256.
-  Definition Self := Sha2x256.
+Module Impl_HashOutput_for_crate_hash_Sha2x256.
+  Definition Self := crate.hash.Sha2x256.
   
   Definition Type : Set := list u8.
   
   Global Instance I : HashOutput.Trait Self := {
   }.
-End Impl_HashOutput_for_Sha2x256.
+End Impl_HashOutput_for_crate_hash_Sha2x256.
 
-Module Impl_HashOutput_for_Keccak256.
-  Definition Self := Keccak256.
+Module Impl_HashOutput_for_crate_hash_Keccak256.
+  Definition Self := crate.hash.Keccak256.
   
   Definition Type : Set := list u8.
   
   Global Instance I : HashOutput.Trait Self := {
   }.
-End Impl_HashOutput_for_Keccak256.
+End Impl_HashOutput_for_crate_hash_Keccak256.
 
-Module Impl_HashOutput_for_Blake2x256.
-  Definition Self := Blake2x256.
+Module Impl_HashOutput_for_crate_hash_Blake2x256.
+  Definition Self := crate.hash.Blake2x256.
   
   Definition Type : Set := list u8.
   
   Global Instance I : HashOutput.Trait Self := {
   }.
-End Impl_HashOutput_for_Blake2x256.
+End Impl_HashOutput_for_crate_hash_Blake2x256.
 
-Module Impl_HashOutput_for_Blake2x128.
-  Definition Self := Blake2x128.
+Module Impl_HashOutput_for_crate_hash_Blake2x128.
+  Definition Self := crate.hash.Blake2x128.
   
   Definition Type : Set := list u8.
   
   Global Instance I : HashOutput.Trait Self := {
   }.
-End Impl_HashOutput_for_Blake2x128.
+End Impl_HashOutput_for_crate_hash_Blake2x128.
 
 Module topics.
   Module TopicsBuilderBackend.
@@ -22918,12 +23147,6 @@ Module Impl_scale_Encode_for_PrefixedValue_X.
 End Impl_scale_Encode_for_PrefixedValue_X.
 
 Module types.
-  Module AccountId := ink_primitives.AccountId.
-  Definition AccountId := AccountId.t.
-  
-  Module Hash := ink_primitives.Hash.
-  Definition Hash := Hash.t.
-  
   Module FromLittleEndian.
     Class Trait (Self : Set) : Set := {
       Bytes : Set;
@@ -23036,12 +23259,12 @@ Module types.
     Global Set Primitive Projections.
   End AccountIdGuard.
   
-  Module Impl_AccountIdGuard_for_AccountId.
-    Definition Self := AccountId.
+  Module Impl_AccountIdGuard_for_ink_primitives_AccountId.
+    Definition Self := ink_primitives.AccountId.
     
     Global Instance I : AccountIdGuard.Trait Self :=
       AccountIdGuard.Build_Class _.
-  End Impl_AccountIdGuard_for_AccountId.
+  End Impl_AccountIdGuard_for_ink_primitives_AccountId.
   
   Module CodecAsType.
     Unset Primitive Projections.
@@ -23196,11 +23419,11 @@ Module types.
       Notation.double_colon := MAX_EVENT_TOPICS;
     }.
     
-    Definition AccountId : Set := AccountId.
+    Definition AccountId : Set := ink_primitives.AccountId.
     
     Definition Balance : Set := Balance.
     
-    Definition Hash : Set := Hash.
+    Definition Hash : Set := ink_primitives.Hash.
     
     Definition Timestamp : Set := Timestamp.
     
@@ -23221,12 +23444,6 @@ Module types.
   
   Definition BlockNumber : Set := u32.
 End types.
-
-Module AccountId := ink_primitives.AccountId.
-Definition AccountId := AccountId.t.
-
-Module Hash := ink_primitives.Hash.
-Definition Hash := Hash.t.
 
 Module FromLittleEndian.
   Class Trait (Self : Set) : Set := {
@@ -23340,11 +23557,11 @@ Module AccountIdGuard.
   Global Set Primitive Projections.
 End AccountIdGuard.
 
-Module Impl_AccountIdGuard_for_AccountId.
-  Definition Self := AccountId.
+Module Impl_AccountIdGuard_for_ink_primitives_AccountId.
+  Definition Self := ink_primitives.AccountId.
   
   Global Instance I : AccountIdGuard.Trait Self := AccountIdGuard.Build_Class _.
-End Impl_AccountIdGuard_for_AccountId.
+End Impl_AccountIdGuard_for_ink_primitives_AccountId.
 
 Module CodecAsType.
   Unset Primitive Projections.
@@ -23554,11 +23771,11 @@ Module Impl_Environment_for_DefaultEnvironment.
     Notation.double_colon := MAX_EVENT_TOPICS;
   }.
   
-  Definition AccountId : Set := AccountId.
+  Definition AccountId : Set := ink_primitives.AccountId.
   
   Definition Balance : Set := Balance.
   
-  Definition Hash : Set := Hash.
+  Definition Hash : Set := ink_primitives.Hash.
   
   Definition Timestamp : Set := Timestamp.
   
@@ -23582,26 +23799,5 @@ Definition BlockNumber : Set := u32.
 Module test := self.engine.off_chain.test_api.
 
 Import self.api.
-
-Module CallFlags := self.backend.CallFlags.
-Definition CallFlags := CallFlags.t.
-
-Module ReturnFlags := self.backend.ReturnFlags.
-Definition ReturnFlags := ReturnFlags.t.
-
-Module Error := self.error.Error.
-Definition Error := Error.t.
-
-Module Result := self.error.Result.
-Definition Result := Result.t.
-
-Module DefaultEnvironment := self.types.DefaultEnvironment.
-Definition DefaultEnvironment := DefaultEnvironment.t.
-
-Module Gas := self.types.Gas.
-Definition Gas := Gas.t.
-
-Module NoChainExtension := self.types.NoChainExtension.
-Definition NoChainExtension := NoChainExtension.t.
 
 Module format := ink_prelude.format.

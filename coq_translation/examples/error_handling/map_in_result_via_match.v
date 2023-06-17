@@ -3,13 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module ParseIntError := std.num.ParseIntError.
-Definition ParseIntError := ParseIntError.t.
-
 Definition multiply
     (first_number_str : ref str)
     (second_number_str : ref str)
-    : M (Result i32 ParseIntError) :=
+    : M (Result i32 std.num.ParseIntError) :=
   let* α0 := first_number_str.["parse"] in
   match α0 with
   | Ok first_number =>
@@ -23,7 +20,7 @@ Definition multiply
   | Err e => Pure (Err e)
   end.
 
-Definition print (result : Result i32 ParseIntError) : M unit :=
+Definition print (result : Result i32 std.num.ParseIntError) : M unit :=
   match result with
   | Ok n =>
     let* _ :=

@@ -3,11 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module ParseIntError := std.num.ParseIntError.
-Definition ParseIntError := ParseIntError.t.
-
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M (Result unit ParseIntError) :=
+Definition main (_ : unit) : M (Result unit std.num.ParseIntError) :=
   let number_str := "10" in
   let* number :=
     let* α0 := number_str.["parse"] in

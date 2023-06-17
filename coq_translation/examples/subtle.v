@@ -3,9 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.core.prelude.rust_2015.
 
-Module Option := core.option.Option.
-Definition Option := Option.t.
-
 Module Choice.
   Record t : Set := { _ : u8;}.
   
@@ -1300,10 +1297,10 @@ Module Impl__crate_fmt_Debug_for_CtOption_T.
   }.
 End Impl__crate_fmt_Debug_for_CtOption_T.
 
-Module Impl_From_for_Option_T.
-  Definition Self := Option T.
+Module Impl_From_for_core_option_Option_T.
+  Definition Self := core.option.Option T.
   
-  Definition from (source : CtOption T) : M (Option T) :=
+  Definition from (source : CtOption T) : M (core.option.Option T) :=
     let* α0 := source.["is_some"] in
     let* α1 := α0.["unwrap_u8"] in
     let* α2 := α1.["eq"] 1 in
@@ -1320,7 +1317,7 @@ Module Impl_From_for_Option_T.
   Global Instance I T : From.Trait Self CtOption T := {
     From.from := from;
   }.
-End Impl_From_for_Option_T.
+End Impl_From_for_core_option_Option_T.
 
 Module ImplCtOption T.
   Definition Self := CtOption T.

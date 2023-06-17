@@ -3,17 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module Arc := std.sync.Arc.
-Definition Arc := Arc.t.
-
 Module thread := std.thread.
-
-Module Duration := std.time.Duration.
-Definition Duration := Duration.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* apple := Arc::["new"] "the same apple" in
+  let* apple := std.sync.Arc::["new"] "the same apple" in
   let* _ :=
     let* α0 := LangItem Range {| Range.start := 0; Range.end := 10; |} in
     match α0 with
@@ -24,7 +18,7 @@ Definition main (_ : unit) : M unit :=
           match α0 with
           | None => Pure Break
           | Some {| Some.0 := _; |} =>
-            let* apple := Arc::["clone"] (addr_of apple) in
+            let* apple := std.sync.Arc::["clone"] (addr_of apple) in
             let* _ :=
               thread.spawn
                 (fun  =>
@@ -47,6 +41,6 @@ Definition main (_ : unit) : M unit :=
         for
     end in
   let* _ :=
-    let* α0 := Duration::["from_secs"] 1 in
+    let* α0 := std.time.Duration::["from_secs"] 1 in
     thread.sleep α0 in
   Pure tt.

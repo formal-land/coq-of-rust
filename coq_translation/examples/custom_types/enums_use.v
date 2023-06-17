@@ -60,5 +60,3 @@ Definition main (_ : unit) : M unit :=
 Module Poor := crate.Status.Poor.
 
 Module Rich := crate.Status.Rich.
-
-Import crate.Work.

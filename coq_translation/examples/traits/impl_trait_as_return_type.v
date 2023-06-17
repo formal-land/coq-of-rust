@@ -5,13 +5,13 @@ Import Root.std.prelude.rust_2015.
 
 Module iter := std.iter.
 
-Module IntoIter := std.vec.IntoIter.
-Definition IntoIter := IntoIter.t.
-
 Definition combine_vecs_explicit_return_type
     (v : Vec i32)
     (u : Vec i32)
-    : M (iter.Cycle (iter.Chain (IntoIter i32) (IntoIter i32))) :=
+    :
+      M
+        (iter.Cycle
+          (iter.Chain (std.vec.IntoIter i32) (std.vec.IntoIter i32))) :=
   let* α0 := v.["into_iter"] in
   let* α1 := u.["into_iter"] in
   let* α2 := α0.["chain"] α1 in

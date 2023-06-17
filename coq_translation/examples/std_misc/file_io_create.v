@@ -14,20 +14,14 @@ cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 ").
 
-Module File := std.fs.File.
-Definition File := File.t.
-
 Import std.io.prelude.
-
-Module Path := std.path.Path.
-Definition Path := Path.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* path := Path::["new"] "lorem_ipsum.txt" in
+  let* path := std.path.Path::["new"] "lorem_ipsum.txt" in
   let* display := path.["display"] in
   let* file :=
-    let* α0 := File::["create"] (addr_of path) in
+    let* α0 := std.fs.File::["create"] (addr_of path) in
     match α0 with
     | Err why =>
       let* α0 := format_argument::["new_display"] (addr_of display) in

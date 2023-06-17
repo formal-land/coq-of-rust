@@ -1,3 +1,4 @@
+use crate::env::*;
 use crate::path::*;
 use crate::render::*;
 
@@ -21,39 +22,49 @@ pub enum Pattern {
 }
 
 /// The function [compile_pattern] translates a hir pattern to a coq-of-rust pattern.
-pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
+pub(crate) fn compile_pattern(tcx: &TyCtxt, env: &Env, pat: &Pat) -> Pattern {
     match &pat.kind {
         PatKind::Wild => Pattern::Wild,
         PatKind::Binding(_, _, ident, pat) => {
             let name = ident.name.to_string();
             match pat {
                 None => Pattern::Variable(ident.name.to_string()),
-                Some(pat) => Pattern::Binding(name, Box::new(compile_pattern(tcx, pat))),
+                Some(pat) => Pattern::Binding(name, Box::new(compile_pattern(tcx, env, pat))),
             }
         }
         PatKind::Struct(qpath, pats, _) => {
-            let path = compile_qpath(qpath);
+            let path = compile_qpath(env, qpath);
             let pats = pats
                 .iter()
-                .map(|pat| (pat.ident.name.to_string(), compile_pattern(tcx, pat.pat)))
+                .map(|pat| {
+                    (
+                        pat.ident.name.to_string(),
+                        compile_pattern(tcx, env, pat.pat),
+                    )
+                })
                 .collect();
             let struct_or_variant = StructOrVariant::of_qpath(tcx, qpath);
             Pattern::StructStruct(path, pats, struct_or_variant)
         }
         PatKind::TupleStruct(qpath, pats, _) => {
-            let path = compile_qpath(qpath);
-            let pats = pats.iter().map(|pat| compile_pattern(tcx, pat)).collect();
+            let path = compile_qpath(env, qpath);
+            let pats = pats
+                .iter()
+                .map(|pat| compile_pattern(tcx, env, pat))
+                .collect();
             let struct_or_variant = StructOrVariant::of_qpath(tcx, qpath);
             Pattern::StructTuple(path, pats, struct_or_variant)
         }
-        PatKind::Or(pats) => {
-            Pattern::Or(pats.iter().map(|pat| compile_pattern(tcx, pat)).collect())
-        }
-        PatKind::Path(qpath) => Pattern::Path(compile_qpath(qpath)),
+        PatKind::Or(pats) => Pattern::Or(
+            pats.iter()
+                .map(|pat| compile_pattern(tcx, env, pat))
+                .collect(),
+        ),
+        PatKind::Path(qpath) => Pattern::Path(compile_qpath(env, qpath)),
         PatKind::Tuple(pats, dot_dot_pos) => {
             let mut pats = pats
                 .iter()
-                .map(|pat| compile_pattern(tcx, pat))
+                .map(|pat| compile_pattern(tcx, env, pat))
                 .collect::<Vec<_>>();
             match dot_dot_pos.as_opt_usize() {
                 None => (),
@@ -70,8 +81,8 @@ pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
             }
             Pattern::Tuple(pats)
         }
-        PatKind::Box(pat) => compile_pattern(tcx, pat),
-        PatKind::Ref(pat, _) => compile_pattern(tcx, pat),
+        PatKind::Box(pat) => compile_pattern(tcx, env, pat),
+        PatKind::Ref(pat, _) => compile_pattern(tcx, env, pat),
         PatKind::Lit(expr) => match expr.kind {
             ExprKind::Lit(lit) => Pattern::Lit(lit.node.clone()),
             _ => {

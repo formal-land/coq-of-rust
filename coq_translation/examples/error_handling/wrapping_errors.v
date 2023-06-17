@@ -7,15 +7,12 @@ Module error := std.error.
 
 Module fmt := std.fmt.
 
-Module ParseIntError := std.num.ParseIntError.
-Definition ParseIntError := ParseIntError.t.
-
 Definition Result : Set := std.result.Result T DoubleError.
 
 Module DoubleError.
   Inductive t : Set :=
   | EmptyVec
-  | Parse (_ : ParseIntError).
+  | Parse (_ : std.num.ParseIntError).
 End DoubleError.
 Definition DoubleError := DoubleError.t.
 
@@ -92,7 +89,7 @@ End Impl_error_Error_for_DoubleError.
 Module Impl_From_for_DoubleError.
   Definition Self := DoubleError.
   
-  Definition from (err : ParseIntError) : M DoubleError :=
+  Definition from (err : std.num.ParseIntError) : M DoubleError :=
     Pure (DoubleError.Parse err).
   
   Global Instance AssociatedFunction_from :
@@ -100,7 +97,7 @@ Module Impl_From_for_DoubleError.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : From.Trait Self ParseIntError := {
+  Global Instance I : From.Trait Self std.num.ParseIntError := {
     From.from := from;
   }.
 End Impl_From_for_DoubleError.

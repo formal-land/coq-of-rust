@@ -5,12 +5,6 @@ Import Root.std.prelude.rust_2015.
 
 Module mpsc := std.sync.mpsc.
 
-Module Receiver := std.sync.mpsc.Receiver.
-Definition Receiver := Receiver.t.
-
-Module Sender := std.sync.mpsc.Sender.
-Definition Sender := Sender.t.
-
 Module thread := std.thread.
 
 Definition NTHREADS : i32 := run (Pure 3).

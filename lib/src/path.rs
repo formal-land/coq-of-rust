@@ -1,3 +1,4 @@
+use crate::env::*;
 use crate::render::*;
 use rustc_hir::def::{CtorOf, DefKind, Res};
 use rustc_hir::{LangItem, QPath};
@@ -39,7 +40,7 @@ impl Path {
     }
 }
 
-pub fn compile_path<Res>(path: &rustc_hir::Path<Res>) -> Path {
+fn compile_path_without_env<Res>(path: &rustc_hir::Path<Res>) -> Path {
     Path {
         segments: path
             .segments
@@ -49,13 +50,22 @@ pub fn compile_path<Res>(path: &rustc_hir::Path<Res>) -> Path {
     }
 }
 
-pub(crate) fn compile_qpath(qpath: &QPath) -> Path {
+pub(crate) fn compile_path<Res>(env: &Env, path: &rustc_hir::Path<Res>) -> Path {
+    if let [segment] = path.segments {
+        if let Some(path) = env.use_types.get(&segment.ident.name.to_string()) {
+            return path.clone();
+        }
+    }
+    compile_path_without_env(path)
+}
+
+pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
     match qpath {
-        QPath::Resolved(_, path) => compile_path(path),
+        QPath::Resolved(_, path) => compile_path(env, path),
         QPath::TypeRelative(ty, segment) => {
             let ty = match ty.kind {
                 rustc_hir::TyKind::Path(QPath::Resolved(_, path)) => {
-                    let mut path = compile_path(path);
+                    let mut path = compile_path(env, path);
                     path.prefix_last_by_impl();
                     path
                 }

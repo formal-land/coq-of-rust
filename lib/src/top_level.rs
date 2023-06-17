@@ -1,3 +1,4 @@
+use crate::env::*;
 use crate::expression::*;
 use crate::header::*;
 use crate::path::*;
@@ -124,7 +125,6 @@ enum TopLevelItem {
         name: String,
         path: Path,
         is_glob: bool,
-        is_type: bool,
     },
     Error(String),
 }
@@ -140,6 +140,7 @@ struct FnSigAndBody {
 
 fn compile_fn_sig_and_body_id(
     tcx: &TyCtxt,
+    env: &mut Env,
     fn_sig: &rustc_hir::FnSig<'_>,
     body_id: &rustc_hir::BodyId,
 ) -> FnSigAndBody {
@@ -155,14 +156,14 @@ fn compile_fn_sig_and_body_id(
                     PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
                     _ => "arg".to_string(),
                 };
-                (name, compile_type(tcx, ty))
+                (name, compile_type(tcx, env, ty))
             })
             .collect(),
         ret_ty: match fn_sig.decl.output {
             rustc_hir::FnRetTy::DefaultReturn(_) => CoqType::unit(),
-            rustc_hir::FnRetTy::Return(ty) => compile_type(tcx, ty),
+            rustc_hir::FnRetTy::Return(ty) => compile_type(tcx, env, ty),
         },
-        body: Box::new(compile_expr(tcx, expr)),
+        body: Box::new(compile_expr(tcx, env, expr)),
     }
 }
 
@@ -248,11 +249,9 @@ fn check_dead_code_lint_in_attributes(tcx: &TyCtxt, item: &Item) -> bool {
 /// - [rustc_middle::hir::map::Map] is intuitively the type for hir environments
 /// - Method [body] allows retrievient the body of an identifier [body_id] in an
 ///   hir environment [hir]
-fn compile_top_level_item(
-    tcx: &TyCtxt,
-    impl_counter: &mut HashMap<CoqType, u64>,
-    item: &Item,
-) -> Vec<TopLevelItem> {
+fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLevelItem> {
+    let name = item.ident.name.to_string();
+
     match &item.kind {
         ItemKind::ExternCrate(_) => vec![],
         ItemKind::Use(path, use_kind) => {
@@ -268,20 +267,25 @@ fn compile_top_level_item(
             if is_trait_use {
                 return vec![];
             }
+            let is_type = path.res.iter().any(|res| match res {
+                rustc_hir::def::Res::Def(def, _) => matches!(
+                    def,
+                    rustc_hir::def::DefKind::TyAlias
+                        | rustc_hir::def::DefKind::Enum
+                        | rustc_hir::def::DefKind::Struct
+                        | rustc_hir::def::DefKind::Union
+                ),
+                _ => false,
+            });
+            let path = compile_path(env, path);
+            if is_type {
+                env.use_types.insert(name, path);
+                return vec![];
+            }
             vec![TopLevelItem::Use {
-                name: item.ident.name.to_string(),
-                path: compile_path(path),
+                name,
+                path,
                 is_glob: matches!(use_kind, rustc_hir::UseKind::Glob),
-                is_type: path.res.iter().any(|res| match res {
-                    rustc_hir::def::Res::Def(def, _) => matches!(
-                        def,
-                        rustc_hir::def::DefKind::TyAlias
-                            | rustc_hir::def::DefKind::Enum
-                            | rustc_hir::def::DefKind::Struct
-                            | rustc_hir::def::DefKind::Union
-                    ),
-                    _ => false,
-                }),
             }]
         }
         ItemKind::Static(ty, _, body_id) | ItemKind::Const(ty, body_id) => {
@@ -290,9 +294,9 @@ fn compile_top_level_item(
             }
             let value = tcx.hir().body(*body_id).value;
             vec![TopLevelItem::Const {
-                name: item.ident.name.to_string(),
-                ty: compile_type(tcx, ty),
-                value: Box::new(compile_expr(tcx, value)),
+                name,
+                ty: compile_type(tcx, env, ty),
+                value: Box::new(compile_expr(tcx, env, value)),
             }]
         }
         ItemKind::Fn(fn_sig, generics, body_id) => {
@@ -301,9 +305,9 @@ fn compile_top_level_item(
             }
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let FnSigAndBody { args, ret_ty, body } =
-                compile_fn_sig_and_body_id(tcx, fn_sig, body_id);
+                compile_fn_sig_and_body_id(tcx, env, fn_sig, body_id);
             vec![TopLevelItem::Definition {
-                name: item.ident.name.to_string(),
+                name,
                 ty_params: generics
                     .params
                     .iter()
@@ -324,8 +328,8 @@ fn compile_top_level_item(
                                     rustc_hir::GenericBound::Trait(ref trait_ref, _) => {
                                         let path = trait_ref.trait_ref.path;
                                         Some((
-                                            compile_path(path),
-                                            compile_path_ty_params(tcx, path),
+                                            compile_path(env, path),
+                                            compile_path_ty_params(tcx, env, path),
                                         ))
                                     }
                                     _ => None,
@@ -334,7 +338,7 @@ fn compile_top_level_item(
                                 .map(|(name, ty_params)| WherePredicate {
                                     name,
                                     ty_params,
-                                    ty: compile_type(tcx, predicate.bounded_ty),
+                                    ty: compile_type(tcx, env, predicate.bounded_ty),
                                 })
                                 .collect()
                         }
@@ -355,11 +359,11 @@ fn compile_top_level_item(
                 .iter()
                 .flat_map(|item_id| {
                     let item = tcx.hir().item(*item_id);
-                    compile_top_level_item(tcx, impl_counter, item)
+                    compile_top_level_item(tcx, env, item)
                 })
                 .collect();
             vec![TopLevelItem::Module {
-                name: item.ident.name.to_string(),
+                name,
                 body: TopLevel(items),
                 is_dead_code: if_marked_as_dead_code,
             }]
@@ -369,12 +373,12 @@ fn compile_top_level_item(
         }
         ItemKind::GlobalAsm(_) => vec![TopLevelItem::Error("GlobalAsm".to_string())],
         ItemKind::TyAlias(ty, _) => vec![TopLevelItem::TypeAlias {
-            name: item.ident.name.to_string(),
-            ty: compile_type(tcx, ty),
+            name,
+            ty: compile_type(tcx, env, ty),
         }],
         ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
         ItemKind::Enum(enum_def, _) => vec![TopLevelItem::TypeEnum {
-            name: item.ident.name.to_string(),
+            name,
             variants: enum_def
                 .variants
                 .iter()
@@ -384,14 +388,16 @@ fn compile_top_level_item(
                         VariantData::Struct(fields, _) => {
                             let fields = fields
                                 .iter()
-                                .map(|field| (field.ident.to_string(), compile_type(tcx, field.ty)))
+                                .map(|field| {
+                                    (field.ident.to_string(), compile_type(tcx, env, field.ty))
+                                })
                                 .collect();
                             VariantItem::Struct { fields }
                         }
                         VariantData::Tuple(fields, _, _) => {
                             let tys = fields
                                 .iter()
-                                .map(|field| compile_type(tcx, field.ty))
+                                .map(|field| compile_type(tcx, env, field.ty))
                                 .collect();
                             VariantItem::Tuple { tys }
                         }
@@ -407,34 +413,37 @@ fn compile_top_level_item(
                 VariantData::Struct(fields, _) => {
                     let fields = fields
                         .iter()
-                        .map(|field| (field.ident.name.to_string(), compile_type(tcx, field.ty)))
+                        .map(|field| {
+                            (
+                                field.ident.name.to_string(),
+                                compile_type(tcx, env, field.ty),
+                            )
+                        })
                         .collect();
                     vec![TopLevelItem::TypeStructStruct {
-                        name: item.ident.name.to_string(),
+                        name,
                         fields,
                         is_dead_code: if_marked_as_dead_code,
                     }]
                 }
                 VariantData::Tuple(fields, _, _) => {
                     vec![TopLevelItem::TypeStructTuple {
-                        name: item.ident.name.to_string(),
+                        name,
                         fields: fields
                             .iter()
-                            .map(|field| compile_type(tcx, field.ty))
+                            .map(|field| compile_type(tcx, env, field.ty))
                             .collect(),
                     }]
                 }
                 VariantData::Unit(_, _) => {
-                    vec![TopLevelItem::TypeStructUnit {
-                        name: item.ident.name.to_string(),
-                    }]
+                    vec![TopLevelItem::TypeStructUnit { name }]
                 }
             }
         }
         ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
         ItemKind::Trait(_, _, generics, _, items) => {
             vec![TopLevelItem::Trait {
-                name: item.ident.name.to_string(),
+                name,
                 ty_params: generics
                     .params
                     .iter()
@@ -446,15 +455,15 @@ fn compile_top_level_item(
                         let item = tcx.hir().trait_item(item.id);
                         let body = match &item.kind {
                             TraitItemKind::Const(ty, _) => TraitItem::Definition {
-                                ty: compile_type(tcx, ty),
+                                ty: compile_type(tcx, env, ty),
                             },
                             TraitItemKind::Fn(fn_sig, trait_fn) => match trait_fn {
                                 TraitFn::Required(_) => TraitItem::Definition {
-                                    ty: compile_fn_decl(tcx, fn_sig.decl),
+                                    ty: compile_fn_decl(tcx, env, fn_sig.decl),
                                 },
                                 TraitFn::Provided(body_id) => {
                                     let FnSigAndBody { args, ret_ty, body } =
-                                        compile_fn_sig_and_body_id(tcx, fn_sig, body_id);
+                                        compile_fn_sig_and_body_id(tcx, env, fn_sig, body_id);
                                     TraitItem::DefinitionWithDefault { args, ret_ty, body }
                                 }
                             },
@@ -494,7 +503,7 @@ fn compile_top_level_item(
                         ImplItemKind::Const(_, body_id) => {
                             let expr = tcx.hir().body(*body_id).value;
                             ImplItem::Const {
-                                body: Box::new(compile_expr(tcx, expr)),
+                                body: Box::new(compile_expr(tcx, env, expr)),
                                 is_dead_code: if_marked_as_dead_code,
                             }
                         }
@@ -511,25 +520,25 @@ fn compile_top_level_item(
                                     _ => "Pattern".to_string(),
                                 }
                             });
-                            let arg_tys = inputs.iter().map(|ty| compile_type(tcx, ty));
-                            let ret_ty = compile_fn_ret_ty(tcx, output);
+                            let arg_tys = inputs.iter().map(|ty| compile_type(tcx, env, ty));
+                            let ret_ty = compile_fn_ret_ty(tcx, env, output);
                             let expr = tcx.hir().body(*body_id).value;
                             ImplItem::Definition {
                                 args: arg_names.zip(arg_tys).collect(),
                                 ret_ty,
-                                body: Box::new(compile_expr(tcx, expr)),
+                                body: Box::new(compile_expr(tcx, env, expr)),
                                 is_method,
                                 is_dead_code: if_marked_as_dead_code,
                             }
                         }
                         ImplItemKind::Type(ty) => ImplItem::Type {
-                            ty: compile_type(tcx, ty),
+                            ty: compile_type(tcx, env, ty),
                         },
                     };
                     (item.ident.name.to_string(), value)
                 })
                 .collect();
-            let self_ty = compile_type(tcx, self_ty);
+            let self_ty = compile_type(tcx, env, self_ty);
             match of_trait {
                 Some(trait_ref) => {
                     let trait_non_default_items = tcx
@@ -558,7 +567,7 @@ fn compile_top_level_item(
                     // part of the list of type parameters.
                     type_params_default_status.remove(0);
 
-                    let ty_params = compile_path_ty_params(tcx, trait_ref.path);
+                    let ty_params = compile_path_ty_params(tcx, env, trait_ref.path);
 
                     vec![TopLevelItem::TraitImpl {
                         generic_tys,
@@ -567,13 +576,13 @@ fn compile_top_level_item(
                             .zip(type_params_default_status)
                             .collect(),
                         self_ty,
-                        of_trait: compile_path(trait_ref.path),
+                        of_trait: compile_path(env, trait_ref.path),
                         items,
                         trait_non_default_items,
                     }]
                 }
                 None => {
-                    let entry = impl_counter.entry(*self_ty.clone());
+                    let entry = env.impl_counter.entry(*self_ty.clone());
                     let counter = *entry.and_modify(|counter| *counter += 1).or_insert(1);
 
                     vec![TopLevelItem::Impl {
@@ -588,14 +597,17 @@ fn compile_top_level_item(
 }
 
 fn compile_top_level(tcx: &TyCtxt) -> TopLevel {
-    let mut impl_counter = HashMap::new();
+    let mut env = Env {
+        impl_counter: HashMap::new(),
+        use_types: HashMap::new(),
+    };
 
     TopLevel(
         tcx.hir()
             .items()
             .flat_map(|item_id| {
                 let item = tcx.hir().item(item_id);
-                compile_top_level_item(tcx, &mut impl_counter, item)
+                compile_top_level_item(tcx, &mut env, item)
             })
             .collect(),
     )
@@ -853,12 +865,10 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             name,
             path,
             is_glob,
-            is_type,
         } => TopLevelItem::Use {
             name,
             path,
             is_glob,
-            is_type,
         },
         TopLevelItem::Error(err) => TopLevelItem::Error(err),
     }
@@ -1708,40 +1718,20 @@ impl TopLevelItem {
                 name,
                 path,
                 is_glob,
-                is_type,
             } => {
                 if *is_glob {
                     nest([text("Import"), line(), path.to_doc(), text(".")])
                 } else {
-                    group([
-                        nest([
-                            text("Module"),
-                            line(),
-                            text(name),
-                            line(),
-                            text(":="),
-                            line(),
-                            path.to_doc(),
-                            text("."),
-                        ]),
-                        if *is_type {
-                            concat([
-                                hardline(),
-                                nest([
-                                    text("Definition"),
-                                    line(),
-                                    text(name),
-                                    line(),
-                                    text(":="),
-                                    line(),
-                                    text(name),
-                                    text(".t."),
-                                ]),
-                            ])
-                        } else {
-                            nil()
-                        },
-                    ])
+                    group([nest([
+                        text("Module"),
+                        line(),
+                        text(name),
+                        line(),
+                        text(":="),
+                        line(),
+                        path.to_doc(),
+                        text("."),
+                    ])])
                 }
             }
             TopLevelItem::Error(message) => nest([text("Error"), line(), text(message), text(".")]),

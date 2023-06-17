@@ -3,9 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module DefaultHasher := std.collections.hash_map.DefaultHasher.
-Definition DefaultHasher := DefaultHasher.t.
-
 Module Person.
   Record t : Set := {
     id : u32;
@@ -43,7 +40,7 @@ Module Impl__crate_hash_Hash_for_Person.
 End Impl__crate_hash_Hash_for_Person.
 
 Definition calculate_hash {T : Set} `{Hash.Trait T} (t : ref T) : M u64 :=
-  let* s := DefaultHasher::["new"] tt in
+  let* s := std.collections.hash_map.DefaultHasher::["new"] tt in
   let* _ := t.["hash"] (addr_of s) in
   s.["finish"].
 

@@ -3,13 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module Command := std.process.Command.
-Definition Command := Command.t.
-
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let* output :=
-    let* α0 := Command::["new"] "rustc" in
+    let* α0 := std.process.Command::["new"] "rustc" in
     let* α1 := α0.["arg"] "--version" in
     let* α2 := α1.["output"] in
     α2.["unwrap_or_else"]

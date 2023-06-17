@@ -3,10 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module ParseIntError := std.num.ParseIntError.
-Definition ParseIntError := ParseIntError.t.
-
-Definition AliasedResult : Set := Result T ParseIntError.
+Definition AliasedResult : Set := Result T std.num.ParseIntError.
 
 Definition multiply
     (first_number_str : ref str)

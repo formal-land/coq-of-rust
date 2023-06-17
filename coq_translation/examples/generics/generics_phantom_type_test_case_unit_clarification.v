@@ -3,9 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module PhantomData := std.marker.PhantomData.
-Definition PhantomData := PhantomData.t.
-
 Module Inch.
   Inductive t : Set :=
   .
@@ -97,7 +94,7 @@ Module Impl__crate_marker_Copy_for_Mm.
 End Impl__crate_marker_Copy_for_Mm.
 
 Module Length.
-  Record t : Set := { _ : f64; _ : PhantomData Unit;}.
+  Record t : Set := { _ : f64; _ : std.marker.PhantomData Unit;}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -161,7 +158,7 @@ Module Impl_Add_for_Length_Unit.
   
   Definition add (self : Self) (rhs : Length Unit) : M (Length Unit) :=
     let* α0 := (self.[0]).["add"] (rhs.[0]) in
-    Pure (Length.Build_t α0 PhantomData.Build).
+    Pure (Length.Build_t α0 std.marker.PhantomData.Build).
   
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -174,8 +171,9 @@ End Impl_Add_for_Length_Unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let one_foot := Length.Build_t 12 (* 12.0 *) PhantomData.Build in
-  let one_meter := Length.Build_t 1000 (* 1000.0 *) PhantomData.Build in
+  let one_foot := Length.Build_t 12 (* 12.0 *) std.marker.PhantomData.Build in
+  let one_meter :=
+    Length.Build_t 1000 (* 1000.0 *) std.marker.PhantomData.Build in
   let* two_feet := one_foot.["add"] one_foot in
   let* two_meters := one_meter.["add"] one_meter in
   let* _ :=

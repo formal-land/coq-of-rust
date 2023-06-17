@@ -5,24 +5,15 @@ Import Root.std.prelude.rust_2015.
 
 Module fs := std.fs.
 
-Module File := std.fs.File.
-Definition File := File.t.
-
-Module OpenOptions := std.fs.OpenOptions.
-Definition OpenOptions := OpenOptions.t.
-
 Module io := std.io.
 
 Import std.io.prelude.
 
 Module unix := std.os.unix.
 
-Module Path := std.path.Path.
-Definition Path := Path.t.
-
-Definition cat (path : ref Path) : M (io.Result String) :=
+Definition cat (path : ref std.path.Path) : M (io.Result String) :=
   let* f :=
-    let* α0 := File::["open"] path in
+    let* α0 := std.fs.File::["open"] path in
     let* α1 := LangItem α0 in
     match α1 with
     | Break {| Break.0 := residual; |} =>
@@ -37,9 +28,9 @@ Definition cat (path : ref Path) : M (io.Result String) :=
   | Err e => Pure (Err e)
   end.
 
-Definition echo (s : ref str) (path : ref Path) : M (io.Result unit) :=
+Definition echo (s : ref str) (path : ref std.path.Path) : M (io.Result unit) :=
   let* f :=
-    let* α0 := File::["create"] path in
+    let* α0 := std.fs.File::["create"] path in
     let* α1 := LangItem α0 in
     match α1 with
     | Break {| Break.0 := residual; |} =>
@@ -50,8 +41,8 @@ Definition echo (s : ref str) (path : ref Path) : M (io.Result unit) :=
   let* α0 := s.["as_bytes"] in
   f.["write_all"] α0.
 
-Definition touch (path : ref Path) : M (io.Result unit) :=
-  let* α0 := OpenOptions::["new"] tt in
+Definition touch (path : ref std.path.Path) : M (io.Result unit) :=
+  let* α0 := std.fs.OpenOptions::["new"] tt in
   let* α1 := α0.["create"] true in
   let* α2 := α1.["write"] true in
   let* α3 := α2.["open"] path in
@@ -93,7 +84,7 @@ Definition main (_ : unit) : M unit :=
       _crate.io._print α0 in
     Pure tt in
   let* _ :=
-    let* α0 := Path::["new"] "a/b.txt" in
+    let* α0 := std.path.Path::["new"] "a/b.txt" in
     let* α1 := echo "hello" (addr_of α0) in
     α1.["unwrap_or_else"]
       (fun why =>
@@ -140,7 +131,7 @@ Definition main (_ : unit) : M unit :=
       _crate.io._print α0 in
     Pure tt in
   let* _ :=
-    let* α0 := Path::["new"] "a/c/e.txt" in
+    let* α0 := std.path.Path::["new"] "a/c/e.txt" in
     let* α1 := touch (addr_of α0) in
     α1.["unwrap_or_else"]
       (fun why =>
@@ -193,7 +184,7 @@ Definition main (_ : unit) : M unit :=
       _crate.io._print α0 in
     Pure tt in
   let* _ :=
-    let* α0 := Path::["new"] "a/c/b.txt" in
+    let* α0 := std.path.Path::["new"] "a/c/b.txt" in
     let* α1 := cat (addr_of α0) in
     match α1 with
     | Err why =>

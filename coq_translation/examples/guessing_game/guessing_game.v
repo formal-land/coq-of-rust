@@ -5,9 +5,6 @@ Import Root.std.prelude.rust_2015.
 
 Module io := std.io.
 
-Module Ordering := std.cmp.Ordering.
-Definition Ordering := Ordering.t.
-
 Module Rng := rand.Rng.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

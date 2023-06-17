@@ -3,13 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module File := std.fs.File.
-Definition File := File.t.
-
 Module io := std.io.
-
-Module Path := std.path.Path.
-Definition Path := Path.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
@@ -50,11 +44,11 @@ Definition main (_ : unit) : M unit :=
 
 Definition read_lines
     {P : Set}
-    `{AsRef.Trait Path P}
+    `{AsRef.Trait std.path.Path P}
     (filename : P)
-    : M (io.Result (io.Lines (io.BufReader File))) :=
+    : M (io.Result (io.Lines (io.BufReader std.fs.File))) :=
   let* file :=
-    let* α0 := File::["open"] filename in
+    let* α0 := std.fs.File::["open"] filename in
     let* α1 := LangItem α0 in
     match α1 with
     | Break {| Break.0 := residual; |} =>

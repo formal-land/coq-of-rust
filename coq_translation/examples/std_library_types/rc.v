@@ -3,9 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module Rc := std.rc.Rc.
-Definition Rc := Rc.t.
-
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let* rc_examples := "Rc examples".["to_string"] in
@@ -17,10 +14,10 @@ Definition main (_ : unit) : M unit :=
 " ]) in
       _crate.io._print α0 in
     Pure tt in
-  let* rc_a := Rc::["new"] rc_examples in
+  let* rc_a := std.rc.Rc::["new"] rc_examples in
   let* _ :=
     let* _ :=
-      let* α0 := Rc::["strong_count"] (addr_of rc_a) in
+      let* α0 := std.rc.Rc::["strong_count"] (addr_of rc_a) in
       let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
         format_arguments::["new_v1"]
@@ -38,10 +35,10 @@ Definition main (_ : unit) : M unit :=
 " ]) in
         _crate.io._print α0 in
       Pure tt in
-    let* rc_b := Rc::["clone"] (addr_of rc_a) in
+    let* rc_b := std.rc.Rc::["clone"] (addr_of rc_a) in
     let* _ :=
       let* _ :=
-        let* α0 := Rc::["strong_count"] (addr_of rc_b) in
+        let* α0 := std.rc.Rc::["strong_count"] (addr_of rc_b) in
         let* α1 := format_argument::["new_display"] (addr_of α0) in
         let* α2 :=
           format_arguments::["new_v1"]
@@ -52,7 +49,7 @@ Definition main (_ : unit) : M unit :=
       Pure tt in
     let* _ :=
       let* _ :=
-        let* α0 := Rc::["strong_count"] (addr_of rc_a) in
+        let* α0 := std.rc.Rc::["strong_count"] (addr_of rc_a) in
         let* α1 := format_argument::["new_display"] (addr_of α0) in
         let* α2 :=
           format_arguments::["new_v1"]
@@ -104,7 +101,7 @@ Definition main (_ : unit) : M unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := Rc::["strong_count"] (addr_of rc_a) in
+      let* α0 := std.rc.Rc::["strong_count"] (addr_of rc_a) in
       let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
         format_arguments::["new_v1"]

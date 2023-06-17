@@ -3,20 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module File := std.fs.File.
-Definition File := File.t.
-
 Import std.io.prelude.
-
-Module Path := std.path.Path.
-Definition Path := Path.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* path := Path::["new"] "hello.txt" in
+  let* path := std.path.Path::["new"] "hello.txt" in
   let* display := path.["display"] in
   let* file :=
-    let* α0 := File::["open"] (addr_of path) in
+    let* α0 := std.fs.File::["open"] (addr_of path) in
     match α0 with
     | Err why =>
       let* α0 := format_argument::["new_display"] (addr_of display) in

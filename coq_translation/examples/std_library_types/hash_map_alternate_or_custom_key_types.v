@@ -3,9 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module HashMap := std.collections.HashMap.
-Definition HashMap := HashMap.t.
-
 Module Account.
   Record t : Set := {
     username : ref str;
@@ -100,7 +97,7 @@ Module AccountInfo.
 End AccountInfo.
 Definition AccountInfo : Set := AccountInfo.t.
 
-Definition Accounts : Set := HashMap Account AccountInfo.
+Definition Accounts : Set := std.collections.HashMap Account AccountInfo.
 
 Definition try_logon
     (accounts : ref Accounts)
@@ -180,7 +177,7 @@ Definition try_logon
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let* accounts := HashMap::["new"] tt in
+  let* accounts := std.collections.HashMap::["new"] tt in
   let account :=
     {| Account.username := "j.everyman"; Account.password := "password123";
     |} in

@@ -5,12 +5,6 @@ Import Root.std.prelude.rust_2015.
 
 Import std.io.prelude.
 
-Module Command := std.process.Command.
-Definition Command := Command.t.
-
-Module Stdio := std.process.Stdio.
-Definition Stdio := Stdio.t.
-
 Definition PANGRAM : ref str :=
   run (Pure "the quick brown fox jumped over the lazy dog
 ").
@@ -18,10 +12,10 @@ Definition PANGRAM : ref str :=
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
   let* process :=
-    let* α0 := Command::["new"] "wc" in
-    let* α1 := Stdio::["piped"] tt in
+    let* α0 := std.process.Command::["new"] "wc" in
+    let* α1 := std.process.Stdio::["piped"] tt in
     let* α2 := α0.["stdin"] α1 in
-    let* α3 := Stdio::["piped"] tt in
+    let* α3 := std.process.Stdio::["piped"] tt in
     let* α4 := α2.["stdout"] α3 in
     let* α5 := α4.["spawn"] in
     match α5 with

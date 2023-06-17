@@ -3,11 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module PhantomData := std.marker.PhantomData.
-Definition PhantomData := PhantomData.t.
-
 Module PhantomTuple.
-  Record t : Set := { _ : A; _ : PhantomData B;}.
+  Record t : Set := { _ : A; _ : std.marker.PhantomData B;}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -45,7 +42,7 @@ End Impl__crate_cmp_PartialEq_for_PhantomTuple_A_B.
 Module PhantomStruct.
   Record t : Set := {
     first : A;
-    phantom : PhantomData B;
+    phantom : std.marker.PhantomData B;
   }.
   
   Global Instance Get_first : Notation.Dot "first" := {
@@ -83,16 +80,16 @@ End Impl__crate_cmp_PartialEq_for_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
-  let _tuple1 := PhantomTuple.Build_t "Q"%char PhantomData.Build in
-  let _tuple2 := PhantomTuple.Build_t "Q"%char PhantomData.Build in
+  let _tuple1 := PhantomTuple.Build_t "Q"%char std.marker.PhantomData.Build in
+  let _tuple2 := PhantomTuple.Build_t "Q"%char std.marker.PhantomData.Build in
   let _struct1 :=
     {|
       PhantomStruct.first := "Q"%char;
-      PhantomStruct.phantom := PhantomData.Build;
+      PhantomStruct.phantom := std.marker.PhantomData.Build;
     |} in
   let _struct2 :=
     {|
       PhantomStruct.first := "Q"%char;
-      PhantomStruct.phantom := PhantomData.Build;
+      PhantomStruct.phantom := std.marker.PhantomData.Build;
     |} in
   Pure tt.

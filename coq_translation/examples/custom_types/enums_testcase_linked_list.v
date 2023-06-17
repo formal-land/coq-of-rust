@@ -3,8 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Import crate.List.
-
 Module List.
   Inductive t : Set :=
   | Cons (_ : u32) (_ : Box List)

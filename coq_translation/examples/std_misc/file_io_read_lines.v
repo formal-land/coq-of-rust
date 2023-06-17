@@ -3,17 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import Root.std.prelude.rust_2015.
 
-Module File := std.fs.File.
-Definition File := File.t.
-
 Module io := std.io.
 
-Module BufReader := std.io.BufReader.
-Definition BufReader := BufReader.t.
-
-Definition read_lines (filename : String) : M (io.Lines (BufReader File)) :=
+Definition read_lines
+    (filename : String)
+    : M (io.Lines (std.io.BufReader std.fs.File)) :=
   let* file :=
-    let* α0 := File::["open"] filename in
+    let* α0 := std.fs.File::["open"] filename in
     α0.["unwrap"] in
   let* _ :=
     let* α0 := io.BufReader::["new"] file in
