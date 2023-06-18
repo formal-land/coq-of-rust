@@ -8,7 +8,6 @@ examples/custom_types/enums_c_like.v
 examples/custom_types/enums_testcase_linked_list.v
 examples/custom_types/enums_type_aliases_v1.v
 examples/custom_types/enums_type_aliases_v2.v
-examples/custom_types/enums_use.v
 examples/custom_types/structures.v
 examples/error_handling/aliases_for_result.v
 examples/error_handling/boxing_errors.v

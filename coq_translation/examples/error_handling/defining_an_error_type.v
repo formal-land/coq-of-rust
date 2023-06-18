@@ -2,9 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition Result : Set :=
-  core.result.Result
-    defining_an_error_type.Result.T
-    defining_an_error_type.DoubleError.
+  core.result.Result T defining_an_error_type.DoubleError.
 
 Module DoubleError.
   Inductive t : Set := Build.

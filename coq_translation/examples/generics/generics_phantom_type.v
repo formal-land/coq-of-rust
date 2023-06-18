@@ -2,10 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module PhantomTuple.
-  Record t : Set :=
-    {
-      _ : generics_phantom_type.PhantomTuple.A;
-      _ : core.marker.PhantomData generics_phantom_type.PhantomTuple.B;}.
+  Record t : Set := { _ : A; _ : core.marker.PhantomData B;}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -17,36 +14,20 @@ End PhantomTuple.
 Definition PhantomTuple := PhantomTuple.t.
 
 Module
-    Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_generics_phantom_type_A_generics_phantom_type_B.
-  Definition
-    Self
-    :=
-    generics_phantom_type.PhantomTuple
-      generics_phantom_type.A
-      generics_phantom_type.B.
+    Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
+  Definition Self := generics_phantom_type.PhantomTuple A B.
   
   Global Instance I A B : core.marker.StructuralPartialEq.Trait Self :=
     core.marker.StructuralPartialEq.Build_Class _.
 End
-  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_generics_phantom_type_A_generics_phantom_type_B.
+  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
-Module
-    Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_generics_phantom_type_A_generics_phantom_type_B.
-  Definition
-    Self
-    :=
-    generics_phantom_type.PhantomTuple
-      generics_phantom_type.A
-      generics_phantom_type.B.
+Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
+  Definition Self := generics_phantom_type.PhantomTuple A B.
   
   Definition eq
       (self : ref Self)
-      (other
-        :
-        ref
-          (generics_phantom_type.PhantomTuple
-            generics_phantom_type.A
-            generics_phantom_type.B))
+      (other : ref (generics_phantom_type.PhantomTuple A B))
       : M bool :=
     let* α0 := (self.[0]).["eq"] (other.[0]) in
     let* α1 := (self.[1]).["eq"] (other.[1]) in
@@ -59,13 +40,12 @@ Module
   Global Instance I A B : core.cmp.PartialEq.Trait Self := {
     core.cmp.PartialEq.eq := eq;
   }.
-End
-  Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_generics_phantom_type_A_generics_phantom_type_B.
+End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module PhantomStruct.
   Record t : Set := {
-    first : generics_phantom_type.PhantomStruct.A;
-    phantom : core.marker.PhantomData generics_phantom_type.PhantomStruct.B;
+    first : A;
+    phantom : core.marker.PhantomData B;
   }.
   
   Global Instance Get_first : Notation.Dot "first" := {
@@ -78,36 +58,20 @@ End PhantomStruct.
 Definition PhantomStruct : Set := PhantomStruct.t.
 
 Module
-    Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_generics_phantom_type_A_generics_phantom_type_B.
-  Definition
-    Self
-    :=
-    generics_phantom_type.PhantomStruct
-      generics_phantom_type.A
-      generics_phantom_type.B.
+    Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
+  Definition Self := generics_phantom_type.PhantomStruct A B.
   
   Global Instance I A B : core.marker.StructuralPartialEq.Trait Self :=
     core.marker.StructuralPartialEq.Build_Class _.
 End
-  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_generics_phantom_type_A_generics_phantom_type_B.
+  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
-Module
-    Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_generics_phantom_type_A_generics_phantom_type_B.
-  Definition
-    Self
-    :=
-    generics_phantom_type.PhantomStruct
-      generics_phantom_type.A
-      generics_phantom_type.B.
+Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
+  Definition Self := generics_phantom_type.PhantomStruct A B.
   
   Definition eq
       (self : ref Self)
-      (other
-        :
-        ref
-          (generics_phantom_type.PhantomStruct
-            generics_phantom_type.A
-            generics_phantom_type.B))
+      (other : ref (generics_phantom_type.PhantomStruct A B))
       : M bool :=
     let* α0 := self.["first"].["eq"] other.["first"] in
     let* α1 := self.["phantom"].["eq"] other.["phantom"] in
@@ -120,8 +84,7 @@ Module
   Global Instance I A B : core.cmp.PartialEq.Trait Self := {
     core.cmp.PartialEq.eq := eq;
   }.
-End
-  Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_generics_phantom_type_A_generics_phantom_type_B.
+End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=

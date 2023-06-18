@@ -83,8 +83,8 @@ Definition Triangle : Set := Triangle.t.
 
 Definition print_debug
     {T : Set}
-    `{core.fmt.Debug.Trait generics_bounds.print_debug.T}
-    (t : ref generics_bounds.print_debug.T)
+    `{core.fmt.Debug.Trait T}
+    (t : ref T)
     : M unit :=
   let* _ :=
     let* _ :=
@@ -98,8 +98,8 @@ Definition print_debug
 
 Definition area
     {T : Set}
-    `{generics_bounds.HasArea.Trait generics_bounds.area.T}
-    (t : ref generics_bounds.area.T)
+    `{generics_bounds.HasArea.Trait T}
+    (t : ref T)
     : M f64 :=
   t.["area"].
 

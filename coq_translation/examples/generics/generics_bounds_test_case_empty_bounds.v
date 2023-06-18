@@ -50,17 +50,15 @@ End
 
 Definition red
     {T : Set}
-    `{generics_bounds_test_case_empty_bounds.Red.Trait
-      generics_bounds_test_case_empty_bounds.red.T}
-    (arg : ref generics_bounds_test_case_empty_bounds.red.T)
+    `{generics_bounds_test_case_empty_bounds.Red.Trait T}
+    (arg : ref T)
     : M (ref str) :=
   Pure "red".
 
 Definition blue
     {T : Set}
-    `{generics_bounds_test_case_empty_bounds.Blue.Trait
-      generics_bounds_test_case_empty_bounds.blue.T}
-    (arg : ref generics_bounds_test_case_empty_bounds.blue.T)
+    `{generics_bounds_test_case_empty_bounds.Blue.Trait T}
+    (arg : ref T)
     : M (ref str) :=
   Pure "blue".
 

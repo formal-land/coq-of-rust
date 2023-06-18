@@ -23,7 +23,7 @@ Definition Person : Set := Person.t.
 Module Impl_core_hash_Hash_for_hash_Person.
   Definition Self := hash.Person.
   
-  Definition hash (self : ref Self) (state : mut_ref hash.hash.__H) : M unit :=
+  Definition hash (self : ref Self) (state : mut_ref __H) : M unit :=
     let* _ := core.hash.Hash.hash (addr_of self.["id"]) state in
     let* _ := core.hash.Hash.hash (addr_of self.["name"]) state in
     core.hash.Hash.hash (addr_of self.["phone"]) state.
@@ -39,8 +39,8 @@ End Impl_core_hash_Hash_for_hash_Person.
 
 Definition calculate_hash
     {T : Set}
-    `{core.hash.Hash.Trait hash.calculate_hash.T}
-    (t : ref hash.calculate_hash.T)
+    `{core.hash.Hash.Trait T}
+    (t : ref T)
     : M u64 :=
   let* s := std.collections.hash.map.DefaultHasher::["new"] tt in
   let* _ := t.["hash"] (addr_of s) in

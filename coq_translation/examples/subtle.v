@@ -1229,14 +1229,14 @@ Module ConditionallyNegatable.
   }.
 End ConditionallyNegatable.
 
-Module Impl_subtle_ConditionallyNegatable_for_subtle_T.
-  Definition Self := subtle.T.
+Module Impl_subtle_ConditionallyNegatable_for_T.
+  Definition Self := T.
   
   Definition conditional_negate
       (self : mut_ref Self)
       (choice : subtle.Choice)
       : M unit :=
-    let* self_neg := (cast self (ref subtle.T)).["neg"] in
+    let* self_neg := (cast self (ref T)).["neg"] in
     let* _ := self.["conditional_assign"] (addr_of self_neg) choice in
     Pure tt.
   
@@ -1248,11 +1248,11 @@ Module Impl_subtle_ConditionallyNegatable_for_subtle_T.
   Global Instance I T : subtle.ConditionallyNegatable.Trait Self := {
     subtle.ConditionallyNegatable.conditional_negate := conditional_negate;
   }.
-End Impl_subtle_ConditionallyNegatable_for_subtle_T.
+End Impl_subtle_ConditionallyNegatable_for_T.
 
 Module CtOption.
   Record t : Set := {
-    value : subtle.CtOption.T;
+    value : T;
     is_some : subtle.Choice;
   }.
   
@@ -1265,10 +1265,10 @@ Module CtOption.
 End CtOption.
 Definition CtOption : Set := CtOption.t.
 
-Module Impl_core_clone_Clone_for_subtle_CtOption_subtle_T.
-  Definition Self := subtle.CtOption subtle.T.
+Module Impl_core_clone_Clone_for_subtle_CtOption_T.
+  Definition Self := subtle.CtOption T.
   
-  Definition clone (self : ref Self) : M (subtle.CtOption subtle.T) :=
+  Definition clone (self : ref Self) : M (subtle.CtOption T) :=
     let* α0 := core.clone.Clone.clone (addr_of self.["value"]) in
     let* α1 := core.clone.Clone.clone (addr_of self.["is_some"]) in
     Pure {| subtle.CtOption.value := α0; subtle.CtOption.is_some := α1; |}.
@@ -1280,17 +1280,17 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_subtle_T.
   Global Instance I T : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
-End Impl_core_clone_Clone_for_subtle_CtOption_subtle_T.
+End Impl_core_clone_Clone_for_subtle_CtOption_T.
 
-Module Impl_core_marker_Copy_for_subtle_CtOption_subtle_T.
-  Definition Self := subtle.CtOption subtle.T.
+Module Impl_core_marker_Copy_for_subtle_CtOption_T.
+  Definition Self := subtle.CtOption T.
   
   Global Instance I T : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Class _.
-End Impl_core_marker_Copy_for_subtle_CtOption_subtle_T.
+End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
-Module Impl_core_fmt_Debug_for_subtle_CtOption_subtle_T.
-  Definition Self := subtle.CtOption subtle.T.
+Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
+  Definition Self := subtle.CtOption T.
   
   Definition fmt
       (self : ref Self)
@@ -1311,14 +1311,12 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_subtle_T.
   Global Instance I T : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_subtle_CtOption_subtle_T.
+End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
-Module Impl_core_convert_From_for_core_option_Option_subtle_T.
-  Definition Self := core.option.Option subtle.T.
+Module Impl_core_convert_From_for_core_option_Option_T.
+  Definition Self := core.option.Option T.
   
-  Definition from
-      (source : subtle.CtOption subtle.T)
-      : M (core.option.Option subtle.T) :=
+  Definition from (source : subtle.CtOption T) : M (core.option.Option T) :=
     let* α0 := source.["is_some"] in
     let* α1 := α0.["unwrap_u8"] in
     let* α2 := α1.["eq"] 1 in
@@ -1332,19 +1330,18 @@ Module Impl_core_convert_From_for_core_option_Option_subtle_T.
     Notation.double_colon := from;
   }.
   
-  Global Instance I T : core.convert.From.Trait Self subtle.CtOption subtle.T :=
-    {
+  Global Instance I T : core.convert.From.Trait Self subtle.CtOption T := {
     core.convert.From.from := from;
   }.
-End Impl_core_convert_From_for_core_option_Option_subtle_T.
+End Impl_core_convert_From_for_core_option_Option_T.
 
-Module Impl_subtle_CtOption_subtle_T.
-  Definition Self := subtle.CtOption subtle.T.
+Module Impl_subtle_CtOption_T.
+  Definition Self := subtle.CtOption T.
   
   Definition new
-      (value : subtle.T)
+      (value : T)
       (is_some : subtle.Choice)
-      : M (subtle.CtOption subtle.T) :=
+      : M (subtle.CtOption T) :=
     Pure
       {| subtle.CtOption.value := value; subtle.CtOption.is_some := is_some; |}.
   
@@ -1352,7 +1349,7 @@ Module Impl_subtle_CtOption_subtle_T.
     Notation.double_colon := new;
   }.
   
-  Definition expect (self : Self) (msg : ref str) : M subtle.T :=
+  Definition expect (self : Self) (msg : ref str) : M T :=
     let* _ :=
       let* α0 := self.["is_some"].["unwrap_u8"] in
       match (addr_of α0, addr_of 1) with
@@ -1384,7 +1381,7 @@ Module Impl_subtle_CtOption_subtle_T.
     Notation.dot := expect;
   }.
   
-  Definition unwrap (self : Self) : M subtle.T :=
+  Definition unwrap (self : Self) : M T :=
     let* _ :=
       let* α0 := self.["is_some"].["unwrap_u8"] in
       match (addr_of α0, addr_of 1) with
@@ -1413,8 +1410,8 @@ Module Impl_subtle_CtOption_subtle_T.
     Notation.dot := unwrap;
   }.
   
-  Definition unwrap_or (self : Self) (def : subtle.T) : M subtle.T :=
-    subtle.T::["conditional_select"]
+  Definition unwrap_or (self : Self) (def : T) : M T :=
+    T::["conditional_select"]
       (addr_of def)
       (addr_of self.["value"])
       self.["is_some"].
@@ -1423,12 +1420,9 @@ Module Impl_subtle_CtOption_subtle_T.
     Notation.dot := unwrap_or;
   }.
   
-  Definition unwrap_or_else
-      (self : Self)
-      (f : subtle.unwrap_or_else.F)
-      : M subtle.T :=
+  Definition unwrap_or_else (self : Self) (f : F) : M T :=
     let* α0 := f tt in
-    subtle.T::["conditional_select"]
+    T::["conditional_select"]
       (addr_of α0)
       (addr_of self.["value"])
       self.["is_some"].
@@ -1451,13 +1445,10 @@ Module Impl_subtle_CtOption_subtle_T.
     Notation.dot := is_none;
   }.
   
-  Definition map
-      (self : Self)
-      (f : subtle.map.F)
-      : M (subtle.CtOption subtle.map.U) :=
-    let* α0 := subtle.T::["default"] tt in
+  Definition map (self : Self) (f : F) : M (subtle.CtOption U) :=
+    let* α0 := T::["default"] tt in
     let* α1 :=
-      subtle.T::["conditional_select"]
+      T::["conditional_select"]
         (addr_of α0)
         (addr_of self.["value"])
         self.["is_some"] in
@@ -1468,14 +1459,11 @@ Module Impl_subtle_CtOption_subtle_T.
     Notation.dot := map;
   }.
   
-  Definition and_then
-      (self : Self)
-      (f : subtle.and_then.F)
-      : M (subtle.CtOption subtle.and_then.U) :=
+  Definition and_then (self : Self) (f : F) : M (subtle.CtOption U) :=
     let* tmp :=
-      let* α0 := subtle.T::["default"] tt in
+      let* α0 := T::["default"] tt in
       let* α1 :=
-        subtle.T::["conditional_select"]
+        T::["conditional_select"]
           (addr_of α0)
           (addr_of self.["value"])
           self.["is_some"] in
@@ -1487,10 +1475,7 @@ Module Impl_subtle_CtOption_subtle_T.
     Notation.dot := and_then;
   }.
   
-  Definition or_else
-      (self : Self)
-      (f : subtle.or_else.F)
-      : M (subtle.CtOption subtle.T) :=
+  Definition or_else (self : Self) (f : F) : M (subtle.CtOption T) :=
     let* is_none := self.["is_none"] in
     let* f := f tt in
     Self::["conditional_select"] (addr_of self) (addr_of f) is_none.
@@ -1498,10 +1483,10 @@ Module Impl_subtle_CtOption_subtle_T.
   Global Instance Method_or_else : Notation.Dot "or_else" := {
     Notation.dot := or_else;
   }.
-End Impl_subtle_CtOption_subtle_T.
+End Impl_subtle_CtOption_T.
 
-Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_subtle_T.
-  Definition Self := subtle.CtOption subtle.T.
+Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
+  Definition Self := subtle.CtOption T.
   
   Definition conditional_select
       (a : ref Self)
@@ -1509,7 +1494,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_subtle_T.
       (choice : subtle.Choice)
       : M Self :=
     let* α0 :=
-      subtle.T::["conditional_select"]
+      T::["conditional_select"]
         (addr_of a.["value"])
         (addr_of b.["value"])
         choice in
@@ -1528,14 +1513,14 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_subtle_T.
   Global Instance I T : subtle.ConditionallySelectable.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
   }.
-End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_subtle_T.
+End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 
-Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_subtle_T.
-  Definition Self := subtle.CtOption subtle.T.
+Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
+  Definition Self := subtle.CtOption T.
   
   Definition ct_eq
       (self : ref Self)
-      (rhs : ref (subtle.CtOption subtle.T))
+      (rhs : ref (subtle.CtOption T))
       : M subtle.Choice :=
     let* a := self.["is_some"] in
     let* b := rhs.["is_some"] in
@@ -1554,7 +1539,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_subtle_T.
   Global Instance I T : subtle.ConstantTimeEq.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
   }.
-End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_subtle_T.
+End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 Module ConstantTimeGreater.
   Class Trait (Self : Set) : Set := {

@@ -52,6 +52,11 @@ fn compile_path_without_env<Res>(path: &rustc_hir::Path<Res>) -> Path {
 
 pub(crate) fn compile_path(env: &Env, path: &rustc_hir::Path) -> Path {
     if let Some(def_if) = path.res.opt_def_id() {
+        // The type parameters should not have an absolute name, as they are not
+        // not declared at top-level.
+        if let Res::Def(DefKind::TyParam, _) = path.res {
+            return compile_path_without_env(path);
+        }
         let crate_name: String = env.tcx.crate_name(def_if.krate).to_string();
         let path_items = env.tcx.def_path(def_if);
         let mut segments = vec![crate_name];

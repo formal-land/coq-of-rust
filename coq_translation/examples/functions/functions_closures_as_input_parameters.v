@@ -3,20 +3,16 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition apply
     {F : Set}
-    `{core.ops.function.FnOnce.Trait
-      unit
-      functions_closures_as_input_parameters.apply.F}
-    (f : functions_closures_as_input_parameters.apply.F)
+    `{core.ops.function.FnOnce.Trait unit F}
+    (f : F)
     : M unit :=
   let* _ := f tt in
   Pure tt.
 
 Definition apply_to_3
     {F : Set}
-    `{core.ops.function.Fn.Trait
-      (i32)
-      functions_closures_as_input_parameters.apply_to_3.F}
-    (f : functions_closures_as_input_parameters.apply_to_3.F)
+    `{core.ops.function.Fn.Trait (i32) F}
+    (f : F)
     : M i32 :=
   f 3.
 

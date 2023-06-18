@@ -16,7 +16,7 @@ End Single.
 Definition Single := Single.t.
 
 Module SingleGen.
-  Record t : Set := { _ : generics.SingleGen.T;}.
+  Record t : Set := { _ : T;}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;

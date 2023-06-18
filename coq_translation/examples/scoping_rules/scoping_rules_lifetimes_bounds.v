@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Ref.
-  Record t : Set := { _ : ref scoping_rules_lifetimes_bounds.Ref.T;}.
+  Record t : Set := { _ : ref T;}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
@@ -10,12 +10,8 @@ Module Ref.
 End Ref.
 Definition Ref := Ref.t.
 
-Module
-    Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_scoping_rules_lifetimes_bounds_T.
-  Definition
-    Self
-    :=
-    scoping_rules_lifetimes_bounds.Ref scoping_rules_lifetimes_bounds.T.
+Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
+  Definition Self := scoping_rules_lifetimes_bounds.Ref T.
   
   Definition fmt
       (self : ref Self)
@@ -33,14 +29,9 @@ Module
   Global Instance I T : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
-End
-  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_scoping_rules_lifetimes_bounds_T.
+End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
-Definition print
-    {T : Set}
-    `{core.fmt.Debug.Trait scoping_rules_lifetimes_bounds.print.T}
-    (t : scoping_rules_lifetimes_bounds.print.T)
-    : M unit :=
+Definition print {T : Set} `{core.fmt.Debug.Trait T} (t : T) : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of t) in
@@ -53,11 +44,7 @@ Definition print
     Pure tt in
   Pure tt.
 
-Definition print_ref
-    {T : Set}
-    `{core.fmt.Debug.Trait scoping_rules_lifetimes_bounds.print_ref.T}
-    (t : ref scoping_rules_lifetimes_bounds.print_ref.T)
-    : M unit :=
+Definition print_ref {T : Set} `{core.fmt.Debug.Trait T} (t : ref T) : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of t) in

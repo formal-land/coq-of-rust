@@ -83,9 +83,8 @@ End
 
 Definition difference
     {C : Set}
-    `{generics_associated_types_solution.Contains.Trait
-      generics_associated_types_solution.difference.C}
-    (container : ref generics_associated_types_solution.difference.C)
+    `{generics_associated_types_solution.Contains.Trait C}
+    (container : ref C)
     : M i32 :=
   let* α0 := container.["last"] in
   let* α1 := container.["first"] in

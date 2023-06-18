@@ -110,12 +110,7 @@ End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Length.
-  Record t : Set :=
-    {
-      _ : f64;
-      _ :
-        core.marker.PhantomData
-          generics_phantom_type_test_case_unit_clarification.Length.Unit;}.
+  Record t : Set := { _ : f64; _ : core.marker.PhantomData Unit;}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -127,12 +122,11 @@ End Length.
 Definition Length := Length.t.
 
 Module
-    Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_generics_phantom_type_test_case_unit_clarification_Unit.
+    Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition
     Self
     :=
-    generics_phantom_type_test_case_unit_clarification.Length
-      generics_phantom_type_test_case_unit_clarification.Unit.
+    generics_phantom_type_test_case_unit_clarification.Length Unit.
   
   Definition fmt
       (self : ref Self)
@@ -152,22 +146,18 @@ Module
     core.fmt.Debug.fmt := fmt;
   }.
 End
-  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_generics_phantom_type_test_case_unit_clarification_Unit.
+  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module
-    Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_generics_phantom_type_test_case_unit_clarification_Unit.
+    Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition
     Self
     :=
-    generics_phantom_type_test_case_unit_clarification.Length
-      generics_phantom_type_test_case_unit_clarification.Unit.
+    generics_phantom_type_test_case_unit_clarification.Length Unit.
   
   Definition clone
       (self : ref Self)
-      :
-        M
-          (generics_phantom_type_test_case_unit_clarification.Length
-            generics_phantom_type_test_case_unit_clarification.Unit) :=
+      : M (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
     let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
     let* α1 := core.clone.Clone.clone (addr_of (self.[1])) in
     Pure
@@ -181,43 +171,34 @@ Module
     core.clone.Clone.clone := clone;
   }.
 End
-  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_generics_phantom_type_test_case_unit_clarification_Unit.
+  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module
-    Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_generics_phantom_type_test_case_unit_clarification_Unit.
+    Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition
     Self
     :=
-    generics_phantom_type_test_case_unit_clarification.Length
-      generics_phantom_type_test_case_unit_clarification.Unit.
+    generics_phantom_type_test_case_unit_clarification.Length Unit.
   
   Global Instance I Unit : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Class _.
 End
-  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_generics_phantom_type_test_case_unit_clarification_Unit.
+  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module
-    Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_generics_phantom_type_test_case_unit_clarification_Unit.
+    Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition
     Self
     :=
-    generics_phantom_type_test_case_unit_clarification.Length
-      generics_phantom_type_test_case_unit_clarification.Unit.
+    generics_phantom_type_test_case_unit_clarification.Length Unit.
   
   Definition Output : Set :=
-    generics_phantom_type_test_case_unit_clarification.Length
-      generics_phantom_type_test_case_unit_clarification.Unit.
+    generics_phantom_type_test_case_unit_clarification.Length Unit.
   
   Definition add
       (self : Self)
-      (rhs
-        :
-        generics_phantom_type_test_case_unit_clarification.Length
-          generics_phantom_type_test_case_unit_clarification.Unit)
-      :
-        M
-          (generics_phantom_type_test_case_unit_clarification.Length
-            generics_phantom_type_test_case_unit_clarification.Unit) :=
+      (rhs : generics_phantom_type_test_case_unit_clarification.Length Unit)
+      : M (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
     let* α0 := (self.[0]).["add"] (rhs.[0]) in
     Pure
       (generics_phantom_type_test_case_unit_clarification.Length.Build_t
@@ -232,7 +213,7 @@ Module
     core.ops.arith.Add.add := add;
   }.
 End
-  Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_generics_phantom_type_test_case_unit_clarification_Unit.
+  Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=

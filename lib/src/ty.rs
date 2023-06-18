@@ -111,7 +111,7 @@ pub(crate) fn compile_fn_decl(env: &Env, fn_decl: &FnDecl) -> Box<CoqType> {
     })
 }
 
-// Returns the type parameters on a path
+/// Return the type parameters on a path
 pub(crate) fn compile_path_ty_params(env: &Env, path: &rustc_hir::Path) -> Vec<Box<CoqType>> {
     match path.segments.last().unwrap().args {
         Some(args) => args

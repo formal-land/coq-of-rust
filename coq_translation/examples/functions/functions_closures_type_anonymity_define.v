@@ -6,10 +6,8 @@ Definition main (_ : unit) : M unit := Pure tt.
 
 Definition apply
     {F : Set}
-    `{core.ops.function.FnOnce.Trait
-      unit
-      functions_closures_type_anonymity_define.main.apply.F}
-    (f : functions_closures_type_anonymity_define.main.apply.F)
+    `{core.ops.function.FnOnce.Trait unit F}
+    (f : F)
     : M unit :=
   let* _ := f tt in
   Pure tt.

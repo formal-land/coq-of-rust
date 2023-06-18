@@ -15,12 +15,7 @@ Definition Container := Container.t.
 
 Module Contains.
   Class Trait (A B Self : Set) : Set := {
-    contains
-      :
-      (ref Self) ->
-      (ref generics_associated_types_problem.Contains.A) ->
-      (ref generics_associated_types_problem.Contains.B) ->
-      (M bool);
+    contains : (ref Self) -> (ref A) -> (ref B) -> (M bool);
     first : (ref Self) -> (M i32);
     last : (ref Self) -> (M i32);
   }.
@@ -77,11 +72,8 @@ End
 
 Definition difference
     {A B C : Set}
-    `{generics_associated_types_problem.Contains.Trait
-      generics_associated_types_problem.difference.A
-      generics_associated_types_problem.difference.B
-      generics_associated_types_problem.difference.C}
-    (container : ref generics_associated_types_problem.difference.C)
+    `{generics_associated_types_problem.Contains.Trait A B C}
+    (container : ref C)
     : M i32 :=
   let* α0 := container.["last"] in
   let* α1 := container.["first"] in

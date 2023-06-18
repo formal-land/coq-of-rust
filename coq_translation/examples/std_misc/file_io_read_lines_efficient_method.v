@@ -40,10 +40,8 @@ Definition main (_ : unit) : M unit :=
 
 Definition read_lines
     {P : Set}
-    `{core.convert.AsRef.Trait
-      std.path.Path
-      file_io_read_lines_efficient_method.read_lines.P}
-    (filename : file_io_read_lines_efficient_method.read_lines.P)
+    `{core.convert.AsRef.Trait std.path.Path P}
+    (filename : P)
     :
       M
         (std.io.error.Result

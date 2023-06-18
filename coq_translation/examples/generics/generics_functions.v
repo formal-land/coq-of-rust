@@ -16,7 +16,7 @@ End S.
 Definition S := S.t.
 
 Module SGen.
-  Record t : Set := { _ : generics_functions.SGen.T;}.
+  Record t : Set := { _ : T;}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
@@ -33,10 +33,7 @@ Definition gen_spec_t
 
 Definition gen_spec_i32 (_s : generics_functions.SGen i32) : M unit := Pure tt.
 
-Definition generic
-    {T : Set}
-    (_s : generics_functions.SGen generics_functions.generic.T)
-    : M unit :=
+Definition generic {T : Set} (_s : generics_functions.SGen T) : M unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

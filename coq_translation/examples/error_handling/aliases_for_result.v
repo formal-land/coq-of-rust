@@ -2,9 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition AliasedResult : Set :=
-  core.result.Result
-    aliases_for_result.AliasedResult.T
-    core.num.error.ParseIntError.
+  core.result.Result T core.num.error.ParseIntError.
 
 Definition multiply
     (first_number_str : ref str)

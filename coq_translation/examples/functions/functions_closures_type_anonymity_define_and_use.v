@@ -3,10 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition apply
     {F : Set}
-    `{core.ops.function.Fn.Trait
-      unit
-      functions_closures_type_anonymity_define_and_use.apply.F}
-    (f : functions_closures_type_anonymity_define_and_use.apply.F)
+    `{core.ops.function.Fn.Trait unit F}
+    (f : F)
     : M unit :=
   let* _ := f tt in
   Pure tt.

@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module my.
   Module OpenBox.
     Record t : Set := {
-      contents : struct_visibility.my.OpenBox.T;
+      contents : T;
     }.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
@@ -15,7 +15,7 @@ Module my.
   
   Module ClosedBox.
     Record t : Set := {
-      contents : struct_visibility.my.ClosedBox.T;
+      contents : T;
     }.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
@@ -24,24 +24,22 @@ Module my.
   End ClosedBox.
   Definition ClosedBox : Set := ClosedBox.t.
   
-  Module Impl_struct_visibility_my_ClosedBox_struct_visibility_my_T.
-    Definition Self := struct_visibility.my.ClosedBox struct_visibility.my.T.
+  Module Impl_struct_visibility_my_ClosedBox_T.
+    Definition Self := struct_visibility.my.ClosedBox T.
     
-    Definition new
-        (contents : struct_visibility.my.T)
-        : M (struct_visibility.my.ClosedBox struct_visibility.my.T) :=
+    Definition new (contents : T) : M (struct_visibility.my.ClosedBox T) :=
       Pure {| struct_visibility.my.ClosedBox.contents := contents; |}.
     
     Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
-  End Impl_struct_visibility_my_ClosedBox_struct_visibility_my_T.
+  End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 
 Module OpenBox.
   Record t : Set := {
-    contents : struct_visibility.my.OpenBox.T;
+    contents : T;
   }.
   
   Global Instance Get_contents : Notation.Dot "contents" := {
@@ -52,7 +50,7 @@ Definition OpenBox : Set := OpenBox.t.
 
 Module ClosedBox.
   Record t : Set := {
-    contents : struct_visibility.my.ClosedBox.T;
+    contents : T;
   }.
   
   Global Instance Get_contents : Notation.Dot "contents" := {
@@ -61,18 +59,16 @@ Module ClosedBox.
 End ClosedBox.
 Definition ClosedBox : Set := ClosedBox.t.
 
-Module Impl_struct_visibility_my_ClosedBox_struct_visibility_my_T_2.
-  Definition Self := struct_visibility.my.ClosedBox struct_visibility.my.T.
+Module Impl_struct_visibility_my_ClosedBox_T_2.
+  Definition Self := struct_visibility.my.ClosedBox T.
   
-  Definition new
-      (contents : struct_visibility.my.T)
-      : M (struct_visibility.my.ClosedBox struct_visibility.my.T) :=
+  Definition new (contents : T) : M (struct_visibility.my.ClosedBox T) :=
     Pure {| struct_visibility.my.ClosedBox.contents := contents; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
-End Impl_struct_visibility_my_ClosedBox_struct_visibility_my_T_2.
+End Impl_struct_visibility_my_ClosedBox_T_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=

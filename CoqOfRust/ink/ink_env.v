@@ -4,33 +4,33 @@ Require Import CoqOfRust.CoqOfRust.
 Module api.
   Definition caller
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.caller.E}
+      `{ink_env.types.Environment.Trait E}
       (_ : unit)
-      : M ink_env.api.caller.ImplE.AccountId :=
+      : M ImplE.AccountId :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => ink_env.backend.TypedEnvBackend.caller instance).
   
   Definition transferred_value
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.transferred_value.E}
+      `{ink_env.types.Environment.Trait E}
       (_ : unit)
-      : M ink_env.api.transferred_value.ImplE.Balance :=
+      : M ImplE.Balance :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         ink_env.backend.TypedEnvBackend.transferred_value instance).
   
   Definition weight_to_fee
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.weight_to_fee.E}
+      `{ink_env.types.Environment.Trait E}
       (gas : ink_env.types.Gas)
-      : M ink_env.api.weight_to_fee.ImplE.Balance :=
+      : M ImplE.Balance :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         ink_env.backend.TypedEnvBackend.weight_to_fee instance gas).
   
   Definition gas_left
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.gas_left.E}
+      `{ink_env.types.Environment.Trait E}
       (_ : unit)
       : M ink_env.types.Gas :=
     ink_env.engine.OnInstance.on_instance
@@ -38,52 +38,52 @@ Module api.
   
   Definition block_timestamp
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.block_timestamp.E}
+      `{ink_env.types.Environment.Trait E}
       (_ : unit)
-      : M ink_env.api.block_timestamp.ImplE.Timestamp :=
+      : M ImplE.Timestamp :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         ink_env.backend.TypedEnvBackend.block_timestamp instance).
   
   Definition account_id
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.account_id.E}
+      `{ink_env.types.Environment.Trait E}
       (_ : unit)
-      : M ink_env.api.account_id.ImplE.AccountId :=
+      : M ImplE.AccountId :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => ink_env.backend.TypedEnvBackend.account_id instance).
   
   Definition balance
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.balance.E}
+      `{ink_env.types.Environment.Trait E}
       (_ : unit)
-      : M ink_env.api.balance.ImplE.Balance :=
+      : M ImplE.Balance :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => ink_env.backend.TypedEnvBackend.balance instance).
   
   Definition block_number
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.block_number.E}
+      `{ink_env.types.Environment.Trait E}
       (_ : unit)
-      : M ink_env.api.block_number.ImplE.BlockNumber :=
+      : M ImplE.BlockNumber :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => ink_env.backend.TypedEnvBackend.block_number instance).
   
   Definition minimum_balance
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.minimum_balance.E}
+      `{ink_env.types.Environment.Trait E}
       (_ : unit)
-      : M ink_env.api.minimum_balance.ImplE.Balance :=
+      : M ImplE.Balance :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         ink_env.backend.TypedEnvBackend.minimum_balance instance).
   
   Definition emit_event
       {E Event : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.emit_event.E}
-      `{ink_env.topics.Topics.Trait ink_env.api.emit_event.Event}
-      `{parity_scale_codec.codec.Encode.Trait ink_env.api.emit_event.Event}
-      (event : ink_env.api.emit_event.Event)
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.Topics.Trait Event}
+      `{parity_scale_codec.codec.Encode.Trait Event}
+      (event : Event)
       : M unit :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -91,12 +91,10 @@ Module api.
   
   Definition set_contract_storage
       {K V : Set}
-      `{parity_scale_codec.codec.Encode.Trait
-        ink_env.api.set_contract_storage.K}
-      `{ink_storage_traits.storage.Storable.Trait
-        ink_env.api.set_contract_storage.V}
-      (key : ref ink_env.api.set_contract_storage.K)
-      (value : ref ink_env.api.set_contract_storage.V)
+      `{parity_scale_codec.codec.Encode.Trait K}
+      `{ink_storage_traits.storage.Storable.Trait V}
+      (key : ref K)
+      (value : ref V)
       : M (core.option.Option u32) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -104,39 +102,28 @@ Module api.
   
   Definition get_contract_storage
       {K R : Set}
-      `{parity_scale_codec.codec.Encode.Trait
-        ink_env.api.get_contract_storage.K}
-      `{ink_storage_traits.storage.Storable.Trait
-        ink_env.api.get_contract_storage.R}
-      (key : ref ink_env.api.get_contract_storage.K)
-      :
-        M
-          (ink_env.error.Result
-            (core.option.Option ink_env.api.get_contract_storage.R)) :=
+      `{parity_scale_codec.codec.Encode.Trait K}
+      `{ink_storage_traits.storage.Storable.Trait R}
+      (key : ref K)
+      : M (ink_env.error.Result (core.option.Option R)) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         ink_env.backend.EnvBackend.get_contract_storage instance key).
   
   Definition take_contract_storage
       {K R : Set}
-      `{parity_scale_codec.codec.Encode.Trait
-        ink_env.api.take_contract_storage.K}
-      `{ink_storage_traits.storage.Storable.Trait
-        ink_env.api.take_contract_storage.R}
-      (key : ref ink_env.api.take_contract_storage.K)
-      :
-        M
-          (ink_env.error.Result
-            (core.option.Option ink_env.api.take_contract_storage.R)) :=
+      `{parity_scale_codec.codec.Encode.Trait K}
+      `{ink_storage_traits.storage.Storable.Trait R}
+      (key : ref K)
+      : M (ink_env.error.Result (core.option.Option R)) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         ink_env.backend.EnvBackend.take_contract_storage instance key).
   
   Definition contains_contract_storage
       {K : Set}
-      `{parity_scale_codec.codec.Encode.Trait
-        ink_env.api.contains_contract_storage.K}
-      (key : ref ink_env.api.contains_contract_storage.K)
+      `{parity_scale_codec.codec.Encode.Trait K}
+      (key : ref K)
       : M (core.option.Option u32) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -144,9 +131,8 @@ Module api.
   
   Definition clear_contract_storage
       {K : Set}
-      `{parity_scale_codec.codec.Encode.Trait
-        ink_env.api.clear_contract_storage.K}
-      (key : ref ink_env.api.clear_contract_storage.K)
+      `{parity_scale_codec.codec.Encode.Trait K}
+      (key : ref K)
       : M (core.option.Option u32) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -154,42 +140,36 @@ Module api.
   
   Definition invoke_contract
       {E Args R : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.invoke_contract.E}
-      `{parity_scale_codec.codec.Encode.Trait ink_env.api.invoke_contract.Args}
-      `{parity_scale_codec.codec.Decode.Trait ink_env.api.invoke_contract.R}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R}
       (params
         :
         ref
           (ink_env.call.call_builder.CallParams
-            ink_env.api.invoke_contract.E
-            (ink_env.call.call_builder.Call ink_env.api.invoke_contract.E)
-            ink_env.api.invoke_contract.Args
-            ink_env.api.invoke_contract.R))
-      :
-        M
-          (ink_env.error.Result
-            (ink_primitives.MessageResult ink_env.api.invoke_contract.R)) :=
+            E
+            (ink_env.call.call_builder.Call E)
+            Args
+            R))
+      : M (ink_env.error.Result (ink_primitives.MessageResult R)) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         ink_env.backend.TypedEnvBackend.invoke_contract instance params).
   
   Definition invoke_contract_delegate
       {E Args R : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.invoke_contract_delegate.E}
-      `{parity_scale_codec.codec.Encode.Trait
-        ink_env.api.invoke_contract_delegate.Args}
-      `{parity_scale_codec.codec.Decode.Trait
-        ink_env.api.invoke_contract_delegate.R}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R}
       (params
         :
         ref
           (ink_env.call.call_builder.CallParams
-            ink_env.api.invoke_contract_delegate.E
-            (ink_env.call.call_builder.DelegateCall
-              ink_env.api.invoke_contract_delegate.E)
-            ink_env.api.invoke_contract_delegate.Args
-            ink_env.api.invoke_contract_delegate.R))
-      : M (ink_env.error.Result ink_env.api.invoke_contract_delegate.R) :=
+            E
+            (ink_env.call.call_builder.DelegateCall E)
+            Args
+            R))
+      : M (ink_env.error.Result R) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         ink_env.backend.TypedEnvBackend.invoke_contract_delegate
@@ -198,25 +178,15 @@ Module api.
   
   Definition instantiate_contract
       {E ContractRef Args Salt R : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.instantiate_contract.E}
-      `{ink_env.call.create_builder.FromAccountId.Trait
-        ink_env.api.instantiate_contract.E
-        ink_env.api.instantiate_contract.ContractRef}
-      `{parity_scale_codec.codec.Encode.Trait
-        ink_env.api.instantiate_contract.Args}
-      `{core.convert.AsRef.Trait Slice ink_env.api.instantiate_contract.Salt}
-      `{ink_env.call.create_builder.ConstructorReturnType.Trait
-        ink_env.api.instantiate_contract.ContractRef
-        ink_env.api.instantiate_contract.R}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{core.convert.AsRef.Trait Slice Salt}
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
       (params
         :
         ref
-          (ink_env.call.create_builder.CreateParams
-            ink_env.api.instantiate_contract.E
-            ink_env.api.instantiate_contract.ContractRef
-            ink_env.api.instantiate_contract.Args
-            ink_env.api.instantiate_contract.Salt
-            ink_env.api.instantiate_contract.R))
+          (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R))
       :
         M
           (ink_env.error.Result
@@ -228,8 +198,8 @@ Module api.
   
   Definition terminate_contract
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.terminate_contract.E}
-      (beneficiary : ink_env.api.terminate_contract.ImplE.AccountId)
+      `{ink_env.types.Environment.Trait E}
+      (beneficiary : ImplE.AccountId)
       : M Empty_set :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -239,9 +209,9 @@ Module api.
   
   Definition transfer
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.transfer.E}
-      (destination : ink_env.api.transfer.ImplE.AccountId)
-      (value : ink_env.api.transfer.ImplE.Balance)
+      `{ink_env.types.Environment.Trait E}
+      (destination : ImplE.AccountId)
+      (value : ImplE.Balance)
       : M (ink_env.error.Result unit) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -249,17 +219,17 @@ Module api.
   
   Definition decode_input
       {T : Set}
-      `{parity_scale_codec.codec.Decode.Trait ink_env.api.decode_input.T}
+      `{parity_scale_codec.codec.Decode.Trait T}
       (_ : unit)
-      : M (ink_env.error.Result ink_env.api.decode_input.T) :=
+      : M (ink_env.error.Result T) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => ink_env.backend.EnvBackend.decode_input instance).
   
   Definition return_value
       {R : Set}
-      `{parity_scale_codec.codec.Encode.Trait ink_env.api.return_value.R}
+      `{parity_scale_codec.codec.Encode.Trait R}
       (return_flags : ink_env.backend.ReturnFlags)
-      (return_value : ref ink_env.api.return_value.R)
+      (return_value : ref R)
       : M Empty_set :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -275,7 +245,7 @@ Module api.
   
   Definition hash_bytes
       {H : Set}
-      `{ink_env.hash.CryptoHash.Trait ink_env.api.hash_bytes.H}
+      `{ink_env.hash.CryptoHash.Trait H}
       (input : ref Slice)
       (output : mut_ref ink_env.hash.HashOutput.Type)
       : M unit :=
@@ -284,9 +254,9 @@ Module api.
   
   Definition hash_encoded
       {H T : Set}
-      `{ink_env.hash.CryptoHash.Trait ink_env.api.hash_encoded.H}
-      `{parity_scale_codec.codec.Encode.Trait ink_env.api.hash_encoded.T}
-      (input : ref ink_env.api.hash_encoded.T)
+      `{ink_env.hash.CryptoHash.Trait H}
+      `{parity_scale_codec.codec.Encode.Trait T}
+      (input : ref T)
       (output : mut_ref ink_env.hash.HashOutput.Type)
       : M unit :=
     ink_env.engine.OnInstance.on_instance
@@ -310,8 +280,8 @@ Module api.
   
   Definition is_contract
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.is_contract.E}
-      (account : ref ink_env.api.is_contract.ImplE.AccountId)
+      `{ink_env.types.Environment.Trait E}
+      (account : ref ImplE.AccountId)
       : M bool :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -319,24 +289,24 @@ Module api.
   
   Definition code_hash
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.code_hash.E}
-      (account : ref ink_env.api.code_hash.ImplE.AccountId)
-      : M (ink_env.error.Result ink_env.api.code_hash.ImplE.Hash) :=
+      `{ink_env.types.Environment.Trait E}
+      (account : ref ImplE.AccountId)
+      : M (ink_env.error.Result ImplE.Hash) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         ink_env.backend.TypedEnvBackend.code_hash instance account).
   
   Definition own_code_hash
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.own_code_hash.E}
+      `{ink_env.types.Environment.Trait E}
       (_ : unit)
-      : M (ink_env.error.Result ink_env.api.own_code_hash.ImplE.Hash) :=
+      : M (ink_env.error.Result ImplE.Hash) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => ink_env.backend.TypedEnvBackend.own_code_hash instance).
   
   Definition caller_is_origin
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.caller_is_origin.E}
+      `{ink_env.types.Environment.Trait E}
       (_ : unit)
       : M bool :=
     ink_env.engine.OnInstance.on_instance
@@ -351,8 +321,8 @@ Module api.
   
   Definition set_code_hash2
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.set_code_hash2.E}
-      (code_hash : ref ink_env.api.set_code_hash2.ImplE.Hash)
+      `{ink_env.types.Environment.Trait E}
+      (code_hash : ref ImplE.Hash)
       : M (ink_env.error.Result unit) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -361,9 +331,9 @@ Module api.
   
   Definition call_runtime
       {E Call : Set}
-      `{ink_env.types.Environment.Trait ink_env.api.call_runtime.E}
-      `{parity_scale_codec.codec.Encode.Trait ink_env.api.call_runtime.Call}
-      (call : ref ink_env.api.call_runtime.Call)
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Call}
+      (call : ref Call)
       : M (ink_env.error.Result unit) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -372,33 +342,33 @@ End api.
 
 Definition caller
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.caller.E}
+    `{ink_env.types.Environment.Trait E}
     (_ : unit)
-    : M ink_env.api.caller.ImplE.AccountId :=
+    : M ImplE.AccountId :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.caller instance).
 
 Definition transferred_value
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.transferred_value.E}
+    `{ink_env.types.Environment.Trait E}
     (_ : unit)
-    : M ink_env.api.transferred_value.ImplE.Balance :=
+    : M ImplE.Balance :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
       ink_env.backend.TypedEnvBackend.transferred_value instance).
 
 Definition weight_to_fee
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.weight_to_fee.E}
+    `{ink_env.types.Environment.Trait E}
     (gas : ink_env.types.Gas)
-    : M ink_env.api.weight_to_fee.ImplE.Balance :=
+    : M ImplE.Balance :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
       ink_env.backend.TypedEnvBackend.weight_to_fee instance gas).
 
 Definition gas_left
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.gas_left.E}
+    `{ink_env.types.Environment.Trait E}
     (_ : unit)
     : M ink_env.types.Gas :=
   ink_env.engine.OnInstance.on_instance
@@ -406,61 +376,60 @@ Definition gas_left
 
 Definition block_timestamp
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.block_timestamp.E}
+    `{ink_env.types.Environment.Trait E}
     (_ : unit)
-    : M ink_env.api.block_timestamp.ImplE.Timestamp :=
+    : M ImplE.Timestamp :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.block_timestamp instance).
 
 Definition account_id
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.account_id.E}
+    `{ink_env.types.Environment.Trait E}
     (_ : unit)
-    : M ink_env.api.account_id.ImplE.AccountId :=
+    : M ImplE.AccountId :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.account_id instance).
 
 Definition balance
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.balance.E}
+    `{ink_env.types.Environment.Trait E}
     (_ : unit)
-    : M ink_env.api.balance.ImplE.Balance :=
+    : M ImplE.Balance :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.balance instance).
 
 Definition block_number
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.block_number.E}
+    `{ink_env.types.Environment.Trait E}
     (_ : unit)
-    : M ink_env.api.block_number.ImplE.BlockNumber :=
+    : M ImplE.BlockNumber :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.block_number instance).
 
 Definition minimum_balance
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.minimum_balance.E}
+    `{ink_env.types.Environment.Trait E}
     (_ : unit)
-    : M ink_env.api.minimum_balance.ImplE.Balance :=
+    : M ImplE.Balance :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.minimum_balance instance).
 
 Definition emit_event
     {E Event : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.emit_event.E}
-    `{ink_env.topics.Topics.Trait ink_env.api.emit_event.Event}
-    `{parity_scale_codec.codec.Encode.Trait ink_env.api.emit_event.Event}
-    (event : ink_env.api.emit_event.Event)
+    `{ink_env.types.Environment.Trait E}
+    `{ink_env.topics.Topics.Trait Event}
+    `{parity_scale_codec.codec.Encode.Trait Event}
+    (event : Event)
     : M unit :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.emit_event instance event).
 
 Definition set_contract_storage
     {K V : Set}
-    `{parity_scale_codec.codec.Encode.Trait ink_env.api.set_contract_storage.K}
-    `{ink_storage_traits.storage.Storable.Trait
-      ink_env.api.set_contract_storage.V}
-    (key : ref ink_env.api.set_contract_storage.K)
-    (value : ref ink_env.api.set_contract_storage.V)
+    `{parity_scale_codec.codec.Encode.Trait K}
+    `{ink_storage_traits.storage.Storable.Trait V}
+    (key : ref K)
+    (value : ref V)
     : M (core.option.Option u32) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -468,37 +437,28 @@ Definition set_contract_storage
 
 Definition get_contract_storage
     {K R : Set}
-    `{parity_scale_codec.codec.Encode.Trait ink_env.api.get_contract_storage.K}
-    `{ink_storage_traits.storage.Storable.Trait
-      ink_env.api.get_contract_storage.R}
-    (key : ref ink_env.api.get_contract_storage.K)
-    :
-      M
-        (ink_env.error.Result
-          (core.option.Option ink_env.api.get_contract_storage.R)) :=
+    `{parity_scale_codec.codec.Encode.Trait K}
+    `{ink_storage_traits.storage.Storable.Trait R}
+    (key : ref K)
+    : M (ink_env.error.Result (core.option.Option R)) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
       ink_env.backend.EnvBackend.get_contract_storage instance key).
 
 Definition take_contract_storage
     {K R : Set}
-    `{parity_scale_codec.codec.Encode.Trait ink_env.api.take_contract_storage.K}
-    `{ink_storage_traits.storage.Storable.Trait
-      ink_env.api.take_contract_storage.R}
-    (key : ref ink_env.api.take_contract_storage.K)
-    :
-      M
-        (ink_env.error.Result
-          (core.option.Option ink_env.api.take_contract_storage.R)) :=
+    `{parity_scale_codec.codec.Encode.Trait K}
+    `{ink_storage_traits.storage.Storable.Trait R}
+    (key : ref K)
+    : M (ink_env.error.Result (core.option.Option R)) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
       ink_env.backend.EnvBackend.take_contract_storage instance key).
 
 Definition contains_contract_storage
     {K : Set}
-    `{parity_scale_codec.codec.Encode.Trait
-      ink_env.api.contains_contract_storage.K}
-    (key : ref ink_env.api.contains_contract_storage.K)
+    `{parity_scale_codec.codec.Encode.Trait K}
+    (key : ref K)
     : M (core.option.Option u32) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -506,9 +466,8 @@ Definition contains_contract_storage
 
 Definition clear_contract_storage
     {K : Set}
-    `{parity_scale_codec.codec.Encode.Trait
-      ink_env.api.clear_contract_storage.K}
-    (key : ref ink_env.api.clear_contract_storage.K)
+    `{parity_scale_codec.codec.Encode.Trait K}
+    (key : ref K)
     : M (core.option.Option u32) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -516,67 +475,50 @@ Definition clear_contract_storage
 
 Definition invoke_contract
     {E Args R : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.invoke_contract.E}
-    `{parity_scale_codec.codec.Encode.Trait ink_env.api.invoke_contract.Args}
-    `{parity_scale_codec.codec.Decode.Trait ink_env.api.invoke_contract.R}
+    `{ink_env.types.Environment.Trait E}
+    `{parity_scale_codec.codec.Encode.Trait Args}
+    `{parity_scale_codec.codec.Decode.Trait R}
     (params
       :
       ref
         (ink_env.call.call_builder.CallParams
-          ink_env.api.invoke_contract.E
-          (ink_env.call.call_builder.Call ink_env.api.invoke_contract.E)
-          ink_env.api.invoke_contract.Args
-          ink_env.api.invoke_contract.R))
-    :
-      M
-        (ink_env.error.Result
-          (ink_primitives.MessageResult ink_env.api.invoke_contract.R)) :=
+          E
+          (ink_env.call.call_builder.Call E)
+          Args
+          R))
+    : M (ink_env.error.Result (ink_primitives.MessageResult R)) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
       ink_env.backend.TypedEnvBackend.invoke_contract instance params).
 
 Definition invoke_contract_delegate
     {E Args R : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.invoke_contract_delegate.E}
-    `{parity_scale_codec.codec.Encode.Trait
-      ink_env.api.invoke_contract_delegate.Args}
-    `{parity_scale_codec.codec.Decode.Trait
-      ink_env.api.invoke_contract_delegate.R}
+    `{ink_env.types.Environment.Trait E}
+    `{parity_scale_codec.codec.Encode.Trait Args}
+    `{parity_scale_codec.codec.Decode.Trait R}
     (params
       :
       ref
         (ink_env.call.call_builder.CallParams
-          ink_env.api.invoke_contract_delegate.E
-          (ink_env.call.call_builder.DelegateCall
-            ink_env.api.invoke_contract_delegate.E)
-          ink_env.api.invoke_contract_delegate.Args
-          ink_env.api.invoke_contract_delegate.R))
-    : M (ink_env.error.Result ink_env.api.invoke_contract_delegate.R) :=
+          E
+          (ink_env.call.call_builder.DelegateCall E)
+          Args
+          R))
+    : M (ink_env.error.Result R) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
       ink_env.backend.TypedEnvBackend.invoke_contract_delegate instance params).
 
 Definition instantiate_contract
     {E ContractRef Args Salt R : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.instantiate_contract.E}
-    `{ink_env.call.create_builder.FromAccountId.Trait
-      ink_env.api.instantiate_contract.E
-      ink_env.api.instantiate_contract.ContractRef}
-    `{parity_scale_codec.codec.Encode.Trait
-      ink_env.api.instantiate_contract.Args}
-    `{core.convert.AsRef.Trait Slice ink_env.api.instantiate_contract.Salt}
-    `{ink_env.call.create_builder.ConstructorReturnType.Trait
-      ink_env.api.instantiate_contract.ContractRef
-      ink_env.api.instantiate_contract.R}
+    `{ink_env.types.Environment.Trait E}
+    `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+    `{parity_scale_codec.codec.Encode.Trait Args}
+    `{core.convert.AsRef.Trait Slice Salt}
+    `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
     (params
       :
-      ref
-        (ink_env.call.create_builder.CreateParams
-          ink_env.api.instantiate_contract.E
-          ink_env.api.instantiate_contract.ContractRef
-          ink_env.api.instantiate_contract.Args
-          ink_env.api.instantiate_contract.Salt
-          ink_env.api.instantiate_contract.R))
+      ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R))
     :
       M
         (ink_env.error.Result
@@ -588,8 +530,8 @@ Definition instantiate_contract
 
 Definition terminate_contract
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.terminate_contract.E}
-    (beneficiary : ink_env.api.terminate_contract.ImplE.AccountId)
+    `{ink_env.types.Environment.Trait E}
+    (beneficiary : ImplE.AccountId)
     : M Empty_set :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -597,9 +539,9 @@ Definition terminate_contract
 
 Definition transfer
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.transfer.E}
-    (destination : ink_env.api.transfer.ImplE.AccountId)
-    (value : ink_env.api.transfer.ImplE.Balance)
+    `{ink_env.types.Environment.Trait E}
+    (destination : ImplE.AccountId)
+    (value : ImplE.Balance)
     : M (ink_env.error.Result unit) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -607,17 +549,17 @@ Definition transfer
 
 Definition decode_input
     {T : Set}
-    `{parity_scale_codec.codec.Decode.Trait ink_env.api.decode_input.T}
+    `{parity_scale_codec.codec.Decode.Trait T}
     (_ : unit)
-    : M (ink_env.error.Result ink_env.api.decode_input.T) :=
+    : M (ink_env.error.Result T) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.EnvBackend.decode_input instance).
 
 Definition return_value
     {R : Set}
-    `{parity_scale_codec.codec.Encode.Trait ink_env.api.return_value.R}
+    `{parity_scale_codec.codec.Encode.Trait R}
     (return_flags : ink_env.backend.ReturnFlags)
-    (return_value : ref ink_env.api.return_value.R)
+    (return_value : ref R)
     : M Empty_set :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -632,7 +574,7 @@ Definition debug_message (message : ref str) : M unit :=
 
 Definition hash_bytes
     {H : Set}
-    `{ink_env.hash.CryptoHash.Trait ink_env.api.hash_bytes.H}
+    `{ink_env.hash.CryptoHash.Trait H}
     (input : ref Slice)
     (output : mut_ref ink_env.hash.HashOutput.Type)
     : M unit :=
@@ -641,9 +583,9 @@ Definition hash_bytes
 
 Definition hash_encoded
     {H T : Set}
-    `{ink_env.hash.CryptoHash.Trait ink_env.api.hash_encoded.H}
-    `{parity_scale_codec.codec.Encode.Trait ink_env.api.hash_encoded.T}
-    (input : ref ink_env.api.hash_encoded.T)
+    `{ink_env.hash.CryptoHash.Trait H}
+    `{parity_scale_codec.codec.Encode.Trait T}
+    (input : ref T)
     (output : mut_ref ink_env.hash.HashOutput.Type)
     : M unit :=
   ink_env.engine.OnInstance.on_instance
@@ -666,8 +608,8 @@ Definition ecdsa_to_eth_address
 
 Definition is_contract
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.is_contract.E}
-    (account : ref ink_env.api.is_contract.ImplE.AccountId)
+    `{ink_env.types.Environment.Trait E}
+    (account : ref ImplE.AccountId)
     : M bool :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -675,24 +617,24 @@ Definition is_contract
 
 Definition code_hash
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.code_hash.E}
-    (account : ref ink_env.api.code_hash.ImplE.AccountId)
-    : M (ink_env.error.Result ink_env.api.code_hash.ImplE.Hash) :=
+    `{ink_env.types.Environment.Trait E}
+    (account : ref ImplE.AccountId)
+    : M (ink_env.error.Result ImplE.Hash) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
       ink_env.backend.TypedEnvBackend.code_hash instance account).
 
 Definition own_code_hash
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.own_code_hash.E}
+    `{ink_env.types.Environment.Trait E}
     (_ : unit)
-    : M (ink_env.error.Result ink_env.api.own_code_hash.ImplE.Hash) :=
+    : M (ink_env.error.Result ImplE.Hash) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.own_code_hash instance).
 
 Definition caller_is_origin
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.caller_is_origin.E}
+    `{ink_env.types.Environment.Trait E}
     (_ : unit)
     : M bool :=
   ink_env.engine.OnInstance.on_instance
@@ -706,8 +648,8 @@ Definition set_code_hash
 
 Definition set_code_hash2
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.set_code_hash2.E}
-    (code_hash : ref ink_env.api.set_code_hash2.ImplE.Hash)
+    `{ink_env.types.Environment.Trait E}
+    (code_hash : ref ImplE.Hash)
     : M (ink_env.error.Result unit) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -716,9 +658,9 @@ Definition set_code_hash2
 
 Definition call_runtime
     {E Call : Set}
-    `{ink_env.types.Environment.Trait ink_env.api.call_runtime.E}
-    `{parity_scale_codec.codec.Encode.Trait ink_env.api.call_runtime.Call}
-    (call : ref ink_env.api.call_runtime.Call)
+    `{ink_env.types.Environment.Trait E}
+    `{parity_scale_codec.codec.Encode.Trait Call}
+    (call : ref Call)
     : M (ink_env.error.Result unit) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -732,12 +674,12 @@ Module arithmetic.
     Global Set Primitive Projections.
   End BaseArithmetic.
   
-  Module Impl_ink_env_arithmetic_BaseArithmetic_for_ink_env_arithmetic_T.
-    Definition Self := ink_env.arithmetic.T.
+  Module Impl_ink_env_arithmetic_BaseArithmetic_for_T.
+    Definition Self := T.
     
     Global Instance I T : ink_env.arithmetic.BaseArithmetic.Trait Self :=
       ink_env.arithmetic.BaseArithmetic.Build_Class _.
-  End Impl_ink_env_arithmetic_BaseArithmetic_for_ink_env_arithmetic_T.
+  End Impl_ink_env_arithmetic_BaseArithmetic_for_T.
   
   Module AtLeast32Bit.
     Unset Primitive Projections.
@@ -746,12 +688,12 @@ Module arithmetic.
     Global Set Primitive Projections.
   End AtLeast32Bit.
   
-  Module Impl_ink_env_arithmetic_AtLeast32Bit_for_ink_env_arithmetic_T.
-    Definition Self := ink_env.arithmetic.T.
+  Module Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
+    Definition Self := T.
     
     Global Instance I T : ink_env.arithmetic.AtLeast32Bit.Trait Self :=
       ink_env.arithmetic.AtLeast32Bit.Build_Class _.
-  End Impl_ink_env_arithmetic_AtLeast32Bit_for_ink_env_arithmetic_T.
+  End Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
   
   Module AtLeast32BitUnsigned.
     Unset Primitive Projections.
@@ -760,12 +702,12 @@ Module arithmetic.
     Global Set Primitive Projections.
   End AtLeast32BitUnsigned.
   
-  Module Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_ink_env_arithmetic_T.
-    Definition Self := ink_env.arithmetic.T.
+  Module Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
+    Definition Self := T.
     
     Global Instance I T : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Self :=
       ink_env.arithmetic.AtLeast32BitUnsigned.Build_Class _.
-  End Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_ink_env_arithmetic_T.
+  End Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
   
   Module Saturating.
     Class Trait (Self : Set) : Set := {
@@ -793,8 +735,8 @@ Module arithmetic.
     }.
   End Saturating.
   
-  Module Impl_ink_env_arithmetic_Saturating_for_ink_env_arithmetic_T.
-    Definition Self := ink_env.arithmetic.T.
+  Module Impl_ink_env_arithmetic_Saturating_for_T.
+    Definition Self := T.
     
     Definition saturating_add (self : Self) (o : Self) : M Self :=
       num_traits.ops.saturating.Saturating.saturating_add self o.
@@ -814,9 +756,9 @@ Module arithmetic.
       let* α0 := self.["checked_mul"] (addr_of o) in
       α0.["unwrap_or_else"]
         (fun  =>
-          let* α0 := ink_env.arithmetic.T::["zero"] tt in
+          let* α0 := T::["zero"] tt in
           let* α1 := self.["lt"] α0 in
-          let* α2 := ink_env.arithmetic.T::["zero"] tt in
+          let* α2 := T::["zero"] tt in
           let* α3 := o.["lt"] α2 in
           let* α4 := α1.["ne"] α3 in
           if (α4 : bool) then
@@ -830,7 +772,7 @@ Module arithmetic.
     
     Definition saturating_pow (self : Self) (exp : usize) : M Self :=
       let* neg :=
-        let* α0 := ink_env.arithmetic.T::["zero"] tt in
+        let* α0 := T::["zero"] tt in
         let* α1 := self.["lt"] α0 in
         let* α2 := exp.["rem"] 2 in
         let* α3 := α2.["ne"] 0 in
@@ -853,7 +795,7 @@ Module arithmetic.
       ink_env.arithmetic.Saturating.saturating_mul := saturating_mul;
       ink_env.arithmetic.Saturating.saturating_pow := saturating_pow;
     }.
-  End Impl_ink_env_arithmetic_Saturating_for_ink_env_arithmetic_T.
+  End Impl_ink_env_arithmetic_Saturating_for_T.
 End arithmetic.
 
 Module BaseArithmetic.
@@ -863,12 +805,12 @@ Module BaseArithmetic.
   Global Set Primitive Projections.
 End BaseArithmetic.
 
-Module Impl_ink_env_arithmetic_BaseArithmetic_for_ink_env_arithmetic_T.
-  Definition Self := ink_env.arithmetic.T.
+Module Impl_ink_env_arithmetic_BaseArithmetic_for_T.
+  Definition Self := T.
   
   Global Instance I T : ink_env.arithmetic.BaseArithmetic.Trait Self :=
     ink_env.arithmetic.BaseArithmetic.Build_Class _.
-End Impl_ink_env_arithmetic_BaseArithmetic_for_ink_env_arithmetic_T.
+End Impl_ink_env_arithmetic_BaseArithmetic_for_T.
 
 Module AtLeast32Bit.
   Unset Primitive Projections.
@@ -877,12 +819,12 @@ Module AtLeast32Bit.
   Global Set Primitive Projections.
 End AtLeast32Bit.
 
-Module Impl_ink_env_arithmetic_AtLeast32Bit_for_ink_env_arithmetic_T.
-  Definition Self := ink_env.arithmetic.T.
+Module Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
+  Definition Self := T.
   
   Global Instance I T : ink_env.arithmetic.AtLeast32Bit.Trait Self :=
     ink_env.arithmetic.AtLeast32Bit.Build_Class _.
-End Impl_ink_env_arithmetic_AtLeast32Bit_for_ink_env_arithmetic_T.
+End Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
 
 Module AtLeast32BitUnsigned.
   Unset Primitive Projections.
@@ -891,12 +833,12 @@ Module AtLeast32BitUnsigned.
   Global Set Primitive Projections.
 End AtLeast32BitUnsigned.
 
-Module Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_ink_env_arithmetic_T.
-  Definition Self := ink_env.arithmetic.T.
+Module Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
+  Definition Self := T.
   
   Global Instance I T : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Self :=
     ink_env.arithmetic.AtLeast32BitUnsigned.Build_Class _.
-End Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_ink_env_arithmetic_T.
+End Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
 
 Module Saturating.
   Class Trait (Self : Set) : Set := {
@@ -924,8 +866,8 @@ Module Saturating.
   }.
 End Saturating.
 
-Module Impl_ink_env_arithmetic_Saturating_for_ink_env_arithmetic_T.
-  Definition Self := ink_env.arithmetic.T.
+Module Impl_ink_env_arithmetic_Saturating_for_T.
+  Definition Self := T.
   
   Definition saturating_add (self : Self) (o : Self) : M Self :=
     num_traits.ops.saturating.Saturating.saturating_add self o.
@@ -945,9 +887,9 @@ Module Impl_ink_env_arithmetic_Saturating_for_ink_env_arithmetic_T.
     let* α0 := self.["checked_mul"] (addr_of o) in
     α0.["unwrap_or_else"]
       (fun  =>
-        let* α0 := ink_env.arithmetic.T::["zero"] tt in
+        let* α0 := T::["zero"] tt in
         let* α1 := self.["lt"] α0 in
-        let* α2 := ink_env.arithmetic.T::["zero"] tt in
+        let* α2 := T::["zero"] tt in
         let* α3 := o.["lt"] α2 in
         let* α4 := α1.["ne"] α3 in
         if (α4 : bool) then
@@ -961,7 +903,7 @@ Module Impl_ink_env_arithmetic_Saturating_for_ink_env_arithmetic_T.
   
   Definition saturating_pow (self : Self) (exp : usize) : M Self :=
     let* neg :=
-      let* α0 := ink_env.arithmetic.T::["zero"] tt in
+      let* α0 := T::["zero"] tt in
       let* α1 := self.["lt"] α0 in
       let* α2 := exp.["rem"] 2 in
       let* α3 := α2.["ne"] 0 in
@@ -984,7 +926,7 @@ Module Impl_ink_env_arithmetic_Saturating_for_ink_env_arithmetic_T.
     ink_env.arithmetic.Saturating.saturating_mul := saturating_mul;
     ink_env.arithmetic.Saturating.saturating_pow := saturating_pow;
   }.
-End Impl_ink_env_arithmetic_Saturating_for_ink_env_arithmetic_T.
+End Impl_ink_env_arithmetic_Saturating_for_T.
 
 Module backend.
   Module ReturnFlags.
@@ -1015,7 +957,7 @@ Module backend.
     }.
   End Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
   
-  Module Impl_ink_env.backend.ReturnFlags.
+  Module Impl_ink_env_backend_ReturnFlags.
     Definition Self := ink_env.backend.ReturnFlags.
     
     Definition new_with_reverted (has_reverted : bool) : M Self :=
@@ -1040,7 +982,7 @@ Module backend.
     Global Instance Method_set_reverted : Notation.Dot "set_reverted" := {
       Notation.dot := set_reverted;
     }.
-  End Impl_ink_env.backend.ReturnFlags.
+  End Impl_ink_env_backend_ReturnFlags.
   
   Module CallFlags.
     Record t : Set := {
@@ -1142,7 +1084,7 @@ Module backend.
     }.
   End Impl_core_default_Default_for_ink_env_backend_CallFlags.
   
-  Module Impl_ink_env.backend.CallFlags.
+  Module Impl_ink_env_backend_CallFlags.
     Definition Self := ink_env.backend.CallFlags.
     
     Definition set_forward_input
@@ -1223,51 +1165,35 @@ Module backend.
     Global Instance Method_allow_reentry : Notation.Dot "allow_reentry" := {
       Notation.dot := allow_reentry;
     }.
-  End Impl_ink_env.backend.CallFlags.
+  End Impl_ink_env_backend_CallFlags.
   
   Module EnvBackend.
     Class Trait (Self : Set) : Set := {
       set_contract_storage
         :
-        (mut_ref Self) ->
-        (ref ink_env.backend.EnvBackend.set_contract_storage.K) ->
-        (ref ink_env.backend.EnvBackend.set_contract_storage.V) ->
-        (M (core.option.Option u32));
+        (mut_ref Self) -> (ref K) -> (ref V) -> (M (core.option.Option u32));
       get_contract_storage
         :
         (mut_ref Self) ->
-        (ref ink_env.backend.EnvBackend.get_contract_storage.K) ->
-        (M
-          (ink_env.error.Result
-            (core.option.Option
-              ink_env.backend.EnvBackend.get_contract_storage.R)));
+        (ref K) ->
+        (M (ink_env.error.Result (core.option.Option R)));
       take_contract_storage
         :
         (mut_ref Self) ->
-        (ref ink_env.backend.EnvBackend.take_contract_storage.K) ->
-        (M
-          (ink_env.error.Result
-            (core.option.Option
-              ink_env.backend.EnvBackend.take_contract_storage.R)));
+        (ref K) ->
+        (M (ink_env.error.Result (core.option.Option R)));
       contains_contract_storage
         :
-        (mut_ref Self) ->
-        (ref ink_env.backend.EnvBackend.contains_contract_storage.K) ->
-        (M (core.option.Option u32));
+        (mut_ref Self) -> (ref K) -> (M (core.option.Option u32));
       clear_contract_storage
         :
-        (mut_ref Self) ->
-        (ref ink_env.backend.EnvBackend.clear_contract_storage.K) ->
-        (M (core.option.Option u32));
-      decode_input
-        :
-        (mut_ref Self) ->
-        (M (ink_env.error.Result ink_env.backend.EnvBackend.decode_input.T));
+        (mut_ref Self) -> (ref K) -> (M (core.option.Option u32));
+      decode_input : (mut_ref Self) -> (M (ink_env.error.Result T));
       return_value
         :
         (mut_ref Self) ->
         ink_env.backend.ReturnFlags ->
-        (ref ink_env.backend.EnvBackend.return_value.R) ->
+        (ref R) ->
         (M Empty_set);
       debug_message : (mut_ref Self) -> (ref str) -> (M unit);
       hash_bytes
@@ -1279,7 +1205,7 @@ Module backend.
       hash_encoded
         :
         (mut_ref Self) ->
-        (ref ink_env.backend.EnvBackend.hash_encoded.T) ->
+        (ref T) ->
         (mut_ref ink_env.hash.HashOutput.Type) ->
         (M unit);
       ecdsa_recover
@@ -1299,13 +1225,10 @@ Module backend.
         :
         (mut_ref Self) ->
         u32 ->
-        (ref ink_env.backend.EnvBackend.call_chain_extension.I) ->
-        ink_env.backend.EnvBackend.call_chain_extension.F ->
-        ink_env.backend.EnvBackend.call_chain_extension.D ->
-        (M
-          (core.result.Result
-            ink_env.backend.EnvBackend.call_chain_extension.T
-            ink_env.backend.EnvBackend.call_chain_extension.E));
+        (ref I) ->
+        F ->
+        D ->
+        (M (core.result.Result T E));
       set_code_hash
         :
         (mut_ref Self) -> (ref Slice) -> (M (ink_env.error.Result unit));
@@ -1370,121 +1293,68 @@ Module backend.
   
   Module TypedEnvBackend.
     Class Trait (Self : Set) : Set := {
-      caller
-        :
-        (mut_ref Self) ->
-        (M ink_env.backend.TypedEnvBackend.caller.ImplE.AccountId);
-      transferred_value
-        :
-        (mut_ref Self) ->
-        (M ink_env.backend.TypedEnvBackend.transferred_value.ImplE.Balance);
-      weight_to_fee
-        :
-        (mut_ref Self) ->
-        u64 ->
-        (M ink_env.backend.TypedEnvBackend.weight_to_fee.ImplE.Balance);
+      caller : (mut_ref Self) -> (M ImplE.AccountId);
+      transferred_value : (mut_ref Self) -> (M ImplE.Balance);
+      weight_to_fee : (mut_ref Self) -> u64 -> (M ImplE.Balance);
       gas_left : (mut_ref Self) -> (M u64);
-      block_timestamp
-        :
-        (mut_ref Self) ->
-        (M ink_env.backend.TypedEnvBackend.block_timestamp.ImplE.Timestamp);
-      account_id
-        :
-        (mut_ref Self) ->
-        (M ink_env.backend.TypedEnvBackend.account_id.ImplE.AccountId);
-      balance
-        :
-        (mut_ref Self) ->
-        (M ink_env.backend.TypedEnvBackend.balance.ImplE.Balance);
-      block_number
-        :
-        (mut_ref Self) ->
-        (M ink_env.backend.TypedEnvBackend.block_number.ImplE.BlockNumber);
-      minimum_balance
-        :
-        (mut_ref Self) ->
-        (M ink_env.backend.TypedEnvBackend.minimum_balance.ImplE.Balance);
-      emit_event
-        :
-        (mut_ref Self) ->
-        ink_env.backend.TypedEnvBackend.emit_event.Event ->
-        (M unit);
+      block_timestamp : (mut_ref Self) -> (M ImplE.Timestamp);
+      account_id : (mut_ref Self) -> (M ImplE.AccountId);
+      balance : (mut_ref Self) -> (M ImplE.Balance);
+      block_number : (mut_ref Self) -> (M ImplE.BlockNumber);
+      minimum_balance : (mut_ref Self) -> (M ImplE.Balance);
+      emit_event : (mut_ref Self) -> Event -> (M unit);
       invoke_contract
         :
         (mut_ref Self) ->
         (ref
           (ink_env.call.call_builder.CallParams
-            ink_env.backend.TypedEnvBackend.invoke_contract.E
-            (ink_env.call.call_builder.Call
-              ink_env.backend.TypedEnvBackend.invoke_contract.E)
-            ink_env.backend.TypedEnvBackend.invoke_contract.Args
-            ink_env.backend.TypedEnvBackend.invoke_contract.R)) ->
-        (M
-          (ink_env.error.Result
-            (ink_primitives.MessageResult
-              ink_env.backend.TypedEnvBackend.invoke_contract.R)));
+            E
+            (ink_env.call.call_builder.Call E)
+            Args
+            R)) ->
+        (M (ink_env.error.Result (ink_primitives.MessageResult R)));
       invoke_contract_delegate
         :
         (mut_ref Self) ->
         (ref
           (ink_env.call.call_builder.CallParams
-            ink_env.backend.TypedEnvBackend.invoke_contract_delegate.E
-            (ink_env.call.call_builder.DelegateCall
-              ink_env.backend.TypedEnvBackend.invoke_contract_delegate.E)
-            ink_env.backend.TypedEnvBackend.invoke_contract_delegate.Args
-            ink_env.backend.TypedEnvBackend.invoke_contract_delegate.R)) ->
-        (M
-          (ink_env.error.Result
-            ink_env.backend.TypedEnvBackend.invoke_contract_delegate.R));
+            E
+            (ink_env.call.call_builder.DelegateCall E)
+            Args
+            R)) ->
+        (M (ink_env.error.Result R));
       instantiate_contract
         :
         (mut_ref Self) ->
         (ref
           (ink_env.call.create_builder.CreateParams
-            ink_env.backend.TypedEnvBackend.instantiate_contract.E
-            ink_env.backend.TypedEnvBackend.instantiate_contract.ContractRef
-            ink_env.backend.TypedEnvBackend.instantiate_contract.Args
-            ink_env.backend.TypedEnvBackend.instantiate_contract.Salt
-            ink_env.backend.TypedEnvBackend.instantiate_contract.R)) ->
+            E
+            ContractRef
+            Args
+            Salt
+            R)) ->
         (M
           (ink_env.error.Result
             (ink_primitives.ConstructorResult
               ink_env.call.create_builder.ConstructorReturnType.Output)));
-      terminate_contract
-        :
-        (mut_ref Self) ->
-        ink_env.backend.TypedEnvBackend.terminate_contract.ImplE.AccountId ->
-        (M Empty_set);
+      terminate_contract : (mut_ref Self) -> ImplE.AccountId -> (M Empty_set);
       transfer
         :
         (mut_ref Self) ->
-        ink_env.backend.TypedEnvBackend.transfer.ImplE.AccountId ->
-        ink_env.backend.TypedEnvBackend.transfer.ImplE.Balance ->
+        ImplE.AccountId ->
+        ImplE.Balance ->
         (M (ink_env.error.Result unit));
-      is_contract
-        :
-        (mut_ref Self) ->
-        (ref ink_env.backend.TypedEnvBackend.is_contract.ImplE.AccountId) ->
-        (M bool);
+      is_contract : (mut_ref Self) -> (ref ImplE.AccountId) -> (M bool);
       caller_is_origin : (mut_ref Self) -> (M bool);
       code_hash
         :
         (mut_ref Self) ->
-        (ref ink_env.backend.TypedEnvBackend.code_hash.ImplE.AccountId) ->
-        (M
-          (ink_env.error.Result
-            ink_env.backend.TypedEnvBackend.code_hash.ImplE.Hash));
-      own_code_hash
-        :
-        (mut_ref Self) ->
-        (M
-          (ink_env.error.Result
-            ink_env.backend.TypedEnvBackend.own_code_hash.ImplE.Hash));
+        (ref ImplE.AccountId) ->
+        (M (ink_env.error.Result ImplE.Hash));
+      own_code_hash : (mut_ref Self) -> (M (ink_env.error.Result ImplE.Hash));
       call_runtime
         :
-        (mut_ref Self) ->
-        (ref ink_env.backend.TypedEnvBackend.call_runtime.Call) ->
-        (M (ink_env.error.Result unit));
+        (mut_ref Self) -> (ref Call) -> (M (ink_env.error.Result unit));
     }.
     
     Global Instance Method_caller `(Trait) : Notation.Dot "caller" := {
@@ -1591,7 +1461,7 @@ Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
   }.
 End Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
 
-Module Impl_ink_env.backend.ReturnFlags_2.
+Module Impl_ink_env_backend_ReturnFlags_2.
   Definition Self := ink_env.backend.ReturnFlags.
   
   Definition new_with_reverted (has_reverted : bool) : M Self :=
@@ -1616,7 +1486,7 @@ Module Impl_ink_env.backend.ReturnFlags_2.
   Global Instance Method_set_reverted : Notation.Dot "set_reverted" := {
     Notation.dot := set_reverted;
   }.
-End Impl_ink_env.backend.ReturnFlags_2.
+End Impl_ink_env_backend_ReturnFlags_2.
 
 Module CallFlags.
   Record t : Set := {
@@ -1718,7 +1588,7 @@ Module Impl_core_default_Default_for_ink_env_backend_CallFlags.
   }.
 End Impl_core_default_Default_for_ink_env_backend_CallFlags.
 
-Module Impl_ink_env.backend.CallFlags_2.
+Module Impl_ink_env_backend_CallFlags_2.
   Definition Self := ink_env.backend.CallFlags.
   
   Definition set_forward_input (self : Self) (forward_input : bool) : M Self :=
@@ -1793,52 +1663,33 @@ Module Impl_ink_env.backend.CallFlags_2.
   Global Instance Method_allow_reentry : Notation.Dot "allow_reentry" := {
     Notation.dot := allow_reentry;
   }.
-End Impl_ink_env.backend.CallFlags_2.
+End Impl_ink_env_backend_CallFlags_2.
 
 Module EnvBackend.
   Class Trait (Self : Set) : Set := {
     set_contract_storage
       :
-      (mut_ref Self) ->
-      (ref ink_env.backend.EnvBackend.set_contract_storage.K) ->
-      (ref ink_env.backend.EnvBackend.set_contract_storage.V) ->
-      (M (core.option.Option u32));
+      (mut_ref Self) -> (ref K) -> (ref V) -> (M (core.option.Option u32));
     get_contract_storage
       :
       (mut_ref Self) ->
-      (ref ink_env.backend.EnvBackend.get_contract_storage.K) ->
-      (M
-        (ink_env.error.Result
-          (core.option.Option
-            ink_env.backend.EnvBackend.get_contract_storage.R)));
+      (ref K) ->
+      (M (ink_env.error.Result (core.option.Option R)));
     take_contract_storage
       :
       (mut_ref Self) ->
-      (ref ink_env.backend.EnvBackend.take_contract_storage.K) ->
-      (M
-        (ink_env.error.Result
-          (core.option.Option
-            ink_env.backend.EnvBackend.take_contract_storage.R)));
+      (ref K) ->
+      (M (ink_env.error.Result (core.option.Option R)));
     contains_contract_storage
       :
-      (mut_ref Self) ->
-      (ref ink_env.backend.EnvBackend.contains_contract_storage.K) ->
-      (M (core.option.Option u32));
+      (mut_ref Self) -> (ref K) -> (M (core.option.Option u32));
     clear_contract_storage
       :
-      (mut_ref Self) ->
-      (ref ink_env.backend.EnvBackend.clear_contract_storage.K) ->
-      (M (core.option.Option u32));
-    decode_input
-      :
-      (mut_ref Self) ->
-      (M (ink_env.error.Result ink_env.backend.EnvBackend.decode_input.T));
+      (mut_ref Self) -> (ref K) -> (M (core.option.Option u32));
+    decode_input : (mut_ref Self) -> (M (ink_env.error.Result T));
     return_value
       :
-      (mut_ref Self) ->
-      ink_env.backend.ReturnFlags ->
-      (ref ink_env.backend.EnvBackend.return_value.R) ->
-      (M Empty_set);
+      (mut_ref Self) -> ink_env.backend.ReturnFlags -> (ref R) -> (M Empty_set);
     debug_message : (mut_ref Self) -> (ref str) -> (M unit);
     hash_bytes
       :
@@ -1849,7 +1700,7 @@ Module EnvBackend.
     hash_encoded
       :
       (mut_ref Self) ->
-      (ref ink_env.backend.EnvBackend.hash_encoded.T) ->
+      (ref T) ->
       (mut_ref ink_env.hash.HashOutput.Type) ->
       (M unit);
     ecdsa_recover
@@ -1869,13 +1720,10 @@ Module EnvBackend.
       :
       (mut_ref Self) ->
       u32 ->
-      (ref ink_env.backend.EnvBackend.call_chain_extension.I) ->
-      ink_env.backend.EnvBackend.call_chain_extension.F ->
-      ink_env.backend.EnvBackend.call_chain_extension.D ->
-      (M
-        (core.result.Result
-          ink_env.backend.EnvBackend.call_chain_extension.T
-          ink_env.backend.EnvBackend.call_chain_extension.E));
+      (ref I) ->
+      F ->
+      D ->
+      (M (core.result.Result T E));
     set_code_hash
       :
       (mut_ref Self) -> (ref Slice) -> (M (ink_env.error.Result unit));
@@ -1940,121 +1788,63 @@ End EnvBackend.
 
 Module TypedEnvBackend.
   Class Trait (Self : Set) : Set := {
-    caller
-      :
-      (mut_ref Self) ->
-      (M ink_env.backend.TypedEnvBackend.caller.ImplE.AccountId);
-    transferred_value
-      :
-      (mut_ref Self) ->
-      (M ink_env.backend.TypedEnvBackend.transferred_value.ImplE.Balance);
-    weight_to_fee
-      :
-      (mut_ref Self) ->
-      u64 ->
-      (M ink_env.backend.TypedEnvBackend.weight_to_fee.ImplE.Balance);
+    caller : (mut_ref Self) -> (M ImplE.AccountId);
+    transferred_value : (mut_ref Self) -> (M ImplE.Balance);
+    weight_to_fee : (mut_ref Self) -> u64 -> (M ImplE.Balance);
     gas_left : (mut_ref Self) -> (M u64);
-    block_timestamp
-      :
-      (mut_ref Self) ->
-      (M ink_env.backend.TypedEnvBackend.block_timestamp.ImplE.Timestamp);
-    account_id
-      :
-      (mut_ref Self) ->
-      (M ink_env.backend.TypedEnvBackend.account_id.ImplE.AccountId);
-    balance
-      :
-      (mut_ref Self) ->
-      (M ink_env.backend.TypedEnvBackend.balance.ImplE.Balance);
-    block_number
-      :
-      (mut_ref Self) ->
-      (M ink_env.backend.TypedEnvBackend.block_number.ImplE.BlockNumber);
-    minimum_balance
-      :
-      (mut_ref Self) ->
-      (M ink_env.backend.TypedEnvBackend.minimum_balance.ImplE.Balance);
-    emit_event
-      :
-      (mut_ref Self) ->
-      ink_env.backend.TypedEnvBackend.emit_event.Event ->
-      (M unit);
+    block_timestamp : (mut_ref Self) -> (M ImplE.Timestamp);
+    account_id : (mut_ref Self) -> (M ImplE.AccountId);
+    balance : (mut_ref Self) -> (M ImplE.Balance);
+    block_number : (mut_ref Self) -> (M ImplE.BlockNumber);
+    minimum_balance : (mut_ref Self) -> (M ImplE.Balance);
+    emit_event : (mut_ref Self) -> Event -> (M unit);
     invoke_contract
       :
       (mut_ref Self) ->
       (ref
         (ink_env.call.call_builder.CallParams
-          ink_env.backend.TypedEnvBackend.invoke_contract.E
-          (ink_env.call.call_builder.Call
-            ink_env.backend.TypedEnvBackend.invoke_contract.E)
-          ink_env.backend.TypedEnvBackend.invoke_contract.Args
-          ink_env.backend.TypedEnvBackend.invoke_contract.R)) ->
-      (M
-        (ink_env.error.Result
-          (ink_primitives.MessageResult
-            ink_env.backend.TypedEnvBackend.invoke_contract.R)));
+          E
+          (ink_env.call.call_builder.Call E)
+          Args
+          R)) ->
+      (M (ink_env.error.Result (ink_primitives.MessageResult R)));
     invoke_contract_delegate
       :
       (mut_ref Self) ->
       (ref
         (ink_env.call.call_builder.CallParams
-          ink_env.backend.TypedEnvBackend.invoke_contract_delegate.E
-          (ink_env.call.call_builder.DelegateCall
-            ink_env.backend.TypedEnvBackend.invoke_contract_delegate.E)
-          ink_env.backend.TypedEnvBackend.invoke_contract_delegate.Args
-          ink_env.backend.TypedEnvBackend.invoke_contract_delegate.R)) ->
-      (M
-        (ink_env.error.Result
-          ink_env.backend.TypedEnvBackend.invoke_contract_delegate.R));
+          E
+          (ink_env.call.call_builder.DelegateCall E)
+          Args
+          R)) ->
+      (M (ink_env.error.Result R));
     instantiate_contract
       :
       (mut_ref Self) ->
       (ref
-        (ink_env.call.create_builder.CreateParams
-          ink_env.backend.TypedEnvBackend.instantiate_contract.E
-          ink_env.backend.TypedEnvBackend.instantiate_contract.ContractRef
-          ink_env.backend.TypedEnvBackend.instantiate_contract.Args
-          ink_env.backend.TypedEnvBackend.instantiate_contract.Salt
-          ink_env.backend.TypedEnvBackend.instantiate_contract.R)) ->
+        (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)) ->
       (M
         (ink_env.error.Result
           (ink_primitives.ConstructorResult
             ink_env.call.create_builder.ConstructorReturnType.Output)));
-    terminate_contract
-      :
-      (mut_ref Self) ->
-      ink_env.backend.TypedEnvBackend.terminate_contract.ImplE.AccountId ->
-      (M Empty_set);
+    terminate_contract : (mut_ref Self) -> ImplE.AccountId -> (M Empty_set);
     transfer
       :
       (mut_ref Self) ->
-      ink_env.backend.TypedEnvBackend.transfer.ImplE.AccountId ->
-      ink_env.backend.TypedEnvBackend.transfer.ImplE.Balance ->
+      ImplE.AccountId ->
+      ImplE.Balance ->
       (M (ink_env.error.Result unit));
-    is_contract
-      :
-      (mut_ref Self) ->
-      (ref ink_env.backend.TypedEnvBackend.is_contract.ImplE.AccountId) ->
-      (M bool);
+    is_contract : (mut_ref Self) -> (ref ImplE.AccountId) -> (M bool);
     caller_is_origin : (mut_ref Self) -> (M bool);
     code_hash
       :
       (mut_ref Self) ->
-      (ref ink_env.backend.TypedEnvBackend.code_hash.ImplE.AccountId) ->
-      (M
-        (ink_env.error.Result
-          ink_env.backend.TypedEnvBackend.code_hash.ImplE.Hash));
-    own_code_hash
-      :
-      (mut_ref Self) ->
-      (M
-        (ink_env.error.Result
-          ink_env.backend.TypedEnvBackend.own_code_hash.ImplE.Hash));
+      (ref ImplE.AccountId) ->
+      (M (ink_env.error.Result ImplE.Hash));
+    own_code_hash : (mut_ref Self) -> (M (ink_env.error.Result ImplE.Hash));
     call_runtime
       :
-      (mut_ref Self) ->
-      (ref ink_env.backend.TypedEnvBackend.call_runtime.Call) ->
-      (M (ink_env.error.Result unit));
+      (mut_ref Self) -> (ref Call) -> (M (ink_env.error.Result unit));
   }.
   
   Global Instance Method_caller `(Trait) : Notation.Dot "caller" := {
@@ -2135,18 +1925,11 @@ Module call.
   Module call_builder.
     Module CallParams.
       Record t : Set := {
-        call_type : ink_env.call.call_builder.CallParams.CallType;
+        call_type : CallType;
         call_flags : ink_env.backend.CallFlags;
-        _return_type
-          :
-          ink_env.call.common.ReturnType ink_env.call.call_builder.CallParams.R;
-        exec_input
-          :
-          ink_env.call.execution_input.ExecutionInput
-            ink_env.call.call_builder.CallParams.Args;
-        _phantom
-          :
-          core.marker.PhantomData ( -> ink_env.call.call_builder.CallParams.E);
+        _return_type : ink_env.call.common.ReturnType R;
+        exec_input : ink_env.call.execution_input.ExecutionInput Args;
+        _phantom : core.marker.PhantomData ( -> E);
       }.
       
       Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -2168,15 +1951,8 @@ Module call.
     Definition CallParams : Set := CallParams.t.
     
     Module
-        Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_ink_env_call_call_builder_E_ink_env_call_call_builder_CallType_ink_env_call_call_builder_Args_ink_env_call_call_builder_R.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallParams
-          ink_env.call.call_builder.E
-          ink_env.call.call_builder.CallType
-          ink_env.call.call_builder.Args
-          ink_env.call.call_builder.R.
+        Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
+      Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
       
       Definition fmt
           (self : ref Self)
@@ -2204,22 +1980,10 @@ Module call.
         core.fmt.Debug.fmt := fmt;
       }.
     End
-      Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_ink_env_call_call_builder_E_ink_env_call_call_builder_CallType_ink_env_call_call_builder_Args_ink_env_call_call_builder_R.
+      Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
     
-    Module
-      Impl_ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        ink_env.call.call_builder.CallType
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallParams
-          ink_env.call.call_builder.E
-          ink_env.call.call_builder.CallType
-          ink_env.call.call_builder.Args
-          ink_env.call.call_builder.R.
+    Module Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
+      Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
       
       Definition call_flags
           (self : ref Self)
@@ -2232,41 +1996,26 @@ Module call.
       
       Definition exec_input
           (self : ref Self)
-          :
-            M
-              (ref
-                (ink_env.call.execution_input.ExecutionInput
-                  ink_env.call.call_builder.Args)) :=
+          : M (ref (ink_env.call.execution_input.ExecutionInput Args)) :=
         Pure (addr_of self.["exec_input"]).
       
       Global Instance Method_exec_input : Notation.Dot "exec_input" := {
         Notation.dot := exec_input;
       }.
-    End
-      Impl_ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        ink_env.call.call_builder.CallType
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R.
+    End Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
     
     Module
-      Impl_ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R.
+      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallParams
-          ink_env.call.call_builder.E
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-          ink_env.call.call_builder.Args
-          ink_env.call.call_builder.R.
+          E
+          (ink_env.call.call_builder.Call E)
+          Args
+          R.
       
-      Definition callee
-          (self : ref Self)
-          : M (ref ink_env.call.call_builder.ImplE.AccountId) :=
+      Definition callee (self : ref Self) : M (ref ImplE.AccountId) :=
         Pure (addr_of self.["call_type"].["callee"]).
       
       Global Instance Method_callee : Notation.Dot "callee" := {
@@ -2280,9 +2029,7 @@ Module call.
         Notation.dot := gas_limit;
       }.
       
-      Definition transferred_value
-          (self : ref Self)
-          : M (ref ink_env.call.call_builder.ImplE.Balance) :=
+      Definition transferred_value (self : ref Self) : M (ref ImplE.Balance) :=
         Pure (addr_of self.["call_type"].["transferred_value"]).
       
       Global Instance Method_transferred_value :
@@ -2290,58 +2037,40 @@ Module call.
         Notation.dot := transferred_value;
       }.
     End
-      Impl_ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R.
+      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R.
     
     Module
-      Impl_ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R.
+      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallParams
-          ink_env.call.call_builder.E
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-          ink_env.call.call_builder.Args
-          ink_env.call.call_builder.R.
+          E
+          (ink_env.call.call_builder.DelegateCall E)
+          Args
+          R.
       
-      Definition code_hash
-          (self : ref Self)
-          : M (ref ink_env.call.call_builder.ImplE.Hash) :=
+      Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
         Pure (addr_of self.["call_type"].["code_hash"]).
       
       Global Instance Method_code_hash : Notation.Dot "code_hash" := {
         Notation.dot := code_hash;
       }.
     End
-      Impl_ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R.
+      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R.
     
     Module
-      Impl_ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R_2.
+      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_2.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallParams
-          ink_env.call.call_builder.E
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-          ink_env.call.call_builder.Args
-          ink_env.call.call_builder.R.
+          E
+          (ink_env.call.call_builder.Call E)
+          Args
+          R.
       
-      Definition invoke (self : ref Self) : M ink_env.call.call_builder.R :=
+      Definition invoke (self : ref Self) : M R :=
         let* α0 := ink_env.api.invoke_contract self in
         let* α1 :=
           α0.["unwrap_or_else"]
@@ -2370,7 +2099,7 @@ Module call.
           :
             M
               (core.result.Result
-                (ink_primitives.MessageResult ink_env.call.call_builder.R)
+                (ink_primitives.MessageResult R)
                 ink_env.error.Error) :=
         ink_env.api.invoke_contract self.
       
@@ -2378,28 +2107,20 @@ Module call.
         Notation.dot := try_invoke;
       }.
     End
-      Impl_ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R_2.
+      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_2.
     
     Module
-      Impl_ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R_2.
+      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_2.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallParams
-          ink_env.call.call_builder.E
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-          ink_env.call.call_builder.Args
-          ink_env.call.call_builder.R.
+          E
+          (ink_env.call.call_builder.DelegateCall E)
+          Args
+          R.
       
-      Definition invoke (self : ref Self) : M ink_env.call.call_builder.R :=
+      Definition invoke (self : ref Self) : M R :=
         let* α0 := ink_env.api.invoke_contract_delegate self in
         α0.["unwrap_or_else"]
           (fun env_error =>
@@ -2416,35 +2137,24 @@ Module call.
       
       Definition try_invoke
           (self : ref Self)
-          :
-            M
-              (core.result.Result
-                ink_env.call.call_builder.R
-                ink_env.error.Error) :=
+          : M (core.result.Result R ink_env.error.Error) :=
         ink_env.api.invoke_contract_delegate self.
       
       Global Instance Method_try_invoke : Notation.Dot "try_invoke" := {
         Notation.dot := try_invoke;
       }.
     End
-      Impl_ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R_2.
+      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_2.
     
     Definition build_call
         {E : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.call.call_builder.build_call.E}
+        `{ink_env.types.Environment.Trait E}
         (_ : unit)
         :
           M
             (ink_env.call.call_builder.CallBuilder
-              ink_env.call.call_builder.build_call.E
-              (ink_env.call.common.Unset
-                (ink_env.call.call_builder.Call
-                  ink_env.call.call_builder.build_call.E))
+              E
+              (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
               (ink_env.call.common.Unset
                 (ink_env.call.execution_input.ExecutionInput
                   ink_env.call.execution_input.EmptyArgumentList))
@@ -2466,9 +2176,9 @@ Module call.
     
     Module Call.
       Record t : Set := {
-        callee : ink_env.call.call_builder.Call.ImplE.AccountId;
+        callee : ImplE.AccountId;
         gas_limit : ink_env.types.Gas;
-        transferred_value : ink_env.call.call_builder.Call.ImplE.Balance;
+        transferred_value : ImplE.Balance;
       }.
       
       Global Instance Get_callee : Notation.Dot "callee" := {
@@ -2484,16 +2194,12 @@ Module call.
     End Call.
     Definition Call : Set := Call.t.
     
-    Module
-        Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_ink_env_call_call_builder_E.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.Call ink_env.call.call_builder.E.
+    Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
+      Definition Self := ink_env.call.call_builder.Call E.
       
       Definition clone
           (self : ref Self)
-          : M (ink_env.call.call_builder.Call ink_env.call.call_builder.E) :=
+          : M (ink_env.call.call_builder.Call E) :=
         let* α0 := core.clone.Clone.clone (addr_of self.["callee"]) in
         let* α1 := core.clone.Clone.clone (addr_of self.["gas_limit"]) in
         let* α2 :=
@@ -2512,20 +2218,14 @@ Module call.
       Global Instance I E : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
-    End
-      Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_ink_env_call_call_builder_E.
+    End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
     
-    Module Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.Call ink_env.call.call_builder.E.
+    Module Impl_ink_env_call_call_builder_Call_E.
+      Definition Self := ink_env.call.call_builder.Call E.
       
-      Definition new
-          (callee : ink_env.call.call_builder.ImplE.AccountId)
-          : M Self :=
+      Definition new (callee : ImplE.AccountId) : M Self :=
         let* α0 := core.default.Default.default tt in
-        let* α1 := ink_env.call.call_builder.ImplE.Balance::["zero"] tt in
+        let* α1 := ImplE.Balance::["zero"] tt in
         Pure
           {|
             Self.callee := callee;
@@ -2537,13 +2237,10 @@ Module call.
         Notation.DoubleColon Self "new" := {
         Notation.double_colon := new;
       }.
-    End Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E.
+    End Impl_ink_env_call_call_builder_Call_E.
     
-    Module Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E_2.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.Call ink_env.call.call_builder.E.
+    Module Impl_ink_env_call_call_builder_Call_E_2.
+      Definition Self := ink_env.call.call_builder.Call E.
       
       Definition gas_limit
           (self : Self)
@@ -2563,7 +2260,7 @@ Module call.
       
       Definition transferred_value
           (self : Self)
-          (transferred_value : ink_env.call.call_builder.ImplE.Balance)
+          (transferred_value : ImplE.Balance)
           : M Self :=
         Pure
           {|
@@ -2577,11 +2274,11 @@ Module call.
         Notation.Dot "transferred_value" := {
         Notation.dot := transferred_value;
       }.
-    End Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E_2.
+    End Impl_ink_env_call_call_builder_Call_E_2.
     
     Module DelegateCall.
       Record t : Set := {
-        code_hash : ink_env.call.call_builder.DelegateCall.ImplE.Hash;
+        code_hash : ImplE.Hash;
       }.
       
       Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -2590,16 +2287,10 @@ Module call.
     End DelegateCall.
     Definition DelegateCall : Set := DelegateCall.t.
     
-    Module
-      Impl_ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E.
+    Module Impl_ink_env_call_call_builder_DelegateCall_E.
+      Definition Self := ink_env.call.call_builder.DelegateCall E.
       
-      Definition new
-          (code_hash : ink_env.call.call_builder.ImplE.Hash)
-          : M Self :=
+      Definition new (code_hash : ImplE.Hash) : M Self :=
         Pure
           {| ink_env.call.call_builder.DelegateCall.code_hash := code_hash; |}.
       
@@ -2607,37 +2298,27 @@ Module call.
         Notation.DoubleColon Self "new" := {
         Notation.double_colon := new;
       }.
-    End Impl_ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E.
+    End Impl_ink_env_call_call_builder_DelegateCall_E.
     
-    Module
-      Impl_ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E_2.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E.
+    Module Impl_ink_env_call_call_builder_DelegateCall_E_2.
+      Definition Self := ink_env.call.call_builder.DelegateCall E.
       
-      Definition code_hash
-          (self : Self)
-          (code_hash : ink_env.call.call_builder.ImplE.Hash)
-          : M Self :=
+      Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
         Pure
           {| ink_env.call.call_builder.DelegateCall.code_hash := code_hash; |}.
       
       Global Instance Method_code_hash : Notation.Dot "code_hash" := {
         Notation.dot := code_hash;
       }.
-    End
-      Impl_ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E_2.
+    End Impl_ink_env_call_call_builder_DelegateCall_E_2.
     
     Module CallBuilder.
       Record t : Set := {
-        call_type : ink_env.call.call_builder.CallBuilder.CallType;
+        call_type : CallType;
         call_flags : ink_env.backend.CallFlags;
-        exec_input : ink_env.call.call_builder.CallBuilder.Args;
-        return_type : ink_env.call.call_builder.CallBuilder.RetType;
-        _phantom
-          :
-          core.marker.PhantomData ( -> ink_env.call.call_builder.CallBuilder.E);
+        exec_input : Args;
+        return_type : RetType;
+        _phantom : core.marker.PhantomData ( -> E);
       }.
       
       Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -2659,25 +2340,15 @@ Module call.
     Definition CallBuilder : Set := CallBuilder.t.
     
     Module
-        Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_ink_env_call_call_builder_E_ink_env_call_call_builder_CallType_ink_env_call_call_builder_Args_ink_env_call_call_builder_RetType.
+        Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
       Definition
         Self
         :=
-        ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
-          ink_env.call.call_builder.CallType
-          ink_env.call.call_builder.Args
-          ink_env.call.call_builder.RetType.
+        ink_env.call.call_builder.CallBuilder E CallType Args RetType.
       
       Definition clone
           (self : ref Self)
-          :
-            M
-              (ink_env.call.call_builder.CallBuilder
-                ink_env.call.call_builder.E
-                ink_env.call.call_builder.CallType
-                ink_env.call.call_builder.Args
-                ink_env.call.call_builder.RetType) :=
+          : M (ink_env.call.call_builder.CallBuilder E CallType Args RetType) :=
         let* α0 := core.clone.Clone.clone (addr_of self.["call_type"]) in
         let* α1 := core.clone.Clone.clone (addr_of self.["call_flags"]) in
         let* α2 := core.clone.Clone.clone (addr_of self.["exec_input"]) in
@@ -2701,34 +2372,29 @@ Module call.
         core.clone.Clone.clone := clone;
       }.
     End
-      Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_ink_env_call_call_builder_E_ink_env_call_call_builder_CallType_ink_env_call_call_builder_Args_ink_env_call_call_builder_RetType.
+      Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
     
     Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType.
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
-          (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-          ink_env.call.call_builder.Args
-          ink_env.call.call_builder.RetType.
+          E
+          (ink_env.call.common.Unset CallType)
+          Args
+          RetType.
       
       Definition call_type
           (self : Self)
-          (call_type : ink_env.call.call_builder.call_type.NewCallType)
+          (call_type : NewCallType)
           :
             M
               (ink_env.call.call_builder.CallBuilder
-                ink_env.call.call_builder.E
-                (ink_env.call.common.Set
-                  ink_env.call.call_builder.call_type.NewCallType)
-                ink_env.call.call_builder.Args
-                ink_env.call.call_builder.RetType) :=
+                E
+                (ink_env.call.common.Set NewCallType)
+                Args
+                RetType) :=
         let* α0 := core.default.Default.default tt in
         Pure
           {|
@@ -2747,37 +2413,18 @@ Module call.
         Notation.dot := call_type;
       }.
     End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType.
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType.
     
-    Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        ink_env.call.call_builder.CallType
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType.
+    Module Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
       Definition
         Self
         :=
-        ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
-          ink_env.call.call_builder.CallType
-          ink_env.call.call_builder.Args
-          ink_env.call.call_builder.RetType.
+        ink_env.call.call_builder.CallBuilder E CallType Args RetType.
       
       Definition call_flags
           (self : Self)
           (call_flags : ink_env.backend.CallFlags)
-          :
-            M
-              (ink_env.call.call_builder.CallBuilder
-                ink_env.call.call_builder.E
-                ink_env.call.call_builder.CallType
-                ink_env.call.call_builder.Args
-                ink_env.call.call_builder.RetType) :=
+          : M (ink_env.call.call_builder.CallBuilder E CallType Args RetType) :=
         let* α0 := core.default.Default.default tt in
         Pure
           {|
@@ -2794,26 +2441,17 @@ Module call.
       Global Instance Method_call_flags : Notation.Dot "call_flags" := {
         Notation.dot := call_flags;
       }.
-    End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        ink_env.call.call_builder.CallType
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType.
+    End Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
     
     Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        ink_env.call.call_builder.CallType
-        ink_env.call.call_builder.Args
-        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
+      Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
-          ink_env.call.call_builder.CallType
-          ink_env.call.call_builder.Args
+          E
+          CallType
+          Args
           (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
       
       Definition returns
@@ -2821,12 +2459,10 @@ Module call.
           :
             M
               (ink_env.call.call_builder.CallBuilder
-                ink_env.call.call_builder.E
-                ink_env.call.call_builder.CallType
-                ink_env.call.call_builder.Args
-                (ink_env.call.common.Set
-                  (ink_env.call.common.ReturnType
-                    ink_env.call.call_builder.returns.R))) :=
+                E
+                CallType
+                Args
+                (ink_env.call.common.Set (ink_env.call.common.ReturnType R))) :=
         let* α0 := core.default.Default.default tt in
         let* α1 := core.default.Default.default tt in
         Pure
@@ -2846,46 +2482,32 @@ Module call.
         Notation.dot := returns;
       }.
     End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        ink_env.call.call_builder.CallType
-        ink_env.call.call_builder.Args
-        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
+      Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
     
     Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        ink_env.call.call_builder.CallType
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        ink_env.call.call_builder.RetType.
+      Impl_ink_env_call_call_builder_CallBuilder_E_CallType_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_RetType.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
-          ink_env.call.call_builder.CallType
+          E
+          CallType
           (ink_env.call.common.Unset
             (ink_env.call.execution_input.ExecutionInput
               ink_env.call.execution_input.EmptyArgumentList))
-          ink_env.call.call_builder.RetType.
+          RetType.
       
       Definition exec_input
           (self : Self)
-          (exec_input
-            :
-            ink_env.call.execution_input.ExecutionInput
-              ink_env.call.call_builder.exec_input.Args)
+          (exec_input : ink_env.call.execution_input.ExecutionInput Args)
           :
             M
               (ink_env.call.call_builder.CallBuilder
-                ink_env.call.call_builder.E
-                ink_env.call.call_builder.CallType
+                E
+                CallType
                 (ink_env.call.common.Set
-                  (ink_env.call.execution_input.ExecutionInput
-                    ink_env.call.call_builder.exec_input.Args))
-                ink_env.call.call_builder.RetType) :=
+                  (ink_env.call.execution_input.ExecutionInput Args))
+                RetType) :=
         let* α0 := core.default.Default.default tt in
         Pure
           {|
@@ -2904,40 +2526,29 @@ Module call.
         Notation.dot := exec_input;
       }.
     End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        ink_env.call.call_builder.CallType
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        ink_env.call.call_builder.RetType.
+      Impl_ink_env_call_call_builder_CallBuilder_E_CallType_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_RetType.
     
     Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType_2.
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_2.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
-          (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-          ink_env.call.call_builder.Args
-          ink_env.call.call_builder.RetType.
+          E
+          (ink_env.call.common.Unset CallType)
+          Args
+          RetType.
       
       Definition call
           (self : Self)
-          (callee : ink_env.call.call_builder.ImplE.AccountId)
+          (callee : ImplE.AccountId)
           :
             M
               (ink_env.call.call_builder.CallBuilder
-                ink_env.call.call_builder.E
-                (ink_env.call.common.Set
-                  (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-                ink_env.call.call_builder.Args
-                ink_env.call.call_builder.RetType) :=
+                E
+                (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
+                Args
+                RetType) :=
         let* α0 := ink_env.call.call_builder.Call::["new"] callee in
         let* α1 := core.default.Default.default tt in
         Pure
@@ -2959,16 +2570,15 @@ Module call.
       
       Definition delegate
           (self : Self)
-          (code_hash : ink_env.call.call_builder.ImplE.Hash)
+          (code_hash : ImplE.Hash)
           :
             M
               (ink_env.call.call_builder.CallBuilder
-                ink_env.call.call_builder.E
+                E
                 (ink_env.call.common.Set
-                  (ink_env.call.call_builder.DelegateCall
-                    ink_env.call.call_builder.E))
-                ink_env.call.call_builder.Args
-                ink_env.call.call_builder.RetType) :=
+                  (ink_env.call.call_builder.DelegateCall E))
+                Args
+                RetType) :=
         let* α0 := ink_env.call.call_builder.DelegateCall::["new"] code_hash in
         let* α1 := core.default.Default.default tt in
         Pure
@@ -2988,28 +2598,18 @@ Module call.
         Notation.dot := delegate;
       }.
     End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType_2.
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_2.
     
     Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType.
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_Args_RetType.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
-          (ink_env.call.common.Set
-            (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-          ink_env.call.call_builder.Args
-          ink_env.call.call_builder.RetType.
+          E
+          (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
+          Args
+          RetType.
       
       Definition gas_limit
           (self : Self)
@@ -3042,7 +2642,7 @@ Module call.
       
       Definition transferred_value
           (self : Self)
-          (transferred_value : ink_env.call.call_builder.ImplE.Balance)
+          (transferred_value : ImplE.Balance)
           : M Self :=
         let* call_type := self.["call_type"].["value"] in
         let* α0 := core.default.Default.default tt in
@@ -3071,35 +2671,20 @@ Module call.
         Notation.dot := transferred_value;
       }.
     End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType.
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_Args_RetType.
     
     Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType.
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_Args_RetType.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
-          (ink_env.call.common.Set
-            (ink_env.call.call_builder.DelegateCall
-              ink_env.call.call_builder.E))
-          ink_env.call.call_builder.Args
-          ink_env.call.call_builder.RetType.
+          E
+          (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
+          Args
+          RetType.
       
-      Definition code_hash
-          (self : Self)
-          (code_hash : ink_env.call.call_builder.ImplE.Hash)
-          : M Self :=
+      Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
         let* α0 := core.default.Default.default tt in
         Pure
           {|
@@ -3121,45 +2706,29 @@ Module call.
         Notation.dot := code_hash;
       }.
     End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType.
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_Args_RetType.
     
     Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.call_builder.Args))
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType)).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
+          E
+          (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
           (ink_env.call.common.Set
-            (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-          (ink_env.call.common.Set
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.call_builder.Args))
-          (ink_env.call.common.Set
-            (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType)).
+            (ink_env.call.execution_input.ExecutionInput Args))
+          (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
       
       Definition params
           (self : Self)
           :
             M
               (ink_env.call.call_builder.CallParams
-                ink_env.call.call_builder.E
-                (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-                ink_env.call.call_builder.Args
-                ink_env.call.call_builder.RetType) :=
+                E
+                (ink_env.call.call_builder.Call E)
+                Args
+                RetType) :=
         let* α0 := self.["call_type"].["value"] in
         let* α1 := core.default.Default.default tt in
         let* α2 := self.["exec_input"].["value"] in
@@ -3177,50 +2746,29 @@ Module call.
         Notation.dot := params;
       }.
     End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.call_builder.Args))
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType)).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType.
     
     Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.call_builder.Args))
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType)).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
+          E
+          (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
           (ink_env.call.common.Set
-            (ink_env.call.call_builder.DelegateCall
-              ink_env.call.call_builder.E))
-          (ink_env.call.common.Set
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.call_builder.Args))
-          (ink_env.call.common.Set
-            (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType)).
+            (ink_env.call.execution_input.ExecutionInput Args))
+          (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
       
       Definition params
           (self : Self)
           :
             M
               (ink_env.call.call_builder.CallParams
-                ink_env.call.call_builder.E
-                (ink_env.call.call_builder.DelegateCall
-                  ink_env.call.call_builder.E)
-                ink_env.call.call_builder.Args
-                ink_env.call.call_builder.RetType) :=
+                E
+                (ink_env.call.call_builder.DelegateCall E)
+                Args
+                RetType) :=
         let* α0 := self.["call_type"].["value"] in
         let* α1 := core.default.Default.default tt in
         let* α2 := self.["exec_input"].["value"] in
@@ -3238,44 +2786,28 @@ Module call.
         Notation.dot := params;
       }.
     End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.call_builder.Args))
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType)).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType.
     
     Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset ink_env.call.call_builder.RetType).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
-          (ink_env.call.common.Set
-            (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
+          E
+          (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
           (ink_env.call.common.Unset
             (ink_env.call.execution_input.ExecutionInput
               ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset ink_env.call.call_builder.RetType).
+          (ink_env.call.common.Unset RetType).
       
       Definition params
           (self : Self)
           :
             M
               (ink_env.call.call_builder.CallParams
-                ink_env.call.call_builder.E
-                (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
+                E
+                (ink_env.call.call_builder.Call E)
                 ink_env.call.execution_input.EmptyArgumentList
                 unit) :=
         let* α0 := self.["call_type"].["value"] in
@@ -3295,45 +2827,28 @@ Module call.
         Notation.dot := params;
       }.
     End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset ink_env.call.call_builder.RetType).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType.
     
     Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset ink_env.call.call_builder.RetType).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
-          (ink_env.call.common.Set
-            (ink_env.call.call_builder.DelegateCall
-              ink_env.call.call_builder.E))
+          E
+          (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
           (ink_env.call.common.Unset
             (ink_env.call.execution_input.ExecutionInput
               ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset ink_env.call.call_builder.RetType).
+          (ink_env.call.common.Unset RetType).
       
       Definition params
           (self : Self)
           :
             M
               (ink_env.call.call_builder.CallParams
-                ink_env.call.call_builder.E
-                (ink_env.call.call_builder.DelegateCall
-                  ink_env.call.call_builder.E)
+                E
+                (ink_env.call.call_builder.DelegateCall E)
                 ink_env.call.execution_input.EmptyArgumentList
                 unit) :=
         let* α0 := self.["call_type"].["value"] in
@@ -3353,31 +2868,16 @@ Module call.
         Notation.dot := params;
       }.
     End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset ink_env.call.call_builder.RetType).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType.
     
     Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
-          (ink_env.call.common.Set
-            (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
+          E
+          (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
           (ink_env.call.common.Unset
             (ink_env.call.execution_input.ExecutionInput
               ink_env.call.execution_input.EmptyArgumentList))
@@ -3405,32 +2905,16 @@ Module call.
         Notation.dot := try_invoke;
       }.
     End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
     
     Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
-          (ink_env.call.common.Set
-            (ink_env.call.call_builder.DelegateCall
-              ink_env.call.call_builder.E))
+          E
+          (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
           (ink_env.call.common.Unset
             (ink_env.call.execution_input.ExecutionInput
               ink_env.call.execution_input.EmptyArgumentList))
@@ -3454,39 +2938,21 @@ Module call.
         Notation.dot := try_invoke;
       }.
     End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
     
     Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.call_builder.Args))
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.call_builder.R)).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
+          E
+          (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
           (ink_env.call.common.Set
-            (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-          (ink_env.call.common.Set
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.call_builder.Args))
-          (ink_env.call.common.Set
-            (ink_env.call.common.ReturnType ink_env.call.call_builder.R)).
+            (ink_env.call.execution_input.ExecutionInput Args))
+          (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
       
-      Definition invoke (self : Self) : M ink_env.call.call_builder.R :=
+      Definition invoke (self : Self) : M R :=
         let* α0 := self.["params"] in
         α0.["invoke"].
       
@@ -3499,7 +2965,7 @@ Module call.
           :
             M
               (core.result.Result
-                (ink_primitives.MessageResult ink_env.call.call_builder.R)
+                (ink_primitives.MessageResult R)
                 ink_env.error.Error) :=
         let* α0 := self.["params"] in
         α0.["try_invoke"].
@@ -3508,41 +2974,21 @@ Module call.
         Notation.dot := try_invoke;
       }.
     End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.call_builder.Args))
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.call_builder.R)).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R.
     
     Module
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.call_builder.Args))
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.call_builder.R)).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R.
       Definition
         Self
         :=
         ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.E
+          E
+          (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
           (ink_env.call.common.Set
-            (ink_env.call.call_builder.DelegateCall
-              ink_env.call.call_builder.E))
-          (ink_env.call.common.Set
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.call_builder.Args))
-          (ink_env.call.common.Set
-            (ink_env.call.common.ReturnType ink_env.call.call_builder.R)).
+            (ink_env.call.execution_input.ExecutionInput Args))
+          (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
       
-      Definition invoke (self : Self) : M ink_env.call.call_builder.R :=
+      Definition invoke (self : Self) : M R :=
         let* α0 := self.["params"] in
         α0.["invoke"].
       
@@ -3552,11 +2998,7 @@ Module call.
       
       Definition try_invoke
           (self : Self)
-          :
-            M
-              (core.result.Result
-                ink_env.call.call_builder.R
-                ink_env.error.Error) :=
+          : M (core.result.Result R ink_env.error.Error) :=
         let* α0 := self.["params"] in
         α0.["try_invoke"].
       
@@ -3564,21 +3006,12 @@ Module call.
         Notation.dot := try_invoke;
       }.
     End
-      Impl_ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.call_builder.Args))
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.call_builder.R)).
+      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R.
   End call_builder.
   
   Module common.
     Module ReturnType.
-      Record t : Set :=
-        { _ : core.marker.PhantomData ( -> ink_env.call.common.ReturnType.T);}.
+      Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
       
       Global Instance Get_0 : Notation.Dot 0 := {
         Notation.dot '(Build_t x0) := x0;
@@ -3586,9 +3019,8 @@ Module call.
     End ReturnType.
     Definition ReturnType := ReturnType.t.
     
-    Module
-        Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
-      Definition Self := ink_env.call.common.ReturnType ink_env.call.common.T.
+    Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
+      Definition Self := ink_env.call.common.ReturnType T.
       
       Definition fmt
           (self : ref Self)
@@ -3606,12 +3038,10 @@ Module call.
       Global Instance I T : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-    End
-      Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
+    End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
     
-    Module
-        Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
-      Definition Self := ink_env.call.common.ReturnType ink_env.call.common.T.
+    Module Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
+      Definition Self := ink_env.call.common.ReturnType T.
       
       Definition clone (self : ref Self) : M Self :=
         let* α0 := core.default.Default.default tt in
@@ -3624,21 +3054,17 @@ Module call.
       Global Instance I T : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
-    End
-      Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
+    End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
     
-    Module
-        Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
-      Definition Self := ink_env.call.common.ReturnType ink_env.call.common.T.
+    Module Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
+      Definition Self := ink_env.call.common.ReturnType T.
       
       Global Instance I T : core.marker.Copy.Trait Self :=
         core.marker.Copy.Build_Class _.
-    End
-      Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
+    End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
     
-    Module
-        Impl_core_default_Default_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
-      Definition Self := ink_env.call.common.ReturnType ink_env.call.common.T.
+    Module Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
+      Definition Self := ink_env.call.common.ReturnType T.
       
       Definition default (_ : unit) : M Self :=
         let* α0 := core.default.Default.default tt in
@@ -3652,11 +3078,10 @@ Module call.
       Global Instance I T : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
-    End
-      Impl_core_default_Default_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
+    End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
     
     Module Set.
-      Record t : Set := { _ : ink_env.call.common.Set.T;}.
+      Record t : Set := { _ : T;}.
       
       Global Instance Get_0 : Notation.Dot 0 := {
         Notation.dot '(Build_t x0) := x0;
@@ -3664,9 +3089,8 @@ Module call.
     End Set.
     Definition Set := Set.t.
     
-    Module
-        Impl_core_fmt_Debug_for_ink_env_call_common_Set_ink_env_call_common_T.
-      Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+    Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
+      Definition Self := ink_env.call.common.Set T.
       
       Definition fmt
           (self : ref Self)
@@ -3684,23 +3108,19 @@ Module call.
       Global Instance I T : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-    End Impl_core_fmt_Debug_for_ink_env_call_common_Set_ink_env_call_common_T.
+    End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
     
-    Module
-        Impl_core_marker_Copy_for_ink_env_call_common_Set_ink_env_call_common_T.
-      Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+    Module Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
+      Definition Self := ink_env.call.common.Set T.
       
       Global Instance I T : core.marker.Copy.Trait Self :=
         core.marker.Copy.Build_Class _.
-    End Impl_core_marker_Copy_for_ink_env_call_common_Set_ink_env_call_common_T.
+    End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
     
-    Module
-        Impl_core_clone_Clone_for_ink_env_call_common_Set_ink_env_call_common_T.
-      Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+    Module Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
+      Definition Self := ink_env.call.common.Set T.
       
-      Definition clone
-          (self : ref Self)
-          : M (ink_env.call.common.Set ink_env.call.common.T) :=
+      Definition clone (self : ref Self) : M (ink_env.call.common.Set T) :=
         let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
         Pure (ink_env.call.common.Set.Build_t α0).
       
@@ -3711,22 +3131,20 @@ Module call.
       Global Instance I T : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
-    End Impl_core_clone_Clone_for_ink_env_call_common_Set_ink_env_call_common_T.
+    End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
     
-    Module Impl_ink_env.call.common.Set ink_env.call.common.T.
-      Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+    Module Impl_ink_env_call_common_Set_T.
+      Definition Self := ink_env.call.common.Set T.
       
-      Definition value (self : Self) : M ink_env.call.common.T :=
-        Pure (self.[0]).
+      Definition value (self : Self) : M T := Pure (self.[0]).
       
       Global Instance Method_value : Notation.Dot "value" := {
         Notation.dot := value;
       }.
-    End Impl_ink_env.call.common.Set ink_env.call.common.T.
+    End Impl_ink_env_call_common_Set_T.
     
     Module Unset.
-      Record t : Set :=
-        { _ : core.marker.PhantomData ( -> ink_env.call.common.Unset.T);}.
+      Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
       
       Global Instance Get_0 : Notation.Dot 0 := {
         Notation.dot '(Build_t x0) := x0;
@@ -3734,9 +3152,8 @@ Module call.
     End Unset.
     Definition Unset := Unset.t.
     
-    Module
-        Impl_core_fmt_Debug_for_ink_env_call_common_Unset_ink_env_call_common_T.
-      Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+    Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
+      Definition Self := ink_env.call.common.Unset T.
       
       Definition fmt
           (self : ref Self)
@@ -3754,11 +3171,10 @@ Module call.
       Global Instance I T : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-    End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_ink_env_call_common_T.
+    End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
     
-    Module
-        Impl_core_clone_Clone_for_ink_env_call_common_Unset_ink_env_call_common_T.
-      Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+    Module Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
+      Definition Self := ink_env.call.common.Unset T.
       
       Definition clone (self : ref Self) : M Self :=
         let* α0 := core.default.Default.default tt in
@@ -3771,21 +3187,17 @@ Module call.
       Global Instance I T : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
-    End
-      Impl_core_clone_Clone_for_ink_env_call_common_Unset_ink_env_call_common_T.
+    End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
     
-    Module
-        Impl_core_marker_Copy_for_ink_env_call_common_Unset_ink_env_call_common_T.
-      Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+    Module Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
+      Definition Self := ink_env.call.common.Unset T.
       
       Global Instance I T : core.marker.Copy.Trait Self :=
         core.marker.Copy.Build_Class _.
-    End
-      Impl_core_marker_Copy_for_ink_env_call_common_Unset_ink_env_call_common_T.
+    End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
     
-    Module
-        Impl_core_default_Default_for_ink_env_call_common_Unset_ink_env_call_common_T.
-      Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+    Module Impl_core_default_Default_for_ink_env_call_common_Unset_T.
+      Definition Self := ink_env.call.common.Unset T.
       
       Definition default (_ : unit) : M Self :=
         let* α0 := core.default.Default.default tt in
@@ -3799,17 +3211,12 @@ Module call.
       Global Instance I T : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
-    End
-      Impl_core_default_Default_for_ink_env_call_common_Unset_ink_env_call_common_T.
+    End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
     
     Module Unwrap.
       Class Trait (Self : Set) : Set := {
         Output : Set;
-        unwrap_or_else
-          :
-          Self ->
-          ink_env.call.common.Unwrap.unwrap_or_else.F ->
-          (M ImplSelf.Output);
+        unwrap_or_else : Self -> F -> (M ImplSelf.Output);
       }.
       
       Global Instance Method_Output `(Trait) : Notation.Dot "Output" := {
@@ -3821,16 +3228,12 @@ Module call.
       }.
     End Unwrap.
     
-    Module
-        Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_ink_env_call_common_T.
-      Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+    Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
+      Definition Self := ink_env.call.common.Unset T.
       
-      Definition Output : Set := ink_env.call.common.T.
+      Definition Output : Set := T.
       
-      Definition unwrap_or_else
-          (self : Self)
-          (f : ink_env.call.common.unwrap_or_else.F)
-          : M ImplSelf.Output :=
+      Definition unwrap_or_else (self : Self) (f : F) : M ImplSelf.Output :=
         f tt.
       
       Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {
@@ -3840,18 +3243,16 @@ Module call.
       Global Instance I T : ink_env.call.common.Unwrap.Trait Self := {
         ink_env.call.common.Unwrap.unwrap_or_else := unwrap_or_else;
       }.
-    End
-      Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_ink_env_call_common_T.
+    End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
     
-    Module
-        Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_ink_env_call_common_T.
-      Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+    Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
+      Definition Self := ink_env.call.common.Set T.
       
-      Definition Output : Set := ink_env.call.common.T.
+      Definition Output : Set := T.
       
       Definition unwrap_or_else
           (self : Self)
-          (Pattern : ink_env.call.common.unwrap_or_else.F)
+          (Pattern : F)
           : M ImplSelf.Output :=
         self.["value"].
       
@@ -3862,8 +3263,7 @@ Module call.
       Global Instance I T : ink_env.call.common.Unwrap.Trait Self := {
         ink_env.call.common.Unwrap.unwrap_or_else := unwrap_or_else;
       }.
-    End
-      Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_ink_env_call_common_T.
+    End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
   End common.
   
   Module create_builder.
@@ -3891,10 +3291,7 @@ Module call.
         IS_RESULT : bool;
         Output : Set;
         Error : Set;
-        ok
-          :
-          ink_env.call.create_builder.ConstructorReturnType.C ->
-          (M ImplSelf.Output);
+        ok : C -> (M ImplSelf.Output);
       }.
       
       Global Instance Method_IS_RESULT `(Trait) : Notation.Dot "IS_RESULT" := {
@@ -3916,18 +3313,14 @@ Module call.
       }.
     End ConstructorReturnType.
     
-    Module
-        Impl_ink_env_call_create_builder_ConstructorReturnType_for_ink_env_call_create_builder_C.
-      Definition Self := ink_env.call.create_builder.C.
+    Module Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
+      Definition Self := C.
       
-      Definition Output : Set := ink_env.call.create_builder.C.
+      Definition Output : Set := C.
       
       Definition Error : Set := unit.
       
-      Definition ok
-          (value : ink_env.call.create_builder.C)
-          : M ImplSelf.Output :=
-        Pure value.
+      Definition ok (value : C) : M ImplSelf.Output := Pure value.
       
       Global Instance AssociatedFunction_ok :
         Notation.DoubleColon Self "ok" := {
@@ -3935,25 +3328,16 @@ Module call.
       }.
       
       Global Instance I
-          C
-          :
-          ink_env.call.create_builder.ConstructorReturnType.Trait
-          Self
-          ink_env.call.create_builder.C :=
+          C :
+          ink_env.call.create_builder.ConstructorReturnType.Trait Self C :=
         {
         ink_env.call.create_builder.ConstructorReturnType.ok := ok;
       }.
-    End
-      Impl_ink_env_call_create_builder_ConstructorReturnType_for_ink_env_call_create_builder_C.
+    End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
     
     Module
-        Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_ink_env_call_create_builder_C_ink_env_call_create_builder_E.
-      Definition
-        Self
-        :=
-        core.result.Result
-          ink_env.call.create_builder.C
-          ink_env.call.create_builder.E.
+        Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
+      Definition Self := core.result.Result C E.
       
       Definition IS_RESULT := Pure true.
       
@@ -3962,16 +3346,11 @@ Module call.
         Notation.double_colon := IS_RESULT;
       }.
       
-      Definition Output : Set :=
-        core.result.Result
-          ink_env.call.create_builder.C
-          ink_env.call.create_builder.E.
+      Definition Output : Set := core.result.Result C E.
       
-      Definition Error : Set := ink_env.call.create_builder.E.
+      Definition Error : Set := E.
       
-      Definition ok
-          (value : ink_env.call.create_builder.C)
-          : M ImplSelf.Output :=
+      Definition ok (value : C) : M ImplSelf.Output :=
         Pure (core.result.Result.Ok value).
       
       Global Instance AssociatedFunction_ok :
@@ -3991,35 +3370,23 @@ Module call.
       
       Global Instance I
           C
-          E
-          :
-          ink_env.call.create_builder.ConstructorReturnType.Trait
-          Self
-          ink_env.call.create_builder.C :=
+          E :
+          ink_env.call.create_builder.ConstructorReturnType.Trait Self C :=
         {
         ink_env.call.create_builder.ConstructorReturnType.ok := ok;
       }.
     End
-      Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_ink_env_call_create_builder_C_ink_env_call_create_builder_E.
+      Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
     
     Module CreateParams.
       Record t : Set := {
-        code_hash : ink_env.call.create_builder.CreateParams.ImplE.Hash;
+        code_hash : ImplE.Hash;
         gas_limit : u64;
-        endowment : ink_env.call.create_builder.CreateParams.ImplE.Balance;
-        exec_input
-          :
-          ink_env.call.execution_input.ExecutionInput
-            ink_env.call.create_builder.CreateParams.Args;
-        salt_bytes : ink_env.call.create_builder.CreateParams.Salt;
-        _return_type
-          :
-          ink_env.call.common.ReturnType
-            ink_env.call.create_builder.CreateParams.R;
-        _phantom
-          :
-          core.marker.PhantomData
-            ( -> ink_env.call.create_builder.CreateParams.ContractRef);
+        endowment : ImplE.Balance;
+        exec_input : ink_env.call.execution_input.ExecutionInput Args;
+        salt_bytes : Salt;
+        _return_type : ink_env.call.common.ReturnType R;
+        _phantom : core.marker.PhantomData ( -> ContractRef);
       }.
       
       Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -4047,16 +3414,11 @@ Module call.
     Definition CreateParams : Set := CreateParams.t.
     
     Module
-        Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_ink_env_call_create_builder_E_ink_env_call_create_builder_ContractRef_ink_env_call_create_builder_Args_ink_env_call_create_builder_Salt_ink_env_call_create_builder_R.
+        Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
       Definition
         Self
         :=
-        ink_env.call.create_builder.CreateParams
-          ink_env.call.create_builder.E
-          ink_env.call.create_builder.ContractRef
-          ink_env.call.create_builder.Args
-          ink_env.call.create_builder.Salt
-          ink_env.call.create_builder.R.
+        ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
       
       Definition fmt
           (self : ref Self)
@@ -4099,28 +3461,16 @@ Module call.
         core.fmt.Debug.fmt := fmt;
       }.
     End
-      Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_ink_env_call_create_builder_E_ink_env_call_create_builder_ContractRef_ink_env_call_create_builder_Args_ink_env_call_create_builder_Salt_ink_env_call_create_builder_R.
+      Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
     
     Module
-      Impl_ink_env.call.create_builder.CreateParams
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.R.
+      Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
       Definition
         Self
         :=
-        ink_env.call.create_builder.CreateParams
-          ink_env.call.create_builder.E
-          ink_env.call.create_builder.ContractRef
-          ink_env.call.create_builder.Args
-          ink_env.call.create_builder.Salt
-          ink_env.call.create_builder.R.
+        ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
       
-      Definition code_hash
-          (self : ref Self)
-          : M (ref ink_env.call.create_builder.ImplE.Hash) :=
+      Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
         Pure (addr_of self.["code_hash"]).
       
       Global Instance Method_code_hash : Notation.Dot "code_hash" := {
@@ -4133,9 +3483,7 @@ Module call.
         Notation.dot := gas_limit;
       }.
       
-      Definition endowment
-          (self : ref Self)
-          : M (ref ink_env.call.create_builder.ImplE.Balance) :=
+      Definition endowment (self : ref Self) : M (ref ImplE.Balance) :=
         Pure (addr_of self.["endowment"]).
       
       Global Instance Method_endowment : Notation.Dot "endowment" := {
@@ -4144,11 +3492,7 @@ Module call.
       
       Definition exec_input
           (self : ref Self)
-          :
-            M
-              (ref
-                (ink_env.call.execution_input.ExecutionInput
-                  ink_env.call.create_builder.Args)) :=
+          : M (ref (ink_env.call.execution_input.ExecutionInput Args)) :=
         Pure (addr_of self.["exec_input"]).
       
       Global Instance Method_exec_input : Notation.Dot "exec_input" := {
@@ -4165,63 +3509,30 @@ Module call.
         Notation.Dot "update_selector" := {
         Notation.dot := update_selector;
       }.
-    End
-      Impl_ink_env.call.create_builder.CreateParams
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.R.
+    End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
     
     Module
-      Impl_ink_env.call.create_builder.CreateParams
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.R_2.
+      Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_2.
       Definition
         Self
         :=
-        ink_env.call.create_builder.CreateParams
-          ink_env.call.create_builder.E
-          ink_env.call.create_builder.ContractRef
-          ink_env.call.create_builder.Args
-          ink_env.call.create_builder.Salt
-          ink_env.call.create_builder.R.
+        ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
       
-      Definition salt_bytes
-          (self : ref Self)
-          : M (ref ink_env.call.create_builder.Salt) :=
+      Definition salt_bytes (self : ref Self) : M (ref Salt) :=
         Pure (addr_of self.["salt_bytes"]).
       
       Global Instance Method_salt_bytes : Notation.Dot "salt_bytes" := {
         Notation.dot := salt_bytes;
       }.
     End
-      Impl_ink_env.call.create_builder.CreateParams
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.R_2.
+      Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_2.
     
     Module
-      Impl_ink_env.call.create_builder.CreateParams
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.R_3.
+      Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_3.
       Definition
         Self
         :=
-        ink_env.call.create_builder.CreateParams
-          ink_env.call.create_builder.E
-          ink_env.call.create_builder.ContractRef
-          ink_env.call.create_builder.Args
-          ink_env.call.create_builder.Salt
-          ink_env.call.create_builder.R.
+        ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
       
       Definition instantiate
           (self : ref Self)
@@ -4264,27 +3575,17 @@ Module call.
         Notation.dot := try_instantiate;
       }.
     End
-      Impl_ink_env.call.create_builder.CreateParams
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.R_3.
+      Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_3.
     
     Module CreateBuilder.
       Record t : Set := {
-        code_hash : ink_env.call.create_builder.CreateBuilder.CodeHash;
-        gas_limit : ink_env.call.create_builder.CreateBuilder.GasLimit;
-        endowment : ink_env.call.create_builder.CreateBuilder.Endowment;
-        exec_input : ink_env.call.create_builder.CreateBuilder.Args;
-        salt : ink_env.call.create_builder.CreateBuilder.Salt;
-        return_type : ink_env.call.create_builder.CreateBuilder.RetType;
-        _phantom
-          :
-          core.marker.PhantomData
-            ( ->
-            (ink_env.call.create_builder.CreateBuilder.E *
-              ink_env.call.create_builder.CreateBuilder.ContractRef));
+        code_hash : CodeHash;
+        gas_limit : GasLimit;
+        endowment : Endowment;
+        exec_input : Args;
+        salt : Salt;
+        return_type : RetType;
+        _phantom : core.marker.PhantomData ( -> (E * ContractRef));
       }.
       
       Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -4313,14 +3614,13 @@ Module call.
     
     Definition build_create
         {ContractRef : Set}
-        `{ink_env.contract.ContractEnv.Trait
-          ink_env.call.create_builder.build_create.ContractRef}
+        `{ink_env.contract.ContractEnv.Trait ContractRef}
         (_ : unit)
         :
           M
             (ink_env.call.create_builder.CreateBuilder
               ink_env.contract.ContractEnv.Env
-              ink_env.call.create_builder.build_create.ContractRef
+              ContractRef
               (ink_env.call.common.Unset ink_env.types.Environment.Hash)
               (ink_env.call.common.Unset u64)
               (ink_env.call.common.Unset ink_env.types.Environment.Balance)
@@ -4349,42 +3649,34 @@ Module call.
         |}.
     
     Module
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Hash)
-        ink_env.call.create_builder.GasLimit
-        ink_env.call.create_builder.Endowment
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.RetType.
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Unset_ImplE_Hash_GasLimit_Endowment_Args_Salt_RetType.
       Definition
         Self
         :=
         ink_env.call.create_builder.CreateBuilder
-          ink_env.call.create_builder.E
-          ink_env.call.create_builder.ContractRef
-          (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Hash)
-          ink_env.call.create_builder.GasLimit
-          ink_env.call.create_builder.Endowment
-          ink_env.call.create_builder.Args
-          ink_env.call.create_builder.Salt
-          ink_env.call.create_builder.RetType.
+          E
+          ContractRef
+          (ink_env.call.common.Unset ImplE.Hash)
+          GasLimit
+          Endowment
+          Args
+          Salt
+          RetType.
       
       Definition code_hash
           (self : Self)
-          (code_hash : ink_env.call.create_builder.ImplE.Hash)
+          (code_hash : ImplE.Hash)
           :
             M
               (ink_env.call.create_builder.CreateBuilder
-                ink_env.call.create_builder.E
-                ink_env.call.create_builder.ContractRef
-                (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-                ink_env.call.create_builder.GasLimit
-                ink_env.call.create_builder.Endowment
-                ink_env.call.create_builder.Args
-                ink_env.call.create_builder.Salt
-                ink_env.call.create_builder.RetType) :=
+                E
+                ContractRef
+                (ink_env.call.common.Set ImplE.Hash)
+                GasLimit
+                Endowment
+                Args
+                Salt
+                RetType) :=
         let* α0 := core.default.Default.default tt in
         Pure
           {|
@@ -4406,38 +3698,22 @@ Module call.
         Notation.dot := code_hash;
       }.
     End
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Hash)
-        ink_env.call.create_builder.GasLimit
-        ink_env.call.create_builder.Endowment
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.RetType.
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Unset_ImplE_Hash_GasLimit_Endowment_Args_Salt_RetType.
     
     Module
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
-        (ink_env.call.common.Unset u64)
-        ink_env.call.create_builder.Endowment
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.RetType.
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_ink_env_call_common_Unset_u64_Endowment_Args_Salt_RetType.
       Definition
         Self
         :=
         ink_env.call.create_builder.CreateBuilder
-          ink_env.call.create_builder.E
-          ink_env.call.create_builder.ContractRef
-          ink_env.call.create_builder.CodeHash
+          E
+          ContractRef
+          CodeHash
           (ink_env.call.common.Unset u64)
-          ink_env.call.create_builder.Endowment
-          ink_env.call.create_builder.Args
-          ink_env.call.create_builder.Salt
-          ink_env.call.create_builder.RetType.
+          Endowment
+          Args
+          Salt
+          RetType.
       
       Definition gas_limit
           (self : Self)
@@ -4445,14 +3721,14 @@ Module call.
           :
             M
               (ink_env.call.create_builder.CreateBuilder
-                ink_env.call.create_builder.E
-                ink_env.call.create_builder.ContractRef
-                ink_env.call.create_builder.CodeHash
+                E
+                ContractRef
+                CodeHash
                 (ink_env.call.common.Set u64)
-                ink_env.call.create_builder.Endowment
-                ink_env.call.create_builder.Args
-                ink_env.call.create_builder.Salt
-                ink_env.call.create_builder.RetType) :=
+                Endowment
+                Args
+                Salt
+                RetType) :=
         let* α0 := core.default.Default.default tt in
         Pure
           {|
@@ -4474,54 +3750,37 @@ Module call.
         Notation.dot := gas_limit;
       }.
     End
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
-        (ink_env.call.common.Unset u64)
-        ink_env.call.create_builder.Endowment
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.RetType.
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_ink_env_call_common_Unset_u64_Endowment_Args_Salt_RetType.
     
     Module
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
-        ink_env.call.create_builder.GasLimit
-        (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Balance)
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.RetType.
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_ink_env_call_common_Unset_ImplE_Balance_Args_Salt_RetType.
       Definition
         Self
         :=
         ink_env.call.create_builder.CreateBuilder
-          ink_env.call.create_builder.E
-          ink_env.call.create_builder.ContractRef
-          ink_env.call.create_builder.CodeHash
-          ink_env.call.create_builder.GasLimit
-          (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Balance)
-          ink_env.call.create_builder.Args
-          ink_env.call.create_builder.Salt
-          ink_env.call.create_builder.RetType.
+          E
+          ContractRef
+          CodeHash
+          GasLimit
+          (ink_env.call.common.Unset ImplE.Balance)
+          Args
+          Salt
+          RetType.
       
       Definition endowment
           (self : Self)
-          (endowment : ink_env.call.create_builder.ImplE.Balance)
+          (endowment : ImplE.Balance)
           :
             M
               (ink_env.call.create_builder.CreateBuilder
-                ink_env.call.create_builder.E
-                ink_env.call.create_builder.ContractRef
-                ink_env.call.create_builder.CodeHash
-                ink_env.call.create_builder.GasLimit
-                (ink_env.call.common.Set
-                  ink_env.call.create_builder.ImplE.Balance)
-                ink_env.call.create_builder.Args
-                ink_env.call.create_builder.Salt
-                ink_env.call.create_builder.RetType) :=
+                E
+                ContractRef
+                CodeHash
+                GasLimit
+                (ink_env.call.common.Set ImplE.Balance)
+                Args
+                Salt
+                RetType) :=
         let* α0 := core.default.Default.default tt in
         Pure
           {|
@@ -4543,62 +3802,40 @@ Module call.
         Notation.dot := endowment;
       }.
     End
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
-        ink_env.call.create_builder.GasLimit
-        (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Balance)
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.RetType.
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_ink_env_call_common_Unset_ImplE_Balance_Args_Salt_RetType.
     
     Module
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
-        ink_env.call.create_builder.GasLimit
-        ink_env.call.create_builder.Endowment
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.RetType.
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_Salt_RetType.
       Definition
         Self
         :=
         ink_env.call.create_builder.CreateBuilder
-          ink_env.call.create_builder.E
-          ink_env.call.create_builder.ContractRef
-          ink_env.call.create_builder.CodeHash
-          ink_env.call.create_builder.GasLimit
-          ink_env.call.create_builder.Endowment
+          E
+          ContractRef
+          CodeHash
+          GasLimit
+          Endowment
           (ink_env.call.common.Unset
             (ink_env.call.execution_input.ExecutionInput
               ink_env.call.execution_input.EmptyArgumentList))
-          ink_env.call.create_builder.Salt
-          ink_env.call.create_builder.RetType.
+          Salt
+          RetType.
       
       Definition exec_input
           (self : Self)
-          (exec_input
-            :
-            ink_env.call.execution_input.ExecutionInput
-              ink_env.call.create_builder.exec_input.Args)
+          (exec_input : ink_env.call.execution_input.ExecutionInput Args)
           :
             M
               (ink_env.call.create_builder.CreateBuilder
-                ink_env.call.create_builder.E
-                ink_env.call.create_builder.ContractRef
-                ink_env.call.create_builder.CodeHash
-                ink_env.call.create_builder.GasLimit
-                ink_env.call.create_builder.Endowment
+                E
+                ContractRef
+                CodeHash
+                GasLimit
+                Endowment
                 (ink_env.call.common.Set
-                  (ink_env.call.execution_input.ExecutionInput
-                    ink_env.call.create_builder.exec_input.Args))
-                ink_env.call.create_builder.Salt
-                ink_env.call.create_builder.RetType) :=
+                  (ink_env.call.execution_input.ExecutionInput Args))
+                Salt
+                RetType) :=
         let* α0 := core.default.Default.default tt in
         Pure
           {|
@@ -4620,56 +3857,37 @@ Module call.
         Notation.dot := exec_input;
       }.
     End
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
-        ink_env.call.create_builder.GasLimit
-        ink_env.call.create_builder.Endowment
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.RetType.
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_Salt_RetType.
     
     Module
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
-        ink_env.call.create_builder.GasLimit
-        ink_env.call.create_builder.Endowment
-        ink_env.call.create_builder.Args
-        (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-        ink_env.call.create_builder.RetType.
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_ink_env_call_common_Unset_ink_env_call_create_builder_state_Salt_RetType.
       Definition
         Self
         :=
         ink_env.call.create_builder.CreateBuilder
-          ink_env.call.create_builder.E
-          ink_env.call.create_builder.ContractRef
-          ink_env.call.create_builder.CodeHash
-          ink_env.call.create_builder.GasLimit
-          ink_env.call.create_builder.Endowment
-          ink_env.call.create_builder.Args
+          E
+          ContractRef
+          CodeHash
+          GasLimit
+          Endowment
+          Args
           (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-          ink_env.call.create_builder.RetType.
+          RetType.
       
       Definition salt_bytes
           (self : Self)
-          (salt : ink_env.call.create_builder.salt_bytes.Salt)
+          (salt : Salt)
           :
             M
               (ink_env.call.create_builder.CreateBuilder
-                ink_env.call.create_builder.E
-                ink_env.call.create_builder.ContractRef
-                ink_env.call.create_builder.CodeHash
-                ink_env.call.create_builder.GasLimit
-                ink_env.call.create_builder.Endowment
-                ink_env.call.create_builder.Args
-                (ink_env.call.common.Set
-                  ink_env.call.create_builder.salt_bytes.Salt)
-                ink_env.call.create_builder.RetType) :=
+                E
+                ContractRef
+                CodeHash
+                GasLimit
+                Endowment
+                Args
+                (ink_env.call.common.Set Salt)
+                RetType) :=
         let* α0 := core.default.Default.default tt in
         Pure
           {|
@@ -4692,37 +3910,21 @@ Module call.
         Notation.dot := salt_bytes;
       }.
     End
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
-        ink_env.call.create_builder.GasLimit
-        ink_env.call.create_builder.Endowment
-        ink_env.call.create_builder.Args
-        (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-        ink_env.call.create_builder.RetType.
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_ink_env_call_common_Unset_ink_env_call_create_builder_state_Salt_RetType.
     
     Module
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
-        ink_env.call.create_builder.GasLimit
-        ink_env.call.create_builder.Endowment
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_Salt_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
       Definition
         Self
         :=
         ink_env.call.create_builder.CreateBuilder
-          ink_env.call.create_builder.E
-          ink_env.call.create_builder.ContractRef
-          ink_env.call.create_builder.CodeHash
-          ink_env.call.create_builder.GasLimit
-          ink_env.call.create_builder.Endowment
-          ink_env.call.create_builder.Args
-          ink_env.call.create_builder.Salt
+          E
+          ContractRef
+          CodeHash
+          GasLimit
+          Endowment
+          Args
+          Salt
           (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
       
       Definition returns
@@ -4730,16 +3932,14 @@ Module call.
           :
             M
               (ink_env.call.create_builder.CreateBuilder
-                ink_env.call.create_builder.E
-                ink_env.call.create_builder.ContractRef
-                ink_env.call.create_builder.CodeHash
-                ink_env.call.create_builder.GasLimit
-                ink_env.call.create_builder.Endowment
-                ink_env.call.create_builder.Args
-                ink_env.call.create_builder.Salt
-                (ink_env.call.common.Set
-                  (ink_env.call.common.ReturnType
-                    ink_env.call.create_builder.returns.R))) :=
+                E
+                ContractRef
+                CodeHash
+                GasLimit
+                Endowment
+                Args
+                Salt
+                (ink_env.call.common.Set (ink_env.call.common.ReturnType R))) :=
         let* α0 := core.default.Default.default tt in
         let* α1 := core.default.Default.default tt in
         Pure
@@ -4762,56 +3962,34 @@ Module call.
         Notation.dot := returns;
       }.
     End
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
-        ink_env.call.create_builder.GasLimit
-        ink_env.call.create_builder.Endowment
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_Salt_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
     
     Module
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-        ink_env.call.create_builder.GasLimit
-        (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.create_builder.Args))
-        (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.create_builder.RetType)).
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType.
       Definition
         Self
         :=
         ink_env.call.create_builder.CreateBuilder
-          ink_env.call.create_builder.E
-          ink_env.call.create_builder.ContractRef
-          (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-          ink_env.call.create_builder.GasLimit
-          (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
+          E
+          ContractRef
+          (ink_env.call.common.Set ImplE.Hash)
+          GasLimit
+          (ink_env.call.common.Set ImplE.Balance)
           (ink_env.call.common.Set
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.create_builder.Args))
-          (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-          (ink_env.call.common.Set
-            (ink_env.call.common.ReturnType
-              ink_env.call.create_builder.RetType)).
+            (ink_env.call.execution_input.ExecutionInput Args))
+          (ink_env.call.common.Set Salt)
+          (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
       
       Definition params
           (self : Self)
           :
             M
               (ink_env.call.create_builder.CreateParams
-                ink_env.call.create_builder.E
-                ink_env.call.create_builder.ContractRef
-                ink_env.call.create_builder.Args
-                ink_env.call.create_builder.Salt
-                ink_env.call.create_builder.RetType) :=
+                E
+                ContractRef
+                Args
+                Salt
+                RetType) :=
         let* α0 := self.["code_hash"].["value"] in
         let* α1 := self.["gas_limit"].["unwrap_or_else"] (fun  => Pure 0) in
         let* α2 := self.["endowment"].["value"] in
@@ -4834,49 +4012,23 @@ Module call.
         Notation.dot := params;
       }.
     End
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-        ink_env.call.create_builder.GasLimit
-        (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.create_builder.Args))
-        (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.create_builder.RetType)).
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType.
     
     Module
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-        ink_env.call.create_builder.GasLimit
-        (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.create_builder.Args))
-        (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType
-            ink_env.call.create_builder.RetType))_2.
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_2.
       Definition
         Self
         :=
         ink_env.call.create_builder.CreateBuilder
-          ink_env.call.create_builder.E
-          ink_env.call.create_builder.ContractRef
-          (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-          ink_env.call.create_builder.GasLimit
-          (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
+          E
+          ContractRef
+          (ink_env.call.common.Set ImplE.Hash)
+          GasLimit
+          (ink_env.call.common.Set ImplE.Balance)
           (ink_env.call.common.Set
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.create_builder.Args))
-          (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-          (ink_env.call.common.Set
-            (ink_env.call.common.ReturnType
-              ink_env.call.create_builder.RetType)).
+            (ink_env.call.execution_input.ExecutionInput Args))
+          (ink_env.call.common.Set Salt)
+          (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
       
       Definition instantiate
           (self : Self)
@@ -4904,26 +4056,14 @@ Module call.
         Notation.dot := try_instantiate;
       }.
     End
-      Impl_ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-        ink_env.call.create_builder.GasLimit
-        (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.create_builder.Args))
-        (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType
-            ink_env.call.create_builder.RetType))_2.
+      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_2.
   End create_builder.
   
   Module execution_input.
     Module ExecutionInput.
       Record t : Set := {
         selector : ink_env.call.selector.Selector;
-        args : ink_env.call.execution_input.ExecutionInput.Args;
+        args : Args;
       }.
       
       Global Instance Get_selector : Notation.Dot "selector" := {
@@ -4936,19 +4076,12 @@ Module call.
     Definition ExecutionInput : Set := ExecutionInput.t.
     
     Module
-        Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.Args.
+        Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+      Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Definition clone
           (self : ref Self)
-          :
-            M
-              (ink_env.call.execution_input.ExecutionInput
-                ink_env.call.execution_input.Args) :=
+          : M (ink_env.call.execution_input.ExecutionInput Args) :=
         let* α0 := core.clone.Clone.clone (addr_of self.["selector"]) in
         let* α1 := core.clone.Clone.clone (addr_of self.["args"]) in
         Pure
@@ -4965,22 +4098,15 @@ Module call.
         core.clone.Clone.clone := clone;
       }.
     End
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
+      Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
     
     Module
-        Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.Args.
+        Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+      Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Definition default
           (_ : unit)
-          :
-            M
-              (ink_env.call.execution_input.ExecutionInput
-                ink_env.call.execution_input.Args) :=
+          : M (ink_env.call.execution_input.ExecutionInput Args) :=
         let* α0 := core.default.Default.default tt in
         let* α1 := core.default.Default.default tt in
         Pure
@@ -4998,15 +4124,11 @@ Module call.
         core.default.Default.default := default;
       }.
     End
-      Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
+      Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
     
     Module
-        Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.Args.
+        Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
+      Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Definition fmt
           (self : ref Self)
@@ -5028,11 +4150,10 @@ Module call.
         core.fmt.Debug.fmt := fmt;
       }.
     End
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
+      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
     
     Module
-      Impl_ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList.
+      Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList.
       Definition
         Self
         :=
@@ -5050,13 +4171,12 @@ Module call.
       
       Definition push_arg
           (self : Self)
-          (arg : ink_env.call.execution_input.push_arg.T)
+          (arg : T)
           :
             M
               (ink_env.call.execution_input.ExecutionInput
                 (ink_env.call.execution_input.ArgumentList
-                  (ink_env.call.execution_input.Argument
-                    ink_env.call.execution_input.push_arg.T)
+                  (ink_env.call.execution_input.Argument T)
                   ink_env.call.execution_input.EmptyArgumentList)) :=
         let* α0 := self.["args"].["push_arg"] arg in
         Pure
@@ -5070,35 +4190,27 @@ Module call.
         Notation.dot := push_arg;
       }.
     End
-      Impl_ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList.
+      Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList.
     
     Module
-      Impl_ink_env.call.execution_input.ExecutionInput
-        (ink_env.call.execution_input.ArgumentList
-          (ink_env.call.execution_input.Argument
-            ink_env.call.execution_input.Head)
-          ink_env.call.execution_input.Rest).
+      Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
       Definition
         Self
         :=
         ink_env.call.execution_input.ExecutionInput
           (ink_env.call.execution_input.ArgumentList
-            (ink_env.call.execution_input.Argument
-              ink_env.call.execution_input.Head)
-            ink_env.call.execution_input.Rest).
+            (ink_env.call.execution_input.Argument Head)
+            Rest).
       
       Definition push_arg
           (self : Self)
-          (arg : ink_env.call.execution_input.push_arg.T)
+          (arg : T)
           :
             M
               (ink_env.call.execution_input.ExecutionInput
                 (ink_env.call.execution_input.ArgsList
-                  ink_env.call.execution_input.push_arg.T
-                  (ink_env.call.execution_input.ArgsList
-                    ink_env.call.execution_input.Head
-                    ink_env.call.execution_input.Rest))) :=
+                  T
+                  (ink_env.call.execution_input.ArgsList Head Rest))) :=
         let* α0 := self.["args"].["push_arg"] arg in
         Pure
           {|
@@ -5111,20 +4223,10 @@ Module call.
         Notation.dot := push_arg;
       }.
     End
-      Impl_ink_env.call.execution_input.ExecutionInput
-        (ink_env.call.execution_input.ArgumentList
-          (ink_env.call.execution_input.Argument
-            ink_env.call.execution_input.Head)
-          ink_env.call.execution_input.Rest).
+      Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
     
-    Module
-      Impl_ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.Args.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.Args.
+    Module Impl_ink_env_call_execution_input_ExecutionInput_Args.
+      Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Definition update_selector
           (self : mut_ref Self)
@@ -5137,14 +4239,12 @@ Module call.
         Notation.Dot "update_selector" := {
         Notation.dot := update_selector;
       }.
-    End
-      Impl_ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.Args.
+    End Impl_ink_env_call_execution_input_ExecutionInput_Args.
     
     Module ArgumentList.
       Record t : Set := {
-        head : ink_env.call.execution_input.ArgumentList.Head;
-        rest : ink_env.call.execution_input.ArgumentList.Rest;
+        head : Head;
+        rest : Rest;
       }.
       
       Global Instance Get_head : Notation.Dot "head" := {
@@ -5157,21 +4257,12 @@ Module call.
     Definition ArgumentList : Set := ArgumentList.t.
     
     Module
-        Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.ArgumentList
-          ink_env.call.execution_input.Head
-          ink_env.call.execution_input.Rest.
+        Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+      Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
       
       Definition clone
           (self : ref Self)
-          :
-            M
-              (ink_env.call.execution_input.ArgumentList
-                ink_env.call.execution_input.Head
-                ink_env.call.execution_input.Rest) :=
+          : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
         let* α0 := core.clone.Clone.clone (addr_of self.["head"]) in
         let* α1 := core.clone.Clone.clone (addr_of self.["rest"]) in
         Pure
@@ -5188,24 +4279,15 @@ Module call.
         core.clone.Clone.clone := clone;
       }.
     End
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+      Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
     
     Module
-        Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.ArgumentList
-          ink_env.call.execution_input.Head
-          ink_env.call.execution_input.Rest.
+        Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+      Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
       
       Definition default
           (_ : unit)
-          :
-            M
-              (ink_env.call.execution_input.ArgumentList
-                ink_env.call.execution_input.Head
-                ink_env.call.execution_input.Rest) :=
+          : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
         let* α0 := core.default.Default.default tt in
         let* α1 := core.default.Default.default tt in
         Pure
@@ -5223,16 +4305,11 @@ Module call.
         core.default.Default.default := default;
       }.
     End
-      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
     
     Module
-        Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.ArgumentList
-          ink_env.call.execution_input.Head
-          ink_env.call.execution_input.Rest.
+        Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+      Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
       
       Definition fmt
           (self : ref Self)
@@ -5254,17 +4331,16 @@ Module call.
         core.fmt.Debug.fmt := fmt;
       }.
     End
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
     
     Definition ArgsList : Set :=
       ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument
-          ink_env.call.execution_input.ArgsList.Head)
-        ink_env.call.execution_input.ArgsList.Rest.
+        (ink_env.call.execution_input.Argument Head)
+        Rest.
     
     Module Argument.
       Record t : Set := {
-        arg : ink_env.call.execution_input.Argument.T;
+        arg : T;
       }.
       
       Global Instance Get_arg : Notation.Dot "arg" := {
@@ -5273,19 +4349,12 @@ Module call.
     End Argument.
     Definition Argument : Set := Argument.t.
     
-    Module
-        Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.Argument ink_env.call.execution_input.T.
+    Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
+      Definition Self := ink_env.call.execution_input.Argument T.
       
       Definition clone
           (self : ref Self)
-          :
-            M
-              (ink_env.call.execution_input.Argument
-                ink_env.call.execution_input.T) :=
+          : M (ink_env.call.execution_input.Argument T) :=
         let* α0 := core.clone.Clone.clone (addr_of self.["arg"]) in
         Pure {| ink_env.call.execution_input.Argument.arg := α0; |}.
       
@@ -5296,15 +4365,10 @@ Module call.
       Global Instance I T : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
-    End
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
+    End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
     
-    Module
-        Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.Argument ink_env.call.execution_input.T.
+    Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
+      Definition Self := ink_env.call.execution_input.Argument T.
       
       Definition fmt
           (self : ref Self)
@@ -5323,25 +4387,18 @@ Module call.
       Global Instance I T : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-    End
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
+    End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
     
-    Module
-      Impl_ink_env.call.execution_input.Argument ink_env.call.execution_input.T.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.Argument ink_env.call.execution_input.T.
+    Module Impl_ink_env_call_execution_input_Argument_T.
+      Definition Self := ink_env.call.execution_input.Argument T.
       
-      Definition new (arg : ink_env.call.execution_input.T) : M Self :=
-        Pure {| Self.arg := arg; |}.
+      Definition new (arg : T) : M Self := Pure {| Self.arg := arg; |}.
       
       Global Instance AssociatedFunction_new :
         Notation.DoubleColon Self "new" := {
         Notation.double_colon := new;
       }.
-    End
-      Impl_ink_env.call.execution_input.Argument ink_env.call.execution_input.T.
+    End Impl_ink_env_call_execution_input_Argument_T.
     
     Module ArgumentListEnd.
       Inductive t : Set := Build.
@@ -5409,7 +4466,7 @@ Module call.
         ink_env.call.execution_input.ArgumentListEnd
         ink_env.call.execution_input.ArgumentListEnd.
     
-    Module Impl_ink_env.call.execution_input.EmptyArgumentList.
+    Module Impl_ink_env_call_execution_input_EmptyArgumentList.
       Definition Self := ink_env.call.execution_input.EmptyArgumentList.
       
       Definition empty
@@ -5430,12 +4487,11 @@ Module call.
       
       Definition push_arg
           (self : Self)
-          (arg : ink_env.call.execution_input.push_arg.T)
+          (arg : T)
           :
             M
               (ink_env.call.execution_input.ArgumentList
-                (ink_env.call.execution_input.Argument
-                  ink_env.call.execution_input.push_arg.T)
+                (ink_env.call.execution_input.Argument T)
                 Self) :=
         let* α0 := ink_env.call.execution_input.Argument::["new"] arg in
         Pure
@@ -5447,29 +4503,24 @@ Module call.
       Global Instance Method_push_arg : Notation.Dot "push_arg" := {
         Notation.dot := push_arg;
       }.
-    End Impl_ink_env.call.execution_input.EmptyArgumentList.
+    End Impl_ink_env_call_execution_input_EmptyArgumentList.
     
     Module
-      Impl_ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument
-          ink_env.call.execution_input.Head)
-        ink_env.call.execution_input.Rest.
+      Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
       Definition
         Self
         :=
         ink_env.call.execution_input.ArgumentList
-          (ink_env.call.execution_input.Argument
-            ink_env.call.execution_input.Head)
-          ink_env.call.execution_input.Rest.
+          (ink_env.call.execution_input.Argument Head)
+          Rest.
       
       Definition push_arg
           (self : Self)
-          (arg : ink_env.call.execution_input.push_arg.T)
+          (arg : T)
           :
             M
               (ink_env.call.execution_input.ArgumentList
-                (ink_env.call.execution_input.Argument
-                  ink_env.call.execution_input.push_arg.T)
+                (ink_env.call.execution_input.Argument T)
                 Self) :=
         let* α0 := ink_env.call.execution_input.Argument::["new"] arg in
         Pure
@@ -5482,17 +4533,11 @@ Module call.
         Notation.dot := push_arg;
       }.
     End
-      Impl_ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument
-          ink_env.call.execution_input.Head)
-        ink_env.call.execution_input.Rest.
+      Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
     
     Module
-        Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.Argument ink_env.call.execution_input.T.
+        Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
+      Definition Self := ink_env.call.execution_input.Argument T.
       
       Definition size_hint (self : ref Self) : M usize :=
         parity_scale_codec.codec.Encode.size_hint (addr_of self.["arg"]).
@@ -5501,10 +4546,7 @@ Module call.
         Notation.dot := size_hint;
       }.
       
-      Definition encode_to
-          (self : ref Self)
-          (output : mut_ref ink_env.call.execution_input.encode_to.O)
-          : M unit :=
+      Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
         parity_scale_codec.codec.Encode.encode_to (addr_of self.["arg"]) output.
       
       Global Instance Method_encode_to : Notation.Dot "encode_to" := {
@@ -5514,7 +4556,7 @@ Module call.
       Global Instance I T : parity_scale_codec.codec.Encode.Trait Self := {
       }.
     End
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
     
     Module
         Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
@@ -5526,10 +4568,7 @@ Module call.
         Notation.dot := size_hint;
       }.
       
-      Definition encode_to
-          (self : ref Self)
-          (_output : mut_ref ink_env.call.execution_input.encode_to.O)
-          : M unit :=
+      Definition encode_to (self : ref Self) (_output : mut_ref O) : M unit :=
         Pure tt.
       
       Global Instance Method_encode_to : Notation.Dot "encode_to" := {
@@ -5542,14 +4581,13 @@ Module call.
       Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
     
     Module
-        Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+        Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
       Definition
         Self
         :=
         ink_env.call.execution_input.ArgumentList
-          (ink_env.call.execution_input.Argument
-            ink_env.call.execution_input.Head)
-          ink_env.call.execution_input.Rest.
+          (ink_env.call.execution_input.Argument Head)
+          Rest.
       
       Definition size_hint (self : ref Self) : M usize :=
         let* α0 :=
@@ -5562,10 +4600,7 @@ Module call.
         Notation.dot := size_hint;
       }.
       
-      Definition encode_to
-          (self : ref Self)
-          (output : mut_ref ink_env.call.execution_input.encode_to.O)
-          : M unit :=
+      Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
         let* _ :=
           parity_scale_codec.codec.Encode.encode_to
             (addr_of self.["rest"])
@@ -5582,22 +4617,16 @@ Module call.
       
       Global Instance I
           Head
-          Rest
-          :
-          parity_scale_codec.codec.Encode.Trait
-          Self :=
+          Rest :
+          parity_scale_codec.codec.Encode.Trait Self :=
         {
       }.
     End
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
     
     Module
-        Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.Args.
+        Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
+      Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Definition size_hint (self : ref Self) : M usize :=
         let* α0 :=
@@ -5611,10 +4640,7 @@ Module call.
         Notation.dot := size_hint;
       }.
       
-      Definition encode_to
-          (self : ref Self)
-          (output : mut_ref ink_env.call.execution_input.encode_to.O)
-          : M unit :=
+      Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
         let* _ :=
           parity_scale_codec.codec.Encode.encode_to
             (addr_of self.["selector"])
@@ -5632,7 +4658,7 @@ Module call.
       Global Instance I Args : parity_scale_codec.codec.Encode.Trait Self := {
       }.
     End
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
   End execution_input.
   
   Module selector.
@@ -5778,7 +4804,7 @@ Module call.
     
     Definition _ : unit := run (Pure tt).
     
-    Module Impl_ink_env.call.selector.Selector.
+    Module Impl_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
       
       Definition new (bytes : list u8) : M Self :=
@@ -5794,7 +4820,7 @@ Module call.
       Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
         Notation.dot := to_bytes;
       }.
-    End Impl_ink_env.call.selector.Selector.
+    End Impl_ink_env_call_selector_Selector.
   End selector.
   
   Module utils.
@@ -5805,18 +4831,11 @@ End call.
 Module call_builder.
   Module CallParams.
     Record t : Set := {
-      call_type : ink_env.call.call_builder.CallParams.CallType;
+      call_type : CallType;
       call_flags : ink_env.backend.CallFlags;
-      _return_type
-        :
-        ink_env.call.common.ReturnType ink_env.call.call_builder.CallParams.R;
-      exec_input
-        :
-        ink_env.call.execution_input.ExecutionInput
-          ink_env.call.call_builder.CallParams.Args;
-      _phantom
-        :
-        core.marker.PhantomData ( -> ink_env.call.call_builder.CallParams.E);
+      _return_type : ink_env.call.common.ReturnType R;
+      exec_input : ink_env.call.execution_input.ExecutionInput Args;
+      _phantom : core.marker.PhantomData ( -> E);
     }.
     
     Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -5838,15 +4857,8 @@ Module call_builder.
   Definition CallParams : Set := CallParams.t.
   
   Module
-      Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_ink_env_call_call_builder_E_ink_env_call_call_builder_CallType_ink_env_call_call_builder_Args_ink_env_call_call_builder_R.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        ink_env.call.call_builder.CallType
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R.
+      Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
+    Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
     
     Definition fmt
         (self : ref Self)
@@ -5874,22 +4886,10 @@ Module call_builder.
       core.fmt.Debug.fmt := fmt;
     }.
   End
-    Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_ink_env_call_call_builder_E_ink_env_call_call_builder_CallType_ink_env_call_call_builder_Args_ink_env_call_call_builder_R.
+    Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
   
-  Module
-    Impl_ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      ink_env.call.call_builder.CallType
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R_2.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        ink_env.call.call_builder.CallType
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R.
+  Module Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R_2.
+    Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
     
     Definition call_flags
         (self : ref Self)
@@ -5902,41 +4902,26 @@ Module call_builder.
     
     Definition exec_input
         (self : ref Self)
-        :
-          M
-            (ref
-              (ink_env.call.execution_input.ExecutionInput
-                ink_env.call.call_builder.Args)) :=
+        : M (ref (ink_env.call.execution_input.ExecutionInput Args)) :=
       Pure (addr_of self.["exec_input"]).
     
     Global Instance Method_exec_input : Notation.Dot "exec_input" := {
       Notation.dot := exec_input;
     }.
-  End
-    Impl_ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      ink_env.call.call_builder.CallType
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R_2.
+  End Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R_2.
   
   Module
-    Impl_ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R_3.
+    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_3.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R.
+        E
+        (ink_env.call.call_builder.Call E)
+        Args
+        R.
     
-    Definition callee
-        (self : ref Self)
-        : M (ref ink_env.call.call_builder.ImplE.AccountId) :=
+    Definition callee (self : ref Self) : M (ref ImplE.AccountId) :=
       Pure (addr_of self.["call_type"].["callee"]).
     
     Global Instance Method_callee : Notation.Dot "callee" := {
@@ -5950,9 +4935,7 @@ Module call_builder.
       Notation.dot := gas_limit;
     }.
     
-    Definition transferred_value
-        (self : ref Self)
-        : M (ref ink_env.call.call_builder.ImplE.Balance) :=
+    Definition transferred_value (self : ref Self) : M (ref ImplE.Balance) :=
       Pure (addr_of self.["call_type"].["transferred_value"]).
     
     Global Instance Method_transferred_value :
@@ -5960,58 +4943,40 @@ Module call_builder.
       Notation.dot := transferred_value;
     }.
   End
-    Impl_ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R_3.
+    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_3.
   
   Module
-    Impl_ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R_3.
+    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_3.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R.
+        E
+        (ink_env.call.call_builder.DelegateCall E)
+        Args
+        R.
     
-    Definition code_hash
-        (self : ref Self)
-        : M (ref ink_env.call.call_builder.ImplE.Hash) :=
+    Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
       Pure (addr_of self.["call_type"].["code_hash"]).
     
     Global Instance Method_code_hash : Notation.Dot "code_hash" := {
       Notation.dot := code_hash;
     }.
   End
-    Impl_ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R_3.
+    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_3.
   
   Module
-    Impl_ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R_4.
+    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_4.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R.
+        E
+        (ink_env.call.call_builder.Call E)
+        Args
+        R.
     
-    Definition invoke (self : ref Self) : M ink_env.call.call_builder.R :=
+    Definition invoke (self : ref Self) : M R :=
       let* α0 := ink_env.api.invoke_contract self in
       let* α1 :=
         α0.["unwrap_or_else"]
@@ -6040,7 +5005,7 @@ Module call_builder.
         :
           M
             (core.result.Result
-              (ink_primitives.MessageResult ink_env.call.call_builder.R)
+              (ink_primitives.MessageResult R)
               ink_env.error.Error) :=
       ink_env.api.invoke_contract self.
     
@@ -6048,28 +5013,20 @@ Module call_builder.
       Notation.dot := try_invoke;
     }.
   End
-    Impl_ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R_4.
+    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_4.
   
   Module
-    Impl_ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R_4.
+    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_4.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallParams
-        ink_env.call.call_builder.E
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.R.
+        E
+        (ink_env.call.call_builder.DelegateCall E)
+        Args
+        R.
     
-    Definition invoke (self : ref Self) : M ink_env.call.call_builder.R :=
+    Definition invoke (self : ref Self) : M R :=
       let* α0 := ink_env.api.invoke_contract_delegate self in
       α0.["unwrap_or_else"]
         (fun env_error =>
@@ -6086,34 +5043,24 @@ Module call_builder.
     
     Definition try_invoke
         (self : ref Self)
-        :
-          M
-            (core.result.Result
-              ink_env.call.call_builder.R
-              ink_env.error.Error) :=
+        : M (core.result.Result R ink_env.error.Error) :=
       ink_env.api.invoke_contract_delegate self.
     
     Global Instance Method_try_invoke : Notation.Dot "try_invoke" := {
       Notation.dot := try_invoke;
     }.
   End
-    Impl_ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R_4.
+    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_4.
   
   Definition build_call
       {E : Set}
-      `{ink_env.types.Environment.Trait ink_env.call.call_builder.build_call.E}
+      `{ink_env.types.Environment.Trait E}
       (_ : unit)
       :
         M
           (ink_env.call.call_builder.CallBuilder
-            ink_env.call.call_builder.build_call.E
-            (ink_env.call.common.Unset
-              (ink_env.call.call_builder.Call
-                ink_env.call.call_builder.build_call.E))
+            E
+            (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
             (ink_env.call.common.Unset
               (ink_env.call.execution_input.ExecutionInput
                 ink_env.call.execution_input.EmptyArgumentList))
@@ -6135,9 +5082,9 @@ Module call_builder.
   
   Module Call.
     Record t : Set := {
-      callee : ink_env.call.call_builder.Call.ImplE.AccountId;
+      callee : ImplE.AccountId;
       gas_limit : ink_env.types.Gas;
-      transferred_value : ink_env.call.call_builder.Call.ImplE.Balance;
+      transferred_value : ImplE.Balance;
     }.
     
     Global Instance Get_callee : Notation.Dot "callee" := {
@@ -6153,16 +5100,10 @@ Module call_builder.
   End Call.
   Definition Call : Set := Call.t.
   
-  Module
-      Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_ink_env_call_call_builder_E.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.Call ink_env.call.call_builder.E.
+  Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
+    Definition Self := ink_env.call.call_builder.Call E.
     
-    Definition clone
-        (self : ref Self)
-        : M (ink_env.call.call_builder.Call ink_env.call.call_builder.E) :=
+    Definition clone (self : ref Self) : M (ink_env.call.call_builder.Call E) :=
       let* α0 := core.clone.Clone.clone (addr_of self.["callee"]) in
       let* α1 := core.clone.Clone.clone (addr_of self.["gas_limit"]) in
       let* α2 := core.clone.Clone.clone (addr_of self.["transferred_value"]) in
@@ -6180,20 +5121,14 @@ Module call_builder.
     Global Instance I E : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
-  End
-    Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_ink_env_call_call_builder_E.
+  End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
   
-  Module Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E_3.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.Call ink_env.call.call_builder.E.
+  Module Impl_ink_env_call_call_builder_Call_E_3.
+    Definition Self := ink_env.call.call_builder.Call E.
     
-    Definition new
-        (callee : ink_env.call.call_builder.ImplE.AccountId)
-        : M Self :=
+    Definition new (callee : ImplE.AccountId) : M Self :=
       let* α0 := core.default.Default.default tt in
-      let* α1 := ink_env.call.call_builder.ImplE.Balance::["zero"] tt in
+      let* α1 := ImplE.Balance::["zero"] tt in
       Pure
         {|
           Self.callee := callee;
@@ -6205,13 +5140,10 @@ Module call_builder.
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
-  End Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E_3.
+  End Impl_ink_env_call_call_builder_Call_E_3.
   
-  Module Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E_4.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.Call ink_env.call.call_builder.E.
+  Module Impl_ink_env_call_call_builder_Call_E_4.
+    Definition Self := ink_env.call.call_builder.Call E.
     
     Definition gas_limit
         (self : Self)
@@ -6231,7 +5163,7 @@ Module call_builder.
     
     Definition transferred_value
         (self : Self)
-        (transferred_value : ink_env.call.call_builder.ImplE.Balance)
+        (transferred_value : ImplE.Balance)
         : M Self :=
       Pure
         {|
@@ -6244,11 +5176,11 @@ Module call_builder.
       Notation.Dot "transferred_value" := {
       Notation.dot := transferred_value;
     }.
-  End Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E_4.
+  End Impl_ink_env_call_call_builder_Call_E_4.
   
   Module DelegateCall.
     Record t : Set := {
-      code_hash : ink_env.call.call_builder.DelegateCall.ImplE.Hash;
+      code_hash : ImplE.Hash;
     }.
     
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -6257,51 +5189,36 @@ Module call_builder.
   End DelegateCall.
   Definition DelegateCall : Set := DelegateCall.t.
   
-  Module
-    Impl_ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E_3.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E.
+  Module Impl_ink_env_call_call_builder_DelegateCall_E_3.
+    Definition Self := ink_env.call.call_builder.DelegateCall E.
     
-    Definition new
-        (code_hash : ink_env.call.call_builder.ImplE.Hash)
-        : M Self :=
+    Definition new (code_hash : ImplE.Hash) : M Self :=
       Pure {| ink_env.call.call_builder.DelegateCall.code_hash := code_hash; |}.
     
     Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
-  End Impl_ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E_3.
+  End Impl_ink_env_call_call_builder_DelegateCall_E_3.
   
-  Module
-    Impl_ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E_4.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E.
+  Module Impl_ink_env_call_call_builder_DelegateCall_E_4.
+    Definition Self := ink_env.call.call_builder.DelegateCall E.
     
-    Definition code_hash
-        (self : Self)
-        (code_hash : ink_env.call.call_builder.ImplE.Hash)
-        : M Self :=
+    Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
       Pure {| ink_env.call.call_builder.DelegateCall.code_hash := code_hash; |}.
     
     Global Instance Method_code_hash : Notation.Dot "code_hash" := {
       Notation.dot := code_hash;
     }.
-  End Impl_ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E_4.
+  End Impl_ink_env_call_call_builder_DelegateCall_E_4.
   
   Module CallBuilder.
     Record t : Set := {
-      call_type : ink_env.call.call_builder.CallBuilder.CallType;
+      call_type : CallType;
       call_flags : ink_env.backend.CallFlags;
-      exec_input : ink_env.call.call_builder.CallBuilder.Args;
-      return_type : ink_env.call.call_builder.CallBuilder.RetType;
-      _phantom
-        :
-        core.marker.PhantomData ( -> ink_env.call.call_builder.CallBuilder.E);
+      exec_input : Args;
+      return_type : RetType;
+      _phantom : core.marker.PhantomData ( -> E);
     }.
     
     Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -6323,25 +5240,15 @@ Module call_builder.
   Definition CallBuilder : Set := CallBuilder.t.
   
   Module
-      Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_ink_env_call_call_builder_E_ink_env_call_call_builder_CallType_ink_env_call_call_builder_Args_ink_env_call_call_builder_RetType.
+      Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
     Definition
       Self
       :=
-      ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        ink_env.call.call_builder.CallType
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType.
+      ink_env.call.call_builder.CallBuilder E CallType Args RetType.
     
     Definition clone
         (self : ref Self)
-        :
-          M
-            (ink_env.call.call_builder.CallBuilder
-              ink_env.call.call_builder.E
-              ink_env.call.call_builder.CallType
-              ink_env.call.call_builder.Args
-              ink_env.call.call_builder.RetType) :=
+        : M (ink_env.call.call_builder.CallBuilder E CallType Args RetType) :=
       let* α0 := core.clone.Clone.clone (addr_of self.["call_type"]) in
       let* α1 := core.clone.Clone.clone (addr_of self.["call_flags"]) in
       let* α2 := core.clone.Clone.clone (addr_of self.["exec_input"]) in
@@ -6364,34 +5271,29 @@ Module call_builder.
       core.clone.Clone.clone := clone;
     }.
   End
-    Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_ink_env_call_call_builder_E_ink_env_call_call_builder_CallType_ink_env_call_call_builder_Args_ink_env_call_call_builder_RetType.
+    Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
   
   Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType_3.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_3.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType.
+        E
+        (ink_env.call.common.Unset CallType)
+        Args
+        RetType.
     
     Definition call_type
         (self : Self)
-        (call_type : ink_env.call.call_builder.call_type.NewCallType)
+        (call_type : NewCallType)
         :
           M
             (ink_env.call.call_builder.CallBuilder
-              ink_env.call.call_builder.E
-              (ink_env.call.common.Set
-                ink_env.call.call_builder.call_type.NewCallType)
-              ink_env.call.call_builder.Args
-              ink_env.call.call_builder.RetType) :=
+              E
+              (ink_env.call.common.Set NewCallType)
+              Args
+              RetType) :=
       let* α0 := core.default.Default.default tt in
       Pure
         {|
@@ -6410,37 +5312,18 @@ Module call_builder.
       Notation.dot := call_type;
     }.
   End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType_3.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_3.
   
-  Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      ink_env.call.call_builder.CallType
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType_2.
+  Module Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType_2.
     Definition
       Self
       :=
-      ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        ink_env.call.call_builder.CallType
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType.
+      ink_env.call.call_builder.CallBuilder E CallType Args RetType.
     
     Definition call_flags
         (self : Self)
         (call_flags : ink_env.backend.CallFlags)
-        :
-          M
-            (ink_env.call.call_builder.CallBuilder
-              ink_env.call.call_builder.E
-              ink_env.call.call_builder.CallType
-              ink_env.call.call_builder.Args
-              ink_env.call.call_builder.RetType) :=
+        : M (ink_env.call.call_builder.CallBuilder E CallType Args RetType) :=
       let* α0 := core.default.Default.default tt in
       Pure
         {|
@@ -6456,26 +5339,17 @@ Module call_builder.
     Global Instance Method_call_flags : Notation.Dot "call_flags" := {
       Notation.dot := call_flags;
     }.
-  End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      ink_env.call.call_builder.CallType
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType_2.
+  End Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType_2.
   
   Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      ink_env.call.call_builder.CallType
-      ink_env.call.call_builder.Args
-      (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        ink_env.call.call_builder.CallType
-        ink_env.call.call_builder.Args
+        E
+        CallType
+        Args
         (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
     
     Definition returns
@@ -6483,12 +5357,10 @@ Module call_builder.
         :
           M
             (ink_env.call.call_builder.CallBuilder
-              ink_env.call.call_builder.E
-              ink_env.call.call_builder.CallType
-              ink_env.call.call_builder.Args
-              (ink_env.call.common.Set
-                (ink_env.call.common.ReturnType
-                  ink_env.call.call_builder.returns.R))) :=
+              E
+              CallType
+              Args
+              (ink_env.call.common.Set (ink_env.call.common.ReturnType R))) :=
       let* α0 := core.default.Default.default tt in
       let* α1 := core.default.Default.default tt in
       Pure
@@ -6507,46 +5379,32 @@ Module call_builder.
       Notation.dot := returns;
     }.
   End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      ink_env.call.call_builder.CallType
-      ink_env.call.call_builder.Args
-      (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
   
   Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      ink_env.call.call_builder.CallType
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      ink_env.call.call_builder.RetType_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_CallType_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_RetType_2.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        ink_env.call.call_builder.CallType
+        E
+        CallType
         (ink_env.call.common.Unset
           (ink_env.call.execution_input.ExecutionInput
             ink_env.call.execution_input.EmptyArgumentList))
-        ink_env.call.call_builder.RetType.
+        RetType.
     
     Definition exec_input
         (self : Self)
-        (exec_input
-          :
-          ink_env.call.execution_input.ExecutionInput
-            ink_env.call.call_builder.exec_input.Args)
+        (exec_input : ink_env.call.execution_input.ExecutionInput Args)
         :
           M
             (ink_env.call.call_builder.CallBuilder
-              ink_env.call.call_builder.E
-              ink_env.call.call_builder.CallType
+              E
+              CallType
               (ink_env.call.common.Set
-                (ink_env.call.execution_input.ExecutionInput
-                  ink_env.call.call_builder.exec_input.Args))
-              ink_env.call.call_builder.RetType) :=
+                (ink_env.call.execution_input.ExecutionInput Args))
+              RetType) :=
       let* α0 := core.default.Default.default tt in
       Pure
         {|
@@ -6564,40 +5422,29 @@ Module call_builder.
       Notation.dot := exec_input;
     }.
   End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      ink_env.call.call_builder.CallType
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      ink_env.call.call_builder.RetType_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_CallType_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_RetType_2.
   
   Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType_4.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_4.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType.
+        E
+        (ink_env.call.common.Unset CallType)
+        Args
+        RetType.
     
     Definition call
         (self : Self)
-        (callee : ink_env.call.call_builder.ImplE.AccountId)
+        (callee : ImplE.AccountId)
         :
           M
             (ink_env.call.call_builder.CallBuilder
-              ink_env.call.call_builder.E
-              (ink_env.call.common.Set
-                (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-              ink_env.call.call_builder.Args
-              ink_env.call.call_builder.RetType) :=
+              E
+              (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
+              Args
+              RetType) :=
       let* α0 := ink_env.call.call_builder.Call::["new"] callee in
       let* α1 := core.default.Default.default tt in
       Pure
@@ -6619,16 +5466,15 @@ Module call_builder.
     
     Definition delegate
         (self : Self)
-        (code_hash : ink_env.call.call_builder.ImplE.Hash)
+        (code_hash : ImplE.Hash)
         :
           M
             (ink_env.call.call_builder.CallBuilder
-              ink_env.call.call_builder.E
+              E
               (ink_env.call.common.Set
-                (ink_env.call.call_builder.DelegateCall
-                  ink_env.call.call_builder.E))
-              ink_env.call.call_builder.Args
-              ink_env.call.call_builder.RetType) :=
+                (ink_env.call.call_builder.DelegateCall E))
+              Args
+              RetType) :=
       let* α0 := ink_env.call.call_builder.DelegateCall::["new"] code_hash in
       let* α1 := core.default.Default.default tt in
       Pure
@@ -6648,28 +5494,18 @@ Module call_builder.
       Notation.dot := delegate;
     }.
   End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType_4.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_4.
   
   Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_Args_RetType_2.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType.
+        E
+        (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
+        Args
+        RetType.
     
     Definition gas_limit
         (self : Self)
@@ -6702,7 +5538,7 @@ Module call_builder.
     
     Definition transferred_value
         (self : Self)
-        (transferred_value : ink_env.call.call_builder.ImplE.Balance)
+        (transferred_value : ImplE.Balance)
         : M Self :=
       let* call_type := self.["call_type"].["value"] in
       let* α0 := core.default.Default.default tt in
@@ -6731,34 +5567,20 @@ Module call_builder.
       Notation.dot := transferred_value;
     }.
   End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_Args_RetType_2.
   
   Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_Args_RetType_2.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-        ink_env.call.call_builder.Args
-        ink_env.call.call_builder.RetType.
+        E
+        (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
+        Args
+        RetType.
     
-    Definition code_hash
-        (self : Self)
-        (code_hash : ink_env.call.call_builder.ImplE.Hash)
-        : M Self :=
+    Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
       let* α0 := core.default.Default.default tt in
       Pure
         {|
@@ -6779,45 +5601,29 @@ Module call_builder.
       Notation.dot := code_hash;
     }.
   End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_Args_RetType_2.
   
   Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.call_builder.Args))
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType))_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_2.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
+        E
+        (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
         (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.call_builder.Args))
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType)).
+          (ink_env.call.execution_input.ExecutionInput Args))
+        (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
     
     Definition params
         (self : Self)
         :
           M
             (ink_env.call.call_builder.CallParams
-              ink_env.call.call_builder.E
-              (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-              ink_env.call.call_builder.Args
-              ink_env.call.call_builder.RetType) :=
+              E
+              (ink_env.call.call_builder.Call E)
+              Args
+              RetType) :=
       let* α0 := self.["call_type"].["value"] in
       let* α1 := core.default.Default.default tt in
       let* α2 := self.["exec_input"].["value"] in
@@ -6835,49 +5641,29 @@ Module call_builder.
       Notation.dot := params;
     }.
   End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.call_builder.Args))
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType))_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_2.
   
   Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.call_builder.Args))
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType))_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_2.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
+        E
+        (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
         (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.call_builder.Args))
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType)).
+          (ink_env.call.execution_input.ExecutionInput Args))
+        (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
     
     Definition params
         (self : Self)
         :
           M
             (ink_env.call.call_builder.CallParams
-              ink_env.call.call_builder.E
-              (ink_env.call.call_builder.DelegateCall
-                ink_env.call.call_builder.E)
-              ink_env.call.call_builder.Args
-              ink_env.call.call_builder.RetType) :=
+              E
+              (ink_env.call.call_builder.DelegateCall E)
+              Args
+              RetType) :=
       let* α0 := self.["call_type"].["value"] in
       let* α1 := core.default.Default.default tt in
       let* α2 := self.["exec_input"].["value"] in
@@ -6895,44 +5681,28 @@ Module call_builder.
       Notation.dot := params;
     }.
   End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.call_builder.Args))
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType))_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_2.
   
   Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      (ink_env.call.common.Unset ink_env.call.call_builder.RetType)_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_2.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
+        E
+        (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
         (ink_env.call.common.Unset
           (ink_env.call.execution_input.ExecutionInput
             ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset ink_env.call.call_builder.RetType).
+        (ink_env.call.common.Unset RetType).
     
     Definition params
         (self : Self)
         :
           M
             (ink_env.call.call_builder.CallParams
-              ink_env.call.call_builder.E
-              (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
+              E
+              (ink_env.call.call_builder.Call E)
               ink_env.call.execution_input.EmptyArgumentList
               unit) :=
       let* α0 := self.["call_type"].["value"] in
@@ -6952,44 +5722,28 @@ Module call_builder.
       Notation.dot := params;
     }.
   End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      (ink_env.call.common.Unset ink_env.call.call_builder.RetType)_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_2.
   
   Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      (ink_env.call.common.Unset ink_env.call.call_builder.RetType)_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_2.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
+        E
+        (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
         (ink_env.call.common.Unset
           (ink_env.call.execution_input.ExecutionInput
             ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset ink_env.call.call_builder.RetType).
+        (ink_env.call.common.Unset RetType).
     
     Definition params
         (self : Self)
         :
           M
             (ink_env.call.call_builder.CallParams
-              ink_env.call.call_builder.E
-              (ink_env.call.call_builder.DelegateCall
-                ink_env.call.call_builder.E)
+              E
+              (ink_env.call.call_builder.DelegateCall E)
               ink_env.call.execution_input.EmptyArgumentList
               unit) :=
       let* α0 := self.["call_type"].["value"] in
@@ -7009,31 +5763,16 @@ Module call_builder.
       Notation.dot := params;
     }.
   End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      (ink_env.call.common.Unset ink_env.call.call_builder.RetType)_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_2.
   
   Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
+        E
+        (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
         (ink_env.call.common.Unset
           (ink_env.call.execution_input.ExecutionInput
             ink_env.call.execution_input.EmptyArgumentList))
@@ -7061,31 +5800,16 @@ Module call_builder.
       Notation.dot := try_invoke;
     }.
   End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
   
   Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
-        (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
+        E
+        (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
         (ink_env.call.common.Unset
           (ink_env.call.execution_input.ExecutionInput
             ink_env.call.execution_input.EmptyArgumentList))
@@ -7109,39 +5833,21 @@ Module call_builder.
       Notation.dot := try_invoke;
     }.
   End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
   
   Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.call_builder.Args))
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.call_builder.R))_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_2.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
+        E
+        (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
         (ink_env.call.common.Set
-          (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.call_builder.Args))
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.call_builder.R)).
+          (ink_env.call.execution_input.ExecutionInput Args))
+        (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
     
-    Definition invoke (self : Self) : M ink_env.call.call_builder.R :=
+    Definition invoke (self : Self) : M R :=
       let* α0 := self.["params"] in
       α0.["invoke"].
     
@@ -7154,7 +5860,7 @@ Module call_builder.
         :
           M
             (core.result.Result
-              (ink_primitives.MessageResult ink_env.call.call_builder.R)
+              (ink_primitives.MessageResult R)
               ink_env.error.Error) :=
       let* α0 := self.["params"] in
       α0.["try_invoke"].
@@ -7163,40 +5869,21 @@ Module call_builder.
       Notation.dot := try_invoke;
     }.
   End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.call_builder.Args))
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.call_builder.R))_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_2.
   
   Module
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.call_builder.Args))
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.call_builder.R))_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_2.
     Definition
       Self
       :=
       ink_env.call.call_builder.CallBuilder
-        ink_env.call.call_builder.E
+        E
+        (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
         (ink_env.call.common.Set
-          (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.call_builder.Args))
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.call_builder.R)).
+          (ink_env.call.execution_input.ExecutionInput Args))
+        (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
     
-    Definition invoke (self : Self) : M ink_env.call.call_builder.R :=
+    Definition invoke (self : Self) : M R :=
       let* α0 := self.["params"] in
       α0.["invoke"].
     
@@ -7206,11 +5893,7 @@ Module call_builder.
     
     Definition try_invoke
         (self : Self)
-        :
-          M
-            (core.result.Result
-              ink_env.call.call_builder.R
-              ink_env.error.Error) :=
+        : M (core.result.Result R ink_env.error.Error) :=
       let* α0 := self.["params"] in
       α0.["try_invoke"].
     
@@ -7218,31 +5901,16 @@ Module call_builder.
       Notation.dot := try_invoke;
     }.
   End
-    Impl_ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.call_builder.Args))
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.call_builder.R))_2.
+    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_2.
 End call_builder.
 
 Module CallParams.
   Record t : Set := {
-    call_type : ink_env.call.call_builder.CallParams.CallType;
+    call_type : CallType;
     call_flags : ink_env.backend.CallFlags;
-    _return_type
-      :
-      ink_env.call.common.ReturnType ink_env.call.call_builder.CallParams.R;
-    exec_input
-      :
-      ink_env.call.execution_input.ExecutionInput
-        ink_env.call.call_builder.CallParams.Args;
-    _phantom
-      :
-      core.marker.PhantomData ( -> ink_env.call.call_builder.CallParams.E);
+    _return_type : ink_env.call.common.ReturnType R;
+    exec_input : ink_env.call.execution_input.ExecutionInput Args;
+    _phantom : core.marker.PhantomData ( -> E);
   }.
   
   Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -7264,15 +5932,8 @@ End CallParams.
 Definition CallParams : Set := CallParams.t.
 
 Module
-    Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_ink_env_call_call_builder_E_ink_env_call_call_builder_CallType_ink_env_call_call_builder_Args_ink_env_call_call_builder_R.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      ink_env.call.call_builder.CallType
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R.
+    Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
+  Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
   
   Definition fmt
       (self : ref Self)
@@ -7300,22 +5961,10 @@ Module
     core.fmt.Debug.fmt := fmt;
   }.
 End
-  Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_ink_env_call_call_builder_E_ink_env_call_call_builder_CallType_ink_env_call_call_builder_Args_ink_env_call_call_builder_R.
+  Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
 
-Module
-  Impl_ink_env.call.call_builder.CallParams
-    ink_env.call.call_builder.E
-    ink_env.call.call_builder.CallType
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.R_3.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      ink_env.call.call_builder.CallType
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R.
+Module Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R_3.
+  Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
   
   Definition call_flags (self : ref Self) : M (ref ink_env.backend.CallFlags) :=
     Pure (addr_of self.["call_flags"]).
@@ -7326,41 +5975,26 @@ Module
   
   Definition exec_input
       (self : ref Self)
-      :
-        M
-          (ref
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.call_builder.Args)) :=
+      : M (ref (ink_env.call.execution_input.ExecutionInput Args)) :=
     Pure (addr_of self.["exec_input"]).
   
   Global Instance Method_exec_input : Notation.Dot "exec_input" := {
     Notation.dot := exec_input;
   }.
-End
-  Impl_ink_env.call.call_builder.CallParams
-    ink_env.call.call_builder.E
-    ink_env.call.call_builder.CallType
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.R_3.
+End Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R_3.
 
 Module
-  Impl_ink_env.call.call_builder.CallParams
-    ink_env.call.call_builder.E
-    (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.R_5.
+  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_5.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R.
+      E
+      (ink_env.call.call_builder.Call E)
+      Args
+      R.
   
-  Definition callee
-      (self : ref Self)
-      : M (ref ink_env.call.call_builder.ImplE.AccountId) :=
+  Definition callee (self : ref Self) : M (ref ImplE.AccountId) :=
     Pure (addr_of self.["call_type"].["callee"]).
   
   Global Instance Method_callee : Notation.Dot "callee" := {
@@ -7374,9 +6008,7 @@ Module
     Notation.dot := gas_limit;
   }.
   
-  Definition transferred_value
-      (self : ref Self)
-      : M (ref ink_env.call.call_builder.ImplE.Balance) :=
+  Definition transferred_value (self : ref Self) : M (ref ImplE.Balance) :=
     Pure (addr_of self.["call_type"].["transferred_value"]).
   
   Global Instance Method_transferred_value :
@@ -7384,58 +6016,40 @@ Module
     Notation.dot := transferred_value;
   }.
 End
-  Impl_ink_env.call.call_builder.CallParams
-    ink_env.call.call_builder.E
-    (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.R_5.
+  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_5.
 
 Module
-  Impl_ink_env.call.call_builder.CallParams
-    ink_env.call.call_builder.E
-    (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.R_5.
+  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_5.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R.
+      E
+      (ink_env.call.call_builder.DelegateCall E)
+      Args
+      R.
   
-  Definition code_hash
-      (self : ref Self)
-      : M (ref ink_env.call.call_builder.ImplE.Hash) :=
+  Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
     Pure (addr_of self.["call_type"].["code_hash"]).
   
   Global Instance Method_code_hash : Notation.Dot "code_hash" := {
     Notation.dot := code_hash;
   }.
 End
-  Impl_ink_env.call.call_builder.CallParams
-    ink_env.call.call_builder.E
-    (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.R_5.
+  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_5.
 
 Module
-  Impl_ink_env.call.call_builder.CallParams
-    ink_env.call.call_builder.E
-    (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.R_6.
+  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_6.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R.
+      E
+      (ink_env.call.call_builder.Call E)
+      Args
+      R.
   
-  Definition invoke (self : ref Self) : M ink_env.call.call_builder.R :=
+  Definition invoke (self : ref Self) : M R :=
     let* α0 := ink_env.api.invoke_contract self in
     let* α1 :=
       α0.["unwrap_or_else"]
@@ -7464,7 +6078,7 @@ Module
       :
         M
           (core.result.Result
-            (ink_primitives.MessageResult ink_env.call.call_builder.R)
+            (ink_primitives.MessageResult R)
             ink_env.error.Error) :=
     ink_env.api.invoke_contract self.
   
@@ -7472,28 +6086,20 @@ Module
     Notation.dot := try_invoke;
   }.
 End
-  Impl_ink_env.call.call_builder.CallParams
-    ink_env.call.call_builder.E
-    (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.R_6.
+  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_6.
 
 Module
-  Impl_ink_env.call.call_builder.CallParams
-    ink_env.call.call_builder.E
-    (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.R_6.
+  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_6.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallParams
-      ink_env.call.call_builder.E
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.R.
+      E
+      (ink_env.call.call_builder.DelegateCall E)
+      Args
+      R.
   
-  Definition invoke (self : ref Self) : M ink_env.call.call_builder.R :=
+  Definition invoke (self : ref Self) : M R :=
     let* α0 := ink_env.api.invoke_contract_delegate self in
     α0.["unwrap_or_else"]
       (fun env_error =>
@@ -7510,34 +6116,24 @@ Module
   
   Definition try_invoke
       (self : ref Self)
-      :
-        M
-          (core.result.Result
-            ink_env.call.call_builder.R
-            ink_env.error.Error) :=
+      : M (core.result.Result R ink_env.error.Error) :=
     ink_env.api.invoke_contract_delegate self.
   
   Global Instance Method_try_invoke : Notation.Dot "try_invoke" := {
     Notation.dot := try_invoke;
   }.
 End
-  Impl_ink_env.call.call_builder.CallParams
-    ink_env.call.call_builder.E
-    (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.R_6.
+  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_6.
 
 Definition build_call
     {E : Set}
-    `{ink_env.types.Environment.Trait ink_env.call.call_builder.build_call.E}
+    `{ink_env.types.Environment.Trait E}
     (_ : unit)
     :
       M
         (ink_env.call.call_builder.CallBuilder
-          ink_env.call.call_builder.build_call.E
-          (ink_env.call.common.Unset
-            (ink_env.call.call_builder.Call
-              ink_env.call.call_builder.build_call.E))
+          E
+          (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
           (ink_env.call.common.Unset
             (ink_env.call.execution_input.ExecutionInput
               ink_env.call.execution_input.EmptyArgumentList))
@@ -7558,9 +6154,9 @@ Definition build_call
 
 Module Call.
   Record t : Set := {
-    callee : ink_env.call.call_builder.Call.ImplE.AccountId;
+    callee : ImplE.AccountId;
     gas_limit : ink_env.types.Gas;
-    transferred_value : ink_env.call.call_builder.Call.ImplE.Balance;
+    transferred_value : ImplE.Balance;
   }.
   
   Global Instance Get_callee : Notation.Dot "callee" := {
@@ -7575,13 +6171,10 @@ Module Call.
 End Call.
 Definition Call : Set := Call.t.
 
-Module
-    Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_ink_env_call_call_builder_E.
-  Definition Self := ink_env.call.call_builder.Call ink_env.call.call_builder.E.
+Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
+  Definition Self := ink_env.call.call_builder.Call E.
   
-  Definition clone
-      (self : ref Self)
-      : M (ink_env.call.call_builder.Call ink_env.call.call_builder.E) :=
+  Definition clone (self : ref Self) : M (ink_env.call.call_builder.Call E) :=
     let* α0 := core.clone.Clone.clone (addr_of self.["callee"]) in
     let* α1 := core.clone.Clone.clone (addr_of self.["gas_limit"]) in
     let* α2 := core.clone.Clone.clone (addr_of self.["transferred_value"]) in
@@ -7599,17 +6192,14 @@ Module
   Global Instance I E : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
-End
-  Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_ink_env_call_call_builder_E.
+End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
 
-Module Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E_5.
-  Definition Self := ink_env.call.call_builder.Call ink_env.call.call_builder.E.
+Module Impl_ink_env_call_call_builder_Call_E_5.
+  Definition Self := ink_env.call.call_builder.Call E.
   
-  Definition new
-      (callee : ink_env.call.call_builder.ImplE.AccountId)
-      : M Self :=
+  Definition new (callee : ImplE.AccountId) : M Self :=
     let* α0 := core.default.Default.default tt in
-    let* α1 := ink_env.call.call_builder.ImplE.Balance::["zero"] tt in
+    let* α1 := ImplE.Balance::["zero"] tt in
     Pure
       {|
         Self.callee := callee;
@@ -7620,10 +6210,10 @@ Module Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E_5.
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
-End Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E_5.
+End Impl_ink_env_call_call_builder_Call_E_5.
 
-Module Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E_6.
-  Definition Self := ink_env.call.call_builder.Call ink_env.call.call_builder.E.
+Module Impl_ink_env_call_call_builder_Call_E_6.
+  Definition Self := ink_env.call.call_builder.Call E.
   
   Definition gas_limit (self : Self) (gas_limit : ink_env.types.Gas) : M Self :=
     Pure
@@ -7640,7 +6230,7 @@ Module Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E_6.
   
   Definition transferred_value
       (self : Self)
-      (transferred_value : ink_env.call.call_builder.ImplE.Balance)
+      (transferred_value : ImplE.Balance)
       : M Self :=
     Pure
       {|
@@ -7653,11 +6243,11 @@ Module Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E_6.
     Notation.Dot "transferred_value" := {
     Notation.dot := transferred_value;
   }.
-End Impl_ink_env.call.call_builder.Call ink_env.call.call_builder.E_6.
+End Impl_ink_env_call_call_builder_Call_E_6.
 
 Module DelegateCall.
   Record t : Set := {
-    code_hash : ink_env.call.call_builder.DelegateCall.ImplE.Hash;
+    code_hash : ImplE.Hash;
   }.
   
   Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -7666,48 +6256,35 @@ Module DelegateCall.
 End DelegateCall.
 Definition DelegateCall : Set := DelegateCall.t.
 
-Module
-  Impl_ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E_5.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E.
+Module Impl_ink_env_call_call_builder_DelegateCall_E_5.
+  Definition Self := ink_env.call.call_builder.DelegateCall E.
   
-  Definition new (code_hash : ink_env.call.call_builder.ImplE.Hash) : M Self :=
+  Definition new (code_hash : ImplE.Hash) : M Self :=
     Pure {| ink_env.call.call_builder.DelegateCall.code_hash := code_hash; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
-End Impl_ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E_5.
+End Impl_ink_env_call_call_builder_DelegateCall_E_5.
 
-Module
-  Impl_ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E_6.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E.
+Module Impl_ink_env_call_call_builder_DelegateCall_E_6.
+  Definition Self := ink_env.call.call_builder.DelegateCall E.
   
-  Definition code_hash
-      (self : Self)
-      (code_hash : ink_env.call.call_builder.ImplE.Hash)
-      : M Self :=
+  Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
     Pure {| ink_env.call.call_builder.DelegateCall.code_hash := code_hash; |}.
   
   Global Instance Method_code_hash : Notation.Dot "code_hash" := {
     Notation.dot := code_hash;
   }.
-End Impl_ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E_6.
+End Impl_ink_env_call_call_builder_DelegateCall_E_6.
 
 Module CallBuilder.
   Record t : Set := {
-    call_type : ink_env.call.call_builder.CallBuilder.CallType;
+    call_type : CallType;
     call_flags : ink_env.backend.CallFlags;
-    exec_input : ink_env.call.call_builder.CallBuilder.Args;
-    return_type : ink_env.call.call_builder.CallBuilder.RetType;
-    _phantom
-      :
-      core.marker.PhantomData ( -> ink_env.call.call_builder.CallBuilder.E);
+    exec_input : Args;
+    return_type : RetType;
+    _phantom : core.marker.PhantomData ( -> E);
   }.
   
   Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -7729,25 +6306,15 @@ End CallBuilder.
 Definition CallBuilder : Set := CallBuilder.t.
 
 Module
-    Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_ink_env_call_call_builder_E_ink_env_call_call_builder_CallType_ink_env_call_call_builder_Args_ink_env_call_call_builder_RetType.
+    Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
   Definition
     Self
     :=
-    ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      ink_env.call.call_builder.CallType
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType.
+    ink_env.call.call_builder.CallBuilder E CallType Args RetType.
   
   Definition clone
       (self : ref Self)
-      :
-        M
-          (ink_env.call.call_builder.CallBuilder
-            ink_env.call.call_builder.E
-            ink_env.call.call_builder.CallType
-            ink_env.call.call_builder.Args
-            ink_env.call.call_builder.RetType) :=
+      : M (ink_env.call.call_builder.CallBuilder E CallType Args RetType) :=
     let* α0 := core.clone.Clone.clone (addr_of self.["call_type"]) in
     let* α1 := core.clone.Clone.clone (addr_of self.["call_flags"]) in
     let* α2 := core.clone.Clone.clone (addr_of self.["exec_input"]) in
@@ -7770,34 +6337,29 @@ Module
     core.clone.Clone.clone := clone;
   }.
 End
-  Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_ink_env_call_call_builder_E_ink_env_call_call_builder_CallType_ink_env_call_call_builder_Args_ink_env_call_call_builder_RetType.
+  Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
 
 Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.RetType_5.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_5.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType.
+      E
+      (ink_env.call.common.Unset CallType)
+      Args
+      RetType.
   
   Definition call_type
       (self : Self)
-      (call_type : ink_env.call.call_builder.call_type.NewCallType)
+      (call_type : NewCallType)
       :
         M
           (ink_env.call.call_builder.CallBuilder
-            ink_env.call.call_builder.E
-            (ink_env.call.common.Set
-              ink_env.call.call_builder.call_type.NewCallType)
-            ink_env.call.call_builder.Args
-            ink_env.call.call_builder.RetType) :=
+            E
+            (ink_env.call.common.Set NewCallType)
+            Args
+            RetType) :=
     let* α0 := core.default.Default.default tt in
     Pure
       {|
@@ -7814,37 +6376,18 @@ Module
     Notation.dot := call_type;
   }.
 End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.RetType_5.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_5.
 
-Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    ink_env.call.call_builder.CallType
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.RetType_3.
+Module Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType_3.
   Definition
     Self
     :=
-    ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      ink_env.call.call_builder.CallType
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType.
+    ink_env.call.call_builder.CallBuilder E CallType Args RetType.
   
   Definition call_flags
       (self : Self)
       (call_flags : ink_env.backend.CallFlags)
-      :
-        M
-          (ink_env.call.call_builder.CallBuilder
-            ink_env.call.call_builder.E
-            ink_env.call.call_builder.CallType
-            ink_env.call.call_builder.Args
-            ink_env.call.call_builder.RetType) :=
+      : M (ink_env.call.call_builder.CallBuilder E CallType Args RetType) :=
     let* α0 := core.default.Default.default tt in
     Pure
       {|
@@ -7859,26 +6402,17 @@ Module
   Global Instance Method_call_flags : Notation.Dot "call_flags" := {
     Notation.dot := call_flags;
   }.
-End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    ink_env.call.call_builder.CallType
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.RetType_3.
+End Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType_3.
 
 Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    ink_env.call.call_builder.CallType
-    ink_env.call.call_builder.Args
-    (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      ink_env.call.call_builder.CallType
-      ink_env.call.call_builder.Args
+      E
+      CallType
+      Args
       (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
   
   Definition returns
@@ -7886,12 +6420,10 @@ Module
       :
         M
           (ink_env.call.call_builder.CallBuilder
-            ink_env.call.call_builder.E
-            ink_env.call.call_builder.CallType
-            ink_env.call.call_builder.Args
-            (ink_env.call.common.Set
-              (ink_env.call.common.ReturnType
-                ink_env.call.call_builder.returns.R))) :=
+            E
+            CallType
+            Args
+            (ink_env.call.common.Set (ink_env.call.common.ReturnType R))) :=
     let* α0 := core.default.Default.default tt in
     let* α1 := core.default.Default.default tt in
     Pure
@@ -7908,46 +6440,32 @@ Module
     Notation.dot := returns;
   }.
 End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    ink_env.call.call_builder.CallType
-    ink_env.call.call_builder.Args
-    (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
 
 Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    ink_env.call.call_builder.CallType
-    (ink_env.call.common.Unset
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList))
-    ink_env.call.call_builder.RetType_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_CallType_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_RetType_3.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      ink_env.call.call_builder.CallType
+      E
+      CallType
       (ink_env.call.common.Unset
         (ink_env.call.execution_input.ExecutionInput
           ink_env.call.execution_input.EmptyArgumentList))
-      ink_env.call.call_builder.RetType.
+      RetType.
   
   Definition exec_input
       (self : Self)
-      (exec_input
-        :
-        ink_env.call.execution_input.ExecutionInput
-          ink_env.call.call_builder.exec_input.Args)
+      (exec_input : ink_env.call.execution_input.ExecutionInput Args)
       :
         M
           (ink_env.call.call_builder.CallBuilder
-            ink_env.call.call_builder.E
-            ink_env.call.call_builder.CallType
+            E
+            CallType
             (ink_env.call.common.Set
-              (ink_env.call.execution_input.ExecutionInput
-                ink_env.call.call_builder.exec_input.Args))
-            ink_env.call.call_builder.RetType) :=
+              (ink_env.call.execution_input.ExecutionInput Args))
+            RetType) :=
     let* α0 := core.default.Default.default tt in
     Pure
       {|
@@ -7964,40 +6482,29 @@ Module
     Notation.dot := exec_input;
   }.
 End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    ink_env.call.call_builder.CallType
-    (ink_env.call.common.Unset
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList))
-    ink_env.call.call_builder.RetType_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_CallType_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_RetType_3.
 
 Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.RetType_6.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_6.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType.
+      E
+      (ink_env.call.common.Unset CallType)
+      Args
+      RetType.
   
   Definition call
       (self : Self)
-      (callee : ink_env.call.call_builder.ImplE.AccountId)
+      (callee : ImplE.AccountId)
       :
         M
           (ink_env.call.call_builder.CallBuilder
-            ink_env.call.call_builder.E
-            (ink_env.call.common.Set
-              (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-            ink_env.call.call_builder.Args
-            ink_env.call.call_builder.RetType) :=
+            E
+            (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
+            Args
+            RetType) :=
     let* α0 := ink_env.call.call_builder.Call::["new"] callee in
     let* α1 := core.default.Default.default tt in
     Pure
@@ -8017,16 +6524,14 @@ Module
   
   Definition delegate
       (self : Self)
-      (code_hash : ink_env.call.call_builder.ImplE.Hash)
+      (code_hash : ImplE.Hash)
       :
         M
           (ink_env.call.call_builder.CallBuilder
-            ink_env.call.call_builder.E
-            (ink_env.call.common.Set
-              (ink_env.call.call_builder.DelegateCall
-                ink_env.call.call_builder.E))
-            ink_env.call.call_builder.Args
-            ink_env.call.call_builder.RetType) :=
+            E
+            (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
+            Args
+            RetType) :=
     let* α0 := ink_env.call.call_builder.DelegateCall::["new"] code_hash in
     let* α1 := core.default.Default.default tt in
     Pure
@@ -8044,28 +6549,18 @@ Module
     Notation.dot := delegate;
   }.
 End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Unset ink_env.call.call_builder.CallType)
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.RetType_6.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_6.
 
 Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.RetType_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_Args_RetType_3.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType.
+      E
+      (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
+      Args
+      RetType.
   
   Definition gas_limit (self : Self) (gas_limit : ink_env.types.Gas) : M Self :=
     let* call_type := self.["call_type"].["value"] in
@@ -8093,7 +6588,7 @@ Module
   
   Definition transferred_value
       (self : Self)
-      (transferred_value : ink_env.call.call_builder.ImplE.Balance)
+      (transferred_value : ImplE.Balance)
       : M Self :=
     let* call_type := self.["call_type"].["value"] in
     let* α0 := core.default.Default.default tt in
@@ -8120,34 +6615,20 @@ Module
     Notation.dot := transferred_value;
   }.
 End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.RetType_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_Args_RetType_3.
 
 Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.RetType_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_Args_RetType_3.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-      ink_env.call.call_builder.Args
-      ink_env.call.call_builder.RetType.
+      E
+      (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
+      Args
+      RetType.
   
-  Definition code_hash
-      (self : Self)
-      (code_hash : ink_env.call.call_builder.ImplE.Hash)
-      : M Self :=
+  Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
     let* α0 := core.default.Default.default tt in
     Pure
       {|
@@ -8166,45 +6647,29 @@ Module
     Notation.dot := code_hash;
   }.
 End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-    ink_env.call.call_builder.Args
-    ink_env.call.call_builder.RetType_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_Args_RetType_3.
 
 Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-    (ink_env.call.common.Set
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.call_builder.Args))
-    (ink_env.call.common.Set
-      (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType))_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_3.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
+      E
+      (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
       (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.call_builder.Args))
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType)).
+        (ink_env.call.execution_input.ExecutionInput Args))
+      (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
   
   Definition params
       (self : Self)
       :
         M
           (ink_env.call.call_builder.CallParams
-            ink_env.call.call_builder.E
-            (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
-            ink_env.call.call_builder.Args
-            ink_env.call.call_builder.RetType) :=
+            E
+            (ink_env.call.call_builder.Call E)
+            Args
+            RetType) :=
     let* α0 := self.["call_type"].["value"] in
     let* α1 := core.default.Default.default tt in
     let* α2 := self.["exec_input"].["value"] in
@@ -8221,48 +6686,29 @@ Module
     Notation.dot := params;
   }.
 End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-    (ink_env.call.common.Set
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.call_builder.Args))
-    (ink_env.call.common.Set
-      (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType))_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_3.
 
 Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-    (ink_env.call.common.Set
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.call_builder.Args))
-    (ink_env.call.common.Set
-      (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType))_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_3.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
+      E
+      (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
       (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.call_builder.Args))
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType)).
+        (ink_env.call.execution_input.ExecutionInput Args))
+      (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
   
   Definition params
       (self : Self)
       :
         M
           (ink_env.call.call_builder.CallParams
-            ink_env.call.call_builder.E
-            (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
-            ink_env.call.call_builder.Args
-            ink_env.call.call_builder.RetType) :=
+            E
+            (ink_env.call.call_builder.DelegateCall E)
+            Args
+            RetType) :=
     let* α0 := self.["call_type"].["value"] in
     let* α1 := core.default.Default.default tt in
     let* α2 := self.["exec_input"].["value"] in
@@ -8279,44 +6725,28 @@ Module
     Notation.dot := params;
   }.
 End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-    (ink_env.call.common.Set
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.call_builder.Args))
-    (ink_env.call.common.Set
-      (ink_env.call.common.ReturnType ink_env.call.call_builder.RetType))_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_3.
 
 Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-    (ink_env.call.common.Unset
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList))
-    (ink_env.call.common.Unset ink_env.call.call_builder.RetType)_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_3.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
+      E
+      (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
       (ink_env.call.common.Unset
         (ink_env.call.execution_input.ExecutionInput
           ink_env.call.execution_input.EmptyArgumentList))
-      (ink_env.call.common.Unset ink_env.call.call_builder.RetType).
+      (ink_env.call.common.Unset RetType).
   
   Definition params
       (self : Self)
       :
         M
           (ink_env.call.call_builder.CallParams
-            ink_env.call.call_builder.E
-            (ink_env.call.call_builder.Call ink_env.call.call_builder.E)
+            E
+            (ink_env.call.call_builder.Call E)
             ink_env.call.execution_input.EmptyArgumentList
             unit) :=
     let* α0 := self.["call_type"].["value"] in
@@ -8335,43 +6765,28 @@ Module
     Notation.dot := params;
   }.
 End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-    (ink_env.call.common.Unset
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList))
-    (ink_env.call.common.Unset ink_env.call.call_builder.RetType)_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_3.
 
 Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-    (ink_env.call.common.Unset
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList))
-    (ink_env.call.common.Unset ink_env.call.call_builder.RetType)_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_3.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
+      E
+      (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
       (ink_env.call.common.Unset
         (ink_env.call.execution_input.ExecutionInput
           ink_env.call.execution_input.EmptyArgumentList))
-      (ink_env.call.common.Unset ink_env.call.call_builder.RetType).
+      (ink_env.call.common.Unset RetType).
   
   Definition params
       (self : Self)
       :
         M
           (ink_env.call.call_builder.CallParams
-            ink_env.call.call_builder.E
-            (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E)
+            E
+            (ink_env.call.call_builder.DelegateCall E)
             ink_env.call.execution_input.EmptyArgumentList
             unit) :=
     let* α0 := self.["call_type"].["value"] in
@@ -8390,31 +6805,16 @@ Module
     Notation.dot := params;
   }.
 End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-    (ink_env.call.common.Unset
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList))
-    (ink_env.call.common.Unset ink_env.call.call_builder.RetType)_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_3.
 
 Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-    (ink_env.call.common.Unset
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList))
-    (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
+      E
+      (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
       (ink_env.call.common.Unset
         (ink_env.call.execution_input.ExecutionInput
           ink_env.call.execution_input.EmptyArgumentList))
@@ -8442,31 +6842,16 @@ Module
     Notation.dot := try_invoke;
   }.
 End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-    (ink_env.call.common.Unset
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList))
-    (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
 
 Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-    (ink_env.call.common.Unset
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList))
-    (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
-      (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
+      E
+      (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
       (ink_env.call.common.Unset
         (ink_env.call.execution_input.ExecutionInput
           ink_env.call.execution_input.EmptyArgumentList))
@@ -8490,39 +6875,21 @@ Module
     Notation.dot := try_invoke;
   }.
 End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-    (ink_env.call.common.Unset
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList))
-    (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
 
 Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-    (ink_env.call.common.Set
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.call_builder.Args))
-    (ink_env.call.common.Set
-      (ink_env.call.common.ReturnType ink_env.call.call_builder.R))_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_3.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
+      E
+      (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
       (ink_env.call.common.Set
-        (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.call_builder.Args))
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.call_builder.R)).
+        (ink_env.call.execution_input.ExecutionInput Args))
+      (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
   
-  Definition invoke (self : Self) : M ink_env.call.call_builder.R :=
+  Definition invoke (self : Self) : M R :=
     let* α0 := self.["params"] in
     α0.["invoke"].
   
@@ -8535,7 +6902,7 @@ Module
       :
         M
           (core.result.Result
-            (ink_primitives.MessageResult ink_env.call.call_builder.R)
+            (ink_primitives.MessageResult R)
             ink_env.error.Error) :=
     let* α0 := self.["params"] in
     α0.["try_invoke"].
@@ -8544,40 +6911,21 @@ Module
     Notation.dot := try_invoke;
   }.
 End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.Call ink_env.call.call_builder.E))
-    (ink_env.call.common.Set
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.call_builder.Args))
-    (ink_env.call.common.Set
-      (ink_env.call.common.ReturnType ink_env.call.call_builder.R))_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_3.
 
 Module
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-    (ink_env.call.common.Set
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.call_builder.Args))
-    (ink_env.call.common.Set
-      (ink_env.call.common.ReturnType ink_env.call.call_builder.R))_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_3.
   Definition
     Self
     :=
     ink_env.call.call_builder.CallBuilder
-      ink_env.call.call_builder.E
+      E
+      (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
       (ink_env.call.common.Set
-        (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.call_builder.Args))
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.call_builder.R)).
+        (ink_env.call.execution_input.ExecutionInput Args))
+      (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
   
-  Definition invoke (self : Self) : M ink_env.call.call_builder.R :=
+  Definition invoke (self : Self) : M R :=
     let* α0 := self.["params"] in
     α0.["invoke"].
   
@@ -8587,11 +6935,7 @@ Module
   
   Definition try_invoke
       (self : Self)
-      :
-        M
-          (core.result.Result
-            ink_env.call.call_builder.R
-            ink_env.error.Error) :=
+      : M (core.result.Result R ink_env.error.Error) :=
     let* α0 := self.["params"] in
     α0.["try_invoke"].
   
@@ -8599,20 +6943,11 @@ Module
     Notation.dot := try_invoke;
   }.
 End
-  Impl_ink_env.call.call_builder.CallBuilder
-    ink_env.call.call_builder.E
-    (ink_env.call.common.Set
-      (ink_env.call.call_builder.DelegateCall ink_env.call.call_builder.E))
-    (ink_env.call.common.Set
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.call_builder.Args))
-    (ink_env.call.common.Set
-      (ink_env.call.common.ReturnType ink_env.call.call_builder.R))_3.
+  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_3.
 
 Module common.
   Module ReturnType.
-    Record t : Set :=
-      { _ : core.marker.PhantomData ( -> ink_env.call.common.ReturnType.T);}.
+    Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
     
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
@@ -8620,9 +6955,8 @@ Module common.
   End ReturnType.
   Definition ReturnType := ReturnType.t.
   
-  Module
-      Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
-    Definition Self := ink_env.call.common.ReturnType ink_env.call.common.T.
+  Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
+    Definition Self := ink_env.call.common.ReturnType T.
     
     Definition fmt
         (self : ref Self)
@@ -8640,12 +6974,10 @@ Module common.
     Global Instance I T : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-  End
-    Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
+  End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
   
-  Module
-      Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
-    Definition Self := ink_env.call.common.ReturnType ink_env.call.common.T.
+  Module Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
+    Definition Self := ink_env.call.common.ReturnType T.
     
     Definition clone (self : ref Self) : M Self :=
       let* α0 := core.default.Default.default tt in
@@ -8658,21 +6990,17 @@ Module common.
     Global Instance I T : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
-  End
-    Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
+  End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
   
-  Module
-      Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
-    Definition Self := ink_env.call.common.ReturnType ink_env.call.common.T.
+  Module Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
+    Definition Self := ink_env.call.common.ReturnType T.
     
     Global Instance I T : core.marker.Copy.Trait Self :=
       core.marker.Copy.Build_Class _.
-  End
-    Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
+  End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
   
-  Module
-      Impl_core_default_Default_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
-    Definition Self := ink_env.call.common.ReturnType ink_env.call.common.T.
+  Module Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
+    Definition Self := ink_env.call.common.ReturnType T.
     
     Definition default (_ : unit) : M Self :=
       let* α0 := core.default.Default.default tt in
@@ -8686,11 +7014,10 @@ Module common.
     Global Instance I T : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-  End
-    Impl_core_default_Default_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
+  End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
   
   Module Set.
-    Record t : Set := { _ : ink_env.call.common.Set.T;}.
+    Record t : Set := { _ : T;}.
     
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
@@ -8698,8 +7025,8 @@ Module common.
   End Set.
   Definition Set := Set.t.
   
-  Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_ink_env_call_common_T.
-    Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+  Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
+    Definition Self := ink_env.call.common.Set T.
     
     Definition fmt
         (self : ref Self)
@@ -8717,23 +7044,19 @@ Module common.
     Global Instance I T : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-  End Impl_core_fmt_Debug_for_ink_env_call_common_Set_ink_env_call_common_T.
+  End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
   
-  Module
-      Impl_core_marker_Copy_for_ink_env_call_common_Set_ink_env_call_common_T.
-    Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+  Module Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
+    Definition Self := ink_env.call.common.Set T.
     
     Global Instance I T : core.marker.Copy.Trait Self :=
       core.marker.Copy.Build_Class _.
-  End Impl_core_marker_Copy_for_ink_env_call_common_Set_ink_env_call_common_T.
+  End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
   
-  Module
-      Impl_core_clone_Clone_for_ink_env_call_common_Set_ink_env_call_common_T.
-    Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+  Module Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
+    Definition Self := ink_env.call.common.Set T.
     
-    Definition clone
-        (self : ref Self)
-        : M (ink_env.call.common.Set ink_env.call.common.T) :=
+    Definition clone (self : ref Self) : M (ink_env.call.common.Set T) :=
       let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
       Pure (ink_env.call.common.Set.Build_t α0).
     
@@ -8744,21 +7067,20 @@ Module common.
     Global Instance I T : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
-  End Impl_core_clone_Clone_for_ink_env_call_common_Set_ink_env_call_common_T.
+  End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
   
-  Module Impl_ink_env.call.common.Set ink_env.call.common.T_2.
-    Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+  Module Impl_ink_env_call_common_Set_T_2.
+    Definition Self := ink_env.call.common.Set T.
     
-    Definition value (self : Self) : M ink_env.call.common.T := Pure (self.[0]).
+    Definition value (self : Self) : M T := Pure (self.[0]).
     
     Global Instance Method_value : Notation.Dot "value" := {
       Notation.dot := value;
     }.
-  End Impl_ink_env.call.common.Set ink_env.call.common.T_2.
+  End Impl_ink_env_call_common_Set_T_2.
   
   Module Unset.
-    Record t : Set :=
-      { _ : core.marker.PhantomData ( -> ink_env.call.common.Unset.T);}.
+    Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
     
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
@@ -8766,9 +7088,8 @@ Module common.
   End Unset.
   Definition Unset := Unset.t.
   
-  Module
-      Impl_core_fmt_Debug_for_ink_env_call_common_Unset_ink_env_call_common_T.
-    Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+  Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
+    Definition Self := ink_env.call.common.Unset T.
     
     Definition fmt
         (self : ref Self)
@@ -8786,11 +7107,10 @@ Module common.
     Global Instance I T : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-  End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_ink_env_call_common_T.
+  End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
   
-  Module
-      Impl_core_clone_Clone_for_ink_env_call_common_Unset_ink_env_call_common_T.
-    Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+  Module Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
+    Definition Self := ink_env.call.common.Unset T.
     
     Definition clone (self : ref Self) : M Self :=
       let* α0 := core.default.Default.default tt in
@@ -8803,19 +7123,17 @@ Module common.
     Global Instance I T : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
-  End Impl_core_clone_Clone_for_ink_env_call_common_Unset_ink_env_call_common_T.
+  End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
   
-  Module
-      Impl_core_marker_Copy_for_ink_env_call_common_Unset_ink_env_call_common_T.
-    Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+  Module Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
+    Definition Self := ink_env.call.common.Unset T.
     
     Global Instance I T : core.marker.Copy.Trait Self :=
       core.marker.Copy.Build_Class _.
-  End Impl_core_marker_Copy_for_ink_env_call_common_Unset_ink_env_call_common_T.
+  End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
   
-  Module
-      Impl_core_default_Default_for_ink_env_call_common_Unset_ink_env_call_common_T.
-    Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+  Module Impl_core_default_Default_for_ink_env_call_common_Unset_T.
+    Definition Self := ink_env.call.common.Unset T.
     
     Definition default (_ : unit) : M Self :=
       let* α0 := core.default.Default.default tt in
@@ -8829,17 +7147,12 @@ Module common.
     Global Instance I T : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
-  End
-    Impl_core_default_Default_for_ink_env_call_common_Unset_ink_env_call_common_T.
+  End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
   
   Module Unwrap.
     Class Trait (Self : Set) : Set := {
       Output : Set;
-      unwrap_or_else
-        :
-        Self ->
-        ink_env.call.common.Unwrap.unwrap_or_else.F ->
-        (M ImplSelf.Output);
+      unwrap_or_else : Self -> F -> (M ImplSelf.Output);
     }.
     
     Global Instance Method_Output `(Trait) : Notation.Dot "Output" := {
@@ -8851,17 +7164,12 @@ Module common.
     }.
   End Unwrap.
   
-  Module
-      Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_ink_env_call_common_T.
-    Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+  Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
+    Definition Self := ink_env.call.common.Unset T.
     
-    Definition Output : Set := ink_env.call.common.T.
+    Definition Output : Set := T.
     
-    Definition unwrap_or_else
-        (self : Self)
-        (f : ink_env.call.common.unwrap_or_else.F)
-        : M ImplSelf.Output :=
-      f tt.
+    Definition unwrap_or_else (self : Self) (f : F) : M ImplSelf.Output := f tt.
     
     Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {
       Notation.dot := unwrap_or_else;
@@ -8870,19 +7178,14 @@ Module common.
     Global Instance I T : ink_env.call.common.Unwrap.Trait Self := {
       ink_env.call.common.Unwrap.unwrap_or_else := unwrap_or_else;
     }.
-  End
-    Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_ink_env_call_common_T.
+  End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
   
-  Module
-      Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_ink_env_call_common_T.
-    Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+  Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
+    Definition Self := ink_env.call.common.Set T.
     
-    Definition Output : Set := ink_env.call.common.T.
+    Definition Output : Set := T.
     
-    Definition unwrap_or_else
-        (self : Self)
-        (Pattern : ink_env.call.common.unwrap_or_else.F)
-        : M ImplSelf.Output :=
+    Definition unwrap_or_else (self : Self) (Pattern : F) : M ImplSelf.Output :=
       self.["value"].
     
     Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {
@@ -8892,13 +7195,11 @@ Module common.
     Global Instance I T : ink_env.call.common.Unwrap.Trait Self := {
       ink_env.call.common.Unwrap.unwrap_or_else := unwrap_or_else;
     }.
-  End
-    Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_ink_env_call_common_T.
+  End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
 End common.
 
 Module ReturnType.
-  Record t : Set :=
-    { _ : core.marker.PhantomData ( -> ink_env.call.common.ReturnType.T);}.
+  Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
@@ -8906,9 +7207,8 @@ Module ReturnType.
 End ReturnType.
 Definition ReturnType := ReturnType.t.
 
-Module
-    Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
-  Definition Self := ink_env.call.common.ReturnType ink_env.call.common.T.
+Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
+  Definition Self := ink_env.call.common.ReturnType T.
   
   Definition fmt
       (self : ref Self)
@@ -8926,12 +7226,10 @@ Module
   Global Instance I T : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
-End
-  Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
+End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
 
-Module
-    Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
-  Definition Self := ink_env.call.common.ReturnType ink_env.call.common.T.
+Module Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
+  Definition Self := ink_env.call.common.ReturnType T.
   
   Definition clone (self : ref Self) : M Self :=
     let* α0 := core.default.Default.default tt in
@@ -8944,21 +7242,17 @@ Module
   Global Instance I T : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
-End
-  Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
+End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
 
-Module
-    Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
-  Definition Self := ink_env.call.common.ReturnType ink_env.call.common.T.
+Module Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
+  Definition Self := ink_env.call.common.ReturnType T.
   
   Global Instance I T : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Class _.
-End
-  Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
+End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
 
-Module
-    Impl_core_default_Default_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
-  Definition Self := ink_env.call.common.ReturnType ink_env.call.common.T.
+Module Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
+  Definition Self := ink_env.call.common.ReturnType T.
   
   Definition default (_ : unit) : M Self :=
     let* α0 := core.default.Default.default tt in
@@ -8972,11 +7266,10 @@ Module
   Global Instance I T : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
-End
-  Impl_core_default_Default_for_ink_env_call_common_ReturnType_ink_env_call_common_T.
+End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
 
 Module Set.
-  Record t : Set := { _ : ink_env.call.common.Set.T;}.
+  Record t : Set := { _ : T;}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
@@ -8984,8 +7277,8 @@ Module Set.
 End Set.
 Definition Set := Set.t.
 
-Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_ink_env_call_common_T.
-  Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
+  Definition Self := ink_env.call.common.Set T.
   
   Definition fmt
       (self : ref Self)
@@ -9003,21 +7296,19 @@ Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_ink_env_call_common_T.
   Global Instance I T : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_ink_env_call_common_Set_ink_env_call_common_T.
+End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
 
-Module Impl_core_marker_Copy_for_ink_env_call_common_Set_ink_env_call_common_T.
-  Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+Module Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
+  Definition Self := ink_env.call.common.Set T.
   
   Global Instance I T : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Class _.
-End Impl_core_marker_Copy_for_ink_env_call_common_Set_ink_env_call_common_T.
+End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
 
-Module Impl_core_clone_Clone_for_ink_env_call_common_Set_ink_env_call_common_T.
-  Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+Module Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
+  Definition Self := ink_env.call.common.Set T.
   
-  Definition clone
-      (self : ref Self)
-      : M (ink_env.call.common.Set ink_env.call.common.T) :=
+  Definition clone (self : ref Self) : M (ink_env.call.common.Set T) :=
     let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
     Pure (ink_env.call.common.Set.Build_t α0).
   
@@ -9028,21 +7319,20 @@ Module Impl_core_clone_Clone_for_ink_env_call_common_Set_ink_env_call_common_T.
   Global Instance I T : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
-End Impl_core_clone_Clone_for_ink_env_call_common_Set_ink_env_call_common_T.
+End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
 
-Module Impl_ink_env.call.common.Set ink_env.call.common.T_3.
-  Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+Module Impl_ink_env_call_common_Set_T_3.
+  Definition Self := ink_env.call.common.Set T.
   
-  Definition value (self : Self) : M ink_env.call.common.T := Pure (self.[0]).
+  Definition value (self : Self) : M T := Pure (self.[0]).
   
   Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
   }.
-End Impl_ink_env.call.common.Set ink_env.call.common.T_3.
+End Impl_ink_env_call_common_Set_T_3.
 
 Module Unset.
-  Record t : Set :=
-    { _ : core.marker.PhantomData ( -> ink_env.call.common.Unset.T);}.
+  Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
@@ -9050,8 +7340,8 @@ Module Unset.
 End Unset.
 Definition Unset := Unset.t.
 
-Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_ink_env_call_common_T.
-  Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
+  Definition Self := ink_env.call.common.Unset T.
   
   Definition fmt
       (self : ref Self)
@@ -9069,11 +7359,10 @@ Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_ink_env_call_common_T.
   Global Instance I T : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
-End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_ink_env_call_common_T.
+End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
 
-Module
-    Impl_core_clone_Clone_for_ink_env_call_common_Unset_ink_env_call_common_T.
-  Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+Module Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
+  Definition Self := ink_env.call.common.Unset T.
   
   Definition clone (self : ref Self) : M Self :=
     let* α0 := core.default.Default.default tt in
@@ -9086,19 +7375,17 @@ Module
   Global Instance I T : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
-End Impl_core_clone_Clone_for_ink_env_call_common_Unset_ink_env_call_common_T.
+End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
 
-Module
-    Impl_core_marker_Copy_for_ink_env_call_common_Unset_ink_env_call_common_T.
-  Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+Module Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
+  Definition Self := ink_env.call.common.Unset T.
   
   Global Instance I T : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Class _.
-End Impl_core_marker_Copy_for_ink_env_call_common_Unset_ink_env_call_common_T.
+End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
 
-Module
-    Impl_core_default_Default_for_ink_env_call_common_Unset_ink_env_call_common_T.
-  Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+Module Impl_core_default_Default_for_ink_env_call_common_Unset_T.
+  Definition Self := ink_env.call.common.Unset T.
   
   Definition default (_ : unit) : M Self :=
     let* α0 := core.default.Default.default tt in
@@ -9112,17 +7399,12 @@ Module
   Global Instance I T : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
-End
-  Impl_core_default_Default_for_ink_env_call_common_Unset_ink_env_call_common_T.
+End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
 
 Module Unwrap.
   Class Trait (Self : Set) : Set := {
     Output : Set;
-    unwrap_or_else
-      :
-      Self ->
-      ink_env.call.common.Unwrap.unwrap_or_else.F ->
-      (M ImplSelf.Output);
+    unwrap_or_else : Self -> F -> (M ImplSelf.Output);
   }.
   
   Global Instance Method_Output `(Trait) : Notation.Dot "Output" := {
@@ -9134,17 +7416,12 @@ Module Unwrap.
   }.
 End Unwrap.
 
-Module
-    Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_ink_env_call_common_T.
-  Definition Self := ink_env.call.common.Unset ink_env.call.common.T.
+Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
+  Definition Self := ink_env.call.common.Unset T.
   
-  Definition Output : Set := ink_env.call.common.T.
+  Definition Output : Set := T.
   
-  Definition unwrap_or_else
-      (self : Self)
-      (f : ink_env.call.common.unwrap_or_else.F)
-      : M ImplSelf.Output :=
-    f tt.
+  Definition unwrap_or_else (self : Self) (f : F) : M ImplSelf.Output := f tt.
   
   Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {
     Notation.dot := unwrap_or_else;
@@ -9153,19 +7430,14 @@ Module
   Global Instance I T : ink_env.call.common.Unwrap.Trait Self := {
     ink_env.call.common.Unwrap.unwrap_or_else := unwrap_or_else;
   }.
-End
-  Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_ink_env_call_common_T.
+End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
 
-Module
-    Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_ink_env_call_common_T.
-  Definition Self := ink_env.call.common.Set ink_env.call.common.T.
+Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
+  Definition Self := ink_env.call.common.Set T.
   
-  Definition Output : Set := ink_env.call.common.T.
+  Definition Output : Set := T.
   
-  Definition unwrap_or_else
-      (self : Self)
-      (Pattern : ink_env.call.common.unwrap_or_else.F)
-      : M ImplSelf.Output :=
+  Definition unwrap_or_else (self : Self) (Pattern : F) : M ImplSelf.Output :=
     self.["value"].
   
   Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {
@@ -9175,8 +7447,7 @@ Module
   Global Instance I T : ink_env.call.common.Unwrap.Trait Self := {
     ink_env.call.common.Unwrap.unwrap_or_else := unwrap_or_else;
   }.
-End
-  Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_ink_env_call_common_T.
+End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
 
 Module create_builder.
   Module state.
@@ -9203,10 +7474,7 @@ Module create_builder.
       IS_RESULT : bool;
       Output : Set;
       Error : Set;
-      ok
-        :
-        ink_env.call.create_builder.ConstructorReturnType.C ->
-        (M ImplSelf.Output);
+      ok : C -> (M ImplSelf.Output);
     }.
     
     Global Instance Method_IS_RESULT `(Trait) : Notation.Dot "IS_RESULT" := {
@@ -9228,41 +7496,30 @@ Module create_builder.
     }.
   End ConstructorReturnType.
   
-  Module
-      Impl_ink_env_call_create_builder_ConstructorReturnType_for_ink_env_call_create_builder_C.
-    Definition Self := ink_env.call.create_builder.C.
+  Module Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
+    Definition Self := C.
     
-    Definition Output : Set := ink_env.call.create_builder.C.
+    Definition Output : Set := C.
     
     Definition Error : Set := unit.
     
-    Definition ok (value : ink_env.call.create_builder.C) : M ImplSelf.Output :=
-      Pure value.
+    Definition ok (value : C) : M ImplSelf.Output := Pure value.
     
     Global Instance AssociatedFunction_ok : Notation.DoubleColon Self "ok" := {
       Notation.double_colon := ok;
     }.
     
     Global Instance I
-        C
-        :
-        ink_env.call.create_builder.ConstructorReturnType.Trait
-        Self
-        ink_env.call.create_builder.C :=
+        C :
+        ink_env.call.create_builder.ConstructorReturnType.Trait Self C :=
       {
       ink_env.call.create_builder.ConstructorReturnType.ok := ok;
     }.
-  End
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_ink_env_call_create_builder_C.
+  End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
   
   Module
-      Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_ink_env_call_create_builder_C_ink_env_call_create_builder_E.
-    Definition
-      Self
-      :=
-      core.result.Result
-        ink_env.call.create_builder.C
-        ink_env.call.create_builder.E.
+      Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
+    Definition Self := core.result.Result C E.
     
     Definition IS_RESULT := Pure true.
     
@@ -9271,14 +7528,11 @@ Module create_builder.
       Notation.double_colon := IS_RESULT;
     }.
     
-    Definition Output : Set :=
-      core.result.Result
-        ink_env.call.create_builder.C
-        ink_env.call.create_builder.E.
+    Definition Output : Set := core.result.Result C E.
     
-    Definition Error : Set := ink_env.call.create_builder.E.
+    Definition Error : Set := E.
     
-    Definition ok (value : ink_env.call.create_builder.C) : M ImplSelf.Output :=
+    Definition ok (value : C) : M ImplSelf.Output :=
       Pure (core.result.Result.Ok value).
     
     Global Instance AssociatedFunction_ok : Notation.DoubleColon Self "ok" := {
@@ -9297,35 +7551,23 @@ Module create_builder.
     
     Global Instance I
         C
-        E
-        :
-        ink_env.call.create_builder.ConstructorReturnType.Trait
-        Self
-        ink_env.call.create_builder.C :=
+        E :
+        ink_env.call.create_builder.ConstructorReturnType.Trait Self C :=
       {
       ink_env.call.create_builder.ConstructorReturnType.ok := ok;
     }.
   End
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_ink_env_call_create_builder_C_ink_env_call_create_builder_E.
+    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
   
   Module CreateParams.
     Record t : Set := {
-      code_hash : ink_env.call.create_builder.CreateParams.ImplE.Hash;
+      code_hash : ImplE.Hash;
       gas_limit : u64;
-      endowment : ink_env.call.create_builder.CreateParams.ImplE.Balance;
-      exec_input
-        :
-        ink_env.call.execution_input.ExecutionInput
-          ink_env.call.create_builder.CreateParams.Args;
-      salt_bytes : ink_env.call.create_builder.CreateParams.Salt;
-      _return_type
-        :
-        ink_env.call.common.ReturnType
-          ink_env.call.create_builder.CreateParams.R;
-      _phantom
-        :
-        core.marker.PhantomData
-          ( -> ink_env.call.create_builder.CreateParams.ContractRef);
+      endowment : ImplE.Balance;
+      exec_input : ink_env.call.execution_input.ExecutionInput Args;
+      salt_bytes : Salt;
+      _return_type : ink_env.call.common.ReturnType R;
+      _phantom : core.marker.PhantomData ( -> ContractRef);
     }.
     
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -9353,16 +7595,11 @@ Module create_builder.
   Definition CreateParams : Set := CreateParams.t.
   
   Module
-      Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_ink_env_call_create_builder_E_ink_env_call_create_builder_ContractRef_ink_env_call_create_builder_Args_ink_env_call_create_builder_Salt_ink_env_call_create_builder_R.
+      Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
     Definition
       Self
       :=
-      ink_env.call.create_builder.CreateParams
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.R.
+      ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
     
     Definition fmt
         (self : ref Self)
@@ -9404,28 +7641,16 @@ Module create_builder.
       core.fmt.Debug.fmt := fmt;
     }.
   End
-    Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_ink_env_call_create_builder_E_ink_env_call_create_builder_ContractRef_ink_env_call_create_builder_Args_ink_env_call_create_builder_Salt_ink_env_call_create_builder_R.
+    Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
   
   Module
-    Impl_ink_env.call.create_builder.CreateParams
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.R_4.
+    Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_4.
     Definition
       Self
       :=
-      ink_env.call.create_builder.CreateParams
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.R.
+      ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
     
-    Definition code_hash
-        (self : ref Self)
-        : M (ref ink_env.call.create_builder.ImplE.Hash) :=
+    Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
       Pure (addr_of self.["code_hash"]).
     
     Global Instance Method_code_hash : Notation.Dot "code_hash" := {
@@ -9438,9 +7663,7 @@ Module create_builder.
       Notation.dot := gas_limit;
     }.
     
-    Definition endowment
-        (self : ref Self)
-        : M (ref ink_env.call.create_builder.ImplE.Balance) :=
+    Definition endowment (self : ref Self) : M (ref ImplE.Balance) :=
       Pure (addr_of self.["endowment"]).
     
     Global Instance Method_endowment : Notation.Dot "endowment" := {
@@ -9449,11 +7672,7 @@ Module create_builder.
     
     Definition exec_input
         (self : ref Self)
-        :
-          M
-            (ref
-              (ink_env.call.execution_input.ExecutionInput
-                ink_env.call.create_builder.Args)) :=
+        : M (ref (ink_env.call.execution_input.ExecutionInput Args)) :=
       Pure (addr_of self.["exec_input"]).
     
     Global Instance Method_exec_input : Notation.Dot "exec_input" := {
@@ -9469,63 +7688,29 @@ Module create_builder.
     Global Instance Method_update_selector : Notation.Dot "update_selector" := {
       Notation.dot := update_selector;
     }.
-  End
-    Impl_ink_env.call.create_builder.CreateParams
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.R_4.
+  End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_4.
   
   Module
-    Impl_ink_env.call.create_builder.CreateParams
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.R_5.
+    Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_5.
     Definition
       Self
       :=
-      ink_env.call.create_builder.CreateParams
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.R.
+      ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
     
-    Definition salt_bytes
-        (self : ref Self)
-        : M (ref ink_env.call.create_builder.Salt) :=
+    Definition salt_bytes (self : ref Self) : M (ref Salt) :=
       Pure (addr_of self.["salt_bytes"]).
     
     Global Instance Method_salt_bytes : Notation.Dot "salt_bytes" := {
       Notation.dot := salt_bytes;
     }.
-  End
-    Impl_ink_env.call.create_builder.CreateParams
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.R_5.
+  End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_5.
   
   Module
-    Impl_ink_env.call.create_builder.CreateParams
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.R_6.
+    Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_6.
     Definition
       Self
       :=
-      ink_env.call.create_builder.CreateParams
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.R.
+      ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
     
     Definition instantiate
         (self : ref Self)
@@ -9566,28 +7751,17 @@ Module create_builder.
     Global Instance Method_try_instantiate : Notation.Dot "try_instantiate" := {
       Notation.dot := try_instantiate;
     }.
-  End
-    Impl_ink_env.call.create_builder.CreateParams
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.R_6.
+  End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_6.
   
   Module CreateBuilder.
     Record t : Set := {
-      code_hash : ink_env.call.create_builder.CreateBuilder.CodeHash;
-      gas_limit : ink_env.call.create_builder.CreateBuilder.GasLimit;
-      endowment : ink_env.call.create_builder.CreateBuilder.Endowment;
-      exec_input : ink_env.call.create_builder.CreateBuilder.Args;
-      salt : ink_env.call.create_builder.CreateBuilder.Salt;
-      return_type : ink_env.call.create_builder.CreateBuilder.RetType;
-      _phantom
-        :
-        core.marker.PhantomData
-          ( ->
-          (ink_env.call.create_builder.CreateBuilder.E *
-            ink_env.call.create_builder.CreateBuilder.ContractRef));
+      code_hash : CodeHash;
+      gas_limit : GasLimit;
+      endowment : Endowment;
+      exec_input : Args;
+      salt : Salt;
+      return_type : RetType;
+      _phantom : core.marker.PhantomData ( -> (E * ContractRef));
     }.
     
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -9616,14 +7790,13 @@ Module create_builder.
   
   Definition build_create
       {ContractRef : Set}
-      `{ink_env.contract.ContractEnv.Trait
-        ink_env.call.create_builder.build_create.ContractRef}
+      `{ink_env.contract.ContractEnv.Trait ContractRef}
       (_ : unit)
       :
         M
           (ink_env.call.create_builder.CreateBuilder
             ink_env.contract.ContractEnv.Env
-            ink_env.call.create_builder.build_create.ContractRef
+            ContractRef
             (ink_env.call.common.Unset ink_env.types.Environment.Hash)
             (ink_env.call.common.Unset u64)
             (ink_env.call.common.Unset ink_env.types.Environment.Balance)
@@ -9652,42 +7825,34 @@ Module create_builder.
       |}.
   
   Module
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Hash)
-      ink_env.call.create_builder.GasLimit
-      ink_env.call.create_builder.Endowment
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.RetType_2.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Unset_ImplE_Hash_GasLimit_Endowment_Args_Salt_RetType_2.
     Definition
       Self
       :=
       ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Hash)
-        ink_env.call.create_builder.GasLimit
-        ink_env.call.create_builder.Endowment
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.RetType.
+        E
+        ContractRef
+        (ink_env.call.common.Unset ImplE.Hash)
+        GasLimit
+        Endowment
+        Args
+        Salt
+        RetType.
     
     Definition code_hash
         (self : Self)
-        (code_hash : ink_env.call.create_builder.ImplE.Hash)
+        (code_hash : ImplE.Hash)
         :
           M
             (ink_env.call.create_builder.CreateBuilder
-              ink_env.call.create_builder.E
-              ink_env.call.create_builder.ContractRef
-              (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-              ink_env.call.create_builder.GasLimit
-              ink_env.call.create_builder.Endowment
-              ink_env.call.create_builder.Args
-              ink_env.call.create_builder.Salt
-              ink_env.call.create_builder.RetType) :=
+              E
+              ContractRef
+              (ink_env.call.common.Set ImplE.Hash)
+              GasLimit
+              Endowment
+              Args
+              Salt
+              RetType) :=
       let* α0 := core.default.Default.default tt in
       Pure
         {|
@@ -9709,38 +7874,22 @@ Module create_builder.
       Notation.dot := code_hash;
     }.
   End
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Hash)
-      ink_env.call.create_builder.GasLimit
-      ink_env.call.create_builder.Endowment
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.RetType_2.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Unset_ImplE_Hash_GasLimit_Endowment_Args_Salt_RetType_2.
   
   Module
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
-      (ink_env.call.common.Unset u64)
-      ink_env.call.create_builder.Endowment
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.RetType_2.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_ink_env_call_common_Unset_u64_Endowment_Args_Salt_RetType_2.
     Definition
       Self
       :=
       ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
+        E
+        ContractRef
+        CodeHash
         (ink_env.call.common.Unset u64)
-        ink_env.call.create_builder.Endowment
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.RetType.
+        Endowment
+        Args
+        Salt
+        RetType.
     
     Definition gas_limit
         (self : Self)
@@ -9748,14 +7897,14 @@ Module create_builder.
         :
           M
             (ink_env.call.create_builder.CreateBuilder
-              ink_env.call.create_builder.E
-              ink_env.call.create_builder.ContractRef
-              ink_env.call.create_builder.CodeHash
+              E
+              ContractRef
+              CodeHash
               (ink_env.call.common.Set u64)
-              ink_env.call.create_builder.Endowment
-              ink_env.call.create_builder.Args
-              ink_env.call.create_builder.Salt
-              ink_env.call.create_builder.RetType) :=
+              Endowment
+              Args
+              Salt
+              RetType) :=
       let* α0 := core.default.Default.default tt in
       Pure
         {|
@@ -9777,54 +7926,37 @@ Module create_builder.
       Notation.dot := gas_limit;
     }.
   End
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
-      (ink_env.call.common.Unset u64)
-      ink_env.call.create_builder.Endowment
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.RetType_2.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_ink_env_call_common_Unset_u64_Endowment_Args_Salt_RetType_2.
   
   Module
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
-      ink_env.call.create_builder.GasLimit
-      (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Balance)
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.RetType_2.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_ink_env_call_common_Unset_ImplE_Balance_Args_Salt_RetType_2.
     Definition
       Self
       :=
       ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
-        ink_env.call.create_builder.GasLimit
-        (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Balance)
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.RetType.
+        E
+        ContractRef
+        CodeHash
+        GasLimit
+        (ink_env.call.common.Unset ImplE.Balance)
+        Args
+        Salt
+        RetType.
     
     Definition endowment
         (self : Self)
-        (endowment : ink_env.call.create_builder.ImplE.Balance)
+        (endowment : ImplE.Balance)
         :
           M
             (ink_env.call.create_builder.CreateBuilder
-              ink_env.call.create_builder.E
-              ink_env.call.create_builder.ContractRef
-              ink_env.call.create_builder.CodeHash
-              ink_env.call.create_builder.GasLimit
-              (ink_env.call.common.Set
-                ink_env.call.create_builder.ImplE.Balance)
-              ink_env.call.create_builder.Args
-              ink_env.call.create_builder.Salt
-              ink_env.call.create_builder.RetType) :=
+              E
+              ContractRef
+              CodeHash
+              GasLimit
+              (ink_env.call.common.Set ImplE.Balance)
+              Args
+              Salt
+              RetType) :=
       let* α0 := core.default.Default.default tt in
       Pure
         {|
@@ -9846,62 +7978,40 @@ Module create_builder.
       Notation.dot := endowment;
     }.
   End
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
-      ink_env.call.create_builder.GasLimit
-      (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Balance)
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.RetType_2.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_ink_env_call_common_Unset_ImplE_Balance_Args_Salt_RetType_2.
   
   Module
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
-      ink_env.call.create_builder.GasLimit
-      ink_env.call.create_builder.Endowment
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.RetType_2.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_Salt_RetType_2.
     Definition
       Self
       :=
       ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
-        ink_env.call.create_builder.GasLimit
-        ink_env.call.create_builder.Endowment
+        E
+        ContractRef
+        CodeHash
+        GasLimit
+        Endowment
         (ink_env.call.common.Unset
           (ink_env.call.execution_input.ExecutionInput
             ink_env.call.execution_input.EmptyArgumentList))
-        ink_env.call.create_builder.Salt
-        ink_env.call.create_builder.RetType.
+        Salt
+        RetType.
     
     Definition exec_input
         (self : Self)
-        (exec_input
-          :
-          ink_env.call.execution_input.ExecutionInput
-            ink_env.call.create_builder.exec_input.Args)
+        (exec_input : ink_env.call.execution_input.ExecutionInput Args)
         :
           M
             (ink_env.call.create_builder.CreateBuilder
-              ink_env.call.create_builder.E
-              ink_env.call.create_builder.ContractRef
-              ink_env.call.create_builder.CodeHash
-              ink_env.call.create_builder.GasLimit
-              ink_env.call.create_builder.Endowment
+              E
+              ContractRef
+              CodeHash
+              GasLimit
+              Endowment
               (ink_env.call.common.Set
-                (ink_env.call.execution_input.ExecutionInput
-                  ink_env.call.create_builder.exec_input.Args))
-              ink_env.call.create_builder.Salt
-              ink_env.call.create_builder.RetType) :=
+                (ink_env.call.execution_input.ExecutionInput Args))
+              Salt
+              RetType) :=
       let* α0 := core.default.Default.default tt in
       Pure
         {|
@@ -9923,56 +8033,37 @@ Module create_builder.
       Notation.dot := exec_input;
     }.
   End
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
-      ink_env.call.create_builder.GasLimit
-      ink_env.call.create_builder.Endowment
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.RetType_2.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_Salt_RetType_2.
   
   Module
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
-      ink_env.call.create_builder.GasLimit
-      ink_env.call.create_builder.Endowment
-      ink_env.call.create_builder.Args
-      (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-      ink_env.call.create_builder.RetType_2.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_ink_env_call_common_Unset_ink_env_call_create_builder_state_Salt_RetType_2.
     Definition
       Self
       :=
       ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
-        ink_env.call.create_builder.GasLimit
-        ink_env.call.create_builder.Endowment
-        ink_env.call.create_builder.Args
+        E
+        ContractRef
+        CodeHash
+        GasLimit
+        Endowment
+        Args
         (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-        ink_env.call.create_builder.RetType.
+        RetType.
     
     Definition salt_bytes
         (self : Self)
-        (salt : ink_env.call.create_builder.salt_bytes.Salt)
+        (salt : Salt)
         :
           M
             (ink_env.call.create_builder.CreateBuilder
-              ink_env.call.create_builder.E
-              ink_env.call.create_builder.ContractRef
-              ink_env.call.create_builder.CodeHash
-              ink_env.call.create_builder.GasLimit
-              ink_env.call.create_builder.Endowment
-              ink_env.call.create_builder.Args
-              (ink_env.call.common.Set
-                ink_env.call.create_builder.salt_bytes.Salt)
-              ink_env.call.create_builder.RetType) :=
+              E
+              ContractRef
+              CodeHash
+              GasLimit
+              Endowment
+              Args
+              (ink_env.call.common.Set Salt)
+              RetType) :=
       let* α0 := core.default.Default.default tt in
       Pure
         {|
@@ -9995,37 +8086,21 @@ Module create_builder.
       Notation.dot := salt_bytes;
     }.
   End
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
-      ink_env.call.create_builder.GasLimit
-      ink_env.call.create_builder.Endowment
-      ink_env.call.create_builder.Args
-      (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-      ink_env.call.create_builder.RetType_2.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_ink_env_call_common_Unset_ink_env_call_create_builder_state_Salt_RetType_2.
   
   Module
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
-      ink_env.call.create_builder.GasLimit
-      ink_env.call.create_builder.Endowment
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_2.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_Salt_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
     Definition
       Self
       :=
       ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        ink_env.call.create_builder.CodeHash
-        ink_env.call.create_builder.GasLimit
-        ink_env.call.create_builder.Endowment
-        ink_env.call.create_builder.Args
-        ink_env.call.create_builder.Salt
+        E
+        ContractRef
+        CodeHash
+        GasLimit
+        Endowment
+        Args
+        Salt
         (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
     
     Definition returns
@@ -10033,16 +8108,14 @@ Module create_builder.
         :
           M
             (ink_env.call.create_builder.CreateBuilder
-              ink_env.call.create_builder.E
-              ink_env.call.create_builder.ContractRef
-              ink_env.call.create_builder.CodeHash
-              ink_env.call.create_builder.GasLimit
-              ink_env.call.create_builder.Endowment
-              ink_env.call.create_builder.Args
-              ink_env.call.create_builder.Salt
-              (ink_env.call.common.Set
-                (ink_env.call.common.ReturnType
-                  ink_env.call.create_builder.returns.R))) :=
+              E
+              ContractRef
+              CodeHash
+              GasLimit
+              Endowment
+              Args
+              Salt
+              (ink_env.call.common.Set (ink_env.call.common.ReturnType R))) :=
       let* α0 := core.default.Default.default tt in
       let* α1 := core.default.Default.default tt in
       Pure
@@ -10065,55 +8138,34 @@ Module create_builder.
       Notation.dot := returns;
     }.
   End
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
-      ink_env.call.create_builder.GasLimit
-      ink_env.call.create_builder.Endowment
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_2.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_Salt_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
   
   Module
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-      ink_env.call.create_builder.GasLimit
-      (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.create_builder.Args))
-      (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.create_builder.RetType))_3.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_3.
     Definition
       Self
       :=
       ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-        ink_env.call.create_builder.GasLimit
-        (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
+        E
+        ContractRef
+        (ink_env.call.common.Set ImplE.Hash)
+        GasLimit
+        (ink_env.call.common.Set ImplE.Balance)
         (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.create_builder.Args))
-        (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.create_builder.RetType)).
+          (ink_env.call.execution_input.ExecutionInput Args))
+        (ink_env.call.common.Set Salt)
+        (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
     
     Definition params
         (self : Self)
         :
           M
             (ink_env.call.create_builder.CreateParams
-              ink_env.call.create_builder.E
-              ink_env.call.create_builder.ContractRef
-              ink_env.call.create_builder.Args
-              ink_env.call.create_builder.Salt
-              ink_env.call.create_builder.RetType) :=
+              E
+              ContractRef
+              Args
+              Salt
+              RetType) :=
       let* α0 := self.["code_hash"].["value"] in
       let* α1 := self.["gas_limit"].["unwrap_or_else"] (fun  => Pure 0) in
       let* α2 := self.["endowment"].["value"] in
@@ -10136,47 +8188,23 @@ Module create_builder.
       Notation.dot := params;
     }.
   End
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-      ink_env.call.create_builder.GasLimit
-      (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.create_builder.Args))
-      (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.create_builder.RetType))_3.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_3.
   
   Module
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-      ink_env.call.create_builder.GasLimit
-      (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.create_builder.Args))
-      (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.create_builder.RetType))_4.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_4.
     Definition
       Self
       :=
       ink_env.call.create_builder.CreateBuilder
-        ink_env.call.create_builder.E
-        ink_env.call.create_builder.ContractRef
-        (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-        ink_env.call.create_builder.GasLimit
-        (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
+        E
+        ContractRef
+        (ink_env.call.common.Set ImplE.Hash)
+        GasLimit
+        (ink_env.call.common.Set ImplE.Balance)
         (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.create_builder.Args))
-        (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-        (ink_env.call.common.Set
-          (ink_env.call.common.ReturnType ink_env.call.create_builder.RetType)).
+          (ink_env.call.execution_input.ExecutionInput Args))
+        (ink_env.call.common.Set Salt)
+        (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
     
     Definition instantiate
         (self : Self)
@@ -10203,18 +8231,7 @@ Module create_builder.
       Notation.dot := try_instantiate;
     }.
   End
-    Impl_ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-      ink_env.call.create_builder.GasLimit
-      (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.create_builder.Args))
-      (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.create_builder.RetType))_4.
+    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_4.
 End create_builder.
 
 Module state.
@@ -10247,10 +8264,7 @@ Module ConstructorReturnType.
     IS_RESULT : bool;
     Output : Set;
     Error : Set;
-    ok
-      :
-      ink_env.call.create_builder.ConstructorReturnType.C ->
-      (M ImplSelf.Output);
+    ok : C -> (M ImplSelf.Output);
   }.
   
   Global Instance Method_IS_RESULT `(Trait) : Notation.Dot "IS_RESULT" := {
@@ -10272,41 +8286,30 @@ Module ConstructorReturnType.
   }.
 End ConstructorReturnType.
 
-Module
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_ink_env_call_create_builder_C.
-  Definition Self := ink_env.call.create_builder.C.
+Module Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
+  Definition Self := C.
   
-  Definition Output : Set := ink_env.call.create_builder.C.
+  Definition Output : Set := C.
   
   Definition Error : Set := unit.
   
-  Definition ok (value : ink_env.call.create_builder.C) : M ImplSelf.Output :=
-    Pure value.
+  Definition ok (value : C) : M ImplSelf.Output := Pure value.
   
   Global Instance AssociatedFunction_ok : Notation.DoubleColon Self "ok" := {
     Notation.double_colon := ok;
   }.
   
   Global Instance I
-      C
-      :
-      ink_env.call.create_builder.ConstructorReturnType.Trait
-      Self
-      ink_env.call.create_builder.C :=
+      C :
+      ink_env.call.create_builder.ConstructorReturnType.Trait Self C :=
     {
     ink_env.call.create_builder.ConstructorReturnType.ok := ok;
   }.
-End
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_ink_env_call_create_builder_C.
+End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
 
 Module
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_ink_env_call_create_builder_C_ink_env_call_create_builder_E.
-  Definition
-    Self
-    :=
-    core.result.Result
-      ink_env.call.create_builder.C
-      ink_env.call.create_builder.E.
+    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
+  Definition Self := core.result.Result C E.
   
   Definition IS_RESULT := Pure true.
   
@@ -10315,14 +8318,11 @@ Module
     Notation.double_colon := IS_RESULT;
   }.
   
-  Definition Output : Set :=
-    core.result.Result
-      ink_env.call.create_builder.C
-      ink_env.call.create_builder.E.
+  Definition Output : Set := core.result.Result C E.
   
-  Definition Error : Set := ink_env.call.create_builder.E.
+  Definition Error : Set := E.
   
-  Definition ok (value : ink_env.call.create_builder.C) : M ImplSelf.Output :=
+  Definition ok (value : C) : M ImplSelf.Output :=
     Pure (core.result.Result.Ok value).
   
   Global Instance AssociatedFunction_ok : Notation.DoubleColon Self "ok" := {
@@ -10340,34 +8340,23 @@ Module
   
   Global Instance I
       C
-      E
-      :
-      ink_env.call.create_builder.ConstructorReturnType.Trait
-      Self
-      ink_env.call.create_builder.C :=
+      E :
+      ink_env.call.create_builder.ConstructorReturnType.Trait Self C :=
     {
     ink_env.call.create_builder.ConstructorReturnType.ok := ok;
   }.
 End
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_ink_env_call_create_builder_C_ink_env_call_create_builder_E.
+  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
 
 Module CreateParams.
   Record t : Set := {
-    code_hash : ink_env.call.create_builder.CreateParams.ImplE.Hash;
+    code_hash : ImplE.Hash;
     gas_limit : u64;
-    endowment : ink_env.call.create_builder.CreateParams.ImplE.Balance;
-    exec_input
-      :
-      ink_env.call.execution_input.ExecutionInput
-        ink_env.call.create_builder.CreateParams.Args;
-    salt_bytes : ink_env.call.create_builder.CreateParams.Salt;
-    _return_type
-      :
-      ink_env.call.common.ReturnType ink_env.call.create_builder.CreateParams.R;
-    _phantom
-      :
-      core.marker.PhantomData
-        ( -> ink_env.call.create_builder.CreateParams.ContractRef);
+    endowment : ImplE.Balance;
+    exec_input : ink_env.call.execution_input.ExecutionInput Args;
+    salt_bytes : Salt;
+    _return_type : ink_env.call.common.ReturnType R;
+    _phantom : core.marker.PhantomData ( -> ContractRef);
   }.
   
   Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -10395,16 +8384,11 @@ End CreateParams.
 Definition CreateParams : Set := CreateParams.t.
 
 Module
-    Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_ink_env_call_create_builder_E_ink_env_call_create_builder_ContractRef_ink_env_call_create_builder_Args_ink_env_call_create_builder_Salt_ink_env_call_create_builder_R.
+    Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
   Definition
     Self
     :=
-    ink_env.call.create_builder.CreateParams
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.R.
+    ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
   
   Definition fmt
       (self : ref Self)
@@ -10446,28 +8430,16 @@ Module
     core.fmt.Debug.fmt := fmt;
   }.
 End
-  Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_ink_env_call_create_builder_E_ink_env_call_create_builder_ContractRef_ink_env_call_create_builder_Args_ink_env_call_create_builder_Salt_ink_env_call_create_builder_R.
+  Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
 
 Module
-  Impl_ink_env.call.create_builder.CreateParams
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.Args
-    ink_env.call.create_builder.Salt
-    ink_env.call.create_builder.R_7.
+  Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_7.
   Definition
     Self
     :=
-    ink_env.call.create_builder.CreateParams
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.R.
+    ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
   
-  Definition code_hash
-      (self : ref Self)
-      : M (ref ink_env.call.create_builder.ImplE.Hash) :=
+  Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
     Pure (addr_of self.["code_hash"]).
   
   Global Instance Method_code_hash : Notation.Dot "code_hash" := {
@@ -10480,9 +8452,7 @@ Module
     Notation.dot := gas_limit;
   }.
   
-  Definition endowment
-      (self : ref Self)
-      : M (ref ink_env.call.create_builder.ImplE.Balance) :=
+  Definition endowment (self : ref Self) : M (ref ImplE.Balance) :=
     Pure (addr_of self.["endowment"]).
   
   Global Instance Method_endowment : Notation.Dot "endowment" := {
@@ -10491,11 +8461,7 @@ Module
   
   Definition exec_input
       (self : ref Self)
-      :
-        M
-          (ref
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.create_builder.Args)) :=
+      : M (ref (ink_env.call.execution_input.ExecutionInput Args)) :=
     Pure (addr_of self.["exec_input"]).
   
   Global Instance Method_exec_input : Notation.Dot "exec_input" := {
@@ -10511,63 +8477,29 @@ Module
   Global Instance Method_update_selector : Notation.Dot "update_selector" := {
     Notation.dot := update_selector;
   }.
-End
-  Impl_ink_env.call.create_builder.CreateParams
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.Args
-    ink_env.call.create_builder.Salt
-    ink_env.call.create_builder.R_7.
+End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_7.
 
 Module
-  Impl_ink_env.call.create_builder.CreateParams
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.Args
-    ink_env.call.create_builder.Salt
-    ink_env.call.create_builder.R_8.
+  Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_8.
   Definition
     Self
     :=
-    ink_env.call.create_builder.CreateParams
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.R.
+    ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
   
-  Definition salt_bytes
-      (self : ref Self)
-      : M (ref ink_env.call.create_builder.Salt) :=
+  Definition salt_bytes (self : ref Self) : M (ref Salt) :=
     Pure (addr_of self.["salt_bytes"]).
   
   Global Instance Method_salt_bytes : Notation.Dot "salt_bytes" := {
     Notation.dot := salt_bytes;
   }.
-End
-  Impl_ink_env.call.create_builder.CreateParams
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.Args
-    ink_env.call.create_builder.Salt
-    ink_env.call.create_builder.R_8.
+End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_8.
 
 Module
-  Impl_ink_env.call.create_builder.CreateParams
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.Args
-    ink_env.call.create_builder.Salt
-    ink_env.call.create_builder.R_9.
+  Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_9.
   Definition
     Self
     :=
-    ink_env.call.create_builder.CreateParams
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.R.
+    ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
   
   Definition instantiate
       (self : ref Self)
@@ -10608,28 +8540,17 @@ Module
   Global Instance Method_try_instantiate : Notation.Dot "try_instantiate" := {
     Notation.dot := try_instantiate;
   }.
-End
-  Impl_ink_env.call.create_builder.CreateParams
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.Args
-    ink_env.call.create_builder.Salt
-    ink_env.call.create_builder.R_9.
+End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_9.
 
 Module CreateBuilder.
   Record t : Set := {
-    code_hash : ink_env.call.create_builder.CreateBuilder.CodeHash;
-    gas_limit : ink_env.call.create_builder.CreateBuilder.GasLimit;
-    endowment : ink_env.call.create_builder.CreateBuilder.Endowment;
-    exec_input : ink_env.call.create_builder.CreateBuilder.Args;
-    salt : ink_env.call.create_builder.CreateBuilder.Salt;
-    return_type : ink_env.call.create_builder.CreateBuilder.RetType;
-    _phantom
-      :
-      core.marker.PhantomData
-        ( ->
-        (ink_env.call.create_builder.CreateBuilder.E *
-          ink_env.call.create_builder.CreateBuilder.ContractRef));
+    code_hash : CodeHash;
+    gas_limit : GasLimit;
+    endowment : Endowment;
+    exec_input : Args;
+    salt : Salt;
+    return_type : RetType;
+    _phantom : core.marker.PhantomData ( -> (E * ContractRef));
   }.
   
   Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -10658,14 +8579,13 @@ Definition CreateBuilder : Set := CreateBuilder.t.
 
 Definition build_create
     {ContractRef : Set}
-    `{ink_env.contract.ContractEnv.Trait
-      ink_env.call.create_builder.build_create.ContractRef}
+    `{ink_env.contract.ContractEnv.Trait ContractRef}
     (_ : unit)
     :
       M
         (ink_env.call.create_builder.CreateBuilder
           ink_env.contract.ContractEnv.Env
-          ink_env.call.create_builder.build_create.ContractRef
+          ContractRef
           (ink_env.call.common.Unset ink_env.types.Environment.Hash)
           (ink_env.call.common.Unset u64)
           (ink_env.call.common.Unset ink_env.types.Environment.Balance)
@@ -10693,42 +8613,34 @@ Definition build_create
     |}.
 
 Module
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Hash)
-    ink_env.call.create_builder.GasLimit
-    ink_env.call.create_builder.Endowment
-    ink_env.call.create_builder.Args
-    ink_env.call.create_builder.Salt
-    ink_env.call.create_builder.RetType_3.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Unset_ImplE_Hash_GasLimit_Endowment_Args_Salt_RetType_3.
   Definition
     Self
     :=
     ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Hash)
-      ink_env.call.create_builder.GasLimit
-      ink_env.call.create_builder.Endowment
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.RetType.
+      E
+      ContractRef
+      (ink_env.call.common.Unset ImplE.Hash)
+      GasLimit
+      Endowment
+      Args
+      Salt
+      RetType.
   
   Definition code_hash
       (self : Self)
-      (code_hash : ink_env.call.create_builder.ImplE.Hash)
+      (code_hash : ImplE.Hash)
       :
         M
           (ink_env.call.create_builder.CreateBuilder
-            ink_env.call.create_builder.E
-            ink_env.call.create_builder.ContractRef
-            (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-            ink_env.call.create_builder.GasLimit
-            ink_env.call.create_builder.Endowment
-            ink_env.call.create_builder.Args
-            ink_env.call.create_builder.Salt
-            ink_env.call.create_builder.RetType) :=
+            E
+            ContractRef
+            (ink_env.call.common.Set ImplE.Hash)
+            GasLimit
+            Endowment
+            Args
+            Salt
+            RetType) :=
     let* α0 := core.default.Default.default tt in
     Pure
       {|
@@ -10750,38 +8662,22 @@ Module
     Notation.dot := code_hash;
   }.
 End
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Hash)
-    ink_env.call.create_builder.GasLimit
-    ink_env.call.create_builder.Endowment
-    ink_env.call.create_builder.Args
-    ink_env.call.create_builder.Salt
-    ink_env.call.create_builder.RetType_3.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Unset_ImplE_Hash_GasLimit_Endowment_Args_Salt_RetType_3.
 
 Module
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.CodeHash
-    (ink_env.call.common.Unset u64)
-    ink_env.call.create_builder.Endowment
-    ink_env.call.create_builder.Args
-    ink_env.call.create_builder.Salt
-    ink_env.call.create_builder.RetType_3.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_ink_env_call_common_Unset_u64_Endowment_Args_Salt_RetType_3.
   Definition
     Self
     :=
     ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
+      E
+      ContractRef
+      CodeHash
       (ink_env.call.common.Unset u64)
-      ink_env.call.create_builder.Endowment
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.RetType.
+      Endowment
+      Args
+      Salt
+      RetType.
   
   Definition gas_limit
       (self : Self)
@@ -10789,14 +8685,14 @@ Module
       :
         M
           (ink_env.call.create_builder.CreateBuilder
-            ink_env.call.create_builder.E
-            ink_env.call.create_builder.ContractRef
-            ink_env.call.create_builder.CodeHash
+            E
+            ContractRef
+            CodeHash
             (ink_env.call.common.Set u64)
-            ink_env.call.create_builder.Endowment
-            ink_env.call.create_builder.Args
-            ink_env.call.create_builder.Salt
-            ink_env.call.create_builder.RetType) :=
+            Endowment
+            Args
+            Salt
+            RetType) :=
     let* α0 := core.default.Default.default tt in
     Pure
       {|
@@ -10818,53 +8714,37 @@ Module
     Notation.dot := gas_limit;
   }.
 End
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.CodeHash
-    (ink_env.call.common.Unset u64)
-    ink_env.call.create_builder.Endowment
-    ink_env.call.create_builder.Args
-    ink_env.call.create_builder.Salt
-    ink_env.call.create_builder.RetType_3.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_ink_env_call_common_Unset_u64_Endowment_Args_Salt_RetType_3.
 
 Module
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.CodeHash
-    ink_env.call.create_builder.GasLimit
-    (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Balance)
-    ink_env.call.create_builder.Args
-    ink_env.call.create_builder.Salt
-    ink_env.call.create_builder.RetType_3.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_ink_env_call_common_Unset_ImplE_Balance_Args_Salt_RetType_3.
   Definition
     Self
     :=
     ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
-      ink_env.call.create_builder.GasLimit
-      (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Balance)
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.RetType.
+      E
+      ContractRef
+      CodeHash
+      GasLimit
+      (ink_env.call.common.Unset ImplE.Balance)
+      Args
+      Salt
+      RetType.
   
   Definition endowment
       (self : Self)
-      (endowment : ink_env.call.create_builder.ImplE.Balance)
+      (endowment : ImplE.Balance)
       :
         M
           (ink_env.call.create_builder.CreateBuilder
-            ink_env.call.create_builder.E
-            ink_env.call.create_builder.ContractRef
-            ink_env.call.create_builder.CodeHash
-            ink_env.call.create_builder.GasLimit
-            (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
-            ink_env.call.create_builder.Args
-            ink_env.call.create_builder.Salt
-            ink_env.call.create_builder.RetType) :=
+            E
+            ContractRef
+            CodeHash
+            GasLimit
+            (ink_env.call.common.Set ImplE.Balance)
+            Args
+            Salt
+            RetType) :=
     let* α0 := core.default.Default.default tt in
     Pure
       {|
@@ -10886,62 +8766,40 @@ Module
     Notation.dot := endowment;
   }.
 End
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.CodeHash
-    ink_env.call.create_builder.GasLimit
-    (ink_env.call.common.Unset ink_env.call.create_builder.ImplE.Balance)
-    ink_env.call.create_builder.Args
-    ink_env.call.create_builder.Salt
-    ink_env.call.create_builder.RetType_3.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_ink_env_call_common_Unset_ImplE_Balance_Args_Salt_RetType_3.
 
 Module
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.CodeHash
-    ink_env.call.create_builder.GasLimit
-    ink_env.call.create_builder.Endowment
-    (ink_env.call.common.Unset
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList))
-    ink_env.call.create_builder.Salt
-    ink_env.call.create_builder.RetType_3.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_Salt_RetType_3.
   Definition
     Self
     :=
     ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
-      ink_env.call.create_builder.GasLimit
-      ink_env.call.create_builder.Endowment
+      E
+      ContractRef
+      CodeHash
+      GasLimit
+      Endowment
       (ink_env.call.common.Unset
         (ink_env.call.execution_input.ExecutionInput
           ink_env.call.execution_input.EmptyArgumentList))
-      ink_env.call.create_builder.Salt
-      ink_env.call.create_builder.RetType.
+      Salt
+      RetType.
   
   Definition exec_input
       (self : Self)
-      (exec_input
-        :
-        ink_env.call.execution_input.ExecutionInput
-          ink_env.call.create_builder.exec_input.Args)
+      (exec_input : ink_env.call.execution_input.ExecutionInput Args)
       :
         M
           (ink_env.call.create_builder.CreateBuilder
-            ink_env.call.create_builder.E
-            ink_env.call.create_builder.ContractRef
-            ink_env.call.create_builder.CodeHash
-            ink_env.call.create_builder.GasLimit
-            ink_env.call.create_builder.Endowment
+            E
+            ContractRef
+            CodeHash
+            GasLimit
+            Endowment
             (ink_env.call.common.Set
-              (ink_env.call.execution_input.ExecutionInput
-                ink_env.call.create_builder.exec_input.Args))
-            ink_env.call.create_builder.Salt
-            ink_env.call.create_builder.RetType) :=
+              (ink_env.call.execution_input.ExecutionInput Args))
+            Salt
+            RetType) :=
     let* α0 := core.default.Default.default tt in
     Pure
       {|
@@ -10963,56 +8821,37 @@ Module
     Notation.dot := exec_input;
   }.
 End
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.CodeHash
-    ink_env.call.create_builder.GasLimit
-    ink_env.call.create_builder.Endowment
-    (ink_env.call.common.Unset
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList))
-    ink_env.call.create_builder.Salt
-    ink_env.call.create_builder.RetType_3.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_Salt_RetType_3.
 
 Module
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.CodeHash
-    ink_env.call.create_builder.GasLimit
-    ink_env.call.create_builder.Endowment
-    ink_env.call.create_builder.Args
-    (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-    ink_env.call.create_builder.RetType_3.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_ink_env_call_common_Unset_ink_env_call_create_builder_state_Salt_RetType_3.
   Definition
     Self
     :=
     ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
-      ink_env.call.create_builder.GasLimit
-      ink_env.call.create_builder.Endowment
-      ink_env.call.create_builder.Args
+      E
+      ContractRef
+      CodeHash
+      GasLimit
+      Endowment
+      Args
       (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-      ink_env.call.create_builder.RetType.
+      RetType.
   
   Definition salt_bytes
       (self : Self)
-      (salt : ink_env.call.create_builder.salt_bytes.Salt)
+      (salt : Salt)
       :
         M
           (ink_env.call.create_builder.CreateBuilder
-            ink_env.call.create_builder.E
-            ink_env.call.create_builder.ContractRef
-            ink_env.call.create_builder.CodeHash
-            ink_env.call.create_builder.GasLimit
-            ink_env.call.create_builder.Endowment
-            ink_env.call.create_builder.Args
-            (ink_env.call.common.Set
-              ink_env.call.create_builder.salt_bytes.Salt)
-            ink_env.call.create_builder.RetType) :=
+            E
+            ContractRef
+            CodeHash
+            GasLimit
+            Endowment
+            Args
+            (ink_env.call.common.Set Salt)
+            RetType) :=
     let* α0 := core.default.Default.default tt in
     Pure
       {|
@@ -11035,37 +8874,21 @@ Module
     Notation.dot := salt_bytes;
   }.
 End
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.CodeHash
-    ink_env.call.create_builder.GasLimit
-    ink_env.call.create_builder.Endowment
-    ink_env.call.create_builder.Args
-    (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-    ink_env.call.create_builder.RetType_3.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_ink_env_call_common_Unset_ink_env_call_create_builder_state_Salt_RetType_3.
 
 Module
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.CodeHash
-    ink_env.call.create_builder.GasLimit
-    ink_env.call.create_builder.Endowment
-    ink_env.call.create_builder.Args
-    ink_env.call.create_builder.Salt
-    (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_3.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_Salt_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
   Definition
     Self
     :=
     ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      ink_env.call.create_builder.CodeHash
-      ink_env.call.create_builder.GasLimit
-      ink_env.call.create_builder.Endowment
-      ink_env.call.create_builder.Args
-      ink_env.call.create_builder.Salt
+      E
+      ContractRef
+      CodeHash
+      GasLimit
+      Endowment
+      Args
+      Salt
       (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
   
   Definition returns
@@ -11073,16 +8896,14 @@ Module
       :
         M
           (ink_env.call.create_builder.CreateBuilder
-            ink_env.call.create_builder.E
-            ink_env.call.create_builder.ContractRef
-            ink_env.call.create_builder.CodeHash
-            ink_env.call.create_builder.GasLimit
-            ink_env.call.create_builder.Endowment
-            ink_env.call.create_builder.Args
-            ink_env.call.create_builder.Salt
-            (ink_env.call.common.Set
-              (ink_env.call.common.ReturnType
-                ink_env.call.create_builder.returns.R))) :=
+            E
+            ContractRef
+            CodeHash
+            GasLimit
+            Endowment
+            Args
+            Salt
+            (ink_env.call.common.Set (ink_env.call.common.ReturnType R))) :=
     let* α0 := core.default.Default.default tt in
     let* α1 := core.default.Default.default tt in
     Pure
@@ -11105,55 +8926,34 @@ Module
     Notation.dot := returns;
   }.
 End
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    ink_env.call.create_builder.CodeHash
-    ink_env.call.create_builder.GasLimit
-    ink_env.call.create_builder.Endowment
-    ink_env.call.create_builder.Args
-    ink_env.call.create_builder.Salt
-    (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))_3.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_Salt_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
 
 Module
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-    ink_env.call.create_builder.GasLimit
-    (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
-    (ink_env.call.common.Set
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.create_builder.Args))
-    (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-    (ink_env.call.common.Set
-      (ink_env.call.common.ReturnType ink_env.call.create_builder.RetType))_5.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_5.
   Definition
     Self
     :=
     ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-      ink_env.call.create_builder.GasLimit
-      (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
+      E
+      ContractRef
+      (ink_env.call.common.Set ImplE.Hash)
+      GasLimit
+      (ink_env.call.common.Set ImplE.Balance)
       (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.create_builder.Args))
-      (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.create_builder.RetType)).
+        (ink_env.call.execution_input.ExecutionInput Args))
+      (ink_env.call.common.Set Salt)
+      (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
   
   Definition params
       (self : Self)
       :
         M
           (ink_env.call.create_builder.CreateParams
-            ink_env.call.create_builder.E
-            ink_env.call.create_builder.ContractRef
-            ink_env.call.create_builder.Args
-            ink_env.call.create_builder.Salt
-            ink_env.call.create_builder.RetType) :=
+            E
+            ContractRef
+            Args
+            Salt
+            RetType) :=
     let* α0 := self.["code_hash"].["value"] in
     let* α1 := self.["gas_limit"].["unwrap_or_else"] (fun  => Pure 0) in
     let* α2 := self.["endowment"].["value"] in
@@ -11176,47 +8976,23 @@ Module
     Notation.dot := params;
   }.
 End
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-    ink_env.call.create_builder.GasLimit
-    (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
-    (ink_env.call.common.Set
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.create_builder.Args))
-    (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-    (ink_env.call.common.Set
-      (ink_env.call.common.ReturnType ink_env.call.create_builder.RetType))_5.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_5.
 
 Module
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-    ink_env.call.create_builder.GasLimit
-    (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
-    (ink_env.call.common.Set
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.create_builder.Args))
-    (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-    (ink_env.call.common.Set
-      (ink_env.call.common.ReturnType ink_env.call.create_builder.RetType))_6.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_6.
   Definition
     Self
     :=
     ink_env.call.create_builder.CreateBuilder
-      ink_env.call.create_builder.E
-      ink_env.call.create_builder.ContractRef
-      (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-      ink_env.call.create_builder.GasLimit
-      (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
+      E
+      ContractRef
+      (ink_env.call.common.Set ImplE.Hash)
+      GasLimit
+      (ink_env.call.common.Set ImplE.Balance)
       (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.create_builder.Args))
-      (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-      (ink_env.call.common.Set
-        (ink_env.call.common.ReturnType ink_env.call.create_builder.RetType)).
+        (ink_env.call.execution_input.ExecutionInput Args))
+      (ink_env.call.common.Set Salt)
+      (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
   
   Definition instantiate
       (self : Self)
@@ -11243,24 +9019,13 @@ Module
     Notation.dot := try_instantiate;
   }.
 End
-  Impl_ink_env.call.create_builder.CreateBuilder
-    ink_env.call.create_builder.E
-    ink_env.call.create_builder.ContractRef
-    (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Hash)
-    ink_env.call.create_builder.GasLimit
-    (ink_env.call.common.Set ink_env.call.create_builder.ImplE.Balance)
-    (ink_env.call.common.Set
-      (ink_env.call.execution_input.ExecutionInput
-        ink_env.call.create_builder.Args))
-    (ink_env.call.common.Set ink_env.call.create_builder.Salt)
-    (ink_env.call.common.Set
-      (ink_env.call.common.ReturnType ink_env.call.create_builder.RetType))_6.
+  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_6.
 
 Module execution_input.
   Module ExecutionInput.
     Record t : Set := {
       selector : ink_env.call.selector.Selector;
-      args : ink_env.call.execution_input.ExecutionInput.Args;
+      args : Args;
     }.
     
     Global Instance Get_selector : Notation.Dot "selector" := {
@@ -11273,19 +9038,12 @@ Module execution_input.
   Definition ExecutionInput : Set := ExecutionInput.t.
   
   Module
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.Args.
+      Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Definition clone
         (self : ref Self)
-        :
-          M
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.Args) :=
+        : M (ink_env.call.execution_input.ExecutionInput Args) :=
       let* α0 := core.clone.Clone.clone (addr_of self.["selector"]) in
       let* α1 := core.clone.Clone.clone (addr_of self.["args"]) in
       Pure
@@ -11302,22 +9060,15 @@ Module execution_input.
       core.clone.Clone.clone := clone;
     }.
   End
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
+    Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
   
   Module
-      Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.Args.
+      Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Definition default
         (_ : unit)
-        :
-          M
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.Args) :=
+        : M (ink_env.call.execution_input.ExecutionInput Args) :=
       let* α0 := core.default.Default.default tt in
       let* α1 := core.default.Default.default tt in
       Pure
@@ -11335,15 +9086,11 @@ Module execution_input.
       core.default.Default.default := default;
     }.
   End
-    Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
+    Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
   
   Module
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.Args.
+      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Definition fmt
         (self : ref Self)
@@ -11364,12 +9111,10 @@ Module execution_input.
     Global Instance I Args : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-  End
-    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
+  End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
   
   Module
-    Impl_ink_env.call.execution_input.ExecutionInput
-      ink_env.call.execution_input.EmptyArgumentList_2.
+    Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_2.
     Definition
       Self
       :=
@@ -11387,13 +9132,12 @@ Module execution_input.
     
     Definition push_arg
         (self : Self)
-        (arg : ink_env.call.execution_input.push_arg.T)
+        (arg : T)
         :
           M
             (ink_env.call.execution_input.ExecutionInput
               (ink_env.call.execution_input.ArgumentList
-                (ink_env.call.execution_input.Argument
-                  ink_env.call.execution_input.push_arg.T)
+                (ink_env.call.execution_input.Argument T)
                 ink_env.call.execution_input.EmptyArgumentList)) :=
       let* α0 := self.["args"].["push_arg"] arg in
       Pure
@@ -11407,35 +9151,27 @@ Module execution_input.
       Notation.dot := push_arg;
     }.
   End
-    Impl_ink_env.call.execution_input.ExecutionInput
-      ink_env.call.execution_input.EmptyArgumentList_2.
+    Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_2.
   
   Module
-    Impl_ink_env.call.execution_input.ExecutionInput
-      (ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument
-          ink_env.call.execution_input.Head)
-        ink_env.call.execution_input.Rest)_2.
+    Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_2.
     Definition
       Self
       :=
       ink_env.call.execution_input.ExecutionInput
         (ink_env.call.execution_input.ArgumentList
-          (ink_env.call.execution_input.Argument
-            ink_env.call.execution_input.Head)
-          ink_env.call.execution_input.Rest).
+          (ink_env.call.execution_input.Argument Head)
+          Rest).
     
     Definition push_arg
         (self : Self)
-        (arg : ink_env.call.execution_input.push_arg.T)
+        (arg : T)
         :
           M
             (ink_env.call.execution_input.ExecutionInput
               (ink_env.call.execution_input.ArgsList
-                ink_env.call.execution_input.push_arg.T
-                (ink_env.call.execution_input.ArgsList
-                  ink_env.call.execution_input.Head
-                  ink_env.call.execution_input.Rest))) :=
+                T
+                (ink_env.call.execution_input.ArgsList Head Rest))) :=
       let* α0 := self.["args"].["push_arg"] arg in
       Pure
         {|
@@ -11448,20 +9184,10 @@ Module execution_input.
       Notation.dot := push_arg;
     }.
   End
-    Impl_ink_env.call.execution_input.ExecutionInput
-      (ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument
-          ink_env.call.execution_input.Head)
-        ink_env.call.execution_input.Rest)_2.
+    Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_2.
   
-  Module
-    Impl_ink_env.call.execution_input.ExecutionInput
-      ink_env.call.execution_input.Args_2.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.Args.
+  Module Impl_ink_env_call_execution_input_ExecutionInput_Args_2.
+    Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Definition update_selector
         (self : mut_ref Self)
@@ -11473,14 +9199,12 @@ Module execution_input.
     Global Instance Method_update_selector : Notation.Dot "update_selector" := {
       Notation.dot := update_selector;
     }.
-  End
-    Impl_ink_env.call.execution_input.ExecutionInput
-      ink_env.call.execution_input.Args_2.
+  End Impl_ink_env_call_execution_input_ExecutionInput_Args_2.
   
   Module ArgumentList.
     Record t : Set := {
-      head : ink_env.call.execution_input.ArgumentList.Head;
-      rest : ink_env.call.execution_input.ArgumentList.Rest;
+      head : Head;
+      rest : Rest;
     }.
     
     Global Instance Get_head : Notation.Dot "head" := {
@@ -11493,21 +9217,12 @@ Module execution_input.
   Definition ArgumentList : Set := ArgumentList.t.
   
   Module
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.ArgumentList
-        ink_env.call.execution_input.Head
-        ink_env.call.execution_input.Rest.
+      Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
     
     Definition clone
         (self : ref Self)
-        :
-          M
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.Head
-              ink_env.call.execution_input.Rest) :=
+        : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
       let* α0 := core.clone.Clone.clone (addr_of self.["head"]) in
       let* α1 := core.clone.Clone.clone (addr_of self.["rest"]) in
       Pure
@@ -11524,24 +9239,15 @@ Module execution_input.
       core.clone.Clone.clone := clone;
     }.
   End
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+    Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
   
   Module
-      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.ArgumentList
-        ink_env.call.execution_input.Head
-        ink_env.call.execution_input.Rest.
+      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
     
     Definition default
         (_ : unit)
-        :
-          M
-            (ink_env.call.execution_input.ArgumentList
-              ink_env.call.execution_input.Head
-              ink_env.call.execution_input.Rest) :=
+        : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
       let* α0 := core.default.Default.default tt in
       let* α1 := core.default.Default.default tt in
       Pure
@@ -11559,16 +9265,11 @@ Module execution_input.
       core.default.Default.default := default;
     }.
   End
-    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
   
   Module
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.ArgumentList
-        ink_env.call.execution_input.Head
-        ink_env.call.execution_input.Rest.
+      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
     
     Definition fmt
         (self : ref Self)
@@ -11590,17 +9291,16 @@ Module execution_input.
       core.fmt.Debug.fmt := fmt;
     }.
   End
-    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
   
   Definition ArgsList : Set :=
     ink_env.call.execution_input.ArgumentList
-      (ink_env.call.execution_input.Argument
-        ink_env.call.execution_input.ArgsList.Head)
-      ink_env.call.execution_input.ArgsList.Rest.
+      (ink_env.call.execution_input.Argument Head)
+      Rest.
   
   Module Argument.
     Record t : Set := {
-      arg : ink_env.call.execution_input.Argument.T;
+      arg : T;
     }.
     
     Global Instance Get_arg : Notation.Dot "arg" := {
@@ -11609,19 +9309,12 @@ Module execution_input.
   End Argument.
   Definition Argument : Set := Argument.t.
   
-  Module
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.Argument ink_env.call.execution_input.T.
+  Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
+    Definition Self := ink_env.call.execution_input.Argument T.
     
     Definition clone
         (self : ref Self)
-        :
-          M
-            (ink_env.call.execution_input.Argument
-              ink_env.call.execution_input.T) :=
+        : M (ink_env.call.execution_input.Argument T) :=
       let* α0 := core.clone.Clone.clone (addr_of self.["arg"]) in
       Pure {| ink_env.call.execution_input.Argument.arg := α0; |}.
     
@@ -11632,15 +9325,10 @@ Module execution_input.
     Global Instance I T : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
-  End
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
+  End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
   
-  Module
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.Argument ink_env.call.execution_input.T.
+  Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
+    Definition Self := ink_env.call.execution_input.Argument T.
     
     Definition fmt
         (self : ref Self)
@@ -11659,25 +9347,18 @@ Module execution_input.
     Global Instance I T : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-  End
-    Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
+  End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
   
-  Module
-    Impl_ink_env.call.execution_input.Argument ink_env.call.execution_input.T_2.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.Argument ink_env.call.execution_input.T.
+  Module Impl_ink_env_call_execution_input_Argument_T_2.
+    Definition Self := ink_env.call.execution_input.Argument T.
     
-    Definition new (arg : ink_env.call.execution_input.T) : M Self :=
-      Pure {| Self.arg := arg; |}.
+    Definition new (arg : T) : M Self := Pure {| Self.arg := arg; |}.
     
     Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
-  End
-    Impl_ink_env.call.execution_input.Argument ink_env.call.execution_input.T_2.
+  End Impl_ink_env_call_execution_input_Argument_T_2.
   
   Module ArgumentListEnd.
     Inductive t : Set := Build.
@@ -11744,7 +9425,7 @@ Module execution_input.
       ink_env.call.execution_input.ArgumentListEnd
       ink_env.call.execution_input.ArgumentListEnd.
   
-  Module Impl_ink_env.call.execution_input.EmptyArgumentList_2.
+  Module Impl_ink_env_call_execution_input_EmptyArgumentList_2.
     Definition Self := ink_env.call.execution_input.EmptyArgumentList.
     
     Definition empty
@@ -11765,12 +9446,11 @@ Module execution_input.
     
     Definition push_arg
         (self : Self)
-        (arg : ink_env.call.execution_input.push_arg.T)
+        (arg : T)
         :
           M
             (ink_env.call.execution_input.ArgumentList
-              (ink_env.call.execution_input.Argument
-                ink_env.call.execution_input.push_arg.T)
+              (ink_env.call.execution_input.Argument T)
               Self) :=
       let* α0 := ink_env.call.execution_input.Argument::["new"] arg in
       Pure
@@ -11782,28 +9462,24 @@ Module execution_input.
     Global Instance Method_push_arg : Notation.Dot "push_arg" := {
       Notation.dot := push_arg;
     }.
-  End Impl_ink_env.call.execution_input.EmptyArgumentList_2.
+  End Impl_ink_env_call_execution_input_EmptyArgumentList_2.
   
   Module
-    Impl_ink_env.call.execution_input.ArgumentList
-      (ink_env.call.execution_input.Argument ink_env.call.execution_input.Head)
-      ink_env.call.execution_input.Rest_2.
+    Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_2.
     Definition
       Self
       :=
       ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument
-          ink_env.call.execution_input.Head)
-        ink_env.call.execution_input.Rest.
+        (ink_env.call.execution_input.Argument Head)
+        Rest.
     
     Definition push_arg
         (self : Self)
-        (arg : ink_env.call.execution_input.push_arg.T)
+        (arg : T)
         :
           M
             (ink_env.call.execution_input.ArgumentList
-              (ink_env.call.execution_input.Argument
-                ink_env.call.execution_input.push_arg.T)
+              (ink_env.call.execution_input.Argument T)
               Self) :=
       let* α0 := ink_env.call.execution_input.Argument::["new"] arg in
       Pure
@@ -11816,16 +9492,11 @@ Module execution_input.
       Notation.dot := push_arg;
     }.
   End
-    Impl_ink_env.call.execution_input.ArgumentList
-      (ink_env.call.execution_input.Argument ink_env.call.execution_input.Head)
-      ink_env.call.execution_input.Rest_2.
+    Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_2.
   
   Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.Argument ink_env.call.execution_input.T.
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
+    Definition Self := ink_env.call.execution_input.Argument T.
     
     Definition size_hint (self : ref Self) : M usize :=
       parity_scale_codec.codec.Encode.size_hint (addr_of self.["arg"]).
@@ -11834,10 +9505,7 @@ Module execution_input.
       Notation.dot := size_hint;
     }.
     
-    Definition encode_to
-        (self : ref Self)
-        (output : mut_ref ink_env.call.execution_input.encode_to.O)
-        : M unit :=
+    Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
       parity_scale_codec.codec.Encode.encode_to (addr_of self.["arg"]) output.
     
     Global Instance Method_encode_to : Notation.Dot "encode_to" := {
@@ -11847,7 +9515,7 @@ Module execution_input.
     Global Instance I T : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
   
   Module
       Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
@@ -11859,10 +9527,7 @@ Module execution_input.
       Notation.dot := size_hint;
     }.
     
-    Definition encode_to
-        (self : ref Self)
-        (_output : mut_ref ink_env.call.execution_input.encode_to.O)
-        : M unit :=
+    Definition encode_to (self : ref Self) (_output : mut_ref O) : M unit :=
       Pure tt.
     
     Global Instance Method_encode_to : Notation.Dot "encode_to" := {
@@ -11875,14 +9540,13 @@ Module execution_input.
     Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
   
   Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
     Definition
       Self
       :=
       ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument
-          ink_env.call.execution_input.Head)
-        ink_env.call.execution_input.Rest.
+        (ink_env.call.execution_input.Argument Head)
+        Rest.
     
     Definition size_hint (self : ref Self) : M usize :=
       let* α0 :=
@@ -11895,10 +9559,7 @@ Module execution_input.
       Notation.dot := size_hint;
     }.
     
-    Definition encode_to
-        (self : ref Self)
-        (output : mut_ref ink_env.call.execution_input.encode_to.O)
-        : M unit :=
+    Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
       let* _ :=
         parity_scale_codec.codec.Encode.encode_to
           (addr_of self.["rest"])
@@ -11917,15 +9578,11 @@ Module execution_input.
       {
     }.
   End
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
   
   Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.Args.
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Definition size_hint (self : ref Self) : M usize :=
       let* α0 :=
@@ -11938,10 +9595,7 @@ Module execution_input.
       Notation.dot := size_hint;
     }.
     
-    Definition encode_to
-        (self : ref Self)
-        (output : mut_ref ink_env.call.execution_input.encode_to.O)
-        : M unit :=
+    Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
       let* _ :=
         parity_scale_codec.codec.Encode.encode_to
           (addr_of self.["selector"])
@@ -11959,13 +9613,13 @@ Module execution_input.
     Global Instance I Args : parity_scale_codec.codec.Encode.Trait Self := {
     }.
   End
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
 End execution_input.
 
 Module ExecutionInput.
   Record t : Set := {
     selector : ink_env.call.selector.Selector;
-    args : ink_env.call.execution_input.ExecutionInput.Args;
+    args : Args;
   }.
   
   Global Instance Get_selector : Notation.Dot "selector" := {
@@ -11978,19 +9632,12 @@ End ExecutionInput.
 Definition ExecutionInput : Set := ExecutionInput.t.
 
 Module
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.ExecutionInput
-      ink_env.call.execution_input.Args.
+    Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Definition clone
       (self : ref Self)
-      :
-        M
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.Args) :=
+      : M (ink_env.call.execution_input.ExecutionInput Args) :=
     let* α0 := core.clone.Clone.clone (addr_of self.["selector"]) in
     let* α1 := core.clone.Clone.clone (addr_of self.["args"]) in
     Pure
@@ -12006,23 +9653,15 @@ Module
   Global Instance I Args : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
-End
-  Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
+End Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
 
 Module
-    Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.ExecutionInput
-      ink_env.call.execution_input.Args.
+    Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Definition default
       (_ : unit)
-      :
-        M
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.Args) :=
+      : M (ink_env.call.execution_input.ExecutionInput Args) :=
     let* α0 := core.default.Default.default tt in
     let* α1 := core.default.Default.default tt in
     Pure
@@ -12040,15 +9679,10 @@ Module
     core.default.Default.default := default;
   }.
 End
-  Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
+  Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
 
-Module
-    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.ExecutionInput
-      ink_env.call.execution_input.Args.
+Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Definition fmt
       (self : ref Self)
@@ -12069,12 +9703,10 @@ Module
   Global Instance I Args : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
-End
-  Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
+End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
 
 Module
-  Impl_ink_env.call.execution_input.ExecutionInput
-    ink_env.call.execution_input.EmptyArgumentList_3.
+  Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_3.
   Definition
     Self
     :=
@@ -12091,13 +9723,12 @@ Module
   
   Definition push_arg
       (self : Self)
-      (arg : ink_env.call.execution_input.push_arg.T)
+      (arg : T)
       :
         M
           (ink_env.call.execution_input.ExecutionInput
             (ink_env.call.execution_input.ArgumentList
-              (ink_env.call.execution_input.Argument
-                ink_env.call.execution_input.push_arg.T)
+              (ink_env.call.execution_input.Argument T)
               ink_env.call.execution_input.EmptyArgumentList)) :=
     let* α0 := self.["args"].["push_arg"] arg in
     Pure
@@ -12111,34 +9742,27 @@ Module
     Notation.dot := push_arg;
   }.
 End
-  Impl_ink_env.call.execution_input.ExecutionInput
-    ink_env.call.execution_input.EmptyArgumentList_3.
+  Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_3.
 
 Module
-  Impl_ink_env.call.execution_input.ExecutionInput
-    (ink_env.call.execution_input.ArgumentList
-      (ink_env.call.execution_input.Argument ink_env.call.execution_input.Head)
-      ink_env.call.execution_input.Rest)_3.
+  Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_3.
   Definition
     Self
     :=
     ink_env.call.execution_input.ExecutionInput
       (ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument
-          ink_env.call.execution_input.Head)
-        ink_env.call.execution_input.Rest).
+        (ink_env.call.execution_input.Argument Head)
+        Rest).
   
   Definition push_arg
       (self : Self)
-      (arg : ink_env.call.execution_input.push_arg.T)
+      (arg : T)
       :
         M
           (ink_env.call.execution_input.ExecutionInput
             (ink_env.call.execution_input.ArgsList
-              ink_env.call.execution_input.push_arg.T
-              (ink_env.call.execution_input.ArgsList
-                ink_env.call.execution_input.Head
-                ink_env.call.execution_input.Rest))) :=
+              T
+              (ink_env.call.execution_input.ArgsList Head Rest))) :=
     let* α0 := self.["args"].["push_arg"] arg in
     Pure
       {|
@@ -12151,19 +9775,10 @@ Module
     Notation.dot := push_arg;
   }.
 End
-  Impl_ink_env.call.execution_input.ExecutionInput
-    (ink_env.call.execution_input.ArgumentList
-      (ink_env.call.execution_input.Argument ink_env.call.execution_input.Head)
-      ink_env.call.execution_input.Rest)_3.
+  Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_3.
 
-Module
-  Impl_ink_env.call.execution_input.ExecutionInput
-    ink_env.call.execution_input.Args_3.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.ExecutionInput
-      ink_env.call.execution_input.Args.
+Module Impl_ink_env_call_execution_input_ExecutionInput_Args_3.
+  Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Definition update_selector
       (self : mut_ref Self)
@@ -12175,14 +9790,12 @@ Module
   Global Instance Method_update_selector : Notation.Dot "update_selector" := {
     Notation.dot := update_selector;
   }.
-End
-  Impl_ink_env.call.execution_input.ExecutionInput
-    ink_env.call.execution_input.Args_3.
+End Impl_ink_env_call_execution_input_ExecutionInput_Args_3.
 
 Module ArgumentList.
   Record t : Set := {
-    head : ink_env.call.execution_input.ArgumentList.Head;
-    rest : ink_env.call.execution_input.ArgumentList.Rest;
+    head : Head;
+    rest : Rest;
   }.
   
   Global Instance Get_head : Notation.Dot "head" := {
@@ -12195,21 +9808,12 @@ End ArgumentList.
 Definition ArgumentList : Set := ArgumentList.t.
 
 Module
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.ArgumentList
-      ink_env.call.execution_input.Head
-      ink_env.call.execution_input.Rest.
+    Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+  Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
   
   Definition clone
       (self : ref Self)
-      :
-        M
-          (ink_env.call.execution_input.ArgumentList
-            ink_env.call.execution_input.Head
-            ink_env.call.execution_input.Rest) :=
+      : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
     let* α0 := core.clone.Clone.clone (addr_of self.["head"]) in
     let* α1 := core.clone.Clone.clone (addr_of self.["rest"]) in
     Pure
@@ -12226,24 +9830,15 @@ Module
     core.clone.Clone.clone := clone;
   }.
 End
-  Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+  Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
 
 Module
-    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.ArgumentList
-      ink_env.call.execution_input.Head
-      ink_env.call.execution_input.Rest.
+    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+  Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
   
   Definition default
       (_ : unit)
-      :
-        M
-          (ink_env.call.execution_input.ArgumentList
-            ink_env.call.execution_input.Head
-            ink_env.call.execution_input.Rest) :=
+      : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
     let* α0 := core.default.Default.default tt in
     let* α1 := core.default.Default.default tt in
     Pure
@@ -12261,16 +9856,11 @@ Module
     core.default.Default.default := default;
   }.
 End
-  Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+  Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
 
 Module
-    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.ArgumentList
-      ink_env.call.execution_input.Head
-      ink_env.call.execution_input.Rest.
+    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+  Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
   
   Definition fmt
       (self : ref Self)
@@ -12291,18 +9881,16 @@ Module
   Global Instance I Head Rest : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
-End
-  Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
 
 Definition ArgsList : Set :=
   ink_env.call.execution_input.ArgumentList
-    (ink_env.call.execution_input.Argument
-      ink_env.call.execution_input.ArgsList.Head)
-    ink_env.call.execution_input.ArgsList.Rest.
+    (ink_env.call.execution_input.Argument Head)
+    Rest.
 
 Module Argument.
   Record t : Set := {
-    arg : ink_env.call.execution_input.Argument.T;
+    arg : T;
   }.
   
   Global Instance Get_arg : Notation.Dot "arg" := {
@@ -12311,19 +9899,12 @@ Module Argument.
 End Argument.
 Definition Argument : Set := Argument.t.
 
-Module
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.Argument ink_env.call.execution_input.T.
+Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
+  Definition Self := ink_env.call.execution_input.Argument T.
   
   Definition clone
       (self : ref Self)
-      :
-        M
-          (ink_env.call.execution_input.Argument
-            ink_env.call.execution_input.T) :=
+      : M (ink_env.call.execution_input.Argument T) :=
     let* α0 := core.clone.Clone.clone (addr_of self.["arg"]) in
     Pure {| ink_env.call.execution_input.Argument.arg := α0; |}.
   
@@ -12334,15 +9915,10 @@ Module
   Global Instance I T : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
-End
-  Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
+End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
 
-Module
-    Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.Argument ink_env.call.execution_input.T.
+Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
+  Definition Self := ink_env.call.execution_input.Argument T.
   
   Definition fmt
       (self : ref Self)
@@ -12361,23 +9937,17 @@ Module
   Global Instance I T : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
-End
-  Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
+End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
 
-Module
-  Impl_ink_env.call.execution_input.Argument ink_env.call.execution_input.T_3.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.Argument ink_env.call.execution_input.T.
+Module Impl_ink_env_call_execution_input_Argument_T_3.
+  Definition Self := ink_env.call.execution_input.Argument T.
   
-  Definition new (arg : ink_env.call.execution_input.T) : M Self :=
-    Pure {| Self.arg := arg; |}.
+  Definition new (arg : T) : M Self := Pure {| Self.arg := arg; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
-End Impl_ink_env.call.execution_input.Argument ink_env.call.execution_input.T_3.
+End Impl_ink_env_call_execution_input_Argument_T_3.
 
 Module ArgumentListEnd.
   Inductive t : Set := Build.
@@ -12443,7 +10013,7 @@ Definition EmptyArgumentList : Set :=
     ink_env.call.execution_input.ArgumentListEnd
     ink_env.call.execution_input.ArgumentListEnd.
 
-Module Impl_ink_env.call.execution_input.EmptyArgumentList_3.
+Module Impl_ink_env_call_execution_input_EmptyArgumentList_3.
   Definition Self := ink_env.call.execution_input.EmptyArgumentList.
   
   Definition empty
@@ -12464,12 +10034,11 @@ Module Impl_ink_env.call.execution_input.EmptyArgumentList_3.
   
   Definition push_arg
       (self : Self)
-      (arg : ink_env.call.execution_input.push_arg.T)
+      (arg : T)
       :
         M
           (ink_env.call.execution_input.ArgumentList
-            (ink_env.call.execution_input.Argument
-              ink_env.call.execution_input.push_arg.T)
+            (ink_env.call.execution_input.Argument T)
             Self) :=
     let* α0 := ink_env.call.execution_input.Argument::["new"] arg in
     Pure
@@ -12481,27 +10050,24 @@ Module Impl_ink_env.call.execution_input.EmptyArgumentList_3.
   Global Instance Method_push_arg : Notation.Dot "push_arg" := {
     Notation.dot := push_arg;
   }.
-End Impl_ink_env.call.execution_input.EmptyArgumentList_3.
+End Impl_ink_env_call_execution_input_EmptyArgumentList_3.
 
 Module
-  Impl_ink_env.call.execution_input.ArgumentList
-    (ink_env.call.execution_input.Argument ink_env.call.execution_input.Head)
-    ink_env.call.execution_input.Rest_3.
+  Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_3.
   Definition
     Self
     :=
     ink_env.call.execution_input.ArgumentList
-      (ink_env.call.execution_input.Argument ink_env.call.execution_input.Head)
-      ink_env.call.execution_input.Rest.
+      (ink_env.call.execution_input.Argument Head)
+      Rest.
   
   Definition push_arg
       (self : Self)
-      (arg : ink_env.call.execution_input.push_arg.T)
+      (arg : T)
       :
         M
           (ink_env.call.execution_input.ArgumentList
-            (ink_env.call.execution_input.Argument
-              ink_env.call.execution_input.push_arg.T)
+            (ink_env.call.execution_input.Argument T)
             Self) :=
     let* α0 := ink_env.call.execution_input.Argument::["new"] arg in
     Pure
@@ -12514,16 +10080,11 @@ Module
     Notation.dot := push_arg;
   }.
 End
-  Impl_ink_env.call.execution_input.ArgumentList
-    (ink_env.call.execution_input.Argument ink_env.call.execution_input.Head)
-    ink_env.call.execution_input.Rest_3.
+  Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_3.
 
 Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.Argument ink_env.call.execution_input.T.
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
+  Definition Self := ink_env.call.execution_input.Argument T.
   
   Definition size_hint (self : ref Self) : M usize :=
     parity_scale_codec.codec.Encode.size_hint (addr_of self.["arg"]).
@@ -12532,10 +10093,7 @@ Module
     Notation.dot := size_hint;
   }.
   
-  Definition encode_to
-      (self : ref Self)
-      (output : mut_ref ink_env.call.execution_input.encode_to.O)
-      : M unit :=
+  Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
     parity_scale_codec.codec.Encode.encode_to (addr_of self.["arg"]) output.
   
   Global Instance Method_encode_to : Notation.Dot "encode_to" := {
@@ -12545,7 +10103,7 @@ Module
   Global Instance I T : parity_scale_codec.codec.Encode.Trait Self := {
   }.
 End
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_ink_env_call_execution_input_T.
+  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
 
 Module
     Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
@@ -12557,10 +10115,7 @@ Module
     Notation.dot := size_hint;
   }.
   
-  Definition encode_to
-      (self : ref Self)
-      (_output : mut_ref ink_env.call.execution_input.encode_to.O)
-      : M unit :=
+  Definition encode_to (self : ref Self) (_output : mut_ref O) : M unit :=
     Pure tt.
   
   Global Instance Method_encode_to : Notation.Dot "encode_to" := {
@@ -12573,13 +10128,13 @@ End
   Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
 
 Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
   Definition
     Self
     :=
     ink_env.call.execution_input.ArgumentList
-      (ink_env.call.execution_input.Argument ink_env.call.execution_input.Head)
-      ink_env.call.execution_input.Rest.
+      (ink_env.call.execution_input.Argument Head)
+      Rest.
   
   Definition size_hint (self : ref Self) : M usize :=
     let* α0 :=
@@ -12592,10 +10147,7 @@ Module
     Notation.dot := size_hint;
   }.
   
-  Definition encode_to
-      (self : ref Self)
-      (output : mut_ref ink_env.call.execution_input.encode_to.O)
-      : M unit :=
+  Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
     let* _ :=
       parity_scale_codec.codec.Encode.encode_to
         (addr_of self.["rest"])
@@ -12613,15 +10165,11 @@ Module
   Global Instance I Head Rest : parity_scale_codec.codec.Encode.Trait Self := {
   }.
 End
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_ink_env_call_execution_input_Head_ink_env_call_execution_input_Rest.
+  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
 
 Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.ExecutionInput
-      ink_env.call.execution_input.Args.
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Definition size_hint (self : ref Self) : M usize :=
     let* α0 :=
@@ -12634,10 +10182,7 @@ Module
     Notation.dot := size_hint;
   }.
   
-  Definition encode_to
-      (self : ref Self)
-      (output : mut_ref ink_env.call.execution_input.encode_to.O)
-      : M unit :=
+  Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
     let* _ :=
       parity_scale_codec.codec.Encode.encode_to
         (addr_of self.["selector"])
@@ -12655,7 +10200,7 @@ Module
   Global Instance I Args : parity_scale_codec.codec.Encode.Trait Self := {
   }.
 End
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_Args.
+  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
 
 Module selector.
   Module Selector.
@@ -12800,7 +10345,7 @@ Module selector.
   
   Definition _ : unit := run (Pure tt).
   
-  Module Impl_ink_env.call.selector.Selector_2.
+  Module Impl_ink_env_call_selector_Selector_2.
     Definition Self := ink_env.call.selector.Selector.
     
     Definition new (bytes : list u8) : M Self :=
@@ -12816,7 +10361,7 @@ Module selector.
     Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
       Notation.dot := to_bytes;
     }.
-  End Impl_ink_env.call.selector.Selector_2.
+  End Impl_ink_env_call_selector_Selector_2.
 End selector.
 
 Module Selector.
@@ -12962,9 +10507,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
   Definition decode
-      (__codec_input_edqy
-        :
-        mut_ref ink_env.call.selector._.decode.__CodecInputEdqy)
+      (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
       parity_scale_codec.codec.Decode.decode __codec_input_edqy in
@@ -12995,9 +10538,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
   
   Definition encode_to
       (self : ref Self)
-      (__codec_dest_edqy
-        :
-        mut_ref ink_env.call.selector._.encode_to.__CodecOutputEdqy)
+      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M unit :=
     parity_scale_codec.codec.Encode.encode_to
       (addr_of (addr_of self.["bytes"]))
@@ -13016,10 +10557,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
     Notation.dot := encode;
   }.
   
-  Definition using_encoded
-      (self : ref Self)
-      (f : ink_env.call.selector._.using_encoded.F)
-      : M ink_env.call.selector._.using_encoded.R :=
+  Definition using_encoded (self : ref Self) (f : F) : M R :=
     parity_scale_codec.codec.Encode.using_encoded
       (addr_of (addr_of self.["bytes"]))
       f.
@@ -13041,7 +10579,7 @@ Module
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_env_call_selector_Selector.
 
-Module Impl_ink_env.call.selector.Selector_3.
+Module Impl_ink_env_call_selector_Selector_3.
   Definition Self := ink_env.call.selector.Selector.
   
   Definition new (bytes : list u8) : M Self := Pure {| Self.bytes := bytes; |}.
@@ -13055,7 +10593,7 @@ Module Impl_ink_env.call.selector.Selector_3.
   Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
     Notation.dot := to_bytes;
   }.
-End Impl_ink_env.call.selector.Selector_3.
+End Impl_ink_env_call_selector_Selector_3.
 
 Module utils.
   
@@ -13076,13 +10614,7 @@ Module chain_extension.
   Module ChainExtensionMethod.
     Record t : Set := {
       func_id : u32;
-      state
-        :
-        core.marker.PhantomData
-          ( ->
-          (ink_env.chain_extension.ChainExtensionMethod.I *
-            ink_env.chain_extension.ChainExtensionMethod.O *
-            ink_env.chain_extension.ChainExtensionMethod.ErrorCode));
+      state : core.marker.PhantomData ( -> (I * O * ErrorCode));
     }.
     
     Global Instance Get_func_id : Notation.Dot "func_id" := {
@@ -13095,14 +10627,11 @@ Module chain_extension.
   Definition ChainExtensionMethod : Set := ChainExtensionMethod.t.
   
   Module
-      Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_ink_env_chain_extension_I_ink_env_chain_extension_O_ink_env_chain_extension_ErrorCode.
+      Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
     Definition
       Self
       :=
-      ink_env.chain_extension.ChainExtensionMethod
-        ink_env.chain_extension.I
-        ink_env.chain_extension.O
-        ink_env.chain_extension.ErrorCode.
+      ink_env.chain_extension.ChainExtensionMethod I O ErrorCode.
     
     Definition fmt
         (self : ref Self)
@@ -13124,9 +10653,9 @@ Module chain_extension.
       core.fmt.Debug.fmt := fmt;
     }.
   End
-    Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_ink_env_chain_extension_I_ink_env_chain_extension_O_ink_env_chain_extension_ErrorCode.
+    Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
   
-  Module Impl_ink_env.chain_extension.ChainExtensionMethod unit unit unit.
+  Module Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__Tuple__Tuple_.
     Definition
       Self
       :=
@@ -13140,29 +10669,17 @@ Module chain_extension.
       Notation.DoubleColon Self "build" := {
       Notation.double_colon := build;
     }.
-  End Impl_ink_env.chain_extension.ChainExtensionMethod unit unit unit.
+  End Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__Tuple__Tuple_.
   
-  Module
-    Impl_ink_env.chain_extension.ChainExtensionMethod
-      unit
-      ink_env.chain_extension.O
-      ink_env.chain_extension.ErrorCode.
+  Module Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__O_ErrorCode.
     Definition
       Self
       :=
-      ink_env.chain_extension.ChainExtensionMethod
-        unit
-        ink_env.chain_extension.O
-        ink_env.chain_extension.ErrorCode.
+      ink_env.chain_extension.ChainExtensionMethod unit O ErrorCode.
     
     Definition input
         (self : Self)
-        :
-          M
-            (ink_env.chain_extension.ChainExtensionMethod
-              ink_env.chain_extension.input.I
-              ink_env.chain_extension.O
-              ink_env.chain_extension.ErrorCode) :=
+        : M (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode) :=
       let* α0 := core.default.Default.default tt in
       Pure
         {|
@@ -13174,33 +10691,17 @@ Module chain_extension.
     Global Instance Method_input : Notation.Dot "input" := {
       Notation.dot := input;
     }.
-  End
-    Impl_ink_env.chain_extension.ChainExtensionMethod
-      unit
-      ink_env.chain_extension.O
-      ink_env.chain_extension.ErrorCode.
+  End Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__O_ErrorCode.
   
-  Module
-    Impl_ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      unit
-      ink_env.chain_extension.ErrorCode.
+  Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_Tuple__ErrorCode.
     Definition
       Self
       :=
-      ink_env.chain_extension.ChainExtensionMethod
-        ink_env.chain_extension.I
-        unit
-        ink_env.chain_extension.ErrorCode.
+      ink_env.chain_extension.ChainExtensionMethod I unit ErrorCode.
     
     Definition output
         (self : Self)
-        :
-          M
-            (ink_env.chain_extension.ChainExtensionMethod
-              ink_env.chain_extension.I
-              ink_env.chain_extension.output.O
-              ink_env.chain_extension.ErrorCode) :=
+        : M (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode) :=
       let* α0 := core.default.Default.default tt in
       Pure
         {|
@@ -13212,32 +10713,18 @@ Module chain_extension.
     Global Instance Method_output : Notation.Dot "output" := {
       Notation.dot := output;
     }.
-  End
-    Impl_ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      unit
-      ink_env.chain_extension.ErrorCode.
+  End Impl_ink_env_chain_extension_ChainExtensionMethod_I_Tuple__ErrorCode.
   
-  Module
-    Impl_ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
-      unit.
-    Definition
-      Self
-      :=
-      ink_env.chain_extension.ChainExtensionMethod
-        ink_env.chain_extension.I
-        ink_env.chain_extension.O
-        unit.
+  Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_Tuple_.
+    Definition Self := ink_env.chain_extension.ChainExtensionMethod I O unit.
     
     Definition ignore_error_code
         (self : Self)
         :
           M
             (ink_env.chain_extension.ChainExtensionMethod
-              ink_env.chain_extension.I
-              ink_env.chain_extension.O
+              I
+              O
               ink_env.chain_extension.state.IgnoreErrorCode) :=
       let* α0 := core.default.Default.default tt in
       Pure
@@ -13257,10 +10744,9 @@ Module chain_extension.
         :
           M
             (ink_env.chain_extension.ChainExtensionMethod
-              ink_env.chain_extension.I
-              ink_env.chain_extension.O
-              (ink_env.chain_extension.state.HandleErrorCode
-                ink_env.chain_extension.handle_error_code.ErrorCode)) :=
+              I
+              O
+              (ink_env.chain_extension.state.HandleErrorCode ErrorCode)) :=
       let* α0 := core.default.Default.default tt in
       Pure
         {|
@@ -13273,11 +10759,7 @@ Module chain_extension.
       Notation.Dot "handle_error_code" := {
       Notation.dot := handle_error_code;
     }.
-  End
-    Impl_ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
-      unit.
+  End Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_Tuple_.
   
   Module state.
     Module IgnoreErrorCode.
@@ -13307,10 +10789,7 @@ Module chain_extension.
     
     Module HandleErrorCode.
       Record t : Set := {
-        error_code
-          :
-          core.marker.PhantomData
-            ( -> ink_env.chain_extension.state.HandleErrorCode.T);
+        error_code : core.marker.PhantomData ( -> T);
       }.
       
       Global Instance Get_error_code : Notation.Dot "error_code" := {
@@ -13320,12 +10799,8 @@ Module chain_extension.
     Definition HandleErrorCode : Set := HandleErrorCode.t.
     
     Module
-        Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_ink_env_chain_extension_state_T.
-      Definition
-        Self
-        :=
-        ink_env.chain_extension.state.HandleErrorCode
-          ink_env.chain_extension.state.T.
+        Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
+      Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
       
       Definition fmt
           (self : ref Self)
@@ -13344,28 +10819,22 @@ Module chain_extension.
       Global Instance I T : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
-    End
-      Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_ink_env_chain_extension_state_T.
+    End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
   End state.
   
   Module
-    Impl_ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
-      (ink_env.chain_extension.state.HandleErrorCode
-        ink_env.chain_extension.ErrorCode).
+    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode.
     Definition
       Self
       :=
       ink_env.chain_extension.ChainExtensionMethod
-        ink_env.chain_extension.I
-        ink_env.chain_extension.O
-        (ink_env.chain_extension.state.HandleErrorCode
-          ink_env.chain_extension.ErrorCode).
+        I
+        O
+        (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
     
     Definition call
         (self : Self)
-        (input : ref ink_env.chain_extension.I)
+        (input : ref I)
         :
           M
             (core.result.Result
@@ -13377,7 +10846,7 @@ Module chain_extension.
             instance
             self.["func_id"]
             input
-            ink_env.chain_extension.ErrorCode::["from_status_code"]
+            ErrorCode::["from_status_code"]
             (fun output =>
               let* α0 :=
                 parity_scale_codec.codec.Decode.decode (addr_of output) in
@@ -13387,28 +10856,21 @@ Module chain_extension.
       Notation.dot := call;
     }.
   End
-    Impl_ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
-      (ink_env.chain_extension.state.HandleErrorCode
-        ink_env.chain_extension.ErrorCode).
+    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode.
   
   Module
-    Impl_ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
-      ink_env.chain_extension.state.IgnoreErrorCode.
+    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode.
     Definition
       Self
       :=
       ink_env.chain_extension.ChainExtensionMethod
-        ink_env.chain_extension.I
-        ink_env.chain_extension.O
+        I
+        O
         ink_env.chain_extension.state.IgnoreErrorCode.
     
     Definition call
         (self : Self)
-        (input : ref ink_env.chain_extension.I)
+        (input : ref I)
         :
           M
             (core.result.Result
@@ -13430,41 +10892,29 @@ Module chain_extension.
       Notation.dot := call;
     }.
   End
-    Impl_ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
-      ink_env.chain_extension.state.IgnoreErrorCode.
+    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode.
   
   Module
-    Impl_ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
-      (ink_env.chain_extension.state.HandleErrorCode
-        ink_env.chain_extension.ErrorCode)_2.
+    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode_2.
     Definition
       Self
       :=
       ink_env.chain_extension.ChainExtensionMethod
-        ink_env.chain_extension.I
-        ink_env.chain_extension.O
-        (ink_env.chain_extension.state.HandleErrorCode
-          ink_env.chain_extension.ErrorCode).
+        I
+        O
+        (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
     
     Definition call
         (self : Self)
-        (input : ref ink_env.chain_extension.I)
-        :
-          M
-            (core.result.Result
-              ink_env.chain_extension.O
-              ink_env.chain_extension.ErrorCode) :=
+        (input : ref I)
+        : M (core.result.Result O ErrorCode) :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
           ink_env.backend.EnvBackend.call_chain_extension
             instance
             self.["func_id"]
             input
-            ink_env.chain_extension.ErrorCode::["from_status_code"]
+            ErrorCode::["from_status_code"]
             (fun output =>
               let* decoded :=
                 let* α0 :=
@@ -13477,29 +10927,19 @@ Module chain_extension.
       Notation.dot := call;
     }.
   End
-    Impl_ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
-      (ink_env.chain_extension.state.HandleErrorCode
-        ink_env.chain_extension.ErrorCode)_2.
+    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode_2.
   
   Module
-    Impl_ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
-      ink_env.chain_extension.state.IgnoreErrorCode_2.
+    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode_2.
     Definition
       Self
       :=
       ink_env.chain_extension.ChainExtensionMethod
-        ink_env.chain_extension.I
-        ink_env.chain_extension.O
+        I
+        O
         ink_env.chain_extension.state.IgnoreErrorCode.
     
-    Definition call
-        (self : Self)
-        (input : ref ink_env.chain_extension.I)
-        : M ink_env.chain_extension.O :=
+    Definition call (self : Self) (input : ref I) : M O :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
           let* α0 :=
@@ -13521,10 +10961,7 @@ Module chain_extension.
       Notation.dot := call;
     }.
   End
-    Impl_ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
-      ink_env.chain_extension.state.IgnoreErrorCode_2.
+    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode_2.
   
   Module IsResultType.
     Class Trait (Self : Set) : Set := {
@@ -13541,37 +10978,27 @@ Module chain_extension.
   End IsResultType.
   
   Module
-      Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_ink_env_chain_extension_T_ink_env_chain_extension_E.
-    Definition
-      Self
-      :=
-      core.result.Result ink_env.chain_extension.T ink_env.chain_extension.E.
+      Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
+    Definition Self := core.result.Result T E.
     
     Global Instance I
         T
-        E
-        :
-        ink_env.chain_extension.private.IsResultTypeSealed.Trait
-        Self :=
+        E :
+        ink_env.chain_extension.private.IsResultTypeSealed.Trait Self :=
       ink_env.chain_extension.private.IsResultTypeSealed.Build_Class _.
   End
-    Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_ink_env_chain_extension_T_ink_env_chain_extension_E.
+    Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
   
-  Module
-      Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_ink_env_chain_extension_T_ink_env_chain_extension_E.
-    Definition
-      Self
-      :=
-      core.result.Result ink_env.chain_extension.T ink_env.chain_extension.E.
+  Module Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
+    Definition Self := core.result.Result T E.
     
-    Definition Ok : Set := ink_env.chain_extension.T.
+    Definition Ok : Set := T.
     
-    Definition Err : Set := ink_env.chain_extension.E.
+    Definition Err : Set := E.
     
     Global Instance I T E : ink_env.chain_extension.IsResultType.Trait Self := {
     }.
-  End
-    Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_ink_env_chain_extension_T_ink_env_chain_extension_E.
+  End Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
   
   Module private.
     Module IsResultTypeSealed.
@@ -13597,13 +11024,7 @@ End FromStatusCode.
 Module ChainExtensionMethod.
   Record t : Set := {
     func_id : u32;
-    state
-      :
-      core.marker.PhantomData
-        ( ->
-        (ink_env.chain_extension.ChainExtensionMethod.I *
-          ink_env.chain_extension.ChainExtensionMethod.O *
-          ink_env.chain_extension.ChainExtensionMethod.ErrorCode));
+    state : core.marker.PhantomData ( -> (I * O * ErrorCode));
   }.
   
   Global Instance Get_func_id : Notation.Dot "func_id" := {
@@ -13616,14 +11037,8 @@ End ChainExtensionMethod.
 Definition ChainExtensionMethod : Set := ChainExtensionMethod.t.
 
 Module
-    Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_ink_env_chain_extension_I_ink_env_chain_extension_O_ink_env_chain_extension_ErrorCode.
-  Definition
-    Self
-    :=
-    ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
-      ink_env.chain_extension.ErrorCode.
+    Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
+  Definition Self := ink_env.chain_extension.ChainExtensionMethod I O ErrorCode.
   
   Definition fmt
       (self : ref Self)
@@ -13645,9 +11060,9 @@ Module
     core.fmt.Debug.fmt := fmt;
   }.
 End
-  Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_ink_env_chain_extension_I_ink_env_chain_extension_O_ink_env_chain_extension_ErrorCode.
+  Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
 
-Module Impl_ink_env.chain_extension.ChainExtensionMethod unit unit unit_2.
+Module Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__Tuple__Tuple__2.
   Definition
     Self
     :=
@@ -13661,29 +11076,17 @@ Module Impl_ink_env.chain_extension.ChainExtensionMethod unit unit unit_2.
     Notation.DoubleColon Self "build" := {
     Notation.double_colon := build;
   }.
-End Impl_ink_env.chain_extension.ChainExtensionMethod unit unit unit_2.
+End Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__Tuple__Tuple__2.
 
-Module
-  Impl_ink_env.chain_extension.ChainExtensionMethod
-    unit
-    ink_env.chain_extension.O
-    ink_env.chain_extension.ErrorCode_2.
+Module Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__O_ErrorCode_2.
   Definition
     Self
     :=
-    ink_env.chain_extension.ChainExtensionMethod
-      unit
-      ink_env.chain_extension.O
-      ink_env.chain_extension.ErrorCode.
+    ink_env.chain_extension.ChainExtensionMethod unit O ErrorCode.
   
   Definition input
       (self : Self)
-      :
-        M
-          (ink_env.chain_extension.ChainExtensionMethod
-            ink_env.chain_extension.input.I
-            ink_env.chain_extension.O
-            ink_env.chain_extension.ErrorCode) :=
+      : M (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode) :=
     let* α0 := core.default.Default.default tt in
     Pure
       {|
@@ -13695,33 +11098,17 @@ Module
   Global Instance Method_input : Notation.Dot "input" := {
     Notation.dot := input;
   }.
-End
-  Impl_ink_env.chain_extension.ChainExtensionMethod
-    unit
-    ink_env.chain_extension.O
-    ink_env.chain_extension.ErrorCode_2.
+End Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__O_ErrorCode_2.
 
-Module
-  Impl_ink_env.chain_extension.ChainExtensionMethod
-    ink_env.chain_extension.I
-    unit
-    ink_env.chain_extension.ErrorCode_2.
+Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_Tuple__ErrorCode_2.
   Definition
     Self
     :=
-    ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      unit
-      ink_env.chain_extension.ErrorCode.
+    ink_env.chain_extension.ChainExtensionMethod I unit ErrorCode.
   
   Definition output
       (self : Self)
-      :
-        M
-          (ink_env.chain_extension.ChainExtensionMethod
-            ink_env.chain_extension.I
-            ink_env.chain_extension.output.O
-            ink_env.chain_extension.ErrorCode) :=
+      : M (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode) :=
     let* α0 := core.default.Default.default tt in
     Pure
       {|
@@ -13733,32 +11120,18 @@ Module
   Global Instance Method_output : Notation.Dot "output" := {
     Notation.dot := output;
   }.
-End
-  Impl_ink_env.chain_extension.ChainExtensionMethod
-    ink_env.chain_extension.I
-    unit
-    ink_env.chain_extension.ErrorCode_2.
+End Impl_ink_env_chain_extension_ChainExtensionMethod_I_Tuple__ErrorCode_2.
 
-Module
-  Impl_ink_env.chain_extension.ChainExtensionMethod
-    ink_env.chain_extension.I
-    ink_env.chain_extension.O
-    unit_2.
-  Definition
-    Self
-    :=
-    ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
-      unit.
+Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_Tuple__2.
+  Definition Self := ink_env.chain_extension.ChainExtensionMethod I O unit.
   
   Definition ignore_error_code
       (self : Self)
       :
         M
           (ink_env.chain_extension.ChainExtensionMethod
-            ink_env.chain_extension.I
-            ink_env.chain_extension.O
+            I
+            O
             ink_env.chain_extension.state.IgnoreErrorCode) :=
     let* α0 := core.default.Default.default tt in
     Pure
@@ -13778,10 +11151,9 @@ Module
       :
         M
           (ink_env.chain_extension.ChainExtensionMethod
-            ink_env.chain_extension.I
-            ink_env.chain_extension.O
-            (ink_env.chain_extension.state.HandleErrorCode
-              ink_env.chain_extension.handle_error_code.ErrorCode)) :=
+            I
+            O
+            (ink_env.chain_extension.state.HandleErrorCode ErrorCode)) :=
     let* α0 := core.default.Default.default tt in
     Pure
       {|
@@ -13794,11 +11166,7 @@ Module
     Notation.Dot "handle_error_code" := {
     Notation.dot := handle_error_code;
   }.
-End
-  Impl_ink_env.chain_extension.ChainExtensionMethod
-    ink_env.chain_extension.I
-    ink_env.chain_extension.O
-    unit_2.
+End Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_Tuple__2.
 
 Module state.
   Module IgnoreErrorCode.
@@ -13827,10 +11195,7 @@ Module state.
   
   Module HandleErrorCode.
     Record t : Set := {
-      error_code
-        :
-        core.marker.PhantomData
-          ( -> ink_env.chain_extension.state.HandleErrorCode.T);
+      error_code : core.marker.PhantomData ( -> T);
     }.
     
     Global Instance Get_error_code : Notation.Dot "error_code" := {
@@ -13840,12 +11205,8 @@ Module state.
   Definition HandleErrorCode : Set := HandleErrorCode.t.
   
   Module
-      Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_ink_env_chain_extension_state_T.
-    Definition
-      Self
-      :=
-      ink_env.chain_extension.state.HandleErrorCode
-        ink_env.chain_extension.state.T.
+      Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
+    Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
     
     Definition fmt
         (self : ref Self)
@@ -13864,8 +11225,7 @@ Module state.
     Global Instance I T : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
-  End
-    Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_ink_env_chain_extension_state_T.
+  End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
 End state.
 
 Module IgnoreErrorCode.
@@ -13894,10 +11254,7 @@ End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
 
 Module HandleErrorCode.
   Record t : Set := {
-    error_code
-      :
-      core.marker.PhantomData
-        ( -> ink_env.chain_extension.state.HandleErrorCode.T);
+    error_code : core.marker.PhantomData ( -> T);
   }.
   
   Global Instance Get_error_code : Notation.Dot "error_code" := {
@@ -13906,13 +11263,8 @@ Module HandleErrorCode.
 End HandleErrorCode.
 Definition HandleErrorCode : Set := HandleErrorCode.t.
 
-Module
-    Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_ink_env_chain_extension_state_T.
-  Definition
-    Self
-    :=
-    ink_env.chain_extension.state.HandleErrorCode
-      ink_env.chain_extension.state.T.
+Module Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
+  Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
   
   Definition fmt
       (self : ref Self)
@@ -13931,27 +11283,21 @@ Module
   Global Instance I T : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
-End
-  Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_ink_env_chain_extension_state_T.
+End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
 
 Module
-  Impl_ink_env.chain_extension.ChainExtensionMethod
-    ink_env.chain_extension.I
-    ink_env.chain_extension.O
-    (ink_env.chain_extension.state.HandleErrorCode
-      ink_env.chain_extension.ErrorCode)_3.
+  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode_3.
   Definition
     Self
     :=
     ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
-      (ink_env.chain_extension.state.HandleErrorCode
-        ink_env.chain_extension.ErrorCode).
+      I
+      O
+      (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
   
   Definition call
       (self : Self)
-      (input : ref ink_env.chain_extension.I)
+      (input : ref I)
       :
         M
           (core.result.Result
@@ -13963,7 +11309,7 @@ Module
           instance
           self.["func_id"]
           input
-          ink_env.chain_extension.ErrorCode::["from_status_code"]
+          ErrorCode::["from_status_code"]
           (fun output =>
             let* α0 :=
               parity_scale_codec.codec.Decode.decode (addr_of output) in
@@ -13973,28 +11319,21 @@ Module
     Notation.dot := call;
   }.
 End
-  Impl_ink_env.chain_extension.ChainExtensionMethod
-    ink_env.chain_extension.I
-    ink_env.chain_extension.O
-    (ink_env.chain_extension.state.HandleErrorCode
-      ink_env.chain_extension.ErrorCode)_3.
+  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode_3.
 
 Module
-  Impl_ink_env.chain_extension.ChainExtensionMethod
-    ink_env.chain_extension.I
-    ink_env.chain_extension.O
-    ink_env.chain_extension.state.IgnoreErrorCode_3.
+  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode_3.
   Definition
     Self
     :=
     ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
+      I
+      O
       ink_env.chain_extension.state.IgnoreErrorCode.
   
   Definition call
       (self : Self)
-      (input : ref ink_env.chain_extension.I)
+      (input : ref I)
       :
         M
           (core.result.Result
@@ -14016,41 +11355,29 @@ Module
     Notation.dot := call;
   }.
 End
-  Impl_ink_env.chain_extension.ChainExtensionMethod
-    ink_env.chain_extension.I
-    ink_env.chain_extension.O
-    ink_env.chain_extension.state.IgnoreErrorCode_3.
+  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode_3.
 
 Module
-  Impl_ink_env.chain_extension.ChainExtensionMethod
-    ink_env.chain_extension.I
-    ink_env.chain_extension.O
-    (ink_env.chain_extension.state.HandleErrorCode
-      ink_env.chain_extension.ErrorCode)_4.
+  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode_4.
   Definition
     Self
     :=
     ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
-      (ink_env.chain_extension.state.HandleErrorCode
-        ink_env.chain_extension.ErrorCode).
+      I
+      O
+      (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
   
   Definition call
       (self : Self)
-      (input : ref ink_env.chain_extension.I)
-      :
-        M
-          (core.result.Result
-            ink_env.chain_extension.O
-            ink_env.chain_extension.ErrorCode) :=
+      (input : ref I)
+      : M (core.result.Result O ErrorCode) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         ink_env.backend.EnvBackend.call_chain_extension
           instance
           self.["func_id"]
           input
-          ink_env.chain_extension.ErrorCode::["from_status_code"]
+          ErrorCode::["from_status_code"]
           (fun output =>
             let* decoded :=
               let* α0 :=
@@ -14063,29 +11390,19 @@ Module
     Notation.dot := call;
   }.
 End
-  Impl_ink_env.chain_extension.ChainExtensionMethod
-    ink_env.chain_extension.I
-    ink_env.chain_extension.O
-    (ink_env.chain_extension.state.HandleErrorCode
-      ink_env.chain_extension.ErrorCode)_4.
+  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode_4.
 
 Module
-  Impl_ink_env.chain_extension.ChainExtensionMethod
-    ink_env.chain_extension.I
-    ink_env.chain_extension.O
-    ink_env.chain_extension.state.IgnoreErrorCode_4.
+  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode_4.
   Definition
     Self
     :=
     ink_env.chain_extension.ChainExtensionMethod
-      ink_env.chain_extension.I
-      ink_env.chain_extension.O
+      I
+      O
       ink_env.chain_extension.state.IgnoreErrorCode.
   
-  Definition call
-      (self : Self)
-      (input : ref ink_env.chain_extension.I)
-      : M ink_env.chain_extension.O :=
+  Definition call (self : Self) (input : ref I) : M O :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         let* α0 :=
@@ -14107,10 +11424,7 @@ Module
     Notation.dot := call;
   }.
 End
-  Impl_ink_env.chain_extension.ChainExtensionMethod
-    ink_env.chain_extension.I
-    ink_env.chain_extension.O
-    ink_env.chain_extension.state.IgnoreErrorCode_4.
+  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode_4.
 
 Module IsResultType.
   Class Trait (Self : Set) : Set := {
@@ -14127,37 +11441,27 @@ Module IsResultType.
 End IsResultType.
 
 Module
-    Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_ink_env_chain_extension_T_ink_env_chain_extension_E.
-  Definition
-    Self
-    :=
-    core.result.Result ink_env.chain_extension.T ink_env.chain_extension.E.
+    Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
+  Definition Self := core.result.Result T E.
   
   Global Instance I
       T
-      E
-      :
-      ink_env.chain_extension.private.IsResultTypeSealed.Trait
-      Self :=
+      E :
+      ink_env.chain_extension.private.IsResultTypeSealed.Trait Self :=
     ink_env.chain_extension.private.IsResultTypeSealed.Build_Class _.
 End
-  Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_ink_env_chain_extension_T_ink_env_chain_extension_E.
+  Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
 
-Module
-    Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_ink_env_chain_extension_T_ink_env_chain_extension_E.
-  Definition
-    Self
-    :=
-    core.result.Result ink_env.chain_extension.T ink_env.chain_extension.E.
+Module Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
+  Definition Self := core.result.Result T E.
   
-  Definition Ok : Set := ink_env.chain_extension.T.
+  Definition Ok : Set := T.
   
-  Definition Err : Set := ink_env.chain_extension.E.
+  Definition Err : Set := E.
   
   Global Instance I T E : ink_env.chain_extension.IsResultType.Trait Self := {
   }.
-End
-  Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_ink_env_chain_extension_T_ink_env_chain_extension_E.
+End Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
 
 Module private.
   Module IsResultTypeSealed.
@@ -14220,10 +11524,7 @@ End ContractReference.
 Module engine.
   Module OnInstance.
     Class Trait (Self : Set) : Set := {
-      on_instance
-        :
-        ink_env.engine.OnInstance.on_instance.F ->
-        (M ink_env.engine.OnInstance.on_instance.R);
+      on_instance : F -> (M R);
     }.
     
     Global Instance Method_on_instance `(Trait)
@@ -14341,7 +11642,7 @@ Module engine.
         }.
       End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
       
-      Module Impl_ink_env.engine.off_chain.call_data.CallData.
+      Module Impl_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Definition new (selector : ink_env.call.selector.Selector) : M Self :=
@@ -14357,10 +11658,7 @@ Module engine.
           Notation.double_colon := new;
         }.
         
-        Definition push_arg
-            (self : mut_ref Self)
-            (arg : ref ink_env.engine.off_chain.call_data.push_arg.A)
-            : M unit :=
+        Definition push_arg (self : mut_ref Self) (arg : ref A) : M unit :=
           arg.["encode_to"] (addr_of self.["bytes"]).
         
         Global Instance Method_push_arg : Notation.Dot "push_arg" := {
@@ -14422,7 +11720,7 @@ Module engine.
         Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
           Notation.dot := to_bytes;
         }.
-      End Impl_ink_env.engine.off_chain.call_data.CallData.
+      End Impl_ink_env_engine_off_chain_call_data_CallData.
       
       Module
           Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
@@ -14435,10 +11733,7 @@ Module engine.
           Notation.dot := size_hint;
         }.
         
-        Definition encode_to
-            (self : ref Self)
-            (dest : mut_ref ink_env.engine.off_chain.call_data.encode_to.T)
-            : M unit :=
+        Definition encode_to (self : ref Self) (dest : mut_ref T) : M unit :=
           let* _ :=
             let* α0 := self.["bytes"].["as_slice"] in
             dest.["write"] α0 in
@@ -14458,7 +11753,7 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Definition decode
-            (input : mut_ref ink_env.engine.off_chain.call_data.decode.I)
+            (input : mut_ref I)
             : M (core.result.Result Self parity_scale_codec.error.Error) :=
           let* remaining_len :=
             let* α0 := input.["remaining_len"] in
@@ -14707,7 +12002,7 @@ Module engine.
         
         Definition push_topic
             (self : mut_ref Self)
-            (topic_value : ref ink_env.engine.off_chain.impls.push_topic.T)
+            (topic_value : ref T)
             : M unit :=
           let* encoded := topic_value.["encode"] in
           let* len_encoded := encoded.["len"] in
@@ -14795,11 +12090,8 @@ Module engine.
         }.
         
         Global Instance I
-            E
-            :
-            ink_env.topics.TopicsBuilderBackend.Trait
-            Self
-            ink_env.engine.off_chain.impls.E :=
+            E :
+            ink_env.topics.TopicsBuilderBackend.Trait Self E :=
           {
           ink_env.topics.TopicsBuilderBackend.expect := expect;
           ink_env.topics.TopicsBuilderBackend.push_topic := push_topic;
@@ -14808,7 +12100,7 @@ Module engine.
       End
         Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
       
-      Module Impl_ink_env.engine.off_chain.EnvInstance.
+      Module Impl_ink_env_engine_off_chain_EnvInstance.
         Definition Self := ink_env.engine.off_chain.EnvInstance.
         
         Definition get_property
@@ -14816,10 +12108,7 @@ Module engine.
             (ext_fn
               :
               (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit)
-            :
-              M
-                (ink_env.error.Result
-                  ink_env.engine.off_chain.impls.get_property.T) :=
+            : M (ink_env.error.Result T) :=
           let* full_scope := repeat 0 in
           let full_scope := addr_of (addr_of full_scope[RangeFull {|  |}]) in
           let* _ := ext_fn (addr_of self.["engine"]) full_scope in
@@ -14831,7 +12120,7 @@ Module engine.
         Global Instance Method_get_property : Notation.Dot "get_property" := {
           Notation.dot := get_property;
         }.
-      End Impl_ink_env.engine.off_chain.EnvInstance.
+      End Impl_ink_env_engine_off_chain_EnvInstance.
       
       Module
           Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
@@ -14839,8 +12128,8 @@ Module engine.
         
         Definition set_contract_storage
             (self : mut_ref Self)
-            (key : ref ink_env.engine.off_chain.impls.set_contract_storage.K)
-            (value : ref ink_env.engine.off_chain.impls.set_contract_storage.V)
+            (key : ref K)
+            (value : ref V)
             : M (core.option.Option u32) :=
           let* v := alloc.vec.Vec::["new"] tt in
           let* _ :=
@@ -14857,12 +12146,8 @@ Module engine.
         
         Definition get_contract_storage
             (self : mut_ref Self)
-            (key : ref ink_env.engine.off_chain.impls.get_contract_storage.K)
-            :
-              M
-                (ink_env.error.Result
-                  (core.option.Option
-                    ink_env.engine.off_chain.impls.get_contract_storage.R)) :=
+            (key : ref K)
+            : M (ink_env.error.Result (core.option.Option R)) :=
           let* output := repeat 0 in
           let* _ :=
             let* α0 := key.["encode"] in
@@ -14900,12 +12185,8 @@ Module engine.
         
         Definition take_contract_storage
             (self : mut_ref Self)
-            (key : ref ink_env.engine.off_chain.impls.take_contract_storage.K)
-            :
-              M
-                (ink_env.error.Result
-                  (core.option.Option
-                    ink_env.engine.off_chain.impls.take_contract_storage.R)) :=
+            (key : ref K)
+            : M (ink_env.error.Result (core.option.Option R)) :=
           let* output := repeat 0 in
           let* _ :=
             let* α0 := key.["encode"] in
@@ -14943,9 +12224,7 @@ Module engine.
         
         Definition contains_contract_storage
             (self : mut_ref Self)
-            (key
-              :
-              ref ink_env.engine.off_chain.impls.contains_contract_storage.K)
+            (key : ref K)
             : M (core.option.Option u32) :=
           let* α0 := key.["encode"] in
           self.["engine"].["contains_storage"] (addr_of α0).
@@ -14957,7 +12236,7 @@ Module engine.
         
         Definition clear_contract_storage
             (self : mut_ref Self)
-            (key : ref ink_env.engine.off_chain.impls.clear_contract_storage.K)
+            (key : ref K)
             : M (core.option.Option u32) :=
           let* α0 := key.["encode"] in
           self.["engine"].["clear_storage"] (addr_of α0).
@@ -14969,10 +12248,7 @@ Module engine.
         
         Definition decode_input
             (self : mut_ref Self)
-            :
-              M
-                (ink_env.error.Result
-                  ink_env.engine.off_chain.impls.decode_input.T) :=
+            : M (ink_env.error.Result T) :=
           let* α0 :=
             format_arguments::["new_v1"]
               (addr_of
@@ -14989,7 +12265,7 @@ Module engine.
         Definition return_value
             (self : mut_ref Self)
             (_flags : ink_env.backend.ReturnFlags)
-            (_return_value : ref ink_env.engine.off_chain.impls.return_value.R)
+            (_return_value : ref R)
             : M Empty_set :=
           let* α0 :=
             format_arguments::["new_v1"]
@@ -15027,7 +12303,7 @@ Module engine.
         
         Definition hash_encoded
             (self : mut_ref Self)
-            (input : ref ink_env.engine.off_chain.impls.hash_encoded.T)
+            (input : ref T)
             (output : mut_ref ink_env.hash.HashOutput.Type)
             : M unit :=
           let* enc_input :=
@@ -15143,18 +12419,10 @@ Module engine.
         Definition call_chain_extension
             (self : mut_ref Self)
             (func_id : u32)
-            (input : ref ink_env.engine.off_chain.impls.call_chain_extension.I)
-            (status_to_result
-              :
-              ink_env.engine.off_chain.impls.call_chain_extension.F)
-            (decode_to_result
-              :
-              ink_env.engine.off_chain.impls.call_chain_extension.D)
-            :
-              M
-                (core.result.Result
-                  ink_env.engine.off_chain.impls.call_chain_extension.T
-                  ink_env.engine.off_chain.impls.call_chain_extension.E) :=
+            (input : ref I)
+            (status_to_result : F)
+            (decode_to_result : D)
+            : M (core.result.Result T E) :=
           let* enc_input :=
             let* α0 := parity_scale_codec.codec.Encode.encode input in
             Pure (addr_of α0[RangeFull {|  |}]) in
@@ -15256,9 +12524,7 @@ Module engine.
           Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
         Definition Self := ink_env.engine.off_chain.EnvInstance.
         
-        Definition caller
-            (self : mut_ref Self)
-            : M ink_env.engine.off_chain.impls.caller.ImplE.AccountId :=
+        Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
           let* α0 := self.["get_property"] ink_engine.ext.Engine::["caller"] in
           α0.["unwrap_or_else"]
             (fun error =>
@@ -15273,11 +12539,7 @@ Module engine.
           Notation.dot := caller;
         }.
         
-        Definition transferred_value
-            (self : mut_ref Self)
-            :
-              M
-                ink_env.engine.off_chain.impls.transferred_value.ImplE.Balance :=
+        Definition transferred_value (self : mut_ref Self) : M ImplE.Balance :=
           let* α0 :=
             self.["get_property"]
               ink_engine.ext.Engine::["value_transferred"] in
@@ -15311,11 +12573,7 @@ Module engine.
           Notation.dot := gas_left;
         }.
         
-        Definition block_timestamp
-            (self : mut_ref Self)
-            :
-              M
-                ink_env.engine.off_chain.impls.block_timestamp.ImplE.Timestamp :=
+        Definition block_timestamp (self : mut_ref Self) : M ImplE.Timestamp :=
           let* α0 :=
             self.["get_property"] ink_engine.ext.Engine::["block_timestamp"] in
           α0.["unwrap_or_else"]
@@ -15332,9 +12590,7 @@ Module engine.
           Notation.dot := block_timestamp;
         }.
         
-        Definition account_id
-            (self : mut_ref Self)
-            : M ink_env.engine.off_chain.impls.account_id.ImplE.AccountId :=
+        Definition account_id (self : mut_ref Self) : M ImplE.AccountId :=
           let* α0 := self.["get_property"] ink_engine.ext.Engine::["address"] in
           α0.["unwrap_or_else"]
             (fun error =>
@@ -15349,9 +12605,7 @@ Module engine.
           Notation.dot := account_id;
         }.
         
-        Definition balance
-            (self : mut_ref Self)
-            : M ink_env.engine.off_chain.impls.balance.ImplE.Balance :=
+        Definition balance (self : mut_ref Self) : M ImplE.Balance :=
           let* α0 := self.["get_property"] ink_engine.ext.Engine::["balance"] in
           α0.["unwrap_or_else"]
             (fun error =>
@@ -15366,9 +12620,7 @@ Module engine.
           Notation.dot := balance;
         }.
         
-        Definition block_number
-            (self : mut_ref Self)
-            : M ink_env.engine.off_chain.impls.block_number.ImplE.BlockNumber :=
+        Definition block_number (self : mut_ref Self) : M ImplE.BlockNumber :=
           let* α0 :=
             self.["get_property"] ink_engine.ext.Engine::["block_number"] in
           α0.["unwrap_or_else"]
@@ -15384,9 +12636,7 @@ Module engine.
           Notation.dot := block_number;
         }.
         
-        Definition minimum_balance
-            (self : mut_ref Self)
-            : M ink_env.engine.off_chain.impls.minimum_balance.ImplE.Balance :=
+        Definition minimum_balance (self : mut_ref Self) : M ImplE.Balance :=
           let* α0 :=
             self.["get_property"] ink_engine.ext.Engine::["minimum_balance"] in
           α0.["unwrap_or_else"]
@@ -15403,10 +12653,7 @@ Module engine.
           Notation.dot := minimum_balance;
         }.
         
-        Definition emit_event
-            (self : mut_ref Self)
-            (event : ink_env.engine.off_chain.impls.emit_event.Event)
-            : M unit :=
+        Definition emit_event (self : mut_ref Self) (event : Event) : M unit :=
           let* builder :=
             ink_env.engine.off_chain.impls.TopicsBuilder::["default"] tt in
           let* enc_topics :=
@@ -15431,16 +12678,11 @@ Module engine.
               :
               ref
                 (ink_env.call.call_builder.CallParams
-                  ink_env.engine.off_chain.impls.invoke_contract.E
-                  (ink_env.call.call_builder.Call
-                    ink_env.engine.off_chain.impls.invoke_contract.E)
-                  ink_env.engine.off_chain.impls.invoke_contract.Args
-                  ink_env.engine.off_chain.impls.invoke_contract.R))
-            :
-              M
-                (ink_env.error.Result
-                  (ink_primitives.MessageResult
-                    ink_env.engine.off_chain.impls.invoke_contract.R)) :=
+                  E
+                  (ink_env.call.call_builder.Call E)
+                  Args
+                  R))
+            : M (ink_env.error.Result (ink_primitives.MessageResult R)) :=
           let* _gas_limit := params.["gas_limit"] in
           let* _callee := params.["callee"] in
           let* _call_flags :=
@@ -15468,15 +12710,11 @@ Module engine.
               :
               ref
                 (ink_env.call.call_builder.CallParams
-                  ink_env.engine.off_chain.impls.invoke_contract_delegate.E
-                  (ink_env.call.call_builder.DelegateCall
-                    ink_env.engine.off_chain.impls.invoke_contract_delegate.E)
-                  ink_env.engine.off_chain.impls.invoke_contract_delegate.Args
-                  ink_env.engine.off_chain.impls.invoke_contract_delegate.R))
-            :
-              M
-                (ink_env.error.Result
-                  ink_env.engine.off_chain.impls.invoke_contract_delegate.R) :=
+                  E
+                  (ink_env.call.call_builder.DelegateCall E)
+                  Args
+                  R))
+            : M (ink_env.error.Result R) :=
           let* _code_hash := params.["code_hash"] in
           let* α0 :=
             format_arguments::["new_v1"]
@@ -15498,11 +12736,11 @@ Module engine.
               :
               ref
                 (ink_env.call.create_builder.CreateParams
-                  ink_env.engine.off_chain.impls.instantiate_contract.E
-                  ink_env.engine.off_chain.impls.instantiate_contract.ContractRef
-                  ink_env.engine.off_chain.impls.instantiate_contract.Args
-                  ink_env.engine.off_chain.impls.instantiate_contract.Salt
-                  ink_env.engine.off_chain.impls.instantiate_contract.R))
+                  E
+                  ContractRef
+                  Args
+                  Salt
+                  R))
             :
               M
                 (ink_env.error.Result
@@ -15529,9 +12767,7 @@ Module engine.
         
         Definition terminate_contract
             (self : mut_ref Self)
-            (beneficiary
-              :
-              ink_env.engine.off_chain.impls.terminate_contract.ImplE.AccountId)
+            (beneficiary : ImplE.AccountId)
             : M Empty_set :=
           let* buffer :=
             parity_scale_codec.codec.Encode.encode (addr_of beneficiary) in
@@ -15544,10 +12780,8 @@ Module engine.
         
         Definition transfer
             (self : mut_ref Self)
-            (destination
-              :
-              ink_env.engine.off_chain.impls.transfer.ImplE.AccountId)
-            (value : ink_env.engine.off_chain.impls.transfer.ImplE.Balance)
+            (destination : ImplE.AccountId)
+            (value : ImplE.Balance)
             : M (ink_env.error.Result unit) :=
           let* enc_destination :=
             let* α0 :=
@@ -15566,7 +12800,7 @@ Module engine.
         Definition weight_to_fee
             (self : mut_ref Self)
             (gas : u64)
-            : M ink_env.engine.off_chain.impls.weight_to_fee.ImplE.Balance :=
+            : M ImplE.Balance :=
           let* output := repeat 0 in
           let* _ :=
             self.["engine"].["weight_to_fee"]
@@ -15590,9 +12824,7 @@ Module engine.
         
         Definition is_contract
             (self : mut_ref Self)
-            (account
-              :
-              ref ink_env.engine.off_chain.impls.is_contract.ImplE.AccountId)
+            (account : ref ImplE.AccountId)
             : M bool :=
           let* α0 := parity_scale_codec.codec.Encode.encode (addr_of account) in
           self.["engine"].["is_contract"] α0.
@@ -15618,13 +12850,8 @@ Module engine.
         
         Definition code_hash
             (self : mut_ref Self)
-            (_account
-              :
-              ref ink_env.engine.off_chain.impls.code_hash.ImplE.AccountId)
-            :
-              M
-                (ink_env.error.Result
-                  ink_env.engine.off_chain.impls.code_hash.ImplE.Hash) :=
+            (_account : ref ImplE.AccountId)
+            : M (ink_env.error.Result ImplE.Hash) :=
           let* α0 :=
             format_arguments::["new_v1"]
               (addr_of
@@ -15640,10 +12867,7 @@ Module engine.
         
         Definition own_code_hash
             (self : mut_ref Self)
-            :
-              M
-                (ink_env.error.Result
-                  ink_env.engine.off_chain.impls.own_code_hash.ImplE.Hash) :=
+            : M (ink_env.error.Result ImplE.Hash) :=
           let* α0 :=
             format_arguments::["new_v1"]
               (addr_of
@@ -15659,7 +12883,7 @@ Module engine.
         
         Definition call_runtime
             (self : mut_ref Self)
-            (_call : ref ink_env.engine.off_chain.impls.call_runtime.Call)
+            (_call : ref Call)
             : M (ink_env.error.Result unit) :=
           let* α0 :=
             format_arguments::["new_v1"]
@@ -15751,14 +12975,9 @@ Module engine.
       
       Definition set_account_balance
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.set_account_balance.T}
-          (account_id
-            :
-            ink_env.engine.off_chain.test_api.set_account_balance.ImplT.AccountId)
-          (new_balance
-            :
-            ink_env.engine.off_chain.test_api.set_account_balance.ImplT.Balance)
+          `{ink_env.types.Environment.Trait T}
+          (account_id : ImplT.AccountId)
+          (new_balance : ImplT.Balance)
           : M unit :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
@@ -15770,15 +12989,9 @@ Module engine.
       
       Definition get_account_balance
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.get_account_balance.T}
-          (account_id
-            :
-            ink_env.engine.off_chain.test_api.get_account_balance.ImplT.AccountId)
-          :
-            M
-              (ink_env.error.Result
-                ink_env.engine.off_chain.test_api.get_account_balance.ImplT.Balance) :=
+          `{ink_env.types.Environment.Trait T}
+          (account_id : ImplT.AccountId)
+          : M (ink_env.error.Result ImplT.Balance) :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
             let* α0 :=
@@ -15788,11 +13001,8 @@ Module engine.
       
       Definition register_chain_extension
           {E : Set}
-          `{ink_engine.chain_extension.ChainExtension.Trait
-            ink_env.engine.off_chain.test_api.register_chain_extension.E}
-          (extension
-            :
-            ink_env.engine.off_chain.test_api.register_chain_extension.E)
+          `{ink_engine.chain_extension.ChainExtension.Trait E}
+          (extension : E)
           : M unit :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
@@ -15821,8 +13031,7 @@ Module engine.
       
       Definition advance_block
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.advance_block.T}
+          `{ink_env.types.Environment.Trait T}
           (_ : unit)
           : M unit :=
         ink_env.engine.OnInstance.on_instance
@@ -15832,12 +13041,9 @@ Module engine.
       
       Definition set_caller
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.set_caller.T}
+          `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          (caller
-            :
-            ink_env.engine.off_chain.test_api.set_caller.ImplT.AccountId)
+          (caller : ImplT.AccountId)
           : M unit :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
@@ -15849,12 +13055,9 @@ Module engine.
       
       Definition set_callee
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.set_callee.T}
+          `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          (callee
-            :
-            ink_env.engine.off_chain.test_api.set_callee.ImplT.AccountId)
+          (callee : ImplT.AccountId)
           : M unit :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
@@ -15866,12 +13069,9 @@ Module engine.
       
       Definition set_contract
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.set_contract.T}
+          `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          (contract
-            :
-            ink_env.engine.off_chain.test_api.set_contract.ImplT.AccountId)
+          (contract : ImplT.AccountId)
           : M unit :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
@@ -15883,12 +13083,9 @@ Module engine.
       
       Definition is_contract
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.is_contract.T}
+          `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          (contract
-            :
-            ink_env.engine.off_chain.test_api.is_contract.ImplT.AccountId)
+          (contract : ImplT.AccountId)
           : M bool :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
@@ -15898,10 +13095,9 @@ Module engine.
       
       Definition callee
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.callee.T}
+          `{ink_env.types.Environment.Trait T}
           (_ : unit)
-          : M ink_env.engine.off_chain.test_api.callee.ImplT.AccountId :=
+          : M ImplT.AccountId :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
             let* callee := instance.["engine"].["get_callee"] in
@@ -15919,12 +13115,8 @@ Module engine.
       
       Definition get_contract_storage_rw
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.get_contract_storage_rw.T}
-          (account_id
-            :
-            ref
-              ink_env.engine.off_chain.test_api.get_contract_storage_rw.ImplT.AccountId)
+          `{ink_env.types.Environment.Trait T}
+          (account_id : ref ImplT.AccountId)
           : M (usize * usize) :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
@@ -15934,11 +13126,8 @@ Module engine.
       
       Definition set_value_transferred
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.set_value_transferred.T}
-          (value
-            :
-            ink_env.engine.off_chain.test_api.set_value_transferred.ImplT.Balance)
+          `{ink_env.types.Environment.Trait T}
+          (value : ImplT.Balance)
           : M unit :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
@@ -15947,9 +13136,8 @@ Module engine.
       
       Definition transfer_in
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.transfer_in.T}
-          (value : ink_env.engine.off_chain.test_api.transfer_in.ImplT.Balance)
+          `{ink_env.types.Environment.Trait T}
+          (value : ImplT.Balance)
           : M unit :=
         let* _ :=
           ink_env.engine.OnInstance.on_instance
@@ -15981,12 +13169,8 @@ Module engine.
       
       Definition count_used_storage_cells
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.count_used_storage_cells.T}
-          (account_id
-            :
-            ref
-              ink_env.engine.off_chain.test_api.count_used_storage_cells.ImplT.AccountId)
+          `{ink_env.types.Environment.Trait T}
+          (account_id : ref ImplT.AccountId)
           : M (ink_env.error.Result usize) :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
@@ -15998,11 +13182,8 @@ Module engine.
       
       Definition set_block_timestamp
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.set_block_timestamp.T}
-          (value
-            :
-            ink_env.engine.off_chain.test_api.set_block_timestamp.ImplT.Timestamp)
+          `{ink_env.types.Environment.Trait T}
+          (value : ImplT.Timestamp)
           : M unit :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
@@ -16011,11 +13192,8 @@ Module engine.
       
       Definition set_block_number
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.set_block_number.T}
-          (value
-            :
-            ink_env.engine.off_chain.test_api.set_block_number.ImplT.BlockNumber)
+          `{ink_env.types.Environment.Trait T}
+          (value : ImplT.BlockNumber)
           : M unit :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
@@ -16024,14 +13202,12 @@ Module engine.
       
       Definition run_test
           {T F : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.run_test.T}
+          `{ink_env.types.Environment.Trait T}
           `{core.ops.function.FnOnce.Trait
-            ((ink_env.engine.off_chain.test_api.DefaultAccounts
-                ink_env.engine.off_chain.test_api.run_test.T))
-            ink_env.engine.off_chain.test_api.run_test.F}
+            ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
+            F}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          (f : ink_env.engine.off_chain.test_api.run_test.F)
+          (f : F)
           : M (ink_env.error.Result unit) :=
         let* default_accounts :=
           ink_env.engine.off_chain.test_api.default_accounts tt in
@@ -16082,38 +13258,22 @@ Module engine.
       
       Definition default_accounts
           {T : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.default_accounts.T}
+          `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
           (_ : unit)
-          :
-            M
-              (ink_env.engine.off_chain.test_api.DefaultAccounts
-                ink_env.engine.off_chain.test_api.default_accounts.T) :=
+          : M (ink_env.engine.off_chain.test_api.DefaultAccounts T) :=
         let* α0 := repeat 1 in
-        let* α1 :=
-          ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-            α0 in
+        let* α1 := ImplT.AccountId::["from"] α0 in
         let* α2 := repeat 2 in
-        let* α3 :=
-          ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-            α2 in
+        let* α3 := ImplT.AccountId::["from"] α2 in
         let* α4 := repeat 3 in
-        let* α5 :=
-          ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-            α4 in
+        let* α5 := ImplT.AccountId::["from"] α4 in
         let* α6 := repeat 4 in
-        let* α7 :=
-          ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-            α6 in
+        let* α7 := ImplT.AccountId::["from"] α6 in
         let* α8 := repeat 5 in
-        let* α9 :=
-          ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-            α8 in
+        let* α9 := ImplT.AccountId::["from"] α8 in
         let* α10 := repeat 6 in
-        let* α11 :=
-          ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-            α10 in
+        let* α11 := ImplT.AccountId::["from"] α10 in
         Pure
           {|
             ink_env.engine.off_chain.test_api.DefaultAccounts.alice := α1;
@@ -16126,24 +13286,12 @@ Module engine.
       
       Module DefaultAccounts.
         Record t : Set := {
-          alice
-            :
-            ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-          bob
-            :
-            ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-          charlie
-            :
-            ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-          django
-            :
-            ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-          eve
-            :
-            ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-          frank
-            :
-            ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
+          alice : ImplT.AccountId;
+          bob : ImplT.AccountId;
+          charlie : ImplT.AccountId;
+          django : ImplT.AccountId;
+          eve : ImplT.AccountId;
+          frank : ImplT.AccountId;
         }.
         
         Global Instance Get_alice : Notation.Dot "alice" := {
@@ -16175,24 +13323,14 @@ Module engine.
       
       Definition assert_contract_termination
           {T F : Set}
-          `{ink_env.types.Environment.Trait
-            ink_env.engine.off_chain.test_api.assert_contract_termination.T}
-          `{core.ops.function.FnMut.Trait
-            unit
-            ink_env.engine.off_chain.test_api.assert_contract_termination.F}
-          `{core.panic.unwind_safe.UnwindSafe.Trait
-            ink_env.engine.off_chain.test_api.assert_contract_termination.F}
+          `{ink_env.types.Environment.Trait T}
+          `{core.ops.function.FnMut.Trait unit F}
+          `{core.panic.unwind_safe.UnwindSafe.Trait F}
           `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
           `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
-          (should_terminate
-            :
-            ink_env.engine.off_chain.test_api.assert_contract_termination.F)
-          (expected_beneficiary
-            :
-            ink_env.engine.off_chain.test_api.assert_contract_termination.ImplT.AccountId)
-          (expected_value_transferred_to_beneficiary
-            :
-            ink_env.engine.off_chain.test_api.assert_contract_termination.ImplT.Balance)
+          (should_terminate : F)
+          (expected_beneficiary : ImplT.AccountId)
+          (expected_value_transferred_to_beneficiary : ImplT.Balance)
           : M unit :=
         let* value_any :=
           let* α0 := std.panic.catch_unwind should_terminate in
@@ -16291,11 +13429,8 @@ Module engine.
           Notation.double_colon := from;
         }.
         
-        Global Instance I
-            :
-            core.convert.From.Trait
-            Self
-            ink_engine.test_api.EmittedEvent :=
+        Global Instance I :
+            core.convert.From.Trait Self ink_engine.test_api.EmittedEvent :=
           {
           core.convert.From.from := from;
         }.
@@ -16350,11 +13485,8 @@ Module engine.
           Notation.double_colon := from;
         }.
         
-        Global Instance I
-            :
-            core.convert.From.Trait
-            Self
-            ink_engine.types.AccountError :=
+        Global Instance I :
+            core.convert.From.Trait Self ink_engine.types.AccountError :=
           {
           core.convert.From.from := from;
         }.
@@ -16376,11 +13508,8 @@ Module engine.
           Notation.double_colon := from;
         }.
         
-        Global Instance I
-            :
-            core.convert.From.Trait
-            Self
-            ink_engine.types.AccountError :=
+        Global Instance I :
+            core.convert.From.Trait Self ink_engine.types.AccountError :=
           {
           core.convert.From.from := from;
         }.
@@ -16402,9 +13531,7 @@ Module engine.
         Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
-      Definition on_instance
-          (f : ink_env.engine.off_chain.on_instance.F)
-          : M ink_env.engine.off_chain.on_instance.R :=
+      Definition on_instance (f : F) : M R :=
         ink_env.engine.off_chain.on_instance.INSTANCE.["with"]
           (fun instance =>
             let* α0 := instance.["borrow_mut"] in
@@ -16474,11 +13601,8 @@ Module engine.
         Notation.double_colon := from;
       }.
       
-      Global Instance I
-          :
-          core.convert.From.Trait
-          Self
-          ink_env.engine.off_chain.AccountError :=
+      Global Instance I :
+          core.convert.From.Trait Self ink_env.engine.off_chain.AccountError :=
         {
         core.convert.From.from := from;
       }.
@@ -16602,11 +13726,8 @@ Module engine.
         Notation.double_colon := from;
       }.
       
-      Global Instance I
-          :
-          core.convert.From.Trait
-          Self
-          parity_scale_codec.error.Error :=
+      Global Instance I :
+          core.convert.From.Trait Self parity_scale_codec.error.Error :=
         {
         core.convert.From.from := from;
       }.
@@ -16689,19 +13810,13 @@ Module engine.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition decode_instantiate_result
       {I E ContractRef R : Set}
-      `{parity_scale_codec.codec.Input.Trait
-        ink_env.engine.decode_instantiate_result.I}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.decode_instantiate_result.E}
-      `{ink_env.call.create_builder.FromAccountId.Trait
-        ink_env.engine.decode_instantiate_result.E
-        ink_env.engine.decode_instantiate_result.ContractRef}
-      `{ink_env.call.create_builder.ConstructorReturnType.Trait
-        ink_env.engine.decode_instantiate_result.ContractRef
-        ink_env.engine.decode_instantiate_result.R}
+      `{parity_scale_codec.codec.Input.Trait I}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
       (instantiate_result : ink_env.error.Result unit)
-      (out_address : mut_ref ink_env.engine.decode_instantiate_result.I)
-      (out_return_value : mut_ref ink_env.engine.decode_instantiate_result.I)
+      (out_address : mut_ref I)
+      (out_return_value : mut_ref I)
       :
         M
           (ink_env.error.Result
@@ -16732,16 +13847,11 @@ Module engine.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition decode_instantiate_err
       {I E ContractRef R : Set}
-      `{parity_scale_codec.codec.Input.Trait
-        ink_env.engine.decode_instantiate_err.I}
-      `{ink_env.types.Environment.Trait ink_env.engine.decode_instantiate_err.E}
-      `{ink_env.call.create_builder.FromAccountId.Trait
-        ink_env.engine.decode_instantiate_err.E
-        ink_env.engine.decode_instantiate_err.ContractRef}
-      `{ink_env.call.create_builder.ConstructorReturnType.Trait
-        ink_env.engine.decode_instantiate_err.ContractRef
-        ink_env.engine.decode_instantiate_err.R}
-      (out_return_value : mut_ref ink_env.engine.decode_instantiate_err.I)
+      `{parity_scale_codec.codec.Input.Trait I}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
+      (out_return_value : mut_ref I)
       :
         M
           (ink_env.error.Result
@@ -16836,10 +13946,7 @@ End engine.
 
 Module OnInstance.
   Class Trait (Self : Set) : Set := {
-    on_instance
-      :
-      ink_env.engine.OnInstance.on_instance.F ->
-      (M ink_env.engine.OnInstance.on_instance.R);
+    on_instance : F -> (M R);
   }.
   
   Global Instance Method_on_instance `(Trait) : Notation.Dot "on_instance" := {
@@ -16954,7 +14061,7 @@ Module off_chain.
       }.
     End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
     
-    Module Impl_ink_env.engine.off_chain.call_data.CallData_2.
+    Module Impl_ink_env_engine_off_chain_call_data_CallData_2.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Definition new (selector : ink_env.call.selector.Selector) : M Self :=
@@ -16969,10 +14076,7 @@ Module off_chain.
         Notation.double_colon := new;
       }.
       
-      Definition push_arg
-          (self : mut_ref Self)
-          (arg : ref ink_env.engine.off_chain.call_data.push_arg.A)
-          : M unit :=
+      Definition push_arg (self : mut_ref Self) (arg : ref A) : M unit :=
         arg.["encode_to"] (addr_of self.["bytes"]).
       
       Global Instance Method_push_arg : Notation.Dot "push_arg" := {
@@ -17034,7 +14138,7 @@ Module off_chain.
       Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
         Notation.dot := to_bytes;
       }.
-    End Impl_ink_env.engine.off_chain.call_data.CallData_2.
+    End Impl_ink_env_engine_off_chain_call_data_CallData_2.
     
     Module
         Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
@@ -17047,10 +14151,7 @@ Module off_chain.
         Notation.dot := size_hint;
       }.
       
-      Definition encode_to
-          (self : ref Self)
-          (dest : mut_ref ink_env.engine.off_chain.call_data.encode_to.T)
-          : M unit :=
+      Definition encode_to (self : ref Self) (dest : mut_ref T) : M unit :=
         let* _ :=
           let* α0 := self.["bytes"].["as_slice"] in
           dest.["write"] α0 in
@@ -17070,7 +14171,7 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Definition decode
-          (input : mut_ref ink_env.engine.off_chain.call_data.decode.I)
+          (input : mut_ref I)
           : M (core.result.Result Self parity_scale_codec.error.Error) :=
         let* remaining_len :=
           let* α0 := input.["remaining_len"] in
@@ -17317,7 +14418,7 @@ Module off_chain.
       
       Definition push_topic
           (self : mut_ref Self)
-          (topic_value : ref ink_env.engine.off_chain.impls.push_topic.T)
+          (topic_value : ref T)
           : M unit :=
         let* encoded := topic_value.["encode"] in
         let* len_encoded := encoded.["len"] in
@@ -17399,12 +14500,7 @@ Module off_chain.
         Notation.dot := output;
       }.
       
-      Global Instance I
-          E
-          :
-          ink_env.topics.TopicsBuilderBackend.Trait
-          Self
-          ink_env.engine.off_chain.impls.E :=
+      Global Instance I E : ink_env.topics.TopicsBuilderBackend.Trait Self E :=
         {
         ink_env.topics.TopicsBuilderBackend.expect := expect;
         ink_env.topics.TopicsBuilderBackend.push_topic := push_topic;
@@ -17413,7 +14509,7 @@ Module off_chain.
     End
       Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
     
-    Module Impl_ink_env.engine.off_chain.EnvInstance_2.
+    Module Impl_ink_env_engine_off_chain_EnvInstance_2.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
       Definition get_property
@@ -17421,10 +14517,7 @@ Module off_chain.
           (ext_fn
             :
             (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit)
-          :
-            M
-              (ink_env.error.Result
-                ink_env.engine.off_chain.impls.get_property.T) :=
+          : M (ink_env.error.Result T) :=
         let* full_scope := repeat 0 in
         let full_scope := addr_of (addr_of full_scope[RangeFull {|  |}]) in
         let* _ := ext_fn (addr_of self.["engine"]) full_scope in
@@ -17436,7 +14529,7 @@ Module off_chain.
       Global Instance Method_get_property : Notation.Dot "get_property" := {
         Notation.dot := get_property;
       }.
-    End Impl_ink_env.engine.off_chain.EnvInstance_2.
+    End Impl_ink_env_engine_off_chain_EnvInstance_2.
     
     Module
         Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
@@ -17444,8 +14537,8 @@ Module off_chain.
       
       Definition set_contract_storage
           (self : mut_ref Self)
-          (key : ref ink_env.engine.off_chain.impls.set_contract_storage.K)
-          (value : ref ink_env.engine.off_chain.impls.set_contract_storage.V)
+          (key : ref K)
+          (value : ref V)
           : M (core.option.Option u32) :=
         let* v := alloc.vec.Vec::["new"] tt in
         let* _ :=
@@ -17462,12 +14555,8 @@ Module off_chain.
       
       Definition get_contract_storage
           (self : mut_ref Self)
-          (key : ref ink_env.engine.off_chain.impls.get_contract_storage.K)
-          :
-            M
-              (ink_env.error.Result
-                (core.option.Option
-                  ink_env.engine.off_chain.impls.get_contract_storage.R)) :=
+          (key : ref K)
+          : M (ink_env.error.Result (core.option.Option R)) :=
         let* output := repeat 0 in
         let* _ :=
           let* α0 := key.["encode"] in
@@ -17505,12 +14594,8 @@ Module off_chain.
       
       Definition take_contract_storage
           (self : mut_ref Self)
-          (key : ref ink_env.engine.off_chain.impls.take_contract_storage.K)
-          :
-            M
-              (ink_env.error.Result
-                (core.option.Option
-                  ink_env.engine.off_chain.impls.take_contract_storage.R)) :=
+          (key : ref K)
+          : M (ink_env.error.Result (core.option.Option R)) :=
         let* output := repeat 0 in
         let* _ :=
           let* α0 := key.["encode"] in
@@ -17548,7 +14633,7 @@ Module off_chain.
       
       Definition contains_contract_storage
           (self : mut_ref Self)
-          (key : ref ink_env.engine.off_chain.impls.contains_contract_storage.K)
+          (key : ref K)
           : M (core.option.Option u32) :=
         let* α0 := key.["encode"] in
         self.["engine"].["contains_storage"] (addr_of α0).
@@ -17560,7 +14645,7 @@ Module off_chain.
       
       Definition clear_contract_storage
           (self : mut_ref Self)
-          (key : ref ink_env.engine.off_chain.impls.clear_contract_storage.K)
+          (key : ref K)
           : M (core.option.Option u32) :=
         let* α0 := key.["encode"] in
         self.["engine"].["clear_storage"] (addr_of α0).
@@ -17572,10 +14657,7 @@ Module off_chain.
       
       Definition decode_input
           (self : mut_ref Self)
-          :
-            M
-              (ink_env.error.Result
-                ink_env.engine.off_chain.impls.decode_input.T) :=
+          : M (ink_env.error.Result T) :=
         let* α0 :=
           format_arguments::["new_v1"]
             (addr_of
@@ -17591,7 +14673,7 @@ Module off_chain.
       Definition return_value
           (self : mut_ref Self)
           (_flags : ink_env.backend.ReturnFlags)
-          (_return_value : ref ink_env.engine.off_chain.impls.return_value.R)
+          (_return_value : ref R)
           : M Empty_set :=
         let* α0 :=
           format_arguments::["new_v1"]
@@ -17629,7 +14711,7 @@ Module off_chain.
       
       Definition hash_encoded
           (self : mut_ref Self)
-          (input : ref ink_env.engine.off_chain.impls.hash_encoded.T)
+          (input : ref T)
           (output : mut_ref ink_env.hash.HashOutput.Type)
           : M unit :=
         let* enc_input :=
@@ -17744,18 +14826,10 @@ Module off_chain.
       Definition call_chain_extension
           (self : mut_ref Self)
           (func_id : u32)
-          (input : ref ink_env.engine.off_chain.impls.call_chain_extension.I)
-          (status_to_result
-            :
-            ink_env.engine.off_chain.impls.call_chain_extension.F)
-          (decode_to_result
-            :
-            ink_env.engine.off_chain.impls.call_chain_extension.D)
-          :
-            M
-              (core.result.Result
-                ink_env.engine.off_chain.impls.call_chain_extension.T
-                ink_env.engine.off_chain.impls.call_chain_extension.E) :=
+          (input : ref I)
+          (status_to_result : F)
+          (decode_to_result : D)
+          : M (core.result.Result T E) :=
         let* enc_input :=
           let* α0 := parity_scale_codec.codec.Encode.encode input in
           Pure (addr_of α0[RangeFull {|  |}]) in
@@ -17849,9 +14923,7 @@ Module off_chain.
         Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
-      Definition caller
-          (self : mut_ref Self)
-          : M ink_env.engine.off_chain.impls.caller.ImplE.AccountId :=
+      Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
         let* α0 := self.["get_property"] ink_engine.ext.Engine::["caller"] in
         α0.["unwrap_or_else"]
           (fun error =>
@@ -17866,9 +14938,7 @@ Module off_chain.
         Notation.dot := caller;
       }.
       
-      Definition transferred_value
-          (self : mut_ref Self)
-          : M ink_env.engine.off_chain.impls.transferred_value.ImplE.Balance :=
+      Definition transferred_value (self : mut_ref Self) : M ImplE.Balance :=
         let* α0 :=
           self.["get_property"] ink_engine.ext.Engine::["value_transferred"] in
         α0.["unwrap_or_else"]
@@ -17900,9 +14970,7 @@ Module off_chain.
         Notation.dot := gas_left;
       }.
       
-      Definition block_timestamp
-          (self : mut_ref Self)
-          : M ink_env.engine.off_chain.impls.block_timestamp.ImplE.Timestamp :=
+      Definition block_timestamp (self : mut_ref Self) : M ImplE.Timestamp :=
         let* α0 :=
           self.["get_property"] ink_engine.ext.Engine::["block_timestamp"] in
         α0.["unwrap_or_else"]
@@ -17919,9 +14987,7 @@ Module off_chain.
         Notation.dot := block_timestamp;
       }.
       
-      Definition account_id
-          (self : mut_ref Self)
-          : M ink_env.engine.off_chain.impls.account_id.ImplE.AccountId :=
+      Definition account_id (self : mut_ref Self) : M ImplE.AccountId :=
         let* α0 := self.["get_property"] ink_engine.ext.Engine::["address"] in
         α0.["unwrap_or_else"]
           (fun error =>
@@ -17936,9 +15002,7 @@ Module off_chain.
         Notation.dot := account_id;
       }.
       
-      Definition balance
-          (self : mut_ref Self)
-          : M ink_env.engine.off_chain.impls.balance.ImplE.Balance :=
+      Definition balance (self : mut_ref Self) : M ImplE.Balance :=
         let* α0 := self.["get_property"] ink_engine.ext.Engine::["balance"] in
         α0.["unwrap_or_else"]
           (fun error =>
@@ -17953,9 +15017,7 @@ Module off_chain.
         Notation.dot := balance;
       }.
       
-      Definition block_number
-          (self : mut_ref Self)
-          : M ink_env.engine.off_chain.impls.block_number.ImplE.BlockNumber :=
+      Definition block_number (self : mut_ref Self) : M ImplE.BlockNumber :=
         let* α0 :=
           self.["get_property"] ink_engine.ext.Engine::["block_number"] in
         α0.["unwrap_or_else"]
@@ -17971,9 +15033,7 @@ Module off_chain.
         Notation.dot := block_number;
       }.
       
-      Definition minimum_balance
-          (self : mut_ref Self)
-          : M ink_env.engine.off_chain.impls.minimum_balance.ImplE.Balance :=
+      Definition minimum_balance (self : mut_ref Self) : M ImplE.Balance :=
         let* α0 :=
           self.["get_property"] ink_engine.ext.Engine::["minimum_balance"] in
         α0.["unwrap_or_else"]
@@ -17990,10 +15050,7 @@ Module off_chain.
         Notation.dot := minimum_balance;
       }.
       
-      Definition emit_event
-          (self : mut_ref Self)
-          (event : ink_env.engine.off_chain.impls.emit_event.Event)
-          : M unit :=
+      Definition emit_event (self : mut_ref Self) (event : Event) : M unit :=
         let* builder :=
           ink_env.engine.off_chain.impls.TopicsBuilder::["default"] tt in
         let* enc_topics :=
@@ -18018,16 +15075,11 @@ Module off_chain.
             :
             ref
               (ink_env.call.call_builder.CallParams
-                ink_env.engine.off_chain.impls.invoke_contract.E
-                (ink_env.call.call_builder.Call
-                  ink_env.engine.off_chain.impls.invoke_contract.E)
-                ink_env.engine.off_chain.impls.invoke_contract.Args
-                ink_env.engine.off_chain.impls.invoke_contract.R))
-          :
-            M
-              (ink_env.error.Result
-                (ink_primitives.MessageResult
-                  ink_env.engine.off_chain.impls.invoke_contract.R)) :=
+                E
+                (ink_env.call.call_builder.Call E)
+                Args
+                R))
+          : M (ink_env.error.Result (ink_primitives.MessageResult R)) :=
         let* _gas_limit := params.["gas_limit"] in
         let* _callee := params.["callee"] in
         let* _call_flags :=
@@ -18055,15 +15107,11 @@ Module off_chain.
             :
             ref
               (ink_env.call.call_builder.CallParams
-                ink_env.engine.off_chain.impls.invoke_contract_delegate.E
-                (ink_env.call.call_builder.DelegateCall
-                  ink_env.engine.off_chain.impls.invoke_contract_delegate.E)
-                ink_env.engine.off_chain.impls.invoke_contract_delegate.Args
-                ink_env.engine.off_chain.impls.invoke_contract_delegate.R))
-          :
-            M
-              (ink_env.error.Result
-                ink_env.engine.off_chain.impls.invoke_contract_delegate.R) :=
+                E
+                (ink_env.call.call_builder.DelegateCall E)
+                Args
+                R))
+          : M (ink_env.error.Result R) :=
         let* _code_hash := params.["code_hash"] in
         let* α0 :=
           format_arguments::["new_v1"]
@@ -18085,11 +15133,11 @@ Module off_chain.
             :
             ref
               (ink_env.call.create_builder.CreateParams
-                ink_env.engine.off_chain.impls.instantiate_contract.E
-                ink_env.engine.off_chain.impls.instantiate_contract.ContractRef
-                ink_env.engine.off_chain.impls.instantiate_contract.Args
-                ink_env.engine.off_chain.impls.instantiate_contract.Salt
-                ink_env.engine.off_chain.impls.instantiate_contract.R))
+                E
+                ContractRef
+                Args
+                Salt
+                R))
           :
             M
               (ink_env.error.Result
@@ -18116,9 +15164,7 @@ Module off_chain.
       
       Definition terminate_contract
           (self : mut_ref Self)
-          (beneficiary
-            :
-            ink_env.engine.off_chain.impls.terminate_contract.ImplE.AccountId)
+          (beneficiary : ImplE.AccountId)
           : M Empty_set :=
         let* buffer :=
           parity_scale_codec.codec.Encode.encode (addr_of beneficiary) in
@@ -18131,10 +15177,8 @@ Module off_chain.
       
       Definition transfer
           (self : mut_ref Self)
-          (destination
-            :
-            ink_env.engine.off_chain.impls.transfer.ImplE.AccountId)
-          (value : ink_env.engine.off_chain.impls.transfer.ImplE.Balance)
+          (destination : ImplE.AccountId)
+          (value : ImplE.Balance)
           : M (ink_env.error.Result unit) :=
         let* enc_destination :=
           let* α0 :=
@@ -18153,7 +15197,7 @@ Module off_chain.
       Definition weight_to_fee
           (self : mut_ref Self)
           (gas : u64)
-          : M ink_env.engine.off_chain.impls.weight_to_fee.ImplE.Balance :=
+          : M ImplE.Balance :=
         let* output := repeat 0 in
         let* _ :=
           self.["engine"].["weight_to_fee"]
@@ -18177,9 +15221,7 @@ Module off_chain.
       
       Definition is_contract
           (self : mut_ref Self)
-          (account
-            :
-            ref ink_env.engine.off_chain.impls.is_contract.ImplE.AccountId)
+          (account : ref ImplE.AccountId)
           : M bool :=
         let* α0 := parity_scale_codec.codec.Encode.encode (addr_of account) in
         self.["engine"].["is_contract"] α0.
@@ -18205,13 +15247,8 @@ Module off_chain.
       
       Definition code_hash
           (self : mut_ref Self)
-          (_account
-            :
-            ref ink_env.engine.off_chain.impls.code_hash.ImplE.AccountId)
-          :
-            M
-              (ink_env.error.Result
-                ink_env.engine.off_chain.impls.code_hash.ImplE.Hash) :=
+          (_account : ref ImplE.AccountId)
+          : M (ink_env.error.Result ImplE.Hash) :=
         let* α0 :=
           format_arguments::["new_v1"]
             (addr_of
@@ -18227,10 +15264,7 @@ Module off_chain.
       
       Definition own_code_hash
           (self : mut_ref Self)
-          :
-            M
-              (ink_env.error.Result
-                ink_env.engine.off_chain.impls.own_code_hash.ImplE.Hash) :=
+          : M (ink_env.error.Result ImplE.Hash) :=
         let* α0 :=
           format_arguments::["new_v1"]
             (addr_of
@@ -18246,7 +15280,7 @@ Module off_chain.
       
       Definition call_runtime
           (self : mut_ref Self)
-          (_call : ref ink_env.engine.off_chain.impls.call_runtime.Call)
+          (_call : ref Call)
           : M (ink_env.error.Result unit) :=
         let* α0 :=
           format_arguments::["new_v1"]
@@ -18336,14 +15370,9 @@ Module off_chain.
     
     Definition set_account_balance
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.set_account_balance.T}
-        (account_id
-          :
-          ink_env.engine.off_chain.test_api.set_account_balance.ImplT.AccountId)
-        (new_balance
-          :
-          ink_env.engine.off_chain.test_api.set_account_balance.ImplT.Balance)
+        `{ink_env.types.Environment.Trait T}
+        (account_id : ImplT.AccountId)
+        (new_balance : ImplT.Balance)
         : M unit :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
@@ -18355,15 +15384,9 @@ Module off_chain.
     
     Definition get_account_balance
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.get_account_balance.T}
-        (account_id
-          :
-          ink_env.engine.off_chain.test_api.get_account_balance.ImplT.AccountId)
-        :
-          M
-            (ink_env.error.Result
-              ink_env.engine.off_chain.test_api.get_account_balance.ImplT.Balance) :=
+        `{ink_env.types.Environment.Trait T}
+        (account_id : ImplT.AccountId)
+        : M (ink_env.error.Result ImplT.Balance) :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
           let* α0 :=
@@ -18373,11 +15396,8 @@ Module off_chain.
     
     Definition register_chain_extension
         {E : Set}
-        `{ink_engine.chain_extension.ChainExtension.Trait
-          ink_env.engine.off_chain.test_api.register_chain_extension.E}
-        (extension
-          :
-          ink_env.engine.off_chain.test_api.register_chain_extension.E)
+        `{ink_engine.chain_extension.ChainExtension.Trait E}
+        (extension : E)
         : M unit :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
@@ -18406,8 +15426,7 @@ Module off_chain.
     
     Definition advance_block
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.advance_block.T}
+        `{ink_env.types.Environment.Trait T}
         (_ : unit)
         : M unit :=
       ink_env.engine.OnInstance.on_instance
@@ -18417,10 +15436,9 @@ Module off_chain.
     
     Definition set_caller
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.set_caller.T}
+        `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        (caller : ink_env.engine.off_chain.test_api.set_caller.ImplT.AccountId)
+        (caller : ImplT.AccountId)
         : M unit :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
@@ -18432,10 +15450,9 @@ Module off_chain.
     
     Definition set_callee
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.set_callee.T}
+        `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        (callee : ink_env.engine.off_chain.test_api.set_callee.ImplT.AccountId)
+        (callee : ImplT.AccountId)
         : M unit :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
@@ -18447,12 +15464,9 @@ Module off_chain.
     
     Definition set_contract
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.set_contract.T}
+        `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        (contract
-          :
-          ink_env.engine.off_chain.test_api.set_contract.ImplT.AccountId)
+        (contract : ImplT.AccountId)
         : M unit :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
@@ -18464,12 +15478,9 @@ Module off_chain.
     
     Definition is_contract
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.is_contract.T}
+        `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        (contract
-          :
-          ink_env.engine.off_chain.test_api.is_contract.ImplT.AccountId)
+        (contract : ImplT.AccountId)
         : M bool :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
@@ -18479,10 +15490,9 @@ Module off_chain.
     
     Definition callee
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.callee.T}
+        `{ink_env.types.Environment.Trait T}
         (_ : unit)
-        : M ink_env.engine.off_chain.test_api.callee.ImplT.AccountId :=
+        : M ImplT.AccountId :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
           let* callee := instance.["engine"].["get_callee"] in
@@ -18500,12 +15510,8 @@ Module off_chain.
     
     Definition get_contract_storage_rw
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.get_contract_storage_rw.T}
-        (account_id
-          :
-          ref
-            ink_env.engine.off_chain.test_api.get_contract_storage_rw.ImplT.AccountId)
+        `{ink_env.types.Environment.Trait T}
+        (account_id : ref ImplT.AccountId)
         : M (usize * usize) :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
@@ -18515,11 +15521,8 @@ Module off_chain.
     
     Definition set_value_transferred
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.set_value_transferred.T}
-        (value
-          :
-          ink_env.engine.off_chain.test_api.set_value_transferred.ImplT.Balance)
+        `{ink_env.types.Environment.Trait T}
+        (value : ImplT.Balance)
         : M unit :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
@@ -18528,9 +15531,8 @@ Module off_chain.
     
     Definition transfer_in
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.transfer_in.T}
-        (value : ink_env.engine.off_chain.test_api.transfer_in.ImplT.Balance)
+        `{ink_env.types.Environment.Trait T}
+        (value : ImplT.Balance)
         : M unit :=
       let* _ :=
         ink_env.engine.OnInstance.on_instance
@@ -18562,12 +15564,8 @@ Module off_chain.
     
     Definition count_used_storage_cells
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.count_used_storage_cells.T}
-        (account_id
-          :
-          ref
-            ink_env.engine.off_chain.test_api.count_used_storage_cells.ImplT.AccountId)
+        `{ink_env.types.Environment.Trait T}
+        (account_id : ref ImplT.AccountId)
         : M (ink_env.error.Result usize) :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
@@ -18579,11 +15577,8 @@ Module off_chain.
     
     Definition set_block_timestamp
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.set_block_timestamp.T}
-        (value
-          :
-          ink_env.engine.off_chain.test_api.set_block_timestamp.ImplT.Timestamp)
+        `{ink_env.types.Environment.Trait T}
+        (value : ImplT.Timestamp)
         : M unit :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
@@ -18592,11 +15587,8 @@ Module off_chain.
     
     Definition set_block_number
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.set_block_number.T}
-        (value
-          :
-          ink_env.engine.off_chain.test_api.set_block_number.ImplT.BlockNumber)
+        `{ink_env.types.Environment.Trait T}
+        (value : ImplT.BlockNumber)
         : M unit :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
@@ -18605,14 +15597,12 @@ Module off_chain.
     
     Definition run_test
         {T F : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.run_test.T}
+        `{ink_env.types.Environment.Trait T}
         `{core.ops.function.FnOnce.Trait
-          ((ink_env.engine.off_chain.test_api.DefaultAccounts
-              ink_env.engine.off_chain.test_api.run_test.T))
-          ink_env.engine.off_chain.test_api.run_test.F}
+          ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
+          F}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        (f : ink_env.engine.off_chain.test_api.run_test.F)
+        (f : F)
         : M (ink_env.error.Result unit) :=
       let* default_accounts :=
         ink_env.engine.off_chain.test_api.default_accounts tt in
@@ -18663,38 +15653,22 @@ Module off_chain.
     
     Definition default_accounts
         {T : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.default_accounts.T}
+        `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
         (_ : unit)
-        :
-          M
-            (ink_env.engine.off_chain.test_api.DefaultAccounts
-              ink_env.engine.off_chain.test_api.default_accounts.T) :=
+        : M (ink_env.engine.off_chain.test_api.DefaultAccounts T) :=
       let* α0 := repeat 1 in
-      let* α1 :=
-        ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-          α0 in
+      let* α1 := ImplT.AccountId::["from"] α0 in
       let* α2 := repeat 2 in
-      let* α3 :=
-        ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-          α2 in
+      let* α3 := ImplT.AccountId::["from"] α2 in
       let* α4 := repeat 3 in
-      let* α5 :=
-        ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-          α4 in
+      let* α5 := ImplT.AccountId::["from"] α4 in
       let* α6 := repeat 4 in
-      let* α7 :=
-        ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-          α6 in
+      let* α7 := ImplT.AccountId::["from"] α6 in
       let* α8 := repeat 5 in
-      let* α9 :=
-        ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-          α8 in
+      let* α9 := ImplT.AccountId::["from"] α8 in
       let* α10 := repeat 6 in
-      let* α11 :=
-        ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-          α10 in
+      let* α11 := ImplT.AccountId::["from"] α10 in
       Pure
         {|
           ink_env.engine.off_chain.test_api.DefaultAccounts.alice := α1;
@@ -18707,20 +15681,12 @@ Module off_chain.
     
     Module DefaultAccounts.
       Record t : Set := {
-        alice
-          :
-          ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-        bob : ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-        charlie
-          :
-          ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-        django
-          :
-          ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-        eve : ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-        frank
-          :
-          ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
+        alice : ImplT.AccountId;
+        bob : ImplT.AccountId;
+        charlie : ImplT.AccountId;
+        django : ImplT.AccountId;
+        eve : ImplT.AccountId;
+        frank : ImplT.AccountId;
       }.
       
       Global Instance Get_alice : Notation.Dot "alice" := {
@@ -18752,24 +15718,14 @@ Module off_chain.
     
     Definition assert_contract_termination
         {T F : Set}
-        `{ink_env.types.Environment.Trait
-          ink_env.engine.off_chain.test_api.assert_contract_termination.T}
-        `{core.ops.function.FnMut.Trait
-          unit
-          ink_env.engine.off_chain.test_api.assert_contract_termination.F}
-        `{core.panic.unwind_safe.UnwindSafe.Trait
-          ink_env.engine.off_chain.test_api.assert_contract_termination.F}
+        `{ink_env.types.Environment.Trait T}
+        `{core.ops.function.FnMut.Trait unit F}
+        `{core.panic.unwind_safe.UnwindSafe.Trait F}
         `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
         `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
-        (should_terminate
-          :
-          ink_env.engine.off_chain.test_api.assert_contract_termination.F)
-        (expected_beneficiary
-          :
-          ink_env.engine.off_chain.test_api.assert_contract_termination.ImplT.AccountId)
-        (expected_value_transferred_to_beneficiary
-          :
-          ink_env.engine.off_chain.test_api.assert_contract_termination.ImplT.Balance)
+        (should_terminate : F)
+        (expected_beneficiary : ImplT.AccountId)
+        (expected_value_transferred_to_beneficiary : ImplT.Balance)
         : M unit :=
       let* value_any :=
         let* α0 := std.panic.catch_unwind should_terminate in
@@ -18867,11 +15823,8 @@ Module off_chain.
         Notation.double_colon := from;
       }.
       
-      Global Instance I
-          :
-          core.convert.From.Trait
-          Self
-          ink_engine.test_api.EmittedEvent :=
+      Global Instance I :
+          core.convert.From.Trait Self ink_engine.test_api.EmittedEvent :=
         {
         core.convert.From.from := from;
       }.
@@ -18926,11 +15879,8 @@ Module off_chain.
         Notation.double_colon := from;
       }.
       
-      Global Instance I
-          :
-          core.convert.From.Trait
-          Self
-          ink_engine.types.AccountError :=
+      Global Instance I :
+          core.convert.From.Trait Self ink_engine.types.AccountError :=
         {
         core.convert.From.from := from;
       }.
@@ -18952,11 +15902,8 @@ Module off_chain.
         Notation.double_colon := from;
       }.
       
-      Global Instance I
-          :
-          core.convert.From.Trait
-          Self
-          ink_engine.types.AccountError :=
+      Global Instance I :
+          core.convert.From.Trait Self ink_engine.types.AccountError :=
         {
         core.convert.From.from := from;
       }.
@@ -18978,9 +15925,7 @@ Module off_chain.
       Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
-    Definition on_instance
-        (f : ink_env.engine.off_chain.on_instance.F)
-        : M ink_env.engine.off_chain.on_instance.R :=
+    Definition on_instance (f : F) : M R :=
       ink_env.engine.off_chain.on_instance.INSTANCE.["with"]
         (fun instance =>
           let* α0 := instance.["borrow_mut"] in
@@ -19048,11 +15993,8 @@ Module off_chain.
       Notation.double_colon := from;
     }.
     
-    Global Instance I
-        :
-        core.convert.From.Trait
-        Self
-        ink_env.engine.off_chain.AccountError :=
+    Global Instance I :
+        core.convert.From.Trait Self ink_env.engine.off_chain.AccountError :=
       {
       core.convert.From.from := from;
     }.
@@ -19175,11 +16117,8 @@ Module off_chain.
       Notation.double_colon := from;
     }.
     
-    Global Instance I
-        :
-        core.convert.From.Trait
-        Self
-        parity_scale_codec.error.Error :=
+    Global Instance I :
+        core.convert.From.Trait Self parity_scale_codec.error.Error :=
       {
       core.convert.From.from := from;
     }.
@@ -19364,7 +16303,7 @@ Module call_data.
     }.
   End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
   
-  Module Impl_ink_env.engine.off_chain.call_data.CallData_3.
+  Module Impl_ink_env_engine_off_chain_call_data_CallData_3.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Definition new (selector : ink_env.call.selector.Selector) : M Self :=
@@ -19379,10 +16318,7 @@ Module call_data.
       Notation.double_colon := new;
     }.
     
-    Definition push_arg
-        (self : mut_ref Self)
-        (arg : ref ink_env.engine.off_chain.call_data.push_arg.A)
-        : M unit :=
+    Definition push_arg (self : mut_ref Self) (arg : ref A) : M unit :=
       arg.["encode_to"] (addr_of self.["bytes"]).
     
     Global Instance Method_push_arg : Notation.Dot "push_arg" := {
@@ -19442,7 +16378,7 @@ Module call_data.
     Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
       Notation.dot := to_bytes;
     }.
-  End Impl_ink_env.engine.off_chain.call_data.CallData_3.
+  End Impl_ink_env_engine_off_chain_call_data_CallData_3.
   
   Module
       Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
@@ -19454,10 +16390,7 @@ Module call_data.
       Notation.dot := size_hint;
     }.
     
-    Definition encode_to
-        (self : ref Self)
-        (dest : mut_ref ink_env.engine.off_chain.call_data.encode_to.T)
-        : M unit :=
+    Definition encode_to (self : ref Self) (dest : mut_ref T) : M unit :=
       let* _ :=
         let* α0 := self.["bytes"].["as_slice"] in
         dest.["write"] α0 in
@@ -19477,7 +16410,7 @@ Module call_data.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Definition decode
-        (input : mut_ref ink_env.engine.off_chain.call_data.decode.I)
+        (input : mut_ref I)
         : M (core.result.Result Self parity_scale_codec.error.Error) :=
       let* remaining_len :=
         let* α0 := input.["remaining_len"] in
@@ -19623,7 +16556,7 @@ Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
   }.
 End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
 
-Module Impl_ink_env.engine.off_chain.call_data.CallData_4.
+Module Impl_ink_env_engine_off_chain_call_data_CallData_4.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
   Definition new (selector : ink_env.call.selector.Selector) : M Self :=
@@ -19637,10 +16570,7 @@ Module Impl_ink_env.engine.off_chain.call_data.CallData_4.
     Notation.double_colon := new;
   }.
   
-  Definition push_arg
-      (self : mut_ref Self)
-      (arg : ref ink_env.engine.off_chain.call_data.push_arg.A)
-      : M unit :=
+  Definition push_arg (self : mut_ref Self) (arg : ref A) : M unit :=
     arg.["encode_to"] (addr_of self.["bytes"]).
   
   Global Instance Method_push_arg : Notation.Dot "push_arg" := {
@@ -19700,7 +16630,7 @@ Module Impl_ink_env.engine.off_chain.call_data.CallData_4.
   Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
     Notation.dot := to_bytes;
   }.
-End Impl_ink_env.engine.off_chain.call_data.CallData_4.
+End Impl_ink_env_engine_off_chain_call_data_CallData_4.
 
 Module
     Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
@@ -19712,10 +16642,7 @@ Module
     Notation.dot := size_hint;
   }.
   
-  Definition encode_to
-      (self : ref Self)
-      (dest : mut_ref ink_env.engine.off_chain.call_data.encode_to.T)
-      : M unit :=
+  Definition encode_to (self : ref Self) (dest : mut_ref T) : M unit :=
     let* _ :=
       let* α0 := self.["bytes"].["as_slice"] in
       dest.["write"] α0 in
@@ -19735,7 +16662,7 @@ Module
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
   Definition decode
-      (input : mut_ref ink_env.engine.off_chain.call_data.decode.I)
+      (input : mut_ref I)
       : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* remaining_len :=
       let* α0 := input.["remaining_len"] in
@@ -19980,7 +16907,7 @@ Module impls.
     
     Definition push_topic
         (self : mut_ref Self)
-        (topic_value : ref ink_env.engine.off_chain.impls.push_topic.T)
+        (topic_value : ref T)
         : M unit :=
       let* encoded := topic_value.["encode"] in
       let* len_encoded := encoded.["len"] in
@@ -20061,13 +16988,7 @@ Module impls.
       Notation.dot := output;
     }.
     
-    Global Instance I
-        E
-        :
-        ink_env.topics.TopicsBuilderBackend.Trait
-        Self
-        ink_env.engine.off_chain.impls.E :=
-      {
+    Global Instance I E : ink_env.topics.TopicsBuilderBackend.Trait Self E := {
       ink_env.topics.TopicsBuilderBackend.expect := expect;
       ink_env.topics.TopicsBuilderBackend.push_topic := push_topic;
       ink_env.topics.TopicsBuilderBackend.output := output;
@@ -20075,7 +16996,7 @@ Module impls.
   End
     Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
   
-  Module Impl_ink_env.engine.off_chain.EnvInstance_3.
+  Module Impl_ink_env_engine_off_chain_EnvInstance_3.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
     Definition get_property
@@ -20083,10 +17004,7 @@ Module impls.
         (ext_fn
           :
           (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit)
-        :
-          M
-            (ink_env.error.Result
-              ink_env.engine.off_chain.impls.get_property.T) :=
+        : M (ink_env.error.Result T) :=
       let* full_scope := repeat 0 in
       let full_scope := addr_of (addr_of full_scope[RangeFull {|  |}]) in
       let* _ := ext_fn (addr_of self.["engine"]) full_scope in
@@ -20098,7 +17016,7 @@ Module impls.
     Global Instance Method_get_property : Notation.Dot "get_property" := {
       Notation.dot := get_property;
     }.
-  End Impl_ink_env.engine.off_chain.EnvInstance_3.
+  End Impl_ink_env_engine_off_chain_EnvInstance_3.
   
   Module
       Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
@@ -20106,8 +17024,8 @@ Module impls.
     
     Definition set_contract_storage
         (self : mut_ref Self)
-        (key : ref ink_env.engine.off_chain.impls.set_contract_storage.K)
-        (value : ref ink_env.engine.off_chain.impls.set_contract_storage.V)
+        (key : ref K)
+        (value : ref V)
         : M (core.option.Option u32) :=
       let* v := alloc.vec.Vec::["new"] tt in
       let* _ := ink_storage_traits.storage.Storable.encode value (addr_of v) in
@@ -20123,12 +17041,8 @@ Module impls.
     
     Definition get_contract_storage
         (self : mut_ref Self)
-        (key : ref ink_env.engine.off_chain.impls.get_contract_storage.K)
-        :
-          M
-            (ink_env.error.Result
-              (core.option.Option
-                ink_env.engine.off_chain.impls.get_contract_storage.R)) :=
+        (key : ref K)
+        : M (ink_env.error.Result (core.option.Option R)) :=
       let* output := repeat 0 in
       let* _ :=
         let* α0 := key.["encode"] in
@@ -20166,12 +17080,8 @@ Module impls.
     
     Definition take_contract_storage
         (self : mut_ref Self)
-        (key : ref ink_env.engine.off_chain.impls.take_contract_storage.K)
-        :
-          M
-            (ink_env.error.Result
-              (core.option.Option
-                ink_env.engine.off_chain.impls.take_contract_storage.R)) :=
+        (key : ref K)
+        : M (ink_env.error.Result (core.option.Option R)) :=
       let* output := repeat 0 in
       let* _ :=
         let* α0 := key.["encode"] in
@@ -20209,7 +17119,7 @@ Module impls.
     
     Definition contains_contract_storage
         (self : mut_ref Self)
-        (key : ref ink_env.engine.off_chain.impls.contains_contract_storage.K)
+        (key : ref K)
         : M (core.option.Option u32) :=
       let* α0 := key.["encode"] in
       self.["engine"].["contains_storage"] (addr_of α0).
@@ -20221,7 +17131,7 @@ Module impls.
     
     Definition clear_contract_storage
         (self : mut_ref Self)
-        (key : ref ink_env.engine.off_chain.impls.clear_contract_storage.K)
+        (key : ref K)
         : M (core.option.Option u32) :=
       let* α0 := key.["encode"] in
       self.["engine"].["clear_storage"] (addr_of α0).
@@ -20233,10 +17143,7 @@ Module impls.
     
     Definition decode_input
         (self : mut_ref Self)
-        :
-          M
-            (ink_env.error.Result
-              ink_env.engine.off_chain.impls.decode_input.T) :=
+        : M (ink_env.error.Result T) :=
       let* α0 :=
         format_arguments::["new_v1"]
           (addr_of
@@ -20251,7 +17158,7 @@ Module impls.
     Definition return_value
         (self : mut_ref Self)
         (_flags : ink_env.backend.ReturnFlags)
-        (_return_value : ref ink_env.engine.off_chain.impls.return_value.R)
+        (_return_value : ref R)
         : M Empty_set :=
       let* α0 :=
         format_arguments::["new_v1"]
@@ -20289,7 +17196,7 @@ Module impls.
     
     Definition hash_encoded
         (self : mut_ref Self)
-        (input : ref ink_env.engine.off_chain.impls.hash_encoded.T)
+        (input : ref T)
         (output : mut_ref ink_env.hash.HashOutput.Type)
         : M unit :=
       let* enc_input :=
@@ -20403,18 +17310,10 @@ Module impls.
     Definition call_chain_extension
         (self : mut_ref Self)
         (func_id : u32)
-        (input : ref ink_env.engine.off_chain.impls.call_chain_extension.I)
-        (status_to_result
-          :
-          ink_env.engine.off_chain.impls.call_chain_extension.F)
-        (decode_to_result
-          :
-          ink_env.engine.off_chain.impls.call_chain_extension.D)
-        :
-          M
-            (core.result.Result
-              ink_env.engine.off_chain.impls.call_chain_extension.T
-              ink_env.engine.off_chain.impls.call_chain_extension.E) :=
+        (input : ref I)
+        (status_to_result : F)
+        (decode_to_result : D)
+        : M (core.result.Result T E) :=
       let* enc_input :=
         let* α0 := parity_scale_codec.codec.Encode.encode input in
         Pure (addr_of α0[RangeFull {|  |}]) in
@@ -20504,9 +17403,7 @@ Module impls.
       Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
-    Definition caller
-        (self : mut_ref Self)
-        : M ink_env.engine.off_chain.impls.caller.ImplE.AccountId :=
+    Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
       let* α0 := self.["get_property"] ink_engine.ext.Engine::["caller"] in
       α0.["unwrap_or_else"]
         (fun error =>
@@ -20521,9 +17418,7 @@ Module impls.
       Notation.dot := caller;
     }.
     
-    Definition transferred_value
-        (self : mut_ref Self)
-        : M ink_env.engine.off_chain.impls.transferred_value.ImplE.Balance :=
+    Definition transferred_value (self : mut_ref Self) : M ImplE.Balance :=
       let* α0 :=
         self.["get_property"] ink_engine.ext.Engine::["value_transferred"] in
       α0.["unwrap_or_else"]
@@ -20555,9 +17450,7 @@ Module impls.
       Notation.dot := gas_left;
     }.
     
-    Definition block_timestamp
-        (self : mut_ref Self)
-        : M ink_env.engine.off_chain.impls.block_timestamp.ImplE.Timestamp :=
+    Definition block_timestamp (self : mut_ref Self) : M ImplE.Timestamp :=
       let* α0 :=
         self.["get_property"] ink_engine.ext.Engine::["block_timestamp"] in
       α0.["unwrap_or_else"]
@@ -20573,9 +17466,7 @@ Module impls.
       Notation.dot := block_timestamp;
     }.
     
-    Definition account_id
-        (self : mut_ref Self)
-        : M ink_env.engine.off_chain.impls.account_id.ImplE.AccountId :=
+    Definition account_id (self : mut_ref Self) : M ImplE.AccountId :=
       let* α0 := self.["get_property"] ink_engine.ext.Engine::["address"] in
       α0.["unwrap_or_else"]
         (fun error =>
@@ -20590,9 +17481,7 @@ Module impls.
       Notation.dot := account_id;
     }.
     
-    Definition balance
-        (self : mut_ref Self)
-        : M ink_env.engine.off_chain.impls.balance.ImplE.Balance :=
+    Definition balance (self : mut_ref Self) : M ImplE.Balance :=
       let* α0 := self.["get_property"] ink_engine.ext.Engine::["balance"] in
       α0.["unwrap_or_else"]
         (fun error =>
@@ -20607,9 +17496,7 @@ Module impls.
       Notation.dot := balance;
     }.
     
-    Definition block_number
-        (self : mut_ref Self)
-        : M ink_env.engine.off_chain.impls.block_number.ImplE.BlockNumber :=
+    Definition block_number (self : mut_ref Self) : M ImplE.BlockNumber :=
       let* α0 :=
         self.["get_property"] ink_engine.ext.Engine::["block_number"] in
       α0.["unwrap_or_else"]
@@ -20625,9 +17512,7 @@ Module impls.
       Notation.dot := block_number;
     }.
     
-    Definition minimum_balance
-        (self : mut_ref Self)
-        : M ink_env.engine.off_chain.impls.minimum_balance.ImplE.Balance :=
+    Definition minimum_balance (self : mut_ref Self) : M ImplE.Balance :=
       let* α0 :=
         self.["get_property"] ink_engine.ext.Engine::["minimum_balance"] in
       α0.["unwrap_or_else"]
@@ -20643,10 +17528,7 @@ Module impls.
       Notation.dot := minimum_balance;
     }.
     
-    Definition emit_event
-        (self : mut_ref Self)
-        (event : ink_env.engine.off_chain.impls.emit_event.Event)
-        : M unit :=
+    Definition emit_event (self : mut_ref Self) (event : Event) : M unit :=
       let* builder :=
         ink_env.engine.off_chain.impls.TopicsBuilder::["default"] tt in
       let* enc_topics :=
@@ -20671,16 +17553,11 @@ Module impls.
           :
           ref
             (ink_env.call.call_builder.CallParams
-              ink_env.engine.off_chain.impls.invoke_contract.E
-              (ink_env.call.call_builder.Call
-                ink_env.engine.off_chain.impls.invoke_contract.E)
-              ink_env.engine.off_chain.impls.invoke_contract.Args
-              ink_env.engine.off_chain.impls.invoke_contract.R))
-        :
-          M
-            (ink_env.error.Result
-              (ink_primitives.MessageResult
-                ink_env.engine.off_chain.impls.invoke_contract.R)) :=
+              E
+              (ink_env.call.call_builder.Call E)
+              Args
+              R))
+        : M (ink_env.error.Result (ink_primitives.MessageResult R)) :=
       let* _gas_limit := params.["gas_limit"] in
       let* _callee := params.["callee"] in
       let* _call_flags :=
@@ -20707,15 +17584,11 @@ Module impls.
           :
           ref
             (ink_env.call.call_builder.CallParams
-              ink_env.engine.off_chain.impls.invoke_contract_delegate.E
-              (ink_env.call.call_builder.DelegateCall
-                ink_env.engine.off_chain.impls.invoke_contract_delegate.E)
-              ink_env.engine.off_chain.impls.invoke_contract_delegate.Args
-              ink_env.engine.off_chain.impls.invoke_contract_delegate.R))
-        :
-          M
-            (ink_env.error.Result
-              ink_env.engine.off_chain.impls.invoke_contract_delegate.R) :=
+              E
+              (ink_env.call.call_builder.DelegateCall E)
+              Args
+              R))
+        : M (ink_env.error.Result R) :=
       let* _code_hash := params.["code_hash"] in
       let* α0 :=
         format_arguments::["new_v1"]
@@ -20737,11 +17610,11 @@ Module impls.
           :
           ref
             (ink_env.call.create_builder.CreateParams
-              ink_env.engine.off_chain.impls.instantiate_contract.E
-              ink_env.engine.off_chain.impls.instantiate_contract.ContractRef
-              ink_env.engine.off_chain.impls.instantiate_contract.Args
-              ink_env.engine.off_chain.impls.instantiate_contract.Salt
-              ink_env.engine.off_chain.impls.instantiate_contract.R))
+              E
+              ContractRef
+              Args
+              Salt
+              R))
         :
           M
             (ink_env.error.Result
@@ -20768,9 +17641,7 @@ Module impls.
     
     Definition terminate_contract
         (self : mut_ref Self)
-        (beneficiary
-          :
-          ink_env.engine.off_chain.impls.terminate_contract.ImplE.AccountId)
+        (beneficiary : ImplE.AccountId)
         : M Empty_set :=
       let* buffer :=
         parity_scale_codec.codec.Encode.encode (addr_of beneficiary) in
@@ -20783,8 +17654,8 @@ Module impls.
     
     Definition transfer
         (self : mut_ref Self)
-        (destination : ink_env.engine.off_chain.impls.transfer.ImplE.AccountId)
-        (value : ink_env.engine.off_chain.impls.transfer.ImplE.Balance)
+        (destination : ImplE.AccountId)
+        (value : ImplE.Balance)
         : M (ink_env.error.Result unit) :=
       let* enc_destination :=
         let* α0 :=
@@ -20803,7 +17674,7 @@ Module impls.
     Definition weight_to_fee
         (self : mut_ref Self)
         (gas : u64)
-        : M ink_env.engine.off_chain.impls.weight_to_fee.ImplE.Balance :=
+        : M ImplE.Balance :=
       let* output := repeat 0 in
       let* _ :=
         self.["engine"].["weight_to_fee"]
@@ -20827,9 +17698,7 @@ Module impls.
     
     Definition is_contract
         (self : mut_ref Self)
-        (account
-          :
-          ref ink_env.engine.off_chain.impls.is_contract.ImplE.AccountId)
+        (account : ref ImplE.AccountId)
         : M bool :=
       let* α0 := parity_scale_codec.codec.Encode.encode (addr_of account) in
       self.["engine"].["is_contract"] α0.
@@ -20855,13 +17724,8 @@ Module impls.
     
     Definition code_hash
         (self : mut_ref Self)
-        (_account
-          :
-          ref ink_env.engine.off_chain.impls.code_hash.ImplE.AccountId)
-        :
-          M
-            (ink_env.error.Result
-              ink_env.engine.off_chain.impls.code_hash.ImplE.Hash) :=
+        (_account : ref ImplE.AccountId)
+        : M (ink_env.error.Result ImplE.Hash) :=
       let* α0 :=
         format_arguments::["new_v1"]
           (addr_of
@@ -20877,10 +17741,7 @@ Module impls.
     
     Definition own_code_hash
         (self : mut_ref Self)
-        :
-          M
-            (ink_env.error.Result
-              ink_env.engine.off_chain.impls.own_code_hash.ImplE.Hash) :=
+        : M (ink_env.error.Result ImplE.Hash) :=
       let* α0 :=
         format_arguments::["new_v1"]
           (addr_of
@@ -20896,7 +17757,7 @@ Module impls.
     
     Definition call_runtime
         (self : mut_ref Self)
-        (_call : ref ink_env.engine.off_chain.impls.call_runtime.Call)
+        (_call : ref Call)
         : M (ink_env.error.Result unit) :=
       let* α0 :=
         format_arguments::["new_v1"]
@@ -20989,38 +17850,28 @@ Module TypeEq.
   }.
 End TypeEq.
 
-Module
-    Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_ink_env_engine_off_chain_impls_hash___T.
-  Definition Self := ink_env.engine.off_chain.impls.hash._.T.
+Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
+  Definition Self := T.
   
   Definition This : Set := Self.
   
   Global Instance I
-      T
-      :
-      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait
-      Self :=
+      T :
+      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self :=
     {
   }.
-End
-  Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_ink_env_engine_off_chain_impls_hash___T.
+End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 
 Definition assert_type_eq_all
     {T U : Set}
-    `{core.marker.Sized.Trait
-      ink_env.engine.off_chain.impls.hash._.assert_type_eq_all.T}
-    `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait
-      ink_env.engine.off_chain.impls.hash._.assert_type_eq_all.T}
-    `{core.marker.Sized.Trait
-      ink_env.engine.off_chain.impls.hash._.assert_type_eq_all.U}
+    `{core.marker.Sized.Trait T}
+    `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
+    `{core.marker.Sized.Trait U}
     (_ : unit)
     : M unit :=
   Pure tt.
 
-Definition as_array
-    {T : Set}
-    (slice : mut_ref Slice)
-    : M (mut_ref list ink_env.engine.off_chain.impls.hash.as_array.T) :=
+Definition as_array {T : Set} (slice : mut_ref Slice) : M (mut_ref list T) :=
   let* α0 := slice.["as_mut_ptr"] in
   let* α1 := (cast α0 (mut_ref list _)).["deref"] in
   Pure (addr_of α1).
@@ -21071,38 +17922,28 @@ Module TypeEq.
   }.
 End TypeEq.
 
-Module
-    Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_ink_env_engine_off_chain_impls_hash___T.
-  Definition Self := ink_env.engine.off_chain.impls.hash._.T.
+Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
+  Definition Self := T.
   
   Definition This : Set := Self.
   
   Global Instance I
-      T
-      :
-      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait
-      Self :=
+      T :
+      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self :=
     {
   }.
-End
-  Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_ink_env_engine_off_chain_impls_hash___T.
+End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 
 Definition assert_type_eq_all
     {T U : Set}
-    `{core.marker.Sized.Trait
-      ink_env.engine.off_chain.impls.hash._.assert_type_eq_all.T}
-    `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait
-      ink_env.engine.off_chain.impls.hash._.assert_type_eq_all.T}
-    `{core.marker.Sized.Trait
-      ink_env.engine.off_chain.impls.hash._.assert_type_eq_all.U}
+    `{core.marker.Sized.Trait T}
+    `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
+    `{core.marker.Sized.Trait U}
     (_ : unit)
     : M unit :=
   Pure tt.
 
-Definition as_array
-    {T : Set}
-    (slice : mut_ref Slice)
-    : M (mut_ref list ink_env.engine.off_chain.impls.hash.as_array.T) :=
+Definition as_array {T : Set} (slice : mut_ref Slice) : M (mut_ref list T) :=
   let* α0 := slice.["as_mut_ptr"] in
   let* α1 := (cast α0 (mut_ref list _)).["deref"] in
   Pure (addr_of α1).
@@ -21153,38 +17994,28 @@ Module TypeEq.
   }.
 End TypeEq.
 
-Module
-    Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_ink_env_engine_off_chain_impls_hash___T.
-  Definition Self := ink_env.engine.off_chain.impls.hash._.T.
+Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
+  Definition Self := T.
   
   Definition This : Set := Self.
   
   Global Instance I
-      T
-      :
-      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait
-      Self :=
+      T :
+      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self :=
     {
   }.
-End
-  Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_ink_env_engine_off_chain_impls_hash___T.
+End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 
 Definition assert_type_eq_all
     {T U : Set}
-    `{core.marker.Sized.Trait
-      ink_env.engine.off_chain.impls.hash._.assert_type_eq_all.T}
-    `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait
-      ink_env.engine.off_chain.impls.hash._.assert_type_eq_all.T}
-    `{core.marker.Sized.Trait
-      ink_env.engine.off_chain.impls.hash._.assert_type_eq_all.U}
+    `{core.marker.Sized.Trait T}
+    `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
+    `{core.marker.Sized.Trait U}
     (_ : unit)
     : M unit :=
   Pure tt.
 
-Definition as_array
-    {T : Set}
-    (slice : mut_ref Slice)
-    : M (mut_ref list ink_env.engine.off_chain.impls.hash.as_array.T) :=
+Definition as_array {T : Set} (slice : mut_ref Slice) : M (mut_ref list T) :=
   let* α0 := slice.["as_mut_ptr"] in
   let* α1 := (cast α0 (mut_ref list _)).["deref"] in
   Pure (addr_of α1).
@@ -21235,38 +18066,28 @@ Module TypeEq.
   }.
 End TypeEq.
 
-Module
-    Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_ink_env_engine_off_chain_impls_hash___T.
-  Definition Self := ink_env.engine.off_chain.impls.hash._.T.
+Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
+  Definition Self := T.
   
   Definition This : Set := Self.
   
   Global Instance I
-      T
-      :
-      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait
-      Self :=
+      T :
+      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self :=
     {
   }.
-End
-  Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_ink_env_engine_off_chain_impls_hash___T.
+End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 
 Definition assert_type_eq_all
     {T U : Set}
-    `{core.marker.Sized.Trait
-      ink_env.engine.off_chain.impls.hash._.assert_type_eq_all.T}
-    `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait
-      ink_env.engine.off_chain.impls.hash._.assert_type_eq_all.T}
-    `{core.marker.Sized.Trait
-      ink_env.engine.off_chain.impls.hash._.assert_type_eq_all.U}
+    `{core.marker.Sized.Trait T}
+    `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
+    `{core.marker.Sized.Trait U}
     (_ : unit)
     : M unit :=
   Pure tt.
 
-Definition as_array
-    {T : Set}
-    (slice : mut_ref Slice)
-    : M (mut_ref list ink_env.engine.off_chain.impls.hash.as_array.T) :=
+Definition as_array {T : Set} (slice : mut_ref Slice) : M (mut_ref list T) :=
   let* α0 := slice.["as_mut_ptr"] in
   let* α1 := (cast α0 (mut_ref list _)).["deref"] in
   Pure (addr_of α1).
@@ -21345,10 +18166,7 @@ Module
     Notation.dot := expect;
   }.
   
-  Definition push_topic
-      (self : mut_ref Self)
-      (topic_value : ref ink_env.engine.off_chain.impls.push_topic.T)
-      : M unit :=
+  Definition push_topic (self : mut_ref Self) (topic_value : ref T) : M unit :=
     let* encoded := topic_value.["encode"] in
     let* len_encoded := encoded.["len"] in
     let result := ink_env.types.Environment.Hash::["CLEAR_HASH"] in
@@ -21427,13 +18245,7 @@ Module
     Notation.dot := output;
   }.
   
-  Global Instance I
-      E
-      :
-      ink_env.topics.TopicsBuilderBackend.Trait
-      Self
-      ink_env.engine.off_chain.impls.E :=
-    {
+  Global Instance I E : ink_env.topics.TopicsBuilderBackend.Trait Self E := {
     ink_env.topics.TopicsBuilderBackend.expect := expect;
     ink_env.topics.TopicsBuilderBackend.push_topic := push_topic;
     ink_env.topics.TopicsBuilderBackend.output := output;
@@ -21441,7 +18253,7 @@ Module
 End
   Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
 
-Module Impl_ink_env.engine.off_chain.EnvInstance_4.
+Module Impl_ink_env_engine_off_chain_EnvInstance_4.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
   Definition get_property
@@ -21449,10 +18261,7 @@ Module Impl_ink_env.engine.off_chain.EnvInstance_4.
       (ext_fn
         :
         (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit)
-      :
-        M
-          (ink_env.error.Result
-            ink_env.engine.off_chain.impls.get_property.T) :=
+      : M (ink_env.error.Result T) :=
     let* full_scope := repeat 0 in
     let full_scope := addr_of (addr_of full_scope[RangeFull {|  |}]) in
     let* _ := ext_fn (addr_of self.["engine"]) full_scope in
@@ -21464,15 +18273,15 @@ Module Impl_ink_env.engine.off_chain.EnvInstance_4.
   Global Instance Method_get_property : Notation.Dot "get_property" := {
     Notation.dot := get_property;
   }.
-End Impl_ink_env.engine.off_chain.EnvInstance_4.
+End Impl_ink_env_engine_off_chain_EnvInstance_4.
 
 Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
   Definition set_contract_storage
       (self : mut_ref Self)
-      (key : ref ink_env.engine.off_chain.impls.set_contract_storage.K)
-      (value : ref ink_env.engine.off_chain.impls.set_contract_storage.V)
+      (key : ref K)
+      (value : ref V)
       : M (core.option.Option u32) :=
     let* v := alloc.vec.Vec::["new"] tt in
     let* _ := ink_storage_traits.storage.Storable.encode value (addr_of v) in
@@ -21486,12 +18295,8 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   
   Definition get_contract_storage
       (self : mut_ref Self)
-      (key : ref ink_env.engine.off_chain.impls.get_contract_storage.K)
-      :
-        M
-          (ink_env.error.Result
-            (core.option.Option
-              ink_env.engine.off_chain.impls.get_contract_storage.R)) :=
+      (key : ref K)
+      : M (ink_env.error.Result (core.option.Option R)) :=
     let* output := repeat 0 in
     let* _ :=
       let* α0 := key.["encode"] in
@@ -21529,12 +18334,8 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   
   Definition take_contract_storage
       (self : mut_ref Self)
-      (key : ref ink_env.engine.off_chain.impls.take_contract_storage.K)
-      :
-        M
-          (ink_env.error.Result
-            (core.option.Option
-              ink_env.engine.off_chain.impls.take_contract_storage.R)) :=
+      (key : ref K)
+      : M (ink_env.error.Result (core.option.Option R)) :=
     let* output := repeat 0 in
     let* _ :=
       let* α0 := key.["encode"] in
@@ -21572,7 +18373,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   
   Definition contains_contract_storage
       (self : mut_ref Self)
-      (key : ref ink_env.engine.off_chain.impls.contains_contract_storage.K)
+      (key : ref K)
       : M (core.option.Option u32) :=
     let* α0 := key.["encode"] in
     self.["engine"].["contains_storage"] (addr_of α0).
@@ -21584,7 +18385,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   
   Definition clear_contract_storage
       (self : mut_ref Self)
-      (key : ref ink_env.engine.off_chain.impls.clear_contract_storage.K)
+      (key : ref K)
       : M (core.option.Option u32) :=
     let* α0 := key.["encode"] in
     self.["engine"].["clear_storage"] (addr_of α0).
@@ -21594,12 +18395,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
     Notation.dot := clear_contract_storage;
   }.
   
-  Definition decode_input
-      (self : mut_ref Self)
-      :
-        M
-          (ink_env.error.Result
-            ink_env.engine.off_chain.impls.decode_input.T) :=
+  Definition decode_input (self : mut_ref Self) : M (ink_env.error.Result T) :=
     let* α0 :=
       format_arguments::["new_v1"]
         (addr_of
@@ -21614,7 +18410,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   Definition return_value
       (self : mut_ref Self)
       (_flags : ink_env.backend.ReturnFlags)
-      (_return_value : ref ink_env.engine.off_chain.impls.return_value.R)
+      (_return_value : ref R)
       : M Empty_set :=
     let* α0 :=
       format_arguments::["new_v1"]
@@ -21649,7 +18445,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   
   Definition hash_encoded
       (self : mut_ref Self)
-      (input : ref ink_env.engine.off_chain.impls.hash_encoded.T)
+      (input : ref T)
       (output : mut_ref ink_env.hash.HashOutput.Type)
       : M unit :=
     let* enc_input :=
@@ -21763,14 +18559,10 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   Definition call_chain_extension
       (self : mut_ref Self)
       (func_id : u32)
-      (input : ref ink_env.engine.off_chain.impls.call_chain_extension.I)
-      (status_to_result : ink_env.engine.off_chain.impls.call_chain_extension.F)
-      (decode_to_result : ink_env.engine.off_chain.impls.call_chain_extension.D)
-      :
-        M
-          (core.result.Result
-            ink_env.engine.off_chain.impls.call_chain_extension.T
-            ink_env.engine.off_chain.impls.call_chain_extension.E) :=
+      (input : ref I)
+      (status_to_result : F)
+      (decode_to_result : D)
+      : M (core.result.Result T E) :=
     let* enc_input :=
       let* α0 := parity_scale_codec.codec.Encode.encode input in
       Pure (addr_of α0[RangeFull {|  |}]) in
@@ -21858,9 +18650,7 @@ Module
     Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
-  Definition caller
-      (self : mut_ref Self)
-      : M ink_env.engine.off_chain.impls.caller.ImplE.AccountId :=
+  Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
     let* α0 := self.["get_property"] ink_engine.ext.Engine::["caller"] in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -21875,9 +18665,7 @@ Module
     Notation.dot := caller;
   }.
   
-  Definition transferred_value
-      (self : mut_ref Self)
-      : M ink_env.engine.off_chain.impls.transferred_value.ImplE.Balance :=
+  Definition transferred_value (self : mut_ref Self) : M ImplE.Balance :=
     let* α0 :=
       self.["get_property"] ink_engine.ext.Engine::["value_transferred"] in
     α0.["unwrap_or_else"]
@@ -21909,9 +18697,7 @@ Module
     Notation.dot := gas_left;
   }.
   
-  Definition block_timestamp
-      (self : mut_ref Self)
-      : M ink_env.engine.off_chain.impls.block_timestamp.ImplE.Timestamp :=
+  Definition block_timestamp (self : mut_ref Self) : M ImplE.Timestamp :=
     let* α0 :=
       self.["get_property"] ink_engine.ext.Engine::["block_timestamp"] in
     α0.["unwrap_or_else"]
@@ -21927,9 +18713,7 @@ Module
     Notation.dot := block_timestamp;
   }.
   
-  Definition account_id
-      (self : mut_ref Self)
-      : M ink_env.engine.off_chain.impls.account_id.ImplE.AccountId :=
+  Definition account_id (self : mut_ref Self) : M ImplE.AccountId :=
     let* α0 := self.["get_property"] ink_engine.ext.Engine::["address"] in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -21944,9 +18728,7 @@ Module
     Notation.dot := account_id;
   }.
   
-  Definition balance
-      (self : mut_ref Self)
-      : M ink_env.engine.off_chain.impls.balance.ImplE.Balance :=
+  Definition balance (self : mut_ref Self) : M ImplE.Balance :=
     let* α0 := self.["get_property"] ink_engine.ext.Engine::["balance"] in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -21961,9 +18743,7 @@ Module
     Notation.dot := balance;
   }.
   
-  Definition block_number
-      (self : mut_ref Self)
-      : M ink_env.engine.off_chain.impls.block_number.ImplE.BlockNumber :=
+  Definition block_number (self : mut_ref Self) : M ImplE.BlockNumber :=
     let* α0 := self.["get_property"] ink_engine.ext.Engine::["block_number"] in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -21978,9 +18758,7 @@ Module
     Notation.dot := block_number;
   }.
   
-  Definition minimum_balance
-      (self : mut_ref Self)
-      : M ink_env.engine.off_chain.impls.minimum_balance.ImplE.Balance :=
+  Definition minimum_balance (self : mut_ref Self) : M ImplE.Balance :=
     let* α0 :=
       self.["get_property"] ink_engine.ext.Engine::["minimum_balance"] in
     α0.["unwrap_or_else"]
@@ -21996,10 +18774,7 @@ Module
     Notation.dot := minimum_balance;
   }.
   
-  Definition emit_event
-      (self : mut_ref Self)
-      (event : ink_env.engine.off_chain.impls.emit_event.Event)
-      : M unit :=
+  Definition emit_event (self : mut_ref Self) (event : Event) : M unit :=
     let* builder :=
       ink_env.engine.off_chain.impls.TopicsBuilder::["default"] tt in
     let* enc_topics :=
@@ -22024,16 +18799,11 @@ Module
         :
         ref
           (ink_env.call.call_builder.CallParams
-            ink_env.engine.off_chain.impls.invoke_contract.E
-            (ink_env.call.call_builder.Call
-              ink_env.engine.off_chain.impls.invoke_contract.E)
-            ink_env.engine.off_chain.impls.invoke_contract.Args
-            ink_env.engine.off_chain.impls.invoke_contract.R))
-      :
-        M
-          (ink_env.error.Result
-            (ink_primitives.MessageResult
-              ink_env.engine.off_chain.impls.invoke_contract.R)) :=
+            E
+            (ink_env.call.call_builder.Call E)
+            Args
+            R))
+      : M (ink_env.error.Result (ink_primitives.MessageResult R)) :=
     let* _gas_limit := params.["gas_limit"] in
     let* _callee := params.["callee"] in
     let* _call_flags :=
@@ -22060,15 +18830,11 @@ Module
         :
         ref
           (ink_env.call.call_builder.CallParams
-            ink_env.engine.off_chain.impls.invoke_contract_delegate.E
-            (ink_env.call.call_builder.DelegateCall
-              ink_env.engine.off_chain.impls.invoke_contract_delegate.E)
-            ink_env.engine.off_chain.impls.invoke_contract_delegate.Args
-            ink_env.engine.off_chain.impls.invoke_contract_delegate.R))
-      :
-        M
-          (ink_env.error.Result
-            ink_env.engine.off_chain.impls.invoke_contract_delegate.R) :=
+            E
+            (ink_env.call.call_builder.DelegateCall E)
+            Args
+            R))
+      : M (ink_env.error.Result R) :=
     let* _code_hash := params.["code_hash"] in
     let* α0 :=
       format_arguments::["new_v1"]
@@ -22089,12 +18855,7 @@ Module
       (params
         :
         ref
-          (ink_env.call.create_builder.CreateParams
-            ink_env.engine.off_chain.impls.instantiate_contract.E
-            ink_env.engine.off_chain.impls.instantiate_contract.ContractRef
-            ink_env.engine.off_chain.impls.instantiate_contract.Args
-            ink_env.engine.off_chain.impls.instantiate_contract.Salt
-            ink_env.engine.off_chain.impls.instantiate_contract.R))
+          (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R))
       :
         M
           (ink_env.error.Result
@@ -22121,9 +18882,7 @@ Module
   
   Definition terminate_contract
       (self : mut_ref Self)
-      (beneficiary
-        :
-        ink_env.engine.off_chain.impls.terminate_contract.ImplE.AccountId)
+      (beneficiary : ImplE.AccountId)
       : M Empty_set :=
     let* buffer :=
       parity_scale_codec.codec.Encode.encode (addr_of beneficiary) in
@@ -22136,8 +18895,8 @@ Module
   
   Definition transfer
       (self : mut_ref Self)
-      (destination : ink_env.engine.off_chain.impls.transfer.ImplE.AccountId)
-      (value : ink_env.engine.off_chain.impls.transfer.ImplE.Balance)
+      (destination : ImplE.AccountId)
+      (value : ImplE.Balance)
       : M (ink_env.error.Result unit) :=
     let* enc_destination :=
       let* α0 := parity_scale_codec.codec.Encode.encode (addr_of destination) in
@@ -22155,7 +18914,7 @@ Module
   Definition weight_to_fee
       (self : mut_ref Self)
       (gas : u64)
-      : M ink_env.engine.off_chain.impls.weight_to_fee.ImplE.Balance :=
+      : M ImplE.Balance :=
     let* output := repeat 0 in
     let* _ :=
       self.["engine"].["weight_to_fee"]
@@ -22179,7 +18938,7 @@ Module
   
   Definition is_contract
       (self : mut_ref Self)
-      (account : ref ink_env.engine.off_chain.impls.is_contract.ImplE.AccountId)
+      (account : ref ImplE.AccountId)
       : M bool :=
     let* α0 := parity_scale_codec.codec.Encode.encode (addr_of account) in
     self.["engine"].["is_contract"] α0.
@@ -22204,11 +18963,8 @@ Module
   
   Definition code_hash
       (self : mut_ref Self)
-      (_account : ref ink_env.engine.off_chain.impls.code_hash.ImplE.AccountId)
-      :
-        M
-          (ink_env.error.Result
-            ink_env.engine.off_chain.impls.code_hash.ImplE.Hash) :=
+      (_account : ref ImplE.AccountId)
+      : M (ink_env.error.Result ImplE.Hash) :=
     let* α0 :=
       format_arguments::["new_v1"]
         (addr_of
@@ -22224,10 +18980,7 @@ Module
   
   Definition own_code_hash
       (self : mut_ref Self)
-      :
-        M
-          (ink_env.error.Result
-            ink_env.engine.off_chain.impls.own_code_hash.ImplE.Hash) :=
+      : M (ink_env.error.Result ImplE.Hash) :=
     let* α0 :=
       format_arguments::["new_v1"]
         (addr_of
@@ -22243,7 +18996,7 @@ Module
   
   Definition call_runtime
       (self : mut_ref Self)
-      (_call : ref ink_env.engine.off_chain.impls.call_runtime.Call)
+      (_call : ref Call)
       : M (ink_env.error.Result unit) :=
     let* α0 :=
       format_arguments::["new_v1"]
@@ -22329,14 +19082,9 @@ Module test_api.
   
   Definition set_account_balance
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.set_account_balance.T}
-      (account_id
-        :
-        ink_env.engine.off_chain.test_api.set_account_balance.ImplT.AccountId)
-      (new_balance
-        :
-        ink_env.engine.off_chain.test_api.set_account_balance.ImplT.Balance)
+      `{ink_env.types.Environment.Trait T}
+      (account_id : ImplT.AccountId)
+      (new_balance : ImplT.Balance)
       : M unit :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -22348,15 +19096,9 @@ Module test_api.
   
   Definition get_account_balance
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.get_account_balance.T}
-      (account_id
-        :
-        ink_env.engine.off_chain.test_api.get_account_balance.ImplT.AccountId)
-      :
-        M
-          (ink_env.error.Result
-            ink_env.engine.off_chain.test_api.get_account_balance.ImplT.Balance) :=
+      `{ink_env.types.Environment.Trait T}
+      (account_id : ImplT.AccountId)
+      : M (ink_env.error.Result ImplT.Balance) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         let* α0 :=
@@ -22366,9 +19108,8 @@ Module test_api.
   
   Definition register_chain_extension
       {E : Set}
-      `{ink_engine.chain_extension.ChainExtension.Trait
-        ink_env.engine.off_chain.test_api.register_chain_extension.E}
-      (extension : ink_env.engine.off_chain.test_api.register_chain_extension.E)
+      `{ink_engine.chain_extension.ChainExtension.Trait E}
+      (extension : E)
       : M unit :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -22397,8 +19138,7 @@ Module test_api.
   
   Definition advance_block
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.advance_block.T}
+      `{ink_env.types.Environment.Trait T}
       (_ : unit)
       : M unit :=
     ink_env.engine.OnInstance.on_instance
@@ -22408,10 +19148,9 @@ Module test_api.
   
   Definition set_caller
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.set_caller.T}
+      `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      (caller : ink_env.engine.off_chain.test_api.set_caller.ImplT.AccountId)
+      (caller : ImplT.AccountId)
       : M unit :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -22422,10 +19161,9 @@ Module test_api.
   
   Definition set_callee
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.set_callee.T}
+      `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      (callee : ink_env.engine.off_chain.test_api.set_callee.ImplT.AccountId)
+      (callee : ImplT.AccountId)
       : M unit :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -22436,12 +19174,9 @@ Module test_api.
   
   Definition set_contract
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.set_contract.T}
+      `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      (contract
-        :
-        ink_env.engine.off_chain.test_api.set_contract.ImplT.AccountId)
+      (contract : ImplT.AccountId)
       : M unit :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -22453,10 +19188,9 @@ Module test_api.
   
   Definition is_contract
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.is_contract.T}
+      `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      (contract : ink_env.engine.off_chain.test_api.is_contract.ImplT.AccountId)
+      (contract : ImplT.AccountId)
       : M bool :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -22465,10 +19199,9 @@ Module test_api.
   
   Definition callee
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.callee.T}
+      `{ink_env.types.Environment.Trait T}
       (_ : unit)
-      : M ink_env.engine.off_chain.test_api.callee.ImplT.AccountId :=
+      : M ImplT.AccountId :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         let* callee := instance.["engine"].["get_callee"] in
@@ -22486,12 +19219,8 @@ Module test_api.
   
   Definition get_contract_storage_rw
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.get_contract_storage_rw.T}
-      (account_id
-        :
-        ref
-          ink_env.engine.off_chain.test_api.get_contract_storage_rw.ImplT.AccountId)
+      `{ink_env.types.Environment.Trait T}
+      (account_id : ref ImplT.AccountId)
       : M (usize * usize) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -22501,11 +19230,8 @@ Module test_api.
   
   Definition set_value_transferred
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.set_value_transferred.T}
-      (value
-        :
-        ink_env.engine.off_chain.test_api.set_value_transferred.ImplT.Balance)
+      `{ink_env.types.Environment.Trait T}
+      (value : ImplT.Balance)
       : M unit :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -22514,9 +19240,8 @@ Module test_api.
   
   Definition transfer_in
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.transfer_in.T}
-      (value : ink_env.engine.off_chain.test_api.transfer_in.ImplT.Balance)
+      `{ink_env.types.Environment.Trait T}
+      (value : ImplT.Balance)
       : M unit :=
     let* _ :=
       ink_env.engine.OnInstance.on_instance
@@ -22548,12 +19273,8 @@ Module test_api.
   
   Definition count_used_storage_cells
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.count_used_storage_cells.T}
-      (account_id
-        :
-        ref
-          ink_env.engine.off_chain.test_api.count_used_storage_cells.ImplT.AccountId)
+      `{ink_env.types.Environment.Trait T}
+      (account_id : ref ImplT.AccountId)
       : M (ink_env.error.Result usize) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -22565,11 +19286,8 @@ Module test_api.
   
   Definition set_block_timestamp
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.set_block_timestamp.T}
-      (value
-        :
-        ink_env.engine.off_chain.test_api.set_block_timestamp.ImplT.Timestamp)
+      `{ink_env.types.Environment.Trait T}
+      (value : ImplT.Timestamp)
       : M unit :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -22578,11 +19296,8 @@ Module test_api.
   
   Definition set_block_number
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.set_block_number.T}
-      (value
-        :
-        ink_env.engine.off_chain.test_api.set_block_number.ImplT.BlockNumber)
+      `{ink_env.types.Environment.Trait T}
+      (value : ImplT.BlockNumber)
       : M unit :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -22591,14 +19306,12 @@ Module test_api.
   
   Definition run_test
       {T F : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.run_test.T}
+      `{ink_env.types.Environment.Trait T}
       `{core.ops.function.FnOnce.Trait
-        ((ink_env.engine.off_chain.test_api.DefaultAccounts
-            ink_env.engine.off_chain.test_api.run_test.T))
-        ink_env.engine.off_chain.test_api.run_test.F}
+        ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
+        F}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      (f : ink_env.engine.off_chain.test_api.run_test.F)
+      (f : F)
       : M (ink_env.error.Result unit) :=
     let* default_accounts :=
       ink_env.engine.off_chain.test_api.default_accounts tt in
@@ -22649,38 +19362,22 @@ Module test_api.
   
   Definition default_accounts
       {T : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.default_accounts.T}
+      `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
       (_ : unit)
-      :
-        M
-          (ink_env.engine.off_chain.test_api.DefaultAccounts
-            ink_env.engine.off_chain.test_api.default_accounts.T) :=
+      : M (ink_env.engine.off_chain.test_api.DefaultAccounts T) :=
     let* α0 := repeat 1 in
-    let* α1 :=
-      ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-        α0 in
+    let* α1 := ImplT.AccountId::["from"] α0 in
     let* α2 := repeat 2 in
-    let* α3 :=
-      ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-        α2 in
+    let* α3 := ImplT.AccountId::["from"] α2 in
     let* α4 := repeat 3 in
-    let* α5 :=
-      ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-        α4 in
+    let* α5 := ImplT.AccountId::["from"] α4 in
     let* α6 := repeat 4 in
-    let* α7 :=
-      ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-        α6 in
+    let* α7 := ImplT.AccountId::["from"] α6 in
     let* α8 := repeat 5 in
-    let* α9 :=
-      ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-        α8 in
+    let* α9 := ImplT.AccountId::["from"] α8 in
     let* α10 := repeat 6 in
-    let* α11 :=
-      ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-        α10 in
+    let* α11 := ImplT.AccountId::["from"] α10 in
     Pure
       {|
         ink_env.engine.off_chain.test_api.DefaultAccounts.alice := α1;
@@ -22693,16 +19390,12 @@ Module test_api.
   
   Module DefaultAccounts.
     Record t : Set := {
-      alice : ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-      bob : ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-      charlie
-        :
-        ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-      django
-        :
-        ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-      eve : ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-      frank : ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
+      alice : ImplT.AccountId;
+      bob : ImplT.AccountId;
+      charlie : ImplT.AccountId;
+      django : ImplT.AccountId;
+      eve : ImplT.AccountId;
+      frank : ImplT.AccountId;
     }.
     
     Global Instance Get_alice : Notation.Dot "alice" := {
@@ -22734,24 +19427,14 @@ Module test_api.
   
   Definition assert_contract_termination
       {T F : Set}
-      `{ink_env.types.Environment.Trait
-        ink_env.engine.off_chain.test_api.assert_contract_termination.T}
-      `{core.ops.function.FnMut.Trait
-        unit
-        ink_env.engine.off_chain.test_api.assert_contract_termination.F}
-      `{core.panic.unwind_safe.UnwindSafe.Trait
-        ink_env.engine.off_chain.test_api.assert_contract_termination.F}
+      `{ink_env.types.Environment.Trait T}
+      `{core.ops.function.FnMut.Trait unit F}
+      `{core.panic.unwind_safe.UnwindSafe.Trait F}
       `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
       `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
-      (should_terminate
-        :
-        ink_env.engine.off_chain.test_api.assert_contract_termination.F)
-      (expected_beneficiary
-        :
-        ink_env.engine.off_chain.test_api.assert_contract_termination.ImplT.AccountId)
-      (expected_value_transferred_to_beneficiary
-        :
-        ink_env.engine.off_chain.test_api.assert_contract_termination.ImplT.Balance)
+      (should_terminate : F)
+      (expected_beneficiary : ImplT.AccountId)
+      (expected_value_transferred_to_beneficiary : ImplT.Balance)
       : M unit :=
     let* value_any :=
       let* α0 := std.panic.catch_unwind should_terminate in
@@ -22871,14 +19554,9 @@ End Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
 
 Definition set_account_balance
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.set_account_balance.T}
-    (account_id
-      :
-      ink_env.engine.off_chain.test_api.set_account_balance.ImplT.AccountId)
-    (new_balance
-      :
-      ink_env.engine.off_chain.test_api.set_account_balance.ImplT.Balance)
+    `{ink_env.types.Environment.Trait T}
+    (account_id : ImplT.AccountId)
+    (new_balance : ImplT.Balance)
     : M unit :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -22890,15 +19568,9 @@ Definition set_account_balance
 
 Definition get_account_balance
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.get_account_balance.T}
-    (account_id
-      :
-      ink_env.engine.off_chain.test_api.get_account_balance.ImplT.AccountId)
-    :
-      M
-        (ink_env.error.Result
-          ink_env.engine.off_chain.test_api.get_account_balance.ImplT.Balance) :=
+    `{ink_env.types.Environment.Trait T}
+    (account_id : ImplT.AccountId)
+    : M (ink_env.error.Result ImplT.Balance) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
       let* α0 := parity_scale_codec.codec.Encode.encode (addr_of account_id) in
@@ -22907,9 +19579,8 @@ Definition get_account_balance
 
 Definition register_chain_extension
     {E : Set}
-    `{ink_engine.chain_extension.ChainExtension.Trait
-      ink_env.engine.off_chain.test_api.register_chain_extension.E}
-    (extension : ink_env.engine.off_chain.test_api.register_chain_extension.E)
+    `{ink_engine.chain_extension.ChainExtension.Trait E}
+    (extension : E)
     : M unit :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -22938,8 +19609,7 @@ Definition set_clear_storage_disabled (_disable : bool) : M unit :=
 
 Definition advance_block
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.advance_block.T}
+    `{ink_env.types.Environment.Trait T}
     (_ : unit)
     : M unit :=
   ink_env.engine.OnInstance.on_instance
@@ -22949,10 +19619,9 @@ Definition advance_block
 
 Definition set_caller
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.set_caller.T}
+    `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    (caller : ink_env.engine.off_chain.test_api.set_caller.ImplT.AccountId)
+    (caller : ImplT.AccountId)
     : M unit :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -22963,10 +19632,9 @@ Definition set_caller
 
 Definition set_callee
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.set_callee.T}
+    `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    (callee : ink_env.engine.off_chain.test_api.set_callee.ImplT.AccountId)
+    (callee : ImplT.AccountId)
     : M unit :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -22977,10 +19645,9 @@ Definition set_callee
 
 Definition set_contract
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.set_contract.T}
+    `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    (contract : ink_env.engine.off_chain.test_api.set_contract.ImplT.AccountId)
+    (contract : ImplT.AccountId)
     : M unit :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -22991,10 +19658,9 @@ Definition set_contract
 
 Definition is_contract
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.is_contract.T}
+    `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    (contract : ink_env.engine.off_chain.test_api.is_contract.ImplT.AccountId)
+    (contract : ImplT.AccountId)
     : M bool :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -23003,10 +19669,9 @@ Definition is_contract
 
 Definition callee
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.callee.T}
+    `{ink_env.types.Environment.Trait T}
     (_ : unit)
-    : M ink_env.engine.off_chain.test_api.callee.ImplT.AccountId :=
+    : M ImplT.AccountId :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
       let* callee := instance.["engine"].["get_callee"] in
@@ -23024,12 +19689,8 @@ Definition callee
 
 Definition get_contract_storage_rw
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.get_contract_storage_rw.T}
-    (account_id
-      :
-      ref
-        ink_env.engine.off_chain.test_api.get_contract_storage_rw.ImplT.AccountId)
+    `{ink_env.types.Environment.Trait T}
+    (account_id : ref ImplT.AccountId)
     : M (usize * usize) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -23038,11 +19699,8 @@ Definition get_contract_storage_rw
 
 Definition set_value_transferred
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.set_value_transferred.T}
-    (value
-      :
-      ink_env.engine.off_chain.test_api.set_value_transferred.ImplT.Balance)
+    `{ink_env.types.Environment.Trait T}
+    (value : ImplT.Balance)
     : M unit :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -23051,9 +19709,8 @@ Definition set_value_transferred
 
 Definition transfer_in
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.transfer_in.T}
-    (value : ink_env.engine.off_chain.test_api.transfer_in.ImplT.Balance)
+    `{ink_env.types.Environment.Trait T}
+    (value : ImplT.Balance)
     : M unit :=
   let* _ :=
     ink_env.engine.OnInstance.on_instance
@@ -23085,12 +19742,8 @@ Definition transfer_in
 
 Definition count_used_storage_cells
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.count_used_storage_cells.T}
-    (account_id
-      :
-      ref
-        ink_env.engine.off_chain.test_api.count_used_storage_cells.ImplT.AccountId)
+    `{ink_env.types.Environment.Trait T}
+    (account_id : ref ImplT.AccountId)
     : M (ink_env.error.Result usize) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -23101,11 +19754,8 @@ Definition count_used_storage_cells
 
 Definition set_block_timestamp
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.set_block_timestamp.T}
-    (value
-      :
-      ink_env.engine.off_chain.test_api.set_block_timestamp.ImplT.Timestamp)
+    `{ink_env.types.Environment.Trait T}
+    (value : ImplT.Timestamp)
     : M unit :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -23114,11 +19764,8 @@ Definition set_block_timestamp
 
 Definition set_block_number
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.set_block_number.T}
-    (value
-      :
-      ink_env.engine.off_chain.test_api.set_block_number.ImplT.BlockNumber)
+    `{ink_env.types.Environment.Trait T}
+    (value : ImplT.BlockNumber)
     : M unit :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -23127,14 +19774,12 @@ Definition set_block_number
 
 Definition run_test
     {T F : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.run_test.T}
+    `{ink_env.types.Environment.Trait T}
     `{core.ops.function.FnOnce.Trait
-      ((ink_env.engine.off_chain.test_api.DefaultAccounts
-          ink_env.engine.off_chain.test_api.run_test.T))
-      ink_env.engine.off_chain.test_api.run_test.F}
+      ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
+      F}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    (f : ink_env.engine.off_chain.test_api.run_test.F)
+    (f : F)
     : M (ink_env.error.Result unit) :=
   let* default_accounts :=
     ink_env.engine.off_chain.test_api.default_accounts tt in
@@ -23185,38 +19830,22 @@ Definition run_test
 
 Definition default_accounts
     {T : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.default_accounts.T}
+    `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
     (_ : unit)
-    :
-      M
-        (ink_env.engine.off_chain.test_api.DefaultAccounts
-          ink_env.engine.off_chain.test_api.default_accounts.T) :=
+    : M (ink_env.engine.off_chain.test_api.DefaultAccounts T) :=
   let* α0 := repeat 1 in
-  let* α1 :=
-    ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-      α0 in
+  let* α1 := ImplT.AccountId::["from"] α0 in
   let* α2 := repeat 2 in
-  let* α3 :=
-    ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-      α2 in
+  let* α3 := ImplT.AccountId::["from"] α2 in
   let* α4 := repeat 3 in
-  let* α5 :=
-    ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-      α4 in
+  let* α5 := ImplT.AccountId::["from"] α4 in
   let* α6 := repeat 4 in
-  let* α7 :=
-    ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-      α6 in
+  let* α7 := ImplT.AccountId::["from"] α6 in
   let* α8 := repeat 5 in
-  let* α9 :=
-    ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-      α8 in
+  let* α9 := ImplT.AccountId::["from"] α8 in
   let* α10 := repeat 6 in
-  let* α11 :=
-    ink_env.engine.off_chain.test_api.default_accounts.ImplT.AccountId::["from"]
-      α10 in
+  let* α11 := ImplT.AccountId::["from"] α10 in
   Pure
     {|
       ink_env.engine.off_chain.test_api.DefaultAccounts.alice := α1;
@@ -23229,12 +19858,12 @@ Definition default_accounts
 
 Module DefaultAccounts.
   Record t : Set := {
-    alice : ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-    bob : ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-    charlie : ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-    django : ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-    eve : ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
-    frank : ink_env.engine.off_chain.test_api.DefaultAccounts.ImplT.AccountId;
+    alice : ImplT.AccountId;
+    bob : ImplT.AccountId;
+    charlie : ImplT.AccountId;
+    django : ImplT.AccountId;
+    eve : ImplT.AccountId;
+    frank : ImplT.AccountId;
   }.
   
   Global Instance Get_alice : Notation.Dot "alice" := {
@@ -23268,24 +19897,14 @@ Error OpaqueTy.
 
 Definition assert_contract_termination
     {T F : Set}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.off_chain.test_api.assert_contract_termination.T}
-    `{core.ops.function.FnMut.Trait
-      unit
-      ink_env.engine.off_chain.test_api.assert_contract_termination.F}
-    `{core.panic.unwind_safe.UnwindSafe.Trait
-      ink_env.engine.off_chain.test_api.assert_contract_termination.F}
+    `{ink_env.types.Environment.Trait T}
+    `{core.ops.function.FnMut.Trait unit F}
+    `{core.panic.unwind_safe.UnwindSafe.Trait F}
     `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
     `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
-    (should_terminate
-      :
-      ink_env.engine.off_chain.test_api.assert_contract_termination.F)
-    (expected_beneficiary
-      :
-      ink_env.engine.off_chain.test_api.assert_contract_termination.ImplT.AccountId)
-    (expected_value_transferred_to_beneficiary
-      :
-      ink_env.engine.off_chain.test_api.assert_contract_termination.ImplT.Balance)
+    (should_terminate : F)
+    (expected_beneficiary : ImplT.AccountId)
+    (expected_value_transferred_to_beneficiary : ImplT.Balance)
     : M unit :=
   let* value_any :=
     let* α0 := std.panic.catch_unwind should_terminate in
@@ -23382,11 +20001,8 @@ Module types.
       Notation.double_colon := from;
     }.
     
-    Global Instance I
-        :
-        core.convert.From.Trait
-        Self
-        ink_engine.test_api.EmittedEvent :=
+    Global Instance I :
+        core.convert.From.Trait Self ink_engine.test_api.EmittedEvent :=
       {
       core.convert.From.from := from;
     }.
@@ -23439,11 +20055,8 @@ Module types.
       Notation.double_colon := from;
     }.
     
-    Global Instance I
-        :
-        core.convert.From.Trait
-        Self
-        ink_engine.types.AccountError :=
+    Global Instance I :
+        core.convert.From.Trait Self ink_engine.types.AccountError :=
       {
       core.convert.From.from := from;
     }.
@@ -23463,11 +20076,8 @@ Module types.
       Notation.double_colon := from;
     }.
     
-    Global Instance I
-        :
-        core.convert.From.Trait
-        Self
-        ink_engine.types.AccountError :=
+    Global Instance I :
+        core.convert.From.Trait Self ink_engine.types.AccountError :=
       {
       core.convert.From.from := from;
     }.
@@ -23490,11 +20100,8 @@ Module
     Notation.double_colon := from;
   }.
   
-  Global Instance I
-      :
-      core.convert.From.Trait
-      Self
-      ink_engine.test_api.EmittedEvent :=
+  Global Instance I :
+      core.convert.From.Trait Self ink_engine.test_api.EmittedEvent :=
     {
     core.convert.From.from := from;
   }.
@@ -23547,11 +20154,8 @@ Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
     Notation.double_colon := from;
   }.
   
-  Global Instance I
-      :
-      core.convert.From.Trait
-      Self
-      ink_engine.types.AccountError :=
+  Global Instance I :
+      core.convert.From.Trait Self ink_engine.types.AccountError :=
     {
     core.convert.From.from := from;
   }.
@@ -23571,11 +20175,8 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
     Notation.double_colon := from;
   }.
   
-  Global Instance I
-      :
-      core.convert.From.Trait
-      Self
-      ink_engine.types.AccountError :=
+  Global Instance I :
+      core.convert.From.Trait Self ink_engine.types.AccountError :=
     {
     core.convert.From.from := from;
   }.
@@ -23595,9 +20196,7 @@ Definition EnvInstance : Set := EnvInstance.t.
 Module Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
-  Definition on_instance
-      (f : ink_env.engine.off_chain.on_instance.F)
-      : M ink_env.engine.off_chain.on_instance.R :=
+  Definition on_instance (f : F) : M R :=
     ink_env.engine.off_chain.on_instance.INSTANCE.["with"]
       (fun instance =>
         let* α0 := instance.["borrow_mut"] in
@@ -23728,11 +20327,8 @@ Module Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
     Notation.double_colon := from;
   }.
   
-  Global Instance I
-      :
-      core.convert.From.Trait
-      Self
-      ink_env.engine.off_chain.AccountError :=
+  Global Instance I :
+      core.convert.From.Trait Self ink_env.engine.off_chain.AccountError :=
     {
     core.convert.From.from := from;
   }.
@@ -23854,11 +20450,8 @@ Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
     Notation.double_colon := from;
   }.
   
-  Global Instance I
-      :
-      core.convert.From.Trait
-      Self
-      parity_scale_codec.error.Error :=
+  Global Instance I :
+      core.convert.From.Trait Self parity_scale_codec.error.Error :=
     {
     core.convert.From.from := from;
   }.
@@ -23939,19 +20532,13 @@ End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition decode_instantiate_result
     {I E ContractRef R : Set}
-    `{parity_scale_codec.codec.Input.Trait
-      ink_env.engine.decode_instantiate_result.I}
-    `{ink_env.types.Environment.Trait
-      ink_env.engine.decode_instantiate_result.E}
-    `{ink_env.call.create_builder.FromAccountId.Trait
-      ink_env.engine.decode_instantiate_result.E
-      ink_env.engine.decode_instantiate_result.ContractRef}
-    `{ink_env.call.create_builder.ConstructorReturnType.Trait
-      ink_env.engine.decode_instantiate_result.ContractRef
-      ink_env.engine.decode_instantiate_result.R}
+    `{parity_scale_codec.codec.Input.Trait I}
+    `{ink_env.types.Environment.Trait E}
+    `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+    `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
     (instantiate_result : ink_env.error.Result unit)
-    (out_address : mut_ref ink_env.engine.decode_instantiate_result.I)
-    (out_return_value : mut_ref ink_env.engine.decode_instantiate_result.I)
+    (out_address : mut_ref I)
+    (out_return_value : mut_ref I)
     :
       M
         (ink_env.error.Result
@@ -23982,16 +20569,11 @@ Definition decode_instantiate_result
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition decode_instantiate_err
     {I E ContractRef R : Set}
-    `{parity_scale_codec.codec.Input.Trait
-      ink_env.engine.decode_instantiate_err.I}
-    `{ink_env.types.Environment.Trait ink_env.engine.decode_instantiate_err.E}
-    `{ink_env.call.create_builder.FromAccountId.Trait
-      ink_env.engine.decode_instantiate_err.E
-      ink_env.engine.decode_instantiate_err.ContractRef}
-    `{ink_env.call.create_builder.ConstructorReturnType.Trait
-      ink_env.engine.decode_instantiate_err.ContractRef
-      ink_env.engine.decode_instantiate_err.R}
-    (out_return_value : mut_ref ink_env.engine.decode_instantiate_err.I)
+    `{parity_scale_codec.codec.Input.Trait I}
+    `{ink_env.types.Environment.Trait E}
+    `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+    `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
+    (out_return_value : mut_ref I)
     :
       M
         (ink_env.error.Result
@@ -24167,11 +20749,8 @@ Module error.
       Notation.double_colon := from;
     }.
     
-    Global Instance I
-        :
-        core.convert.From.Trait
-        Self
-        parity_scale_codec.error.Error :=
+    Global Instance I :
+        core.convert.From.Trait Self parity_scale_codec.error.Error :=
       {
       core.convert.From.from := from;
     }.
@@ -24190,11 +20769,8 @@ Module error.
       Notation.double_colon := from;
     }.
     
-    Global Instance I
-        :
-        core.convert.From.Trait
-        Self
-        ink_env.engine.off_chain.OffChainError :=
+    Global Instance I :
+        core.convert.From.Trait Self ink_env.engine.off_chain.OffChainError :=
       {
       core.convert.From.from := from;
     }.
@@ -24270,8 +20846,7 @@ Module error.
     }.
   End Impl_core_cmp_Eq_for_ink_env_error_Error.
   
-  Definition Result : Set :=
-    core.result.Result ink_env.error.Result.T ink_env.error.Error.
+  Definition Result : Set := core.result.Result T ink_env.error.Error.
 End error.
 
 Module Error.
@@ -24359,11 +20934,8 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
     Notation.double_colon := from;
   }.
   
-  Global Instance I
-      :
-      core.convert.From.Trait
-      Self
-      parity_scale_codec.error.Error :=
+  Global Instance I :
+      core.convert.From.Trait Self parity_scale_codec.error.Error :=
     {
     core.convert.From.from := from;
   }.
@@ -24382,11 +20954,8 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
     Notation.double_colon := from;
   }.
   
-  Global Instance I
-      :
-      core.convert.From.Trait
-      Self
-      ink_env.engine.off_chain.OffChainError :=
+  Global Instance I :
+      core.convert.From.Trait Self ink_env.engine.off_chain.OffChainError :=
     {
     core.convert.From.from := from;
   }.
@@ -24459,8 +21028,7 @@ Module Impl_core_cmp_Eq_for_ink_env_error_Error.
   }.
 End Impl_core_cmp_Eq_for_ink_env_error_Error.
 
-Definition Result : Set :=
-  core.result.Result ink_env.error.Result.T ink_env.error.Error.
+Definition Result : Set := core.result.Result T ink_env.error.Error.
 
 Module hash.
   Module HashOutput.
@@ -25402,11 +21970,7 @@ Module topics.
     Class Trait (E Self : Set) : Set := {
       Output : Set;
       expect : (mut_ref Self) -> usize -> (M unit);
-      push_topic
-        :
-        (mut_ref Self) ->
-        (ref ink_env.topics.TopicsBuilderBackend.push_topic.T) ->
-        (M unit);
+      push_topic : (mut_ref Self) -> (ref T) -> (M unit);
       output : Self -> (M ImplSelf.Output);
     }.
     
@@ -25426,12 +21990,8 @@ Module topics.
   
   Module TopicsBuilder.
     Record t : Set := {
-      backend : ink_env.topics.TopicsBuilder.B;
-      state
-        :
-        core.marker.PhantomData
-          ( ->
-          (ink_env.topics.TopicsBuilder.S * ink_env.topics.TopicsBuilder.E));
+      backend : B;
+      state : core.marker.PhantomData ( -> (S * E));
     }.
     
     Global Instance Get_backend : Notation.Dot "backend" := {
@@ -25444,16 +22004,13 @@ Module topics.
   Definition TopicsBuilder : Set := TopicsBuilder.t.
   
   Module
-      Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_ink_env_topics_E_ink_env_topics_B.
+      Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
     Definition
       Self
       :=
-      ink_env.topics.TopicsBuilder
-        ink_env.topics.state.Uninit
-        ink_env.topics.E
-        ink_env.topics.B.
+      ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
     
-    Definition from (backend : ink_env.topics.B) : M Self :=
+    Definition from (backend : B) : M Self :=
       let* α0 := core.default.Default.default tt in
       Pure {| Self.backend := backend; Self.state := α0; |}.
     
@@ -25462,11 +22019,11 @@ Module topics.
       Notation.double_colon := from;
     }.
     
-    Global Instance I E B : core.convert.From.Trait Self ink_env.topics.B := {
+    Global Instance I E B : core.convert.From.Trait Self B := {
       core.convert.From.from := from;
     }.
   End
-    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_ink_env_topics_E_ink_env_topics_B.
+    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
   
   Module state.
     Module Uninit.
@@ -25488,18 +22045,11 @@ Module topics.
     Definition NoRemainingTopics := NoRemainingTopics.t.
   End state.
   
-  Module
-    Impl_ink_env.topics.TopicsBuilder
-      ink_env.topics.state.Uninit
-      ink_env.topics.E
-      ink_env.topics.B.
+  Module Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
     Definition
       Self
       :=
-      ink_env.topics.TopicsBuilder
-        ink_env.topics.state.Uninit
-        ink_env.topics.E
-        ink_env.topics.B.
+      ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
     
     Definition build
         (self : Self)
@@ -25507,8 +22057,8 @@ Module topics.
           M
             (ink_env.topics.TopicsBuilder
               ink_env.topics.Topics.RemainingTopics
-              ink_env.topics.E
-              ink_env.topics.B) :=
+              E
+              B) :=
       let* _ :=
         self.["backend"].["expect"] ink_env.topics.EventTopicsAmount.AMOUNT in
       let* α0 := core.default.Default.default tt in
@@ -25521,34 +22071,20 @@ Module topics.
     Global Instance Method_build : Notation.Dot "build" := {
       Notation.dot := build;
     }.
-  End
-    Impl_ink_env.topics.TopicsBuilder
-      ink_env.topics.state.Uninit
-      ink_env.topics.E
-      ink_env.topics.B.
+  End Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
   
-  Module
-    Impl_ink_env.topics.TopicsBuilder
-      ink_env.topics.S
-      ink_env.topics.E
-      ink_env.topics.B.
-    Definition
-      Self
-      :=
-      ink_env.topics.TopicsBuilder
-        ink_env.topics.S
-        ink_env.topics.E
-        ink_env.topics.B.
+  Module Impl_ink_env_topics_TopicsBuilder_S_E_B.
+    Definition Self := ink_env.topics.TopicsBuilder S E B.
     
     Definition push_topic
         (self : Self)
-        (value : ref ink_env.topics.push_topic.T)
+        (value : ref T)
         :
           M
             (ink_env.topics.TopicsBuilder
               ink_env.topics.SomeRemainingTopics.Next
-              ink_env.topics.E
-              ink_env.topics.B) :=
+              E
+              B) :=
       let* _ := self.["backend"].["push_topic"] value in
       let* α0 := core.default.Default.default tt in
       Pure
@@ -25560,24 +22096,14 @@ Module topics.
     Global Instance Method_push_topic : Notation.Dot "push_topic" := {
       Notation.dot := push_topic;
     }.
-  End
-    Impl_ink_env.topics.TopicsBuilder
-      ink_env.topics.S
-      ink_env.topics.E
-      ink_env.topics.B.
+  End Impl_ink_env_topics_TopicsBuilder_S_E_B.
   
   Module
-    Impl_ink_env.topics.TopicsBuilder
-      ink_env.topics.state.NoRemainingTopics
-      ink_env.topics.E
-      ink_env.topics.B.
+    Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_NoRemainingTopics_E_B.
     Definition
       Self
       :=
-      ink_env.topics.TopicsBuilder
-        ink_env.topics.state.NoRemainingTopics
-        ink_env.topics.E
-        ink_env.topics.B.
+      ink_env.topics.TopicsBuilder ink_env.topics.state.NoRemainingTopics E B.
     
     Definition finish
         (self : Self)
@@ -25588,10 +22114,7 @@ Module topics.
       Notation.dot := finish;
     }.
   End
-    Impl_ink_env.topics.TopicsBuilder
-      ink_env.topics.state.NoRemainingTopics
-      ink_env.topics.E
-      ink_env.topics.B.
+    Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_NoRemainingTopics_E_B.
   
   Module SomeRemainingTopics.
     Class Trait (Self : Set) : Set := {
@@ -26532,10 +23055,7 @@ Module topics.
       topics
         :
         (ref Self) ->
-        (ink_env.topics.TopicsBuilder
-          ink_env.topics.state.Uninit
-          ink_env.topics.Topics.topics.E
-          ink_env.topics.Topics.topics.B) ->
+        (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
         (M ink_env.topics.TopicsBuilderBackend.Output);
     }.
     
@@ -26551,7 +23071,7 @@ Module topics.
   Module PrefixedValue.
     Record t : Set := {
       prefix : ref Slice;
-      value : ref ink_env.topics.PrefixedValue.T;
+      value : ref T;
     }.
     
     Global Instance Get_prefix : Notation.Dot "prefix" := {
@@ -26564,8 +23084,8 @@ Module topics.
   Definition PrefixedValue : Set := PrefixedValue.t.
   
   Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_ink_env_topics_X.
-    Definition Self := ink_env.topics.PrefixedValue ink_env.topics.X.
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
+    Definition Self := ink_env.topics.PrefixedValue X.
     
     Definition size_hint (self : ref Self) : M usize :=
       let* α0 := self.["prefix"].["size_hint"] in
@@ -26576,10 +23096,7 @@ Module topics.
       Notation.dot := size_hint;
     }.
     
-    Definition encode_to
-        (self : ref Self)
-        (dest : mut_ref ink_env.topics.encode_to.T)
-        : M unit :=
+    Definition encode_to (self : ref Self) (dest : mut_ref T) : M unit :=
       let* _ := self.["prefix"].["encode_to"] dest in
       let* _ := self.["value"].["encode_to"] dest in
       Pure tt.
@@ -26590,19 +23107,14 @@ Module topics.
     
     Global Instance I X : parity_scale_codec.codec.Encode.Trait Self := {
     }.
-  End
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_ink_env_topics_X.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
 End topics.
 
 Module TopicsBuilderBackend.
   Class Trait (E Self : Set) : Set := {
     Output : Set;
     expect : (mut_ref Self) -> usize -> (M unit);
-    push_topic
-      :
-      (mut_ref Self) ->
-      (ref ink_env.topics.TopicsBuilderBackend.push_topic.T) ->
-      (M unit);
+    push_topic : (mut_ref Self) -> (ref T) -> (M unit);
     output : Self -> (M ImplSelf.Output);
   }.
   
@@ -26622,11 +23134,8 @@ End TopicsBuilderBackend.
 
 Module TopicsBuilder.
   Record t : Set := {
-    backend : ink_env.topics.TopicsBuilder.B;
-    state
-      :
-      core.marker.PhantomData
-        ( -> (ink_env.topics.TopicsBuilder.S * ink_env.topics.TopicsBuilder.E));
+    backend : B;
+    state : core.marker.PhantomData ( -> (S * E));
   }.
   
   Global Instance Get_backend : Notation.Dot "backend" := {
@@ -26639,16 +23148,13 @@ End TopicsBuilder.
 Definition TopicsBuilder : Set := TopicsBuilder.t.
 
 Module
-    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_ink_env_topics_E_ink_env_topics_B.
+    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
   Definition
     Self
     :=
-    ink_env.topics.TopicsBuilder
-      ink_env.topics.state.Uninit
-      ink_env.topics.E
-      ink_env.topics.B.
+    ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
   
-  Definition from (backend : ink_env.topics.B) : M Self :=
+  Definition from (backend : B) : M Self :=
     let* α0 := core.default.Default.default tt in
     Pure {| Self.backend := backend; Self.state := α0; |}.
   
@@ -26657,11 +23163,11 @@ Module
     Notation.double_colon := from;
   }.
   
-  Global Instance I E B : core.convert.From.Trait Self ink_env.topics.B := {
+  Global Instance I E B : core.convert.From.Trait Self B := {
     core.convert.From.from := from;
   }.
 End
-  Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_ink_env_topics_E_ink_env_topics_B.
+  Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
 
 Module state.
   Module Uninit.
@@ -26701,18 +23207,11 @@ Module NoRemainingTopics.
 End NoRemainingTopics.
 Definition NoRemainingTopics := NoRemainingTopics.t.
 
-Module
-  Impl_ink_env.topics.TopicsBuilder
-    ink_env.topics.state.Uninit
-    ink_env.topics.E
-    ink_env.topics.B_2.
+Module Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B_2.
   Definition
     Self
     :=
-    ink_env.topics.TopicsBuilder
-      ink_env.topics.state.Uninit
-      ink_env.topics.E
-      ink_env.topics.B.
+    ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
   
   Definition build
       (self : Self)
@@ -26720,8 +23219,8 @@ Module
         M
           (ink_env.topics.TopicsBuilder
             ink_env.topics.Topics.RemainingTopics
-            ink_env.topics.E
-            ink_env.topics.B) :=
+            E
+            B) :=
     let* _ :=
       self.["backend"].["expect"] ink_env.topics.EventTopicsAmount.AMOUNT in
     let* α0 := core.default.Default.default tt in
@@ -26734,34 +23233,20 @@ Module
   Global Instance Method_build : Notation.Dot "build" := {
     Notation.dot := build;
   }.
-End
-  Impl_ink_env.topics.TopicsBuilder
-    ink_env.topics.state.Uninit
-    ink_env.topics.E
-    ink_env.topics.B_2.
+End Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B_2.
 
-Module
-  Impl_ink_env.topics.TopicsBuilder
-    ink_env.topics.S
-    ink_env.topics.E
-    ink_env.topics.B_2.
-  Definition
-    Self
-    :=
-    ink_env.topics.TopicsBuilder
-      ink_env.topics.S
-      ink_env.topics.E
-      ink_env.topics.B.
+Module Impl_ink_env_topics_TopicsBuilder_S_E_B_2.
+  Definition Self := ink_env.topics.TopicsBuilder S E B.
   
   Definition push_topic
       (self : Self)
-      (value : ref ink_env.topics.push_topic.T)
+      (value : ref T)
       :
         M
           (ink_env.topics.TopicsBuilder
             ink_env.topics.SomeRemainingTopics.Next
-            ink_env.topics.E
-            ink_env.topics.B) :=
+            E
+            B) :=
     let* _ := self.["backend"].["push_topic"] value in
     let* α0 := core.default.Default.default tt in
     Pure
@@ -26773,24 +23258,14 @@ Module
   Global Instance Method_push_topic : Notation.Dot "push_topic" := {
     Notation.dot := push_topic;
   }.
-End
-  Impl_ink_env.topics.TopicsBuilder
-    ink_env.topics.S
-    ink_env.topics.E
-    ink_env.topics.B_2.
+End Impl_ink_env_topics_TopicsBuilder_S_E_B_2.
 
 Module
-  Impl_ink_env.topics.TopicsBuilder
-    ink_env.topics.state.NoRemainingTopics
-    ink_env.topics.E
-    ink_env.topics.B_2.
+  Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_NoRemainingTopics_E_B_2.
   Definition
     Self
     :=
-    ink_env.topics.TopicsBuilder
-      ink_env.topics.state.NoRemainingTopics
-      ink_env.topics.E
-      ink_env.topics.B.
+    ink_env.topics.TopicsBuilder ink_env.topics.state.NoRemainingTopics E B.
   
   Definition finish
       (self : Self)
@@ -26801,10 +23276,7 @@ Module
     Notation.dot := finish;
   }.
 End
-  Impl_ink_env.topics.TopicsBuilder
-    ink_env.topics.state.NoRemainingTopics
-    ink_env.topics.E
-    ink_env.topics.B_2.
+  Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_NoRemainingTopics_E_B_2.
 
 Module SomeRemainingTopics.
   Class Trait (Self : Set) : Set := {
@@ -27745,10 +24217,7 @@ Module Topics.
     topics
       :
       (ref Self) ->
-      (ink_env.topics.TopicsBuilder
-        ink_env.topics.state.Uninit
-        ink_env.topics.Topics.topics.E
-        ink_env.topics.Topics.topics.B) ->
+      (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
       (M ink_env.topics.TopicsBuilderBackend.Output);
   }.
   
@@ -27764,7 +24233,7 @@ End Topics.
 Module PrefixedValue.
   Record t : Set := {
     prefix : ref Slice;
-    value : ref ink_env.topics.PrefixedValue.T;
+    value : ref T;
   }.
   
   Global Instance Get_prefix : Notation.Dot "prefix" := {
@@ -27776,9 +24245,8 @@ Module PrefixedValue.
 End PrefixedValue.
 Definition PrefixedValue : Set := PrefixedValue.t.
 
-Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_ink_env_topics_X.
-  Definition Self := ink_env.topics.PrefixedValue ink_env.topics.X.
+Module Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
+  Definition Self := ink_env.topics.PrefixedValue X.
   
   Definition size_hint (self : ref Self) : M usize :=
     let* α0 := self.["prefix"].["size_hint"] in
@@ -27789,10 +24257,7 @@ Module
     Notation.dot := size_hint;
   }.
   
-  Definition encode_to
-      (self : ref Self)
-      (dest : mut_ref ink_env.topics.encode_to.T)
-      : M unit :=
+  Definition encode_to (self : ref Self) (dest : mut_ref T) : M unit :=
     let* _ := self.["prefix"].["encode_to"] dest in
     let* _ := self.["value"].["encode_to"] dest in
     Pure tt.
@@ -27803,8 +24268,7 @@ Module
   
   Global Instance I X : parity_scale_codec.codec.Encode.Trait Self := {
   }.
-End
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_ink_env_topics_X.
+End Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
 
 Module types.
   Module FromLittleEndian.
@@ -27933,12 +24397,12 @@ Module types.
     Global Set Primitive Projections.
   End CodecAsType.
   
-  Module Impl_ink_env_types_CodecAsType_for_ink_env_types_T.
-    Definition Self := ink_env.types.T.
+  Module Impl_ink_env_types_CodecAsType_for_T.
+    Definition Self := T.
     
     Global Instance I T : ink_env.types.CodecAsType.Trait Self :=
       ink_env.types.CodecAsType.Build_Class _.
-  End Impl_ink_env_types_CodecAsType_for_ink_env_types_T.
+  End Impl_ink_env_types_CodecAsType_for_T.
   
   Module Environment.
     Class Trait (Self : Set) : Set := {
@@ -28236,12 +24700,12 @@ Module CodecAsType.
   Global Set Primitive Projections.
 End CodecAsType.
 
-Module Impl_ink_env_types_CodecAsType_for_ink_env_types_T.
-  Definition Self := ink_env.types.T.
+Module Impl_ink_env_types_CodecAsType_for_T.
+  Definition Self := T.
   
   Global Instance I T : ink_env.types.CodecAsType.Trait Self :=
     ink_env.types.CodecAsType.Build_Class _.
-End Impl_ink_env_types_CodecAsType_for_ink_env_types_T.
+End Impl_ink_env_types_CodecAsType_for_T.
 
 Module Environment.
   Class Trait (Self : Set) : Set := {

@@ -3,9 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition compare_prints
     {T : Set}
-    `{core.fmt.Debug.Trait generics_multiple_bounds.compare_prints.T}
-    `{core.fmt.Display.Trait generics_multiple_bounds.compare_prints.T}
-    (t : ref generics_multiple_bounds.compare_prints.T)
+    `{core.fmt.Debug.Trait T}
+    `{core.fmt.Display.Trait T}
+    (t : ref T)
     : M unit :=
   let* _ :=
     let* _ :=
@@ -31,10 +31,10 @@ Definition compare_prints
 
 Definition compare_types
     {T U : Set}
-    `{core.fmt.Debug.Trait generics_multiple_bounds.compare_types.T}
-    `{core.fmt.Debug.Trait generics_multiple_bounds.compare_types.U}
-    (t : ref generics_multiple_bounds.compare_types.T)
-    (u : ref generics_multiple_bounds.compare_types.U)
+    `{core.fmt.Debug.Trait T}
+    `{core.fmt.Debug.Trait U}
+    (t : ref T)
+    (u : ref U)
     : M unit :=
   let* _ :=
     let* _ :=

@@ -3,10 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition call_me
     {F : Set}
-    `{core.ops.function.Fn.Trait
-      unit
-      functions_closures_input_functions.call_me.F}
-    (f : functions_closures_input_functions.call_me.F)
+    `{core.ops.function.Fn.Trait unit F}
+    (f : F)
     : M unit :=
   let* _ := f tt in
   Pure tt.

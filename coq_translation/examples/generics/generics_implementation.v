@@ -14,7 +14,7 @@ Definition Val : Set := Val.t.
 
 Module GenVal.
   Record t : Set := {
-    gen_val : generics_implementation.GenVal.T;
+    gen_val : T;
   }.
   
   Global Instance Get_gen_val : Notation.Dot "gen_val" := {
@@ -34,16 +34,16 @@ Module Impl_generics_implementation_Val.
   }.
 End Impl_generics_implementation_Val.
 
-Module Impl_generics_implementation_GenVal_generics_implementation_T.
-  Definition Self := generics_implementation.GenVal generics_implementation.T.
+Module Impl_generics_implementation_GenVal_T.
+  Definition Self := generics_implementation.GenVal T.
   
-  Definition value (self : ref Self) : M (ref generics_implementation.T) :=
+  Definition value (self : ref Self) : M (ref T) :=
     Pure (addr_of self.["gen_val"]).
   
   Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
   }.
-End Impl_generics_implementation_GenVal_generics_implementation_T.
+End Impl_generics_implementation_GenVal_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (_ : unit) : M unit :=
