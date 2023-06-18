@@ -1,14 +1,14 @@
+use crate::env::*;
 use crate::path::*;
 use crate::render::*;
 
 use rustc_ast::{LitIntType, LitKind};
 use rustc_hir::{ExprKind, Pat, PatKind, RangeEnd};
-use rustc_middle::ty::TyCtxt;
 use rustc_span::source_map::Spanned;
 
 /// The enum [Pat] represents the patterns which can be matched
 #[derive(Clone, Debug)]
-pub enum Pattern {
+pub(crate) enum Pattern {
     Wild,
     Variable(String),
     Binding(String, Box<Pattern>),
@@ -21,45 +21,46 @@ pub enum Pattern {
 }
 
 /// The function [compile_pattern] translates a hir pattern to a coq-of-rust pattern.
-pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
+pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
     match &pat.kind {
         PatKind::Wild => Pattern::Wild,
         PatKind::Binding(_, _, ident, pat) => {
             let name = ident.name.to_string();
             match pat {
                 None => Pattern::Variable(ident.name.to_string()),
-                Some(pat) => Pattern::Binding(name, Box::new(compile_pattern(tcx, pat))),
+                Some(pat) => Pattern::Binding(name, Box::new(compile_pattern(env, pat))),
             }
         }
         PatKind::Struct(qpath, pats, _) => {
-            let path = compile_qpath(qpath);
+            let path = compile_qpath(env, qpath);
             let pats = pats
                 .iter()
-                .map(|pat| (pat.ident.name.to_string(), compile_pattern(tcx, pat.pat)))
+                .map(|pat| (pat.ident.name.to_string(), compile_pattern(env, pat.pat)))
                 .collect();
-            let struct_or_variant = StructOrVariant::of_qpath(tcx, qpath);
+            let struct_or_variant = StructOrVariant::of_qpath(env, qpath);
             Pattern::StructStruct(path, pats, struct_or_variant)
         }
         PatKind::TupleStruct(qpath, pats, _) => {
-            let path = compile_qpath(qpath);
-            let pats = pats.iter().map(|pat| compile_pattern(tcx, pat)).collect();
-            let struct_or_variant = StructOrVariant::of_qpath(tcx, qpath);
+            let path = compile_qpath(env, qpath);
+            let pats = pats.iter().map(|pat| compile_pattern(env, pat)).collect();
+            let struct_or_variant = StructOrVariant::of_qpath(env, qpath);
             Pattern::StructTuple(path, pats, struct_or_variant)
         }
         PatKind::Or(pats) => {
-            Pattern::Or(pats.iter().map(|pat| compile_pattern(tcx, pat)).collect())
+            Pattern::Or(pats.iter().map(|pat| compile_pattern(env, pat)).collect())
         }
-        PatKind::Path(qpath) => Pattern::Path(compile_qpath(qpath)),
+        PatKind::Path(qpath) => Pattern::Path(compile_qpath(env, qpath)),
         PatKind::Tuple(pats, dot_dot_pos) => {
             let mut pats = pats
                 .iter()
-                .map(|pat| compile_pattern(tcx, pat))
+                .map(|pat| compile_pattern(env, pat))
                 .collect::<Vec<_>>();
             match dot_dot_pos.as_opt_usize() {
                 None => (),
                 Some(0) => pats.insert(0, Pattern::Wild),
                 Some(_) => {
-                    tcx.sess
+                    env.tcx
+                        .sess
                         .struct_span_warn(
                             pat.span,
                             "Only leading `..` patterns are supported in tuple patterns.",
@@ -70,12 +71,13 @@ pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
             }
             Pattern::Tuple(pats)
         }
-        PatKind::Box(pat) => compile_pattern(tcx, pat),
-        PatKind::Ref(pat, _) => compile_pattern(tcx, pat),
+        PatKind::Box(pat) => compile_pattern(env, pat),
+        PatKind::Ref(pat, _) => compile_pattern(env, pat),
         PatKind::Lit(expr) => match expr.kind {
             ExprKind::Lit(lit) => Pattern::Lit(lit.node.clone()),
             _ => {
-                tcx.sess
+                env.tcx
+                    .sess
                     .struct_span_warn(
                         pat.span,
                         "Only literal expressions in patterns are supported.",
@@ -108,7 +110,8 @@ pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
                     )
                 }
                 _ => {
-                    tcx.sess
+                    env.tcx
+                        .sess
                         .struct_span_warn(
                             pat.span,
                             "Only ranges on literal integers are supported.",
@@ -120,7 +123,8 @@ pub fn compile_pattern(tcx: &TyCtxt, pat: &Pat) -> Pattern {
             },
             (None, None) => Pattern::Wild,
             _ => {
-                tcx.sess
+                env.tcx
+                    .sess
                     .struct_span_warn(
                         pat.span,
                         "Range patterns with an open bound are not supported.",

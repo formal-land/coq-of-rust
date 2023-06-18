@@ -11,13 +11,13 @@ enum Work {
     Soldier,
 }
 
-fn main() {
-    // Explicitly `use` each name so they are available without
-    // manual scoping.
-    use crate::Status::{Poor, Rich};
-    // Automatically `use` each name inside `Work`.
-    use crate::Work::*;
+// Explicitly `use` each name so they are available without
+// manual scoping.
+use crate::Status::{Poor, Rich};
+// Automatically `use` each name inside `Work`.
+use crate::Work::*;
 
+fn main() {
     // Equivalent to `Status::Poor`.
     let status = Poor;
     // Equivalent to `Work::Civilian`.

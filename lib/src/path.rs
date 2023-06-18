@@ -1,8 +1,9 @@
+use crate::env::*;
 use crate::render::*;
 use rustc_hir::def::{CtorOf, DefKind, Res};
 use rustc_hir::{LangItem, QPath};
-use rustc_middle::ty::TyCtxt;
 use std::fmt;
+use std::vec;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Path {
@@ -39,7 +40,7 @@ impl Path {
     }
 }
 
-pub fn compile_path<Res>(path: &rustc_hir::Path<Res>) -> Path {
+fn compile_path_without_env<Res>(path: &rustc_hir::Path<Res>) -> Path {
     Path {
         segments: path
             .segments
@@ -49,13 +50,35 @@ pub fn compile_path<Res>(path: &rustc_hir::Path<Res>) -> Path {
     }
 }
 
-pub(crate) fn compile_qpath(qpath: &QPath) -> Path {
+pub(crate) fn compile_path(env: &Env, path: &rustc_hir::Path) -> Path {
+    if let Some(def_if) = path.res.opt_def_id() {
+        // The type parameters should not have an absolute name, as they are not
+        // not declared at top-level.
+        if let Res::Def(DefKind::TyParam, _) = path.res {
+            return compile_path_without_env(path);
+        }
+        let crate_name: String = env.tcx.crate_name(def_if.krate).to_string();
+        let path_items = env.tcx.def_path(def_if);
+        let mut segments = vec![crate_name];
+        segments.extend(
+            path_items
+                .data
+                .iter()
+                .filter_map(|item| item.data.get_opt_name())
+                .map(|name| to_valid_coq_name(name.to_string())),
+        );
+        return Path { segments };
+    }
+    compile_path_without_env(path)
+}
+
+pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
     match qpath {
-        QPath::Resolved(_, path) => compile_path(path),
+        QPath::Resolved(_, path) => compile_path(env, path),
         QPath::TypeRelative(ty, segment) => {
             let ty = match ty.kind {
                 rustc_hir::TyKind::Path(QPath::Resolved(_, path)) => {
-                    let mut path = compile_path(path);
+                    let mut path = compile_path(env, path);
                     path.prefix_last_by_impl();
                     path
                 }
@@ -75,16 +98,17 @@ pub(crate) fn compile_qpath(qpath: &QPath) -> Path {
 }
 
 #[derive(Clone, Debug)]
-pub enum StructOrVariant {
+pub(crate) enum StructOrVariant {
     Struct,
     Variant,
 }
 
 impl StructOrVariant {
     /// Returns wether a qpath refers to a struct or a variant.
-    pub(crate) fn of_qpath(tcx: &TyCtxt, qpath: &QPath) -> StructOrVariant {
+    pub(crate) fn of_qpath(env: &Env, qpath: &QPath) -> StructOrVariant {
         let emit_warn_unsupported = || {
-            tcx.sess
+            env.tcx
+                .sess
                 .struct_span_warn(
                     qpath.span(),
                     "Cannot determine if this is a `struct` or an `enum`.",
@@ -133,18 +157,18 @@ impl StructOrVariant {
     }
 }
 
-pub fn to_valid_coq_name(str: String) -> String {
+pub(crate) fn to_valid_coq_name(str: String) -> String {
     let str = str::replace(&str, "$", "_");
     let str = str::replace(&str, "{{root}}", "Root");
     str::replace(&str, "::", ".")
 }
 
 impl Path {
-    pub fn to_doc(&self) -> Doc {
+    pub(crate) fn to_doc(&self) -> Doc {
         intersperse(self.segments.iter().map(text), [text(".")])
     }
 
-    pub fn to_name(&self) -> String {
+    pub(crate) fn to_name(&self) -> String {
         self.segments.join("_")
     }
 }
