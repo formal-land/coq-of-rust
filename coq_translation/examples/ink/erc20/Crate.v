@@ -3,6 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Import std.prelude.rust_2021.
 
+(** @TODO, use ink_env!? *)
 Module Root.
   Module ink.
     Module storage.
@@ -37,13 +38,13 @@ Module Root.
       Module ConstructorOutput.
         Parameter Error : Set.
         (* @TODO Not sure about this, it is a guess *)
-        Parameter IS_RESULT : unit -> bool.
+        Parameter IS_RESULT : unit -> M bool.
       End ConstructorOutput.
 
       Module DispatchableConstructorInfo.
         Class Trait (Self : Set) : Set := {
-          IS_RESULT : unit -> bool;
-          CALLABLE : Root.ink.storage.traits.AutoStorableHint.Type_ -> Self;
+          IS_RESULT : unit -> M bool;
+          CALLABLE : Root.ink.storage.traits.AutoStorableHint.Type_ -> M Self;
           PAYABLE : bool;
           SELECTOR : list Z;
           LABEL : string;
@@ -52,8 +53,8 @@ Module Root.
 
       Module DispatchableMessageInfo.
      (* : unit -> ImplFlipper.Self -> unit -> bool *)
-        Class Trait Self (a : Set) := {
-            CALLABLE : Self -> Root.ink.storage.traits.AutoStorableHint.Type_ -> a;
+        Class Trait (Self : Set) := {
+            CALLABLE : Self -> Root.ink.storage.traits.AutoStorableHint.Type_ -> M unit;
             MUTATES : bool;
             PAYABLE : bool;
             SELECTOR : list Z;
@@ -167,8 +168,8 @@ Module erc20.
   
   Module Transfer.
     Record t : Set := {
-      from : Option AccountId;
-      to : Option AccountId;
+      from : core.option.Option AccountId;
+      to : core.option.Option AccountId;
       value : Balance;
     }.
     
@@ -275,7 +276,7 @@ Module erc20.
       Notation.double_colon := IS_RESULT;
     }.
 
-    Global Instance Erc20_new_method : Notation.DoubleColon Erc20 "new" (T := unit -> M Erc20). Admitted.
+    Global Instance Erc20_new_method : Notation.DoubleColon Erc20 "new" (T := Root.ink.storage.traits.AutoStorableHint.Type_ -> M Erc20). Admitted.
     
     Definition
       CALLABLE := fun (__ink_binding_0 : _) => Erc20::["new"] __ink_binding_0.
@@ -327,8 +328,13 @@ Module erc20.
     Definition Output : Set := Balance.
     
     Definition Storage : Set := Erc20.
+
+    Global Instance Erc20_total_supply :
+      Notation.DoubleColon Erc20 "total_supply"
+        (T := Root.ink.storage.traits.AutoStorableHint.Type_ -> M Erc20).
+    Admitted.
     
-    Definition CALLABLE := fun storage _ => Erc20::["total_supply"] storage.
+    Definition CALLABLE := fun storage (_ : Root.ink.storage.traits.AutoStorableHint.Type_)  => Erc20::["total_supply"] storage.
     
     Global Instance AssociatedFunction_CALLABLE :
       Notation.DoubleColon Self "CALLABLE" := {
@@ -363,6 +369,7 @@ Module erc20.
       Notation.double_colon := LABEL;
     }.
     
+    (* WIP *)
     Global Instance I : Root.ink.reflect.DispatchableMessageInfo.Trait Self := {
       Root.ink.reflect.DispatchableMessageInfo.CALLABLE := CALLABLE;
       Root.ink.reflect.DispatchableMessageInfo.MUTATES := MUTATES;
@@ -1741,8 +1748,8 @@ Definition _ : unit := run ((Root.ink.codegen.utils.consume_type tt)).
 
 Module Transfer.
   Record t : Set := {
-    from : Option AccountId;
-    to : Option AccountId;
+    from : core.option.Option AccountId;
+    to : core.option.Option AccountId;
     value : Balance;
   }.
   
@@ -2736,8 +2743,8 @@ Module Impl_Root_ink_reflect_ExecuteDispatchable_for___ink_MessageDecoder.
     let contract :=
       Root.core.mem.ManuallyDrop::["new"]
         match Root.ink.env.get_contract_storage (addr_of key) with
-        | Root.core.result.Result.Ok Root.core.option.Option.Some value => value
-        | Root.core.result.Result.Ok Root.core.option.Option.None =>
+        | Root.core.result.Result.Ok Root.core.option.core.option.Option.Some value => value
+        | Root.core.result.Result.Ok Root.core.option.core.option.Option.None =>
           _crate.panicking.panic_fmt
             (format_arguments::["new_const"]
               (addr_of [ "storage entry was empty" ]))
