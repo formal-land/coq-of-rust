@@ -141,7 +141,6 @@ Global Instance Hash_for_unit : Hash.Trait unit. Admitted.
 Global Instance Hash_for_bool : Hash.Trait unit. Admitted.
 Global Instance Hash_for_i32 : Hash.Trait i32. Admitted.
 Global Instance Hash_for_u32 : Hash.Trait u32. Admitted.
-Global Instance Hash_for_String : Hash.Trait String. Admitted.
+Global Instance Hash_for_String : Hash.Trait alloc.string.String. Admitted.
 Global Instance Hash_for_i64 : Hash.Trait i64. Admitted.
 Global Instance Hash_for_u64 : Hash.Trait u64. Admitted.
-
