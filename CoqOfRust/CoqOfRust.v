@@ -59,7 +59,7 @@ Export M.Notations.
     for now. It will drive the monadic transformation in near future. *)
 Notation "e (| e1 , .. , en |)" :=
   ((.. (e e1) ..) en)
-  (at level 0, 
+  (at level 0,
     only parsing).
 
 (** Particular case when there are no arguments. *)
@@ -916,39 +916,37 @@ Module std.
       (* fn write_str(&mut self, s: &str) { ... } *)
       write_str : mut_ref Self -> ref str;
       }.
-
-      (* @TODO add Dot and DotNotation instances *)
     End Hasher.
 
     Module Hash.
-      Class Trait (Self : Set) : Set := { 
-        hash {H : Set} 
+      Class Trait (Self : Set) : Set := {
+        hash {H : Set}
           `{Hasher : Hasher.Trait H}
           : ref Self -> mut_ref H -> M unit;
 
-          (* @TODO add Dot and DotNotation instances *)
-
-        (* hash_slice (H : Set)  *)
-        (*   `{Hasher.Trait H} *)
-        (*   (* `{Sized.Trait Self} *) *)
-        (*   : ref (list Self) -> M (mut_ref H); *)
-
+          
+        (* @TODO 
+        hash_slice (H : Set)
+          `{Hasher.Trait H}
+          (* `{Sized.Trait Self} *)
+          : ref (list Self) -> M (mut_ref H);
+         *)
       }.
     End Hash.
 
-    Module BuilHasher.
-      Class Trait (Self Hasher : Set) 
+    Module BuildHasher.
+      Class Trait (Self Hasher : Set)
         `{Hasher.Trait Hasher}
-        : Set := { 
+        : Set := {
           Hasher := Hasher;
           build_hasher : ref Self -> Hasher;
-          hash_one (T : Set) 
+          hash_one (T : Set)
             `{Hash.Trait T}
             (* `{Sized.Trait Self} *)
             `{Hasher.Trait Hasher}
             : ref Self -> T -> u64;
       }.
-    End BuilHasher.
+    End BuildHasher.
 
     (** Hasher instance functions *)
     Global Instance Hasher_Method_finish (T : Set) `{Hasher.Trait T} : Notation.Dot "finish" := {
@@ -1014,10 +1012,10 @@ Module std.
         ne : ref Self -> ref Rhs -> M bool;
       }.
 
-      Global Instance Method_eq `(Trait) : Notation.Dot "eq" := { 
+      Global Instance Method_eq `(Trait) : Notation.Dot "eq" := {
         Notation.dot := eq;
       }.
-      Global Instance Method_ne `(Trait) : Notation.Dot "ne" := { 
+      Global Instance Method_ne `(Trait) : Notation.Dot "ne" := {
         Notation.dot := ne;
       }.
     End PartialEq.
@@ -1033,19 +1031,19 @@ Module std.
         ge : ref Self -> ref Rhs -> M bool;
       }.
 
-      Global Instance Method_partial_cmp `(Trait) : Notation.Dot "partial_cmp" := { 
+      Global Instance Method_partial_cmp `(Trait) : Notation.Dot "partial_cmp" := {
         Notation.dot := partial_cmp;
       }.
-      Global Instance Method_lt `(Trait) : Notation.Dot "lt" := { 
+      Global Instance Method_lt `(Trait) : Notation.Dot "lt" := {
         Notation.dot := lt;
       }.
-      Global Instance Method_le `(Trait) : Notation.Dot "le" := { 
+      Global Instance Method_le `(Trait) : Notation.Dot "le" := {
         Notation.dot := le;
       }.
-      Global Instance Method_gt `(Trait) : Notation.Dot "gt" := { 
+      Global Instance Method_gt `(Trait) : Notation.Dot "gt" := {
         Notation.dot := gt;
       }.
-      Global Instance Method_ge `(Trait) : Notation.Dot "ge" := { 
+      Global Instance Method_ge `(Trait) : Notation.Dot "ge" := {
         Notation.dot := ge;
       }.
     End PartialOrd.
@@ -1266,8 +1264,8 @@ Module _crate.
 
   Module fmt := core.fmt.
 
-  Module hash := std.hash. 
-  
+  Module hash := std.hash.
+
   Module log.
     Parameter sol_log : str -> M unit.
   End log.
