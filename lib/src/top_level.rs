@@ -1638,7 +1638,7 @@ impl TopLevelItem {
                                   .iter()
                                   .zip(
                                     // ... with processed ty params
-                                    ty_params.iter().map(|(ty_param, has_default)| 
+                                    ty_params.iter().map(|(ty_param, has_default)|
                                       // If the param has a defaultType we make it to "Some"
                                       (if *has_default {
                                           nest([
