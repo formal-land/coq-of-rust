@@ -1579,7 +1579,6 @@ impl TopLevelItem {
                             text("."),
                         ]),
                         hardline(),
-                        // Begin edit for #77
                         nest([
                           text("Section"),
                           line(),
@@ -1602,7 +1601,6 @@ impl TopLevelItem {
                           text(".")
                         ]),
                         hardline(),
-                        // End edit for #77
                         nest([
                             text("Definition"),
                             line(),
@@ -1620,35 +1618,55 @@ impl TopLevelItem {
                         })),
                         nest([
                             nest([
-                                text("Global Instance I"),
-                                concat(
-                                    generic_tys
-                                        .iter()
-                                        .map(|generic_ty| concat([line(), text(generic_ty)])),
-                                ),
-                                text(" :"),
+                                nest([text("Global Instance"), line(), text("I")]),
                                 line(),
-                                nest([
-                                    of_trait.to_doc(),
-                                    text(".Trait"),
+                                text(":"),
+                                line(),
+                                of_trait.to_doc(),
+                                text(".Trait"),
+                                line(),
+                                // Below we want to make a list of assigned params, and we have to concat them together eventually
+                                concat(
+                                  // First we zip the list of generic tys and ty params together
+                                  // Get the list of generic ty as doc strings
+                                  generic_tys.iter().map(|generic_ty| text(generic_ty))
+                                  // Change back to a collection to insert an element
+                                  .collect()
+                                  // Insert "Self" at the beginning to match up the parameters
+                                  .insert(0, text("Self"))
+                                  // Switch back to iteration mode and begin to zip
+                                  .iter()
+                                  .zip(
+                                    // ... with processed ty params
+                                    ty_params.iter().map(|(ty_param, has_default)| 
+                                      // If the param has a defaultType we make it to "Some"
+                                      (if *has_default {
+                                          nest([
+                                              text("(Some"),
+                                              line(),
+                                              ty_param.to_doc(false),
+                                              text(")"),
+                                          ])
+                                      // Otherwise we just leave it as original doc text
+                                      } else {
+                                          ty_param.to_doc(false)
+                                      })
+                                    )
+                                  )
+                                  // Generate the list of assigned params from the zipped pairs
+                                  .map(|(generic_ty_doc, ty_param_doc)|
+                                  concat([
                                     line(),
-                                    text("Self"),
-                                    concat(ty_params.iter().map(|(ty_param, has_default)| {
-                                        concat([
-                                            line(),
-                                            (if *has_default {
-                                                nest([
-                                                    text("(Some"),
-                                                    line(),
-                                                    ty_param.to_doc(false),
-                                                    text(")"),
-                                                ])
-                                            } else {
-                                                ty_param.to_doc(false)
-                                            }),
-                                        ])
-                                    })),
-                                ]),
+                                    text("("),
+                                    generic_ty_doc,
+                                    line(),
+                                    text(":"),
+                                    line(),
+                                    ty_param_doc,
+                                    text(")")
+                                  ])
+                                )
+                              )
                             ]),
                             text(" :="),
                             line(),
@@ -1680,7 +1698,6 @@ impl TopLevelItem {
                         },
                     ]),
                     hardline(),
-                    // Begin edit for #77
                     nest([
                         text("End"),
                         line(),
@@ -1691,7 +1708,6 @@ impl TopLevelItem {
                         text("."),
                     ]),
                     hardline(),
-                    // End edit for #77
                     nest([
                         text("End"),
                         line(),
