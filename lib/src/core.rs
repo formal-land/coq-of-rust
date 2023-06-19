@@ -50,6 +50,13 @@ pub fn run(src_path: &path::Path) {
             if src_path.is_dir() {
                 fs::create_dir_all(&dst_path).unwrap();
             } else {
+                // filter out files not ending with .rs
+                if src_path
+                    .extension()
+                    .map_or(true, |extension| extension != "rs")
+                {
+                    continue;
+                }
                 // if the entry is a file, create a Coq version of it and write it to the destination directory
                 let translation = create_translation_to_coq(PathBuf::from(src_path));
                 fs::write(
