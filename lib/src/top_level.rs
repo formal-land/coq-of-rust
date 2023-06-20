@@ -253,6 +253,11 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             if check_if_test_declaration(ty) {
                 return vec![];
             }
+            // skip const _ : () = ...
+            if name == "_" && matches!(ty.kind, TyKind::Tup([])) {
+                return vec![];
+            }
+
             let value = tcx.hir().body(*body_id).value;
             vec![TopLevelItem::Const {
                 name,

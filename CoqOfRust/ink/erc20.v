@@ -28,8 +28,6 @@ Module erc20.
   Definition MAX_EVENT_TOPICS : usize :=
     run (Pure ink_env.types.Environment.MAX_EVENT_TOPICS).
   
-  Definition _ : unit := run (Pure tt).
-  
   Module Erc20.
     Record t : Set := {
       total_supply : ink_storage_traits.storage.AutoStorableHint.Type;
@@ -48,16 +46,6 @@ Module erc20.
     }.
   End Erc20.
   Definition Erc20 : Set := Erc20.t.
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
   
   Module Impl_core_default_Default_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
@@ -83,32 +71,12 @@ Module erc20.
     }.
   End Impl_core_default_Default_for_erc20_erc20_Erc20.
   
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
   Module __ink_EventBase.
     Inductive t : Set :=
     | Transfer (_ : erc20.erc20.Transfer)
     | Approval (_ : erc20.erc20.Approval).
   End __ink_EventBase.
   Definition __ink_EventBase := __ink_EventBase.t.
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
   
   Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
     Definition Self := erc20.erc20.Transfer.
@@ -119,8 +87,6 @@ Module erc20.
     }.
   End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
   
-  Definition _ : unit := run (ink.codegen.utils.identity_type.consume_type tt).
-  
   Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
     Definition Self := erc20.erc20.Approval.
     
@@ -129,8 +95,6 @@ Module erc20.
     Global Instance I : ink.codegen.event.topics.EventLenTopics.Trait Self := {
     }.
   End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
-  
-  Definition _ : unit := run (ink.codegen.utils.identity_type.consume_type tt).
   
   Module Transfer.
     Record t : Set := {
@@ -151,10 +115,6 @@ Module erc20.
   End Transfer.
   Definition Transfer : Set := Transfer.t.
   
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
   Module Approval.
     Record t : Set := {
       owner : erc20.erc20.AccountId;
@@ -173,14 +133,6 @@ Module erc20.
     }.
   End Approval.
   Definition Approval : Set := Approval.t.
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
   
   Module
       Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
@@ -611,14 +563,6 @@ Module erc20.
     }.
   End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
   Module Erc20Ref.
     Record t : Set := {
       inner : ink.codegen.dispatch.info.ContractCallBuilder.Type;
@@ -651,10 +595,6 @@ Module erc20.
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
   
   Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
@@ -734,12 +674,6 @@ Module erc20.
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
   
   Module Impl_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
@@ -1024,8 +958,6 @@ Module erc20.
     }.
   End Impl_erc20_erc20_Erc20Ref.
   
-  Definition _ : unit := run (Pure tt).
-  
   Module
       Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
@@ -1100,16 +1032,12 @@ Module erc20.
     }.
   End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
   
-  Definition _ : unit := run (Pure tt).
-  
   Module Error.
     Inductive t : Set :=
     | InsufficientBalance
     | InsufficientAllowance.
   End Error.
   Definition Error := Error.t.
-  
-  Definition _ : unit := run (Pure tt).
   
   Module Impl_core_fmt_Debug_for_erc20_erc20_Error.
     Definition Self := erc20.erc20.Error.
@@ -1181,10 +1109,6 @@ Module erc20.
     }.
   End Impl_core_cmp_Eq_for_erc20_erc20_Error.
   
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
   Definition Result : Set := core.result.Result T erc20.erc20.Error.
 End erc20.
 
@@ -1213,8 +1137,6 @@ Definition ChainExtension : Set := ink_env.types.Environment.ChainExtension.
 
 Definition MAX_EVENT_TOPICS : usize :=
   run (Pure ink_env.types.Environment.MAX_EVENT_TOPICS).
-
-Definition _ : unit := run (Pure tt).
 
 Module Check.
   Record t : Set := {
@@ -1266,8 +1188,6 @@ Module Erc20.
 End Erc20.
 Definition Erc20 : Set := Erc20.t.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
@@ -1282,8 +1202,6 @@ Module Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
   }.
 End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
@@ -1297,8 +1215,6 @@ Module Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
     ink_storage_traits.storage.StorageKey.KEY := KEY;
   }.
 End Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
@@ -1377,8 +1293,6 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
   }.
 End Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
@@ -1442,8 +1356,6 @@ AutoStorableHint<::ink::storage::traits::ManualKey<639884519u32, ()
   }.
 End Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
@@ -1494,8 +1406,6 @@ Module Impl_core_default_Default_for_erc20_erc20_Erc20.
   }.
 End Impl_core_default_Default_for_erc20_erc20_Erc20.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_ink_reflect_contract_ContractName_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
@@ -1510,8 +1420,6 @@ Module Impl_ink_reflect_contract_ContractName_for_erc20_erc20_Erc20.
     ink.reflect.contract.ContractName.NAME := NAME;
   }.
 End Impl_ink_reflect_contract_ContractName_for_erc20_erc20_Erc20.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
   Definition Self := ref erc20.erc20.Erc20.
@@ -1549,10 +1457,6 @@ Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
   }.
 End Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
 
-Definition _ : unit := run (Pure tt).
-
-Definition _ : unit := run (Pure tt).
-
 Module
     Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
   Definition Self := ink.env_access.EnvAccess erc20.erc20.Environment.
@@ -1581,8 +1485,6 @@ Module __ink_EventBase.
   | Approval (_ : erc20.erc20.Approval).
 End __ink_EventBase.
 Definition __ink_EventBase := __ink_EventBase.t.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
@@ -1624,8 +1526,6 @@ Module
     parity_scale_codec.encode_like.EncodeLike.Build_Class _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
@@ -1715,8 +1615,6 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
   }.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
@@ -1725,8 +1623,6 @@ Module Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
   Global Instance I : ink.reflect.event.ContractEventBase.Trait Self := {
   }.
 End Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
@@ -1744,8 +1640,6 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
   }.
 End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
   
@@ -1761,8 +1655,6 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
-
-Definition _ : unit := run (Pure tt).
 
 Module __ink_UndefinedAmountOfTopics.
   Inductive t : Set :=
@@ -1826,8 +1718,6 @@ Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
   }.
 End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
 
-Definition _ : unit := run (ink.codegen.utils.identity_type.consume_type tt).
-
 Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
   Definition Self := erc20.erc20.Approval.
   
@@ -1836,8 +1726,6 @@ Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
   Global Instance I : ink.codegen.event.topics.EventLenTopics.Trait Self := {
   }.
 End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
-
-Definition _ : unit := run (ink.codegen.utils.identity_type.consume_type tt).
 
 Module Transfer.
   Record t : Set := {
@@ -1857,8 +1745,6 @@ Module Transfer.
   }.
 End Transfer.
 Definition Transfer : Set := Transfer.t.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
   Definition Self := erc20.erc20.Transfer.
@@ -1895,8 +1781,6 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
   Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
     parity_scale_codec.encode_like.EncodeLike.Build_Class _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
   Definition Self := erc20.erc20.Transfer.
@@ -1968,8 +1852,6 @@ Module Approval.
 End Approval.
 Definition Approval : Set := Approval.t.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
   Definition Self := erc20.erc20.Approval.
   
@@ -2005,8 +1887,6 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
   Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
     parity_scale_codec.encode_like.EncodeLike.Build_Class _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
   Definition Self := erc20.erc20.Approval.
@@ -2059,8 +1939,6 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
   }.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
   Definition Self := erc20.erc20.Transfer.
   
@@ -2106,8 +1984,6 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
     ink_env.topics.Topics.topics := topics;
   }.
 End Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
   Definition Self := erc20.erc20.Approval.
@@ -2567,8 +2443,6 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   }.
 End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
 
-Definition _ : unit := run (Pure tt).
-
 Module __ink_ConstructorDecoder.
   Inductive t : Set :=
   | Constructor0 (_ : ink.reflect.dispatch.DispatchableConstructorInfo.Input).
@@ -2733,8 +2607,6 @@ Module
     {
   }.
 End Impl_ink_reflect_dispatch_ContractConstructorDecoder_for_erc20_erc20_Erc20.
-
-Definition _ : unit := run (Pure tt).
 
 Module __ink_MessageDecoder.
   Inductive t : Set :=
@@ -3380,8 +3252,6 @@ Module Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
   }.
 End Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
 
-Definition _ : unit := run (Pure tt).
-
 Definition _ : ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
   run ((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"] tt).
 
@@ -3578,29 +3448,6 @@ Module Impl_erc20_erc20_Erc20.
   }.
 End Impl_erc20_erc20_Erc20.
 
-Definition _ : unit :=
-  run
-    (let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    let* _ := ink.codegen.utils.identity_type.consume_type tt in
-    Pure tt).
-
-Definition _ : unit := run (Pure tt).
-
 Module CallBuilder.
   Record t : Set := {
     account_id : erc20.erc20.AccountId;
@@ -3633,8 +3480,6 @@ Module Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
@@ -3682,8 +3527,6 @@ Module
     parity_scale_codec.encode_like.EncodeLike.Build_Class _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
@@ -3792,8 +3635,6 @@ Module Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
   }.
 End Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
@@ -3833,8 +3674,6 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
   }.
 End Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
 
-Definition _ : unit := run (Pure tt).
-
 Module
     Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
@@ -3856,8 +3695,6 @@ Module
     ink_storage_traits.layout.StorageLayout.layout := layout;
   }.
 End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20___CallBuilder.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
@@ -4182,8 +4019,6 @@ Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
   }.
 End Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
@@ -4227,8 +4062,6 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
   Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
     parity_scale_codec.encode_like.EncodeLike.Build_Class _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
@@ -4333,8 +4166,6 @@ Module Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
   }.
 End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
@@ -4367,8 +4198,6 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
   }.
 End Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
@@ -4389,8 +4218,6 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
     ink_storage_traits.layout.StorageLayout.layout := layout;
   }.
 End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_ink_env_contract_ContractReference_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
@@ -4751,8 +4578,6 @@ Module Impl_erc20_erc20_Erc20Ref_2.
   }.
 End Impl_erc20_erc20_Erc20Ref_2.
 
-Definition _ : unit := run (Pure tt).
-
 Module
     Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
@@ -4853,8 +4678,6 @@ Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
     core.convert.AsMut.as_mut := as_mut;
   }.
 End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
-
-Definition _ : unit := run (Pure tt).
 
 Definition __ink_generate_metadata (_ : unit) : M ink_metadata.InkProject :=
   let* layout :=
@@ -5254,8 +5077,6 @@ Module Error.
 End Error.
 Definition Error := Error.t.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
@@ -5369,8 +5190,6 @@ Module Impl_core_cmp_Eq_for_erc20_erc20_Error.
   }.
 End Impl_core_cmp_Eq_for_erc20_erc20_Error.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
@@ -5405,8 +5224,6 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
   Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
     parity_scale_codec.encode_like.EncodeLike.Build_Class _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
