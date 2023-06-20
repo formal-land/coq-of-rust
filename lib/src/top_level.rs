@@ -259,7 +259,6 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             }
 
             let value = tcx.hir().body(*body_id).value;
-
             vec![TopLevelItem::Const {
                 name,
                 ty: compile_type(env, ty),
