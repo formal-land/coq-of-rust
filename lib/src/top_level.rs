@@ -1421,21 +1421,21 @@ impl TopLevelItem {
                             text("Trait"),
                             line(),
                             nest([
-                              text("("),
-                              line(),
-                              text("Self"),
-                              line(),
-                              text(":"),
-                              line(),
-                              text("Set"),
-                              text(")"),
-                              line(),
-                              text("{"),
-                              concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
-                              text(":"),
-                              line(),
-                              text("Set"),
-                              text("}"),
+                                text("("),
+                                line(),
+                                text("Self"),
+                                line(),
+                                text(":"),
+                                line(),
+                                text("Set"),
+                                text(")"),
+                                line(),
+                                text("{"),
+                                concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
+                                text(":"),
+                                line(),
+                                text("Set"),
+                                text("}"),
                             ]),
                             line(),
                             text(":"),
@@ -1579,28 +1579,30 @@ impl TopLevelItem {
                             text("."),
                         ]),
                         hardline(),
-                        if ty_params.is_empty() { nil() } else {
-                          nest([
-                            text("Section"),
-                            line(),
-                            text("Impl_"),
-                            text(of_trait.to_name()),
-                            text("_for_"),
-                            text(self_ty.to_name()),
-                            text("."),
-                            hardline(),
-                          ])
+                        if ty_params.is_empty() {
+                            nil()
+                        } else {
+                            nest([
+                                text("Section"),
+                                line(),
+                                text("Impl_"),
+                                text(of_trait.to_name()),
+                                text("_for_"),
+                                text(self_ty.to_name()),
+                                text("."),
+                                hardline()
+                            ])
                         },
                         nest([
-                          text("Context"),
-                          line(),
-                          text("{"),
-                          concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
-                          text(":"),
-                          line(),
-                          text("Set"),
-                          text("}"),
-                          text(".")
+                            text("Context"),
+                            line(),
+                            text("{"),
+                            concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
+                            text(":"),
+                            line(),
+                            text("Set"),
+                            text("}"),
+                            text("."),
                         ]),
                         hardline(),
                         nest([
@@ -1629,18 +1631,20 @@ impl TopLevelItem {
                                 line(),
                                 // Below we want to make a list of assigned params, and we have to concat them together eventually
                                 concat(
-                                  // First we zip the list of generic tys and ty params together
-                                  // Get the list of generic ty as doc strings
-                                  generic_tys.iter().map(|generic_ty| text(generic_ty))
-                                  // Change back to a collection to insert an element
-                                  .collect()
-                                  // Insert "Self" at the beginning to match up the parameters
-                                  .insert(0, text("Self"))
-                                  // Switch back to iteration mode and begin to zip
-                                  .iter()
-                                  .zip(
-                                    // ... with processed ty params
-                                    ty_params.iter().map(|(ty_param, has_default)|
+                                    // First we zip the list of generic tys and ty params together
+                                    // Get the list of generic ty as doc strings
+                                    generic_tys
+                                        .iter()
+                                        .map(|generic_ty| text(generic_ty))
+                                        // Change back to a collection to insert an element
+                                        .collect()
+                                        // Insert "Self" at the beginning to match up the parameters
+                                        .insert(0, text("Self"))
+                                        // Switch back to iteration mode and begin to zip
+                                        .iter()
+                                        .zip(
+                                            // ... with processed ty params
+                                            ty_params.iter().map(|(ty_param, has_default)|
                                       // If the param has a defaultType we make it to "Some"
                                       (if *has_default {
                                           nest([
@@ -1652,23 +1656,22 @@ impl TopLevelItem {
                                       // Otherwise we just leave it as original doc text
                                       } else {
                                           ty_param.to_doc(false)
-                                      })
-                                    )
-                                  )
-                                  // Generate the list of assigned params from the zipped pairs
-                                  .map(|(generic_ty_doc, ty_param_doc)|
-                                  concat([
-                                    line(),
-                                    text("("),
-                                    generic_ty_doc,
-                                    line(),
-                                    text(":"),
-                                    line(),
-                                    ty_param_doc,
-                                    text(")")
-                                  ])
-                                )
-                              )
+                                      })),
+                                        )
+                                        // Generate the list of assigned params from the zipped pairs
+                                        .map(|(generic_ty_doc, ty_param_doc)| {
+                                            concat([
+                                                line(),
+                                                text("("),
+                                                generic_ty_doc,
+                                                line(),
+                                                text(":"),
+                                                line(),
+                                                ty_param_doc,
+                                                text(")"),
+                                            ])
+                                        }),
+                                ),
                             ]),
                             text(" :="),
                             line(),
