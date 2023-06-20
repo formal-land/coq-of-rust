@@ -1,1 +1,5 @@
-const _: () = ();
+const _: () = {
+    struct Foo {
+        test: bool,
+    }
+};

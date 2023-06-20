@@ -2,3 +2,14 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition _ : unit := run (Pure tt).
+
+Module Foo.
+  Record t : Set := {
+    test : bool;
+  }.
+  
+  Global Instance Get_test : Notation.Dot "test" := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
+End Foo.
+Definition Foo : Set := Foo.t.
