@@ -4800,10 +4800,6 @@ Module call.
       }.
     End Impl_core_convert_From_for_ink_env_call_selector_Selector.
     
-    Definition _ : unit := run (Pure tt).
-    
-    Definition _ : unit := run (Pure tt).
-    
     Module Impl_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
       
@@ -10341,10 +10337,6 @@ Module selector.
     }.
   End Impl_core_convert_From_for_ink_env_call_selector_Selector.
   
-  Definition _ : unit := run (Pure tt).
-  
-  Definition _ : unit := run (Pure tt).
-  
   Module Impl_ink_env_call_selector_Selector_2.
     Definition Self := ink_env.call.selector.Selector.
     
@@ -10501,8 +10493,6 @@ Module Impl_core_convert_From_for_ink_env_call_selector_Selector.
   }.
 End Impl_core_convert_From_for_ink_env_call_selector_Selector.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_parity_scale_codec_codec_Decode_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
@@ -10530,8 +10520,6 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_env_call_selector_Selector.
     parity_scale_codec.codec.Decode.decode := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_ink_env_call_selector_Selector.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
@@ -24447,15 +24435,11 @@ Module types.
   End NoChainExtension.
   Definition NoChainExtension := NoChainExtension.t.
   
-  Definition _ : unit := run (Pure tt).
-  
   Module DefaultEnvironment.
     Inductive t : Set :=
     .
   End DefaultEnvironment.
   Definition DefaultEnvironment := DefaultEnvironment.t.
-  
-  Definition _ : unit := run (Pure tt).
   
   Module Impl_core_fmt_Debug_for_ink_env_types_DefaultEnvironment.
     Definition Self := ink_env.types.DefaultEnvironment.
@@ -24749,8 +24733,6 @@ Module NoChainExtension.
 End NoChainExtension.
 Definition NoChainExtension := NoChainExtension.t.
 
-Definition _ : unit := run (Pure tt).
-
 Module Impl_scale_info_TypeInfo_for_ink_env_types_NoChainExtension.
   Definition Self := ink_env.types.NoChainExtension.
   
@@ -24785,8 +24767,6 @@ Module DefaultEnvironment.
   .
 End DefaultEnvironment.
 Definition DefaultEnvironment := DefaultEnvironment.t.
-
-Definition _ : unit := run (Pure tt).
 
 Module Impl_scale_info_TypeInfo_for_ink_env_types_DefaultEnvironment.
   Definition Self := ink_env.types.DefaultEnvironment.
