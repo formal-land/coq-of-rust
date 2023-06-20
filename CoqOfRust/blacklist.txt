@@ -177,6 +177,7 @@ examples/unsafe_operations/inline_assembly.v
 examples/unsafe_operations/raw_pointers.v
 examples/variable_bindings/declare_first.v
 examples/variable_bindings/variable_bindings.v
+ink/erc20.v
 ink/ink_env.v
 std/error.v
 std/io.v
