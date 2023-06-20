@@ -1600,7 +1600,11 @@ impl TopLevelItem {
                                 text("Context"),
                                 line(),
                                 text("{"),
-                                concat(ty_params.iter().map(|(ty, has_default)| concat([ty.to_doc(false), line()]))),
+                                concat(
+                                    ty_params.iter().map(|(ty, has_default)| {
+                                        concat([ty.to_doc(false), line()])
+                                    }),
+                                ),
                                 text(":"),
                                 line(),
                                 text("Set"),
