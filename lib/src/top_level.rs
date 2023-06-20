@@ -1579,16 +1579,18 @@ impl TopLevelItem {
                             text("."),
                         ]),
                         hardline(),
-                        nest([
-                          text("Section"),
-                          line(),
-                          text("Impl_"),
-                          text(of_trait.to_name()),
-                          text("_for_"),
-                          text(self_ty.to_name()),
-                          text("."),
-                        ]),
-                        hardline(),
+                        if ty_params.is_empty() { nil() } else {
+                          nest([
+                            text("Section"),
+                            line(),
+                            text("Impl_"),
+                            text(of_trait.to_name()),
+                            text("_for_"),
+                            text(self_ty.to_name()),
+                            text("."),
+                            hardline(),
+                          ])
+                        },
                         nest([
                           text("Context"),
                           line(),
