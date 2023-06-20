@@ -1600,7 +1600,7 @@ impl TopLevelItem {
                                 text("Context"),
                                 line(),
                                 text("{"),
-                                concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
+                                concat(ty_params.iter().map(|(ty, has_default)| concat([ty.to_doc(false), line()]))),
                                 text(":"),
                                 line(),
                                 text("Set"),
@@ -1645,7 +1645,7 @@ impl TopLevelItem {
                                         // Switch back to iteration mode and begin to zip
                                         .iter()
                                         .zip(ty_params.iter().map(|(ty_param, has_default)| {
-                                            (if *has_default {
+                                            if *has_default {
                                                 nest([
                                                     text("(Some"),
                                                     line(),
@@ -1654,7 +1654,7 @@ impl TopLevelItem {
                                                 ])
                                             } else {
                                                 ty_param.to_doc(false)
-                                            })
+                                            }
                                         }))
                                         // Generate the list of assigned params from the zipped pairs
                                         .map(|(generic_ty_doc, ty_param_doc)| {
