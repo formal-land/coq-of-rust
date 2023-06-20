@@ -1,9 +1,0 @@
-warning: unused variable: `tcx`
-   --> lib/src/top_level.rs:207:30
-    |
-207 | fn check_if_const_underscode(tcx: &TyCtxt, ty: &Ty, name: &str) -> bool {
-    |                              ^^^ help: if this is intentional, prefix it with an underscore: `_tcx`
-    |
-    = note: `#[warn(unused_variables)]` on by default
-
-=======> ty Ty { hir_id: HirId(DefId(0:3 ~ test0[962f]::message).4), kind: Ref(Lifetime { hir_id: HirId(DefId(0:3 ~ test0[962f]::message).1), ident: '_#0, res: Static }, MutTy { ty: Ty { hir_id: HirId(DefId(0:3 ~ test0[962f]::message).2), kind: Path(Resolved(None, Path { span: examples/test0.rs:1:17: 1:20 (#0), res: PrimTy(Str), segments: [PathSegment { ident: str#0, hir_id: HirId(DefId(0:3 ~ test0[962f]::message).3), res: PrimTy(Str), args: None, infer_args: false }] })), span: examples/test0.rs:1:17: 1:20 (#0) }, mutbl: Not }), span: examples/test0.rs:1:16: 1:20 (#0) }, name ====> "message"

@@ -1,8 +1,0 @@
-warning: unused variable: `tcx`
-   --> lib/src/top_level.rs:207:30
-    |
-207 | fn check_if_const_underscode(tcx: &TyCtxt, ty: &Ty, name: &str) -> bool {
-    |                              ^^^ help: if this is intentional, prefix it with an underscore: `_tcx`
-    |
-    = note: `#[warn(unused_variables)]` on by default
-
