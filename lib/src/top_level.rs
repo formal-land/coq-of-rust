@@ -1590,20 +1590,24 @@ impl TopLevelItem {
                                 text("_for_"),
                                 text(self_ty.to_name()),
                                 text("."),
-                                hardline()
+                                hardline(),
                             ])
                         },
-                        nest([
-                            text("Context"),
-                            line(),
-                            text("{"),
-                            concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
-                            text(":"),
-                            line(),
-                            text("Set"),
-                            text("}"),
-                            text("."),
-                        ]),
+                        if ty_params.is_empty() {
+                            nil()
+                        } else {
+                            nest([
+                                text("Context"),
+                                line(),
+                                text("{"),
+                                concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
+                                text(":"),
+                                line(),
+                                text("Set"),
+                                text("}"),
+                                text("."),
+                            ])
+                        },
                         hardline(),
                         nest([
                             text("Definition"),
@@ -1631,8 +1635,6 @@ impl TopLevelItem {
                                 line(),
                                 // Below we want to make a list of assigned params, and we have to concat them together eventually
                                 concat(
-                                    // First we zip the list of generic tys and ty params together
-                                    // Get the list of generic ty as doc strings
                                     generic_tys
                                         .iter()
                                         .map(|generic_ty| text(generic_ty))
@@ -1642,22 +1644,18 @@ impl TopLevelItem {
                                         .insert(0, text("Self"))
                                         // Switch back to iteration mode and begin to zip
                                         .iter()
-                                        .zip(
-                                            // ... with processed ty params
-                                            ty_params.iter().map(|(ty_param, has_default)|
-                                      // If the param has a defaultType we make it to "Some"
-                                      (if *has_default {
-                                          nest([
-                                              text("(Some"),
-                                              line(),
-                                              ty_param.to_doc(false),
-                                              text(")"),
-                                          ])
-                                      // Otherwise we just leave it as original doc text
-                                      } else {
-                                          ty_param.to_doc(false)
-                                      })),
-                                        )
+                                        .zip(ty_params.iter().map(|(ty_param, has_default)| {
+                                            (if *has_default {
+                                                nest([
+                                                    text("(Some"),
+                                                    line(),
+                                                    ty_param.to_doc(false),
+                                                    text(")"),
+                                                ])
+                                            } else {
+                                                ty_param.to_doc(false)
+                                            })
+                                        }))
                                         // Generate the list of assigned params from the zipped pairs
                                         .map(|(generic_ty_doc, ty_param_doc)| {
                                             concat([
