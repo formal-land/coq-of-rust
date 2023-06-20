@@ -89,8 +89,6 @@ examples/generics/generics_where_clauses.v
 examples/generics/generics.v
 examples/guessing_game/guessing_game.v
 examples/hello_world/formatted_print.v
-examples/ink/flipper/Crate.v
-examples/ink/erc20/Crate.v
 examples/macro_rules/macro_rules_designators.v
 examples/macro_rules/macro_rules_overload.v
 examples/macro_rules/macro_rules_repeat.v
