@@ -1638,11 +1638,13 @@ impl TopLevelItem {
                                 text(".Trait"),
                                 line(),
                                 concat([
+                                    text("("),
                                     text("Self"),
                                     line(),
                                     text(":"),
                                     line(),
                                     text(self_ty.to_name()),
+                                    text(")"),
                                 ]),
                                 concat(
                                     generic_tys[1..]
