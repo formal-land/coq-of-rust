@@ -1601,9 +1601,9 @@ impl TopLevelItem {
                                 line(),
                                 text("{"),
                                 concat(
-                                    ty_params.iter().map(|(ty, has_default)| {
-                                        concat([ty.to_doc(false), line()])
-                                    }),
+                                    ty_params
+                                        .iter()
+                                        .map(|(ty, _)| concat([ty.to_doc(false), line()])),
                                 ),
                                 text(":"),
                                 line(),
@@ -1620,7 +1620,7 @@ impl TopLevelItem {
                             line(),
                             text(":="),
                             line(),
-                            self_ty.to_doc(false),
+                            text(self_ty.to_name()),
                             text("."),
                         ]),
                         hardline(),
@@ -1637,17 +1637,17 @@ impl TopLevelItem {
                                 of_trait.to_doc(),
                                 text(".Trait"),
                                 line(),
-                                // Below we want to make a list of assigned params, and we have to concat them together eventually
+                                concat([
+                                    text("Self"),
+                                    line(),
+                                    text(":"),
+                                    line(),
+                                    text(self_ty.to_name()),
+                                ]),
                                 concat(
-                                    generic_tys
+                                    generic_tys[1..]
                                         .iter()
                                         .map(|generic_ty| text(generic_ty))
-                                        // Change back to a collection to insert an element
-                                        .collect()
-                                        // Insert "Self" at the beginning to match up the parameters
-                                        .insert(0, text("Self"))
-                                        // Switch back to iteration mode and begin to zip
-                                        .iter()
                                         .zip(ty_params.iter().map(|(ty_param, has_default)| {
                                             if *has_default {
                                                 nest([
@@ -1660,7 +1660,6 @@ impl TopLevelItem {
                                                 ty_param.to_doc(false)
                                             }
                                         }))
-                                        // Generate the list of assigned params from the zipped pairs
                                         .map(|(generic_ty_doc, ty_param_doc)| {
                                             concat([
                                                 line(),
