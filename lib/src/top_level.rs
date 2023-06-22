@@ -1649,7 +1649,7 @@ impl TopLevelItem {
                                 concat(
                                     generic_tys[1..]
                                         .iter()
-                                        .map(text))
+                                        .map(text)
                                         .zip(ty_params.iter().map(|(ty_param, has_default)| {
                                             if *has_default {
                                                 nest([
