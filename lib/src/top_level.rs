@@ -4,6 +4,7 @@ use crate::header::*;
 use crate::path::*;
 use crate::render::*;
 use crate::ty::*;
+use clap::builder::PathBufValueParser;
 use rustc_ast::ast::{AttrArgs, AttrKind};
 use rustc_hir::{
     Impl, ImplItemKind, Item, ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind,
@@ -588,6 +589,7 @@ fn fn_to_doc<'a>(
     ret_ty: &'a CoqType,
     body: &'a Expr,
     is_dead_code: bool,
+    extra_data: Option<&TopLevelItem>,
 ) -> Doc<'a> {
     group([
         if is_dead_code {
@@ -977,7 +979,7 @@ impl TopLevelItem {
         text("HI")
     }
 
-    fn to_doc(&self) -> Doc {
+    fn to_doc(&self, extra_data: Option<&TopLevelItem>) -> Doc {
         match self {
             TopLevelItem::Const { name, ty, value } => nest([
                 nest([
@@ -1017,6 +1019,7 @@ impl TopLevelItem {
                 ret_ty,
                 body,
                 *is_dead_code,
+                extra_data,
             ),
             TopLevelItem::Module {
                 name,
@@ -1706,25 +1709,24 @@ impl TopLevelItem {
 }
 
 impl TopLevel {
-    fn get_struct_types(&self, self_ty: &Box<CoqType>) -> Vec<&str> {
-        // @TODO this is BOLVANKA, turn it into real code
-
-        self.0.iter().map(|item_ins| match item_ins {
+    // function returns TopLevelItem::TypeStructStruct (comparing name)
+    fn find_tli_by_name(&self, self_ty: &Box<CoqType>) -> Option<&TopLevelItem> {
+        //Option<TopLevelItem> {
+        self.0.iter().find(|item_ins| match item_ins {
             TopLevelItem::TypeStructStruct {
                 name,
                 fields,
                 is_dead_code: _,
             } => {
                 if *name == self_ty.to_name() {
-                    println!("OUR STRUCT, Fields: {:#?} ", fields)
+                    true
                 } else {
-                    println!("this is different struct, not ours")
+                    // this is different struct, not ours
+                    false
                 }
             }
-            _ => println!("It was not struct"),
-        });
-        println!("DA");
-        vec!["string", "string", "smthElse"]
+            _ => false,
+        })
     }
 
     fn to_doc(&self) -> Doc {
@@ -1735,7 +1737,13 @@ impl TopLevel {
         // NATALIE ADDED BELOW
         println!("OOOOOOOOIIIIIIIIUUUUUUUUYYYYYYYY");
 
+        // in this variable we store additional data to pass to to_doc function
+
         // NATALIE ADDED ABOWE
+        // Задача: пройти по всему дереву, и, если встретился TraitImpl - сохранить
+        // предыдущий Item (тот, для которого печатается Impl). потому, что из него (предыдущего)
+        // нам доставать типы данных (extra data). Для StructStruct проверять, равны ли name
+
         intersperse(
             self.0.iter().map(|item| {
                 println!("ITEM============: {:#?}", item);
@@ -1756,9 +1764,9 @@ impl TopLevel {
                         println!("SELF_TY: {:#?}", self_ty.to_name());
                         // @TODO. support for deriveDebug (add code to support more traits)
                         if of_trait.to_name() == "core_fmt_Debug" {
-                            let strct = self.get_struct_types(self_ty);
-                            // add structs types here (for printing)
-                            item.to_doc_with_extra_data(strct)
+                            let strct = self.find_tli_by_name(self_ty); // self.get_struct_types(self_ty);
+                                                                        // add structs types here (for printing)
+                            item.to_doc(strct)
                         } else {
                             println!("@TODO more cases (only Derive debug for Struct supported)");
                             item.to_doc()
