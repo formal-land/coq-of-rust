@@ -598,6 +598,36 @@ fn fn_to_doc<'a>(
         } else {
             nil()
         },
+        // Printing instance of DoubleColon Class for [f]
+        // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
+        if name == "fmt" {
+            concat([
+                text("Parameter99999 "),
+                body.parameter_name_for_fmt(),
+                // get type of argument named f
+                // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
+                concat(args.iter().map(
+                    |(name, ty)| {
+                        if name == "f" {
+                            ty.to_doc(false)
+                        } else {
+                            nil()
+                        }
+                    },
+                )),
+                text(" -> "),
+                line(),
+                ret_ty.to_doc(false),
+                text("."),
+                hardline(),
+                hardline(),
+                text("Global Instance ..."),
+                hardline(),
+                hardline(),
+            ])
+        } else {
+            nil()
+        },
         nest([
             nest([
                 nest([text("Definition"), line(), text(name)]),
@@ -942,6 +972,11 @@ impl ImplItem {
 }
 
 impl TopLevelItem {
+    // @TODO NATALIE 21JUNE ADDED
+    fn to_doc_with_extra_data(&self, strct: Vec<&str>) -> Doc {
+        text("HI")
+    }
+
     fn to_doc(&self) -> Doc {
         match self {
             TopLevelItem::Const { name, ty, value } => nest([
@@ -1671,9 +1706,70 @@ impl TopLevelItem {
 }
 
 impl TopLevel {
+    fn get_struct_types(&self, self_ty: &Box<CoqType>) -> Vec<&str> {
+        // @TODO this is BOLVANKA, turn it into real code
+
+        self.0.iter().map(|item_ins| match item_ins {
+            TopLevelItem::TypeStructStruct {
+                name,
+                fields,
+                is_dead_code: _,
+            } => {
+                if *name == self_ty.to_name() {
+                    println!("OUR STRUCT, Fields: {:#?} ", fields)
+                } else {
+                    println!("this is different struct, not ours")
+                }
+            }
+            _ => println!("It was not struct"),
+        });
+        println!("DA");
+        vec!["string", "string", "smthElse"]
+    }
+
     fn to_doc(&self) -> Doc {
+        // check if there is a Debug Trait implementation in the code (#[derive(Debug)])
+        // for a TopLevelItem::TypeStructStruct (@TODO extend to cover more cases)
+        // if "yes" - get both TopLevelItems (Struct itself and TraitImpl for it)
+        // in order to have all required data for printing instance for DoubleColon Class
+        // NATALIE ADDED BELOW
+        println!("OOOOOOOOIIIIIIIIUUUUUUUUYYYYYYYY");
+
+        // NATALIE ADDED ABOWE
         intersperse(
-            self.0.iter().map(|item| item.to_doc()),
+            self.0.iter().map(|item| {
+                println!("ITEM============: {:#?}", item);
+                // if item is DeriveDebug, get struct's fields
+                match item {
+                    TopLevelItem::TraitImpl {
+                        generic_tys: _,
+                        ty_params: _,
+                        self_ty,
+                        of_trait,
+                        items,
+                        trait_non_default_items: _,
+                    } =>
+                    // if item is DeriveDebug we are getting missing datatypes for Struct, and
+                    // printing DoubleColon instance for fmt function
+                    {
+                        println!("OF_TRAIT_TO_NAME: {}", of_trait.to_name());
+                        println!("SELF_TY: {:#?}", self_ty.to_name());
+                        // @TODO. support for deriveDebug (add code to support more traits)
+                        if of_trait.to_name() == "core_fmt_Debug" {
+                            let strct = self.get_struct_types(self_ty);
+                            // add structs types here (for printing)
+                            item.to_doc_with_extra_data(strct)
+                        } else {
+                            println!("@TODO more cases (only Derive debug for Struct supported)");
+                            item.to_doc()
+                        }
+                    }
+                    _ => {
+                        // if no DeriveDebug - we just convert item to doc
+                        item.to_doc()
+                    }
+                }
+            }),
             [hardline(), hardline()],
         )
     }
