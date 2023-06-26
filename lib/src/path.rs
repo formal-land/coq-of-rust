@@ -28,6 +28,16 @@ impl Path {
         self.segments.last().unwrap()
     }
 
+    pub fn to_slice(&self) -> &[String] {
+        &self.segments[..]
+    }
+
+    pub fn of_slice(vec: &[String]) -> Path {
+        Path {
+            segments: vec.iter().map(|x| String::from(x.as_str())).collect(),
+        }
+    }
+
     pub fn base_before_last(&self) -> Path {
         Path {
             segments: self.segments[..self.segments.len() - 1].to_vec(),

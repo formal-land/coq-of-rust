@@ -25,8 +25,8 @@ End Tar.
 Module SomeTrait.
   Class
       Trait
-      (Self : Set) {SomeType : Set} `{traits_parms.Foo SomeType}
-       `{traits_parms.Bar SomeType}  `{traits_parms.Tar SomeType} 
+      (Self : Set) {SomeType : Set} `{Foo.Trait SomeType}  `{Bar.Trait SomeType}
+       `{Tar.Trait SomeType} 
       :
       Set
       :=
@@ -43,17 +43,17 @@ Module SomeTrait.
   }.
 End SomeTrait.
 
-Module SomeType.
+Module SomeOtherType.
   Record t : Set := { _ : u32;}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
-End SomeType.
-Definition SomeType := SomeType.t.
+End SomeOtherType.
+Definition SomeOtherType := SomeOtherType.t.
 
-Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeType.
-  Definition Self := traits_parms.SomeType.
+Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
+  Definition Self := traits_parms.SomeOtherType.
   
   Definition some_fn (_ : unit) : M unit := Pure tt.
   
@@ -65,4 +65,4 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeType.
   Global Instance I : traits_parms.SomeTrait.Trait Self := {
     traits_parms.SomeTrait.some_fn := some_fn;
   }.
-End Impl_traits_parms_SomeTrait_for_traits_parms_SomeType.
+End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.

@@ -8,8 +8,8 @@ trait SomeTrait {
     fn some_fn();
 }
 
-struct SomeType(u32);
+struct SomeOtherType(u32);
 
-impl SomeTrait for SomeType {
+impl SomeTrait for SomeOtherType {
     fn some_fn() {}
 }

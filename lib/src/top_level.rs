@@ -24,7 +24,7 @@ enum TraitItem {
         ret_ty: Box<CoqType>,
         body: Box<Expr>,
     },
-    Type(Vec<CoqType>),
+    Type(Vec<Path>),
 }
 
 #[derive(Debug)]
@@ -430,9 +430,9 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 let generic_bounds = generic_bounds
                                     .iter()
                                     .filter_map(|generic_bound| match generic_bound {
-                                        GenericBound::Trait(ptraitref, _) => Some(CoqType::Var(
-                                            Box::new(compile_path(env, ptraitref.trait_ref.path)),
-                                        )),
+                                        GenericBound::Trait(ptraitref, _) => {
+                                            Some(compile_path(env, ptraitref.trait_ref.path))
+                                        }
                                         GenericBound::LangItemTrait { .. } => None,
                                         GenericBound::Outlives { .. } => None,
                                     })
@@ -1449,33 +1449,35 @@ impl TopLevelItem {
                             ]),
                             // types start
                             intersperse(
-                                body.iter().map(|(name, item)| match item {
+                                body.iter().map(|(item_name, item)| match item {
                                     TraitItem::Definition { .. } => nil(),
                                     TraitItem::DefinitionWithDefault { .. } => nil(),
-                                    TraitItem::Type(_bounds) => {
-                                        eprintln!("ty {:?}", _bounds);
-                                        group([
-                                            nest([
-                                                text(" {"),
-                                                text(name),
-                                                line(),
-                                                text(":"),
-                                                line(),
-                                                text("Set"),
+                                    TraitItem::Type(bounds) => group([
+                                        nest([
+                                            text(" {"),
+                                            text(item_name),
+                                            line(),
+                                            text(":"),
+                                            line(),
+                                            text("Set"),
+                                            text("}"),
+                                        ]),
+                                        concat(bounds.iter().map(|x| {
+                                            group([
+                                                text(" `{"),
+                                                {
+                                                    text(format!(
+                                                        "{}.Trait",
+                                                        Path::of_slice(&x.to_slice()[1..]) // skip the module name
+                                                    ))
+                                                },
+                                                text(" "),
+                                                text(item_name),
                                                 text("}"),
-                                            ]),
-                                            concat(_bounds.iter().map(|x| {
-                                                group([
-                                                    text(" `{"),
-                                                    x.to_doc(false),
-                                                    text(" "),
-                                                    text(name),
-                                                    text("}"),
-                                                    line(),
-                                                ])
-                                            })),
-                                        ])
-                                    }
+                                                line(),
+                                            ])
+                                        })),
+                                    ]),
                                 }),
                                 [nil()],
                             ),
