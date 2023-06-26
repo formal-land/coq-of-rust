@@ -141,10 +141,14 @@ impl CoqType {
             CoqType::Function { args, ret } => paren(
                 with_paren,
                 group([
-                    intersperse(
-                        args.iter().map(|arg| arg.to_doc(true)),
-                        [text(" ->"), line()],
-                    ),
+                    if args.is_empty() {
+                        text("unit")
+                    } else {
+                        intersperse(
+                            args.iter().map(|arg| arg.to_doc(true)),
+                            [text(" ->"), line()],
+                        )
+                    },
                     text(" ->"),
                     line(),
                     ret.to_doc(true),
