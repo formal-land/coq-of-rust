@@ -25,7 +25,7 @@ End Tar.
 Module SomeTrait.
   Class Trait (Self : Set) : Set := {
     SomeType : Set;
-    some_fn :  -> (M unit);
+    some_fn : unit -> (M unit);
   }.
   
   Global Instance Method_SomeType `(Trait) : Notation.Dot "SomeType" := {
