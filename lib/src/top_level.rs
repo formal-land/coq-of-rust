@@ -1435,6 +1435,24 @@ impl TopLevelItem {
                                 text("Set"),
                                 text(")"),
                             ]),
+                            // types start
+                            intersperse(
+                                body.iter().map(|(name, item)| match item {
+                                    TraitItem::Definition { .. } => nil(),
+                                    TraitItem::DefinitionWithDefault { .. } => nil(),
+                                    TraitItem::Type => group([nest([
+                                        text(" {"),
+                                        text(name),
+                                        line(),
+                                        text(":"),
+                                        line(),
+                                        text("Set"),
+                                        text("}"),
+                                    ])]),
+                                }),
+                                [nil()],
+                            ),
+                            // types end
                             line(),
                             text(":"),
                             line(),
@@ -1458,17 +1476,18 @@ impl TopLevelItem {
                                     ]),
                                 ]),
                                 TraitItem::DefinitionWithDefault { .. } => nil(),
-                                TraitItem::Type => group([
-                                    hardline(),
-                                    nest([
-                                        text(name),
-                                        line(),
-                                        text(":"),
-                                        line(),
-                                        text("Set"),
-                                        text(";"),
-                                    ]),
-                                ]),
+                                TraitItem::Type => nil(),
+                                // group([
+                                // hardline(),
+                                // nest([
+                                //     text(name),
+                                //     line(),
+                                //     text(":"),
+                                //     line(),
+                                //     text("Set"),
+                                //     text(";"),
+                                // ]),
+                                // ]),
                             }),
                             [nil()],
                         ),
