@@ -24,6 +24,7 @@ End Tar.
 
 Module SomeTrait.
   Class Trait (Self : Set) {SomeType : Set} : Set := {
+    SomeType := SomeType;
     some_fn : unit -> (M unit);
   }.
   

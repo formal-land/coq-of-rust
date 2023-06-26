@@ -1436,22 +1436,25 @@ impl TopLevelItem {
                                 text(")"),
                             ]),
                             // types start
-                            intersperse(
-                                body.iter().map(|(name, item)| match item {
-                                    TraitItem::Definition { .. } => nil(),
-                                    TraitItem::DefinitionWithDefault { .. } => nil(),
-                                    TraitItem::Type => group([nest([
-                                        text(" {"),
-                                        text(name),
-                                        line(),
-                                        text(":"),
-                                        line(),
-                                        text("Set"),
-                                        text("}"),
-                                    ])]),
-                                }),
-                                [nil()],
-                            ),
+                            {
+                                eprintln!("ty {:?}", body);
+                                intersperse(
+                                    body.iter().map(|(name, item)| match item {
+                                        TraitItem::Definition { .. } => nil(),
+                                        TraitItem::DefinitionWithDefault { .. } => nil(),
+                                        TraitItem::Type => group([nest([
+                                            text(" {"),
+                                            text(name),
+                                            line(),
+                                            text(":"),
+                                            line(),
+                                            text("Set"),
+                                            text("}"),
+                                        ])]),
+                                    }),
+                                    [nil()],
+                                )
+                            },
                             // types end
                             line(),
                             text(":"),
@@ -1476,18 +1479,17 @@ impl TopLevelItem {
                                     ]),
                                 ]),
                                 TraitItem::DefinitionWithDefault { .. } => nil(),
-                                TraitItem::Type => nil(),
-                                // group([
-                                // hardline(),
-                                // nest([
-                                //     text(name),
-                                //     line(),
-                                //     text(":"),
-                                //     line(),
-                                //     text("Set"),
-                                //     text(";"),
-                                // ]),
-                                // ]),
+                                TraitItem::Type => group([
+                                    hardline(),
+                                    nest([
+                                        text(name),
+                                        line(),
+                                        text(":="),
+                                        line(),
+                                        text(name),
+                                        text(";"),
+                                    ]),
+                                ]),
                             }),
                             [nil()],
                         ),
