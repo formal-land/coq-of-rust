@@ -23,7 +23,14 @@ Module Tar.
 End Tar.
 
 Module SomeTrait.
-  Class Trait (Self : Set) {SomeType : Set} : Set := {
+  Class
+      Trait
+      (Self : Set) {SomeType : Set} `{traits_parms.Foo SomeType}
+       `{traits_parms.Bar SomeType}  `{traits_parms.Tar SomeType} 
+      :
+      Set
+      :=
+      {
     SomeType := SomeType;
     some_fn : unit -> (M unit);
   }.
