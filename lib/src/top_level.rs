@@ -24,7 +24,9 @@ enum TraitItem {
         ret_ty: Box<CoqType>,
         body: Box<Expr>,
     },
-    Type,
+    Type {
+        generic_bounds: Option<Vec<CoqType>>,
+    },
 }
 
 #[derive(Debug)]
@@ -426,7 +428,13 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                     TraitItem::DefinitionWithDefault { args, ret_ty, body }
                                 }
                             },
-                            TraitItemKind::Type(_, _) => TraitItem::Type,
+                            TraitItemKind::Type(a, b) => {
+                                eprintln!("trait type generic_bound 1 {:?}", a);
+                                eprintln!("trait type concrete type 2 {:?}", b);
+                                TraitItem::Type {
+                                    generic_bounds: None,
+                                }
+                            }
                         };
                         (item.ident.name.to_string(), body)
                     })
@@ -714,7 +722,7 @@ fn mt_impl_items(items: Vec<(String, ImplItem)>) -> Vec<(String, ImplItem)> {
 fn mt_trait_item(body: TraitItem) -> TraitItem {
     match body {
         TraitItem::Definition { ty } => TraitItem::Definition { ty: mt_ty(ty) },
-        TraitItem::Type => TraitItem::Type,
+        TraitItem::Type { generic_bounds } => TraitItem::Type { generic_bounds },
         TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             TraitItem::DefinitionWithDefault {
@@ -1442,7 +1450,7 @@ impl TopLevelItem {
                                     body.iter().map(|(name, item)| match item {
                                         TraitItem::Definition { .. } => nil(),
                                         TraitItem::DefinitionWithDefault { .. } => nil(),
-                                        TraitItem::Type => group([nest([
+                                        TraitItem::Type { .. } => group([nest([
                                             text(" {"),
                                             text(name),
                                             line(),
@@ -1479,7 +1487,7 @@ impl TopLevelItem {
                                     ]),
                                 ]),
                                 TraitItem::DefinitionWithDefault { .. } => nil(),
-                                TraitItem::Type => group([
+                                TraitItem::Type { .. } => group([
                                     hardline(),
                                     nest([
                                         text(name),
@@ -1524,14 +1532,16 @@ impl TopLevelItem {
                             nest([
                                 hardline(),
                                 match item {
-                                    TraitItem::Definition { .. } | TraitItem::Type => nest([
-                                        text("Notation.dot"),
-                                        line(),
-                                        text(":="),
-                                        line(),
-                                        text(name),
-                                        text(";"),
-                                    ]),
+                                    TraitItem::Definition { .. } | TraitItem::Type { .. } => {
+                                        nest([
+                                            text("Notation.dot"),
+                                            line(),
+                                            text(":="),
+                                            line(),
+                                            text(name),
+                                            text(";"),
+                                        ])
+                                    }
                                     TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
                                         nest([
                                             nest([
