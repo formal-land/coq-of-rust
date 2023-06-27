@@ -1465,7 +1465,7 @@ impl TopLevelItem {
                                             group([
                                                 text("`{"),
                                                 x.to_doc(),
-                                                text(".Trait"),
+                                                text(".Trait "),
                                                 text(item_name),
                                                 text("}"),
                                                 line(),
