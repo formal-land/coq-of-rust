@@ -25,8 +25,8 @@ End Tar.
 Module SomeTrait.
   Class
       Trait
-      (Self : Set) {SomeType : Set} `{Foo.Trait SomeType}  `{Bar.Trait SomeType}
-       `{Tar.Trait SomeType} 
+      (Self : Set) {SomeType : Set} `{traits_parms.Foo.Trait SomeType}
+       `{traits_parms.Bar.Trait SomeType}  `{traits_parms.Tar.Trait SomeType} 
       :
       Set
       :=

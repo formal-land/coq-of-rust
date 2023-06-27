@@ -16,13 +16,6 @@ impl fmt::Display for Path {
         write!(f, "{segments}")
     }
 }
-
-impl From<&[String]> for Path {
-    fn from(slice: &[String]) -> Self {
-        Path::of_slice(slice)
-    }
-}
-
 impl Path {
     pub fn local(name: String) -> Path {
         Path {
@@ -32,16 +25,6 @@ impl Path {
 
     pub fn last(&self) -> &String {
         self.segments.last().unwrap()
-    }
-
-    pub fn to_slice(&self) -> &[String] {
-        &self.segments[..]
-    }
-
-    pub fn of_slice(vec: &[String]) -> Path {
-        Path {
-            segments: vec.iter().map(|x| String::from(x.as_str())).collect(),
-        }
     }
 
     pub fn base_before_last(&self) -> Path {

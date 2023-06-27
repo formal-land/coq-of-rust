@@ -1465,10 +1465,8 @@ impl TopLevelItem {
                                         concat(bounds.iter().map(|x| {
                                             group([
                                                 text(" `{"),
-                                                {
-                                                    let x: Path = x.to_slice()[1..].into();
-                                                    text(format!("{}.Trait", x))
-                                                },
+                                                x.to_doc(),
+                                                text(".Trait"),
                                                 text(" "),
                                                 text(item_name),
                                                 text("}"),
@@ -1678,7 +1676,7 @@ impl TopLevelItem {
                             text(" :="),
                             line(),
                             if items.is_empty() {
-                                nest([of_trait.to_doc(), text(".Build_Class"), line(), text("_")])
+                                nest([of_trait.to_doc(), text(".Build_Trait"), line(), text("_")])
                             } else {
                                 text("{")
                             },
