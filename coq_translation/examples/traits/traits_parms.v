@@ -35,9 +35,6 @@ Module SomeTrait.
     some_fn : unit -> (M unit);
   }.
   
-  Global Instance Method_SomeType `(Trait) : Notation.Dot "SomeType" := {
-    Notation.dot := SomeType;
-  }.
   Global Instance Method_some_fn `(Trait) : Notation.Dot "some_fn" := {
     Notation.dot := some_fn;
   }.
