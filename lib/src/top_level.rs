@@ -726,7 +726,7 @@ fn mt_impl_items(items: Vec<(String, ImplItem)>) -> Vec<(String, ImplItem)> {
 fn mt_trait_item(body: TraitItem) -> TraitItem {
     match body {
         TraitItem::Definition { ty } => TraitItem::Definition { ty: mt_ty(ty) },
-        TraitItem::Type(x) => TraitItem::Type(x), // @TODO apply MT
+        TraitItem::Type(x) => TraitItem::Type(x),
         TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             TraitItem::DefinitionWithDefault {
