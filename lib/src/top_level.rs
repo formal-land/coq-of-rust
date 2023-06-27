@@ -1447,7 +1447,6 @@ impl TopLevelItem {
                                 text("Set"),
                                 text(")"),
                             ]),
-                            // types start
                             intersperse(
                                 body.iter().map(|(item_name, item)| match item {
                                     TraitItem::Definition { .. } => nil(),
@@ -1477,15 +1476,10 @@ impl TopLevelItem {
                                 }),
                                 [nil()],
                             ),
-                            // types end
-                            line(),
-                            text(":"),
-                            line(),
-                            text("Set"),
-                            line(),
-                            text(":="),
-                            line(),
-                            text("{"),
+                            intersperse(
+                                [text(":"), text("Set"), text(":="), text("{")],
+                                [text(" ")],
+                            ),
                         ]),
                         intersperse(
                             body.iter().map(|(name, item)| match item {
