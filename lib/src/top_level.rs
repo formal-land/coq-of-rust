@@ -1466,10 +1466,8 @@ impl TopLevelItem {
                                             group([
                                                 text(" `{"),
                                                 {
-                                                    text(format!(
-                                                        "{}.Trait",
-                                                        Path::of_slice(&x.to_slice()[1..]) // skip the module name
-                                                    ))
+                                                    let x: Path = x.to_slice()[1..].into();
+                                                    text(format!("{}.Trait", x))
                                                 },
                                                 text(" "),
                                                 text(item_name),

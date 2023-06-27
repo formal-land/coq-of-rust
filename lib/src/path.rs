@@ -17,6 +17,12 @@ impl fmt::Display for Path {
     }
 }
 
+impl From<&[String]> for Path {
+    fn from(slice: &[String]) -> Self {
+        Path::of_slice(slice)
+    }
+}
+
 impl Path {
     pub fn local(name: String) -> Path {
         Path {
