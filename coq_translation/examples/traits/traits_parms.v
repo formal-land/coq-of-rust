@@ -26,8 +26,8 @@ Module SomeTrait.
   Class
       Trait
       (Self : Set)
-      {SomeType : Set} `{traits_parms.Foo.TraitSomeType}
-      `{traits_parms.Bar.TraitSomeType} `{traits_parms.Tar.TraitSomeType}
+      {SomeType : Set} `{traits_parms.Foo.Trait SomeType}
+      `{traits_parms.Bar.Trait SomeType} `{traits_parms.Tar.Trait SomeType}
       : Set := { 
       
     SomeType := SomeType;
