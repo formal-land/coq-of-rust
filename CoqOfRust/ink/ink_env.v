@@ -6,8 +6,8 @@ Module types.
     Class
         Trait
         (Self : Set)
-        {Bytes : Set} `{core.default.Default.TraitBytes}
-        `{core.convert.AsRef.TraitBytes} `{core.convert.AsMut.TraitBytes}
+        {Bytes : Set} `{core.default.Default.Trait Bytes}
+        `{core.convert.AsRef.Trait Bytes} `{core.convert.AsMut.Trait Bytes}
         : Set := { 
         
       Bytes := Bytes;
@@ -142,37 +142,37 @@ Module types.
     Class
         Trait
         (Self : Set)
-        {AccountId : Set} `{parity_scale_codec.codec.Codec.TraitAccountId}
-        `{ink_env.types.CodecAsType.TraitAccountId}
-        `{core.clone.Clone.TraitAccountId} `{core.cmp.PartialEq.TraitAccountId}
-        `{core.cmp.Eq.TraitAccountId} `{core.cmp.Ord.TraitAccountId}
-        `{core.convert.AsRef.TraitAccountId}
-        `{core.convert.AsMut.TraitAccountId} {Balance : Set}
-          `{parity_scale_codec.codec.Codec.TraitBalance}
-        `{ink_env.types.CodecAsType.TraitBalance}
-        `{core.marker.Copy.TraitBalance} `{core.clone.Clone.TraitBalance}
-        `{core.cmp.PartialEq.TraitBalance} `{core.cmp.Eq.TraitBalance}
-        `{ink_env.arithmetic.AtLeast32BitUnsigned.TraitBalance}
-        `{ink_env.types.FromLittleEndian.TraitBalance} {Hash : Set}
-          `{parity_scale_codec.codec.Codec.TraitHash}
-        `{ink_env.types.CodecAsType.TraitHash} `{core.marker.Copy.TraitHash}
-        `{core.clone.Clone.TraitHash} `{ink_primitives.types.Clear.TraitHash}
-        `{core.cmp.PartialEq.TraitHash} `{core.cmp.Eq.TraitHash}
-        `{core.cmp.Ord.TraitHash} `{core.convert.AsRef.TraitHash}
-        `{core.convert.AsMut.TraitHash} {Timestamp : Set}
-          `{parity_scale_codec.codec.Codec.TraitTimestamp}
-        `{ink_env.types.CodecAsType.TraitTimestamp}
-        `{core.marker.Copy.TraitTimestamp} `{core.clone.Clone.TraitTimestamp}
-        `{core.cmp.PartialEq.TraitTimestamp} `{core.cmp.Eq.TraitTimestamp}
-        `{ink_env.arithmetic.AtLeast32BitUnsigned.TraitTimestamp}
-        `{ink_env.types.FromLittleEndian.TraitTimestamp} {BlockNumber : Set}
-          `{parity_scale_codec.codec.Codec.TraitBlockNumber}
-        `{ink_env.types.CodecAsType.TraitBlockNumber}
-        `{core.marker.Copy.TraitBlockNumber}
-        `{core.clone.Clone.TraitBlockNumber}
-        `{core.cmp.PartialEq.TraitBlockNumber} `{core.cmp.Eq.TraitBlockNumber}
-        `{ink_env.arithmetic.AtLeast32BitUnsigned.TraitBlockNumber}
-        `{ink_env.types.FromLittleEndian.TraitBlockNumber}
+        {AccountId : Set} `{parity_scale_codec.codec.Codec.Trait AccountId}
+        `{ink_env.types.CodecAsType.Trait AccountId}
+        `{core.clone.Clone.Trait AccountId}
+        `{core.cmp.PartialEq.Trait AccountId} `{core.cmp.Eq.Trait AccountId}
+        `{core.cmp.Ord.Trait AccountId} `{core.convert.AsRef.Trait AccountId}
+        `{core.convert.AsMut.Trait AccountId} {Balance : Set}
+          `{parity_scale_codec.codec.Codec.Trait Balance}
+        `{ink_env.types.CodecAsType.Trait Balance}
+        `{core.marker.Copy.Trait Balance} `{core.clone.Clone.Trait Balance}
+        `{core.cmp.PartialEq.Trait Balance} `{core.cmp.Eq.Trait Balance}
+        `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance}
+        `{ink_env.types.FromLittleEndian.Trait Balance} {Hash : Set}
+          `{parity_scale_codec.codec.Codec.Trait Hash}
+        `{ink_env.types.CodecAsType.Trait Hash} `{core.marker.Copy.Trait Hash}
+        `{core.clone.Clone.Trait Hash} `{ink_primitives.types.Clear.Trait Hash}
+        `{core.cmp.PartialEq.Trait Hash} `{core.cmp.Eq.Trait Hash}
+        `{core.cmp.Ord.Trait Hash} `{core.convert.AsRef.Trait Hash}
+        `{core.convert.AsMut.Trait Hash} {Timestamp : Set}
+          `{parity_scale_codec.codec.Codec.Trait Timestamp}
+        `{ink_env.types.CodecAsType.Trait Timestamp}
+        `{core.marker.Copy.Trait Timestamp} `{core.clone.Clone.Trait Timestamp}
+        `{core.cmp.PartialEq.Trait Timestamp} `{core.cmp.Eq.Trait Timestamp}
+        `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp}
+        `{ink_env.types.FromLittleEndian.Trait Timestamp} {BlockNumber : Set}
+          `{parity_scale_codec.codec.Codec.Trait BlockNumber}
+        `{ink_env.types.CodecAsType.Trait BlockNumber}
+        `{core.marker.Copy.Trait BlockNumber}
+        `{core.clone.Clone.Trait BlockNumber}
+        `{core.cmp.PartialEq.Trait BlockNumber} `{core.cmp.Eq.Trait BlockNumber}
+        `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber}
+        `{ink_env.types.FromLittleEndian.Trait BlockNumber}
         {ChainExtension : Set} : Set := { 
         
       MAX_EVENT_TOPICS : usize;
@@ -323,8 +323,8 @@ Module FromLittleEndian.
   Class
       Trait
       (Self : Set)
-      {Bytes : Set} `{core.default.Default.TraitBytes}
-      `{core.convert.AsRef.TraitBytes} `{core.convert.AsMut.TraitBytes}
+      {Bytes : Set} `{core.default.Default.Trait Bytes}
+      `{core.convert.AsRef.Trait Bytes} `{core.convert.AsMut.Trait Bytes}
       : Set := { 
       
     Bytes := Bytes;
@@ -459,35 +459,37 @@ Module Environment.
   Class
       Trait
       (Self : Set)
-      {AccountId : Set} `{parity_scale_codec.codec.Codec.TraitAccountId}
-      `{ink_env.types.CodecAsType.TraitAccountId}
-      `{core.clone.Clone.TraitAccountId} `{core.cmp.PartialEq.TraitAccountId}
-      `{core.cmp.Eq.TraitAccountId} `{core.cmp.Ord.TraitAccountId}
-      `{core.convert.AsRef.TraitAccountId} `{core.convert.AsMut.TraitAccountId}
-      {Balance : Set} `{parity_scale_codec.codec.Codec.TraitBalance}
-      `{ink_env.types.CodecAsType.TraitBalance} `{core.marker.Copy.TraitBalance}
-      `{core.clone.Clone.TraitBalance} `{core.cmp.PartialEq.TraitBalance}
-      `{core.cmp.Eq.TraitBalance}
-      `{ink_env.arithmetic.AtLeast32BitUnsigned.TraitBalance}
-      `{ink_env.types.FromLittleEndian.TraitBalance} {Hash : Set}
-        `{parity_scale_codec.codec.Codec.TraitHash}
-      `{ink_env.types.CodecAsType.TraitHash} `{core.marker.Copy.TraitHash}
-      `{core.clone.Clone.TraitHash} `{ink_primitives.types.Clear.TraitHash}
-      `{core.cmp.PartialEq.TraitHash} `{core.cmp.Eq.TraitHash}
-      `{core.cmp.Ord.TraitHash} `{core.convert.AsRef.TraitHash}
-      `{core.convert.AsMut.TraitHash} {Timestamp : Set}
-        `{parity_scale_codec.codec.Codec.TraitTimestamp}
-      `{ink_env.types.CodecAsType.TraitTimestamp}
-      `{core.marker.Copy.TraitTimestamp} `{core.clone.Clone.TraitTimestamp}
-      `{core.cmp.PartialEq.TraitTimestamp} `{core.cmp.Eq.TraitTimestamp}
-      `{ink_env.arithmetic.AtLeast32BitUnsigned.TraitTimestamp}
-      `{ink_env.types.FromLittleEndian.TraitTimestamp} {BlockNumber : Set}
-        `{parity_scale_codec.codec.Codec.TraitBlockNumber}
-      `{ink_env.types.CodecAsType.TraitBlockNumber}
-      `{core.marker.Copy.TraitBlockNumber} `{core.clone.Clone.TraitBlockNumber}
-      `{core.cmp.PartialEq.TraitBlockNumber} `{core.cmp.Eq.TraitBlockNumber}
-      `{ink_env.arithmetic.AtLeast32BitUnsigned.TraitBlockNumber}
-      `{ink_env.types.FromLittleEndian.TraitBlockNumber} {ChainExtension : Set}
+      {AccountId : Set} `{parity_scale_codec.codec.Codec.Trait AccountId}
+      `{ink_env.types.CodecAsType.Trait AccountId}
+      `{core.clone.Clone.Trait AccountId} `{core.cmp.PartialEq.Trait AccountId}
+      `{core.cmp.Eq.Trait AccountId} `{core.cmp.Ord.Trait AccountId}
+      `{core.convert.AsRef.Trait AccountId}
+      `{core.convert.AsMut.Trait AccountId} {Balance : Set}
+        `{parity_scale_codec.codec.Codec.Trait Balance}
+      `{ink_env.types.CodecAsType.Trait Balance}
+      `{core.marker.Copy.Trait Balance} `{core.clone.Clone.Trait Balance}
+      `{core.cmp.PartialEq.Trait Balance} `{core.cmp.Eq.Trait Balance}
+      `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance}
+      `{ink_env.types.FromLittleEndian.Trait Balance} {Hash : Set}
+        `{parity_scale_codec.codec.Codec.Trait Hash}
+      `{ink_env.types.CodecAsType.Trait Hash} `{core.marker.Copy.Trait Hash}
+      `{core.clone.Clone.Trait Hash} `{ink_primitives.types.Clear.Trait Hash}
+      `{core.cmp.PartialEq.Trait Hash} `{core.cmp.Eq.Trait Hash}
+      `{core.cmp.Ord.Trait Hash} `{core.convert.AsRef.Trait Hash}
+      `{core.convert.AsMut.Trait Hash} {Timestamp : Set}
+        `{parity_scale_codec.codec.Codec.Trait Timestamp}
+      `{ink_env.types.CodecAsType.Trait Timestamp}
+      `{core.marker.Copy.Trait Timestamp} `{core.clone.Clone.Trait Timestamp}
+      `{core.cmp.PartialEq.Trait Timestamp} `{core.cmp.Eq.Trait Timestamp}
+      `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp}
+      `{ink_env.types.FromLittleEndian.Trait Timestamp} {BlockNumber : Set}
+        `{parity_scale_codec.codec.Codec.Trait BlockNumber}
+      `{ink_env.types.CodecAsType.Trait BlockNumber}
+      `{core.marker.Copy.Trait BlockNumber}
+      `{core.clone.Clone.Trait BlockNumber}
+      `{core.cmp.PartialEq.Trait BlockNumber} `{core.cmp.Eq.Trait BlockNumber}
+      `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber}
+      `{ink_env.types.FromLittleEndian.Trait BlockNumber} {ChainExtension : Set}
         : Set := { 
       
     MAX_EVENT_TOPICS : usize;
@@ -3997,7 +3999,7 @@ Module call.
           Trait
           (C Self : Set)
           {Output : Set} {Error : Set}
-            `{parity_scale_codec.codec.Decode.TraitError} : Set := { 
+            `{parity_scale_codec.codec.Decode.Trait Error} : Set := { 
           
         IS_RESULT : bool;
         Output := Output;
@@ -8211,7 +8213,7 @@ Module create_builder.
         Trait
         (C Self : Set)
         {Output : Set} {Error : Set}
-          `{parity_scale_codec.codec.Decode.TraitError} : Set := { 
+          `{parity_scale_codec.codec.Decode.Trait Error} : Set := { 
         
       IS_RESULT : bool;
       Output := Output;
@@ -8999,8 +9001,8 @@ Module ConstructorReturnType.
   Class
       Trait
       (C Self : Set)
-      {Output : Set} {Error : Set} `{parity_scale_codec.codec.Decode.TraitError}
-      : Set := { 
+      {Output : Set} {Error : Set}
+        `{parity_scale_codec.codec.Decode.Trait Error} : Set := { 
       
     IS_RESULT : bool;
     Output := Output;
@@ -12199,7 +12201,7 @@ Module contract.
     Class
         Trait
         (Self : Set)
-        {Env : Set} `{ink_env.types.Environment.TraitEnv} : Set := { 
+        {Env : Set} `{ink_env.types.Environment.Trait Env} : Set := { 
         
       Env := Env;
     }.
@@ -12218,7 +12220,7 @@ Module ContractEnv.
   Class
       Trait
       (Self : Set)
-      {Env : Set} `{ink_env.types.Environment.TraitEnv} : Set := { 
+      {Env : Set} `{ink_env.types.Environment.Trait Env} : Set := { 
       
     Env := Env;
   }.
@@ -18555,7 +18557,7 @@ Module TypeEq.
   Class
       Trait
       (Self : Set)
-      {This : Set} `{core.marker.Sized.TraitThis} : Set := { 
+      {This : Set} `{core.marker.Sized.Trait This} : Set := { 
       
     This := This;
   }.
@@ -18628,7 +18630,7 @@ Module TypeEq.
   Class
       Trait
       (Self : Set)
-      {This : Set} `{core.marker.Sized.TraitThis} : Set := { 
+      {This : Set} `{core.marker.Sized.Trait This} : Set := { 
       
     This := This;
   }.
@@ -18701,7 +18703,7 @@ Module TypeEq.
   Class
       Trait
       (Self : Set)
-      {This : Set} `{core.marker.Sized.TraitThis} : Set := { 
+      {This : Set} `{core.marker.Sized.Trait This} : Set := { 
       
     This := This;
   }.
@@ -18774,7 +18776,7 @@ Module TypeEq.
   Class
       Trait
       (Self : Set)
-      {This : Set} `{core.marker.Sized.TraitThis} : Set := { 
+      {This : Set} `{core.marker.Sized.Trait This} : Set := { 
       
     This := This;
   }.
@@ -21750,7 +21752,7 @@ Module hash.
     Class
         Trait
         (Self : Set)
-        {Type : Set} `{core.default.Default.TraitType} : Set := { 
+        {Type : Set} `{core.default.Default.Trait Type} : Set := { 
         
       Type := Type;
     }.
@@ -22217,7 +22219,7 @@ Module HashOutput.
   Class
       Trait
       (Self : Set)
-      {Type : Set} `{core.default.Default.TraitType} : Set := { 
+      {Type : Set} `{core.default.Default.Trait Type} : Set := { 
       
     Type := Type;
   }.
@@ -23765,7 +23767,7 @@ Module topics.
         Trait
         (Self : Set)
         {RemainingTopics : Set}
-          `{ink_env.topics.EventTopicsAmount.TraitRemainingTopics} : Set := { 
+          `{ink_env.topics.EventTopicsAmount.Trait RemainingTopics} : Set := { 
         
       RemainingTopics := RemainingTopics;
       topics
@@ -24922,7 +24924,7 @@ Module Topics.
       Trait
       (Self : Set)
       {RemainingTopics : Set}
-        `{ink_env.topics.EventTopicsAmount.TraitRemainingTopics} : Set := { 
+        `{ink_env.topics.EventTopicsAmount.Trait RemainingTopics} : Set := { 
       
     RemainingTopics := RemainingTopics;
     topics
