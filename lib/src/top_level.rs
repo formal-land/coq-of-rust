@@ -726,7 +726,7 @@ fn mt_impl_items(items: Vec<(String, ImplItem)>) -> Vec<(String, ImplItem)> {
 fn mt_trait_item(body: TraitItem) -> TraitItem {
     match body {
         TraitItem::Definition { ty } => TraitItem::Definition { ty: mt_ty(ty) },
-        TraitItem::Type(x) => TraitItem::Type(x),
+        TraitItem::Type(x) => TraitItem::Type(x), // @TODO apply MT
         TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             TraitItem::DefinitionWithDefault {
@@ -1447,26 +1447,25 @@ impl TopLevelItem {
                                 text("Set"),
                                 text(")"),
                             ]),
+                            line(),
                             intersperse(
                                 body.iter().map(|(item_name, item)| match item {
                                     TraitItem::Definition { .. } => nil(),
                                     TraitItem::DefinitionWithDefault { .. } => nil(),
                                     TraitItem::Type(bounds) => group([
                                         nest([
-                                            text(" {"),
+                                            text("{"),
                                             text(item_name),
-                                            line(),
-                                            text(":"),
-                                            line(),
+                                            text(" : "),
                                             text("Set"),
                                             text("}"),
+                                            line(),
                                         ]),
                                         concat(bounds.iter().map(|x| {
                                             group([
-                                                text(" `{"),
+                                                text("`{"),
                                                 x.to_doc(),
                                                 text(".Trait"),
-                                                text(" "),
                                                 text(item_name),
                                                 text("}"),
                                                 line(),
@@ -1477,7 +1476,7 @@ impl TopLevelItem {
                                 [nil()],
                             ),
                             intersperse(
-                                [text(":"), text("Set"), text(":="), text("{")],
+                                [text(":"), text("Set"), text(":="), text("{"), line()],
                                 [text(" ")],
                             ),
                         ]),
