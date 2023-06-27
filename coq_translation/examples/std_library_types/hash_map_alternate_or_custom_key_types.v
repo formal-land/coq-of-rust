@@ -21,7 +21,7 @@ Module
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Class _.
+    core.marker.StructuralPartialEq.Build_Trait _.
 End
   Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
@@ -51,7 +51,7 @@ Module
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
   Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Class _.
+    core.marker.StructuralEq.Build_Trait _.
 End
   Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
 

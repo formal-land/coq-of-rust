@@ -38,7 +38,7 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
   Definition Self := scoping_rules_borrowing_the_ref_pattern.Point.
   
   Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

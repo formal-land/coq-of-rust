@@ -14,20 +14,14 @@ End Container.
 Definition Container := Container.t.
 
 Module Contains.
-  Class Trait (Self : Set) : Set := {
-    A : Set;
-    B : Set;
+  Class Trait (Self : Set) {A : Set} {B : Set} : Set := {  
+    A := A;
+    B := B;
     contains : (ref Self) -> (ref ImplSelf.A) -> (ref ImplSelf.B) -> (M bool);
     first : (ref Self) -> (M i32);
     last : (ref Self) -> (M i32);
   }.
   
-  Global Instance Method_A `(Trait) : Notation.Dot "A" := {
-    Notation.dot := A;
-  }.
-  Global Instance Method_B `(Trait) : Notation.Dot "B" := {
-    Notation.dot := B;
-  }.
   Global Instance Method_contains `(Trait) : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.

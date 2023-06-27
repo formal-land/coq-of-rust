@@ -51,7 +51,7 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
   Definition Self := other_uses_of_question_mark.EmptyVec.
   
   Global Instance I : core.error.Error.Trait Self :=
-    core.error.Error.Build_Class _.
+    core.error.Error.Build_Trait _.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 Definition double_first

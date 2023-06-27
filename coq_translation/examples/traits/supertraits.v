@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Person.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {  
     name : (ref Self) -> (M alloc.string.String);
   }.
   
@@ -12,7 +12,7 @@ Module Person.
 End Person.
 
 Module Student.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {  
     university : (ref Self) -> (M alloc.string.String);
   }.
   
@@ -22,7 +22,7 @@ Module Student.
 End Student.
 
 Module Programmer.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {  
     fav_language : (ref Self) -> (M alloc.string.String);
   }.
   
@@ -33,7 +33,7 @@ Module Programmer.
 End Programmer.
 
 Module CompSciStudent.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {  
     git_username : (ref Self) -> (M alloc.string.String);
   }.
   

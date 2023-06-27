@@ -24,7 +24,7 @@ End Bar.
 Definition Bar : Set := Bar.t.
 
 Module BarTrait.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {  
     show : Self -> (M alloc.string.String);
   }.
   

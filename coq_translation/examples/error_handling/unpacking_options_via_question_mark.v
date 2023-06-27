@@ -47,7 +47,7 @@ Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
   Definition Self := unpacking_options_via_question_mark.Job.
   
   Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
 Module PhoneNumber.
@@ -90,7 +90,7 @@ Module
   Definition Self := unpacking_options_via_question_mark.PhoneNumber.
   
   Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_unpacking_options_via_question_mark_Person.

@@ -14,7 +14,7 @@ Module Impl_core_marker_Copy_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
   Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_subtle_Choice.
 
 Module Impl_core_clone_Clone_for_subtle_Choice.
@@ -270,7 +270,7 @@ Module Impl_core_convert_From_for_subtle_Choice.
 End Impl_core_convert_From_for_subtle_Choice.
 
 Module ConstantTimeEq.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {  
     ct_eq : (ref Self) -> (ref Self) -> (M subtle.Choice);
   }.
   
@@ -554,7 +554,7 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 Module ConditionallySelectable.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {  
     conditional_select : (ref Self) -> (ref Self) -> subtle.Choice -> (M Self);
   }.
   
@@ -1219,7 +1219,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 Module ConditionallyNegatable.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {  
     conditional_negate : (mut_ref Self) -> subtle.Choice -> (M unit);
   }.
   
@@ -1286,7 +1286,7 @@ Module Impl_core_marker_Copy_for_subtle_CtOption_T.
   Definition Self := subtle.CtOption T.
   
   Global Instance I T : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
@@ -1542,7 +1542,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 Module ConstantTimeGreater.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {  
     ct_gt : (ref Self) -> (ref Self) -> (M subtle.Choice);
   }.
   
@@ -1772,7 +1772,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
 End Impl_subtle_ConstantTimeGreater_for_u64.
 
 Module ConstantTimeLess.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Set := {  
   }.
   
   Global Instance Method_ct_lt `(Trait) : Notation.Dot "ct_lt" := {
@@ -1790,26 +1790,26 @@ Module Impl_subtle_ConstantTimeLess_for_u8.
   Definition Self := u8.
   
   Global Instance I : subtle.ConstantTimeLess.Trait Self :=
-    subtle.ConstantTimeLess.Build_Class _.
+    subtle.ConstantTimeLess.Build_Trait _.
 End Impl_subtle_ConstantTimeLess_for_u8.
 
 Module Impl_subtle_ConstantTimeLess_for_u16.
   Definition Self := u16.
   
   Global Instance I : subtle.ConstantTimeLess.Trait Self :=
-    subtle.ConstantTimeLess.Build_Class _.
+    subtle.ConstantTimeLess.Build_Trait _.
 End Impl_subtle_ConstantTimeLess_for_u16.
 
 Module Impl_subtle_ConstantTimeLess_for_u32.
   Definition Self := u32.
   
   Global Instance I : subtle.ConstantTimeLess.Trait Self :=
-    subtle.ConstantTimeLess.Build_Class _.
+    subtle.ConstantTimeLess.Build_Trait _.
 End Impl_subtle_ConstantTimeLess_for_u32.
 
 Module Impl_subtle_ConstantTimeLess_for_u64.
   Definition Self := u64.
   
   Global Instance I : subtle.ConstantTimeLess.Trait Self :=
-    subtle.ConstantTimeLess.Build_Class _.
+    subtle.ConstantTimeLess.Build_Trait _.
 End Impl_subtle_ConstantTimeLess_for_u64.
