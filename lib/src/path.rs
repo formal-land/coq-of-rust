@@ -16,6 +16,7 @@ impl fmt::Display for Path {
         write!(f, "{segments}")
     }
 }
+
 impl Path {
     pub fn local(name: String) -> Path {
         Path {
