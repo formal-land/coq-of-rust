@@ -218,4 +218,16 @@ impl CoqType {
             }
         }
     }
+
+    // To get cleared name out of path
+    // @TODO extend to cover more cases
+    pub(crate) fn to_item_name(&self) -> String {
+        match self {
+            CoqType::Var(path) => {
+                let ret = path.last().clone();
+                ret
+            }
+            _ => String::from("Not ready for this yet"),
+        }
+    }
 }

@@ -4,7 +4,7 @@ use crate::header::*;
 use crate::path::*;
 use crate::render::*;
 use crate::ty::*;
-use clap::builder::PathBufValueParser;
+//use clap::builder::PathBufValueParser;
 use rustc_ast::ast::{AttrArgs, AttrKind};
 use rustc_hir::{
     Impl, ImplItemKind, Item, ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind,
@@ -581,6 +581,47 @@ pub fn top_level_to_coq(tcx: &TyCtxt) -> String {
     top_level.to_pretty(LINE_WIDTH)
 }
 
+fn types_for_f(extra_data: Option<&TopLevelItem>) -> Doc {
+    println!("EXTRA_DATA***************: {:#?}", extra_data);
+    match extra_data {
+        // @TODO this is support for TypeStructStruct,
+        // add support for more items
+        Some(TopLevelItem::TypeStructStruct {
+            name: _,
+            fields,
+            is_dead_code: _,
+        }) => {
+            println!("HERE HERE MATCH HAPPENED");
+            concat([
+                text("string"),
+                text(" -> "),
+                line(),
+                nest([
+                    text("{"),
+                    intersperse(
+                        fields.iter().map(|(str, boxed_coq_type)| {
+                            nest([
+                                // print field name
+                                text(str),
+                                text(" -> "),
+                                // print field type
+                                //text(boxed_coq_type.to_name()),
+                                text("TYPE HERE"),
+                                text(" -> "),
+                                line(),
+                            ])
+                        }),
+                        [line()],
+                    ),
+                    line(),
+                    text(": Set}"),
+                ]),
+            ])
+        }
+        _ => text("PROBLEM, didn't matched!!!!!!!!"),
+    }
+}
+
 fn fn_to_doc<'a>(
     name: &'a String,
     ty_params: Option<&'a Vec<String>>,
@@ -589,8 +630,10 @@ fn fn_to_doc<'a>(
     ret_ty: &'a CoqType,
     body: &'a Expr,
     is_dead_code: bool,
-    extra_data: Option<&TopLevelItem>,
+    extra_data: Option<&'a TopLevelItem>,
 ) -> Doc<'a> {
+    // println!("EXTRA_DATA: {:#?}", extra_data);
+    let types_for_f = types_for_f(extra_data);
     group([
         if is_dead_code {
             concat([
@@ -619,6 +662,8 @@ fn fn_to_doc<'a>(
                 )),
                 text(" -> "),
                 line(),
+                text(" oieoeoeoe "),
+                types_for_f,
                 ret_ty.to_doc(false),
                 text("."),
                 hardline(),
@@ -934,7 +979,7 @@ impl ImplItem {
                 is_method,
                 is_dead_code,
             } => concat([
-                fn_to_doc(name, None, None, args, ret_ty, body, *is_dead_code),
+                fn_to_doc(name, None, None, args, ret_ty, body, *is_dead_code, None),
                 hardline(),
                 hardline(),
                 if *is_method {
@@ -974,12 +1019,7 @@ impl ImplItem {
 }
 
 impl TopLevelItem {
-    // @TODO NATALIE 21JUNE ADDED
-    fn to_doc_with_extra_data(&self, strct: Vec<&str>) -> Doc {
-        text("HI")
-    }
-
-    fn to_doc(&self, extra_data: Option<&TopLevelItem>) -> Doc {
+    fn to_doc<'a>(&'a self, extra_data: &Option<&'a TopLevelItem>) -> Doc {
         match self {
             TopLevelItem::Const { name, ty, value } => nest([
                 nest([
@@ -1019,7 +1059,7 @@ impl TopLevelItem {
                 ret_ty,
                 body,
                 *is_dead_code,
-                extra_data,
+                *extra_data,
             ),
             TopLevelItem::Module {
                 name,
@@ -1710,20 +1750,21 @@ impl TopLevelItem {
 
 impl TopLevel {
     // function returns TopLevelItem::TypeStructStruct (comparing name)
-    fn find_tli_by_name(&self, self_ty: &Box<CoqType>) -> Option<&TopLevelItem> {
+    fn find_tli_by_name(&self, self_ty: &CoqType) -> Option<&TopLevelItem> {
         //Option<TopLevelItem> {
         self.0.iter().find(|item_ins| match item_ins {
             TopLevelItem::TypeStructStruct {
                 name,
-                fields,
+                fields: _,
                 is_dead_code: _,
             } => {
-                if *name == self_ty.to_name() {
-                    true
-                } else {
-                    // this is different struct, not ours
-                    false
-                }
+                // check if it is the struct we are looking for
+                println!(
+                    "NAME, SELF_TY.TO_NAME: {:#?} EQUALS {:#?}",
+                    *name,
+                    self_ty.to_item_name()
+                );
+                *name == self_ty.to_item_name()
             }
             _ => false,
         })
@@ -1735,7 +1776,7 @@ impl TopLevel {
         // if "yes" - get both TopLevelItems (Struct itself and TraitImpl for it)
         // in order to have all required data for printing instance for DoubleColon Class
         // NATALIE ADDED BELOW
-        println!("OOOOOOOOIIIIIIIIUUUUUUUUYYYYYYYY");
+        println!("***********************************************");
 
         // in this variable we store additional data to pass to to_doc function
 
@@ -1746,7 +1787,7 @@ impl TopLevel {
 
         intersperse(
             self.0.iter().map(|item| {
-                println!("ITEM============: {:#?}", item);
+                // println!("ITEM============: {:#?}", item);
                 // if item is DeriveDebug, get struct's fields
                 match item {
                     TopLevelItem::TraitImpl {
@@ -1754,27 +1795,29 @@ impl TopLevel {
                         ty_params: _,
                         self_ty,
                         of_trait,
-                        items,
+                        items: _,
                         trait_non_default_items: _,
                     } =>
                     // if item is DeriveDebug we are getting missing datatypes for Struct, and
                     // printing DoubleColon instance for fmt function
                     {
-                        println!("OF_TRAIT_TO_NAME: {}", of_trait.to_name());
-                        println!("SELF_TY: {:#?}", self_ty.to_name());
-                        // @TODO. support for deriveDebug (add code to support more traits)
+                        //     println!("OF_TRAIT_TO_NAME: {}", of_trait.to_name());
+                        //     println!("SELF_TY: {:#?}", self_ty.to_name());
+                        // @TODO. below is support for deriveDebug (add code to support more traits)
                         if of_trait.to_name() == "core_fmt_Debug" {
                             let strct = self.find_tli_by_name(self_ty); // self.get_struct_types(self_ty);
-                                                                        // add structs types here (for printing)
-                            item.to_doc(strct)
+                            println!("FOUNDED_TLI: {:#?}", strct);
+                            // add structs types here (for printing)
+                            item.to_doc(&strct)
                         } else {
-                            println!("@TODO more cases (only Derive debug for Struct supported)");
-                            item.to_doc()
+                            // @TODO more cases (only Derive debug for Struct supported)");
+                            // if no DeriveDebug - we just convert item to doc, no extra data required.
+                            item.to_doc(&None)
                         }
                     }
                     _ => {
-                        // if no DeriveDebug - we just convert item to doc
-                        item.to_doc()
+                        // if item is not TopLevelItem::TraitImpl - we just convert item to doc, no extra data required.
+                        item.to_doc(&None)
                     }
                 }
             }),
