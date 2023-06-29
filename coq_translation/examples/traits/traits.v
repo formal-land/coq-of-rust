@@ -154,10 +154,14 @@ End Impl_traits_Sheep_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* dolly :=
     let* α0 := traits.Animal.new "Dolly" in
     Pure (α0 : traits.Sheep) in

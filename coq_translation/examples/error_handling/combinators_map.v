@@ -184,10 +184,14 @@ Definition eat (food : core.option.Option combinators_map.Cooked) : M unit :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let apple := core.option.Option.Some combinators_map.Food.Apple in
   let carrot := core.option.Option.Some combinators_map.Food.Carrot in
   let potato := core.option.Option.None in

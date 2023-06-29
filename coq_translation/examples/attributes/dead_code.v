@@ -2,6 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b389ac0 (ci: update the snapshots)
 Definition used_function : M unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -11,6 +14,7 @@ Definition noisy_unused_function : M unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
+<<<<<<< HEAD
   let* _ := dead_code.used_function in
 =======
 Definition used_function  : M unit := Pure tt.
@@ -22,6 +26,8 @@ Definition noisy_unused_function  : M unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main  : M unit :=
+=======
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ := dead_code.used_function tt in
 >>>>>>> 6ee776e (update snapshot)
   Pure tt.

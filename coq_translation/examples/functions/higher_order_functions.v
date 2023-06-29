@@ -7,10 +7,14 @@ Definition is_odd (n : u32) : M bool :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=

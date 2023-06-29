@@ -2,16 +2,22 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b389ac0 (ci: update the snapshots)
 Definition some_fn : M unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
+<<<<<<< HEAD
   let* a := diverging_functions_no_info_in_return_type.some_fn in
 =======
 Definition some_fn  : M unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main  : M unit :=
+=======
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* a := diverging_functions_no_info_in_return_type.some_fn tt in
 >>>>>>> 6ee776e (update snapshot)
   let* _ :=

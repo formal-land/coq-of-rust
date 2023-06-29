@@ -2,10 +2,14 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition create_fn : M OpaqueDef :=
 =======
 Definition create_fn  : M OpaqueDef :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition create_fn : M OpaqueDef :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* text := "Fn".["to_owned"] in
   Pure
     (fun  =>
@@ -22,10 +26,14 @@ Definition create_fn  : M OpaqueDef :=
 Error OpaqueTy.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition create_fnmut : M OpaqueDef :=
 =======
 Definition create_fnmut  : M OpaqueDef :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition create_fnmut : M OpaqueDef :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* text := "FnMut".["to_owned"] in
   Pure
     (fun  =>
@@ -42,10 +50,14 @@ Definition create_fnmut  : M OpaqueDef :=
 Error OpaqueTy.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition create_fnonce : M OpaqueDef :=
 =======
 Definition create_fnonce  : M OpaqueDef :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition create_fnonce : M OpaqueDef :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* text := "FnOnce".["to_owned"] in
   Pure
     (fun  =>
@@ -63,6 +75,7 @@ Error OpaqueTy.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
   let* fn_plain := functions_closures_as_output_parameters.create_fn in
   let* fn_mut := functions_closures_as_output_parameters.create_fnmut in
@@ -72,6 +85,9 @@ Definition main : M unit :=
   let* _ := fn_once in
 =======
 Definition main  : M unit :=
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* fn_plain := functions_closures_as_output_parameters.create_fn tt in
   let* fn_mut := functions_closures_as_output_parameters.create_fnmut tt in
   let* fn_once := functions_closures_as_output_parameters.create_fnonce tt in

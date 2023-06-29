@@ -83,10 +83,14 @@ End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition origin : M box_stack_heap.Point :=
 =======
 Definition origin  : M box_stack_heap.Point :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition origin : M box_stack_heap.Point :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   Pure
     {|
       box_stack_heap.Point.x := 0 (* 0.0 *);
@@ -94,10 +98,14 @@ Definition origin  : M box_stack_heap.Point :=
     |}.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition boxed_origin : M (alloc.boxed.Box box_stack_heap.Point) :=
 =======
 Definition boxed_origin  : M (alloc.boxed.Box box_stack_heap.Point) :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition boxed_origin : M (alloc.boxed.Box box_stack_heap.Point) :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   alloc.boxed.Box::["new"]
     {|
       box_stack_heap.Point.x := 0 (* 0.0 *);
@@ -106,10 +114,14 @@ Definition boxed_origin  : M (alloc.boxed.Box box_stack_heap.Point) :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
   let* point := box_stack_heap.origin in
 =======
 Definition main  : M unit :=
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* point := box_stack_heap.origin tt in
 >>>>>>> 6ee776e (update snapshot)
   let* rectangle :=

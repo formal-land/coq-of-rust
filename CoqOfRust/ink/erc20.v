@@ -50,10 +50,14 @@ Module erc20.
   Module Impl_core_default_Default_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
     
+<<<<<<< HEAD
     Definition default
         `{H : State.Trait}
         (_ : unit)
         : M (H := H) erc20.erc20.Erc20 :=
+=======
+    Definition default : M erc20.erc20.Erc20 :=
+>>>>>>> b389ac0 (ci: update the snapshots)
       let* α0 := core.default.Default.default tt in
       let* α1 := core.default.Default.default tt in
       let* α2 := core.default.Default.default tt in
@@ -1481,10 +1485,14 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
   
   Definition Identity : Set := Self.
   
+<<<<<<< HEAD
   Definition type_info
       `{H : State.Trait}
       (_ : unit)
       : M (H := H) scale_info.ty.Type :=
+=======
+  Definition type_info : M scale_info.ty.Type :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Erc20" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
@@ -1572,10 +1580,14 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
 Module Impl_core_default_Default_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
+<<<<<<< HEAD
   Definition default
       `{H : State.Trait}
       (_ : unit)
       : M (H := H) erc20.erc20.Erc20 :=
+=======
+  Definition default : M erc20.erc20.Erc20 :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* α0 := core.default.Default.default tt in
     let* α1 := core.default.Default.default tt in
     let* α2 := core.default.Default.default tt in
@@ -1638,11 +1650,15 @@ Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
   Definition EnvAccess : Set :=
     ink.env_access.EnvAccess ink_env.contract.ContractEnv.Env.
   
+<<<<<<< HEAD
   Definition env
       `{H : State.Trait}
       (_ : unit)
       : M (H := H) ImplSelf.EnvAccess :=
     core.default.Default.default tt.
+=======
+  Definition env : M ImplSelf.EnvAccess := core.default.Default.default tt.
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Global Instance AssociatedFunction_env `{H : State.Trait} :
     Notation.DoubleColon Self "env" := {
@@ -4121,10 +4137,14 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
   
   Definition Identity : Set := Self.
   
+<<<<<<< HEAD
   Definition type_info
       `{H : State.Trait}
       (_ : unit)
       : M (H := H) scale_info.ty.Type :=
+=======
+  Definition type_info : M scale_info.ty.Type :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "CallBuilder" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
@@ -4718,10 +4738,14 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
   
   Definition Identity : Set := Self.
   
+<<<<<<< HEAD
   Definition type_info
       `{H : State.Trait}
       (_ : unit)
       : M (H := H) scale_info.ty.Type :=
+=======
+  Definition type_info : M scale_info.ty.Type :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Erc20Ref" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
@@ -5307,10 +5331,14 @@ Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
   }.
 End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
 
+<<<<<<< HEAD
 Definition __ink_generate_metadata
     `{H : State.Trait}
     (_ : unit)
     : M (H := H) ink_metadata.InkProject :=
+=======
+Definition __ink_generate_metadata : M ink_metadata.InkProject :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* layout :=
     let* α0 :=
       core.convert.From.from ink_storage_traits.storage.StorageKey.KEY in
@@ -5713,10 +5741,14 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
   
   Definition Identity : Set := Self.
   
+<<<<<<< HEAD
   Definition type_info
       `{H : State.Trait}
       (_ : unit)
       : M (H := H) scale_info.ty.Type :=
+=======
+  Definition type_info : M scale_info.ty.Type :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Error" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in

@@ -43,10 +43,14 @@ End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let c := "Q"%char in
   let ref_c1 := c in
   let ref_c2 := addr_of c in

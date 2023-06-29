@@ -11,10 +11,14 @@ Definition division (dividend : i32) (divisor : i32) : M i32 :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _x := alloc.boxed.Box::["new"] 0 in
   let* _ := panic.division 3 0 in
   let* _ :=

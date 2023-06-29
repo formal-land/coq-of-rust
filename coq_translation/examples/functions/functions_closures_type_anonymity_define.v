@@ -3,10 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit := Pure tt.
 =======
 Definition main  : M unit := Pure tt.
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit := Pure tt.
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Definition apply
     {F : Set}

@@ -29,10 +29,14 @@ Definition borrow_i32 (borrowed_i32 : ref i32) : M unit :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* boxed_i32 := alloc.boxed.Box::["new"] 5 in
   let stacked_i32 := 6 in
   let* _ := scoping_rules_borrowing.borrow_i32 (addr_of boxed_i32) in

@@ -2,10 +2,14 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition function : M unit :=
 =======
 Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -18,10 +22,14 @@ Definition function  : M unit :=
 Module deeply.
   Module nested.
 <<<<<<< HEAD
+<<<<<<< HEAD
     Definition function : M unit :=
 =======
     Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+    Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -36,10 +44,14 @@ End deeply.
 
 Module nested.
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition function : M unit :=
 =======
   Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -52,10 +64,14 @@ Module nested.
 End nested.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition function : M unit :=
 =======
 Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -68,10 +84,14 @@ Definition function  : M unit :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
   let* _ := the_use_as_declaration.deeply.nested.function in
 =======
 Definition main  : M unit :=
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ := the_use_as_declaration.deeply.nested.function tt in
 >>>>>>> 6ee776e (update snapshot)
   let* _ :=

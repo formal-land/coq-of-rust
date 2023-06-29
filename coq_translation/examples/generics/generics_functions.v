@@ -38,10 +38,14 @@ Definition generic {T : Set} (_s : generics_functions.SGen T) : M unit :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     generics_functions.reg_fn
       (generics_functions.S.Build_t generics_functions.A.Build) in

@@ -38,10 +38,14 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition default : M Self := Pure {| Self.x := addr_of 10; |}.
 =======
   Definition default  : M Self := Pure {| Self.x := addr_of 10; |}.
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition default : M Self := Pure {| Self.x := addr_of 10; |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Global Instance AssociatedFunction_default :
     Notation.DoubleColon Self "default" := {
@@ -55,10 +59,14 @@ End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
   let* b := core.default.Default.default in
 =======
 Definition main  : M unit :=
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* b := core.default.Default.default tt in
 >>>>>>> 6ee776e (update snapshot)
   let* _ :=

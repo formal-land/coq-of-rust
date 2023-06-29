@@ -2,10 +2,14 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition function : M unit :=
 =======
 Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -17,10 +21,14 @@ Definition function  : M unit :=
 
 Module cool.
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition function : M unit :=
 =======
   Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -33,10 +41,14 @@ Module cool.
 End cool.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition function : M unit :=
 =======
 Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -49,10 +61,14 @@ Definition function  : M unit :=
 
 Module my.
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition function : M unit :=
 =======
   Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -65,10 +81,14 @@ Module my.
   
   Module cool.
 <<<<<<< HEAD
+<<<<<<< HEAD
     Definition function : M unit :=
 =======
     Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+    Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -81,10 +101,14 @@ Module my.
   End cool.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition indirect_call : M unit :=
 =======
   Definition indirect_call  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition indirect_call : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -102,10 +126,14 @@ Module my.
 End my.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition function : M unit :=
 =======
 Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -118,10 +146,14 @@ Definition function  : M unit :=
 
 Module cool.
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition function : M unit :=
 =======
   Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -134,10 +166,14 @@ Module cool.
 End cool.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition function : M unit :=
 =======
 Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -149,10 +185,14 @@ Definition function  : M unit :=
   Pure tt.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition indirect_call : M unit :=
 =======
 Definition indirect_call  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition indirect_call : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -170,10 +210,14 @@ Definition indirect_call  : M unit :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
   let* _ := super_and_self.my.indirect_call in
 =======
 Definition main  : M unit :=
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ := super_and_self.my.indirect_call tt in
 >>>>>>> 6ee776e (update snapshot)
   Pure tt.

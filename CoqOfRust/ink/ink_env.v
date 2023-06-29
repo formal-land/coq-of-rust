@@ -641,10 +641,28 @@ Module Impl_scale_info_TypeInfo_for_ink_env_types_NoChainExtension.
   
   Definition Identity : Set := Self.
   
+<<<<<<< HEAD
   Parameter type_info : forall `{H : State.Trait}, unit
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
+=======
+  Definition type_info : M scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] tt in
+    let* α1 :=
+      scale_info.ty.path.Path::["new"] "NoChainExtension" "ink_env::types" in
+    let* α2 := α0.["path"] α1 in
+    let* α3 := alloc.vec.Vec::["new"] tt in
+    let* α4 := α2.["type_params"] α3 in
+    let* α5 :=
+      α4.["docs"]
+        (addr_of
+          [ "Placeholder for chains that have no defined chain extension." ]) in
+    let* α6 := scale_info.build.Variants::["new"] tt in
+    α5.["variant"] α6.
+  
+  Global Instance AssociatedFunction_type_info :
+>>>>>>> b389ac0 (ci: update the snapshots)
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
@@ -665,10 +683,27 @@ Module Impl_scale_info_TypeInfo_for_ink_env_types_DefaultEnvironment.
   
   Definition Identity : Set := Self.
   
+<<<<<<< HEAD
   Parameter type_info : forall `{H : State.Trait}, unit
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
+=======
+  Definition type_info : M scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] tt in
+    let* α1 :=
+      scale_info.ty.path.Path::["new"] "DefaultEnvironment" "ink_env::types" in
+    let* α2 := α0.["path"] α1 in
+    let* α3 := alloc.vec.Vec::["new"] tt in
+    let* α4 := α2.["type_params"] α3 in
+    let* α5 :=
+      α4.["docs"]
+        (addr_of [ "The fundamental types of the default configuration." ]) in
+    let* α6 := scale_info.build.Variants::["new"] tt in
+    α5.["variant"] α6.
+  
+  Global Instance AssociatedFunction_type_info :
+>>>>>>> b389ac0 (ci: update the snapshots)
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
@@ -797,17 +832,33 @@ Module api.
   Parameter caller : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
       unit
       -> M (H := H) ImplE.AccountId.
+=======
+      : M ImplE.AccountId :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance => ink_env.backend.TypedEnvBackend.caller instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Parameter transferred_value : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
       unit
       -> M (H := H) ImplE.Balance.
   
   Parameter weight_to_fee : forall `{H : State.Trait}, forall
       {E : Set},
+=======
+      : M ImplE.Balance :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance =>
+        ink_env.backend.TypedEnvBackend.transferred_value instance).
+  
+  Definition weight_to_fee
+      {E : Set}
+>>>>>>> b389ac0 (ci: update the snapshots)
       `{ink_env.types.Environment.Trait E}
       ink_env.types.Gas
       -> M (H := H) ImplE.Balance.
@@ -815,12 +866,19 @@ Module api.
   Parameter gas_left : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
       unit
       -> M (H := H) ink_env.types.Gas.
+=======
+      : M ink_env.types.Gas :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance => ink_env.backend.TypedEnvBackend.gas_left instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Parameter block_timestamp : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
       unit
       -> M (H := H) ImplE.Timestamp.
   
@@ -829,27 +887,62 @@ Module api.
       `{ink_env.types.Environment.Trait E}
       unit
       -> M (H := H) ImplE.AccountId.
+=======
+      : M ImplE.Timestamp :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance =>
+        ink_env.backend.TypedEnvBackend.block_timestamp instance).
+  
+  Definition account_id
+      {E : Set}
+      `{ink_env.types.Environment.Trait E}
+      : M ImplE.AccountId :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance => ink_env.backend.TypedEnvBackend.account_id instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Parameter balance : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
       unit
       -> M (H := H) ImplE.Balance.
+=======
+      : M ImplE.Balance :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance => ink_env.backend.TypedEnvBackend.balance instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Parameter block_number : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
       unit
       -> M (H := H) ImplE.BlockNumber.
+=======
+      : M ImplE.BlockNumber :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance => ink_env.backend.TypedEnvBackend.block_number instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Parameter minimum_balance : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
       unit
       -> M (H := H) ImplE.Balance.
   
   Parameter emit_event : forall `{H : State.Trait}, forall
       {E : Set} {Event : Set},
+=======
+      : M ImplE.Balance :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance =>
+        ink_env.backend.TypedEnvBackend.minimum_balance instance).
+  
+  Definition emit_event
+      {E Event : Set}
+>>>>>>> b389ac0 (ci: update the snapshots)
       `{ink_env.types.Environment.Trait E}
       `{ink_env.topics.Topics.Trait Event}
       `{parity_scale_codec.codec.Encode.Trait Event}
@@ -946,8 +1039,14 @@ Module api.
   Parameter decode_input : forall `{H : State.Trait}, forall
       {T : Set},
       `{parity_scale_codec.codec.Decode.Trait T}
+<<<<<<< HEAD
       unit
       -> M (H := H) (ink_env.error.Result T).
+=======
+      : M (ink_env.error.Result T) :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance => ink_env.backend.EnvBackend.decode_input instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Parameter return_value : forall `{H : State.Trait}, forall
       {R : Set},
@@ -998,12 +1097,19 @@ Module api.
   Parameter own_code_hash : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
       unit
       -> M (H := H) (ink_env.error.Result ImplE.Hash).
+=======
+      : M (ink_env.error.Result ImplE.Hash) :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance => ink_env.backend.TypedEnvBackend.own_code_hash instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Parameter caller_is_origin : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
       unit
       -> M (H := H) bool.
   
@@ -1012,6 +1118,21 @@ Module api.
   
   Parameter set_code_hash2 : forall `{H : State.Trait}, forall
       {E : Set},
+=======
+      : M bool :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance =>
+        ink_env.backend.TypedEnvBackend.caller_is_origin instance).
+  
+  Definition set_code_hash
+      (code_hash : ref list u8)
+      : M (ink_env.error.Result unit) :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance => instance.["set_code_hash"] code_hash).
+  
+  Definition set_code_hash2
+      {E : Set}
+>>>>>>> b389ac0 (ci: update the snapshots)
       `{ink_env.types.Environment.Trait E}
       ref ImplE.Hash
       -> M (H := H) (ink_env.error.Result unit).
@@ -1027,17 +1148,33 @@ End api.
 Parameter caller : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplE.AccountId.
+=======
+    : M ImplE.AccountId :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance => ink_env.backend.TypedEnvBackend.caller instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Parameter transferred_value : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplE.Balance.
 
 Parameter weight_to_fee : forall `{H : State.Trait}, forall
     {E : Set},
+=======
+    : M ImplE.Balance :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance =>
+      ink_env.backend.TypedEnvBackend.transferred_value instance).
+
+Definition weight_to_fee
+    {E : Set}
+>>>>>>> b389ac0 (ci: update the snapshots)
     `{ink_env.types.Environment.Trait E}
     ink_env.types.Gas
     -> M (H := H) ImplE.Balance.
@@ -1045,38 +1182,74 @@ Parameter weight_to_fee : forall `{H : State.Trait}, forall
 Parameter gas_left : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
     unit
     -> M (H := H) ink_env.types.Gas.
+=======
+    : M ink_env.types.Gas :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance => ink_env.backend.TypedEnvBackend.gas_left instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Parameter block_timestamp : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplE.Timestamp.
+=======
+    : M ImplE.Timestamp :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance => ink_env.backend.TypedEnvBackend.block_timestamp instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Parameter account_id : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplE.AccountId.
+=======
+    : M ImplE.AccountId :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance => ink_env.backend.TypedEnvBackend.account_id instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Parameter balance : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplE.Balance.
+=======
+    : M ImplE.Balance :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance => ink_env.backend.TypedEnvBackend.balance instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Parameter block_number : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplE.BlockNumber.
+=======
+    : M ImplE.BlockNumber :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance => ink_env.backend.TypedEnvBackend.block_number instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Parameter minimum_balance : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplE.Balance.
+=======
+    : M ImplE.Balance :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance => ink_env.backend.TypedEnvBackend.minimum_balance instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Parameter emit_event : forall `{H : State.Trait}, forall
     {E : Set} {Event : Set},
@@ -1176,8 +1349,14 @@ Parameter transfer : forall `{H : State.Trait}, forall
 Parameter decode_input : forall `{H : State.Trait}, forall
     {T : Set},
     `{parity_scale_codec.codec.Decode.Trait T}
+<<<<<<< HEAD
     unit
     -> M (H := H) (ink_env.error.Result T).
+=======
+    : M (ink_env.error.Result T) :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance => ink_env.backend.EnvBackend.decode_input instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Parameter return_value : forall `{H : State.Trait}, forall
     {R : Set},
@@ -1227,12 +1406,19 @@ Parameter code_hash : forall `{H : State.Trait}, forall
 Parameter own_code_hash : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
     unit
     -> M (H := H) (ink_env.error.Result ImplE.Hash).
+=======
+    : M (ink_env.error.Result ImplE.Hash) :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance => ink_env.backend.TypedEnvBackend.own_code_hash instance).
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Parameter caller_is_origin : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
     unit
     -> M (H := H) bool.
 
@@ -1241,6 +1427,20 @@ Parameter set_code_hash : forall `{H : State.Trait}, ref list u8
 
 Parameter set_code_hash2 : forall `{H : State.Trait}, forall
     {E : Set},
+=======
+    : M bool :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance => ink_env.backend.TypedEnvBackend.caller_is_origin instance).
+
+Definition set_code_hash
+    (code_hash : ref list u8)
+    : M (ink_env.error.Result unit) :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance => instance.["set_code_hash"] code_hash).
+
+Definition set_code_hash2
+    {E : Set}
+>>>>>>> b389ac0 (ci: update the snapshots)
     `{ink_env.types.Environment.Trait E}
     ref ImplE.Hash
     -> M (H := H) (ink_env.error.Result unit).
@@ -1555,8 +1755,14 @@ Module backend.
   Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
     Definition Self := ink_env.backend.ReturnFlags.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_env.backend.ReturnFlags.
+=======
+    Definition default : M ink_env.backend.ReturnFlags :=
+      let* α0 := core.default.Default.default tt in
+      Pure {| ink_env.backend.ReturnFlags.value := α0; |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -1664,10 +1870,27 @@ Module backend.
   Module Impl_core_default_Default_for_ink_env_backend_CallFlags.
     Definition Self := ink_env.backend.CallFlags.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_env.backend.CallFlags.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
+=======
+    Definition default : M ink_env.backend.CallFlags :=
+      let* α0 := core.default.Default.default tt in
+      let* α1 := core.default.Default.default tt in
+      let* α2 := core.default.Default.default tt in
+      let* α3 := core.default.Default.default tt in
+      Pure
+        {|
+          ink_env.backend.CallFlags.forward_input := α0;
+          ink_env.backend.CallFlags.clone_input := α1;
+          ink_env.backend.CallFlags.tail_call := α2;
+          ink_env.backend.CallFlags.allow_reentry := α3;
+        |}.
+    
+    Global Instance AssociatedFunction_default :
+>>>>>>> b389ac0 (ci: update the snapshots)
       Notation.DoubleColon Self "default" := {
       Notation.double_colon := default;
     }.
@@ -2108,8 +2331,14 @@ Definition ReturnFlags : Set := ReturnFlags.t.
 Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
   Definition Self := ink_env.backend.ReturnFlags.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_env.backend.ReturnFlags.
+=======
+  Definition default : M ink_env.backend.ReturnFlags :=
+    let* α0 := core.default.Default.default tt in
+    Pure {| ink_env.backend.ReturnFlags.value := α0; |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -2217,10 +2446,27 @@ End Impl_core_fmt_Debug_for_ink_env_backend_CallFlags.
 Module Impl_core_default_Default_for_ink_env_backend_CallFlags.
   Definition Self := ink_env.backend.CallFlags.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_env.backend.CallFlags.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
+=======
+  Definition default : M ink_env.backend.CallFlags :=
+    let* α0 := core.default.Default.default tt in
+    let* α1 := core.default.Default.default tt in
+    let* α2 := core.default.Default.default tt in
+    let* α3 := core.default.Default.default tt in
+    Pure
+      {|
+        ink_env.backend.CallFlags.forward_input := α0;
+        ink_env.backend.CallFlags.clone_input := α1;
+        ink_env.backend.CallFlags.tail_call := α2;
+        ink_env.backend.CallFlags.allow_reentry := α3;
+      |}.
+  
+  Global Instance AssociatedFunction_default :
+>>>>>>> b389ac0 (ci: update the snapshots)
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.
@@ -2832,9 +3078,14 @@ Module call.
     Parameter build_call : forall `{H : State.Trait}, forall
         {E : Set},
         `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
         unit
         ->
           M (H := H)
+=======
+        :
+          M
+>>>>>>> b389ac0 (ci: update the snapshots)
             (ink_env.call.call_builder.CallBuilder
               E
               (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
@@ -3524,7 +3775,13 @@ Module call.
       
       Definition Self := ink_env.call.common.ReturnType T.
       
+<<<<<<< HEAD
       Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+      Definition default : M Self :=
+        let* α0 := core.default.Default.default tt in
+        Self α0.
+>>>>>>> b389ac0 (ci: update the snapshots)
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -3673,7 +3930,13 @@ Module call.
       
       Definition Self := ink_env.call.common.Unset T.
       
+<<<<<<< HEAD
       Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+      Definition default : M Self :=
+        let* α0 := core.default.Default.default tt in
+        Self α0.
+>>>>>>> b389ac0 (ci: update the snapshots)
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -4093,9 +4356,14 @@ Module call.
     Parameter build_create : forall `{H : State.Trait}, forall
         {ContractRef : Set},
         `{ink_env.contract.ContractEnv.Trait ContractRef}
+<<<<<<< HEAD
         unit
         ->
           M (H := H)
+=======
+        :
+          M
+>>>>>>> b389ac0 (ci: update the snapshots)
             (ink_env.call.create_builder.CreateBuilder
               ink_env.contract.ContractEnv.Env
               ContractRef
@@ -4449,10 +4717,24 @@ Module call.
       
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
+<<<<<<< HEAD
       Parameter default : forall `{H : State.Trait}, unit
           -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
+=======
+      Definition default
+          : M (ink_env.call.execution_input.ExecutionInput Args) :=
+        let* α0 := core.default.Default.default tt in
+        let* α1 := core.default.Default.default tt in
+        Pure
+          {|
+            ink_env.call.execution_input.ExecutionInput.selector := α0;
+            ink_env.call.execution_input.ExecutionInput.args := α1;
+          |}.
+      
+      Global Instance AssociatedFunction_default :
+>>>>>>> b389ac0 (ci: update the snapshots)
         Notation.DoubleColon Self "default" := {
         Notation.double_colon := default;
       }.
@@ -4607,10 +4889,24 @@ Module call.
       
       Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
       
+<<<<<<< HEAD
       Parameter default : forall `{H : State.Trait}, unit
           -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
+=======
+      Definition default
+          : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
+        let* α0 := core.default.Default.default tt in
+        let* α1 := core.default.Default.default tt in
+        Pure
+          {|
+            ink_env.call.execution_input.ArgumentList.head := α0;
+            ink_env.call.execution_input.ArgumentList.rest := α1;
+          |}.
+      
+      Global Instance AssociatedFunction_default :
+>>>>>>> b389ac0 (ci: update the snapshots)
         Notation.DoubleColon Self "default" := {
         Notation.double_colon := default;
       }.
@@ -4740,8 +5036,13 @@ Module call.
       Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
       Definition Self := ink_env.call.execution_input.ArgumentListEnd.
       
+<<<<<<< HEAD
       Parameter default : forall `{H : State.Trait}, unit
           -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
+=======
+      Definition default : M ink_env.call.execution_input.ArgumentListEnd :=
+        Pure {|  |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -4778,10 +5079,23 @@ Module call.
     Module Impl_ink_env_call_execution_input_EmptyArgumentList.
       Definition Self := ink_env.call.execution_input.EmptyArgumentList.
       
+<<<<<<< HEAD
       Parameter empty : forall `{H : State.Trait}, unit
           -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
       
       Global Instance AssociatedFunction_empty `{H : State.Trait} :
+=======
+      Definition empty : M ink_env.call.execution_input.EmptyArgumentList :=
+        Pure
+          {|
+            ink_env.call.execution_input.ArgumentList.head :=
+              ink_env.call.execution_input.ArgumentListEnd.Build;
+            ink_env.call.execution_input.ArgumentList.rest :=
+              ink_env.call.execution_input.ArgumentListEnd.Build;
+          |}.
+      
+      Global Instance AssociatedFunction_empty :
+>>>>>>> b389ac0 (ci: update the snapshots)
         Notation.DoubleColon Self "empty" := {
         Notation.double_colon := empty;
       }.
@@ -4967,8 +5281,14 @@ Module call.
     Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
       
+<<<<<<< HEAD
       Parameter default : forall `{H : State.Trait}, unit
           -> M (H := H) ink_env.call.selector.Selector.
+=======
+      Definition default : M ink_env.call.selector.Selector :=
+        let* α0 := core.default.Default.default tt in
+        Pure {| ink_env.call.selector.Selector.bytes := α0; |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -5312,9 +5632,14 @@ Module call_builder.
   Parameter build_call : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
       unit
       ->
         M (H := H)
+=======
+      :
+        M
+>>>>>>> b389ac0 (ci: update the snapshots)
           (ink_env.call.call_builder.CallBuilder
             E
             (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
@@ -6128,9 +6453,14 @@ End
 Parameter build_call : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
     unit
     ->
       M (H := H)
+=======
+    :
+      M
+>>>>>>> b389ac0 (ci: update the snapshots)
         (ink_env.call.call_builder.CallBuilder
           E
           (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
@@ -6804,7 +7134,13 @@ Module common.
     
     Definition Self := ink_env.call.common.ReturnType T.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition default : M Self :=
+      let* α0 := core.default.Default.default tt in
+      Self α0.
+>>>>>>> b389ac0 (ci: update the snapshots)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -6950,7 +7286,13 @@ Module common.
     
     Definition Self := ink_env.call.common.Unset T.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition default : M Self :=
+      let* α0 := core.default.Default.default tt in
+      Self α0.
+>>>>>>> b389ac0 (ci: update the snapshots)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -7099,7 +7441,13 @@ Section Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
   
   Definition Self := ink_env.call.common.ReturnType T.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition default : M Self :=
+    let* α0 := core.default.Default.default tt in
+    Self α0.
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -7245,7 +7593,13 @@ Section Impl_core_default_Default_for_ink_env_call_common_Unset_T.
   
   Definition Self := ink_env.call.common.Unset T.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition default : M Self :=
+    let* α0 := core.default.Default.default tt in
+    Self α0.
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -7659,9 +8013,14 @@ Module create_builder.
   Parameter build_create : forall `{H : State.Trait}, forall
       {ContractRef : Set},
       `{ink_env.contract.ContractEnv.Trait ContractRef}
+<<<<<<< HEAD
       unit
       ->
         M (H := H)
+=======
+      :
+        M
+>>>>>>> b389ac0 (ci: update the snapshots)
           (ink_env.call.create_builder.CreateBuilder
             ink_env.contract.ContractEnv.Env
             ContractRef
@@ -8295,9 +8654,14 @@ Definition CreateBuilder : Set := CreateBuilder.t.
 Parameter build_create : forall `{H : State.Trait}, forall
     {ContractRef : Set},
     `{ink_env.contract.ContractEnv.Trait ContractRef}
+<<<<<<< HEAD
     unit
     ->
       M (H := H)
+=======
+    :
+      M
+>>>>>>> b389ac0 (ci: update the snapshots)
         (ink_env.call.create_builder.CreateBuilder
           ink_env.contract.ContractEnv.Env
           ContractRef
@@ -8646,10 +9010,23 @@ Module execution_input.
     
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
+=======
+    Definition default : M (ink_env.call.execution_input.ExecutionInput Args) :=
+      let* α0 := core.default.Default.default tt in
+      let* α1 := core.default.Default.default tt in
+      Pure
+        {|
+          ink_env.call.execution_input.ExecutionInput.selector := α0;
+          ink_env.call.execution_input.ExecutionInput.args := α1;
+        |}.
+    
+    Global Instance AssociatedFunction_default :
+>>>>>>> b389ac0 (ci: update the snapshots)
       Notation.DoubleColon Self "default" := {
       Notation.double_colon := default;
     }.
@@ -8801,10 +9178,24 @@ Module execution_input.
     
     Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
+=======
+    Definition default
+        : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
+      let* α0 := core.default.Default.default tt in
+      let* α1 := core.default.Default.default tt in
+      Pure
+        {|
+          ink_env.call.execution_input.ArgumentList.head := α0;
+          ink_env.call.execution_input.ArgumentList.rest := α1;
+        |}.
+    
+    Global Instance AssociatedFunction_default :
+>>>>>>> b389ac0 (ci: update the snapshots)
       Notation.DoubleColon Self "default" := {
       Notation.double_colon := default;
     }.
@@ -8931,8 +9322,13 @@ Module execution_input.
     Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
     Definition Self := ink_env.call.execution_input.ArgumentListEnd.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
+=======
+    Definition default : M ink_env.call.execution_input.ArgumentListEnd :=
+      Pure {|  |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -8969,10 +9365,23 @@ Module execution_input.
   Module Impl_ink_env_call_execution_input_EmptyArgumentList_2.
     Definition Self := ink_env.call.execution_input.EmptyArgumentList.
     
+<<<<<<< HEAD
     Parameter empty : forall `{H : State.Trait}, unit
         -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
     
     Global Instance AssociatedFunction_empty `{H : State.Trait} :
+=======
+    Definition empty : M ink_env.call.execution_input.EmptyArgumentList :=
+      Pure
+        {|
+          ink_env.call.execution_input.ArgumentList.head :=
+            ink_env.call.execution_input.ArgumentListEnd.Build;
+          ink_env.call.execution_input.ArgumentList.rest :=
+            ink_env.call.execution_input.ArgumentListEnd.Build;
+        |}.
+    
+    Global Instance AssociatedFunction_empty :
+>>>>>>> b389ac0 (ci: update the snapshots)
       Notation.DoubleColon Self "empty" := {
       Notation.double_colon := empty;
     }.
@@ -9187,10 +9596,23 @@ Section
   
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
+=======
+  Definition default : M (ink_env.call.execution_input.ExecutionInput Args) :=
+    let* α0 := core.default.Default.default tt in
+    let* α1 := core.default.Default.default tt in
+    Pure
+      {|
+        ink_env.call.execution_input.ExecutionInput.selector := α0;
+        ink_env.call.execution_input.ExecutionInput.args := α1;
+      |}.
+  
+  Global Instance AssociatedFunction_default :
+>>>>>>> b389ac0 (ci: update the snapshots)
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.
@@ -9341,10 +9763,24 @@ Section
   
   Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
+=======
+  Definition default
+      : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
+    let* α0 := core.default.Default.default tt in
+    let* α1 := core.default.Default.default tt in
+    Pure
+      {|
+        ink_env.call.execution_input.ArgumentList.head := α0;
+        ink_env.call.execution_input.ArgumentList.rest := α1;
+      |}.
+  
+  Global Instance AssociatedFunction_default :
+>>>>>>> b389ac0 (ci: update the snapshots)
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.
@@ -9469,8 +9905,13 @@ Module
   Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
   Definition Self := ink_env.call.execution_input.ArgumentListEnd.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
+=======
+  Definition default : M ink_env.call.execution_input.ArgumentListEnd :=
+    Pure {|  |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -9506,10 +9947,23 @@ Definition EmptyArgumentList : Set :=
 Module Impl_ink_env_call_execution_input_EmptyArgumentList_3.
   Definition Self := ink_env.call.execution_input.EmptyArgumentList.
   
+<<<<<<< HEAD
   Parameter empty : forall `{H : State.Trait}, unit
       -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
   
   Global Instance AssociatedFunction_empty `{H : State.Trait} :
+=======
+  Definition empty : M ink_env.call.execution_input.EmptyArgumentList :=
+    Pure
+      {|
+        ink_env.call.execution_input.ArgumentList.head :=
+          ink_env.call.execution_input.ArgumentListEnd.Build;
+        ink_env.call.execution_input.ArgumentList.rest :=
+          ink_env.call.execution_input.ArgumentListEnd.Build;
+      |}.
+  
+  Global Instance AssociatedFunction_empty :
+>>>>>>> b389ac0 (ci: update the snapshots)
     Notation.DoubleColon Self "empty" := {
     Notation.double_colon := empty;
   }.
@@ -9690,8 +10144,14 @@ Module selector.
   Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
     Definition Self := ink_env.call.selector.Selector.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_env.call.selector.Selector.
+=======
+    Definition default : M ink_env.call.selector.Selector :=
+      let* α0 := core.default.Default.default tt in
+      Pure {| ink_env.call.selector.Selector.bytes := α0; |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -9844,8 +10304,14 @@ Definition Selector : Set := Selector.t.
 Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_env.call.selector.Selector.
+=======
+  Definition default : M ink_env.call.selector.Selector :=
+    let* α0 := core.default.Default.default tt in
+    Pure {| ink_env.call.selector.Selector.bytes := α0; |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -11134,8 +11600,14 @@ Module engine.
         Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
         Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
         
+<<<<<<< HEAD
         Parameter default : forall `{H : State.Trait}, unit
             -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
+=======
+        Definition default : M ink_env.engine.off_chain.impls.TopicsBuilder :=
+          let* α0 := core.default.Default.default tt in
+          Pure {| ink_env.engine.off_chain.impls.TopicsBuilder.topics := α0; |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
         
         Global Instance AssociatedFunction_default `{H : State.Trait} :
           Notation.DoubleColon Self "default" := {
@@ -11755,6 +12227,7 @@ Module engine.
       Parameter register_chain_extension : forall `{H : State.Trait}, forall
           {E : Set},
           `{ink_engine.chain_extension.ChainExtension.Trait E}
+<<<<<<< HEAD
           E
           -> M (H := H) unit.
       
@@ -11772,6 +12245,45 @@ Module engine.
       
       Parameter set_caller : forall `{H : State.Trait}, forall
           {T : Set},
+=======
+          (extension : E)
+          : M unit :=
+        ink_env.engine.OnInstance.on_instance
+          (fun instance =>
+            let* _ :=
+              let* α0 := alloc.boxed.Box::["new"] extension in
+              instance.["engine"].["chain_extension_handler"].["register"] α0 in
+            Pure tt).
+      
+      Definition recorded_debug_messages
+          : M ink_engine.test_api.RecordedDebugMessages :=
+        ink_env.engine.OnInstance.on_instance
+          (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
+      
+      Definition set_clear_storage_disabled (_disable : bool) : M unit :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_v1"]
+              (addr_of
+                [
+                  "not implemented: off-chain environment does not yet support `set_clear_storage_disabled`"
+                ])
+              (addr_of [ ]) in
+          core.panicking.panic_fmt α0 in
+        Pure tt.
+      
+      Definition advance_block
+          {T : Set}
+          `{ink_env.types.Environment.Trait T}
+          : M unit :=
+        ink_env.engine.OnInstance.on_instance
+          (fun instance =>
+            let* _ := instance.["engine"].["advance_block"] in
+            Pure tt).
+      
+      Definition set_caller
+          {T : Set}
+>>>>>>> b389ac0 (ci: update the snapshots)
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
           ImplT.AccountId
@@ -11801,11 +12313,32 @@ Module engine.
       Parameter callee : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
+<<<<<<< HEAD
           unit
           -> M (H := H) ImplT.AccountId.
       
       Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
           {T : Set},
+=======
+          : M ImplT.AccountId :=
+        ink_env.engine.OnInstance.on_instance
+          (fun instance =>
+            let* callee := instance.["engine"].["get_callee"] in
+            let* α0 :=
+              parity_scale_codec.codec.Decode.decode
+                (addr_of (addr_of callee[RangeFull {|  |}])) in
+            α0.["unwrap_or_else"]
+              (fun err =>
+                let* α0 := format_argument::["new_display"] (addr_of err) in
+                let* α1 :=
+                  format_arguments::["new_v1"]
+                    (addr_of [ "encoding failed: " ])
+                    (addr_of [ α0 ]) in
+                core.panicking.panic_fmt α1)).
+      
+      Definition get_contract_storage_rw
+          {T : Set}
+>>>>>>> b389ac0 (ci: update the snapshots)
           `{ink_env.types.Environment.Trait T}
           ref ImplT.AccountId
           -> M (H := H) (usize * usize).
@@ -11854,8 +12387,33 @@ Module engine.
           {T : Set},
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+<<<<<<< HEAD
           unit
           -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+=======
+          : M (ink_env.engine.off_chain.test_api.DefaultAccounts T) :=
+        let* α0 := repeat 1 in
+        let* α1 := ImplT.AccountId::["from"] α0 in
+        let* α2 := repeat 2 in
+        let* α3 := ImplT.AccountId::["from"] α2 in
+        let* α4 := repeat 3 in
+        let* α5 := ImplT.AccountId::["from"] α4 in
+        let* α6 := repeat 4 in
+        let* α7 := ImplT.AccountId::["from"] α6 in
+        let* α8 := repeat 5 in
+        let* α9 := ImplT.AccountId::["from"] α8 in
+        let* α10 := repeat 6 in
+        let* α11 := ImplT.AccountId::["from"] α10 in
+        Pure
+          {|
+            ink_env.engine.off_chain.test_api.DefaultAccounts.alice := α1;
+            ink_env.engine.off_chain.test_api.DefaultAccounts.bob := α3;
+            ink_env.engine.off_chain.test_api.DefaultAccounts.charlie := α5;
+            ink_env.engine.off_chain.test_api.DefaultAccounts.django := α7;
+            ink_env.engine.off_chain.test_api.DefaultAccounts.eve := α9;
+            ink_env.engine.off_chain.test_api.DefaultAccounts.frank := α11;
+          |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
       
       Module DefaultAccounts.
         Record t : Set := {
@@ -11888,8 +12446,16 @@ Module engine.
       End DefaultAccounts.
       Definition DefaultAccounts : Set := DefaultAccounts.t.
       
+<<<<<<< HEAD
       Parameter recorded_events : forall `{H : State.Trait}, unit
           -> M (H := H) OpaqueDef.
+=======
+      Definition recorded_events : M OpaqueDef :=
+        ink_env.engine.OnInstance.on_instance
+          (fun instance =>
+            let* α0 := instance.["engine"].["get_emitted_events"] in
+            α0.["map"] (fun evt => evt.["into"])).
+>>>>>>> b389ac0 (ci: update the snapshots)
       
       Parameter assert_contract_termination : forall `{H : State.Trait}, forall
           {T : Set} {F : Set},
@@ -12545,8 +13111,14 @@ Module off_chain.
       Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
       Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
       
+<<<<<<< HEAD
       Parameter default : forall `{H : State.Trait}, unit
           -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
+=======
+      Definition default : M ink_env.engine.off_chain.impls.TopicsBuilder :=
+        let* α0 := core.default.Default.default tt in
+        Pure {| ink_env.engine.off_chain.impls.TopicsBuilder.topics := α0; |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -13142,6 +13714,7 @@ Module off_chain.
     Parameter register_chain_extension : forall `{H : State.Trait}, forall
         {E : Set},
         `{ink_engine.chain_extension.ChainExtension.Trait E}
+<<<<<<< HEAD
         E
         -> M (H := H) unit.
     
@@ -13159,6 +13732,45 @@ Module off_chain.
     
     Parameter set_caller : forall `{H : State.Trait}, forall
         {T : Set},
+=======
+        (extension : E)
+        : M unit :=
+      ink_env.engine.OnInstance.on_instance
+        (fun instance =>
+          let* _ :=
+            let* α0 := alloc.boxed.Box::["new"] extension in
+            instance.["engine"].["chain_extension_handler"].["register"] α0 in
+          Pure tt).
+    
+    Definition recorded_debug_messages
+        : M ink_engine.test_api.RecordedDebugMessages :=
+      ink_env.engine.OnInstance.on_instance
+        (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
+    
+    Definition set_clear_storage_disabled (_disable : bool) : M unit :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_v1"]
+            (addr_of
+              [
+                "not implemented: off-chain environment does not yet support `set_clear_storage_disabled`"
+              ])
+            (addr_of [ ]) in
+        core.panicking.panic_fmt α0 in
+      Pure tt.
+    
+    Definition advance_block
+        {T : Set}
+        `{ink_env.types.Environment.Trait T}
+        : M unit :=
+      ink_env.engine.OnInstance.on_instance
+        (fun instance =>
+          let* _ := instance.["engine"].["advance_block"] in
+          Pure tt).
+    
+    Definition set_caller
+        {T : Set}
+>>>>>>> b389ac0 (ci: update the snapshots)
         `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
         ImplT.AccountId
@@ -13188,11 +13800,32 @@ Module off_chain.
     Parameter callee : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
+<<<<<<< HEAD
         unit
         -> M (H := H) ImplT.AccountId.
     
     Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
         {T : Set},
+=======
+        : M ImplT.AccountId :=
+      ink_env.engine.OnInstance.on_instance
+        (fun instance =>
+          let* callee := instance.["engine"].["get_callee"] in
+          let* α0 :=
+            parity_scale_codec.codec.Decode.decode
+              (addr_of (addr_of callee[RangeFull {|  |}])) in
+          α0.["unwrap_or_else"]
+            (fun err =>
+              let* α0 := format_argument::["new_display"] (addr_of err) in
+              let* α1 :=
+                format_arguments::["new_v1"]
+                  (addr_of [ "encoding failed: " ])
+                  (addr_of [ α0 ]) in
+              core.panicking.panic_fmt α1)).
+    
+    Definition get_contract_storage_rw
+        {T : Set}
+>>>>>>> b389ac0 (ci: update the snapshots)
         `{ink_env.types.Environment.Trait T}
         ref ImplT.AccountId
         -> M (H := H) (usize * usize).
@@ -13241,8 +13874,33 @@ Module off_chain.
         {T : Set},
         `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+<<<<<<< HEAD
         unit
         -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+=======
+        : M (ink_env.engine.off_chain.test_api.DefaultAccounts T) :=
+      let* α0 := repeat 1 in
+      let* α1 := ImplT.AccountId::["from"] α0 in
+      let* α2 := repeat 2 in
+      let* α3 := ImplT.AccountId::["from"] α2 in
+      let* α4 := repeat 3 in
+      let* α5 := ImplT.AccountId::["from"] α4 in
+      let* α6 := repeat 4 in
+      let* α7 := ImplT.AccountId::["from"] α6 in
+      let* α8 := repeat 5 in
+      let* α9 := ImplT.AccountId::["from"] α8 in
+      let* α10 := repeat 6 in
+      let* α11 := ImplT.AccountId::["from"] α10 in
+      Pure
+        {|
+          ink_env.engine.off_chain.test_api.DefaultAccounts.alice := α1;
+          ink_env.engine.off_chain.test_api.DefaultAccounts.bob := α3;
+          ink_env.engine.off_chain.test_api.DefaultAccounts.charlie := α5;
+          ink_env.engine.off_chain.test_api.DefaultAccounts.django := α7;
+          ink_env.engine.off_chain.test_api.DefaultAccounts.eve := α9;
+          ink_env.engine.off_chain.test_api.DefaultAccounts.frank := α11;
+        |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
     
     Module DefaultAccounts.
       Record t : Set := {
@@ -13275,8 +13933,16 @@ Module off_chain.
     End DefaultAccounts.
     Definition DefaultAccounts : Set := DefaultAccounts.t.
     
+<<<<<<< HEAD
     Parameter recorded_events : forall `{H : State.Trait}, unit
         -> M (H := H) OpaqueDef.
+=======
+    Definition recorded_events : M OpaqueDef :=
+      ink_env.engine.OnInstance.on_instance
+        (fun instance =>
+          let* α0 := instance.["engine"].["get_emitted_events"] in
+          α0.["map"] (fun evt => evt.["into"])).
+>>>>>>> b389ac0 (ci: update the snapshots)
     
     Parameter assert_contract_termination : forall `{H : State.Trait}, forall
         {T : Set} {F : Set},
@@ -14058,8 +14724,14 @@ Module impls.
     Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
     Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
+=======
+    Definition default : M ink_env.engine.off_chain.impls.TopicsBuilder :=
+      let* α0 := core.default.Default.default tt in
+      Pure {| ink_env.engine.off_chain.impls.TopicsBuilder.topics := α0; |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -14655,8 +15327,13 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{core.marker.Sized.Trait T}
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
+<<<<<<< HEAD
     unit
     -> M (H := H) unit.
+=======
+    : M unit :=
+  Pure tt.
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Parameter as_array : forall `{H : State.Trait}, forall
     {T : Set},
@@ -14723,8 +15400,13 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{core.marker.Sized.Trait T}
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
+<<<<<<< HEAD
     unit
     -> M (H := H) unit.
+=======
+    : M unit :=
+  Pure tt.
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Parameter as_array : forall `{H : State.Trait}, forall
     {T : Set},
@@ -14791,8 +15473,13 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{core.marker.Sized.Trait T}
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
+<<<<<<< HEAD
     unit
     -> M (H := H) unit.
+=======
+    : M unit :=
+  Pure tt.
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Parameter as_array : forall `{H : State.Trait}, forall
     {T : Set},
@@ -14859,8 +15546,13 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{core.marker.Sized.Trait T}
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
+<<<<<<< HEAD
     unit
     -> M (H := H) unit.
+=======
+    : M unit :=
+  Pure tt.
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Parameter as_array : forall `{H : State.Trait}, forall
     {T : Set},
@@ -14899,8 +15591,14 @@ Module
   Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
   Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
+=======
+  Definition default : M ink_env.engine.off_chain.impls.TopicsBuilder :=
+    let* α0 := core.default.Default.default tt in
+    Pure {| ink_env.engine.off_chain.impls.TopicsBuilder.topics := α0; |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -15460,6 +16158,7 @@ Module test_api.
   Parameter register_chain_extension : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_engine.chain_extension.ChainExtension.Trait E}
+<<<<<<< HEAD
       E
       -> M (H := H) unit.
   
@@ -15477,6 +16176,45 @@ Module test_api.
   
   Parameter set_caller : forall `{H : State.Trait}, forall
       {T : Set},
+=======
+      (extension : E)
+      : M unit :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance =>
+        let* _ :=
+          let* α0 := alloc.boxed.Box::["new"] extension in
+          instance.["engine"].["chain_extension_handler"].["register"] α0 in
+        Pure tt).
+  
+  Definition recorded_debug_messages
+      : M ink_engine.test_api.RecordedDebugMessages :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
+  
+  Definition set_clear_storage_disabled (_disable : bool) : M unit :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_v1"]
+          (addr_of
+            [
+              "not implemented: off-chain environment does not yet support `set_clear_storage_disabled`"
+            ])
+          (addr_of [ ]) in
+      core.panicking.panic_fmt α0 in
+    Pure tt.
+  
+  Definition advance_block
+      {T : Set}
+      `{ink_env.types.Environment.Trait T}
+      : M unit :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance =>
+        let* _ := instance.["engine"].["advance_block"] in
+        Pure tt).
+  
+  Definition set_caller
+      {T : Set}
+>>>>>>> b389ac0 (ci: update the snapshots)
       `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
       ImplT.AccountId
@@ -15506,11 +16244,32 @@ Module test_api.
   Parameter callee : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
+<<<<<<< HEAD
       unit
       -> M (H := H) ImplT.AccountId.
   
   Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
       {T : Set},
+=======
+      : M ImplT.AccountId :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance =>
+        let* callee := instance.["engine"].["get_callee"] in
+        let* α0 :=
+          parity_scale_codec.codec.Decode.decode
+            (addr_of (addr_of callee[RangeFull {|  |}])) in
+        α0.["unwrap_or_else"]
+          (fun err =>
+            let* α0 := format_argument::["new_display"] (addr_of err) in
+            let* α1 :=
+              format_arguments::["new_v1"]
+                (addr_of [ "encoding failed: " ])
+                (addr_of [ α0 ]) in
+            core.panicking.panic_fmt α1)).
+  
+  Definition get_contract_storage_rw
+      {T : Set}
+>>>>>>> b389ac0 (ci: update the snapshots)
       `{ink_env.types.Environment.Trait T}
       ref ImplT.AccountId
       -> M (H := H) (usize * usize).
@@ -15559,8 +16318,33 @@ Module test_api.
       {T : Set},
       `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+<<<<<<< HEAD
       unit
       -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+=======
+      : M (ink_env.engine.off_chain.test_api.DefaultAccounts T) :=
+    let* α0 := repeat 1 in
+    let* α1 := ImplT.AccountId::["from"] α0 in
+    let* α2 := repeat 2 in
+    let* α3 := ImplT.AccountId::["from"] α2 in
+    let* α4 := repeat 3 in
+    let* α5 := ImplT.AccountId::["from"] α4 in
+    let* α6 := repeat 4 in
+    let* α7 := ImplT.AccountId::["from"] α6 in
+    let* α8 := repeat 5 in
+    let* α9 := ImplT.AccountId::["from"] α8 in
+    let* α10 := repeat 6 in
+    let* α11 := ImplT.AccountId::["from"] α10 in
+    Pure
+      {|
+        ink_env.engine.off_chain.test_api.DefaultAccounts.alice := α1;
+        ink_env.engine.off_chain.test_api.DefaultAccounts.bob := α3;
+        ink_env.engine.off_chain.test_api.DefaultAccounts.charlie := α5;
+        ink_env.engine.off_chain.test_api.DefaultAccounts.django := α7;
+        ink_env.engine.off_chain.test_api.DefaultAccounts.eve := α9;
+        ink_env.engine.off_chain.test_api.DefaultAccounts.frank := α11;
+      |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Module DefaultAccounts.
     Record t : Set := {
@@ -15593,8 +16377,16 @@ Module test_api.
   End DefaultAccounts.
   Definition DefaultAccounts : Set := DefaultAccounts.t.
   
+<<<<<<< HEAD
   Parameter recorded_events : forall `{H : State.Trait}, unit
       -> M (H := H) OpaqueDef.
+=======
+  Definition recorded_events : M OpaqueDef :=
+    ink_env.engine.OnInstance.on_instance
+      (fun instance =>
+        let* α0 := instance.["engine"].["get_emitted_events"] in
+        α0.["map"] (fun evt => evt.["into"])).
+>>>>>>> b389ac0 (ci: update the snapshots)
   
   Parameter assert_contract_termination : forall `{H : State.Trait}, forall
       {T : Set} {F : Set},
@@ -15655,6 +16447,7 @@ Parameter get_account_balance : forall `{H : State.Trait}, forall
 Parameter register_chain_extension : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_engine.chain_extension.ChainExtension.Trait E}
+<<<<<<< HEAD
     E
     -> M (H := H) unit.
 
@@ -15672,6 +16465,45 @@ Parameter advance_block : forall `{H : State.Trait}, forall
 
 Parameter set_caller : forall `{H : State.Trait}, forall
     {T : Set},
+=======
+    (extension : E)
+    : M unit :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance =>
+      let* _ :=
+        let* α0 := alloc.boxed.Box::["new"] extension in
+        instance.["engine"].["chain_extension_handler"].["register"] α0 in
+      Pure tt).
+
+Definition recorded_debug_messages
+    : M ink_engine.test_api.RecordedDebugMessages :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
+
+Definition set_clear_storage_disabled (_disable : bool) : M unit :=
+  let* _ :=
+    let* α0 :=
+      format_arguments::["new_v1"]
+        (addr_of
+          [
+            "not implemented: off-chain environment does not yet support `set_clear_storage_disabled`"
+          ])
+        (addr_of [ ]) in
+    core.panicking.panic_fmt α0 in
+  Pure tt.
+
+Definition advance_block
+    {T : Set}
+    `{ink_env.types.Environment.Trait T}
+    : M unit :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance =>
+      let* _ := instance.["engine"].["advance_block"] in
+      Pure tt).
+
+Definition set_caller
+    {T : Set}
+>>>>>>> b389ac0 (ci: update the snapshots)
     `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
     ImplT.AccountId
@@ -15701,11 +16533,32 @@ Parameter is_contract : forall `{H : State.Trait}, forall
 Parameter callee : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplT.AccountId.
 
 Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
     {T : Set},
+=======
+    : M ImplT.AccountId :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance =>
+      let* callee := instance.["engine"].["get_callee"] in
+      let* α0 :=
+        parity_scale_codec.codec.Decode.decode
+          (addr_of (addr_of callee[RangeFull {|  |}])) in
+      α0.["unwrap_or_else"]
+        (fun err =>
+          let* α0 := format_argument::["new_display"] (addr_of err) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "encoding failed: " ])
+              (addr_of [ α0 ]) in
+          core.panicking.panic_fmt α1)).
+
+Definition get_contract_storage_rw
+    {T : Set}
+>>>>>>> b389ac0 (ci: update the snapshots)
     `{ink_env.types.Environment.Trait T}
     ref ImplT.AccountId
     -> M (H := H) (usize * usize).
@@ -15754,8 +16607,33 @@ Parameter default_accounts : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+<<<<<<< HEAD
     unit
     -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+=======
+    : M (ink_env.engine.off_chain.test_api.DefaultAccounts T) :=
+  let* α0 := repeat 1 in
+  let* α1 := ImplT.AccountId::["from"] α0 in
+  let* α2 := repeat 2 in
+  let* α3 := ImplT.AccountId::["from"] α2 in
+  let* α4 := repeat 3 in
+  let* α5 := ImplT.AccountId::["from"] α4 in
+  let* α6 := repeat 4 in
+  let* α7 := ImplT.AccountId::["from"] α6 in
+  let* α8 := repeat 5 in
+  let* α9 := ImplT.AccountId::["from"] α8 in
+  let* α10 := repeat 6 in
+  let* α11 := ImplT.AccountId::["from"] α10 in
+  Pure
+    {|
+      ink_env.engine.off_chain.test_api.DefaultAccounts.alice := α1;
+      ink_env.engine.off_chain.test_api.DefaultAccounts.bob := α3;
+      ink_env.engine.off_chain.test_api.DefaultAccounts.charlie := α5;
+      ink_env.engine.off_chain.test_api.DefaultAccounts.django := α7;
+      ink_env.engine.off_chain.test_api.DefaultAccounts.eve := α9;
+      ink_env.engine.off_chain.test_api.DefaultAccounts.frank := α11;
+    |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Module DefaultAccounts.
   Record t : Set := {
@@ -15788,8 +16666,16 @@ Module DefaultAccounts.
 End DefaultAccounts.
 Definition DefaultAccounts : Set := DefaultAccounts.t.
 
+<<<<<<< HEAD
 Parameter recorded_events : forall `{H : State.Trait}, unit
     -> M (H := H) OpaqueDef.
+=======
+Definition recorded_events : M OpaqueDef :=
+  ink_env.engine.OnInstance.on_instance
+    (fun instance =>
+      let* α0 := instance.["engine"].["get_emitted_events"] in
+      α0.["map"] (fun evt => evt.["into"])).
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Error OpaqueTy.
 
@@ -15981,8 +16867,16 @@ Definition
     (std.thread.local.LocalKey::["new"]
       ink_env.engine.off_chain.on_instance.INSTANCE.__getit).
 
+<<<<<<< HEAD
 Parameter __init : forall `{H : State.Trait}, unit
     -> M (H := H) (core.cell.RefCell ink_env.engine.off_chain.EnvInstance).
+=======
+Definition __init
+    : M (core.cell.RefCell ink_env.engine.off_chain.EnvInstance) :=
+  let* α0 := ink_engine.ext.Engine::["new"] tt in
+  core.cell.RefCell::["new"]
+    {| ink_env.engine.off_chain.EnvInstance.engine := α0; |}.
+>>>>>>> b389ac0 (ci: update the snapshots)
 
 Parameter __getit : forall `{H : State.Trait}, core.option.Option
         (mut_ref

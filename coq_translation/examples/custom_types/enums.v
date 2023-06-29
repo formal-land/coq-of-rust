@@ -80,10 +80,14 @@ Definition inspect (event : enums.WebEvent) : M unit :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let pressed := enums.WebEvent.KeyPress "x"%char in
   let* pasted :=
     let* α0 := "my text".["to_owned"] in

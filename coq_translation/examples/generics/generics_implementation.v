@@ -47,10 +47,14 @@ End Impl_generics_implementation_GenVal_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let x := {| generics_implementation.Val.val := 3 (* 3.0 *); |} in
   let y := {| generics_implementation.GenVal.gen_val := 3; |} in
   let* _ :=

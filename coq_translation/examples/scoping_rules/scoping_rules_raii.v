@@ -2,19 +2,27 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition create_box : M unit :=
 =======
 Definition create_box  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition create_box : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _box1 := alloc.boxed.Box::["new"] 3 in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _box2 := alloc.boxed.Box::["new"] 5 in
   let* _ :=
     let* _box3 := alloc.boxed.Box::["new"] 4 in

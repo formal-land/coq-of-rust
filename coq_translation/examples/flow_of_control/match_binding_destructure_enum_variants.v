@@ -2,11 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b389ac0 (ci: update the snapshots)
 Definition some_number : M (core.option.Option u32) :=
   Pure (core.option.Option.Some 42).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
+<<<<<<< HEAD
   let* α0 := match_binding_destructure_enum_variants.some_number in
 =======
 Definition some_number  : M (core.option.Option u32) :=
@@ -14,6 +18,8 @@ Definition some_number  : M (core.option.Option u32) :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main  : M unit :=
+=======
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* α0 := match_binding_destructure_enum_variants.some_number tt in
 >>>>>>> 6ee776e (update snapshot)
   match α0 with

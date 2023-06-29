@@ -3,10 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* some_vector :=
     let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3; 4 ] in
     Slice::["into_vec"] α0 in

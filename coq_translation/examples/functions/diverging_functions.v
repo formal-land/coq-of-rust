@@ -3,6 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit := Pure tt.
 
 Definition foo : M Empty_set :=
@@ -11,5 +12,10 @@ Definition main  : M unit := Pure tt.
 
 Definition foo  : M Empty_set :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit := Pure tt.
+
+Definition foo : M Empty_set :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ := std.panicking.begin_panic "This call never returns." in
   Pure tt.

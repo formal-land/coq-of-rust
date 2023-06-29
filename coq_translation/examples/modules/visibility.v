@@ -3,10 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module my_mod.
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition private_function : M unit :=
 =======
   Definition private_function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition private_function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -18,10 +22,14 @@ Module my_mod.
     Pure tt.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition function : M unit :=
 =======
   Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -33,10 +41,14 @@ Module my_mod.
     Pure tt.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition indirect_access : M unit :=
 =======
   Definition indirect_access  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition indirect_access : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -50,10 +62,14 @@ Module my_mod.
   
   Module nested.
 <<<<<<< HEAD
+<<<<<<< HEAD
     Definition function : M unit :=
 =======
     Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+    Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -66,10 +82,14 @@ Module my_mod.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
     Definition private_function : M unit :=
 =======
     Definition private_function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+    Definition private_function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -81,10 +101,14 @@ Module my_mod.
       Pure tt.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Definition public_function_in_my_mod : M unit :=
 =======
     Definition public_function_in_my_mod  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+    Definition public_function_in_my_mod : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -100,10 +124,14 @@ Module my_mod.
       Pure tt.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Definition public_function_in_nested : M unit :=
 =======
     Definition public_function_in_nested  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+    Definition public_function_in_nested : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -116,10 +144,14 @@ Module my_mod.
       Pure tt.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Definition public_function_in_super_mod : M unit :=
 =======
     Definition public_function_in_super_mod  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+    Definition public_function_in_super_mod : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -134,10 +166,14 @@ Module my_mod.
   End nested.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition call_public_function_in_my_mod : M unit :=
 =======
   Definition call_public_function_in_my_mod  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition call_public_function_in_my_mod : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -158,10 +194,14 @@ Module my_mod.
     Pure tt.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition public_function_in_crate : M unit :=
 =======
   Definition public_function_in_crate  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition public_function_in_crate : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -175,10 +215,14 @@ Module my_mod.
   Module private_nested.
     (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
     Definition function : M unit :=
 =======
     Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+    Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -191,10 +235,14 @@ Module my_mod.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
     Definition restricted_function : M unit :=
 =======
     Definition restricted_function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+    Definition restricted_function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -210,10 +258,14 @@ Module my_mod.
 End my_mod.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition private_function : M unit :=
 =======
 Definition private_function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition private_function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -225,10 +277,14 @@ Definition private_function  : M unit :=
   Pure tt.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition function : M unit :=
 =======
 Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -240,10 +296,14 @@ Definition function  : M unit :=
   Pure tt.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition indirect_access : M unit :=
 =======
 Definition indirect_access  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition indirect_access : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -257,10 +317,14 @@ Definition indirect_access  : M unit :=
 
 Module nested.
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition function : M unit :=
 =======
   Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -273,10 +337,14 @@ Module nested.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition private_function : M unit :=
 =======
   Definition private_function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition private_function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -288,10 +356,14 @@ Module nested.
     Pure tt.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition public_function_in_my_mod : M unit :=
 =======
   Definition public_function_in_my_mod  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition public_function_in_my_mod : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -306,10 +378,14 @@ Module nested.
     Pure tt.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition public_function_in_nested : M unit :=
 =======
   Definition public_function_in_nested  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition public_function_in_nested : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -322,10 +398,14 @@ Module nested.
     Pure tt.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition public_function_in_super_mod : M unit :=
 =======
   Definition public_function_in_super_mod  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition public_function_in_super_mod : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -339,10 +419,14 @@ Module nested.
 End nested.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition function : M unit :=
 =======
 Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -355,10 +439,14 @@ Definition function  : M unit :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition private_function : M unit :=
 =======
 Definition private_function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition private_function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -370,10 +458,14 @@ Definition private_function  : M unit :=
   Pure tt.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition public_function_in_my_mod : M unit :=
 =======
 Definition public_function_in_my_mod  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition public_function_in_my_mod : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -388,10 +480,14 @@ Definition public_function_in_my_mod  : M unit :=
   Pure tt.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition public_function_in_nested : M unit :=
 =======
 Definition public_function_in_nested  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition public_function_in_nested : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -404,10 +500,14 @@ Definition public_function_in_nested  : M unit :=
   Pure tt.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition public_function_in_super_mod : M unit :=
 =======
 Definition public_function_in_super_mod  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition public_function_in_super_mod : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -420,10 +520,14 @@ Definition public_function_in_super_mod  : M unit :=
   Pure tt.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition call_public_function_in_my_mod : M unit :=
 =======
 Definition call_public_function_in_my_mod  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition call_public_function_in_my_mod : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -443,10 +547,14 @@ Definition call_public_function_in_my_mod  : M unit :=
   Pure tt.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition public_function_in_crate : M unit :=
 =======
 Definition public_function_in_crate  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition public_function_in_crate : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -460,10 +568,14 @@ Definition public_function_in_crate  : M unit :=
 Module private_nested.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition function : M unit :=
 =======
   Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -476,10 +588,14 @@ Module private_nested.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition restricted_function : M unit :=
 =======
   Definition restricted_function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition restricted_function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -494,10 +610,14 @@ End private_nested.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition function : M unit :=
 =======
 Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -510,10 +630,14 @@ Definition function  : M unit :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition restricted_function : M unit :=
 =======
 Definition restricted_function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition restricted_function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -526,10 +650,14 @@ Definition restricted_function  : M unit :=
   Pure tt.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition function : M unit :=
 =======
 Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -541,6 +669,7 @@ Definition function  : M unit :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
   let* _ := visibility.function in
   let* _ := visibility.my_mod.function in
@@ -550,6 +679,9 @@ Definition main : M unit :=
   let* _ := visibility.my_mod.public_function_in_crate in
 =======
 Definition main  : M unit :=
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ := visibility.function tt in
   let* _ := visibility.my_mod.function tt in
   let* _ := visibility.my_mod.indirect_access tt in

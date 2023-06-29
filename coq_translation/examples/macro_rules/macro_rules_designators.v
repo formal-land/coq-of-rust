@@ -2,10 +2,14 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition foo : M unit :=
 =======
 Definition foo  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition foo : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of "foo") in
@@ -19,10 +23,14 @@ Definition foo  : M unit :=
   Pure tt.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition bar : M unit :=
 =======
 Definition bar  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition bar : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of "bar") in
@@ -37,11 +45,15 @@ Definition bar  : M unit :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
   let* _ := macro_rules_designators.foo in
   let* _ := macro_rules_designators.bar in
 =======
 Definition main  : M unit :=
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ := macro_rules_designators.foo tt in
   let* _ := macro_rules_designators.bar tt in
 >>>>>>> 6ee776e (update snapshot)

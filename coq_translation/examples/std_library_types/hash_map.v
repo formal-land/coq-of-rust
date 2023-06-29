@@ -16,10 +16,14 @@ Definition call (number : ref str) : M (ref str) :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
   let* contacts := std.collections.hash.map.HashMap::["new"] in
 =======
 Definition main  : M unit :=
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* contacts := std.collections.hash.map.HashMap::["new"] tt in
 >>>>>>> 6ee776e (update snapshot)
   let* _ := contacts.["insert"] "Daniel" "798-1364" in

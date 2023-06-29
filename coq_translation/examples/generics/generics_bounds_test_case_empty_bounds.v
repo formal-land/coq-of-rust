@@ -62,10 +62,14 @@ Definition blue
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let cardinal := generics_bounds_test_case_empty_bounds.Cardinal.Build in
   let blue_jay := generics_bounds_test_case_empty_bounds.BlueJay.Build in
   let _turkey := generics_bounds_test_case_empty_bounds.Turkey.Build in

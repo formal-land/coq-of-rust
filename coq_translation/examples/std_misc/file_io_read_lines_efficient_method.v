@@ -3,10 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* α0 := file_io_read_lines_efficient_method.read_lines "./hosts" in
   let* α1 := let_if core.result.Result.Ok lines := α0 in
   if (α1 : bool) then

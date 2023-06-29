@@ -5,11 +5,15 @@ Definition NTHREADS : i32 := run (Pure 3).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
   let* '(tx, rx) := std.sync.mpsc.channel in
   let* children := alloc.vec.Vec::["new"] in
 =======
 Definition main  : M unit :=
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* '(tx, rx) := std.sync.mpsc.channel tt in
   let* children := alloc.vec.Vec::["new"] tt in
 >>>>>>> 6ee776e (update snapshot)

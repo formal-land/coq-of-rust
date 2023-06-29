@@ -19,10 +19,14 @@ Definition foo {A : Set} (o : core.option.Option A) : M unit :=
 
 Module tests.
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition test_file : M unit :=
 =======
   Definition test_file  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition test_file : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* file :=
       let* α0 := std.fs.OpenOptions::["new"] in
       let* α1 := α0.["append"] true in
@@ -51,10 +55,14 @@ Module tests.
     end.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition test_file_also : M unit :=
 =======
   Definition test_file_also  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition test_file_also : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* file :=
       let* α0 := std.fs.OpenOptions::["new"] in
       let* α1 := α0.["append"] true in
@@ -84,10 +92,14 @@ Module tests.
 End tests.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition test_file : M unit :=
 =======
 Definition test_file  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition test_file : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* file :=
     let* α0 := std.fs.OpenOptions::["new"] in
     let* α1 := α0.["append"] true in
@@ -116,10 +128,14 @@ Definition test_file  : M unit :=
   end.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition test_file_also : M unit :=
 =======
 Definition test_file_also  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition test_file_also : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* file :=
     let* α0 := std.fs.OpenOptions::["new"] in
     let* α1 := α0.["append"] true in

@@ -7,10 +7,14 @@ Definition tri (a : u64) (b : u64) (c : u64) : M unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ := example01.id 0 in
   let* _ :=
     let* α0 := example01.id 0 in

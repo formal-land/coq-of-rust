@@ -12,10 +12,14 @@ Definition Years := Years.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let years := generics_new_type_idiom_as_base_type.Years.Build_t 42 in
   let years_as_primitive_1 := years.[0] in
   let

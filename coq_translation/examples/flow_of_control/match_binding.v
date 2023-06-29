@@ -2,16 +2,22 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b389ac0 (ci: update the snapshots)
 Definition age : M u32 := Pure 15.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
+<<<<<<< HEAD
 =======
 Definition age  : M u32 := Pure 15.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=

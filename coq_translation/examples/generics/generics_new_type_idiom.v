@@ -48,10 +48,14 @@ Definition old_enough (age : ref generics_new_type_idiom.Years) : M bool :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let age := generics_new_type_idiom.Years.Build_t 5 in
   let* age_days := age.["to_days"] in
   let* _ :=

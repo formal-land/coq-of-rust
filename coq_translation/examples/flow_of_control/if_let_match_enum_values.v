@@ -11,10 +11,14 @@ Definition Foo := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let a := if_let_match_enum_values.Foo.Bar in
   let b := if_let_match_enum_values.Foo.Baz in
   let c := if_let_match_enum_values.Foo.Qux 100 in

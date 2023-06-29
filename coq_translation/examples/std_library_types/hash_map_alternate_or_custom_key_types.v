@@ -189,10 +189,14 @@ Definition try_logon
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
   let* accounts := std.collections.hash.map.HashMap::["new"] in
 =======
 Definition main  : M unit :=
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* accounts := std.collections.hash.map.HashMap::["new"] tt in
 >>>>>>> 6ee776e (update snapshot)
   let account :=

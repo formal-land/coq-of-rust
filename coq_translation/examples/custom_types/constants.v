@@ -9,10 +9,14 @@ Definition is_big (n : i32) : M bool := n.["gt"] constants.THRESHOLD.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let n := 16 in
   let* _ :=
     let* _ :=

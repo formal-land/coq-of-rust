@@ -8,10 +8,14 @@ Definition coerce_static (arg : ref i32) : M (ref i32) :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let static_string := "I'm in read-only memory" in
     let* _ :=

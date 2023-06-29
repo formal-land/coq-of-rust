@@ -699,6 +699,7 @@ fn fn_to_doc<'a>(
                 if args.is_empty() {
                     text("unit")
                 } else {
+<<<<<<< HEAD
                     intersperse(
                         args.iter().map(|(_, ty)| nest([ty.to_doc(false)])),
                         [text("->"), line()],
@@ -784,6 +785,32 @@ fn fn_to_doc<'a>(
                 text("."),
             ])
         },
+=======
+                    concat([
+                        intersperse(
+                            args.iter().map(|(name, ty)| {
+                                nest([
+                                    text("("),
+                                    text(name),
+                                    line(),
+                                    text(":"),
+                                    line(),
+                                    ty.to_doc(false),
+                                    text(")"),
+                                ])
+                            }),
+                            [line()],
+                        ),
+                        line(),
+                    ])
+                },
+                nest([text(":"), line(), ret_ty.to_doc(false), text(" :=")]),
+            ]),
+            line(),
+            body.to_doc(false),
+            text("."),
+        ]),
+>>>>>>> b389ac0 (ci: update the snapshots)
     ])
 }
 

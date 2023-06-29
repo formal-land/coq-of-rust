@@ -12,10 +12,14 @@ Module Impl_enums_testcase_linked_list_List.
   Definition Self := enums_testcase_linked_list.List.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition new : M enums_testcase_linked_list.List :=
 =======
   Definition new  : M enums_testcase_linked_list.List :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition new : M enums_testcase_linked_list.List :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     Pure enums_testcase_linked_list.List.Nil.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
@@ -74,10 +78,14 @@ End Impl_enums_testcase_linked_list_List.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
   let* list := enums_testcase_linked_list.List::["new"] in
 =======
 Definition main  : M unit :=
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* list := enums_testcase_linked_list.List::["new"] tt in
 >>>>>>> 6ee776e (update snapshot)
   let* _ :=

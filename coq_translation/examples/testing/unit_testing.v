@@ -8,10 +8,14 @@ Definition bad_add (a : i32) (b : i32) : M i32 := a.["sub"] b.
 
 Module tests.
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition test_add : M unit :=
 =======
   Definition test_add  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition test_add : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* α0 := unit_testing.add 1 2 in
       match (addr_of α0, addr_of 3) with
@@ -37,10 +41,14 @@ Module tests.
     Pure tt.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition test_bad_add : M unit :=
 =======
   Definition test_bad_add  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+  Definition test_bad_add : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
     let* _ :=
       let* α0 := unit_testing.bad_add 1 2 in
       match (addr_of α0, addr_of 3) with
@@ -67,10 +75,14 @@ Module tests.
 End tests.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition test_add : M unit :=
 =======
 Definition test_add  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition test_add : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* α0 := unit_testing.add 1 2 in
     match (addr_of α0, addr_of 3) with
@@ -96,10 +108,14 @@ Definition test_add  : M unit :=
   Pure tt.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition test_bad_add : M unit :=
 =======
 Definition test_bad_add  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition test_bad_add : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* α0 := unit_testing.bad_add 1 2 in
     match (addr_of α0, addr_of 3) with

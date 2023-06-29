@@ -46,10 +46,14 @@ Definition print
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* twenty := map_in_result_via_match.multiply "10" "2" in
   let* _ := map_in_result_via_match.print twenty in
   let* tt := map_in_result_via_match.multiply "t" "2" in

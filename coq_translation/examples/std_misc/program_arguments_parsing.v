@@ -26,10 +26,14 @@ Definition decrease (number : i32) : M unit :=
   Pure tt.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition help : M unit :=
 =======
 Definition help  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition help : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -49,10 +53,14 @@ match_args {increase|decrease} <integer>
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* args :=
     let* α0 := std.env.args in
     α0.["collect"] in

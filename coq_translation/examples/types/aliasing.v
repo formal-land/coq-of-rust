@@ -9,10 +9,14 @@ Definition U64 : Set := u64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let nanoseconds := cast 5 aliasing.U64 in
   let inches := cast 2 aliasing.U64 in
   let* _ :=

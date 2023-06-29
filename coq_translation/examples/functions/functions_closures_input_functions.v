@@ -9,10 +9,14 @@ Definition call_me
   Pure tt.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition function : M unit :=
 =======
 Definition function  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition function : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -24,10 +28,14 @@ Definition function  : M unit :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main : M unit :=
 =======
 Definition main  : M unit :=
 >>>>>>> 6ee776e (update snapshot)
+=======
+Definition main : M unit :=
+>>>>>>> b389ac0 (ci: update the snapshots)
   let closure :=
     fun  =>
       let* _ :=
