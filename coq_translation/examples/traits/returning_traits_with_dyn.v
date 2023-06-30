@@ -14,7 +14,7 @@ End Cow.
 Definition Cow : Set := Cow.t.
 
 Module Animal.
-  Class Trait (Self : Set) : Set := {  
+  Class Trait (Self : Set) : Set := {
     noise : (ref Self) -> (M (ref str));
   }.
   

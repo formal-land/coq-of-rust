@@ -270,7 +270,7 @@ Module Impl_core_convert_From_for_subtle_Choice.
 End Impl_core_convert_From_for_subtle_Choice.
 
 Module ConstantTimeEq.
-  Class Trait (Self : Set) : Set := {  
+  Class Trait (Self : Set) : Set := {
     ct_eq : (ref Self) -> (ref Self) -> (M subtle.Choice);
   }.
   
@@ -554,7 +554,7 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 Module ConditionallySelectable.
-  Class Trait (Self : Set) : Set := {  
+  Class Trait (Self : Set) : Set := {
     conditional_select : (ref Self) -> (ref Self) -> subtle.Choice -> (M Self);
   }.
   
@@ -1219,7 +1219,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 Module ConditionallyNegatable.
-  Class Trait (Self : Set) : Set := {  
+  Class Trait (Self : Set) : Set := {
     conditional_negate : (mut_ref Self) -> subtle.Choice -> (M unit);
   }.
   
@@ -1542,7 +1542,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 Module ConstantTimeGreater.
-  Class Trait (Self : Set) : Set := {  
+  Class Trait (Self : Set) : Set := {
     ct_gt : (ref Self) -> (ref Self) -> (M subtle.Choice);
   }.
   
@@ -1772,7 +1772,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
 End Impl_subtle_ConstantTimeGreater_for_u64.
 
 Module ConstantTimeLess.
-  Class Trait (Self : Set) : Set := {  
+  Class Trait (Self : Set) : Set := {
   }.
   
   Global Instance Method_ct_lt `(Trait) : Notation.Dot "ct_lt" := {

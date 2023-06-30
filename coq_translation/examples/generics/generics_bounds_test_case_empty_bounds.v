@@ -18,14 +18,14 @@ Definition Turkey := Turkey.t.
 
 Module Red.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {  
+  Class Trait (Self : Set) : Set := {
   }.
   Global Set Primitive Projections.
 End Red.
 
 Module Blue.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {  
+  Class Trait (Self : Set) : Set := {
   }.
   Global Set Primitive Projections.
 End Blue.

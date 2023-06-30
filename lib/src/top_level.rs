@@ -1433,9 +1433,7 @@ impl TopLevelItem {
                     },
                     nest([
                         nest([
-                            text("Class"),
-                            line(),
-                            text("Trait"),
+                            text("Class Trait"),
                             line(),
                             nest([
                                 text("("),
@@ -1447,38 +1445,39 @@ impl TopLevelItem {
                                 text("Set"),
                                 text(")"),
                             ]),
-                            line(),
                             intersperse(
                                 body.iter().map(|(item_name, item)| match item {
                                     TraitItem::Definition { .. } => nil(),
                                     TraitItem::DefinitionWithDefault { .. } => nil(),
-                                    TraitItem::Type(bounds) => group([
+                                    TraitItem::Type(bounds) => concat([
+                                        line(),
                                         nest([
                                             text("{"),
                                             text(item_name),
                                             text(" : "),
                                             text("Set"),
                                             text("}"),
-                                            line(),
                                         ]),
                                         concat(bounds.iter().map(|x| {
-                                            group([
-                                                text("`{"),
-                                                x.to_doc(),
-                                                text(".Trait "),
-                                                text(item_name),
-                                                text("}"),
+                                            concat([
                                                 line(),
+                                                nest([
+                                                    text("`{"),
+                                                    x.to_doc(),
+                                                    text(".Trait"),
+                                                    line(),
+                                                    text(item_name),
+                                                    text("}"),
+                                                ]),
                                             ])
                                         })),
                                     ]),
                                 }),
                                 [nil()],
                             ),
-                            intersperse(
-                                [text(":"), text("Set"), text(":="), text("{"), line()],
-                                [text(" ")],
-                            ),
+                            text(" :"),
+                            line(),
+                            text("Set := {"),
                         ]),
                         intersperse(
                             body.iter().map(|(name, item)| match item {

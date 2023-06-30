@@ -17,7 +17,7 @@ End Sheep.
 Definition Sheep : Set := Sheep.t.
 
 Module Animal.
-  Class Trait (Self : Set) : Set := {  
+  Class Trait (Self : Set) : Set := {
     new : (ref str) -> (M Self);
     name : (ref Self) -> (M (ref str));
     noise : (ref Self) -> (M (ref str));

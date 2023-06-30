@@ -14,7 +14,7 @@ End Container.
 Definition Container := Container.t.
 
 Module Contains.
-  Class Trait (Self : Set) {A : Set} {B : Set} : Set := {  
+  Class Trait (Self : Set) {A : Set} {B : Set} : Set := {
     A := A;
     B := B;
     contains : (ref Self) -> (ref ImplSelf.A) -> (ref ImplSelf.B) -> (M bool);

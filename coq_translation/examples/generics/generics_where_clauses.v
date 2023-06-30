@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module PrintInOption.
-  Class Trait (Self : Set) : Set := {  
+  Class Trait (Self : Set) : Set := {
     print_in_option : Self -> (M unit);
   }.
   
