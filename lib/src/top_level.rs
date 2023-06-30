@@ -598,28 +598,24 @@ fn types_for_f(extra_data: Option<&TopLevelItem>) -> Doc {
                 text(" -> "),
                 line(),
                 nest([
-                    text("{"),
                     intersperse(
-                        fields.iter().map(|(str, boxed_coq_type)| {
+                        fields.iter().map(|(_str, boxed_coq_type)| {
                             nest([
                                 // print field name
-                                text(str),
+                                text("string"),
                                 text(" -> "),
                                 // print field type
-                                //text(boxed_coq_type.to_name()),
-                                text("TYPE HERE"),
+                                text(boxed_coq_type.to_name()),
+                                // text("TYPE HERE"),
                                 text(" -> "),
-                                line(),
                             ])
                         }),
                         [line()],
                     ),
                     line(),
-                    text(": Set}"),
                 ]),
             ])
         }
-        None => text("PROBLEM, didn't matched, we have None!!!!!!!!"),
         _ => text("PROBLEM, didn't matched, but NOT None!!!!!!!!"),
     }
 }
@@ -648,8 +644,8 @@ fn fn_to_doc<'a>(
         // Printing instance of DoubleColon Class for [f]
         // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
         if name == "fmt" {
-            concat([
-                text("Parameter99999 "),
+            concat([nest([
+                text("Parameter "),
                 body.parameter_name_for_fmt(),
                 // get type of argument named f
                 // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
@@ -663,8 +659,6 @@ fn fn_to_doc<'a>(
                     },
                 )),
                 text(" -> "),
-                line(),
-                text(" oieoeoeoe "),
                 types_for_f,
                 ret_ty.to_doc(false),
                 text("."),
@@ -673,7 +667,7 @@ fn fn_to_doc<'a>(
                 text("Global Instance ..."),
                 hardline(),
                 hardline(),
-            ])
+            ])])
         } else {
             nil()
         },
