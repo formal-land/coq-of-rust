@@ -100,8 +100,7 @@ Module Impl_core_convert_From_for_wrapping_errors_DoubleError.
   }.
   
   Global Instance I :
-      core.convert.From.Trait Self core.num.error.ParseIntError :=
-    {
+      core.convert.From.Trait Self (T := core.num.error.ParseIntError) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_wrapping_errors_DoubleError.

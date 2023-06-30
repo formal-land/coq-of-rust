@@ -132,10 +132,14 @@ Module types.
   End CodecAsType.
   
   Module Impl_ink_env_types_CodecAsType_for_T.
+  Section Impl_ink_env_types_CodecAsType_for_T.
+    Context {T : Set}.
+    
     Definition Self := T.
     
-    Global Instance I T : ink_env.types.CodecAsType.Trait Self :=
+    Global Instance I : ink_env.types.CodecAsType.Trait Self :=
       ink_env.types.CodecAsType.Build_Trait _.
+  End Impl_ink_env_types_CodecAsType_for_T.
   End Impl_ink_env_types_CodecAsType_for_T.
   
   Module Environment.
@@ -251,7 +255,7 @@ Module types.
   End Impl_core_clone_Clone_for_ink_env_types_DefaultEnvironment.
   
   Module
-      Impl_core_marker_StructuralPartialEq_for_ink_env_types_DefaultEnvironment.
+    Impl_core_marker_StructuralPartialEq_for_ink_env_types_DefaultEnvironment.
     Definition Self := ink_env.types.DefaultEnvironment.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -464,10 +468,14 @@ Module CodecAsType.
 End CodecAsType.
 
 Module Impl_ink_env_types_CodecAsType_for_T.
+Section Impl_ink_env_types_CodecAsType_for_T.
+  Context {T : Set}.
+  
   Definition Self := T.
   
-  Global Instance I T : ink_env.types.CodecAsType.Trait Self :=
+  Global Instance I : ink_env.types.CodecAsType.Trait Self :=
     ink_env.types.CodecAsType.Build_Trait _.
+End Impl_ink_env_types_CodecAsType_for_T.
 End Impl_ink_env_types_CodecAsType_for_T.
 
 Module Environment.
@@ -640,7 +648,7 @@ Module Impl_core_clone_Clone_for_ink_env_types_DefaultEnvironment.
 End Impl_core_clone_Clone_for_ink_env_types_DefaultEnvironment.
 
 Module
-    Impl_core_marker_StructuralPartialEq_for_ink_env_types_DefaultEnvironment.
+  Impl_core_marker_StructuralPartialEq_for_ink_env_types_DefaultEnvironment.
   Definition Self := ink_env.types.DefaultEnvironment.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -1395,10 +1403,14 @@ Module arithmetic.
   End BaseArithmetic.
   
   Module Impl_ink_env_arithmetic_BaseArithmetic_for_T.
+  Section Impl_ink_env_arithmetic_BaseArithmetic_for_T.
+    Context {T : Set}.
+    
     Definition Self := T.
     
-    Global Instance I T : ink_env.arithmetic.BaseArithmetic.Trait Self :=
+    Global Instance I : ink_env.arithmetic.BaseArithmetic.Trait Self :=
       ink_env.arithmetic.BaseArithmetic.Build_Trait _.
+  End Impl_ink_env_arithmetic_BaseArithmetic_for_T.
   End Impl_ink_env_arithmetic_BaseArithmetic_for_T.
   
   Module AtLeast32Bit.
@@ -1409,10 +1421,14 @@ Module arithmetic.
   End AtLeast32Bit.
   
   Module Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
+  Section Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
+    Context {T : Set}.
+    
     Definition Self := T.
     
-    Global Instance I T : ink_env.arithmetic.AtLeast32Bit.Trait Self :=
+    Global Instance I : ink_env.arithmetic.AtLeast32Bit.Trait Self :=
       ink_env.arithmetic.AtLeast32Bit.Build_Trait _.
+  End Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
   End Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
   
   Module AtLeast32BitUnsigned.
@@ -1423,10 +1439,14 @@ Module arithmetic.
   End AtLeast32BitUnsigned.
   
   Module Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
+  Section Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
+    Context {T : Set}.
+    
     Definition Self := T.
     
-    Global Instance I T : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Self :=
+    Global Instance I : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Self :=
       ink_env.arithmetic.AtLeast32BitUnsigned.Build_Trait _.
+  End Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
   End Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
   
   Module Saturating.
@@ -1456,6 +1476,9 @@ Module arithmetic.
   End Saturating.
   
   Module Impl_ink_env_arithmetic_Saturating_for_T.
+  Section Impl_ink_env_arithmetic_Saturating_for_T.
+    Context {T : Set}.
+    
     Definition Self := T.
     
     Definition saturating_add (self : Self) (o : Self) : M Self :=
@@ -1509,12 +1532,13 @@ Module arithmetic.
       Notation.dot := saturating_pow;
     }.
     
-    Global Instance I T : ink_env.arithmetic.Saturating.Trait Self := {
+    Global Instance I : ink_env.arithmetic.Saturating.Trait Self := {
       ink_env.arithmetic.Saturating.saturating_add := saturating_add;
       ink_env.arithmetic.Saturating.saturating_sub := saturating_sub;
       ink_env.arithmetic.Saturating.saturating_mul := saturating_mul;
       ink_env.arithmetic.Saturating.saturating_pow := saturating_pow;
     }.
+  End Impl_ink_env_arithmetic_Saturating_for_T.
   End Impl_ink_env_arithmetic_Saturating_for_T.
 End arithmetic.
 
@@ -1526,10 +1550,14 @@ Module BaseArithmetic.
 End BaseArithmetic.
 
 Module Impl_ink_env_arithmetic_BaseArithmetic_for_T.
+Section Impl_ink_env_arithmetic_BaseArithmetic_for_T.
+  Context {T : Set}.
+  
   Definition Self := T.
   
-  Global Instance I T : ink_env.arithmetic.BaseArithmetic.Trait Self :=
+  Global Instance I : ink_env.arithmetic.BaseArithmetic.Trait Self :=
     ink_env.arithmetic.BaseArithmetic.Build_Trait _.
+End Impl_ink_env_arithmetic_BaseArithmetic_for_T.
 End Impl_ink_env_arithmetic_BaseArithmetic_for_T.
 
 Module AtLeast32Bit.
@@ -1540,10 +1568,14 @@ Module AtLeast32Bit.
 End AtLeast32Bit.
 
 Module Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
+Section Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
+  Context {T : Set}.
+  
   Definition Self := T.
   
-  Global Instance I T : ink_env.arithmetic.AtLeast32Bit.Trait Self :=
+  Global Instance I : ink_env.arithmetic.AtLeast32Bit.Trait Self :=
     ink_env.arithmetic.AtLeast32Bit.Build_Trait _.
+End Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
 End Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
 
 Module AtLeast32BitUnsigned.
@@ -1554,10 +1586,14 @@ Module AtLeast32BitUnsigned.
 End AtLeast32BitUnsigned.
 
 Module Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
+Section Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
+  Context {T : Set}.
+  
   Definition Self := T.
   
-  Global Instance I T : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Self :=
+  Global Instance I : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Self :=
     ink_env.arithmetic.AtLeast32BitUnsigned.Build_Trait _.
+End Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
 End Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
 
 Module Saturating.
@@ -1587,6 +1623,9 @@ Module Saturating.
 End Saturating.
 
 Module Impl_ink_env_arithmetic_Saturating_for_T.
+Section Impl_ink_env_arithmetic_Saturating_for_T.
+  Context {T : Set}.
+  
   Definition Self := T.
   
   Definition saturating_add (self : Self) (o : Self) : M Self :=
@@ -1640,12 +1679,13 @@ Module Impl_ink_env_arithmetic_Saturating_for_T.
     Notation.dot := saturating_pow;
   }.
   
-  Global Instance I T : ink_env.arithmetic.Saturating.Trait Self := {
+  Global Instance I : ink_env.arithmetic.Saturating.Trait Self := {
     ink_env.arithmetic.Saturating.saturating_add := saturating_add;
     ink_env.arithmetic.Saturating.saturating_sub := saturating_sub;
     ink_env.arithmetic.Saturating.saturating_mul := saturating_mul;
     ink_env.arithmetic.Saturating.saturating_pow := saturating_pow;
   }.
+End Impl_ink_env_arithmetic_Saturating_for_T.
 End Impl_ink_env_arithmetic_Saturating_for_T.
 
 Module backend.
@@ -2671,7 +2711,11 @@ Module call.
     Definition CallParams : Set := CallParams.t.
     
     Module
-        Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
+      Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
+    Section
+      Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
+      Context {E CallType Args R : Set}.
+      
       Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
       
       Definition fmt
@@ -2696,9 +2740,11 @@ Module call.
         Notation.dot := fmt;
       }.
       
-      Global Instance I E CallType Args R : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+    End
+      Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
     End
       Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
     
@@ -2928,6 +2974,9 @@ Module call.
     Definition Call : Set := Call.t.
     
     Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
+    Section Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
+      Context {E : Set}.
+      
       Definition Self := ink_env.call.call_builder.Call E.
       
       Definition clone
@@ -2948,9 +2997,10 @@ Module call.
         Notation.dot := clone;
       }.
       
-      Global Instance I E : core.clone.Clone.Trait Self := {
+      Global Instance I : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
+    End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
     End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
     
     Module Impl_ink_env_call_call_builder_Call_E.
@@ -3073,7 +3123,11 @@ Module call.
     Definition CallBuilder : Set := CallBuilder.t.
     
     Module
-        Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
+      Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
+    Section
+      Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
+      Context {E CallType Args RetType : Set}.
+      
       Definition
         Self
         :=
@@ -3100,10 +3154,11 @@ Module call.
         Notation.dot := clone;
       }.
       
-      Global Instance I E CallType Args RetType : core.clone.Clone.Trait Self :=
-        {
+      Global Instance I : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
+    End
+      Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
     End
       Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
     
@@ -3761,6 +3816,9 @@ Module call.
     Definition ReturnType := ReturnType.t.
     
     Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
+    Section Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.common.ReturnType T.
       
       Definition fmt
@@ -3776,12 +3834,16 @@ Module call.
         Notation.dot := fmt;
       }.
       
-      Global Instance I T : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
+    End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
     
     Module Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
+    Section Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.common.ReturnType T.
       
       Definition clone (self : ref Self) : M Self :=
@@ -3792,19 +3854,27 @@ Module call.
         Notation.dot := clone;
       }.
       
-      Global Instance I T : core.clone.Clone.Trait Self := {
+      Global Instance I : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
+    End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
     
     Module Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
+    Section Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.common.ReturnType T.
       
-      Global Instance I T : core.marker.Copy.Trait Self :=
+      Global Instance I : core.marker.Copy.Trait Self :=
         core.marker.Copy.Build_Trait _.
+    End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
     End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
     
     Module Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
+    Section Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.common.ReturnType T.
       
       Definition default (_ : unit) : M Self :=
@@ -3816,9 +3886,10 @@ Module call.
         Notation.double_colon := default;
       }.
       
-      Global Instance I T : core.default.Default.Trait Self := {
+      Global Instance I : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
+    End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
     End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
     
     Module Set.
@@ -3831,6 +3902,9 @@ Module call.
     Definition Set := Set.t.
     
     Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
+    Section Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.common.Set T.
       
       Definition fmt
@@ -3846,19 +3920,27 @@ Module call.
         Notation.dot := fmt;
       }.
       
-      Global Instance I T : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
+    End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
     
     Module Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
+    Section Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.common.Set T.
       
-      Global Instance I T : core.marker.Copy.Trait Self :=
+      Global Instance I : core.marker.Copy.Trait Self :=
         core.marker.Copy.Build_Trait _.
+    End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
     End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
     
     Module Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
+    Section Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.common.Set T.
       
       Definition clone (self : ref Self) : M (ink_env.call.common.Set T) :=
@@ -3869,9 +3951,10 @@ Module call.
         Notation.dot := clone;
       }.
       
-      Global Instance I T : core.clone.Clone.Trait Self := {
+      Global Instance I : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
+    End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
     End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
     
     Module Impl_ink_env_call_common_Set_T.
@@ -3894,6 +3977,9 @@ Module call.
     Definition Unset := Unset.t.
     
     Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
+    Section Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.common.Unset T.
       
       Definition fmt
@@ -3909,12 +3995,16 @@ Module call.
         Notation.dot := fmt;
       }.
       
-      Global Instance I T : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
+    End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
     
     Module Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
+    Section Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.common.Unset T.
       
       Definition clone (self : ref Self) : M Self :=
@@ -3925,19 +4015,27 @@ Module call.
         Notation.dot := clone;
       }.
       
-      Global Instance I T : core.clone.Clone.Trait Self := {
+      Global Instance I : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
+    End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
     
     Module Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
+    Section Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.common.Unset T.
       
-      Global Instance I T : core.marker.Copy.Trait Self :=
+      Global Instance I : core.marker.Copy.Trait Self :=
         core.marker.Copy.Build_Trait _.
+    End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
     End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
     
     Module Impl_core_default_Default_for_ink_env_call_common_Unset_T.
+    Section Impl_core_default_Default_for_ink_env_call_common_Unset_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.common.Unset T.
       
       Definition default (_ : unit) : M Self :=
@@ -3949,9 +4047,10 @@ Module call.
         Notation.double_colon := default;
       }.
       
-      Global Instance I T : core.default.Default.Trait Self := {
+      Global Instance I : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
+    End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
     End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
     
     Module Unwrap.
@@ -3967,6 +4066,9 @@ Module call.
     End Unwrap.
     
     Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
+    Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.common.Unset T.
       
       Definition Output : Set := T.
@@ -3978,12 +4080,16 @@ Module call.
         Notation.dot := unwrap_or_else;
       }.
       
-      Global Instance I T : ink_env.call.common.Unwrap.Trait Self := {
+      Global Instance I : ink_env.call.common.Unwrap.Trait Self := {
         ink_env.call.common.Unwrap.unwrap_or_else := unwrap_or_else;
       }.
     End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
+    End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
     
     Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
+    Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.common.Set T.
       
       Definition Output : Set := T.
@@ -3998,9 +4104,10 @@ Module call.
         Notation.dot := unwrap_or_else;
       }.
       
-      Global Instance I T : ink_env.call.common.Unwrap.Trait Self := {
+      Global Instance I : ink_env.call.common.Unwrap.Trait Self := {
         ink_env.call.common.Unwrap.unwrap_or_else := unwrap_or_else;
       }.
+    End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
     End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
   End common.
   
@@ -4014,7 +4121,7 @@ Module call.
     End state.
     
     Module FromAccountId.
-      Class Trait (T Self : Set) : Set := {
+      Class Trait (Self : Set) {T : Set} : Set := {
         from_account_id : ink_env.types.Environment.AccountId -> (M Self);
       }.
       
@@ -4026,7 +4133,7 @@ Module call.
     
     Module ConstructorReturnType.
       Class Trait
-          (C Self : Set)
+          (Self : Set) {C : Set}
           {Output : Set}
           {Error : Set}
           `{parity_scale_codec.codec.Decode.Trait Error} :
@@ -4051,6 +4158,9 @@ Module call.
     End ConstructorReturnType.
     
     Module Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
+    Section Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
+      Context {C : Set}.
+      
       Definition Self := C.
       
       Definition Output : Set := C.
@@ -4064,16 +4174,21 @@ Module call.
         Notation.double_colon := ok;
       }.
       
-      Global Instance I
-          C :
-          ink_env.call.create_builder.ConstructorReturnType.Trait Self C :=
-        {
+      Global Instance I :
+          ink_env.call.create_builder.ConstructorReturnType.Trait
+            Self
+            (C := C) := {
         ink_env.call.create_builder.ConstructorReturnType.ok := ok;
       }.
     End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
+    End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
     
     Module
-        Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
+      Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
+    Section
+      Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
+      Context {C E : Set}.
+      
       Definition Self := core.result.Result C E.
       
       Definition IS_RESULT := Pure true.
@@ -4105,13 +4220,14 @@ Module call.
         Notation.double_colon := err;
       }.
       
-      Global Instance I
-          C
-          E :
-          ink_env.call.create_builder.ConstructorReturnType.Trait Self C :=
-        {
+      Global Instance I :
+          ink_env.call.create_builder.ConstructorReturnType.Trait
+            Self
+            (C := C) := {
         ink_env.call.create_builder.ConstructorReturnType.ok := ok;
       }.
+    End
+      Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
     End
       Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
     
@@ -4151,7 +4267,11 @@ Module call.
     Definition CreateParams : Set := CreateParams.t.
     
     Module
-        Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
+      Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
+    Section
+      Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
+      Context {E ContractRef Args Salt R : Set}.
+      
       Definition
         Self
         :=
@@ -4193,10 +4313,11 @@ Module call.
         Notation.dot := fmt;
       }.
       
-      Global Instance I E ContractRef Args Salt R : core.fmt.Debug.Trait Self :=
-        {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+    End
+      Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
     End
       Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
     
@@ -4813,7 +4934,11 @@ Module call.
     Definition ExecutionInput : Set := ExecutionInput.t.
     
     Module
-        Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+      Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Section
+      Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+      Context {Args : Set}.
+      
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Definition clone
@@ -4831,14 +4956,20 @@ Module call.
         Notation.dot := clone;
       }.
       
-      Global Instance I Args : core.clone.Clone.Trait Self := {
+      Global Instance I : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End
       Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+    End
+      Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
     
     Module
-        Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+      Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Section
+      Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+      Context {Args : Set}.
+      
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Definition default
@@ -4857,14 +4988,20 @@ Module call.
         Notation.double_colon := default;
       }.
       
-      Global Instance I Args : core.default.Default.Trait Self := {
+      Global Instance I : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
     End
       Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+    End
+      Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
     
     Module
-        Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
+      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Section
+      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
+      Context {Args : Set}.
+      
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Definition fmt
@@ -4883,9 +5020,11 @@ Module call.
         Notation.dot := fmt;
       }.
       
-      Global Instance I Args : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+    End
+      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
     End
       Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
     
@@ -4994,7 +5133,11 @@ Module call.
     Definition ArgumentList : Set := ArgumentList.t.
     
     Module
-        Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+      Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    Section
+      Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+      Context {Head Rest : Set}.
+      
       Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
       
       Definition clone
@@ -5012,14 +5155,20 @@ Module call.
         Notation.dot := clone;
       }.
       
-      Global Instance I Head Rest : core.clone.Clone.Trait Self := {
+      Global Instance I : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End
       Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    End
+      Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
     
     Module
-        Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    Section
+      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+      Context {Head Rest : Set}.
+      
       Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
       
       Definition default
@@ -5038,14 +5187,20 @@ Module call.
         Notation.double_colon := default;
       }.
       
-      Global Instance I Head Rest : core.default.Default.Trait Self := {
+      Global Instance I : core.default.Default.Trait Self := {
         core.default.Default.default := default;
       }.
     End
       Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    End
+      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
     
     Module
-        Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    Section
+      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+      Context {Head Rest : Set}.
+      
       Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
       
       Definition fmt
@@ -5064,9 +5219,11 @@ Module call.
         Notation.dot := fmt;
       }.
       
-      Global Instance I Head Rest : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+    End
+      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
     End
       Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
     
@@ -5087,6 +5244,9 @@ Module call.
     Definition Argument : Set := Argument.t.
     
     Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
+    Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.execution_input.Argument T.
       
       Definition clone
@@ -5099,12 +5259,16 @@ Module call.
         Notation.dot := clone;
       }.
       
-      Global Instance I T : core.clone.Clone.Trait Self := {
+      Global Instance I : core.clone.Clone.Trait Self := {
         core.clone.Clone.clone := clone;
       }.
     End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
+    End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
     
     Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
+    Section Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.execution_input.Argument T.
       
       Definition fmt
@@ -5121,9 +5285,10 @@ Module call.
         Notation.dot := fmt;
       }.
       
-      Global Instance I T : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+    End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
     End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
     
     Module Impl_ink_env_call_execution_input_Argument_T.
@@ -5143,7 +5308,7 @@ Module call.
     Definition ArgumentListEnd := ArgumentListEnd.t.
     
     Module
-        Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
+      Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
       Definition Self := ink_env.call.execution_input.ArgumentListEnd.
       
       Definition clone
@@ -5161,7 +5326,7 @@ Module call.
     End Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
     
     Module
-        Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
+      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
       Definition Self := ink_env.call.execution_input.ArgumentListEnd.
       
       Definition default
@@ -5273,7 +5438,11 @@ Module call.
       Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
     
     Module
-        Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
+    Section
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.call.execution_input.Argument T.
       
       Definition size_hint (self : ref Self) : M usize :=
@@ -5290,13 +5459,15 @@ Module call.
         Notation.dot := encode_to;
       }.
       
-      Global Instance I T : parity_scale_codec.codec.Encode.Trait Self := {
+      Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
       }.
+    End
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
     End
       Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
     
     Module
-        Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
       Definition Self := ink_env.call.execution_input.EmptyArgumentList.
       
       Definition size_hint (self : ref Self) : M usize := Pure 0.
@@ -5318,7 +5489,11 @@ Module call.
       Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
     
     Module
-        Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
+    Section
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
+      Context {Head Rest : Set}.
+      
       Definition
         Self
         :=
@@ -5352,17 +5527,19 @@ Module call.
         Notation.dot := encode_to;
       }.
       
-      Global Instance I
-          Head
-          Rest :
-          parity_scale_codec.codec.Encode.Trait Self :=
-        {
+      Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
       }.
+    End
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
     End
       Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
     
     Module
-        Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Section
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
+      Context {Args : Set}.
+      
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Definition size_hint (self : ref Self) : M usize :=
@@ -5392,8 +5569,10 @@ Module call.
         Notation.dot := encode_to;
       }.
       
-      Global Instance I Args : parity_scale_codec.codec.Encode.Trait Self := {
+      Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
       }.
+    End
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
     End
       Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
   End execution_input.
@@ -5473,7 +5652,7 @@ Module call.
     End Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
     
     Module
-        Impl_core_marker_StructuralPartialEq_for_ink_env_call_selector_Selector.
+      Impl_core_marker_StructuralPartialEq_for_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
       
       Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -5532,7 +5711,7 @@ Module call.
         Notation.double_colon := from;
       }.
       
-      Global Instance I : core.convert.From.Trait Self list u8 := {
+      Global Instance I : core.convert.From.Trait Self (T := list u8) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_env_call_selector_Selector.
@@ -5590,7 +5769,11 @@ Module call_builder.
   Definition CallParams : Set := CallParams.t.
   
   Module
-      Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
+    Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
+  Section
+    Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
+    Context {E CallType Args R : Set}.
+    
     Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
     
     Definition fmt
@@ -5615,9 +5798,11 @@ Module call_builder.
       Notation.dot := fmt;
     }.
     
-    Global Instance I E CallType Args R : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+  End
+    Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
   End
     Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
   
@@ -5847,6 +6032,9 @@ Module call_builder.
   Definition Call : Set := Call.t.
   
   Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
+  Section Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
+    Context {E : Set}.
+    
     Definition Self := ink_env.call.call_builder.Call E.
     
     Definition clone (self : ref Self) : M (ink_env.call.call_builder.Call E) :=
@@ -5864,9 +6052,10 @@ Module call_builder.
       Notation.dot := clone;
     }.
     
-    Global Instance I E : core.clone.Clone.Trait Self := {
+    Global Instance I : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+  End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
   End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
   
   Module Impl_ink_env_call_call_builder_Call_E_3.
@@ -5986,7 +6175,11 @@ Module call_builder.
   Definition CallBuilder : Set := CallBuilder.t.
   
   Module
-      Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
+    Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
+  Section
+    Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
+    Context {E CallType Args RetType : Set}.
+    
     Definition
       Self
       :=
@@ -6013,9 +6206,11 @@ Module call_builder.
       Notation.dot := clone;
     }.
     
-    Global Instance I E CallType Args RetType : core.clone.Clone.Trait Self := {
+    Global Instance I : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+  End
+    Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
   End
     Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
   
@@ -6686,7 +6881,11 @@ End CallParams.
 Definition CallParams : Set := CallParams.t.
 
 Module
-    Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
+  Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
+Section
+  Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
+  Context {E CallType Args R : Set}.
+  
   Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
   
   Definition fmt
@@ -6711,9 +6910,11 @@ Module
     Notation.dot := fmt;
   }.
   
-  Global Instance I E CallType Args R : core.fmt.Debug.Trait Self := {
+  Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
+End
+  Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
 End
   Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
 
@@ -6939,6 +7140,9 @@ End Call.
 Definition Call : Set := Call.t.
 
 Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
+Section Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
+  Context {E : Set}.
+  
   Definition Self := ink_env.call.call_builder.Call E.
   
   Definition clone (self : ref Self) : M (ink_env.call.call_builder.Call E) :=
@@ -6956,9 +7160,10 @@ Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
     Notation.dot := clone;
   }.
   
-  Global Instance I E : core.clone.Clone.Trait Self := {
+  Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
+End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
 End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
 
 Module Impl_ink_env_call_call_builder_Call_E_5.
@@ -7073,7 +7278,11 @@ End CallBuilder.
 Definition CallBuilder : Set := CallBuilder.t.
 
 Module
-    Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
+  Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
+Section
+  Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
+  Context {E CallType Args RetType : Set}.
+  
   Definition
     Self
     :=
@@ -7100,9 +7309,11 @@ Module
     Notation.dot := clone;
   }.
   
-  Global Instance I E CallType Args RetType : core.clone.Clone.Trait Self := {
+  Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
+End
+  Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
 End
   Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
 
@@ -7731,6 +7942,9 @@ Module common.
   Definition ReturnType := ReturnType.t.
   
   Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
+  Section Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.common.ReturnType T.
     
     Definition fmt
@@ -7746,12 +7960,16 @@ Module common.
       Notation.dot := fmt;
     }.
     
-    Global Instance I T : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
+  End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
   
   Module Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
+  Section Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.common.ReturnType T.
     
     Definition clone (self : ref Self) : M Self :=
@@ -7762,19 +7980,27 @@ Module common.
       Notation.dot := clone;
     }.
     
-    Global Instance I T : core.clone.Clone.Trait Self := {
+    Global Instance I : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
+  End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
   
   Module Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
+  Section Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.common.ReturnType T.
     
-    Global Instance I T : core.marker.Copy.Trait Self :=
+    Global Instance I : core.marker.Copy.Trait Self :=
       core.marker.Copy.Build_Trait _.
+  End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
   End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
   
   Module Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
+  Section Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.common.ReturnType T.
     
     Definition default (_ : unit) : M Self :=
@@ -7786,9 +8012,10 @@ Module common.
       Notation.double_colon := default;
     }.
     
-    Global Instance I T : core.default.Default.Trait Self := {
+    Global Instance I : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
+  End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
   End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
   
   Module Set.
@@ -7801,6 +8028,9 @@ Module common.
   Definition Set := Set.t.
   
   Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
+  Section Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.common.Set T.
     
     Definition fmt
@@ -7816,19 +8046,27 @@ Module common.
       Notation.dot := fmt;
     }.
     
-    Global Instance I T : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
+  End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
   
   Module Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
+  Section Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.common.Set T.
     
-    Global Instance I T : core.marker.Copy.Trait Self :=
+    Global Instance I : core.marker.Copy.Trait Self :=
       core.marker.Copy.Build_Trait _.
+  End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
   End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
   
   Module Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
+  Section Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.common.Set T.
     
     Definition clone (self : ref Self) : M (ink_env.call.common.Set T) :=
@@ -7839,9 +8077,10 @@ Module common.
       Notation.dot := clone;
     }.
     
-    Global Instance I T : core.clone.Clone.Trait Self := {
+    Global Instance I : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
+  End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
   End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
   
   Module Impl_ink_env_call_common_Set_T_2.
@@ -7864,6 +8103,9 @@ Module common.
   Definition Unset := Unset.t.
   
   Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
+  Section Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.common.Unset T.
     
     Definition fmt
@@ -7879,12 +8121,16 @@ Module common.
       Notation.dot := fmt;
     }.
     
-    Global Instance I T : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
+  End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
   
   Module Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
+  Section Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.common.Unset T.
     
     Definition clone (self : ref Self) : M Self :=
@@ -7895,19 +8141,27 @@ Module common.
       Notation.dot := clone;
     }.
     
-    Global Instance I T : core.clone.Clone.Trait Self := {
+    Global Instance I : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
+  End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
   
   Module Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
+  Section Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.common.Unset T.
     
-    Global Instance I T : core.marker.Copy.Trait Self :=
+    Global Instance I : core.marker.Copy.Trait Self :=
       core.marker.Copy.Build_Trait _.
+  End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
   End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
   
   Module Impl_core_default_Default_for_ink_env_call_common_Unset_T.
+  Section Impl_core_default_Default_for_ink_env_call_common_Unset_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.common.Unset T.
     
     Definition default (_ : unit) : M Self :=
@@ -7919,9 +8173,10 @@ Module common.
       Notation.double_colon := default;
     }.
     
-    Global Instance I T : core.default.Default.Trait Self := {
+    Global Instance I : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
+  End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
   End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
   
   Module Unwrap.
@@ -7937,6 +8192,9 @@ Module common.
   End Unwrap.
   
   Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
+  Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.common.Unset T.
     
     Definition Output : Set := T.
@@ -7947,12 +8205,16 @@ Module common.
       Notation.dot := unwrap_or_else;
     }.
     
-    Global Instance I T : ink_env.call.common.Unwrap.Trait Self := {
+    Global Instance I : ink_env.call.common.Unwrap.Trait Self := {
       ink_env.call.common.Unwrap.unwrap_or_else := unwrap_or_else;
     }.
   End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
+  End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
   
   Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
+  Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.common.Set T.
     
     Definition Output : Set := T.
@@ -7964,9 +8226,10 @@ Module common.
       Notation.dot := unwrap_or_else;
     }.
     
-    Global Instance I T : ink_env.call.common.Unwrap.Trait Self := {
+    Global Instance I : ink_env.call.common.Unwrap.Trait Self := {
       ink_env.call.common.Unwrap.unwrap_or_else := unwrap_or_else;
     }.
+  End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
   End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
 End common.
 
@@ -7980,6 +8243,9 @@ End ReturnType.
 Definition ReturnType := ReturnType.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
+Section Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.common.ReturnType T.
   
   Definition fmt
@@ -7995,12 +8261,16 @@ Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
     Notation.dot := fmt;
   }.
   
-  Global Instance I T : core.fmt.Debug.Trait Self := {
+  Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
+End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
 
 Module Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
+Section Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.common.ReturnType T.
   
   Definition clone (self : ref Self) : M Self :=
@@ -8011,19 +8281,27 @@ Module Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
     Notation.dot := clone;
   }.
   
-  Global Instance I T : core.clone.Clone.Trait Self := {
+  Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
 End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
+End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
 
 Module Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
+Section Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.common.ReturnType T.
   
-  Global Instance I T : core.marker.Copy.Trait Self :=
+  Global Instance I : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Trait _.
+End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
 End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
 
 Module Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
+Section Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.common.ReturnType T.
   
   Definition default (_ : unit) : M Self :=
@@ -8035,9 +8313,10 @@ Module Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
     Notation.double_colon := default;
   }.
   
-  Global Instance I T : core.default.Default.Trait Self := {
+  Global Instance I : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
+End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
 End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
 
 Module Set.
@@ -8050,6 +8329,9 @@ End Set.
 Definition Set := Set.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
+Section Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.common.Set T.
   
   Definition fmt
@@ -8065,19 +8347,27 @@ Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
     Notation.dot := fmt;
   }.
   
-  Global Instance I T : core.fmt.Debug.Trait Self := {
+  Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
+End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
 
 Module Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
+Section Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.common.Set T.
   
-  Global Instance I T : core.marker.Copy.Trait Self :=
+  Global Instance I : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Trait _.
+End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
 End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
 
 Module Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
+Section Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.common.Set T.
   
   Definition clone (self : ref Self) : M (ink_env.call.common.Set T) :=
@@ -8088,9 +8378,10 @@ Module Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
     Notation.dot := clone;
   }.
   
-  Global Instance I T : core.clone.Clone.Trait Self := {
+  Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
+End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
 End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
 
 Module Impl_ink_env_call_common_Set_T_3.
@@ -8113,6 +8404,9 @@ End Unset.
 Definition Unset := Unset.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
+Section Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.common.Unset T.
   
   Definition fmt
@@ -8128,12 +8422,16 @@ Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
     Notation.dot := fmt;
   }.
   
-  Global Instance I T : core.fmt.Debug.Trait Self := {
+  Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
+End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
 
 Module Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
+Section Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.common.Unset T.
   
   Definition clone (self : ref Self) : M Self :=
@@ -8144,19 +8442,27 @@ Module Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
     Notation.dot := clone;
   }.
   
-  Global Instance I T : core.clone.Clone.Trait Self := {
+  Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
 End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
+End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
 
 Module Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
+Section Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.common.Unset T.
   
-  Global Instance I T : core.marker.Copy.Trait Self :=
+  Global Instance I : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Trait _.
+End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
 End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
 
 Module Impl_core_default_Default_for_ink_env_call_common_Unset_T.
+Section Impl_core_default_Default_for_ink_env_call_common_Unset_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.common.Unset T.
   
   Definition default (_ : unit) : M Self :=
@@ -8168,9 +8474,10 @@ Module Impl_core_default_Default_for_ink_env_call_common_Unset_T.
     Notation.double_colon := default;
   }.
   
-  Global Instance I T : core.default.Default.Trait Self := {
+  Global Instance I : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
+End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
 End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
 
 Module Unwrap.
@@ -8186,6 +8493,9 @@ Module Unwrap.
 End Unwrap.
 
 Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
+Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.common.Unset T.
   
   Definition Output : Set := T.
@@ -8196,12 +8506,16 @@ Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
     Notation.dot := unwrap_or_else;
   }.
   
-  Global Instance I T : ink_env.call.common.Unwrap.Trait Self := {
+  Global Instance I : ink_env.call.common.Unwrap.Trait Self := {
     ink_env.call.common.Unwrap.unwrap_or_else := unwrap_or_else;
   }.
 End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
+End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
 
 Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
+Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.common.Set T.
   
   Definition Output : Set := T.
@@ -8213,9 +8527,10 @@ Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
     Notation.dot := unwrap_or_else;
   }.
   
-  Global Instance I T : ink_env.call.common.Unwrap.Trait Self := {
+  Global Instance I : ink_env.call.common.Unwrap.Trait Self := {
     ink_env.call.common.Unwrap.unwrap_or_else := unwrap_or_else;
   }.
+End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
 End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
 
 Module create_builder.
@@ -8228,7 +8543,7 @@ Module create_builder.
   End state.
   
   Module FromAccountId.
-    Class Trait (T Self : Set) : Set := {
+    Class Trait (Self : Set) {T : Set} : Set := {
       from_account_id : ink_env.types.Environment.AccountId -> (M Self);
     }.
     
@@ -8240,7 +8555,7 @@ Module create_builder.
   
   Module ConstructorReturnType.
     Class Trait
-        (C Self : Set)
+        (Self : Set) {C : Set}
         {Output : Set}
         {Error : Set}
         `{parity_scale_codec.codec.Decode.Trait Error} :
@@ -8265,6 +8580,9 @@ Module create_builder.
   End ConstructorReturnType.
   
   Module Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
+  Section Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
+    Context {C : Set}.
+    
     Definition Self := C.
     
     Definition Output : Set := C.
@@ -8277,16 +8595,21 @@ Module create_builder.
       Notation.double_colon := ok;
     }.
     
-    Global Instance I
-        C :
-        ink_env.call.create_builder.ConstructorReturnType.Trait Self C :=
-      {
+    Global Instance I :
+        ink_env.call.create_builder.ConstructorReturnType.Trait
+          Self
+          (C := C) := {
       ink_env.call.create_builder.ConstructorReturnType.ok := ok;
     }.
   End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
+  End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
   
   Module
-      Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
+    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
+  Section
+    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
+    Context {C E : Set}.
+    
     Definition Self := core.result.Result C E.
     
     Definition IS_RESULT := Pure true.
@@ -8317,13 +8640,14 @@ Module create_builder.
       Notation.double_colon := err;
     }.
     
-    Global Instance I
-        C
-        E :
-        ink_env.call.create_builder.ConstructorReturnType.Trait Self C :=
-      {
+    Global Instance I :
+        ink_env.call.create_builder.ConstructorReturnType.Trait
+          Self
+          (C := C) := {
       ink_env.call.create_builder.ConstructorReturnType.ok := ok;
     }.
+  End
+    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
   End
     Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
   
@@ -8363,7 +8687,11 @@ Module create_builder.
   Definition CreateParams : Set := CreateParams.t.
   
   Module
-      Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
+    Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
+  Section
+    Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
+    Context {E ContractRef Args Salt R : Set}.
+    
     Definition
       Self
       :=
@@ -8405,9 +8733,11 @@ Module create_builder.
       Notation.dot := fmt;
     }.
     
-    Global Instance I E ContractRef Args Salt R : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+  End
+    Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
   End
     Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
   
@@ -9017,7 +9347,7 @@ End Salt.
 Definition Salt := Salt.t.
 
 Module FromAccountId.
-  Class Trait (T Self : Set) : Set := {
+  Class Trait (Self : Set) {T : Set} : Set := {
     from_account_id : ink_env.types.Environment.AccountId -> (M Self);
   }.
   
@@ -9029,7 +9359,7 @@ End FromAccountId.
 
 Module ConstructorReturnType.
   Class Trait
-      (C Self : Set)
+      (Self : Set) {C : Set}
       {Output : Set}
       {Error : Set}
       `{parity_scale_codec.codec.Decode.Trait Error} :
@@ -9054,6 +9384,9 @@ Module ConstructorReturnType.
 End ConstructorReturnType.
 
 Module Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
+Section Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
+  Context {C : Set}.
+  
   Definition Self := C.
   
   Definition Output : Set := C.
@@ -9066,16 +9399,19 @@ Module Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
     Notation.double_colon := ok;
   }.
   
-  Global Instance I
-      C :
-      ink_env.call.create_builder.ConstructorReturnType.Trait Self C :=
-    {
+  Global Instance I :
+      ink_env.call.create_builder.ConstructorReturnType.Trait Self (C := C) := {
     ink_env.call.create_builder.ConstructorReturnType.ok := ok;
   }.
 End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
+End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
 
 Module
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
+  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
+Section
+  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
+  Context {C E : Set}.
+  
   Definition Self := core.result.Result C E.
   
   Definition IS_RESULT := Pure true.
@@ -9105,13 +9441,12 @@ Module
     Notation.double_colon := err;
   }.
   
-  Global Instance I
-      C
-      E :
-      ink_env.call.create_builder.ConstructorReturnType.Trait Self C :=
-    {
+  Global Instance I :
+      ink_env.call.create_builder.ConstructorReturnType.Trait Self (C := C) := {
     ink_env.call.create_builder.ConstructorReturnType.ok := ok;
   }.
+End
+  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
 End
   Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
 
@@ -9151,7 +9486,11 @@ End CreateParams.
 Definition CreateParams : Set := CreateParams.t.
 
 Module
-    Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
+  Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
+Section
+  Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
+  Context {E ContractRef Args Salt R : Set}.
+  
   Definition
     Self
     :=
@@ -9193,9 +9532,11 @@ Module
     Notation.dot := fmt;
   }.
   
-  Global Instance I E ContractRef Args Salt R : core.fmt.Debug.Trait Self := {
+  Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
+End
+  Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
 End
   Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
 
@@ -9805,7 +10146,11 @@ Module execution_input.
   Definition ExecutionInput : Set := ExecutionInput.t.
   
   Module
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Section
+    Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Context {Args : Set}.
+    
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Definition clone
@@ -9823,14 +10168,20 @@ Module execution_input.
       Notation.dot := clone;
     }.
     
-    Global Instance I Args : core.clone.Clone.Trait Self := {
+    Global Instance I : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End
     Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+  End
+    Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
   
   Module
-      Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Section
+    Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Context {Args : Set}.
+    
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Definition default
@@ -9849,14 +10200,20 @@ Module execution_input.
       Notation.double_colon := default;
     }.
     
-    Global Instance I Args : core.default.Default.Trait Self := {
+    Global Instance I : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
   End
     Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+  End
+    Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
   
   Module
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Section
+    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Context {Args : Set}.
+    
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Definition fmt
@@ -9875,9 +10232,10 @@ Module execution_input.
       Notation.dot := fmt;
     }.
     
-    Global Instance I Args : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+  End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
   End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
   
   Module
@@ -9984,7 +10342,11 @@ Module execution_input.
   Definition ArgumentList : Set := ArgumentList.t.
   
   Module
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+  Section
+    Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    Context {Head Rest : Set}.
+    
     Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
     
     Definition clone
@@ -10002,14 +10364,20 @@ Module execution_input.
       Notation.dot := clone;
     }.
     
-    Global Instance I Head Rest : core.clone.Clone.Trait Self := {
+    Global Instance I : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End
     Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+  End
+    Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
   
   Module
-      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+  Section
+    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    Context {Head Rest : Set}.
+    
     Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
     
     Definition default
@@ -10028,14 +10396,20 @@ Module execution_input.
       Notation.double_colon := default;
     }.
     
-    Global Instance I Head Rest : core.default.Default.Trait Self := {
+    Global Instance I : core.default.Default.Trait Self := {
       core.default.Default.default := default;
     }.
   End
     Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+  End
+    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
   
   Module
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+  Section
+    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    Context {Head Rest : Set}.
+    
     Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
     
     Definition fmt
@@ -10054,9 +10428,11 @@ Module execution_input.
       Notation.dot := fmt;
     }.
     
-    Global Instance I Head Rest : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+  End
+    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
   End
     Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
   
@@ -10077,6 +10453,9 @@ Module execution_input.
   Definition Argument : Set := Argument.t.
   
   Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
+  Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.execution_input.Argument T.
     
     Definition clone
@@ -10089,12 +10468,16 @@ Module execution_input.
       Notation.dot := clone;
     }.
     
-    Global Instance I T : core.clone.Clone.Trait Self := {
+    Global Instance I : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
+  End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
   
   Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
+  Section Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.execution_input.Argument T.
     
     Definition fmt
@@ -10111,9 +10494,10 @@ Module execution_input.
       Notation.dot := fmt;
     }.
     
-    Global Instance I T : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+  End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
   End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
   
   Module Impl_ink_env_call_execution_input_Argument_T_2.
@@ -10150,7 +10534,7 @@ Module execution_input.
   End Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
   
   Module
-      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
+    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
     Definition Self := ink_env.call.execution_input.ArgumentListEnd.
     
     Definition default
@@ -10262,7 +10646,11 @@ Module execution_input.
     Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_2.
   
   Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
+  Section
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.call.execution_input.Argument T.
     
     Definition size_hint (self : ref Self) : M usize :=
@@ -10279,13 +10667,15 @@ Module execution_input.
       Notation.dot := encode_to;
     }.
     
-    Global Instance I T : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
+  End
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
   
   Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
     Definition Self := ink_env.call.execution_input.EmptyArgumentList.
     
     Definition size_hint (self : ref Self) : M usize := Pure 0.
@@ -10307,7 +10697,11 @@ Module execution_input.
     Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
   
   Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
+  Section
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
+    Context {Head Rest : Set}.
+    
     Definition
       Self
       :=
@@ -10341,14 +10735,19 @@ Module execution_input.
       Notation.dot := encode_to;
     }.
     
-    Global Instance I Head Rest : parity_scale_codec.codec.Encode.Trait Self :=
-      {
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
+  End
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
   
   Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Section
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
+    Context {Args : Set}.
+    
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Definition size_hint (self : ref Self) : M usize :=
@@ -10377,8 +10776,10 @@ Module execution_input.
       Notation.dot := encode_to;
     }.
     
-    Global Instance I Args : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
+  End
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
   End
     Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
 End execution_input.
@@ -10399,7 +10800,11 @@ End ExecutionInput.
 Definition ExecutionInput : Set := ExecutionInput.t.
 
 Module
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+Section
+  Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Context {Args : Set}.
+  
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Definition clone
@@ -10417,13 +10822,18 @@ Module
     Notation.dot := clone;
   }.
   
-  Global Instance I Args : core.clone.Clone.Trait Self := {
+  Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
 End Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
+End Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
 
 Module
-    Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+Section
+  Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Context {Args : Set}.
+  
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Definition default
@@ -10442,13 +10852,19 @@ Module
     Notation.double_colon := default;
   }.
   
-  Global Instance I Args : core.default.Default.Trait Self := {
+  Global Instance I : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End
   Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
+End
+  Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
 
 Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
+Section
+  Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Context {Args : Set}.
+  
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Definition fmt
@@ -10467,9 +10883,10 @@ Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
     Notation.dot := fmt;
   }.
   
-  Global Instance I Args : core.fmt.Debug.Trait Self := {
+  Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
+End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
 End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
 
 Module
@@ -10575,7 +10992,11 @@ End ArgumentList.
 Definition ArgumentList : Set := ArgumentList.t.
 
 Module
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+  Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+Section
+  Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+  Context {Head Rest : Set}.
+  
   Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
   
   Definition clone
@@ -10593,14 +11014,20 @@ Module
     Notation.dot := clone;
   }.
   
-  Global Instance I Head Rest : core.clone.Clone.Trait Self := {
+  Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
 End
   Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+End
+  Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
 
 Module
-    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+  Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+Section
+  Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+  Context {Head Rest : Set}.
+  
   Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
   
   Definition default
@@ -10619,14 +11046,20 @@ Module
     Notation.double_colon := default;
   }.
   
-  Global Instance I Head Rest : core.default.Default.Trait Self := {
+  Global Instance I : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End
   Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+End
+  Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
 
 Module
-    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+  Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+Section
+  Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+  Context {Head Rest : Set}.
+  
   Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
   
   Definition fmt
@@ -10645,9 +11078,10 @@ Module
     Notation.dot := fmt;
   }.
   
-  Global Instance I Head Rest : core.fmt.Debug.Trait Self := {
+  Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
+End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
 End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
 
 Definition ArgsList : Set :=
@@ -10667,6 +11101,9 @@ End Argument.
 Definition Argument : Set := Argument.t.
 
 Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
+Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.execution_input.Argument T.
   
   Definition clone
@@ -10679,12 +11116,16 @@ Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
     Notation.dot := clone;
   }.
   
-  Global Instance I T : core.clone.Clone.Trait Self := {
+  Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
 End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
+End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
 
 Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
+Section Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.execution_input.Argument T.
   
   Definition fmt
@@ -10701,9 +11142,10 @@ Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
     Notation.dot := fmt;
   }.
   
-  Global Instance I T : core.fmt.Debug.Trait Self := {
+  Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
+End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
 End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
 
 Module Impl_ink_env_call_execution_input_Argument_T_3.
@@ -10739,7 +11181,7 @@ Module Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
 End Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
 
 Module
-    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
+  Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
   Definition Self := ink_env.call.execution_input.ArgumentListEnd.
   
   Definition default
@@ -10850,7 +11292,11 @@ End
   Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_3.
 
 Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
+  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
+Section
+  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.call.execution_input.Argument T.
   
   Definition size_hint (self : ref Self) : M usize :=
@@ -10867,13 +11313,15 @@ Module
     Notation.dot := encode_to;
   }.
   
-  Global Instance I T : parity_scale_codec.codec.Encode.Trait Self := {
+  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
   }.
+End
+  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
 End
   Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
 
 Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
+  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
   Definition Self := ink_env.call.execution_input.EmptyArgumentList.
   
   Definition size_hint (self : ref Self) : M usize := Pure 0.
@@ -10895,7 +11343,11 @@ End
   Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
 
 Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
+  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
+Section
+  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
+  Context {Head Rest : Set}.
+  
   Definition
     Self
     :=
@@ -10929,13 +11381,19 @@ Module
     Notation.dot := encode_to;
   }.
   
-  Global Instance I Head Rest : parity_scale_codec.codec.Encode.Trait Self := {
+  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
   }.
+End
+  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
 End
   Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
 
 Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
+Section
+  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
+  Context {Args : Set}.
+  
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Definition size_hint (self : ref Self) : M usize :=
@@ -10964,8 +11422,10 @@ Module
     Notation.dot := encode_to;
   }.
   
-  Global Instance I Args : parity_scale_codec.codec.Encode.Trait Self := {
+  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
   }.
+End
+  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
 End
   Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
 
@@ -11044,7 +11504,7 @@ Module selector.
   End Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
   
   Module
-      Impl_core_marker_StructuralPartialEq_for_ink_env_call_selector_Selector.
+    Impl_core_marker_StructuralPartialEq_for_ink_env_call_selector_Selector.
     Definition Self := ink_env.call.selector.Selector.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -11103,7 +11563,7 @@ Module selector.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self list u8 := {
+    Global Instance I : core.convert.From.Trait Self (T := list u8) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_call_selector_Selector.
@@ -11259,7 +11719,7 @@ Module Impl_core_convert_From_for_ink_env_call_selector_Selector.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self list u8 := {
+  Global Instance I : core.convert.From.Trait Self (T := list u8) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_call_selector_Selector.
@@ -11330,7 +11790,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
 End Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
 
 Module
-    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_env_call_selector_Selector.
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
   Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
@@ -11386,7 +11846,11 @@ Module chain_extension.
   Definition ChainExtensionMethod : Set := ChainExtensionMethod.t.
   
   Module
-      Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
+    Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
+  Section
+    Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
+    Context {I O ErrorCode : Set}.
+    
     Definition
       Self
       :=
@@ -11408,9 +11872,11 @@ Module chain_extension.
       Notation.dot := fmt;
     }.
     
-    Global Instance I I O ErrorCode : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+  End
+    Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
   End
     Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
   
@@ -11528,7 +11994,7 @@ Module chain_extension.
     Definition IgnoreErrorCode := IgnoreErrorCode.t.
     
     Module
-        Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
+      Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
       Definition Self := ink_env.chain_extension.state.IgnoreErrorCode.
       
       Definition fmt
@@ -11558,7 +12024,11 @@ Module chain_extension.
     Definition HandleErrorCode : Set := HandleErrorCode.t.
     
     Module
-        Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
+      Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
+    Section
+      Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
+      Context {T : Set}.
+      
       Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
       
       Definition fmt
@@ -11575,9 +12045,10 @@ Module chain_extension.
         Notation.dot := fmt;
       }.
       
-      Global Instance I T : core.fmt.Debug.Trait Self := {
+      Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt := fmt;
       }.
+    End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
     End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
   End state.
   
@@ -11731,26 +12202,34 @@ Module chain_extension.
   End IsResultType.
   
   Module
-      Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
+    Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
+  Section
+    Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
+    Context {T E : Set}.
+    
     Definition Self := core.result.Result T E.
     
-    Global Instance I
-        T
-        E :
+    Global Instance I :
         ink_env.chain_extension.private.IsResultTypeSealed.Trait Self :=
       ink_env.chain_extension.private.IsResultTypeSealed.Build_Trait _.
   End
     Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
+  End
+    Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
   
   Module Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
+  Section Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
+    Context {T E : Set}.
+    
     Definition Self := core.result.Result T E.
     
     Definition Ok : Set := T.
     
     Definition Err : Set := E.
     
-    Global Instance I T E : ink_env.chain_extension.IsResultType.Trait Self := {
+    Global Instance I : ink_env.chain_extension.IsResultType.Trait Self := {
     }.
+  End Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
   End Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
   
   Module private.
@@ -11790,7 +12269,11 @@ End ChainExtensionMethod.
 Definition ChainExtensionMethod : Set := ChainExtensionMethod.t.
 
 Module
-    Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
+  Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
+Section
+  Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
+  Context {I O ErrorCode : Set}.
+  
   Definition Self := ink_env.chain_extension.ChainExtensionMethod I O ErrorCode.
   
   Definition fmt
@@ -11809,9 +12292,11 @@ Module
     Notation.dot := fmt;
   }.
   
-  Global Instance I I O ErrorCode : core.fmt.Debug.Trait Self := {
+  Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
+End
+  Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
 End
   Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
 
@@ -11958,7 +12443,11 @@ Module state.
   Definition HandleErrorCode : Set := HandleErrorCode.t.
   
   Module
-      Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
+    Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
+  Section
+    Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
+    Context {T : Set}.
+    
     Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
     
     Definition fmt
@@ -11975,9 +12464,10 @@ Module state.
       Notation.dot := fmt;
     }.
     
-    Global Instance I T : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
+  End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
   End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
 End state.
 
@@ -12017,6 +12507,9 @@ End HandleErrorCode.
 Definition HandleErrorCode : Set := HandleErrorCode.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
+Section Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
+  Context {T : Set}.
+  
   Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
   
   Definition fmt
@@ -12033,9 +12526,10 @@ Module Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
     Notation.dot := fmt;
   }.
   
-  Global Instance I T : core.fmt.Debug.Trait Self := {
+  Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
+End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
 End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
 
 Module
@@ -12188,26 +12682,34 @@ Module IsResultType.
 End IsResultType.
 
 Module
-    Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
+  Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
+Section
+  Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
+  Context {T E : Set}.
+  
   Definition Self := core.result.Result T E.
   
-  Global Instance I
-      T
-      E :
+  Global Instance I :
       ink_env.chain_extension.private.IsResultTypeSealed.Trait Self :=
     ink_env.chain_extension.private.IsResultTypeSealed.Build_Trait _.
 End
   Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
+End
+  Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
 
 Module Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
+Section Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
+  Context {T E : Set}.
+  
   Definition Self := core.result.Result T E.
   
   Definition Ok : Set := T.
   
   Definition Err : Set := E.
   
-  Global Instance I T E : ink_env.chain_extension.IsResultType.Trait Self := {
+  Global Instance I : ink_env.chain_extension.IsResultType.Trait Self := {
   }.
+End Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
 End Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
 
 Module private.
@@ -12290,7 +12792,7 @@ Module engine.
       Definition CallData : Set := CallData.t.
       
       Module
-          Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
+        Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Definition fmt
@@ -12313,7 +12815,7 @@ Module engine.
       End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
       
       Module
-          Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
+        Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Definition clone
@@ -12332,7 +12834,7 @@ Module engine.
       End Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
       
       Module
-          Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
+        Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -12341,7 +12843,7 @@ Module engine.
         Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
       
       Module
-          Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
+        Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Definition eq
@@ -12361,7 +12863,7 @@ Module engine.
         Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
       
       Module
-          Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
+        Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Global Instance I : core.marker.StructuralEq.Trait Self :=
@@ -12466,7 +12968,7 @@ Module engine.
       End Impl_ink_env_engine_off_chain_call_data_CallData.
       
       Module
-          Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
+        Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Definition size_hint (self : ref Self) : M usize :=
@@ -12492,7 +12994,7 @@ Module engine.
         Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
       
       Module
-          Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
+        Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Definition decode
@@ -12689,8 +13191,8 @@ Module engine.
           Notation.double_colon := from;
         }.
         
-        Global Instance I : core.convert.From.Trait Self ink_engine.ext.Error :=
-          {
+        Global Instance I :
+            core.convert.From.Trait Self (T := ink_engine.ext.Error) := {
           core.convert.From.from := from;
         }.
       End Impl_core_convert_From_for_ink_env_error_Error.
@@ -12707,7 +13209,7 @@ Module engine.
       Definition TopicsBuilder : Set := TopicsBuilder.t.
       
       Module
-          Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+        Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
         Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
         
         Definition default
@@ -12728,7 +13230,11 @@ Module engine.
         Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
       
       Module
-          Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+        Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+      Section
+        Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+        Context {E : Set}.
+        
         Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
         
         Definition Output : Set := alloc.vec.Vec u8.
@@ -12832,14 +13338,14 @@ Module engine.
           Notation.dot := output;
         }.
         
-        Global Instance I
-            E :
-            ink_env.topics.TopicsBuilderBackend.Trait Self E :=
-          {
+        Global Instance I :
+            ink_env.topics.TopicsBuilderBackend.Trait Self (E := E) := {
           ink_env.topics.TopicsBuilderBackend.expect := expect;
           ink_env.topics.TopicsBuilderBackend.push_topic := push_topic;
           ink_env.topics.TopicsBuilderBackend.output := output;
         }.
+      End
+        Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
       End
         Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
       
@@ -12866,7 +13372,7 @@ Module engine.
       End Impl_ink_env_engine_off_chain_EnvInstance.
       
       Module
-          Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+        Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
         Definition Self := ink_env.engine.off_chain.EnvInstance.
         
         Definition set_contract_storage
@@ -13264,7 +13770,7 @@ Module engine.
         Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
       
       Module
-          Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+        Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
         Definition Self := ink_env.engine.off_chain.EnvInstance.
         
         Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
@@ -13692,7 +14198,7 @@ Module engine.
       Definition EmittedEvent : Set := EmittedEvent.t.
       
       Module
-          Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
+        Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
         Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
         
         Definition clone
@@ -14155,7 +14661,7 @@ Module engine.
     
     Module types.
       Module
-          Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
+        Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
         Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
         
         Definition from (evt : ink_engine.test_api.EmittedEvent) : M Self :=
@@ -14173,8 +14679,9 @@ Module engine.
         }.
         
         Global Instance I :
-            core.convert.From.Trait Self ink_engine.test_api.EmittedEvent :=
-          {
+            core.convert.From.Trait
+              Self
+              (T := ink_engine.test_api.EmittedEvent) := {
           core.convert.From.from := from;
         }.
       End
@@ -14205,7 +14712,8 @@ Module engine.
           Notation.double_colon := from;
         }.
         
-        Global Instance I : core.convert.From.Trait Self ink_engine.Error := {
+        Global Instance I :
+            core.convert.From.Trait Self (T := ink_engine.Error) := {
           core.convert.From.from := from;
         }.
       End Impl_core_convert_From_for_ink_env_error_Error.
@@ -14229,8 +14737,9 @@ Module engine.
         }.
         
         Global Instance I :
-            core.convert.From.Trait Self ink_engine.types.AccountError :=
-          {
+            core.convert.From.Trait
+              Self
+              (T := ink_engine.types.AccountError) := {
           core.convert.From.from := from;
         }.
       End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
@@ -14252,8 +14761,9 @@ Module engine.
         }.
         
         Global Instance I :
-            core.convert.From.Trait Self ink_engine.types.AccountError :=
-          {
+            core.convert.From.Trait
+              Self
+              (T := ink_engine.types.AccountError) := {
           core.convert.From.from := from;
         }.
       End Impl_core_convert_From_for_ink_env_error_Error.
@@ -14271,7 +14781,7 @@ Module engine.
     Definition EnvInstance : Set := EnvInstance.t.
     
     Module
-        Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
+      Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
       Definition on_instance (f : F) : M R :=
@@ -14345,14 +14855,15 @@ Module engine.
       }.
       
       Global Instance I :
-          core.convert.From.Trait Self ink_env.engine.off_chain.AccountError :=
-        {
+          core.convert.From.Trait
+            Self
+            (T := ink_env.engine.off_chain.AccountError) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
     
     Module
-        Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
+      Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
       Definition Self := ink_env.engine.off_chain.OffChainError.
       
       Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -14393,7 +14904,7 @@ Module engine.
     End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
     
     Module
-        Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
+      Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
       Definition Self := ink_env.engine.off_chain.OffChainError.
       
       Global Instance I : core.marker.StructuralEq.Trait Self :=
@@ -14470,14 +14981,15 @@ Module engine.
       }.
       
       Global Instance I :
-          core.convert.From.Trait Self parity_scale_codec.error.Error :=
-        {
+          core.convert.From.Trait
+            Self
+            (T := parity_scale_codec.error.Error) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
     
     Module
-        Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
+      Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
       Definition Self := ink_env.engine.off_chain.AccountError.
       
       Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -14525,7 +15037,7 @@ Module engine.
     End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
     
     Module
-        Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
+      Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
       Definition Self := ink_env.engine.off_chain.AccountError.
       
       Global Instance I : core.marker.StructuralEq.Trait Self :=
@@ -14733,7 +15245,7 @@ Module off_chain.
     End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
     
     Module
-        Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
+      Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Definition clone
@@ -14752,7 +15264,7 @@ Module off_chain.
     End Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
     
     Module
-        Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
+      Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -14761,7 +15273,7 @@ Module off_chain.
       Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
     
     Module
-        Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
+      Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Definition eq
@@ -14780,7 +15292,7 @@ Module off_chain.
     End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
     
     Module
-        Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
+      Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Global Instance I : core.marker.StructuralEq.Trait Self :=
@@ -14884,7 +15396,7 @@ Module off_chain.
     End Impl_ink_env_engine_off_chain_call_data_CallData_2.
     
     Module
-        Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
+      Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Definition size_hint (self : ref Self) : M usize :=
@@ -14910,7 +15422,7 @@ Module off_chain.
       Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
     
     Module
-        Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
+      Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Definition decode
@@ -15106,7 +15618,8 @@ Module off_chain.
         Notation.double_colon := from;
       }.
       
-      Global Instance I : core.convert.From.Trait Self ink_engine.ext.Error := {
+      Global Instance I :
+          core.convert.From.Trait Self (T := ink_engine.ext.Error) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_env_error_Error.
@@ -15123,7 +15636,7 @@ Module off_chain.
     Definition TopicsBuilder : Set := TopicsBuilder.t.
     
     Module
-        Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+      Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
       Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
       
       Definition default
@@ -15144,7 +15657,11 @@ Module off_chain.
       Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
     
     Module
-        Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+      Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+    Section
+      Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+      Context {E : Set}.
+      
       Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
       
       Definition Output : Set := alloc.vec.Vec u8.
@@ -15243,12 +15760,14 @@ Module off_chain.
         Notation.dot := output;
       }.
       
-      Global Instance I E : ink_env.topics.TopicsBuilderBackend.Trait Self E :=
-        {
+      Global Instance I :
+          ink_env.topics.TopicsBuilderBackend.Trait Self (E := E) := {
         ink_env.topics.TopicsBuilderBackend.expect := expect;
         ink_env.topics.TopicsBuilderBackend.push_topic := push_topic;
         ink_env.topics.TopicsBuilderBackend.output := output;
       }.
+    End
+      Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
     End
       Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
     
@@ -15275,7 +15794,7 @@ Module off_chain.
     End Impl_ink_env_engine_off_chain_EnvInstance_2.
     
     Module
-        Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+      Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
       Definition set_contract_storage
@@ -15663,7 +16182,7 @@ Module off_chain.
       Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
     
     Module
-        Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+      Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
       Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
@@ -16087,7 +16606,7 @@ Module off_chain.
     Definition EmittedEvent : Set := EmittedEvent.t.
     
     Module
-        Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
+      Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
       Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
       
       Definition clone
@@ -16550,7 +17069,7 @@ Module off_chain.
   
   Module types.
     Module
-        Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
+      Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
       Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
       
       Definition from (evt : ink_engine.test_api.EmittedEvent) : M Self :=
@@ -16567,8 +17086,9 @@ Module off_chain.
       }.
       
       Global Instance I :
-          core.convert.From.Trait Self ink_engine.test_api.EmittedEvent :=
-        {
+          core.convert.From.Trait
+            Self
+            (T := ink_engine.test_api.EmittedEvent) := {
         core.convert.From.from := from;
       }.
     End
@@ -16599,7 +17119,8 @@ Module off_chain.
         Notation.double_colon := from;
       }.
       
-      Global Instance I : core.convert.From.Trait Self ink_engine.Error := {
+      Global Instance I :
+          core.convert.From.Trait Self (T := ink_engine.Error) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_env_error_Error.
@@ -16623,8 +17144,7 @@ Module off_chain.
       }.
       
       Global Instance I :
-          core.convert.From.Trait Self ink_engine.types.AccountError :=
-        {
+          core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
@@ -16646,8 +17166,7 @@ Module off_chain.
       }.
       
       Global Instance I :
-          core.convert.From.Trait Self ink_engine.types.AccountError :=
-        {
+          core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_env_error_Error.
@@ -16665,7 +17184,7 @@ Module off_chain.
   Definition EnvInstance : Set := EnvInstance.t.
   
   Module
-      Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
+    Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
     Definition on_instance (f : F) : M R :=
@@ -16737,14 +17256,15 @@ Module off_chain.
     }.
     
     Global Instance I :
-        core.convert.From.Trait Self ink_env.engine.off_chain.AccountError :=
-      {
+        core.convert.From.Trait
+          Self
+          (T := ink_env.engine.off_chain.AccountError) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
   
   Module
-      Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
+    Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
     Definition Self := ink_env.engine.off_chain.OffChainError.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -16785,7 +17305,7 @@ Module off_chain.
   End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
   
   Module
-      Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
+    Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
     Definition Self := ink_env.engine.off_chain.OffChainError.
     
     Global Instance I : core.marker.StructuralEq.Trait Self :=
@@ -16861,14 +17381,13 @@ Module off_chain.
     }.
     
     Global Instance I :
-        core.convert.From.Trait Self parity_scale_codec.error.Error :=
-      {
+        core.convert.From.Trait Self (T := parity_scale_codec.error.Error) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
   
   Module
-      Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
+    Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
     Definition Self := ink_env.engine.off_chain.AccountError.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -16916,7 +17435,7 @@ Module off_chain.
   End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
   
   Module
-      Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
+    Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
     Definition Self := ink_env.engine.off_chain.AccountError.
     
     Global Instance I : core.marker.StructuralEq.Trait Self :=
@@ -16994,7 +17513,7 @@ Module call_data.
   End Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
   
   Module
-      Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
+    Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -17003,7 +17522,7 @@ Module call_data.
     Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
   
   Module
-      Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
+    Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Definition eq
@@ -17022,7 +17541,7 @@ Module call_data.
   End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
   
   Module
-      Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
+    Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Global Instance I : core.marker.StructuralEq.Trait Self :=
@@ -17124,7 +17643,7 @@ Module call_data.
   End Impl_ink_env_engine_off_chain_call_data_CallData_3.
   
   Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Definition size_hint (self : ref Self) : M usize := self.["bytes"].["len"].
@@ -17149,7 +17668,7 @@ Module call_data.
     Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
   
   Module
-      Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
+    Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Definition decode
@@ -17248,7 +17767,7 @@ Module Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
 End Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
 
 Module
-    Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
+  Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -17275,7 +17794,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
 End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
 
 Module
-    Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
+  Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
   Global Instance I : core.marker.StructuralEq.Trait Self :=
@@ -17376,7 +17895,7 @@ Module Impl_ink_env_engine_off_chain_call_data_CallData_4.
 End Impl_ink_env_engine_off_chain_call_data_CallData_4.
 
 Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
+  Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
   Definition size_hint (self : ref Self) : M usize := self.["bytes"].["len"].
@@ -17401,7 +17920,7 @@ End
   Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
 
 Module
-    Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
+  Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
   Definition decode
@@ -17595,7 +18114,8 @@ Module impls.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self ink_engine.ext.Error := {
+    Global Instance I :
+        core.convert.From.Trait Self (T := ink_engine.ext.Error) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_error_Error.
@@ -17612,7 +18132,7 @@ Module impls.
   Definition TopicsBuilder : Set := TopicsBuilder.t.
   
   Module
-      Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+    Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
     Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
     
     Definition default
@@ -17633,7 +18153,11 @@ Module impls.
     Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
   
   Module
-      Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+    Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+  Section
+    Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+    Context {E : Set}.
+    
     Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
     
     Definition Output : Set := alloc.vec.Vec u8.
@@ -17731,11 +18255,14 @@ Module impls.
       Notation.dot := output;
     }.
     
-    Global Instance I E : ink_env.topics.TopicsBuilderBackend.Trait Self E := {
+    Global Instance I :
+        ink_env.topics.TopicsBuilderBackend.Trait Self (E := E) := {
       ink_env.topics.TopicsBuilderBackend.expect := expect;
       ink_env.topics.TopicsBuilderBackend.push_topic := push_topic;
       ink_env.topics.TopicsBuilderBackend.output := output;
     }.
+  End
+    Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
   End
     Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
   
@@ -17762,7 +18289,7 @@ Module impls.
   End Impl_ink_env_engine_off_chain_EnvInstance_3.
   
   Module
-      Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+    Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
     Definition set_contract_storage
@@ -18143,7 +18670,7 @@ Module impls.
   End Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   
   Module
-      Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+    Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
     Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
@@ -18595,15 +19122,17 @@ Module TypeEq.
 End TypeEq.
 
 Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
+Section Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
+  Context {T : Set}.
+  
   Definition Self := T.
   
   Definition This : Set := Self.
   
-  Global Instance I
-      T :
-      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self :=
-    {
+  Global Instance I :
+      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self := {
   }.
+End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 
 Definition assert_type_eq_all
@@ -18668,15 +19197,17 @@ Module TypeEq.
 End TypeEq.
 
 Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
+Section Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
+  Context {T : Set}.
+  
   Definition Self := T.
   
   Definition This : Set := Self.
   
-  Global Instance I
-      T :
-      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self :=
-    {
+  Global Instance I :
+      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self := {
   }.
+End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 
 Definition assert_type_eq_all
@@ -18741,15 +19272,17 @@ Module TypeEq.
 End TypeEq.
 
 Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
+Section Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
+  Context {T : Set}.
+  
   Definition Self := T.
   
   Definition This : Set := Self.
   
-  Global Instance I
-      T :
-      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self :=
-    {
+  Global Instance I :
+      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self := {
   }.
+End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 
 Definition assert_type_eq_all
@@ -18814,15 +19347,17 @@ Module TypeEq.
 End TypeEq.
 
 Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
+Section Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
+  Context {T : Set}.
+  
   Definition Self := T.
   
   Definition This : Set := Self.
   
-  Global Instance I
-      T :
-      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self :=
-    {
+  Global Instance I :
+      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self := {
   }.
+End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 
 Definition assert_type_eq_all
@@ -18864,7 +19399,8 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self ink_engine.ext.Error := {
+  Global Instance I :
+      core.convert.From.Trait Self (T := ink_engine.ext.Error) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_error_Error.
@@ -18881,7 +19417,7 @@ End TopicsBuilder.
 Definition TopicsBuilder : Set := TopicsBuilder.t.
 
 Module
-    Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+  Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
   Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
   
   Definition default
@@ -18901,7 +19437,11 @@ Module
 End Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
 
 Module
-    Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+  Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+Section
+  Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
+  Context {E : Set}.
+  
   Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
   
   Definition Output : Set := alloc.vec.Vec u8.
@@ -18992,11 +19532,14 @@ Module
     Notation.dot := output;
   }.
   
-  Global Instance I E : ink_env.topics.TopicsBuilderBackend.Trait Self E := {
+  Global Instance I :
+      ink_env.topics.TopicsBuilderBackend.Trait Self (E := E) := {
     ink_env.topics.TopicsBuilderBackend.expect := expect;
     ink_env.topics.TopicsBuilderBackend.push_topic := push_topic;
     ink_env.topics.TopicsBuilderBackend.output := output;
   }.
+End
+  Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
 End
   Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
 
@@ -19394,7 +19937,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
 End Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
 
 Module
-    Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+  Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
   Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
@@ -19804,7 +20347,7 @@ Module test_api.
   Definition EmittedEvent : Set := EmittedEvent.t.
   
   Module
-      Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
+    Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
     Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
     
     Definition clone
@@ -20732,7 +21275,7 @@ Definition assert_contract_termination
 
 Module types.
   Module
-      Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
+    Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
     Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
     
     Definition from (evt : ink_engine.test_api.EmittedEvent) : M Self :=
@@ -20749,8 +21292,9 @@ Module types.
     }.
     
     Global Instance I :
-        core.convert.From.Trait Self ink_engine.test_api.EmittedEvent :=
-      {
+        core.convert.From.Trait
+          Self
+          (T := ink_engine.test_api.EmittedEvent) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
@@ -20779,7 +21323,8 @@ Module types.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self ink_engine.Error := {
+    Global Instance I :
+        core.convert.From.Trait Self (T := ink_engine.Error) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_error_Error.
@@ -20803,8 +21348,7 @@ Module types.
     }.
     
     Global Instance I :
-        core.convert.From.Trait Self ink_engine.types.AccountError :=
-      {
+        core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
@@ -20824,15 +21368,14 @@ Module types.
     }.
     
     Global Instance I :
-        core.convert.From.Trait Self ink_engine.types.AccountError :=
-      {
+        core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_error_Error.
 End types.
 
 Module
-    Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
+  Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
   Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
   
   Definition from (evt : ink_engine.test_api.EmittedEvent) : M Self :=
@@ -20848,8 +21391,7 @@ Module
   }.
   
   Global Instance I :
-      core.convert.From.Trait Self ink_engine.test_api.EmittedEvent :=
-    {
+      core.convert.From.Trait Self (T := ink_engine.test_api.EmittedEvent) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
@@ -20878,7 +21420,7 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self ink_engine.Error := {
+  Global Instance I : core.convert.From.Trait Self (T := ink_engine.Error) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_error_Error.
@@ -20902,8 +21444,7 @@ Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
   }.
   
   Global Instance I :
-      core.convert.From.Trait Self ink_engine.types.AccountError :=
-    {
+      core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
@@ -20923,8 +21464,7 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
   }.
   
   Global Instance I :
-      core.convert.From.Trait Self ink_engine.types.AccountError :=
-    {
+      core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_error_Error.
@@ -21075,14 +21615,15 @@ Module Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
   }.
   
   Global Instance I :
-      core.convert.From.Trait Self ink_env.engine.off_chain.AccountError :=
-    {
+      core.convert.From.Trait
+        Self
+        (T := ink_env.engine.off_chain.AccountError) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
 
 Module
-    Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
+  Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
   Definition Self := ink_env.engine.off_chain.OffChainError.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -21198,14 +21739,13 @@ Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
   }.
   
   Global Instance I :
-      core.convert.From.Trait Self parity_scale_codec.error.Error :=
-    {
+      core.convert.From.Trait Self (T := parity_scale_codec.error.Error) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
 
 Module
-    Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
+  Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
   Definition Self := ink_env.engine.off_chain.AccountError.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
@@ -21497,8 +22037,7 @@ Module error.
     }.
     
     Global Instance I :
-        core.convert.From.Trait Self parity_scale_codec.error.Error :=
-      {
+        core.convert.From.Trait Self (T := parity_scale_codec.error.Error) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_error_Error.
@@ -21517,8 +22056,9 @@ Module error.
     }.
     
     Global Instance I :
-        core.convert.From.Trait Self ink_env.engine.off_chain.OffChainError :=
-      {
+        core.convert.From.Trait
+          Self
+          (T := ink_env.engine.off_chain.OffChainError) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_error_Error.
@@ -21682,8 +22222,7 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
   }.
   
   Global Instance I :
-      core.convert.From.Trait Self parity_scale_codec.error.Error :=
-    {
+      core.convert.From.Trait Self (T := parity_scale_codec.error.Error) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_error_Error.
@@ -21702,8 +22241,9 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
   }.
   
   Global Instance I :
-      core.convert.From.Trait Self ink_env.engine.off_chain.OffChainError :=
-    {
+      core.convert.From.Trait
+        Self
+        (T := ink_env.engine.off_chain.OffChainError) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_error_Error.
@@ -22716,7 +23256,7 @@ End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
 
 Module topics.
   Module TopicsBuilderBackend.
-    Class Trait (E Self : Set) {Output : Set} : Set := {
+    Class Trait (Self : Set) {E : Set} {Output : Set} : Set := {
       Output := Output;
       expect : (mut_ref Self) -> usize -> (M unit);
       push_topic : (mut_ref Self) -> (ref T) -> (M unit);
@@ -22750,7 +23290,11 @@ Module topics.
   Definition TopicsBuilder : Set := TopicsBuilder.t.
   
   Module
-      Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+  Section
+    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+    Context {E B : Set}.
+    
     Definition
       Self
       :=
@@ -22765,9 +23309,11 @@ Module topics.
       Notation.double_colon := from;
     }.
     
-    Global Instance I E B : core.convert.From.Trait Self B := {
+    Global Instance I : core.convert.From.Trait Self (T := B) := {
       core.convert.From.from := from;
     }.
+  End
+    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
   End
     Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
   
@@ -22880,7 +23426,7 @@ Module topics.
   End EventTopicsAmount.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -22891,7 +23437,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 2.
@@ -22908,7 +23454,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -22919,7 +23465,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 3.
@@ -22936,7 +23482,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -22947,7 +23493,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 4.
@@ -22964,7 +23510,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -22975,7 +23521,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 5.
@@ -22992,7 +23538,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23003,7 +23549,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 6.
@@ -23020,7 +23566,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23031,7 +23577,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 7.
@@ -23048,7 +23594,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23059,7 +23605,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 8.
@@ -23076,7 +23622,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23087,7 +23633,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 9.
@@ -23104,7 +23650,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23115,7 +23661,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 10.
@@ -23132,7 +23678,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23143,7 +23689,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 11.
@@ -23160,7 +23706,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23171,7 +23717,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 12.
@@ -23188,7 +23734,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23199,7 +23745,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 13.
@@ -23216,7 +23762,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23227,7 +23773,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 14.
@@ -23244,7 +23790,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23255,7 +23801,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 15.
@@ -23272,7 +23818,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23283,7 +23829,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 16.
@@ -23300,7 +23846,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23311,7 +23857,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 17.
@@ -23328,7 +23874,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23339,7 +23885,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 18.
@@ -23356,7 +23902,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23367,7 +23913,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 19.
@@ -23384,7 +23930,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23395,7 +23941,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 20.
@@ -23412,7 +23958,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23423,7 +23969,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 21.
@@ -23440,7 +23986,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23451,7 +23997,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 22.
@@ -23468,7 +24014,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23479,7 +24025,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 23.
@@ -23496,7 +24042,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23507,7 +24053,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 24.
@@ -23524,7 +24070,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23535,7 +24081,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 25.
@@ -23552,7 +24098,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23563,7 +24109,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 26.
@@ -23580,7 +24126,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23591,7 +24137,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 27.
@@ -23608,7 +24154,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23619,7 +24165,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 28.
@@ -23636,7 +24182,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23647,7 +24193,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 29.
@@ -23664,7 +24210,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23675,7 +24221,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 30.
@@ -23692,7 +24238,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23703,7 +24249,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 31.
@@ -23720,7 +24266,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -23731,7 +24277,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 32.
@@ -23748,7 +24294,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition Next : Set := ink_env.topics.state.NoRemainingTopics.
@@ -23759,7 +24305,7 @@ Module topics.
     Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
     Definition Self := list ink_env.topics.state.HasRemainingTopics.
     
     Definition AMOUNT := Pure 1.
@@ -23776,7 +24322,7 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   
   Module
-      Impl_ink_env_topics_EventTopicsAmount_for_ink_env_topics_state_NoRemainingTopics.
+    Impl_ink_env_topics_EventTopicsAmount_for_ink_env_topics_state_NoRemainingTopics.
     Definition Self := ink_env.topics.state.NoRemainingTopics.
     
     Definition AMOUNT := Pure 0.
@@ -23827,7 +24373,11 @@ Module topics.
   Definition PrefixedValue : Set := PrefixedValue.t.
   
   Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
+  Section
+    Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
+    Context {X : Set}.
+    
     Definition Self := ink_env.topics.PrefixedValue X.
     
     Definition size_hint (self : ref Self) : M usize :=
@@ -23848,13 +24398,14 @@ Module topics.
       Notation.dot := encode_to;
     }.
     
-    Global Instance I X : parity_scale_codec.codec.Encode.Trait Self := {
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
   End Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
 End topics.
 
 Module TopicsBuilderBackend.
-  Class Trait (E Self : Set) {Output : Set} : Set := {
+  Class Trait (Self : Set) {E : Set} {Output : Set} : Set := {
     Output := Output;
     expect : (mut_ref Self) -> usize -> (M unit);
     push_topic : (mut_ref Self) -> (ref T) -> (M unit);
@@ -23888,7 +24439,11 @@ End TopicsBuilder.
 Definition TopicsBuilder : Set := TopicsBuilder.t.
 
 Module
-    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+  Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+Section
+  Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+  Context {E B : Set}.
+  
   Definition
     Self
     :=
@@ -23903,9 +24458,11 @@ Module
     Notation.double_colon := from;
   }.
   
-  Global Instance I E B : core.convert.From.Trait Self B := {
+  Global Instance I : core.convert.From.Trait Self (T := B) := {
     core.convert.From.from := from;
   }.
+End
+  Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
 End
   Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
 
@@ -24036,7 +24593,7 @@ Module EventTopicsAmount.
 End EventTopicsAmount.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24047,7 +24604,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 2.
@@ -24064,7 +24621,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24075,7 +24632,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 3.
@@ -24092,7 +24649,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24103,7 +24660,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 4.
@@ -24120,7 +24677,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24131,7 +24688,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 5.
@@ -24148,7 +24705,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24159,7 +24716,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 6.
@@ -24176,7 +24733,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24187,7 +24744,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 7.
@@ -24204,7 +24761,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24215,7 +24772,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 8.
@@ -24232,7 +24789,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24243,7 +24800,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 9.
@@ -24260,7 +24817,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24271,7 +24828,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 10.
@@ -24288,7 +24845,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24299,7 +24856,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 11.
@@ -24316,7 +24873,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24327,7 +24884,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 12.
@@ -24344,7 +24901,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24355,7 +24912,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 13.
@@ -24372,7 +24929,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24383,7 +24940,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 14.
@@ -24400,7 +24957,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24411,7 +24968,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 15.
@@ -24428,7 +24985,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24439,7 +24996,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 16.
@@ -24456,7 +25013,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24467,7 +25024,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 17.
@@ -24484,7 +25041,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24495,7 +25052,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 18.
@@ -24512,7 +25069,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24523,7 +25080,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 19.
@@ -24540,7 +25097,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24551,7 +25108,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 20.
@@ -24568,7 +25125,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24579,7 +25136,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 21.
@@ -24596,7 +25153,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24607,7 +25164,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 22.
@@ -24624,7 +25181,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24635,7 +25192,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 23.
@@ -24652,7 +25209,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24663,7 +25220,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 24.
@@ -24680,7 +25237,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24691,7 +25248,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 25.
@@ -24708,7 +25265,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24719,7 +25276,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 26.
@@ -24736,7 +25293,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24747,7 +25304,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 27.
@@ -24764,7 +25321,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24775,7 +25332,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 28.
@@ -24792,7 +25349,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24803,7 +25360,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 29.
@@ -24820,7 +25377,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24831,7 +25388,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 30.
@@ -24848,7 +25405,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24859,7 +25416,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 31.
@@ -24876,7 +25433,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
@@ -24887,7 +25444,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 32.
@@ -24904,7 +25461,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition Next : Set := ink_env.topics.state.NoRemainingTopics.
@@ -24915,7 +25472,7 @@ End
   Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
   Definition Self := list ink_env.topics.state.HasRemainingTopics.
   
   Definition AMOUNT := Pure 1.
@@ -24932,7 +25489,7 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
 
 Module
-    Impl_ink_env_topics_EventTopicsAmount_for_ink_env_topics_state_NoRemainingTopics.
+  Impl_ink_env_topics_EventTopicsAmount_for_ink_env_topics_state_NoRemainingTopics.
   Definition Self := ink_env.topics.state.NoRemainingTopics.
   
   Definition AMOUNT := Pure 0.
@@ -24983,6 +25540,9 @@ End PrefixedValue.
 Definition PrefixedValue : Set := PrefixedValue.t.
 
 Module Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
+Section Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
+  Context {X : Set}.
+  
   Definition Self := ink_env.topics.PrefixedValue X.
   
   Definition size_hint (self : ref Self) : M usize :=
@@ -25003,6 +25563,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
     Notation.dot := encode_to;
   }.
   
-  Global Instance I X : parity_scale_codec.codec.Encode.Trait Self := {
+  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
   }.
+End Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
 End Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.

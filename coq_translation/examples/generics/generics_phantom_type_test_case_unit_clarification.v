@@ -8,7 +8,7 @@ End Inch.
 Definition Inch := Inch.t.
 
 Module
-    Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
+  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
   
   Definition fmt
@@ -28,7 +28,7 @@ End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module
-    Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
+  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
   
   Definition clone
@@ -47,7 +47,7 @@ End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module
-    Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
+  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
   
   Global Instance I : core.marker.Copy.Trait Self :=
@@ -62,7 +62,7 @@ End Mm.
 Definition Mm := Mm.t.
 
 Module
-    Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
+  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
   
   Definition fmt
@@ -82,7 +82,7 @@ End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module
-    Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
+  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
   
   Definition clone
@@ -101,7 +101,7 @@ End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module
-    Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
+  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
   
   Global Instance I : core.marker.Copy.Trait Self :=
@@ -122,7 +122,11 @@ End Length.
 Definition Length := Length.t.
 
 Module
-    Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+Section
+  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+  Context {Unit : Set}.
+  
   Definition
     Self
     :=
@@ -142,14 +146,20 @@ Module
     Notation.dot := fmt;
   }.
   
-  Global Instance I Unit : core.fmt.Debug.Trait Self := {
+  Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+End
+  Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module
-    Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+Section
+  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+  Context {Unit : Set}.
+  
   Definition
     Self
     :=
@@ -167,26 +177,38 @@ Module
     Notation.dot := clone;
   }.
   
-  Global Instance I Unit : core.clone.Clone.Trait Self := {
+  Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone := clone;
   }.
 End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+End
+  Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module
-    Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+Section
+  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+  Context {Unit : Set}.
+  
   Definition
     Self
     :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
-  Global Instance I Unit : core.marker.Copy.Trait Self :=
+  Global Instance I : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Trait _.
+End
+  Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module
-    Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+  Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+Section
+  Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+  Context {Unit : Set}.
+  
   Definition
     Self
     :=
@@ -209,9 +231,11 @@ Module
     Notation.dot := add;
   }.
   
-  Global Instance I Unit : core.ops.arith.Add.Trait Self := {
+  Global Instance I : core.ops.arith.Add.Trait Self := {
     core.ops.arith.Add.add := add;
   }.
+End
+  Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 End
   Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 

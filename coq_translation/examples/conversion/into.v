@@ -45,7 +45,7 @@ Module Impl_core_convert_From_for_into_Number.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self i32 := {
+  Global Instance I : core.convert.From.Trait Self (T := i32) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_into_Number.

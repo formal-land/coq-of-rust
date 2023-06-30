@@ -114,14 +114,21 @@ enum TopLevelItem {
     },
     TraitImpl {
         generic_tys: Vec<String>,
-        // The boolean is there to indicate if the type parameter has a default
-        ty_params: Vec<(Box<CoqType>, bool)>,
+        /// The boolean is there to indicate if the type parameter has a default
+        ty_params: Vec<Box<TraitImplTyParam>>,
         self_ty: Box<CoqType>,
         of_trait: Path,
         items: Vec<(String, ImplItem)>,
         trait_non_default_items: Vec<String>,
     },
     Error(String),
+}
+
+#[derive(Debug)]
+struct TraitImplTyParam {
+    name: String,
+    ty: Box<CoqType>,
+    has_default: bool,
 }
 
 #[derive(Debug)]
@@ -524,19 +531,19 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     let generics = tcx.generics_of(trait_ref.trait_def_id().unwrap());
 
                     // Get the list of type parameters default status (true if it has a default)
-                    let mut type_params_default_status: Vec<bool> = generics
+                    let mut type_params_name_and_default_status: Vec<(String, bool)> = generics
                         .params
                         .iter()
                         .filter_map(|param| match param.kind {
                             rustc_middle::ty::GenericParamDefKind::Type { has_default, .. } => {
-                                Some(has_default)
+                                Some((param.name.to_string(), has_default))
                             }
                             _ => None,
                         })
                         .collect();
                     // The first type parameter is always the Self type, that we do not consider as
                     // part of the list of type parameters.
-                    type_params_default_status.remove(0);
+                    type_params_name_and_default_status.remove(0);
 
                     let ty_params = compile_path_ty_params(env, trait_ref.path);
 
@@ -544,7 +551,14 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         generic_tys,
                         ty_params: ty_params
                             .into_iter()
-                            .zip(type_params_default_status)
+                            .zip(type_params_name_and_default_status)
+                            .map(|(ty, (name, has_default))| {
+                                Box::new(TraitImplTyParam {
+                                    name,
+                                    ty,
+                                    has_default,
+                                })
+                            })
                             .collect(),
                         self_ty,
                         of_trait: compile_path(env, trait_ref.path),
@@ -1437,13 +1451,31 @@ impl TopLevelItem {
                             line(),
                             nest([
                                 text("("),
-                                concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
                                 text("Self"),
                                 line(),
                                 text(":"),
                                 line(),
                                 text("Set"),
                                 text(")"),
+                                if ty_params.is_empty() {
+                                    nil()
+                                } else {
+                                    concat([
+                                        line(),
+                                        nest([
+                                            text("{"),
+                                            concat(
+                                                ty_params
+                                                    .iter()
+                                                    .map(|ty| concat([text(ty), line()])),
+                                            ),
+                                            text(":"),
+                                            line(),
+                                            text("Set"),
+                                            text("}"),
+                                        ]),
+                                    ])
+                                },
                             ]),
                             intersperse(
                                 body.iter().map(|(item_name, item)| match item {
@@ -1606,18 +1638,47 @@ impl TopLevelItem {
                 items,
                 trait_non_default_items,
             } => {
+                let module_name = format!("Impl_{}_for_{}", of_trait.to_name(), self_ty.to_name());
                 group([
+                    nest([text("Module"), line(), text(module_name.clone()), text(".")]),
+                    if generic_tys.is_empty() {
+                        nil()
+                    } else {
+                        concat([
+                            hardline(),
+                            nest([
+                                text("Section"),
+                                line(),
+                                text(module_name.clone()),
+                                text("."),
+                            ]),
+                        ])
+                    },
                     nest([
-                        nest([
-                            text("Module"),
-                            line(),
-                            text("Impl_"),
-                            text(of_trait.to_name()),
-                            text("_for_"),
-                            text(self_ty.to_name()),
-                            text("."),
-                        ]),
                         hardline(),
+                        if generic_tys.is_empty() {
+                            nil()
+                        } else {
+                            concat([
+                                nest([
+                                    text("Context"),
+                                    line(),
+                                    nest([
+                                        text("{"),
+                                        concat(
+                                            generic_tys.iter().map(|ty| concat([text(ty), line()])),
+                                        ),
+                                        text(":"),
+                                        line(),
+                                        text("Set"),
+                                        text("}"),
+                                    ]),
+                                    text("."),
+                                ]),
+                                hardline(),
+                                hardline(),
+                            ])
+                        },
                         nest([
                             text("Definition"),
                             line(),
@@ -1635,42 +1696,51 @@ impl TopLevelItem {
                         })),
                         nest([
                             nest([
-                                text("Global Instance I"),
-                                concat(
-                                    generic_tys
-                                        .iter()
-                                        .map(|generic_ty| concat([line(), text(generic_ty)])),
-                                ),
-                                text(" :"),
+                                text("Global Instance I :"),
                                 line(),
                                 nest([
                                     of_trait.to_doc(),
                                     text(".Trait"),
                                     line(),
                                     text("Self"),
-                                    concat(ty_params.iter().map(|(ty_param, has_default)| {
+                                    concat(ty_params.iter().map(|ty_param| {
                                         concat([
                                             line(),
-                                            (if *has_default {
-                                                nest([
-                                                    text("(Some"),
-                                                    line(),
-                                                    ty_param.to_doc(false),
-                                                    text(")"),
-                                                ])
-                                            } else {
-                                                ty_param.to_doc(false)
-                                            }),
+                                            nest([
+                                                text("("),
+                                                text(ty_param.name.clone()),
+                                                line(),
+                                                text(":="),
+                                                line(),
+                                                if ty_param.has_default {
+                                                    nest([
+                                                        text("(Some"),
+                                                        line(),
+                                                        ty_param.ty.to_doc(false),
+                                                        text(")"),
+                                                    ])
+                                                } else {
+                                                    ty_param.ty.to_doc(false)
+                                                },
+                                                text(")"),
+                                            ]),
                                         ])
                                     })),
                                 ]),
                             ]),
                             text(" :="),
-                            line(),
                             if items.is_empty() {
-                                nest([of_trait.to_doc(), text(".Build_Trait"), line(), text("_")])
+                                concat([
+                                    line(),
+                                    nest([
+                                        of_trait.to_doc(),
+                                        text(".Build_Trait"),
+                                        line(),
+                                        text("_"),
+                                    ]),
+                                ])
                             } else {
-                                text("{")
+                                text(" {")
                             },
                         ]),
                         nest(trait_non_default_items.iter().map(|name| {
@@ -1695,15 +1765,15 @@ impl TopLevelItem {
                         },
                     ]),
                     hardline(),
-                    nest([
-                        text("End"),
-                        line(),
-                        text("Impl_"),
-                        text(of_trait.to_name()),
-                        text("_for_"),
-                        text(self_ty.to_name()),
-                        text("."),
-                    ]),
+                    if generic_tys.is_empty() {
+                        nil()
+                    } else {
+                        concat([
+                            nest([text("End"), line(), text(module_name.clone()), text(".")]),
+                            hardline(),
+                        ])
+                    },
+                    nest([text("End"), line(), text(module_name), text(".")]),
                 ])
             }
             TopLevelItem::Error(message) => nest([text("Error"), line(), text(message), text(".")]),

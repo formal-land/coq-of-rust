@@ -66,7 +66,7 @@ End PhoneNumber.
 Definition PhoneNumber : Set := PhoneNumber.t.
 
 Module
-    Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
+  Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
   Definition Self := unpacking_options_via_question_mark.PhoneNumber.
   
   Definition clone
@@ -86,7 +86,7 @@ Module
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module
-    Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
+  Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
   Definition Self := unpacking_options_via_question_mark.PhoneNumber.
   
   Global Instance I : core.marker.Copy.Trait Self :=

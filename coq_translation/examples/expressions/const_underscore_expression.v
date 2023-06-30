@@ -34,7 +34,7 @@ Module BarTrait.
 End BarTrait.
 
 Module
-    Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
+  Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
   Definition Self := const_underscore_expression.Bar.
   
   Definition show (self : Self) : M alloc.string.String := Pure self.["test"].

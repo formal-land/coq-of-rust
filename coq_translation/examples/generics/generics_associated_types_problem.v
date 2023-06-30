@@ -14,7 +14,7 @@ End Container.
 Definition Container := Container.t.
 
 Module Contains.
-  Class Trait (A B Self : Set) : Set := {
+  Class Trait (Self : Set) {A B : Set} : Set := {
     contains : (ref Self) -> (ref A) -> (ref B) -> (M bool);
     first : (ref Self) -> (M i32);
     last : (ref Self) -> (M i32);
@@ -32,7 +32,7 @@ Module Contains.
 End Contains.
 
 Module
-    Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
+  Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
   Definition Self := generics_associated_types_problem.Container.
   
   Definition contains
@@ -61,8 +61,10 @@ Module
   }.
   
   Global Instance I :
-      generics_associated_types_problem.Contains.Trait Self i32 i32 :=
-    {
+      generics_associated_types_problem.Contains.Trait
+        Self
+        (A := i32)
+        (B := i32) := {
     generics_associated_types_problem.Contains.contains := contains;
     generics_associated_types_problem.Contains.first := first;
     generics_associated_types_problem.Contains.last := last;
