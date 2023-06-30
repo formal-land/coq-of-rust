@@ -66,7 +66,7 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
   Definition Self := boxing_errors.EmptyVec.
   
   Global Instance I : core.error.Error.Trait Self :=
-    core.error.Error.Build_Class _.
+    core.error.Error.Build_Trait _.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Definition double_first

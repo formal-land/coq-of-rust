@@ -63,7 +63,7 @@ Module Impl_core_marker_Copy_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
   
   Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_box_stack_heap_Point.
 
 (* #[allow(dead_code)] - struct was ignored by the compiler *)

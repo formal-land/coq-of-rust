@@ -6,8 +6,8 @@ use crate::render::*;
 use crate::ty::*;
 use rustc_ast::ast::{AttrArgs, AttrKind};
 use rustc_hir::{
-    Impl, ImplItemKind, Item, ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind,
-    VariantData,
+    GenericBound, Impl, ImplItemKind, Item, ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty,
+    TyKind, VariantData,
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
@@ -24,7 +24,7 @@ enum TraitItem {
         ret_ty: Box<CoqType>,
         body: Box<Expr>,
     },
-    Type,
+    Type(Vec<Path>),
 }
 
 #[derive(Debug)]
@@ -426,7 +426,19 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                     TraitItem::DefinitionWithDefault { args, ret_ty, body }
                                 }
                             },
-                            TraitItemKind::Type(_, _) => TraitItem::Type,
+                            TraitItemKind::Type(generic_bounds, ..) => {
+                                let generic_bounds = generic_bounds
+                                    .iter()
+                                    .filter_map(|generic_bound| match generic_bound {
+                                        GenericBound::Trait(ptraitref, _) => {
+                                            Some(compile_path(env, ptraitref.trait_ref.path))
+                                        }
+                                        GenericBound::LangItemTrait { .. } => None,
+                                        GenericBound::Outlives { .. } => None,
+                                    })
+                                    .collect();
+                                TraitItem::Type(generic_bounds)
+                            }
                         };
                         (item.ident.name.to_string(), body)
                     })
@@ -714,7 +726,7 @@ fn mt_impl_items(items: Vec<(String, ImplItem)>) -> Vec<(String, ImplItem)> {
 fn mt_trait_item(body: TraitItem) -> TraitItem {
     match body {
         TraitItem::Definition { ty } => TraitItem::Definition { ty: mt_ty(ty) },
-        TraitItem::Type => TraitItem::Type,
+        TraitItem::Type(x) => TraitItem::Type(x), // @TODO apply MT
         TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             TraitItem::DefinitionWithDefault {
@@ -1421,9 +1433,7 @@ impl TopLevelItem {
                     },
                     nest([
                         nest([
-                            text("Class"),
-                            line(),
-                            text("Trait"),
+                            text("Class Trait"),
                             line(),
                             nest([
                                 text("("),
@@ -1435,14 +1445,39 @@ impl TopLevelItem {
                                 text("Set"),
                                 text(")"),
                             ]),
+                            intersperse(
+                                body.iter().map(|(item_name, item)| match item {
+                                    TraitItem::Definition { .. } => nil(),
+                                    TraitItem::DefinitionWithDefault { .. } => nil(),
+                                    TraitItem::Type(bounds) => concat([
+                                        line(),
+                                        nest([
+                                            text("{"),
+                                            text(item_name),
+                                            text(" : "),
+                                            text("Set"),
+                                            text("}"),
+                                        ]),
+                                        concat(bounds.iter().map(|x| {
+                                            concat([
+                                                line(),
+                                                nest([
+                                                    text("`{"),
+                                                    x.to_doc(),
+                                                    text(".Trait"),
+                                                    line(),
+                                                    text(item_name),
+                                                    text("}"),
+                                                ]),
+                                            ])
+                                        })),
+                                    ]),
+                                }),
+                                [nil()],
+                            ),
+                            text(" :"),
                             line(),
-                            text(":"),
-                            line(),
-                            text("Set"),
-                            line(),
-                            text(":="),
-                            line(),
-                            text("{"),
+                            text("Set := {"),
                         ]),
                         intersperse(
                             body.iter().map(|(name, item)| match item {
@@ -1458,14 +1493,14 @@ impl TopLevelItem {
                                     ]),
                                 ]),
                                 TraitItem::DefinitionWithDefault { .. } => nil(),
-                                TraitItem::Type => group([
+                                TraitItem::Type { .. } => group([
                                     hardline(),
                                     nest([
                                         text(name),
                                         line(),
-                                        text(":"),
+                                        text(":="),
                                         line(),
-                                        text("Set"),
+                                        text(name),
                                         text(";"),
                                     ]),
                                 ]),
@@ -1481,77 +1516,83 @@ impl TopLevelItem {
                         hardline()
                     },
                     concat(body.iter().map(|(name, item)| {
-                        concat([
-                            hardline(),
-                            nest([
-                                nest([
-                                    text("Global Instance"),
-                                    line(),
-                                    text(format!("Method_{name}")),
-                                    line(),
-                                    text("`(Trait)"),
-                                ]),
-                                line(),
-                                nest([
-                                    text(": Notation.Dot"),
-                                    line(),
-                                    text(format!("\"{name}\"")),
-                                    line(),
-                                    text(":= {"),
-                                ]),
-                            ]),
-                            nest([
+                        if matches!(item, TraitItem::Type(..)) {
+                            nil()
+                        } else {
+                            concat([
                                 hardline(),
-                                match item {
-                                    TraitItem::Definition { .. } | TraitItem::Type => nest([
-                                        text("Notation.dot"),
+                                nest([
+                                    nest([
+                                        text("Global Instance"),
                                         line(),
-                                        text(":="),
+                                        text(format!("Method_{name}")),
                                         line(),
-                                        text(name),
-                                        text(";"),
+                                        text("`(Trait)"),
                                     ]),
-                                    TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
-                                        nest([
+                                    line(),
+                                    nest([
+                                        text(": Notation.Dot"),
+                                        line(),
+                                        text(format!("\"{name}\"")),
+                                        line(),
+                                        text(":= {"),
+                                    ]),
+                                ]),
+                                nest([
+                                    hardline(),
+                                    match item {
+                                        TraitItem::Definition { .. } | TraitItem::Type { .. } => {
                                             nest([
                                                 text("Notation.dot"),
-                                                if args.is_empty() {
-                                                    concat([line(), text("tt")])
-                                                } else {
-                                                    concat(args.iter().map(|(name, ty)| {
-                                                        concat([
-                                                            line(),
-                                                            nest([
-                                                                text("("),
-                                                                text(name),
-                                                                line(),
-                                                                text(": "),
-                                                                ty.to_doc(false),
-                                                                text(")"),
-                                                            ]),
-                                                        ])
-                                                    }))
-                                                },
-                                                text(" :="),
-                                            ]),
-                                            line(),
-                                            text("("),
-                                            body.to_doc(false),
-                                            line(),
-                                            nest([
-                                                text(":"),
                                                 line(),
-                                                ret_ty.to_doc(false),
-                                                text(")"),
-                                            ]),
-                                            text(";"),
-                                        ])
-                                    }
-                                },
-                            ]),
-                            hardline(),
-                            text("}."),
-                        ])
+                                                text(":="),
+                                                line(),
+                                                text(name),
+                                                text(";"),
+                                            ])
+                                        }
+                                        TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
+                                            nest([
+                                                nest([
+                                                    text("Notation.dot"),
+                                                    if args.is_empty() {
+                                                        concat([line(), text("tt")])
+                                                    } else {
+                                                        concat(args.iter().map(|(name, ty)| {
+                                                            concat([
+                                                                line(),
+                                                                nest([
+                                                                    text("("),
+                                                                    text(name),
+                                                                    line(),
+                                                                    text(": "),
+                                                                    ty.to_doc(false),
+                                                                    text(")"),
+                                                                ]),
+                                                            ])
+                                                        }))
+                                                    },
+                                                    text(" :="),
+                                                ]),
+                                                line(),
+                                                text("("),
+                                                body.to_doc(false),
+                                                line(),
+                                                nest([
+                                                    text(":"),
+                                                    line(),
+                                                    ret_ty.to_doc(false),
+                                                    text(")"),
+                                                ]),
+                                                text(";"),
+                                            ])
+                                        }
+                                    },
+                                ]),
+                                hardline(),
+                                text("}."),
+                            ])
+                        }
                     })),
                 ]),
                 hardline(),
@@ -1627,7 +1668,7 @@ impl TopLevelItem {
                             text(" :="),
                             line(),
                             if items.is_empty() {
-                                nest([of_trait.to_doc(), text(".Build_Class"), line(), text("_")])
+                                nest([of_trait.to_doc(), text(".Build_Trait"), line(), text("_")])
                             } else {
                                 text("{")
                             },

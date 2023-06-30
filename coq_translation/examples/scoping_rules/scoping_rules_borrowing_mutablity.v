@@ -46,7 +46,7 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
   Definition Self := scoping_rules_borrowing_mutablity.Book.
   
   Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 Definition borrow_book

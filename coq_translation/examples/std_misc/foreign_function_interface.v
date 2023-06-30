@@ -78,7 +78,7 @@ Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
   Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

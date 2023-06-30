@@ -18,7 +18,7 @@ Module
   Definition Self := generics_phantom_type.PhantomTuple A B.
   
   Global Instance I A B : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Class _.
+    core.marker.StructuralPartialEq.Build_Trait _.
 End
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
@@ -62,7 +62,7 @@ Module
   Definition Self := generics_phantom_type.PhantomStruct A B.
   
   Global Instance I A B : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Class _.
+    core.marker.StructuralPartialEq.Build_Trait _.
 End
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 

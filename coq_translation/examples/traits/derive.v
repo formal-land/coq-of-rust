@@ -14,7 +14,7 @@ Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
   Definition Self := derive.Centimeters.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Class _.
+    core.marker.StructuralPartialEq.Build_Trait _.
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.

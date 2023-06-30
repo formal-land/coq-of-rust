@@ -3,14 +3,17 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module types.
   Module FromLittleEndian.
-    Class Trait (Self : Set) : Set := {
-      Bytes : Set;
+    Class Trait
+        (Self : Set)
+        {Bytes : Set}
+        `{core.default.Default.Trait Bytes}
+        `{core.convert.AsRef.Trait Bytes}
+        `{core.convert.AsMut.Trait Bytes} :
+        Set := {
+      Bytes := Bytes;
       from_le_bytes : ImplSelf.Bytes -> (M Self);
     }.
     
-    Global Instance Method_Bytes `(Trait) : Notation.Dot "Bytes" := {
-      Notation.dot := Bytes;
-    }.
     Global Instance Method_from_le_bytes `(Trait)
       : Notation.Dot "from_le_bytes" := {
       Notation.dot := from_le_bytes;
@@ -118,7 +121,7 @@ Module types.
     Definition Self := ink_primitives.types.AccountId.
     
     Global Instance I : ink_env.types.AccountIdGuard.Trait Self :=
-      ink_env.types.AccountIdGuard.Build_Class _.
+      ink_env.types.AccountIdGuard.Build_Trait _.
   End Impl_ink_env_types_AccountIdGuard_for_ink_primitives_types_AccountId.
   
   Module CodecAsType.
@@ -132,43 +135,73 @@ Module types.
     Definition Self := T.
     
     Global Instance I T : ink_env.types.CodecAsType.Trait Self :=
-      ink_env.types.CodecAsType.Build_Class _.
+      ink_env.types.CodecAsType.Build_Trait _.
   End Impl_ink_env_types_CodecAsType_for_T.
   
   Module Environment.
-    Class Trait (Self : Set) : Set := {
+    Class Trait
+        (Self : Set)
+        {AccountId : Set}
+        `{parity_scale_codec.codec.Codec.Trait AccountId}
+        `{ink_env.types.CodecAsType.Trait AccountId}
+        `{core.clone.Clone.Trait AccountId}
+        `{core.cmp.PartialEq.Trait AccountId}
+        `{core.cmp.Eq.Trait AccountId}
+        `{core.cmp.Ord.Trait AccountId}
+        `{core.convert.AsRef.Trait AccountId}
+        `{core.convert.AsMut.Trait AccountId}
+        {Balance : Set}
+        `{parity_scale_codec.codec.Codec.Trait Balance}
+        `{ink_env.types.CodecAsType.Trait Balance}
+        `{core.marker.Copy.Trait Balance}
+        `{core.clone.Clone.Trait Balance}
+        `{core.cmp.PartialEq.Trait Balance}
+        `{core.cmp.Eq.Trait Balance}
+        `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance}
+        `{ink_env.types.FromLittleEndian.Trait Balance}
+        {Hash : Set}
+        `{parity_scale_codec.codec.Codec.Trait Hash}
+        `{ink_env.types.CodecAsType.Trait Hash}
+        `{core.marker.Copy.Trait Hash}
+        `{core.clone.Clone.Trait Hash}
+        `{ink_primitives.types.Clear.Trait Hash}
+        `{core.cmp.PartialEq.Trait Hash}
+        `{core.cmp.Eq.Trait Hash}
+        `{core.cmp.Ord.Trait Hash}
+        `{core.convert.AsRef.Trait Hash}
+        `{core.convert.AsMut.Trait Hash}
+        {Timestamp : Set}
+        `{parity_scale_codec.codec.Codec.Trait Timestamp}
+        `{ink_env.types.CodecAsType.Trait Timestamp}
+        `{core.marker.Copy.Trait Timestamp}
+        `{core.clone.Clone.Trait Timestamp}
+        `{core.cmp.PartialEq.Trait Timestamp}
+        `{core.cmp.Eq.Trait Timestamp}
+        `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp}
+        `{ink_env.types.FromLittleEndian.Trait Timestamp}
+        {BlockNumber : Set}
+        `{parity_scale_codec.codec.Codec.Trait BlockNumber}
+        `{ink_env.types.CodecAsType.Trait BlockNumber}
+        `{core.marker.Copy.Trait BlockNumber}
+        `{core.clone.Clone.Trait BlockNumber}
+        `{core.cmp.PartialEq.Trait BlockNumber}
+        `{core.cmp.Eq.Trait BlockNumber}
+        `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber}
+        `{ink_env.types.FromLittleEndian.Trait BlockNumber}
+        {ChainExtension : Set} :
+        Set := {
       MAX_EVENT_TOPICS : usize;
-      AccountId : Set;
-      Balance : Set;
-      Hash : Set;
-      Timestamp : Set;
-      BlockNumber : Set;
-      ChainExtension : Set;
+      AccountId := AccountId;
+      Balance := Balance;
+      Hash := Hash;
+      Timestamp := Timestamp;
+      BlockNumber := BlockNumber;
+      ChainExtension := ChainExtension;
     }.
     
     Global Instance Method_MAX_EVENT_TOPICS `(Trait)
       : Notation.Dot "MAX_EVENT_TOPICS" := {
       Notation.dot := MAX_EVENT_TOPICS;
-    }.
-    Global Instance Method_AccountId `(Trait) : Notation.Dot "AccountId" := {
-      Notation.dot := AccountId;
-    }.
-    Global Instance Method_Balance `(Trait) : Notation.Dot "Balance" := {
-      Notation.dot := Balance;
-    }.
-    Global Instance Method_Hash `(Trait) : Notation.Dot "Hash" := {
-      Notation.dot := Hash;
-    }.
-    Global Instance Method_Timestamp `(Trait) : Notation.Dot "Timestamp" := {
-      Notation.dot := Timestamp;
-    }.
-    Global Instance Method_BlockNumber `(Trait)
-      : Notation.Dot "BlockNumber" := {
-      Notation.dot := BlockNumber;
-    }.
-    Global Instance Method_ChainExtension `(Trait)
-      : Notation.Dot "ChainExtension" := {
-      Notation.dot := ChainExtension;
     }.
   End Environment.
   
@@ -222,7 +255,7 @@ Module types.
     Definition Self := ink_env.types.DefaultEnvironment.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Class _.
+      core.marker.StructuralPartialEq.Build_Trait _.
   End Impl_core_marker_StructuralPartialEq_for_ink_env_types_DefaultEnvironment.
   
   Module Impl_core_cmp_PartialEq_for_ink_env_types_DefaultEnvironment.
@@ -247,7 +280,7 @@ Module types.
     Definition Self := ink_env.types.DefaultEnvironment.
     
     Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Class _.
+      core.marker.StructuralEq.Build_Trait _.
   End Impl_core_marker_StructuralEq_for_ink_env_types_DefaultEnvironment.
   
   Module Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
@@ -302,14 +335,17 @@ Module types.
 End types.
 
 Module FromLittleEndian.
-  Class Trait (Self : Set) : Set := {
-    Bytes : Set;
+  Class Trait
+      (Self : Set)
+      {Bytes : Set}
+      `{core.default.Default.Trait Bytes}
+      `{core.convert.AsRef.Trait Bytes}
+      `{core.convert.AsMut.Trait Bytes} :
+      Set := {
+    Bytes := Bytes;
     from_le_bytes : ImplSelf.Bytes -> (M Self);
   }.
   
-  Global Instance Method_Bytes `(Trait) : Notation.Dot "Bytes" := {
-    Notation.dot := Bytes;
-  }.
   Global Instance Method_from_le_bytes `(Trait)
     : Notation.Dot "from_le_bytes" := {
     Notation.dot := from_le_bytes;
@@ -417,7 +453,7 @@ Module Impl_ink_env_types_AccountIdGuard_for_ink_primitives_types_AccountId.
   Definition Self := ink_primitives.types.AccountId.
   
   Global Instance I : ink_env.types.AccountIdGuard.Trait Self :=
-    ink_env.types.AccountIdGuard.Build_Class _.
+    ink_env.types.AccountIdGuard.Build_Trait _.
 End Impl_ink_env_types_AccountIdGuard_for_ink_primitives_types_AccountId.
 
 Module CodecAsType.
@@ -431,42 +467,73 @@ Module Impl_ink_env_types_CodecAsType_for_T.
   Definition Self := T.
   
   Global Instance I T : ink_env.types.CodecAsType.Trait Self :=
-    ink_env.types.CodecAsType.Build_Class _.
+    ink_env.types.CodecAsType.Build_Trait _.
 End Impl_ink_env_types_CodecAsType_for_T.
 
 Module Environment.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self : Set)
+      {AccountId : Set}
+      `{parity_scale_codec.codec.Codec.Trait AccountId}
+      `{ink_env.types.CodecAsType.Trait AccountId}
+      `{core.clone.Clone.Trait AccountId}
+      `{core.cmp.PartialEq.Trait AccountId}
+      `{core.cmp.Eq.Trait AccountId}
+      `{core.cmp.Ord.Trait AccountId}
+      `{core.convert.AsRef.Trait AccountId}
+      `{core.convert.AsMut.Trait AccountId}
+      {Balance : Set}
+      `{parity_scale_codec.codec.Codec.Trait Balance}
+      `{ink_env.types.CodecAsType.Trait Balance}
+      `{core.marker.Copy.Trait Balance}
+      `{core.clone.Clone.Trait Balance}
+      `{core.cmp.PartialEq.Trait Balance}
+      `{core.cmp.Eq.Trait Balance}
+      `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance}
+      `{ink_env.types.FromLittleEndian.Trait Balance}
+      {Hash : Set}
+      `{parity_scale_codec.codec.Codec.Trait Hash}
+      `{ink_env.types.CodecAsType.Trait Hash}
+      `{core.marker.Copy.Trait Hash}
+      `{core.clone.Clone.Trait Hash}
+      `{ink_primitives.types.Clear.Trait Hash}
+      `{core.cmp.PartialEq.Trait Hash}
+      `{core.cmp.Eq.Trait Hash}
+      `{core.cmp.Ord.Trait Hash}
+      `{core.convert.AsRef.Trait Hash}
+      `{core.convert.AsMut.Trait Hash}
+      {Timestamp : Set}
+      `{parity_scale_codec.codec.Codec.Trait Timestamp}
+      `{ink_env.types.CodecAsType.Trait Timestamp}
+      `{core.marker.Copy.Trait Timestamp}
+      `{core.clone.Clone.Trait Timestamp}
+      `{core.cmp.PartialEq.Trait Timestamp}
+      `{core.cmp.Eq.Trait Timestamp}
+      `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp}
+      `{ink_env.types.FromLittleEndian.Trait Timestamp}
+      {BlockNumber : Set}
+      `{parity_scale_codec.codec.Codec.Trait BlockNumber}
+      `{ink_env.types.CodecAsType.Trait BlockNumber}
+      `{core.marker.Copy.Trait BlockNumber}
+      `{core.clone.Clone.Trait BlockNumber}
+      `{core.cmp.PartialEq.Trait BlockNumber}
+      `{core.cmp.Eq.Trait BlockNumber}
+      `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber}
+      `{ink_env.types.FromLittleEndian.Trait BlockNumber}
+      {ChainExtension : Set} :
+      Set := {
     MAX_EVENT_TOPICS : usize;
-    AccountId : Set;
-    Balance : Set;
-    Hash : Set;
-    Timestamp : Set;
-    BlockNumber : Set;
-    ChainExtension : Set;
+    AccountId := AccountId;
+    Balance := Balance;
+    Hash := Hash;
+    Timestamp := Timestamp;
+    BlockNumber := BlockNumber;
+    ChainExtension := ChainExtension;
   }.
   
   Global Instance Method_MAX_EVENT_TOPICS `(Trait)
     : Notation.Dot "MAX_EVENT_TOPICS" := {
     Notation.dot := MAX_EVENT_TOPICS;
-  }.
-  Global Instance Method_AccountId `(Trait) : Notation.Dot "AccountId" := {
-    Notation.dot := AccountId;
-  }.
-  Global Instance Method_Balance `(Trait) : Notation.Dot "Balance" := {
-    Notation.dot := Balance;
-  }.
-  Global Instance Method_Hash `(Trait) : Notation.Dot "Hash" := {
-    Notation.dot := Hash;
-  }.
-  Global Instance Method_Timestamp `(Trait) : Notation.Dot "Timestamp" := {
-    Notation.dot := Timestamp;
-  }.
-  Global Instance Method_BlockNumber `(Trait) : Notation.Dot "BlockNumber" := {
-    Notation.dot := BlockNumber;
-  }.
-  Global Instance Method_ChainExtension `(Trait)
-    : Notation.Dot "ChainExtension" := {
-    Notation.dot := ChainExtension;
   }.
 End Environment.
 
@@ -577,7 +644,7 @@ Module
   Definition Self := ink_env.types.DefaultEnvironment.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Class _.
+    core.marker.StructuralPartialEq.Build_Trait _.
 End Impl_core_marker_StructuralPartialEq_for_ink_env_types_DefaultEnvironment.
 
 Module Impl_core_cmp_PartialEq_for_ink_env_types_DefaultEnvironment.
@@ -602,7 +669,7 @@ Module Impl_core_marker_StructuralEq_for_ink_env_types_DefaultEnvironment.
   Definition Self := ink_env.types.DefaultEnvironment.
   
   Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Class _.
+    core.marker.StructuralEq.Build_Trait _.
 End Impl_core_marker_StructuralEq_for_ink_env_types_DefaultEnvironment.
 
 Module Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
@@ -1331,7 +1398,7 @@ Module arithmetic.
     Definition Self := T.
     
     Global Instance I T : ink_env.arithmetic.BaseArithmetic.Trait Self :=
-      ink_env.arithmetic.BaseArithmetic.Build_Class _.
+      ink_env.arithmetic.BaseArithmetic.Build_Trait _.
   End Impl_ink_env_arithmetic_BaseArithmetic_for_T.
   
   Module AtLeast32Bit.
@@ -1345,7 +1412,7 @@ Module arithmetic.
     Definition Self := T.
     
     Global Instance I T : ink_env.arithmetic.AtLeast32Bit.Trait Self :=
-      ink_env.arithmetic.AtLeast32Bit.Build_Class _.
+      ink_env.arithmetic.AtLeast32Bit.Build_Trait _.
   End Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
   
   Module AtLeast32BitUnsigned.
@@ -1359,7 +1426,7 @@ Module arithmetic.
     Definition Self := T.
     
     Global Instance I T : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Self :=
-      ink_env.arithmetic.AtLeast32BitUnsigned.Build_Class _.
+      ink_env.arithmetic.AtLeast32BitUnsigned.Build_Trait _.
   End Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
   
   Module Saturating.
@@ -1462,7 +1529,7 @@ Module Impl_ink_env_arithmetic_BaseArithmetic_for_T.
   Definition Self := T.
   
   Global Instance I T : ink_env.arithmetic.BaseArithmetic.Trait Self :=
-    ink_env.arithmetic.BaseArithmetic.Build_Class _.
+    ink_env.arithmetic.BaseArithmetic.Build_Trait _.
 End Impl_ink_env_arithmetic_BaseArithmetic_for_T.
 
 Module AtLeast32Bit.
@@ -1476,7 +1543,7 @@ Module Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
   Definition Self := T.
   
   Global Instance I T : ink_env.arithmetic.AtLeast32Bit.Trait Self :=
-    ink_env.arithmetic.AtLeast32Bit.Build_Class _.
+    ink_env.arithmetic.AtLeast32Bit.Build_Trait _.
 End Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
 
 Module AtLeast32BitUnsigned.
@@ -1490,7 +1557,7 @@ Module Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
   Definition Self := T.
   
   Global Instance I T : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Self :=
-    ink_env.arithmetic.AtLeast32BitUnsigned.Build_Class _.
+    ink_env.arithmetic.AtLeast32BitUnsigned.Build_Trait _.
 End Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
 
 Module Saturating.
@@ -1664,7 +1731,7 @@ Module backend.
     Definition Self := ink_env.backend.CallFlags.
     
     Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Class _.
+      core.marker.Copy.Build_Trait _.
   End Impl_core_marker_Copy_for_ink_env_backend_CallFlags.
   
   Module Impl_core_clone_Clone_for_ink_env_backend_CallFlags.
@@ -2168,7 +2235,7 @@ Module Impl_core_marker_Copy_for_ink_env_backend_CallFlags.
   Definition Self := ink_env.backend.CallFlags.
   
   Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_ink_env_backend_CallFlags.
 
 Module Impl_core_clone_Clone_for_ink_env_backend_CallFlags.
@@ -2582,7 +2649,7 @@ Module call.
         call_flags : ink_env.backend.CallFlags;
         _return_type : ink_env.call.common.ReturnType R;
         exec_input : ink_env.call.execution_input.ExecutionInput Args;
-        _phantom : core.marker.PhantomData ( -> E);
+        _phantom : core.marker.PhantomData (unit -> E);
       }.
       
       Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -2984,7 +3051,7 @@ Module call.
         call_flags : ink_env.backend.CallFlags;
         exec_input : Args;
         return_type : RetType;
-        _phantom : core.marker.PhantomData ( -> E);
+        _phantom : core.marker.PhantomData (unit -> E);
       }.
       
       Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -3685,7 +3752,7 @@ Module call.
   
   Module common.
     Module ReturnType.
-      Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
+      Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
       
       Global Instance Get_0 : Notation.Dot 0 := {
         Notation.dot '(Build_t x0) := x0;
@@ -3734,7 +3801,7 @@ Module call.
       Definition Self := ink_env.call.common.ReturnType T.
       
       Global Instance I T : core.marker.Copy.Trait Self :=
-        core.marker.Copy.Build_Class _.
+        core.marker.Copy.Build_Trait _.
     End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
     
     Module Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
@@ -3788,7 +3855,7 @@ Module call.
       Definition Self := ink_env.call.common.Set T.
       
       Global Instance I T : core.marker.Copy.Trait Self :=
-        core.marker.Copy.Build_Class _.
+        core.marker.Copy.Build_Trait _.
     End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
     
     Module Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
@@ -3818,7 +3885,7 @@ Module call.
     End Impl_ink_env_call_common_Set_T.
     
     Module Unset.
-      Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
+      Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
       
       Global Instance Get_0 : Notation.Dot 0 := {
         Notation.dot '(Build_t x0) := x0;
@@ -3867,7 +3934,7 @@ Module call.
       Definition Self := ink_env.call.common.Unset T.
       
       Global Instance I T : core.marker.Copy.Trait Self :=
-        core.marker.Copy.Build_Class _.
+        core.marker.Copy.Build_Trait _.
     End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
     
     Module Impl_core_default_Default_for_ink_env_call_common_Unset_T.
@@ -3888,14 +3955,11 @@ Module call.
     End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
     
     Module Unwrap.
-      Class Trait (Self : Set) : Set := {
-        Output : Set;
+      Class Trait (Self : Set) {Output : Set} : Set := {
+        Output := Output;
         unwrap_or_else : Self -> F -> (M ImplSelf.Output);
       }.
       
-      Global Instance Method_Output `(Trait) : Notation.Dot "Output" := {
-        Notation.dot := Output;
-      }.
       Global Instance Method_unwrap_or_else `(Trait)
         : Notation.Dot "unwrap_or_else" := {
         Notation.dot := unwrap_or_else;
@@ -3961,21 +4025,20 @@ Module call.
     End FromAccountId.
     
     Module ConstructorReturnType.
-      Class Trait (C Self : Set) : Set := {
+      Class Trait
+          (C Self : Set)
+          {Output : Set}
+          {Error : Set}
+          `{parity_scale_codec.codec.Decode.Trait Error} :
+          Set := {
         IS_RESULT : bool;
-        Output : Set;
-        Error : Set;
+        Output := Output;
+        Error := Error;
         ok : C -> (M ImplSelf.Output);
       }.
       
       Global Instance Method_IS_RESULT `(Trait) : Notation.Dot "IS_RESULT" := {
         Notation.dot := IS_RESULT;
-      }.
-      Global Instance Method_Output `(Trait) : Notation.Dot "Output" := {
-        Notation.dot := Output;
-      }.
-      Global Instance Method_Error `(Trait) : Notation.Dot "Error" := {
-        Notation.dot := Error;
       }.
       Global Instance Method_ok `(Trait) : Notation.Dot "ok" := {
         Notation.dot := ok;
@@ -4060,7 +4123,7 @@ Module call.
         exec_input : ink_env.call.execution_input.ExecutionInput Args;
         salt_bytes : Salt;
         _return_type : ink_env.call.common.ReturnType R;
-        _phantom : core.marker.PhantomData ( -> ContractRef);
+        _phantom : core.marker.PhantomData (unit -> ContractRef);
       }.
       
       Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -4259,7 +4322,7 @@ Module call.
         exec_input : Args;
         salt : Salt;
         return_type : RetType;
-        _phantom : core.marker.PhantomData ( -> (E * ContractRef));
+        _phantom : core.marker.PhantomData (unit -> (E * ContractRef));
       }.
       
       Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -5390,7 +5453,7 @@ Module call.
       Definition Self := ink_env.call.selector.Selector.
       
       Global Instance I : core.marker.Copy.Trait Self :=
-        core.marker.Copy.Build_Class _.
+        core.marker.Copy.Build_Trait _.
     End Impl_core_marker_Copy_for_ink_env_call_selector_Selector.
     
     Module Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
@@ -5414,7 +5477,7 @@ Module call.
       Definition Self := ink_env.call.selector.Selector.
       
       Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-        core.marker.StructuralPartialEq.Build_Class _.
+        core.marker.StructuralPartialEq.Build_Trait _.
     End Impl_core_marker_StructuralPartialEq_for_ink_env_call_selector_Selector.
     
     Module Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
@@ -5439,7 +5502,7 @@ Module call.
       Definition Self := ink_env.call.selector.Selector.
       
       Global Instance I : core.marker.StructuralEq.Trait Self :=
-        core.marker.StructuralEq.Build_Class _.
+        core.marker.StructuralEq.Build_Trait _.
     End Impl_core_marker_StructuralEq_for_ink_env_call_selector_Selector.
     
     Module Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
@@ -5505,7 +5568,7 @@ Module call_builder.
       call_flags : ink_env.backend.CallFlags;
       _return_type : ink_env.call.common.ReturnType R;
       exec_input : ink_env.call.execution_input.ExecutionInput Args;
-      _phantom : core.marker.PhantomData ( -> E);
+      _phantom : core.marker.PhantomData (unit -> E);
     }.
     
     Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -5901,7 +5964,7 @@ Module call_builder.
       call_flags : ink_env.backend.CallFlags;
       exec_input : Args;
       return_type : RetType;
-      _phantom : core.marker.PhantomData ( -> E);
+      _phantom : core.marker.PhantomData (unit -> E);
     }.
     
     Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -6601,7 +6664,7 @@ Module CallParams.
     call_flags : ink_env.backend.CallFlags;
     _return_type : ink_env.call.common.ReturnType R;
     exec_input : ink_env.call.execution_input.ExecutionInput Args;
-    _phantom : core.marker.PhantomData ( -> E);
+    _phantom : core.marker.PhantomData (unit -> E);
   }.
   
   Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -6988,7 +7051,7 @@ Module CallBuilder.
     call_flags : ink_env.backend.CallFlags;
     exec_input : Args;
     return_type : RetType;
-    _phantom : core.marker.PhantomData ( -> E);
+    _phantom : core.marker.PhantomData (unit -> E);
   }.
   
   Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -7659,7 +7722,7 @@ End
 
 Module common.
   Module ReturnType.
-    Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
+    Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
     
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
@@ -7708,7 +7771,7 @@ Module common.
     Definition Self := ink_env.call.common.ReturnType T.
     
     Global Instance I T : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Class _.
+      core.marker.Copy.Build_Trait _.
   End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
   
   Module Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
@@ -7762,7 +7825,7 @@ Module common.
     Definition Self := ink_env.call.common.Set T.
     
     Global Instance I T : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Class _.
+      core.marker.Copy.Build_Trait _.
   End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
   
   Module Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
@@ -7792,7 +7855,7 @@ Module common.
   End Impl_ink_env_call_common_Set_T_2.
   
   Module Unset.
-    Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
+    Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
     
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
@@ -7841,7 +7904,7 @@ Module common.
     Definition Self := ink_env.call.common.Unset T.
     
     Global Instance I T : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Class _.
+      core.marker.Copy.Build_Trait _.
   End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
   
   Module Impl_core_default_Default_for_ink_env_call_common_Unset_T.
@@ -7862,14 +7925,11 @@ Module common.
   End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
   
   Module Unwrap.
-    Class Trait (Self : Set) : Set := {
-      Output : Set;
+    Class Trait (Self : Set) {Output : Set} : Set := {
+      Output := Output;
       unwrap_or_else : Self -> F -> (M ImplSelf.Output);
     }.
     
-    Global Instance Method_Output `(Trait) : Notation.Dot "Output" := {
-      Notation.dot := Output;
-    }.
     Global Instance Method_unwrap_or_else `(Trait)
       : Notation.Dot "unwrap_or_else" := {
       Notation.dot := unwrap_or_else;
@@ -7911,7 +7971,7 @@ Module common.
 End common.
 
 Module ReturnType.
-  Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
+  Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
@@ -7960,7 +8020,7 @@ Module Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
   Definition Self := ink_env.call.common.ReturnType T.
   
   Global Instance I T : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
 
 Module Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
@@ -8014,7 +8074,7 @@ Module Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
   Definition Self := ink_env.call.common.Set T.
   
   Global Instance I T : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
 
 Module Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
@@ -8044,7 +8104,7 @@ Module Impl_ink_env_call_common_Set_T_3.
 End Impl_ink_env_call_common_Set_T_3.
 
 Module Unset.
-  Record t : Set := { _ : core.marker.PhantomData ( -> T);}.
+  Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
@@ -8093,7 +8153,7 @@ Module Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
   Definition Self := ink_env.call.common.Unset T.
   
   Global Instance I T : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
 
 Module Impl_core_default_Default_for_ink_env_call_common_Unset_T.
@@ -8114,14 +8174,11 @@ Module Impl_core_default_Default_for_ink_env_call_common_Unset_T.
 End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
 
 Module Unwrap.
-  Class Trait (Self : Set) : Set := {
-    Output : Set;
+  Class Trait (Self : Set) {Output : Set} : Set := {
+    Output := Output;
     unwrap_or_else : Self -> F -> (M ImplSelf.Output);
   }.
   
-  Global Instance Method_Output `(Trait) : Notation.Dot "Output" := {
-    Notation.dot := Output;
-  }.
   Global Instance Method_unwrap_or_else `(Trait)
     : Notation.Dot "unwrap_or_else" := {
     Notation.dot := unwrap_or_else;
@@ -8182,21 +8239,20 @@ Module create_builder.
   End FromAccountId.
   
   Module ConstructorReturnType.
-    Class Trait (C Self : Set) : Set := {
+    Class Trait
+        (C Self : Set)
+        {Output : Set}
+        {Error : Set}
+        `{parity_scale_codec.codec.Decode.Trait Error} :
+        Set := {
       IS_RESULT : bool;
-      Output : Set;
-      Error : Set;
+      Output := Output;
+      Error := Error;
       ok : C -> (M ImplSelf.Output);
     }.
     
     Global Instance Method_IS_RESULT `(Trait) : Notation.Dot "IS_RESULT" := {
       Notation.dot := IS_RESULT;
-    }.
-    Global Instance Method_Output `(Trait) : Notation.Dot "Output" := {
-      Notation.dot := Output;
-    }.
-    Global Instance Method_Error `(Trait) : Notation.Dot "Error" := {
-      Notation.dot := Error;
     }.
     Global Instance Method_ok `(Trait) : Notation.Dot "ok" := {
       Notation.dot := ok;
@@ -8279,7 +8335,7 @@ Module create_builder.
       exec_input : ink_env.call.execution_input.ExecutionInput Args;
       salt_bytes : Salt;
       _return_type : ink_env.call.common.ReturnType R;
-      _phantom : core.marker.PhantomData ( -> ContractRef);
+      _phantom : core.marker.PhantomData (unit -> ContractRef);
     }.
     
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -8473,7 +8529,7 @@ Module create_builder.
       exec_input : Args;
       salt : Salt;
       return_type : RetType;
-      _phantom : core.marker.PhantomData ( -> (E * ContractRef));
+      _phantom : core.marker.PhantomData (unit -> (E * ContractRef));
     }.
     
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -8972,21 +9028,20 @@ Module FromAccountId.
 End FromAccountId.
 
 Module ConstructorReturnType.
-  Class Trait (C Self : Set) : Set := {
+  Class Trait
+      (C Self : Set)
+      {Output : Set}
+      {Error : Set}
+      `{parity_scale_codec.codec.Decode.Trait Error} :
+      Set := {
     IS_RESULT : bool;
-    Output : Set;
-    Error : Set;
+    Output := Output;
+    Error := Error;
     ok : C -> (M ImplSelf.Output);
   }.
   
   Global Instance Method_IS_RESULT `(Trait) : Notation.Dot "IS_RESULT" := {
     Notation.dot := IS_RESULT;
-  }.
-  Global Instance Method_Output `(Trait) : Notation.Dot "Output" := {
-    Notation.dot := Output;
-  }.
-  Global Instance Method_Error `(Trait) : Notation.Dot "Error" := {
-    Notation.dot := Error;
   }.
   Global Instance Method_ok `(Trait) : Notation.Dot "ok" := {
     Notation.dot := ok;
@@ -9068,7 +9123,7 @@ Module CreateParams.
     exec_input : ink_env.call.execution_input.ExecutionInput Args;
     salt_bytes : Salt;
     _return_type : ink_env.call.common.ReturnType R;
-    _phantom : core.marker.PhantomData ( -> ContractRef);
+    _phantom : core.marker.PhantomData (unit -> ContractRef);
   }.
   
   Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -9262,7 +9317,7 @@ Module CreateBuilder.
     exec_input : Args;
     salt : Salt;
     return_type : RetType;
-    _phantom : core.marker.PhantomData ( -> (E * ContractRef));
+    _phantom : core.marker.PhantomData (unit -> (E * ContractRef));
   }.
   
   Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -10969,7 +11024,7 @@ Module selector.
     Definition Self := ink_env.call.selector.Selector.
     
     Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Class _.
+      core.marker.Copy.Build_Trait _.
   End Impl_core_marker_Copy_for_ink_env_call_selector_Selector.
   
   Module Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
@@ -10993,7 +11048,7 @@ Module selector.
     Definition Self := ink_env.call.selector.Selector.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Class _.
+      core.marker.StructuralPartialEq.Build_Trait _.
   End Impl_core_marker_StructuralPartialEq_for_ink_env_call_selector_Selector.
   
   Module Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
@@ -11018,7 +11073,7 @@ Module selector.
     Definition Self := ink_env.call.selector.Selector.
     
     Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Class _.
+      core.marker.StructuralEq.Build_Trait _.
   End Impl_core_marker_StructuralEq_for_ink_env_call_selector_Selector.
   
   Module Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
@@ -11126,7 +11181,7 @@ Module Impl_core_marker_Copy_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
   Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_ink_env_call_selector_Selector.
 
 Module Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
@@ -11149,7 +11204,7 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Class _.
+    core.marker.StructuralPartialEq.Build_Trait _.
 End Impl_core_marker_StructuralPartialEq_for_ink_env_call_selector_Selector.
 
 Module Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
@@ -11174,7 +11229,7 @@ Module Impl_core_marker_StructuralEq_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
   Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Class _.
+    core.marker.StructuralEq.Build_Trait _.
 End Impl_core_marker_StructuralEq_for_ink_env_call_selector_Selector.
 
 Module Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
@@ -11279,7 +11334,7 @@ Module
   Definition Self := ink_env.call.selector.Selector.
   
   Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
-    parity_scale_codec.encode_like.EncodeLike.Build_Class _.
+    parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_env_call_selector_Selector.
 
@@ -11318,7 +11373,7 @@ Module chain_extension.
   Module ChainExtensionMethod.
     Record t : Set := {
       func_id : u32;
-      state : core.marker.PhantomData ( -> (I * O * ErrorCode));
+      state : core.marker.PhantomData (unit -> (I * O * ErrorCode));
     }.
     
     Global Instance Get_func_id : Notation.Dot "func_id" := {
@@ -11493,7 +11548,7 @@ Module chain_extension.
     
     Module HandleErrorCode.
       Record t : Set := {
-        error_code : core.marker.PhantomData ( -> T);
+        error_code : core.marker.PhantomData (unit -> T);
       }.
       
       Global Instance Get_error_code : Notation.Dot "error_code" := {
@@ -11668,17 +11723,11 @@ Module chain_extension.
     Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode_2.
   
   Module IsResultType.
-    Class Trait (Self : Set) : Set := {
-      Ok : Set;
-      Err : Set;
+    Class Trait (Self : Set) {Ok : Set} {Err : Set} : Set := {
+      Ok := Ok;
+      Err := Err;
     }.
     
-    Global Instance Method_Ok `(Trait) : Notation.Dot "Ok" := {
-      Notation.dot := Ok;
-    }.
-    Global Instance Method_Err `(Trait) : Notation.Dot "Err" := {
-      Notation.dot := Err;
-    }.
   End IsResultType.
   
   Module
@@ -11689,7 +11738,7 @@ Module chain_extension.
         T
         E :
         ink_env.chain_extension.private.IsResultTypeSealed.Trait Self :=
-      ink_env.chain_extension.private.IsResultTypeSealed.Build_Class _.
+      ink_env.chain_extension.private.IsResultTypeSealed.Build_Trait _.
   End
     Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
   
@@ -11728,7 +11777,7 @@ End FromStatusCode.
 Module ChainExtensionMethod.
   Record t : Set := {
     func_id : u32;
-    state : core.marker.PhantomData ( -> (I * O * ErrorCode));
+    state : core.marker.PhantomData (unit -> (I * O * ErrorCode));
   }.
   
   Global Instance Get_func_id : Notation.Dot "func_id" := {
@@ -11899,7 +11948,7 @@ Module state.
   
   Module HandleErrorCode.
     Record t : Set := {
-      error_code : core.marker.PhantomData ( -> T);
+      error_code : core.marker.PhantomData (unit -> T);
     }.
     
     Global Instance Get_error_code : Notation.Dot "error_code" := {
@@ -11958,7 +12007,7 @@ End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
 
 Module HandleErrorCode.
   Record t : Set := {
-    error_code : core.marker.PhantomData ( -> T);
+    error_code : core.marker.PhantomData (unit -> T);
   }.
   
   Global Instance Get_error_code : Notation.Dot "error_code" := {
@@ -12131,17 +12180,11 @@ End
   Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode_4.
 
 Module IsResultType.
-  Class Trait (Self : Set) : Set := {
-    Ok : Set;
-    Err : Set;
+  Class Trait (Self : Set) {Ok : Set} {Err : Set} : Set := {
+    Ok := Ok;
+    Err := Err;
   }.
   
-  Global Instance Method_Ok `(Trait) : Notation.Dot "Ok" := {
-    Notation.dot := Ok;
-  }.
-  Global Instance Method_Err `(Trait) : Notation.Dot "Err" := {
-    Notation.dot := Err;
-  }.
 End IsResultType.
 
 Module
@@ -12152,7 +12195,7 @@ Module
       T
       E :
       ink_env.chain_extension.private.IsResultTypeSealed.Trait Self :=
-    ink_env.chain_extension.private.IsResultTypeSealed.Build_Class _.
+    ink_env.chain_extension.private.IsResultTypeSealed.Build_Trait _.
 End
   Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
 
@@ -12185,44 +12228,40 @@ End IsResultTypeSealed.
 
 Module contract.
   Module ContractEnv.
-    Class Trait (Self : Set) : Set := {
-      Env : Set;
+    Class Trait
+        (Self : Set)
+        {Env : Set}
+        `{ink_env.types.Environment.Trait Env} :
+        Set := {
+      Env := Env;
     }.
     
-    Global Instance Method_Env `(Trait) : Notation.Dot "Env" := {
-      Notation.dot := Env;
-    }.
   End ContractEnv.
   
   Module ContractReference.
-    Class Trait (Self : Set) : Set := {
-      Type : Set;
+    Class Trait (Self : Set) {Type : Set} : Set := {
+      Type := Type;
     }.
     
-    Global Instance Method_Type `(Trait) : Notation.Dot "Type" := {
-      Notation.dot := Type;
-    }.
   End ContractReference.
 End contract.
 
 Module ContractEnv.
-  Class Trait (Self : Set) : Set := {
-    Env : Set;
+  Class Trait
+      (Self : Set)
+      {Env : Set}
+      `{ink_env.types.Environment.Trait Env} :
+      Set := {
+    Env := Env;
   }.
   
-  Global Instance Method_Env `(Trait) : Notation.Dot "Env" := {
-    Notation.dot := Env;
-  }.
 End ContractEnv.
 
 Module ContractReference.
-  Class Trait (Self : Set) : Set := {
-    Type : Set;
+  Class Trait (Self : Set) {Type : Set} : Set := {
+    Type := Type;
   }.
   
-  Global Instance Method_Type `(Trait) : Notation.Dot "Type" := {
-    Notation.dot := Type;
-  }.
 End ContractReference.
 
 Module engine.
@@ -12297,7 +12336,7 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-          core.marker.StructuralPartialEq.Build_Class _.
+          core.marker.StructuralPartialEq.Build_Trait _.
       End
         Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
       
@@ -12326,7 +12365,7 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Global Instance I : core.marker.StructuralEq.Trait Self :=
-          core.marker.StructuralEq.Build_Class _.
+          core.marker.StructuralEq.Build_Trait _.
       End
         Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
       
@@ -14317,7 +14356,7 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.OffChainError.
       
       Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-        core.marker.StructuralPartialEq.Build_Class _.
+        core.marker.StructuralPartialEq.Build_Trait _.
     End
       Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
     
@@ -14358,7 +14397,7 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.OffChainError.
       
       Global Instance I : core.marker.StructuralEq.Trait Self :=
-        core.marker.StructuralEq.Build_Class _.
+        core.marker.StructuralEq.Build_Trait _.
     End
       Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
     
@@ -14442,7 +14481,7 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.AccountError.
       
       Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-        core.marker.StructuralPartialEq.Build_Class _.
+        core.marker.StructuralPartialEq.Build_Trait _.
     End
       Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
     
@@ -14490,7 +14529,7 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.AccountError.
       
       Global Instance I : core.marker.StructuralEq.Trait Self :=
-        core.marker.StructuralEq.Build_Class _.
+        core.marker.StructuralEq.Build_Trait _.
     End Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
     
     Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
@@ -14717,7 +14756,7 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-        core.marker.StructuralPartialEq.Build_Class _.
+        core.marker.StructuralPartialEq.Build_Trait _.
     End
       Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
     
@@ -14745,7 +14784,7 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Global Instance I : core.marker.StructuralEq.Trait Self :=
-        core.marker.StructuralEq.Build_Class _.
+        core.marker.StructuralEq.Build_Trait _.
     End
       Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
     
@@ -16709,7 +16748,7 @@ Module off_chain.
     Definition Self := ink_env.engine.off_chain.OffChainError.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Class _.
+      core.marker.StructuralPartialEq.Build_Trait _.
   End
     Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
   
@@ -16750,7 +16789,7 @@ Module off_chain.
     Definition Self := ink_env.engine.off_chain.OffChainError.
     
     Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Class _.
+      core.marker.StructuralEq.Build_Trait _.
   End Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
   
   Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
@@ -16833,7 +16872,7 @@ Module off_chain.
     Definition Self := ink_env.engine.off_chain.AccountError.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Class _.
+      core.marker.StructuralPartialEq.Build_Trait _.
   End
     Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
   
@@ -16881,7 +16920,7 @@ Module off_chain.
     Definition Self := ink_env.engine.off_chain.AccountError.
     
     Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Class _.
+      core.marker.StructuralEq.Build_Trait _.
   End Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
   
   Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
@@ -16959,7 +16998,7 @@ Module call_data.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Class _.
+      core.marker.StructuralPartialEq.Build_Trait _.
   End
     Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
   
@@ -16987,7 +17026,7 @@ Module call_data.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Class _.
+      core.marker.StructuralEq.Build_Trait _.
   End
     Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
   
@@ -17213,7 +17252,7 @@ Module
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Class _.
+    core.marker.StructuralPartialEq.Build_Trait _.
 End
   Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
 
@@ -17240,7 +17279,7 @@ Module
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
   Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Class _.
+    core.marker.StructuralEq.Build_Trait _.
 End
   Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
 
@@ -18537,7 +18576,7 @@ End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
 
 Definition OutputType : Set := list u8.
 
-Definition _ :  -> unit :=
+Definition _ : unit -> unit :=
   run
     (Pure
       (fun  =>
@@ -18545,13 +18584,14 @@ Definition _ :  -> unit :=
         Pure tt)).
 
 Module TypeEq.
-  Class Trait (Self : Set) : Set := {
-    This : Set;
+  Class Trait
+      (Self : Set)
+      {This : Set}
+      `{core.marker.Sized.Trait This} :
+      Set := {
+    This := This;
   }.
   
-  Global Instance Method_This `(Trait) : Notation.Dot "This" := {
-    Notation.dot := This;
-  }.
 End TypeEq.
 
 Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
@@ -18609,7 +18649,7 @@ End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
 
 Definition OutputType : Set := list u8.
 
-Definition _ :  -> unit :=
+Definition _ : unit -> unit :=
   run
     (Pure
       (fun  =>
@@ -18617,13 +18657,14 @@ Definition _ :  -> unit :=
         Pure tt)).
 
 Module TypeEq.
-  Class Trait (Self : Set) : Set := {
-    This : Set;
+  Class Trait
+      (Self : Set)
+      {This : Set}
+      `{core.marker.Sized.Trait This} :
+      Set := {
+    This := This;
   }.
   
-  Global Instance Method_This `(Trait) : Notation.Dot "This" := {
-    Notation.dot := This;
-  }.
 End TypeEq.
 
 Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
@@ -18681,7 +18722,7 @@ End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
 
 Definition OutputType : Set := list u8.
 
-Definition _ :  -> unit :=
+Definition _ : unit -> unit :=
   run
     (Pure
       (fun  =>
@@ -18689,13 +18730,14 @@ Definition _ :  -> unit :=
         Pure tt)).
 
 Module TypeEq.
-  Class Trait (Self : Set) : Set := {
-    This : Set;
+  Class Trait
+      (Self : Set)
+      {This : Set}
+      `{core.marker.Sized.Trait This} :
+      Set := {
+    This := This;
   }.
   
-  Global Instance Method_This `(Trait) : Notation.Dot "This" := {
-    Notation.dot := This;
-  }.
 End TypeEq.
 
 Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
@@ -18753,7 +18795,7 @@ End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
 
 Definition OutputType : Set := list u8.
 
-Definition _ :  -> unit :=
+Definition _ : unit -> unit :=
   run
     (Pure
       (fun  =>
@@ -18761,13 +18803,14 @@ Definition _ :  -> unit :=
         Pure tt)).
 
 Module TypeEq.
-  Class Trait (Self : Set) : Set := {
-    This : Set;
+  Class Trait
+      (Self : Set)
+      {This : Set}
+      `{core.marker.Sized.Trait This} :
+      Set := {
+    This := This;
   }.
   
-  Global Instance Method_This `(Trait) : Notation.Dot "This" := {
-    Notation.dot := This;
-  }.
 End TypeEq.
 
 Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
@@ -21043,7 +21086,7 @@ Module
   Definition Self := ink_env.engine.off_chain.OffChainError.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Class _.
+    core.marker.StructuralPartialEq.Build_Trait _.
 End
   Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
 
@@ -21083,7 +21126,7 @@ Module Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
   Definition Self := ink_env.engine.off_chain.OffChainError.
   
   Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Class _.
+    core.marker.StructuralEq.Build_Trait _.
 End Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
 
 Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
@@ -21166,7 +21209,7 @@ Module
   Definition Self := ink_env.engine.off_chain.AccountError.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Class _.
+    core.marker.StructuralPartialEq.Build_Trait _.
 End
   Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
 
@@ -21213,7 +21256,7 @@ Module Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
   Definition Self := ink_env.engine.off_chain.AccountError.
   
   Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Class _.
+    core.marker.StructuralEq.Build_Trait _.
 End Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
 
 Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
@@ -21484,7 +21527,7 @@ Module error.
     Definition Self := ink_env.error.Error.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Class _.
+      core.marker.StructuralPartialEq.Build_Trait _.
   End Impl_core_marker_StructuralPartialEq_for_ink_env_error_Error.
   
   Module Impl_core_cmp_PartialEq_for_ink_env_error_Error.
@@ -21530,7 +21573,7 @@ Module error.
     Definition Self := ink_env.error.Error.
     
     Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Class _.
+      core.marker.StructuralEq.Build_Trait _.
   End Impl_core_marker_StructuralEq_for_ink_env_error_Error.
   
   Module Impl_core_cmp_Eq_for_ink_env_error_Error.
@@ -21669,7 +21712,7 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Class _.
+    core.marker.StructuralPartialEq.Build_Trait _.
 End Impl_core_marker_StructuralPartialEq_for_ink_env_error_Error.
 
 Module Impl_core_cmp_PartialEq_for_ink_env_error_Error.
@@ -21712,7 +21755,7 @@ Module Impl_core_marker_StructuralEq_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
   Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Class _.
+    core.marker.StructuralEq.Build_Trait _.
 End Impl_core_marker_StructuralEq_for_ink_env_error_Error.
 
 Module Impl_core_cmp_Eq_for_ink_env_error_Error.
@@ -21736,13 +21779,14 @@ Definition Result : Set := core.result.Result T ink_env.error.Error.
 
 Module hash.
   Module HashOutput.
-    Class Trait (Self : Set) : Set := {
-      Type : Set;
+    Class Trait
+        (Self : Set)
+        {Type : Set}
+        `{core.default.Default.Trait Type} :
+        Set := {
+      Type := Type;
     }.
     
-    Global Instance Method_Type `(Trait) : Notation.Dot "Type" := {
-      Notation.dot := Type;
-    }.
   End HashOutput.
   
   Module CryptoHash.
@@ -21783,7 +21827,7 @@ Module hash.
     Definition Self := ink_env.hash.Sha2x256.
     
     Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Class _.
+      core.marker.Copy.Build_Trait _.
   End Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
   
   Module Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
@@ -21805,7 +21849,7 @@ Module hash.
     Definition Self := ink_env.hash.Sha2x256.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Class _.
+      core.marker.StructuralPartialEq.Build_Trait _.
   End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
   
   Module Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
@@ -21830,7 +21874,7 @@ Module hash.
     Definition Self := ink_env.hash.Sha2x256.
     
     Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Class _.
+      core.marker.StructuralEq.Build_Trait _.
   End Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
   
   Module Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
@@ -21876,7 +21920,7 @@ Module hash.
     Definition Self := ink_env.hash.Keccak256.
     
     Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Class _.
+      core.marker.Copy.Build_Trait _.
   End Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
   
   Module Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
@@ -21898,7 +21942,7 @@ Module hash.
     Definition Self := ink_env.hash.Keccak256.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Class _.
+      core.marker.StructuralPartialEq.Build_Trait _.
   End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
   
   Module Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
@@ -21923,7 +21967,7 @@ Module hash.
     Definition Self := ink_env.hash.Keccak256.
     
     Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Class _.
+      core.marker.StructuralEq.Build_Trait _.
   End Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
   
   Module Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
@@ -21969,7 +22013,7 @@ Module hash.
     Definition Self := ink_env.hash.Blake2x256.
     
     Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Class _.
+      core.marker.Copy.Build_Trait _.
   End Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
   
   Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
@@ -21991,7 +22035,7 @@ Module hash.
     Definition Self := ink_env.hash.Blake2x256.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Class _.
+      core.marker.StructuralPartialEq.Build_Trait _.
   End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
   
   Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
@@ -22016,7 +22060,7 @@ Module hash.
     Definition Self := ink_env.hash.Blake2x256.
     
     Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Class _.
+      core.marker.StructuralEq.Build_Trait _.
   End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
   
   Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
@@ -22062,7 +22106,7 @@ Module hash.
     Definition Self := ink_env.hash.Blake2x128.
     
     Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Class _.
+      core.marker.Copy.Build_Trait _.
   End Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
   
   Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
@@ -22084,7 +22128,7 @@ Module hash.
     Definition Self := ink_env.hash.Blake2x128.
     
     Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Class _.
+      core.marker.StructuralPartialEq.Build_Trait _.
   End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
   
   Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
@@ -22109,7 +22153,7 @@ Module hash.
     Definition Self := ink_env.hash.Blake2x128.
     
     Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Class _.
+      core.marker.StructuralEq.Build_Trait _.
   End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
   
   Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
@@ -22140,28 +22184,28 @@ Module hash.
     Definition Self := ink_env.hash.Sha2x256.
     
     Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-      ink_env.hash.private.Sealed.Build_Class _.
+      ink_env.hash.private.Sealed.Build_Trait _.
   End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
   
   Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
     Definition Self := ink_env.hash.Keccak256.
     
     Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-      ink_env.hash.private.Sealed.Build_Class _.
+      ink_env.hash.private.Sealed.Build_Trait _.
   End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
   
   Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
     Definition Self := ink_env.hash.Blake2x256.
     
     Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-      ink_env.hash.private.Sealed.Build_Class _.
+      ink_env.hash.private.Sealed.Build_Trait _.
   End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
   
   Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
     Definition Self := ink_env.hash.Blake2x128.
     
     Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-      ink_env.hash.private.Sealed.Build_Class _.
+      ink_env.hash.private.Sealed.Build_Trait _.
   End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
   
   Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
@@ -22202,13 +22246,14 @@ Module hash.
 End hash.
 
 Module HashOutput.
-  Class Trait (Self : Set) : Set := {
-    Type : Set;
+  Class Trait
+      (Self : Set)
+      {Type : Set}
+      `{core.default.Default.Trait Type} :
+      Set := {
+    Type := Type;
   }.
   
-  Global Instance Method_Type `(Trait) : Notation.Dot "Type" := {
-    Notation.dot := Type;
-  }.
 End HashOutput.
 
 Module CryptoHash.
@@ -22249,7 +22294,7 @@ Module Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
   Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
 
 Module Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
@@ -22271,7 +22316,7 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Class _.
+    core.marker.StructuralPartialEq.Build_Trait _.
 End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
 
 Module Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
@@ -22296,7 +22341,7 @@ Module Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
   Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Class _.
+    core.marker.StructuralEq.Build_Trait _.
 End Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
 
 Module Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
@@ -22341,7 +22386,7 @@ Module Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
   Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
 
 Module Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
@@ -22363,7 +22408,7 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Class _.
+    core.marker.StructuralPartialEq.Build_Trait _.
 End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
 
 Module Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
@@ -22388,7 +22433,7 @@ Module Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
   Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Class _.
+    core.marker.StructuralEq.Build_Trait _.
 End Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
 
 Module Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
@@ -22433,7 +22478,7 @@ Module Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
   Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
 
 Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
@@ -22455,7 +22500,7 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Class _.
+    core.marker.StructuralPartialEq.Build_Trait _.
 End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
 
 Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
@@ -22480,7 +22525,7 @@ Module Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
   Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Class _.
+    core.marker.StructuralEq.Build_Trait _.
 End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
 
 Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
@@ -22525,7 +22570,7 @@ Module Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
   Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Class _.
+    core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
 
 Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
@@ -22547,7 +22592,7 @@ Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Class _.
+    core.marker.StructuralPartialEq.Build_Trait _.
 End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
 
 Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
@@ -22572,7 +22617,7 @@ Module Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
   Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Class _.
+    core.marker.StructuralEq.Build_Trait _.
 End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
 
 Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
@@ -22609,28 +22654,28 @@ Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
   Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-    ink_env.hash.private.Sealed.Build_Class _.
+    ink_env.hash.private.Sealed.Build_Trait _.
 End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
 
 Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
   Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-    ink_env.hash.private.Sealed.Build_Class _.
+    ink_env.hash.private.Sealed.Build_Trait _.
 End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
 
 Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
   Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-    ink_env.hash.private.Sealed.Build_Class _.
+    ink_env.hash.private.Sealed.Build_Trait _.
 End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
 
 Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
   Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-    ink_env.hash.private.Sealed.Build_Class _.
+    ink_env.hash.private.Sealed.Build_Trait _.
 End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
 
 Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
@@ -22671,16 +22716,13 @@ End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
 
 Module topics.
   Module TopicsBuilderBackend.
-    Class Trait (E Self : Set) : Set := {
-      Output : Set;
+    Class Trait (E Self : Set) {Output : Set} : Set := {
+      Output := Output;
       expect : (mut_ref Self) -> usize -> (M unit);
       push_topic : (mut_ref Self) -> (ref T) -> (M unit);
       output : Self -> (M ImplSelf.Output);
     }.
     
-    Global Instance Method_Output `(Trait) : Notation.Dot "Output" := {
-      Notation.dot := Output;
-    }.
     Global Instance Method_expect `(Trait) : Notation.Dot "expect" := {
       Notation.dot := expect;
     }.
@@ -22695,7 +22737,7 @@ Module topics.
   Module TopicsBuilder.
     Record t : Set := {
       backend : B;
-      state : core.marker.PhantomData ( -> (S * E));
+      state : core.marker.PhantomData (unit -> (S * E));
     }.
     
     Global Instance Get_backend : Notation.Dot "backend" := {
@@ -22821,13 +22863,10 @@ Module topics.
     Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_NoRemainingTopics_E_B.
   
   Module SomeRemainingTopics.
-    Class Trait (Self : Set) : Set := {
-      Next : Set;
+    Class Trait (Self : Set) {Next : Set} : Set := {
+      Next := Next;
     }.
     
-    Global Instance Method_Next `(Trait) : Notation.Dot "Next" := {
-      Notation.dot := Next;
-    }.
   End SomeRemainingTopics.
   
   Module EventTopicsAmount.
@@ -23754,8 +23793,12 @@ Module topics.
     Impl_ink_env_topics_EventTopicsAmount_for_ink_env_topics_state_NoRemainingTopics.
   
   Module Topics.
-    Class Trait (Self : Set) : Set := {
-      RemainingTopics : Set;
+    Class Trait
+        (Self : Set)
+        {RemainingTopics : Set}
+        `{ink_env.topics.EventTopicsAmount.Trait RemainingTopics} :
+        Set := {
+      RemainingTopics := RemainingTopics;
       topics
         :
         (ref Self) ->
@@ -23763,10 +23806,6 @@ Module topics.
         (M ink_env.topics.TopicsBuilderBackend.Output);
     }.
     
-    Global Instance Method_RemainingTopics `(Trait)
-      : Notation.Dot "RemainingTopics" := {
-      Notation.dot := RemainingTopics;
-    }.
     Global Instance Method_topics `(Trait) : Notation.Dot "topics" := {
       Notation.dot := topics;
     }.
@@ -23815,16 +23854,13 @@ Module topics.
 End topics.
 
 Module TopicsBuilderBackend.
-  Class Trait (E Self : Set) : Set := {
-    Output : Set;
+  Class Trait (E Self : Set) {Output : Set} : Set := {
+    Output := Output;
     expect : (mut_ref Self) -> usize -> (M unit);
     push_topic : (mut_ref Self) -> (ref T) -> (M unit);
     output : Self -> (M ImplSelf.Output);
   }.
   
-  Global Instance Method_Output `(Trait) : Notation.Dot "Output" := {
-    Notation.dot := Output;
-  }.
   Global Instance Method_expect `(Trait) : Notation.Dot "expect" := {
     Notation.dot := expect;
   }.
@@ -23839,7 +23875,7 @@ End TopicsBuilderBackend.
 Module TopicsBuilder.
   Record t : Set := {
     backend : B;
-    state : core.marker.PhantomData ( -> (S * E));
+    state : core.marker.PhantomData (unit -> (S * E));
   }.
   
   Global Instance Get_backend : Notation.Dot "backend" := {
@@ -23983,13 +24019,10 @@ End
   Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_NoRemainingTopics_E_B_2.
 
 Module SomeRemainingTopics.
-  Class Trait (Self : Set) : Set := {
-    Next : Set;
+  Class Trait (Self : Set) {Next : Set} : Set := {
+    Next := Next;
   }.
   
-  Global Instance Method_Next `(Trait) : Notation.Dot "Next" := {
-    Notation.dot := Next;
-  }.
 End SomeRemainingTopics.
 
 Module EventTopicsAmount.
@@ -24916,8 +24949,12 @@ End
   Impl_ink_env_topics_EventTopicsAmount_for_ink_env_topics_state_NoRemainingTopics.
 
 Module Topics.
-  Class Trait (Self : Set) : Set := {
-    RemainingTopics : Set;
+  Class Trait
+      (Self : Set)
+      {RemainingTopics : Set}
+      `{ink_env.topics.EventTopicsAmount.Trait RemainingTopics} :
+      Set := {
+    RemainingTopics := RemainingTopics;
     topics
       :
       (ref Self) ->
@@ -24925,10 +24962,6 @@ Module Topics.
       (M ink_env.topics.TopicsBuilderBackend.Output);
   }.
   
-  Global Instance Method_RemainingTopics `(Trait)
-    : Notation.Dot "RemainingTopics" := {
-    Notation.dot := RemainingTopics;
-  }.
   Global Instance Method_topics `(Trait) : Notation.Dot "topics" := {
     Notation.dot := topics;
   }.
