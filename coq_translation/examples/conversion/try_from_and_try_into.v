@@ -78,7 +78,7 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
     Notation.double_colon := try_from;
   }.
   
-  Global Instance I : core.convert.TryFrom.Trait Self := {
+  Global Instance I : core.convert.TryFrom.Trait Self (T := i32) := {
     core.convert.TryFrom.try_from := try_from;
   }.
 End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.

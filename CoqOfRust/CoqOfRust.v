@@ -389,7 +389,7 @@ Module core.
   Module ops.
     Module arith.
       Module Add.
-        Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           add : Self -> Rhs -> M Output;
@@ -401,7 +401,7 @@ Module core.
       End Add.
 
       Module AddAssign.
-        Class Trait (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait (Self : Set) {Rhs : option Set} : Set := {
           Rhs := defaultType Rhs Self;
           add_assign : mut_ref Self -> Rhs -> M unit;
         }.
@@ -412,7 +412,7 @@ Module core.
       End AddAssign.
 
       Module Sub.
-        Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           sub : Self -> Rhs -> M Output;
@@ -424,7 +424,7 @@ Module core.
       End Sub.
 
       Module SubAssign.
-        Class Trait (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait (Self : Set) {Rhs : option Set} : Set := {
           Rhs := defaultType Rhs Self;
           sub_assign : mut_ref Self -> Rhs -> M unit;
         }.
@@ -435,7 +435,7 @@ Module core.
       End SubAssign.
 
       Module Mul.
-        Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           mul : Self -> Rhs -> M Output;
@@ -447,7 +447,7 @@ Module core.
       End Mul.
 
       Module MulAssign.
-        Class Trait (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait (Self : Set) {Rhs : option Set} : Set := {
           Rhs := defaultType Rhs Self;
           mul_assign : mut_ref Self -> Rhs -> M unit;
         }.
@@ -458,7 +458,7 @@ Module core.
       End MulAssign.
 
       Module Div.
-        Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           div : Self -> Rhs -> M Output;
@@ -470,7 +470,7 @@ Module core.
       End Div.
 
       Module DivAssign.
-        Class Trait (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait (Self : Set) {Rhs : option Set} : Set := {
           Rhs := defaultType Rhs Self;
           div_assign : mut_ref Self -> Rhs -> M unit;
         }.
@@ -481,7 +481,7 @@ Module core.
       End DivAssign.
 
       Module Rem.
-        Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           rem : Self -> Rhs -> M Output;
@@ -493,7 +493,7 @@ Module core.
       End Rem.
 
       Module RemAssign.
-        Class Trait (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait (Self : Set) {Rhs : option Set} : Set := {
           Rhs := defaultType Rhs Self;
           rem_assign : mut_ref Self -> Rhs -> M unit;
         }.
@@ -504,7 +504,7 @@ Module core.
       End RemAssign.
 
       Module BitXor.
-        Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           bitxor : Self -> Rhs -> M Output;
@@ -516,7 +516,7 @@ Module core.
       End BitXor.
 
       Module BitXorAssign.
-        Class Trait (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait (Self : Set) {Rhs : option Set} : Set := {
           Rhs := defaultType Rhs Self;
           bitxor_assign : mut_ref Self -> Rhs -> M unit;
         }.
@@ -527,7 +527,7 @@ Module core.
       End BitXorAssign.
 
       Module BitAnd.
-        Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           bitand : Self -> Rhs -> M Output;
@@ -539,7 +539,7 @@ Module core.
       End BitAnd.
 
       Module BitAndAssign.
-        Class Trait (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait (Self : Set) {Rhs : option Set} : Set := {
           Rhs := defaultType Rhs Self;
           bitand_assign : mut_ref Self -> Rhs -> M unit;
         }.
@@ -550,7 +550,7 @@ Module core.
       End BitAndAssign.
 
       Module BitOr.
-        Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           bitor : Self -> Rhs -> M Output;
@@ -562,7 +562,7 @@ Module core.
       End BitOr.
 
       Module BitOrAssign.
-        Class Trait (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait (Self : Set) {Rhs : option Set} : Set := {
           Rhs := defaultType Rhs Self;
           bitor_assign : mut_ref Self -> Rhs -> M unit;
         }.
@@ -573,7 +573,7 @@ Module core.
       End BitOrAssign.
 
       Module Shl.
-        Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           shl : Self -> Rhs -> M Output;
@@ -585,7 +585,7 @@ Module core.
       End Shl.
 
       Module ShlAssign.
-        Class Trait (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait (Self : Set) {Rhs : option Set} : Set := {
           Rhs := defaultType Rhs Self;
           shl_assign : mut_ref Self -> Rhs -> M unit;
         }.
@@ -596,7 +596,7 @@ Module core.
       End ShlAssign.
 
       Module Shr.
-        Class Trait {Output : Set} (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           shr : Self -> Rhs -> M Output;
@@ -608,7 +608,7 @@ Module core.
       End Shr.
 
       Module ShrAssign.
-        Class Trait (Self : Set) (Rhs : option Set) : Set := {
+        Class Trait (Self : Set) {Rhs : option Set} : Set := {
           Rhs := defaultType Rhs Self;
           shr_assign : mut_ref Self -> Rhs -> M unit;
         }.
@@ -661,7 +661,7 @@ Module core.
         Notation.dot := add;
       }.
 
-      Global Instance Add_for_Z : arith.Add.Trait Z None := {
+      Global Instance Add_for_Z : arith.Add.Trait Z (Rhs := None) := {
         add := add;
       }.
     End Impl_Add_for_Z.
@@ -673,7 +673,8 @@ Module core.
         Notation.dot := add_assign;
       }.
 
-      Global Instance AddAssign_for_Z : arith.AddAssign.Trait Z None := {
+      Global Instance AddAssign_for_Z :
+        arith.AddAssign.Trait Z (Rhs := None) := {
         add_assign := add_assign;
       }.
     End Impl_AddAssign_for_Z.
@@ -685,7 +686,7 @@ Module core.
         Notation.dot := sub;
       }.
 
-      Global Instance Sub_for_Z : arith.Sub.Trait Z None := {
+      Global Instance Sub_for_Z : arith.Sub.Trait Z (Rhs := None) := {
         sub := sub;
       }.
     End Impl_Sub_for_Z.
@@ -697,7 +698,8 @@ Module core.
         Notation.dot := sub_assign;
       }.
 
-      Global Instance SubAssign_for_Z : arith.SubAssign.Trait Z None := {
+      Global Instance SubAssign_for_Z :
+        arith.SubAssign.Trait Z (Rhs := None) := {
         sub_assign := sub_assign;
       }.
     End Impl_SubAssign_for_Z.
@@ -709,7 +711,7 @@ Module core.
         Notation.dot := mul;
       }.
 
-      Global Instance Mul_for_Z : arith.Mul.Trait Z None := {
+      Global Instance Mul_for_Z : arith.Mul.Trait Z (Rhs := None) := {
         mul := mul;
       }.
     End Impl_Mul_for_Z.
@@ -721,7 +723,8 @@ Module core.
         Notation.dot := mul_assign;
       }.
 
-      Global Instance MulAssign_for_Z : arith.MulAssign.Trait Z None := {
+      Global Instance MulAssign_for_Z :
+        arith.MulAssign.Trait Z (Rhs := None) := {
         mul_assign := mul_assign;
       }.
     End Impl_MulAssign_for_Z.
@@ -733,7 +736,7 @@ Module core.
         Notation.dot := div;
       }.
 
-      Global Instance Div_for_Z : arith.Div.Trait Z None := {
+      Global Instance Div_for_Z : arith.Div.Trait Z (Rhs := None) := {
         div := div;
       }.
     End Impl_Div_for_Z.
@@ -745,7 +748,8 @@ Module core.
         Notation.dot := div_assign;
       }.
 
-      Global Instance DivAssign_for_Z : arith.DivAssign.Trait Z None := {
+      Global Instance DivAssign_for_Z :
+        arith.DivAssign.Trait Z (Rhs := None) := {
         div_assign := div_assign;
       }.
     End Impl_DivAssign_for_Z.
@@ -757,7 +761,7 @@ Module core.
         Notation.dot := rem;
       }.
 
-      Global Instance Rem_for_Z : arith.Rem.Trait Z None := {
+      Global Instance Rem_for_Z : arith.Rem.Trait Z (Rhs := None) := {
         rem := rem;
       }.
     End Impl_Rem_for_Z.
@@ -769,7 +773,8 @@ Module core.
         Notation.dot := rem_assign;
       }.
 
-      Global Instance RemAssign_for_Z : arith.RemAssign.Trait Z None := {
+      Global Instance RemAssign_for_Z :
+        arith.RemAssign.Trait Z (Rhs := None) := {
         rem_assign := rem_assign;
       }.
     End Impl_RemAssign_for_Z.
@@ -814,7 +819,8 @@ Module alloc.
   Module boxed.
     Definition Box (A : Set) : Set := A.
 
-    Global Instance Method_Box_new (A : Set) : Notation.DoubleColon Box "new" := {
+    Global Instance Method_Box_new (A : Set) :
+      Notation.DoubleColon Box "new" := {
       Notation.double_colon (x : A) := Pure x;
     }.
   End boxed.

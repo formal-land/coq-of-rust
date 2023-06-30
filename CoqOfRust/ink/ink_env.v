@@ -4175,9 +4175,9 @@ Module call.
       }.
       
       Global Instance I :
-          ink_env.call.create_builder.ConstructorReturnType.Trait Self
-          (C : C) :=
-        {
+          ink_env.call.create_builder.ConstructorReturnType.Trait
+            Self
+            (C := C) := {
         ink_env.call.create_builder.ConstructorReturnType.ok := ok;
       }.
     End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
@@ -4221,9 +4221,9 @@ Module call.
       }.
       
       Global Instance I :
-          ink_env.call.create_builder.ConstructorReturnType.Trait Self
-          (C : C) :=
-        {
+          ink_env.call.create_builder.ConstructorReturnType.Trait
+            Self
+            (C := C) := {
         ink_env.call.create_builder.ConstructorReturnType.ok := ok;
       }.
     End
@@ -5711,7 +5711,7 @@ Module call.
         Notation.double_colon := from;
       }.
       
-      Global Instance I : core.convert.From.Trait Self := {
+      Global Instance I : core.convert.From.Trait Self (T := list u8) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_env_call_selector_Selector.
@@ -8596,9 +8596,9 @@ Module create_builder.
     }.
     
     Global Instance I :
-        ink_env.call.create_builder.ConstructorReturnType.Trait Self
-        (C : C) :=
-      {
+        ink_env.call.create_builder.ConstructorReturnType.Trait
+          Self
+          (C := C) := {
       ink_env.call.create_builder.ConstructorReturnType.ok := ok;
     }.
   End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
@@ -8641,9 +8641,9 @@ Module create_builder.
     }.
     
     Global Instance I :
-        ink_env.call.create_builder.ConstructorReturnType.Trait Self
-        (C : C) :=
-      {
+        ink_env.call.create_builder.ConstructorReturnType.Trait
+          Self
+          (C := C) := {
       ink_env.call.create_builder.ConstructorReturnType.ok := ok;
     }.
   End
@@ -9400,9 +9400,7 @@ Section Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
   }.
   
   Global Instance I :
-      ink_env.call.create_builder.ConstructorReturnType.Trait Self
-      (C : C) :=
-    {
+      ink_env.call.create_builder.ConstructorReturnType.Trait Self (C := C) := {
     ink_env.call.create_builder.ConstructorReturnType.ok := ok;
   }.
 End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
@@ -9444,9 +9442,7 @@ Section
   }.
   
   Global Instance I :
-      ink_env.call.create_builder.ConstructorReturnType.Trait Self
-      (C : C) :=
-    {
+      ink_env.call.create_builder.ConstructorReturnType.Trait Self (C := C) := {
     ink_env.call.create_builder.ConstructorReturnType.ok := ok;
   }.
 End
@@ -11567,7 +11563,7 @@ Module selector.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self := {
+    Global Instance I : core.convert.From.Trait Self (T := list u8) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_call_selector_Selector.
@@ -11723,7 +11719,7 @@ Module Impl_core_convert_From_for_ink_env_call_selector_Selector.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self := {
+  Global Instance I : core.convert.From.Trait Self (T := list u8) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_call_selector_Selector.
@@ -13195,7 +13191,8 @@ Module engine.
           Notation.double_colon := from;
         }.
         
-        Global Instance I : core.convert.From.Trait Self := {
+        Global Instance I :
+            core.convert.From.Trait Self (T := ink_engine.ext.Error) := {
           core.convert.From.from := from;
         }.
       End Impl_core_convert_From_for_ink_env_error_Error.
@@ -13342,9 +13339,7 @@ Module engine.
         }.
         
         Global Instance I :
-            ink_env.topics.TopicsBuilderBackend.Trait Self
-            (E : E) :=
-          {
+            ink_env.topics.TopicsBuilderBackend.Trait Self (E := E) := {
           ink_env.topics.TopicsBuilderBackend.expect := expect;
           ink_env.topics.TopicsBuilderBackend.push_topic := push_topic;
           ink_env.topics.TopicsBuilderBackend.output := output;
@@ -14683,7 +14678,10 @@ Module engine.
           Notation.double_colon := from;
         }.
         
-        Global Instance I : core.convert.From.Trait Self := {
+        Global Instance I :
+            core.convert.From.Trait
+              Self
+              (T := ink_engine.test_api.EmittedEvent) := {
           core.convert.From.from := from;
         }.
       End
@@ -14714,7 +14712,8 @@ Module engine.
           Notation.double_colon := from;
         }.
         
-        Global Instance I : core.convert.From.Trait Self := {
+        Global Instance I :
+            core.convert.From.Trait Self (T := ink_engine.Error) := {
           core.convert.From.from := from;
         }.
       End Impl_core_convert_From_for_ink_env_error_Error.
@@ -14737,7 +14736,10 @@ Module engine.
           Notation.double_colon := from;
         }.
         
-        Global Instance I : core.convert.From.Trait Self := {
+        Global Instance I :
+            core.convert.From.Trait
+              Self
+              (T := ink_engine.types.AccountError) := {
           core.convert.From.from := from;
         }.
       End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
@@ -14758,7 +14760,10 @@ Module engine.
           Notation.double_colon := from;
         }.
         
-        Global Instance I : core.convert.From.Trait Self := {
+        Global Instance I :
+            core.convert.From.Trait
+              Self
+              (T := ink_engine.types.AccountError) := {
           core.convert.From.from := from;
         }.
       End Impl_core_convert_From_for_ink_env_error_Error.
@@ -14849,7 +14854,10 @@ Module engine.
         Notation.double_colon := from;
       }.
       
-      Global Instance I : core.convert.From.Trait Self := {
+      Global Instance I :
+          core.convert.From.Trait
+            Self
+            (T := ink_env.engine.off_chain.AccountError) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
@@ -14972,7 +14980,10 @@ Module engine.
         Notation.double_colon := from;
       }.
       
-      Global Instance I : core.convert.From.Trait Self := {
+      Global Instance I :
+          core.convert.From.Trait
+            Self
+            (T := parity_scale_codec.error.Error) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
@@ -15607,7 +15618,8 @@ Module off_chain.
         Notation.double_colon := from;
       }.
       
-      Global Instance I : core.convert.From.Trait Self := {
+      Global Instance I :
+          core.convert.From.Trait Self (T := ink_engine.ext.Error) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_env_error_Error.
@@ -15749,9 +15761,7 @@ Module off_chain.
       }.
       
       Global Instance I :
-          ink_env.topics.TopicsBuilderBackend.Trait Self
-          (E : E) :=
-        {
+          ink_env.topics.TopicsBuilderBackend.Trait Self (E := E) := {
         ink_env.topics.TopicsBuilderBackend.expect := expect;
         ink_env.topics.TopicsBuilderBackend.push_topic := push_topic;
         ink_env.topics.TopicsBuilderBackend.output := output;
@@ -17075,7 +17085,10 @@ Module off_chain.
         Notation.double_colon := from;
       }.
       
-      Global Instance I : core.convert.From.Trait Self := {
+      Global Instance I :
+          core.convert.From.Trait
+            Self
+            (T := ink_engine.test_api.EmittedEvent) := {
         core.convert.From.from := from;
       }.
     End
@@ -17106,7 +17119,8 @@ Module off_chain.
         Notation.double_colon := from;
       }.
       
-      Global Instance I : core.convert.From.Trait Self := {
+      Global Instance I :
+          core.convert.From.Trait Self (T := ink_engine.Error) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_env_error_Error.
@@ -17129,7 +17143,8 @@ Module off_chain.
         Notation.double_colon := from;
       }.
       
-      Global Instance I : core.convert.From.Trait Self := {
+      Global Instance I :
+          core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
@@ -17150,7 +17165,8 @@ Module off_chain.
         Notation.double_colon := from;
       }.
       
-      Global Instance I : core.convert.From.Trait Self := {
+      Global Instance I :
+          core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
         core.convert.From.from := from;
       }.
     End Impl_core_convert_From_for_ink_env_error_Error.
@@ -17239,7 +17255,10 @@ Module off_chain.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self := {
+    Global Instance I :
+        core.convert.From.Trait
+          Self
+          (T := ink_env.engine.off_chain.AccountError) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
@@ -17361,7 +17380,8 @@ Module off_chain.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self := {
+    Global Instance I :
+        core.convert.From.Trait Self (T := parity_scale_codec.error.Error) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
@@ -18094,7 +18114,8 @@ Module impls.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self := {
+    Global Instance I :
+        core.convert.From.Trait Self (T := ink_engine.ext.Error) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_error_Error.
@@ -18235,9 +18256,7 @@ Module impls.
     }.
     
     Global Instance I :
-        ink_env.topics.TopicsBuilderBackend.Trait Self
-        (E : E) :=
-      {
+        ink_env.topics.TopicsBuilderBackend.Trait Self (E := E) := {
       ink_env.topics.TopicsBuilderBackend.expect := expect;
       ink_env.topics.TopicsBuilderBackend.push_topic := push_topic;
       ink_env.topics.TopicsBuilderBackend.output := output;
@@ -19110,8 +19129,8 @@ Section Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
   
   Definition This : Set := Self.
   
-  Global Instance I : ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self :=
-    {
+  Global Instance I :
+      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self := {
   }.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
@@ -19185,8 +19204,8 @@ Section Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
   
   Definition This : Set := Self.
   
-  Global Instance I : ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self :=
-    {
+  Global Instance I :
+      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self := {
   }.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
@@ -19260,8 +19279,8 @@ Section Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
   
   Definition This : Set := Self.
   
-  Global Instance I : ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self :=
-    {
+  Global Instance I :
+      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self := {
   }.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
@@ -19335,8 +19354,8 @@ Section Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
   
   Definition This : Set := Self.
   
-  Global Instance I : ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self :=
-    {
+  Global Instance I :
+      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self := {
   }.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
@@ -19380,7 +19399,8 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self := {
+  Global Instance I :
+      core.convert.From.Trait Self (T := ink_engine.ext.Error) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_error_Error.
@@ -19512,8 +19532,8 @@ Section
     Notation.dot := output;
   }.
   
-  Global Instance I : ink_env.topics.TopicsBuilderBackend.Trait Self (E : E) :=
-    {
+  Global Instance I :
+      ink_env.topics.TopicsBuilderBackend.Trait Self (E := E) := {
     ink_env.topics.TopicsBuilderBackend.expect := expect;
     ink_env.topics.TopicsBuilderBackend.push_topic := push_topic;
     ink_env.topics.TopicsBuilderBackend.output := output;
@@ -21271,7 +21291,10 @@ Module types.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self := {
+    Global Instance I :
+        core.convert.From.Trait
+          Self
+          (T := ink_engine.test_api.EmittedEvent) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
@@ -21300,7 +21323,8 @@ Module types.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self := {
+    Global Instance I :
+        core.convert.From.Trait Self (T := ink_engine.Error) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_error_Error.
@@ -21323,7 +21347,8 @@ Module types.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self := {
+    Global Instance I :
+        core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
@@ -21342,7 +21367,8 @@ Module types.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self := {
+    Global Instance I :
+        core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_error_Error.
@@ -21364,7 +21390,8 @@ Module
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self := {
+  Global Instance I :
+      core.convert.From.Trait Self (T := ink_engine.test_api.EmittedEvent) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
@@ -21393,7 +21420,7 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self := {
+  Global Instance I : core.convert.From.Trait Self (T := ink_engine.Error) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_error_Error.
@@ -21416,7 +21443,8 @@ Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self := {
+  Global Instance I :
+      core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
@@ -21435,7 +21463,8 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self := {
+  Global Instance I :
+      core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_error_Error.
@@ -21585,7 +21614,10 @@ Module Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self := {
+  Global Instance I :
+      core.convert.From.Trait
+        Self
+        (T := ink_env.engine.off_chain.AccountError) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
@@ -21706,7 +21738,8 @@ Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self := {
+  Global Instance I :
+      core.convert.From.Trait Self (T := parity_scale_codec.error.Error) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
@@ -22003,7 +22036,8 @@ Module error.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self := {
+    Global Instance I :
+        core.convert.From.Trait Self (T := parity_scale_codec.error.Error) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_error_Error.
@@ -22021,7 +22055,10 @@ Module error.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self := {
+    Global Instance I :
+        core.convert.From.Trait
+          Self
+          (T := ink_env.engine.off_chain.OffChainError) := {
       core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_ink_env_error_Error.
@@ -22184,7 +22221,8 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self := {
+  Global Instance I :
+      core.convert.From.Trait Self (T := parity_scale_codec.error.Error) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_error_Error.
@@ -22202,7 +22240,10 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self := {
+  Global Instance I :
+      core.convert.From.Trait
+        Self
+        (T := ink_env.engine.off_chain.OffChainError) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_ink_env_error_Error.
@@ -23268,7 +23309,7 @@ Module topics.
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self (E : B) := {
+    Global Instance I : core.convert.From.Trait Self (T := B) := {
       core.convert.From.from := from;
     }.
   End
@@ -24417,7 +24458,7 @@ Section
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self (E : B) := {
+  Global Instance I : core.convert.From.Trait Self (T := B) := {
     core.convert.From.from := from;
   }.
 End

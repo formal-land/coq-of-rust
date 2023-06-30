@@ -33,7 +33,7 @@ Section Impl_generics_traits_DoubleDrop_for_U.
     Notation.dot := double_drop;
   }.
   
-  Global Instance I : generics_traits.DoubleDrop.Trait Self (T : T) := {
+  Global Instance I : generics_traits.DoubleDrop.Trait Self (T := T) := {
     generics_traits.DoubleDrop.double_drop := double_drop;
   }.
 End Impl_generics_traits_DoubleDrop_for_U.

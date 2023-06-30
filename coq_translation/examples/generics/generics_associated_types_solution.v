@@ -66,8 +66,8 @@ Module
     Notation.dot := last;
   }.
   
-  Global Instance I : generics_associated_types_solution.Contains.Trait Self :=
-    {
+  Global Instance I :
+      generics_associated_types_solution.Contains.Trait Self := {
     generics_associated_types_solution.Contains.contains := contains;
     generics_associated_types_solution.Contains.first := first;
     generics_associated_types_solution.Contains.last := last;

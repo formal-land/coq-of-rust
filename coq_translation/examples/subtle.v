@@ -90,7 +90,7 @@ Module Impl_core_convert_From_for_bool.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self := {
+  Global Instance I : core.convert.From.Trait Self (T := subtle.Choice) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_bool.
@@ -264,7 +264,7 @@ Module Impl_core_convert_From_for_subtle_Choice.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self := {
+  Global Instance I : core.convert.From.Trait Self (T := u8) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_subtle_Choice.
@@ -1353,7 +1353,7 @@ Section Impl_core_convert_From_for_core_option_Option_T.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self (T : subtle.CtOption T) := {
+  Global Instance I : core.convert.From.Trait Self (T := subtle.CtOption T) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_core_option_Option_T.

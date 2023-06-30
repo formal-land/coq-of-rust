@@ -185,8 +185,7 @@ Module erc20.
     }.
     
     Global Instance I :
-        ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self :=
-      {
+        ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableConstructorInfo.IS_RESULT := IS_RESULT;
       ink.reflect.dispatch.DispatchableConstructorInfo.CALLABLE := CALLABLE;
       ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE := PAYABLE;
@@ -244,8 +243,7 @@ Module erc20.
     }.
     
     Global Instance I :
-        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self :=
-      {
+        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
@@ -303,8 +301,7 @@ Module erc20.
     }.
     
     Global Instance I :
-        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self :=
-      {
+        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
@@ -365,8 +362,7 @@ Module erc20.
     }.
     
     Global Instance I :
-        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self :=
-      {
+        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
@@ -427,8 +423,7 @@ Module erc20.
     }.
     
     Global Instance I :
-        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self :=
-      {
+        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
@@ -489,8 +484,7 @@ Module erc20.
     }.
     
     Global Instance I :
-        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self :=
-      {
+        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
@@ -553,8 +547,7 @@ Module erc20.
     }.
     
     Global Instance I :
-        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self :=
-      {
+        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
@@ -972,8 +965,10 @@ Module erc20.
       Notation.double_colon := from_account_id;
     }.
     
-    Global Instance I : ink_env.call.create_builder.FromAccountId.Trait Self :=
-      {
+    Global Instance I :
+        ink_env.call.create_builder.FromAccountId.Trait
+          Self
+          (T := erc20.erc20.Environment) := {
       ink_env.call.create_builder.FromAccountId.from_account_id
         :=
         from_account_id;
@@ -990,7 +985,10 @@ Module erc20.
       Notation.dot := to_account_id;
     }.
     
-    Global Instance I : ink.contract_ref.ToAccountId.Trait Self := {
+    Global Instance I :
+        ink.contract_ref.ToAccountId.Trait
+          Self
+          (T := erc20.erc20.Environment) := {
       ink.contract_ref.ToAccountId.to_account_id := to_account_id;
     }.
   End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
@@ -1005,7 +1003,8 @@ Module erc20.
       Notation.dot := as_ref;
     }.
     
-    Global Instance I : core.convert.AsRef.Trait Self := {
+    Global Instance I :
+        core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
       core.convert.AsRef.as_ref := as_ref;
     }.
   End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
@@ -1022,7 +1021,8 @@ Module erc20.
       Notation.dot := as_mut;
     }.
     
-    Global Instance I : core.convert.AsMut.Trait Self := {
+    Global Instance I :
+        core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
       core.convert.AsMut.as_mut := as_mut;
     }.
   End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
@@ -1194,9 +1194,9 @@ Section Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
   Definition PreferredKey : Set := ink_storage_traits.impls.AutoKey.
   
   Global Instance I :
-      ink_storage_traits.storage.StorableHint.Trait Self
-      (__ink_generic_salt : __ink_generic_salt) :=
-    {
+      ink_storage_traits.storage.StorableHint.Trait
+        Self
+        (Key := __ink_generic_salt) := {
   }.
 End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
 End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
@@ -1470,7 +1470,8 @@ Module
     Notation.dot := emit_event;
   }.
   
-  Global Instance I : ink.codegen.event.emit.EmitEvent.Trait Self := {
+  Global Instance I :
+      ink.codegen.event.emit.EmitEvent.Trait Self (C := erc20.erc20.Erc20) := {
     ink.codegen.event.emit.EmitEvent.emit_event := emit_event;
   }.
 End
@@ -1632,7 +1633,8 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self := {
+  Global Instance I :
+      core.convert.From.Trait Self (T := erc20.erc20.Transfer) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
@@ -1648,7 +1650,8 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self := {
+  Global Instance I :
+      core.convert.From.Trait Self (T := erc20.erc20.Approval) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
@@ -2078,8 +2081,7 @@ Module
   }.
   
   Global Instance I :
-      ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self :=
-    {
+      ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableConstructorInfo.IS_RESULT := IS_RESULT;
     ink.reflect.dispatch.DispatchableConstructorInfo.CALLABLE := CALLABLE;
     ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE := PAYABLE;
@@ -2134,8 +2136,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Notation.double_colon := LABEL;
   }.
   
-  Global Instance I : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self :=
-    {
+  Global Instance I :
+      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
@@ -2191,8 +2193,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Notation.double_colon := LABEL;
   }.
   
-  Global Instance I : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self :=
-    {
+  Global Instance I :
+      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
@@ -2251,8 +2253,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Notation.double_colon := LABEL;
   }.
   
-  Global Instance I : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self :=
-    {
+  Global Instance I :
+      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
@@ -2311,8 +2313,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Notation.double_colon := LABEL;
   }.
   
-  Global Instance I : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self :=
-    {
+  Global Instance I :
+      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
@@ -2368,8 +2370,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Notation.double_colon := LABEL;
   }.
   
-  Global Instance I : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self :=
-    {
+  Global Instance I :
+      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
@@ -2430,8 +2432,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Notation.double_colon := LABEL;
   }.
   
-  Global Instance I : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self :=
-    {
+  Global Instance I :
+      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE := CALLABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.MUTATES := MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE := PAYABLE;
@@ -2600,8 +2602,7 @@ Module
   Definition Type : Set := erc20.erc20._.__ink_ConstructorDecoder.
   
   Global Instance I :
-      ink.reflect.dispatch.ContractConstructorDecoder.Trait Self :=
-    {
+      ink.reflect.dispatch.ContractConstructorDecoder.Trait Self := {
   }.
 End Impl_ink_reflect_dispatch_ContractConstructorDecoder_for_erc20_erc20_Erc20.
 
@@ -3244,8 +3245,8 @@ Module Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
   
   Definition Type : Set := erc20.erc20._.__ink_MessageDecoder.
   
-  Global Instance I : ink.reflect.dispatch.ContractMessageDecoder.Trait Self :=
-    {
+  Global Instance I :
+      ink.reflect.dispatch.ContractMessageDecoder.Trait Self := {
   }.
 End Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
 
@@ -3699,8 +3700,7 @@ Module Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
   Definition Type : Set := erc20.erc20._.CallBuilder.
   
   Global Instance I :
-      ink.codegen.dispatch.info.ContractCallBuilder.Trait Self :=
-    {
+      ink.codegen.dispatch.info.ContractCallBuilder.Trait Self := {
   }.
 End Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
 
@@ -3725,7 +3725,10 @@ Module
     Notation.double_colon := from_account_id;
   }.
   
-  Global Instance I : ink_env.call.create_builder.FromAccountId.Trait Self := {
+  Global Instance I :
+      ink_env.call.create_builder.FromAccountId.Trait
+        Self
+        (T := erc20.erc20.Environment) := {
     ink_env.call.create_builder.FromAccountId.from_account_id
       :=
       from_account_id;
@@ -3743,7 +3746,10 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
     Notation.dot := to_account_id;
   }.
   
-  Global Instance I : ink.contract_ref.ToAccountId.Trait Self := {
+  Global Instance I :
+      ink.contract_ref.ToAccountId.Trait
+        Self
+        (T := erc20.erc20.Environment) := {
     ink.contract_ref.ToAccountId.to_account_id := to_account_id;
   }.
 End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
@@ -3758,7 +3764,8 @@ Module Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
     Notation.dot := as_ref;
   }.
   
-  Global Instance I : core.convert.AsRef.Trait Self := {
+  Global Instance I :
+      core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
     core.convert.AsRef.as_ref := as_ref;
   }.
 End Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
@@ -3773,7 +3780,8 @@ Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
     Notation.dot := as_mut;
   }.
   
-  Global Instance I : core.convert.AsMut.Trait Self := {
+  Global Instance I :
+      core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
     core.convert.AsMut.as_mut := as_mut;
   }.
 End Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
@@ -4235,8 +4243,9 @@ Module
   }.
   
   Global Instance I :
-      ink_env.call.create_builder.ConstructorReturnType.Trait Self :=
-    {
+      ink_env.call.create_builder.ConstructorReturnType.Trait
+        Self
+        (C := erc20.erc20.Erc20Ref) := {
     ink_env.call.create_builder.ConstructorReturnType.ok := ok;
   }.
 End
@@ -4278,9 +4287,9 @@ Section
   }.
   
   Global Instance I :
-      ink_env.call.create_builder.ConstructorReturnType.Trait Self
-      (E : erc20.erc20.Erc20Ref) :=
-    {
+      ink_env.call.create_builder.ConstructorReturnType.Trait
+        Self
+        (C := erc20.erc20.Erc20Ref) := {
     ink_env.call.create_builder.ConstructorReturnType.ok := ok;
   }.
 End
@@ -4593,8 +4602,7 @@ Module
   }.
   
   Global Instance I :
-      ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Self :=
-    {
+      ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Self := {
     ink.codegen.trait_def.call_builder.TraitCallBuilder.call := call;
     ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut := call_mut;
   }.
@@ -4614,7 +4622,10 @@ Module Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
     Notation.double_colon := from_account_id;
   }.
   
-  Global Instance I : ink_env.call.create_builder.FromAccountId.Trait Self := {
+  Global Instance I :
+      ink_env.call.create_builder.FromAccountId.Trait
+        Self
+        (T := erc20.erc20.Environment) := {
     ink_env.call.create_builder.FromAccountId.from_account_id
       :=
       from_account_id;
@@ -4631,7 +4642,10 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
     Notation.dot := to_account_id;
   }.
   
-  Global Instance I : ink.contract_ref.ToAccountId.Trait Self := {
+  Global Instance I :
+      ink.contract_ref.ToAccountId.Trait
+        Self
+        (T := erc20.erc20.Environment) := {
     ink.contract_ref.ToAccountId.to_account_id := to_account_id;
   }.
 End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
@@ -4646,7 +4660,8 @@ Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
     Notation.dot := as_ref;
   }.
   
-  Global Instance I : core.convert.AsRef.Trait Self := {
+  Global Instance I :
+      core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
     core.convert.AsRef.as_ref := as_ref;
   }.
 End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
@@ -4661,7 +4676,8 @@ Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
     Notation.dot := as_mut;
   }.
   
-  Global Instance I : core.convert.AsMut.Trait Self := {
+  Global Instance I :
+      core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
     core.convert.AsMut.as_mut := as_mut;
   }.
 End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
