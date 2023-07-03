@@ -1,9 +1,9 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust.std.any.
-Require Import CoqOfRust.std.fmt.
-Require Import CoqOfRust.std.option.
-Require Import CoqOfRust.std.boxed.
+Require Import CoqOfRust._std.any.
+Require Import CoqOfRust._std.fmt.
+Require Import CoqOfRust._std.option.
+Require Import CoqOfRust._std.boxed.
 
 (* ********TRAITS******** *)
 (* 
@@ -41,5 +41,5 @@ End Error.
 Module Report.
   Record t (E : Set) : Set := { }.
 End Report.
-Definition Report (E : option Set) : Set :=
+Definition Report (E : option Set) `{alloc.Allocator.Trait (defaultType None alloc.Global)} : Set :=
   Report.t (defaultType E (Box Error None)).

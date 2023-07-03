@@ -1,8 +1,8 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust.std.alloc.
-(* Require Import CoqOfRust.std.iter. *)
-Require Import CoqOfRust.std.ops.
+Require Import CoqOfRust._std.alloc.
+(* Require Import CoqOfRust._std.iter. *)
+Require Import CoqOfRust._std.ops.
 
 (* ********STRUCTS******** *)
 (* 
@@ -101,6 +101,7 @@ Module Vec.
   Record t (T A : Set): Set := { }.
 End Vec.
 Definition Vec (T : Set) (A : option Set) := Vec.t T (defaultType A Global).
+
   (* 
   let A_type := (defaultType A Global) in
   let traits 

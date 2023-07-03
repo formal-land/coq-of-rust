@@ -1,5 +1,5 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust.std.sync.
+Require Import CoqOfRust._std.sync.
 
 (* ********STRUCTS******** *)
 (* 

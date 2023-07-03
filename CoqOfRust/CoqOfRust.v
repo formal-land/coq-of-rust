@@ -37,23 +37,8 @@ Global Open Scope Z_scope.
 
 Export List.ListNotations.
 
-(** A sketch of the [M] monad *)
-Module M.
-  Parameter M : Set -> Set.
-  Parameter Pure : forall {a : Set}, a -> M a.
-  Parameter bind : forall {a b : Set}, M a -> (a -> M b) -> M b.
-
-  (** Used for the definitions of "const". *)
-  Parameter run : forall {A : Set}, M A -> A.
-
-  Module Notations.
-    Notation "'let*' a := b 'in' c" :=
-      (bind b (fun a => c))
-        (at level 200, b at level 100, a name).
-  End Notations.
-End M.
-Export M.
-Export M.Notations.
+Require Export CoqOfRust.Monad.
+Export Monad.Notations.
 
 (** Notation for a function call. Translated directly to function application
     for now. It will drive the monadic transformation in near future. *)
@@ -830,6 +815,117 @@ Module alloc.
   End string.
 End alloc.
 
+Require CoqOfRust._std.alloc.
+Require CoqOfRust._std.any.
+Require CoqOfRust._std.arch.
+Require CoqOfRust._std.array.
+Require CoqOfRust._std.ascii.
+Require CoqOfRust._std.assert_matches.
+Require CoqOfRust._std.async_iter.
+Require CoqOfRust._std.backtrace.
+Require CoqOfRust._std.borrow.
+Require CoqOfRust._std.boxed.
+Require CoqOfRust._std.cell.
+Require CoqOfRust._std.char.
+Require CoqOfRust._std.clone.
+Require CoqOfRust._std.cmp.
+Require CoqOfRust._std.collections.
+Require CoqOfRust._std.convert.
+Require CoqOfRust._std.default.
+Require CoqOfRust._std.env.
+Require CoqOfRust._std.error.
+Require CoqOfRust._std.ffi.
+Require CoqOfRust._std.fmt.
+Require CoqOfRust._std.fs.
+Require CoqOfRust._std.future.
+Require CoqOfRust._std.hash.
+Require CoqOfRust._std.hint.
+Require CoqOfRust._std.intrinsics.
+Require CoqOfRust._std.io.
+(* Require CoqOfRust._std.iter. *)
+(* Require Import CoqOfRust._std.iter_type. *)
+Require Import CoqOfRust._std.marker.
+Require Import CoqOfRust._std.mem.
+(* Require Import CoqOfRust._std.net. *)
+Require Import CoqOfRust._std.num.
+Require Import CoqOfRust._std.ops.
+Require Import CoqOfRust._std.option.
+(* Require Import CoqOfRust._std.os. *)
+Require Import CoqOfRust._std.panic.
+Require Import CoqOfRust._std.path.
+Require Import CoqOfRust._std.pin.
+Require Import CoqOfRust._std.prelude.
+Require Import CoqOfRust._std.primitive.
+Require Import CoqOfRust._std.process.
+Require Import CoqOfRust._std.ptr.
+Require Import CoqOfRust._std.rc.
+Require Import CoqOfRust._std.result.
+Require Import CoqOfRust._std.simd.
+Require Import CoqOfRust._std.slice.
+Require Import CoqOfRust._std.str.
+Require Import CoqOfRust._std.string.
+Require Import CoqOfRust._std.sync.
+Require Import CoqOfRust._std.task.
+Require Import CoqOfRust._std.thread.
+Require Import CoqOfRust._std.time.
+Require Import CoqOfRust._std.vec.
+
+
+Module std.
+  Module alloc := _std.alloc.
+  Module any := _std.any.
+  Module arch := _std.arch.
+  Module array := _std.array.
+  Module ascii := _std.ascii.
+  Module backtrace := _std.backtrace.
+  Module borrow := _std.borrow.
+  Module boxed := _std.boxed.
+  Module cell := _std.cell.
+  Module char := _std.char.
+  Module clone := _std.clone.
+  Module cmp := _std.cmp.
+  Module collections := _std.collections.
+  Module convert := _std.convert.
+  Module default := _std.default.
+  Module env := _std.env.
+  (* Module error := _std.error. *)
+  Module ffi := _std.ffi.
+  Module fmt := _std.fmt.
+  Module fs := _std.fs.
+  Module future := _std.future.
+  Module hash := _std.hash.
+  Module hint := _std.hint.
+  Module intrinsics := _std.intrinsics.
+  Module io := _std.io.
+  (* Module iter := _std.iter. *)
+  Module marker := _std.marker.
+  Module mem := _std.mem.
+  (* Module net := _std.net. *)
+  Module num := _std.num.
+  Module ops := _std.ops.
+  Module option := _std.option.
+  (* Module os := _std.os. *)
+  Module panic := _std.panic.
+  Module path := _std.path.
+  Module pin := _std.pin.
+  Module prelude := _std.prelude.
+  Module primitive := _std.primitive.
+  Module process := _std.process.
+  Module ptr := _std.ptr.
+  Module rc := _std.rc.
+  Module result := _std.result.
+  Module simd := _std.simd.
+  Module slice := _std.slice.
+  Module str := _std.str.
+  Module string := _std.string.
+  Module sync := _std.sync.
+  Module task := _std.task.
+  Module thread := _std.thread.
+  Module time := _std.time.
+  Module vec := _std.vec.
+End std.
+
+(*
 Module std.
   Module collections.
    Module hash_map.
@@ -1062,6 +1158,7 @@ Module std.
     Definition t : Set := OpenOptions.t.
   End fs.
 End std.
+*)
 
 Module bool_Instances.
   Global Instance IDisplay : core.fmt.Display.Trait bool.

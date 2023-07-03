@@ -1,5 +1,6 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust.std.convert.
+Require Import CoqOfRust._std.convert.
+Require Import CoqOfRust._std.fmt.
 
 (* ********TYPE DEFS******** *)
 (* 
@@ -52,6 +53,11 @@ Module ToString.
   Global Instance Method_to_string `(Trait) : Notation.Dot "to_string" := {
     Notation.dot := to_string;
   }.
+
+  Global Instance ToString_on_Display {Self : Set}
+    `{fmt.Display.Trait Self} :
+    ToString.Trait Self.
+  Admitted.
 End ToString.
 
 (* The String type (Struct std::string::String) and it's methods  *)

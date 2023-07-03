@@ -1,7 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust.std.option.
-Require Import CoqOfRust.std.vec.
+Require Import CoqOfRust._std.option.
+Require Import CoqOfRust._std.vec.
 
 (* ********STRUCTS******** *)
 (* 

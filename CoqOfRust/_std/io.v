@@ -1,6 +1,9 @@
-Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust.std.fmt.
+Require Import CoqOfRust.Monad.
 
+Require Import CoqOfRust.lib.lib.
+Require Import CoqOfRust._std.fmt.
+Require Import CoqOfRust._std.vec.
+Require Import CoqOfRust._std.result.
 
 (* ********STRUCTS******** *)
 (* 
@@ -30,6 +33,14 @@ Require Import CoqOfRust.std.fmt.
 [x] Take
 [x] WriterPanicked
 *)
+
+(* pub struct Error { /* private fields */ } *)
+Module Error.
+  Record t : Set := { }.
+End Error.
+Definition Error := Error.t.
+
+Definition Result (T : Set) := _std.result.Result T Error.t.
 
 (* pub struct BorrowedBuf<'data> { /* private fields */ } *)
 Module BorrowedBuf.
@@ -114,12 +125,6 @@ Module Empty.
   Record t : Set := { }.
 End Empty.
 Definition Empty := Empty.t.
-
-(* pub struct Error { /* private fields */ } *)
-Module Error.
-  Record t : Set := { }.
-End Error.
-Definition Error := Error.t.
 
 (* pub struct IntoInnerError<W>(_, _); *)
 Module IntoInnerError.
@@ -378,13 +383,13 @@ Module Read.
     read_vectored : mut_ref Self -> mut_ref (slice IoSliceMut) -> Result usize;
     is_read_vectored : ref Self -> bool;
     read_to_end : mut_ref Self -> mut_ref (slice u8) -> Result usize;
-    read_to_string : mut_ref Self -> mut_ref Steing -> Result usize;
+    read_to_string : mut_ref Self -> mut_ref String -> Result usize;
     read_exact : mut_ref Self -> mut_ref (slice u8) -> Result unit;
     read_buf : mut_ref Self -> BorrowedCursor -> Result unit;
     read_buf_exact : mut_ref Self -> BorrowedCursor -> Result unit;
     by_ref : mut_ref Self -> mut_ref Self;
     bytes : Self -> Bytes Self;
-    chain (R : Read) : Self -> R -> Chain Self R;
+    chain {R : Set} : Self -> R -> Chain Self R;
     take : Self -> u64 -> Take Self;
   }.
 End Read.
@@ -410,7 +415,7 @@ Module BufRead.
     fill_buf : mut_ref Self -> Result (ref (slice u8));
     consume : mut_ref Self -> usize -> unit;
     has_data_left : mut_ref Self -> Result bool;
-    read_until : mut_ref Self -> u8 -> mut_ref (Vec u8) -> Result usize;
+    read_until : mut_ref Self -> u8 -> mut_ref (Vec u8 None) -> Result usize;
     read_line : mut_ref Self -> mut_ref String -> Result usize;
     split : Self -> u8 -> Split Self;
     lines : mut_ref Self -> Lines Self;
@@ -454,3 +459,7 @@ End Seek.
 [ ] RawOsError
 [ ] Result
 *)
+
+Module stdio.
+  Parameter _print : forall {A : Set}, A -> M unit.
+End stdio.

@@ -1,6 +1,6 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust.std.ffi.
+Require Import CoqOfRust._std.ffi.
 
 (* ********STRUCTS******** *)
 (*

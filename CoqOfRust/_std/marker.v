@@ -1,9 +1,9 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust.std.clone.
-Require Import CoqOfRust.std.fmt.
+Require Import CoqOfRust._std.clone.
+Require Import CoqOfRust._std.fmt.
 (* BUGGED: Circular Dependency *)
-(* Require Import CoqOfRust.std.cmp. *)
+(* Require Import CoqOfRust._std.cmp. *)
 
 (* 
 Structs: 

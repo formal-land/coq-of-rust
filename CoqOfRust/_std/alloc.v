@@ -1,8 +1,8 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust.std.ptr.
-Require Import CoqOfRust.std.result.
-Require Import CoqOfRust.std.marker.
+Require Import CoqOfRust._std.ptr.
+Require Import CoqOfRust._std.result.
+Require Import CoqOfRust._std.marker.
 
 (* *******STRUCTS******** *)
 (* 

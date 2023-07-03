@@ -1,6 +1,6 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust.std.task.
-Require Import CoqOfRust.std.pin.
+Require Import CoqOfRust._std.task.
+Require Import CoqOfRust._std.pin.
 
 (* ********STRUCTS******** *)
 (*
