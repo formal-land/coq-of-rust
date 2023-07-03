@@ -154,6 +154,28 @@ Global Instance Method_destroy (A : Set) : Notation.Dot "destroy" := {
 Global Instance Method_ne_u64 : Notation.Dot "ne" (T := u64 -> u64 -> M bool). Admitted.
 
 Module core.
+  Module default.
+    Module Default.
+      Class Trait (Self : Set) : Set := {
+        default : unit -> M Self;
+      }.
+    End Default.
+  End default.
+
+  Module convert.
+    Module AsRef.
+      Class Trait (Self : Set) {T : Set} : Set := {
+          as_ref : ref Self -> ref T;
+      }.
+    End AsRef.
+
+    Module AsMut.
+      Class Trait (Self : Set) {T : Set} : Set := {
+          as_mut : mut_ref Self -> mut_ref T;
+      }.
+    End AsMut.
+  End convert.
+
   Module option.
     Module Option.
       Inductive t (T : Set) : Set :=
