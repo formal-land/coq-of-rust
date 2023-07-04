@@ -16,8 +16,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: OS
+      run: cat /etc/os-release
     - name: Download Git submodules
       run: git submodule update --init --recursive
+    - name: Checksum ERC20
+      run: md5sum ink/integration-tests/erc20/lib.rs
     - name: Install Coq
       run: sudo apt-get install coq
     - name: Format check
