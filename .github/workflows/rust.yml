@@ -21,7 +21,9 @@ jobs:
     - name: Download Git submodules
       run: git submodule update --init --recursive
     - name: Checksum ERC20
-      run: md5sum ink/integration-tests/erc20/lib.rs
+      run: |
+        md5sum ink/integration-tests/erc20/lib.rs
+        cargo expand --manifest-path ink/integration-tests/erc20/Cargo.toml | md5sum                
     - name: Install Coq
       run: sudo apt-get install coq
     - name: Format check
