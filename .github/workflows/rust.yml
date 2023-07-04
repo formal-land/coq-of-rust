@@ -22,8 +22,12 @@ jobs:
       run: git submodule update --init --recursive
     - name: Install Coq
       run: sudo apt-get install coq
+    - name: Cargo version
+      run: cargo fmt --check
     - name: Format check
       run: cargo fmt --check
+    - name: Find Cargo.lock
+      run: find . -name 'Cargo.lock' -exec md5sum {} \;
     - name: Checksum ERC20
       run: |
         cargo install cargo-expand
