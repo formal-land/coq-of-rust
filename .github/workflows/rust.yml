@@ -19,20 +19,35 @@ jobs:
     - name: Download Git submodules
       run: git submodule update --init --recursive
     - name: Install Coq
-      run: sudo apt-get install coq
+      run: sudo apt update && sudo apt-get -y install coq
+    - name: Install Rust
+      run: |
+        curl --proto =https --tlsv1.3 https://sh.rustup.rs -sSf -o rustup-init.sh
+        chmod +x rustup-init.sh
+        ./rustup-init.sh -y --default-toolchain nightly
     - name: Format check
-      run: cargo fmt --check
+      run: |
+        source "$HOME/.cargo/env"
+        cargo fmt --check
     - name: Build
-      run: cargo build --verbose
+      run: |
+        source "$HOME/.cargo/env"
+        cargo build --verbose
     - name: Install
-      run: cargo install --path lib/
+      run: |
+        source "$HOME/.cargo/env"
+        cargo install --path lib/
     - name: Lint
-      run: cargo clippy --all-targets --all-features -- -D warnings
+      run: |
+        source "$HOME/.cargo/env"
+        cargo clippy --all-targets --all-features -- -D warnings
     - name: Translate Rust examples
       run: |
+        source "$HOME/.cargo/env"
         python run_tests.py
     - name: Translate Ink! library
       run: |
+        source "$HOME/.cargo/env"
         cd CoqOfRust
         ./generate_ink_example.sh
     - name: Check that the diff is empty
