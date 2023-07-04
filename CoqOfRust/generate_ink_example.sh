@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 cd ../ink/crates/env
 # We do a "touch" to make sure that the compilation is restarted
