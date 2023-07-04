@@ -663,20 +663,11 @@ struct ArgumentsForFnToDoc<'a> {
     extra_data: Option<&'a TopLevelItem>,
 }
 
-fn fn_to_doc<'a>(
-    name: &'a String,
-    ty_params: Option<&'a Vec<String>>,
-    where_predicates: Option<&'a Vec<WherePredicate>>,
-    args: &'a Vec<(String, Box<CoqType>)>,
-    ret_ty: &'a CoqType,
-    body: &'a Expr,
-    is_dead_code: bool,
-    extra_data: Option<&'a TopLevelItem>,
-) -> Doc<'a> {
-    println!("EXTRA_DATA_inside_fn_to_doc: {:#?}", extra_data);
-    let types_for_f = types_for_f(extra_data);
+fn fn_to_doc<'a>(strct_args: ArgumentsForFnToDoc<'a>) -> Doc<'a> {
+    println!("EXTRA_DATA_inside_fn_to_doc: {:#?}", strct_args.extra_data);
+    let types_for_f = types_for_f(strct_args.extra_data);
     group([
-        if is_dead_code {
+        if strct_args.is_dead_code {
             concat([
                 text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
                 hardline(),
@@ -686,48 +677,44 @@ fn fn_to_doc<'a>(
         },
         // Printing instance of DoubleColon Class for [f]
         // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
-        if name == "fmt" {
+        if strct_args.name == "fmt" {
             group([nest([
                 text("Parameter "),
-                body.parameter_name_for_fmt(),
+                strct_args.body.parameter_name_for_fmt(),
                 text(" : "),
                 // get type of argument named f
                 // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                concat(args.iter().map(
-                    |(name, ty)| {
-                        if name == "f" {
-                            ty.to_doc(false)
-                        } else {
-                            nil()
-                        }
-                    },
-                )),
+                concat(strct_args.args.iter().map(|(name, ty)| {
+                    if name == "f" {
+                        ty.to_doc(false)
+                    } else {
+                        nil()
+                    }
+                })),
                 text(" -> "),
                 types_for_f,
-                ret_ty.to_doc(false),
+                strct_args.ret_ty.to_doc(false),
                 text("."),
                 hardline(),
                 hardline(),
                 text("Global Instance Deb_"),
-                body.parameter_name_for_fmt(),
+                strct_args.body.parameter_name_for_fmt(),
                 text(" : "),
                 text("Notation.DoubleColon "),
-                concat(args.iter().map(
-                    |(name, ty)| {
-                        if name == "f" {
-                            ty.to_doc(false)
-                        } else {
-                            nil()
-                        }
-                    },
-                )),
+                concat(strct_args.args.iter().map(|(name, ty)| {
+                    if name == "f" {
+                        ty.to_doc(false)
+                    } else {
+                        nil()
+                    }
+                })),
                 text("\""),
-                body.parameter_name_for_fmt(),
+                strct_args.body.parameter_name_for_fmt(),
                 text("\""),
                 text(" := "),
                 text("{"),
                 text(" Notation.double_colon := "),
-                body.parameter_name_for_fmt(),
+                strct_args.body.parameter_name_for_fmt(),
                 text(";"),
                 text(" }."),
                 hardline(),
@@ -738,8 +725,8 @@ fn fn_to_doc<'a>(
         },
         nest([
             nest([
-                nest([text("Definition"), line(), text(name)]),
-                match ty_params {
+                nest([text("Definition"), line(), text(strct_args.name)]),
+                match strct_args.ty_params {
                     None => nil(),
                     Some(ty_params) => {
                         if ty_params.is_empty() {
@@ -758,7 +745,7 @@ fn fn_to_doc<'a>(
                     }
                 },
                 line(),
-                match where_predicates {
+                match strct_args.where_predicates {
                     None => nil(),
                     Some(where_predicates) => concat(where_predicates.iter().map(
                         |WherePredicate {
@@ -785,11 +772,11 @@ fn fn_to_doc<'a>(
                         },
                     )),
                 },
-                if args.is_empty() {
+                if strct_args.args.is_empty() {
                     text("(_ : unit)")
                 } else {
                     intersperse(
-                        args.iter().map(|(name, ty)| {
+                        strct_args.args.iter().map(|(name, ty)| {
                             nest([
                                 text("("),
                                 text(name),
@@ -804,10 +791,15 @@ fn fn_to_doc<'a>(
                     )
                 },
                 line(),
-                nest([text(":"), line(), ret_ty.to_doc(false), text(" :=")]),
+                nest([
+                    text(":"),
+                    line(),
+                    strct_args.ret_ty.to_doc(false),
+                    text(" :="),
+                ]),
             ]),
             line(),
-            body.to_doc(false),
+            strct_args.body.to_doc(false),
             text("."),
         ]),
     ])
@@ -1039,35 +1031,38 @@ impl ImplItem {
                 body,
                 is_method,
                 is_dead_code,
-            } => concat([
-                fn_to_doc(
+            } => {
+                let afftd = ArgumentsForFnToDoc {
                     name,
-                    None,
-                    None,
+                    ty_params: None,
+                    where_predicates: None,
                     args,
                     ret_ty,
                     body,
-                    *is_dead_code,
-                    *extra_data,
-                ),
-                hardline(),
-                hardline(),
-                if *is_method {
-                    concat([Self::class_instance_to_doc(
-                        "Method",
-                        name,
-                        "Notation.Dot",
-                        "Notation.dot",
-                    )])
-                } else {
-                    Self::class_instance_to_doc(
-                        "AssociatedFunction",
-                        name,
-                        "Notation.DoubleColon Self",
-                        "Notation.double_colon",
-                    )
-                },
-            ]),
+                    is_dead_code: *is_dead_code,
+                    extra_data: *extra_data,
+                };
+                concat([
+                    fn_to_doc(afftd),
+                    hardline(),
+                    hardline(),
+                    if *is_method {
+                        concat([Self::class_instance_to_doc(
+                            "Method",
+                            name,
+                            "Notation.Dot",
+                            "Notation.dot",
+                        )])
+                    } else {
+                        Self::class_instance_to_doc(
+                            "AssociatedFunction",
+                            name,
+                            "Notation.DoubleColon Self",
+                            "Notation.double_colon",
+                        )
+                    },
+                ])
+            }
             ImplItem::Type { ty } => nest([
                 nest([
                     text("Definition"),
@@ -1130,16 +1125,17 @@ impl TopLevelItem {
                     "WE should not have EXTRA_DATA here it should be equal to NONE here {:#?}",
                     extra_data
                 );
-                fn_to_doc(
+                let afftd = ArgumentsForFnToDoc {
                     name,
-                    Some(ty_params),
-                    Some(where_predicates),
+                    ty_params: Some(ty_params),
+                    where_predicates: Some(where_predicates),
                     args,
                     ret_ty,
                     body,
-                    *is_dead_code,
-                    *extra_data,
-                )
+                    is_dead_code: *is_dead_code,
+                    extra_data: *extra_data,
+                };
+                fn_to_doc(afftd)
             }
             TopLevelItem::Module {
                 name,
