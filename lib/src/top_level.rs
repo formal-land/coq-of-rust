@@ -606,9 +606,7 @@ pub fn top_level_to_coq(tcx: &TyCtxt) -> String {
     top_level.to_pretty(LINE_WIDTH)
 }
 
-// @TODO MAYBE DELETE THIS FUNCTION
 fn types_for_f(extra_data: Option<&TopLevelItem>) -> Doc {
-    println!("EXTRA_DATA_types_for_f***************: {:#?}", extra_data);
     match extra_data {
         // @TODO this is support for TypeStructStruct,
         // add support for more items
@@ -617,41 +615,38 @@ fn types_for_f(extra_data: Option<&TopLevelItem>) -> Doc {
             fields,
             is_dead_code: _,
         }) => {
-            println!("HERE HERE MATCH HAPPENED");
             concat([
                 text("string"),
                 text(" -> "),
                 line(),
-                nest([
-                    intersperse(
-                        fields.iter().map(|(_str, boxed_coq_type)| {
-                            let nm = boxed_coq_type.to_name();
-                            let nn = if nm == *"StaticRef_str" {
-                                String::from("string")
-                            } else {
-                                boxed_coq_type.to_name()
-                            };
-                            group([
-                                // print field name
-                                text("string"),
-                                text(" ->"),
-                                // print field type
-                                text(nn),
-                                text(" -> "),
-                            ])
-                        }),
-                        [line()],
-                    ),
-                    line(),
-                ]),
+                intersperse(
+                    fields.iter().map(|(_str, boxed_coq_type)| {
+                        let nm = boxed_coq_type.to_name();
+                        let nn = if nm == *"StaticRef_str" {
+                            String::from("string")
+                        } else {
+                            boxed_coq_type.to_name()
+                        };
+                        group([
+                            // print field name
+                            text("string"),
+                            text(" -> "),
+                            // print field type
+                            text(nn),
+                            text(" -> "),
+                        ])
+                    }),
+                    [line()],
+                ),
+                line(),
             ])
         }
-        _ => text("PROBLEM, didn't matched, but NOT nesasarily None!!!!!!!!"),
+        _ => text("unreachable branch"),
     }
 }
 
 // We can not have more than 7 arguments for the function,
-// so we put all the arguments int one struct
+// so we put all the arguments into the one struct
 struct ArgumentsForFnToDoc<'a> {
     name: &'a String,
     ty_params: Option<&'a Vec<String>>,
@@ -663,8 +658,7 @@ struct ArgumentsForFnToDoc<'a> {
     extra_data: Option<&'a TopLevelItem>,
 }
 
-fn fn_to_doc<'a>(strct_args: ArgumentsForFnToDoc<'a>) -> Doc<'a> {
-    println!("EXTRA_DATA_inside_fn_to_doc: {:#?}", strct_args.extra_data);
+fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
     let types_for_f = types_for_f(strct_args.extra_data);
     group([
         if strct_args.is_dead_code {
@@ -678,48 +672,57 @@ fn fn_to_doc<'a>(strct_args: ArgumentsForFnToDoc<'a>) -> Doc<'a> {
         // Printing instance of DoubleColon Class for [f]
         // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
         if strct_args.name == "fmt" {
-            group([nest([
-                text("Parameter "),
-                strct_args.body.parameter_name_for_fmt(),
-                text(" : "),
-                // get type of argument named f
-                // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                concat(strct_args.args.iter().map(|(name, ty)| {
-                    if name == "f" {
-                        ty.to_doc(false)
-                    } else {
-                        nil()
-                    }
-                })),
-                text(" -> "),
-                types_for_f,
-                strct_args.ret_ty.to_doc(false),
-                text("."),
+            group([
+                nest([
+                    text("Parameter "),
+                    strct_args.body.parameter_name_for_fmt(),
+                    text(" : "),
+                    // get type of argument named f
+                    // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
+                    concat(strct_args.args.iter().map(|(name, ty)| {
+                        if name == "f" {
+                            ty.to_doc_tuning(false)
+                        } else {
+                            nil()
+                        }
+                    })),
+                    text(" -> "),
+                    types_for_f,
+                    strct_args.ret_ty.to_doc(false),
+                    text("."),
+                ]),
                 hardline(),
                 hardline(),
-                text("Global Instance Deb_"),
-                strct_args.body.parameter_name_for_fmt(),
-                text(" : "),
-                text("Notation.DoubleColon "),
-                concat(strct_args.args.iter().map(|(name, ty)| {
-                    if name == "f" {
-                        ty.to_doc(false)
-                    } else {
-                        nil()
-                    }
-                })),
-                text("\""),
-                strct_args.body.parameter_name_for_fmt(),
-                text("\""),
-                text(" := "),
-                text("{"),
-                text(" Notation.double_colon := "),
-                strct_args.body.parameter_name_for_fmt(),
-                text(";"),
-                text(" }."),
+                nest([
+                    text("Global Instance Deb_"),
+                    strct_args.body.parameter_name_for_fmt(),
+                    text(" : "),
+                    text("Notation.DoubleColon"),
+                    line(),
+                    concat(strct_args.args.iter().map(|(name, ty)| {
+                        if name == "f" {
+                            ty.to_doc_tuning(false)
+                        } else {
+                            nil()
+                        }
+                    })),
+                    text(" \""),
+                    strct_args.body.parameter_name_for_fmt(),
+                    text("\""),
+                    text(" := "),
+                    text("{"),
+                    line(),
+                    nest([
+                        text("Notation.double_colon := "),
+                        strct_args.body.parameter_name_for_fmt(),
+                        text(";"),
+                    ]),
+                    line(),
+                ]),
+                text("}."),
                 hardline(),
                 hardline(),
-            ])])
+            ])
         } else {
             nil()
         },
@@ -1085,10 +1088,6 @@ impl ImplItem {
 
 impl TopLevelItem {
     fn to_doc<'a>(&'a self, extra_data: &Option<&'a TopLevelItem>) -> Doc {
-        println!(
-            "EXTRA_DATA_inside_impl TopLevelItem fn to_doc, line 1023 {:#?}, self : {:#?}",
-            extra_data, self
-        );
         match self {
             TopLevelItem::Const { name, ty, value } => nest([
                 nest([
@@ -1121,10 +1120,6 @@ impl TopLevelItem {
                 body,
                 is_dead_code,
             } => {
-                println!(
-                    "WE should not have EXTRA_DATA here it should be equal to NONE here {:#?}",
-                    extra_data
-                );
                 let afftd = ArgumentsForFnToDoc {
                     name,
                     ty_params: Some(ty_params),
@@ -1934,11 +1929,6 @@ impl TopLevel {
                 is_dead_code: _,
             } => {
                 // check if it is the struct we are looking for
-                println!(
-                    "NAME, SELF_TY.TO_NAME: {:#?} EQUALS {:#?}",
-                    *name,
-                    self_ty.to_item_name()
-                );
                 *name == self_ty.to_item_name()
             }
             _ => false,
@@ -1950,16 +1940,11 @@ impl TopLevel {
         // for a TopLevelItem::TypeStructStruct (@TODO extend to cover more cases)
         // if "yes" - get both TopLevelItems (Struct itself and TraitImpl for it)
         // in order to have all required data for printing instance for DoubleColon Class
-        // NATALIE ADDED BELOW
-        // in this variable we store additional data to pass to to_doc function
 
-        // NATALIE ADDED ABOWE
-        // Задача: пройти по всему дереву, и, если встретился TraitImpl - сохранить
-        // предыдущий Item (тот, для которого печатается Impl). потому, что из него (предыдущего)
-        // нам доставать типы данных (extra data). Для StructStruct проверять, равны ли name
+        // We go through whole tree and if we face TraitImpl, we need to save previous item too
+        // (the one for which Impl is being printed), in order to have all the extra_data
         intersperse(
             self.0.iter().map(|item| {
-                println!("ITEM=============================: {:#?}", item);
                 // if item is DeriveDebug, get struct's fields
                 match item {
                     TopLevelItem::TraitImpl {
@@ -1973,16 +1958,13 @@ impl TopLevel {
                     // if item is DeriveDebug we are getting missing datatypes for Struct, and
                     // printing DoubleColon instance for fmt function
                     {
-                        //     println!("OF_TRAIT_TO_NAME: {}", of_trait.to_name());
-                        //     println!("SELF_TY: {:#?}", self_ty.to_name());
                         // @TODO. below is support for deriveDebug (add code to support more traits)
                         if of_trait.to_name() == "core_fmt_Debug" {
                             let strct = self.find_tli_by_name(self_ty); // self.get_struct_types(self_ty);
-                            println!("FOUNDED_TLI: {:#?}", strct);
-                            // add structs types here (for printing)
+                                                                        // add structs types here (for printing)
                             item.to_doc(&strct)
                         } else {
-                            // @TODO more cases (only Derive debug for Struct supported)");
+                            // @TODO add more cases (only Derive debug for Struct supported)");
                             // if no DeriveDebug - we just convert item to doc, no extra data required.
                             item.to_doc(&None)
                         }
