@@ -3549,6 +3549,80 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
     Notation.double_colon := decode;
   }.
   
+  Definition decode_into
+      (__codec_input_edqy : mut_ref __CodecInputEdqy)
+      (dst_ : mut_ref (core.mem.maybe_uninit.MaybeUninit Self))
+      :
+        M
+          (core.result.Result
+            parity_scale_codec.decode_finished.DecodeFinished
+            parity_scale_codec.error.Error) :=
+    let* _ :=
+      let* α0 := core.mem.size_of tt in
+      let* α1 := core.mem.size_of tt in
+      match (addr_of α0, addr_of α1) with
+      | (left_val, right_val) =>
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* α2 := α0.["eq"] α1 in
+        let* α3 := α2.["not"] in
+        if (α3 : bool) then
+          let kind := core.panicking.AssertKind.Eq in
+          let* _ :=
+            let* α0 := left_val.["deref"] in
+            let* α1 := right_val.["deref"] in
+            core.panicking.assert_failed
+              kind
+              (addr_of α0)
+              (addr_of α1)
+              core.option.Option.None in
+          Pure tt
+        else
+          Pure tt
+      end in
+    let* _ :=
+      let* α0 := core.mem.size_of tt in
+      let* α1 := α0.["gt"] 0 in
+      let* α2 :=
+        if (α1 : bool) then
+          Pure 1
+        else
+          Pure 0 in
+      let* α3 := α2.["le"] 1 in
+      let* α4 := α3.["not"] in
+      if (α4 : bool) then
+        core.panicking.panic
+          "assertion failed: if ::core::mem::size_of::<AccountId>() > 0 { 1 } else { 0 } <= 1"
+      else
+        Pure tt in
+    let* _ :=
+      let dst_ := dst_ in
+      let* dst_ :=
+        let* α0 := dst_.["as_mut_ptr"] in
+        let* α1 := α0.["cast"] in
+        let* α2 := α1.["deref"] in
+        Pure (addr_of α2) in
+      let* _ :=
+        let* α0 :=
+          parity_scale_codec.codec.Decode.decode_into __codec_input_edqy dst_ in
+        let* α1 := LangItem α0 in
+        match α1 with
+        | Break {| Break.0 := residual; |} =>
+          let* α0 := LangItem residual in
+          Return α0
+        | Continue {| Continue.0 := val; |} => Pure val
+        end in
+      Pure tt in
+    let* α0 :=
+      parity_scale_codec.decode_finished.DecodeFinished::["assert_decoding_finished"]
+        tt in
+    Pure (core.result.Result.Ok α0).
+  
+  Global Instance AssociatedFunction_decode_into :
+    Notation.DoubleColon Self "decode_into" := {
+    Notation.double_colon := decode_into;
+  }.
+  
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
     parity_scale_codec.codec.Decode.decode := decode;
   }.
