@@ -138,6 +138,22 @@ Global Instance Method_destroy (A : Set) : Notation.Dot "destroy" := {
 
 Global Instance Method_ne_u64 : Notation.Dot "ne" (T := u64 -> u64 -> M bool). Admitted.
 
+
+(* @TODO:
+   1. Move this to its folders
+   2. Make std reexport these definitions were appropriated
+
+   In Rust [std] depends and reexports [core]. We added the
+   definitions in this file ad-hocly as we need them, and added the
+   defitions for [std] also, but at some points they are duplicates,
+   it would be nice if we deduplicate them by making [std] files
+   reexport [core] definitions.
+
+   An observation is that during the translation the names are
+   resolved so we never see these aliases between [std] and [core] in
+   translated code, it always use the real definition (in [core] in
+   this case).
+*)
 Module core.
   Module option.
     Module Option.
