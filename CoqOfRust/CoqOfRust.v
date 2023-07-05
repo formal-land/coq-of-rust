@@ -100,7 +100,7 @@ Notation "e1 .[ e2 ]" := (Notation.dot e2 e1)
 Notation "e1 ::[ e2 ]" := (Notation.double_colon e1 e2)
   (at level 0).
 
-Notation "e1 ::type[ e2]" := (Notation.double_colon_type e1 e2)
+Notation "e1 ::type[ e2 ]" := (Notation.double_colon_type e1 e2)
   (at level 0).
 
 (** A method is also an associated function for its type. *)
