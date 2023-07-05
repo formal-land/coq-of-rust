@@ -888,7 +888,7 @@ Module std.
   Module convert := _std.convert.
   Module default := _std.default.
   Module env := _std.env.
-  (* Module error := _std.error. *)
+  Module error := _std.error.
   Module ffi := _std.ffi.
   Module fmt := _std.fmt.
   Module fs := _std.fs.
