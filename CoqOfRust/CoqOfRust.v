@@ -70,6 +70,12 @@ Module Notation.
     double_colon : T;
   }.
   Arguments double_colon {Kind} type name {T DoubleColon}.
+
+  (* A class to represent types in a trait. *)
+  Class DoubleColonType {Kind : Type} (type : Kind) (name : string) : Set := {
+    double_colon_type : Set;
+  }.
+  Arguments double_colon_type {Kind} type name {DoubleColonType}.
 End Notation.
 
 (** Note that we revert the arguments in this notation. *)
@@ -77,6 +83,9 @@ Notation "e1 .[ e2 ]" := (Notation.dot e2 e1)
   (at level 0).
 
 Notation "e1 ::[ e2 ]" := (Notation.double_colon e1 e2)
+  (at level 0).
+
+Notation "e1 ::type[ e2]" := (Notation.double_colon_type e1 e2)
   (at level 0).
 
 (** A method is also an associated function for its type. *)
