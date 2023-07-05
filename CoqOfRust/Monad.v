@@ -11,4 +11,3 @@ Module Notations.
     (bind b (fun a => c))
       (at level 200, b at level 100, a name).
 End Notations.
-
