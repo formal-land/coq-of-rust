@@ -51,9 +51,9 @@ Definition Metadata := Metadata.t.
 
 (* pub struct OpenOptions(_); *)
 Module OpenOptions.
-  Record t : Set := { }.
+  Parameter t : Set.
 End OpenOptions.
-Definition OpenOptions := OpenOptions.t.
+Definition t : Set := OpenOptions.t.
 
 (* pub struct Permissions(_); *)
 Module Permissions.

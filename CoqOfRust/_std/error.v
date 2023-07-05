@@ -19,6 +19,7 @@ pub trait Error: Debug + Display {
 }
 *)
 Module Error.
+  Unset Primitive Projections.
   Class Trait (Self : Set) 
     `{Debug.Trait Self}
     `{Display.Trait Self}
@@ -30,6 +31,7 @@ Module Error.
     (* cause : ref Self -> Option ((ref dyn) Error); *)
     provide : ref Self -> mut_ref Demand -> unit;
   }.
+  Global Set Primitive Projections.
 End Error.
 
 (* ********STRUCTS******** *)

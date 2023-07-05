@@ -925,240 +925,31 @@ Module std.
   Module vec := _std.vec.
 End std.
 
-(*
-Module std.
-  Module collections.
-   Module hash_map.
-     Module DefaultHasher.
-       Parameter t : Set.
-       Definition new (_ : unit) : M t. Admitted.
+(*** std instances *)
 
-       Global Instance DefaultHasher_new : Notation.DoubleColon t "new" := {
-         Notation.double_colon := new
-       }.
-     End DefaultHasher.
-     Definition DefaultHasher := DefaultHasher.t.
-   End hash_map.
-  End collections.
+Module hash_Instances.
+  (** Hasher instance functions *)
+  Global Instance Hasher_Method_finish (T : Set) `{std.hash.Hasher.Trait T} : Notation.Dot "finish" := {
+    Notation.dot (x : T) := std.hash.Hasher.finish x;
+  }.
 
- Module string.
-    Module ToString.
-      Class Trait (Self : Set) : Set := {
-        to_string : ref Self -> M alloc.string.String;
-      }.
+  (** Hash instance functions *)
+  Global Instance Hash_Method_hash (T : Set) `{std.hash.Hasher.Trait} `{std.hash.Hash.Trait T} : Notation.Dot "hash" := {
+      Notation.dot (x : T) := std.hash.Hash.hash x;
+  }.
 
-      Global Instance Method_to_string `(Trait) : Notation.Dot "to_string" := {
-        Notation.dot := to_string;
-      }.
-    End ToString.
+  (** Hasher implementation for DefaultHasher *)
+  Global Instance DefaultHasher_Hasher : std.hash.Hasher.Trait std.collections.hash_map.DefaultHasher. Admitted.
 
-    Global Instance ToString_on_Display {Self : Set}
-      `{core.fmt.Display.Trait Self} :
-      ToString.Trait Self.
-    Admitted.
-  End string.
-
-  (* @TODO: There is a module [std.hash] in [std/hash.v] which was
-     added with the remaining of the stdlib, the module below
-     was added alone to make trait.rs example work, they differ
-     slightly, TODO: we should have only one of them *)
-  Module hash.
-    Module BuilHasherDefault.
-      Record t (H : Set) : Set := { }.
-    End BuilHasherDefault.
-    Definition BuilHasherDefault := BuilHasherDefault.t.
-
-    Module Hasher.
-      Class Trait (Self : Set) : Set := {
-      (* fn finish(&self) -> u64; *)
-      finish : ref Self -> M u64;
-
-      (* fn write(&mut self, bytes: &[u8]); *)
-      write : mut_ref Self -> ref (list u8) -> unit;
-
-      (* fn write_u8(&mut self, i: u8) { ... } *)
-      write_u8 : mut_ref Self -> u8 -> unit;
-
-      (* fn write_u16(&mut self, i: u16) { ... } *)
-      write_u16 : mut_ref Self -> u16 -> unit;
-
-      (* fn write_u32(&mut self, i: u32) { ... } *)
-      write_u32 : mut_ref Self -> u32 -> unit;
-
-      (* fn write_u64(&mut self, i: u64) { ... } *)
-      write_u64 : mut_ref Self -> u64 -> unit;
-
-      (* fn write_u128(&mut self, i: u128) { ... } *)
-      write_u128 : mut_ref Self -> u128 -> unit;
-
-      (* fn write_usize(&mut self, i: usize) { ... } *)
-      write_usize : mut_ref Self -> usize -> unit;
-
-      (* fn write_i8(&mut self, i: i8) { ... } *)
-      write_i8 : mut_ref Self -> i8 -> unit;
-
-      (* fn write_i16(&mut self, i: i16) { ... } *)
-      write_i16 : mut_ref Self -> i16 -> unit;
-
-      (* fn write_i32(&mut self, i: i32) { ... } *)
-      write_i32 : mut_ref Self -> i32 -> unit;
-
-      (* fn write_i64(&mut self, i: i64) { ... } *)
-      write_i64 : mut_ref Self -> i64 -> unit;
-
-      (* fn write_i128(&mut self, i: i128) { ... } *)
-      write_i128 : mut_ref Self -> i128 -> unit;
-
-      (* fn write_isize(&mut self, i: isize) { ... } *)
-      write_isize : mut_ref Self -> isize -> unit;
-
-      (* fn write_length_prefix(&mut self, len: usize) { ... } *)
-      write_length_prefix : mut_ref Self -> usize -> unit;
-
-      (* fn write_str(&mut self, s: &str) { ... } *)
-      write_str : mut_ref Self -> ref str;
-      }.
-    End Hasher.
-
-    Module Hash.
-      Class Trait (Self : Set) : Set := {
-        hash {H : Set}
-          `{Hasher : Hasher.Trait H}
-          : ref Self -> mut_ref H -> M unit;
-
-          
-        (* @TODO 
-        hash_slice (H : Set)
-          `{Hasher.Trait H}
-          (* `{Sized.Trait Self} *)
-          : ref (list Self) -> M (mut_ref H);
-         *)
-      }.
-    End Hash.
-
-    Module BuildHasher.
-      Class Trait (Self Hasher : Set)
-        `{Hasher.Trait Hasher}
-        : Set := {
-          Hasher := Hasher;
-          build_hasher : ref Self -> Hasher;
-          hash_one (T : Set)
-            `{Hash.Trait T}
-            (* `{Sized.Trait Self} *)
-            `{Hasher.Trait Hasher}
-            : ref Self -> T -> u64;
-      }.
-    End BuildHasher.
-
-    (** Hasher instance functions *)
-    Global Instance Hasher_Method_finish (T : Set) `{Hasher.Trait T} : Notation.Dot "finish" := {
-      Notation.dot (x : T) := Hasher.finish x;
-    }.
-
-    (** Hash instance functions *)
-    Global Instance Hash_Method_hash (T : Set) `{Hasher.Trait} `{Hash.Trait T} : Notation.Dot "hash" := {
-        Notation.dot (x : T) := Hash.hash x;
-    }.
-
-    (** Hasher implementation for DefaultHasher *)
-    Global Instance DefaultHasher_Hasher : Hasher.Trait std.collections.hash_map.DefaultHasher. Admitted.
-
-    (** Hash implementation for primitive types *)
-    Global Instance Hash_for_unit : Hash.Trait unit. Admitted.
-    Global Instance Hash_for_bool : Hash.Trait unit. Admitted.
-    Global Instance Hash_for_i32 : Hash.Trait i32. Admitted.
-    Global Instance Hash_for_u32 : Hash.Trait u32. Admitted.
-    Global Instance Hash_for_String : Hash.Trait alloc.string.String. Admitted.
-    Global Instance Hash_for_i64 : Hash.Trait i64. Admitted.
-    Global Instance Hash_for_u64 : Hash.Trait u64. Admitted.
-  End hash.
-
-  Module prelude.
-    Module rust_2021.
-      Module From.
-        Class Trait (T : Set) (Self : Set) : Set := {
-          from : T -> M Self;
-        }.
-      End From.
-    End rust_2021.
-  End prelude.
-
-  Module error.
-    Module Error.
-      Unset Primitive Projections.
-      Class Trait (Self : Set) : Set := {
-      }.
-      Global Set Primitive Projections.
-    End Error.
-  End error.
-
-  Module io.
-    Module stdio.
-      Parameter _print : forall {A : Set}, A -> M unit.
-    End stdio.
-  End io.
-
-  Module cmp.
-    Module Ordering.
-      Inductive t : Set :=
-      | Less : t
-      | Grreater : t
-      | Equal : t.
-    End Ordering.
-
-    Module PartialEq.
-      Class Trait (Self : Set) (Rhs : option Set) : Set := {
-        Rhs := defaultType Rhs Self;
-
-        eq : ref Self -> ref Rhs -> M bool;
-        ne : ref Self -> ref Rhs -> M bool;
-      }.
-
-      Global Instance Method_eq `(Trait) : Notation.Dot "eq" := {
-        Notation.dot := eq;
-      }.
-      Global Instance Method_ne `(Trait) : Notation.Dot "ne" := {
-        Notation.dot := ne;
-      }.
-    End PartialEq.
-
-    Module PartialOrd.
-      Class Trait (Self : Set) (Rhs : option Set) : Set := {
-        Rhs := defaultType Rhs Self;
-
-        partial_cmp : ref Self -> ref Self -> M (option (Ordering.t));
-        lt : ref Self -> ref Rhs -> M bool;
-        le : ref Self -> ref Rhs -> M bool;
-        gt : ref Self -> ref Rhs -> M bool;
-        ge : ref Self -> ref Rhs -> M bool;
-      }.
-
-      Global Instance Method_partial_cmp `(Trait) : Notation.Dot "partial_cmp" := {
-        Notation.dot := partial_cmp;
-      }.
-      Global Instance Method_lt `(Trait) : Notation.Dot "lt" := {
-        Notation.dot := lt;
-      }.
-      Global Instance Method_le `(Trait) : Notation.Dot "le" := {
-        Notation.dot := le;
-      }.
-      Global Instance Method_gt `(Trait) : Notation.Dot "gt" := {
-        Notation.dot := gt;
-      }.
-      Global Instance Method_ge `(Trait) : Notation.Dot "ge" := {
-        Notation.dot := ge;
-      }.
-    End PartialOrd.
-  End cmp.
-
-  Module fs.
-    Module OpenOptions.
-      Parameter t : Set.
-    End OpenOptions.
-    Definition t : Set := OpenOptions.t.
-  End fs.
-End std.
-*)
+  (** Hash implementation for primitive types *)
+  Global Instance Hash_for_unit : std.hash.Hash.Trait unit. Admitted.
+  Global Instance Hash_for_bool : std.hash.Hash.Trait unit. Admitted.
+  Global Instance Hash_for_i32 : std.hash.Hash.Trait i32. Admitted.
+  Global Instance Hash_for_u32 : std.hash.Hash.Trait u32. Admitted.
+  Global Instance Hash_for_String : std.hash.Hash.Trait alloc.string.String. Admitted.
+  Global Instance Hash_for_i64 : std.hash.Hash.Trait i64. Admitted.
+  Global Instance Hash_for_u64 : std.hash.Hash.Trait u64. Admitted.
+End hash_Instances.
 
 Module bool_Instances.
   Global Instance IDisplay : core.fmt.Display.Trait bool.

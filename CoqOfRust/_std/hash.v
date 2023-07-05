@@ -1,3 +1,4 @@
+Require Import CoqOfRust.Monad.
 Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust._std.marker.
@@ -92,14 +93,18 @@ pub trait Hash {
 }
 *)
 Module Hash.
-  Class Trait (Self : Set) : Set := { 
-    hash (H : Set) 
-      `{Hasher.Trait H}
-      : ref Self -> mut_ref H -> unit;
+  Class Trait (Self : Set) : Set := {
+    hash {H : Set}
+      `{Hasher : Hasher.Trait H}
+      : ref Self -> mut_ref H -> M unit;
 
-    hash_slice (H : Set) 
+
+    (* @TODO 
+    hash_slice (H : Set)
       `{Hasher.Trait H}
-      : ref (list Self) -> mut_ref H;
+      (* `{Sized.Trait Self} *)
+      : ref (list Self) -> M (mut_ref H);
+     *)
   }.
 End Hash.
 
@@ -129,4 +134,3 @@ Module BuilHasher.
         : ref Self -> T -> u64;
   }.
 End BuilHasher.
-

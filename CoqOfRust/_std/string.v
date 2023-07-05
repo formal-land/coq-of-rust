@@ -1,3 +1,4 @@
+Require Import CoqOfRust.Monad.
 Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust._std.convert.
 Require Import CoqOfRust._std.fmt.
@@ -47,17 +48,12 @@ Definition String := String.t.
 
 Module ToString.
   Class Trait (Self : Set) : Set := {
-    to_string : ref Self -> String;
+    to_string : ref Self -> M string;
   }.
 
   Global Instance Method_to_string `(Trait) : Notation.Dot "to_string" := {
     Notation.dot := to_string;
   }.
-
-  Global Instance ToString_on_Display {Self : Set}
-    `{fmt.Display.Trait Self} :
-    ToString.Trait Self.
-  Admitted.
 End ToString.
 
 (* The String type (Struct std::string::String) and it's methods  *)
@@ -75,5 +71,9 @@ Module StringType.
   }.
 
  (* @TODO add more methods from (Struct std::string::String) *)
- 
 End StringType.
+
+Global Instance ToString_on_Display {Self : Set}
+  `{_std.fmt.Display.Trait Self} :
+  ToString.Trait Self.
+Admitted.

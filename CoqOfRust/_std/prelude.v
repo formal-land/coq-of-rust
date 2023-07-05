@@ -1,3 +1,4 @@
+Require Import CoqOfRust.Monad.
 Require Import CoqOfRust.lib.lib.
 
 (* ********MODULES******** *)
@@ -109,4 +110,9 @@ Module rust_2021.
   super::v1::*
   core::prelude::rust_2021::*
   *)
+  Module From.
+    Class Trait (T : Set) (Self : Set) : Set := {
+      from : T -> M Self;
+    }.
+  End From.
 End rust_2021.

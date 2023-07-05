@@ -1,3 +1,4 @@
+Require Import CoqOfRust.Monad.
 Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust._std.alloc.
 Require Import CoqOfRust._std.clone.
@@ -618,10 +619,15 @@ Module hash_map.
 
   (* pub struct DefaultHasher(_); *)
   Module DefaultHasher.
-    Record t : Set := { }.
+    Parameter t : Set.
+    Definition new (_ : unit) : M t. Admitted.
+
+    Global Instance DefaultHasher_new : Notation.DoubleColon t "new" := {
+      Notation.double_colon := new
+    }.
   End DefaultHasher.
-  Definition DefaultHasher := DefaultHasher.t.
-  
+
+  Definition DefaultHasher := DefaultHasher.t.  
   (* pub struct Drain<'a, K: 'a, V: 'a> { /* private fields */ } *)
   Module Drain.
     Record t (K V : Set) : Set := { }.
