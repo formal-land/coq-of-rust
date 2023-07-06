@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* _ :=
     let* α0 := format_arguments::["new_const"] (addr_of [ "Hello!
 " ]) in

@@ -11,7 +11,10 @@ Definition List := List.t.
 Module Impl_enums_testcase_linked_list_List.
   Definition Self := enums_testcase_linked_list.List.
   
-  Definition new (_ : unit) : M enums_testcase_linked_list.List :=
+  Definition new
+      `{State.Trait}
+      (_ : unit)
+      : M enums_testcase_linked_list.List :=
     Pure enums_testcase_linked_list.List.Nil.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
@@ -19,6 +22,7 @@ Module Impl_enums_testcase_linked_list_List.
   }.
   
   Definition prepend
+      `{State.Trait}
       (self : Self)
       (elem : u32)
       : M enums_testcase_linked_list.List :=
@@ -29,7 +33,7 @@ Module Impl_enums_testcase_linked_list_List.
     Notation.dot := prepend;
   }.
   
-  Definition len (self : ref Self) : M u32 :=
+  Definition len `{State.Trait} (self : ref Self) : M u32 :=
     let* α0 := self.["deref"] in
     match α0 with
     | enums_testcase_linked_list.List.Cons _ tail =>
@@ -42,7 +46,10 @@ Module Impl_enums_testcase_linked_list_List.
     Notation.dot := len;
   }.
   
-  Definition stringify (self : ref Self) : M alloc.string.String :=
+  Definition stringify
+      `{State.Trait}
+      (self : ref Self)
+      : M alloc.string.String :=
     let* α0 := self.["deref"] in
     match α0 with
     | enums_testcase_linked_list.List.Cons head tail =>
@@ -69,7 +76,7 @@ Module Impl_enums_testcase_linked_list_List.
 End Impl_enums_testcase_linked_list_List.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* list := enums_testcase_linked_list.List::["new"] tt in
   let* _ :=
     let* α0 := list.["prepend"] 1 in

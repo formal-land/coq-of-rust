@@ -12,6 +12,7 @@ Module
   Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -32,6 +33,7 @@ Module
   Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
   
   Definition clone
+      `{State.Trait}
       (self : ref Self)
       : M generics_phantom_type_test_case_unit_clarification.Inch :=
     self.["deref"].
@@ -66,6 +68,7 @@ Module
   Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -86,6 +89,7 @@ Module
   Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
   
   Definition clone
+      `{State.Trait}
       (self : ref Self)
       : M generics_phantom_type_test_case_unit_clarification.Mm :=
     self.["deref"].
@@ -133,6 +137,7 @@ Section
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -166,6 +171,7 @@ Section
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
   Definition clone
+      `{State.Trait}
       (self : ref Self)
       : M (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
     let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
@@ -218,6 +224,7 @@ Section
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
   Definition add
+      `{State.Trait}
       (self : Self)
       (rhs : generics_phantom_type_test_case_unit_clarification.Length Unit)
       : M (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
@@ -240,7 +247,7 @@ End
   Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let one_foot :=
     generics_phantom_type_test_case_unit_clarification.Length.Build_t
       12 (* 12.0 *)

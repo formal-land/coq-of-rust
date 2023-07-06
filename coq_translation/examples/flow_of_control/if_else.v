@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let n := 5 in
   let* _ :=
     let* α0 := n.["lt"] 0 in

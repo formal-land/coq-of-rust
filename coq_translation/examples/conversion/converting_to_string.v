@@ -16,6 +16,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   Definition Self := converting_to_string.Circle.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -36,7 +37,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let circle := {| converting_to_string.Circle.radius := 6; |} in
   let* _ :=
     let* _ :=

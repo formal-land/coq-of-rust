@@ -23,7 +23,11 @@ Definition Person : Set := Person.t.
 Module Impl_core_hash_Hash_for_hash_Person.
   Definition Self := hash.Person.
   
-  Definition hash (self : ref Self) (state : mut_ref __H) : M unit :=
+  Definition hash
+      `{State.Trait}
+      (self : ref Self)
+      (state : mut_ref __H)
+      : M unit :=
     let* _ := core.hash.Hash.hash (addr_of self.["id"]) state in
     let* _ := core.hash.Hash.hash (addr_of self.["name"]) state in
     core.hash.Hash.hash (addr_of self.["phone"]) state.
@@ -38,6 +42,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
 End Impl_core_hash_Hash_for_hash_Person.
 
 Definition calculate_hash
+    `{State.Trait}
     {T : Set}
     `{core.hash.Hash.Trait T}
     (t : ref T)
@@ -47,7 +52,7 @@ Definition calculate_hash
   s.["finish"].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* person1 :=
     let* α0 := "Janet".["to_string"] in
     Pure

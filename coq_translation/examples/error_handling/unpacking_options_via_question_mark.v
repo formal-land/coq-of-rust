@@ -29,6 +29,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Definition Self := unpacking_options_via_question_mark.Job.
   
   Definition clone
+      `{State.Trait}
       (self : ref Self)
       : M unpacking_options_via_question_mark.Job :=
     let _ := tt in
@@ -70,6 +71,7 @@ Module
   Definition Self := unpacking_options_via_question_mark.PhoneNumber.
   
   Definition clone
+      `{State.Trait}
       (self : ref Self)
       : M unpacking_options_via_question_mark.PhoneNumber :=
     let _ := tt in
@@ -97,6 +99,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
   Definition Self := unpacking_options_via_question_mark.Person.
   
   Definition work_phone_area_code
+      `{State.Trait}
       (self : ref Self)
       : M (core.option.Option u8) :=
     let* α0 := LangItem self.["job"] in
@@ -124,7 +127,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
 End Impl_unpacking_options_via_question_mark_Person.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let p :=
     {|
       unpacking_options_via_question_mark.Person.job :=

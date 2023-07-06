@@ -5,10 +5,11 @@ Definition LANGUAGE : ref str := run (Pure "Rust").
 
 Definition THRESHOLD : i32 := run (Pure 10).
 
-Definition is_big (n : i32) : M bool := n.["gt"] constants.THRESHOLD.
+Definition is_big `{State.Trait} (n : i32) : M bool :=
+  n.["gt"] constants.THRESHOLD.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let n := 16 in
   let* _ :=
     let* _ :=

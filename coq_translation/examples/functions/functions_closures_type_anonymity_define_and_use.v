@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition apply
+    `{State.Trait}
     {F : Set}
     `{core.ops.function.Fn.Trait unit F}
     (f : F)
@@ -10,7 +11,7 @@ Definition apply
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let x := 7 in
   let print :=
     fun  =>

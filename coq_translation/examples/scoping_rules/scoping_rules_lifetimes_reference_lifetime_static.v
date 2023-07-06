@@ -3,11 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition NUM : i32 := run (Pure 18).
 
-Definition coerce_static (arg : ref i32) : M (ref i32) :=
+Definition coerce_static `{State.Trait} (arg : ref i32) : M (ref i32) :=
   Pure (addr_of scoping_rules_lifetimes_reference_lifetime_static.NUM).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* _ :=
     let static_string := "I'm in read-only memory" in
     let* _ :=

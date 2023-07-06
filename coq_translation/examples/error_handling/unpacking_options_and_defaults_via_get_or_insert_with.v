@@ -19,6 +19,7 @@ Module
     unpacking_options_and_defaults_via_get_or_insert_with.Fruit.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -48,7 +49,7 @@ End
   Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let my_fruit := core.option.Option.None in
   let get_lemon_as_fallback :=
     fun  =>

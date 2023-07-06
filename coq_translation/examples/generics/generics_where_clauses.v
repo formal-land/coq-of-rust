@@ -18,7 +18,7 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
   
   Definition Self := T.
   
-  Definition print_in_option (self : Self) : M unit :=
+  Definition print_in_option `{State.Trait} (self : Self) : M unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -42,7 +42,7 @@ End Impl_generics_where_clauses_PrintInOption_for_T.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* vec :=
     let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
     Slice::["into_vec"] α0 in

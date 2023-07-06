@@ -25,7 +25,7 @@ End SingleGen.
 Definition SingleGen := SingleGen.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let _s := generics.Single.Build_t generics.A.Build in
   let _char := generics.SingleGen.Build_t "a"%char in
   let _t := generics.SingleGen.Build_t generics.A.Build in

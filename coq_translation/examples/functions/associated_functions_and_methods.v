@@ -19,7 +19,10 @@ Definition Point : Set := Point.t.
 Module Impl_associated_functions_and_methods_Point.
   Definition Self := associated_functions_and_methods.Point.
   
-  Definition origin (_ : unit) : M associated_functions_and_methods.Point :=
+  Definition origin
+      `{State.Trait}
+      (_ : unit)
+      : M associated_functions_and_methods.Point :=
     Pure
       {|
         associated_functions_and_methods.Point.y := 0 (* 0.0 *);
@@ -32,6 +35,7 @@ Module Impl_associated_functions_and_methods_Point.
   }.
   
   Definition new
+      `{State.Trait}
       (x : f64)
       (y : f64)
       : M associated_functions_and_methods.Point :=
@@ -65,6 +69,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
   Definition Self := associated_functions_and_methods.Rectangle.
   
   Definition get_p1
+      `{State.Trait}
       (self : ref Self)
       : M associated_functions_and_methods.Point :=
     Pure self.["p1"].
@@ -73,7 +78,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
     Notation.dot := get_p1;
   }.
   
-  Definition area (self : ref Self) : M f64 :=
+  Definition area `{State.Trait} (self : ref Self) : M f64 :=
     let
         '{|
           associated_functions_and_methods.Point.x := x1;
@@ -95,7 +100,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
     Notation.dot := area;
   }.
   
-  Definition perimeter (self : ref Self) : M f64 :=
+  Definition perimeter `{State.Trait} (self : ref Self) : M f64 :=
     let
         '{|
           associated_functions_and_methods.Point.x := x1;
@@ -119,7 +124,12 @@ Module Impl_associated_functions_and_methods_Rectangle.
     Notation.dot := perimeter;
   }.
   
-  Definition translate (self : mut_ref Self) (x : f64) (y : f64) : M unit :=
+  Definition translate
+      `{State.Trait}
+      (self : mut_ref Self)
+      (x : f64)
+      (y : f64)
+      : M unit :=
     let* _ := self.["p1"].["x"].["add_assign"] x in
     let* _ := self.["p2"].["x"].["add_assign"] x in
     let* _ := self.["p1"].["y"].["add_assign"] y in
@@ -146,7 +156,7 @@ Definition Pair := Pair.t.
 Module Impl_associated_functions_and_methods_Pair.
   Definition Self := associated_functions_and_methods.Pair.
   
-  Definition destroy (self : Self) : M unit :=
+  Definition destroy `{State.Trait} (self : Self) : M unit :=
     let 'associated_functions_and_methods.Pair.Build_t first second := self in
     let* _ :=
       let* _ :=
@@ -167,7 +177,7 @@ Module Impl_associated_functions_and_methods_Pair.
 End Impl_associated_functions_and_methods_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* rectangle :=
     let* α0 := associated_functions_and_methods.Point::["origin"] tt in
     let* α1 :=

@@ -26,6 +26,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone
+      `{State.Trait}
       (self : ref Self)
       : M scoping_rules_borrowing_mutablity.Book :=
     let _ := tt in
@@ -50,6 +51,7 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 Definition borrow_book
+    `{State.Trait}
     (book : ref scoping_rules_borrowing_mutablity.Book)
     : M unit :=
   let* _ :=
@@ -66,6 +68,7 @@ Definition borrow_book
   Pure tt.
 
 Definition new_edition
+    `{State.Trait}
     (book : mut_ref scoping_rules_borrowing_mutablity.Book)
     : M unit :=
   let* _ := assign book.["year"] 2014 in
@@ -83,7 +86,7 @@ Definition new_edition
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let immutabook :=
     {|
       scoping_rules_borrowing_mutablity.Book.author := "Douglas Hofstadter";

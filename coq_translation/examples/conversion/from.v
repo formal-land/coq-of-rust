@@ -16,6 +16,7 @@ Module Impl_core_fmt_Debug_for_from_Number.
   Definition Self := from.Number.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -37,7 +38,7 @@ End Impl_core_fmt_Debug_for_from_Number.
 Module Impl_core_convert_From_for_from_Number.
   Definition Self := from.Number.
   
-  Definition from (item : i32) : M Self :=
+  Definition from `{State.Trait} (item : i32) : M Self :=
     Pure {| from.Number.value := item; |}.
   
   Global Instance AssociatedFunction_from :
@@ -51,7 +52,7 @@ Module Impl_core_convert_From_for_from_Number.
 End Impl_core_convert_From_for_from_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* num := from.Number::["from"] 30 in
   let* _ :=
     let* _ :=

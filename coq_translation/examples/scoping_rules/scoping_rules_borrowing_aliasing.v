@@ -21,7 +21,7 @@ End Point.
 Definition Point : Set := Point.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let point :=
     {|
       scoping_rules_borrowing_aliasing.Point.x := 0;

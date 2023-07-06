@@ -14,6 +14,7 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   Definition Self := try_from_and_try_into.EvenNumber.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -43,6 +44,7 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   Definition Self := try_from_and_try_into.EvenNumber.
   
   Definition eq
+      `{State.Trait}
       (self : ref Self)
       (other : ref try_from_and_try_into.EvenNumber)
       : M bool :=
@@ -63,6 +65,7 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
   Definition Error : Set := unit.
   
   Definition try_from
+      `{State.Trait}
       (value : i32)
       : M (core.result.Result Self ImplSelf.Error) :=
     let* α0 := value.["rem"] 2 in
@@ -84,7 +87,7 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* _ :=
     let* α0 := try_from_and_try_into.EvenNumber::["try_from"] 8 in
     match

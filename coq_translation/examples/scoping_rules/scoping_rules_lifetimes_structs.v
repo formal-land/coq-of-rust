@@ -14,6 +14,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
   Definition Self := scoping_rules_lifetimes_structs.Borrowed.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -50,6 +51,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
   Definition Self := scoping_rules_lifetimes_structs.NamedBorrowed.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -81,6 +83,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
   Definition Self := scoping_rules_lifetimes_structs.Either.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -107,7 +110,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let x := 18 in
   let y := 15 in
   let single := scoping_rules_lifetimes_structs.Borrowed.Build_t (addr_of x) in

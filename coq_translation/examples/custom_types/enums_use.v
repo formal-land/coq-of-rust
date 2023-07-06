@@ -16,7 +16,7 @@ End Work.
 Definition Work := Work.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let status := enums_use.Status.Poor in
   let work := enums_use.Work.Civilian in
   let* _ :=

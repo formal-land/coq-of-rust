@@ -27,7 +27,8 @@ Module
   Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
   Definition Self := returning_traits_with_dyn.Sheep.
   
-  Definition noise (self : ref Self) : M (ref str) := Pure "baaaaah!".
+  Definition noise `{State.Trait} (self : ref Self) : M (ref str) :=
+    Pure "baaaaah!".
   
   Global Instance Method_noise : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -41,7 +42,8 @@ End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Definition Self := returning_traits_with_dyn.Cow.
   
-  Definition noise (self : ref Self) : M (ref str) := Pure "moooooo!".
+  Definition noise `{State.Trait} (self : ref Self) : M (ref str) :=
+    Pure "moooooo!".
   
   Global Instance Method_noise : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -53,6 +55,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Definition random_animal
+    `{State.Trait}
     (random_number : f64)
     : M (alloc.boxed.Box TraitObject) :=
   let* α0 := random_number.["lt"] 1 (* 0.5 *) in
@@ -62,7 +65,7 @@ Definition random_animal
     alloc.boxed.Box::["new"] {|  |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let random_number := 0 (* 0.234 *) in
   let* animal := returning_traits_with_dyn.random_animal random_number in
   let* _ :=

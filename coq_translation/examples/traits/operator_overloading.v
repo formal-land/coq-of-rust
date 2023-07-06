@@ -20,6 +20,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Definition Self := operator_overloading.FooBar.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -43,6 +44,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Definition Self := operator_overloading.BarFoo.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -63,6 +65,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
   Definition Output : Set := operator_overloading.FooBar.
   
   Definition add
+      `{State.Trait}
       (self : Self)
       (_rhs : operator_overloading.Bar)
       : M operator_overloading.FooBar :=
@@ -94,6 +97,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
   Definition Output : Set := operator_overloading.BarFoo.
   
   Definition add
+      `{State.Trait}
       (self : Self)
       (_rhs : operator_overloading.Foo)
       : M operator_overloading.BarFoo :=
@@ -120,7 +124,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* _ :=
     let* _ :=
       let* α0 :=

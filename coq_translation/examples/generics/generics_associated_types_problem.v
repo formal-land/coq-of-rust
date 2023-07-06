@@ -36,6 +36,7 @@ Module
   Definition Self := generics_associated_types_problem.Container.
   
   Definition contains
+      `{State.Trait}
       (self : ref Self)
       (number_1 : ref i32)
       (number_2 : ref i32)
@@ -48,13 +49,13 @@ Module
     Notation.dot := contains;
   }.
   
-  Definition first (self : ref Self) : M i32 := Pure (self.[0]).
+  Definition first `{State.Trait} (self : ref Self) : M i32 := Pure (self.[0]).
   
   Global Instance Method_first : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
-  Definition last (self : ref Self) : M i32 := Pure (self.[1]).
+  Definition last `{State.Trait} (self : ref Self) : M i32 := Pure (self.[1]).
   
   Global Instance Method_last : Notation.Dot "last" := {
     Notation.dot := last;
@@ -73,6 +74,7 @@ End
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
 
 Definition difference
+    `{State.Trait}
     {A B C : Set}
     `{generics_associated_types_problem.Contains.Trait A B C}
     (container : ref C)
@@ -82,7 +84,7 @@ Definition difference
   α0.["sub"] α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let number_1 := 3 in
   let number_2 := 10 in
   let container :=

@@ -40,7 +40,7 @@ Module
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
   Definition Self := disambiguating_overlapping_traits.Form.
   
-  Definition get (self : ref Self) : M alloc.string.String :=
+  Definition get `{State.Trait} (self : ref Self) : M alloc.string.String :=
     self.["username"].["clone"].
   
   Global Instance Method_get : Notation.Dot "get" := {
@@ -58,7 +58,7 @@ Module
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
   Definition Self := disambiguating_overlapping_traits.Form.
   
-  Definition get (self : ref Self) : M u8 := Pure self.["age"].
+  Definition get `{State.Trait} (self : ref Self) : M u8 := Pure self.["age"].
   
   Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
@@ -72,7 +72,7 @@ End
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* form :=
     let* α0 := "rustacean".["to_owned"] in
     Pure

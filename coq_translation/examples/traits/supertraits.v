@@ -44,6 +44,7 @@ Module CompSciStudent.
 End CompSciStudent.
 
 Definition comp_sci_student_greeting
+    `{State.Trait}
     (student : ref TraitObject)
     : M alloc.string.String :=
   let* res :=
@@ -69,4 +70,4 @@ Definition comp_sci_student_greeting
   Pure res.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit := Pure tt.
+Definition main `{State.Trait} (_ : unit) : M unit := Pure tt.

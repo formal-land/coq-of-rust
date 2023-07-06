@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition cat
+    `{State.Trait}
     (path : ref std.path.Path)
     : M (std.io.error.Result alloc.string.String) :=
   let* f :=
@@ -21,6 +22,7 @@ Definition cat
   end.
 
 Definition echo
+    `{State.Trait}
     (s : ref str)
     (path : ref std.path.Path)
     : M (std.io.error.Result unit) :=
@@ -36,7 +38,10 @@ Definition echo
   let* α0 := s.["as_bytes"] in
   f.["write_all"] α0.
 
-Definition touch (path : ref std.path.Path) : M (std.io.error.Result unit) :=
+Definition touch
+    `{State.Trait}
+    (path : ref std.path.Path)
+    : M (std.io.error.Result unit) :=
   let* α0 := std.fs.OpenOptions::["new"] tt in
   let* α1 := α0.["create"] true in
   let* α2 := α1.["write"] true in
@@ -47,7 +52,7 @@ Definition touch (path : ref std.path.Path) : M (std.io.error.Result unit) :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_arguments::["new_const"] (addr_of [ "`mkdir a`

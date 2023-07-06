@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* person :=
     let* α0 := alloc.string.String::["from"] "Alice" in
     let* α1 := alloc.boxed.Box::["new"] 20 in
@@ -74,6 +74,7 @@ Module
     scoping_rules_ownership_and_rules_partial_moves.main.Person.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=

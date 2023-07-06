@@ -16,6 +16,7 @@ Module
   Definition Self := unpacking_options_and_defaults_via_get_or_insert.Fruit.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -45,7 +46,7 @@ End
   Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let my_fruit := core.option.Option.None in
   let apple := unpacking_options_and_defaults_via_get_or_insert.Fruit.Apple in
   let* first_available_fruit := my_fruit.["get_or_insert"] apple in

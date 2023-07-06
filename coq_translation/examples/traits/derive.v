@@ -20,7 +20,11 @@ End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   Definition Self := derive.Centimeters.
   
-  Definition eq (self : ref Self) (other : ref derive.Centimeters) : M bool :=
+  Definition eq
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref derive.Centimeters)
+      : M bool :=
     (self.[0]).["eq"] (other.[0]).
   
   Global Instance Method_eq : Notation.Dot "eq" := {
@@ -36,6 +40,7 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   Definition Self := derive.Centimeters.
   
   Definition partial_cmp
+      `{State.Trait}
       (self : ref Self)
       (other : ref derive.Centimeters)
       : M (core.option.Option core.cmp.Ordering) :=
@@ -63,6 +68,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
   Definition Self := derive.Inches.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -83,7 +89,10 @@ End Impl_core_fmt_Debug_for_derive_Inches.
 Module Impl_derive_Inches.
   Definition Self := derive.Inches.
   
-  Definition to_centimeters (self : ref Self) : M derive.Centimeters :=
+  Definition to_centimeters
+      `{State.Trait}
+      (self : ref Self)
+      : M derive.Centimeters :=
     let 'derive.Inches.Build_t inches := self in
     let* α0 := (cast inches f64).["mul"] 3 (* 2.54 *) in
     Pure (derive.Centimeters.Build_t α0).
@@ -103,7 +112,7 @@ End Seconds.
 Definition Seconds := Seconds.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let _one_second := derive.Seconds.Build_t 1 in
   let foot := derive.Inches.Build_t 12 in
   let* _ :=

@@ -13,7 +13,7 @@ Definition Owner := Owner.t.
 Module Impl_scoping_rules_lifetimes_methods_Owner.
   Definition Self := scoping_rules_lifetimes_methods.Owner.
   
-  Definition add_one (self : mut_ref Self) : M unit :=
+  Definition add_one `{State.Trait} (self : mut_ref Self) : M unit :=
     let* _ := (self.[0]).["add_assign"] 1 in
     Pure tt.
   
@@ -21,7 +21,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
     Notation.dot := add_one;
   }.
   
-  Definition print (self : ref Self) : M unit :=
+  Definition print `{State.Trait} (self : ref Self) : M unit :=
     let* _ :=
       let* _ :=
         let* α0 := format_argument::["new_display"] (addr_of (self.[0])) in
@@ -40,7 +40,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let owner := scoping_rules_lifetimes_methods.Owner.Build_t 18 in
   let* _ := owner.["add_one"] in
   let* _ := owner.["print"] in

@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition double_first
+    `{State.Trait}
     (vec : alloc.vec.Vec (ref str))
     :
       M
@@ -14,7 +15,7 @@ Definition double_first
       α0.["map"] (fun n => 2.["mul"] n)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* numbers :=
     let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
     Slice::["into_vec"] α0 in

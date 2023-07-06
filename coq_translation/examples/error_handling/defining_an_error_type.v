@@ -13,6 +13,7 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
   Definition Self := defining_an_error_type.DoubleError.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -30,7 +31,10 @@ End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   Definition Self := defining_an_error_type.DoubleError.
   
-  Definition clone (self : ref Self) : M defining_an_error_type.DoubleError :=
+  Definition clone
+      `{State.Trait}
+      (self : ref Self)
+      : M defining_an_error_type.DoubleError :=
     Pure defining_an_error_type.DoubleError.Build.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -46,6 +50,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   Definition Self := defining_an_error_type.DoubleError.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -64,6 +69,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
 Definition double_first
+    `{State.Trait}
     (vec : alloc.vec.Vec (ref str))
     : M (defining_an_error_type.Result i32) :=
   let* α0 := vec.["first"] in
@@ -76,7 +82,10 @@ Definition double_first
           (fun _ => Pure defining_an_error_type.DoubleError.Build) in
       α1.["map"] (fun i => 2.["mul"] i)).
 
-Definition print (result : defining_an_error_type.Result i32) : M unit :=
+Definition print
+    `{State.Trait}
+    (result : defining_an_error_type.Result i32)
+    : M unit :=
   match result with
   | core.result.Result.Ok n =>
     let* _ :=
@@ -101,7 +110,7 @@ Definition print (result : defining_an_error_type.Result i32) : M unit :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* numbers :=
     let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
     Slice::["into_vec"] α0 in

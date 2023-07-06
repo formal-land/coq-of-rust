@@ -22,6 +22,7 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -46,7 +47,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition clone (self : ref Self) : M box_stack_heap.Point :=
+  Definition clone `{State.Trait} (self : ref Self) : M box_stack_heap.Point :=
     let _ := tt in
     self.["deref"].
   
@@ -82,14 +83,17 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
-Definition origin (_ : unit) : M box_stack_heap.Point :=
+Definition origin `{State.Trait} (_ : unit) : M box_stack_heap.Point :=
   Pure
     {|
       box_stack_heap.Point.x := 0 (* 0.0 *);
       box_stack_heap.Point.y := 0 (* 0.0 *);
     |}.
 
-Definition boxed_origin (_ : unit) : M (alloc.boxed.Box box_stack_heap.Point) :=
+Definition boxed_origin
+    `{State.Trait}
+    (_ : unit)
+    : M (alloc.boxed.Box box_stack_heap.Point) :=
   alloc.boxed.Box::["new"]
     {|
       box_stack_heap.Point.x := 0 (* 0.0 *);
@@ -97,7 +101,7 @@ Definition boxed_origin (_ : unit) : M (alloc.boxed.Box box_stack_heap.Point) :=
     |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* point := box_stack_heap.origin tt in
   let* rectangle :=
     let* α0 := box_stack_heap.origin tt in

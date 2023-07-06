@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit := Pure tt.
+Definition main `{State.Trait} (_ : unit) : M unit := Pure tt.
 
-Definition mul (a : u64) (b : u64) : M u128 :=
+Definition mul `{State.Trait} (a : u64) (b : u64) : M u128 :=
   let lo := tt in
   let hi := tt in
   let _ :=

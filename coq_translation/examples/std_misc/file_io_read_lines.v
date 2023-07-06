@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition read_lines
+    `{State.Trait}
     (filename : alloc.string.String)
     : M (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File)) :=
   let* file :=
@@ -14,7 +15,7 @@ Definition read_lines
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* lines :=
     let* α0 := "./hosts".["to_string"] in
     file_io_read_lines.read_lines α0 in

@@ -15,7 +15,7 @@ Definition Droppable : Set := Droppable.t.
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   Definition Self := drop.Droppable.
   
-  Definition drop (self : mut_ref Self) : M unit :=
+  Definition drop `{State.Trait} (self : mut_ref Self) : M unit :=
     let* _ :=
       let* _ :=
         let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
@@ -38,7 +38,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let _a := {| drop.Droppable.name := "a"; |} in
   let* _ :=
     let _b := {| drop.Droppable.name := "b"; |} in

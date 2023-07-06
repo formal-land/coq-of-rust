@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition apply
+    `{State.Trait}
     {F : Set}
     `{core.ops.function.FnOnce.Trait unit F}
     (f : F)
@@ -10,6 +11,7 @@ Definition apply
   Pure tt.
 
 Definition apply_to_3
+    `{State.Trait}
     {F : Set}
     `{core.ops.function.Fn.Trait (i32) F}
     (f : F)
@@ -17,7 +19,7 @@ Definition apply_to_3
   f 3.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let greeting := "hello" in
   let* farewell := "goodbye".["to_owned"] in
   let diary :=

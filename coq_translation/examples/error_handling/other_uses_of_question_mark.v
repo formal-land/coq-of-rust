@@ -12,6 +12,7 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
   Definition Self := other_uses_of_question_mark.EmptyVec.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -30,6 +31,7 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
   Definition Self := other_uses_of_question_mark.EmptyVec.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -55,6 +57,7 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 Definition double_first
+    `{State.Trait}
     (vec : alloc.vec.Vec (ref str))
     : M (other_uses_of_question_mark.Result i32) :=
   let* first :=
@@ -79,7 +82,10 @@ Definition double_first
   let* α0 := 2.["mul"] parsed in
   Pure (core.result.Result.Ok α0).
 
-Definition print (result : other_uses_of_question_mark.Result i32) : M unit :=
+Definition print
+    `{State.Trait}
+    (result : other_uses_of_question_mark.Result i32)
+    : M unit :=
   match result with
   | core.result.Result.Ok n =>
     let* _ :=
@@ -104,7 +110,7 @@ Definition print (result : other_uses_of_question_mark.Result i32) : M unit :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* numbers :=
     let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
     Slice::["into_vec"] α0 in

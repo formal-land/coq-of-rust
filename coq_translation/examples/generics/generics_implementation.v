@@ -26,7 +26,7 @@ Definition GenVal : Set := GenVal.t.
 Module Impl_generics_implementation_Val.
   Definition Self := generics_implementation.Val.
   
-  Definition value (self : ref Self) : M (ref f64) :=
+  Definition value `{State.Trait} (self : ref Self) : M (ref f64) :=
     Pure (addr_of self.["val"]).
   
   Global Instance Method_value : Notation.Dot "value" := {
@@ -37,7 +37,7 @@ End Impl_generics_implementation_Val.
 Module Impl_generics_implementation_GenVal_T.
   Definition Self := generics_implementation.GenVal T.
   
-  Definition value (self : ref Self) : M (ref T) :=
+  Definition value `{State.Trait} (self : ref Self) : M (ref T) :=
     Pure (addr_of self.["gen_val"]).
   
   Global Instance Method_value : Notation.Dot "value" := {
@@ -46,7 +46,7 @@ Module Impl_generics_implementation_GenVal_T.
 End Impl_generics_implementation_GenVal_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let x := {| generics_implementation.Val.val := 3 (* 3.0 *); |} in
   let y := {| generics_implementation.GenVal.gen_val := 3; |} in
   let* _ :=

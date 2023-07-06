@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* apple := alloc.sync.Arc::["new"] "the same apple" in
   let* _ :=
     let* α0 := LangItem Range {| Range.start := 0; Range.end := 10; |} in

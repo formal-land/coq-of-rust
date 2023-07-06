@@ -4,12 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Error ForeignMod.
 
 Definition cos
+    `{State.Trait}
     (z : foreign_function_interface.Complex)
     : M foreign_function_interface.Complex :=
   foreign_function_interface.ccosf z.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* z :=
     let* α0 := 1 (* 1. *).["neg"] in
     Pure
@@ -61,7 +62,10 @@ Definition Complex : Set := Complex.t.
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
-  Definition clone (self : ref Self) : M foreign_function_interface.Complex :=
+  Definition clone
+      `{State.Trait}
+      (self : ref Self)
+      : M foreign_function_interface.Complex :=
     let _ := tt in
     self.["deref"].
   
@@ -85,6 +89,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=

@@ -12,6 +12,7 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
   Definition Self := boxing_errors.EmptyVec.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -29,7 +30,10 @@ End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
   Definition Self := boxing_errors.EmptyVec.
   
-  Definition clone (self : ref Self) : M boxing_errors.EmptyVec :=
+  Definition clone
+      `{State.Trait}
+      (self : ref Self)
+      : M boxing_errors.EmptyVec :=
     Pure boxing_errors.EmptyVec.Build.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -45,6 +49,7 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
   Definition Self := boxing_errors.EmptyVec.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -70,6 +75,7 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Definition double_first
+    `{State.Trait}
     (vec : alloc.vec.Vec (ref str))
     : M (boxing_errors.Result i32) :=
   let* α0 := vec.["first"] in
@@ -81,7 +87,7 @@ Definition double_first
       let* α1 := α0.["map_err"] (fun e => e.["into"]) in
       α1.["map"] (fun i => 2.["mul"] i)).
 
-Definition print (result : boxing_errors.Result i32) : M unit :=
+Definition print `{State.Trait} (result : boxing_errors.Result i32) : M unit :=
   match result with
   | core.result.Result.Ok n =>
     let* _ :=
@@ -106,7 +112,7 @@ Definition print (result : boxing_errors.Result i32) : M unit :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* numbers :=
     let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
     Slice::["into_vec"] α0 in

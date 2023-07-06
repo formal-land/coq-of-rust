@@ -16,6 +16,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -37,7 +38,8 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.
   
-  Definition default (_ : unit) : M Self := Pure {| Self.x := addr_of 10; |}.
+  Definition default `{State.Trait} (_ : unit) : M Self :=
+    Pure {| Self.x := addr_of 10; |}.
   
   Global Instance AssociatedFunction_default :
     Notation.DoubleColon Self "default" := {
@@ -50,7 +52,7 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* b := core.default.Default.default tt in
   let* _ :=
     let* _ :=

@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit := Pure tt.
+Definition main `{State.Trait} (_ : unit) : M unit := Pure tt.
 
-Definition foo (arg : i32) : M i32 :=
+Definition foo `{State.Trait} (arg : i32) : M i32 :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of arg) in
@@ -17,7 +17,7 @@ Definition foo (arg : i32) : M i32 :=
     Pure tt in
   arg.["mul"] 2.
 
-Definition call_foo (arg : i32) : M i32 :=
+Definition call_foo `{State.Trait} (arg : i32) : M i32 :=
   let result := tt in
   let _ := InlineAsm in
   Pure result.

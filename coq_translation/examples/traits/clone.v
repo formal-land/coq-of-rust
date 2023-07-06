@@ -10,6 +10,7 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
   Definition Self := clone.Unit.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -27,7 +28,8 @@ End Impl_core_fmt_Debug_for_clone_Unit.
 Module Impl_core_clone_Clone_for_clone_Unit.
   Definition Self := clone.Unit.
   
-  Definition clone (self : ref Self) : M clone.Unit := self.["deref"].
+  Definition clone `{State.Trait} (self : ref Self) : M clone.Unit :=
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -60,7 +62,7 @@ Definition Pair := Pair.t.
 Module Impl_core_clone_Clone_for_clone_Pair.
   Definition Self := clone.Pair.
   
-  Definition clone (self : ref Self) : M clone.Pair :=
+  Definition clone `{State.Trait} (self : ref Self) : M clone.Pair :=
     let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
     let* α1 := core.clone.Clone.clone (addr_of (self.[1])) in
     Pure (clone.Pair.Build_t α0 α1).
@@ -78,6 +80,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
   Definition Self := clone.Pair.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -97,7 +100,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let unit := clone.Unit.Build in
   let copied_unit := unit in
   let* _ :=

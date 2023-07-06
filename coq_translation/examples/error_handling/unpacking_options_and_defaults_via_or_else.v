@@ -15,6 +15,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
   Definition Self := unpacking_options_and_defaults_via_or_else.Fruit.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -38,7 +39,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let apple :=
     core.option.Option.Some
       unpacking_options_and_defaults_via_or_else.Fruit.Apple in

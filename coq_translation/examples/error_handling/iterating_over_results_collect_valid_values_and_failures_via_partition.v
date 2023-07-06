@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* strings :=
     let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
     Slice::["into_vec"] α0 in

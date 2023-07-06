@@ -55,7 +55,8 @@ End Animal.
 Module Impl_traits_Sheep.
   Definition Self := traits.Sheep.
   
-  Definition is_naked (self : ref Self) : M bool := Pure self.["naked"].
+  Definition is_naked `{State.Trait} (self : ref Self) : M bool :=
+    Pure self.["naked"].
   
   Global Instance Method_is_naked : Notation.Dot "is_naked" := {
     Notation.dot := is_naked;
@@ -65,20 +66,21 @@ End Impl_traits_Sheep.
 Module Impl_traits_Animal_for_traits_Sheep.
   Definition Self := traits.Sheep.
   
-  Definition new (name : ref str) : M traits.Sheep :=
+  Definition new `{State.Trait} (name : ref str) : M traits.Sheep :=
     Pure {| traits.Sheep.name := name; traits.Sheep.naked := false; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Definition name (self : ref Self) : M (ref str) := Pure self.["name"].
+  Definition name `{State.Trait} (self : ref Self) : M (ref str) :=
+    Pure self.["name"].
   
   Global Instance Method_name : Notation.Dot "name" := {
     Notation.dot := name;
   }.
   
-  Definition noise (self : ref Self) : M (ref str) :=
+  Definition noise `{State.Trait} (self : ref Self) : M (ref str) :=
     let* α0 := self.["is_naked"] in
     if (α0 : bool) then
       Pure "baaaaah?"
@@ -89,7 +91,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
     Notation.dot := noise;
   }.
   
-  Definition talk (self : ref Self) : M unit :=
+  Definition talk `{State.Trait} (self : ref Self) : M unit :=
     let* _ :=
       let* _ :=
         let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
@@ -118,7 +120,7 @@ End Impl_traits_Animal_for_traits_Sheep.
 Module Impl_traits_Sheep_2.
   Definition Self := traits.Sheep.
   
-  Definition shear (self : mut_ref Self) : M unit :=
+  Definition shear `{State.Trait} (self : mut_ref Self) : M unit :=
     let* α0 := self.["is_naked"] in
     if (α0 : bool) then
       let* _ :=
@@ -153,7 +155,7 @@ Module Impl_traits_Sheep_2.
 End Impl_traits_Sheep_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* dolly :=
     let* α0 := traits.Animal.new "Dolly" in
     Pure (α0 : traits.Sheep) in

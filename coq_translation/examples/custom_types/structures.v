@@ -20,6 +20,7 @@ Module Impl_core_fmt_Debug_for_structures_Person.
   Definition Self := structures.Person.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -88,7 +89,7 @@ End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* name := alloc.string.String::["from"] "Peter" in
   let age := 27 in
   let peter :=

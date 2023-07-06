@@ -20,7 +20,7 @@ End Impl_core_marker_Copy_for_subtle_Choice.
 Module Impl_core_clone_Clone_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
-  Definition clone (self : ref Self) : M subtle.Choice :=
+  Definition clone `{State.Trait} (self : ref Self) : M subtle.Choice :=
     let _ := tt in
     self.["deref"].
   
@@ -37,6 +37,7 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -57,7 +58,8 @@ End Impl_core_fmt_Debug_for_subtle_Choice.
 Module Impl_subtle_Choice.
   Definition Self := subtle.Choice.
   
-  Definition unwrap_u8 (self : ref Self) : M u8 := Pure (self.[0]).
+  Definition unwrap_u8 `{State.Trait} (self : ref Self) : M u8 :=
+    Pure (self.[0]).
   
   Global Instance Method_unwrap_u8 : Notation.Dot "unwrap_u8" := {
     Notation.dot := unwrap_u8;
@@ -67,7 +69,7 @@ End Impl_subtle_Choice.
 Module Impl_core_convert_From_for_bool.
   Definition Self := bool.
   
-  Definition from (source : subtle.Choice) : M bool :=
+  Definition from `{State.Trait} (source : subtle.Choice) : M bool :=
     let* _ :=
       if (true : bool) then
         let* _ :=
@@ -100,7 +102,11 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
   
   Definition Output : Set := subtle.Choice.
   
-  Definition bitand (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
+  Definition bitand
+      `{State.Trait}
+      (self : Self)
+      (rhs : subtle.Choice)
+      : M subtle.Choice :=
     let* α0 := (self.[0]).["bitand"] (rhs.[0]) in
     α0.["into"].
   
@@ -117,6 +123,7 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
   Definition bitand_assign
+      `{State.Trait}
       (self : mut_ref Self)
       (rhs : subtle.Choice)
       : M unit :=
@@ -140,7 +147,11 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
   
   Definition Output : Set := subtle.Choice.
   
-  Definition bitor (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
+  Definition bitor
+      `{State.Trait}
+      (self : Self)
+      (rhs : subtle.Choice)
+      : M subtle.Choice :=
     let* α0 := (self.[0]).["bitor"] (rhs.[0]) in
     α0.["into"].
   
@@ -157,6 +168,7 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
   Definition bitor_assign
+      `{State.Trait}
       (self : mut_ref Self)
       (rhs : subtle.Choice)
       : M unit :=
@@ -180,7 +192,11 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
   
   Definition Output : Set := subtle.Choice.
   
-  Definition bitxor (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
+  Definition bitxor
+      `{State.Trait}
+      (self : Self)
+      (rhs : subtle.Choice)
+      : M subtle.Choice :=
     let* α0 := (self.[0]).["bitxor"] (rhs.[0]) in
     α0.["into"].
   
@@ -197,6 +213,7 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
   Definition bitxor_assign
+      `{State.Trait}
       (self : mut_ref Self)
       (rhs : subtle.Choice)
       : M unit :=
@@ -220,7 +237,7 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
   
   Definition Output : Set := subtle.Choice.
   
-  Definition not (self : Self) : M subtle.Choice :=
+  Definition not `{State.Trait} (self : Self) : M subtle.Choice :=
     let* α0 := (self.[0]).["not"] in
     let* α1 := 1.["bitand"] α0 in
     α1.["into"].
@@ -234,7 +251,7 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
   }.
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
-Definition black_box (input : u8) : M u8 :=
+Definition black_box `{State.Trait} (input : u8) : M u8 :=
   let* _ :=
     if (true : bool) then
       let* _ :=
@@ -255,7 +272,7 @@ Definition black_box (input : u8) : M u8 :=
 Module Impl_core_convert_From_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
-  Definition from (input : u8) : M subtle.Choice :=
+  Definition from `{State.Trait} (input : u8) : M subtle.Choice :=
     let* α0 := subtle.black_box input in
     Pure (subtle.Choice.Build_t α0).
   
@@ -291,7 +308,11 @@ Section Impl_subtle_ConstantTimeEq_for_Slice.
   
   Definition Self := Slice.
   
-  Definition ct_eq (self : ref Self) (_rhs : ref Slice) : M subtle.Choice :=
+  Definition ct_eq
+      `{State.Trait}
+      (self : ref Self)
+      (_rhs : ref Slice)
+      : M subtle.Choice :=
     let* len := self.["len"] in
     let* _ :=
       let* α0 := _rhs.["len"] in
@@ -343,6 +364,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
   Definition ct_eq
+      `{State.Trait}
       (self : ref Self)
       (rhs : ref subtle.Choice)
       : M subtle.Choice :=
@@ -363,7 +385,11 @@ End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
 Module Impl_subtle_ConstantTimeEq_for_u8.
   Definition Self := u8.
   
-  Definition ct_eq (self : ref Self) (other : ref u8) : M subtle.Choice :=
+  Definition ct_eq
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref u8)
+      : M subtle.Choice :=
     let* x := self.["bitxor"] other in
     let* y :=
       let* α0 := x.["wrapping_neg"] in
@@ -385,7 +411,11 @@ End Impl_subtle_ConstantTimeEq_for_u8.
 Module Impl_subtle_ConstantTimeEq_for_i8.
   Definition Self := i8.
   
-  Definition ct_eq (self : ref Self) (other : ref i8) : M subtle.Choice :=
+  Definition ct_eq
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref i8)
+      : M subtle.Choice :=
     let* α0 := self.["deref"] in
     let* α1 := other.["deref"] in
     (cast α0 u8).["ct_eq"] (addr_of (cast α1 u8)).
@@ -402,7 +432,11 @@ End Impl_subtle_ConstantTimeEq_for_i8.
 Module Impl_subtle_ConstantTimeEq_for_u16.
   Definition Self := u16.
   
-  Definition ct_eq (self : ref Self) (other : ref u16) : M subtle.Choice :=
+  Definition ct_eq
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref u16)
+      : M subtle.Choice :=
     let* x := self.["bitxor"] other in
     let* y :=
       let* α0 := x.["wrapping_neg"] in
@@ -424,7 +458,11 @@ End Impl_subtle_ConstantTimeEq_for_u16.
 Module Impl_subtle_ConstantTimeEq_for_i16.
   Definition Self := i16.
   
-  Definition ct_eq (self : ref Self) (other : ref i16) : M subtle.Choice :=
+  Definition ct_eq
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref i16)
+      : M subtle.Choice :=
     let* α0 := self.["deref"] in
     let* α1 := other.["deref"] in
     (cast α0 u16).["ct_eq"] (addr_of (cast α1 u16)).
@@ -441,7 +479,11 @@ End Impl_subtle_ConstantTimeEq_for_i16.
 Module Impl_subtle_ConstantTimeEq_for_u32.
   Definition Self := u32.
   
-  Definition ct_eq (self : ref Self) (other : ref u32) : M subtle.Choice :=
+  Definition ct_eq
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref u32)
+      : M subtle.Choice :=
     let* x := self.["bitxor"] other in
     let* y :=
       let* α0 := x.["wrapping_neg"] in
@@ -463,7 +505,11 @@ End Impl_subtle_ConstantTimeEq_for_u32.
 Module Impl_subtle_ConstantTimeEq_for_i32.
   Definition Self := i32.
   
-  Definition ct_eq (self : ref Self) (other : ref i32) : M subtle.Choice :=
+  Definition ct_eq
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref i32)
+      : M subtle.Choice :=
     let* α0 := self.["deref"] in
     let* α1 := other.["deref"] in
     (cast α0 u32).["ct_eq"] (addr_of (cast α1 u32)).
@@ -480,7 +526,11 @@ End Impl_subtle_ConstantTimeEq_for_i32.
 Module Impl_subtle_ConstantTimeEq_for_u64.
   Definition Self := u64.
   
-  Definition ct_eq (self : ref Self) (other : ref u64) : M subtle.Choice :=
+  Definition ct_eq
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref u64)
+      : M subtle.Choice :=
     let* x := self.["bitxor"] other in
     let* y :=
       let* α0 := x.["wrapping_neg"] in
@@ -502,7 +552,11 @@ End Impl_subtle_ConstantTimeEq_for_u64.
 Module Impl_subtle_ConstantTimeEq_for_i64.
   Definition Self := i64.
   
-  Definition ct_eq (self : ref Self) (other : ref i64) : M subtle.Choice :=
+  Definition ct_eq
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref i64)
+      : M subtle.Choice :=
     let* α0 := self.["deref"] in
     let* α1 := other.["deref"] in
     (cast α0 u64).["ct_eq"] (addr_of (cast α1 u64)).
@@ -519,7 +573,11 @@ End Impl_subtle_ConstantTimeEq_for_i64.
 Module Impl_subtle_ConstantTimeEq_for_usize.
   Definition Self := usize.
   
-  Definition ct_eq (self : ref Self) (other : ref usize) : M subtle.Choice :=
+  Definition ct_eq
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref usize)
+      : M subtle.Choice :=
     let* x := self.["bitxor"] other in
     let* y :=
       let* α0 := x.["wrapping_neg"] in
@@ -543,7 +601,11 @@ End Impl_subtle_ConstantTimeEq_for_usize.
 Module Impl_subtle_ConstantTimeEq_for_isize.
   Definition Self := isize.
   
-  Definition ct_eq (self : ref Self) (other : ref isize) : M subtle.Choice :=
+  Definition ct_eq
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref isize)
+      : M subtle.Choice :=
     let* α0 := self.["deref"] in
     let* α1 := other.["deref"] in
     (cast α0 usize).["ct_eq"] (addr_of (cast α1 usize)).
@@ -596,6 +658,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   Definition Self := u8.
   
   Definition conditional_select
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
@@ -614,6 +677,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   }.
   
   Definition conditional_assign
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
@@ -637,6 +701,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   }.
   
   Definition conditional_swap
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
@@ -672,6 +737,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   Definition Self := i8.
   
   Definition conditional_select
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
@@ -690,6 +756,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   }.
   
   Definition conditional_assign
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
@@ -713,6 +780,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   }.
   
   Definition conditional_swap
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
@@ -748,6 +816,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   Definition Self := u16.
   
   Definition conditional_select
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
@@ -766,6 +835,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   }.
   
   Definition conditional_assign
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
@@ -789,6 +859,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   }.
   
   Definition conditional_swap
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
@@ -824,6 +895,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   Definition Self := i16.
   
   Definition conditional_select
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
@@ -842,6 +914,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   }.
   
   Definition conditional_assign
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
@@ -865,6 +938,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   }.
   
   Definition conditional_swap
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
@@ -900,6 +974,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   Definition Self := u32.
   
   Definition conditional_select
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
@@ -918,6 +993,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   }.
   
   Definition conditional_assign
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
@@ -941,6 +1017,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   }.
   
   Definition conditional_swap
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
@@ -976,6 +1053,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   Definition Self := i32.
   
   Definition conditional_select
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
@@ -994,6 +1072,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   }.
   
   Definition conditional_assign
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
@@ -1017,6 +1096,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   }.
   
   Definition conditional_swap
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
@@ -1052,6 +1132,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   Definition Self := u64.
   
   Definition conditional_select
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
@@ -1070,6 +1151,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   }.
   
   Definition conditional_assign
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
@@ -1093,6 +1175,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   }.
   
   Definition conditional_swap
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
@@ -1128,6 +1211,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   Definition Self := i64.
   
   Definition conditional_select
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
@@ -1146,6 +1230,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   }.
   
   Definition conditional_assign
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
@@ -1169,6 +1254,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   }.
   
   Definition conditional_swap
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
@@ -1204,6 +1290,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
   Definition conditional_select
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
@@ -1240,6 +1327,7 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
   Definition Self := T.
   
   Definition conditional_negate
+      `{State.Trait}
       (self : mut_ref Self)
       (choice : subtle.Choice)
       : M unit :=
@@ -1279,7 +1367,7 @@ Section Impl_core_clone_Clone_for_subtle_CtOption_T.
   
   Definition Self := subtle.CtOption T.
   
-  Definition clone (self : ref Self) : M (subtle.CtOption T) :=
+  Definition clone `{State.Trait} (self : ref Self) : M (subtle.CtOption T) :=
     let* α0 := core.clone.Clone.clone (addr_of self.["value"]) in
     let* α1 := core.clone.Clone.clone (addr_of self.["is_some"]) in
     Pure {| subtle.CtOption.value := α0; subtle.CtOption.is_some := α1; |}.
@@ -1312,6 +1400,7 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
   Definition Self := subtle.CtOption T.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -1339,7 +1428,10 @@ Section Impl_core_convert_From_for_core_option_Option_T.
   
   Definition Self := core.option.Option T.
   
-  Definition from (source : subtle.CtOption T) : M (core.option.Option T) :=
+  Definition from
+      `{State.Trait}
+      (source : subtle.CtOption T)
+      : M (core.option.Option T) :=
     let* α0 := source.["is_some"] in
     let* α1 := α0.["unwrap_u8"] in
     let* α2 := α1.["eq"] 1 in
@@ -1363,6 +1455,7 @@ Module Impl_subtle_CtOption_T.
   Definition Self := subtle.CtOption T.
   
   Definition new
+      `{State.Trait}
       (value : T)
       (is_some : subtle.Choice)
       : M (subtle.CtOption T) :=
@@ -1373,7 +1466,7 @@ Module Impl_subtle_CtOption_T.
     Notation.double_colon := new;
   }.
   
-  Definition expect (self : Self) (msg : ref str) : M T :=
+  Definition expect `{State.Trait} (self : Self) (msg : ref str) : M T :=
     let* _ :=
       let* α0 := self.["is_some"].["unwrap_u8"] in
       match (addr_of α0, addr_of 1) with
@@ -1405,7 +1498,7 @@ Module Impl_subtle_CtOption_T.
     Notation.dot := expect;
   }.
   
-  Definition unwrap (self : Self) : M T :=
+  Definition unwrap `{State.Trait} (self : Self) : M T :=
     let* _ :=
       let* α0 := self.["is_some"].["unwrap_u8"] in
       match (addr_of α0, addr_of 1) with
@@ -1434,7 +1527,7 @@ Module Impl_subtle_CtOption_T.
     Notation.dot := unwrap;
   }.
   
-  Definition unwrap_or (self : Self) (def : T) : M T :=
+  Definition unwrap_or `{State.Trait} (self : Self) (def : T) : M T :=
     T::["conditional_select"]
       (addr_of def)
       (addr_of self.["value"])
@@ -1444,7 +1537,7 @@ Module Impl_subtle_CtOption_T.
     Notation.dot := unwrap_or;
   }.
   
-  Definition unwrap_or_else (self : Self) (f : F) : M T :=
+  Definition unwrap_or_else `{State.Trait} (self : Self) (f : F) : M T :=
     let* α0 := f tt in
     T::["conditional_select"]
       (addr_of α0)
@@ -1455,21 +1548,21 @@ Module Impl_subtle_CtOption_T.
     Notation.dot := unwrap_or_else;
   }.
   
-  Definition is_some (self : ref Self) : M subtle.Choice :=
+  Definition is_some `{State.Trait} (self : ref Self) : M subtle.Choice :=
     Pure self.["is_some"].
   
   Global Instance Method_is_some : Notation.Dot "is_some" := {
     Notation.dot := is_some;
   }.
   
-  Definition is_none (self : ref Self) : M subtle.Choice :=
+  Definition is_none `{State.Trait} (self : ref Self) : M subtle.Choice :=
     self.["is_some"].["not"].
   
   Global Instance Method_is_none : Notation.Dot "is_none" := {
     Notation.dot := is_none;
   }.
   
-  Definition map (self : Self) (f : F) : M (subtle.CtOption U) :=
+  Definition map `{State.Trait} (self : Self) (f : F) : M (subtle.CtOption U) :=
     let* α0 := T::["default"] tt in
     let* α1 :=
       T::["conditional_select"]
@@ -1483,7 +1576,11 @@ Module Impl_subtle_CtOption_T.
     Notation.dot := map;
   }.
   
-  Definition and_then (self : Self) (f : F) : M (subtle.CtOption U) :=
+  Definition and_then
+      `{State.Trait}
+      (self : Self)
+      (f : F)
+      : M (subtle.CtOption U) :=
     let* tmp :=
       let* α0 := T::["default"] tt in
       let* α1 :=
@@ -1499,7 +1596,11 @@ Module Impl_subtle_CtOption_T.
     Notation.dot := and_then;
   }.
   
-  Definition or_else (self : Self) (f : F) : M (subtle.CtOption T) :=
+  Definition or_else
+      `{State.Trait}
+      (self : Self)
+      (f : F)
+      : M (subtle.CtOption T) :=
     let* is_none := self.["is_none"] in
     let* f := f tt in
     Self::["conditional_select"] (addr_of self) (addr_of f) is_none.
@@ -1516,6 +1617,7 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
   Definition Self := subtle.CtOption T.
   
   Definition conditional_select
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
@@ -1550,6 +1652,7 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
   Definition Self := subtle.CtOption T.
   
   Definition ct_eq
+      `{State.Trait}
       (self : ref Self)
       (rhs : ref (subtle.CtOption T))
       : M subtle.Choice :=
@@ -1586,7 +1689,11 @@ End ConstantTimeGreater.
 Module Impl_subtle_ConstantTimeGreater_for_u8.
   Definition Self := u8.
   
-  Definition ct_gt (self : ref Self) (other : ref u8) : M subtle.Choice :=
+  Definition ct_gt
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref u8)
+      : M subtle.Choice :=
     let* gtb :=
       let* α0 := other.["not"] in
       self.["bitand"] α0 in
@@ -1641,7 +1748,11 @@ End Impl_subtle_ConstantTimeGreater_for_u8.
 Module Impl_subtle_ConstantTimeGreater_for_u16.
   Definition Self := u16.
   
-  Definition ct_gt (self : ref Self) (other : ref u16) : M subtle.Choice :=
+  Definition ct_gt
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref u16)
+      : M subtle.Choice :=
     let* gtb :=
       let* α0 := other.["not"] in
       self.["bitand"] α0 in
@@ -1696,7 +1807,11 @@ End Impl_subtle_ConstantTimeGreater_for_u16.
 Module Impl_subtle_ConstantTimeGreater_for_u32.
   Definition Self := u32.
   
-  Definition ct_gt (self : ref Self) (other : ref u32) : M subtle.Choice :=
+  Definition ct_gt
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref u32)
+      : M subtle.Choice :=
     let* gtb :=
       let* α0 := other.["not"] in
       self.["bitand"] α0 in
@@ -1751,7 +1866,11 @@ End Impl_subtle_ConstantTimeGreater_for_u32.
 Module Impl_subtle_ConstantTimeGreater_for_u64.
   Definition Self := u64.
   
-  Definition ct_gt (self : ref Self) (other : ref u64) : M subtle.Choice :=
+  Definition ct_gt
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref u64)
+      : M subtle.Choice :=
     let* gtb :=
       let* α0 := other.["not"] in
       self.["bitand"] α0 in

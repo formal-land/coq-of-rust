@@ -22,6 +22,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   Definition Item : Set := u32.
   
   Definition next
+      `{State.Trait}
       (self : mut_ref Self)
       : M (core.option.Option ImplSelf.Item) :=
     let current := self.["curr"] in
@@ -40,11 +41,11 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   }.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
-Definition fibonacci (_ : unit) : M iterators.Fibonacci :=
+Definition fibonacci `{State.Trait} (_ : unit) : M iterators.Fibonacci :=
   Pure {| iterators.Fibonacci.curr := 0; iterators.Fibonacci.next := 1; |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let sequence := Range {| Range.start := 0; Range.end := 3; |} in
   let* _ :=
     let* _ :=

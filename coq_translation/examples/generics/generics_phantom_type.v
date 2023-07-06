@@ -35,6 +35,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   Definition Self := generics_phantom_type.PhantomTuple A B.
   
   Definition eq
+      `{State.Trait}
       (self : ref Self)
       (other : ref (generics_phantom_type.PhantomTuple A B))
       : M bool :=
@@ -89,6 +90,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Definition Self := generics_phantom_type.PhantomStruct A B.
   
   Definition eq
+      `{State.Trait}
       (self : ref Self)
       (other : ref (generics_phantom_type.PhantomStruct A B))
       : M bool :=
@@ -107,7 +109,7 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let _tuple1 :=
     generics_phantom_type.PhantomTuple.Build_t
       "Q"%char

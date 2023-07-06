@@ -14,7 +14,7 @@ End HasArea.
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
-  Definition area (self : ref Self) : M f64 :=
+  Definition area `{State.Trait} (self : ref Self) : M f64 :=
     self.["length"].["mul"] self.["height"].
   
   Global Instance Method_area : Notation.Dot "area" := {
@@ -45,6 +45,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -82,6 +83,7 @@ End Triangle.
 Definition Triangle : Set := Triangle.t.
 
 Definition print_debug
+    `{State.Trait}
     {T : Set}
     `{core.fmt.Debug.Trait T}
     (t : ref T)
@@ -97,6 +99,7 @@ Definition print_debug
   Pure tt.
 
 Definition area
+    `{State.Trait}
     {T : Set}
     `{generics_bounds.HasArea.Trait T}
     (t : ref T)
@@ -104,7 +107,7 @@ Definition area
   t.["area"].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let rectangle :=
     {|
       generics_bounds.Rectangle.length := 3 (* 3.0 *);

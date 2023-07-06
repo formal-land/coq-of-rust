@@ -30,6 +30,7 @@ Module
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
   Definition eq
+      `{State.Trait}
       (self : ref Self)
       (other : ref hash_map_alternate_or_custom_key_types.Account)
       : M bool :=
@@ -58,7 +59,10 @@ End
 Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+  Definition assert_receiver_is_total_eq
+      `{State.Trait}
+      (self : ref Self)
+      : M unit :=
     let _ := tt in
     let _ := tt in
     Pure tt.
@@ -75,7 +79,11 @@ End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
-  Definition hash (self : ref Self) (state : mut_ref __H) : M unit :=
+  Definition hash
+      `{State.Trait}
+      (self : ref Self)
+      (state : mut_ref __H)
+      : M unit :=
     let* _ := core.hash.Hash.hash (addr_of self.["username"]) state in
     core.hash.Hash.hash (addr_of self.["password"]) state.
   
@@ -109,6 +117,7 @@ Definition Accounts : Set :=
     hash_map_alternate_or_custom_key_types.AccountInfo.
 
 Definition try_logon
+    `{State.Trait}
     (accounts : ref hash_map_alternate_or_custom_key_types.Accounts)
     (username : ref str)
     (password : ref str)
@@ -188,7 +197,7 @@ Definition try_logon
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{State.Trait} (_ : unit) : M unit :=
   let* accounts := std.collections.hash.map.HashMap::["new"] tt in
   let account :=
     {|

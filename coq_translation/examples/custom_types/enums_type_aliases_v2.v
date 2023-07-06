@@ -17,7 +17,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
     :=
     enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.
   
-  Definition run (self : ref Self) (x : i32) (y : i32) : M i32 :=
+  Definition run `{State.Trait} (self : ref Self) (x : i32) (y : i32) : M i32 :=
     match self with
     | ImplSelf.Add => x.["add"] y
     | ImplSelf.Subtract => x.["sub"] y
