@@ -206,7 +206,7 @@ Module core.
       Class Trait (Self : Set) : Set := {
         write_str : mut_ref Self -> ref str -> M Result;
         write_char : mut_ref Self -> char -> M Result;
-        write_fmt : mut_ref Self -> Arguments -> M Result;
+        write_fmt `{State.Trait} : mut_ref Self -> Arguments -> M Result;
       }.
 
       Global Instance Method_write_str `(Trait) : Notation.Dot "write_str" := {
@@ -215,7 +215,7 @@ Module core.
       Global Instance Method_write_char `(Trait) : Notation.Dot "write_char" := {
         Notation.dot := write_char;
       }.
-      Global Instance Method_write_fmt `(Trait) : Notation.Dot "write_fmt" := {
+      Global Instance Method_write_fmt `{State.Trait} `(Trait) : Notation.Dot "write_fmt" := {
         Notation.dot := write_fmt;
       }.
     End Write.
@@ -307,12 +307,13 @@ Module core.
       }.
 
       Parameter new_display :
-        forall {T : Set} `{Display.Trait T}, ref T -> M Self.
+        forall `{State.Trait} {T : Set} `{Display.Trait T}, ref T -> M Self.
 
-      Global Instance ArgumentV1_new_display {T : Set} `{Display.Trait T} :
+      Global Instance ArgumentV1_new_display `{State.Trait} {T : Set} `{Display.Trait T} :
         Notation.DoubleColon ArgumentV1 "new_display" := {
         Notation.double_colon := new_display (T := T);
       }.
+(* Print ArgumentV1_new_display. *)
 
       Parameter new_debug :
         forall {T : Set} `{Debug.Trait T}, ref T -> M Self.
@@ -388,9 +389,9 @@ Module core.
       }.
 
       Parameter new_v1 :
-        ref (list (ref str)) -> ref (list ArgumentV1) -> M Arguments.
+        forall `{State.Trait}, ref (list (ref str)) -> ref (list ArgumentV1) -> M Arguments.
 
-      Global Instance Arguments_new_v1 :
+      Global Instance Arguments_new_v1 `{State.Trait} :
         Notation.DoubleColon Arguments "new_v1" := {
         Notation.double_colon := new_v1;
       }.
