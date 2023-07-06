@@ -1,6 +1,7 @@
 examples/cargo/concurrent_tests.v
 examples/conversion/from.v
 examples/conversion/into.v
+examples/conversion/converting_to_string.v
 examples/conversion/parsing_a_string.v
 examples/conversion/try_from_and_try_into.v
 examples/custom_types/constants.v
@@ -179,9 +180,9 @@ examples/variable_bindings/declare_first.v
 examples/variable_bindings/variable_bindings.v
 ink/erc20.v
 ink/ink_env.v
-std/error.v
-std/io.v
-std/iter_type.v
-std/iter.v
-std/net.v
-std/os.v
+# _std/error.v
+# _std/io.v
+_std/iter_type.v
+_std/iter.v
+_std/net.v
+_std/os.v

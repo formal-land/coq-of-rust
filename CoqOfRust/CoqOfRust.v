@@ -37,23 +37,8 @@ Global Open Scope Z_scope.
 
 Export List.ListNotations.
 
-(** A sketch of the [M] monad *)
-Module M.
-  Parameter M : Set -> Set.
-  Parameter Pure : forall {a : Set}, a -> M a.
-  Parameter bind : forall {a b : Set}, M a -> (a -> M b) -> M b.
-
-  (** Used for the definitions of "const". *)
-  Parameter run : forall {A : Set}, M A -> A.
-
-  Module Notations.
-    Notation "'let*' a := b 'in' c" :=
-      (bind b (fun a => c))
-        (at level 200, b at level 100, a name).
-  End Notations.
-End M.
-Export M.
-Export M.Notations.
+Require Export CoqOfRust.Monad.
+Export Monad.Notations.
 
 (** Notation for a function call. Translated directly to function application
     for now. It will drive the monadic transformation in near future. *)
@@ -153,6 +138,22 @@ Global Instance Method_destroy (A : Set) : Notation.Dot "destroy" := {
 
 Global Instance Method_ne_u64 : Notation.Dot "ne" (T := u64 -> u64 -> M bool). Admitted.
 
+
+(* @TODO:
+   1. Move this to its folders
+   2. Make std reexport these definitions were appropriated
+
+   In Rust [std] depends and reexports [core]. We added the
+   definitions in this file ad-hocly as we need them, and added the
+   defitions for [std] also, but at some points they are duplicates,
+   it would be nice if we deduplicate them by making [std] files
+   reexport [core] definitions.
+
+   An observation is that during the translation the names are
+   resolved so we never see these aliases between [std] and [core] in
+   translated code, it always use the real definition (in [core] in
+   this case).
+*)
 Module core.
   Module option.
     Module Option.
@@ -830,238 +831,141 @@ Module alloc.
   End string.
 End alloc.
 
+Require CoqOfRust._std.alloc.
+Require CoqOfRust._std.any.
+Require CoqOfRust._std.arch.
+Require CoqOfRust._std.array.
+Require CoqOfRust._std.ascii.
+Require CoqOfRust._std.assert_matches.
+Require CoqOfRust._std.async_iter.
+Require CoqOfRust._std.backtrace.
+Require CoqOfRust._std.borrow.
+Require CoqOfRust._std.boxed.
+Require CoqOfRust._std.cell.
+Require CoqOfRust._std.char.
+Require CoqOfRust._std.clone.
+Require CoqOfRust._std.cmp.
+Require CoqOfRust._std.collections.
+Require CoqOfRust._std.convert.
+Require CoqOfRust._std.default.
+Require CoqOfRust._std.env.
+Require CoqOfRust._std.error.
+Require CoqOfRust._std.ffi.
+Require CoqOfRust._std.fmt.
+Require CoqOfRust._std.fs.
+Require CoqOfRust._std.future.
+Require CoqOfRust._std.hash.
+Require CoqOfRust._std.hint.
+Require CoqOfRust._std.intrinsics.
+Require CoqOfRust._std.io.
+(* Require CoqOfRust._std.iter. *)
+(* Require Import CoqOfRust._std.iter_type. *)
+Require Import CoqOfRust._std.marker.
+Require Import CoqOfRust._std.mem.
+(* Require Import CoqOfRust._std.net. *)
+Require Import CoqOfRust._std.num.
+Require Import CoqOfRust._std.ops.
+Require Import CoqOfRust._std.option.
+(* Require Import CoqOfRust._std.os. *)
+Require Import CoqOfRust._std.panic.
+Require Import CoqOfRust._std.path.
+Require Import CoqOfRust._std.pin.
+Require Import CoqOfRust._std.prelude.
+Require Import CoqOfRust._std.primitive.
+Require Import CoqOfRust._std.process.
+Require Import CoqOfRust._std.ptr.
+Require Import CoqOfRust._std.rc.
+Require Import CoqOfRust._std.result.
+Require Import CoqOfRust._std.simd.
+Require Import CoqOfRust._std.slice.
+Require Import CoqOfRust._std.str.
+Require Import CoqOfRust._std.string.
+Require Import CoqOfRust._std.sync.
+Require Import CoqOfRust._std.task.
+Require Import CoqOfRust._std.thread.
+Require Import CoqOfRust._std.time.
+Require Import CoqOfRust._std.vec.
+
+
 Module std.
-  Module collections.
-   Module hash_map.
-     Module DefaultHasher.
-       Parameter t : Set.
-       Definition new (_ : unit) : M t. Admitted.
-
-       Global Instance DefaultHasher_new : Notation.DoubleColon t "new" := {
-         Notation.double_colon := new
-       }.
-     End DefaultHasher.
-     Definition DefaultHasher := DefaultHasher.t.
-   End hash_map.
-  End collections.
-
- Module string.
-    Module ToString.
-      Class Trait (Self : Set) : Set := {
-        to_string : ref Self -> M alloc.string.String;
-      }.
-
-      Global Instance Method_to_string `(Trait) : Notation.Dot "to_string" := {
-        Notation.dot := to_string;
-      }.
-    End ToString.
-
-    Global Instance ToString_on_Display {Self : Set}
-      `{core.fmt.Display.Trait Self} :
-      ToString.Trait Self.
-    Admitted.
-  End string.
-
-  (* @TODO: There is a module [std.hash] in [std/hash.v] which was
-     added with the remaining of the stdlib, the module below
-     was added alone to make trait.rs example work, they differ
-     slightly, TODO: we should have only one of them *)
-  Module hash.
-    Module BuilHasherDefault.
-      Record t (H : Set) : Set := { }.
-    End BuilHasherDefault.
-    Definition BuilHasherDefault := BuilHasherDefault.t.
-
-    Module Hasher.
-      Class Trait (Self : Set) : Set := {
-      (* fn finish(&self) -> u64; *)
-      finish : ref Self -> M u64;
-
-      (* fn write(&mut self, bytes: &[u8]); *)
-      write : mut_ref Self -> ref (list u8) -> unit;
-
-      (* fn write_u8(&mut self, i: u8) { ... } *)
-      write_u8 : mut_ref Self -> u8 -> unit;
-
-      (* fn write_u16(&mut self, i: u16) { ... } *)
-      write_u16 : mut_ref Self -> u16 -> unit;
-
-      (* fn write_u32(&mut self, i: u32) { ... } *)
-      write_u32 : mut_ref Self -> u32 -> unit;
-
-      (* fn write_u64(&mut self, i: u64) { ... } *)
-      write_u64 : mut_ref Self -> u64 -> unit;
-
-      (* fn write_u128(&mut self, i: u128) { ... } *)
-      write_u128 : mut_ref Self -> u128 -> unit;
-
-      (* fn write_usize(&mut self, i: usize) { ... } *)
-      write_usize : mut_ref Self -> usize -> unit;
-
-      (* fn write_i8(&mut self, i: i8) { ... } *)
-      write_i8 : mut_ref Self -> i8 -> unit;
-
-      (* fn write_i16(&mut self, i: i16) { ... } *)
-      write_i16 : mut_ref Self -> i16 -> unit;
-
-      (* fn write_i32(&mut self, i: i32) { ... } *)
-      write_i32 : mut_ref Self -> i32 -> unit;
-
-      (* fn write_i64(&mut self, i: i64) { ... } *)
-      write_i64 : mut_ref Self -> i64 -> unit;
-
-      (* fn write_i128(&mut self, i: i128) { ... } *)
-      write_i128 : mut_ref Self -> i128 -> unit;
-
-      (* fn write_isize(&mut self, i: isize) { ... } *)
-      write_isize : mut_ref Self -> isize -> unit;
-
-      (* fn write_length_prefix(&mut self, len: usize) { ... } *)
-      write_length_prefix : mut_ref Self -> usize -> unit;
-
-      (* fn write_str(&mut self, s: &str) { ... } *)
-      write_str : mut_ref Self -> ref str;
-      }.
-    End Hasher.
-
-    Module Hash.
-      Class Trait (Self : Set) : Set := {
-        hash {H : Set}
-          `{Hasher : Hasher.Trait H}
-          : ref Self -> mut_ref H -> M unit;
-
-          
-        (* @TODO 
-        hash_slice (H : Set)
-          `{Hasher.Trait H}
-          (* `{Sized.Trait Self} *)
-          : ref (list Self) -> M (mut_ref H);
-         *)
-      }.
-    End Hash.
-
-    Module BuildHasher.
-      Class Trait (Self Hasher : Set)
-        `{Hasher.Trait Hasher}
-        : Set := {
-          Hasher := Hasher;
-          build_hasher : ref Self -> Hasher;
-          hash_one (T : Set)
-            `{Hash.Trait T}
-            (* `{Sized.Trait Self} *)
-            `{Hasher.Trait Hasher}
-            : ref Self -> T -> u64;
-      }.
-    End BuildHasher.
-
-    (** Hasher instance functions *)
-    Global Instance Hasher_Method_finish (T : Set) `{Hasher.Trait T} : Notation.Dot "finish" := {
-      Notation.dot (x : T) := Hasher.finish x;
-    }.
-
-    (** Hash instance functions *)
-    Global Instance Hash_Method_hash (T : Set) `{Hasher.Trait} `{Hash.Trait T} : Notation.Dot "hash" := {
-        Notation.dot (x : T) := Hash.hash x;
-    }.
-
-    (** Hasher implementation for DefaultHasher *)
-    Global Instance DefaultHasher_Hasher : Hasher.Trait std.collections.hash_map.DefaultHasher. Admitted.
-
-    (** Hash implementation for primitive types *)
-    Global Instance Hash_for_unit : Hash.Trait unit. Admitted.
-    Global Instance Hash_for_bool : Hash.Trait unit. Admitted.
-    Global Instance Hash_for_i32 : Hash.Trait i32. Admitted.
-    Global Instance Hash_for_u32 : Hash.Trait u32. Admitted.
-    Global Instance Hash_for_String : Hash.Trait alloc.string.String. Admitted.
-    Global Instance Hash_for_i64 : Hash.Trait i64. Admitted.
-    Global Instance Hash_for_u64 : Hash.Trait u64. Admitted.
-  End hash.
-
-  Module prelude.
-    Module rust_2021.
-      Module From.
-        Class Trait (T : Set) (Self : Set) : Set := {
-          from : T -> M Self;
-        }.
-      End From.
-    End rust_2021.
-  End prelude.
-
-  Module error.
-    Module Error.
-      Unset Primitive Projections.
-      Class Trait (Self : Set) : Set := {
-      }.
-      Global Set Primitive Projections.
-    End Error.
-  End error.
-
-  Module io.
-    Module stdio.
-      Parameter _print : forall {A : Set}, A -> M unit.
-    End stdio.
-  End io.
-
-  Module cmp.
-    Module Ordering.
-      Inductive t : Set :=
-      | Less : t
-      | Grreater : t
-      | Equal : t.
-    End Ordering.
-
-    Module PartialEq.
-      Class Trait (Self : Set) (Rhs : option Set) : Set := {
-        Rhs := defaultType Rhs Self;
-
-        eq : ref Self -> ref Rhs -> M bool;
-        ne : ref Self -> ref Rhs -> M bool;
-      }.
-
-      Global Instance Method_eq `(Trait) : Notation.Dot "eq" := {
-        Notation.dot := eq;
-      }.
-      Global Instance Method_ne `(Trait) : Notation.Dot "ne" := {
-        Notation.dot := ne;
-      }.
-    End PartialEq.
-
-    Module PartialOrd.
-      Class Trait (Self : Set) (Rhs : option Set) : Set := {
-        Rhs := defaultType Rhs Self;
-
-        partial_cmp : ref Self -> ref Self -> M (option (Ordering.t));
-        lt : ref Self -> ref Rhs -> M bool;
-        le : ref Self -> ref Rhs -> M bool;
-        gt : ref Self -> ref Rhs -> M bool;
-        ge : ref Self -> ref Rhs -> M bool;
-      }.
-
-      Global Instance Method_partial_cmp `(Trait) : Notation.Dot "partial_cmp" := {
-        Notation.dot := partial_cmp;
-      }.
-      Global Instance Method_lt `(Trait) : Notation.Dot "lt" := {
-        Notation.dot := lt;
-      }.
-      Global Instance Method_le `(Trait) : Notation.Dot "le" := {
-        Notation.dot := le;
-      }.
-      Global Instance Method_gt `(Trait) : Notation.Dot "gt" := {
-        Notation.dot := gt;
-      }.
-      Global Instance Method_ge `(Trait) : Notation.Dot "ge" := {
-        Notation.dot := ge;
-      }.
-    End PartialOrd.
-  End cmp.
-
-  Module fs.
-    Module OpenOptions.
-      Parameter t : Set.
-    End OpenOptions.
-    Definition t : Set := OpenOptions.t.
-  End fs.
+  Module alloc := _std.alloc.
+  Module any := _std.any.
+  Module arch := _std.arch.
+  Module array := _std.array.
+  Module ascii := _std.ascii.
+  Module backtrace := _std.backtrace.
+  Module borrow := _std.borrow.
+  Module boxed := _std.boxed.
+  Module cell := _std.cell.
+  Module char := _std.char.
+  Module clone := _std.clone.
+  Module cmp := _std.cmp.
+  Module collections := _std.collections.
+  Module convert := _std.convert.
+  Module default := _std.default.
+  Module env := _std.env.
+  Module error := _std.error.
+  Module ffi := _std.ffi.
+  Module fmt := _std.fmt.
+  Module fs := _std.fs.
+  Module future := _std.future.
+  Module hash := _std.hash.
+  Module hint := _std.hint.
+  Module intrinsics := _std.intrinsics.
+  Module io := _std.io.
+  (* Module iter := _std.iter. *)
+  Module marker := _std.marker.
+  Module mem := _std.mem.
+  (* Module net := _std.net. *)
+  Module num := _std.num.
+  Module ops := _std.ops.
+  Module option := _std.option.
+  (* Module os := _std.os. *)
+  Module panic := _std.panic.
+  Module path := _std.path.
+  Module pin := _std.pin.
+  Module prelude := _std.prelude.
+  Module primitive := _std.primitive.
+  Module process := _std.process.
+  Module ptr := _std.ptr.
+  Module rc := _std.rc.
+  Module result := _std.result.
+  Module simd := _std.simd.
+  Module slice := _std.slice.
+  Module str := _std.str.
+  Module string := _std.string.
+  Module sync := _std.sync.
+  Module task := _std.task.
+  Module thread := _std.thread.
+  Module time := _std.time.
+  Module vec := _std.vec.
 End std.
+
+(*** std instances *)
+
+Module hash_Instances.
+  (** Hasher instance functions *)
+  Global Instance Hasher_Method_finish (T : Set) `{std.hash.Hasher.Trait T} : Notation.Dot "finish" := {
+    Notation.dot (x : T) := std.hash.Hasher.finish x;
+  }.
+
+  (** Hash instance functions *)
+  Global Instance Hash_Method_hash (T : Set) `{std.hash.Hasher.Trait} `{std.hash.Hash.Trait T} : Notation.Dot "hash" := {
+      Notation.dot (x : T) := std.hash.Hash.hash x;
+  }.
+
+  (** Hasher implementation for DefaultHasher *)
+  Global Instance DefaultHasher_Hasher : std.hash.Hasher.Trait std.collections.hash_map.DefaultHasher. Admitted.
+
+  (** Hash implementation for primitive types *)
+  Global Instance Hash_for_unit : std.hash.Hash.Trait unit. Admitted.
+  Global Instance Hash_for_bool : std.hash.Hash.Trait unit. Admitted.
+  Global Instance Hash_for_i32 : std.hash.Hash.Trait i32. Admitted.
+  Global Instance Hash_for_u32 : std.hash.Hash.Trait u32. Admitted.
+  Global Instance Hash_for_String : std.hash.Hash.Trait alloc.string.String. Admitted.
+  Global Instance Hash_for_i64 : std.hash.Hash.Trait i64. Admitted.
+  Global Instance Hash_for_u64 : std.hash.Hash.Trait u64. Admitted.
+End hash_Instances.
 
 Module bool_Instances.
   Global Instance IDisplay : core.fmt.Display.Trait bool.
