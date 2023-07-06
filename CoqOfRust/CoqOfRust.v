@@ -204,12 +204,12 @@ Module core.
 
     Module Write.
       Class Trait (Self : Set) : Set := {
-        write_str : mut_ref Self -> ref str -> M Result;
+        write_str `{State.Trait} : mut_ref Self -> ref str -> M Result;
         write_char : mut_ref Self -> char -> M Result;
         write_fmt `{State.Trait} : mut_ref Self -> Arguments -> M Result;
       }.
 
-      Global Instance Method_write_str `(Trait) : Notation.Dot "write_str" := {
+      Global Instance Method_write_str `{State.Trait} `(Trait) : Notation.Dot "write_str" := {
         Notation.dot := write_str;
       }.
       Global Instance Method_write_char `(Trait) : Notation.Dot "write_char" := {
@@ -381,15 +381,17 @@ Module core.
     End ImplArgumentV1.
 
     Module ImplArguments.
-      Parameter new_const : ref (list (ref str)) -> M Arguments.
+      Parameter new_const :
+        forall `{State.Trait}, ref (list (ref str)) -> M Arguments.
 
-      Global Instance Arguments_new_const :
+      Global Instance Arguments_new_const `{State.Trait} :
         Notation.DoubleColon Arguments "new_const" := {
         Notation.double_colon := new_const;
       }.
 
       Parameter new_v1 :
-        forall `{State.Trait}, ref (list (ref str)) -> ref (list ArgumentV1) -> M Arguments.
+        forall `{State.Trait},
+          ref (list (ref str)) -> ref (list ArgumentV1) -> M Arguments.
 
       Global Instance Arguments_new_v1 `{State.Trait} :
         Notation.DoubleColon Arguments "new_v1" := {
@@ -670,9 +672,9 @@ Module core.
     (* The trait implementations for [Z] are convenient but should be replaced
        by the implementations for the native types eventually. *)
     Module Impl_Add_for_Z.
-      Definition add (z1 z2 : Z) : M Z := Pure (Z.add z1 z2).
+      Definition add `{State.Trait} (z1 z2 : Z) : M Z := Pure (Z.add z1 z2).
 
-      Global Instance Method_add : Notation.Dot "add" := {
+      Global Instance Method_add `{State.Trait} : Notation.Dot "add" := {
         Notation.dot := add;
       }.
 
@@ -682,9 +684,10 @@ Module core.
     End Impl_Add_for_Z.
 
     Module Impl_AddAssign_for_Z.
-      Parameter add_assign : mut_ref Z -> Z -> M unit.
+      Parameter add_assign : forall `{State.Trait}, mut_ref Z -> Z -> M unit.
 
-      Global Instance Method_add_assign : Notation.Dot "add_assign" := {
+      Global Instance Method_add_assign `{State.Trait} :
+        Notation.Dot "add_assign" := {
         Notation.dot := add_assign;
       }.
 
@@ -695,9 +698,9 @@ Module core.
     End Impl_AddAssign_for_Z.
 
     Module Impl_Sub_for_Z.
-      Definition sub (z1 z2 : Z) : M Z := Pure (Z.sub z1 z2).
+      Definition sub `{State.Trait} (z1 z2 : Z) : M Z := Pure (Z.sub z1 z2).
 
-      Global Instance Method_sub : Notation.Dot "sub" := {
+      Global Instance Method_sub `{State.Trait} : Notation.Dot "sub" := {
         Notation.dot := sub;
       }.
 
@@ -720,9 +723,9 @@ Module core.
     End Impl_SubAssign_for_Z.
 
     Module Impl_Mul_for_Z.
-      Definition mul (z1 z2 : Z) : M Z := Pure (Z.mul z1 z2).
+      Definition mul `{State.Trait} (z1 z2 : Z) : M Z := Pure (Z.mul z1 z2).
 
-      Global Instance Method_mul : Notation.Dot "mul" := {
+      Global Instance Method_mul `{State.Trait} : Notation.Dot "mul" := {
         Notation.dot := mul;
       }.
 
@@ -821,9 +824,10 @@ Module core.
     (** For now we implement the dereferencing operator on any types, as the
         identity. *)
     Module Impl_Deref_for_any.
-      Definition deref {A : Set} (x : A) : M A := Pure x.
+      Definition deref `{State.Trait} {A : Set} (x : A) : M A := Pure x.
 
-      Global Instance Method_deref (A : Set) : Notation.Dot "deref" := {
+      Global Instance Method_deref `{State.Trait} (A : Set) :
+        Notation.Dot "deref" := {
         Notation.dot := deref (A := A);
       }.
     End Impl_Deref_for_any.
