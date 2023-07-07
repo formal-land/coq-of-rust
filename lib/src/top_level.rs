@@ -606,6 +606,13 @@ pub fn top_level_to_coq(tcx: &TyCtxt) -> String {
     top_level.to_pretty(LINE_WIDTH)
 }
 
+/// provides the instance of the Struct.Trait typeclass
+/// for definitions of functions and constants
+/// which types utilize the M monad constructor
+fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
+    text("`{State.Trait}")
+}
+
 fn fn_to_doc<'a>(
     name: &'a String,
     ty_params: Option<&'a Vec<String>>,
@@ -628,7 +635,7 @@ fn fn_to_doc<'a>(
             nest([
                 nest([text("Definition"), line(), text(name)]),
                 line(),
-                text("`{State.Trait}"),
+                monadic_typeclass_parameter(),
                 match ty_params {
                     None => nil(),
                     Some(ty_params) => {
@@ -869,7 +876,8 @@ impl ImplItem {
                     text("Global Instance"),
                     line(),
                     text(format!("{instance_prefix}_{name}")),
-                    text("`{State.Trait}"),
+                    line(),
+                    monadic_typeclass_parameter(),
                     text(" :"),
                 ]),
                 line(),
@@ -1521,6 +1529,8 @@ impl TopLevelItem {
                                     nest([
                                         text(name),
                                         line(),
+                                        monadic_typeclass_parameter(),
+                                        line(),
                                         text(":"),
                                         line(),
                                         ty.to_doc(false),
@@ -1558,6 +1568,8 @@ impl TopLevelItem {
                                     text("Global Instance"),
                                     line(),
                                     text(format!("Method_{name}")),
+                                    line(),
+                                    monadic_typeclass_parameter(),
                                     line(),
                                     text("`(Trait)"),
                                 ]),
