@@ -1548,83 +1548,97 @@ impl TopLevelItem {
                         hardline()
                     },
                     concat(body.iter().map(|(name, item)| {
-                        if matches!(item, TraitItem::Type(..)) {
-                            nil()
-                        } else {
-                            concat([
-                                hardline(),
+                        concat([
+                            hardline(),
+                            nest([
                                 nest([
-                                    nest([
-                                        text("Global Instance"),
-                                        line(),
-                                        text(format!("Method_{name}")),
-                                        line(),
-                                        text("`(Trait)"),
-                                    ]),
+                                    text("Global Instance"),
                                     line(),
-                                    nest([
+                                    text(format!("Method_{name}")),
+                                    line(),
+                                    text("`(Trait)"),
+                                ]),
+                                line(),
+                                match item {
+                                    TraitItem::Definition { .. }
+                                    | TraitItem::DefinitionWithDefault { .. } => nest([
                                         text(": Notation.Dot"),
                                         line(),
                                         text(format!("\"{name}\"")),
                                         line(),
                                         text(":= {"),
                                     ]),
-                                ]),
-                                nest([
-                                    hardline(),
-                                    match item {
-                                        TraitItem::Definition { .. } | TraitItem::Type { .. } => {
+                                    TraitItem::Type { .. } => nest([
+                                        text(": Notation.DoubleColonType"),
+                                        line(),
+                                        text("Self"),
+                                        line(),
+                                        text(format!("\"{name}\"")),
+                                        line(),
+                                        text(":= {"),
+                                    ]),
+                                },
+                            ]),
+                            nest([
+                                hardline(),
+                                match item {
+                                    TraitItem::Definition { .. } => nest([
+                                        text("Notation.dot"),
+                                        line(),
+                                        text(":="),
+                                        line(),
+                                        text(name),
+                                        text(";"),
+                                    ]),
+                                    TraitItem::Type { .. } => nest([
+                                        text("Notation.double_colon_type"),
+                                        line(),
+                                        text(":="),
+                                        line(),
+                                        text(name),
+                                        text(";"),
+                                    ]),
+                                    TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
+                                        nest([
                                             nest([
                                                 text("Notation.dot"),
-                                                line(),
-                                                text(":="),
-                                                line(),
-                                                text(name),
-                                                text(";"),
-                                            ])
-                                        }
-                                        TraitItem::DefinitionWithDefault { args, ret_ty, body } => {
-                                            nest([
-                                                nest([
-                                                    text("Notation.dot"),
-                                                    if args.is_empty() {
-                                                        concat([line(), text("tt")])
-                                                    } else {
-                                                        concat(args.iter().map(|(name, ty)| {
-                                                            concat([
+                                                if args.is_empty() {
+                                                    concat([line(), text("tt")])
+                                                } else {
+                                                    concat(args.iter().map(|(name, ty)| {
+                                                        concat([
+                                                            line(),
+                                                            nest([
+                                                                text("("),
+                                                                text(name),
                                                                 line(),
-                                                                nest([
-                                                                    text("("),
-                                                                    text(name),
-                                                                    line(),
-                                                                    text(": "),
-                                                                    ty.to_doc(false),
-                                                                    text(")"),
-                                                                ]),
-                                                            ])
-                                                        }))
-                                                    },
-                                                    text(" :="),
-                                                ]),
+                                                                text(": "),
+                                                                ty.to_doc(false),
+                                                                text(")"),
+                                                            ]),
+                                                        ])
+                                                    }))
+                                                },
+                                                text(" :="),
+                                            ]),
+                                            line(),
+                                            text("("),
+                                            body.to_doc(false),
+                                            line(),
+                                            nest([
+                                                text(":"),
                                                 line(),
-                                                text("("),
-                                                body.to_doc(false),
-                                                line(),
-                                                nest([
-                                                    text(":"),
-                                                    line(),
-                                                    ret_ty.to_doc(false),
-                                                    text(")"),
-                                                ]),
-                                                text(";"),
-                                            ])
-                                        }
-                                    },
-                                ]),
-                                hardline(),
-                                text("}."),
-                            ])
-                        }
+                                                ret_ty.to_doc(false),
+                                                text(")"),
+                                            ]),
+                                            text(";"),
+                                        ])
+                                    }
+                                },
+                            ]),
+                            hardline(),
+                            text("}."),
+                        ])
                     })),
                 ]),
                 hardline(),

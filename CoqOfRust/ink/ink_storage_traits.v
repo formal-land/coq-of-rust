@@ -1676,6 +1676,14 @@ Module storage.
       PreferredKey := PreferredKey;
     }.
     
+    Global Instance Method_Type `(Trait)
+      : Notation.DoubleColonType Self "Type" := {
+      Notation.double_colon_type := Type;
+    }.
+    Global Instance Method_PreferredKey `(Trait)
+      : Notation.DoubleColonType Self "PreferredKey" := {
+      Notation.double_colon_type := PreferredKey;
+    }.
   End StorableHint.
   
   Module AutoStorableHint.
@@ -1687,6 +1695,10 @@ Module storage.
       Type := Type;
     }.
     
+    Global Instance Method_Type `(Trait)
+      : Notation.DoubleColonType Self "Type" := {
+      Notation.double_colon_type := Type;
+    }.
   End AutoStorableHint.
 End storage.
 
@@ -1787,6 +1799,14 @@ Module StorableHint.
     PreferredKey := PreferredKey;
   }.
   
+  Global Instance Method_Type `(Trait)
+    : Notation.DoubleColonType Self "Type" := {
+    Notation.double_colon_type := Type;
+  }.
+  Global Instance Method_PreferredKey `(Trait)
+    : Notation.DoubleColonType Self "PreferredKey" := {
+    Notation.double_colon_type := PreferredKey;
+  }.
 End StorableHint.
 
 Module AutoStorableHint.
@@ -1798,6 +1818,10 @@ Module AutoStorableHint.
     Type := Type;
   }.
   
+  Global Instance Method_Type `(Trait)
+    : Notation.DoubleColonType Self "Type" := {
+    Notation.double_colon_type := Type;
+  }.
 End AutoStorableHint.
 
 Module layout.
