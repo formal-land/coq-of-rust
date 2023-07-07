@@ -40,6 +40,10 @@ Export List.ListNotations.
 Require Export CoqOfRust.Monad.
 Export Monad.Notations.
 
+(* TODO: remove *)
+  Parameter State Address : Set.
+  Instance H : StateMonad.State.Trait State Address. Admitted.
+
 (** Notation for a function call. Translated directly to function application
     for now. It will drive the monadic transformation in near future. *)
 Notation "e (| e1 , .. , en |)" :=
