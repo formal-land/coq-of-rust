@@ -641,7 +641,8 @@ fn types_for_f(extra_data: Option<&TopLevelItem>) -> Doc {
                 line(),
             ])
         }
-        _ => text("unreachable branch"),
+        // @TODO unreachable branch, extend to cover more cases
+        _ => nil(),
     }
 }
 
