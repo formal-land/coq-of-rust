@@ -34,6 +34,10 @@ Module SomeTrait.
     some_fn : unit -> (M unit);
   }.
   
+  Global Instance Method_SomeType `(Trait)
+    : Notation.DoubleColonType Self "SomeType" := {
+    Notation.double_colon_type := SomeType;
+  }.
   Global Instance Method_some_fn `(Trait) : Notation.Dot "some_fn" := {
     Notation.dot := some_fn;
   }.

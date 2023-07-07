@@ -22,6 +22,12 @@ Module Contains.
     last : (ref Self) -> (M i32);
   }.
   
+  Global Instance Method_A `(Trait) : Notation.DoubleColonType Self "A" := {
+    Notation.double_colon_type := A;
+  }.
+  Global Instance Method_B `(Trait) : Notation.DoubleColonType Self "B" := {
+    Notation.double_colon_type := B;
+  }.
   Global Instance Method_contains `(Trait) : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
