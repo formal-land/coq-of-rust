@@ -986,6 +986,8 @@ impl TopLevelItem {
                     text("Definition"),
                     line(),
                     text(name),
+                    line(),
+                    monadic_typeclass_parameter(),
                     text(" :"),
                     line(),
                     ty.to_doc(false),
