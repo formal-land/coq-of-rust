@@ -996,17 +996,21 @@ End std.
 
 Module hash_Instances.
   (** Hasher instance functions *)
-  Global Instance Hasher_Method_finish (T : Set) `{std.hash.Hasher.Trait T} : Notation.Dot "finish" := {
+  Global Instance Hasher_Method_finish (T : Set) `{std.hash.Hasher.Trait T} :
+    Notation.Dot "finish" := {
     Notation.dot (x : T) := std.hash.Hasher.finish x;
   }.
 
   (** Hash instance functions *)
-  Global Instance Hash_Method_hash (T : Set) `{std.hash.Hasher.Trait} `{std.hash.Hash.Trait T} : Notation.Dot "hash" := {
+  Global Instance Hash_Method_hash
+    `{State.Trait} (T : Set) `{std.hash.Hasher.Trait} `{std.hash.Hash.Trait T} :
+    Notation.Dot "hash" := {
       Notation.dot (x : T) := std.hash.Hash.hash x;
   }.
 
   (** Hasher implementation for DefaultHasher *)
-  Global Instance DefaultHasher_Hasher : std.hash.Hasher.Trait std.collections.hash_map.DefaultHasher. Admitted.
+  Global Instance DefaultHasher_Hasher :
+    std.hash.Hasher.Trait std.collections.hash_map.DefaultHasher. Admitted.
 
   (** Hash implementation for primitive types *)
   Global Instance Hash_for_unit : std.hash.Hash.Trait unit. Admitted.
