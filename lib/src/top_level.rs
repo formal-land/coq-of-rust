@@ -627,6 +627,8 @@ fn fn_to_doc<'a>(
         nest([
             nest([
                 nest([text("Definition"), line(), text(name)]),
+                line(),
+                text("`{State.Trait}"),
                 match ty_params {
                     None => nil(),
                     Some(ty_params) => {

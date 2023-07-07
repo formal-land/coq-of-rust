@@ -112,6 +112,6 @@ Definition bind `{State.Trait} {R A B : Set}
   | inr e => RawMonad.Pure (inr e, s)
   end).
 
-Notation "'let*' x ':=' e1 'in' e2" :=
+(* Notation "'let*' x ':=' e1 'in' e2" :=
   (bind e1 (fun x => e2))
-  (at level 200, x name, e1 at level 100, e2 at level 200).
+  (at level 200, x name, e1 at level 100, e2 at level 200). *)
