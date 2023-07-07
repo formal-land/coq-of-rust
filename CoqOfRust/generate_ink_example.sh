@@ -1,14 +1,14 @@
 #!/bin/bash
 
-cd ../ink/crates/env
+cd ../ink
 # We do a "touch" to make sure that the compilation is restarted
-touch src/lib.rs
+touch crates/*/src/lib.rs
 time cargo coq-of-rust
-cd ../../../CoqOfRust
-mv ../ink/ink_env.v ink/
+# Removing these files as they are too long
+rm ink_codegen.v ink_ir.v ink_metadata.v
+mv *.v ../CoqOfRust/ink/
 
-cd ../ink/integration-tests/erc20
+cd integration-tests/erc20
 touch lib.rs
 time cargo coq-of-rust
-cd ../../../CoqOfRust
-mv ../ink/integration-tests/erc20/erc20.v ink/
+mv erc20.v ../../../CoqOfRust/ink/
