@@ -29,7 +29,7 @@ Module types.
     
     Definition Bytes : Set := list u8.
     
-    Definition from_le_bytes (bytes : ImplSelf.Bytes) : M Self :=
+    Definition from_le_bytes `{State.Trait} (bytes : ImplSelf.Bytes) : M Self :=
       u8::["from_le_bytes"] bytes.
     
     Global Instance AssociatedFunction_from_le_bytes :
@@ -47,7 +47,7 @@ Module types.
     
     Definition Bytes : Set := list u8.
     
-    Definition from_le_bytes (bytes : ImplSelf.Bytes) : M Self :=
+    Definition from_le_bytes `{State.Trait} (bytes : ImplSelf.Bytes) : M Self :=
       u16::["from_le_bytes"] bytes.
     
     Global Instance AssociatedFunction_from_le_bytes :
@@ -65,7 +65,7 @@ Module types.
     
     Definition Bytes : Set := list u8.
     
-    Definition from_le_bytes (bytes : ImplSelf.Bytes) : M Self :=
+    Definition from_le_bytes `{State.Trait} (bytes : ImplSelf.Bytes) : M Self :=
       u32::["from_le_bytes"] bytes.
     
     Global Instance AssociatedFunction_from_le_bytes :
@@ -83,7 +83,7 @@ Module types.
     
     Definition Bytes : Set := list u8.
     
-    Definition from_le_bytes (bytes : ImplSelf.Bytes) : M Self :=
+    Definition from_le_bytes `{State.Trait} (bytes : ImplSelf.Bytes) : M Self :=
       u64::["from_le_bytes"] bytes.
     
     Global Instance AssociatedFunction_from_le_bytes :
@@ -101,7 +101,7 @@ Module types.
     
     Definition Bytes : Set := list u8.
     
-    Definition from_le_bytes (bytes : ImplSelf.Bytes) : M Self :=
+    Definition from_le_bytes `{State.Trait} (bytes : ImplSelf.Bytes) : M Self :=
       u128::["from_le_bytes"] bytes.
     
     Global Instance AssociatedFunction_from_le_bytes :
@@ -253,6 +253,7 @@ Module types.
     Definition Self := ink_env.types.DefaultEnvironment.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -270,7 +271,10 @@ Module types.
   Module Impl_core_clone_Clone_for_ink_env_types_DefaultEnvironment.
     Definition Self := ink_env.types.DefaultEnvironment.
     
-    Definition clone (self : ref Self) : M ink_env.types.DefaultEnvironment :=
+    Definition clone
+        `{State.Trait}
+        (self : ref Self)
+        : M ink_env.types.DefaultEnvironment :=
       core.intrinsics.unreachable tt.
     
     Global Instance Method_clone : Notation.Dot "clone" := {
@@ -294,6 +298,7 @@ Module types.
     Definition Self := ink_env.types.DefaultEnvironment.
     
     Definition eq
+        `{State.Trait}
         (self : ref Self)
         (other : ref ink_env.types.DefaultEnvironment)
         : M bool :=
@@ -318,7 +323,10 @@ Module types.
   Module Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
     Definition Self := ink_env.types.DefaultEnvironment.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    Definition assert_receiver_is_total_eq
+        `{State.Trait}
+        (self : ref Self)
+        : M unit :=
       Pure tt.
     
     Global Instance Method_assert_receiver_is_total_eq :
@@ -393,7 +401,7 @@ Module Impl_ink_env_types_FromLittleEndian_for_u8.
   
   Definition Bytes : Set := list u8.
   
-  Definition from_le_bytes (bytes : ImplSelf.Bytes) : M Self :=
+  Definition from_le_bytes `{State.Trait} (bytes : ImplSelf.Bytes) : M Self :=
     u8::["from_le_bytes"] bytes.
   
   Global Instance AssociatedFunction_from_le_bytes :
@@ -411,7 +419,7 @@ Module Impl_ink_env_types_FromLittleEndian_for_u16.
   
   Definition Bytes : Set := list u8.
   
-  Definition from_le_bytes (bytes : ImplSelf.Bytes) : M Self :=
+  Definition from_le_bytes `{State.Trait} (bytes : ImplSelf.Bytes) : M Self :=
     u16::["from_le_bytes"] bytes.
   
   Global Instance AssociatedFunction_from_le_bytes :
@@ -429,7 +437,7 @@ Module Impl_ink_env_types_FromLittleEndian_for_u32.
   
   Definition Bytes : Set := list u8.
   
-  Definition from_le_bytes (bytes : ImplSelf.Bytes) : M Self :=
+  Definition from_le_bytes `{State.Trait} (bytes : ImplSelf.Bytes) : M Self :=
     u32::["from_le_bytes"] bytes.
   
   Global Instance AssociatedFunction_from_le_bytes :
@@ -447,7 +455,7 @@ Module Impl_ink_env_types_FromLittleEndian_for_u64.
   
   Definition Bytes : Set := list u8.
   
-  Definition from_le_bytes (bytes : ImplSelf.Bytes) : M Self :=
+  Definition from_le_bytes `{State.Trait} (bytes : ImplSelf.Bytes) : M Self :=
     u64::["from_le_bytes"] bytes.
   
   Global Instance AssociatedFunction_from_le_bytes :
@@ -465,7 +473,7 @@ Module Impl_ink_env_types_FromLittleEndian_for_u128.
   
   Definition Bytes : Set := list u8.
   
-  Definition from_le_bytes (bytes : ImplSelf.Bytes) : M Self :=
+  Definition from_le_bytes `{State.Trait} (bytes : ImplSelf.Bytes) : M Self :=
     u128::["from_le_bytes"] bytes.
   
   Global Instance AssociatedFunction_from_le_bytes :
@@ -612,7 +620,7 @@ Module Impl_scale_info_TypeInfo_for_ink_env_types_NoChainExtension.
   
   Definition Identity : Set := Self.
   
-  Definition type_info (_ : unit) : M scale_info.ty.Type :=
+  Definition type_info `{State.Trait} (_ : unit) : M scale_info.ty.Type :=
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 :=
       scale_info.ty.path.Path::["new"] "NoChainExtension" "ink_env::types" in
@@ -647,7 +655,7 @@ Module Impl_scale_info_TypeInfo_for_ink_env_types_DefaultEnvironment.
   
   Definition Identity : Set := Self.
   
-  Definition type_info (_ : unit) : M scale_info.ty.Type :=
+  Definition type_info `{State.Trait} (_ : unit) : M scale_info.ty.Type :=
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 :=
       scale_info.ty.path.Path::["new"] "DefaultEnvironment" "ink_env::types" in
@@ -674,6 +682,7 @@ Module Impl_core_fmt_Debug_for_ink_env_types_DefaultEnvironment.
   Definition Self := ink_env.types.DefaultEnvironment.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -691,7 +700,10 @@ End Impl_core_fmt_Debug_for_ink_env_types_DefaultEnvironment.
 Module Impl_core_clone_Clone_for_ink_env_types_DefaultEnvironment.
   Definition Self := ink_env.types.DefaultEnvironment.
   
-  Definition clone (self : ref Self) : M ink_env.types.DefaultEnvironment :=
+  Definition clone
+      `{State.Trait}
+      (self : ref Self)
+      : M ink_env.types.DefaultEnvironment :=
     core.intrinsics.unreachable tt.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -715,6 +727,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_types_DefaultEnvironment.
   Definition Self := ink_env.types.DefaultEnvironment.
   
   Definition eq
+      `{State.Trait}
       (self : ref Self)
       (other : ref ink_env.types.DefaultEnvironment)
       : M bool :=
@@ -739,7 +752,11 @@ End Impl_core_marker_StructuralEq_for_ink_env_types_DefaultEnvironment.
 Module Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
   Definition Self := ink_env.types.DefaultEnvironment.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit := Pure tt.
+  Definition assert_receiver_is_total_eq
+      `{State.Trait}
+      (self : ref Self)
+      : M unit :=
+    Pure tt.
   
   Global Instance Method_assert_receiver_is_total_eq :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -787,6 +804,7 @@ Definition BlockNumber : Set := u32.
 
 Module api.
   Definition caller
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (_ : unit)
@@ -795,6 +813,7 @@ Module api.
       (fun instance => ink_env.backend.TypedEnvBackend.caller instance).
   
   Definition transferred_value
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (_ : unit)
@@ -804,6 +823,7 @@ Module api.
         ink_env.backend.TypedEnvBackend.transferred_value instance).
   
   Definition weight_to_fee
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (gas : ink_env.types.Gas)
@@ -813,6 +833,7 @@ Module api.
         ink_env.backend.TypedEnvBackend.weight_to_fee instance gas).
   
   Definition gas_left
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (_ : unit)
@@ -821,6 +842,7 @@ Module api.
       (fun instance => ink_env.backend.TypedEnvBackend.gas_left instance).
   
   Definition block_timestamp
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (_ : unit)
@@ -830,6 +852,7 @@ Module api.
         ink_env.backend.TypedEnvBackend.block_timestamp instance).
   
   Definition account_id
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (_ : unit)
@@ -838,6 +861,7 @@ Module api.
       (fun instance => ink_env.backend.TypedEnvBackend.account_id instance).
   
   Definition balance
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (_ : unit)
@@ -846,6 +870,7 @@ Module api.
       (fun instance => ink_env.backend.TypedEnvBackend.balance instance).
   
   Definition block_number
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (_ : unit)
@@ -854,6 +879,7 @@ Module api.
       (fun instance => ink_env.backend.TypedEnvBackend.block_number instance).
   
   Definition minimum_balance
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (_ : unit)
@@ -863,6 +889,7 @@ Module api.
         ink_env.backend.TypedEnvBackend.minimum_balance instance).
   
   Definition emit_event
+      `{State.Trait}
       {E Event : Set}
       `{ink_env.types.Environment.Trait E}
       `{ink_env.topics.Topics.Trait Event}
@@ -874,6 +901,7 @@ Module api.
         ink_env.backend.TypedEnvBackend.emit_event instance event).
   
   Definition set_contract_storage
+      `{State.Trait}
       {K V : Set}
       `{parity_scale_codec.codec.Encode.Trait K}
       `{ink_storage_traits.storage.Storable.Trait V}
@@ -885,6 +913,7 @@ Module api.
         ink_env.backend.EnvBackend.set_contract_storage instance key value).
   
   Definition get_contract_storage
+      `{State.Trait}
       {K R : Set}
       `{parity_scale_codec.codec.Encode.Trait K}
       `{ink_storage_traits.storage.Storable.Trait R}
@@ -895,6 +924,7 @@ Module api.
         ink_env.backend.EnvBackend.get_contract_storage instance key).
   
   Definition take_contract_storage
+      `{State.Trait}
       {K R : Set}
       `{parity_scale_codec.codec.Encode.Trait K}
       `{ink_storage_traits.storage.Storable.Trait R}
@@ -905,6 +935,7 @@ Module api.
         ink_env.backend.EnvBackend.take_contract_storage instance key).
   
   Definition contains_contract_storage
+      `{State.Trait}
       {K : Set}
       `{parity_scale_codec.codec.Encode.Trait K}
       (key : ref K)
@@ -914,6 +945,7 @@ Module api.
         ink_env.backend.EnvBackend.contains_contract_storage instance key).
   
   Definition clear_contract_storage
+      `{State.Trait}
       {K : Set}
       `{parity_scale_codec.codec.Encode.Trait K}
       (key : ref K)
@@ -923,6 +955,7 @@ Module api.
         ink_env.backend.EnvBackend.clear_contract_storage instance key).
   
   Definition invoke_contract
+      `{State.Trait}
       {E Args R : Set}
       `{ink_env.types.Environment.Trait E}
       `{parity_scale_codec.codec.Encode.Trait Args}
@@ -941,6 +974,7 @@ Module api.
         ink_env.backend.TypedEnvBackend.invoke_contract instance params).
   
   Definition invoke_contract_delegate
+      `{State.Trait}
       {E Args R : Set}
       `{ink_env.types.Environment.Trait E}
       `{parity_scale_codec.codec.Encode.Trait Args}
@@ -961,6 +995,7 @@ Module api.
           params).
   
   Definition instantiate_contract
+      `{State.Trait}
       {E ContractRef Args Salt R : Set}
       `{ink_env.types.Environment.Trait E}
       `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
@@ -981,6 +1016,7 @@ Module api.
         ink_env.backend.TypedEnvBackend.instantiate_contract instance params).
   
   Definition terminate_contract
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (beneficiary : ImplE.AccountId)
@@ -992,6 +1028,7 @@ Module api.
           beneficiary).
   
   Definition transfer
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (destination : ImplE.AccountId)
@@ -1002,6 +1039,7 @@ Module api.
         ink_env.backend.TypedEnvBackend.transfer instance destination value).
   
   Definition decode_input
+      `{State.Trait}
       {T : Set}
       `{parity_scale_codec.codec.Decode.Trait T}
       (_ : unit)
@@ -1010,6 +1048,7 @@ Module api.
       (fun instance => ink_env.backend.EnvBackend.decode_input instance).
   
   Definition return_value
+      `{State.Trait}
       {R : Set}
       `{parity_scale_codec.codec.Encode.Trait R}
       (return_flags : ink_env.backend.ReturnFlags)
@@ -1022,12 +1061,13 @@ Module api.
           return_flags
           return_value).
   
-  Definition debug_message (message : ref str) : M unit :=
+  Definition debug_message `{State.Trait} (message : ref str) : M unit :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         ink_env.backend.EnvBackend.debug_message instance message).
   
   Definition hash_bytes
+      `{State.Trait}
       {H : Set}
       `{ink_env.hash.CryptoHash.Trait H}
       (input : ref Slice)
@@ -1037,6 +1077,7 @@ Module api.
       (fun instance => instance.["hash_bytes"] input output).
   
   Definition hash_encoded
+      `{State.Trait}
       {H T : Set}
       `{ink_env.hash.CryptoHash.Trait H}
       `{parity_scale_codec.codec.Encode.Trait T}
@@ -1047,6 +1088,7 @@ Module api.
       (fun instance => instance.["hash_encoded"] input output).
   
   Definition ecdsa_recover
+      `{State.Trait}
       (signature : ref list u8)
       (message_hash : ref list u8)
       (output : mut_ref list u8)
@@ -1056,6 +1098,7 @@ Module api.
         instance.["ecdsa_recover"] signature message_hash output).
   
   Definition ecdsa_to_eth_address
+      `{State.Trait}
       (pubkey : ref list u8)
       (output : mut_ref list u8)
       : M (ink_env.error.Result unit) :=
@@ -1063,6 +1106,7 @@ Module api.
       (fun instance => instance.["ecdsa_to_eth_address"] pubkey output).
   
   Definition is_contract
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (account : ref ImplE.AccountId)
@@ -1072,6 +1116,7 @@ Module api.
         ink_env.backend.TypedEnvBackend.is_contract instance account).
   
   Definition code_hash
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (account : ref ImplE.AccountId)
@@ -1081,6 +1126,7 @@ Module api.
         ink_env.backend.TypedEnvBackend.code_hash instance account).
   
   Definition own_code_hash
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (_ : unit)
@@ -1089,6 +1135,7 @@ Module api.
       (fun instance => ink_env.backend.TypedEnvBackend.own_code_hash instance).
   
   Definition caller_is_origin
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (_ : unit)
@@ -1098,12 +1145,14 @@ Module api.
         ink_env.backend.TypedEnvBackend.caller_is_origin instance).
   
   Definition set_code_hash
+      `{State.Trait}
       (code_hash : ref list u8)
       : M (ink_env.error.Result unit) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => instance.["set_code_hash"] code_hash).
   
   Definition set_code_hash2
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (code_hash : ref ImplE.Hash)
@@ -1114,6 +1163,7 @@ Module api.
         instance.["set_code_hash"] α0).
   
   Definition call_runtime
+      `{State.Trait}
       {E Call : Set}
       `{ink_env.types.Environment.Trait E}
       `{parity_scale_codec.codec.Encode.Trait Call}
@@ -1125,6 +1175,7 @@ Module api.
 End api.
 
 Definition caller
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (_ : unit)
@@ -1133,6 +1184,7 @@ Definition caller
     (fun instance => ink_env.backend.TypedEnvBackend.caller instance).
 
 Definition transferred_value
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (_ : unit)
@@ -1142,6 +1194,7 @@ Definition transferred_value
       ink_env.backend.TypedEnvBackend.transferred_value instance).
 
 Definition weight_to_fee
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (gas : ink_env.types.Gas)
@@ -1151,6 +1204,7 @@ Definition weight_to_fee
       ink_env.backend.TypedEnvBackend.weight_to_fee instance gas).
 
 Definition gas_left
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (_ : unit)
@@ -1159,6 +1213,7 @@ Definition gas_left
     (fun instance => ink_env.backend.TypedEnvBackend.gas_left instance).
 
 Definition block_timestamp
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (_ : unit)
@@ -1167,6 +1222,7 @@ Definition block_timestamp
     (fun instance => ink_env.backend.TypedEnvBackend.block_timestamp instance).
 
 Definition account_id
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (_ : unit)
@@ -1175,6 +1231,7 @@ Definition account_id
     (fun instance => ink_env.backend.TypedEnvBackend.account_id instance).
 
 Definition balance
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (_ : unit)
@@ -1183,6 +1240,7 @@ Definition balance
     (fun instance => ink_env.backend.TypedEnvBackend.balance instance).
 
 Definition block_number
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (_ : unit)
@@ -1191,6 +1249,7 @@ Definition block_number
     (fun instance => ink_env.backend.TypedEnvBackend.block_number instance).
 
 Definition minimum_balance
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (_ : unit)
@@ -1199,6 +1258,7 @@ Definition minimum_balance
     (fun instance => ink_env.backend.TypedEnvBackend.minimum_balance instance).
 
 Definition emit_event
+    `{State.Trait}
     {E Event : Set}
     `{ink_env.types.Environment.Trait E}
     `{ink_env.topics.Topics.Trait Event}
@@ -1209,6 +1269,7 @@ Definition emit_event
     (fun instance => ink_env.backend.TypedEnvBackend.emit_event instance event).
 
 Definition set_contract_storage
+    `{State.Trait}
     {K V : Set}
     `{parity_scale_codec.codec.Encode.Trait K}
     `{ink_storage_traits.storage.Storable.Trait V}
@@ -1220,6 +1281,7 @@ Definition set_contract_storage
       ink_env.backend.EnvBackend.set_contract_storage instance key value).
 
 Definition get_contract_storage
+    `{State.Trait}
     {K R : Set}
     `{parity_scale_codec.codec.Encode.Trait K}
     `{ink_storage_traits.storage.Storable.Trait R}
@@ -1230,6 +1292,7 @@ Definition get_contract_storage
       ink_env.backend.EnvBackend.get_contract_storage instance key).
 
 Definition take_contract_storage
+    `{State.Trait}
     {K R : Set}
     `{parity_scale_codec.codec.Encode.Trait K}
     `{ink_storage_traits.storage.Storable.Trait R}
@@ -1240,6 +1303,7 @@ Definition take_contract_storage
       ink_env.backend.EnvBackend.take_contract_storage instance key).
 
 Definition contains_contract_storage
+    `{State.Trait}
     {K : Set}
     `{parity_scale_codec.codec.Encode.Trait K}
     (key : ref K)
@@ -1249,6 +1313,7 @@ Definition contains_contract_storage
       ink_env.backend.EnvBackend.contains_contract_storage instance key).
 
 Definition clear_contract_storage
+    `{State.Trait}
     {K : Set}
     `{parity_scale_codec.codec.Encode.Trait K}
     (key : ref K)
@@ -1258,6 +1323,7 @@ Definition clear_contract_storage
       ink_env.backend.EnvBackend.clear_contract_storage instance key).
 
 Definition invoke_contract
+    `{State.Trait}
     {E Args R : Set}
     `{ink_env.types.Environment.Trait E}
     `{parity_scale_codec.codec.Encode.Trait Args}
@@ -1276,6 +1342,7 @@ Definition invoke_contract
       ink_env.backend.TypedEnvBackend.invoke_contract instance params).
 
 Definition invoke_contract_delegate
+    `{State.Trait}
     {E Args R : Set}
     `{ink_env.types.Environment.Trait E}
     `{parity_scale_codec.codec.Encode.Trait Args}
@@ -1294,6 +1361,7 @@ Definition invoke_contract_delegate
       ink_env.backend.TypedEnvBackend.invoke_contract_delegate instance params).
 
 Definition instantiate_contract
+    `{State.Trait}
     {E ContractRef Args Salt R : Set}
     `{ink_env.types.Environment.Trait E}
     `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
@@ -1313,6 +1381,7 @@ Definition instantiate_contract
       ink_env.backend.TypedEnvBackend.instantiate_contract instance params).
 
 Definition terminate_contract
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (beneficiary : ImplE.AccountId)
@@ -1322,6 +1391,7 @@ Definition terminate_contract
       ink_env.backend.TypedEnvBackend.terminate_contract instance beneficiary).
 
 Definition transfer
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (destination : ImplE.AccountId)
@@ -1332,6 +1402,7 @@ Definition transfer
       ink_env.backend.TypedEnvBackend.transfer instance destination value).
 
 Definition decode_input
+    `{State.Trait}
     {T : Set}
     `{parity_scale_codec.codec.Decode.Trait T}
     (_ : unit)
@@ -1340,6 +1411,7 @@ Definition decode_input
     (fun instance => ink_env.backend.EnvBackend.decode_input instance).
 
 Definition return_value
+    `{State.Trait}
     {R : Set}
     `{parity_scale_codec.codec.Encode.Trait R}
     (return_flags : ink_env.backend.ReturnFlags)
@@ -1352,11 +1424,12 @@ Definition return_value
         return_flags
         return_value).
 
-Definition debug_message (message : ref str) : M unit :=
+Definition debug_message `{State.Trait} (message : ref str) : M unit :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.EnvBackend.debug_message instance message).
 
 Definition hash_bytes
+    `{State.Trait}
     {H : Set}
     `{ink_env.hash.CryptoHash.Trait H}
     (input : ref Slice)
@@ -1366,6 +1439,7 @@ Definition hash_bytes
     (fun instance => instance.["hash_bytes"] input output).
 
 Definition hash_encoded
+    `{State.Trait}
     {H T : Set}
     `{ink_env.hash.CryptoHash.Trait H}
     `{parity_scale_codec.codec.Encode.Trait T}
@@ -1376,6 +1450,7 @@ Definition hash_encoded
     (fun instance => instance.["hash_encoded"] input output).
 
 Definition ecdsa_recover
+    `{State.Trait}
     (signature : ref list u8)
     (message_hash : ref list u8)
     (output : mut_ref list u8)
@@ -1384,6 +1459,7 @@ Definition ecdsa_recover
     (fun instance => instance.["ecdsa_recover"] signature message_hash output).
 
 Definition ecdsa_to_eth_address
+    `{State.Trait}
     (pubkey : ref list u8)
     (output : mut_ref list u8)
     : M (ink_env.error.Result unit) :=
@@ -1391,6 +1467,7 @@ Definition ecdsa_to_eth_address
     (fun instance => instance.["ecdsa_to_eth_address"] pubkey output).
 
 Definition is_contract
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (account : ref ImplE.AccountId)
@@ -1400,6 +1477,7 @@ Definition is_contract
       ink_env.backend.TypedEnvBackend.is_contract instance account).
 
 Definition code_hash
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (account : ref ImplE.AccountId)
@@ -1409,6 +1487,7 @@ Definition code_hash
       ink_env.backend.TypedEnvBackend.code_hash instance account).
 
 Definition own_code_hash
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (_ : unit)
@@ -1417,6 +1496,7 @@ Definition own_code_hash
     (fun instance => ink_env.backend.TypedEnvBackend.own_code_hash instance).
 
 Definition caller_is_origin
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (_ : unit)
@@ -1425,12 +1505,14 @@ Definition caller_is_origin
     (fun instance => ink_env.backend.TypedEnvBackend.caller_is_origin instance).
 
 Definition set_code_hash
+    `{State.Trait}
     (code_hash : ref list u8)
     : M (ink_env.error.Result unit) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => instance.["set_code_hash"] code_hash).
 
 Definition set_code_hash2
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (code_hash : ref ImplE.Hash)
@@ -1441,6 +1523,7 @@ Definition set_code_hash2
       instance.["set_code_hash"] α0).
 
 Definition call_runtime
+    `{State.Trait}
     {E Call : Set}
     `{ink_env.types.Environment.Trait E}
     `{parity_scale_codec.codec.Encode.Trait Call}
@@ -1537,21 +1620,33 @@ Module arithmetic.
     
     Definition Self := T.
     
-    Definition saturating_add (self : Self) (o : Self) : M Self :=
+    Definition saturating_add
+        `{State.Trait}
+        (self : Self)
+        (o : Self)
+        : M Self :=
       num_traits.ops.saturating.Saturating.saturating_add self o.
     
     Global Instance Method_saturating_add : Notation.Dot "saturating_add" := {
       Notation.dot := saturating_add;
     }.
     
-    Definition saturating_sub (self : Self) (o : Self) : M Self :=
+    Definition saturating_sub
+        `{State.Trait}
+        (self : Self)
+        (o : Self)
+        : M Self :=
       num_traits.ops.saturating.Saturating.saturating_sub self o.
     
     Global Instance Method_saturating_sub : Notation.Dot "saturating_sub" := {
       Notation.dot := saturating_sub;
     }.
     
-    Definition saturating_mul (self : Self) (o : Self) : M Self :=
+    Definition saturating_mul
+        `{State.Trait}
+        (self : Self)
+        (o : Self)
+        : M Self :=
       let* α0 := self.["checked_mul"] (addr_of o) in
       α0.["unwrap_or_else"]
         (fun  =>
@@ -1569,7 +1664,11 @@ Module arithmetic.
       Notation.dot := saturating_mul;
     }.
     
-    Definition saturating_pow (self : Self) (exp : usize) : M Self :=
+    Definition saturating_pow
+        `{State.Trait}
+        (self : Self)
+        (exp : usize)
+        : M Self :=
       let* neg :=
         let* α0 := T::["zero"] tt in
         let* α1 := self.["lt"] α0 in
@@ -1684,21 +1783,21 @@ Section Impl_ink_env_arithmetic_Saturating_for_T.
   
   Definition Self := T.
   
-  Definition saturating_add (self : Self) (o : Self) : M Self :=
+  Definition saturating_add `{State.Trait} (self : Self) (o : Self) : M Self :=
     num_traits.ops.saturating.Saturating.saturating_add self o.
   
   Global Instance Method_saturating_add : Notation.Dot "saturating_add" := {
     Notation.dot := saturating_add;
   }.
   
-  Definition saturating_sub (self : Self) (o : Self) : M Self :=
+  Definition saturating_sub `{State.Trait} (self : Self) (o : Self) : M Self :=
     num_traits.ops.saturating.Saturating.saturating_sub self o.
   
   Global Instance Method_saturating_sub : Notation.Dot "saturating_sub" := {
     Notation.dot := saturating_sub;
   }.
   
-  Definition saturating_mul (self : Self) (o : Self) : M Self :=
+  Definition saturating_mul `{State.Trait} (self : Self) (o : Self) : M Self :=
     let* α0 := self.["checked_mul"] (addr_of o) in
     α0.["unwrap_or_else"]
       (fun  =>
@@ -1716,7 +1815,11 @@ Section Impl_ink_env_arithmetic_Saturating_for_T.
     Notation.dot := saturating_mul;
   }.
   
-  Definition saturating_pow (self : Self) (exp : usize) : M Self :=
+  Definition saturating_pow
+      `{State.Trait}
+      (self : Self)
+      (exp : usize)
+      : M Self :=
     let* neg :=
       let* α0 := T::["zero"] tt in
       let* α1 := self.["lt"] α0 in
@@ -1759,7 +1862,10 @@ Module backend.
   Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
     Definition Self := ink_env.backend.ReturnFlags.
     
-    Definition default (_ : unit) : M ink_env.backend.ReturnFlags :=
+    Definition default
+        `{State.Trait}
+        (_ : unit)
+        : M ink_env.backend.ReturnFlags :=
       let* α0 := core.default.Default.default tt in
       Pure {| ink_env.backend.ReturnFlags.value := α0; |}.
     
@@ -1776,7 +1882,10 @@ Module backend.
   Module Impl_ink_env_backend_ReturnFlags.
     Definition Self := ink_env.backend.ReturnFlags.
     
-    Definition new_with_reverted (has_reverted : bool) : M Self :=
+    Definition new_with_reverted
+        `{State.Trait}
+        (has_reverted : bool)
+        : M Self :=
       let* α0 := Self::["default"] tt in
       α0.["set_reverted"] has_reverted.
     
@@ -1785,7 +1894,11 @@ Module backend.
       Notation.double_colon := new_with_reverted;
     }.
     
-    Definition set_reverted (self : Self) (has_reverted : bool) : M Self :=
+    Definition set_reverted
+        `{State.Trait}
+        (self : Self)
+        (has_reverted : bool)
+        : M Self :=
       let* _ :=
         match has_reverted with
         | true => self.["value"].["bitor_assign"] (cast has_reverted u32)
@@ -1833,7 +1946,10 @@ Module backend.
   Module Impl_core_clone_Clone_for_ink_env_backend_CallFlags.
     Definition Self := ink_env.backend.CallFlags.
     
-    Definition clone (self : ref Self) : M ink_env.backend.CallFlags :=
+    Definition clone
+        `{State.Trait}
+        (self : ref Self)
+        : M ink_env.backend.CallFlags :=
       let _ := tt in
       self.["deref"].
     
@@ -1850,6 +1966,7 @@ Module backend.
     Definition Self := ink_env.backend.CallFlags.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -1877,7 +1994,10 @@ Module backend.
   Module Impl_core_default_Default_for_ink_env_backend_CallFlags.
     Definition Self := ink_env.backend.CallFlags.
     
-    Definition default (_ : unit) : M ink_env.backend.CallFlags :=
+    Definition default
+        `{State.Trait}
+        (_ : unit)
+        : M ink_env.backend.CallFlags :=
       let* α0 := core.default.Default.default tt in
       let* α1 := core.default.Default.default tt in
       let* α2 := core.default.Default.default tt in
@@ -1904,6 +2024,7 @@ Module backend.
     Definition Self := ink_env.backend.CallFlags.
     
     Definition set_forward_input
+        `{State.Trait}
         (self : Self)
         (forward_input : bool)
         : M Self :=
@@ -1915,7 +2036,11 @@ Module backend.
       Notation.dot := set_forward_input;
     }.
     
-    Definition set_clone_input (self : Self) (clone_input : bool) : M Self :=
+    Definition set_clone_input
+        `{State.Trait}
+        (self : Self)
+        (clone_input : bool)
+        : M Self :=
       let* _ := assign self.["clone_input"] clone_input in
       Pure self.
     
@@ -1923,7 +2048,11 @@ Module backend.
       Notation.dot := set_clone_input;
     }.
     
-    Definition set_tail_call (self : Self) (tail_call : bool) : M Self :=
+    Definition set_tail_call
+        `{State.Trait}
+        (self : Self)
+        (tail_call : bool)
+        : M Self :=
       let* _ := assign self.["tail_call"] tail_call in
       Pure self.
     
@@ -1932,6 +2061,7 @@ Module backend.
     }.
     
     Definition set_allow_reentry
+        `{State.Trait}
         (self : Self)
         (allow_reentry : bool)
         : M Self :=
@@ -1943,7 +2073,7 @@ Module backend.
       Notation.dot := set_allow_reentry;
     }.
     
-    Definition into_u32 (self : Self) : M u32 :=
+    Definition into_u32 `{State.Trait} (self : Self) : M u32 :=
       let* α0 := (cast self.["clone_input"] u32).["shl"] 1 in
       let* α1 := (cast self.["forward_input"] u32).["bitor"] α0 in
       let* α2 := (cast self.["tail_call"] u32).["shl"] 2 in
@@ -1955,27 +2085,28 @@ Module backend.
       Notation.dot := into_u32;
     }.
     
-    Definition forward_input (self : ref Self) : M bool :=
+    Definition forward_input `{State.Trait} (self : ref Self) : M bool :=
       Pure self.["forward_input"].
     
     Global Instance Method_forward_input : Notation.Dot "forward_input" := {
       Notation.dot := forward_input;
     }.
     
-    Definition clone_input (self : ref Self) : M bool :=
+    Definition clone_input `{State.Trait} (self : ref Self) : M bool :=
       Pure self.["clone_input"].
     
     Global Instance Method_clone_input : Notation.Dot "clone_input" := {
       Notation.dot := clone_input;
     }.
     
-    Definition tail_call (self : ref Self) : M bool := Pure self.["tail_call"].
+    Definition tail_call `{State.Trait} (self : ref Self) : M bool :=
+      Pure self.["tail_call"].
     
     Global Instance Method_tail_call : Notation.Dot "tail_call" := {
       Notation.dot := tail_call;
     }.
     
-    Definition allow_reentry (self : ref Self) : M bool :=
+    Definition allow_reentry `{State.Trait} (self : ref Self) : M bool :=
       Pure self.["allow_reentry"].
     
     Global Instance Method_allow_reentry : Notation.Dot "allow_reentry" := {
@@ -2263,7 +2394,10 @@ Definition ReturnFlags : Set := ReturnFlags.t.
 Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
   Definition Self := ink_env.backend.ReturnFlags.
   
-  Definition default (_ : unit) : M ink_env.backend.ReturnFlags :=
+  Definition default
+      `{State.Trait}
+      (_ : unit)
+      : M ink_env.backend.ReturnFlags :=
     let* α0 := core.default.Default.default tt in
     Pure {| ink_env.backend.ReturnFlags.value := α0; |}.
   
@@ -2280,7 +2414,7 @@ End Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
 Module Impl_ink_env_backend_ReturnFlags_2.
   Definition Self := ink_env.backend.ReturnFlags.
   
-  Definition new_with_reverted (has_reverted : bool) : M Self :=
+  Definition new_with_reverted `{State.Trait} (has_reverted : bool) : M Self :=
     let* α0 := Self::["default"] tt in
     α0.["set_reverted"] has_reverted.
   
@@ -2289,7 +2423,11 @@ Module Impl_ink_env_backend_ReturnFlags_2.
     Notation.double_colon := new_with_reverted;
   }.
   
-  Definition set_reverted (self : Self) (has_reverted : bool) : M Self :=
+  Definition set_reverted
+      `{State.Trait}
+      (self : Self)
+      (has_reverted : bool)
+      : M Self :=
     let* _ :=
       match has_reverted with
       | true => self.["value"].["bitor_assign"] (cast has_reverted u32)
@@ -2337,7 +2475,10 @@ End Impl_core_marker_Copy_for_ink_env_backend_CallFlags.
 Module Impl_core_clone_Clone_for_ink_env_backend_CallFlags.
   Definition Self := ink_env.backend.CallFlags.
   
-  Definition clone (self : ref Self) : M ink_env.backend.CallFlags :=
+  Definition clone
+      `{State.Trait}
+      (self : ref Self)
+      : M ink_env.backend.CallFlags :=
     let _ := tt in
     self.["deref"].
   
@@ -2354,6 +2495,7 @@ Module Impl_core_fmt_Debug_for_ink_env_backend_CallFlags.
   Definition Self := ink_env.backend.CallFlags.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -2381,7 +2523,7 @@ End Impl_core_fmt_Debug_for_ink_env_backend_CallFlags.
 Module Impl_core_default_Default_for_ink_env_backend_CallFlags.
   Definition Self := ink_env.backend.CallFlags.
   
-  Definition default (_ : unit) : M ink_env.backend.CallFlags :=
+  Definition default `{State.Trait} (_ : unit) : M ink_env.backend.CallFlags :=
     let* α0 := core.default.Default.default tt in
     let* α1 := core.default.Default.default tt in
     let* α2 := core.default.Default.default tt in
@@ -2407,7 +2549,11 @@ End Impl_core_default_Default_for_ink_env_backend_CallFlags.
 Module Impl_ink_env_backend_CallFlags_2.
   Definition Self := ink_env.backend.CallFlags.
   
-  Definition set_forward_input (self : Self) (forward_input : bool) : M Self :=
+  Definition set_forward_input
+      `{State.Trait}
+      (self : Self)
+      (forward_input : bool)
+      : M Self :=
     let* _ := assign self.["forward_input"] forward_input in
     Pure self.
   
@@ -2416,7 +2562,11 @@ Module Impl_ink_env_backend_CallFlags_2.
     Notation.dot := set_forward_input;
   }.
   
-  Definition set_clone_input (self : Self) (clone_input : bool) : M Self :=
+  Definition set_clone_input
+      `{State.Trait}
+      (self : Self)
+      (clone_input : bool)
+      : M Self :=
     let* _ := assign self.["clone_input"] clone_input in
     Pure self.
   
@@ -2424,7 +2574,11 @@ Module Impl_ink_env_backend_CallFlags_2.
     Notation.dot := set_clone_input;
   }.
   
-  Definition set_tail_call (self : Self) (tail_call : bool) : M Self :=
+  Definition set_tail_call
+      `{State.Trait}
+      (self : Self)
+      (tail_call : bool)
+      : M Self :=
     let* _ := assign self.["tail_call"] tail_call in
     Pure self.
   
@@ -2432,7 +2586,11 @@ Module Impl_ink_env_backend_CallFlags_2.
     Notation.dot := set_tail_call;
   }.
   
-  Definition set_allow_reentry (self : Self) (allow_reentry : bool) : M Self :=
+  Definition set_allow_reentry
+      `{State.Trait}
+      (self : Self)
+      (allow_reentry : bool)
+      : M Self :=
     let* _ := assign self.["allow_reentry"] allow_reentry in
     Pure self.
   
@@ -2441,7 +2599,7 @@ Module Impl_ink_env_backend_CallFlags_2.
     Notation.dot := set_allow_reentry;
   }.
   
-  Definition into_u32 (self : Self) : M u32 :=
+  Definition into_u32 `{State.Trait} (self : Self) : M u32 :=
     let* α0 := (cast self.["clone_input"] u32).["shl"] 1 in
     let* α1 := (cast self.["forward_input"] u32).["bitor"] α0 in
     let* α2 := (cast self.["tail_call"] u32).["shl"] 2 in
@@ -2453,27 +2611,28 @@ Module Impl_ink_env_backend_CallFlags_2.
     Notation.dot := into_u32;
   }.
   
-  Definition forward_input (self : ref Self) : M bool :=
+  Definition forward_input `{State.Trait} (self : ref Self) : M bool :=
     Pure self.["forward_input"].
   
   Global Instance Method_forward_input : Notation.Dot "forward_input" := {
     Notation.dot := forward_input;
   }.
   
-  Definition clone_input (self : ref Self) : M bool :=
+  Definition clone_input `{State.Trait} (self : ref Self) : M bool :=
     Pure self.["clone_input"].
   
   Global Instance Method_clone_input : Notation.Dot "clone_input" := {
     Notation.dot := clone_input;
   }.
   
-  Definition tail_call (self : ref Self) : M bool := Pure self.["tail_call"].
+  Definition tail_call `{State.Trait} (self : ref Self) : M bool :=
+    Pure self.["tail_call"].
   
   Global Instance Method_tail_call : Notation.Dot "tail_call" := {
     Notation.dot := tail_call;
   }.
   
-  Definition allow_reentry (self : ref Self) : M bool :=
+  Definition allow_reentry `{State.Trait} (self : ref Self) : M bool :=
     Pure self.["allow_reentry"].
   
   Global Instance Method_allow_reentry : Notation.Dot "allow_reentry" := {
@@ -2775,6 +2934,7 @@ Module call.
       Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -2808,6 +2968,7 @@ Module call.
       Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
       
       Definition call_flags
+          `{State.Trait}
           (self : ref Self)
           : M (ref ink_env.backend.CallFlags) :=
         Pure (addr_of self.["call_flags"]).
@@ -2817,6 +2978,7 @@ Module call.
       }.
       
       Definition exec_input
+          `{State.Trait}
           (self : ref Self)
           : M (ref (ink_env.call.execution_input.ExecutionInput Args)) :=
         Pure (addr_of self.["exec_input"]).
@@ -2837,21 +2999,30 @@ Module call.
           Args
           R.
       
-      Definition callee (self : ref Self) : M (ref ImplE.AccountId) :=
+      Definition callee
+          `{State.Trait}
+          (self : ref Self)
+          : M (ref ImplE.AccountId) :=
         Pure (addr_of self.["call_type"].["callee"]).
       
       Global Instance Method_callee : Notation.Dot "callee" := {
         Notation.dot := callee;
       }.
       
-      Definition gas_limit (self : ref Self) : M ink_env.types.Gas :=
+      Definition gas_limit
+          `{State.Trait}
+          (self : ref Self)
+          : M ink_env.types.Gas :=
         Pure self.["call_type"].["gas_limit"].
       
       Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot := gas_limit;
       }.
       
-      Definition transferred_value (self : ref Self) : M (ref ImplE.Balance) :=
+      Definition transferred_value
+          `{State.Trait}
+          (self : ref Self)
+          : M (ref ImplE.Balance) :=
         Pure (addr_of self.["call_type"].["transferred_value"]).
       
       Global Instance Method_transferred_value :
@@ -2872,7 +3043,10 @@ Module call.
           Args
           R.
       
-      Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
+      Definition code_hash
+          `{State.Trait}
+          (self : ref Self)
+          : M (ref ImplE.Hash) :=
         Pure (addr_of self.["call_type"].["code_hash"]).
       
       Global Instance Method_code_hash : Notation.Dot "code_hash" := {
@@ -2892,7 +3066,7 @@ Module call.
           Args
           R.
       
-      Definition invoke (self : ref Self) : M R :=
+      Definition invoke `{State.Trait} (self : ref Self) : M R :=
         let* α0 := ink_env.api.invoke_contract self in
         let* α1 :=
           α0.["unwrap_or_else"]
@@ -2917,6 +3091,7 @@ Module call.
       }.
       
       Definition try_invoke
+          `{State.Trait}
           (self : ref Self)
           :
             M
@@ -2942,7 +3117,7 @@ Module call.
           Args
           R.
       
-      Definition invoke (self : ref Self) : M R :=
+      Definition invoke `{State.Trait} (self : ref Self) : M R :=
         let* α0 := ink_env.api.invoke_contract_delegate self in
         let* α1 :=
           α0.["unwrap_or_else"]
@@ -2967,6 +3142,7 @@ Module call.
       }.
       
       Definition try_invoke
+          `{State.Trait}
           (self : ref Self)
           :
             M
@@ -2982,6 +3158,7 @@ Module call.
       Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_2.
     
     Definition build_call
+        `{State.Trait}
         {E : Set}
         `{ink_env.types.Environment.Trait E}
         (_ : unit)
@@ -3036,6 +3213,7 @@ Module call.
       Definition Self := ink_env.call.call_builder.Call E.
       
       Definition clone
+          `{State.Trait}
           (self : ref Self)
           : M (ink_env.call.call_builder.Call E) :=
         let* α0 := core.clone.Clone.clone (addr_of self.["callee"]) in
@@ -3062,7 +3240,7 @@ Module call.
     Module Impl_ink_env_call_call_builder_Call_E.
       Definition Self := ink_env.call.call_builder.Call E.
       
-      Definition new (callee : ImplE.AccountId) : M Self :=
+      Definition new `{State.Trait} (callee : ImplE.AccountId) : M Self :=
         let* α0 := core.default.Default.default tt in
         let* α1 := ImplE.Balance::["zero"] tt in
         Pure
@@ -3082,6 +3260,7 @@ Module call.
       Definition Self := ink_env.call.call_builder.Call E.
       
       Definition gas_limit
+          `{State.Trait}
           (self : Self)
           (gas_limit : ink_env.types.Gas)
           : M Self :=
@@ -3098,6 +3277,7 @@ Module call.
       }.
       
       Definition transferred_value
+          `{State.Trait}
           (self : Self)
           (transferred_value : ImplE.Balance)
           : M Self :=
@@ -3129,7 +3309,7 @@ Module call.
     Module Impl_ink_env_call_call_builder_DelegateCall_E.
       Definition Self := ink_env.call.call_builder.DelegateCall E.
       
-      Definition new (code_hash : ImplE.Hash) : M Self :=
+      Definition new `{State.Trait} (code_hash : ImplE.Hash) : M Self :=
         Pure
           {| ink_env.call.call_builder.DelegateCall.code_hash := code_hash; |}.
       
@@ -3142,7 +3322,11 @@ Module call.
     Module Impl_ink_env_call_call_builder_DelegateCall_E_2.
       Definition Self := ink_env.call.call_builder.DelegateCall E.
       
-      Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
+      Definition code_hash
+          `{State.Trait}
+          (self : Self)
+          (code_hash : ImplE.Hash)
+          : M Self :=
         Pure
           {| ink_env.call.call_builder.DelegateCall.code_hash := code_hash; |}.
       
@@ -3190,6 +3374,7 @@ Module call.
         ink_env.call.call_builder.CallBuilder E CallType Args RetType.
       
       Definition clone
+          `{State.Trait}
           (self : ref Self)
           : M (ink_env.call.call_builder.CallBuilder E CallType Args RetType) :=
         let* α0 := core.clone.Clone.clone (addr_of self.["call_type"]) in
@@ -3230,6 +3415,7 @@ Module call.
           RetType.
       
       Definition call_type
+          `{State.Trait}
           (self : Self)
           (call_type : NewCallType)
           :
@@ -3266,6 +3452,7 @@ Module call.
         ink_env.call.call_builder.CallBuilder E CallType Args RetType.
       
       Definition call_flags
+          `{State.Trait}
           (self : Self)
           (call_flags : ink_env.backend.CallFlags)
           : M (ink_env.call.call_builder.CallBuilder E CallType Args RetType) :=
@@ -3299,6 +3486,7 @@ Module call.
           (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
       
       Definition returns
+          `{State.Trait}
           (self : Self)
           :
             M
@@ -3342,6 +3530,7 @@ Module call.
           RetType.
       
       Definition exec_input
+          `{State.Trait}
           (self : Self)
           (exec_input : ink_env.call.execution_input.ExecutionInput Args)
           :
@@ -3384,6 +3573,7 @@ Module call.
           RetType.
       
       Definition call
+          `{State.Trait}
           (self : Self)
           (callee : ImplE.AccountId)
           :
@@ -3413,6 +3603,7 @@ Module call.
       }.
       
       Definition delegate
+          `{State.Trait}
           (self : Self)
           (code_hash : ImplE.Hash)
           :
@@ -3456,6 +3647,7 @@ Module call.
           RetType.
       
       Definition gas_limit
+          `{State.Trait}
           (self : Self)
           (gas_limit : ink_env.types.Gas)
           : M Self :=
@@ -3485,6 +3677,7 @@ Module call.
       }.
       
       Definition transferred_value
+          `{State.Trait}
           (self : Self)
           (transferred_value : ImplE.Balance)
           : M Self :=
@@ -3528,7 +3721,11 @@ Module call.
           Args
           RetType.
       
-      Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
+      Definition code_hash
+          `{State.Trait}
+          (self : Self)
+          (code_hash : ImplE.Hash)
+          : M Self :=
         let* α0 := core.default.Default.default tt in
         Pure
           {|
@@ -3565,6 +3762,7 @@ Module call.
           (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
       
       Definition params
+          `{State.Trait}
           (self : Self)
           :
             M
@@ -3605,6 +3803,7 @@ Module call.
           (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
       
       Definition params
+          `{State.Trait}
           (self : Self)
           :
             M
@@ -3646,6 +3845,7 @@ Module call.
           (ink_env.call.common.Unset RetType).
       
       Definition params
+          `{State.Trait}
           (self : Self)
           :
             M
@@ -3687,6 +3887,7 @@ Module call.
           (ink_env.call.common.Unset RetType).
       
       Definition params
+          `{State.Trait}
           (self : Self)
           :
             M
@@ -3727,7 +3928,7 @@ Module call.
               ink_env.call.execution_input.EmptyArgumentList))
           (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
       
-      Definition invoke (self : Self) : M unit :=
+      Definition invoke `{State.Trait} (self : Self) : M unit :=
         let* α0 := self.["params"] in
         α0.["invoke"].
       
@@ -3736,6 +3937,7 @@ Module call.
       }.
       
       Definition try_invoke
+          `{State.Trait}
           (self : Self)
           :
             M
@@ -3764,7 +3966,7 @@ Module call.
               ink_env.call.execution_input.EmptyArgumentList))
           (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
       
-      Definition invoke (self : Self) : M unit :=
+      Definition invoke `{State.Trait} (self : Self) : M unit :=
         let* α0 := self.["params"] in
         α0.["invoke"].
       
@@ -3773,6 +3975,7 @@ Module call.
       }.
       
       Definition try_invoke
+          `{State.Trait}
           (self : Self)
           :
             M
@@ -3800,7 +4003,7 @@ Module call.
             (ink_env.call.execution_input.ExecutionInput Args))
           (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
       
-      Definition invoke (self : Self) : M R :=
+      Definition invoke `{State.Trait} (self : Self) : M R :=
         let* α0 := self.["params"] in
         α0.["invoke"].
       
@@ -3809,6 +4012,7 @@ Module call.
       }.
       
       Definition try_invoke
+          `{State.Trait}
           (self : Self)
           :
             M
@@ -3836,7 +4040,7 @@ Module call.
             (ink_env.call.execution_input.ExecutionInput Args))
           (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
       
-      Definition invoke (self : Self) : M R :=
+      Definition invoke `{State.Trait} (self : Self) : M R :=
         let* α0 := self.["params"] in
         α0.["invoke"].
       
@@ -3845,6 +4049,7 @@ Module call.
       }.
       
       Definition try_invoke
+          `{State.Trait}
           (self : Self)
           :
             M
@@ -3878,6 +4083,7 @@ Module call.
       Definition Self := ink_env.call.common.ReturnType T.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -3902,7 +4108,7 @@ Module call.
       
       Definition Self := ink_env.call.common.ReturnType T.
       
-      Definition clone (self : ref Self) : M Self :=
+      Definition clone `{State.Trait} (self : ref Self) : M Self :=
         let* α0 := core.default.Default.default tt in
         Self α0.
       
@@ -3933,7 +4139,7 @@ Module call.
       
       Definition Self := ink_env.call.common.ReturnType T.
       
-      Definition default (_ : unit) : M Self :=
+      Definition default `{State.Trait} (_ : unit) : M Self :=
         let* α0 := core.default.Default.default tt in
         Self α0.
       
@@ -3964,6 +4170,7 @@ Module call.
       Definition Self := ink_env.call.common.Set T.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -3999,7 +4206,10 @@ Module call.
       
       Definition Self := ink_env.call.common.Set T.
       
-      Definition clone (self : ref Self) : M (ink_env.call.common.Set T) :=
+      Definition clone
+          `{State.Trait}
+          (self : ref Self)
+          : M (ink_env.call.common.Set T) :=
         let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
         Pure (ink_env.call.common.Set.Build_t α0).
       
@@ -4016,7 +4226,7 @@ Module call.
     Module Impl_ink_env_call_common_Set_T.
       Definition Self := ink_env.call.common.Set T.
       
-      Definition value (self : Self) : M T := Pure (self.[0]).
+      Definition value `{State.Trait} (self : Self) : M T := Pure (self.[0]).
       
       Global Instance Method_value : Notation.Dot "value" := {
         Notation.dot := value;
@@ -4039,6 +4249,7 @@ Module call.
       Definition Self := ink_env.call.common.Unset T.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -4063,7 +4274,7 @@ Module call.
       
       Definition Self := ink_env.call.common.Unset T.
       
-      Definition clone (self : ref Self) : M Self :=
+      Definition clone `{State.Trait} (self : ref Self) : M Self :=
         let* α0 := core.default.Default.default tt in
         Self α0.
       
@@ -4094,7 +4305,7 @@ Module call.
       
       Definition Self := ink_env.call.common.Unset T.
       
-      Definition default (_ : unit) : M Self :=
+      Definition default `{State.Trait} (_ : unit) : M Self :=
         let* α0 := core.default.Default.default tt in
         Self α0.
       
@@ -4133,7 +4344,11 @@ Module call.
       
       Definition Output : Set := T.
       
-      Definition unwrap_or_else (self : Self) (f : F) : M ImplSelf.Output :=
+      Definition unwrap_or_else
+          `{State.Trait}
+          (self : Self)
+          (f : F)
+          : M ImplSelf.Output :=
         f tt.
       
       Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {
@@ -4155,6 +4370,7 @@ Module call.
       Definition Output : Set := T.
       
       Definition unwrap_or_else
+          `{State.Trait}
           (self : Self)
           (Pattern : F)
           : M ImplSelf.Output :=
@@ -4235,7 +4451,8 @@ Module call.
       
       Definition Error : Set := unit.
       
-      Definition ok (value : C) : M ImplSelf.Output := Pure value.
+      Definition ok `{State.Trait} (value : C) : M ImplSelf.Output :=
+        Pure value.
       
       Global Instance AssociatedFunction_ok :
         Notation.DoubleColon Self "ok" := {
@@ -4270,7 +4487,7 @@ Module call.
       
       Definition Error : Set := E.
       
-      Definition ok (value : C) : M ImplSelf.Output :=
+      Definition ok `{State.Trait} (value : C) : M ImplSelf.Output :=
         Pure (core.result.Result.Ok value).
       
       Global Instance AssociatedFunction_ok :
@@ -4279,6 +4496,7 @@ Module call.
       }.
       
       Definition err
+          `{State.Trait}
           (err : ImplSelf.Error)
           : M (core.option.Option ImplSelf.Output) :=
         Pure (core.option.Option.Some (core.result.Result.Err err)).
@@ -4346,6 +4564,7 @@ Module call.
         ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -4396,20 +4615,27 @@ Module call.
         :=
         ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
       
-      Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
+      Definition code_hash
+          `{State.Trait}
+          (self : ref Self)
+          : M (ref ImplE.Hash) :=
         Pure (addr_of self.["code_hash"]).
       
       Global Instance Method_code_hash : Notation.Dot "code_hash" := {
         Notation.dot := code_hash;
       }.
       
-      Definition gas_limit (self : ref Self) : M u64 := Pure self.["gas_limit"].
+      Definition gas_limit `{State.Trait} (self : ref Self) : M u64 :=
+        Pure self.["gas_limit"].
       
       Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot := gas_limit;
       }.
       
-      Definition endowment (self : ref Self) : M (ref ImplE.Balance) :=
+      Definition endowment
+          `{State.Trait}
+          (self : ref Self)
+          : M (ref ImplE.Balance) :=
         Pure (addr_of self.["endowment"]).
       
       Global Instance Method_endowment : Notation.Dot "endowment" := {
@@ -4417,6 +4643,7 @@ Module call.
       }.
       
       Definition exec_input
+          `{State.Trait}
           (self : ref Self)
           : M (ref (ink_env.call.execution_input.ExecutionInput Args)) :=
         Pure (addr_of self.["exec_input"]).
@@ -4426,6 +4653,7 @@ Module call.
       }.
       
       Definition update_selector
+          `{State.Trait}
           (self : mut_ref Self)
           (selector : ink_env.call.selector.Selector)
           : M unit :=
@@ -4444,7 +4672,7 @@ Module call.
         :=
         ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
       
-      Definition salt_bytes (self : ref Self) : M (ref Salt) :=
+      Definition salt_bytes `{State.Trait} (self : ref Self) : M (ref Salt) :=
         Pure (addr_of self.["salt_bytes"]).
       
       Global Instance Method_salt_bytes : Notation.Dot "salt_bytes" := {
@@ -4461,6 +4689,7 @@ Module call.
         ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
       
       Definition instantiate
+          `{State.Trait}
           (self : ref Self)
           : M ink_env.call.create_builder.ConstructorReturnType.Output :=
         let* α0 := ink_env.api.instantiate_contract self in
@@ -4487,6 +4716,7 @@ Module call.
       }.
       
       Definition try_instantiate
+          `{State.Trait}
           (self : ref Self)
           :
             M
@@ -4539,6 +4769,7 @@ Module call.
     Definition CreateBuilder : Set := CreateBuilder.t.
     
     Definition build_create
+        `{State.Trait}
         {ContractRef : Set}
         `{ink_env.contract.ContractEnv.Trait ContractRef}
         (_ : unit)
@@ -4590,6 +4821,7 @@ Module call.
           RetType.
       
       Definition code_hash
+          `{State.Trait}
           (self : Self)
           (code_hash : ImplE.Hash)
           :
@@ -4642,6 +4874,7 @@ Module call.
           RetType.
       
       Definition gas_limit
+          `{State.Trait}
           (self : Self)
           (gas_limit : u64)
           :
@@ -4694,6 +4927,7 @@ Module call.
           RetType.
       
       Definition endowment
+          `{State.Trait}
           (self : Self)
           (endowment : ImplE.Balance)
           :
@@ -4748,6 +4982,7 @@ Module call.
           RetType.
       
       Definition exec_input
+          `{State.Trait}
           (self : Self)
           (exec_input : ink_env.call.execution_input.ExecutionInput Args)
           :
@@ -4801,6 +5036,7 @@ Module call.
           RetType.
       
       Definition salt_bytes
+          `{State.Trait}
           (self : Self)
           (salt : Salt)
           :
@@ -4854,6 +5090,7 @@ Module call.
           (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
       
       Definition returns
+          `{State.Trait}
           (self : Self)
           :
             M
@@ -4907,6 +5144,7 @@ Module call.
           (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
       
       Definition params
+          `{State.Trait}
           (self : Self)
           :
             M
@@ -4957,6 +5195,7 @@ Module call.
           (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
       
       Definition instantiate
+          `{State.Trait}
           (self : Self)
           : M ink_env.call.create_builder.ConstructorReturnType.Output :=
         let* α0 := self.["params"] in
@@ -4967,6 +5206,7 @@ Module call.
       }.
       
       Definition try_instantiate
+          `{State.Trait}
           (self : Self)
           :
             M
@@ -5010,6 +5250,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Definition clone
+          `{State.Trait}
           (self : ref Self)
           : M (ink_env.call.execution_input.ExecutionInput Args) :=
         let* α0 := core.clone.Clone.clone (addr_of self.["selector"]) in
@@ -5041,6 +5282,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Definition default
+          `{State.Trait}
           (_ : unit)
           : M (ink_env.call.execution_input.ExecutionInput Args) :=
         let* α0 := core.default.Default.default tt in
@@ -5073,6 +5315,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -5104,7 +5347,10 @@ Module call.
         ink_env.call.execution_input.ExecutionInput
           ink_env.call.execution_input.EmptyArgumentList.
       
-      Definition new (selector : ink_env.call.selector.Selector) : M Self :=
+      Definition new
+          `{State.Trait}
+          (selector : ink_env.call.selector.Selector)
+          : M Self :=
         let* α0 := ink_env.call.execution_input.ArgumentList::["empty"] tt in
         Pure {| Self.selector := selector; Self.args := α0; |}.
       
@@ -5114,6 +5360,7 @@ Module call.
       }.
       
       Definition push_arg
+          `{State.Trait}
           (self : Self)
           (arg : T)
           :
@@ -5147,6 +5394,7 @@ Module call.
             Rest).
       
       Definition push_arg
+          `{State.Trait}
           (self : Self)
           (arg : T)
           :
@@ -5173,6 +5421,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Definition update_selector
+          `{State.Trait}
           (self : mut_ref Self)
           (selector : ink_env.call.selector.Selector)
           : M unit :=
@@ -5209,6 +5458,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
       
       Definition clone
+          `{State.Trait}
           (self : ref Self)
           : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
         let* α0 := core.clone.Clone.clone (addr_of self.["head"]) in
@@ -5240,6 +5490,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
       
       Definition default
+          `{State.Trait}
           (_ : unit)
           : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
         let* α0 := core.default.Default.default tt in
@@ -5272,6 +5523,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -5318,6 +5570,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.Argument T.
       
       Definition clone
+          `{State.Trait}
           (self : ref Self)
           : M (ink_env.call.execution_input.Argument T) :=
         let* α0 := core.clone.Clone.clone (addr_of self.["arg"]) in
@@ -5340,6 +5593,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.Argument T.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -5362,7 +5616,8 @@ Module call.
     Module Impl_ink_env_call_execution_input_Argument_T.
       Definition Self := ink_env.call.execution_input.Argument T.
       
-      Definition new (arg : T) : M Self := Pure {| Self.arg := arg; |}.
+      Definition new `{State.Trait} (arg : T) : M Self :=
+        Pure {| Self.arg := arg; |}.
       
       Global Instance AssociatedFunction_new :
         Notation.DoubleColon Self "new" := {
@@ -5380,6 +5635,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.ArgumentListEnd.
       
       Definition clone
+          `{State.Trait}
           (self : ref Self)
           : M ink_env.call.execution_input.ArgumentListEnd :=
         Pure ink_env.call.execution_input.ArgumentListEnd.Build.
@@ -5398,6 +5654,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.ArgumentListEnd.
       
       Definition default
+          `{State.Trait}
           (_ : unit)
           : M ink_env.call.execution_input.ArgumentListEnd :=
         Pure {|  |}.
@@ -5417,6 +5674,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.ArgumentListEnd.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -5440,6 +5698,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.EmptyArgumentList.
       
       Definition empty
+          `{State.Trait}
           (_ : unit)
           : M ink_env.call.execution_input.EmptyArgumentList :=
         Pure
@@ -5456,6 +5715,7 @@ Module call.
       }.
       
       Definition push_arg
+          `{State.Trait}
           (self : Self)
           (arg : T)
           :
@@ -5485,6 +5745,7 @@ Module call.
           Rest.
       
       Definition push_arg
+          `{State.Trait}
           (self : Self)
           (arg : T)
           :
@@ -5513,14 +5774,18 @@ Module call.
       
       Definition Self := ink_env.call.execution_input.Argument T.
       
-      Definition size_hint (self : ref Self) : M usize :=
+      Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
         parity_scale_codec.codec.Encode.size_hint (addr_of self.["arg"]).
       
       Global Instance Method_size_hint : Notation.Dot "size_hint" := {
         Notation.dot := size_hint;
       }.
       
-      Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
+      Definition encode_to
+          `{State.Trait}
+          (self : ref Self)
+          (output : mut_ref O)
+          : M unit :=
         parity_scale_codec.codec.Encode.encode_to (addr_of self.["arg"]) output.
       
       Global Instance Method_encode_to : Notation.Dot "encode_to" := {
@@ -5538,13 +5803,17 @@ Module call.
       Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
       Definition Self := ink_env.call.execution_input.EmptyArgumentList.
       
-      Definition size_hint (self : ref Self) : M usize := Pure 0.
+      Definition size_hint `{State.Trait} (self : ref Self) : M usize := Pure 0.
       
       Global Instance Method_size_hint : Notation.Dot "size_hint" := {
         Notation.dot := size_hint;
       }.
       
-      Definition encode_to (self : ref Self) (_output : mut_ref O) : M unit :=
+      Definition encode_to
+          `{State.Trait}
+          (self : ref Self)
+          (_output : mut_ref O)
+          : M unit :=
         Pure tt.
       
       Global Instance Method_encode_to : Notation.Dot "encode_to" := {
@@ -5569,7 +5838,7 @@ Module call.
           (ink_env.call.execution_input.Argument Head)
           Rest.
       
-      Definition size_hint (self : ref Self) : M usize :=
+      Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
         let* α0 :=
           parity_scale_codec.codec.Encode.size_hint (addr_of self.["head"]) in
         let* α1 :=
@@ -5580,7 +5849,11 @@ Module call.
         Notation.dot := size_hint;
       }.
       
-      Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
+      Definition encode_to
+          `{State.Trait}
+          (self : ref Self)
+          (output : mut_ref O)
+          : M unit :=
         let* _ :=
           parity_scale_codec.codec.Encode.encode_to
             (addr_of self.["rest"])
@@ -5610,7 +5883,7 @@ Module call.
       
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
-      Definition size_hint (self : ref Self) : M usize :=
+      Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
         let* α0 :=
           parity_scale_codec.codec.Encode.size_hint
             (addr_of self.["selector"]) in
@@ -5622,7 +5895,11 @@ Module call.
         Notation.dot := size_hint;
       }.
       
-      Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
+      Definition encode_to
+          `{State.Trait}
+          (self : ref Self)
+          (output : mut_ref O)
+          : M unit :=
         let* _ :=
           parity_scale_codec.codec.Encode.encode_to
             (addr_of self.["selector"])
@@ -5660,7 +5937,10 @@ Module call.
     Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
       
-      Definition default (_ : unit) : M ink_env.call.selector.Selector :=
+      Definition default
+          `{State.Trait}
+          (_ : unit)
+          : M ink_env.call.selector.Selector :=
         let* α0 := core.default.Default.default tt in
         Pure {| ink_env.call.selector.Selector.bytes := α0; |}.
       
@@ -5678,6 +5958,7 @@ Module call.
       Definition Self := ink_env.call.selector.Selector.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -5706,7 +5987,10 @@ Module call.
     Module Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
       
-      Definition clone (self : ref Self) : M ink_env.call.selector.Selector :=
+      Definition clone
+          `{State.Trait}
+          (self : ref Self)
+          : M ink_env.call.selector.Selector :=
         let _ := tt in
         self.["deref"].
       
@@ -5731,6 +6015,7 @@ Module call.
       Definition Self := ink_env.call.selector.Selector.
       
       Definition eq
+          `{State.Trait}
           (self : ref Self)
           (other : ref ink_env.call.selector.Selector)
           : M bool :=
@@ -5755,7 +6040,10 @@ Module call.
     Module Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
       
-      Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+      Definition assert_receiver_is_total_eq
+          `{State.Trait}
+          (self : ref Self)
+          : M unit :=
         let _ := tt in
         Pure tt.
       
@@ -5771,7 +6059,10 @@ Module call.
     Module Impl_core_convert_From_for_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
       
-      Definition from (original : list u8) : M ink_env.call.selector.Selector :=
+      Definition from
+          `{State.Trait}
+          (original : list u8)
+          : M ink_env.call.selector.Selector :=
         Pure {| ink_env.call.selector.Selector.bytes := original; |}.
       
       Global Instance AssociatedFunction_from :
@@ -5787,7 +6078,7 @@ Module call.
     Module Impl_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
       
-      Definition new (bytes : list u8) : M Self :=
+      Definition new `{State.Trait} (bytes : list u8) : M Self :=
         Pure {| Self.bytes := bytes; |}.
       
       Global Instance AssociatedFunction_new :
@@ -5795,7 +6086,8 @@ Module call.
         Notation.double_colon := new;
       }.
       
-      Definition to_bytes (self : Self) : M list u8 := Pure self.["bytes"].
+      Definition to_bytes `{State.Trait} (self : Self) : M list u8 :=
+        Pure self.["bytes"].
       
       Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
         Notation.dot := to_bytes;
@@ -5845,6 +6137,7 @@ Module call_builder.
     Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -5878,6 +6171,7 @@ Module call_builder.
     Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
     
     Definition call_flags
+        `{State.Trait}
         (self : ref Self)
         : M (ref ink_env.backend.CallFlags) :=
       Pure (addr_of self.["call_flags"]).
@@ -5887,6 +6181,7 @@ Module call_builder.
     }.
     
     Definition exec_input
+        `{State.Trait}
         (self : ref Self)
         : M (ref (ink_env.call.execution_input.ExecutionInput Args)) :=
       Pure (addr_of self.["exec_input"]).
@@ -5907,21 +6202,30 @@ Module call_builder.
         Args
         R.
     
-    Definition callee (self : ref Self) : M (ref ImplE.AccountId) :=
+    Definition callee
+        `{State.Trait}
+        (self : ref Self)
+        : M (ref ImplE.AccountId) :=
       Pure (addr_of self.["call_type"].["callee"]).
     
     Global Instance Method_callee : Notation.Dot "callee" := {
       Notation.dot := callee;
     }.
     
-    Definition gas_limit (self : ref Self) : M ink_env.types.Gas :=
+    Definition gas_limit
+        `{State.Trait}
+        (self : ref Self)
+        : M ink_env.types.Gas :=
       Pure self.["call_type"].["gas_limit"].
     
     Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot := gas_limit;
     }.
     
-    Definition transferred_value (self : ref Self) : M (ref ImplE.Balance) :=
+    Definition transferred_value
+        `{State.Trait}
+        (self : ref Self)
+        : M (ref ImplE.Balance) :=
       Pure (addr_of self.["call_type"].["transferred_value"]).
     
     Global Instance Method_transferred_value :
@@ -5942,7 +6246,10 @@ Module call_builder.
         Args
         R.
     
-    Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
+    Definition code_hash
+        `{State.Trait}
+        (self : ref Self)
+        : M (ref ImplE.Hash) :=
       Pure (addr_of self.["call_type"].["code_hash"]).
     
     Global Instance Method_code_hash : Notation.Dot "code_hash" := {
@@ -5962,7 +6269,7 @@ Module call_builder.
         Args
         R.
     
-    Definition invoke (self : ref Self) : M R :=
+    Definition invoke `{State.Trait} (self : ref Self) : M R :=
       let* α0 := ink_env.api.invoke_contract self in
       let* α1 :=
         α0.["unwrap_or_else"]
@@ -5987,6 +6294,7 @@ Module call_builder.
     }.
     
     Definition try_invoke
+        `{State.Trait}
         (self : ref Self)
         :
           M
@@ -6012,7 +6320,7 @@ Module call_builder.
         Args
         R.
     
-    Definition invoke (self : ref Self) : M R :=
+    Definition invoke `{State.Trait} (self : ref Self) : M R :=
       let* α0 := ink_env.api.invoke_contract_delegate self in
       let* α1 :=
         α0.["unwrap_or_else"]
@@ -6037,6 +6345,7 @@ Module call_builder.
     }.
     
     Definition try_invoke
+        `{State.Trait}
         (self : ref Self)
         :
           M
@@ -6052,6 +6361,7 @@ Module call_builder.
     Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_4.
   
   Definition build_call
+      `{State.Trait}
       {E : Set}
       `{ink_env.types.Environment.Trait E}
       (_ : unit)
@@ -6105,7 +6415,10 @@ Module call_builder.
     
     Definition Self := ink_env.call.call_builder.Call E.
     
-    Definition clone (self : ref Self) : M (ink_env.call.call_builder.Call E) :=
+    Definition clone
+        `{State.Trait}
+        (self : ref Self)
+        : M (ink_env.call.call_builder.Call E) :=
       let* α0 := core.clone.Clone.clone (addr_of self.["callee"]) in
       let* α1 := core.clone.Clone.clone (addr_of self.["gas_limit"]) in
       let* α2 := core.clone.Clone.clone (addr_of self.["transferred_value"]) in
@@ -6129,7 +6442,7 @@ Module call_builder.
   Module Impl_ink_env_call_call_builder_Call_E_3.
     Definition Self := ink_env.call.call_builder.Call E.
     
-    Definition new (callee : ImplE.AccountId) : M Self :=
+    Definition new `{State.Trait} (callee : ImplE.AccountId) : M Self :=
       let* α0 := core.default.Default.default tt in
       let* α1 := ImplE.Balance::["zero"] tt in
       Pure
@@ -6149,6 +6462,7 @@ Module call_builder.
     Definition Self := ink_env.call.call_builder.Call E.
     
     Definition gas_limit
+        `{State.Trait}
         (self : Self)
         (gas_limit : ink_env.types.Gas)
         : M Self :=
@@ -6165,6 +6479,7 @@ Module call_builder.
     }.
     
     Definition transferred_value
+        `{State.Trait}
         (self : Self)
         (transferred_value : ImplE.Balance)
         : M Self :=
@@ -6195,7 +6510,7 @@ Module call_builder.
   Module Impl_ink_env_call_call_builder_DelegateCall_E_3.
     Definition Self := ink_env.call.call_builder.DelegateCall E.
     
-    Definition new (code_hash : ImplE.Hash) : M Self :=
+    Definition new `{State.Trait} (code_hash : ImplE.Hash) : M Self :=
       Pure {| ink_env.call.call_builder.DelegateCall.code_hash := code_hash; |}.
     
     Global Instance AssociatedFunction_new :
@@ -6207,7 +6522,11 @@ Module call_builder.
   Module Impl_ink_env_call_call_builder_DelegateCall_E_4.
     Definition Self := ink_env.call.call_builder.DelegateCall E.
     
-    Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
+    Definition code_hash
+        `{State.Trait}
+        (self : Self)
+        (code_hash : ImplE.Hash)
+        : M Self :=
       Pure {| ink_env.call.call_builder.DelegateCall.code_hash := code_hash; |}.
     
     Global Instance Method_code_hash : Notation.Dot "code_hash" := {
@@ -6254,6 +6573,7 @@ Module call_builder.
       ink_env.call.call_builder.CallBuilder E CallType Args RetType.
     
     Definition clone
+        `{State.Trait}
         (self : ref Self)
         : M (ink_env.call.call_builder.CallBuilder E CallType Args RetType) :=
       let* α0 := core.clone.Clone.clone (addr_of self.["call_type"]) in
@@ -6294,6 +6614,7 @@ Module call_builder.
         RetType.
     
     Definition call_type
+        `{State.Trait}
         (self : Self)
         (call_type : NewCallType)
         :
@@ -6330,6 +6651,7 @@ Module call_builder.
       ink_env.call.call_builder.CallBuilder E CallType Args RetType.
     
     Definition call_flags
+        `{State.Trait}
         (self : Self)
         (call_flags : ink_env.backend.CallFlags)
         : M (ink_env.call.call_builder.CallBuilder E CallType Args RetType) :=
@@ -6362,6 +6684,7 @@ Module call_builder.
         (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
     
     Definition returns
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -6404,6 +6727,7 @@ Module call_builder.
         RetType.
     
     Definition exec_input
+        `{State.Trait}
         (self : Self)
         (exec_input : ink_env.call.execution_input.ExecutionInput Args)
         :
@@ -6445,6 +6769,7 @@ Module call_builder.
         RetType.
     
     Definition call
+        `{State.Trait}
         (self : Self)
         (callee : ImplE.AccountId)
         :
@@ -6474,6 +6799,7 @@ Module call_builder.
     }.
     
     Definition delegate
+        `{State.Trait}
         (self : Self)
         (code_hash : ImplE.Hash)
         :
@@ -6517,6 +6843,7 @@ Module call_builder.
         RetType.
     
     Definition gas_limit
+        `{State.Trait}
         (self : Self)
         (gas_limit : ink_env.types.Gas)
         : M Self :=
@@ -6546,6 +6873,7 @@ Module call_builder.
     }.
     
     Definition transferred_value
+        `{State.Trait}
         (self : Self)
         (transferred_value : ImplE.Balance)
         : M Self :=
@@ -6589,7 +6917,11 @@ Module call_builder.
         Args
         RetType.
     
-    Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
+    Definition code_hash
+        `{State.Trait}
+        (self : Self)
+        (code_hash : ImplE.Hash)
+        : M Self :=
       let* α0 := core.default.Default.default tt in
       Pure
         {|
@@ -6625,6 +6957,7 @@ Module call_builder.
         (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
     
     Definition params
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -6665,6 +6998,7 @@ Module call_builder.
         (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
     
     Definition params
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -6706,6 +7040,7 @@ Module call_builder.
         (ink_env.call.common.Unset RetType).
     
     Definition params
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -6747,6 +7082,7 @@ Module call_builder.
         (ink_env.call.common.Unset RetType).
     
     Definition params
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -6787,7 +7123,7 @@ Module call_builder.
             ink_env.call.execution_input.EmptyArgumentList))
         (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
     
-    Definition invoke (self : Self) : M unit :=
+    Definition invoke `{State.Trait} (self : Self) : M unit :=
       let* α0 := self.["params"] in
       α0.["invoke"].
     
@@ -6796,6 +7132,7 @@ Module call_builder.
     }.
     
     Definition try_invoke
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -6824,7 +7161,7 @@ Module call_builder.
             ink_env.call.execution_input.EmptyArgumentList))
         (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
     
-    Definition invoke (self : Self) : M unit :=
+    Definition invoke `{State.Trait} (self : Self) : M unit :=
       let* α0 := self.["params"] in
       α0.["invoke"].
     
@@ -6833,6 +7170,7 @@ Module call_builder.
     }.
     
     Definition try_invoke
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -6860,7 +7198,7 @@ Module call_builder.
           (ink_env.call.execution_input.ExecutionInput Args))
         (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
     
-    Definition invoke (self : Self) : M R :=
+    Definition invoke `{State.Trait} (self : Self) : M R :=
       let* α0 := self.["params"] in
       α0.["invoke"].
     
@@ -6869,6 +7207,7 @@ Module call_builder.
     }.
     
     Definition try_invoke
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -6896,7 +7235,7 @@ Module call_builder.
           (ink_env.call.execution_input.ExecutionInput Args))
         (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
     
-    Definition invoke (self : Self) : M R :=
+    Definition invoke `{State.Trait} (self : Self) : M R :=
       let* α0 := self.["params"] in
       α0.["invoke"].
     
@@ -6905,6 +7244,7 @@ Module call_builder.
     }.
     
     Definition try_invoke
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -6957,6 +7297,7 @@ Section
   Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -6989,7 +7330,10 @@ End
 Module Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R_3.
   Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
   
-  Definition call_flags (self : ref Self) : M (ref ink_env.backend.CallFlags) :=
+  Definition call_flags
+      `{State.Trait}
+      (self : ref Self)
+      : M (ref ink_env.backend.CallFlags) :=
     Pure (addr_of self.["call_flags"]).
   
   Global Instance Method_call_flags : Notation.Dot "call_flags" := {
@@ -6997,6 +7341,7 @@ Module Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R_3.
   }.
   
   Definition exec_input
+      `{State.Trait}
       (self : ref Self)
       : M (ref (ink_env.call.execution_input.ExecutionInput Args)) :=
     Pure (addr_of self.["exec_input"]).
@@ -7017,21 +7362,27 @@ Module
       Args
       R.
   
-  Definition callee (self : ref Self) : M (ref ImplE.AccountId) :=
+  Definition callee
+      `{State.Trait}
+      (self : ref Self)
+      : M (ref ImplE.AccountId) :=
     Pure (addr_of self.["call_type"].["callee"]).
   
   Global Instance Method_callee : Notation.Dot "callee" := {
     Notation.dot := callee;
   }.
   
-  Definition gas_limit (self : ref Self) : M ink_env.types.Gas :=
+  Definition gas_limit `{State.Trait} (self : ref Self) : M ink_env.types.Gas :=
     Pure self.["call_type"].["gas_limit"].
   
   Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
     Notation.dot := gas_limit;
   }.
   
-  Definition transferred_value (self : ref Self) : M (ref ImplE.Balance) :=
+  Definition transferred_value
+      `{State.Trait}
+      (self : ref Self)
+      : M (ref ImplE.Balance) :=
     Pure (addr_of self.["call_type"].["transferred_value"]).
   
   Global Instance Method_transferred_value :
@@ -7052,7 +7403,7 @@ Module
       Args
       R.
   
-  Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
+  Definition code_hash `{State.Trait} (self : ref Self) : M (ref ImplE.Hash) :=
     Pure (addr_of self.["call_type"].["code_hash"]).
   
   Global Instance Method_code_hash : Notation.Dot "code_hash" := {
@@ -7072,7 +7423,7 @@ Module
       Args
       R.
   
-  Definition invoke (self : ref Self) : M R :=
+  Definition invoke `{State.Trait} (self : ref Self) : M R :=
     let* α0 := ink_env.api.invoke_contract self in
     let* α1 :=
       α0.["unwrap_or_else"]
@@ -7097,6 +7448,7 @@ Module
   }.
   
   Definition try_invoke
+      `{State.Trait}
       (self : ref Self)
       :
         M
@@ -7122,7 +7474,7 @@ Module
       Args
       R.
   
-  Definition invoke (self : ref Self) : M R :=
+  Definition invoke `{State.Trait} (self : ref Self) : M R :=
     let* α0 := ink_env.api.invoke_contract_delegate self in
     let* α1 :=
       α0.["unwrap_or_else"]
@@ -7147,6 +7499,7 @@ Module
   }.
   
   Definition try_invoke
+      `{State.Trait}
       (self : ref Self)
       :
         M
@@ -7162,6 +7515,7 @@ End
   Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_6.
 
 Definition build_call
+    `{State.Trait}
     {E : Set}
     `{ink_env.types.Environment.Trait E}
     (_ : unit)
@@ -7213,7 +7567,10 @@ Section Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
   
   Definition Self := ink_env.call.call_builder.Call E.
   
-  Definition clone (self : ref Self) : M (ink_env.call.call_builder.Call E) :=
+  Definition clone
+      `{State.Trait}
+      (self : ref Self)
+      : M (ink_env.call.call_builder.Call E) :=
     let* α0 := core.clone.Clone.clone (addr_of self.["callee"]) in
     let* α1 := core.clone.Clone.clone (addr_of self.["gas_limit"]) in
     let* α2 := core.clone.Clone.clone (addr_of self.["transferred_value"]) in
@@ -7237,7 +7594,7 @@ End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
 Module Impl_ink_env_call_call_builder_Call_E_5.
   Definition Self := ink_env.call.call_builder.Call E.
   
-  Definition new (callee : ImplE.AccountId) : M Self :=
+  Definition new `{State.Trait} (callee : ImplE.AccountId) : M Self :=
     let* α0 := core.default.Default.default tt in
     let* α1 := ImplE.Balance::["zero"] tt in
     Pure
@@ -7255,7 +7612,11 @@ End Impl_ink_env_call_call_builder_Call_E_5.
 Module Impl_ink_env_call_call_builder_Call_E_6.
   Definition Self := ink_env.call.call_builder.Call E.
   
-  Definition gas_limit (self : Self) (gas_limit : ink_env.types.Gas) : M Self :=
+  Definition gas_limit
+      `{State.Trait}
+      (self : Self)
+      (gas_limit : ink_env.types.Gas)
+      : M Self :=
     Pure
       {|
         ink_env.call.call_builder.Call.callee := self.["callee"];
@@ -7269,6 +7630,7 @@ Module Impl_ink_env_call_call_builder_Call_E_6.
   }.
   
   Definition transferred_value
+      `{State.Trait}
       (self : Self)
       (transferred_value : ImplE.Balance)
       : M Self :=
@@ -7299,7 +7661,7 @@ Definition DelegateCall : Set := DelegateCall.t.
 Module Impl_ink_env_call_call_builder_DelegateCall_E_5.
   Definition Self := ink_env.call.call_builder.DelegateCall E.
   
-  Definition new (code_hash : ImplE.Hash) : M Self :=
+  Definition new `{State.Trait} (code_hash : ImplE.Hash) : M Self :=
     Pure {| ink_env.call.call_builder.DelegateCall.code_hash := code_hash; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
@@ -7310,7 +7672,11 @@ End Impl_ink_env_call_call_builder_DelegateCall_E_5.
 Module Impl_ink_env_call_call_builder_DelegateCall_E_6.
   Definition Self := ink_env.call.call_builder.DelegateCall E.
   
-  Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
+  Definition code_hash
+      `{State.Trait}
+      (self : Self)
+      (code_hash : ImplE.Hash)
+      : M Self :=
     Pure {| ink_env.call.call_builder.DelegateCall.code_hash := code_hash; |}.
   
   Global Instance Method_code_hash : Notation.Dot "code_hash" := {
@@ -7357,6 +7723,7 @@ Section
     ink_env.call.call_builder.CallBuilder E CallType Args RetType.
   
   Definition clone
+      `{State.Trait}
       (self : ref Self)
       : M (ink_env.call.call_builder.CallBuilder E CallType Args RetType) :=
     let* α0 := core.clone.Clone.clone (addr_of self.["call_type"]) in
@@ -7397,6 +7764,7 @@ Module
       RetType.
   
   Definition call_type
+      `{State.Trait}
       (self : Self)
       (call_type : NewCallType)
       :
@@ -7431,6 +7799,7 @@ Module Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType_3.
     ink_env.call.call_builder.CallBuilder E CallType Args RetType.
   
   Definition call_flags
+      `{State.Trait}
       (self : Self)
       (call_flags : ink_env.backend.CallFlags)
       : M (ink_env.call.call_builder.CallBuilder E CallType Args RetType) :=
@@ -7462,6 +7831,7 @@ Module
       (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
   
   Definition returns
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -7502,6 +7872,7 @@ Module
       RetType.
   
   Definition exec_input
+      `{State.Trait}
       (self : Self)
       (exec_input : ink_env.call.execution_input.ExecutionInput Args)
       :
@@ -7542,6 +7913,7 @@ Module
       RetType.
   
   Definition call
+      `{State.Trait}
       (self : Self)
       (callee : ImplE.AccountId)
       :
@@ -7569,6 +7941,7 @@ Module
   }.
   
   Definition delegate
+      `{State.Trait}
       (self : Self)
       (code_hash : ImplE.Hash)
       :
@@ -7608,7 +7981,11 @@ Module
       Args
       RetType.
   
-  Definition gas_limit (self : Self) (gas_limit : ink_env.types.Gas) : M Self :=
+  Definition gas_limit
+      `{State.Trait}
+      (self : Self)
+      (gas_limit : ink_env.types.Gas)
+      : M Self :=
     let* call_type := self.["call_type"].["value"] in
     let* α0 := core.default.Default.default tt in
     Pure
@@ -7633,6 +8010,7 @@ Module
   }.
   
   Definition transferred_value
+      `{State.Trait}
       (self : Self)
       (transferred_value : ImplE.Balance)
       : M Self :=
@@ -7674,7 +8052,11 @@ Module
       Args
       RetType.
   
-  Definition code_hash (self : Self) (code_hash : ImplE.Hash) : M Self :=
+  Definition code_hash
+      `{State.Trait}
+      (self : Self)
+      (code_hash : ImplE.Hash)
+      : M Self :=
     let* α0 := core.default.Default.default tt in
     Pure
       {|
@@ -7708,6 +8090,7 @@ Module
       (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
   
   Definition params
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -7747,6 +8130,7 @@ Module
       (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
   
   Definition params
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -7787,6 +8171,7 @@ Module
       (ink_env.call.common.Unset RetType).
   
   Definition params
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -7827,6 +8212,7 @@ Module
       (ink_env.call.common.Unset RetType).
   
   Definition params
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -7866,7 +8252,7 @@ Module
           ink_env.call.execution_input.EmptyArgumentList))
       (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
   
-  Definition invoke (self : Self) : M unit :=
+  Definition invoke `{State.Trait} (self : Self) : M unit :=
     let* α0 := self.["params"] in
     α0.["invoke"].
   
@@ -7875,6 +8261,7 @@ Module
   }.
   
   Definition try_invoke
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -7903,7 +8290,7 @@ Module
           ink_env.call.execution_input.EmptyArgumentList))
       (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
   
-  Definition invoke (self : Self) : M unit :=
+  Definition invoke `{State.Trait} (self : Self) : M unit :=
     let* α0 := self.["params"] in
     α0.["invoke"].
   
@@ -7912,6 +8299,7 @@ Module
   }.
   
   Definition try_invoke
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -7939,7 +8327,7 @@ Module
         (ink_env.call.execution_input.ExecutionInput Args))
       (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
   
-  Definition invoke (self : Self) : M R :=
+  Definition invoke `{State.Trait} (self : Self) : M R :=
     let* α0 := self.["params"] in
     α0.["invoke"].
   
@@ -7948,6 +8336,7 @@ Module
   }.
   
   Definition try_invoke
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -7975,7 +8364,7 @@ Module
         (ink_env.call.execution_input.ExecutionInput Args))
       (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
   
-  Definition invoke (self : Self) : M R :=
+  Definition invoke `{State.Trait} (self : Self) : M R :=
     let* α0 := self.["params"] in
     α0.["invoke"].
   
@@ -7984,6 +8373,7 @@ Module
   }.
   
   Definition try_invoke
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -8016,6 +8406,7 @@ Module common.
     Definition Self := ink_env.call.common.ReturnType T.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -8040,7 +8431,7 @@ Module common.
     
     Definition Self := ink_env.call.common.ReturnType T.
     
-    Definition clone (self : ref Self) : M Self :=
+    Definition clone `{State.Trait} (self : ref Self) : M Self :=
       let* α0 := core.default.Default.default tt in
       Self α0.
     
@@ -8071,7 +8462,7 @@ Module common.
     
     Definition Self := ink_env.call.common.ReturnType T.
     
-    Definition default (_ : unit) : M Self :=
+    Definition default `{State.Trait} (_ : unit) : M Self :=
       let* α0 := core.default.Default.default tt in
       Self α0.
     
@@ -8102,6 +8493,7 @@ Module common.
     Definition Self := ink_env.call.common.Set T.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -8137,7 +8529,10 @@ Module common.
     
     Definition Self := ink_env.call.common.Set T.
     
-    Definition clone (self : ref Self) : M (ink_env.call.common.Set T) :=
+    Definition clone
+        `{State.Trait}
+        (self : ref Self)
+        : M (ink_env.call.common.Set T) :=
       let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
       Pure (ink_env.call.common.Set.Build_t α0).
     
@@ -8154,7 +8549,7 @@ Module common.
   Module Impl_ink_env_call_common_Set_T_2.
     Definition Self := ink_env.call.common.Set T.
     
-    Definition value (self : Self) : M T := Pure (self.[0]).
+    Definition value `{State.Trait} (self : Self) : M T := Pure (self.[0]).
     
     Global Instance Method_value : Notation.Dot "value" := {
       Notation.dot := value;
@@ -8177,6 +8572,7 @@ Module common.
     Definition Self := ink_env.call.common.Unset T.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -8201,7 +8597,7 @@ Module common.
     
     Definition Self := ink_env.call.common.Unset T.
     
-    Definition clone (self : ref Self) : M Self :=
+    Definition clone `{State.Trait} (self : ref Self) : M Self :=
       let* α0 := core.default.Default.default tt in
       Self α0.
     
@@ -8232,7 +8628,7 @@ Module common.
     
     Definition Self := ink_env.call.common.Unset T.
     
-    Definition default (_ : unit) : M Self :=
+    Definition default `{State.Trait} (_ : unit) : M Self :=
       let* α0 := core.default.Default.default tt in
       Self α0.
     
@@ -8271,7 +8667,12 @@ Module common.
     
     Definition Output : Set := T.
     
-    Definition unwrap_or_else (self : Self) (f : F) : M ImplSelf.Output := f tt.
+    Definition unwrap_or_else
+        `{State.Trait}
+        (self : Self)
+        (f : F)
+        : M ImplSelf.Output :=
+      f tt.
     
     Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {
       Notation.dot := unwrap_or_else;
@@ -8291,7 +8692,11 @@ Module common.
     
     Definition Output : Set := T.
     
-    Definition unwrap_or_else (self : Self) (Pattern : F) : M ImplSelf.Output :=
+    Definition unwrap_or_else
+        `{State.Trait}
+        (self : Self)
+        (Pattern : F)
+        : M ImplSelf.Output :=
       self.["value"].
     
     Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {
@@ -8321,6 +8726,7 @@ Section Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
   Definition Self := ink_env.call.common.ReturnType T.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -8345,7 +8751,7 @@ Section Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
   
   Definition Self := ink_env.call.common.ReturnType T.
   
-  Definition clone (self : ref Self) : M Self :=
+  Definition clone `{State.Trait} (self : ref Self) : M Self :=
     let* α0 := core.default.Default.default tt in
     Self α0.
   
@@ -8376,7 +8782,7 @@ Section Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
   
   Definition Self := ink_env.call.common.ReturnType T.
   
-  Definition default (_ : unit) : M Self :=
+  Definition default `{State.Trait} (_ : unit) : M Self :=
     let* α0 := core.default.Default.default tt in
     Self α0.
   
@@ -8407,6 +8813,7 @@ Section Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
   Definition Self := ink_env.call.common.Set T.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -8442,7 +8849,10 @@ Section Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
   
   Definition Self := ink_env.call.common.Set T.
   
-  Definition clone (self : ref Self) : M (ink_env.call.common.Set T) :=
+  Definition clone
+      `{State.Trait}
+      (self : ref Self)
+      : M (ink_env.call.common.Set T) :=
     let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
     Pure (ink_env.call.common.Set.Build_t α0).
   
@@ -8459,7 +8869,7 @@ End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
 Module Impl_ink_env_call_common_Set_T_3.
   Definition Self := ink_env.call.common.Set T.
   
-  Definition value (self : Self) : M T := Pure (self.[0]).
+  Definition value `{State.Trait} (self : Self) : M T := Pure (self.[0]).
   
   Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
@@ -8482,6 +8892,7 @@ Section Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
   Definition Self := ink_env.call.common.Unset T.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -8506,7 +8917,7 @@ Section Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
   
   Definition Self := ink_env.call.common.Unset T.
   
-  Definition clone (self : ref Self) : M Self :=
+  Definition clone `{State.Trait} (self : ref Self) : M Self :=
     let* α0 := core.default.Default.default tt in
     Self α0.
   
@@ -8537,7 +8948,7 @@ Section Impl_core_default_Default_for_ink_env_call_common_Unset_T.
   
   Definition Self := ink_env.call.common.Unset T.
   
-  Definition default (_ : unit) : M Self :=
+  Definition default `{State.Trait} (_ : unit) : M Self :=
     let* α0 := core.default.Default.default tt in
     Self α0.
   
@@ -8576,7 +8987,12 @@ Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
   
   Definition Output : Set := T.
   
-  Definition unwrap_or_else (self : Self) (f : F) : M ImplSelf.Output := f tt.
+  Definition unwrap_or_else
+      `{State.Trait}
+      (self : Self)
+      (f : F)
+      : M ImplSelf.Output :=
+    f tt.
   
   Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {
     Notation.dot := unwrap_or_else;
@@ -8596,7 +9012,11 @@ Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
   
   Definition Output : Set := T.
   
-  Definition unwrap_or_else (self : Self) (Pattern : F) : M ImplSelf.Output :=
+  Definition unwrap_or_else
+      `{State.Trait}
+      (self : Self)
+      (Pattern : F)
+      : M ImplSelf.Output :=
     self.["value"].
   
   Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {
@@ -8673,7 +9093,7 @@ Module create_builder.
     
     Definition Error : Set := unit.
     
-    Definition ok (value : C) : M ImplSelf.Output := Pure value.
+    Definition ok `{State.Trait} (value : C) : M ImplSelf.Output := Pure value.
     
     Global Instance AssociatedFunction_ok : Notation.DoubleColon Self "ok" := {
       Notation.double_colon := ok;
@@ -8707,7 +9127,7 @@ Module create_builder.
     
     Definition Error : Set := E.
     
-    Definition ok (value : C) : M ImplSelf.Output :=
+    Definition ok `{State.Trait} (value : C) : M ImplSelf.Output :=
       Pure (core.result.Result.Ok value).
     
     Global Instance AssociatedFunction_ok : Notation.DoubleColon Self "ok" := {
@@ -8715,6 +9135,7 @@ Module create_builder.
     }.
     
     Definition err
+        `{State.Trait}
         (err : ImplSelf.Error)
         : M (core.option.Option ImplSelf.Output) :=
       Pure (core.option.Option.Some (core.result.Result.Err err)).
@@ -8782,6 +9203,7 @@ Module create_builder.
       ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -8832,20 +9254,27 @@ Module create_builder.
       :=
       ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
     
-    Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
+    Definition code_hash
+        `{State.Trait}
+        (self : ref Self)
+        : M (ref ImplE.Hash) :=
       Pure (addr_of self.["code_hash"]).
     
     Global Instance Method_code_hash : Notation.Dot "code_hash" := {
       Notation.dot := code_hash;
     }.
     
-    Definition gas_limit (self : ref Self) : M u64 := Pure self.["gas_limit"].
+    Definition gas_limit `{State.Trait} (self : ref Self) : M u64 :=
+      Pure self.["gas_limit"].
     
     Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot := gas_limit;
     }.
     
-    Definition endowment (self : ref Self) : M (ref ImplE.Balance) :=
+    Definition endowment
+        `{State.Trait}
+        (self : ref Self)
+        : M (ref ImplE.Balance) :=
       Pure (addr_of self.["endowment"]).
     
     Global Instance Method_endowment : Notation.Dot "endowment" := {
@@ -8853,6 +9282,7 @@ Module create_builder.
     }.
     
     Definition exec_input
+        `{State.Trait}
         (self : ref Self)
         : M (ref (ink_env.call.execution_input.ExecutionInput Args)) :=
       Pure (addr_of self.["exec_input"]).
@@ -8862,6 +9292,7 @@ Module create_builder.
     }.
     
     Definition update_selector
+        `{State.Trait}
         (self : mut_ref Self)
         (selector : ink_env.call.selector.Selector)
         : M unit :=
@@ -8879,7 +9310,7 @@ Module create_builder.
       :=
       ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
     
-    Definition salt_bytes (self : ref Self) : M (ref Salt) :=
+    Definition salt_bytes `{State.Trait} (self : ref Self) : M (ref Salt) :=
       Pure (addr_of self.["salt_bytes"]).
     
     Global Instance Method_salt_bytes : Notation.Dot "salt_bytes" := {
@@ -8895,6 +9326,7 @@ Module create_builder.
       ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
     
     Definition instantiate
+        `{State.Trait}
         (self : ref Self)
         : M ink_env.call.create_builder.ConstructorReturnType.Output :=
       let* α0 := ink_env.api.instantiate_contract self in
@@ -8921,6 +9353,7 @@ Module create_builder.
     }.
     
     Definition try_instantiate
+        `{State.Trait}
         (self : ref Self)
         :
           M
@@ -8971,6 +9404,7 @@ Module create_builder.
   Definition CreateBuilder : Set := CreateBuilder.t.
   
   Definition build_create
+      `{State.Trait}
       {ContractRef : Set}
       `{ink_env.contract.ContractEnv.Trait ContractRef}
       (_ : unit)
@@ -9022,6 +9456,7 @@ Module create_builder.
         RetType.
     
     Definition code_hash
+        `{State.Trait}
         (self : Self)
         (code_hash : ImplE.Hash)
         :
@@ -9074,6 +9509,7 @@ Module create_builder.
         RetType.
     
     Definition gas_limit
+        `{State.Trait}
         (self : Self)
         (gas_limit : u64)
         :
@@ -9126,6 +9562,7 @@ Module create_builder.
         RetType.
     
     Definition endowment
+        `{State.Trait}
         (self : Self)
         (endowment : ImplE.Balance)
         :
@@ -9180,6 +9617,7 @@ Module create_builder.
         RetType.
     
     Definition exec_input
+        `{State.Trait}
         (self : Self)
         (exec_input : ink_env.call.execution_input.ExecutionInput Args)
         :
@@ -9233,6 +9671,7 @@ Module create_builder.
         RetType.
     
     Definition salt_bytes
+        `{State.Trait}
         (self : Self)
         (salt : Salt)
         :
@@ -9286,6 +9725,7 @@ Module create_builder.
         (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
     
     Definition returns
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -9339,6 +9779,7 @@ Module create_builder.
         (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
     
     Definition params
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -9389,6 +9830,7 @@ Module create_builder.
         (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
     
     Definition instantiate
+        `{State.Trait}
         (self : Self)
         : M ink_env.call.create_builder.ConstructorReturnType.Output :=
       let* α0 := self.["params"] in
@@ -9399,6 +9841,7 @@ Module create_builder.
     }.
     
     Definition try_instantiate
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -9485,7 +9928,7 @@ Section Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
   
   Definition Error : Set := unit.
   
-  Definition ok (value : C) : M ImplSelf.Output := Pure value.
+  Definition ok `{State.Trait} (value : C) : M ImplSelf.Output := Pure value.
   
   Global Instance AssociatedFunction_ok : Notation.DoubleColon Self "ok" := {
     Notation.double_colon := ok;
@@ -9517,7 +9960,7 @@ Section
   
   Definition Error : Set := E.
   
-  Definition ok (value : C) : M ImplSelf.Output :=
+  Definition ok `{State.Trait} (value : C) : M ImplSelf.Output :=
     Pure (core.result.Result.Ok value).
   
   Global Instance AssociatedFunction_ok : Notation.DoubleColon Self "ok" := {
@@ -9525,6 +9968,7 @@ Section
   }.
   
   Definition err
+      `{State.Trait}
       (err : ImplSelf.Error)
       : M (core.option.Option ImplSelf.Output) :=
     Pure (core.option.Option.Some (core.result.Result.Err err)).
@@ -9589,6 +10033,7 @@ Section
     ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -9639,20 +10084,24 @@ Module
     :=
     ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
   
-  Definition code_hash (self : ref Self) : M (ref ImplE.Hash) :=
+  Definition code_hash `{State.Trait} (self : ref Self) : M (ref ImplE.Hash) :=
     Pure (addr_of self.["code_hash"]).
   
   Global Instance Method_code_hash : Notation.Dot "code_hash" := {
     Notation.dot := code_hash;
   }.
   
-  Definition gas_limit (self : ref Self) : M u64 := Pure self.["gas_limit"].
+  Definition gas_limit `{State.Trait} (self : ref Self) : M u64 :=
+    Pure self.["gas_limit"].
   
   Global Instance Method_gas_limit : Notation.Dot "gas_limit" := {
     Notation.dot := gas_limit;
   }.
   
-  Definition endowment (self : ref Self) : M (ref ImplE.Balance) :=
+  Definition endowment
+      `{State.Trait}
+      (self : ref Self)
+      : M (ref ImplE.Balance) :=
     Pure (addr_of self.["endowment"]).
   
   Global Instance Method_endowment : Notation.Dot "endowment" := {
@@ -9660,6 +10109,7 @@ Module
   }.
   
   Definition exec_input
+      `{State.Trait}
       (self : ref Self)
       : M (ref (ink_env.call.execution_input.ExecutionInput Args)) :=
     Pure (addr_of self.["exec_input"]).
@@ -9669,6 +10119,7 @@ Module
   }.
   
   Definition update_selector
+      `{State.Trait}
       (self : mut_ref Self)
       (selector : ink_env.call.selector.Selector)
       : M unit :=
@@ -9686,7 +10137,7 @@ Module
     :=
     ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
   
-  Definition salt_bytes (self : ref Self) : M (ref Salt) :=
+  Definition salt_bytes `{State.Trait} (self : ref Self) : M (ref Salt) :=
     Pure (addr_of self.["salt_bytes"]).
   
   Global Instance Method_salt_bytes : Notation.Dot "salt_bytes" := {
@@ -9702,6 +10153,7 @@ Module
     ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
   
   Definition instantiate
+      `{State.Trait}
       (self : ref Self)
       : M ink_env.call.create_builder.ConstructorReturnType.Output :=
     let* α0 := ink_env.api.instantiate_contract self in
@@ -9728,6 +10180,7 @@ Module
   }.
   
   Definition try_instantiate
+      `{State.Trait}
       (self : ref Self)
       :
         M
@@ -9778,6 +10231,7 @@ End CreateBuilder.
 Definition CreateBuilder : Set := CreateBuilder.t.
 
 Definition build_create
+    `{State.Trait}
     {ContractRef : Set}
     `{ink_env.contract.ContractEnv.Trait ContractRef}
     (_ : unit)
@@ -9828,6 +10282,7 @@ Module
       RetType.
   
   Definition code_hash
+      `{State.Trait}
       (self : Self)
       (code_hash : ImplE.Hash)
       :
@@ -9880,6 +10335,7 @@ Module
       RetType.
   
   Definition gas_limit
+      `{State.Trait}
       (self : Self)
       (gas_limit : u64)
       :
@@ -9932,6 +10388,7 @@ Module
       RetType.
   
   Definition endowment
+      `{State.Trait}
       (self : Self)
       (endowment : ImplE.Balance)
       :
@@ -9986,6 +10443,7 @@ Module
       RetType.
   
   Definition exec_input
+      `{State.Trait}
       (self : Self)
       (exec_input : ink_env.call.execution_input.ExecutionInput Args)
       :
@@ -10039,6 +10497,7 @@ Module
       RetType.
   
   Definition salt_bytes
+      `{State.Trait}
       (self : Self)
       (salt : Salt)
       :
@@ -10092,6 +10551,7 @@ Module
       (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
   
   Definition returns
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -10145,6 +10605,7 @@ Module
       (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
   
   Definition params
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -10195,6 +10656,7 @@ Module
       (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
   
   Definition instantiate
+      `{State.Trait}
       (self : Self)
       : M ink_env.call.create_builder.ConstructorReturnType.Output :=
     let* α0 := self.["params"] in
@@ -10205,6 +10667,7 @@ Module
   }.
   
   Definition try_instantiate
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -10246,6 +10709,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Definition clone
+        `{State.Trait}
         (self : ref Self)
         : M (ink_env.call.execution_input.ExecutionInput Args) :=
       let* α0 := core.clone.Clone.clone (addr_of self.["selector"]) in
@@ -10277,6 +10741,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Definition default
+        `{State.Trait}
         (_ : unit)
         : M (ink_env.call.execution_input.ExecutionInput Args) :=
       let* α0 := core.default.Default.default tt in
@@ -10309,6 +10774,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -10338,7 +10804,10 @@ Module execution_input.
       ink_env.call.execution_input.ExecutionInput
         ink_env.call.execution_input.EmptyArgumentList.
     
-    Definition new (selector : ink_env.call.selector.Selector) : M Self :=
+    Definition new
+        `{State.Trait}
+        (selector : ink_env.call.selector.Selector)
+        : M Self :=
       let* α0 := ink_env.call.execution_input.ArgumentList::["empty"] tt in
       Pure {| Self.selector := selector; Self.args := α0; |}.
     
@@ -10348,6 +10817,7 @@ Module execution_input.
     }.
     
     Definition push_arg
+        `{State.Trait}
         (self : Self)
         (arg : T)
         :
@@ -10381,6 +10851,7 @@ Module execution_input.
           Rest).
     
     Definition push_arg
+        `{State.Trait}
         (self : Self)
         (arg : T)
         :
@@ -10407,6 +10878,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Definition update_selector
+        `{State.Trait}
         (self : mut_ref Self)
         (selector : ink_env.call.selector.Selector)
         : M unit :=
@@ -10442,6 +10914,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
     
     Definition clone
+        `{State.Trait}
         (self : ref Self)
         : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
       let* α0 := core.clone.Clone.clone (addr_of self.["head"]) in
@@ -10473,6 +10946,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
     
     Definition default
+        `{State.Trait}
         (_ : unit)
         : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
       let* α0 := core.default.Default.default tt in
@@ -10505,6 +10979,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -10551,6 +11026,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.Argument T.
     
     Definition clone
+        `{State.Trait}
         (self : ref Self)
         : M (ink_env.call.execution_input.Argument T) :=
       let* α0 := core.clone.Clone.clone (addr_of self.["arg"]) in
@@ -10573,6 +11049,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.Argument T.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -10595,7 +11072,8 @@ Module execution_input.
   Module Impl_ink_env_call_execution_input_Argument_T_2.
     Definition Self := ink_env.call.execution_input.Argument T.
     
-    Definition new (arg : T) : M Self := Pure {| Self.arg := arg; |}.
+    Definition new `{State.Trait} (arg : T) : M Self :=
+      Pure {| Self.arg := arg; |}.
     
     Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
@@ -10612,6 +11090,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ArgumentListEnd.
     
     Definition clone
+        `{State.Trait}
         (self : ref Self)
         : M ink_env.call.execution_input.ArgumentListEnd :=
       Pure ink_env.call.execution_input.ArgumentListEnd.Build.
@@ -10630,6 +11109,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ArgumentListEnd.
     
     Definition default
+        `{State.Trait}
         (_ : unit)
         : M ink_env.call.execution_input.ArgumentListEnd :=
       Pure {|  |}.
@@ -10649,6 +11129,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ArgumentListEnd.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -10672,6 +11153,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.EmptyArgumentList.
     
     Definition empty
+        `{State.Trait}
         (_ : unit)
         : M ink_env.call.execution_input.EmptyArgumentList :=
       Pure
@@ -10688,6 +11170,7 @@ Module execution_input.
     }.
     
     Definition push_arg
+        `{State.Trait}
         (self : Self)
         (arg : T)
         :
@@ -10717,6 +11200,7 @@ Module execution_input.
         Rest.
     
     Definition push_arg
+        `{State.Trait}
         (self : Self)
         (arg : T)
         :
@@ -10745,14 +11229,18 @@ Module execution_input.
     
     Definition Self := ink_env.call.execution_input.Argument T.
     
-    Definition size_hint (self : ref Self) : M usize :=
+    Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
       parity_scale_codec.codec.Encode.size_hint (addr_of self.["arg"]).
     
     Global Instance Method_size_hint : Notation.Dot "size_hint" := {
       Notation.dot := size_hint;
     }.
     
-    Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
+    Definition encode_to
+        `{State.Trait}
+        (self : ref Self)
+        (output : mut_ref O)
+        : M unit :=
       parity_scale_codec.codec.Encode.encode_to (addr_of self.["arg"]) output.
     
     Global Instance Method_encode_to : Notation.Dot "encode_to" := {
@@ -10770,13 +11258,17 @@ Module execution_input.
     Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
     Definition Self := ink_env.call.execution_input.EmptyArgumentList.
     
-    Definition size_hint (self : ref Self) : M usize := Pure 0.
+    Definition size_hint `{State.Trait} (self : ref Self) : M usize := Pure 0.
     
     Global Instance Method_size_hint : Notation.Dot "size_hint" := {
       Notation.dot := size_hint;
     }.
     
-    Definition encode_to (self : ref Self) (_output : mut_ref O) : M unit :=
+    Definition encode_to
+        `{State.Trait}
+        (self : ref Self)
+        (_output : mut_ref O)
+        : M unit :=
       Pure tt.
     
     Global Instance Method_encode_to : Notation.Dot "encode_to" := {
@@ -10801,7 +11293,7 @@ Module execution_input.
         (ink_env.call.execution_input.Argument Head)
         Rest.
     
-    Definition size_hint (self : ref Self) : M usize :=
+    Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
       let* α0 :=
         parity_scale_codec.codec.Encode.size_hint (addr_of self.["head"]) in
       let* α1 :=
@@ -10812,7 +11304,11 @@ Module execution_input.
       Notation.dot := size_hint;
     }.
     
-    Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
+    Definition encode_to
+        `{State.Trait}
+        (self : ref Self)
+        (output : mut_ref O)
+        : M unit :=
       let* _ :=
         parity_scale_codec.codec.Encode.encode_to
           (addr_of self.["rest"])
@@ -10842,7 +11338,7 @@ Module execution_input.
     
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
-    Definition size_hint (self : ref Self) : M usize :=
+    Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
       let* α0 :=
         parity_scale_codec.codec.Encode.size_hint (addr_of self.["selector"]) in
       let* α1 :=
@@ -10853,7 +11349,11 @@ Module execution_input.
       Notation.dot := size_hint;
     }.
     
-    Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
+    Definition encode_to
+        `{State.Trait}
+        (self : ref Self)
+        (output : mut_ref O)
+        : M unit :=
       let* _ :=
         parity_scale_codec.codec.Encode.encode_to
           (addr_of self.["selector"])
@@ -10900,6 +11400,7 @@ Section
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Definition clone
+      `{State.Trait}
       (self : ref Self)
       : M (ink_env.call.execution_input.ExecutionInput Args) :=
     let* α0 := core.clone.Clone.clone (addr_of self.["selector"]) in
@@ -10929,6 +11430,7 @@ Section
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Definition default
+      `{State.Trait}
       (_ : unit)
       : M (ink_env.call.execution_input.ExecutionInput Args) :=
     let* α0 := core.default.Default.default tt in
@@ -10960,6 +11462,7 @@ Section
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -10989,7 +11492,10 @@ Module
     ink_env.call.execution_input.ExecutionInput
       ink_env.call.execution_input.EmptyArgumentList.
   
-  Definition new (selector : ink_env.call.selector.Selector) : M Self :=
+  Definition new
+      `{State.Trait}
+      (selector : ink_env.call.selector.Selector)
+      : M Self :=
     let* α0 := ink_env.call.execution_input.ArgumentList::["empty"] tt in
     Pure {| Self.selector := selector; Self.args := α0; |}.
   
@@ -10998,6 +11504,7 @@ Module
   }.
   
   Definition push_arg
+      `{State.Trait}
       (self : Self)
       (arg : T)
       :
@@ -11031,6 +11538,7 @@ Module
         Rest).
   
   Definition push_arg
+      `{State.Trait}
       (self : Self)
       (arg : T)
       :
@@ -11057,6 +11565,7 @@ Module Impl_ink_env_call_execution_input_ExecutionInput_Args_3.
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Definition update_selector
+      `{State.Trait}
       (self : mut_ref Self)
       (selector : ink_env.call.selector.Selector)
       : M unit :=
@@ -11092,6 +11601,7 @@ Section
   Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
   
   Definition clone
+      `{State.Trait}
       (self : ref Self)
       : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
     let* α0 := core.clone.Clone.clone (addr_of self.["head"]) in
@@ -11123,6 +11633,7 @@ Section
   Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
   
   Definition default
+      `{State.Trait}
       (_ : unit)
       : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
     let* α0 := core.default.Default.default tt in
@@ -11155,6 +11666,7 @@ Section
   Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -11199,6 +11711,7 @@ Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
   Definition Self := ink_env.call.execution_input.Argument T.
   
   Definition clone
+      `{State.Trait}
       (self : ref Self)
       : M (ink_env.call.execution_input.Argument T) :=
     let* α0 := core.clone.Clone.clone (addr_of self.["arg"]) in
@@ -11221,6 +11734,7 @@ Section Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
   Definition Self := ink_env.call.execution_input.Argument T.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -11243,7 +11757,8 @@ End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
 Module Impl_ink_env_call_execution_input_Argument_T_3.
   Definition Self := ink_env.call.execution_input.Argument T.
   
-  Definition new (arg : T) : M Self := Pure {| Self.arg := arg; |}.
+  Definition new `{State.Trait} (arg : T) : M Self :=
+    Pure {| Self.arg := arg; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
@@ -11259,6 +11774,7 @@ Module Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
   Definition Self := ink_env.call.execution_input.ArgumentListEnd.
   
   Definition clone
+      `{State.Trait}
       (self : ref Self)
       : M ink_env.call.execution_input.ArgumentListEnd :=
     Pure ink_env.call.execution_input.ArgumentListEnd.Build.
@@ -11277,6 +11793,7 @@ Module
   Definition Self := ink_env.call.execution_input.ArgumentListEnd.
   
   Definition default
+      `{State.Trait}
       (_ : unit)
       : M ink_env.call.execution_input.ArgumentListEnd :=
     Pure {|  |}.
@@ -11295,6 +11812,7 @@ Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentListEnd.
   Definition Self := ink_env.call.execution_input.ArgumentListEnd.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -11318,6 +11836,7 @@ Module Impl_ink_env_call_execution_input_EmptyArgumentList_3.
   Definition Self := ink_env.call.execution_input.EmptyArgumentList.
   
   Definition empty
+      `{State.Trait}
       (_ : unit)
       : M ink_env.call.execution_input.EmptyArgumentList :=
     Pure
@@ -11334,6 +11853,7 @@ Module Impl_ink_env_call_execution_input_EmptyArgumentList_3.
   }.
   
   Definition push_arg
+      `{State.Trait}
       (self : Self)
       (arg : T)
       :
@@ -11363,6 +11883,7 @@ Module
       Rest.
   
   Definition push_arg
+      `{State.Trait}
       (self : Self)
       (arg : T)
       :
@@ -11391,14 +11912,18 @@ Section
   
   Definition Self := ink_env.call.execution_input.Argument T.
   
-  Definition size_hint (self : ref Self) : M usize :=
+  Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
     parity_scale_codec.codec.Encode.size_hint (addr_of self.["arg"]).
   
   Global Instance Method_size_hint : Notation.Dot "size_hint" := {
     Notation.dot := size_hint;
   }.
   
-  Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
+  Definition encode_to
+      `{State.Trait}
+      (self : ref Self)
+      (output : mut_ref O)
+      : M unit :=
     parity_scale_codec.codec.Encode.encode_to (addr_of self.["arg"]) output.
   
   Global Instance Method_encode_to : Notation.Dot "encode_to" := {
@@ -11416,13 +11941,17 @@ Module
   Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
   Definition Self := ink_env.call.execution_input.EmptyArgumentList.
   
-  Definition size_hint (self : ref Self) : M usize := Pure 0.
+  Definition size_hint `{State.Trait} (self : ref Self) : M usize := Pure 0.
   
   Global Instance Method_size_hint : Notation.Dot "size_hint" := {
     Notation.dot := size_hint;
   }.
   
-  Definition encode_to (self : ref Self) (_output : mut_ref O) : M unit :=
+  Definition encode_to
+      `{State.Trait}
+      (self : ref Self)
+      (_output : mut_ref O)
+      : M unit :=
     Pure tt.
   
   Global Instance Method_encode_to : Notation.Dot "encode_to" := {
@@ -11447,7 +11976,7 @@ Section
       (ink_env.call.execution_input.Argument Head)
       Rest.
   
-  Definition size_hint (self : ref Self) : M usize :=
+  Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
     let* α0 :=
       parity_scale_codec.codec.Encode.size_hint (addr_of self.["head"]) in
     let* α1 :=
@@ -11458,7 +11987,11 @@ Section
     Notation.dot := size_hint;
   }.
   
-  Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
+  Definition encode_to
+      `{State.Trait}
+      (self : ref Self)
+      (output : mut_ref O)
+      : M unit :=
     let* _ :=
       parity_scale_codec.codec.Encode.encode_to
         (addr_of self.["rest"])
@@ -11488,7 +12021,7 @@ Section
   
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
-  Definition size_hint (self : ref Self) : M usize :=
+  Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
     let* α0 :=
       parity_scale_codec.codec.Encode.size_hint (addr_of self.["selector"]) in
     let* α1 :=
@@ -11499,7 +12032,11 @@ Section
     Notation.dot := size_hint;
   }.
   
-  Definition encode_to (self : ref Self) (output : mut_ref O) : M unit :=
+  Definition encode_to
+      `{State.Trait}
+      (self : ref Self)
+      (output : mut_ref O)
+      : M unit :=
     let* _ :=
       parity_scale_codec.codec.Encode.encode_to
         (addr_of self.["selector"])
@@ -11536,7 +12073,10 @@ Module selector.
   Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
     Definition Self := ink_env.call.selector.Selector.
     
-    Definition default (_ : unit) : M ink_env.call.selector.Selector :=
+    Definition default
+        `{State.Trait}
+        (_ : unit)
+        : M ink_env.call.selector.Selector :=
       let* α0 := core.default.Default.default tt in
       Pure {| ink_env.call.selector.Selector.bytes := α0; |}.
     
@@ -11554,6 +12094,7 @@ Module selector.
     Definition Self := ink_env.call.selector.Selector.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -11582,7 +12123,10 @@ Module selector.
   Module Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
     Definition Self := ink_env.call.selector.Selector.
     
-    Definition clone (self : ref Self) : M ink_env.call.selector.Selector :=
+    Definition clone
+        `{State.Trait}
+        (self : ref Self)
+        : M ink_env.call.selector.Selector :=
       let _ := tt in
       self.["deref"].
     
@@ -11607,6 +12151,7 @@ Module selector.
     Definition Self := ink_env.call.selector.Selector.
     
     Definition eq
+        `{State.Trait}
         (self : ref Self)
         (other : ref ink_env.call.selector.Selector)
         : M bool :=
@@ -11631,7 +12176,10 @@ Module selector.
   Module Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
     Definition Self := ink_env.call.selector.Selector.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    Definition assert_receiver_is_total_eq
+        `{State.Trait}
+        (self : ref Self)
+        : M unit :=
       let _ := tt in
       Pure tt.
     
@@ -11647,7 +12195,10 @@ Module selector.
   Module Impl_core_convert_From_for_ink_env_call_selector_Selector.
     Definition Self := ink_env.call.selector.Selector.
     
-    Definition from (original : list u8) : M ink_env.call.selector.Selector :=
+    Definition from
+        `{State.Trait}
+        (original : list u8)
+        : M ink_env.call.selector.Selector :=
       Pure {| ink_env.call.selector.Selector.bytes := original; |}.
     
     Global Instance AssociatedFunction_from :
@@ -11663,7 +12214,7 @@ Module selector.
   Module Impl_ink_env_call_selector_Selector_2.
     Definition Self := ink_env.call.selector.Selector.
     
-    Definition new (bytes : list u8) : M Self :=
+    Definition new `{State.Trait} (bytes : list u8) : M Self :=
       Pure {| Self.bytes := bytes; |}.
     
     Global Instance AssociatedFunction_new :
@@ -11671,7 +12222,8 @@ Module selector.
       Notation.double_colon := new;
     }.
     
-    Definition to_bytes (self : Self) : M list u8 := Pure self.["bytes"].
+    Definition to_bytes `{State.Trait} (self : Self) : M list u8 :=
+      Pure self.["bytes"].
     
     Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
       Notation.dot := to_bytes;
@@ -11693,7 +12245,10 @@ Definition Selector : Set := Selector.t.
 Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
-  Definition default (_ : unit) : M ink_env.call.selector.Selector :=
+  Definition default
+      `{State.Trait}
+      (_ : unit)
+      : M ink_env.call.selector.Selector :=
     let* α0 := core.default.Default.default tt in
     Pure {| ink_env.call.selector.Selector.bytes := α0; |}.
   
@@ -11711,6 +12266,7 @@ Module Impl_core_fmt_Debug_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -11739,7 +12295,10 @@ End Impl_core_marker_Copy_for_ink_env_call_selector_Selector.
 Module Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
-  Definition clone (self : ref Self) : M ink_env.call.selector.Selector :=
+  Definition clone
+      `{State.Trait}
+      (self : ref Self)
+      : M ink_env.call.selector.Selector :=
     let _ := tt in
     self.["deref"].
   
@@ -11763,6 +12322,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
   Definition eq
+      `{State.Trait}
       (self : ref Self)
       (other : ref ink_env.call.selector.Selector)
       : M bool :=
@@ -11787,7 +12347,10 @@ End Impl_core_marker_StructuralEq_for_ink_env_call_selector_Selector.
 Module Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+  Definition assert_receiver_is_total_eq
+      `{State.Trait}
+      (self : ref Self)
+      : M unit :=
     let _ := tt in
     Pure tt.
   
@@ -11803,7 +12366,10 @@ End Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
 Module Impl_core_convert_From_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
-  Definition from (original : list u8) : M ink_env.call.selector.Selector :=
+  Definition from
+      `{State.Trait}
+      (original : list u8)
+      : M ink_env.call.selector.Selector :=
     Pure {| ink_env.call.selector.Selector.bytes := original; |}.
   
   Global Instance AssociatedFunction_from :
@@ -11820,6 +12386,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
   Definition decode
+      `{State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
@@ -11848,6 +12415,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
   Definition encode_to
+      `{State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M unit :=
@@ -11860,6 +12428,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
   }.
   
   Definition encode
+      `{State.Trait}
       (self : ref Self)
       : M (alloc.vec.Vec Root.core.primitive.u8) :=
     parity_scale_codec.codec.Encode.encode (addr_of (addr_of self.["bytes"])).
@@ -11868,7 +12437,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
     Notation.dot := encode;
   }.
   
-  Definition using_encoded (self : ref Self) (f : F) : M R :=
+  Definition using_encoded `{State.Trait} (self : ref Self) (f : F) : M R :=
     parity_scale_codec.codec.Encode.using_encoded
       (addr_of (addr_of self.["bytes"]))
       f.
@@ -11893,13 +12462,15 @@ End
 Module Impl_ink_env_call_selector_Selector_3.
   Definition Self := ink_env.call.selector.Selector.
   
-  Definition new (bytes : list u8) : M Self := Pure {| Self.bytes := bytes; |}.
+  Definition new `{State.Trait} (bytes : list u8) : M Self :=
+    Pure {| Self.bytes := bytes; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Definition to_bytes (self : Self) : M list u8 := Pure self.["bytes"].
+  Definition to_bytes `{State.Trait} (self : Self) : M list u8 :=
+    Pure self.["bytes"].
   
   Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
     Notation.dot := to_bytes;
@@ -11949,6 +12520,7 @@ Module chain_extension.
       ink_env.chain_extension.ChainExtensionMethod I O ErrorCode.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -11978,7 +12550,7 @@ Module chain_extension.
       :=
       ink_env.chain_extension.ChainExtensionMethod unit unit unit.
     
-    Definition build (func_id : u32) : M Self :=
+    Definition build `{State.Trait} (func_id : u32) : M Self :=
       let* α0 := core.default.Default.default tt in
       Pure {| Self.func_id := func_id; Self.state := α0; |}.
     
@@ -11995,6 +12567,7 @@ Module chain_extension.
       ink_env.chain_extension.ChainExtensionMethod unit O ErrorCode.
     
     Definition input
+        `{State.Trait}
         (self : Self)
         : M (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode) :=
       let* α0 := core.default.Default.default tt in
@@ -12017,6 +12590,7 @@ Module chain_extension.
       ink_env.chain_extension.ChainExtensionMethod I unit ErrorCode.
     
     Definition output
+        `{State.Trait}
         (self : Self)
         : M (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode) :=
       let* α0 := core.default.Default.default tt in
@@ -12036,6 +12610,7 @@ Module chain_extension.
     Definition Self := ink_env.chain_extension.ChainExtensionMethod I O unit.
     
     Definition ignore_error_code
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -12057,6 +12632,7 @@ Module chain_extension.
     }.
     
     Definition handle_error_code
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -12090,6 +12666,7 @@ Module chain_extension.
       Definition Self := ink_env.chain_extension.state.IgnoreErrorCode.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -12124,6 +12701,7 @@ Module chain_extension.
       Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -12155,6 +12733,7 @@ Module chain_extension.
         (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
     
     Definition call
+        `{State.Trait}
         (self : Self)
         (input : ref I)
         :
@@ -12191,6 +12770,7 @@ Module chain_extension.
         ink_env.chain_extension.state.IgnoreErrorCode.
     
     Definition call
+        `{State.Trait}
         (self : Self)
         (input : ref I)
         :
@@ -12227,6 +12807,7 @@ Module chain_extension.
         (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
     
     Definition call
+        `{State.Trait}
         (self : Self)
         (input : ref I)
         : M (core.result.Result O ErrorCode) :=
@@ -12261,7 +12842,7 @@ Module chain_extension.
         O
         ink_env.chain_extension.state.IgnoreErrorCode.
     
-    Definition call (self : Self) (input : ref I) : M O :=
+    Definition call `{State.Trait} (self : Self) (input : ref I) : M O :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
           let* α0 :=
@@ -12376,6 +12957,7 @@ Section
   Definition Self := ink_env.chain_extension.ChainExtensionMethod I O ErrorCode.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -12405,7 +12987,7 @@ Module Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__Tuple__Tuple__2.
     :=
     ink_env.chain_extension.ChainExtensionMethod unit unit unit.
   
-  Definition build (func_id : u32) : M Self :=
+  Definition build `{State.Trait} (func_id : u32) : M Self :=
     let* α0 := core.default.Default.default tt in
     Pure {| Self.func_id := func_id; Self.state := α0; |}.
   
@@ -12422,6 +13004,7 @@ Module Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__O_ErrorCode_2.
     ink_env.chain_extension.ChainExtensionMethod unit O ErrorCode.
   
   Definition input
+      `{State.Trait}
       (self : Self)
       : M (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode) :=
     let* α0 := core.default.Default.default tt in
@@ -12444,6 +13027,7 @@ Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_Tuple__ErrorCode_2.
     ink_env.chain_extension.ChainExtensionMethod I unit ErrorCode.
   
   Definition output
+      `{State.Trait}
       (self : Self)
       : M (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode) :=
     let* α0 := core.default.Default.default tt in
@@ -12463,6 +13047,7 @@ Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_Tuple__2.
   Definition Self := ink_env.chain_extension.ChainExtensionMethod I O unit.
   
   Definition ignore_error_code
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -12484,6 +13069,7 @@ Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_Tuple__2.
   }.
   
   Definition handle_error_code
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -12516,6 +13102,7 @@ Module state.
     Definition Self := ink_env.chain_extension.state.IgnoreErrorCode.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -12550,6 +13137,7 @@ Module state.
     Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -12580,6 +13168,7 @@ Module Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
   Definition Self := ink_env.chain_extension.state.IgnoreErrorCode.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -12612,6 +13201,7 @@ Section Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
   Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -12642,6 +13232,7 @@ Module
       (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
   
   Definition call
+      `{State.Trait}
       (self : Self)
       (input : ref I)
       :
@@ -12678,6 +13269,7 @@ Module
       ink_env.chain_extension.state.IgnoreErrorCode.
   
   Definition call
+      `{State.Trait}
       (self : Self)
       (input : ref I)
       :
@@ -12714,6 +13306,7 @@ Module
       (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
   
   Definition call
+      `{State.Trait}
       (self : Self)
       (input : ref I)
       : M (core.result.Result O ErrorCode) :=
@@ -12748,7 +13341,7 @@ Module
       O
       ink_env.chain_extension.state.IgnoreErrorCode.
   
-  Definition call (self : Self) (input : ref I) : M O :=
+  Definition call `{State.Trait} (self : Self) (input : ref I) : M O :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         let* α0 :=
@@ -12916,6 +13509,7 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Definition fmt
+            `{State.Trait}
             (self : ref Self)
             (f : mut_ref core.fmt.Formatter)
             : M core.fmt.Result :=
@@ -12939,6 +13533,7 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Definition clone
+            `{State.Trait}
             (self : ref Self)
             : M ink_env.engine.off_chain.call_data.CallData :=
           let* α0 := core.clone.Clone.clone (addr_of self.["bytes"]) in
@@ -12967,6 +13562,7 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Definition eq
+            `{State.Trait}
             (self : ref Self)
             (other : ref ink_env.engine.off_chain.call_data.CallData)
             : M bool :=
@@ -12994,7 +13590,10 @@ Module engine.
       Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
-        Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+        Definition assert_receiver_is_total_eq
+            `{State.Trait}
+            (self : ref Self)
+            : M unit :=
           let _ := tt in
           Pure tt.
         
@@ -13010,7 +13609,10 @@ Module engine.
       Module Impl_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
-        Definition new (selector : ink_env.call.selector.Selector) : M Self :=
+        Definition new
+            `{State.Trait}
+            (selector : ink_env.call.selector.Selector)
+            : M Self :=
           let* bytes := selector.["to_bytes"] in
           let* α0 :=
             alloc.boxed.Box::["new"]
@@ -13023,7 +13625,11 @@ Module engine.
           Notation.double_colon := new;
         }.
         
-        Definition push_arg (self : mut_ref Self) (arg : ref A) : M unit :=
+        Definition push_arg
+            `{State.Trait}
+            (self : mut_ref Self)
+            (arg : ref A)
+            : M unit :=
           arg.["encode_to"] (addr_of self.["bytes"]).
         
         Global Instance Method_push_arg : Notation.Dot "push_arg" := {
@@ -13031,6 +13637,7 @@ Module engine.
         }.
         
         Definition selector
+            `{State.Trait}
             (self : ref Self)
             : M ink_env.call.selector.Selector :=
           let* _ :=
@@ -13059,7 +13666,7 @@ Module engine.
           Notation.dot := selector;
         }.
         
-        Definition params (self : ref Self) : M (ref Slice) :=
+        Definition params `{State.Trait} (self : ref Self) : M (ref Slice) :=
           let* _ :=
             if (true : bool) then
               let* _ :=
@@ -13079,7 +13686,7 @@ Module engine.
           Notation.dot := params;
         }.
         
-        Definition to_bytes (self : ref Self) : M (ref Slice) :=
+        Definition to_bytes `{State.Trait} (self : ref Self) : M (ref Slice) :=
           Pure (addr_of self.["bytes"]).
         
         Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
@@ -13091,14 +13698,18 @@ Module engine.
         Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
-        Definition size_hint (self : ref Self) : M usize :=
+        Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
           self.["bytes"].["len"].
         
         Global Instance Method_size_hint : Notation.Dot "size_hint" := {
           Notation.dot := size_hint;
         }.
         
-        Definition encode_to (self : ref Self) (dest : mut_ref T) : M unit :=
+        Definition encode_to
+            `{State.Trait}
+            (self : ref Self)
+            (dest : mut_ref T)
+            : M unit :=
           let* _ :=
             let* α0 := self.["bytes"].["as_slice"] in
             dest.["write"] α0 in
@@ -13118,6 +13729,7 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Definition decode
+            `{State.Trait}
             (input : mut_ref I)
             : M (core.result.Result Self parity_scale_codec.error.Error) :=
           let* remaining_len :=
@@ -13168,6 +13780,7 @@ Module engine.
         Definition Self := ink_env.hash.Blake2x128.
         
         Definition hash
+            `{State.Trait}
             (input : ref Slice)
             (output : mut_ref ink_env.hash.HashOutput.Type)
             : M unit :=
@@ -13198,6 +13811,7 @@ Module engine.
         Definition Self := ink_env.hash.Blake2x256.
         
         Definition hash
+            `{State.Trait}
             (input : ref Slice)
             (output : mut_ref ink_env.hash.HashOutput.Type)
             : M unit :=
@@ -13228,6 +13842,7 @@ Module engine.
         Definition Self := ink_env.hash.Sha2x256.
         
         Definition hash
+            `{State.Trait}
             (input : ref Slice)
             (output : mut_ref ink_env.hash.HashOutput.Type)
             : M unit :=
@@ -13258,6 +13873,7 @@ Module engine.
         Definition Self := ink_env.hash.Keccak256.
         
         Definition hash
+            `{State.Trait}
             (input : ref Slice)
             (output : mut_ref ink_env.hash.HashOutput.Type)
             : M unit :=
@@ -13287,7 +13903,10 @@ Module engine.
       Module Impl_core_convert_From_for_ink_env_error_Error.
         Definition Self := ink_env.error.Error.
         
-        Definition from (ext_error : ink_engine.ext.Error) : M Self :=
+        Definition from
+            `{State.Trait}
+            (ext_error : ink_engine.ext.Error)
+            : M Self :=
           match ext_error with
           | ink_engine.ext.Error.Unknown => Pure Self::["Unknown"]
           | ink_engine.ext.Error.CalleeTrapped => Pure Self::["CalleeTrapped"]
@@ -13333,6 +13952,7 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
         
         Definition default
+            `{State.Trait}
             (_ : unit)
             : M ink_env.engine.off_chain.impls.TopicsBuilder :=
           let* α0 := core.default.Default.default tt in
@@ -13360,6 +13980,7 @@ Module engine.
         Definition Output : Set := alloc.vec.Vec u8.
         
         Definition expect
+            `{State.Trait}
             (self : mut_ref Self)
             (_expected_topics : usize)
             : M unit :=
@@ -13370,6 +13991,7 @@ Module engine.
         }.
         
         Definition push_topic
+            `{State.Trait}
             (self : mut_ref Self)
             (topic_value : ref T)
             : M unit :=
@@ -13434,7 +14056,7 @@ Module engine.
           Notation.dot := push_topic;
         }.
         
-        Definition output (self : Self) : M ImplSelf.Output :=
+        Definition output `{State.Trait} (self : Self) : M ImplSelf.Output :=
           let* all := alloc.vec.Vec::["new"] tt in
           let* topics_len_compact :=
             let* α0 := self.["topics"].["len"] in
@@ -13473,6 +14095,7 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.EnvInstance.
         
         Definition get_property
+            `{State.Trait}
             (self : mut_ref Self)
             (ext_fn
               :
@@ -13496,6 +14119,7 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.EnvInstance.
         
         Definition set_contract_storage
+            `{State.Trait}
             (self : mut_ref Self)
             (key : ref K)
             (value : ref V)
@@ -13514,6 +14138,7 @@ Module engine.
         }.
         
         Definition get_contract_storage
+            `{State.Trait}
             (self : mut_ref Self)
             (key : ref K)
             : M (ink_env.error.Result (core.option.Option R)) :=
@@ -13553,6 +14178,7 @@ Module engine.
         }.
         
         Definition take_contract_storage
+            `{State.Trait}
             (self : mut_ref Self)
             (key : ref K)
             : M (ink_env.error.Result (core.option.Option R)) :=
@@ -13592,6 +14218,7 @@ Module engine.
         }.
         
         Definition contains_contract_storage
+            `{State.Trait}
             (self : mut_ref Self)
             (key : ref K)
             : M (core.option.Option u32) :=
@@ -13604,6 +14231,7 @@ Module engine.
         }.
         
         Definition clear_contract_storage
+            `{State.Trait}
             (self : mut_ref Self)
             (key : ref K)
             : M (core.option.Option u32) :=
@@ -13616,6 +14244,7 @@ Module engine.
         }.
         
         Definition decode_input
+            `{State.Trait}
             (self : mut_ref Self)
             : M (ink_env.error.Result T) :=
           let* α0 :=
@@ -13632,6 +14261,7 @@ Module engine.
         }.
         
         Definition return_value
+            `{State.Trait}
             (self : mut_ref Self)
             (_flags : ink_env.backend.ReturnFlags)
             (_return_value : ref R)
@@ -13650,6 +14280,7 @@ Module engine.
         }.
         
         Definition debug_message
+            `{State.Trait}
             (self : mut_ref Self)
             (message : ref str)
             : M unit :=
@@ -13660,6 +14291,7 @@ Module engine.
         }.
         
         Definition hash_bytes
+            `{State.Trait}
             (self : mut_ref Self)
             (input : ref Slice)
             (output : mut_ref ink_env.hash.HashOutput.Type)
@@ -13671,6 +14303,7 @@ Module engine.
         }.
         
         Definition hash_encoded
+            `{State.Trait}
             (self : mut_ref Self)
             (input : ref T)
             (output : mut_ref ink_env.hash.HashOutput.Type)
@@ -13685,6 +14318,7 @@ Module engine.
         }.
         
         Definition ecdsa_recover
+            `{State.Trait}
             (self : mut_ref Self)
             (signature : ref list u8)
             (message_hash : ref list u8)
@@ -13752,6 +14386,7 @@ Module engine.
         }.
         
         Definition ecdsa_to_eth_address
+            `{State.Trait}
             (self : mut_ref Self)
             (pubkey : ref list u8)
             (output : mut_ref list u8)
@@ -13786,6 +14421,7 @@ Module engine.
         }.
         
         Definition call_chain_extension
+            `{State.Trait}
             (self : mut_ref Self)
             (func_id : u32)
             (input : ref I)
@@ -13840,6 +14476,7 @@ Module engine.
         }.
         
         Definition set_code_hash
+            `{State.Trait}
             (self : mut_ref Self)
             (_code_hash : ref Slice)
             : M (ink_env.error.Result unit) :=
@@ -13893,7 +14530,10 @@ Module engine.
         Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
         Definition Self := ink_env.engine.off_chain.EnvInstance.
         
-        Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
+        Definition caller
+            `{State.Trait}
+            (self : mut_ref Self)
+            : M ImplE.AccountId :=
           let* α0 := self.["get_property"] ink_engine.ext.Engine::["caller"] in
           α0.["unwrap_or_else"]
             (fun error =>
@@ -13908,7 +14548,10 @@ Module engine.
           Notation.dot := caller;
         }.
         
-        Definition transferred_value (self : mut_ref Self) : M ImplE.Balance :=
+        Definition transferred_value
+            `{State.Trait}
+            (self : mut_ref Self)
+            : M ImplE.Balance :=
           let* α0 :=
             self.["get_property"]
               ink_engine.ext.Engine::["value_transferred"] in
@@ -13926,7 +14569,7 @@ Module engine.
           Notation.dot := transferred_value;
         }.
         
-        Definition gas_left (self : mut_ref Self) : M u64 :=
+        Definition gas_left `{State.Trait} (self : mut_ref Self) : M u64 :=
           let* α0 :=
             self.["get_property"] ink_engine.ext.Engine::["gas_left"] in
           α0.["unwrap_or_else"]
@@ -13942,7 +14585,10 @@ Module engine.
           Notation.dot := gas_left;
         }.
         
-        Definition block_timestamp (self : mut_ref Self) : M ImplE.Timestamp :=
+        Definition block_timestamp
+            `{State.Trait}
+            (self : mut_ref Self)
+            : M ImplE.Timestamp :=
           let* α0 :=
             self.["get_property"] ink_engine.ext.Engine::["block_timestamp"] in
           α0.["unwrap_or_else"]
@@ -13959,7 +14605,10 @@ Module engine.
           Notation.dot := block_timestamp;
         }.
         
-        Definition account_id (self : mut_ref Self) : M ImplE.AccountId :=
+        Definition account_id
+            `{State.Trait}
+            (self : mut_ref Self)
+            : M ImplE.AccountId :=
           let* α0 := self.["get_property"] ink_engine.ext.Engine::["address"] in
           α0.["unwrap_or_else"]
             (fun error =>
@@ -13974,7 +14623,10 @@ Module engine.
           Notation.dot := account_id;
         }.
         
-        Definition balance (self : mut_ref Self) : M ImplE.Balance :=
+        Definition balance
+            `{State.Trait}
+            (self : mut_ref Self)
+            : M ImplE.Balance :=
           let* α0 := self.["get_property"] ink_engine.ext.Engine::["balance"] in
           α0.["unwrap_or_else"]
             (fun error =>
@@ -13989,7 +14641,10 @@ Module engine.
           Notation.dot := balance;
         }.
         
-        Definition block_number (self : mut_ref Self) : M ImplE.BlockNumber :=
+        Definition block_number
+            `{State.Trait}
+            (self : mut_ref Self)
+            : M ImplE.BlockNumber :=
           let* α0 :=
             self.["get_property"] ink_engine.ext.Engine::["block_number"] in
           α0.["unwrap_or_else"]
@@ -14005,7 +14660,10 @@ Module engine.
           Notation.dot := block_number;
         }.
         
-        Definition minimum_balance (self : mut_ref Self) : M ImplE.Balance :=
+        Definition minimum_balance
+            `{State.Trait}
+            (self : mut_ref Self)
+            : M ImplE.Balance :=
           let* α0 :=
             self.["get_property"] ink_engine.ext.Engine::["minimum_balance"] in
           α0.["unwrap_or_else"]
@@ -14022,7 +14680,11 @@ Module engine.
           Notation.dot := minimum_balance;
         }.
         
-        Definition emit_event (self : mut_ref Self) (event : Event) : M unit :=
+        Definition emit_event
+            `{State.Trait}
+            (self : mut_ref Self)
+            (event : Event)
+            : M unit :=
           let* builder :=
             ink_env.engine.off_chain.impls.TopicsBuilder::["default"] tt in
           let* enc_topics :=
@@ -14042,6 +14704,7 @@ Module engine.
         }.
         
         Definition invoke_contract
+            `{State.Trait}
             (self : mut_ref Self)
             (params
               :
@@ -14074,6 +14737,7 @@ Module engine.
         }.
         
         Definition invoke_contract_delegate
+            `{State.Trait}
             (self : mut_ref Self)
             (params
               :
@@ -14100,6 +14764,7 @@ Module engine.
         }.
         
         Definition instantiate_contract
+            `{State.Trait}
             (self : mut_ref Self)
             (params
               :
@@ -14135,6 +14800,7 @@ Module engine.
         }.
         
         Definition terminate_contract
+            `{State.Trait}
             (self : mut_ref Self)
             (beneficiary : ImplE.AccountId)
             : M Empty_set :=
@@ -14148,6 +14814,7 @@ Module engine.
         }.
         
         Definition transfer
+            `{State.Trait}
             (self : mut_ref Self)
             (destination : ImplE.AccountId)
             (value : ImplE.Balance)
@@ -14167,6 +14834,7 @@ Module engine.
         }.
         
         Definition weight_to_fee
+            `{State.Trait}
             (self : mut_ref Self)
             (gas : u64)
             : M ImplE.Balance :=
@@ -14192,6 +14860,7 @@ Module engine.
         }.
         
         Definition is_contract
+            `{State.Trait}
             (self : mut_ref Self)
             (account : ref ImplE.AccountId)
             : M bool :=
@@ -14202,7 +14871,10 @@ Module engine.
           Notation.dot := is_contract;
         }.
         
-        Definition caller_is_origin (self : mut_ref Self) : M bool :=
+        Definition caller_is_origin
+            `{State.Trait}
+            (self : mut_ref Self)
+            : M bool :=
           let* α0 :=
             format_arguments::["new_v1"]
               (addr_of
@@ -14218,6 +14890,7 @@ Module engine.
         }.
         
         Definition code_hash
+            `{State.Trait}
             (self : mut_ref Self)
             (_account : ref ImplE.AccountId)
             : M (ink_env.error.Result ImplE.Hash) :=
@@ -14235,6 +14908,7 @@ Module engine.
         }.
         
         Definition own_code_hash
+            `{State.Trait}
             (self : mut_ref Self)
             : M (ink_env.error.Result ImplE.Hash) :=
           let* α0 :=
@@ -14251,6 +14925,7 @@ Module engine.
         }.
         
         Definition call_runtime
+            `{State.Trait}
             (self : mut_ref Self)
             (_call : ref Call)
             : M (ink_env.error.Result unit) :=
@@ -14322,6 +14997,7 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
         
         Definition clone
+            `{State.Trait}
             (self : ref Self)
             : M ink_env.engine.off_chain.test_api.EmittedEvent :=
           let* α0 := core.clone.Clone.clone (addr_of self.["topics"]) in
@@ -14343,6 +15019,7 @@ Module engine.
         Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
       
       Definition set_account_balance
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           (account_id : ImplT.AccountId)
@@ -14357,6 +15034,7 @@ Module engine.
             Pure tt).
       
       Definition get_account_balance
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           (account_id : ImplT.AccountId)
@@ -14369,6 +15047,7 @@ Module engine.
             α1.["map_err"] core.convert.Into.into).
       
       Definition register_chain_extension
+          `{State.Trait}
           {E : Set}
           `{ink_engine.chain_extension.ChainExtension.Trait E}
           (extension : E)
@@ -14381,12 +15060,16 @@ Module engine.
             Pure tt).
       
       Definition recorded_debug_messages
+          `{State.Trait}
           (_ : unit)
           : M ink_engine.test_api.RecordedDebugMessages :=
         ink_env.engine.OnInstance.on_instance
           (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
       
-      Definition set_clear_storage_disabled (_disable : bool) : M unit :=
+      Definition set_clear_storage_disabled
+          `{State.Trait}
+          (_disable : bool)
+          : M unit :=
         let* _ :=
           let* α0 :=
             format_arguments::["new_v1"]
@@ -14399,6 +15082,7 @@ Module engine.
         Pure tt.
       
       Definition advance_block
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           (_ : unit)
@@ -14409,6 +15093,7 @@ Module engine.
             Pure tt).
       
       Definition set_caller
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -14423,6 +15108,7 @@ Module engine.
             Pure tt).
       
       Definition set_callee
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -14437,6 +15123,7 @@ Module engine.
             Pure tt).
       
       Definition set_contract
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -14451,6 +15138,7 @@ Module engine.
             Pure tt).
       
       Definition is_contract
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -14463,6 +15151,7 @@ Module engine.
             instance.["engine"].["is_contract"] α0).
       
       Definition callee
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           (_ : unit)
@@ -14483,6 +15172,7 @@ Module engine.
                 core.panicking.panic_fmt α1)).
       
       Definition get_contract_storage_rw
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           (account_id : ref ImplT.AccountId)
@@ -14494,6 +15184,7 @@ Module engine.
             instance.["engine"].["get_contract_storage_rw"] α0).
       
       Definition set_value_transferred
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           (value : ImplT.Balance)
@@ -14504,6 +15195,7 @@ Module engine.
             Pure tt).
       
       Definition transfer_in
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           (value : ImplT.Balance)
@@ -14537,6 +15229,7 @@ Module engine.
         Pure tt.
       
       Definition count_used_storage_cells
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           (account_id : ref ImplT.AccountId)
@@ -14550,6 +15243,7 @@ Module engine.
             α1.["map_err"] core.convert.Into.into).
       
       Definition set_block_timestamp
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           (value : ImplT.Timestamp)
@@ -14560,6 +15254,7 @@ Module engine.
             Pure tt).
       
       Definition set_block_number
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           (value : ImplT.BlockNumber)
@@ -14570,6 +15265,7 @@ Module engine.
             Pure tt).
       
       Definition run_test
+          `{State.Trait}
           {T F : Set}
           `{ink_env.types.Environment.Trait T}
           `{core.ops.function.FnOnce.Trait
@@ -14626,6 +15322,7 @@ Module engine.
         f default_accounts.
       
       Definition default_accounts
+          `{State.Trait}
           {T : Set}
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -14684,13 +15381,14 @@ Module engine.
       End DefaultAccounts.
       Definition DefaultAccounts : Set := DefaultAccounts.t.
       
-      Definition recorded_events (_ : unit) : M OpaqueDef :=
+      Definition recorded_events `{State.Trait} (_ : unit) : M OpaqueDef :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
             let* α0 := instance.["engine"].["get_emitted_events"] in
             α0.["map"] (fun evt => evt.["into"])).
       
       Definition assert_contract_termination
+          `{State.Trait}
           {T F : Set}
           `{ink_env.types.Environment.Trait T}
           `{core.ops.function.FnMut.Trait unit F}
@@ -14784,7 +15482,10 @@ Module engine.
         Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
         Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
         
-        Definition from (evt : ink_engine.test_api.EmittedEvent) : M Self :=
+        Definition from
+            `{State.Trait}
+            (evt : ink_engine.test_api.EmittedEvent)
+            : M Self :=
           Pure
             {|
               ink_env.engine.off_chain.test_api.EmittedEvent.topics :=
@@ -14810,7 +15511,7 @@ Module engine.
       Module Impl_core_convert_From_for_ink_env_error_Error.
         Definition Self := ink_env.error.Error.
         
-        Definition from (err : ink_engine.Error) : M Self :=
+        Definition from `{State.Trait} (err : ink_engine.Error) : M Self :=
           let* e :=
             match err with
             | ink_engine.Error.Account acc =>
@@ -14841,7 +15542,10 @@ Module engine.
       Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
         Definition Self := ink_env.engine.off_chain.AccountError.
         
-        Definition from (err : ink_engine.types.AccountError) : M Self :=
+        Definition from
+            `{State.Trait}
+            (err : ink_engine.types.AccountError)
+            : M Self :=
           match err with
           | ink_engine.types.AccountError.Decoding e =>
             Pure (ink_env.engine.off_chain.AccountError.Decoding e)
@@ -14868,6 +15572,7 @@ Module engine.
         Definition Self := ink_env.error.Error.
         
         Definition from
+            `{State.Trait}
             (account_error : ink_engine.types.AccountError)
             : M Self :=
           let* α0 := account_error.["into"] in
@@ -14904,7 +15609,7 @@ Module engine.
       Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
-      Definition on_instance (f : F) : M R :=
+      Definition on_instance `{State.Trait} (f : F) : M R :=
         ink_env.engine.off_chain.on_instance.INSTANCE.["with"]
           (fun instance =>
             let* α0 := instance.["borrow_mut"] in
@@ -14933,6 +15638,7 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.OffChainError.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -14965,6 +15671,7 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.OffChainError.
       
       Definition from
+          `{State.Trait}
           (original : ink_env.engine.off_chain.AccountError)
           : M ink_env.engine.off_chain.OffChainError :=
         Pure (ink_env.engine.off_chain.OffChainError.Account original).
@@ -14995,6 +15702,7 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.OffChainError.
       
       Definition eq
+          `{State.Trait}
           (self : ref Self)
           (other : ref ink_env.engine.off_chain.OffChainError)
           : M bool :=
@@ -15035,7 +15743,10 @@ Module engine.
     Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
       Definition Self := ink_env.engine.off_chain.OffChainError.
       
-      Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+      Definition assert_receiver_is_total_eq
+          `{State.Trait}
+          (self : ref Self)
+          : M unit :=
         let _ := tt in
         Pure tt.
       
@@ -15060,6 +15771,7 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.AccountError.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -15091,6 +15803,7 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.AccountError.
       
       Definition from
+          `{State.Trait}
           (original : parity_scale_codec.error.Error)
           : M ink_env.engine.off_chain.AccountError :=
         Pure (ink_env.engine.off_chain.AccountError.Decoding original).
@@ -15121,6 +15834,7 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.AccountError.
       
       Definition eq
+          `{State.Trait}
           (self : ref Self)
           (other : ref ink_env.engine.off_chain.AccountError)
           : M bool :=
@@ -15167,7 +15881,10 @@ Module engine.
     Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
       Definition Self := ink_env.engine.off_chain.AccountError.
       
-      Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+      Definition assert_receiver_is_total_eq
+          `{State.Trait}
+          (self : ref Self)
+          : M unit :=
         let _ := tt in
         let _ := tt in
         Pure tt.
@@ -15184,6 +15901,7 @@ Module engine.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition decode_instantiate_result
+      `{State.Trait}
       {I E ContractRef R : Set}
       `{parity_scale_codec.codec.Input.Trait I}
       `{ink_env.types.Environment.Trait E}
@@ -15221,6 +15939,7 @@ Module engine.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition decode_instantiate_err
+      `{State.Trait}
       {I E ContractRef R : Set}
       `{parity_scale_codec.codec.Input.Trait I}
       `{ink_env.types.Environment.Trait E}
@@ -15346,6 +16065,7 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Definition fmt
+          `{State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
           : M core.fmt.Result :=
@@ -15369,6 +16089,7 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Definition clone
+          `{State.Trait}
           (self : ref Self)
           : M ink_env.engine.off_chain.call_data.CallData :=
         let* α0 := core.clone.Clone.clone (addr_of self.["bytes"]) in
@@ -15397,6 +16118,7 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Definition eq
+          `{State.Trait}
           (self : ref Self)
           (other : ref ink_env.engine.off_chain.call_data.CallData)
           : M bool :=
@@ -15423,7 +16145,10 @@ Module off_chain.
     Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
-      Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+      Definition assert_receiver_is_total_eq
+          `{State.Trait}
+          (self : ref Self)
+          : M unit :=
         let _ := tt in
         Pure tt.
       
@@ -15439,7 +16164,10 @@ Module off_chain.
     Module Impl_ink_env_engine_off_chain_call_data_CallData_2.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
-      Definition new (selector : ink_env.call.selector.Selector) : M Self :=
+      Definition new
+          `{State.Trait}
+          (selector : ink_env.call.selector.Selector)
+          : M Self :=
         let* bytes := selector.["to_bytes"] in
         let* α0 :=
           alloc.boxed.Box::["new"] [ bytes[0]; bytes[1]; bytes[2]; bytes[3] ] in
@@ -15451,7 +16179,11 @@ Module off_chain.
         Notation.double_colon := new;
       }.
       
-      Definition push_arg (self : mut_ref Self) (arg : ref A) : M unit :=
+      Definition push_arg
+          `{State.Trait}
+          (self : mut_ref Self)
+          (arg : ref A)
+          : M unit :=
         arg.["encode_to"] (addr_of self.["bytes"]).
       
       Global Instance Method_push_arg : Notation.Dot "push_arg" := {
@@ -15459,6 +16191,7 @@ Module off_chain.
       }.
       
       Definition selector
+          `{State.Trait}
           (self : ref Self)
           : M ink_env.call.selector.Selector :=
         let* _ :=
@@ -15487,7 +16220,7 @@ Module off_chain.
         Notation.dot := selector;
       }.
       
-      Definition params (self : ref Self) : M (ref Slice) :=
+      Definition params `{State.Trait} (self : ref Self) : M (ref Slice) :=
         let* _ :=
           if (true : bool) then
             let* _ :=
@@ -15507,7 +16240,7 @@ Module off_chain.
         Notation.dot := params;
       }.
       
-      Definition to_bytes (self : ref Self) : M (ref Slice) :=
+      Definition to_bytes `{State.Trait} (self : ref Self) : M (ref Slice) :=
         Pure (addr_of self.["bytes"]).
       
       Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
@@ -15519,14 +16252,18 @@ Module off_chain.
       Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
-      Definition size_hint (self : ref Self) : M usize :=
+      Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
         self.["bytes"].["len"].
       
       Global Instance Method_size_hint : Notation.Dot "size_hint" := {
         Notation.dot := size_hint;
       }.
       
-      Definition encode_to (self : ref Self) (dest : mut_ref T) : M unit :=
+      Definition encode_to
+          `{State.Trait}
+          (self : ref Self)
+          (dest : mut_ref T)
+          : M unit :=
         let* _ :=
           let* α0 := self.["bytes"].["as_slice"] in
           dest.["write"] α0 in
@@ -15546,6 +16283,7 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Definition decode
+          `{State.Trait}
           (input : mut_ref I)
           : M (core.result.Result Self parity_scale_codec.error.Error) :=
         let* remaining_len :=
@@ -15596,6 +16334,7 @@ Module off_chain.
       Definition Self := ink_env.hash.Blake2x128.
       
       Definition hash
+          `{State.Trait}
           (input : ref Slice)
           (output : mut_ref ink_env.hash.HashOutput.Type)
           : M unit :=
@@ -15626,6 +16365,7 @@ Module off_chain.
       Definition Self := ink_env.hash.Blake2x256.
       
       Definition hash
+          `{State.Trait}
           (input : ref Slice)
           (output : mut_ref ink_env.hash.HashOutput.Type)
           : M unit :=
@@ -15656,6 +16396,7 @@ Module off_chain.
       Definition Self := ink_env.hash.Sha2x256.
       
       Definition hash
+          `{State.Trait}
           (input : ref Slice)
           (output : mut_ref ink_env.hash.HashOutput.Type)
           : M unit :=
@@ -15686,6 +16427,7 @@ Module off_chain.
       Definition Self := ink_env.hash.Keccak256.
       
       Definition hash
+          `{State.Trait}
           (input : ref Slice)
           (output : mut_ref ink_env.hash.HashOutput.Type)
           : M unit :=
@@ -15715,7 +16457,10 @@ Module off_chain.
     Module Impl_core_convert_From_for_ink_env_error_Error.
       Definition Self := ink_env.error.Error.
       
-      Definition from (ext_error : ink_engine.ext.Error) : M Self :=
+      Definition from
+          `{State.Trait}
+          (ext_error : ink_engine.ext.Error)
+          : M Self :=
         match ext_error with
         | ink_engine.ext.Error.Unknown => Pure Self::["Unknown"]
         | ink_engine.ext.Error.CalleeTrapped => Pure Self::["CalleeTrapped"]
@@ -15760,6 +16505,7 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
       
       Definition default
+          `{State.Trait}
           (_ : unit)
           : M ink_env.engine.off_chain.impls.TopicsBuilder :=
         let* α0 := core.default.Default.default tt in
@@ -15787,6 +16533,7 @@ Module off_chain.
       Definition Output : Set := alloc.vec.Vec u8.
       
       Definition expect
+          `{State.Trait}
           (self : mut_ref Self)
           (_expected_topics : usize)
           : M unit :=
@@ -15797,6 +16544,7 @@ Module off_chain.
       }.
       
       Definition push_topic
+          `{State.Trait}
           (self : mut_ref Self)
           (topic_value : ref T)
           : M unit :=
@@ -15856,7 +16604,7 @@ Module off_chain.
         Notation.dot := push_topic;
       }.
       
-      Definition output (self : Self) : M ImplSelf.Output :=
+      Definition output `{State.Trait} (self : Self) : M ImplSelf.Output :=
         let* all := alloc.vec.Vec::["new"] tt in
         let* topics_len_compact :=
           let* α0 := self.["topics"].["len"] in
@@ -15895,6 +16643,7 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
       Definition get_property
+          `{State.Trait}
           (self : mut_ref Self)
           (ext_fn
             :
@@ -15918,6 +16667,7 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
       Definition set_contract_storage
+          `{State.Trait}
           (self : mut_ref Self)
           (key : ref K)
           (value : ref V)
@@ -15936,6 +16686,7 @@ Module off_chain.
       }.
       
       Definition get_contract_storage
+          `{State.Trait}
           (self : mut_ref Self)
           (key : ref K)
           : M (ink_env.error.Result (core.option.Option R)) :=
@@ -15975,6 +16726,7 @@ Module off_chain.
       }.
       
       Definition take_contract_storage
+          `{State.Trait}
           (self : mut_ref Self)
           (key : ref K)
           : M (ink_env.error.Result (core.option.Option R)) :=
@@ -16014,6 +16766,7 @@ Module off_chain.
       }.
       
       Definition contains_contract_storage
+          `{State.Trait}
           (self : mut_ref Self)
           (key : ref K)
           : M (core.option.Option u32) :=
@@ -16026,6 +16779,7 @@ Module off_chain.
       }.
       
       Definition clear_contract_storage
+          `{State.Trait}
           (self : mut_ref Self)
           (key : ref K)
           : M (core.option.Option u32) :=
@@ -16038,6 +16792,7 @@ Module off_chain.
       }.
       
       Definition decode_input
+          `{State.Trait}
           (self : mut_ref Self)
           : M (ink_env.error.Result T) :=
         let* α0 :=
@@ -16053,6 +16808,7 @@ Module off_chain.
       }.
       
       Definition return_value
+          `{State.Trait}
           (self : mut_ref Self)
           (_flags : ink_env.backend.ReturnFlags)
           (_return_value : ref R)
@@ -16071,6 +16827,7 @@ Module off_chain.
       }.
       
       Definition debug_message
+          `{State.Trait}
           (self : mut_ref Self)
           (message : ref str)
           : M unit :=
@@ -16081,6 +16838,7 @@ Module off_chain.
       }.
       
       Definition hash_bytes
+          `{State.Trait}
           (self : mut_ref Self)
           (input : ref Slice)
           (output : mut_ref ink_env.hash.HashOutput.Type)
@@ -16092,6 +16850,7 @@ Module off_chain.
       }.
       
       Definition hash_encoded
+          `{State.Trait}
           (self : mut_ref Self)
           (input : ref T)
           (output : mut_ref ink_env.hash.HashOutput.Type)
@@ -16106,6 +16865,7 @@ Module off_chain.
       }.
       
       Definition ecdsa_recover
+          `{State.Trait}
           (self : mut_ref Self)
           (signature : ref list u8)
           (message_hash : ref list u8)
@@ -16172,6 +16932,7 @@ Module off_chain.
       }.
       
       Definition ecdsa_to_eth_address
+          `{State.Trait}
           (self : mut_ref Self)
           (pubkey : ref list u8)
           (output : mut_ref list u8)
@@ -16206,6 +16967,7 @@ Module off_chain.
       }.
       
       Definition call_chain_extension
+          `{State.Trait}
           (self : mut_ref Self)
           (func_id : u32)
           (input : ref I)
@@ -16260,6 +17022,7 @@ Module off_chain.
       }.
       
       Definition set_code_hash
+          `{State.Trait}
           (self : mut_ref Self)
           (_code_hash : ref Slice)
           : M (ink_env.error.Result unit) :=
@@ -16305,7 +17068,10 @@ Module off_chain.
       Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
-      Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
+      Definition caller
+          `{State.Trait}
+          (self : mut_ref Self)
+          : M ImplE.AccountId :=
         let* α0 := self.["get_property"] ink_engine.ext.Engine::["caller"] in
         α0.["unwrap_or_else"]
           (fun error =>
@@ -16320,7 +17086,10 @@ Module off_chain.
         Notation.dot := caller;
       }.
       
-      Definition transferred_value (self : mut_ref Self) : M ImplE.Balance :=
+      Definition transferred_value
+          `{State.Trait}
+          (self : mut_ref Self)
+          : M ImplE.Balance :=
         let* α0 :=
           self.["get_property"] ink_engine.ext.Engine::["value_transferred"] in
         α0.["unwrap_or_else"]
@@ -16337,7 +17106,7 @@ Module off_chain.
         Notation.dot := transferred_value;
       }.
       
-      Definition gas_left (self : mut_ref Self) : M u64 :=
+      Definition gas_left `{State.Trait} (self : mut_ref Self) : M u64 :=
         let* α0 := self.["get_property"] ink_engine.ext.Engine::["gas_left"] in
         α0.["unwrap_or_else"]
           (fun error =>
@@ -16352,7 +17121,10 @@ Module off_chain.
         Notation.dot := gas_left;
       }.
       
-      Definition block_timestamp (self : mut_ref Self) : M ImplE.Timestamp :=
+      Definition block_timestamp
+          `{State.Trait}
+          (self : mut_ref Self)
+          : M ImplE.Timestamp :=
         let* α0 :=
           self.["get_property"] ink_engine.ext.Engine::["block_timestamp"] in
         α0.["unwrap_or_else"]
@@ -16369,7 +17141,10 @@ Module off_chain.
         Notation.dot := block_timestamp;
       }.
       
-      Definition account_id (self : mut_ref Self) : M ImplE.AccountId :=
+      Definition account_id
+          `{State.Trait}
+          (self : mut_ref Self)
+          : M ImplE.AccountId :=
         let* α0 := self.["get_property"] ink_engine.ext.Engine::["address"] in
         α0.["unwrap_or_else"]
           (fun error =>
@@ -16384,7 +17159,10 @@ Module off_chain.
         Notation.dot := account_id;
       }.
       
-      Definition balance (self : mut_ref Self) : M ImplE.Balance :=
+      Definition balance
+          `{State.Trait}
+          (self : mut_ref Self)
+          : M ImplE.Balance :=
         let* α0 := self.["get_property"] ink_engine.ext.Engine::["balance"] in
         α0.["unwrap_or_else"]
           (fun error =>
@@ -16399,7 +17177,10 @@ Module off_chain.
         Notation.dot := balance;
       }.
       
-      Definition block_number (self : mut_ref Self) : M ImplE.BlockNumber :=
+      Definition block_number
+          `{State.Trait}
+          (self : mut_ref Self)
+          : M ImplE.BlockNumber :=
         let* α0 :=
           self.["get_property"] ink_engine.ext.Engine::["block_number"] in
         α0.["unwrap_or_else"]
@@ -16415,7 +17196,10 @@ Module off_chain.
         Notation.dot := block_number;
       }.
       
-      Definition minimum_balance (self : mut_ref Self) : M ImplE.Balance :=
+      Definition minimum_balance
+          `{State.Trait}
+          (self : mut_ref Self)
+          : M ImplE.Balance :=
         let* α0 :=
           self.["get_property"] ink_engine.ext.Engine::["minimum_balance"] in
         α0.["unwrap_or_else"]
@@ -16432,7 +17216,11 @@ Module off_chain.
         Notation.dot := minimum_balance;
       }.
       
-      Definition emit_event (self : mut_ref Self) (event : Event) : M unit :=
+      Definition emit_event
+          `{State.Trait}
+          (self : mut_ref Self)
+          (event : Event)
+          : M unit :=
         let* builder :=
           ink_env.engine.off_chain.impls.TopicsBuilder::["default"] tt in
         let* enc_topics :=
@@ -16452,6 +17240,7 @@ Module off_chain.
       }.
       
       Definition invoke_contract
+          `{State.Trait}
           (self : mut_ref Self)
           (params
             :
@@ -16484,6 +17273,7 @@ Module off_chain.
       }.
       
       Definition invoke_contract_delegate
+          `{State.Trait}
           (self : mut_ref Self)
           (params
             :
@@ -16510,6 +17300,7 @@ Module off_chain.
       }.
       
       Definition instantiate_contract
+          `{State.Trait}
           (self : mut_ref Self)
           (params
             :
@@ -16545,6 +17336,7 @@ Module off_chain.
       }.
       
       Definition terminate_contract
+          `{State.Trait}
           (self : mut_ref Self)
           (beneficiary : ImplE.AccountId)
           : M Empty_set :=
@@ -16558,6 +17350,7 @@ Module off_chain.
       }.
       
       Definition transfer
+          `{State.Trait}
           (self : mut_ref Self)
           (destination : ImplE.AccountId)
           (value : ImplE.Balance)
@@ -16577,6 +17370,7 @@ Module off_chain.
       }.
       
       Definition weight_to_fee
+          `{State.Trait}
           (self : mut_ref Self)
           (gas : u64)
           : M ImplE.Balance :=
@@ -16602,6 +17396,7 @@ Module off_chain.
       }.
       
       Definition is_contract
+          `{State.Trait}
           (self : mut_ref Self)
           (account : ref ImplE.AccountId)
           : M bool :=
@@ -16612,7 +17407,10 @@ Module off_chain.
         Notation.dot := is_contract;
       }.
       
-      Definition caller_is_origin (self : mut_ref Self) : M bool :=
+      Definition caller_is_origin
+          `{State.Trait}
+          (self : mut_ref Self)
+          : M bool :=
         let* α0 :=
           format_arguments::["new_v1"]
             (addr_of
@@ -16628,6 +17426,7 @@ Module off_chain.
       }.
       
       Definition code_hash
+          `{State.Trait}
           (self : mut_ref Self)
           (_account : ref ImplE.AccountId)
           : M (ink_env.error.Result ImplE.Hash) :=
@@ -16645,6 +17444,7 @@ Module off_chain.
       }.
       
       Definition own_code_hash
+          `{State.Trait}
           (self : mut_ref Self)
           : M (ink_env.error.Result ImplE.Hash) :=
         let* α0 :=
@@ -16661,6 +17461,7 @@ Module off_chain.
       }.
       
       Definition call_runtime
+          `{State.Trait}
           (self : mut_ref Self)
           (_call : ref Call)
           : M (ink_env.error.Result unit) :=
@@ -16730,6 +17531,7 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
       
       Definition clone
+          `{State.Trait}
           (self : ref Self)
           : M ink_env.engine.off_chain.test_api.EmittedEvent :=
         let* α0 := core.clone.Clone.clone (addr_of self.["topics"]) in
@@ -16751,6 +17553,7 @@ Module off_chain.
       Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
     
     Definition set_account_balance
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         (account_id : ImplT.AccountId)
@@ -16765,6 +17568,7 @@ Module off_chain.
           Pure tt).
     
     Definition get_account_balance
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         (account_id : ImplT.AccountId)
@@ -16777,6 +17581,7 @@ Module off_chain.
           α1.["map_err"] core.convert.Into.into).
     
     Definition register_chain_extension
+        `{State.Trait}
         {E : Set}
         `{ink_engine.chain_extension.ChainExtension.Trait E}
         (extension : E)
@@ -16789,12 +17594,16 @@ Module off_chain.
           Pure tt).
     
     Definition recorded_debug_messages
+        `{State.Trait}
         (_ : unit)
         : M ink_engine.test_api.RecordedDebugMessages :=
       ink_env.engine.OnInstance.on_instance
         (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
     
-    Definition set_clear_storage_disabled (_disable : bool) : M unit :=
+    Definition set_clear_storage_disabled
+        `{State.Trait}
+        (_disable : bool)
+        : M unit :=
       let* _ :=
         let* α0 :=
           format_arguments::["new_v1"]
@@ -16807,6 +17616,7 @@ Module off_chain.
       Pure tt.
     
     Definition advance_block
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         (_ : unit)
@@ -16817,6 +17627,7 @@ Module off_chain.
           Pure tt).
     
     Definition set_caller
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -16831,6 +17642,7 @@ Module off_chain.
           Pure tt).
     
     Definition set_callee
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -16845,6 +17657,7 @@ Module off_chain.
           Pure tt).
     
     Definition set_contract
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -16859,6 +17672,7 @@ Module off_chain.
           Pure tt).
     
     Definition is_contract
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -16871,6 +17685,7 @@ Module off_chain.
           instance.["engine"].["is_contract"] α0).
     
     Definition callee
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         (_ : unit)
@@ -16891,6 +17706,7 @@ Module off_chain.
               core.panicking.panic_fmt α1)).
     
     Definition get_contract_storage_rw
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         (account_id : ref ImplT.AccountId)
@@ -16902,6 +17718,7 @@ Module off_chain.
           instance.["engine"].["get_contract_storage_rw"] α0).
     
     Definition set_value_transferred
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         (value : ImplT.Balance)
@@ -16912,6 +17729,7 @@ Module off_chain.
           Pure tt).
     
     Definition transfer_in
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         (value : ImplT.Balance)
@@ -16945,6 +17763,7 @@ Module off_chain.
       Pure tt.
     
     Definition count_used_storage_cells
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         (account_id : ref ImplT.AccountId)
@@ -16958,6 +17777,7 @@ Module off_chain.
           α1.["map_err"] core.convert.Into.into).
     
     Definition set_block_timestamp
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         (value : ImplT.Timestamp)
@@ -16968,6 +17788,7 @@ Module off_chain.
           Pure tt).
     
     Definition set_block_number
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         (value : ImplT.BlockNumber)
@@ -16978,6 +17799,7 @@ Module off_chain.
           Pure tt).
     
     Definition run_test
+        `{State.Trait}
         {T F : Set}
         `{ink_env.types.Environment.Trait T}
         `{core.ops.function.FnOnce.Trait
@@ -17034,6 +17856,7 @@ Module off_chain.
       f default_accounts.
     
     Definition default_accounts
+        `{State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -17092,13 +17915,14 @@ Module off_chain.
     End DefaultAccounts.
     Definition DefaultAccounts : Set := DefaultAccounts.t.
     
-    Definition recorded_events (_ : unit) : M OpaqueDef :=
+    Definition recorded_events `{State.Trait} (_ : unit) : M OpaqueDef :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
           let* α0 := instance.["engine"].["get_emitted_events"] in
           α0.["map"] (fun evt => evt.["into"])).
     
     Definition assert_contract_termination
+        `{State.Trait}
         {T F : Set}
         `{ink_env.types.Environment.Trait T}
         `{core.ops.function.FnMut.Trait unit F}
@@ -17192,7 +18016,10 @@ Module off_chain.
       Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
       Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
       
-      Definition from (evt : ink_engine.test_api.EmittedEvent) : M Self :=
+      Definition from
+          `{State.Trait}
+          (evt : ink_engine.test_api.EmittedEvent)
+          : M Self :=
         Pure
           {|
             ink_env.engine.off_chain.test_api.EmittedEvent.topics :=
@@ -17217,7 +18044,7 @@ Module off_chain.
     Module Impl_core_convert_From_for_ink_env_error_Error.
       Definition Self := ink_env.error.Error.
       
-      Definition from (err : ink_engine.Error) : M Self :=
+      Definition from `{State.Trait} (err : ink_engine.Error) : M Self :=
         let* e :=
           match err with
           | ink_engine.Error.Account acc =>
@@ -17248,7 +18075,10 @@ Module off_chain.
     Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
       Definition Self := ink_env.engine.off_chain.AccountError.
       
-      Definition from (err : ink_engine.types.AccountError) : M Self :=
+      Definition from
+          `{State.Trait}
+          (err : ink_engine.types.AccountError)
+          : M Self :=
         match err with
         | ink_engine.types.AccountError.Decoding e =>
           Pure (ink_env.engine.off_chain.AccountError.Decoding e)
@@ -17273,6 +18103,7 @@ Module off_chain.
       Definition Self := ink_env.error.Error.
       
       Definition from
+          `{State.Trait}
           (account_error : ink_engine.types.AccountError)
           : M Self :=
         let* α0 := account_error.["into"] in
@@ -17307,7 +18138,7 @@ Module off_chain.
     Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
-    Definition on_instance (f : F) : M R :=
+    Definition on_instance `{State.Trait} (f : F) : M R :=
       ink_env.engine.off_chain.on_instance.INSTANCE.["with"]
         (fun instance =>
           let* α0 := instance.["borrow_mut"] in
@@ -17336,6 +18167,7 @@ Module off_chain.
     Definition Self := ink_env.engine.off_chain.OffChainError.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -17366,6 +18198,7 @@ Module off_chain.
     Definition Self := ink_env.engine.off_chain.OffChainError.
     
     Definition from
+        `{State.Trait}
         (original : ink_env.engine.off_chain.AccountError)
         : M ink_env.engine.off_chain.OffChainError :=
       Pure (ink_env.engine.off_chain.OffChainError.Account original).
@@ -17396,6 +18229,7 @@ Module off_chain.
     Definition Self := ink_env.engine.off_chain.OffChainError.
     
     Definition eq
+        `{State.Trait}
         (self : ref Self)
         (other : ref ink_env.engine.off_chain.OffChainError)
         : M bool :=
@@ -17435,7 +18269,10 @@ Module off_chain.
   Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
     Definition Self := ink_env.engine.off_chain.OffChainError.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    Definition assert_receiver_is_total_eq
+        `{State.Trait}
+        (self : ref Self)
+        : M unit :=
       let _ := tt in
       Pure tt.
     
@@ -17460,6 +18297,7 @@ Module off_chain.
     Definition Self := ink_env.engine.off_chain.AccountError.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -17491,6 +18329,7 @@ Module off_chain.
     Definition Self := ink_env.engine.off_chain.AccountError.
     
     Definition from
+        `{State.Trait}
         (original : parity_scale_codec.error.Error)
         : M ink_env.engine.off_chain.AccountError :=
       Pure (ink_env.engine.off_chain.AccountError.Decoding original).
@@ -17519,6 +18358,7 @@ Module off_chain.
     Definition Self := ink_env.engine.off_chain.AccountError.
     
     Definition eq
+        `{State.Trait}
         (self : ref Self)
         (other : ref ink_env.engine.off_chain.AccountError)
         : M bool :=
@@ -17565,7 +18405,10 @@ Module off_chain.
   Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
     Definition Self := ink_env.engine.off_chain.AccountError.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    Definition assert_receiver_is_total_eq
+        `{State.Trait}
+        (self : ref Self)
+        : M unit :=
       let _ := tt in
       let _ := tt in
       Pure tt.
@@ -17596,6 +18439,7 @@ Module call_data.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -17618,6 +18462,7 @@ Module call_data.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Definition clone
+        `{State.Trait}
         (self : ref Self)
         : M ink_env.engine.off_chain.call_data.CallData :=
       let* α0 := core.clone.Clone.clone (addr_of self.["bytes"]) in
@@ -17646,6 +18491,7 @@ Module call_data.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Definition eq
+        `{State.Trait}
         (self : ref Self)
         (other : ref ink_env.engine.off_chain.call_data.CallData)
         : M bool :=
@@ -17672,7 +18518,10 @@ Module call_data.
   Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    Definition assert_receiver_is_total_eq
+        `{State.Trait}
+        (self : ref Self)
+        : M unit :=
       let _ := tt in
       Pure tt.
     
@@ -17688,7 +18537,10 @@ Module call_data.
   Module Impl_ink_env_engine_off_chain_call_data_CallData_3.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
-    Definition new (selector : ink_env.call.selector.Selector) : M Self :=
+    Definition new
+        `{State.Trait}
+        (selector : ink_env.call.selector.Selector)
+        : M Self :=
       let* bytes := selector.["to_bytes"] in
       let* α0 :=
         alloc.boxed.Box::["new"] [ bytes[0]; bytes[1]; bytes[2]; bytes[3] ] in
@@ -17700,14 +18552,21 @@ Module call_data.
       Notation.double_colon := new;
     }.
     
-    Definition push_arg (self : mut_ref Self) (arg : ref A) : M unit :=
+    Definition push_arg
+        `{State.Trait}
+        (self : mut_ref Self)
+        (arg : ref A)
+        : M unit :=
       arg.["encode_to"] (addr_of self.["bytes"]).
     
     Global Instance Method_push_arg : Notation.Dot "push_arg" := {
       Notation.dot := push_arg;
     }.
     
-    Definition selector (self : ref Self) : M ink_env.call.selector.Selector :=
+    Definition selector
+        `{State.Trait}
+        (self : ref Self)
+        : M ink_env.call.selector.Selector :=
       let* _ :=
         if (true : bool) then
           let* _ :=
@@ -17734,7 +18593,7 @@ Module call_data.
       Notation.dot := selector;
     }.
     
-    Definition params (self : ref Self) : M (ref Slice) :=
+    Definition params `{State.Trait} (self : ref Self) : M (ref Slice) :=
       let* _ :=
         if (true : bool) then
           let* _ :=
@@ -17754,7 +18613,7 @@ Module call_data.
       Notation.dot := params;
     }.
     
-    Definition to_bytes (self : ref Self) : M (ref Slice) :=
+    Definition to_bytes `{State.Trait} (self : ref Self) : M (ref Slice) :=
       Pure (addr_of self.["bytes"]).
     
     Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
@@ -17766,13 +18625,18 @@ Module call_data.
     Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
-    Definition size_hint (self : ref Self) : M usize := self.["bytes"].["len"].
+    Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
+      self.["bytes"].["len"].
     
     Global Instance Method_size_hint : Notation.Dot "size_hint" := {
       Notation.dot := size_hint;
     }.
     
-    Definition encode_to (self : ref Self) (dest : mut_ref T) : M unit :=
+    Definition encode_to
+        `{State.Trait}
+        (self : ref Self)
+        (dest : mut_ref T)
+        : M unit :=
       let* _ :=
         let* α0 := self.["bytes"].["as_slice"] in
         dest.["write"] α0 in
@@ -17792,6 +18656,7 @@ Module call_data.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Definition decode
+        `{State.Trait}
         (input : mut_ref I)
         : M (core.result.Result Self parity_scale_codec.error.Error) :=
       let* remaining_len :=
@@ -17850,6 +18715,7 @@ Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -17872,6 +18738,7 @@ Module Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
   Definition clone
+      `{State.Trait}
       (self : ref Self)
       : M ink_env.engine.off_chain.call_data.CallData :=
     let* α0 := core.clone.Clone.clone (addr_of self.["bytes"]) in
@@ -17899,6 +18766,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
   Definition eq
+      `{State.Trait}
       (self : ref Self)
       (other : ref ink_env.engine.off_chain.call_data.CallData)
       : M bool :=
@@ -17925,7 +18793,10 @@ End
 Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+  Definition assert_receiver_is_total_eq
+      `{State.Trait}
+      (self : ref Self)
+      : M unit :=
     let _ := tt in
     Pure tt.
   
@@ -17941,7 +18812,10 @@ End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
 Module Impl_ink_env_engine_off_chain_call_data_CallData_4.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
-  Definition new (selector : ink_env.call.selector.Selector) : M Self :=
+  Definition new
+      `{State.Trait}
+      (selector : ink_env.call.selector.Selector)
+      : M Self :=
     let* bytes := selector.["to_bytes"] in
     let* α0 :=
       alloc.boxed.Box::["new"] [ bytes[0]; bytes[1]; bytes[2]; bytes[3] ] in
@@ -17952,14 +18826,21 @@ Module Impl_ink_env_engine_off_chain_call_data_CallData_4.
     Notation.double_colon := new;
   }.
   
-  Definition push_arg (self : mut_ref Self) (arg : ref A) : M unit :=
+  Definition push_arg
+      `{State.Trait}
+      (self : mut_ref Self)
+      (arg : ref A)
+      : M unit :=
     arg.["encode_to"] (addr_of self.["bytes"]).
   
   Global Instance Method_push_arg : Notation.Dot "push_arg" := {
     Notation.dot := push_arg;
   }.
   
-  Definition selector (self : ref Self) : M ink_env.call.selector.Selector :=
+  Definition selector
+      `{State.Trait}
+      (self : ref Self)
+      : M ink_env.call.selector.Selector :=
     let* _ :=
       if (true : bool) then
         let* _ :=
@@ -17986,7 +18867,7 @@ Module Impl_ink_env_engine_off_chain_call_data_CallData_4.
     Notation.dot := selector;
   }.
   
-  Definition params (self : ref Self) : M (ref Slice) :=
+  Definition params `{State.Trait} (self : ref Self) : M (ref Slice) :=
     let* _ :=
       if (true : bool) then
         let* _ :=
@@ -18006,7 +18887,7 @@ Module Impl_ink_env_engine_off_chain_call_data_CallData_4.
     Notation.dot := params;
   }.
   
-  Definition to_bytes (self : ref Self) : M (ref Slice) :=
+  Definition to_bytes `{State.Trait} (self : ref Self) : M (ref Slice) :=
     Pure (addr_of self.["bytes"]).
   
   Global Instance Method_to_bytes : Notation.Dot "to_bytes" := {
@@ -18018,13 +18899,18 @@ Module
   Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
-  Definition size_hint (self : ref Self) : M usize := self.["bytes"].["len"].
+  Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
+    self.["bytes"].["len"].
   
   Global Instance Method_size_hint : Notation.Dot "size_hint" := {
     Notation.dot := size_hint;
   }.
   
-  Definition encode_to (self : ref Self) (dest : mut_ref T) : M unit :=
+  Definition encode_to
+      `{State.Trait}
+      (self : ref Self)
+      (dest : mut_ref T)
+      : M unit :=
     let* _ :=
       let* α0 := self.["bytes"].["as_slice"] in
       dest.["write"] α0 in
@@ -18044,6 +18930,7 @@ Module
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
   Definition decode
+      `{State.Trait}
       (input : mut_ref I)
       : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* remaining_len :=
@@ -18093,6 +18980,7 @@ Module impls.
     Definition Self := ink_env.hash.Blake2x128.
     
     Definition hash
+        `{State.Trait}
         (input : ref Slice)
         (output : mut_ref ink_env.hash.HashOutput.Type)
         : M unit :=
@@ -18123,6 +19011,7 @@ Module impls.
     Definition Self := ink_env.hash.Blake2x256.
     
     Definition hash
+        `{State.Trait}
         (input : ref Slice)
         (output : mut_ref ink_env.hash.HashOutput.Type)
         : M unit :=
@@ -18153,6 +19042,7 @@ Module impls.
     Definition Self := ink_env.hash.Sha2x256.
     
     Definition hash
+        `{State.Trait}
         (input : ref Slice)
         (output : mut_ref ink_env.hash.HashOutput.Type)
         : M unit :=
@@ -18183,6 +19073,7 @@ Module impls.
     Definition Self := ink_env.hash.Keccak256.
     
     Definition hash
+        `{State.Trait}
         (input : ref Slice)
         (output : mut_ref ink_env.hash.HashOutput.Type)
         : M unit :=
@@ -18212,7 +19103,10 @@ Module impls.
   Module Impl_core_convert_From_for_ink_env_error_Error.
     Definition Self := ink_env.error.Error.
     
-    Definition from (ext_error : ink_engine.ext.Error) : M Self :=
+    Definition from
+        `{State.Trait}
+        (ext_error : ink_engine.ext.Error)
+        : M Self :=
       match ext_error with
       | ink_engine.ext.Error.Unknown => Pure Self::["Unknown"]
       | ink_engine.ext.Error.CalleeTrapped => Pure Self::["CalleeTrapped"]
@@ -18256,6 +19150,7 @@ Module impls.
     Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
     
     Definition default
+        `{State.Trait}
         (_ : unit)
         : M ink_env.engine.off_chain.impls.TopicsBuilder :=
       let* α0 := core.default.Default.default tt in
@@ -18283,6 +19178,7 @@ Module impls.
     Definition Output : Set := alloc.vec.Vec u8.
     
     Definition expect
+        `{State.Trait}
         (self : mut_ref Self)
         (_expected_topics : usize)
         : M unit :=
@@ -18293,6 +19189,7 @@ Module impls.
     }.
     
     Definition push_topic
+        `{State.Trait}
         (self : mut_ref Self)
         (topic_value : ref T)
         : M unit :=
@@ -18352,7 +19249,7 @@ Module impls.
       Notation.dot := push_topic;
     }.
     
-    Definition output (self : Self) : M ImplSelf.Output :=
+    Definition output `{State.Trait} (self : Self) : M ImplSelf.Output :=
       let* all := alloc.vec.Vec::["new"] tt in
       let* topics_len_compact :=
         let* α0 := self.["topics"].["len"] in
@@ -18390,6 +19287,7 @@ Module impls.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
     Definition get_property
+        `{State.Trait}
         (self : mut_ref Self)
         (ext_fn
           :
@@ -18413,6 +19311,7 @@ Module impls.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
     Definition set_contract_storage
+        `{State.Trait}
         (self : mut_ref Self)
         (key : ref K)
         (value : ref V)
@@ -18430,6 +19329,7 @@ Module impls.
     }.
     
     Definition get_contract_storage
+        `{State.Trait}
         (self : mut_ref Self)
         (key : ref K)
         : M (ink_env.error.Result (core.option.Option R)) :=
@@ -18469,6 +19369,7 @@ Module impls.
     }.
     
     Definition take_contract_storage
+        `{State.Trait}
         (self : mut_ref Self)
         (key : ref K)
         : M (ink_env.error.Result (core.option.Option R)) :=
@@ -18508,6 +19409,7 @@ Module impls.
     }.
     
     Definition contains_contract_storage
+        `{State.Trait}
         (self : mut_ref Self)
         (key : ref K)
         : M (core.option.Option u32) :=
@@ -18520,6 +19422,7 @@ Module impls.
     }.
     
     Definition clear_contract_storage
+        `{State.Trait}
         (self : mut_ref Self)
         (key : ref K)
         : M (core.option.Option u32) :=
@@ -18532,6 +19435,7 @@ Module impls.
     }.
     
     Definition decode_input
+        `{State.Trait}
         (self : mut_ref Self)
         : M (ink_env.error.Result T) :=
       let* α0 :=
@@ -18546,6 +19450,7 @@ Module impls.
     }.
     
     Definition return_value
+        `{State.Trait}
         (self : mut_ref Self)
         (_flags : ink_env.backend.ReturnFlags)
         (_return_value : ref R)
@@ -18564,6 +19469,7 @@ Module impls.
     }.
     
     Definition debug_message
+        `{State.Trait}
         (self : mut_ref Self)
         (message : ref str)
         : M unit :=
@@ -18574,6 +19480,7 @@ Module impls.
     }.
     
     Definition hash_bytes
+        `{State.Trait}
         (self : mut_ref Self)
         (input : ref Slice)
         (output : mut_ref ink_env.hash.HashOutput.Type)
@@ -18585,6 +19492,7 @@ Module impls.
     }.
     
     Definition hash_encoded
+        `{State.Trait}
         (self : mut_ref Self)
         (input : ref T)
         (output : mut_ref ink_env.hash.HashOutput.Type)
@@ -18599,6 +19507,7 @@ Module impls.
     }.
     
     Definition ecdsa_recover
+        `{State.Trait}
         (self : mut_ref Self)
         (signature : ref list u8)
         (message_hash : ref list u8)
@@ -18664,6 +19573,7 @@ Module impls.
     }.
     
     Definition ecdsa_to_eth_address
+        `{State.Trait}
         (self : mut_ref Self)
         (pubkey : ref list u8)
         (output : mut_ref list u8)
@@ -18698,6 +19608,7 @@ Module impls.
     }.
     
     Definition call_chain_extension
+        `{State.Trait}
         (self : mut_ref Self)
         (func_id : u32)
         (input : ref I)
@@ -18751,6 +19662,7 @@ Module impls.
     }.
     
     Definition set_code_hash
+        `{State.Trait}
         (self : mut_ref Self)
         (_code_hash : ref Slice)
         : M (ink_env.error.Result unit) :=
@@ -18793,7 +19705,10 @@ Module impls.
     Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
-    Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
+    Definition caller
+        `{State.Trait}
+        (self : mut_ref Self)
+        : M ImplE.AccountId :=
       let* α0 := self.["get_property"] ink_engine.ext.Engine::["caller"] in
       α0.["unwrap_or_else"]
         (fun error =>
@@ -18808,7 +19723,10 @@ Module impls.
       Notation.dot := caller;
     }.
     
-    Definition transferred_value (self : mut_ref Self) : M ImplE.Balance :=
+    Definition transferred_value
+        `{State.Trait}
+        (self : mut_ref Self)
+        : M ImplE.Balance :=
       let* α0 :=
         self.["get_property"] ink_engine.ext.Engine::["value_transferred"] in
       α0.["unwrap_or_else"]
@@ -18825,7 +19743,7 @@ Module impls.
       Notation.dot := transferred_value;
     }.
     
-    Definition gas_left (self : mut_ref Self) : M u64 :=
+    Definition gas_left `{State.Trait} (self : mut_ref Self) : M u64 :=
       let* α0 := self.["get_property"] ink_engine.ext.Engine::["gas_left"] in
       α0.["unwrap_or_else"]
         (fun error =>
@@ -18840,7 +19758,10 @@ Module impls.
       Notation.dot := gas_left;
     }.
     
-    Definition block_timestamp (self : mut_ref Self) : M ImplE.Timestamp :=
+    Definition block_timestamp
+        `{State.Trait}
+        (self : mut_ref Self)
+        : M ImplE.Timestamp :=
       let* α0 :=
         self.["get_property"] ink_engine.ext.Engine::["block_timestamp"] in
       α0.["unwrap_or_else"]
@@ -18856,7 +19777,10 @@ Module impls.
       Notation.dot := block_timestamp;
     }.
     
-    Definition account_id (self : mut_ref Self) : M ImplE.AccountId :=
+    Definition account_id
+        `{State.Trait}
+        (self : mut_ref Self)
+        : M ImplE.AccountId :=
       let* α0 := self.["get_property"] ink_engine.ext.Engine::["address"] in
       α0.["unwrap_or_else"]
         (fun error =>
@@ -18871,7 +19795,7 @@ Module impls.
       Notation.dot := account_id;
     }.
     
-    Definition balance (self : mut_ref Self) : M ImplE.Balance :=
+    Definition balance `{State.Trait} (self : mut_ref Self) : M ImplE.Balance :=
       let* α0 := self.["get_property"] ink_engine.ext.Engine::["balance"] in
       α0.["unwrap_or_else"]
         (fun error =>
@@ -18886,7 +19810,10 @@ Module impls.
       Notation.dot := balance;
     }.
     
-    Definition block_number (self : mut_ref Self) : M ImplE.BlockNumber :=
+    Definition block_number
+        `{State.Trait}
+        (self : mut_ref Self)
+        : M ImplE.BlockNumber :=
       let* α0 :=
         self.["get_property"] ink_engine.ext.Engine::["block_number"] in
       α0.["unwrap_or_else"]
@@ -18902,7 +19829,10 @@ Module impls.
       Notation.dot := block_number;
     }.
     
-    Definition minimum_balance (self : mut_ref Self) : M ImplE.Balance :=
+    Definition minimum_balance
+        `{State.Trait}
+        (self : mut_ref Self)
+        : M ImplE.Balance :=
       let* α0 :=
         self.["get_property"] ink_engine.ext.Engine::["minimum_balance"] in
       α0.["unwrap_or_else"]
@@ -18918,7 +19848,11 @@ Module impls.
       Notation.dot := minimum_balance;
     }.
     
-    Definition emit_event (self : mut_ref Self) (event : Event) : M unit :=
+    Definition emit_event
+        `{State.Trait}
+        (self : mut_ref Self)
+        (event : Event)
+        : M unit :=
       let* builder :=
         ink_env.engine.off_chain.impls.TopicsBuilder::["default"] tt in
       let* enc_topics :=
@@ -18938,6 +19872,7 @@ Module impls.
     }.
     
     Definition invoke_contract
+        `{State.Trait}
         (self : mut_ref Self)
         (params
           :
@@ -18969,6 +19904,7 @@ Module impls.
     }.
     
     Definition invoke_contract_delegate
+        `{State.Trait}
         (self : mut_ref Self)
         (params
           :
@@ -18995,6 +19931,7 @@ Module impls.
     }.
     
     Definition instantiate_contract
+        `{State.Trait}
         (self : mut_ref Self)
         (params
           :
@@ -19030,6 +19967,7 @@ Module impls.
     }.
     
     Definition terminate_contract
+        `{State.Trait}
         (self : mut_ref Self)
         (beneficiary : ImplE.AccountId)
         : M Empty_set :=
@@ -19043,6 +19981,7 @@ Module impls.
     }.
     
     Definition transfer
+        `{State.Trait}
         (self : mut_ref Self)
         (destination : ImplE.AccountId)
         (value : ImplE.Balance)
@@ -19062,6 +20001,7 @@ Module impls.
     }.
     
     Definition weight_to_fee
+        `{State.Trait}
         (self : mut_ref Self)
         (gas : u64)
         : M ImplE.Balance :=
@@ -19087,6 +20027,7 @@ Module impls.
     }.
     
     Definition is_contract
+        `{State.Trait}
         (self : mut_ref Self)
         (account : ref ImplE.AccountId)
         : M bool :=
@@ -19097,7 +20038,7 @@ Module impls.
       Notation.dot := is_contract;
     }.
     
-    Definition caller_is_origin (self : mut_ref Self) : M bool :=
+    Definition caller_is_origin `{State.Trait} (self : mut_ref Self) : M bool :=
       let* α0 :=
         format_arguments::["new_v1"]
           (addr_of
@@ -19113,6 +20054,7 @@ Module impls.
     }.
     
     Definition code_hash
+        `{State.Trait}
         (self : mut_ref Self)
         (_account : ref ImplE.AccountId)
         : M (ink_env.error.Result ImplE.Hash) :=
@@ -19130,6 +20072,7 @@ Module impls.
     }.
     
     Definition own_code_hash
+        `{State.Trait}
         (self : mut_ref Self)
         : M (ink_env.error.Result ImplE.Hash) :=
       let* α0 :=
@@ -19146,6 +20089,7 @@ Module impls.
     }.
     
     Definition call_runtime
+        `{State.Trait}
         (self : mut_ref Self)
         (_call : ref Call)
         : M (ink_env.error.Result unit) :=
@@ -19198,6 +20142,7 @@ Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
   Definition hash
+      `{State.Trait}
       (input : ref Slice)
       (output : mut_ref ink_env.hash.HashOutput.Type)
       : M unit :=
@@ -19260,6 +20205,7 @@ End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 
 Definition assert_type_eq_all
+    `{State.Trait}
     {T U : Set}
     `{core.marker.Sized.Trait T}
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
@@ -19268,7 +20214,11 @@ Definition assert_type_eq_all
     : M unit :=
   Pure tt.
 
-Definition as_array {T : Set} (slice : mut_ref Slice) : M (mut_ref list T) :=
+Definition as_array
+    `{State.Trait}
+    {T : Set}
+    (slice : mut_ref Slice)
+    : M (mut_ref list T) :=
   let* α0 := slice.["as_mut_ptr"] in
   let* α1 := (cast α0 (mut_ref list _)).["deref"] in
   Pure (addr_of α1).
@@ -19277,6 +20227,7 @@ Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
   Definition hash
+      `{State.Trait}
       (input : ref Slice)
       (output : mut_ref ink_env.hash.HashOutput.Type)
       : M unit :=
@@ -19339,6 +20290,7 @@ End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 
 Definition assert_type_eq_all
+    `{State.Trait}
     {T U : Set}
     `{core.marker.Sized.Trait T}
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
@@ -19347,7 +20299,11 @@ Definition assert_type_eq_all
     : M unit :=
   Pure tt.
 
-Definition as_array {T : Set} (slice : mut_ref Slice) : M (mut_ref list T) :=
+Definition as_array
+    `{State.Trait}
+    {T : Set}
+    (slice : mut_ref Slice)
+    : M (mut_ref list T) :=
   let* α0 := slice.["as_mut_ptr"] in
   let* α1 := (cast α0 (mut_ref list _)).["deref"] in
   Pure (addr_of α1).
@@ -19356,6 +20312,7 @@ Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
   Definition hash
+      `{State.Trait}
       (input : ref Slice)
       (output : mut_ref ink_env.hash.HashOutput.Type)
       : M unit :=
@@ -19418,6 +20375,7 @@ End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 
 Definition assert_type_eq_all
+    `{State.Trait}
     {T U : Set}
     `{core.marker.Sized.Trait T}
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
@@ -19426,7 +20384,11 @@ Definition assert_type_eq_all
     : M unit :=
   Pure tt.
 
-Definition as_array {T : Set} (slice : mut_ref Slice) : M (mut_ref list T) :=
+Definition as_array
+    `{State.Trait}
+    {T : Set}
+    (slice : mut_ref Slice)
+    : M (mut_ref list T) :=
   let* α0 := slice.["as_mut_ptr"] in
   let* α1 := (cast α0 (mut_ref list _)).["deref"] in
   Pure (addr_of α1).
@@ -19435,6 +20397,7 @@ Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
   Definition hash
+      `{State.Trait}
       (input : ref Slice)
       (output : mut_ref ink_env.hash.HashOutput.Type)
       : M unit :=
@@ -19497,6 +20460,7 @@ End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
 
 Definition assert_type_eq_all
+    `{State.Trait}
     {T U : Set}
     `{core.marker.Sized.Trait T}
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
@@ -19505,7 +20469,11 @@ Definition assert_type_eq_all
     : M unit :=
   Pure tt.
 
-Definition as_array {T : Set} (slice : mut_ref Slice) : M (mut_ref list T) :=
+Definition as_array
+    `{State.Trait}
+    {T : Set}
+    (slice : mut_ref Slice)
+    : M (mut_ref list T) :=
   let* α0 := slice.["as_mut_ptr"] in
   let* α1 := (cast α0 (mut_ref list _)).["deref"] in
   Pure (addr_of α1).
@@ -19513,7 +20481,7 @@ Definition as_array {T : Set} (slice : mut_ref Slice) : M (mut_ref list T) :=
 Module Impl_core_convert_From_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
-  Definition from (ext_error : ink_engine.ext.Error) : M Self :=
+  Definition from `{State.Trait} (ext_error : ink_engine.ext.Error) : M Self :=
     match ext_error with
     | ink_engine.ext.Error.Unknown => Pure Self::["Unknown"]
     | ink_engine.ext.Error.CalleeTrapped => Pure Self::["CalleeTrapped"]
@@ -19557,6 +20525,7 @@ Module
   Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
   
   Definition default
+      `{State.Trait}
       (_ : unit)
       : M ink_env.engine.off_chain.impls.TopicsBuilder :=
     let* α0 := core.default.Default.default tt in
@@ -19582,14 +20551,22 @@ Section
   
   Definition Output : Set := alloc.vec.Vec u8.
   
-  Definition expect (self : mut_ref Self) (_expected_topics : usize) : M unit :=
+  Definition expect
+      `{State.Trait}
+      (self : mut_ref Self)
+      (_expected_topics : usize)
+      : M unit :=
     Pure tt.
   
   Global Instance Method_expect : Notation.Dot "expect" := {
     Notation.dot := expect;
   }.
   
-  Definition push_topic (self : mut_ref Self) (topic_value : ref T) : M unit :=
+  Definition push_topic
+      `{State.Trait}
+      (self : mut_ref Self)
+      (topic_value : ref T)
+      : M unit :=
     let* encoded := topic_value.["encode"] in
     let* len_encoded := encoded.["len"] in
     let result := ink_env.types.Environment.Hash::["CLEAR_HASH"] in
@@ -19646,7 +20623,7 @@ Section
     Notation.dot := push_topic;
   }.
   
-  Definition output (self : Self) : M ImplSelf.Output :=
+  Definition output `{State.Trait} (self : Self) : M ImplSelf.Output :=
     let* all := alloc.vec.Vec::["new"] tt in
     let* topics_len_compact :=
       let* α0 := self.["topics"].["len"] in
@@ -19683,6 +20660,7 @@ Module Impl_ink_env_engine_off_chain_EnvInstance_4.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
   Definition get_property
+      `{State.Trait}
       (self : mut_ref Self)
       (ext_fn
         :
@@ -19705,6 +20683,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
   Definition set_contract_storage
+      `{State.Trait}
       (self : mut_ref Self)
       (key : ref K)
       (value : ref V)
@@ -19720,6 +20699,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Definition get_contract_storage
+      `{State.Trait}
       (self : mut_ref Self)
       (key : ref K)
       : M (ink_env.error.Result (core.option.Option R)) :=
@@ -19759,6 +20739,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Definition take_contract_storage
+      `{State.Trait}
       (self : mut_ref Self)
       (key : ref K)
       : M (ink_env.error.Result (core.option.Option R)) :=
@@ -19798,6 +20779,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Definition contains_contract_storage
+      `{State.Trait}
       (self : mut_ref Self)
       (key : ref K)
       : M (core.option.Option u32) :=
@@ -19810,6 +20792,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Definition clear_contract_storage
+      `{State.Trait}
       (self : mut_ref Self)
       (key : ref K)
       : M (core.option.Option u32) :=
@@ -19821,7 +20804,10 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
     Notation.dot := clear_contract_storage;
   }.
   
-  Definition decode_input (self : mut_ref Self) : M (ink_env.error.Result T) :=
+  Definition decode_input
+      `{State.Trait}
+      (self : mut_ref Self)
+      : M (ink_env.error.Result T) :=
     let* α0 :=
       format_arguments::["new_v1"]
         (addr_of
@@ -19834,6 +20820,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Definition return_value
+      `{State.Trait}
       (self : mut_ref Self)
       (_flags : ink_env.backend.ReturnFlags)
       (_return_value : ref R)
@@ -19851,7 +20838,11 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
     Notation.dot := return_value;
   }.
   
-  Definition debug_message (self : mut_ref Self) (message : ref str) : M unit :=
+  Definition debug_message
+      `{State.Trait}
+      (self : mut_ref Self)
+      (message : ref str)
+      : M unit :=
     self.["engine"].["debug_message"] message.
   
   Global Instance Method_debug_message : Notation.Dot "debug_message" := {
@@ -19859,6 +20850,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Definition hash_bytes
+      `{State.Trait}
       (self : mut_ref Self)
       (input : ref Slice)
       (output : mut_ref ink_env.hash.HashOutput.Type)
@@ -19870,6 +20862,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Definition hash_encoded
+      `{State.Trait}
       (self : mut_ref Self)
       (input : ref T)
       (output : mut_ref ink_env.hash.HashOutput.Type)
@@ -19884,6 +20877,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Definition ecdsa_recover
+      `{State.Trait}
       (self : mut_ref Self)
       (signature : ref list u8)
       (message_hash : ref list u8)
@@ -19949,6 +20943,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Definition ecdsa_to_eth_address
+      `{State.Trait}
       (self : mut_ref Self)
       (pubkey : ref list u8)
       (output : mut_ref list u8)
@@ -19983,6 +20978,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Definition call_chain_extension
+      `{State.Trait}
       (self : mut_ref Self)
       (func_id : u32)
       (input : ref I)
@@ -20036,6 +21032,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Definition set_code_hash
+      `{State.Trait}
       (self : mut_ref Self)
       (_code_hash : ref Slice)
       : M (ink_env.error.Result unit) :=
@@ -20076,7 +21073,7 @@ Module
   Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
-  Definition caller (self : mut_ref Self) : M ImplE.AccountId :=
+  Definition caller `{State.Trait} (self : mut_ref Self) : M ImplE.AccountId :=
     let* α0 := self.["get_property"] ink_engine.ext.Engine::["caller"] in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -20091,7 +21088,10 @@ Module
     Notation.dot := caller;
   }.
   
-  Definition transferred_value (self : mut_ref Self) : M ImplE.Balance :=
+  Definition transferred_value
+      `{State.Trait}
+      (self : mut_ref Self)
+      : M ImplE.Balance :=
     let* α0 :=
       self.["get_property"] ink_engine.ext.Engine::["value_transferred"] in
     α0.["unwrap_or_else"]
@@ -20108,7 +21108,7 @@ Module
     Notation.dot := transferred_value;
   }.
   
-  Definition gas_left (self : mut_ref Self) : M u64 :=
+  Definition gas_left `{State.Trait} (self : mut_ref Self) : M u64 :=
     let* α0 := self.["get_property"] ink_engine.ext.Engine::["gas_left"] in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -20123,7 +21123,10 @@ Module
     Notation.dot := gas_left;
   }.
   
-  Definition block_timestamp (self : mut_ref Self) : M ImplE.Timestamp :=
+  Definition block_timestamp
+      `{State.Trait}
+      (self : mut_ref Self)
+      : M ImplE.Timestamp :=
     let* α0 :=
       self.["get_property"] ink_engine.ext.Engine::["block_timestamp"] in
     α0.["unwrap_or_else"]
@@ -20139,7 +21142,10 @@ Module
     Notation.dot := block_timestamp;
   }.
   
-  Definition account_id (self : mut_ref Self) : M ImplE.AccountId :=
+  Definition account_id
+      `{State.Trait}
+      (self : mut_ref Self)
+      : M ImplE.AccountId :=
     let* α0 := self.["get_property"] ink_engine.ext.Engine::["address"] in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -20154,7 +21160,7 @@ Module
     Notation.dot := account_id;
   }.
   
-  Definition balance (self : mut_ref Self) : M ImplE.Balance :=
+  Definition balance `{State.Trait} (self : mut_ref Self) : M ImplE.Balance :=
     let* α0 := self.["get_property"] ink_engine.ext.Engine::["balance"] in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -20169,7 +21175,10 @@ Module
     Notation.dot := balance;
   }.
   
-  Definition block_number (self : mut_ref Self) : M ImplE.BlockNumber :=
+  Definition block_number
+      `{State.Trait}
+      (self : mut_ref Self)
+      : M ImplE.BlockNumber :=
     let* α0 := self.["get_property"] ink_engine.ext.Engine::["block_number"] in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -20184,7 +21193,10 @@ Module
     Notation.dot := block_number;
   }.
   
-  Definition minimum_balance (self : mut_ref Self) : M ImplE.Balance :=
+  Definition minimum_balance
+      `{State.Trait}
+      (self : mut_ref Self)
+      : M ImplE.Balance :=
     let* α0 :=
       self.["get_property"] ink_engine.ext.Engine::["minimum_balance"] in
     α0.["unwrap_or_else"]
@@ -20200,7 +21212,11 @@ Module
     Notation.dot := minimum_balance;
   }.
   
-  Definition emit_event (self : mut_ref Self) (event : Event) : M unit :=
+  Definition emit_event
+      `{State.Trait}
+      (self : mut_ref Self)
+      (event : Event)
+      : M unit :=
     let* builder :=
       ink_env.engine.off_chain.impls.TopicsBuilder::["default"] tt in
     let* enc_topics :=
@@ -20220,6 +21236,7 @@ Module
   }.
   
   Definition invoke_contract
+      `{State.Trait}
       (self : mut_ref Self)
       (params
         :
@@ -20251,6 +21268,7 @@ Module
   }.
   
   Definition invoke_contract_delegate
+      `{State.Trait}
       (self : mut_ref Self)
       (params
         :
@@ -20277,6 +21295,7 @@ Module
   }.
   
   Definition instantiate_contract
+      `{State.Trait}
       (self : mut_ref Self)
       (params
         :
@@ -20307,6 +21326,7 @@ Module
   }.
   
   Definition terminate_contract
+      `{State.Trait}
       (self : mut_ref Self)
       (beneficiary : ImplE.AccountId)
       : M Empty_set :=
@@ -20320,6 +21340,7 @@ Module
   }.
   
   Definition transfer
+      `{State.Trait}
       (self : mut_ref Self)
       (destination : ImplE.AccountId)
       (value : ImplE.Balance)
@@ -20338,6 +21359,7 @@ Module
   }.
   
   Definition weight_to_fee
+      `{State.Trait}
       (self : mut_ref Self)
       (gas : u64)
       : M ImplE.Balance :=
@@ -20363,6 +21385,7 @@ Module
   }.
   
   Definition is_contract
+      `{State.Trait}
       (self : mut_ref Self)
       (account : ref ImplE.AccountId)
       : M bool :=
@@ -20373,7 +21396,7 @@ Module
     Notation.dot := is_contract;
   }.
   
-  Definition caller_is_origin (self : mut_ref Self) : M bool :=
+  Definition caller_is_origin `{State.Trait} (self : mut_ref Self) : M bool :=
     let* α0 :=
       format_arguments::["new_v1"]
         (addr_of
@@ -20388,6 +21411,7 @@ Module
   }.
   
   Definition code_hash
+      `{State.Trait}
       (self : mut_ref Self)
       (_account : ref ImplE.AccountId)
       : M (ink_env.error.Result ImplE.Hash) :=
@@ -20405,6 +21429,7 @@ Module
   }.
   
   Definition own_code_hash
+      `{State.Trait}
       (self : mut_ref Self)
       : M (ink_env.error.Result ImplE.Hash) :=
     let* α0 :=
@@ -20421,6 +21446,7 @@ Module
   }.
   
   Definition call_runtime
+      `{State.Trait}
       (self : mut_ref Self)
       (_call : ref Call)
       : M (ink_env.error.Result unit) :=
@@ -20487,6 +21513,7 @@ Module test_api.
     Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
     
     Definition clone
+        `{State.Trait}
         (self : ref Self)
         : M ink_env.engine.off_chain.test_api.EmittedEvent :=
       let* α0 := core.clone.Clone.clone (addr_of self.["topics"]) in
@@ -20507,6 +21534,7 @@ Module test_api.
   End Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
   
   Definition set_account_balance
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       (account_id : ImplT.AccountId)
@@ -20521,6 +21549,7 @@ Module test_api.
         Pure tt).
   
   Definition get_account_balance
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       (account_id : ImplT.AccountId)
@@ -20533,6 +21562,7 @@ Module test_api.
         α1.["map_err"] core.convert.Into.into).
   
   Definition register_chain_extension
+      `{State.Trait}
       {E : Set}
       `{ink_engine.chain_extension.ChainExtension.Trait E}
       (extension : E)
@@ -20545,12 +21575,16 @@ Module test_api.
         Pure tt).
   
   Definition recorded_debug_messages
+      `{State.Trait}
       (_ : unit)
       : M ink_engine.test_api.RecordedDebugMessages :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
   
-  Definition set_clear_storage_disabled (_disable : bool) : M unit :=
+  Definition set_clear_storage_disabled
+      `{State.Trait}
+      (_disable : bool)
+      : M unit :=
     let* _ :=
       let* α0 :=
         format_arguments::["new_v1"]
@@ -20563,6 +21597,7 @@ Module test_api.
     Pure tt.
   
   Definition advance_block
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       (_ : unit)
@@ -20573,6 +21608,7 @@ Module test_api.
         Pure tt).
   
   Definition set_caller
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -20586,6 +21622,7 @@ Module test_api.
         Pure tt).
   
   Definition set_callee
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -20599,6 +21636,7 @@ Module test_api.
         Pure tt).
   
   Definition set_contract
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -20613,6 +21651,7 @@ Module test_api.
         Pure tt).
   
   Definition is_contract
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -20624,6 +21663,7 @@ Module test_api.
         instance.["engine"].["is_contract"] α0).
   
   Definition callee
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       (_ : unit)
@@ -20644,6 +21684,7 @@ Module test_api.
             core.panicking.panic_fmt α1)).
   
   Definition get_contract_storage_rw
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       (account_id : ref ImplT.AccountId)
@@ -20655,6 +21696,7 @@ Module test_api.
         instance.["engine"].["get_contract_storage_rw"] α0).
   
   Definition set_value_transferred
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       (value : ImplT.Balance)
@@ -20665,6 +21707,7 @@ Module test_api.
         Pure tt).
   
   Definition transfer_in
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       (value : ImplT.Balance)
@@ -20698,6 +21741,7 @@ Module test_api.
     Pure tt.
   
   Definition count_used_storage_cells
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       (account_id : ref ImplT.AccountId)
@@ -20711,6 +21755,7 @@ Module test_api.
         α1.["map_err"] core.convert.Into.into).
   
   Definition set_block_timestamp
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       (value : ImplT.Timestamp)
@@ -20721,6 +21766,7 @@ Module test_api.
         Pure tt).
   
   Definition set_block_number
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       (value : ImplT.BlockNumber)
@@ -20731,6 +21777,7 @@ Module test_api.
         Pure tt).
   
   Definition run_test
+      `{State.Trait}
       {T F : Set}
       `{ink_env.types.Environment.Trait T}
       `{core.ops.function.FnOnce.Trait
@@ -20787,6 +21834,7 @@ Module test_api.
     f default_accounts.
   
   Definition default_accounts
+      `{State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -20845,13 +21893,14 @@ Module test_api.
   End DefaultAccounts.
   Definition DefaultAccounts : Set := DefaultAccounts.t.
   
-  Definition recorded_events (_ : unit) : M OpaqueDef :=
+  Definition recorded_events `{State.Trait} (_ : unit) : M OpaqueDef :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         let* α0 := instance.["engine"].["get_emitted_events"] in
         α0.["map"] (fun evt => evt.["into"])).
   
   Definition assert_contract_termination
+      `{State.Trait}
       {T F : Set}
       `{ink_env.types.Environment.Trait T}
       `{core.ops.function.FnMut.Trait unit F}
@@ -20959,6 +22008,7 @@ Module Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
   Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
   
   Definition clone
+      `{State.Trait}
       (self : ref Self)
       : M ink_env.engine.off_chain.test_api.EmittedEvent :=
     let* α0 := core.clone.Clone.clone (addr_of self.["topics"]) in
@@ -20979,6 +22029,7 @@ Module Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
 End Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
 
 Definition set_account_balance
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     (account_id : ImplT.AccountId)
@@ -20993,6 +22044,7 @@ Definition set_account_balance
       Pure tt).
 
 Definition get_account_balance
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     (account_id : ImplT.AccountId)
@@ -21004,6 +22056,7 @@ Definition get_account_balance
       α1.["map_err"] core.convert.Into.into).
 
 Definition register_chain_extension
+    `{State.Trait}
     {E : Set}
     `{ink_engine.chain_extension.ChainExtension.Trait E}
     (extension : E)
@@ -21016,12 +22069,16 @@ Definition register_chain_extension
       Pure tt).
 
 Definition recorded_debug_messages
+    `{State.Trait}
     (_ : unit)
     : M ink_engine.test_api.RecordedDebugMessages :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
 
-Definition set_clear_storage_disabled (_disable : bool) : M unit :=
+Definition set_clear_storage_disabled
+    `{State.Trait}
+    (_disable : bool)
+    : M unit :=
   let* _ :=
     let* α0 :=
       format_arguments::["new_v1"]
@@ -21034,6 +22091,7 @@ Definition set_clear_storage_disabled (_disable : bool) : M unit :=
   Pure tt.
 
 Definition advance_block
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     (_ : unit)
@@ -21044,6 +22102,7 @@ Definition advance_block
       Pure tt).
 
 Definition set_caller
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -21057,6 +22116,7 @@ Definition set_caller
       Pure tt).
 
 Definition set_callee
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -21070,6 +22130,7 @@ Definition set_callee
       Pure tt).
 
 Definition set_contract
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -21083,6 +22144,7 @@ Definition set_contract
       Pure tt).
 
 Definition is_contract
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -21094,6 +22156,7 @@ Definition is_contract
       instance.["engine"].["is_contract"] α0).
 
 Definition callee
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     (_ : unit)
@@ -21114,6 +22177,7 @@ Definition callee
           core.panicking.panic_fmt α1)).
 
 Definition get_contract_storage_rw
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     (account_id : ref ImplT.AccountId)
@@ -21124,6 +22188,7 @@ Definition get_contract_storage_rw
       instance.["engine"].["get_contract_storage_rw"] α0).
 
 Definition set_value_transferred
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     (value : ImplT.Balance)
@@ -21134,6 +22199,7 @@ Definition set_value_transferred
       Pure tt).
 
 Definition transfer_in
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     (value : ImplT.Balance)
@@ -21167,6 +22233,7 @@ Definition transfer_in
   Pure tt.
 
 Definition count_used_storage_cells
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     (account_id : ref ImplT.AccountId)
@@ -21179,6 +22246,7 @@ Definition count_used_storage_cells
       α1.["map_err"] core.convert.Into.into).
 
 Definition set_block_timestamp
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     (value : ImplT.Timestamp)
@@ -21189,6 +22257,7 @@ Definition set_block_timestamp
       Pure tt).
 
 Definition set_block_number
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     (value : ImplT.BlockNumber)
@@ -21199,6 +22268,7 @@ Definition set_block_number
       Pure tt).
 
 Definition run_test
+    `{State.Trait}
     {T F : Set}
     `{ink_env.types.Environment.Trait T}
     `{core.ops.function.FnOnce.Trait
@@ -21255,6 +22325,7 @@ Definition run_test
   f default_accounts.
 
 Definition default_accounts
+    `{State.Trait}
     {T : Set}
     `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
@@ -21313,7 +22384,7 @@ Module DefaultAccounts.
 End DefaultAccounts.
 Definition DefaultAccounts : Set := DefaultAccounts.t.
 
-Definition recorded_events (_ : unit) : M OpaqueDef :=
+Definition recorded_events `{State.Trait} (_ : unit) : M OpaqueDef :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
       let* α0 := instance.["engine"].["get_emitted_events"] in
@@ -21322,6 +22393,7 @@ Definition recorded_events (_ : unit) : M OpaqueDef :=
 Error OpaqueTy.
 
 Definition assert_contract_termination
+    `{State.Trait}
     {T F : Set}
     `{ink_env.types.Environment.Trait T}
     `{core.ops.function.FnMut.Trait unit F}
@@ -21414,7 +22486,10 @@ Module types.
     Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
     Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
     
-    Definition from (evt : ink_engine.test_api.EmittedEvent) : M Self :=
+    Definition from
+        `{State.Trait}
+        (evt : ink_engine.test_api.EmittedEvent)
+        : M Self :=
       Pure
         {|
           ink_env.engine.off_chain.test_api.EmittedEvent.topics :=
@@ -21438,7 +22513,7 @@ Module types.
   Module Impl_core_convert_From_for_ink_env_error_Error.
     Definition Self := ink_env.error.Error.
     
-    Definition from (err : ink_engine.Error) : M Self :=
+    Definition from `{State.Trait} (err : ink_engine.Error) : M Self :=
       let* e :=
         match err with
         | ink_engine.Error.Account acc =>
@@ -21468,7 +22543,10 @@ Module types.
   Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
     Definition Self := ink_env.engine.off_chain.AccountError.
     
-    Definition from (err : ink_engine.types.AccountError) : M Self :=
+    Definition from
+        `{State.Trait}
+        (err : ink_engine.types.AccountError)
+        : M Self :=
       match err with
       | ink_engine.types.AccountError.Decoding e =>
         Pure (ink_env.engine.off_chain.AccountError.Decoding e)
@@ -21492,7 +22570,10 @@ Module types.
   Module Impl_core_convert_From_for_ink_env_error_Error.
     Definition Self := ink_env.error.Error.
     
-    Definition from (account_error : ink_engine.types.AccountError) : M Self :=
+    Definition from
+        `{State.Trait}
+        (account_error : ink_engine.types.AccountError)
+        : M Self :=
       let* α0 := account_error.["into"] in
       Pure
         (ink_env.error.Error.OffChain
@@ -21514,7 +22595,10 @@ Module
   Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
   Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
   
-  Definition from (evt : ink_engine.test_api.EmittedEvent) : M Self :=
+  Definition from
+      `{State.Trait}
+      (evt : ink_engine.test_api.EmittedEvent)
+      : M Self :=
     Pure
       {|
         ink_env.engine.off_chain.test_api.EmittedEvent.topics := evt.["topics"];
@@ -21535,7 +22619,7 @@ End Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
 Module Impl_core_convert_From_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
-  Definition from (err : ink_engine.Error) : M Self :=
+  Definition from `{State.Trait} (err : ink_engine.Error) : M Self :=
     let* e :=
       match err with
       | ink_engine.Error.Account acc =>
@@ -21564,7 +22648,10 @@ End Impl_core_convert_From_for_ink_env_error_Error.
 Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
   Definition Self := ink_env.engine.off_chain.AccountError.
   
-  Definition from (err : ink_engine.types.AccountError) : M Self :=
+  Definition from
+      `{State.Trait}
+      (err : ink_engine.types.AccountError)
+      : M Self :=
     match err with
     | ink_engine.types.AccountError.Decoding e =>
       Pure (ink_env.engine.off_chain.AccountError.Decoding e)
@@ -21588,7 +22675,10 @@ End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
 Module Impl_core_convert_From_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
-  Definition from (account_error : ink_engine.types.AccountError) : M Self :=
+  Definition from
+      `{State.Trait}
+      (account_error : ink_engine.types.AccountError)
+      : M Self :=
     let* α0 := account_error.["into"] in
     Pure
       (ink_env.error.Error.OffChain
@@ -21619,7 +22709,7 @@ Definition EnvInstance : Set := EnvInstance.t.
 Module Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
-  Definition on_instance (f : F) : M R :=
+  Definition on_instance `{State.Trait} (f : F) : M R :=
     ink_env.engine.off_chain.on_instance.INSTANCE.["with"]
       (fun instance =>
         let* α0 := instance.["borrow_mut"] in
@@ -21644,6 +22734,7 @@ Definition
       ink_env.engine.off_chain.on_instance.INSTANCE.__getit).
 
 Definition __init
+    `{State.Trait}
     (_ : unit)
     : M (core.cell.RefCell ink_env.engine.off_chain.EnvInstance) :=
   let* α0 := ink_engine.ext.Engine::["new"] tt in
@@ -21651,6 +22742,7 @@ Definition __init
     {| ink_env.engine.off_chain.EnvInstance.engine := α0; |}.
 
 Definition __getit
+    `{State.Trait}
     (init
       :
       core.option.Option
@@ -21711,6 +22803,7 @@ Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
   Definition Self := ink_env.engine.off_chain.OffChainError.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -21741,6 +22834,7 @@ Module Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
   Definition Self := ink_env.engine.off_chain.OffChainError.
   
   Definition from
+      `{State.Trait}
       (original : ink_env.engine.off_chain.AccountError)
       : M ink_env.engine.off_chain.OffChainError :=
     Pure (ink_env.engine.off_chain.OffChainError.Account original).
@@ -21771,6 +22865,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
   Definition Self := ink_env.engine.off_chain.OffChainError.
   
   Definition eq
+      `{State.Trait}
       (self : ref Self)
       (other : ref ink_env.engine.off_chain.OffChainError)
       : M bool :=
@@ -21809,7 +22904,10 @@ End Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
 Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
   Definition Self := ink_env.engine.off_chain.OffChainError.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+  Definition assert_receiver_is_total_eq
+      `{State.Trait}
+      (self : ref Self)
+      : M unit :=
     let _ := tt in
     Pure tt.
   
@@ -21834,6 +22932,7 @@ Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
   Definition Self := ink_env.engine.off_chain.AccountError.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -21865,6 +22964,7 @@ Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
   Definition Self := ink_env.engine.off_chain.AccountError.
   
   Definition from
+      `{State.Trait}
       (original : parity_scale_codec.error.Error)
       : M ink_env.engine.off_chain.AccountError :=
     Pure (ink_env.engine.off_chain.AccountError.Decoding original).
@@ -21893,6 +22993,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
   Definition Self := ink_env.engine.off_chain.AccountError.
   
   Definition eq
+      `{State.Trait}
       (self : ref Self)
       (other : ref ink_env.engine.off_chain.AccountError)
       : M bool :=
@@ -21938,7 +23039,10 @@ End Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
 Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
   Definition Self := ink_env.engine.off_chain.AccountError.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+  Definition assert_receiver_is_total_eq
+      `{State.Trait}
+      (self : ref Self)
+      : M unit :=
     let _ := tt in
     let _ := tt in
     Pure tt.
@@ -21954,6 +23058,7 @@ End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition decode_instantiate_result
+    `{State.Trait}
     {I E ContractRef R : Set}
     `{parity_scale_codec.codec.Input.Trait I}
     `{ink_env.types.Environment.Trait E}
@@ -21991,6 +23096,7 @@ Definition decode_instantiate_result
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition decode_instantiate_err
+    `{State.Trait}
     {I E ContractRef R : Set}
     `{parity_scale_codec.codec.Input.Trait I}
     `{ink_env.types.Environment.Trait E}
@@ -22110,6 +23216,7 @@ Module error.
     Definition Self := ink_env.error.Error.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -22163,6 +23270,7 @@ Module error.
     Definition Self := ink_env.error.Error.
     
     Definition from
+        `{State.Trait}
         (original : parity_scale_codec.error.Error)
         : M ink_env.error.Error :=
       Pure (ink_env.error.Error.Decode original).
@@ -22182,6 +23290,7 @@ Module error.
     Definition Self := ink_env.error.Error.
     
     Definition from
+        `{State.Trait}
         (original : ink_env.engine.off_chain.OffChainError)
         : M ink_env.error.Error :=
       Pure (ink_env.error.Error.OffChain original).
@@ -22210,6 +23319,7 @@ Module error.
     Definition Self := ink_env.error.Error.
     
     Definition eq
+        `{State.Trait}
         (self : ref Self)
         (other : ref ink_env.error.Error)
         : M bool :=
@@ -22255,7 +23365,10 @@ Module error.
   Module Impl_core_cmp_Eq_for_ink_env_error_Error.
     Definition Self := ink_env.error.Error.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    Definition assert_receiver_is_total_eq
+        `{State.Trait}
+        (self : ref Self)
+        : M unit :=
       let _ := tt in
       let _ := tt in
       Pure tt.
@@ -22295,6 +23408,7 @@ Module Impl_core_fmt_Debug_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -22348,6 +23462,7 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
   Definition from
+      `{State.Trait}
       (original : parity_scale_codec.error.Error)
       : M ink_env.error.Error :=
     Pure (ink_env.error.Error.Decode original).
@@ -22367,6 +23482,7 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
   Definition from
+      `{State.Trait}
       (original : ink_env.engine.off_chain.OffChainError)
       : M ink_env.error.Error :=
     Pure (ink_env.error.Error.OffChain original).
@@ -22394,7 +23510,11 @@ End Impl_core_marker_StructuralPartialEq_for_ink_env_error_Error.
 Module Impl_core_cmp_PartialEq_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
-  Definition eq (self : ref Self) (other : ref ink_env.error.Error) : M bool :=
+  Definition eq
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref ink_env.error.Error)
+      : M bool :=
     let* __self_tag := core.intrinsics.discriminant_value self in
     let* __arg1_tag := core.intrinsics.discriminant_value other in
     let* α0 := __self_tag.["eq"] __arg1_tag in
@@ -22437,7 +23557,10 @@ End Impl_core_marker_StructuralEq_for_ink_env_error_Error.
 Module Impl_core_cmp_Eq_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+  Definition assert_receiver_is_total_eq
+      `{State.Trait}
+      (self : ref Self)
+      : M unit :=
     let _ := tt in
     let _ := tt in
     Pure tt.
@@ -22489,6 +23612,7 @@ Module hash.
     Definition Self := ink_env.hash.Sha2x256.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -22513,7 +23637,10 @@ Module hash.
   Module Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
     Definition Self := ink_env.hash.Sha2x256.
     
-    Definition clone (self : ref Self) : M ink_env.hash.Sha2x256 :=
+    Definition clone
+        `{State.Trait}
+        (self : ref Self)
+        : M ink_env.hash.Sha2x256 :=
       self.["deref"].
     
     Global Instance Method_clone : Notation.Dot "clone" := {
@@ -22536,6 +23663,7 @@ Module hash.
     Definition Self := ink_env.hash.Sha2x256.
     
     Definition eq
+        `{State.Trait}
         (self : ref Self)
         (other : ref ink_env.hash.Sha2x256)
         : M bool :=
@@ -22560,7 +23688,10 @@ Module hash.
   Module Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
     Definition Self := ink_env.hash.Sha2x256.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    Definition assert_receiver_is_total_eq
+        `{State.Trait}
+        (self : ref Self)
+        : M unit :=
       Pure tt.
     
     Global Instance Method_assert_receiver_is_total_eq :
@@ -22582,6 +23713,7 @@ Module hash.
     Definition Self := ink_env.hash.Keccak256.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -22606,7 +23738,10 @@ Module hash.
   Module Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
     Definition Self := ink_env.hash.Keccak256.
     
-    Definition clone (self : ref Self) : M ink_env.hash.Keccak256 :=
+    Definition clone
+        `{State.Trait}
+        (self : ref Self)
+        : M ink_env.hash.Keccak256 :=
       self.["deref"].
     
     Global Instance Method_clone : Notation.Dot "clone" := {
@@ -22629,6 +23764,7 @@ Module hash.
     Definition Self := ink_env.hash.Keccak256.
     
     Definition eq
+        `{State.Trait}
         (self : ref Self)
         (other : ref ink_env.hash.Keccak256)
         : M bool :=
@@ -22653,7 +23789,10 @@ Module hash.
   Module Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
     Definition Self := ink_env.hash.Keccak256.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    Definition assert_receiver_is_total_eq
+        `{State.Trait}
+        (self : ref Self)
+        : M unit :=
       Pure tt.
     
     Global Instance Method_assert_receiver_is_total_eq :
@@ -22675,6 +23814,7 @@ Module hash.
     Definition Self := ink_env.hash.Blake2x256.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -22699,7 +23839,10 @@ Module hash.
   Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
     Definition Self := ink_env.hash.Blake2x256.
     
-    Definition clone (self : ref Self) : M ink_env.hash.Blake2x256 :=
+    Definition clone
+        `{State.Trait}
+        (self : ref Self)
+        : M ink_env.hash.Blake2x256 :=
       self.["deref"].
     
     Global Instance Method_clone : Notation.Dot "clone" := {
@@ -22722,6 +23865,7 @@ Module hash.
     Definition Self := ink_env.hash.Blake2x256.
     
     Definition eq
+        `{State.Trait}
         (self : ref Self)
         (other : ref ink_env.hash.Blake2x256)
         : M bool :=
@@ -22746,7 +23890,10 @@ Module hash.
   Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
     Definition Self := ink_env.hash.Blake2x256.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    Definition assert_receiver_is_total_eq
+        `{State.Trait}
+        (self : ref Self)
+        : M unit :=
       Pure tt.
     
     Global Instance Method_assert_receiver_is_total_eq :
@@ -22768,6 +23915,7 @@ Module hash.
     Definition Self := ink_env.hash.Blake2x128.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -22792,7 +23940,10 @@ Module hash.
   Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
     Definition Self := ink_env.hash.Blake2x128.
     
-    Definition clone (self : ref Self) : M ink_env.hash.Blake2x128 :=
+    Definition clone
+        `{State.Trait}
+        (self : ref Self)
+        : M ink_env.hash.Blake2x128 :=
       self.["deref"].
     
     Global Instance Method_clone : Notation.Dot "clone" := {
@@ -22815,6 +23966,7 @@ Module hash.
     Definition Self := ink_env.hash.Blake2x128.
     
     Definition eq
+        `{State.Trait}
         (self : ref Self)
         (other : ref ink_env.hash.Blake2x128)
         : M bool :=
@@ -22839,7 +23991,10 @@ Module hash.
   Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
     Definition Self := ink_env.hash.Blake2x128.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    Definition assert_receiver_is_total_eq
+        `{State.Trait}
+        (self : ref Self)
+        : M unit :=
       Pure tt.
     
     Global Instance Method_assert_receiver_is_total_eq :
@@ -22960,6 +24115,7 @@ Module Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -22984,7 +24140,7 @@ End Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
 Module Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
-  Definition clone (self : ref Self) : M ink_env.hash.Sha2x256 :=
+  Definition clone `{State.Trait} (self : ref Self) : M ink_env.hash.Sha2x256 :=
     self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -23007,6 +24163,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
   Definition eq
+      `{State.Trait}
       (self : ref Self)
       (other : ref ink_env.hash.Sha2x256)
       : M bool :=
@@ -23031,7 +24188,11 @@ End Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
 Module Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit := Pure tt.
+  Definition assert_receiver_is_total_eq
+      `{State.Trait}
+      (self : ref Self)
+      : M unit :=
+    Pure tt.
   
   Global Instance Method_assert_receiver_is_total_eq :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -23052,6 +24213,7 @@ Module Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -23076,7 +24238,10 @@ End Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
 Module Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
-  Definition clone (self : ref Self) : M ink_env.hash.Keccak256 :=
+  Definition clone
+      `{State.Trait}
+      (self : ref Self)
+      : M ink_env.hash.Keccak256 :=
     self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -23099,6 +24264,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
   Definition eq
+      `{State.Trait}
       (self : ref Self)
       (other : ref ink_env.hash.Keccak256)
       : M bool :=
@@ -23123,7 +24289,11 @@ End Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
 Module Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit := Pure tt.
+  Definition assert_receiver_is_total_eq
+      `{State.Trait}
+      (self : ref Self)
+      : M unit :=
+    Pure tt.
   
   Global Instance Method_assert_receiver_is_total_eq :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -23144,6 +24314,7 @@ Module Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -23168,7 +24339,10 @@ End Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
 Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
-  Definition clone (self : ref Self) : M ink_env.hash.Blake2x256 :=
+  Definition clone
+      `{State.Trait}
+      (self : ref Self)
+      : M ink_env.hash.Blake2x256 :=
     self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -23191,6 +24365,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
   Definition eq
+      `{State.Trait}
       (self : ref Self)
       (other : ref ink_env.hash.Blake2x256)
       : M bool :=
@@ -23215,7 +24390,11 @@ End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
 Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit := Pure tt.
+  Definition assert_receiver_is_total_eq
+      `{State.Trait}
+      (self : ref Self)
+      : M unit :=
+    Pure tt.
   
   Global Instance Method_assert_receiver_is_total_eq :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -23236,6 +24415,7 @@ Module Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -23260,7 +24440,10 @@ End Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
 Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
-  Definition clone (self : ref Self) : M ink_env.hash.Blake2x128 :=
+  Definition clone
+      `{State.Trait}
+      (self : ref Self)
+      : M ink_env.hash.Blake2x128 :=
     self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
@@ -23283,6 +24466,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
   Definition eq
+      `{State.Trait}
       (self : ref Self)
       (other : ref ink_env.hash.Blake2x128)
       : M bool :=
@@ -23307,7 +24491,11 @@ End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
 Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit := Pure tt.
+  Definition assert_receiver_is_total_eq
+      `{State.Trait}
+      (self : ref Self)
+      : M unit :=
+    Pure tt.
   
   Global Instance Method_assert_receiver_is_total_eq :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -23448,7 +24636,7 @@ Module topics.
       :=
       ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
     
-    Definition from (backend : B) : M Self :=
+    Definition from `{State.Trait} (backend : B) : M Self :=
       let* α0 := core.default.Default.default tt in
       Pure {| Self.backend := backend; Self.state := α0; |}.
     
@@ -23492,6 +24680,7 @@ Module topics.
       ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
     
     Definition build
+        `{State.Trait}
         (self : Self)
         :
           M
@@ -23517,6 +24706,7 @@ Module topics.
     Definition Self := ink_env.topics.TopicsBuilder S E B.
     
     Definition push_topic
+        `{State.Trait}
         (self : Self)
         (value : ref T)
         :
@@ -23546,6 +24736,7 @@ Module topics.
       ink_env.topics.TopicsBuilder ink_env.topics.state.NoRemainingTopics E B.
     
     Definition finish
+        `{State.Trait}
         (self : Self)
         : M ink_env.topics.TopicsBuilderBackend.Output :=
       self.["backend"].["output"].
@@ -24536,7 +25727,7 @@ Module topics.
     
     Definition Self := ink_env.topics.PrefixedValue X.
     
-    Definition size_hint (self : ref Self) : M usize :=
+    Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
       let* α0 := self.["prefix"].["size_hint"] in
       let* α1 := self.["value"].["size_hint"] in
       α0.["add"] α1.
@@ -24545,7 +25736,11 @@ Module topics.
       Notation.dot := size_hint;
     }.
     
-    Definition encode_to (self : ref Self) (dest : mut_ref T) : M unit :=
+    Definition encode_to
+        `{State.Trait}
+        (self : ref Self)
+        (dest : mut_ref T)
+        : M unit :=
       let* _ := self.["prefix"].["encode_to"] dest in
       let* _ := self.["value"].["encode_to"] dest in
       Pure tt.
@@ -24609,7 +25804,7 @@ Section
     :=
     ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
   
-  Definition from (backend : B) : M Self :=
+  Definition from `{State.Trait} (backend : B) : M Self :=
     let* α0 := core.default.Default.default tt in
     Pure {| Self.backend := backend; Self.state := α0; |}.
   
@@ -24671,6 +25866,7 @@ Module Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B_2.
     ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
   
   Definition build
+      `{State.Trait}
       (self : Self)
       :
         M
@@ -24696,6 +25892,7 @@ Module Impl_ink_env_topics_TopicsBuilder_S_E_B_2.
   Definition Self := ink_env.topics.TopicsBuilder S E B.
   
   Definition push_topic
+      `{State.Trait}
       (self : Self)
       (value : ref T)
       :
@@ -24725,6 +25922,7 @@ Module
     ink_env.topics.TopicsBuilder ink_env.topics.state.NoRemainingTopics E B.
   
   Definition finish
+      `{State.Trait}
       (self : Self)
       : M ink_env.topics.TopicsBuilderBackend.Output :=
     self.["backend"].["output"].
@@ -25713,7 +26911,7 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
   
   Definition Self := ink_env.topics.PrefixedValue X.
   
-  Definition size_hint (self : ref Self) : M usize :=
+  Definition size_hint `{State.Trait} (self : ref Self) : M usize :=
     let* α0 := self.["prefix"].["size_hint"] in
     let* α1 := self.["value"].["size_hint"] in
     α0.["add"] α1.
@@ -25722,7 +26920,11 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
     Notation.dot := size_hint;
   }.
   
-  Definition encode_to (self : ref Self) (dest : mut_ref T) : M unit :=
+  Definition encode_to
+      `{State.Trait}
+      (self : ref Self)
+      (dest : mut_ref T)
+      : M unit :=
     let* _ := self.["prefix"].["encode_to"] dest in
     let* _ := self.["value"].["encode_to"] dest in
     Pure tt.

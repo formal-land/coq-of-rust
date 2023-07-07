@@ -50,7 +50,7 @@ Module erc20.
   Module Impl_core_default_Default_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
     
-    Definition default (_ : unit) : M erc20.erc20.Erc20 :=
+    Definition default `{State.Trait} (_ : unit) : M erc20.erc20.Erc20 :=
       let* α0 := core.default.Default.default tt in
       let* α1 := core.default.Default.default tt in
       let* α2 := core.default.Default.default tt in
@@ -571,6 +571,7 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -592,7 +593,11 @@ Module erc20.
   Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
     
-    Definition hash (self : ref Self) (state : mut_ref __H) : M unit :=
+    Definition hash
+        `{State.Trait}
+        (self : ref Self)
+        (state : mut_ref __H)
+        : M unit :=
       core.hash.Hash.hash (addr_of self.["inner"]) state.
     
     Global Instance Method_hash : Notation.Dot "hash" := {
@@ -615,6 +620,7 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition eq
+        `{State.Trait}
         (self : ref Self)
         (other : ref erc20.erc20.Erc20Ref)
         : M bool :=
@@ -639,7 +645,10 @@ Module erc20.
   Module Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    Definition assert_receiver_is_total_eq
+        `{State.Trait}
+        (self : ref Self)
+        : M unit :=
       let _ := tt in
       Pure tt.
     
@@ -655,7 +664,10 @@ Module erc20.
   Module Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
     
-    Definition clone (self : ref Self) : M erc20.erc20.Erc20Ref :=
+    Definition clone
+        `{State.Trait}
+        (self : ref Self)
+        : M erc20.erc20.Erc20Ref :=
       let* α0 := core.clone.Clone.clone (addr_of self.["inner"]) in
       Pure {| erc20.erc20.Erc20Ref.inner := α0; |}.
     
@@ -672,6 +684,7 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition new
+        `{State.Trait}
         (__ink_binding_0 : erc20.erc20.Balance)
         :
           M
@@ -702,7 +715,10 @@ Module erc20.
       Notation.double_colon := new;
     }.
     
-    Definition total_supply (self : ref Self) : M erc20.erc20.Balance :=
+    Definition total_supply
+        `{State.Trait}
+        (self : ref Self)
+        : M erc20.erc20.Balance :=
       let* α0 := self.["try_total_supply"] in
       α0.["unwrap_or_else"]
         (fun error =>
@@ -719,6 +735,7 @@ Module erc20.
     }.
     
     Definition try_total_supply
+        `{State.Trait}
         (self : ref Self)
         : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
       let* α0 :=
@@ -741,6 +758,7 @@ Module erc20.
     }.
     
     Definition balance_of
+        `{State.Trait}
         (self : ref Self)
         (owner : erc20.erc20.AccountId)
         : M erc20.erc20.Balance :=
@@ -760,6 +778,7 @@ Module erc20.
     }.
     
     Definition try_balance_of
+        `{State.Trait}
         (self : ref Self)
         (owner : erc20.erc20.AccountId)
         : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
@@ -782,6 +801,7 @@ Module erc20.
     }.
     
     Definition allowance
+        `{State.Trait}
         (self : ref Self)
         (owner : erc20.erc20.AccountId)
         (spender : erc20.erc20.AccountId)
@@ -801,6 +821,7 @@ Module erc20.
     }.
     
     Definition try_allowance
+        `{State.Trait}
         (self : ref Self)
         (owner : erc20.erc20.AccountId)
         (spender : erc20.erc20.AccountId)
@@ -823,6 +844,7 @@ Module erc20.
     }.
     
     Definition transfer
+        `{State.Trait}
         (self : mut_ref Self)
         (to : erc20.erc20.AccountId)
         (value : erc20.erc20.Balance)
@@ -842,6 +864,7 @@ Module erc20.
     }.
     
     Definition try_transfer
+        `{State.Trait}
         (self : mut_ref Self)
         (to : erc20.erc20.AccountId)
         (value : erc20.erc20.Balance)
@@ -864,6 +887,7 @@ Module erc20.
     }.
     
     Definition approve
+        `{State.Trait}
         (self : mut_ref Self)
         (spender : erc20.erc20.AccountId)
         (value : erc20.erc20.Balance)
@@ -883,6 +907,7 @@ Module erc20.
     }.
     
     Definition try_approve
+        `{State.Trait}
         (self : mut_ref Self)
         (spender : erc20.erc20.AccountId)
         (value : erc20.erc20.Balance)
@@ -905,6 +930,7 @@ Module erc20.
     }.
     
     Definition transfer_from
+        `{State.Trait}
         (self : mut_ref Self)
         (from : erc20.erc20.AccountId)
         (to : erc20.erc20.AccountId)
@@ -926,6 +952,7 @@ Module erc20.
     }.
     
     Definition try_transfer_from
+        `{State.Trait}
         (self : mut_ref Self)
         (from : erc20.erc20.AccountId)
         (to : erc20.erc20.AccountId)
@@ -955,7 +982,10 @@ Module erc20.
     Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
     
-    Definition from_account_id (account_id : erc20.erc20.AccountId) : M Self :=
+    Definition from_account_id
+        `{State.Trait}
+        (account_id : erc20.erc20.AccountId)
+        : M Self :=
       let* α0 :=
         ink_env.call.create_builder.FromAccountId.from_account_id account_id in
       Pure {| Self.inner := α0; |}.
@@ -978,7 +1008,10 @@ Module erc20.
   Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
     
-    Definition to_account_id (self : ref Self) : M erc20.erc20.AccountId :=
+    Definition to_account_id
+        `{State.Trait}
+        (self : ref Self)
+        : M erc20.erc20.AccountId :=
       ink.contract_ref.ToAccountId.to_account_id (addr_of self.["inner"]).
     
     Global Instance Method_to_account_id : Notation.Dot "to_account_id" := {
@@ -996,7 +1029,10 @@ Module erc20.
   Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
     
-    Definition as_ref (self : ref Self) : M (ref erc20.erc20.AccountId) :=
+    Definition as_ref
+        `{State.Trait}
+        (self : ref Self)
+        : M (ref erc20.erc20.AccountId) :=
       core.convert.AsRef.as_ref (addr_of self.["inner"]).
     
     Global Instance Method_as_ref : Notation.Dot "as_ref" := {
@@ -1013,6 +1049,7 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition as_mut
+        `{State.Trait}
         (self : mut_ref Self)
         : M (mut_ref erc20.erc20.AccountId) :=
       core.convert.AsMut.as_mut (addr_of self.["inner"]).
@@ -1038,6 +1075,7 @@ Module erc20.
     Definition Self := erc20.erc20.Error.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -1068,7 +1106,11 @@ Module erc20.
   Module Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
     Definition Self := erc20.erc20.Error.
     
-    Definition eq (self : ref Self) (other : ref erc20.erc20.Error) : M bool :=
+    Definition eq
+        `{State.Trait}
+        (self : ref Self)
+        (other : ref erc20.erc20.Error)
+        : M bool :=
       let* __self_tag := core.intrinsics.discriminant_value self in
       let* __arg1_tag := core.intrinsics.discriminant_value other in
       __self_tag.["eq"] __arg1_tag.
@@ -1092,7 +1134,10 @@ Module erc20.
   Module Impl_core_cmp_Eq_for_erc20_erc20_Error.
     Definition Self := erc20.erc20.Error.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    Definition assert_receiver_is_total_eq
+        `{State.Trait}
+        (self : ref Self)
+        : M unit :=
       Pure tt.
     
     Global Instance Method_assert_receiver_is_total_eq :
@@ -1219,6 +1264,7 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
   Definition decode
+      `{State.Trait}
       (__input : mut_ref __ink_I)
       : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := ink_storage_traits.storage.Storable.decode __input in
@@ -1261,7 +1307,11 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
     Notation.double_colon := decode;
   }.
   
-  Definition encode (self : ref Self) (__dest : mut_ref __ink_O) : M unit :=
+  Definition encode
+      `{State.Trait}
+      (self : ref Self)
+      (__dest : mut_ref __ink_O)
+      : M unit :=
     match self with
     |
         {|
@@ -1297,7 +1347,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
   
   Definition Identity : Set := Self.
   
-  Definition type_info (_ : unit) : M scale_info.ty.Type :=
+  Definition type_info `{State.Trait} (_ : unit) : M scale_info.ty.Type :=
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Erc20" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
@@ -1359,6 +1409,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
   Definition layout
+      `{State.Trait}
       (__key : ref ink_primitives.key.Key)
       : M ink_metadata.layout.Layout :=
     let* α0 := ink_storage_traits.layout.StorageLayout.layout __key in
@@ -1384,7 +1435,7 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
 Module Impl_core_default_Default_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
-  Definition default (_ : unit) : M erc20.erc20.Erc20 :=
+  Definition default `{State.Trait} (_ : unit) : M erc20.erc20.Erc20 :=
     let* α0 := core.default.Default.default tt in
     let* α1 := core.default.Default.default tt in
     let* α2 := core.default.Default.default tt in
@@ -1426,7 +1477,7 @@ Module Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
   Definition EnvAccess : Set :=
     ink.env_access.EnvAccess ink_env.contract.ContractEnv.Env.
   
-  Definition env (self : Self) : M ImplSelf.EnvAccess :=
+  Definition env `{State.Trait} (self : Self) : M ImplSelf.EnvAccess :=
     core.default.Default.default tt.
   
   Global Instance Method_env : Notation.Dot "env" := {
@@ -1444,7 +1495,7 @@ Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
   Definition EnvAccess : Set :=
     ink.env_access.EnvAccess ink_env.contract.ContractEnv.Env.
   
-  Definition env (_ : unit) : M ImplSelf.EnvAccess :=
+  Definition env `{State.Trait} (_ : unit) : M ImplSelf.EnvAccess :=
     core.default.Default.default tt.
   
   Global Instance AssociatedFunction_env : Notation.DoubleColon Self "env" := {
@@ -1460,7 +1511,7 @@ Module
   Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
   Definition Self := ink.env_access.EnvAccess erc20.erc20.Environment.
   
-  Definition emit_event (self : Self) (event : E) : M unit :=
+  Definition emit_event `{State.Trait} (self : Self) (event : E) : M unit :=
     let* _ :=
       let* α0 := event.["into"] in
       ink_env.api.emit_event α0 in
@@ -1488,6 +1539,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
   
   Definition encode_to
+      `{State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M unit :=
@@ -1529,6 +1581,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
   
   Definition decode
+      `{State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := __codec_input_edqy.["read_byte"] in
@@ -1625,7 +1678,7 @@ End Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
 Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
   
-  Definition from (event : erc20.erc20.Transfer) : M Self :=
+  Definition from `{State.Trait} (event : erc20.erc20.Transfer) : M Self :=
     Self::["Transfer"] event.
   
   Global Instance AssociatedFunction_from :
@@ -1642,7 +1695,7 @@ End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
 Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
   
-  Definition from (event : erc20.erc20.Approval) : M Self :=
+  Definition from `{State.Trait} (event : erc20.erc20.Approval) : M Self :=
     Self::["Approval"] event.
   
   Global Instance AssociatedFunction_from :
@@ -1686,6 +1739,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
     erc20.erc20._.__ink_UndefinedAmountOfTopics.
   
   Definition topics
+      `{State.Trait}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M ink_env.topics.TopicsBuilderBackend.Output :=
@@ -1750,6 +1804,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
   Definition Self := erc20.erc20.Transfer.
   
   Definition encode_to
+      `{State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M unit :=
@@ -1786,6 +1841,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
   Definition Self := erc20.erc20.Transfer.
   
   Definition decode
+      `{State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
@@ -1856,6 +1912,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
   Definition Self := erc20.erc20.Approval.
   
   Definition encode_to
+      `{State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M unit :=
@@ -1892,6 +1949,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
   Definition Self := erc20.erc20.Approval.
   
   Definition decode
+      `{State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
@@ -1946,6 +2004,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
     list ink_env.topics.state.HasRemainingTopics.
   
   Definition topics
+      `{State.Trait}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M ink_env.topics.TopicsBuilderBackend.Output :=
@@ -1992,6 +2051,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
     list ink_env.topics.state.HasRemainingTopics.
   
   Definition topics
+      `{State.Trait}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M ink_env.topics.TopicsBuilderBackend.Output :=
@@ -2453,6 +2513,7 @@ Module
   Definition Self := erc20.erc20._.__ink_ConstructorDecoder.
   
   Definition decode_dispatch
+      `{State.Trait}
       (input : mut_ref I)
       : M (core.result.Result Self ink.reflect.dispatch.DispatchError) :=
     let* α0 := parity_scale_codec.codec.Decode.decode input in
@@ -2509,6 +2570,7 @@ Module
   Definition Self := erc20.erc20._.__ink_ConstructorDecoder.
   
   Definition decode
+      `{State.Trait}
       (input : mut_ref I)
       : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := ink.reflect.dispatch.DecodeDispatch.decode_dispatch input in
@@ -2530,6 +2592,7 @@ Module
   Definition Self := erc20.erc20._.__ink_ConstructorDecoder.
   
   Definition execute_dispatchable
+      `{State.Trait}
       (self : Self)
       : M (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
     match self with
@@ -2622,6 +2685,7 @@ Module
   Definition Self := erc20.erc20._.__ink_MessageDecoder.
   
   Definition decode_dispatch
+      `{State.Trait}
       (input : mut_ref I)
       : M (core.result.Result Self ink.reflect.dispatch.DispatchError) :=
     let* α0 := parity_scale_codec.codec.Decode.decode input in
@@ -2773,6 +2837,7 @@ Module
   Definition Self := erc20.erc20._.__ink_MessageDecoder.
   
   Definition decode
+      `{State.Trait}
       (input : mut_ref I)
       : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := ink.reflect.dispatch.DecodeDispatch.decode_dispatch input in
@@ -2789,6 +2854,7 @@ Module
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_MessageDecoder.
 
 Definition push_contract
+    `{State.Trait}
     (contract : core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20)
     (mutates : bool)
     : M unit :=
@@ -2806,6 +2872,7 @@ Module
   Definition Self := erc20.erc20._.__ink_MessageDecoder.
   
   Definition execute_dispatchable
+      `{State.Trait}
       (self : Self)
       : M (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
     let key := ink_storage_traits.storage.StorageKey.KEY in
@@ -3256,7 +3323,7 @@ Definition _ : ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
 Module Impl_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
-  Definition new (total_supply : erc20.erc20.Balance) : M Self :=
+  Definition new `{State.Trait} (total_supply : erc20.erc20.Balance) : M Self :=
     let* balances := ink_storage.lazy.mapping.Mapping::["default"] tt in
     let* caller :=
       let* α0 := Self::["env"] tt in
@@ -3282,7 +3349,10 @@ Module Impl_erc20_erc20_Erc20.
     Notation.double_colon := new;
   }.
   
-  Definition total_supply (self : ref Self) : M erc20.erc20.Balance :=
+  Definition total_supply
+      `{State.Trait}
+      (self : ref Self)
+      : M erc20.erc20.Balance :=
     Pure self.["total_supply"].
   
   Global Instance Method_total_supply : Notation.Dot "total_supply" := {
@@ -3290,6 +3360,7 @@ Module Impl_erc20_erc20_Erc20.
   }.
   
   Definition balance_of
+      `{State.Trait}
       (self : ref Self)
       (owner : erc20.erc20.AccountId)
       : M erc20.erc20.Balance :=
@@ -3300,6 +3371,7 @@ Module Impl_erc20_erc20_Erc20.
   }.
   
   Definition allowance
+      `{State.Trait}
       (self : ref Self)
       (owner : erc20.erc20.AccountId)
       (spender : erc20.erc20.AccountId)
@@ -3311,6 +3383,7 @@ Module Impl_erc20_erc20_Erc20.
   }.
   
   Definition transfer
+      `{State.Trait}
       (self : mut_ref Self)
       (to : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
@@ -3325,6 +3398,7 @@ Module Impl_erc20_erc20_Erc20.
   }.
   
   Definition approve
+      `{State.Trait}
       (self : mut_ref Self)
       (spender : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
@@ -3351,6 +3425,7 @@ Module Impl_erc20_erc20_Erc20.
   }.
   
   Definition transfer_from
+      `{State.Trait}
       (self : mut_ref Self)
       (from : erc20.erc20.AccountId)
       (to : erc20.erc20.AccountId)
@@ -3387,6 +3462,7 @@ Module Impl_erc20_erc20_Erc20.
   }.
   
   Definition balance_of_impl
+      `{State.Trait}
       (self : ref Self)
       (owner : ref erc20.erc20.AccountId)
       : M erc20.erc20.Balance :=
@@ -3398,6 +3474,7 @@ Module Impl_erc20_erc20_Erc20.
   }.
   
   Definition allowance_impl
+      `{State.Trait}
       (self : ref Self)
       (owner : ref erc20.erc20.AccountId)
       (spender : ref erc20.erc20.AccountId)
@@ -3410,6 +3487,7 @@ Module Impl_erc20_erc20_Erc20.
   }.
   
   Definition transfer_from_to
+      `{State.Trait}
       (self : mut_ref Self)
       (from : ref erc20.erc20.AccountId)
       (to : ref erc20.erc20.AccountId)
@@ -3461,6 +3539,7 @@ Module Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -3483,6 +3562,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition encode_to
+      `{State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M unit :=
@@ -3495,6 +3575,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
   }.
   
   Definition encode
+      `{State.Trait}
       (self : ref Self)
       : M (alloc.vec.Vec Root.core.primitive.u8) :=
     parity_scale_codec.codec.Encode.encode
@@ -3504,7 +3585,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
     Notation.dot := encode;
   }.
   
-  Definition using_encoded (self : ref Self) (f : F) : M R :=
+  Definition using_encoded `{State.Trait} (self : ref Self) (f : F) : M R :=
     parity_scale_codec.codec.Encode.using_encoded
       (addr_of (addr_of self.["account_id"]))
       f.
@@ -3530,6 +3611,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition decode
+      `{State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
@@ -3550,6 +3632,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
   }.
   
   Definition decode_into
+      `{State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       (dst_ : mut_ref (core.mem.maybe_uninit.MaybeUninit Self))
       :
@@ -3631,7 +3714,11 @@ End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
 Module Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Definition hash (self : ref Self) (state : mut_ref __H) : M unit :=
+  Definition hash
+      `{State.Trait}
+      (self : ref Self)
+      (state : mut_ref __H)
+      : M unit :=
     core.hash.Hash.hash (addr_of self.["account_id"]) state.
   
   Global Instance Method_hash : Notation.Dot "hash" := {
@@ -3654,6 +3741,7 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition eq
+      `{State.Trait}
       (self : ref Self)
       (other : ref erc20.erc20._.CallBuilder)
       : M bool :=
@@ -3678,7 +3766,10 @@ End Impl_core_marker_StructuralEq_for_erc20_erc20___CallBuilder.
 Module Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+  Definition assert_receiver_is_total_eq
+      `{State.Trait}
+      (self : ref Self)
+      : M unit :=
     let _ := tt in
     Pure tt.
   
@@ -3694,7 +3785,10 @@ End Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
 Module Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Definition clone (self : ref Self) : M erc20.erc20._.CallBuilder :=
+  Definition clone
+      `{State.Trait}
+      (self : ref Self)
+      : M erc20.erc20._.CallBuilder :=
     let* α0 := core.clone.Clone.clone (addr_of self.["account_id"]) in
     Pure {| erc20.erc20._.CallBuilder.account_id := α0; |}.
   
@@ -3712,7 +3806,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
   
   Definition Identity : Set := Self.
   
-  Definition type_info (_ : unit) : M scale_info.ty.Type :=
+  Definition type_info `{State.Trait} (_ : unit) : M scale_info.ty.Type :=
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "CallBuilder" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
@@ -3751,6 +3845,7 @@ Module
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition layout
+      `{State.Trait}
       (__key : ref ink_primitives.key.Key)
       : M ink_metadata.layout.Layout :=
     let* α0 := ink_storage_traits.layout.StorageLayout.layout __key in
@@ -3791,7 +3886,10 @@ Module
   Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Definition from_account_id (account_id : erc20.erc20.AccountId) : M Self :=
+  Definition from_account_id
+      `{State.Trait}
+      (account_id : erc20.erc20.AccountId)
+      : M Self :=
     Pure {| Self.account_id := account_id; |}.
   
   Global Instance AssociatedFunction_from_account_id :
@@ -3813,7 +3911,10 @@ End
 Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Definition to_account_id (self : ref Self) : M erc20.erc20.AccountId :=
+  Definition to_account_id
+      `{State.Trait}
+      (self : ref Self)
+      : M erc20.erc20.AccountId :=
     core.clone.Clone.clone (addr_of self.["account_id"]).
   
   Global Instance Method_to_account_id : Notation.Dot "to_account_id" := {
@@ -3831,7 +3932,10 @@ End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
 Module Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Definition as_ref (self : ref Self) : M (ref erc20.erc20.AccountId) :=
+  Definition as_ref
+      `{State.Trait}
+      (self : ref Self)
+      : M (ref erc20.erc20.AccountId) :=
     Pure (addr_of self.["account_id"]).
   
   Global Instance Method_as_ref : Notation.Dot "as_ref" := {
@@ -3847,7 +3951,10 @@ End Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
 Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Definition as_mut (self : mut_ref Self) : M (mut_ref erc20.erc20.AccountId) :=
+  Definition as_mut
+      `{State.Trait}
+      (self : mut_ref Self)
+      : M (mut_ref erc20.erc20.AccountId) :=
     Pure (addr_of self.["account_id"]).
   
   Global Instance Method_as_mut : Notation.Dot "as_mut" := {
@@ -3864,6 +3971,7 @@ Module Impl_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition total_supply
+      `{State.Trait}
       (self : ref Self)
       :
         M
@@ -3889,6 +3997,7 @@ Module Impl_erc20_erc20___CallBuilder.
   }.
   
   Definition balance_of
+      `{State.Trait}
       (self : ref Self)
       (__ink_binding_0 : erc20.erc20.AccountId)
       :
@@ -3918,6 +4027,7 @@ Module Impl_erc20_erc20___CallBuilder.
   }.
   
   Definition allowance
+      `{State.Trait}
       (self : ref Self)
       (__ink_binding_0 : erc20.erc20.AccountId)
       (__ink_binding_1 : erc20.erc20.AccountId)
@@ -3952,6 +4062,7 @@ Module Impl_erc20_erc20___CallBuilder.
   }.
   
   Definition transfer
+      `{State.Trait}
       (self : mut_ref Self)
       (__ink_binding_0 : erc20.erc20.AccountId)
       (__ink_binding_1 : erc20.erc20.Balance)
@@ -3986,6 +4097,7 @@ Module Impl_erc20_erc20___CallBuilder.
   }.
   
   Definition approve
+      `{State.Trait}
       (self : mut_ref Self)
       (__ink_binding_0 : erc20.erc20.AccountId)
       (__ink_binding_1 : erc20.erc20.Balance)
@@ -4020,6 +4132,7 @@ Module Impl_erc20_erc20___CallBuilder.
   }.
   
   Definition transfer_from
+      `{State.Trait}
       (self : mut_ref Self)
       (__ink_binding_0 : erc20.erc20.AccountId)
       (__ink_binding_1 : erc20.erc20.AccountId)
@@ -4074,6 +4187,7 @@ Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -4096,6 +4210,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition encode_to
+      `{State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M unit :=
@@ -4108,6 +4223,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
   }.
   
   Definition encode
+      `{State.Trait}
       (self : ref Self)
       : M (alloc.vec.Vec Root.core.primitive.u8) :=
     parity_scale_codec.codec.Encode.encode (addr_of (addr_of self.["inner"])).
@@ -4116,7 +4232,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
     Notation.dot := encode;
   }.
   
-  Definition using_encoded (self : ref Self) (f : F) : M R :=
+  Definition using_encoded `{State.Trait} (self : ref Self) (f : F) : M R :=
     parity_scale_codec.codec.Encode.using_encoded
       (addr_of (addr_of self.["inner"]))
       f.
@@ -4140,6 +4256,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition decode
+      `{State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
@@ -4166,7 +4283,11 @@ End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
 Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Definition hash (self : ref Self) (state : mut_ref __H) : M unit :=
+  Definition hash
+      `{State.Trait}
+      (self : ref Self)
+      (state : mut_ref __H)
+      : M unit :=
     core.hash.Hash.hash (addr_of self.["inner"]) state.
   
   Global Instance Method_hash : Notation.Dot "hash" := {
@@ -4188,7 +4309,11 @@ End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
 Module Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Definition eq (self : ref Self) (other : ref erc20.erc20.Erc20Ref) : M bool :=
+  Definition eq
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref erc20.erc20.Erc20Ref)
+      : M bool :=
     self.["inner"].["eq"] other.["inner"].
   
   Global Instance Method_eq : Notation.Dot "eq" := {
@@ -4210,7 +4335,10 @@ End Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
 Module Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+  Definition assert_receiver_is_total_eq
+      `{State.Trait}
+      (self : ref Self)
+      : M unit :=
     let _ := tt in
     Pure tt.
   
@@ -4226,7 +4354,7 @@ End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
 Module Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Definition clone (self : ref Self) : M erc20.erc20.Erc20Ref :=
+  Definition clone `{State.Trait} (self : ref Self) : M erc20.erc20.Erc20Ref :=
     let* α0 := core.clone.Clone.clone (addr_of self.["inner"]) in
     Pure {| erc20.erc20.Erc20Ref.inner := α0; |}.
   
@@ -4244,7 +4372,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
   
   Definition Identity : Set := Self.
   
-  Definition type_info (_ : unit) : M scale_info.ty.Type :=
+  Definition type_info `{State.Trait} (_ : unit) : M scale_info.ty.Type :=
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Erc20Ref" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
@@ -4275,6 +4403,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition layout
+      `{State.Trait}
       (__key : ref ink_primitives.key.Key)
       : M ink_metadata.layout.Layout :=
     let* α0 := ink_storage_traits.layout.StorageLayout.layout __key in
@@ -4309,7 +4438,10 @@ Module
   
   Definition Error : Set := unit.
   
-  Definition ok (value : erc20.erc20.Erc20Ref) : M ImplSelf.Output :=
+  Definition ok
+      `{State.Trait}
+      (value : erc20.erc20.Erc20Ref)
+      : M ImplSelf.Output :=
     Pure value.
   
   Global Instance AssociatedFunction_ok : Notation.DoubleColon Self "ok" := {
@@ -4344,7 +4476,10 @@ Section
   
   Definition Error : Set := E.
   
-  Definition ok (value : erc20.erc20.Erc20Ref) : M ImplSelf.Output :=
+  Definition ok
+      `{State.Trait}
+      (value : erc20.erc20.Erc20Ref)
+      : M ImplSelf.Output :=
     Pure (core.result.Result.Ok value).
   
   Global Instance AssociatedFunction_ok : Notation.DoubleColon Self "ok" := {
@@ -4352,6 +4487,7 @@ Section
   }.
   
   Definition err
+      `{State.Trait}
       (err : ImplSelf.Error)
       : M (core.option.Option ImplSelf.Output) :=
     Pure (core.option.Option.Some (core.result.Result.Err err)).
@@ -4384,6 +4520,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition new
+      `{State.Trait}
       (__ink_binding_0 : erc20.erc20.Balance)
       :
         M
@@ -4411,7 +4548,10 @@ Module Impl_erc20_erc20_Erc20Ref_2.
     Notation.double_colon := new;
   }.
   
-  Definition total_supply (self : ref Self) : M erc20.erc20.Balance :=
+  Definition total_supply
+      `{State.Trait}
+      (self : ref Self)
+      : M erc20.erc20.Balance :=
     let* α0 := self.["try_total_supply"] in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -4428,6 +4568,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
   }.
   
   Definition try_total_supply
+      `{State.Trait}
       (self : ref Self)
       : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
     let* α0 := ink.codegen.trait_def.call_builder.TraitCallBuilder.call self in
@@ -4448,6 +4589,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
   }.
   
   Definition balance_of
+      `{State.Trait}
       (self : ref Self)
       (owner : erc20.erc20.AccountId)
       : M erc20.erc20.Balance :=
@@ -4466,6 +4608,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
   }.
   
   Definition try_balance_of
+      `{State.Trait}
       (self : ref Self)
       (owner : erc20.erc20.AccountId)
       : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
@@ -4486,6 +4629,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
   }.
   
   Definition allowance
+      `{State.Trait}
       (self : ref Self)
       (owner : erc20.erc20.AccountId)
       (spender : erc20.erc20.AccountId)
@@ -4505,6 +4649,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
   }.
   
   Definition try_allowance
+      `{State.Trait}
       (self : ref Self)
       (owner : erc20.erc20.AccountId)
       (spender : erc20.erc20.AccountId)
@@ -4526,6 +4671,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
   }.
   
   Definition transfer
+      `{State.Trait}
       (self : mut_ref Self)
       (to : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
@@ -4545,6 +4691,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
   }.
   
   Definition try_transfer
+      `{State.Trait}
       (self : mut_ref Self)
       (to : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
@@ -4567,6 +4714,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
   }.
   
   Definition approve
+      `{State.Trait}
       (self : mut_ref Self)
       (spender : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
@@ -4586,6 +4734,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
   }.
   
   Definition try_approve
+      `{State.Trait}
       (self : mut_ref Self)
       (spender : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
@@ -4608,6 +4757,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
   }.
   
   Definition transfer_from
+      `{State.Trait}
       (self : mut_ref Self)
       (from : erc20.erc20.AccountId)
       (to : erc20.erc20.AccountId)
@@ -4629,6 +4779,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
   }.
   
   Definition try_transfer_from
+      `{State.Trait}
       (self : mut_ref Self)
       (from : erc20.erc20.AccountId)
       (to : erc20.erc20.AccountId)
@@ -4661,14 +4812,17 @@ Module
   Definition Builder : Set :=
     ink.codegen.dispatch.info.ContractCallBuilder.Type.
   
-  Definition call (self : ref Self) : M (ref ImplSelf.Builder) :=
+  Definition call `{State.Trait} (self : ref Self) : M (ref ImplSelf.Builder) :=
     Pure (addr_of self.["inner"]).
   
   Global Instance Method_call : Notation.Dot "call" := {
     Notation.dot := call;
   }.
   
-  Definition call_mut (self : mut_ref Self) : M (mut_ref ImplSelf.Builder) :=
+  Definition call_mut
+      `{State.Trait}
+      (self : mut_ref Self)
+      : M (mut_ref ImplSelf.Builder) :=
     Pure (addr_of self.["inner"]).
   
   Global Instance Method_call_mut : Notation.Dot "call_mut" := {
@@ -4686,7 +4840,10 @@ End
 Module Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Definition from_account_id (account_id : erc20.erc20.AccountId) : M Self :=
+  Definition from_account_id
+      `{State.Trait}
+      (account_id : erc20.erc20.AccountId)
+      : M Self :=
     let* α0 :=
       ink_env.call.create_builder.FromAccountId.from_account_id account_id in
     Pure {| Self.inner := α0; |}.
@@ -4709,7 +4866,10 @@ End Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
 Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Definition to_account_id (self : ref Self) : M erc20.erc20.AccountId :=
+  Definition to_account_id
+      `{State.Trait}
+      (self : ref Self)
+      : M erc20.erc20.AccountId :=
     ink.contract_ref.ToAccountId.to_account_id (addr_of self.["inner"]).
   
   Global Instance Method_to_account_id : Notation.Dot "to_account_id" := {
@@ -4727,7 +4887,10 @@ End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
 Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Definition as_ref (self : ref Self) : M (ref erc20.erc20.AccountId) :=
+  Definition as_ref
+      `{State.Trait}
+      (self : ref Self)
+      : M (ref erc20.erc20.AccountId) :=
     core.convert.AsRef.as_ref (addr_of self.["inner"]).
   
   Global Instance Method_as_ref : Notation.Dot "as_ref" := {
@@ -4743,7 +4906,10 @@ End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
 Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Definition as_mut (self : mut_ref Self) : M (mut_ref erc20.erc20.AccountId) :=
+  Definition as_mut
+      `{State.Trait}
+      (self : mut_ref Self)
+      : M (mut_ref erc20.erc20.AccountId) :=
     core.convert.AsMut.as_mut (addr_of self.["inner"]).
   
   Global Instance Method_as_mut : Notation.Dot "as_mut" := {
@@ -4756,7 +4922,10 @@ Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
   }.
 End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
 
-Definition __ink_generate_metadata (_ : unit) : M ink_metadata.InkProject :=
+Definition __ink_generate_metadata
+    `{State.Trait}
+    (_ : unit)
+    : M ink_metadata.InkProject :=
   let* layout :=
     let* α0 :=
       core.convert.From.from ink_storage_traits.storage.StorageKey.KEY in
@@ -5159,7 +5328,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
   
   Definition Identity : Set := Self.
   
-  Definition type_info (_ : unit) : M scale_info.ty.Type :=
+  Definition type_info `{State.Trait} (_ : unit) : M scale_info.ty.Type :=
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Error" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
@@ -5203,6 +5372,7 @@ Module Impl_core_fmt_Debug_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -5232,7 +5402,11 @@ End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
 Module Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
-  Definition eq (self : ref Self) (other : ref erc20.erc20.Error) : M bool :=
+  Definition eq
+      `{State.Trait}
+      (self : ref Self)
+      (other : ref erc20.erc20.Error)
+      : M bool :=
     let* __self_tag := core.intrinsics.discriminant_value self in
     let* __arg1_tag := core.intrinsics.discriminant_value other in
     __self_tag.["eq"] __arg1_tag.
@@ -5256,7 +5430,11 @@ End Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
 Module Impl_core_cmp_Eq_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit := Pure tt.
+  Definition assert_receiver_is_total_eq
+      `{State.Trait}
+      (self : ref Self)
+      : M unit :=
+    Pure tt.
   
   Global Instance Method_assert_receiver_is_total_eq :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -5271,6 +5449,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
   Definition encode_to
+      `{State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M unit :=
@@ -5306,6 +5485,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
   Definition decode
+      `{State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := __codec_input_edqy.["read_byte"] in
