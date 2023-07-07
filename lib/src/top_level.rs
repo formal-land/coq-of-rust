@@ -869,6 +869,7 @@ impl ImplItem {
                     text("Global Instance"),
                     line(),
                     text(format!("{instance_prefix}_{name}")),
+                    text("`{State.Trait}"),
                     text(" :"),
                 ]),
                 line(),
