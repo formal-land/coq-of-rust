@@ -3758,10 +3758,10 @@ Module Impl_ink_engine_chain_extension_ChainExtensionHandler_2.
 End Impl_ink_engine_chain_extension_ChainExtensionHandler_2.
 
 Module database.
-  Definition BALANCE_OF : ref Slice :=
+  Definition BALANCE_OF `{State.Trait} : ref Slice :=
     run (Pure [98, 97, 108, 97, 110, 99, 101, 58]).
   
-  Definition STORAGE_OF : ref Slice :=
+  Definition STORAGE_OF `{State.Trait} : ref Slice :=
     run
       (Pure
         [99, 111, 110, 116, 114, 97, 99, 116, 45, 115, 116, 111, 114, 97, 103, 101, 58]).
@@ -3975,10 +3975,10 @@ Module database.
   End Impl_ink_engine_database_Database.
 End database.
 
-Definition BALANCE_OF : ref Slice :=
+Definition BALANCE_OF `{State.Trait} : ref Slice :=
   run (Pure [98, 97, 108, 97, 110, 99, 101, 58]).
 
-Definition STORAGE_OF : ref Slice :=
+Definition STORAGE_OF `{State.Trait} : ref Slice :=
   run
     (Pure
       [99, 111, 110, 116, 114, 97, 99, 116, 45, 115, 116, 111, 114, 97, 103, 101, 58]).

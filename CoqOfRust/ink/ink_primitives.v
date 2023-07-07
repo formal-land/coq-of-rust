@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module key.
-  Definition XXH32_SEED : u32 := run (Pure 0).
+  Definition XXH32_SEED `{State.Trait} : u32 := run (Pure 0).
   
   Definition Key : Set := u32.
   
@@ -199,7 +199,7 @@ Module key.
   End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
 End key.
 
-Definition XXH32_SEED : u32 := run (Pure 0).
+Definition XXH32_SEED `{State.Trait} : u32 := run (Pure 0).
 
 Definition Key : Set := u32.
 

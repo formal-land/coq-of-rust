@@ -25,7 +25,7 @@ Module erc20.
   
   Definition ChainExtension : Set := ink_env.types.Environment.ChainExtension.
   
-  Definition MAX_EVENT_TOPICS : usize :=
+  Definition MAX_EVENT_TOPICS `{State.Trait} : usize :=
     run (Pure ink_env.types.Environment.MAX_EVENT_TOPICS).
   
   Module Erc20.
@@ -1294,7 +1294,7 @@ Definition BlockNumber : Set := ink_env.types.Environment.BlockNumber.
 
 Definition ChainExtension : Set := ink_env.types.Environment.ChainExtension.
 
-Definition MAX_EVENT_TOPICS : usize :=
+Definition MAX_EVENT_TOPICS `{State.Trait} : usize :=
   run (Pure ink_env.types.Environment.MAX_EVENT_TOPICS).
 
 Module Check.
@@ -2777,7 +2777,7 @@ Module
 End
   Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
 
-Definition CONSTRUCTOR_0 : list Root.core.primitive.u8 :=
+Definition CONSTRUCTOR_0 `{State.Trait} : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableConstructorInfo.SELECTOR).
 
 Module
@@ -3033,22 +3033,22 @@ Module
 End
   Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
 
-Definition MESSAGE_0 : list Root.core.primitive.u8 :=
+Definition MESSAGE_0 `{State.Trait} : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR).
 
-Definition MESSAGE_1 : list Root.core.primitive.u8 :=
+Definition MESSAGE_1 `{State.Trait} : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR).
 
-Definition MESSAGE_2 : list Root.core.primitive.u8 :=
+Definition MESSAGE_2 `{State.Trait} : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR).
 
-Definition MESSAGE_3 : list Root.core.primitive.u8 :=
+Definition MESSAGE_3 `{State.Trait} : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR).
 
-Definition MESSAGE_4 : list Root.core.primitive.u8 :=
+Definition MESSAGE_4 `{State.Trait} : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR).
 
-Definition MESSAGE_5 : list Root.core.primitive.u8 :=
+Definition MESSAGE_5 `{State.Trait} : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR).
 
 Module
@@ -3537,7 +3537,10 @@ Module Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
   }.
 End Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
 
-Definition _ : ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
+Definition
+    _
+    `{State.Trait} :
+    ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
   run ((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"] tt).
 
 Module Impl_erc20_erc20_Erc20.

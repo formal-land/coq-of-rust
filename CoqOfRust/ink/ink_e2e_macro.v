@@ -2,11 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module codegen.
-  Definition BUILD_ONCE : std.sync.once.Once :=
+  Definition BUILD_ONCE `{State.Trait} : std.sync.once.Once :=
     run (std.sync.once.Once::["new"] tt).
   
   Definition
-      ALREADY_BUILT_CONTRACTS :
+      ALREADY_BUILT_CONTRACTS
+      `{State.Trait} :
       std.thread.local.LocalKey
         (core.cell.RefCell
           (std.collections.hash.map.HashMap
@@ -889,11 +890,12 @@ Module codegen.
     end.
 End codegen.
 
-Definition BUILD_ONCE : std.sync.once.Once :=
+Definition BUILD_ONCE `{State.Trait} : std.sync.once.Once :=
   run (std.sync.once.Once::["new"] tt).
 
 Definition
-    ALREADY_BUILT_CONTRACTS :
+    ALREADY_BUILT_CONTRACTS
+    `{State.Trait} :
     std.thread.local.LocalKey
       (core.cell.RefCell
         (std.collections.hash.map.HashMap
@@ -963,7 +965,8 @@ Definition __getit
       ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.__init tt).
 
 Definition
-    __KEY :
+    __KEY
+    `{State.Trait} :
     std.sys.common.thread_local.fast_local.Key
       (core.cell.RefCell
         (std.collections.hash.map.HashMap
@@ -1669,7 +1672,7 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
   }.
 End Impl_ink_e2e_macro_codegen_InkE2ETest_2.
 
-Definition DEFAULT_CONTRACTS_NODE : ref str :=
+Definition DEFAULT_CONTRACTS_NODE `{State.Trait} : ref str :=
   run (Pure "substrate-contracts-node").
 
 Module ContractManifests.
@@ -2720,7 +2723,7 @@ Definition generate_or_err
   let* α0 := codegen.["generate_code"] in
   Pure (core.result.Result.Ok α0).
 
-Definition _DECLS : ref Slice :=
+Definition _DECLS `{State.Trait} : ref Slice :=
   run
     (let* α0 :=
       proc_macro.bridge.client.ProcMacro::["attr"] "test" ink_e2e_macro.test in

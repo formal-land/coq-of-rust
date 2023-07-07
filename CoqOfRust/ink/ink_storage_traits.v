@@ -3454,7 +3454,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i128.
   }.
 End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
 
-Definition TUPLE_NAME : ref str := run (Pure "(A)").
+Definition TUPLE_NAME `{State.Trait} : ref str := run (Pure "(A)").
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
 Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
@@ -3485,7 +3485,7 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
 
-Definition TUPLE_NAME : ref str := run (Pure "(A, B)").
+Definition TUPLE_NAME `{State.Trait} : ref str := run (Pure "(A, B)").
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
 Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
@@ -3518,7 +3518,7 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
 
-Definition TUPLE_NAME : ref str := run (Pure "(A, B, C)").
+Definition TUPLE_NAME `{State.Trait} : ref str := run (Pure "(A, B, C)").
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
 Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
@@ -3553,7 +3553,7 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
 
-Definition TUPLE_NAME : ref str := run (Pure "(A, B, C, D)").
+Definition TUPLE_NAME `{State.Trait} : ref str := run (Pure "(A, B, C, D)").
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
 Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
@@ -3590,7 +3590,7 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
 
-Definition TUPLE_NAME : ref str := run (Pure "(A, B, C, D, E)").
+Definition TUPLE_NAME `{State.Trait} : ref str := run (Pure "(A, B, C, D, E)").
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
 Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
@@ -3629,7 +3629,8 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
 
-Definition TUPLE_NAME : ref str := run (Pure "(A, B, C, D, E, F)").
+Definition TUPLE_NAME `{State.Trait} : ref str :=
+  run (Pure "(A, B, C, D, E, F)").
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
 Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
@@ -3670,7 +3671,8 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
 
-Definition TUPLE_NAME : ref str := run (Pure "(A, B, C, D, E, F, G)").
+Definition TUPLE_NAME `{State.Trait} : ref str :=
+  run (Pure "(A, B, C, D, E, F, G)").
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
 Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
@@ -3713,7 +3715,8 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
 
-Definition TUPLE_NAME : ref str := run (Pure "(A, B, C, D, E, F, G, H)").
+Definition TUPLE_NAME `{State.Trait} : ref str :=
+  run (Pure "(A, B, C, D, E, F, G, H)").
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
 Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
@@ -3758,7 +3761,8 @@ Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
 
-Definition TUPLE_NAME : ref str := run (Pure "(A, B, C, D, E, F, G, H, I)").
+Definition TUPLE_NAME `{State.Trait} : ref str :=
+  run (Pure "(A, B, C, D, E, F, G, H, I)").
 
 Module
   Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_.
@@ -3807,7 +3811,8 @@ Section
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_.
 
-Definition TUPLE_NAME : ref str := run (Pure "(A, B, C, D, E, F, G, H, I, J)").
+Definition TUPLE_NAME `{State.Trait} : ref str :=
+  run (Pure "(A, B, C, D, E, F, G, H, I, J)").
 
 Module
   Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_J_.

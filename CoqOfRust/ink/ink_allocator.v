@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module bump.
-  Definition PAGE_SIZE : usize := run (64.["mul"] 1024).
+  Definition PAGE_SIZE `{State.Trait} : usize := run (64.["mul"] 1024).
   
-  Definition INNER : ink_allocator.bump.InnerAlloc :=
+  Definition INNER `{State.Trait} : ink_allocator.bump.InnerAlloc :=
     run (ink_allocator.bump.InnerAlloc::["new"] tt).
   
   Module BumpAllocator.
@@ -257,9 +257,9 @@ Module bump.
       (fun num => num.["checked_div"] ink_allocator.bump.PAGE_SIZE).
 End bump.
 
-Definition PAGE_SIZE : usize := run (64.["mul"] 1024).
+Definition PAGE_SIZE `{State.Trait} : usize := run (64.["mul"] 1024).
 
-Definition INNER : ink_allocator.bump.InnerAlloc :=
+Definition INNER `{State.Trait} : ink_allocator.bump.InnerAlloc :=
   run (ink_allocator.bump.InnerAlloc::["new"] tt).
 
 Module BumpAllocator.

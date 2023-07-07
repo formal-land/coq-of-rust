@@ -14129,7 +14129,7 @@ Module engine.
     End call_data.
     
     Module impls.
-      Definition BUFFER_SIZE : usize := run (1.["shl"] 14).
+      Definition BUFFER_SIZE `{State.Trait} : usize := run (1.["shl"] 14).
       
       Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
         Definition Self := ink_env.hash.Blake2x128.
@@ -16777,7 +16777,7 @@ Module off_chain.
   End call_data.
   
   Module impls.
-    Definition BUFFER_SIZE : usize := run (1.["shl"] 14).
+    Definition BUFFER_SIZE `{State.Trait} : usize := run (1.["shl"] 14).
     
     Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
       Definition Self := ink_env.hash.Blake2x128.
@@ -19511,7 +19511,7 @@ End
   Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
 
 Module impls.
-  Definition BUFFER_SIZE : usize := run (1.["shl"] 14).
+  Definition BUFFER_SIZE `{State.Trait} : usize := run (1.["shl"] 14).
   
   Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
     Definition Self := ink_env.hash.Blake2x128.
@@ -20747,7 +20747,7 @@ Module impls.
     Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
 End impls.
 
-Definition BUFFER_SIZE : usize := run (1.["shl"] 14).
+Definition BUFFER_SIZE `{State.Trait} : usize := run (1.["shl"] 14).
 
 Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
@@ -20779,7 +20779,7 @@ End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
 
 Definition OutputType : Set := list u8.
 
-Definition _ : unit -> unit :=
+Definition _ `{State.Trait} : unit -> unit :=
   run
     (Pure
       (fun  =>
@@ -20864,7 +20864,7 @@ End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
 
 Definition OutputType : Set := list u8.
 
-Definition _ : unit -> unit :=
+Definition _ `{State.Trait} : unit -> unit :=
   run
     (Pure
       (fun  =>
@@ -20949,7 +20949,7 @@ End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
 
 Definition OutputType : Set := list u8.
 
-Definition _ : unit -> unit :=
+Definition _ `{State.Trait} : unit -> unit :=
   run
     (Pure
       (fun  =>
@@ -21034,7 +21034,7 @@ End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
 
 Definition OutputType : Set := list u8.
 
-Definition _ : unit -> unit :=
+Definition _ `{State.Trait} : unit -> unit :=
   run
     (Pure
       (fun  =>
@@ -23403,7 +23403,8 @@ Module Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
 End Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
 
 Definition
-    INSTANCE :
+    INSTANCE
+    `{State.Trait} :
     std.thread.local.LocalKey
       (core.cell.RefCell ink_env.engine.off_chain.EnvInstance) :=
   run
@@ -23459,7 +23460,8 @@ Definition __getit
       ink_env.engine.off_chain.on_instance.INSTANCE.__init tt).
 
 Definition
-    __KEY :
+    __KEY
+    `{State.Trait} :
     std.sys.common.thread_local.fast_local.Key
       (core.cell.RefCell ink_env.engine.off_chain.EnvInstance) :=
   run

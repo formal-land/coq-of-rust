@@ -5940,7 +5940,7 @@ Definition StorageLayout
     core.convert.Into.into α0
   end.
 
-Definition _DECLS : ref Slice :=
+Definition _DECLS `{State.Trait} : ref Slice :=
   run
     (let* α0 :=
       proc_macro.bridge.client.ProcMacro::["bang"]

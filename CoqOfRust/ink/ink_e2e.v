@@ -6140,12 +6140,12 @@ Module Impl_ink_e2e_node_proc_TestNodeProcess_R_2.
   }.
 End Impl_ink_e2e_node_proc_TestNodeProcess_R_2.
 
-Definition CALLSITE : tracing_core.callsite.DefaultCallsite :=
+Definition CALLSITE `{State.Trait} : tracing_core.callsite.DefaultCallsite :=
   run
     (tracing_core.callsite.DefaultCallsite::["new"]
       (addr_of ink_e2e.node_proc.kill.CALLSITE.META)).
 
-Definition META : tracing_core.metadata.Metadata :=
+Definition META `{State.Trait} : tracing_core.metadata.Metadata :=
   run
     (let* α0 :=
       tracing_core.field.FieldSet::["new"]
@@ -6162,12 +6162,12 @@ Definition META : tracing_core.metadata.Metadata :=
       α0
       tracing_core.metadata.Kind::["EVENT"]).
 
-Definition CALLSITE : tracing_core.callsite.DefaultCallsite :=
+Definition CALLSITE `{State.Trait} : tracing_core.callsite.DefaultCallsite :=
   run
     (tracing_core.callsite.DefaultCallsite::["new"]
       (addr_of ink_e2e.node_proc.kill.CALLSITE.META)).
 
-Definition META : tracing_core.metadata.Metadata :=
+Definition META `{State.Trait} : tracing_core.metadata.Metadata :=
   run
     (let* α0 :=
       tracing_core.field.FieldSet::["new"]
@@ -6442,12 +6442,12 @@ End Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
 
 Error OpaqueTy.
 
-Definition CALLSITE : tracing_core.callsite.DefaultCallsite :=
+Definition CALLSITE `{State.Trait} : tracing_core.callsite.DefaultCallsite :=
   run
     (tracing_core.callsite.DefaultCallsite::["new"]
       (addr_of ink_e2e.node_proc.spawn.CALLSITE.META)).
 
-Definition META : tracing_core.metadata.Metadata :=
+Definition META `{State.Trait} : tracing_core.metadata.Metadata :=
   run
     (let* α0 :=
       tracing_core.field.FieldSet::["new"]
@@ -9164,7 +9164,7 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
   }.
 End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
 
-Definition FIELDS : ref Slice :=
+Definition FIELDS `{State.Trait} : ref Slice :=
   run (Pure (addr_of [ "ref_time"; "proof_size" ])).
 
 Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
@@ -12127,10 +12127,12 @@ Definition PolkadotConfig : Set :=
 Definition Signer : Set :=
   subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair.
 
-Definition INIT : std.sync.once.Once := run (std.sync.once.Once::["new"] tt).
+Definition INIT `{State.Trait} : std.sync.once.Once :=
+  run (std.sync.once.Once::["new"] tt).
 
 Definition
-    LOG_PREFIX :
+    LOG_PREFIX
+    `{State.Trait} :
     std.thread.local.LocalKey (core.cell.RefCell alloc.string.String) :=
   run (std.thread.local.LocalKey::["new"] ink_e2e.LOG_PREFIX.__getit).
 
@@ -12177,7 +12179,8 @@ Definition __getit
       ink_e2e.LOG_PREFIX.__init tt).
 
 Definition
-    __KEY :
+    __KEY
+    `{State.Trait} :
     std.sys.common.thread_local.fast_local.Key
       (core.cell.RefCell alloc.string.String) :=
   run
@@ -12242,12 +12245,12 @@ Definition log_info `{State.Trait} (msg : ref str) : M unit :=
       Pure tt in
   Pure tt.
 
-Definition CALLSITE : tracing_core.callsite.DefaultCallsite :=
+Definition CALLSITE `{State.Trait} : tracing_core.callsite.DefaultCallsite :=
   run
     (tracing_core.callsite.DefaultCallsite::["new"]
       (addr_of ink_e2e.log_info.CALLSITE.META)).
 
-Definition META : tracing_core.metadata.Metadata :=
+Definition META `{State.Trait} : tracing_core.metadata.Metadata :=
   run
     (let* α0 :=
       tracing_core.field.FieldSet::["new"]
@@ -12315,12 +12318,12 @@ Definition log_error `{State.Trait} (msg : ref str) : M unit :=
       Pure tt in
   Pure tt.
 
-Definition CALLSITE : tracing_core.callsite.DefaultCallsite :=
+Definition CALLSITE `{State.Trait} : tracing_core.callsite.DefaultCallsite :=
   run
     (tracing_core.callsite.DefaultCallsite::["new"]
       (addr_of ink_e2e.log_error.CALLSITE.META)).
 
-Definition META : tracing_core.metadata.Metadata :=
+Definition META `{State.Trait} : tracing_core.metadata.Metadata :=
   run
     (let* α0 :=
       tracing_core.field.FieldSet::["new"]
