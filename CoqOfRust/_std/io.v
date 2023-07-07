@@ -461,5 +461,5 @@ End Seek.
 *)
 
 Module stdio.
-  Parameter _print : forall {A : Set}, A -> M unit.
+  Parameter _print : forall `{State.Trait} {A : Set}, A -> M unit.
 End stdio.
