@@ -1,4 +1,5 @@
 (** The definition of a Rust monad. *)
+(** based on experiments.MonadExperiments *)
 
 Module State.
   Class Trait (State Address : Set) : Type := {

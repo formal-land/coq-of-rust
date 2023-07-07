@@ -1,5 +1,5 @@
 (* Imports monad-related definitions *)
-Require experiments.StateMonad.
+Require Export StateMonad.
 
 (* Parameter State Address : Set.
 Instance H : StateMonad.State.Trait State Address. Admitted. *)
