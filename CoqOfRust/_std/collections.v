@@ -620,9 +620,10 @@ Module hash_map.
   (* pub struct DefaultHasher(_); *)
   Module DefaultHasher.
     Parameter t : Set.
-    Definition new (_ : unit) : M t. Admitted.
+    Definition new `{State.Trait} (_ : unit) : M t. Admitted.
 
-    Global Instance DefaultHasher_new : Notation.DoubleColon t "new" := {
+    Global Instance DefaultHasher_new `{State.Trait} :
+      Notation.DoubleColon t "new" := {
       Notation.double_colon := new
     }.
   End DefaultHasher.
