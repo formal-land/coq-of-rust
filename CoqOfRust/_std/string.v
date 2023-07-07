@@ -48,10 +48,11 @@ Definition String := String.t.
 
 Module ToString.
   Class Trait (Self : Set) : Set := {
-    to_string : ref Self -> M string;
+    to_string `{State.Trait} : ref Self -> M string;
   }.
 
-  Global Instance Method_to_string `(Trait) : Notation.Dot "to_string" := {
+  Global Instance Method_to_string `{State.Trait} `(Trait) :
+    Notation.Dot "to_string" := {
     Notation.dot := to_string;
   }.
 End ToString.
