@@ -1,9 +1,6 @@
 (* Imports monad-related definitions *)
 Require Export StateMonad.
 
-(* Parameter State Address : Set.
-Instance H : StateMonad.State.Trait State Address. Admitted. *)
-
 (** A sketch of the [M] monad *)
 Definition M `{StateMonad.State.Trait} := StateMonad.M : Set -> Set.
 Definition Pure
