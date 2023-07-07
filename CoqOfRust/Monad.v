@@ -1,19 +1,20 @@
 (* Imports monad-related definitions *)
 Require experiments.StateMonad.
 
-Parameter State Address : Set.
-Instance H : StateMonad.State.Trait State Address. Admitted.
+(* Parameter State Address : Set.
+Instance H : StateMonad.State.Trait State Address. Admitted. *)
 
 (** A sketch of the [M] monad *)
-Definition M := StateMonad.M : Set -> Set.
-Definition Pure :=
-  (fun _ => StateMonad.pure) : forall {a : Set}, a -> M a.
-Definition bind :=
-  (fun _ _ => StateMonad.bind) :
-  forall {a b : Set}, M a -> (a -> M b) -> M b.
+Definition M `{StateMonad.State.Trait} := StateMonad.M : Set -> Set.
+Definition Pure
+  `{StateMonad.State.Trait} {a : Set} :=
+  StateMonad.pure : a -> M a.
+Definition bind
+  `{StateMonad.State.Trait} {a b : Set} :=
+  StateMonad.bind : M a -> (a -> M b) -> M b.
 
 (** Used for the definitions of "const". *)
-Parameter run : forall {A : Set}, M A -> A.
+Parameter run : forall `{StateMonad.State.Trait} {A : Set}, M A -> A.
 
 Module Notations.
   Notation "'let*' a := b 'in' c" :=
