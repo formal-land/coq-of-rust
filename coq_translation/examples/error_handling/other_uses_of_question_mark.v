@@ -18,12 +18,12 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
       : M core.fmt.Result :=
     core.fmt.Formatter::["write_str"] f "EmptyVec".
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
@@ -40,12 +40,12 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
         (addr_of [ "invalid first item to double" ]) in
     f.["write_fmt"] α0.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt := fmt;
+    core.fmt.Display.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 

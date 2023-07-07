@@ -18,21 +18,22 @@ Definition Sheep : Set := Sheep.t.
 
 Module Animal.
   Class Trait (Self : Set) : Set := {
-    new : (ref str) -> (M Self);
-    name : (ref Self) -> (M (ref str));
-    noise : (ref Self) -> (M (ref str));
+    new `{State.Trait} : (ref str) -> (M Self);
+    name `{State.Trait} : (ref Self) -> (M (ref str));
+    noise `{State.Trait} : (ref Self) -> (M (ref str));
   }.
   
-  Global Instance Method_new `(Trait) : Notation.Dot "new" := {
+  Global Instance Method_new `{State.Trait} `(Trait) : Notation.Dot "new" := {
     Notation.dot := new;
   }.
-  Global Instance Method_name `(Trait) : Notation.Dot "name" := {
+  Global Instance Method_name `{State.Trait} `(Trait) : Notation.Dot "name" := {
     Notation.dot := name;
   }.
-  Global Instance Method_noise `(Trait) : Notation.Dot "noise" := {
+  Global Instance Method_noise `{State.Trait} `(Trait)
+    : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
-  Global Instance Method_talk `(Trait) : Notation.Dot "talk" := {
+  Global Instance Method_talk `{State.Trait} `(Trait) : Notation.Dot "talk" := {
     Notation.dot (self : ref Self) :=
       (let* _ :=
         let* _ :=
@@ -58,7 +59,7 @@ Module Impl_traits_Sheep.
   Definition is_naked `{State.Trait} (self : ref Self) : M bool :=
     Pure self.["naked"].
   
-  Global Instance Method_is_naked : Notation.Dot "is_naked" := {
+  Global Instance Method_is_naked `{State.Trait} : Notation.Dot "is_naked" := {
     Notation.dot := is_naked;
   }.
 End Impl_traits_Sheep.
@@ -69,14 +70,15 @@ Module Impl_traits_Animal_for_traits_Sheep.
   Definition new `{State.Trait} (name : ref str) : M traits.Sheep :=
     Pure {| traits.Sheep.name := name; traits.Sheep.naked := false; |}.
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new `{State.Trait} :
+    Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
   Definition name `{State.Trait} (self : ref Self) : M (ref str) :=
     Pure self.["name"].
   
-  Global Instance Method_name : Notation.Dot "name" := {
+  Global Instance Method_name `{State.Trait} : Notation.Dot "name" := {
     Notation.dot := name;
   }.
   
@@ -87,7 +89,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
     else
       Pure "baaaaah!".
   
-  Global Instance Method_noise : Notation.Dot "noise" := {
+  Global Instance Method_noise `{State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
@@ -106,14 +108,14 @@ Module Impl_traits_Animal_for_traits_Sheep.
       Pure tt in
     Pure tt.
   
-  Global Instance Method_talk : Notation.Dot "talk" := {
+  Global Instance Method_talk `{State.Trait} : Notation.Dot "talk" := {
     Notation.dot := talk;
   }.
   
   Global Instance I : traits.Animal.Trait Self := {
-    traits.Animal.new := new;
-    traits.Animal.name := name;
-    traits.Animal.noise := noise;
+    traits.Animal.new `{State.Trait} := new;
+    traits.Animal.name `{State.Trait} := name;
+    traits.Animal.noise `{State.Trait} := noise;
   }.
 End Impl_traits_Animal_for_traits_Sheep.
 
@@ -149,7 +151,7 @@ Module Impl_traits_Sheep_2.
       let* _ := assign self.["naked"] true in
       Pure tt.
   
-  Global Instance Method_shear : Notation.Dot "shear" := {
+  Global Instance Method_shear `{State.Trait} : Notation.Dot "shear" := {
     Notation.dot := shear;
   }.
 End Impl_traits_Sheep_2.

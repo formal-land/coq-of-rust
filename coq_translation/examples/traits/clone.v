@@ -16,12 +16,12 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
       : M core.fmt.Result :=
     core.fmt.Formatter::["write_str"] f "Unit".
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_clone_Unit.
 
@@ -31,12 +31,12 @@ Module Impl_core_clone_Clone_for_clone_Unit.
   Definition clone `{State.Trait} (self : ref Self) : M clone.Unit :=
     self.["deref"].
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_clone_Unit.
 
@@ -67,12 +67,12 @@ Module Impl_core_clone_Clone_for_clone_Pair.
     let* α1 := core.clone.Clone.clone (addr_of (self.[1])) in
     Pure (clone.Pair.Build_t α0 α1).
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_clone_Pair.
 
@@ -90,12 +90,12 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       (addr_of (self.[0]))
       (addr_of (addr_of (self.[1]))).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_clone_Pair.
 

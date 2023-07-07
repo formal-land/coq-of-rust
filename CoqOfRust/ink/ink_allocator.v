@@ -17,6 +17,7 @@ Module bump.
     Definition Self := ink_allocator.bump.BumpAllocator.
     
     Definition alloc
+        `{State.Trait}
         (self : ref Self)
         (layout : core.alloc.layout.Layout)
         : M (mut_ref u8) :=
@@ -26,34 +27,37 @@ Module bump.
       | core.option.Option.None => core.ptr.null_mut tt
       end.
     
-    Global Instance Method_alloc : Notation.Dot "alloc" := {
+    Global Instance Method_alloc `{State.Trait} : Notation.Dot "alloc" := {
       Notation.dot := alloc;
     }.
     
     Definition alloc_zeroed
+        `{State.Trait}
         (self : ref Self)
         (layout : core.alloc.layout.Layout)
         : M (mut_ref u8) :=
       self.["alloc"] layout.
     
-    Global Instance Method_alloc_zeroed : Notation.Dot "alloc_zeroed" := {
+    Global Instance Method_alloc_zeroed `{State.Trait} :
+      Notation.Dot "alloc_zeroed" := {
       Notation.dot := alloc_zeroed;
     }.
     
     Definition dealloc
+        `{State.Trait}
         (self : ref Self)
         (_ptr : mut_ref u8)
         (_layout : core.alloc.layout.Layout)
         : M unit :=
       Pure tt.
     
-    Global Instance Method_dealloc : Notation.Dot "dealloc" := {
+    Global Instance Method_dealloc `{State.Trait} : Notation.Dot "dealloc" := {
       Notation.dot := dealloc;
     }.
     
     Global Instance I : core.alloc.global.GlobalAlloc.Trait Self := {
-      core.alloc.global.GlobalAlloc.alloc := alloc;
-      core.alloc.global.GlobalAlloc.dealloc := dealloc;
+      core.alloc.global.GlobalAlloc.alloc `{State.Trait} := alloc;
+      core.alloc.global.GlobalAlloc.dealloc `{State.Trait} := dealloc;
     }.
   End Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
   
@@ -76,6 +80,7 @@ Module bump.
     Definition Self := ink_allocator.bump.InnerAlloc.
     
     Definition fmt
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M core.fmt.Result :=
@@ -87,12 +92,12 @@ Module bump.
         "upper_limit"
         (addr_of (addr_of self.["upper_limit"])).
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
   
@@ -106,47 +111,51 @@ Module bump.
   Module Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
     Definition Self := ink_allocator.bump.InnerAlloc.
     
-    Definition clone (self : ref Self) : M ink_allocator.bump.InnerAlloc :=
+    Definition clone
+        `{State.Trait}
+        (self : ref Self)
+        : M ink_allocator.bump.InnerAlloc :=
       let _ := tt in
       self.["deref"].
     
-    Global Instance Method_clone : Notation.Dot "clone" := {
+    Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
     }.
     
     Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone := clone;
+      core.clone.Clone.clone `{State.Trait} := clone;
     }.
   End Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
   
   Module Impl_ink_allocator_bump_InnerAlloc.
     Definition Self := ink_allocator.bump.InnerAlloc.
     
-    Definition new (_ : unit) : M Self :=
+    Definition new `{State.Trait} (_ : unit) : M Self :=
       let* α0 := Self::["heap_start"] tt in
       let* α1 := Self::["heap_end"] tt in
       Pure {| Self.next := α0; Self.upper_limit := α1; |}.
     
-    Global Instance AssociatedFunction_new :
+    Global Instance AssociatedFunction_new `{State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
     
-    Definition heap_start (_ : unit) : M usize := Pure 0.
+    Definition heap_start `{State.Trait} (_ : unit) : M usize := Pure 0.
     
-    Global Instance AssociatedFunction_heap_start :
+    Global Instance AssociatedFunction_heap_start `{State.Trait} :
       Notation.DoubleColon Self "heap_start" := {
       Notation.double_colon := heap_start;
     }.
     
-    Definition heap_end (_ : unit) : M usize := Pure 0.
+    Definition heap_end `{State.Trait} (_ : unit) : M usize := Pure 0.
     
-    Global Instance AssociatedFunction_heap_end :
+    Global Instance AssociatedFunction_heap_end `{State.Trait} :
       Notation.DoubleColon Self "heap_end" := {
       Notation.double_colon := heap_end;
     }.
     
     Definition request_pages
+        `{State.Trait}
         (self : mut_ref Self)
         (_pages : usize)
         : M (core.option.Option usize) :=
@@ -160,11 +169,13 @@ Module bump.
           (addr_of [ ]) in
       core.panicking.panic_fmt α0.
     
-    Global Instance Method_request_pages : Notation.Dot "request_pages" := {
+    Global Instance Method_request_pages `{State.Trait} :
+      Notation.Dot "request_pages" := {
       Notation.dot := request_pages;
     }.
     
     Definition alloc
+        `{State.Trait}
         (self : mut_ref Self)
         (layout : core.alloc.layout.Layout)
         : M (core.option.Option usize) :=
@@ -231,12 +242,15 @@ Module bump.
         let* _ := assign self.["next"] alloc_end in
         Pure (core.option.Option.Some alloc_start).
     
-    Global Instance Method_alloc : Notation.Dot "alloc" := {
+    Global Instance Method_alloc `{State.Trait} : Notation.Dot "alloc" := {
       Notation.dot := alloc;
     }.
   End Impl_ink_allocator_bump_InnerAlloc.
   
-  Definition required_pages (size : usize) : M (core.option.Option usize) :=
+  Definition required_pages
+      `{State.Trait}
+      (size : usize)
+      : M (core.option.Option usize) :=
     let* α0 := ink_allocator.bump.PAGE_SIZE.["sub"] 1 in
     let* α1 := size.["checked_add"] α0 in
     α1.["and_then"]
@@ -257,6 +271,7 @@ Module Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
   Definition Self := ink_allocator.bump.BumpAllocator.
   
   Definition alloc
+      `{State.Trait}
       (self : ref Self)
       (layout : core.alloc.layout.Layout)
       : M (mut_ref u8) :=
@@ -266,34 +281,37 @@ Module Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
     | core.option.Option.None => core.ptr.null_mut tt
     end.
   
-  Global Instance Method_alloc : Notation.Dot "alloc" := {
+  Global Instance Method_alloc `{State.Trait} : Notation.Dot "alloc" := {
     Notation.dot := alloc;
   }.
   
   Definition alloc_zeroed
+      `{State.Trait}
       (self : ref Self)
       (layout : core.alloc.layout.Layout)
       : M (mut_ref u8) :=
     self.["alloc"] layout.
   
-  Global Instance Method_alloc_zeroed : Notation.Dot "alloc_zeroed" := {
+  Global Instance Method_alloc_zeroed `{State.Trait} :
+    Notation.Dot "alloc_zeroed" := {
     Notation.dot := alloc_zeroed;
   }.
   
   Definition dealloc
+      `{State.Trait}
       (self : ref Self)
       (_ptr : mut_ref u8)
       (_layout : core.alloc.layout.Layout)
       : M unit :=
     Pure tt.
   
-  Global Instance Method_dealloc : Notation.Dot "dealloc" := {
+  Global Instance Method_dealloc `{State.Trait} : Notation.Dot "dealloc" := {
     Notation.dot := dealloc;
   }.
   
   Global Instance I : core.alloc.global.GlobalAlloc.Trait Self := {
-    core.alloc.global.GlobalAlloc.alloc := alloc;
-    core.alloc.global.GlobalAlloc.dealloc := dealloc;
+    core.alloc.global.GlobalAlloc.alloc `{State.Trait} := alloc;
+    core.alloc.global.GlobalAlloc.dealloc `{State.Trait} := dealloc;
   }.
 End Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
 
@@ -316,6 +334,7 @@ Module Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
   Definition Self := ink_allocator.bump.InnerAlloc.
   
   Definition fmt
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
@@ -327,12 +346,12 @@ Module Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
       "upper_limit"
       (addr_of (addr_of self.["upper_limit"])).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
 
@@ -346,46 +365,51 @@ End Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc.
 Module Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
   Definition Self := ink_allocator.bump.InnerAlloc.
   
-  Definition clone (self : ref Self) : M ink_allocator.bump.InnerAlloc :=
+  Definition clone
+      `{State.Trait}
+      (self : ref Self)
+      : M ink_allocator.bump.InnerAlloc :=
     let _ := tt in
     self.["deref"].
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
 
 Module Impl_ink_allocator_bump_InnerAlloc_2.
   Definition Self := ink_allocator.bump.InnerAlloc.
   
-  Definition new (_ : unit) : M Self :=
+  Definition new `{State.Trait} (_ : unit) : M Self :=
     let* α0 := Self::["heap_start"] tt in
     let* α1 := Self::["heap_end"] tt in
     Pure {| Self.next := α0; Self.upper_limit := α1; |}.
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new `{State.Trait} :
+    Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Definition heap_start (_ : unit) : M usize := Pure 0.
+  Definition heap_start `{State.Trait} (_ : unit) : M usize := Pure 0.
   
-  Global Instance AssociatedFunction_heap_start :
+  Global Instance AssociatedFunction_heap_start `{State.Trait} :
     Notation.DoubleColon Self "heap_start" := {
     Notation.double_colon := heap_start;
   }.
   
-  Definition heap_end (_ : unit) : M usize := Pure 0.
+  Definition heap_end `{State.Trait} (_ : unit) : M usize := Pure 0.
   
-  Global Instance AssociatedFunction_heap_end :
+  Global Instance AssociatedFunction_heap_end `{State.Trait} :
     Notation.DoubleColon Self "heap_end" := {
     Notation.double_colon := heap_end;
   }.
   
   Definition request_pages
+      `{State.Trait}
       (self : mut_ref Self)
       (_pages : usize)
       : M (core.option.Option usize) :=
@@ -399,11 +423,13 @@ Module Impl_ink_allocator_bump_InnerAlloc_2.
         (addr_of [ ]) in
     core.panicking.panic_fmt α0.
   
-  Global Instance Method_request_pages : Notation.Dot "request_pages" := {
+  Global Instance Method_request_pages `{State.Trait} :
+    Notation.Dot "request_pages" := {
     Notation.dot := request_pages;
   }.
   
   Definition alloc
+      `{State.Trait}
       (self : mut_ref Self)
       (layout : core.alloc.layout.Layout)
       : M (core.option.Option usize) :=
@@ -470,12 +496,15 @@ Module Impl_ink_allocator_bump_InnerAlloc_2.
       let* _ := assign self.["next"] alloc_end in
       Pure (core.option.Option.Some alloc_start).
   
-  Global Instance Method_alloc : Notation.Dot "alloc" := {
+  Global Instance Method_alloc `{State.Trait} : Notation.Dot "alloc" := {
     Notation.dot := alloc;
   }.
 End Impl_ink_allocator_bump_InnerAlloc_2.
 
-Definition required_pages (size : usize) : M (core.option.Option usize) :=
+Definition required_pages
+    `{State.Trait}
+    (size : usize)
+    : M (core.option.Option usize) :=
   let* α0 := ink_allocator.bump.PAGE_SIZE.["sub"] 1 in
   let* α1 := size.["checked_add"] α0 in
   α1.["and_then"] (fun num => num.["checked_div"] ink_allocator.bump.PAGE_SIZE).

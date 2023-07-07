@@ -31,14 +31,15 @@ Module SomeTrait.
       `{traits_parms.Tar.Trait SomeType} :
       Set := {
     SomeType := SomeType;
-    some_fn : unit -> (M unit);
+    some_fn `{State.Trait} : unit -> (M unit);
   }.
   
-  Global Instance Method_SomeType `(Trait)
+  Global Instance Method_SomeType `{State.Trait} `(Trait)
     : Notation.DoubleColonType Self "SomeType" := {
     Notation.double_colon_type := SomeType;
   }.
-  Global Instance Method_some_fn `(Trait) : Notation.Dot "some_fn" := {
+  Global Instance Method_some_fn `{State.Trait} `(Trait)
+    : Notation.Dot "some_fn" := {
     Notation.dot := some_fn;
   }.
 End SomeTrait.
@@ -78,12 +79,12 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
   
   Definition some_fn `{State.Trait} (_ : unit) : M unit := Pure tt.
   
-  Global Instance AssociatedFunction_some_fn :
+  Global Instance AssociatedFunction_some_fn `{State.Trait} :
     Notation.DoubleColon Self "some_fn" := {
     Notation.double_colon := some_fn;
   }.
   
   Global Instance I : traits_parms.SomeTrait.Trait Self := {
-    traits_parms.SomeTrait.some_fn := some_fn;
+    traits_parms.SomeTrait.some_fn `{State.Trait} := some_fn;
   }.
 End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.

@@ -29,7 +29,7 @@ Module Impl_generics_new_type_idiom_Years.
     let* α0 := (self.[0]).["mul"] 365 in
     Pure (generics_new_type_idiom.Days.Build_t α0).
   
-  Global Instance Method_to_days : Notation.Dot "to_days" := {
+  Global Instance Method_to_days `{State.Trait} : Notation.Dot "to_days" := {
     Notation.dot := to_days;
   }.
 End Impl_generics_new_type_idiom_Years.
@@ -44,7 +44,7 @@ Module Impl_generics_new_type_idiom_Days.
     let* α0 := (self.[0]).["div"] 365 in
     Pure (generics_new_type_idiom.Years.Build_t α0).
   
-  Global Instance Method_to_years : Notation.Dot "to_years" := {
+  Global Instance Method_to_years `{State.Trait} : Notation.Dot "to_years" := {
     Notation.dot := to_years;
   }.
 End Impl_generics_new_type_idiom_Days.

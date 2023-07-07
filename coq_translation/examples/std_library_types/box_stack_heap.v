@@ -34,12 +34,12 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
       "y"
       (addr_of (addr_of self.["y"])).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 
@@ -51,12 +51,12 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
     let _ := tt in
     self.["deref"].
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_box_stack_heap_Point.
 

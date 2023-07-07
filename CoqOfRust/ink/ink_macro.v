@@ -3,6 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module blake2b.
   Definition generate_blake2x256_hash
+      `{State.Trait}
       (input : proc_macro2.TokenStream)
       : M proc_macro2.TokenStream :=
     let* α0 := ink_macro.blake2b.generate_blake2x256_hash_or_err input in
@@ -12,6 +13,7 @@ Module blake2b.
     end.
   
   Definition generate_blake2x256_hash_or_err
+      `{State.Trait}
       (input : proc_macro2.TokenStream)
       : M (syn.error.Result proc_macro2.TokenStream) :=
     let* hash :=
@@ -28,6 +30,7 @@ Module blake2b.
 End blake2b.
 
 Definition generate_blake2x256_hash
+    `{State.Trait}
     (input : proc_macro2.TokenStream)
     : M proc_macro2.TokenStream :=
   let* α0 := ink_macro.blake2b.generate_blake2x256_hash_or_err input in
@@ -37,6 +40,7 @@ Definition generate_blake2x256_hash
   end.
 
 Definition generate_blake2x256_hash_or_err
+    `{State.Trait}
     (input : proc_macro2.TokenStream)
     : M (syn.error.Result proc_macro2.TokenStream) :=
   let* hash :=
@@ -53,6 +57,7 @@ Definition generate_blake2x256_hash_or_err
 
 Module chain_extension.
   Definition generate
+      `{State.Trait}
       (attr : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
       : M proc_macro2.TokenStream :=
@@ -63,6 +68,7 @@ Module chain_extension.
     end.
   
   Definition generate_or_err
+      `{State.Trait}
       (attr : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
       : M (syn.error.Result proc_macro2.TokenStream) :=
@@ -80,6 +86,7 @@ Module chain_extension.
 End chain_extension.
 
 Definition generate
+    `{State.Trait}
     (attr : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
     : M proc_macro2.TokenStream :=
@@ -90,6 +97,7 @@ Definition generate
   end.
 
 Definition generate_or_err
+    `{State.Trait}
     (attr : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
     : M (syn.error.Result proc_macro2.TokenStream) :=
@@ -107,6 +115,7 @@ Definition generate_or_err
 
 Module contract.
   Definition generate
+      `{State.Trait}
       (attr : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
       : M proc_macro2.TokenStream :=
@@ -117,6 +126,7 @@ Module contract.
     end.
   
   Definition generate_or_err
+      `{State.Trait}
       (attr : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
       : M (syn.error.Result proc_macro2.TokenStream) :=
@@ -134,6 +144,7 @@ Module contract.
 End contract.
 
 Definition generate
+    `{State.Trait}
     (attr : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
     : M proc_macro2.TokenStream :=
@@ -144,6 +155,7 @@ Definition generate
   end.
 
 Definition generate_or_err
+    `{State.Trait}
     (attr : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
     : M (syn.error.Result proc_macro2.TokenStream) :=
@@ -161,6 +173,7 @@ Definition generate_or_err
 
 Module ink_test.
   Definition generate
+      `{State.Trait}
       (attr : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
       : M proc_macro2.TokenStream :=
@@ -171,6 +184,7 @@ Module ink_test.
     end.
   
   Definition generate_or_err
+      `{State.Trait}
       (attr : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
       : M (syn.error.Result proc_macro2.TokenStream) :=
@@ -188,6 +202,7 @@ Module ink_test.
 End ink_test.
 
 Definition generate
+    `{State.Trait}
     (attr : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
     : M proc_macro2.TokenStream :=
@@ -198,6 +213,7 @@ Definition generate
   end.
 
 Definition generate_or_err
+    `{State.Trait}
     (attr : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
     : M (syn.error.Result proc_macro2.TokenStream) :=
@@ -215,6 +231,7 @@ Definition generate_or_err
 
 Module selector.
   Definition generate_selector_id
+      `{State.Trait}
       (input : proc_macro2.TokenStream)
       : M proc_macro2.TokenStream :=
     let* α0 := ink_macro.selector.generate_selector_id_or_err input in
@@ -224,6 +241,7 @@ Module selector.
     end.
   
   Definition generate_selector_id_or_err
+      `{State.Trait}
       (input : proc_macro2.TokenStream)
       : M (syn.error.Result proc_macro2.TokenStream) :=
     let* selector :=
@@ -242,6 +260,7 @@ Module selector.
     Pure (core.result.Result.Ok α0).
   
   Definition generate_selector_bytes
+      `{State.Trait}
       (input : proc_macro2.TokenStream)
       : M proc_macro2.TokenStream :=
     let* α0 := ink_macro.selector.generate_selector_bytes_or_err input in
@@ -251,6 +270,7 @@ Module selector.
     end.
   
   Definition generate_selector_bytes_or_err
+      `{State.Trait}
       (input : proc_macro2.TokenStream)
       : M (syn.error.Result proc_macro2.TokenStream) :=
     let* selector :=
@@ -270,6 +290,7 @@ Module selector.
 End selector.
 
 Definition generate_selector_id
+    `{State.Trait}
     (input : proc_macro2.TokenStream)
     : M proc_macro2.TokenStream :=
   let* α0 := ink_macro.selector.generate_selector_id_or_err input in
@@ -279,6 +300,7 @@ Definition generate_selector_id
   end.
 
 Definition generate_selector_id_or_err
+    `{State.Trait}
     (input : proc_macro2.TokenStream)
     : M (syn.error.Result proc_macro2.TokenStream) :=
   let* selector :=
@@ -297,6 +319,7 @@ Definition generate_selector_id_or_err
   Pure (core.result.Result.Ok α0).
 
 Definition generate_selector_bytes
+    `{State.Trait}
     (input : proc_macro2.TokenStream)
     : M proc_macro2.TokenStream :=
   let* α0 := ink_macro.selector.generate_selector_bytes_or_err input in
@@ -306,6 +329,7 @@ Definition generate_selector_bytes
   end.
 
 Definition generate_selector_bytes_or_err
+    `{State.Trait}
     (input : proc_macro2.TokenStream)
     : M (syn.error.Result proc_macro2.TokenStream) :=
   let* selector :=
@@ -326,6 +350,7 @@ Definition generate_selector_bytes_or_err
 Module storage.
   Module storable.
     Definition storable_struct_derive
+        `{State.Trait}
         (s : ref synstructure.Structure)
         : M proc_macro2.TokenStream :=
       let* _ :=
@@ -653,6 +678,7 @@ Module storage.
       s.["gen_impl"] _s.
     
     Definition storable_enum_derive
+        `{State.Trait}
         (s : ref synstructure.Structure)
         : M proc_macro2.TokenStream :=
       let* _ :=
@@ -1207,6 +1233,7 @@ Module storage.
       s.["gen_impl"] _s.
     
     Definition storable_derive
+        `{State.Trait}
         (s : synstructure.Structure)
         : M proc_macro2.TokenStream :=
       let* _ :=
@@ -1230,6 +1257,7 @@ Module storage.
   
   Module storable_hint.
     Definition storable_hint_inner
+        `{State.Trait}
         (s : synstructure.Structure)
         : M proc_macro2.TokenStream :=
       let* ident :=
@@ -1453,6 +1481,7 @@ Module storage.
         Pure _s.
     
     Definition storable_hint_derive
+        `{State.Trait}
         (s : synstructure.Structure)
         : M proc_macro2.TokenStream :=
       let* derive := ink_macro.storage.storable_hint.storable_hint_inner s in
@@ -1481,6 +1510,7 @@ Module storage.
   
   Module storage_key.
     Definition storage_key_derive
+        `{State.Trait}
         (s : synstructure.Structure)
         : M proc_macro2.TokenStream :=
       let* _ :=
@@ -1552,6 +1582,7 @@ Module storage.
   
   Module storage_layout.
     Definition field_layout
+        `{State.Trait}
         (variant : ref synstructure.VariantInfo)
         : M OpaqueDef :=
       let* α0 := variant.["ast"] in
@@ -1626,6 +1657,7 @@ Module storage.
           Pure _s).
     
     Definition storage_layout_struct
+        `{State.Trait}
         (s : ref synstructure.Structure)
         : M proc_macro2.TokenStream :=
       let* _ :=
@@ -1799,6 +1831,7 @@ Module storage.
       s.["gen_impl"] _s.
     
     Definition storage_layout_enum
+        `{State.Trait}
         (s : ref synstructure.Structure)
         : M proc_macro2.TokenStream :=
       let* _ :=
@@ -2123,6 +2156,7 @@ Module storage.
       s.["gen_impl"] _s.
     
     Definition storage_layout_derive
+        `{State.Trait}
         (s : synstructure.Structure)
         : M proc_macro2.TokenStream :=
       let* _ :=
@@ -2148,6 +2182,7 @@ End storage.
 
 Module storable.
   Definition storable_struct_derive
+      `{State.Trait}
       (s : ref synstructure.Structure)
       : M proc_macro2.TokenStream :=
     let* _ :=
@@ -2459,6 +2494,7 @@ Module storable.
     s.["gen_impl"] _s.
   
   Definition storable_enum_derive
+      `{State.Trait}
       (s : ref synstructure.Structure)
       : M proc_macro2.TokenStream :=
     let* _ :=
@@ -2997,6 +3033,7 @@ Module storable.
     s.["gen_impl"] _s.
   
   Definition storable_derive
+      `{State.Trait}
       (s : synstructure.Structure)
       : M proc_macro2.TokenStream :=
     let* _ :=
@@ -3018,6 +3055,7 @@ Module storable.
 End storable.
 
 Definition storable_struct_derive
+    `{State.Trait}
     (s : ref synstructure.Structure)
     : M proc_macro2.TokenStream :=
   let* _ :=
@@ -3318,6 +3356,7 @@ Definition storable_struct_derive
   s.["gen_impl"] _s.
 
 Definition storable_enum_derive
+    `{State.Trait}
     (s : ref synstructure.Structure)
     : M proc_macro2.TokenStream :=
   let* _ :=
@@ -3846,6 +3885,7 @@ Definition storable_enum_derive
   s.["gen_impl"] _s.
 
 Definition storable_derive
+    `{State.Trait}
     (s : synstructure.Structure)
     : M proc_macro2.TokenStream :=
   let* _ :=
@@ -3867,6 +3907,7 @@ Definition storable_derive
 
 Module storable_hint.
   Definition storable_hint_inner
+      `{State.Trait}
       (s : synstructure.Structure)
       : M proc_macro2.TokenStream :=
     let* ident :=
@@ -4081,6 +4122,7 @@ Module storable_hint.
       Pure _s.
   
   Definition storable_hint_derive
+      `{State.Trait}
       (s : synstructure.Structure)
       : M proc_macro2.TokenStream :=
     let* derive := ink_macro.storage.storable_hint.storable_hint_inner s in
@@ -4105,6 +4147,7 @@ Module storable_hint.
 End storable_hint.
 
 Definition storable_hint_inner
+    `{State.Trait}
     (s : synstructure.Structure)
     : M proc_macro2.TokenStream :=
   let* ident :=
@@ -4303,6 +4346,7 @@ Definition storable_hint_inner
     Pure _s.
 
 Definition storable_hint_derive
+    `{State.Trait}
     (s : synstructure.Structure)
     : M proc_macro2.TokenStream :=
   let* derive := ink_macro.storage.storable_hint.storable_hint_inner s in
@@ -4327,6 +4371,7 @@ Definition storable_hint_derive
 
 Module storage_key.
   Definition storage_key_derive
+      `{State.Trait}
       (s : synstructure.Structure)
       : M proc_macro2.TokenStream :=
     let* _ :=
@@ -4394,6 +4439,7 @@ Module storage_key.
 End storage_key.
 
 Definition storage_key_derive
+    `{State.Trait}
     (s : synstructure.Structure)
     : M proc_macro2.TokenStream :=
   let* _ :=
@@ -4460,6 +4506,7 @@ Definition storage_key_derive
 
 Module storage_layout.
   Definition field_layout
+      `{State.Trait}
       (variant : ref synstructure.VariantInfo)
       : M OpaqueDef :=
     let* α0 := variant.["ast"] in
@@ -4532,6 +4579,7 @@ Module storage_layout.
         Pure _s).
   
   Definition storage_layout_struct
+      `{State.Trait}
       (s : ref synstructure.Structure)
       : M proc_macro2.TokenStream :=
     let* _ :=
@@ -4701,6 +4749,7 @@ Module storage_layout.
     s.["gen_impl"] _s.
   
   Definition storage_layout_enum
+      `{State.Trait}
       (s : ref synstructure.Structure)
       : M proc_macro2.TokenStream :=
     let* _ :=
@@ -5019,6 +5068,7 @@ Module storage_layout.
     s.["gen_impl"] _s.
   
   Definition storage_layout_derive
+      `{State.Trait}
       (s : synstructure.Structure)
       : M proc_macro2.TokenStream :=
     let* _ :=
@@ -5041,6 +5091,7 @@ Module storage_layout.
 End storage_layout.
 
 Definition field_layout
+    `{State.Trait}
     (variant : ref synstructure.VariantInfo)
     : M OpaqueDef :=
   let* α0 := variant.["ast"] in
@@ -5115,6 +5166,7 @@ Definition field_layout
 Error OpaqueTy.
 
 Definition storage_layout_struct
+    `{State.Trait}
     (s : ref synstructure.Structure)
     : M proc_macro2.TokenStream :=
   let* _ :=
@@ -5280,6 +5332,7 @@ Definition storage_layout_struct
   s.["gen_impl"] _s.
 
 Definition storage_layout_enum
+    `{State.Trait}
     (s : ref synstructure.Structure)
     : M proc_macro2.TokenStream :=
   let* _ :=
@@ -5593,6 +5646,7 @@ Definition storage_layout_enum
   s.["gen_impl"] _s.
 
 Definition storage_layout_derive
+    `{State.Trait}
     (s : synstructure.Structure)
     : M proc_macro2.TokenStream :=
   let* _ :=
@@ -5614,6 +5668,7 @@ Definition storage_layout_derive
 
 Module storage_item.
   Definition generate
+      `{State.Trait}
       (config : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
       : M proc_macro2.TokenStream :=
@@ -5624,6 +5679,7 @@ Module storage_item.
     end.
   
   Definition generate_or_err
+      `{State.Trait}
       (config : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
       : M (syn.error.Result proc_macro2.TokenStream) :=
@@ -5641,6 +5697,7 @@ Module storage_item.
 End storage_item.
 
 Definition generate
+    `{State.Trait}
     (config : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
     : M proc_macro2.TokenStream :=
@@ -5651,6 +5708,7 @@ Definition generate
   end.
 
 Definition generate_or_err
+    `{State.Trait}
     (config : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
     : M (syn.error.Result proc_macro2.TokenStream) :=
@@ -5668,6 +5726,7 @@ Definition generate_or_err
 
 Module trait_def.
   Definition analyze
+      `{State.Trait}
       (config : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
       : M proc_macro2.TokenStream :=
@@ -5678,6 +5737,7 @@ Module trait_def.
     end.
   
   Definition analyze_or_err
+      `{State.Trait}
       (config : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
       : M (syn.error.Result proc_macro2.TokenStream) :=
@@ -5695,6 +5755,7 @@ Module trait_def.
 End trait_def.
 
 Definition analyze
+    `{State.Trait}
     (config : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
     : M proc_macro2.TokenStream :=
@@ -5705,6 +5766,7 @@ Definition analyze
   end.
 
 Definition analyze_or_err
+    `{State.Trait}
     (config : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
     : M (syn.error.Result proc_macro2.TokenStream) :=
@@ -5721,6 +5783,7 @@ Definition analyze_or_err
   Pure (core.result.Result.Ok α0).
 
 Definition blake2x256
+    `{State.Trait}
     (input : proc_macro.TokenStream)
     : M proc_macro.TokenStream :=
   let* α0 := input.["into"] in
@@ -5728,6 +5791,7 @@ Definition blake2x256
   α1.["into"].
 
 Definition selector_id
+    `{State.Trait}
     (input : proc_macro.TokenStream)
     : M proc_macro.TokenStream :=
   let* α0 := input.["into"] in
@@ -5735,6 +5799,7 @@ Definition selector_id
   α1.["into"].
 
 Definition selector_bytes
+    `{State.Trait}
     (input : proc_macro.TokenStream)
     : M proc_macro.TokenStream :=
   let* α0 := input.["into"] in
@@ -5742,6 +5807,7 @@ Definition selector_bytes
   α1.["into"].
 
 Definition contract
+    `{State.Trait}
     (attr : proc_macro.TokenStream)
     (item : proc_macro.TokenStream)
     : M proc_macro.TokenStream :=
@@ -5751,6 +5817,7 @@ Definition contract
   α2.["into"].
 
 Definition trait_definition
+    `{State.Trait}
     (attr : proc_macro.TokenStream)
     (item : proc_macro.TokenStream)
     : M proc_macro.TokenStream :=
@@ -5760,6 +5827,7 @@ Definition trait_definition
   α2.["into"].
 
 Definition storage_item
+    `{State.Trait}
     (attr : proc_macro.TokenStream)
     (item : proc_macro.TokenStream)
     : M proc_macro.TokenStream :=
@@ -5769,6 +5837,7 @@ Definition storage_item
   α2.["into"].
 
 Definition test
+    `{State.Trait}
     (attr : proc_macro.TokenStream)
     (item : proc_macro.TokenStream)
     : M proc_macro.TokenStream :=
@@ -5778,6 +5847,7 @@ Definition test
   α2.["into"].
 
 Definition chain_extension
+    `{State.Trait}
     (attr : proc_macro.TokenStream)
     (item : proc_macro.TokenStream)
     : M proc_macro.TokenStream :=
@@ -5786,7 +5856,10 @@ Definition chain_extension
   let* α2 := ink_macro.chain_extension.generate α0 α1 in
   α2.["into"].
 
-Definition Storable (i : proc_macro.TokenStream) : M proc_macro.TokenStream :=
+Definition Storable
+    `{State.Trait}
+    (i : proc_macro.TokenStream)
+    : M proc_macro.TokenStream :=
   let* α0 := syn.parse i in
   match α0 with
   | core.result.Result.Ok p =>
@@ -5805,6 +5878,7 @@ Definition Storable (i : proc_macro.TokenStream) : M proc_macro.TokenStream :=
   end.
 
 Definition StorableHint
+    `{State.Trait}
     (i : proc_macro.TokenStream)
     : M proc_macro.TokenStream :=
   let* α0 := syn.parse i in
@@ -5824,7 +5898,10 @@ Definition StorableHint
     core.convert.Into.into α0
   end.
 
-Definition StorageKey (i : proc_macro.TokenStream) : M proc_macro.TokenStream :=
+Definition StorageKey
+    `{State.Trait}
+    (i : proc_macro.TokenStream)
+    : M proc_macro.TokenStream :=
   let* α0 := syn.parse i in
   match α0 with
   | core.result.Result.Ok p =>
@@ -5843,6 +5920,7 @@ Definition StorageKey (i : proc_macro.TokenStream) : M proc_macro.TokenStream :=
   end.
 
 Definition StorageLayout
+    `{State.Trait}
     (i : proc_macro.TokenStream)
     : M proc_macro.TokenStream :=
   let* α0 := syn.parse i in

@@ -15,18 +15,20 @@ Definition Container := Container.t.
 
 Module Contains.
   Class Trait (Self : Set) {A B : Set} : Set := {
-    contains : (ref Self) -> (ref A) -> (ref B) -> (M bool);
-    first : (ref Self) -> (M i32);
-    last : (ref Self) -> (M i32);
+    contains `{State.Trait} : (ref Self) -> (ref A) -> (ref B) -> (M bool);
+    first `{State.Trait} : (ref Self) -> (M i32);
+    last `{State.Trait} : (ref Self) -> (M i32);
   }.
   
-  Global Instance Method_contains `(Trait) : Notation.Dot "contains" := {
+  Global Instance Method_contains `{State.Trait} `(Trait)
+    : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
-  Global Instance Method_first `(Trait) : Notation.Dot "first" := {
+  Global Instance Method_first `{State.Trait} `(Trait)
+    : Notation.Dot "first" := {
     Notation.dot := first;
   }.
-  Global Instance Method_last `(Trait) : Notation.Dot "last" := {
+  Global Instance Method_last `{State.Trait} `(Trait) : Notation.Dot "last" := {
     Notation.dot := last;
   }.
 End Contains.
@@ -45,19 +47,19 @@ Module
     let* α1 := (addr_of (self.[1])).["eq"] number_2 in
     α0.["andb"] α1.
   
-  Global Instance Method_contains : Notation.Dot "contains" := {
+  Global Instance Method_contains `{State.Trait} : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
   Definition first `{State.Trait} (self : ref Self) : M i32 := Pure (self.[0]).
   
-  Global Instance Method_first : Notation.Dot "first" := {
+  Global Instance Method_first `{State.Trait} : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
   Definition last `{State.Trait} (self : ref Self) : M i32 := Pure (self.[1]).
   
-  Global Instance Method_last : Notation.Dot "last" := {
+  Global Instance Method_last `{State.Trait} : Notation.Dot "last" := {
     Notation.dot := last;
   }.
   
@@ -66,9 +68,12 @@ Module
         Self
         (A := i32)
         (B := i32) := {
-    generics_associated_types_problem.Contains.contains := contains;
-    generics_associated_types_problem.Contains.first := first;
-    generics_associated_types_problem.Contains.last := last;
+    generics_associated_types_problem.Contains.contains
+      `{State.Trait}
+      :=
+      contains;
+    generics_associated_types_problem.Contains.first `{State.Trait} := first;
+    generics_associated_types_problem.Contains.last `{State.Trait} := last;
   }.
 End
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.

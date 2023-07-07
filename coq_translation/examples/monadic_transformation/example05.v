@@ -15,7 +15,7 @@ Module Impl_example05_Foo.
   
   Definition plus1 `{State.Trait} (s : Self) : M u32 := (s.[0]).["add"] 1.
   
-  Global Instance AssociatedFunction_plus1 :
+  Global Instance AssociatedFunction_plus1 `{State.Trait} :
     Notation.DoubleColon Self "plus1" := {
     Notation.double_colon := plus1;
   }.

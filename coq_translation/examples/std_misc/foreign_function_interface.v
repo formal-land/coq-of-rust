@@ -69,12 +69,12 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
     let _ := tt in
     self.["deref"].
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
@@ -112,11 +112,11 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           (addr_of [ α0; α1 ]) in
       f.["write_fmt"] α2.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

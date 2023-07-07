@@ -17,24 +17,31 @@ Module Contains.
   Class Trait (Self : Set) {A : Set} {B : Set} : Set := {
     A := A;
     B := B;
-    contains : (ref Self) -> (ref ImplSelf.A) -> (ref ImplSelf.B) -> (M bool);
-    first : (ref Self) -> (M i32);
-    last : (ref Self) -> (M i32);
+    contains
+      `{State.Trait}
+      :
+      (ref Self) -> (ref ImplSelf.A) -> (ref ImplSelf.B) -> (M bool);
+    first `{State.Trait} : (ref Self) -> (M i32);
+    last `{State.Trait} : (ref Self) -> (M i32);
   }.
   
-  Global Instance Method_A `(Trait) : Notation.DoubleColonType Self "A" := {
+  Global Instance Method_A `{State.Trait} `(Trait)
+    : Notation.DoubleColonType Self "A" := {
     Notation.double_colon_type := A;
   }.
-  Global Instance Method_B `(Trait) : Notation.DoubleColonType Self "B" := {
+  Global Instance Method_B `{State.Trait} `(Trait)
+    : Notation.DoubleColonType Self "B" := {
     Notation.double_colon_type := B;
   }.
-  Global Instance Method_contains `(Trait) : Notation.Dot "contains" := {
+  Global Instance Method_contains `{State.Trait} `(Trait)
+    : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
-  Global Instance Method_first `(Trait) : Notation.Dot "first" := {
+  Global Instance Method_first `{State.Trait} `(Trait)
+    : Notation.Dot "first" := {
     Notation.dot := first;
   }.
-  Global Instance Method_last `(Trait) : Notation.Dot "last" := {
+  Global Instance Method_last `{State.Trait} `(Trait) : Notation.Dot "last" := {
     Notation.dot := last;
   }.
 End Contains.
@@ -57,27 +64,30 @@ Module
     let* α1 := (addr_of (self.[1])).["eq"] number_2 in
     α0.["andb"] α1.
   
-  Global Instance Method_contains : Notation.Dot "contains" := {
+  Global Instance Method_contains `{State.Trait} : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
   Definition first `{State.Trait} (self : ref Self) : M i32 := Pure (self.[0]).
   
-  Global Instance Method_first : Notation.Dot "first" := {
+  Global Instance Method_first `{State.Trait} : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
   Definition last `{State.Trait} (self : ref Self) : M i32 := Pure (self.[1]).
   
-  Global Instance Method_last : Notation.Dot "last" := {
+  Global Instance Method_last `{State.Trait} : Notation.Dot "last" := {
     Notation.dot := last;
   }.
   
   Global Instance I :
       generics_associated_types_solution.Contains.Trait Self := {
-    generics_associated_types_solution.Contains.contains := contains;
-    generics_associated_types_solution.Contains.first := first;
-    generics_associated_types_solution.Contains.last := last;
+    generics_associated_types_solution.Contains.contains
+      `{State.Trait}
+      :=
+      contains;
+    generics_associated_types_solution.Contains.first `{State.Trait} := first;
+    generics_associated_types_solution.Contains.last `{State.Trait} := last;
   }.
 End
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.

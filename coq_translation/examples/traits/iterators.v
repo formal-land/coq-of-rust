@@ -32,12 +32,12 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
       assign self.["next"] α0 in
     Pure (core.option.Option.Some current).
   
-  Global Instance Method_next : Notation.Dot "next" := {
+  Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
     Notation.dot := next;
   }.
   
   Global Instance I : core.iter.traits.iterator.Iterator.Trait Self := {
-    core.iter.traits.iterator.Iterator.next := next;
+    core.iter.traits.iterator.Iterator.next `{State.Trait} := next;
   }.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 

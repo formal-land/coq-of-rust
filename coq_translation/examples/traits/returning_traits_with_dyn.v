@@ -15,10 +15,11 @@ Definition Cow : Set := Cow.t.
 
 Module Animal.
   Class Trait (Self : Set) : Set := {
-    noise : (ref Self) -> (M (ref str));
+    noise `{State.Trait} : (ref Self) -> (M (ref str));
   }.
   
-  Global Instance Method_noise `(Trait) : Notation.Dot "noise" := {
+  Global Instance Method_noise `{State.Trait} `(Trait)
+    : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
 End Animal.
@@ -30,12 +31,12 @@ Module
   Definition noise `{State.Trait} (self : ref Self) : M (ref str) :=
     Pure "baaaaah!".
   
-  Global Instance Method_noise : Notation.Dot "noise" := {
+  Global Instance Method_noise `{State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
   Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
-    returning_traits_with_dyn.Animal.noise := noise;
+    returning_traits_with_dyn.Animal.noise `{State.Trait} := noise;
   }.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
@@ -45,12 +46,12 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Definition noise `{State.Trait} (self : ref Self) : M (ref str) :=
     Pure "moooooo!".
   
-  Global Instance Method_noise : Notation.Dot "noise" := {
+  Global Instance Method_noise `{State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
   Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
-    returning_traits_with_dyn.Animal.noise := noise;
+    returning_traits_with_dyn.Animal.noise `{State.Trait} := noise;
   }.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 

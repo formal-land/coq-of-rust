@@ -27,12 +27,12 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
       : M bool :=
     (self.[0]).["eq"] (other.[0]).
   
-  Global Instance Method_eq : Notation.Dot "eq" := {
+  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
   Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq := eq;
+    core.cmp.PartialEq.eq `{State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
@@ -46,12 +46,13 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
       : M (core.option.Option core.cmp.Ordering) :=
     core.cmp.PartialOrd.partial_cmp (addr_of (self.[0])) (addr_of (other.[0])).
   
-  Global Instance Method_partial_cmp : Notation.Dot "partial_cmp" := {
+  Global Instance Method_partial_cmp `{State.Trait} :
+    Notation.Dot "partial_cmp" := {
     Notation.dot := partial_cmp;
   }.
   
   Global Instance I : core.cmp.PartialOrd.Trait Self := {
-    core.cmp.PartialOrd.partial_cmp := partial_cmp;
+    core.cmp.PartialOrd.partial_cmp `{State.Trait} := partial_cmp;
   }.
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
@@ -77,12 +78,12 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
       "Inches"
       (addr_of (addr_of (self.[0]))).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_derive_Inches.
 
@@ -97,7 +98,8 @@ Module Impl_derive_Inches.
     let* α0 := (cast inches f64).["mul"] 3 (* 2.54 *) in
     Pure (derive.Centimeters.Build_t α0).
   
-  Global Instance Method_to_centimeters : Notation.Dot "to_centimeters" := {
+  Global Instance Method_to_centimeters `{State.Trait} :
+    Notation.Dot "to_centimeters" := {
     Notation.dot := to_centimeters;
   }.
 End Impl_derive_Inches.

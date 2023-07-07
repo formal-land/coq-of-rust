@@ -33,7 +33,7 @@ Module my.
         : M (struct_visibility.my.ClosedBox T) :=
       Pure {| struct_visibility.my.ClosedBox.contents := contents; |}.
     
-    Global Instance AssociatedFunction_new :
+    Global Instance AssociatedFunction_new `{State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
@@ -71,7 +71,8 @@ Module Impl_struct_visibility_my_ClosedBox_T_2.
       : M (struct_visibility.my.ClosedBox T) :=
     Pure {| struct_visibility.my.ClosedBox.contents := contents; |}.
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new `{State.Trait} :
+    Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
 End Impl_struct_visibility_my_ClosedBox_T_2.

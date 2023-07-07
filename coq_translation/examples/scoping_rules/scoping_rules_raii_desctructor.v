@@ -20,12 +20,12 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
       Pure tt in
     Pure tt.
   
-  Global Instance Method_drop : Notation.Dot "drop" := {
+  Global Instance Method_drop `{State.Trait} : Notation.Dot "drop" := {
     Notation.dot := drop;
   }.
   
   Global Instance I : core.ops.drop.Drop.Trait Self := {
-    core.ops.drop.Drop.drop := drop;
+    core.ops.drop.Drop.drop `{State.Trait} := drop;
   }.
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 

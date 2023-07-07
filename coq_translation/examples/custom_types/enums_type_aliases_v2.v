@@ -23,7 +23,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
     | ImplSelf.Subtract => x.["sub"] y
     end.
   
-  Global Instance Method_run : Notation.Dot "run" := {
+  Global Instance Method_run `{State.Trait} : Notation.Dot "run" := {
     Notation.dot := run;
   }.
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.

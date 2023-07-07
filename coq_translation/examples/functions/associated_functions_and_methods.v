@@ -29,7 +29,7 @@ Module Impl_associated_functions_and_methods_Point.
         associated_functions_and_methods.Point.x := 1 (* 1.0 *);
       |}.
   
-  Global Instance AssociatedFunction_origin :
+  Global Instance AssociatedFunction_origin `{State.Trait} :
     Notation.DoubleColon Self "origin" := {
     Notation.double_colon := origin;
   }.
@@ -45,7 +45,8 @@ Module Impl_associated_functions_and_methods_Point.
         associated_functions_and_methods.Point.y := y;
       |}.
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new `{State.Trait} :
+    Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
 End Impl_associated_functions_and_methods_Point.
@@ -74,7 +75,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
       : M associated_functions_and_methods.Point :=
     Pure self.["p1"].
   
-  Global Instance Method_get_p1 : Notation.Dot "get_p1" := {
+  Global Instance Method_get_p1 `{State.Trait} : Notation.Dot "get_p1" := {
     Notation.dot := get_p1;
   }.
   
@@ -96,7 +97,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
     let* α2 := α0.["mul"] α1 in
     α2.["abs"].
   
-  Global Instance Method_area : Notation.Dot "area" := {
+  Global Instance Method_area `{State.Trait} : Notation.Dot "area" := {
     Notation.dot := area;
   }.
   
@@ -120,7 +121,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
     let* α4 := α1.["add"] α3 in
     2 (* 2.0 *).["mul"] α4.
   
-  Global Instance Method_perimeter : Notation.Dot "perimeter" := {
+  Global Instance Method_perimeter `{State.Trait} :
+    Notation.Dot "perimeter" := {
     Notation.dot := perimeter;
   }.
   
@@ -136,7 +138,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
     let* _ := self.["p2"].["y"].["add_assign"] y in
     Pure tt.
   
-  Global Instance Method_translate : Notation.Dot "translate" := {
+  Global Instance Method_translate `{State.Trait} :
+    Notation.Dot "translate" := {
     Notation.dot := translate;
   }.
 End Impl_associated_functions_and_methods_Rectangle.
@@ -171,7 +174,7 @@ Module Impl_associated_functions_and_methods_Pair.
       Pure tt in
     Pure tt.
   
-  Global Instance Method_destroy : Notation.Dot "destroy" := {
+  Global Instance Method_destroy `{State.Trait} : Notation.Dot "destroy" := {
     Notation.dot := destroy;
   }.
 End Impl_associated_functions_and_methods_Pair.

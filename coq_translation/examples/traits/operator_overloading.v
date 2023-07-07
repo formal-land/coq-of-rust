@@ -26,12 +26,12 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
       : M core.fmt.Result :=
     core.fmt.Formatter::["write_str"] f "FooBar".
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 
@@ -50,12 +50,12 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
       : M core.fmt.Result :=
     core.fmt.Formatter::["write_str"] f "BarFoo".
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 
@@ -79,7 +79,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
       Pure tt in
     Pure operator_overloading.FooBar.Build.
   
-  Global Instance Method_add : Notation.Dot "add" := {
+  Global Instance Method_add `{State.Trait} : Notation.Dot "add" := {
     Notation.dot := add;
   }.
   
@@ -87,7 +87,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
       core.ops.arith.Add.Trait
         Self
         (Rhs := (Some operator_overloading.Bar)) := {
-    core.ops.arith.Add.add := add;
+    core.ops.arith.Add.add `{State.Trait} := add;
   }.
 End Impl_core_ops_arith_Add_for_operator_overloading_Foo.
 
@@ -111,7 +111,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
       Pure tt in
     Pure operator_overloading.BarFoo.Build.
   
-  Global Instance Method_add : Notation.Dot "add" := {
+  Global Instance Method_add `{State.Trait} : Notation.Dot "add" := {
     Notation.dot := add;
   }.
   
@@ -119,7 +119,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
       core.ops.arith.Add.Trait
         Self
         (Rhs := (Some operator_overloading.Foo)) := {
-    core.ops.arith.Add.add := add;
+    core.ops.arith.Add.add `{State.Trait} := add;
   }.
 End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 

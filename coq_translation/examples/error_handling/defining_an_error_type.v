@@ -19,12 +19,12 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
       : M core.fmt.Result :=
     core.fmt.Formatter::["write_str"] f "DoubleError".
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 
@@ -37,12 +37,12 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
       : M defining_an_error_type.DoubleError :=
     Pure defining_an_error_type.DoubleError.Build.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
@@ -59,12 +59,12 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
         (addr_of [ "invalid first item to double" ]) in
     f.["write_fmt"] α0.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt := fmt;
+    core.fmt.Display.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 

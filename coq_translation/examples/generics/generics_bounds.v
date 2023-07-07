@@ -3,10 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module HasArea.
   Class Trait (Self : Set) : Set := {
-    area : (ref Self) -> (M f64);
+    area `{State.Trait} : (ref Self) -> (M f64);
   }.
   
-  Global Instance Method_area `(Trait) : Notation.Dot "area" := {
+  Global Instance Method_area `{State.Trait} `(Trait) : Notation.Dot "area" := {
     Notation.dot := area;
   }.
 End HasArea.
@@ -17,12 +17,12 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Definition area `{State.Trait} (self : ref Self) : M f64 :=
     self.["length"].["mul"] self.["height"].
   
-  Global Instance Method_area : Notation.Dot "area" := {
+  Global Instance Method_area `{State.Trait} : Notation.Dot "area" := {
     Notation.dot := area;
   }.
   
   Global Instance I : generics_bounds.HasArea.Trait Self := {
-    generics_bounds.HasArea.area := area;
+    generics_bounds.HasArea.area `{State.Trait} := area;
   }.
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
@@ -57,12 +57,12 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       "height"
       (addr_of (addr_of self.["height"])).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 

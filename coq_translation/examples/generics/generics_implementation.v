@@ -29,7 +29,7 @@ Module Impl_generics_implementation_Val.
   Definition value `{State.Trait} (self : ref Self) : M (ref f64) :=
     Pure (addr_of self.["val"]).
   
-  Global Instance Method_value : Notation.Dot "value" := {
+  Global Instance Method_value `{State.Trait} : Notation.Dot "value" := {
     Notation.dot := value;
   }.
 End Impl_generics_implementation_Val.
@@ -40,7 +40,7 @@ Module Impl_generics_implementation_GenVal_T.
   Definition value `{State.Trait} (self : ref Self) : M (ref T) :=
     Pure (addr_of self.["gen_val"]).
   
-  Global Instance Method_value : Notation.Dot "value" := {
+  Global Instance Method_value `{State.Trait} : Notation.Dot "value" := {
     Notation.dot := value;
   }.
 End Impl_generics_implementation_GenVal_T.

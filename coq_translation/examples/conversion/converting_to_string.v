@@ -27,12 +27,12 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
         (addr_of [ α0 ]) in
     f.["write_fmt"] α1.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt := fmt;
+    core.fmt.Display.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 

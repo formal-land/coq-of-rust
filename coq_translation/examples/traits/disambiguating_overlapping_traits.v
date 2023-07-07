@@ -3,20 +3,20 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module UsernameWidget.
   Class Trait (Self : Set) : Set := {
-    get : (ref Self) -> (M alloc.string.String);
+    get `{State.Trait} : (ref Self) -> (M alloc.string.String);
   }.
   
-  Global Instance Method_get `(Trait) : Notation.Dot "get" := {
+  Global Instance Method_get `{State.Trait} `(Trait) : Notation.Dot "get" := {
     Notation.dot := get;
   }.
 End UsernameWidget.
 
 Module AgeWidget.
   Class Trait (Self : Set) : Set := {
-    get : (ref Self) -> (M u8);
+    get `{State.Trait} : (ref Self) -> (M u8);
   }.
   
-  Global Instance Method_get `(Trait) : Notation.Dot "get" := {
+  Global Instance Method_get `{State.Trait} `(Trait) : Notation.Dot "get" := {
     Notation.dot := get;
   }.
 End AgeWidget.
@@ -43,13 +43,13 @@ Module
   Definition get `{State.Trait} (self : ref Self) : M alloc.string.String :=
     self.["username"].["clone"].
   
-  Global Instance Method_get : Notation.Dot "get" := {
+  Global Instance Method_get `{State.Trait} : Notation.Dot "get" := {
     Notation.dot := get;
   }.
   
   Global Instance I :
       disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
-    disambiguating_overlapping_traits.UsernameWidget.get := get;
+    disambiguating_overlapping_traits.UsernameWidget.get `{State.Trait} := get;
   }.
 End
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
@@ -60,13 +60,13 @@ Module
   
   Definition get `{State.Trait} (self : ref Self) : M u8 := Pure self.["age"].
   
-  Global Instance Method_get : Notation.Dot "get" := {
+  Global Instance Method_get `{State.Trait} : Notation.Dot "get" := {
     Notation.dot := get;
   }.
   
   Global Instance I :
       disambiguating_overlapping_traits.AgeWidget.Trait Self := {
-    disambiguating_overlapping_traits.AgeWidget.get := get;
+    disambiguating_overlapping_traits.AgeWidget.get `{State.Trait} := get;
   }.
 End
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.

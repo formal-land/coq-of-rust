@@ -17,7 +17,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
     let* _ := (self.[0]).["add_assign"] 1 in
     Pure tt.
   
-  Global Instance Method_add_one : Notation.Dot "add_one" := {
+  Global Instance Method_add_one `{State.Trait} : Notation.Dot "add_one" := {
     Notation.dot := add_one;
   }.
   
@@ -34,7 +34,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       Pure tt in
     Pure tt.
   
-  Global Instance Method_print : Notation.Dot "print" := {
+  Global Instance Method_print `{State.Trait} : Notation.Dot "print" := {
     Notation.dot := print;
   }.
 End Impl_scoping_rules_lifetimes_methods_Owner.

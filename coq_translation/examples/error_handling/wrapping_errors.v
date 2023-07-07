@@ -28,12 +28,12 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
         (addr_of __self_0)
     end.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
@@ -59,12 +59,12 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
       f.["write_fmt"] α0
     end.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt := fmt;
+    core.fmt.Display.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 
@@ -81,7 +81,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
     | wrapping_errors.DoubleError.Parse e => Pure (core.option.Option.Some e)
     end.
   
-  Global Instance Method_source : Notation.Dot "source" := {
+  Global Instance Method_source `{State.Trait} : Notation.Dot "source" := {
     Notation.dot := source;
   }.
   
@@ -98,14 +98,14 @@ Module Impl_core_convert_From_for_wrapping_errors_DoubleError.
       : M wrapping_errors.DoubleError :=
     Pure (wrapping_errors.DoubleError.Parse err).
   
-  Global Instance AssociatedFunction_from :
+  Global Instance AssociatedFunction_from `{State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
   Global Instance I :
       core.convert.From.Trait Self (T := core.num.error.ParseIntError) := {
-    core.convert.From.from := from;
+    core.convert.From.from `{State.Trait} := from;
   }.
 End Impl_core_convert_From_for_wrapping_errors_DoubleError.
 

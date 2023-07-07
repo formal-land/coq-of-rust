@@ -26,12 +26,12 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
       "x"
       (addr_of (addr_of self.["x"])).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 
@@ -41,13 +41,13 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition default `{State.Trait} (_ : unit) : M Self :=
     Pure {| Self.x := addr_of 10; |}.
   
-  Global Instance AssociatedFunction_default :
+  Global Instance AssociatedFunction_default `{State.Trait} :
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.
   
   Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default := default;
+    core.default.Default.default `{State.Trait} := default;
   }.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 

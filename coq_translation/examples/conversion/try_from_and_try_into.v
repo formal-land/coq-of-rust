@@ -23,12 +23,12 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       "EvenNumber"
       (addr_of (addr_of (self.[0]))).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 
@@ -50,12 +50,12 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
       : M bool :=
     (self.[0]).["eq"] (other.[0]).
   
-  Global Instance Method_eq : Notation.Dot "eq" := {
+  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
   Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq := eq;
+    core.cmp.PartialEq.eq `{State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 
@@ -76,13 +76,13 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
     else
       Pure (core.result.Result.Err tt).
   
-  Global Instance AssociatedFunction_try_from :
+  Global Instance AssociatedFunction_try_from `{State.Trait} :
     Notation.DoubleColon Self "try_from" := {
     Notation.double_colon := try_from;
   }.
   
   Global Instance I : core.convert.TryFrom.Trait Self (T := i32) := {
-    core.convert.TryFrom.try_from := try_from;
+    core.convert.TryFrom.try_from `{State.Trait} := try_from;
   }.
 End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 

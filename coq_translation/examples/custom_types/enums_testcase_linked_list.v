@@ -17,7 +17,8 @@ Module Impl_enums_testcase_linked_list_List.
       : M enums_testcase_linked_list.List :=
     Pure enums_testcase_linked_list.List.Nil.
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new `{State.Trait} :
+    Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
@@ -29,7 +30,7 @@ Module Impl_enums_testcase_linked_list_List.
     let* α0 := alloc.boxed.Box::["new"] self in
     Pure (enums_testcase_linked_list.List.Cons elem α0).
   
-  Global Instance Method_prepend : Notation.Dot "prepend" := {
+  Global Instance Method_prepend `{State.Trait} : Notation.Dot "prepend" := {
     Notation.dot := prepend;
   }.
   
@@ -42,7 +43,7 @@ Module Impl_enums_testcase_linked_list_List.
     | enums_testcase_linked_list.List.Nil => Pure 0
     end.
   
-  Global Instance Method_len : Notation.Dot "len" := {
+  Global Instance Method_len `{State.Trait} : Notation.Dot "len" := {
     Notation.dot := len;
   }.
   
@@ -70,7 +71,8 @@ Module Impl_enums_testcase_linked_list_List.
       Pure res
     end.
   
-  Global Instance Method_stringify : Notation.Dot "stringify" := {
+  Global Instance Method_stringify `{State.Trait} :
+    Notation.Dot "stringify" := {
     Notation.dot := stringify;
   }.
 End Impl_enums_testcase_linked_list_List.

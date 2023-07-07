@@ -3,30 +3,31 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Person.
   Class Trait (Self : Set) : Set := {
-    name : (ref Self) -> (M alloc.string.String);
+    name `{State.Trait} : (ref Self) -> (M alloc.string.String);
   }.
   
-  Global Instance Method_name `(Trait) : Notation.Dot "name" := {
+  Global Instance Method_name `{State.Trait} `(Trait) : Notation.Dot "name" := {
     Notation.dot := name;
   }.
 End Person.
 
 Module Student.
   Class Trait (Self : Set) : Set := {
-    university : (ref Self) -> (M alloc.string.String);
+    university `{State.Trait} : (ref Self) -> (M alloc.string.String);
   }.
   
-  Global Instance Method_university `(Trait) : Notation.Dot "university" := {
+  Global Instance Method_university `{State.Trait} `(Trait)
+    : Notation.Dot "university" := {
     Notation.dot := university;
   }.
 End Student.
 
 Module Programmer.
   Class Trait (Self : Set) : Set := {
-    fav_language : (ref Self) -> (M alloc.string.String);
+    fav_language `{State.Trait} : (ref Self) -> (M alloc.string.String);
   }.
   
-  Global Instance Method_fav_language `(Trait)
+  Global Instance Method_fav_language `{State.Trait} `(Trait)
     : Notation.Dot "fav_language" := {
     Notation.dot := fav_language;
   }.
@@ -34,10 +35,10 @@ End Programmer.
 
 Module CompSciStudent.
   Class Trait (Self : Set) : Set := {
-    git_username : (ref Self) -> (M alloc.string.String);
+    git_username `{State.Trait} : (ref Self) -> (M alloc.string.String);
   }.
   
-  Global Instance Method_git_username `(Trait)
+  Global Instance Method_git_username `{State.Trait} `(Trait)
     : Notation.Dot "git_username" := {
     Notation.dot := git_username;
   }.
