@@ -1780,6 +1780,8 @@ impl TopLevelItem {
                                     text("."),
                                     text(name),
                                     line(),
+                                    monadic_typeclass_parameter(),
+                                    line(),
                                     text(":="),
                                     line(),
                                     text(name),
