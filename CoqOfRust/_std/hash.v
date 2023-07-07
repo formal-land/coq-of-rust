@@ -94,7 +94,7 @@ pub trait Hash {
 *)
 Module Hash.
   Class Trait (Self : Set) : Set := {
-    hash {H : Set}
+    hash `{State.Trait} {H : Set}
       `{Hasher : Hasher.Trait H}
       : ref Self -> mut_ref H -> M unit;
 
