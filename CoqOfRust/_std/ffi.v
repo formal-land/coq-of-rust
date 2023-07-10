@@ -20,61 +20,61 @@ where
 { /* private fields */ }
 *)
 Module VaList.
-  Record t : Set := { }.
+  Parameter t : Set.
 End VaList.
 Definition VaList := VaList.t.
 
 (* pub struct VaListImpl<'f> { /* private fields */ } *)
 Module VaListImpl.
-  Record t : Set := { }.
+  Parameter t : Set.
 End VaListImpl.
 Definition VaListImpl := VaListImpl.t.
 
 (* pub struct CStr { /* private fields */ } *)
 Module CStr.
-  Record t : Set := { }.
+  Parameter t : Set.
 End CStr.
 Definition CStr := CStr.t.
 
 (* pub struct CString { /* private fields */ } *)
 Module CString.
-  Record t : Set := { }.
+  Parameter t : Set.
 End CString.
 Definition CString := CString.t.
 
 (* pub struct FromBytesWithNulError { /* private fields */ } *)
 Module FromBytesWithNulError.
-  Record t : Set := { }.
+  Parameter t : Set.
 End FromBytesWithNulError.
 Definition FromBytesWithNulError := FromBytesWithNulError.t.
 
 (* pub struct FromVecWithNulError { /* private fields */ } *)
 Module FromVecWithNulError.
-  Record t : Set := { }.
+  Parameter t : Set.
 End FromVecWithNulError.
 Definition FromVecWithNulError := FromVecWithNulError.t.
 
 (* pub struct IntoStringError { /* private fields */ } *)
 Module IntoStringError.
-  Record t : Set := { }.
+  Parameter t : Set.
 End IntoStringError.
 Definition IntoStringError := IntoStringError.t.
 
 (* pub struct NulError(_, _); *)
 Module NulError.
-  Record t : Set := { }.
+  Parameter t : Set.
 End NulError.
 Definition NulError := NulError.t.
 
 (* pub struct OsStr { /* private fields */ } *)
 Module OsStr.
-  Record t : Set := { }.
+  Parameter t : Set.
 End OsStr.
 Definition OsStr := OsStr.t.
 
 (* pub struct OsString { /* private fields */ } *)
 Module OsString.
-  Record t : Set := { }.
+  Parameter t : Set.
 End OsString.
 Definition OsString := OsString.t.
 

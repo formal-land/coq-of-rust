@@ -19,19 +19,19 @@ Require Import CoqOfRust._std.fmt.
 
 (* pub struct Drain<'a> { /* private fields */ } *)
 Module Drain.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Drain.
 Definition Drain := Drain.t.
 
 (* pub struct FromUtf8Error { /* private fields */ } *)
 Module FromUtf8Error.
-  Record t : Set := { }.
+  Parameter t : Set.
 End FromUtf8Error.
 Definition FromUtf8Error := FromUtf8Error.t.
 
 (* pub struct FromUtf16Error(_); *)
 Module FromUtf16Error.
-  Record t (underscore : Set): Set := { }.
+  Parameter t : Set.
 End FromUtf16Error.
 Definition FromUtf16Error := FromUtf16Error.t.
 

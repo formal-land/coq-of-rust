@@ -8,19 +8,19 @@ Require Import CoqOfRust.lib.lib.
 *)
 (* pub struct AssertUnwindSafe<T>(pub T); *)
 Module AssertUnwindSafe.
-  Record t (T : Set): Set := { }.
+  Parameter t : forall (T : Set), Set.
 End AssertUnwindSafe.
 Definition AssertUnwindSafe := AssertUnwindSafe.t.
 
 (* pub struct Location<'a> { /* private fields */ } *)
 Module Location.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Location.
 Definition Location := Location.t.
 
 (* pub struct PanicInfo<'a> { /* private fields */ } *)
 Module PanicInfo.
-  Record t : Set := { }.
+  Parameter t : Set.
 End PanicInfo.
 Definition PanicInfo := PanicInfo.t.
 
@@ -31,12 +31,16 @@ Definition PanicInfo := PanicInfo.t.
 *)
 (* pub auto trait RefUnwindSafe { } *)
 Module RefUnwindSafe.
+  Unset Primitive Projections.
   Class Trait (Self : Set) : Set := { }.
+  Set Primitive Projections.
 End RefUnwindSafe.
 
 (* pub auto trait UnwindSafe { } *)
 Module UnsindSafe.
+  Unset Primitive Projections.
   Class Trait (Self : Set) : Set := { }.
+  Set Primitive Projections.
 End UnsindSafe.
 
 

@@ -12,7 +12,7 @@ where
 { /* private fields */ }
 *)
 Module Rc.
-  Record t (T : Set) : Set := { }.
+  Parameter t : forall (T : Set), Set.
 End Rc.
 Definition Rc := Rc.t.
 
@@ -23,6 +23,6 @@ where
 { /* private fields */ }
 *)
 Module Weak.
-  Record t (T : Set) : Set := { }.
+  Parameter t : forall (T : Set), Set.
 End Weak.
 Definition Weak := Weak.t.

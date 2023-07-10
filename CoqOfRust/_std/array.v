@@ -8,13 +8,13 @@ Require Import CoqOfRust.lib.lib.
 
 (* pub struct IntoIter<T, const N: usize> *)
 Module IntoIter.
-  Record t (T : Set) (N : usize): Set := { }.
-End IntoIter. 
+  Parameter t : Set -> Set.
+End IntoIter.
 Definition IntoIter := IntoIter.t.
 
 
 (* pub struct TryFromSliceError(_); *)
 Module TryFromSliceError.
-  Record t (underscore : Set) : Set := { }.
+  Parameter t : Set.
 End TryFromSliceError.
 Definition TryFromSliceError := TryFromSliceError.t.

@@ -26,7 +26,7 @@ Definition Assume := Assume.t.
 
 (* pub struct Discriminant<T>(_); *)
 Module Ddiscriminant.
-  Record t (T : Set): Set := { }.
+  Parameter t : forall (T : Set), Set.
 End Ddiscriminant.
 Definition Ddiscriminant := Ddiscriminant.t.
 
@@ -37,7 +37,7 @@ where
 { /* private fields */ }
 *)
 Module ManuallyDrop.
-  Record t (T : Set): Set := { }.
+  Parameter t : forall (T : Set), Set.
 End ManuallyDrop.
 Definition ManuallyDrop := ManuallyDrop.t.
 
@@ -54,7 +54,9 @@ where
 { }
 *)
 Module BikeshedIntrinsicFrom.
+  Unset Primitive Projections.
   Class Trait (Self Src Context : Set) : Set := { }.
+  Set Primitive Projections.
 End BikeshedIntrinsicFrom.
 
 (* ********FUNCTIONS******** *)

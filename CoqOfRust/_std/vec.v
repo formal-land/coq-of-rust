@@ -24,7 +24,7 @@ where
 { /* private fields */ }
 *)
 Module DrainFilter.
-  Record t (T F A : Set) : Set := { }.
+  Parameter t : forall (T F A : Set), Set.
 End DrainFilter.
 Definition DrainFilter (T F : Set) (A : option Set)
   `{Allocator.Trait (defaultType A Global)} 
@@ -47,7 +47,7 @@ where
 { /* private fields */ }
 *)
 Module Drain.
-  Record t (T A: Set) : Set := { }.
+  Parameter t : forall (T A : Set), Set.
 End Drain.
 Definition Drain (T : Set) (A : option Set) : Set :=
   Drain.t T (defaultType A Global).
@@ -66,7 +66,7 @@ where
 { /* private fields */ }
 *)
 Module IntoIter.
-  Record t (T A : Set) : Set := { }.
+  Parameter t : forall (T A : Set), Set.
 End IntoIter.
 Definition IntoIter (T : Set) (A : option Set) := IntoIter.t T (defaultType A Global).
   (* 
@@ -86,7 +86,7 @@ where
 { /* private fields */ }
 *)
 Module Splice.
-  Record t (I A : Set) : Set := { }.
+  Parameter t : forall (I A : Set), Set.
 End Splice.
 Definition Splice (I : Set) (A : option Set) := Splice.t I (defaultType A Global).
 
@@ -98,7 +98,7 @@ where
 { /* private fields */ }
 *)
 Module Vec.
-  Record t (T A : Set): Set := { }.
+  Parameter t : forall (T A : Set), Set.
 End Vec.
 Definition Vec (T : Set) (A : option Set) := Vec.t T (defaultType A Global).
 

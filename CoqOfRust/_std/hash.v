@@ -11,7 +11,7 @@ Require Import CoqOfRust._std.marker.
 
 (* pub struct BuildHasherDefault<H>(_); *)
 Module BuildHasherDefault.
-  Record t (H : Set) : Set := { }.
+  Parameter t : forall (H : Set), Set.
 End BuildHasherDefault.
 Definition BuildHasherDefault := BuildHasherDefault.t.
 

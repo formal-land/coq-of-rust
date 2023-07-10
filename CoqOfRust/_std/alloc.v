@@ -14,27 +14,27 @@ Require Import CoqOfRust._std.marker.
 *)
 
 Module AllocError.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End AllocError.
 Definition AllocError := AllocError.t.
 
 Module Global.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End Global.
 Definition Global := Global.t.
 
 Module Layout.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Layout.
 Definition Layout := Layout.t.
 
 Module LayoutError.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End LayoutError.
 Definition LayoutError := LayoutError.t.
 
 Module System.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End System.
 Definition System := System.t.
 

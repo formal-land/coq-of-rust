@@ -18,7 +18,7 @@ Require Import CoqOfRust.lib.lib.
 
 (* pub struct CharTryFromError(_); *)
 Module CharTryFromError.
-  Record t : Set := { }.
+  Parameter t : Set.
 End CharTryFromError.
 Definition CharTryFromError := CharTryFromError.t.
 
@@ -30,55 +30,55 @@ where
 { /* private fields */ }
 *)
 Module DecodeUtf16.
-  Record t (I : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End DecodeUtf16.
 Definition DecodeUtf16 := DecodeUtf16.t.
 
 (* pub struct DecodeUtf16Error { /* private fields */ } *)
 Module DecodeUtf16Error.
-  Record t : Set := { }.
+  Parameter t : Set.
 End DecodeUtf16Error.
 Definition DecodeUtf16Error := DecodeUtf16Error.t.
 
 (* pub struct EscapeDebug(_); *)
 Module EscapeDebug.
-  Record t : Set := { }.
+  Parameter t : Set.
 End EscapeDebug.
 Definition EscapeDebug := EscapeDebug.t.
 
 (* pub struct EscapeDefault { /* private fields */ } *)
 Module EscapeDefault.
-  Record t : Set := { }.
+  Parameter t : Set.
 End EscapeDefault.
 Definition EscapeDefault := EscapeDefault.t.
 
 (* pub struct EscapeUnicode { /* private fields */ } *)
 Module EscapeUnicode.
-  Record t : Set := { }.
+  Parameter t : Set.
 End EscapeUnicode.
 Definition EscapeUnicode := EscapeUnicode.t.
 
 (* pub struct ParseCharError { /* private fields */ } *)
 Module ParseCharError.
-  Record t : Set := { }.
+  Parameter t : Set.
 End ParseCharError.
 Definition ParseCharError := ParseCharError.t.
 
 (* pub struct ToLowercase(_); *)
 Module ToLowercase.
-  Record t : Set := { }.
+  Parameter t : Set.
 End ToLowercase.
 Definition ToLowercase := ToLowercase.t.
 
 (* pub struct ToUppercase(_); *)
 Module ToUppercase.
-  Record t : Set := { }.
+  Parameter t : Set.
 End ToUppercase.
 Definition ToUppercase := ToUppercase.t.
 
 (* pub struct TryFromCharError(_); *)
 Module TryFromCharError.
-  Record t : Set := { }.
+  Parameter t : Set.
 End TryFromCharError.
 Definition TryFromCharError := TryFromCharError.t.
 
