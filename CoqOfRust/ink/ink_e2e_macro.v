@@ -2,12 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module codegen.
-  Definition BUILD_ONCE `{State.Trait} : std.sync.once.Once :=
+  Definition BUILD_ONCE `{H : State.Trait} : std.sync.once.Once :=
     run (std.sync.once.Once::["new"] tt).
   
   Definition
       ALREADY_BUILT_CONTRACTS
-      `{State.Trait} :
+      `{H : State.Trait} :
       std.thread.local.LocalKey
         (core.cell.RefCell
           (std.collections.hash.map.HashMap
@@ -18,10 +18,10 @@ Module codegen.
         ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.__getit).
   
   Definition already_built_contracts
-      `{State.Trait}
+      `{H : State.Trait}
       (_ : unit)
       :
-        M
+        M (H := H)
           (std.collections.hash.map.HashMap
             alloc.string.String
             alloc.string.String) :=
@@ -31,13 +31,13 @@ Module codegen.
         α0.["clone"]).
   
   Definition set_already_built_contracts
-      `{State.Trait}
+      `{H : State.Trait}
       (hash_map
         :
         std.collections.hash.map.HashMap
           alloc.string.String
           alloc.string.String)
-      : M unit :=
+      : M (H := H) unit :=
     let* _ :=
       ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.["with"]
         (fun metadata_paths =>
@@ -60,19 +60,19 @@ Module codegen.
     Definition Self := ink_e2e_macro.codegen.InkE2ETest.
     
     Definition from
-        `{State.Trait}
+        `{H : State.Trait}
         (original : ink_e2e_macro.ir.InkE2ETest)
-        : M ink_e2e_macro.codegen.InkE2ETest :=
+        : M (H := H) ink_e2e_macro.codegen.InkE2ETest :=
       Pure {| ink_e2e_macro.codegen.InkE2ETest.test := original; |}.
     
-    Global Instance AssociatedFunction_from `{State.Trait} :
+    Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
       Notation.double_colon := from;
     }.
     
     Global Instance I :
         core.convert.From.Trait Self (T := ink_e2e_macro.ir.InkE2ETest) := {
-      core.convert.From.from `{State.Trait} := from;
+      core.convert.From.from `{H : State.Trait} := from;
     }.
   End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
   
@@ -80,9 +80,9 @@ Module codegen.
     Definition Self := ink_e2e_macro.codegen.InkE2ETest.
     
     Definition generate_code
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
-        : M proc_macro2.TokenStream :=
+        : M (H := H) proc_macro2.TokenStream :=
       let item_fn := addr_of self.["test"].["item_fn"].["item_fn"] in
       let fn_name := addr_of item_fn.["sig"].["ident"] in
       let block := addr_of item_fn.["block"] in
@@ -713,7 +713,7 @@ Module codegen.
           _s in
       Pure _s.
     
-    Global Instance Method_generate_code `{State.Trait} :
+    Global Instance Method_generate_code `{H : State.Trait} :
       Notation.Dot "generate_code" := {
       Notation.dot := generate_code;
     }.
@@ -739,10 +739,10 @@ Module codegen.
     Definition Self := ink_e2e_macro.codegen.ContractManifests.
     
     Definition fmt
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       core.fmt.Formatter::["debug_struct_field2_finish"]
         f
         "ContractManifests"
@@ -751,19 +751,22 @@ Module codegen.
         "contract_dependencies"
         (addr_of (addr_of self.["contract_dependencies"])).
     
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{State.Trait} := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
   
   Module Impl_ink_e2e_macro_codegen_ContractManifests.
     Definition Self := ink_e2e_macro.codegen.ContractManifests.
     
-    Definition from_cargo_metadata `{State.Trait} (_ : unit) : M Self :=
+    Definition from_cargo_metadata
+        `{H : State.Trait}
+        (_ : unit)
+        : M (H := H) Self :=
       let* cmd := cargo_metadata.MetadataCommand::["new"] tt in
       let* metadata :=
         let* α0 := cmd.["exec"] in
@@ -800,15 +803,15 @@ Module codegen.
           Self.contract_dependencies := contract_dependencies;
         |}.
     
-    Global Instance AssociatedFunction_from_cargo_metadata `{State.Trait} :
+    Global Instance AssociatedFunction_from_cargo_metadata `{H : State.Trait} :
       Notation.DoubleColon Self "from_cargo_metadata" := {
       Notation.double_colon := from_cargo_metadata;
     }.
     
     Definition all_contracts_to_build
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
-        : M (alloc.vec.Vec alloc.string.String) :=
+        : M (H := H) (alloc.vec.Vec alloc.string.String) :=
       let* all_manifests :=
         let* α0 := self.["root_package"].["iter"] in
         let* α1 := α0.["cloned"] in
@@ -818,16 +821,16 @@ Module codegen.
         all_manifests.["append"] (addr_of α0) in
       Pure all_manifests.
     
-    Global Instance Method_all_contracts_to_build `{State.Trait} :
+    Global Instance Method_all_contracts_to_build `{H : State.Trait} :
       Notation.Dot "all_contracts_to_build" := {
       Notation.dot := all_contracts_to_build;
     }.
   End Impl_ink_e2e_macro_codegen_ContractManifests.
   
   Definition build_contract
-      `{State.Trait}
+      `{H : State.Trait}
       (path_to_cargo_toml : ref str)
-      : M alloc.string.String :=
+      : M (H := H) alloc.string.String :=
     let* manifest_path :=
       let* α0 :=
         contract_build.workspace.manifest.ManifestPath::["new"]
@@ -890,12 +893,12 @@ Module codegen.
     end.
 End codegen.
 
-Definition BUILD_ONCE `{State.Trait} : std.sync.once.Once :=
+Definition BUILD_ONCE `{H : State.Trait} : std.sync.once.Once :=
   run (std.sync.once.Once::["new"] tt).
 
 Definition
     ALREADY_BUILT_CONTRACTS
-    `{State.Trait} :
+    `{H : State.Trait} :
     std.thread.local.LocalKey
       (core.cell.RefCell
         (std.collections.hash.map.HashMap
@@ -906,10 +909,10 @@ Definition
       ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.__getit).
 
 Definition __init
-    `{State.Trait}
+    `{H : State.Trait}
     (_ : unit)
     :
-      M
+      M (H := H)
         (core.cell.RefCell
           (std.collections.hash.map.HashMap
             alloc.string.String
@@ -918,7 +921,7 @@ Definition __init
   core.cell.RefCell::["new"] α0.
 
 Definition __getit
-    `{State.Trait}
+    `{H : State.Trait}
     (init
       :
       core.option.Option
@@ -929,7 +932,7 @@ Definition __getit
                 alloc.string.String
                 alloc.string.String)))))
     :
-      M
+      M (H := H)
         (core.option.Option
           (ref
             (core.cell.RefCell
@@ -966,7 +969,7 @@ Definition __getit
 
 Definition
     __KEY
-    `{State.Trait} :
+    `{H : State.Trait} :
     std.sys.common.thread_local.fast_local.Key
       (core.cell.RefCell
         (std.collections.hash.map.HashMap
@@ -981,10 +984,10 @@ Definition
       tt).
 
 Definition already_built_contracts
-    `{State.Trait}
+    `{H : State.Trait}
     (_ : unit)
     :
-      M
+      M (H := H)
         (std.collections.hash.map.HashMap
           alloc.string.String
           alloc.string.String) :=
@@ -994,11 +997,11 @@ Definition already_built_contracts
       α0.["clone"]).
 
 Definition set_already_built_contracts
-    `{State.Trait}
+    `{H : State.Trait}
     (hash_map
       :
       std.collections.hash.map.HashMap alloc.string.String alloc.string.String)
-    : M unit :=
+    : M (H := H) unit :=
   let* _ :=
     ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.["with"]
       (fun metadata_paths =>
@@ -1021,19 +1024,19 @@ Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
   Definition Self := ink_e2e_macro.codegen.InkE2ETest.
   
   Definition from
-      `{State.Trait}
+      `{H : State.Trait}
       (original : ink_e2e_macro.ir.InkE2ETest)
-      : M ink_e2e_macro.codegen.InkE2ETest :=
+      : M (H := H) ink_e2e_macro.codegen.InkE2ETest :=
     Pure {| ink_e2e_macro.codegen.InkE2ETest.test := original; |}.
   
-  Global Instance AssociatedFunction_from `{State.Trait} :
+  Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
   Global Instance I :
       core.convert.From.Trait Self (T := ink_e2e_macro.ir.InkE2ETest) := {
-    core.convert.From.from `{State.Trait} := from;
+    core.convert.From.from `{H : State.Trait} := from;
   }.
 End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
 
@@ -1041,9 +1044,9 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
   Definition Self := ink_e2e_macro.codegen.InkE2ETest.
   
   Definition generate_code
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let item_fn := addr_of self.["test"].["item_fn"].["item_fn"] in
     let fn_name := addr_of item_fn.["sig"].["ident"] in
     let block := addr_of item_fn.["block"] in
@@ -1666,13 +1669,13 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
       quote.__private.push_group (addr_of _s) proc_macro2.Delimiter.Brace _s in
     Pure _s.
   
-  Global Instance Method_generate_code `{State.Trait} :
+  Global Instance Method_generate_code `{H : State.Trait} :
     Notation.Dot "generate_code" := {
     Notation.dot := generate_code;
   }.
 End Impl_ink_e2e_macro_codegen_InkE2ETest_2.
 
-Definition DEFAULT_CONTRACTS_NODE `{State.Trait} : ref str :=
+Definition DEFAULT_CONTRACTS_NODE `{H : State.Trait} : ref str :=
   run (Pure "substrate-contracts-node").
 
 Module ContractManifests.
@@ -1695,10 +1698,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
   Definition Self := ink_e2e_macro.codegen.ContractManifests.
   
   Definition fmt
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "ContractManifests"
@@ -1707,19 +1710,22 @@ Module Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
       "contract_dependencies"
       (addr_of (addr_of self.["contract_dependencies"])).
   
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
 
 Module Impl_ink_e2e_macro_codegen_ContractManifests_2.
   Definition Self := ink_e2e_macro.codegen.ContractManifests.
   
-  Definition from_cargo_metadata `{State.Trait} (_ : unit) : M Self :=
+  Definition from_cargo_metadata
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) Self :=
     let* cmd := cargo_metadata.MetadataCommand::["new"] tt in
     let* metadata :=
       let* α0 := cmd.["exec"] in
@@ -1755,15 +1761,15 @@ Module Impl_ink_e2e_macro_codegen_ContractManifests_2.
         Self.contract_dependencies := contract_dependencies;
       |}.
   
-  Global Instance AssociatedFunction_from_cargo_metadata `{State.Trait} :
+  Global Instance AssociatedFunction_from_cargo_metadata `{H : State.Trait} :
     Notation.DoubleColon Self "from_cargo_metadata" := {
     Notation.double_colon := from_cargo_metadata;
   }.
   
   Definition all_contracts_to_build
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M (alloc.vec.Vec alloc.string.String) :=
+      : M (H := H) (alloc.vec.Vec alloc.string.String) :=
     let* all_manifests :=
       let* α0 := self.["root_package"].["iter"] in
       let* α1 := α0.["cloned"] in
@@ -1773,24 +1779,24 @@ Module Impl_ink_e2e_macro_codegen_ContractManifests_2.
       all_manifests.["append"] (addr_of α0) in
     Pure all_manifests.
   
-  Global Instance Method_all_contracts_to_build `{State.Trait} :
+  Global Instance Method_all_contracts_to_build `{H : State.Trait} :
     Notation.Dot "all_contracts_to_build" := {
     Notation.dot := all_contracts_to_build;
   }.
 End Impl_ink_e2e_macro_codegen_ContractManifests_2.
 
 Definition maybe_contract_package
-    `{State.Trait}
+    `{H : State.Trait}
     (package : ref cargo_metadata.Package)
-    : M (core.option.Option alloc.string.String) :=
+    : M (H := H) (core.option.Option alloc.string.String) :=
   let* α0 := package.["features"].["iter"] in
   let* α1 := α0.["any"] (fun (feat, _) => feat.["eq"] "ink-as-dependency") in
   α1.["then"] (fun  => package.["manifest_path"].["to_string"]).
 
 Definition build_contract
-    `{State.Trait}
+    `{H : State.Trait}
     (path_to_cargo_toml : ref str)
-    : M alloc.string.String :=
+    : M (H := H) alloc.string.String :=
   let* manifest_path :=
     let* α0 :=
       contract_build.workspace.manifest.ManifestPath::["new"]
@@ -1877,10 +1883,10 @@ Module config.
     Definition Self := ink_e2e_macro.config.E2EConfig.
     
     Definition fmt
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       core.fmt.Formatter::["debug_struct_field3_finish"]
         f
         "E2EConfig"
@@ -1891,12 +1897,12 @@ Module config.
         "environment"
         (addr_of (addr_of self.["environment"])).
     
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{State.Trait} := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
   
@@ -1904,9 +1910,9 @@ Module config.
     Definition Self := ink_e2e_macro.config.E2EConfig.
     
     Definition default
-        `{State.Trait}
+        `{H : State.Trait}
         (_ : unit)
-        : M ink_e2e_macro.config.E2EConfig :=
+        : M (H := H) ink_e2e_macro.config.E2EConfig :=
       let* α0 := core.default.Default.default tt in
       let* α1 := core.default.Default.default tt in
       let* α2 := core.default.Default.default tt in
@@ -1917,13 +1923,13 @@ Module config.
           ink_e2e_macro.config.E2EConfig.environment := α2;
         |}.
     
-    Global Instance AssociatedFunction_default `{State.Trait} :
+    Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
       Notation.double_colon := default;
     }.
     
     Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{State.Trait} := default;
+      core.default.Default.default `{H : State.Trait} := default;
     }.
   End Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
   
@@ -1939,10 +1945,10 @@ Module config.
     Definition Self := ink_e2e_macro.config.E2EConfig.
     
     Definition eq
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
         (other : ref ink_e2e_macro.config.E2EConfig)
-        : M bool :=
+        : M (H := H) bool :=
       let* α0 :=
         self.["whitelisted_attributes"].["eq"]
           other.["whitelisted_attributes"] in
@@ -1952,12 +1958,12 @@ Module config.
       let* α3 := self.["environment"].["eq"] other.["environment"] in
       α2.["andb"] α3.
     
-    Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
+    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
     }.
     
     Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq `{State.Trait} := eq;
+      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
   
@@ -1972,15 +1978,15 @@ Module config.
     Definition Self := ink_e2e_macro.config.E2EConfig.
     
     Definition assert_receiver_is_total_eq
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
-        : M unit :=
+        : M (H := H) unit :=
       let _ := tt in
       let _ := tt in
       let _ := tt in
       Pure tt.
     
-    Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
+    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
       Notation.dot := assert_receiver_is_total_eq;
     }.
@@ -1995,9 +2001,9 @@ Module config.
     Definition Error : Set := syn.error.Error.
     
     Definition try_from
-        `{State.Trait}
+        `{H : State.Trait}
         (args : ink_ir.ast.attr_args.AttributeArgs)
-        : M (core.result.Result Self ImplSelf.Error) :=
+        : M (H := H) (core.result.Result Self ImplSelf.Error) :=
       let* whitelisted_attributes :=
         ink_ir.ir.utils.WhitelistedAttributes::["default"] tt in
       let additional_contracts := core.option.Option.None in
@@ -2138,7 +2144,7 @@ Module config.
             ink_e2e_macro.config.E2EConfig.environment := environment;
           |}).
     
-    Global Instance AssociatedFunction_try_from `{State.Trait} :
+    Global Instance AssociatedFunction_try_from `{H : State.Trait} :
       Notation.DoubleColon Self "try_from" := {
       Notation.double_colon := try_from;
     }.
@@ -2147,7 +2153,7 @@ Module config.
         core.convert.TryFrom.Trait
           Self
           (T := ink_ir.ast.attr_args.AttributeArgs) := {
-      core.convert.TryFrom.try_from `{State.Trait} := try_from;
+      core.convert.TryFrom.try_from `{H : State.Trait} := try_from;
     }.
   End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
   
@@ -2155,23 +2161,23 @@ Module config.
     Definition Self := ink_e2e_macro.config.E2EConfig.
     
     Definition additional_contracts
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
-        : M (alloc.vec.Vec alloc.string.String) :=
+        : M (H := H) (alloc.vec.Vec alloc.string.String) :=
       self.["additional_contracts"].["clone"].
     
-    Global Instance Method_additional_contracts `{State.Trait} :
+    Global Instance Method_additional_contracts `{H : State.Trait} :
       Notation.Dot "additional_contracts" := {
       Notation.dot := additional_contracts;
     }.
     
     Definition environment
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
-        : M (core.option.Option syn.path.Path) :=
+        : M (H := H) (core.option.Option syn.path.Path) :=
       self.["environment"].["clone"].
     
-    Global Instance Method_environment `{State.Trait} :
+    Global Instance Method_environment `{H : State.Trait} :
       Notation.Dot "environment" := {
       Notation.dot := environment;
     }.
@@ -2203,10 +2209,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
   Definition Self := ink_e2e_macro.config.E2EConfig.
   
   Definition fmt
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field3_finish"]
       f
       "E2EConfig"
@@ -2217,12 +2223,12 @@ Module Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
       "environment"
       (addr_of (addr_of self.["environment"])).
   
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
 
@@ -2230,9 +2236,9 @@ Module Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
   Definition Self := ink_e2e_macro.config.E2EConfig.
   
   Definition default
-      `{State.Trait}
+      `{H : State.Trait}
       (_ : unit)
-      : M ink_e2e_macro.config.E2EConfig :=
+      : M (H := H) ink_e2e_macro.config.E2EConfig :=
     let* α0 := core.default.Default.default tt in
     let* α1 := core.default.Default.default tt in
     let* α2 := core.default.Default.default tt in
@@ -2243,13 +2249,13 @@ Module Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
         ink_e2e_macro.config.E2EConfig.environment := α2;
       |}.
   
-  Global Instance AssociatedFunction_default `{State.Trait} :
+  Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.
   
   Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{State.Trait} := default;
+    core.default.Default.default `{H : State.Trait} := default;
   }.
 End Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
 
@@ -2264,10 +2270,10 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
   Definition Self := ink_e2e_macro.config.E2EConfig.
   
   Definition eq
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (other : ref ink_e2e_macro.config.E2EConfig)
-      : M bool :=
+      : M (H := H) bool :=
     let* α0 :=
       self.["whitelisted_attributes"].["eq"] other.["whitelisted_attributes"] in
     let* α1 :=
@@ -2276,12 +2282,12 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
     let* α3 := self.["environment"].["eq"] other.["environment"] in
     α2.["andb"] α3.
   
-  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
+  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
   Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{State.Trait} := eq;
+    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
 
@@ -2296,15 +2302,15 @@ Module Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
   Definition Self := ink_e2e_macro.config.E2EConfig.
   
   Definition assert_receiver_is_total_eq
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M unit :=
+      : M (H := H) unit :=
     let _ := tt in
     let _ := tt in
     let _ := tt in
     Pure tt.
   
-  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
+  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
   }.
@@ -2319,9 +2325,9 @@ Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
   Definition Error : Set := syn.error.Error.
   
   Definition try_from
-      `{State.Trait}
+      `{H : State.Trait}
       (args : ink_ir.ast.attr_args.AttributeArgs)
-      : M (core.result.Result Self ImplSelf.Error) :=
+      : M (H := H) (core.result.Result Self ImplSelf.Error) :=
     let* whitelisted_attributes :=
       ink_ir.ir.utils.WhitelistedAttributes::["default"] tt in
     let additional_contracts := core.option.Option.None in
@@ -2461,7 +2467,7 @@ Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
           ink_e2e_macro.config.E2EConfig.environment := environment;
         |}).
   
-  Global Instance AssociatedFunction_try_from `{State.Trait} :
+  Global Instance AssociatedFunction_try_from `{H : State.Trait} :
     Notation.DoubleColon Self "try_from" := {
     Notation.double_colon := try_from;
   }.
@@ -2470,7 +2476,7 @@ Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
       core.convert.TryFrom.Trait
         Self
         (T := ink_ir.ast.attr_args.AttributeArgs) := {
-    core.convert.TryFrom.try_from `{State.Trait} := try_from;
+    core.convert.TryFrom.try_from `{H : State.Trait} := try_from;
   }.
 End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
 
@@ -2478,23 +2484,23 @@ Module Impl_ink_e2e_macro_config_E2EConfig_2.
   Definition Self := ink_e2e_macro.config.E2EConfig.
   
   Definition additional_contracts
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M (alloc.vec.Vec alloc.string.String) :=
+      : M (H := H) (alloc.vec.Vec alloc.string.String) :=
     self.["additional_contracts"].["clone"].
   
-  Global Instance Method_additional_contracts `{State.Trait} :
+  Global Instance Method_additional_contracts `{H : State.Trait} :
     Notation.Dot "additional_contracts" := {
     Notation.dot := additional_contracts;
   }.
   
   Definition environment
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M (core.option.Option syn.path.Path) :=
+      : M (H := H) (core.option.Option syn.path.Path) :=
     self.["environment"].["clone"].
   
-  Global Instance Method_environment `{State.Trait} :
+  Global Instance Method_environment `{H : State.Trait} :
     Notation.Dot "environment" := {
     Notation.dot := environment;
   }.
@@ -2531,18 +2537,18 @@ Module ir.
     Definition Self := ink_e2e_macro.ir.E2EFn.
     
     Definition from
-        `{State.Trait}
+        `{H : State.Trait}
         (original : syn.item.ItemFn)
-        : M ink_e2e_macro.ir.E2EFn :=
+        : M (H := H) ink_e2e_macro.ir.E2EFn :=
       Pure {| ink_e2e_macro.ir.E2EFn.item_fn := original; |}.
     
-    Global Instance AssociatedFunction_from `{State.Trait} :
+    Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
       Notation.double_colon := from;
     }.
     
     Global Instance I : core.convert.From.Trait Self (T := syn.item.ItemFn) := {
-      core.convert.From.from `{State.Trait} := from;
+      core.convert.From.from `{H : State.Trait} := from;
     }.
   End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
   
@@ -2550,10 +2556,10 @@ Module ir.
     Definition Self := ink_e2e_macro.ir.InkE2ETest.
     
     Definition new
-        `{State.Trait}
+        `{H : State.Trait}
         (attrs : proc_macro2.TokenStream)
         (input : proc_macro2.TokenStream)
-        : M (core.result.Result Self syn.error.Error) :=
+        : M (H := H) (core.result.Result Self syn.error.Error) :=
       let* config :=
         let* α0 := syn.parse2 attrs in
         let* α1 := LangItem α0 in
@@ -2586,7 +2592,7 @@ Module ir.
         (core.result.Result.Ok
           {| Self.item_fn := e2e_fn; Self.config := e2e_config; |}).
     
-    Global Instance AssociatedFunction_new `{State.Trait} :
+    Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
@@ -2623,18 +2629,18 @@ Module Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
   Definition Self := ink_e2e_macro.ir.E2EFn.
   
   Definition from
-      `{State.Trait}
+      `{H : State.Trait}
       (original : syn.item.ItemFn)
-      : M ink_e2e_macro.ir.E2EFn :=
+      : M (H := H) ink_e2e_macro.ir.E2EFn :=
     Pure {| ink_e2e_macro.ir.E2EFn.item_fn := original; |}.
   
-  Global Instance AssociatedFunction_from `{State.Trait} :
+  Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
   Global Instance I : core.convert.From.Trait Self (T := syn.item.ItemFn) := {
-    core.convert.From.from `{State.Trait} := from;
+    core.convert.From.from `{H : State.Trait} := from;
   }.
 End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
 
@@ -2642,10 +2648,10 @@ Module Impl_ink_e2e_macro_ir_InkE2ETest_2.
   Definition Self := ink_e2e_macro.ir.InkE2ETest.
   
   Definition new
-      `{State.Trait}
+      `{H : State.Trait}
       (attrs : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
-      : M (core.result.Result Self syn.error.Error) :=
+      : M (H := H) (core.result.Result Self syn.error.Error) :=
     let* config :=
       let* α0 := syn.parse2 attrs in
       let* α1 := LangItem α0 in
@@ -2678,27 +2684,27 @@ Module Impl_ink_e2e_macro_ir_InkE2ETest_2.
       (core.result.Result.Ok
         {| Self.item_fn := e2e_fn; Self.config := e2e_config; |}).
   
-  Global Instance AssociatedFunction_new `{State.Trait} :
+  Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
 End Impl_ink_e2e_macro_ir_InkE2ETest_2.
 
 Definition test
-    `{State.Trait}
+    `{H : State.Trait}
     (attr : proc_macro.TokenStream)
     (item : proc_macro.TokenStream)
-    : M proc_macro.TokenStream :=
+    : M (H := H) proc_macro.TokenStream :=
   let* α0 := attr.["into"] in
   let* α1 := item.["into"] in
   let* α2 := ink_e2e_macro.generate α0 α1 in
   α2.["into"].
 
 Definition generate
-    `{State.Trait}
+    `{H : State.Trait}
     (attr : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* α0 := ink_e2e_macro.generate_or_err attr input in
   match α0 with
   | core.result.Result.Ok tokens => Pure tokens
@@ -2706,10 +2712,10 @@ Definition generate
   end.
 
 Definition generate_or_err
-    `{State.Trait}
+    `{H : State.Trait}
     (attr : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
-    : M (syn.error.Result proc_macro2.TokenStream) :=
+    : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* test_definition :=
     let* α0 := ink_e2e_macro.ir.InkE2ETest::["new"] attr input in
     let* α1 := LangItem α0 in
@@ -2723,7 +2729,7 @@ Definition generate_or_err
   let* α0 := codegen.["generate_code"] in
   Pure (core.result.Result.Ok α0).
 
-Definition _DECLS `{State.Trait} : ref Slice :=
+Definition _DECLS `{H : State.Trait} : ref Slice :=
   run
     (let* α0 :=
       proc_macro.bridge.client.ProcMacro::["attr"] "test" ink_e2e_macro.test in

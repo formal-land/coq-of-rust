@@ -3,9 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module blake2b.
   Definition generate_blake2x256_hash
-      `{State.Trait}
+      `{H : State.Trait}
       (input : proc_macro2.TokenStream)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* α0 := ink_macro.blake2b.generate_blake2x256_hash_or_err input in
     match α0 with
     | core.result.Result.Ok tokens => Pure tokens
@@ -13,9 +13,9 @@ Module blake2b.
     end.
   
   Definition generate_blake2x256_hash_or_err
-      `{State.Trait}
+      `{H : State.Trait}
       (input : proc_macro2.TokenStream)
-      : M (syn.error.Result proc_macro2.TokenStream) :=
+      : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
     let* hash :=
       let* α0 := ink_ir.ir.blake2.Blake2x256Macro::["try_from"] input in
       let* α1 := LangItem α0 in
@@ -30,9 +30,9 @@ Module blake2b.
 End blake2b.
 
 Definition generate_blake2x256_hash
-    `{State.Trait}
+    `{H : State.Trait}
     (input : proc_macro2.TokenStream)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* α0 := ink_macro.blake2b.generate_blake2x256_hash_or_err input in
   match α0 with
   | core.result.Result.Ok tokens => Pure tokens
@@ -40,9 +40,9 @@ Definition generate_blake2x256_hash
   end.
 
 Definition generate_blake2x256_hash_or_err
-    `{State.Trait}
+    `{H : State.Trait}
     (input : proc_macro2.TokenStream)
-    : M (syn.error.Result proc_macro2.TokenStream) :=
+    : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* hash :=
     let* α0 := ink_ir.ir.blake2.Blake2x256Macro::["try_from"] input in
     let* α1 := LangItem α0 in
@@ -57,10 +57,10 @@ Definition generate_blake2x256_hash_or_err
 
 Module chain_extension.
   Definition generate
-      `{State.Trait}
+      `{H : State.Trait}
       (attr : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* α0 := ink_macro.chain_extension.generate_or_err attr input in
     match α0 with
     | core.result.Result.Ok tokens => Pure tokens
@@ -68,10 +68,10 @@ Module chain_extension.
     end.
   
   Definition generate_or_err
-      `{State.Trait}
+      `{H : State.Trait}
       (attr : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
-      : M (syn.error.Result proc_macro2.TokenStream) :=
+      : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
     let* chain_extension :=
       let* α0 := ink_ir.ir.chain_extension.ChainExtension::["new"] attr input in
       let* α1 := LangItem α0 in
@@ -86,10 +86,10 @@ Module chain_extension.
 End chain_extension.
 
 Definition generate
-    `{State.Trait}
+    `{H : State.Trait}
     (attr : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* α0 := ink_macro.chain_extension.generate_or_err attr input in
   match α0 with
   | core.result.Result.Ok tokens => Pure tokens
@@ -97,10 +97,10 @@ Definition generate
   end.
 
 Definition generate_or_err
-    `{State.Trait}
+    `{H : State.Trait}
     (attr : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
-    : M (syn.error.Result proc_macro2.TokenStream) :=
+    : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* chain_extension :=
     let* α0 := ink_ir.ir.chain_extension.ChainExtension::["new"] attr input in
     let* α1 := LangItem α0 in
@@ -115,10 +115,10 @@ Definition generate_or_err
 
 Module contract.
   Definition generate
-      `{State.Trait}
+      `{H : State.Trait}
       (attr : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* α0 := ink_macro.contract.generate_or_err attr input in
     match α0 with
     | core.result.Result.Ok tokens => Pure tokens
@@ -126,10 +126,10 @@ Module contract.
     end.
   
   Definition generate_or_err
-      `{State.Trait}
+      `{H : State.Trait}
       (attr : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
-      : M (syn.error.Result proc_macro2.TokenStream) :=
+      : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
     let* contract :=
       let* α0 := ink_ir.ir.contract.Contract::["new"] attr input in
       let* α1 := LangItem α0 in
@@ -144,10 +144,10 @@ Module contract.
 End contract.
 
 Definition generate
-    `{State.Trait}
+    `{H : State.Trait}
     (attr : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* α0 := ink_macro.contract.generate_or_err attr input in
   match α0 with
   | core.result.Result.Ok tokens => Pure tokens
@@ -155,10 +155,10 @@ Definition generate
   end.
 
 Definition generate_or_err
-    `{State.Trait}
+    `{H : State.Trait}
     (attr : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
-    : M (syn.error.Result proc_macro2.TokenStream) :=
+    : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* contract :=
     let* α0 := ink_ir.ir.contract.Contract::["new"] attr input in
     let* α1 := LangItem α0 in
@@ -173,10 +173,10 @@ Definition generate_or_err
 
 Module ink_test.
   Definition generate
-      `{State.Trait}
+      `{H : State.Trait}
       (attr : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* α0 := ink_macro.ink_test.generate_or_err attr input in
     match α0 with
     | core.result.Result.Ok tokens => Pure tokens
@@ -184,10 +184,10 @@ Module ink_test.
     end.
   
   Definition generate_or_err
-      `{State.Trait}
+      `{H : State.Trait}
       (attr : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
-      : M (syn.error.Result proc_macro2.TokenStream) :=
+      : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
     let* test_definition :=
       let* α0 := ink_ir.ir.ink_test.InkTest::["new"] attr input in
       let* α1 := LangItem α0 in
@@ -202,10 +202,10 @@ Module ink_test.
 End ink_test.
 
 Definition generate
-    `{State.Trait}
+    `{H : State.Trait}
     (attr : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* α0 := ink_macro.ink_test.generate_or_err attr input in
   match α0 with
   | core.result.Result.Ok tokens => Pure tokens
@@ -213,10 +213,10 @@ Definition generate
   end.
 
 Definition generate_or_err
-    `{State.Trait}
+    `{H : State.Trait}
     (attr : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
-    : M (syn.error.Result proc_macro2.TokenStream) :=
+    : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* test_definition :=
     let* α0 := ink_ir.ir.ink_test.InkTest::["new"] attr input in
     let* α1 := LangItem α0 in
@@ -231,9 +231,9 @@ Definition generate_or_err
 
 Module selector.
   Definition generate_selector_id
-      `{State.Trait}
+      `{H : State.Trait}
       (input : proc_macro2.TokenStream)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* α0 := ink_macro.selector.generate_selector_id_or_err input in
     match α0 with
     | core.result.Result.Ok tokens => Pure tokens
@@ -241,9 +241,9 @@ Module selector.
     end.
   
   Definition generate_selector_id_or_err
-      `{State.Trait}
+      `{H : State.Trait}
       (input : proc_macro2.TokenStream)
-      : M (syn.error.Result proc_macro2.TokenStream) :=
+      : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
     let* selector :=
       let* α0 :=
         (ink_ir.ir.selector.SelectorMacro
@@ -260,9 +260,9 @@ Module selector.
     Pure (core.result.Result.Ok α0).
   
   Definition generate_selector_bytes
-      `{State.Trait}
+      `{H : State.Trait}
       (input : proc_macro2.TokenStream)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* α0 := ink_macro.selector.generate_selector_bytes_or_err input in
     match α0 with
     | core.result.Result.Ok tokens => Pure tokens
@@ -270,9 +270,9 @@ Module selector.
     end.
   
   Definition generate_selector_bytes_or_err
-      `{State.Trait}
+      `{H : State.Trait}
       (input : proc_macro2.TokenStream)
-      : M (syn.error.Result proc_macro2.TokenStream) :=
+      : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
     let* selector :=
       let* α0 :=
         (ink_ir.ir.selector.SelectorMacro
@@ -290,9 +290,9 @@ Module selector.
 End selector.
 
 Definition generate_selector_id
-    `{State.Trait}
+    `{H : State.Trait}
     (input : proc_macro2.TokenStream)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* α0 := ink_macro.selector.generate_selector_id_or_err input in
   match α0 with
   | core.result.Result.Ok tokens => Pure tokens
@@ -300,9 +300,9 @@ Definition generate_selector_id
   end.
 
 Definition generate_selector_id_or_err
-    `{State.Trait}
+    `{H : State.Trait}
     (input : proc_macro2.TokenStream)
-    : M (syn.error.Result proc_macro2.TokenStream) :=
+    : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* selector :=
     let* α0 :=
       (ink_ir.ir.selector.SelectorMacro
@@ -319,9 +319,9 @@ Definition generate_selector_id_or_err
   Pure (core.result.Result.Ok α0).
 
 Definition generate_selector_bytes
-    `{State.Trait}
+    `{H : State.Trait}
     (input : proc_macro2.TokenStream)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* α0 := ink_macro.selector.generate_selector_bytes_or_err input in
   match α0 with
   | core.result.Result.Ok tokens => Pure tokens
@@ -329,9 +329,9 @@ Definition generate_selector_bytes
   end.
 
 Definition generate_selector_bytes_or_err
-    `{State.Trait}
+    `{H : State.Trait}
     (input : proc_macro2.TokenStream)
-    : M (syn.error.Result proc_macro2.TokenStream) :=
+    : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* selector :=
     let* α0 :=
       (ink_ir.ir.selector.SelectorMacro
@@ -350,9 +350,9 @@ Definition generate_selector_bytes_or_err
 Module storage.
   Module storable.
     Definition storable_struct_derive
-        `{State.Trait}
+        `{H : State.Trait}
         (s : ref synstructure.Structure)
-        : M proc_macro2.TokenStream :=
+        : M (H := H) proc_macro2.TokenStream :=
       let* _ :=
         let* α0 := s.["variants"] in
         let* α1 := α0.["len"] in
@@ -678,9 +678,9 @@ Module storage.
       s.["gen_impl"] _s.
     
     Definition storable_enum_derive
-        `{State.Trait}
+        `{H : State.Trait}
         (s : ref synstructure.Structure)
-        : M proc_macro2.TokenStream :=
+        : M (H := H) proc_macro2.TokenStream :=
       let* _ :=
         let* α0 := s.["variants"] in
         let* α1 := α0.["is_empty"] in
@@ -1233,9 +1233,9 @@ Module storage.
       s.["gen_impl"] _s.
     
     Definition storable_derive
-        `{State.Trait}
+        `{H : State.Trait}
         (s : synstructure.Structure)
-        : M proc_macro2.TokenStream :=
+        : M (H := H) proc_macro2.TokenStream :=
       let* _ :=
         let* α0 :=
           s.["bind_with"] (fun _ => Pure synstructure.BindStyle.Move) in
@@ -1257,9 +1257,9 @@ Module storage.
   
   Module storable_hint.
     Definition storable_hint_inner
-        `{State.Trait}
+        `{H : State.Trait}
         (s : synstructure.Structure)
-        : M proc_macro2.TokenStream :=
+        : M (H := H) proc_macro2.TokenStream :=
       let* ident :=
         let* α0 := s.["ast"] in
         α0.["ident"].["clone"] in
@@ -1481,9 +1481,9 @@ Module storage.
         Pure _s.
     
     Definition storable_hint_derive
-        `{State.Trait}
+        `{H : State.Trait}
         (s : synstructure.Structure)
-        : M proc_macro2.TokenStream :=
+        : M (H := H) proc_macro2.TokenStream :=
       let* derive := ink_macro.storage.storable_hint.storable_hint_inner s in
       let* _s := proc_macro2.TokenStream::["new"] tt in
       let* _ := quote.__private.push_ident (addr_of _s) "const" in
@@ -1510,9 +1510,9 @@ Module storage.
   
   Module storage_key.
     Definition storage_key_derive
-        `{State.Trait}
+        `{H : State.Trait}
         (s : synstructure.Structure)
-        : M proc_macro2.TokenStream :=
+        : M (H := H) proc_macro2.TokenStream :=
       let* _ :=
         let* α0 := s.["add_bounds"] synstructure.AddBounds.None in
         α0.["underscore_const"] true in
@@ -1582,9 +1582,9 @@ Module storage.
   
   Module storage_layout.
     Definition field_layout
-        `{State.Trait}
+        `{H : State.Trait}
         (variant : ref synstructure.VariantInfo)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       let* α0 := variant.["ast"] in
       let* α1 := α0.["fields"].["iter"] in
       let* α2 := α1.["enumerate"] in
@@ -1657,9 +1657,9 @@ Module storage.
           Pure _s).
     
     Definition storage_layout_struct
-        `{State.Trait}
+        `{H : State.Trait}
         (s : ref synstructure.Structure)
-        : M proc_macro2.TokenStream :=
+        : M (H := H) proc_macro2.TokenStream :=
       let* _ :=
         let* α0 := s.["ast"] in
         let* α1 :=
@@ -1831,9 +1831,9 @@ Module storage.
       s.["gen_impl"] _s.
     
     Definition storage_layout_enum
-        `{State.Trait}
+        `{H : State.Trait}
         (s : ref synstructure.Structure)
-        : M proc_macro2.TokenStream :=
+        : M (H := H) proc_macro2.TokenStream :=
       let* _ :=
         let* α0 := s.["ast"] in
         let* α1 :=
@@ -2156,9 +2156,9 @@ Module storage.
       s.["gen_impl"] _s.
     
     Definition storage_layout_derive
-        `{State.Trait}
+        `{H : State.Trait}
         (s : synstructure.Structure)
-        : M proc_macro2.TokenStream :=
+        : M (H := H) proc_macro2.TokenStream :=
       let* _ :=
         let* α0 :=
           s.["bind_with"] (fun _ => Pure synstructure.BindStyle.Move) in
@@ -2182,9 +2182,9 @@ End storage.
 
 Module storable.
   Definition storable_struct_derive
-      `{State.Trait}
+      `{H : State.Trait}
       (s : ref synstructure.Structure)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* _ :=
       let* α0 := s.["variants"] in
       let* α1 := α0.["len"] in
@@ -2494,9 +2494,9 @@ Module storable.
     s.["gen_impl"] _s.
   
   Definition storable_enum_derive
-      `{State.Trait}
+      `{H : State.Trait}
       (s : ref synstructure.Structure)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* _ :=
       let* α0 := s.["variants"] in
       let* α1 := α0.["is_empty"] in
@@ -3033,9 +3033,9 @@ Module storable.
     s.["gen_impl"] _s.
   
   Definition storable_derive
-      `{State.Trait}
+      `{H : State.Trait}
       (s : synstructure.Structure)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* _ :=
       let* α0 := s.["bind_with"] (fun _ => Pure synstructure.BindStyle.Move) in
       let* α1 := α0.["add_bounds"] synstructure.AddBounds.Fields in
@@ -3055,9 +3055,9 @@ Module storable.
 End storable.
 
 Definition storable_struct_derive
-    `{State.Trait}
+    `{H : State.Trait}
     (s : ref synstructure.Structure)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* _ :=
     let* α0 := s.["variants"] in
     let* α1 := α0.["len"] in
@@ -3356,9 +3356,9 @@ Definition storable_struct_derive
   s.["gen_impl"] _s.
 
 Definition storable_enum_derive
-    `{State.Trait}
+    `{H : State.Trait}
     (s : ref synstructure.Structure)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* _ :=
     let* α0 := s.["variants"] in
     let* α1 := α0.["is_empty"] in
@@ -3885,9 +3885,9 @@ Definition storable_enum_derive
   s.["gen_impl"] _s.
 
 Definition storable_derive
-    `{State.Trait}
+    `{H : State.Trait}
     (s : synstructure.Structure)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* _ :=
     let* α0 := s.["bind_with"] (fun _ => Pure synstructure.BindStyle.Move) in
     let* α1 := α0.["add_bounds"] synstructure.AddBounds.Fields in
@@ -3907,9 +3907,9 @@ Definition storable_derive
 
 Module storable_hint.
   Definition storable_hint_inner
-      `{State.Trait}
+      `{H : State.Trait}
       (s : synstructure.Structure)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* ident :=
       let* α0 := s.["ast"] in
       α0.["ident"].["clone"] in
@@ -4122,9 +4122,9 @@ Module storable_hint.
       Pure _s.
   
   Definition storable_hint_derive
-      `{State.Trait}
+      `{H : State.Trait}
       (s : synstructure.Structure)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* derive := ink_macro.storage.storable_hint.storable_hint_inner s in
     let* _s := proc_macro2.TokenStream::["new"] tt in
     let* _ := quote.__private.push_ident (addr_of _s) "const" in
@@ -4147,9 +4147,9 @@ Module storable_hint.
 End storable_hint.
 
 Definition storable_hint_inner
-    `{State.Trait}
+    `{H : State.Trait}
     (s : synstructure.Structure)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* ident :=
     let* α0 := s.["ast"] in
     α0.["ident"].["clone"] in
@@ -4346,9 +4346,9 @@ Definition storable_hint_inner
     Pure _s.
 
 Definition storable_hint_derive
-    `{State.Trait}
+    `{H : State.Trait}
     (s : synstructure.Structure)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* derive := ink_macro.storage.storable_hint.storable_hint_inner s in
   let* _s := proc_macro2.TokenStream::["new"] tt in
   let* _ := quote.__private.push_ident (addr_of _s) "const" in
@@ -4371,9 +4371,9 @@ Definition storable_hint_derive
 
 Module storage_key.
   Definition storage_key_derive
-      `{State.Trait}
+      `{H : State.Trait}
       (s : synstructure.Structure)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* _ :=
       let* α0 := s.["add_bounds"] synstructure.AddBounds.None in
       α0.["underscore_const"] true in
@@ -4439,9 +4439,9 @@ Module storage_key.
 End storage_key.
 
 Definition storage_key_derive
-    `{State.Trait}
+    `{H : State.Trait}
     (s : synstructure.Structure)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* _ :=
     let* α0 := s.["add_bounds"] synstructure.AddBounds.None in
     α0.["underscore_const"] true in
@@ -4506,9 +4506,9 @@ Definition storage_key_derive
 
 Module storage_layout.
   Definition field_layout
-      `{State.Trait}
+      `{H : State.Trait}
       (variant : ref synstructure.VariantInfo)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     let* α0 := variant.["ast"] in
     let* α1 := α0.["fields"].["iter"] in
     let* α2 := α1.["enumerate"] in
@@ -4579,9 +4579,9 @@ Module storage_layout.
         Pure _s).
   
   Definition storage_layout_struct
-      `{State.Trait}
+      `{H : State.Trait}
       (s : ref synstructure.Structure)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* _ :=
       let* α0 := s.["ast"] in
       let* α1 :=
@@ -4749,9 +4749,9 @@ Module storage_layout.
     s.["gen_impl"] _s.
   
   Definition storage_layout_enum
-      `{State.Trait}
+      `{H : State.Trait}
       (s : ref synstructure.Structure)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* _ :=
       let* α0 := s.["ast"] in
       let* α1 :=
@@ -5068,9 +5068,9 @@ Module storage_layout.
     s.["gen_impl"] _s.
   
   Definition storage_layout_derive
-      `{State.Trait}
+      `{H : State.Trait}
       (s : synstructure.Structure)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* _ :=
       let* α0 := s.["bind_with"] (fun _ => Pure synstructure.BindStyle.Move) in
       let* α1 := α0.["add_bounds"] synstructure.AddBounds.Fields in
@@ -5091,9 +5091,9 @@ Module storage_layout.
 End storage_layout.
 
 Definition field_layout
-    `{State.Trait}
+    `{H : State.Trait}
     (variant : ref synstructure.VariantInfo)
-    : M OpaqueDef :=
+    : M (H := H) OpaqueDef :=
   let* α0 := variant.["ast"] in
   let* α1 := α0.["fields"].["iter"] in
   let* α2 := α1.["enumerate"] in
@@ -5166,9 +5166,9 @@ Definition field_layout
 Error OpaqueTy.
 
 Definition storage_layout_struct
-    `{State.Trait}
+    `{H : State.Trait}
     (s : ref synstructure.Structure)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* _ :=
     let* α0 := s.["ast"] in
     let* α1 :=
@@ -5332,9 +5332,9 @@ Definition storage_layout_struct
   s.["gen_impl"] _s.
 
 Definition storage_layout_enum
-    `{State.Trait}
+    `{H : State.Trait}
     (s : ref synstructure.Structure)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* _ :=
     let* α0 := s.["ast"] in
     let* α1 :=
@@ -5646,9 +5646,9 @@ Definition storage_layout_enum
   s.["gen_impl"] _s.
 
 Definition storage_layout_derive
-    `{State.Trait}
+    `{H : State.Trait}
     (s : synstructure.Structure)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* _ :=
     let* α0 := s.["bind_with"] (fun _ => Pure synstructure.BindStyle.Move) in
     let* α1 := α0.["add_bounds"] synstructure.AddBounds.Fields in
@@ -5668,10 +5668,10 @@ Definition storage_layout_derive
 
 Module storage_item.
   Definition generate
-      `{State.Trait}
+      `{H : State.Trait}
       (config : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* α0 := ink_macro.storage_item.generate_or_err config input in
     match α0 with
     | core.result.Result.Ok tokens => Pure tokens
@@ -5679,10 +5679,10 @@ Module storage_item.
     end.
   
   Definition generate_or_err
-      `{State.Trait}
+      `{H : State.Trait}
       (config : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
-      : M (syn.error.Result proc_macro2.TokenStream) :=
+      : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
     let* storage_item :=
       let* α0 := ink_ir.ir.storage_item.StorageItem::["new"] config input in
       let* α1 := LangItem α0 in
@@ -5697,10 +5697,10 @@ Module storage_item.
 End storage_item.
 
 Definition generate
-    `{State.Trait}
+    `{H : State.Trait}
     (config : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* α0 := ink_macro.storage_item.generate_or_err config input in
   match α0 with
   | core.result.Result.Ok tokens => Pure tokens
@@ -5708,10 +5708,10 @@ Definition generate
   end.
 
 Definition generate_or_err
-    `{State.Trait}
+    `{H : State.Trait}
     (config : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
-    : M (syn.error.Result proc_macro2.TokenStream) :=
+    : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* storage_item :=
     let* α0 := ink_ir.ir.storage_item.StorageItem::["new"] config input in
     let* α1 := LangItem α0 in
@@ -5726,10 +5726,10 @@ Definition generate_or_err
 
 Module trait_def.
   Definition analyze
-      `{State.Trait}
+      `{H : State.Trait}
       (config : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
-      : M proc_macro2.TokenStream :=
+      : M (H := H) proc_macro2.TokenStream :=
     let* α0 := ink_macro.trait_def.analyze_or_err config input in
     match α0 with
     | core.result.Result.Ok tokens => Pure tokens
@@ -5737,10 +5737,10 @@ Module trait_def.
     end.
   
   Definition analyze_or_err
-      `{State.Trait}
+      `{H : State.Trait}
       (config : proc_macro2.TokenStream)
       (input : proc_macro2.TokenStream)
-      : M (syn.error.Result proc_macro2.TokenStream) :=
+      : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
     let* trait_definition :=
       let* α0 := ink_ir.ir.trait_def.InkTraitDefinition::["new"] config input in
       let* α1 := LangItem α0 in
@@ -5755,10 +5755,10 @@ Module trait_def.
 End trait_def.
 
 Definition analyze
-    `{State.Trait}
+    `{H : State.Trait}
     (config : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
-    : M proc_macro2.TokenStream :=
+    : M (H := H) proc_macro2.TokenStream :=
   let* α0 := ink_macro.trait_def.analyze_or_err config input in
   match α0 with
   | core.result.Result.Ok tokens => Pure tokens
@@ -5766,10 +5766,10 @@ Definition analyze
   end.
 
 Definition analyze_or_err
-    `{State.Trait}
+    `{H : State.Trait}
     (config : proc_macro2.TokenStream)
     (input : proc_macro2.TokenStream)
-    : M (syn.error.Result proc_macro2.TokenStream) :=
+    : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* trait_definition :=
     let* α0 := ink_ir.ir.trait_def.InkTraitDefinition::["new"] config input in
     let* α1 := LangItem α0 in
@@ -5783,83 +5783,83 @@ Definition analyze_or_err
   Pure (core.result.Result.Ok α0).
 
 Definition blake2x256
-    `{State.Trait}
+    `{H : State.Trait}
     (input : proc_macro.TokenStream)
-    : M proc_macro.TokenStream :=
+    : M (H := H) proc_macro.TokenStream :=
   let* α0 := input.["into"] in
   let* α1 := ink_macro.blake2b.generate_blake2x256_hash α0 in
   α1.["into"].
 
 Definition selector_id
-    `{State.Trait}
+    `{H : State.Trait}
     (input : proc_macro.TokenStream)
-    : M proc_macro.TokenStream :=
+    : M (H := H) proc_macro.TokenStream :=
   let* α0 := input.["into"] in
   let* α1 := ink_macro.selector.generate_selector_id α0 in
   α1.["into"].
 
 Definition selector_bytes
-    `{State.Trait}
+    `{H : State.Trait}
     (input : proc_macro.TokenStream)
-    : M proc_macro.TokenStream :=
+    : M (H := H) proc_macro.TokenStream :=
   let* α0 := input.["into"] in
   let* α1 := ink_macro.selector.generate_selector_bytes α0 in
   α1.["into"].
 
 Definition contract
-    `{State.Trait}
+    `{H : State.Trait}
     (attr : proc_macro.TokenStream)
     (item : proc_macro.TokenStream)
-    : M proc_macro.TokenStream :=
+    : M (H := H) proc_macro.TokenStream :=
   let* α0 := attr.["into"] in
   let* α1 := item.["into"] in
   let* α2 := ink_macro.contract.generate α0 α1 in
   α2.["into"].
 
 Definition trait_definition
-    `{State.Trait}
+    `{H : State.Trait}
     (attr : proc_macro.TokenStream)
     (item : proc_macro.TokenStream)
-    : M proc_macro.TokenStream :=
+    : M (H := H) proc_macro.TokenStream :=
   let* α0 := attr.["into"] in
   let* α1 := item.["into"] in
   let* α2 := ink_macro.trait_def.analyze α0 α1 in
   α2.["into"].
 
 Definition storage_item
-    `{State.Trait}
+    `{H : State.Trait}
     (attr : proc_macro.TokenStream)
     (item : proc_macro.TokenStream)
-    : M proc_macro.TokenStream :=
+    : M (H := H) proc_macro.TokenStream :=
   let* α0 := attr.["into"] in
   let* α1 := item.["into"] in
   let* α2 := ink_macro.storage_item.generate α0 α1 in
   α2.["into"].
 
 Definition test
-    `{State.Trait}
+    `{H : State.Trait}
     (attr : proc_macro.TokenStream)
     (item : proc_macro.TokenStream)
-    : M proc_macro.TokenStream :=
+    : M (H := H) proc_macro.TokenStream :=
   let* α0 := attr.["into"] in
   let* α1 := item.["into"] in
   let* α2 := ink_macro.ink_test.generate α0 α1 in
   α2.["into"].
 
 Definition chain_extension
-    `{State.Trait}
+    `{H : State.Trait}
     (attr : proc_macro.TokenStream)
     (item : proc_macro.TokenStream)
-    : M proc_macro.TokenStream :=
+    : M (H := H) proc_macro.TokenStream :=
   let* α0 := attr.["into"] in
   let* α1 := item.["into"] in
   let* α2 := ink_macro.chain_extension.generate α0 α1 in
   α2.["into"].
 
 Definition Storable
-    `{State.Trait}
+    `{H : State.Trait}
     (i : proc_macro.TokenStream)
-    : M proc_macro.TokenStream :=
+    : M (H := H) proc_macro.TokenStream :=
   let* α0 := syn.parse i in
   match α0 with
   | core.result.Result.Ok p =>
@@ -5878,9 +5878,9 @@ Definition Storable
   end.
 
 Definition StorableHint
-    `{State.Trait}
+    `{H : State.Trait}
     (i : proc_macro.TokenStream)
-    : M proc_macro.TokenStream :=
+    : M (H := H) proc_macro.TokenStream :=
   let* α0 := syn.parse i in
   match α0 with
   | core.result.Result.Ok p =>
@@ -5899,9 +5899,9 @@ Definition StorableHint
   end.
 
 Definition StorageKey
-    `{State.Trait}
+    `{H : State.Trait}
     (i : proc_macro.TokenStream)
-    : M proc_macro.TokenStream :=
+    : M (H := H) proc_macro.TokenStream :=
   let* α0 := syn.parse i in
   match α0 with
   | core.result.Result.Ok p =>
@@ -5920,9 +5920,9 @@ Definition StorageKey
   end.
 
 Definition StorageLayout
-    `{State.Trait}
+    `{H : State.Trait}
     (i : proc_macro.TokenStream)
-    : M proc_macro.TokenStream :=
+    : M (H := H) proc_macro.TokenStream :=
   let* α0 := syn.parse i in
   match α0 with
   | core.result.Result.Ok p =>
@@ -5940,7 +5940,7 @@ Definition StorageLayout
     core.convert.Into.into α0
   end.
 
-Definition _DECLS `{State.Trait} : ref Slice :=
+Definition _DECLS `{H : State.Trait} : ref Slice :=
   run
     (let* α0 :=
       proc_macro.bridge.client.ProcMacro::["bang"]

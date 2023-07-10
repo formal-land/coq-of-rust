@@ -25,7 +25,7 @@ Module erc20.
   
   Definition ChainExtension : Set := ink_env.types.Environment.ChainExtension.
   
-  Definition MAX_EVENT_TOPICS `{State.Trait} : usize :=
+  Definition MAX_EVENT_TOPICS `{H : State.Trait} : usize :=
     run (Pure ink_env.types.Environment.MAX_EVENT_TOPICS).
   
   Module Erc20.
@@ -50,7 +50,10 @@ Module erc20.
   Module Impl_core_default_Default_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
     
-    Definition default `{State.Trait} (_ : unit) : M erc20.erc20.Erc20 :=
+    Definition default
+        `{H : State.Trait}
+        (_ : unit)
+        : M (H := H) erc20.erc20.Erc20 :=
       let* α0 := core.default.Default.default tt in
       let* α1 := core.default.Default.default tt in
       let* α2 := core.default.Default.default tt in
@@ -61,13 +64,13 @@ Module erc20.
           erc20.erc20.Erc20.allowances := α2;
         |}.
     
-    Global Instance AssociatedFunction_default `{State.Trait} :
+    Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
       Notation.double_colon := default;
     }.
     
     Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{State.Trait} := default;
+      core.default.Default.default `{H : State.Trait} := default;
     }.
   End Impl_core_default_Default_for_erc20_erc20_Erc20.
   
@@ -149,7 +152,7 @@ Module erc20.
     Definition
       IS_RESULT := Pure ink.reflect.dispatch.ConstructorOutput.IS_RESULT.
     
-    Global Instance AssociatedFunction_IS_RESULT `{State.Trait} :
+    Global Instance AssociatedFunction_IS_RESULT `{H : State.Trait} :
       Notation.DoubleColon Self "IS_RESULT" := {
       Notation.double_colon := IS_RESULT;
     }.
@@ -158,28 +161,28 @@ Module erc20.
       CALLABLE := Pure
         (fun __ink_binding_0 => erc20.erc20.Erc20::["new"] __ink_binding_0).
     
-    Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+    Global Instance AssociatedFunction_CALLABLE `{H : State.Trait} :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
     Definition PAYABLE := Pure false.
     
-    Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+    Global Instance AssociatedFunction_PAYABLE `{H : State.Trait} :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
     Definition SELECTOR := Pure [ 155; 174; 157; 94 ].
     
-    Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+    Global Instance AssociatedFunction_SELECTOR `{H : State.Trait} :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
     Definition LABEL := Pure "new".
     
-    Global Instance AssociatedFunction_LABEL `{State.Trait} :
+    Global Instance AssociatedFunction_LABEL `{H : State.Trait} :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
@@ -187,23 +190,23 @@ Module erc20.
     Global Instance I :
         ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableConstructorInfo.IS_RESULT
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         IS_RESULT;
       ink.reflect.dispatch.DispatchableConstructorInfo.CALLABLE
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         CALLABLE;
       ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         PAYABLE;
       ink.reflect.dispatch.DispatchableConstructorInfo.SELECTOR
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         SELECTOR;
       ink.reflect.dispatch.DispatchableConstructorInfo.LABEL
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         LABEL;
     }.
@@ -224,35 +227,35 @@ Module erc20.
       CALLABLE := Pure
         (fun storage _ => erc20.erc20.Erc20::["total_supply"] storage).
     
-    Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+    Global Instance AssociatedFunction_CALLABLE `{H : State.Trait} :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
     Definition SELECTOR := Pure [ 219; 99; 117; 168 ].
     
-    Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+    Global Instance AssociatedFunction_SELECTOR `{H : State.Trait} :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
     Definition PAYABLE := Pure false.
     
-    Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+    Global Instance AssociatedFunction_PAYABLE `{H : State.Trait} :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
     Definition MUTATES := Pure false.
     
-    Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+    Global Instance AssociatedFunction_MUTATES `{H : State.Trait} :
       Notation.DoubleColon Self "MUTATES" := {
       Notation.double_colon := MUTATES;
     }.
     
     Definition LABEL := Pure "total_supply".
     
-    Global Instance AssociatedFunction_LABEL `{State.Trait} :
+    Global Instance AssociatedFunction_LABEL `{H : State.Trait} :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
@@ -260,23 +263,23 @@ Module erc20.
     Global Instance I :
         ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         CALLABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         SELECTOR;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         LABEL;
     }.
@@ -297,35 +300,35 @@ Module erc20.
         (fun storage __ink_binding_0 =>
           erc20.erc20.Erc20::["balance_of"] storage __ink_binding_0).
     
-    Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+    Global Instance AssociatedFunction_CALLABLE `{H : State.Trait} :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
     Definition SELECTOR := Pure [ 15; 117; 90; 86 ].
     
-    Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+    Global Instance AssociatedFunction_SELECTOR `{H : State.Trait} :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
     Definition PAYABLE := Pure false.
     
-    Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+    Global Instance AssociatedFunction_PAYABLE `{H : State.Trait} :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
     Definition MUTATES := Pure false.
     
-    Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+    Global Instance AssociatedFunction_MUTATES `{H : State.Trait} :
       Notation.DoubleColon Self "MUTATES" := {
       Notation.double_colon := MUTATES;
     }.
     
     Definition LABEL := Pure "balance_of".
     
-    Global Instance AssociatedFunction_LABEL `{State.Trait} :
+    Global Instance AssociatedFunction_LABEL `{H : State.Trait} :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
@@ -333,23 +336,23 @@ Module erc20.
     Global Instance I :
         ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         CALLABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         SELECTOR;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         LABEL;
     }.
@@ -373,35 +376,35 @@ Module erc20.
             __ink_binding_0
             __ink_binding_1).
     
-    Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+    Global Instance AssociatedFunction_CALLABLE `{H : State.Trait} :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
     Definition SELECTOR := Pure [ 106; 0; 22; 94 ].
     
-    Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+    Global Instance AssociatedFunction_SELECTOR `{H : State.Trait} :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
     Definition PAYABLE := Pure false.
     
-    Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+    Global Instance AssociatedFunction_PAYABLE `{H : State.Trait} :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
     Definition MUTATES := Pure false.
     
-    Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+    Global Instance AssociatedFunction_MUTATES `{H : State.Trait} :
       Notation.DoubleColon Self "MUTATES" := {
       Notation.double_colon := MUTATES;
     }.
     
     Definition LABEL := Pure "allowance".
     
-    Global Instance AssociatedFunction_LABEL `{State.Trait} :
+    Global Instance AssociatedFunction_LABEL `{H : State.Trait} :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
@@ -409,23 +412,23 @@ Module erc20.
     Global Instance I :
         ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         CALLABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         SELECTOR;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         LABEL;
     }.
@@ -449,35 +452,35 @@ Module erc20.
             __ink_binding_0
             __ink_binding_1).
     
-    Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+    Global Instance AssociatedFunction_CALLABLE `{H : State.Trait} :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
     Definition SELECTOR := Pure [ 132; 161; 93; 161 ].
     
-    Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+    Global Instance AssociatedFunction_SELECTOR `{H : State.Trait} :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
     Definition PAYABLE := Pure false.
     
-    Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+    Global Instance AssociatedFunction_PAYABLE `{H : State.Trait} :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
     Definition MUTATES := Pure true.
     
-    Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+    Global Instance AssociatedFunction_MUTATES `{H : State.Trait} :
       Notation.DoubleColon Self "MUTATES" := {
       Notation.double_colon := MUTATES;
     }.
     
     Definition LABEL := Pure "transfer".
     
-    Global Instance AssociatedFunction_LABEL `{State.Trait} :
+    Global Instance AssociatedFunction_LABEL `{H : State.Trait} :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
@@ -485,23 +488,23 @@ Module erc20.
     Global Instance I :
         ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         CALLABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         SELECTOR;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         LABEL;
     }.
@@ -525,35 +528,35 @@ Module erc20.
             __ink_binding_0
             __ink_binding_1).
     
-    Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+    Global Instance AssociatedFunction_CALLABLE `{H : State.Trait} :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
     Definition SELECTOR := Pure [ 104; 18; 102; 160 ].
     
-    Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+    Global Instance AssociatedFunction_SELECTOR `{H : State.Trait} :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
     Definition PAYABLE := Pure false.
     
-    Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+    Global Instance AssociatedFunction_PAYABLE `{H : State.Trait} :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
     Definition MUTATES := Pure true.
     
-    Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+    Global Instance AssociatedFunction_MUTATES `{H : State.Trait} :
       Notation.DoubleColon Self "MUTATES" := {
       Notation.double_colon := MUTATES;
     }.
     
     Definition LABEL := Pure "approve".
     
-    Global Instance AssociatedFunction_LABEL `{State.Trait} :
+    Global Instance AssociatedFunction_LABEL `{H : State.Trait} :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
@@ -561,23 +564,23 @@ Module erc20.
     Global Instance I :
         ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         CALLABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         SELECTOR;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         LABEL;
     }.
@@ -603,35 +606,35 @@ Module erc20.
             __ink_binding_1
             __ink_binding_2).
     
-    Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+    Global Instance AssociatedFunction_CALLABLE `{H : State.Trait} :
       Notation.DoubleColon Self "CALLABLE" := {
       Notation.double_colon := CALLABLE;
     }.
     
     Definition SELECTOR := Pure [ 11; 57; 111; 24 ].
     
-    Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+    Global Instance AssociatedFunction_SELECTOR `{H : State.Trait} :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
     Definition PAYABLE := Pure false.
     
-    Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+    Global Instance AssociatedFunction_PAYABLE `{H : State.Trait} :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
     Definition MUTATES := Pure true.
     
-    Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+    Global Instance AssociatedFunction_MUTATES `{H : State.Trait} :
       Notation.DoubleColon Self "MUTATES" := {
       Notation.double_colon := MUTATES;
     }.
     
     Definition LABEL := Pure "transfer_from".
     
-    Global Instance AssociatedFunction_LABEL `{State.Trait} :
+    Global Instance AssociatedFunction_LABEL `{H : State.Trait} :
       Notation.DoubleColon Self "LABEL" := {
       Notation.double_colon := LABEL;
     }.
@@ -639,23 +642,23 @@ Module erc20.
     Global Instance I :
         ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         CALLABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         SELECTOR;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         LABEL;
     }.
@@ -676,22 +679,22 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition fmt
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       core.fmt.Formatter::["debug_struct_field1_finish"]
         f
         "Erc20Ref"
         "inner"
         (addr_of (addr_of self.["inner"])).
     
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{State.Trait} := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
   
@@ -699,18 +702,18 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition hash
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
         (state : mut_ref __H)
-        : M unit :=
+        : M (H := H) unit :=
       core.hash.Hash.hash (addr_of self.["inner"]) state.
     
-    Global Instance Method_hash `{State.Trait} : Notation.Dot "hash" := {
+    Global Instance Method_hash `{H : State.Trait} : Notation.Dot "hash" := {
       Notation.dot := hash;
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash `{State.Trait} := hash;
+      core.hash.Hash.hash `{H : State.Trait} := hash;
     }.
   End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
   
@@ -725,18 +728,18 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition eq
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
         (other : ref erc20.erc20.Erc20Ref)
-        : M bool :=
+        : M (H := H) bool :=
       self.["inner"].["eq"] other.["inner"].
     
-    Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
+    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
     }.
     
     Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq `{State.Trait} := eq;
+      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
   
@@ -751,13 +754,13 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition assert_receiver_is_total_eq
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
-        : M unit :=
+        : M (H := H) unit :=
       let _ := tt in
       Pure tt.
     
-    Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
+    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
       Notation.dot := assert_receiver_is_total_eq;
     }.
@@ -770,18 +773,18 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition clone
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
-        : M erc20.erc20.Erc20Ref :=
+        : M (H := H) erc20.erc20.Erc20Ref :=
       let* α0 := core.clone.Clone.clone (addr_of self.["inner"]) in
       Pure {| erc20.erc20.Erc20Ref.inner := α0; |}.
     
-    Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
+    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
     }.
     
     Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{State.Trait} := clone;
+      core.clone.Clone.clone `{H : State.Trait} := clone;
     }.
   End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
   
@@ -789,10 +792,10 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition new
-        `{State.Trait}
+        `{H : State.Trait}
         (__ink_binding_0 : erc20.erc20.Balance)
         :
-          M
+          M (H := H)
             (ink_env.call.create_builder.CreateBuilder
               erc20.erc20.Environment
               Self
@@ -815,15 +818,15 @@ Module erc20.
       let* α4 := α0.["exec_input"] α3 in
       α4.["returns"].
     
-    Global Instance AssociatedFunction_new `{State.Trait} :
+    Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
     
     Definition total_supply
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
-        : M erc20.erc20.Balance :=
+        : M (H := H) erc20.erc20.Balance :=
       let* α0 := self.["try_total_supply"] in
       α0.["unwrap_or_else"]
         (fun error =>
@@ -835,15 +838,15 @@ Module erc20.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_total_supply `{State.Trait} :
+    Global Instance Method_total_supply `{H : State.Trait} :
       Notation.Dot "total_supply" := {
       Notation.dot := total_supply;
     }.
     
     Definition try_total_supply
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
-        : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+        : M (H := H) (ink_primitives.MessageResult erc20.erc20.Balance) :=
       let* α0 :=
         ink.codegen.trait_def.call_builder.TraitCallBuilder.call self in
       let* α1 := α0.["total_supply"] in
@@ -858,16 +861,16 @@ Module erc20.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_try_total_supply `{State.Trait} :
+    Global Instance Method_try_total_supply `{H : State.Trait} :
       Notation.Dot "try_total_supply" := {
       Notation.dot := try_total_supply;
     }.
     
     Definition balance_of
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
         (owner : erc20.erc20.AccountId)
-        : M erc20.erc20.Balance :=
+        : M (H := H) erc20.erc20.Balance :=
       let* α0 := self.["try_balance_of"] owner in
       α0.["unwrap_or_else"]
         (fun error =>
@@ -879,16 +882,16 @@ Module erc20.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_balance_of `{State.Trait} :
+    Global Instance Method_balance_of `{H : State.Trait} :
       Notation.Dot "balance_of" := {
       Notation.dot := balance_of;
     }.
     
     Definition try_balance_of
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
         (owner : erc20.erc20.AccountId)
-        : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+        : M (H := H) (ink_primitives.MessageResult erc20.erc20.Balance) :=
       let* α0 :=
         ink.codegen.trait_def.call_builder.TraitCallBuilder.call self in
       let* α1 := α0.["balance_of"] owner in
@@ -903,17 +906,17 @@ Module erc20.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_try_balance_of `{State.Trait} :
+    Global Instance Method_try_balance_of `{H : State.Trait} :
       Notation.Dot "try_balance_of" := {
       Notation.dot := try_balance_of;
     }.
     
     Definition allowance
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
         (owner : erc20.erc20.AccountId)
         (spender : erc20.erc20.AccountId)
-        : M erc20.erc20.Balance :=
+        : M (H := H) erc20.erc20.Balance :=
       let* α0 := self.["try_allowance"] owner spender in
       α0.["unwrap_or_else"]
         (fun error =>
@@ -924,17 +927,17 @@ Module erc20.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_allowance `{State.Trait} :
+    Global Instance Method_allowance `{H : State.Trait} :
       Notation.Dot "allowance" := {
       Notation.dot := allowance;
     }.
     
     Definition try_allowance
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
         (owner : erc20.erc20.AccountId)
         (spender : erc20.erc20.AccountId)
-        : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+        : M (H := H) (ink_primitives.MessageResult erc20.erc20.Balance) :=
       let* α0 :=
         ink.codegen.trait_def.call_builder.TraitCallBuilder.call self in
       let* α1 := α0.["allowance"] owner spender in
@@ -948,17 +951,17 @@ Module erc20.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_try_allowance `{State.Trait} :
+    Global Instance Method_try_allowance `{H : State.Trait} :
       Notation.Dot "try_allowance" := {
       Notation.dot := try_allowance;
     }.
     
     Definition transfer
-        `{State.Trait}
+        `{H : State.Trait}
         (self : mut_ref Self)
         (to : erc20.erc20.AccountId)
         (value : erc20.erc20.Balance)
-        : M (erc20.erc20.Result unit) :=
+        : M (H := H) (erc20.erc20.Result unit) :=
       let* α0 := self.["try_transfer"] to value in
       α0.["unwrap_or_else"]
         (fun error =>
@@ -969,17 +972,17 @@ Module erc20.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_transfer `{State.Trait} :
+    Global Instance Method_transfer `{H : State.Trait} :
       Notation.Dot "transfer" := {
       Notation.dot := transfer;
     }.
     
     Definition try_transfer
-        `{State.Trait}
+        `{H : State.Trait}
         (self : mut_ref Self)
         (to : erc20.erc20.AccountId)
         (value : erc20.erc20.Balance)
-        : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+        : M (H := H) (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
       let* α0 :=
         ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut self in
       let* α1 := α0.["transfer"] to value in
@@ -993,17 +996,17 @@ Module erc20.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_try_transfer `{State.Trait} :
+    Global Instance Method_try_transfer `{H : State.Trait} :
       Notation.Dot "try_transfer" := {
       Notation.dot := try_transfer;
     }.
     
     Definition approve
-        `{State.Trait}
+        `{H : State.Trait}
         (self : mut_ref Self)
         (spender : erc20.erc20.AccountId)
         (value : erc20.erc20.Balance)
-        : M (erc20.erc20.Result unit) :=
+        : M (H := H) (erc20.erc20.Result unit) :=
       let* α0 := self.["try_approve"] spender value in
       α0.["unwrap_or_else"]
         (fun error =>
@@ -1014,16 +1017,17 @@ Module erc20.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_approve `{State.Trait} : Notation.Dot "approve" := {
+    Global Instance Method_approve `{H : State.Trait} :
+      Notation.Dot "approve" := {
       Notation.dot := approve;
     }.
     
     Definition try_approve
-        `{State.Trait}
+        `{H : State.Trait}
         (self : mut_ref Self)
         (spender : erc20.erc20.AccountId)
         (value : erc20.erc20.Balance)
-        : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+        : M (H := H) (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
       let* α0 :=
         ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut self in
       let* α1 := α0.["approve"] spender value in
@@ -1037,18 +1041,18 @@ Module erc20.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_try_approve `{State.Trait} :
+    Global Instance Method_try_approve `{H : State.Trait} :
       Notation.Dot "try_approve" := {
       Notation.dot := try_approve;
     }.
     
     Definition transfer_from
-        `{State.Trait}
+        `{H : State.Trait}
         (self : mut_ref Self)
         (from : erc20.erc20.AccountId)
         (to : erc20.erc20.AccountId)
         (value : erc20.erc20.Balance)
-        : M (erc20.erc20.Result unit) :=
+        : M (H := H) (erc20.erc20.Result unit) :=
       let* α0 := self.["try_transfer_from"] from to value in
       α0.["unwrap_or_else"]
         (fun error =>
@@ -1060,18 +1064,18 @@ Module erc20.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_transfer_from `{State.Trait} :
+    Global Instance Method_transfer_from `{H : State.Trait} :
       Notation.Dot "transfer_from" := {
       Notation.dot := transfer_from;
     }.
     
     Definition try_transfer_from
-        `{State.Trait}
+        `{H : State.Trait}
         (self : mut_ref Self)
         (from : erc20.erc20.AccountId)
         (to : erc20.erc20.AccountId)
         (value : erc20.erc20.Balance)
-        : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+        : M (H := H) (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
       let* α0 :=
         ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut self in
       let* α1 := α0.["transfer_from"] from to value in
@@ -1086,7 +1090,7 @@ Module erc20.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_try_transfer_from `{State.Trait} :
+    Global Instance Method_try_transfer_from `{H : State.Trait} :
       Notation.Dot "try_transfer_from" := {
       Notation.dot := try_transfer_from;
     }.
@@ -1097,14 +1101,14 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition from_account_id
-        `{State.Trait}
+        `{H : State.Trait}
         (account_id : erc20.erc20.AccountId)
-        : M Self :=
+        : M (H := H) Self :=
       let* α0 :=
         ink_env.call.create_builder.FromAccountId.from_account_id account_id in
       Pure {| Self.inner := α0; |}.
     
-    Global Instance AssociatedFunction_from_account_id `{State.Trait} :
+    Global Instance AssociatedFunction_from_account_id `{H : State.Trait} :
       Notation.DoubleColon Self "from_account_id" := {
       Notation.double_colon := from_account_id;
     }.
@@ -1114,7 +1118,7 @@ Module erc20.
           Self
           (T := erc20.erc20.Environment) := {
       ink_env.call.create_builder.FromAccountId.from_account_id
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         from_account_id;
     }.
@@ -1124,12 +1128,12 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition to_account_id
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
-        : M erc20.erc20.AccountId :=
+        : M (H := H) erc20.erc20.AccountId :=
       ink.contract_ref.ToAccountId.to_account_id (addr_of self.["inner"]).
     
-    Global Instance Method_to_account_id `{State.Trait} :
+    Global Instance Method_to_account_id `{H : State.Trait} :
       Notation.Dot "to_account_id" := {
       Notation.dot := to_account_id;
     }.
@@ -1139,7 +1143,7 @@ Module erc20.
           Self
           (T := erc20.erc20.Environment) := {
       ink.contract_ref.ToAccountId.to_account_id
-        `{State.Trait}
+        `{H : State.Trait}
         :=
         to_account_id;
     }.
@@ -1149,18 +1153,19 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition as_ref
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
-        : M (ref erc20.erc20.AccountId) :=
+        : M (H := H) (ref erc20.erc20.AccountId) :=
       core.convert.AsRef.as_ref (addr_of self.["inner"]).
     
-    Global Instance Method_as_ref `{State.Trait} : Notation.Dot "as_ref" := {
+    Global Instance Method_as_ref `{H : State.Trait} :
+      Notation.Dot "as_ref" := {
       Notation.dot := as_ref;
     }.
     
     Global Instance I :
         core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
-      core.convert.AsRef.as_ref `{State.Trait} := as_ref;
+      core.convert.AsRef.as_ref `{H : State.Trait} := as_ref;
     }.
   End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
   
@@ -1168,18 +1173,19 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition as_mut
-        `{State.Trait}
+        `{H : State.Trait}
         (self : mut_ref Self)
-        : M (mut_ref erc20.erc20.AccountId) :=
+        : M (H := H) (mut_ref erc20.erc20.AccountId) :=
       core.convert.AsMut.as_mut (addr_of self.["inner"]).
     
-    Global Instance Method_as_mut `{State.Trait} : Notation.Dot "as_mut" := {
+    Global Instance Method_as_mut `{H : State.Trait} :
+      Notation.Dot "as_mut" := {
       Notation.dot := as_mut;
     }.
     
     Global Instance I :
         core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
-      core.convert.AsMut.as_mut `{State.Trait} := as_mut;
+      core.convert.AsMut.as_mut `{H : State.Trait} := as_mut;
     }.
   End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
   
@@ -1194,10 +1200,10 @@ Module erc20.
     Definition Self := erc20.erc20.Error.
     
     Definition fmt
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       let* α0 :=
         match self with
         | erc20.erc20.Error.InsufficientBalance => Pure "InsufficientBalance"
@@ -1206,12 +1212,12 @@ Module erc20.
         end in
       core.fmt.Formatter::["write_str"] f α0.
     
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{State.Trait} := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_erc20_erc20_Error.
   
@@ -1226,20 +1232,20 @@ Module erc20.
     Definition Self := erc20.erc20.Error.
     
     Definition eq
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
         (other : ref erc20.erc20.Error)
-        : M bool :=
+        : M (H := H) bool :=
       let* __self_tag := core.intrinsics.discriminant_value self in
       let* __arg1_tag := core.intrinsics.discriminant_value other in
       __self_tag.["eq"] __arg1_tag.
     
-    Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
+    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
     }.
     
     Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq `{State.Trait} := eq;
+      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
   
@@ -1254,12 +1260,12 @@ Module erc20.
     Definition Self := erc20.erc20.Error.
     
     Definition assert_receiver_is_total_eq
-        `{State.Trait}
+        `{H : State.Trait}
         (self : ref Self)
-        : M unit :=
+        : M (H := H) unit :=
       Pure tt.
     
-    Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
+    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
       Notation.dot := assert_receiver_is_total_eq;
     }.
@@ -1294,7 +1300,7 @@ Definition BlockNumber : Set := ink_env.types.Environment.BlockNumber.
 
 Definition ChainExtension : Set := ink_env.types.Environment.ChainExtension.
 
-Definition MAX_EVENT_TOPICS `{State.Trait} : usize :=
+Definition MAX_EVENT_TOPICS `{H : State.Trait} : usize :=
   run (Pure ink_env.types.Environment.MAX_EVENT_TOPICS).
 
 Module Check.
@@ -1370,13 +1376,13 @@ Module Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
   
   Definition KEY := Pure ink_storage_traits.storage.StorageKey.KEY.
   
-  Global Instance AssociatedFunction_KEY `{State.Trait} :
+  Global Instance AssociatedFunction_KEY `{H : State.Trait} :
     Notation.DoubleColon Self "KEY" := {
     Notation.double_colon := KEY;
   }.
   
   Global Instance I : ink_storage_traits.storage.StorageKey.Trait Self := {
-    ink_storage_traits.storage.StorageKey.KEY `{State.Trait} := KEY;
+    ink_storage_traits.storage.StorageKey.KEY `{H : State.Trait} := KEY;
   }.
 End Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
 
@@ -1384,9 +1390,9 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
   Definition decode
-      `{State.Trait}
+      `{H : State.Trait}
       (__input : mut_ref __ink_I)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := ink_storage_traits.storage.Storable.decode __input in
     let* α1 := LangItem α0 in
     let* α2 :=
@@ -1422,16 +1428,16 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
           erc20.erc20.Erc20.allowances := α8;
         |}).
   
-  Global Instance AssociatedFunction_decode `{State.Trait} :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Definition encode
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (__dest : mut_ref __ink_O)
-      : M unit :=
+      : M (H := H) unit :=
     match self with
     |
         {|
@@ -1452,13 +1458,13 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
       Pure tt
     end.
   
-  Global Instance Method_encode `{State.Trait} : Notation.Dot "encode" := {
+  Global Instance Method_encode `{H : State.Trait} : Notation.Dot "encode" := {
     Notation.dot := encode;
   }.
   
   Global Instance I : ink_storage_traits.storage.Storable.Trait Self := {
-    ink_storage_traits.storage.Storable.encode `{State.Trait} := encode;
-    ink_storage_traits.storage.Storable.decode `{State.Trait} := decode;
+    ink_storage_traits.storage.Storable.encode `{H : State.Trait} := encode;
+    ink_storage_traits.storage.Storable.decode `{H : State.Trait} := decode;
   }.
 End Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
 
@@ -1467,7 +1473,10 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{State.Trait} (_ : unit) : M scale_info.ty.Type :=
+  Definition type_info
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) scale_info.ty.Type :=
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Erc20" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
@@ -1515,13 +1524,13 @@ AutoStorableHint<::ink::storage::traits::ManualKey<639884519u32, ()
               ])) in
     α5.["composite"] α9.
   
-  Global Instance AssociatedFunction_type_info `{State.Trait} :
+  Global Instance AssociatedFunction_type_info `{H : State.Trait} :
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
   
   Global Instance I : scale_info.TypeInfo.Trait Self := {
-    scale_info.TypeInfo.type_info `{State.Trait} := type_info;
+    scale_info.TypeInfo.type_info `{H : State.Trait} := type_info;
   }.
 End Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
 
@@ -1529,9 +1538,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
   Definition layout
-      `{State.Trait}
+      `{H : State.Trait}
       (__key : ref ink_primitives.key.Key)
-      : M ink_metadata.layout.Layout :=
+      : M (H := H) ink_metadata.layout.Layout :=
     let* α0 := ink_storage_traits.layout.StorageLayout.layout __key in
     let* α1 := ink_metadata.layout.FieldLayout::["new"] "total_supply" α0 in
     let* α2 := ink_storage_traits.layout.StorageLayout.layout __key in
@@ -1542,20 +1551,23 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
       ink_metadata.layout.StructLayout::["new"] "Erc20" [ α1; α3; α5 ] in
     Pure (ink_metadata.layout.Layout.Struct α6).
   
-  Global Instance AssociatedFunction_layout `{State.Trait} :
+  Global Instance AssociatedFunction_layout `{H : State.Trait} :
     Notation.DoubleColon Self "layout" := {
     Notation.double_colon := layout;
   }.
   
   Global Instance I : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{State.Trait} := layout;
+    ink_storage_traits.layout.StorageLayout.layout `{H : State.Trait} := layout;
   }.
 End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
 
 Module Impl_core_default_Default_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
-  Definition default `{State.Trait} (_ : unit) : M erc20.erc20.Erc20 :=
+  Definition default
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) erc20.erc20.Erc20 :=
     let* α0 := core.default.Default.default tt in
     let* α1 := core.default.Default.default tt in
     let* α2 := core.default.Default.default tt in
@@ -1566,13 +1578,13 @@ Module Impl_core_default_Default_for_erc20_erc20_Erc20.
         erc20.erc20.Erc20.allowances := α2;
       |}.
   
-  Global Instance AssociatedFunction_default `{State.Trait} :
+  Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.
   
   Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{State.Trait} := default;
+    core.default.Default.default `{H : State.Trait} := default;
   }.
 End Impl_core_default_Default_for_erc20_erc20_Erc20.
 
@@ -1581,13 +1593,13 @@ Module Impl_ink_reflect_contract_ContractName_for_erc20_erc20_Erc20.
   
   Definition NAME := Pure "Erc20".
   
-  Global Instance AssociatedFunction_NAME `{State.Trait} :
+  Global Instance AssociatedFunction_NAME `{H : State.Trait} :
     Notation.DoubleColon Self "NAME" := {
     Notation.double_colon := NAME;
   }.
   
   Global Instance I : ink.reflect.contract.ContractName.Trait Self := {
-    ink.reflect.contract.ContractName.NAME `{State.Trait} := NAME;
+    ink.reflect.contract.ContractName.NAME `{H : State.Trait} := NAME;
   }.
 End Impl_ink_reflect_contract_ContractName_for_erc20_erc20_Erc20.
 
@@ -1597,15 +1609,18 @@ Module Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
   Definition EnvAccess : Set :=
     ink.env_access.EnvAccess ink_env.contract.ContractEnv.Env.
   
-  Definition env `{State.Trait} (self : Self) : M ImplSelf.EnvAccess :=
+  Definition env
+      `{H : State.Trait}
+      (self : Self)
+      : M (H := H) ImplSelf.EnvAccess :=
     core.default.Default.default tt.
   
-  Global Instance Method_env `{State.Trait} : Notation.Dot "env" := {
+  Global Instance Method_env `{H : State.Trait} : Notation.Dot "env" := {
     Notation.dot := env;
   }.
   
   Global Instance I : ink.codegen.env.Env.Trait Self := {
-    ink.codegen.env.Env.env `{State.Trait} := env;
+    ink.codegen.env.Env.env `{H : State.Trait} := env;
   }.
 End Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
 
@@ -1615,16 +1630,19 @@ Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
   Definition EnvAccess : Set :=
     ink.env_access.EnvAccess ink_env.contract.ContractEnv.Env.
   
-  Definition env `{State.Trait} (_ : unit) : M ImplSelf.EnvAccess :=
+  Definition env
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) ImplSelf.EnvAccess :=
     core.default.Default.default tt.
   
-  Global Instance AssociatedFunction_env `{State.Trait} :
+  Global Instance AssociatedFunction_env `{H : State.Trait} :
     Notation.DoubleColon Self "env" := {
     Notation.double_colon := env;
   }.
   
   Global Instance I : ink.codegen.env.StaticEnv.Trait Self := {
-    ink.codegen.env.StaticEnv.env `{State.Trait} := env;
+    ink.codegen.env.StaticEnv.env `{H : State.Trait} := env;
   }.
 End Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
 
@@ -1632,20 +1650,27 @@ Module
   Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
   Definition Self := ink.env_access.EnvAccess erc20.erc20.Environment.
   
-  Definition emit_event `{State.Trait} (self : Self) (event : E) : M unit :=
+  Definition emit_event
+      `{H : State.Trait}
+      (self : Self)
+      (event : E)
+      : M (H := H) unit :=
     let* _ :=
       let* α0 := event.["into"] in
       ink_env.api.emit_event α0 in
     Pure tt.
   
-  Global Instance Method_emit_event `{State.Trait} :
+  Global Instance Method_emit_event `{H : State.Trait} :
     Notation.Dot "emit_event" := {
     Notation.dot := emit_event;
   }.
   
   Global Instance I :
       ink.codegen.event.emit.EmitEvent.Trait Self (C := erc20.erc20.Erc20) := {
-    ink.codegen.event.emit.EmitEvent.emit_event `{State.Trait} := emit_event;
+    ink.codegen.event.emit.EmitEvent.emit_event
+      `{H : State.Trait}
+      :=
+      emit_event;
   }.
 End
   Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
@@ -1661,10 +1686,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
   
   Definition encode_to
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* α0 := self.["deref"] in
     match α0 with
     | erc20.erc20.__ink_EventBase.Transfer aa =>
@@ -1682,7 +1707,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
     | _ => Pure tt
     end.
   
-  Global Instance Method_encode_to `{State.Trait} :
+  Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
@@ -1704,9 +1729,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
   
   Definition decode
-      `{State.Trait}
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := __codec_input_edqy.["read_byte"] in
     let* α1 :=
       α0.["map_err"]
@@ -1779,13 +1804,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
       Pure tt
     end.
   
-  Global Instance AssociatedFunction_decode `{State.Trait} :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
 
@@ -1801,34 +1826,40 @@ End Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
 Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
   
-  Definition from `{State.Trait} (event : erc20.erc20.Transfer) : M Self :=
+  Definition from
+      `{H : State.Trait}
+      (event : erc20.erc20.Transfer)
+      : M (H := H) Self :=
     Self::["Transfer"] event.
   
-  Global Instance AssociatedFunction_from `{State.Trait} :
+  Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
   Global Instance I :
       core.convert.From.Trait Self (T := erc20.erc20.Transfer) := {
-    core.convert.From.from `{State.Trait} := from;
+    core.convert.From.from `{H : State.Trait} := from;
   }.
 End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
 
 Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
   
-  Definition from `{State.Trait} (event : erc20.erc20.Approval) : M Self :=
+  Definition from
+      `{H : State.Trait}
+      (event : erc20.erc20.Approval)
+      : M (H := H) Self :=
     Self::["Approval"] event.
   
-  Global Instance AssociatedFunction_from `{State.Trait} :
+  Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
   Global Instance I :
       core.convert.From.Trait Self (T := erc20.erc20.Approval) := {
-    core.convert.From.from `{State.Trait} := from;
+    core.convert.From.from `{H : State.Trait} := from;
   }.
 End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
 
@@ -1844,13 +1875,13 @@ Module
   
   Definition AMOUNT := Pure 0.
   
-  Global Instance AssociatedFunction_AMOUNT `{State.Trait} :
+  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
     Notation.DoubleColon Self "AMOUNT" := {
     Notation.double_colon := AMOUNT;
   }.
   
   Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{State.Trait} := AMOUNT;
+    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
   }.
 End
   Impl_ink_env_topics_EventTopicsAmount_for_erc20_erc20_____ink_UndefinedAmountOfTopics.
@@ -1862,10 +1893,10 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
     erc20.erc20._.__ink_UndefinedAmountOfTopics.
   
   Definition topics
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
-      : M ink_env.topics.TopicsBuilderBackend.Output :=
+      : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
     match self with
     | ImplSelf.Transfer.Build_t event =>
       ink_env.topics.Topics.topics event builder
@@ -1877,12 +1908,12 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
       core.panicking.panic_fmt α0
     end.
   
-  Global Instance Method_topics `{State.Trait} : Notation.Dot "topics" := {
+  Global Instance Method_topics `{H : State.Trait} : Notation.Dot "topics" := {
     Notation.dot := topics;
   }.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
-    ink_env.topics.Topics.topics `{State.Trait} := topics;
+    ink_env.topics.Topics.topics `{H : State.Trait} := topics;
   }.
 End Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
 
@@ -1927,10 +1958,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
   Definition Self := erc20.erc20.Transfer.
   
   Definition encode_to
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* _ :=
       parity_scale_codec.codec.Encode.encode_to
         (addr_of self.["from"])
@@ -1945,7 +1976,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to `{State.Trait} :
+  Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
@@ -1965,9 +1996,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
   Definition Self := erc20.erc20.Transfer.
   
   Definition decode
-      `{State.Trait}
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
       parity_scale_codec.codec.Decode.decode __codec_input_edqy in
     let* α0 :=
@@ -2003,13 +2034,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
           erc20.erc20.Transfer.value := α2;
         |}).
   
-  Global Instance AssociatedFunction_decode `{State.Trait} :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
 
@@ -2036,10 +2067,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
   Definition Self := erc20.erc20.Approval.
   
   Definition encode_to
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* _ :=
       parity_scale_codec.codec.Encode.encode_to
         (addr_of self.["owner"])
@@ -2054,7 +2085,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to `{State.Trait} :
+  Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
@@ -2074,9 +2105,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
   Definition Self := erc20.erc20.Approval.
   
   Definition decode
-      `{State.Trait}
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
       parity_scale_codec.codec.Decode.decode __codec_input_edqy in
     let* α0 :=
@@ -2112,13 +2143,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
           erc20.erc20.Approval.value := α2;
         |}).
   
-  Global Instance AssociatedFunction_decode `{State.Trait} :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
 
@@ -2129,10 +2160,10 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
     list ink_env.topics.state.HasRemainingTopics.
   
   Definition topics
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
-      : M ink_env.topics.TopicsBuilderBackend.Output :=
+      : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
     let* α0 := builder.["build"] in
     let* α1 :=
       α0.["push_topic"]
@@ -2160,12 +2191,12 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
           |}) in
     α3.["finish"].
   
-  Global Instance Method_topics `{State.Trait} : Notation.Dot "topics" := {
+  Global Instance Method_topics `{H : State.Trait} : Notation.Dot "topics" := {
     Notation.dot := topics;
   }.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
-    ink_env.topics.Topics.topics `{State.Trait} := topics;
+    ink_env.topics.Topics.topics `{H : State.Trait} := topics;
   }.
 End Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
 
@@ -2176,10 +2207,10 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
     list ink_env.topics.state.HasRemainingTopics.
   
   Definition topics
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
-      : M ink_env.topics.TopicsBuilderBackend.Output :=
+      : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
     let* α0 := builder.["build"] in
     let* α1 :=
       α0.["push_topic"]
@@ -2207,12 +2238,12 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
           |}) in
     α3.["finish"].
   
-  Global Instance Method_topics `{State.Trait} : Notation.Dot "topics" := {
+  Global Instance Method_topics `{H : State.Trait} : Notation.Dot "topics" := {
     Notation.dot := topics;
   }.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
-    ink_env.topics.Topics.topics `{State.Trait} := topics;
+    ink_env.topics.Topics.topics `{H : State.Trait} := topics;
   }.
 End Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
 
@@ -2230,7 +2261,7 @@ Module
   
   Definition IS_RESULT := Pure ink.reflect.dispatch.ConstructorOutput.IS_RESULT.
   
-  Global Instance AssociatedFunction_IS_RESULT `{State.Trait} :
+  Global Instance AssociatedFunction_IS_RESULT `{H : State.Trait} :
     Notation.DoubleColon Self "IS_RESULT" := {
     Notation.double_colon := IS_RESULT;
   }.
@@ -2239,28 +2270,28 @@ Module
     CALLABLE := Pure
       (fun __ink_binding_0 => erc20.erc20.Erc20::["new"] __ink_binding_0).
   
-  Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+  Global Instance AssociatedFunction_CALLABLE `{H : State.Trait} :
     Notation.DoubleColon Self "CALLABLE" := {
     Notation.double_colon := CALLABLE;
   }.
   
   Definition PAYABLE := Pure false.
   
-  Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+  Global Instance AssociatedFunction_PAYABLE `{H : State.Trait} :
     Notation.DoubleColon Self "PAYABLE" := {
     Notation.double_colon := PAYABLE;
   }.
   
   Definition SELECTOR := Pure [ 155; 174; 157; 94 ].
   
-  Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+  Global Instance AssociatedFunction_SELECTOR `{H : State.Trait} :
     Notation.DoubleColon Self "SELECTOR" := {
     Notation.double_colon := SELECTOR;
   }.
   
   Definition LABEL := Pure "new".
   
-  Global Instance AssociatedFunction_LABEL `{State.Trait} :
+  Global Instance AssociatedFunction_LABEL `{H : State.Trait} :
     Notation.DoubleColon Self "LABEL" := {
     Notation.double_colon := LABEL;
   }.
@@ -2268,23 +2299,23 @@ Module
   Global Instance I :
       ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableConstructorInfo.IS_RESULT
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       IS_RESULT;
     ink.reflect.dispatch.DispatchableConstructorInfo.CALLABLE
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       CALLABLE;
     ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       PAYABLE;
     ink.reflect.dispatch.DispatchableConstructorInfo.SELECTOR
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       SELECTOR;
     ink.reflect.dispatch.DispatchableConstructorInfo.LABEL
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       LABEL;
   }.
@@ -2303,35 +2334,35 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     CALLABLE := Pure
       (fun storage _ => erc20.erc20.Erc20::["total_supply"] storage).
   
-  Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+  Global Instance AssociatedFunction_CALLABLE `{H : State.Trait} :
     Notation.DoubleColon Self "CALLABLE" := {
     Notation.double_colon := CALLABLE;
   }.
   
   Definition SELECTOR := Pure [ 219; 99; 117; 168 ].
   
-  Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+  Global Instance AssociatedFunction_SELECTOR `{H : State.Trait} :
     Notation.DoubleColon Self "SELECTOR" := {
     Notation.double_colon := SELECTOR;
   }.
   
   Definition PAYABLE := Pure false.
   
-  Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+  Global Instance AssociatedFunction_PAYABLE `{H : State.Trait} :
     Notation.DoubleColon Self "PAYABLE" := {
     Notation.double_colon := PAYABLE;
   }.
   
   Definition MUTATES := Pure false.
   
-  Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+  Global Instance AssociatedFunction_MUTATES `{H : State.Trait} :
     Notation.DoubleColon Self "MUTATES" := {
     Notation.double_colon := MUTATES;
   }.
   
   Definition LABEL := Pure "total_supply".
   
-  Global Instance AssociatedFunction_LABEL `{State.Trait} :
+  Global Instance AssociatedFunction_LABEL `{H : State.Trait} :
     Notation.DoubleColon Self "LABEL" := {
     Notation.double_colon := LABEL;
   }.
@@ -2339,22 +2370,25 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Global Instance I :
       ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       CALLABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{State.Trait} := LABEL;
+    ink.reflect.dispatch.DispatchableMessageInfo.LABEL
+      `{H : State.Trait}
+      :=
+      LABEL;
   }.
 End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
 
@@ -2372,35 +2406,35 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       (fun storage __ink_binding_0 =>
         erc20.erc20.Erc20::["balance_of"] storage __ink_binding_0).
   
-  Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+  Global Instance AssociatedFunction_CALLABLE `{H : State.Trait} :
     Notation.DoubleColon Self "CALLABLE" := {
     Notation.double_colon := CALLABLE;
   }.
   
   Definition SELECTOR := Pure [ 15; 117; 90; 86 ].
   
-  Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+  Global Instance AssociatedFunction_SELECTOR `{H : State.Trait} :
     Notation.DoubleColon Self "SELECTOR" := {
     Notation.double_colon := SELECTOR;
   }.
   
   Definition PAYABLE := Pure false.
   
-  Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+  Global Instance AssociatedFunction_PAYABLE `{H : State.Trait} :
     Notation.DoubleColon Self "PAYABLE" := {
     Notation.double_colon := PAYABLE;
   }.
   
   Definition MUTATES := Pure false.
   
-  Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+  Global Instance AssociatedFunction_MUTATES `{H : State.Trait} :
     Notation.DoubleColon Self "MUTATES" := {
     Notation.double_colon := MUTATES;
   }.
   
   Definition LABEL := Pure "balance_of".
   
-  Global Instance AssociatedFunction_LABEL `{State.Trait} :
+  Global Instance AssociatedFunction_LABEL `{H : State.Trait} :
     Notation.DoubleColon Self "LABEL" := {
     Notation.double_colon := LABEL;
   }.
@@ -2408,22 +2442,25 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Global Instance I :
       ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       CALLABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{State.Trait} := LABEL;
+    ink.reflect.dispatch.DispatchableMessageInfo.LABEL
+      `{H : State.Trait}
+      :=
+      LABEL;
   }.
 End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
 
@@ -2444,35 +2481,35 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
           __ink_binding_0
           __ink_binding_1).
   
-  Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+  Global Instance AssociatedFunction_CALLABLE `{H : State.Trait} :
     Notation.DoubleColon Self "CALLABLE" := {
     Notation.double_colon := CALLABLE;
   }.
   
   Definition SELECTOR := Pure [ 106; 0; 22; 94 ].
   
-  Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+  Global Instance AssociatedFunction_SELECTOR `{H : State.Trait} :
     Notation.DoubleColon Self "SELECTOR" := {
     Notation.double_colon := SELECTOR;
   }.
   
   Definition PAYABLE := Pure false.
   
-  Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+  Global Instance AssociatedFunction_PAYABLE `{H : State.Trait} :
     Notation.DoubleColon Self "PAYABLE" := {
     Notation.double_colon := PAYABLE;
   }.
   
   Definition MUTATES := Pure false.
   
-  Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+  Global Instance AssociatedFunction_MUTATES `{H : State.Trait} :
     Notation.DoubleColon Self "MUTATES" := {
     Notation.double_colon := MUTATES;
   }.
   
   Definition LABEL := Pure "allowance".
   
-  Global Instance AssociatedFunction_LABEL `{State.Trait} :
+  Global Instance AssociatedFunction_LABEL `{H : State.Trait} :
     Notation.DoubleColon Self "LABEL" := {
     Notation.double_colon := LABEL;
   }.
@@ -2480,22 +2517,25 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Global Instance I :
       ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       CALLABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{State.Trait} := LABEL;
+    ink.reflect.dispatch.DispatchableMessageInfo.LABEL
+      `{H : State.Trait}
+      :=
+      LABEL;
   }.
 End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
 
@@ -2516,35 +2556,35 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
           __ink_binding_0
           __ink_binding_1).
   
-  Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+  Global Instance AssociatedFunction_CALLABLE `{H : State.Trait} :
     Notation.DoubleColon Self "CALLABLE" := {
     Notation.double_colon := CALLABLE;
   }.
   
   Definition SELECTOR := Pure [ 132; 161; 93; 161 ].
   
-  Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+  Global Instance AssociatedFunction_SELECTOR `{H : State.Trait} :
     Notation.DoubleColon Self "SELECTOR" := {
     Notation.double_colon := SELECTOR;
   }.
   
   Definition PAYABLE := Pure false.
   
-  Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+  Global Instance AssociatedFunction_PAYABLE `{H : State.Trait} :
     Notation.DoubleColon Self "PAYABLE" := {
     Notation.double_colon := PAYABLE;
   }.
   
   Definition MUTATES := Pure true.
   
-  Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+  Global Instance AssociatedFunction_MUTATES `{H : State.Trait} :
     Notation.DoubleColon Self "MUTATES" := {
     Notation.double_colon := MUTATES;
   }.
   
   Definition LABEL := Pure "transfer".
   
-  Global Instance AssociatedFunction_LABEL `{State.Trait} :
+  Global Instance AssociatedFunction_LABEL `{H : State.Trait} :
     Notation.DoubleColon Self "LABEL" := {
     Notation.double_colon := LABEL;
   }.
@@ -2552,22 +2592,25 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Global Instance I :
       ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       CALLABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{State.Trait} := LABEL;
+    ink.reflect.dispatch.DispatchableMessageInfo.LABEL
+      `{H : State.Trait}
+      :=
+      LABEL;
   }.
 End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
 
@@ -2585,35 +2628,35 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
       (fun storage (__ink_binding_0, __ink_binding_1) =>
         erc20.erc20.Erc20::["approve"] storage __ink_binding_0 __ink_binding_1).
   
-  Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+  Global Instance AssociatedFunction_CALLABLE `{H : State.Trait} :
     Notation.DoubleColon Self "CALLABLE" := {
     Notation.double_colon := CALLABLE;
   }.
   
   Definition SELECTOR := Pure [ 104; 18; 102; 160 ].
   
-  Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+  Global Instance AssociatedFunction_SELECTOR `{H : State.Trait} :
     Notation.DoubleColon Self "SELECTOR" := {
     Notation.double_colon := SELECTOR;
   }.
   
   Definition PAYABLE := Pure false.
   
-  Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+  Global Instance AssociatedFunction_PAYABLE `{H : State.Trait} :
     Notation.DoubleColon Self "PAYABLE" := {
     Notation.double_colon := PAYABLE;
   }.
   
   Definition MUTATES := Pure true.
   
-  Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+  Global Instance AssociatedFunction_MUTATES `{H : State.Trait} :
     Notation.DoubleColon Self "MUTATES" := {
     Notation.double_colon := MUTATES;
   }.
   
   Definition LABEL := Pure "approve".
   
-  Global Instance AssociatedFunction_LABEL `{State.Trait} :
+  Global Instance AssociatedFunction_LABEL `{H : State.Trait} :
     Notation.DoubleColon Self "LABEL" := {
     Notation.double_colon := LABEL;
   }.
@@ -2621,22 +2664,25 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Global Instance I :
       ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       CALLABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{State.Trait} := LABEL;
+    ink.reflect.dispatch.DispatchableMessageInfo.LABEL
+      `{H : State.Trait}
+      :=
+      LABEL;
   }.
 End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
 
@@ -2659,35 +2705,35 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
           __ink_binding_1
           __ink_binding_2).
   
-  Global Instance AssociatedFunction_CALLABLE `{State.Trait} :
+  Global Instance AssociatedFunction_CALLABLE `{H : State.Trait} :
     Notation.DoubleColon Self "CALLABLE" := {
     Notation.double_colon := CALLABLE;
   }.
   
   Definition SELECTOR := Pure [ 11; 57; 111; 24 ].
   
-  Global Instance AssociatedFunction_SELECTOR `{State.Trait} :
+  Global Instance AssociatedFunction_SELECTOR `{H : State.Trait} :
     Notation.DoubleColon Self "SELECTOR" := {
     Notation.double_colon := SELECTOR;
   }.
   
   Definition PAYABLE := Pure false.
   
-  Global Instance AssociatedFunction_PAYABLE `{State.Trait} :
+  Global Instance AssociatedFunction_PAYABLE `{H : State.Trait} :
     Notation.DoubleColon Self "PAYABLE" := {
     Notation.double_colon := PAYABLE;
   }.
   
   Definition MUTATES := Pure true.
   
-  Global Instance AssociatedFunction_MUTATES `{State.Trait} :
+  Global Instance AssociatedFunction_MUTATES `{H : State.Trait} :
     Notation.DoubleColon Self "MUTATES" := {
     Notation.double_colon := MUTATES;
   }.
   
   Definition LABEL := Pure "transfer_from".
   
-  Global Instance AssociatedFunction_LABEL `{State.Trait} :
+  Global Instance AssociatedFunction_LABEL `{H : State.Trait} :
     Notation.DoubleColon Self "LABEL" := {
     Notation.double_colon := LABEL;
   }.
@@ -2695,22 +2741,25 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Global Instance I :
       ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       CALLABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{State.Trait} := LABEL;
+    ink.reflect.dispatch.DispatchableMessageInfo.LABEL
+      `{H : State.Trait}
+      :=
+      LABEL;
   }.
 End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
 
@@ -2725,9 +2774,11 @@ Module
   Definition Self := erc20.erc20._.__ink_ConstructorDecoder.
   
   Definition decode_dispatch
-      `{State.Trait}
+      `{H : State.Trait}
       (input : mut_ref I)
-      : M (core.result.Result Self ink.reflect.dispatch.DispatchError) :=
+      :
+        M (H := H)
+          (core.result.Result Self ink.reflect.dispatch.DispatchError) :=
     let* α0 := parity_scale_codec.codec.Decode.decode input in
     let* α1 :=
       α0.["map_err"]
@@ -2763,21 +2814,21 @@ Module
           ink.reflect.dispatch.DispatchError.UnknownSelector)
     end.
   
-  Global Instance AssociatedFunction_decode_dispatch `{State.Trait} :
+  Global Instance AssociatedFunction_decode_dispatch `{H : State.Trait} :
     Notation.DoubleColon Self "decode_dispatch" := {
     Notation.double_colon := decode_dispatch;
   }.
   
   Global Instance I : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
     ink.reflect.dispatch.DecodeDispatch.decode_dispatch
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       decode_dispatch;
   }.
 End
   Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
 
-Definition CONSTRUCTOR_0 `{State.Trait} : list Root.core.primitive.u8 :=
+Definition CONSTRUCTOR_0 `{H : State.Trait} : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableConstructorInfo.SELECTOR).
 
 Module
@@ -2785,19 +2836,19 @@ Module
   Definition Self := erc20.erc20._.__ink_ConstructorDecoder.
   
   Definition decode
-      `{State.Trait}
+      `{H : State.Trait}
       (input : mut_ref I)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := ink.reflect.dispatch.DecodeDispatch.decode_dispatch input in
     α0.["map_err"] core.convert.Into.into.
   
-  Global Instance AssociatedFunction_decode `{State.Trait} :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End
   Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_ConstructorDecoder.
@@ -2807,9 +2858,11 @@ Module
   Definition Self := erc20.erc20._.__ink_ConstructorDecoder.
   
   Definition execute_dispatchable
-      `{State.Trait}
+      `{H : State.Trait}
       (self : Self)
-      : M (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
+      :
+        M (H := H)
+          (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
     match self with
     | ImplSelf.Constructor0.Build_t input =>
       let* _ :=
@@ -2860,14 +2913,14 @@ Module
       Pure tt
     end.
   
-  Global Instance Method_execute_dispatchable `{State.Trait} :
+  Global Instance Method_execute_dispatchable `{H : State.Trait} :
     Notation.Dot "execute_dispatchable" := {
     Notation.dot := execute_dispatchable;
   }.
   
   Global Instance I : ink.reflect.dispatch.ExecuteDispatchable.Trait Self := {
     ink.reflect.dispatch.ExecuteDispatchable.execute_dispatchable
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       execute_dispatchable;
   }.
@@ -2901,9 +2954,11 @@ Module
   Definition Self := erc20.erc20._.__ink_MessageDecoder.
   
   Definition decode_dispatch
-      `{State.Trait}
+      `{H : State.Trait}
       (input : mut_ref I)
-      : M (core.result.Result Self ink.reflect.dispatch.DispatchError) :=
+      :
+        M (H := H)
+          (core.result.Result Self ink.reflect.dispatch.DispatchError) :=
     let* α0 := parity_scale_codec.codec.Decode.decode input in
     let* α1 :=
       α0.["map_err"]
@@ -3019,36 +3074,36 @@ Module
           ink.reflect.dispatch.DispatchError.UnknownSelector)
     end.
   
-  Global Instance AssociatedFunction_decode_dispatch `{State.Trait} :
+  Global Instance AssociatedFunction_decode_dispatch `{H : State.Trait} :
     Notation.DoubleColon Self "decode_dispatch" := {
     Notation.double_colon := decode_dispatch;
   }.
   
   Global Instance I : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
     ink.reflect.dispatch.DecodeDispatch.decode_dispatch
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       decode_dispatch;
   }.
 End
   Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
 
-Definition MESSAGE_0 `{State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_0 `{H : State.Trait} : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR).
 
-Definition MESSAGE_1 `{State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_1 `{H : State.Trait} : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR).
 
-Definition MESSAGE_2 `{State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_2 `{H : State.Trait} : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR).
 
-Definition MESSAGE_3 `{State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_3 `{H : State.Trait} : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR).
 
-Definition MESSAGE_4 `{State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_4 `{H : State.Trait} : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR).
 
-Definition MESSAGE_5 `{State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_5 `{H : State.Trait} : list Root.core.primitive.u8 :=
   run (Pure ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR).
 
 Module
@@ -3056,27 +3111,27 @@ Module
   Definition Self := erc20.erc20._.__ink_MessageDecoder.
   
   Definition decode
-      `{State.Trait}
+      `{H : State.Trait}
       (input : mut_ref I)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := ink.reflect.dispatch.DecodeDispatch.decode_dispatch input in
     α0.["map_err"] core.convert.Into.into.
   
-  Global Instance AssociatedFunction_decode `{State.Trait} :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_MessageDecoder.
 
 Definition push_contract
-    `{State.Trait}
+    `{H : State.Trait}
     (contract : core.mem.manually_drop.ManuallyDrop erc20.erc20.Erc20)
     (mutates : bool)
-    : M unit :=
+    : M (H := H) unit :=
   if (mutates : bool) then
     let* _ :=
       ink_env.api.set_contract_storage
@@ -3091,9 +3146,11 @@ Module
   Definition Self := erc20.erc20._.__ink_MessageDecoder.
   
   Definition execute_dispatchable
-      `{State.Trait}
+      `{H : State.Trait}
       (self : Self)
-      : M (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
+      :
+        M (H := H)
+          (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
     let key := ink_storage_traits.storage.StorageKey.KEY in
     let* contract :=
       let* α0 := ink_env.api.get_contract_storage (addr_of key) in
@@ -3513,14 +3570,14 @@ Module
       end in
     Pure tt.
   
-  Global Instance Method_execute_dispatchable `{State.Trait} :
+  Global Instance Method_execute_dispatchable `{H : State.Trait} :
     Notation.Dot "execute_dispatchable" := {
     Notation.dot := execute_dispatchable;
   }.
   
   Global Instance I : ink.reflect.dispatch.ExecuteDispatchable.Trait Self := {
     ink.reflect.dispatch.ExecuteDispatchable.execute_dispatchable
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       execute_dispatchable;
   }.
@@ -3539,14 +3596,17 @@ End Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
 
 Definition
     _
-    `{State.Trait} :
+    `{H : State.Trait} :
     ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
   run ((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"] tt).
 
 Module Impl_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
-  Definition new `{State.Trait} (total_supply : erc20.erc20.Balance) : M Self :=
+  Definition new
+      `{H : State.Trait}
+      (total_supply : erc20.erc20.Balance)
+      : M (H := H) Self :=
     let* balances := ink_storage.lazy.mapping.Mapping::["default"] tt in
     let* caller :=
       let* α0 := Self::["env"] tt in
@@ -3568,68 +3628,69 @@ Module Impl_erc20_erc20_Erc20.
         Self.allowances := α0;
       |}.
   
-  Global Instance AssociatedFunction_new `{State.Trait} :
+  Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
   Definition total_supply
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M erc20.erc20.Balance :=
+      : M (H := H) erc20.erc20.Balance :=
     Pure self.["total_supply"].
   
-  Global Instance Method_total_supply `{State.Trait} :
+  Global Instance Method_total_supply `{H : State.Trait} :
     Notation.Dot "total_supply" := {
     Notation.dot := total_supply;
   }.
   
   Definition balance_of
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (owner : erc20.erc20.AccountId)
-      : M erc20.erc20.Balance :=
+      : M (H := H) erc20.erc20.Balance :=
     self.["balance_of_impl"] (addr_of owner).
   
-  Global Instance Method_balance_of `{State.Trait} :
+  Global Instance Method_balance_of `{H : State.Trait} :
     Notation.Dot "balance_of" := {
     Notation.dot := balance_of;
   }.
   
   Definition allowance
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (owner : erc20.erc20.AccountId)
       (spender : erc20.erc20.AccountId)
-      : M erc20.erc20.Balance :=
+      : M (H := H) erc20.erc20.Balance :=
     self.["allowance_impl"] (addr_of owner) (addr_of spender).
   
-  Global Instance Method_allowance `{State.Trait} :
+  Global Instance Method_allowance `{H : State.Trait} :
     Notation.Dot "allowance" := {
     Notation.dot := allowance;
   }.
   
   Definition transfer
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
       (to : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
-      : M (erc20.erc20.Result unit) :=
+      : M (H := H) (erc20.erc20.Result unit) :=
     let* from :=
       let* α0 := self.["env"] in
       α0.["caller"] in
     self.["transfer_from_to"] (addr_of from) (addr_of to) value.
   
-  Global Instance Method_transfer `{State.Trait} : Notation.Dot "transfer" := {
+  Global Instance Method_transfer `{H : State.Trait} :
+    Notation.Dot "transfer" := {
     Notation.dot := transfer;
   }.
   
   Definition approve
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
       (spender : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
-      : M (erc20.erc20.Result unit) :=
+      : M (H := H) (erc20.erc20.Result unit) :=
     let* owner :=
       let* α0 := self.["env"] in
       α0.["caller"] in
@@ -3647,17 +3708,18 @@ Module Impl_erc20_erc20_Erc20.
         |} in
     Pure (core.result.Result.Ok tt).
   
-  Global Instance Method_approve `{State.Trait} : Notation.Dot "approve" := {
+  Global Instance Method_approve `{H : State.Trait} :
+    Notation.Dot "approve" := {
     Notation.dot := approve;
   }.
   
   Definition transfer_from
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
       (from : erc20.erc20.AccountId)
       (to : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
-      : M (erc20.erc20.Result unit) :=
+      : M (H := H) (erc20.erc20.Result unit) :=
     let* caller :=
       let* α0 := self.["env"] in
       α0.["caller"] in
@@ -3684,45 +3746,45 @@ Module Impl_erc20_erc20_Erc20.
         (addr_of α0) in
     Pure (core.result.Result.Ok tt).
   
-  Global Instance Method_transfer_from `{State.Trait} :
+  Global Instance Method_transfer_from `{H : State.Trait} :
     Notation.Dot "transfer_from" := {
     Notation.dot := transfer_from;
   }.
   
   Definition balance_of_impl
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (owner : ref erc20.erc20.AccountId)
-      : M erc20.erc20.Balance :=
+      : M (H := H) erc20.erc20.Balance :=
     let* α0 := self.["balances"].["get"] owner in
     α0.["unwrap_or_default"].
   
-  Global Instance Method_balance_of_impl `{State.Trait} :
+  Global Instance Method_balance_of_impl `{H : State.Trait} :
     Notation.Dot "balance_of_impl" := {
     Notation.dot := balance_of_impl;
   }.
   
   Definition allowance_impl
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (owner : ref erc20.erc20.AccountId)
       (spender : ref erc20.erc20.AccountId)
-      : M erc20.erc20.Balance :=
+      : M (H := H) erc20.erc20.Balance :=
     let* α0 := self.["allowances"].["get"] (owner, spender) in
     α0.["unwrap_or_default"].
   
-  Global Instance Method_allowance_impl `{State.Trait} :
+  Global Instance Method_allowance_impl `{H : State.Trait} :
     Notation.Dot "allowance_impl" := {
     Notation.dot := allowance_impl;
   }.
   
   Definition transfer_from_to
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
       (from : ref erc20.erc20.AccountId)
       (to : ref erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
-      : M (erc20.erc20.Result unit) :=
+      : M (H := H) (erc20.erc20.Result unit) :=
     let* from_balance := self.["balance_of_impl"] from in
     let* _ :=
       let* α0 := from_balance.["lt"] value in
@@ -3749,7 +3811,7 @@ Module Impl_erc20_erc20_Erc20.
         |} in
     Pure (core.result.Result.Ok tt).
   
-  Global Instance Method_transfer_from_to `{State.Trait} :
+  Global Instance Method_transfer_from_to `{H : State.Trait} :
     Notation.Dot "transfer_from_to" := {
     Notation.dot := transfer_from_to;
   }.
@@ -3770,22 +3832,22 @@ Module Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition fmt
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field1_finish"]
       f
       "CallBuilder"
       "account_id"
       (addr_of (addr_of self.["account_id"])).
   
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
 
@@ -3793,36 +3855,40 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition encode_to
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     parity_scale_codec.codec.Encode.encode_to
       (addr_of (addr_of self.["account_id"]))
       __codec_dest_edqy.
   
-  Global Instance Method_encode_to `{State.Trait} :
+  Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
   Definition encode
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M (alloc.vec.Vec Root.core.primitive.u8) :=
+      : M (H := H) (alloc.vec.Vec Root.core.primitive.u8) :=
     parity_scale_codec.codec.Encode.encode
       (addr_of (addr_of self.["account_id"])).
   
-  Global Instance Method_encode `{State.Trait} : Notation.Dot "encode" := {
+  Global Instance Method_encode `{H : State.Trait} : Notation.Dot "encode" := {
     Notation.dot := encode;
   }.
   
-  Definition using_encoded `{State.Trait} (self : ref Self) (f : F) : M R :=
+  Definition using_encoded
+      `{H : State.Trait}
+      (self : ref Self)
+      (f : F)
+      : M (H := H) R :=
     parity_scale_codec.codec.Encode.using_encoded
       (addr_of (addr_of self.["account_id"]))
       f.
   
-  Global Instance Method_using_encoded `{State.Trait} :
+  Global Instance Method_using_encoded `{H : State.Trait} :
     Notation.Dot "using_encoded" := {
     Notation.dot := using_encoded;
   }.
@@ -3844,9 +3910,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition decode
-      `{State.Trait}
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
       parity_scale_codec.codec.Decode.decode __codec_input_edqy in
     let* α0 :=
@@ -3859,17 +3925,17 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
     Pure
       (core.result.Result.Ok {| erc20.erc20._.CallBuilder.account_id := α0; |}).
   
-  Global Instance AssociatedFunction_decode `{State.Trait} :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Definition decode_into
-      `{State.Trait}
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       (dst_ : mut_ref (core.mem.maybe_uninit.MaybeUninit Self))
       :
-        M
+        M (H := H)
           (core.result.Result
             parity_scale_codec.decode_finished.DecodeFinished
             parity_scale_codec.error.Error) :=
@@ -3934,13 +4000,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
         tt in
     Pure (core.result.Result.Ok α0).
   
-  Global Instance AssociatedFunction_decode_into `{State.Trait} :
+  Global Instance AssociatedFunction_decode_into `{H : State.Trait} :
     Notation.DoubleColon Self "decode_into" := {
     Notation.double_colon := decode_into;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
 
@@ -3948,18 +4014,18 @@ Module Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition hash
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (state : mut_ref __H)
-      : M unit :=
+      : M (H := H) unit :=
     core.hash.Hash.hash (addr_of self.["account_id"]) state.
   
-  Global Instance Method_hash `{State.Trait} : Notation.Dot "hash" := {
+  Global Instance Method_hash `{H : State.Trait} : Notation.Dot "hash" := {
     Notation.dot := hash;
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{State.Trait} := hash;
+    core.hash.Hash.hash `{H : State.Trait} := hash;
   }.
 End Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
 
@@ -3974,18 +4040,18 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition eq
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (other : ref erc20.erc20._.CallBuilder)
-      : M bool :=
+      : M (H := H) bool :=
     self.["account_id"].["eq"] other.["account_id"].
   
-  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
+  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
   Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{State.Trait} := eq;
+    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
 
@@ -4000,13 +4066,13 @@ Module Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition assert_receiver_is_total_eq
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M unit :=
+      : M (H := H) unit :=
     let _ := tt in
     Pure tt.
   
-  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
+  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
   }.
@@ -4019,18 +4085,18 @@ Module Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition clone
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M erc20.erc20._.CallBuilder :=
+      : M (H := H) erc20.erc20._.CallBuilder :=
     let* α0 := core.clone.Clone.clone (addr_of self.["account_id"]) in
     Pure {| erc20.erc20._.CallBuilder.account_id := α0; |}.
   
-  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{State.Trait} := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_erc20_erc20___CallBuilder.
 
@@ -4039,7 +4105,10 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{State.Trait} (_ : unit) : M scale_info.ty.Type :=
+  Definition type_info
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) scale_info.ty.Type :=
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "CallBuilder" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
@@ -4063,13 +4132,13 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
           α1.["type_name"] "AccountId") in
     α5.["composite"] α7.
   
-  Global Instance AssociatedFunction_type_info `{State.Trait} :
+  Global Instance AssociatedFunction_type_info `{H : State.Trait} :
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
   
   Global Instance I : scale_info.TypeInfo.Trait Self := {
-    scale_info.TypeInfo.type_info `{State.Trait} := type_info;
+    scale_info.TypeInfo.type_info `{H : State.Trait} := type_info;
   }.
 End Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
 
@@ -4078,21 +4147,21 @@ Module
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition layout
-      `{State.Trait}
+      `{H : State.Trait}
       (__key : ref ink_primitives.key.Key)
-      : M ink_metadata.layout.Layout :=
+      : M (H := H) ink_metadata.layout.Layout :=
     let* α0 := ink_storage_traits.layout.StorageLayout.layout __key in
     let* α1 := ink_metadata.layout.FieldLayout::["new"] "account_id" α0 in
     let* α2 := ink_metadata.layout.StructLayout::["new"] "CallBuilder" [ α1 ] in
     Pure (ink_metadata.layout.Layout.Struct α2).
   
-  Global Instance AssociatedFunction_layout `{State.Trait} :
+  Global Instance AssociatedFunction_layout `{H : State.Trait} :
     Notation.DoubleColon Self "layout" := {
     Notation.double_colon := layout;
   }.
   
   Global Instance I : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{State.Trait} := layout;
+    ink_storage_traits.layout.StorageLayout.layout `{H : State.Trait} := layout;
   }.
 End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20___CallBuilder.
 
@@ -4120,12 +4189,12 @@ Module
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition from_account_id
-      `{State.Trait}
+      `{H : State.Trait}
       (account_id : erc20.erc20.AccountId)
-      : M Self :=
+      : M (H := H) Self :=
     Pure {| Self.account_id := account_id; |}.
   
-  Global Instance AssociatedFunction_from_account_id `{State.Trait} :
+  Global Instance AssociatedFunction_from_account_id `{H : State.Trait} :
     Notation.DoubleColon Self "from_account_id" := {
     Notation.double_colon := from_account_id;
   }.
@@ -4135,7 +4204,7 @@ Module
         Self
         (T := erc20.erc20.Environment) := {
     ink_env.call.create_builder.FromAccountId.from_account_id
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       from_account_id;
   }.
@@ -4146,12 +4215,12 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition to_account_id
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M erc20.erc20.AccountId :=
+      : M (H := H) erc20.erc20.AccountId :=
     core.clone.Clone.clone (addr_of self.["account_id"]).
   
-  Global Instance Method_to_account_id `{State.Trait} :
+  Global Instance Method_to_account_id `{H : State.Trait} :
     Notation.Dot "to_account_id" := {
     Notation.dot := to_account_id;
   }.
@@ -4160,7 +4229,10 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
       ink.contract_ref.ToAccountId.Trait
         Self
         (T := erc20.erc20.Environment) := {
-    ink.contract_ref.ToAccountId.to_account_id `{State.Trait} := to_account_id;
+    ink.contract_ref.ToAccountId.to_account_id
+      `{H : State.Trait}
+      :=
+      to_account_id;
   }.
 End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
 
@@ -4168,18 +4240,18 @@ Module Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition as_ref
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M (ref erc20.erc20.AccountId) :=
+      : M (H := H) (ref erc20.erc20.AccountId) :=
     Pure (addr_of self.["account_id"]).
   
-  Global Instance Method_as_ref `{State.Trait} : Notation.Dot "as_ref" := {
+  Global Instance Method_as_ref `{H : State.Trait} : Notation.Dot "as_ref" := {
     Notation.dot := as_ref;
   }.
   
   Global Instance I :
       core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
-    core.convert.AsRef.as_ref `{State.Trait} := as_ref;
+    core.convert.AsRef.as_ref `{H : State.Trait} := as_ref;
   }.
 End Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
 
@@ -4187,18 +4259,18 @@ Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition as_mut
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
-      : M (mut_ref erc20.erc20.AccountId) :=
+      : M (H := H) (mut_ref erc20.erc20.AccountId) :=
     Pure (addr_of self.["account_id"]).
   
-  Global Instance Method_as_mut `{State.Trait} : Notation.Dot "as_mut" := {
+  Global Instance Method_as_mut `{H : State.Trait} : Notation.Dot "as_mut" := {
     Notation.dot := as_mut;
   }.
   
   Global Instance I :
       core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
-    core.convert.AsMut.as_mut `{State.Trait} := as_mut;
+    core.convert.AsMut.as_mut `{H : State.Trait} := as_mut;
   }.
 End Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
 
@@ -4206,10 +4278,10 @@ Module Impl_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition total_supply
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       :
-        M
+        M (H := H)
           (ink_env.call.call_builder.CallBuilder
             erc20.erc20.Environment
             (ink_env.call.common.Set
@@ -4227,17 +4299,17 @@ Module Impl_erc20_erc20___CallBuilder.
     let* α5 := α2.["exec_input"] α4 in
     α5.["returns"].
   
-  Global Instance Method_total_supply `{State.Trait} :
+  Global Instance Method_total_supply `{H : State.Trait} :
     Notation.Dot "total_supply" := {
     Notation.dot := total_supply;
   }.
   
   Definition balance_of
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (__ink_binding_0 : erc20.erc20.AccountId)
       :
-        M
+        M (H := H)
           (ink_env.call.call_builder.CallBuilder
             erc20.erc20.Environment
             (ink_env.call.common.Set
@@ -4258,18 +4330,18 @@ Module Impl_erc20_erc20___CallBuilder.
     let* α6 := α2.["exec_input"] α5 in
     α6.["returns"].
   
-  Global Instance Method_balance_of `{State.Trait} :
+  Global Instance Method_balance_of `{H : State.Trait} :
     Notation.Dot "balance_of" := {
     Notation.dot := balance_of;
   }.
   
   Definition allowance
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (__ink_binding_0 : erc20.erc20.AccountId)
       (__ink_binding_1 : erc20.erc20.AccountId)
       :
-        M
+        M (H := H)
           (ink_env.call.call_builder.CallBuilder
             erc20.erc20.Environment
             (ink_env.call.common.Set
@@ -4294,18 +4366,18 @@ Module Impl_erc20_erc20___CallBuilder.
     let* α7 := α2.["exec_input"] α6 in
     α7.["returns"].
   
-  Global Instance Method_allowance `{State.Trait} :
+  Global Instance Method_allowance `{H : State.Trait} :
     Notation.Dot "allowance" := {
     Notation.dot := allowance;
   }.
   
   Definition transfer
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
       (__ink_binding_0 : erc20.erc20.AccountId)
       (__ink_binding_1 : erc20.erc20.Balance)
       :
-        M
+        M (H := H)
           (ink_env.call.call_builder.CallBuilder
             erc20.erc20.Environment
             (ink_env.call.common.Set
@@ -4330,17 +4402,18 @@ Module Impl_erc20_erc20___CallBuilder.
     let* α7 := α2.["exec_input"] α6 in
     α7.["returns"].
   
-  Global Instance Method_transfer `{State.Trait} : Notation.Dot "transfer" := {
+  Global Instance Method_transfer `{H : State.Trait} :
+    Notation.Dot "transfer" := {
     Notation.dot := transfer;
   }.
   
   Definition approve
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
       (__ink_binding_0 : erc20.erc20.AccountId)
       (__ink_binding_1 : erc20.erc20.Balance)
       :
-        M
+        M (H := H)
           (ink_env.call.call_builder.CallBuilder
             erc20.erc20.Environment
             (ink_env.call.common.Set
@@ -4365,18 +4438,19 @@ Module Impl_erc20_erc20___CallBuilder.
     let* α7 := α2.["exec_input"] α6 in
     α7.["returns"].
   
-  Global Instance Method_approve `{State.Trait} : Notation.Dot "approve" := {
+  Global Instance Method_approve `{H : State.Trait} :
+    Notation.Dot "approve" := {
     Notation.dot := approve;
   }.
   
   Definition transfer_from
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
       (__ink_binding_0 : erc20.erc20.AccountId)
       (__ink_binding_1 : erc20.erc20.AccountId)
       (__ink_binding_2 : erc20.erc20.Balance)
       :
-        M
+        M (H := H)
           (ink_env.call.call_builder.CallBuilder
             erc20.erc20.Environment
             (ink_env.call.common.Set
@@ -4405,7 +4479,7 @@ Module Impl_erc20_erc20___CallBuilder.
     let* α8 := α2.["exec_input"] α7 in
     α8.["returns"].
   
-  Global Instance Method_transfer_from `{State.Trait} :
+  Global Instance Method_transfer_from `{H : State.Trait} :
     Notation.Dot "transfer_from" := {
     Notation.dot := transfer_from;
   }.
@@ -4426,22 +4500,22 @@ Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition fmt
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field1_finish"]
       f
       "Erc20Ref"
       "inner"
       (addr_of (addr_of self.["inner"])).
   
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
 
@@ -4449,35 +4523,39 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition encode_to
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     parity_scale_codec.codec.Encode.encode_to
       (addr_of (addr_of self.["inner"]))
       __codec_dest_edqy.
   
-  Global Instance Method_encode_to `{State.Trait} :
+  Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
   Definition encode
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M (alloc.vec.Vec Root.core.primitive.u8) :=
+      : M (H := H) (alloc.vec.Vec Root.core.primitive.u8) :=
     parity_scale_codec.codec.Encode.encode (addr_of (addr_of self.["inner"])).
   
-  Global Instance Method_encode `{State.Trait} : Notation.Dot "encode" := {
+  Global Instance Method_encode `{H : State.Trait} : Notation.Dot "encode" := {
     Notation.dot := encode;
   }.
   
-  Definition using_encoded `{State.Trait} (self : ref Self) (f : F) : M R :=
+  Definition using_encoded
+      `{H : State.Trait}
+      (self : ref Self)
+      (f : F)
+      : M (H := H) R :=
     parity_scale_codec.codec.Encode.using_encoded
       (addr_of (addr_of self.["inner"]))
       f.
   
-  Global Instance Method_using_encoded `{State.Trait} :
+  Global Instance Method_using_encoded `{H : State.Trait} :
     Notation.Dot "using_encoded" := {
     Notation.dot := using_encoded;
   }.
@@ -4497,9 +4575,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition decode
-      `{State.Trait}
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
       parity_scale_codec.codec.Decode.decode __codec_input_edqy in
     let* α0 :=
@@ -4511,13 +4589,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
       end in
     Pure (core.result.Result.Ok {| erc20.erc20.Erc20Ref.inner := α0; |}).
   
-  Global Instance AssociatedFunction_decode `{State.Trait} :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
 
@@ -4525,18 +4603,18 @@ Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition hash
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (state : mut_ref __H)
-      : M unit :=
+      : M (H := H) unit :=
     core.hash.Hash.hash (addr_of self.["inner"]) state.
   
-  Global Instance Method_hash `{State.Trait} : Notation.Dot "hash" := {
+  Global Instance Method_hash `{H : State.Trait} : Notation.Dot "hash" := {
     Notation.dot := hash;
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{State.Trait} := hash;
+    core.hash.Hash.hash `{H : State.Trait} := hash;
   }.
 End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
 
@@ -4551,18 +4629,18 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition eq
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (other : ref erc20.erc20.Erc20Ref)
-      : M bool :=
+      : M (H := H) bool :=
     self.["inner"].["eq"] other.["inner"].
   
-  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
+  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
   Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{State.Trait} := eq;
+    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
 
@@ -4577,13 +4655,13 @@ Module Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition assert_receiver_is_total_eq
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M unit :=
+      : M (H := H) unit :=
     let _ := tt in
     Pure tt.
   
-  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
+  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
   }.
@@ -4595,16 +4673,19 @@ End Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
 Module Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Definition clone `{State.Trait} (self : ref Self) : M erc20.erc20.Erc20Ref :=
+  Definition clone
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) erc20.erc20.Erc20Ref :=
     let* α0 := core.clone.Clone.clone (addr_of self.["inner"]) in
     Pure {| erc20.erc20.Erc20Ref.inner := α0; |}.
   
-  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{State.Trait} := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
 
@@ -4613,7 +4694,10 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{State.Trait} (_ : unit) : M scale_info.ty.Type :=
+  Definition type_info
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) scale_info.ty.Type :=
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Erc20Ref" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
@@ -4630,13 +4714,13 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
             "<Erc20 as::ink::codegen::ContractCallBuilder>::Type") in
     α5.["composite"] α7.
   
-  Global Instance AssociatedFunction_type_info `{State.Trait} :
+  Global Instance AssociatedFunction_type_info `{H : State.Trait} :
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
   
   Global Instance I : scale_info.TypeInfo.Trait Self := {
-    scale_info.TypeInfo.type_info `{State.Trait} := type_info;
+    scale_info.TypeInfo.type_info `{H : State.Trait} := type_info;
   }.
 End Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
 
@@ -4644,21 +4728,21 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition layout
-      `{State.Trait}
+      `{H : State.Trait}
       (__key : ref ink_primitives.key.Key)
-      : M ink_metadata.layout.Layout :=
+      : M (H := H) ink_metadata.layout.Layout :=
     let* α0 := ink_storage_traits.layout.StorageLayout.layout __key in
     let* α1 := ink_metadata.layout.FieldLayout::["new"] "inner" α0 in
     let* α2 := ink_metadata.layout.StructLayout::["new"] "Erc20Ref" [ α1 ] in
     Pure (ink_metadata.layout.Layout.Struct α2).
   
-  Global Instance AssociatedFunction_layout `{State.Trait} :
+  Global Instance AssociatedFunction_layout `{H : State.Trait} :
     Notation.DoubleColon Self "layout" := {
     Notation.double_colon := layout;
   }.
   
   Global Instance I : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{State.Trait} := layout;
+    ink_storage_traits.layout.StorageLayout.layout `{H : State.Trait} := layout;
   }.
 End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
 
@@ -4680,12 +4764,12 @@ Module
   Definition Error : Set := unit.
   
   Definition ok
-      `{State.Trait}
+      `{H : State.Trait}
       (value : erc20.erc20.Erc20Ref)
-      : M ImplSelf.Output :=
+      : M (H := H) ImplSelf.Output :=
     Pure value.
   
-  Global Instance AssociatedFunction_ok `{State.Trait} :
+  Global Instance AssociatedFunction_ok `{H : State.Trait} :
     Notation.DoubleColon Self "ok" := {
     Notation.double_colon := ok;
   }.
@@ -4694,7 +4778,10 @@ Module
       ink_env.call.create_builder.ConstructorReturnType.Trait
         Self
         (C := erc20.erc20.Erc20Ref) := {
-    ink_env.call.create_builder.ConstructorReturnType.ok `{State.Trait} := ok;
+    ink_env.call.create_builder.ConstructorReturnType.ok
+      `{H : State.Trait}
+      :=
+      ok;
   }.
 End
   Impl_ink_env_call_create_builder_ConstructorReturnType_for_erc20_erc20_Erc20.
@@ -4709,7 +4796,7 @@ Section
   
   Definition IS_RESULT := Pure true.
   
-  Global Instance AssociatedFunction_IS_RESULT `{State.Trait} :
+  Global Instance AssociatedFunction_IS_RESULT `{H : State.Trait} :
     Notation.DoubleColon Self "IS_RESULT" := {
     Notation.double_colon := IS_RESULT;
   }.
@@ -4719,23 +4806,23 @@ Section
   Definition Error : Set := E.
   
   Definition ok
-      `{State.Trait}
+      `{H : State.Trait}
       (value : erc20.erc20.Erc20Ref)
-      : M ImplSelf.Output :=
+      : M (H := H) ImplSelf.Output :=
     Pure (core.result.Result.Ok value).
   
-  Global Instance AssociatedFunction_ok `{State.Trait} :
+  Global Instance AssociatedFunction_ok `{H : State.Trait} :
     Notation.DoubleColon Self "ok" := {
     Notation.double_colon := ok;
   }.
   
   Definition err
-      `{State.Trait}
+      `{H : State.Trait}
       (err : ImplSelf.Error)
-      : M (core.option.Option ImplSelf.Output) :=
+      : M (H := H) (core.option.Option ImplSelf.Output) :=
     Pure (core.option.Option.Some (core.result.Result.Err err)).
   
-  Global Instance AssociatedFunction_err `{State.Trait} :
+  Global Instance AssociatedFunction_err `{H : State.Trait} :
     Notation.DoubleColon Self "err" := {
     Notation.double_colon := err;
   }.
@@ -4744,7 +4831,10 @@ Section
       ink_env.call.create_builder.ConstructorReturnType.Trait
         Self
         (C := erc20.erc20.Erc20Ref) := {
-    ink_env.call.create_builder.ConstructorReturnType.ok `{State.Trait} := ok;
+    ink_env.call.create_builder.ConstructorReturnType.ok
+      `{H : State.Trait}
+      :=
+      ok;
   }.
 End
   Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
@@ -4764,10 +4854,10 @@ Module Impl_erc20_erc20_Erc20Ref_2.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition new
-      `{State.Trait}
+      `{H : State.Trait}
       (__ink_binding_0 : erc20.erc20.Balance)
       :
-        M
+        M (H := H)
           (ink_env.call.create_builder.CreateBuilder
             erc20.erc20.Environment
             Self
@@ -4788,15 +4878,15 @@ Module Impl_erc20_erc20_Erc20Ref_2.
     let* α4 := α0.["exec_input"] α3 in
     α4.["returns"].
   
-  Global Instance AssociatedFunction_new `{State.Trait} :
+  Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
   Definition total_supply
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M erc20.erc20.Balance :=
+      : M (H := H) erc20.erc20.Balance :=
     let* α0 := self.["try_total_supply"] in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -4808,15 +4898,15 @@ Module Impl_erc20_erc20_Erc20Ref_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_total_supply `{State.Trait} :
+  Global Instance Method_total_supply `{H : State.Trait} :
     Notation.Dot "total_supply" := {
     Notation.dot := total_supply;
   }.
   
   Definition try_total_supply
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+      : M (H := H) (ink_primitives.MessageResult erc20.erc20.Balance) :=
     let* α0 := ink.codegen.trait_def.call_builder.TraitCallBuilder.call self in
     let* α1 := α0.["total_supply"] in
     let* α2 := α1.["try_invoke"] in
@@ -4830,16 +4920,16 @@ Module Impl_erc20_erc20_Erc20Ref_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_try_total_supply `{State.Trait} :
+  Global Instance Method_try_total_supply `{H : State.Trait} :
     Notation.Dot "try_total_supply" := {
     Notation.dot := try_total_supply;
   }.
   
   Definition balance_of
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (owner : erc20.erc20.AccountId)
-      : M erc20.erc20.Balance :=
+      : M (H := H) erc20.erc20.Balance :=
     let* α0 := self.["try_balance_of"] owner in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -4850,16 +4940,16 @@ Module Impl_erc20_erc20_Erc20Ref_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_balance_of `{State.Trait} :
+  Global Instance Method_balance_of `{H : State.Trait} :
     Notation.Dot "balance_of" := {
     Notation.dot := balance_of;
   }.
   
   Definition try_balance_of
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (owner : erc20.erc20.AccountId)
-      : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+      : M (H := H) (ink_primitives.MessageResult erc20.erc20.Balance) :=
     let* α0 := ink.codegen.trait_def.call_builder.TraitCallBuilder.call self in
     let* α1 := α0.["balance_of"] owner in
     let* α2 := α1.["try_invoke"] in
@@ -4872,17 +4962,17 @@ Module Impl_erc20_erc20_Erc20Ref_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_try_balance_of `{State.Trait} :
+  Global Instance Method_try_balance_of `{H : State.Trait} :
     Notation.Dot "try_balance_of" := {
     Notation.dot := try_balance_of;
   }.
   
   Definition allowance
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (owner : erc20.erc20.AccountId)
       (spender : erc20.erc20.AccountId)
-      : M erc20.erc20.Balance :=
+      : M (H := H) erc20.erc20.Balance :=
     let* α0 := self.["try_allowance"] owner spender in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -4893,17 +4983,17 @@ Module Impl_erc20_erc20_Erc20Ref_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_allowance `{State.Trait} :
+  Global Instance Method_allowance `{H : State.Trait} :
     Notation.Dot "allowance" := {
     Notation.dot := allowance;
   }.
   
   Definition try_allowance
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (owner : erc20.erc20.AccountId)
       (spender : erc20.erc20.AccountId)
-      : M (ink_primitives.MessageResult erc20.erc20.Balance) :=
+      : M (H := H) (ink_primitives.MessageResult erc20.erc20.Balance) :=
     let* α0 := ink.codegen.trait_def.call_builder.TraitCallBuilder.call self in
     let* α1 := α0.["allowance"] owner spender in
     let* α2 := α1.["try_invoke"] in
@@ -4916,17 +5006,17 @@ Module Impl_erc20_erc20_Erc20Ref_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_try_allowance `{State.Trait} :
+  Global Instance Method_try_allowance `{H : State.Trait} :
     Notation.Dot "try_allowance" := {
     Notation.dot := try_allowance;
   }.
   
   Definition transfer
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
       (to : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
-      : M (erc20.erc20.Result unit) :=
+      : M (H := H) (erc20.erc20.Result unit) :=
     let* α0 := self.["try_transfer"] to value in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -4937,16 +5027,17 @@ Module Impl_erc20_erc20_Erc20Ref_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_transfer `{State.Trait} : Notation.Dot "transfer" := {
+  Global Instance Method_transfer `{H : State.Trait} :
+    Notation.Dot "transfer" := {
     Notation.dot := transfer;
   }.
   
   Definition try_transfer
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
       (to : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
-      : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+      : M (H := H) (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
     let* α0 :=
       ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut self in
     let* α1 := α0.["transfer"] to value in
@@ -4960,17 +5051,17 @@ Module Impl_erc20_erc20_Erc20Ref_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_try_transfer `{State.Trait} :
+  Global Instance Method_try_transfer `{H : State.Trait} :
     Notation.Dot "try_transfer" := {
     Notation.dot := try_transfer;
   }.
   
   Definition approve
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
       (spender : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
-      : M (erc20.erc20.Result unit) :=
+      : M (H := H) (erc20.erc20.Result unit) :=
     let* α0 := self.["try_approve"] spender value in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -4981,16 +5072,17 @@ Module Impl_erc20_erc20_Erc20Ref_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_approve `{State.Trait} : Notation.Dot "approve" := {
+  Global Instance Method_approve `{H : State.Trait} :
+    Notation.Dot "approve" := {
     Notation.dot := approve;
   }.
   
   Definition try_approve
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
       (spender : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
-      : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+      : M (H := H) (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
     let* α0 :=
       ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut self in
     let* α1 := α0.["approve"] spender value in
@@ -5004,18 +5096,18 @@ Module Impl_erc20_erc20_Erc20Ref_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_try_approve `{State.Trait} :
+  Global Instance Method_try_approve `{H : State.Trait} :
     Notation.Dot "try_approve" := {
     Notation.dot := try_approve;
   }.
   
   Definition transfer_from
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
       (from : erc20.erc20.AccountId)
       (to : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
-      : M (erc20.erc20.Result unit) :=
+      : M (H := H) (erc20.erc20.Result unit) :=
     let* α0 := self.["try_transfer_from"] from to value in
     α0.["unwrap_or_else"]
       (fun error =>
@@ -5027,18 +5119,18 @@ Module Impl_erc20_erc20_Erc20Ref_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_transfer_from `{State.Trait} :
+  Global Instance Method_transfer_from `{H : State.Trait} :
     Notation.Dot "transfer_from" := {
     Notation.dot := transfer_from;
   }.
   
   Definition try_transfer_from
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
       (from : erc20.erc20.AccountId)
       (to : erc20.erc20.AccountId)
       (value : erc20.erc20.Balance)
-      : M (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
+      : M (H := H) (ink_primitives.MessageResult (erc20.erc20.Result unit)) :=
     let* α0 :=
       ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut self in
     let* α1 := α0.["transfer_from"] from to value in
@@ -5053,7 +5145,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_try_transfer_from `{State.Trait} :
+  Global Instance Method_try_transfer_from `{H : State.Trait} :
     Notation.Dot "try_transfer_from" := {
     Notation.dot := try_transfer_from;
   }.
@@ -5066,31 +5158,35 @@ Module
   Definition Builder : Set :=
     ink.codegen.dispatch.info.ContractCallBuilder.Type.
   
-  Definition call `{State.Trait} (self : ref Self) : M (ref ImplSelf.Builder) :=
+  Definition call
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) (ref ImplSelf.Builder) :=
     Pure (addr_of self.["inner"]).
   
-  Global Instance Method_call `{State.Trait} : Notation.Dot "call" := {
+  Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
     Notation.dot := call;
   }.
   
   Definition call_mut
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
-      : M (mut_ref ImplSelf.Builder) :=
+      : M (H := H) (mut_ref ImplSelf.Builder) :=
     Pure (addr_of self.["inner"]).
   
-  Global Instance Method_call_mut `{State.Trait} : Notation.Dot "call_mut" := {
+  Global Instance Method_call_mut `{H : State.Trait} :
+    Notation.Dot "call_mut" := {
     Notation.dot := call_mut;
   }.
   
   Global Instance I :
       ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Self := {
     ink.codegen.trait_def.call_builder.TraitCallBuilder.call
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       call;
     ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       call_mut;
   }.
@@ -5101,14 +5197,14 @@ Module Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition from_account_id
-      `{State.Trait}
+      `{H : State.Trait}
       (account_id : erc20.erc20.AccountId)
-      : M Self :=
+      : M (H := H) Self :=
     let* α0 :=
       ink_env.call.create_builder.FromAccountId.from_account_id account_id in
     Pure {| Self.inner := α0; |}.
   
-  Global Instance AssociatedFunction_from_account_id `{State.Trait} :
+  Global Instance AssociatedFunction_from_account_id `{H : State.Trait} :
     Notation.DoubleColon Self "from_account_id" := {
     Notation.double_colon := from_account_id;
   }.
@@ -5118,7 +5214,7 @@ Module Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
         Self
         (T := erc20.erc20.Environment) := {
     ink_env.call.create_builder.FromAccountId.from_account_id
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       from_account_id;
   }.
@@ -5128,12 +5224,12 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition to_account_id
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M erc20.erc20.AccountId :=
+      : M (H := H) erc20.erc20.AccountId :=
     ink.contract_ref.ToAccountId.to_account_id (addr_of self.["inner"]).
   
-  Global Instance Method_to_account_id `{State.Trait} :
+  Global Instance Method_to_account_id `{H : State.Trait} :
     Notation.Dot "to_account_id" := {
     Notation.dot := to_account_id;
   }.
@@ -5142,7 +5238,10 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
       ink.contract_ref.ToAccountId.Trait
         Self
         (T := erc20.erc20.Environment) := {
-    ink.contract_ref.ToAccountId.to_account_id `{State.Trait} := to_account_id;
+    ink.contract_ref.ToAccountId.to_account_id
+      `{H : State.Trait}
+      :=
+      to_account_id;
   }.
 End Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
 
@@ -5150,18 +5249,18 @@ Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition as_ref
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M (ref erc20.erc20.AccountId) :=
+      : M (H := H) (ref erc20.erc20.AccountId) :=
     core.convert.AsRef.as_ref (addr_of self.["inner"]).
   
-  Global Instance Method_as_ref `{State.Trait} : Notation.Dot "as_ref" := {
+  Global Instance Method_as_ref `{H : State.Trait} : Notation.Dot "as_ref" := {
     Notation.dot := as_ref;
   }.
   
   Global Instance I :
       core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
-    core.convert.AsRef.as_ref `{State.Trait} := as_ref;
+    core.convert.AsRef.as_ref `{H : State.Trait} := as_ref;
   }.
 End Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
 
@@ -5169,25 +5268,25 @@ Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition as_mut
-      `{State.Trait}
+      `{H : State.Trait}
       (self : mut_ref Self)
-      : M (mut_ref erc20.erc20.AccountId) :=
+      : M (H := H) (mut_ref erc20.erc20.AccountId) :=
     core.convert.AsMut.as_mut (addr_of self.["inner"]).
   
-  Global Instance Method_as_mut `{State.Trait} : Notation.Dot "as_mut" := {
+  Global Instance Method_as_mut `{H : State.Trait} : Notation.Dot "as_mut" := {
     Notation.dot := as_mut;
   }.
   
   Global Instance I :
       core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
-    core.convert.AsMut.as_mut `{State.Trait} := as_mut;
+    core.convert.AsMut.as_mut `{H : State.Trait} := as_mut;
   }.
 End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
 
 Definition __ink_generate_metadata
-    `{State.Trait}
+    `{H : State.Trait}
     (_ : unit)
-    : M ink_metadata.InkProject :=
+    : M (H := H) ink_metadata.InkProject :=
   let* layout :=
     let* α0 :=
       core.convert.From.from ink_storage_traits.storage.StorageKey.KEY in
@@ -5590,7 +5689,10 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{State.Trait} (_ : unit) : M scale_info.ty.Type :=
+  Definition type_info
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) scale_info.ty.Type :=
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Error" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
@@ -5620,13 +5722,13 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
               ])) in
     α5.["variant"] α8.
   
-  Global Instance AssociatedFunction_type_info `{State.Trait} :
+  Global Instance AssociatedFunction_type_info `{H : State.Trait} :
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
   
   Global Instance I : scale_info.TypeInfo.Trait Self := {
-    scale_info.TypeInfo.type_info `{State.Trait} := type_info;
+    scale_info.TypeInfo.type_info `{H : State.Trait} := type_info;
   }.
 End Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
 
@@ -5634,10 +5736,10 @@ Module Impl_core_fmt_Debug_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
   Definition fmt
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     let* α0 :=
       match self with
       | erc20.erc20.Error.InsufficientBalance => Pure "InsufficientBalance"
@@ -5645,12 +5747,12 @@ Module Impl_core_fmt_Debug_for_erc20_erc20_Error.
       end in
     core.fmt.Formatter::["write_str"] f α0.
   
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_erc20_erc20_Error.
 
@@ -5665,20 +5767,20 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
   Definition eq
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (other : ref erc20.erc20.Error)
-      : M bool :=
+      : M (H := H) bool :=
     let* __self_tag := core.intrinsics.discriminant_value self in
     let* __arg1_tag := core.intrinsics.discriminant_value other in
     __self_tag.["eq"] __arg1_tag.
   
-  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
+  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
   Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{State.Trait} := eq;
+    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
 
@@ -5693,12 +5795,12 @@ Module Impl_core_cmp_Eq_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
   Definition assert_receiver_is_total_eq
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M unit :=
+      : M (H := H) unit :=
     Pure tt.
   
-  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
+  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
   }.
@@ -5711,10 +5813,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
   Definition encode_to
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* α0 := self.["deref"] in
     match α0 with
     | erc20.erc20.Error.InsufficientBalance =>
@@ -5728,7 +5830,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
     | _ => Pure tt
     end.
   
-  Global Instance Method_encode_to `{State.Trait} :
+  Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
@@ -5748,9 +5850,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
   Definition decode
-      `{State.Trait}
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := __codec_input_edqy.["read_byte"] in
     let* α1 :=
       α0.["map_err"]
@@ -5797,13 +5899,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
       Pure tt
     end.
   
-  Global Instance AssociatedFunction_decode `{State.Trait} :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
 
