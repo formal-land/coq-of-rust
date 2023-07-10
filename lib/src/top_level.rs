@@ -1713,7 +1713,7 @@ impl TopLevelItem {
                                             nest([
                                                 text("Notation.dot"),
                                                 if args.is_empty() {
-                                                    concat([line(), text("tt")])
+                                                    nil()
                                                 } else {
                                                     concat(args.iter().map(|(name, ty)| {
                                                         concat([
