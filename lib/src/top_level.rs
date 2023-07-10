@@ -14,6 +14,10 @@ use rustc_span::symbol::sym;
 use std::collections::HashMap;
 use std::string::ToString;
 
+pub struct TopLevelOptions {
+    pub axiomatize: bool,
+}
+
 #[derive(Debug)]
 enum TraitItem {
     Definition {
@@ -600,7 +604,7 @@ fn compile_top_level(tcx: &TyCtxt) -> TopLevel {
 
 const LINE_WIDTH: usize = 80;
 
-pub fn top_level_to_coq(tcx: &TyCtxt) -> String {
+pub fn top_level_to_coq(tcx: &TyCtxt, _opts: TopLevelOptions) -> String {
     let top_level = compile_top_level(tcx);
     let top_level = mt_top_level(top_level);
     top_level.to_pretty(LINE_WIDTH)
