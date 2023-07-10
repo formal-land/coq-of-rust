@@ -84,10 +84,13 @@ End Run.
 
 Module Exception.
   Inductive t (R : Set) : Set :=
+  (* exceptions with Rust equivalents *)
   | Return : R -> t R
   | Continue : t R
   | Break : t R
-  | Panic {A : Set} : A -> t R.
+  | Panic {A : Set} : A -> t R
+  (* exception for potential non-termination *)
+  | NonTermination : t R.
   Arguments Return {_}.
   Arguments Continue {_}.
   Arguments Break {_}.
