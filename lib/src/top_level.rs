@@ -610,7 +610,8 @@ pub fn top_level_to_coq(tcx: &TyCtxt) -> String {
 /// for definitions of functions and constants
 /// which types utilize the M monad constructor
 fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
-    text("`{State.Trait}")
+    // TODO: check whether the name of the parameter is necessary
+    text("`{H : State.Trait}")
 }
 
 fn fn_to_doc<'a>(
