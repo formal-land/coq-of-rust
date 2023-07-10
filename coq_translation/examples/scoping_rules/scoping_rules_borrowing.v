@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition eat_box_i32
-    `{State.Trait}
+    `{H : State.Trait}
     (boxed_i32 : alloc.boxed.Box i32)
-    : M unit :=
+    : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of boxed_i32) in
@@ -17,7 +17,10 @@ Definition eat_box_i32
     Pure tt in
   Pure tt.
 
-Definition borrow_i32 `{State.Trait} (borrowed_i32 : ref i32) : M unit :=
+Definition borrow_i32
+    `{H : State.Trait}
+    (borrowed_i32 : ref i32)
+    : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of borrowed_i32) in
@@ -31,7 +34,7 @@ Definition borrow_i32 `{State.Trait} (borrowed_i32 : ref i32) : M unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* boxed_i32 := alloc.boxed.Box::["new"] 5 in
   let stacked_i32 := 6 in
   let* _ := scoping_rules_borrowing.borrow_i32 (addr_of boxed_i32) in

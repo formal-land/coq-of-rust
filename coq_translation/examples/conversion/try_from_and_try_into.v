@@ -14,21 +14,21 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   Definition Self := try_from_and_try_into.EvenNumber.
   
   Definition fmt
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "EvenNumber"
       (addr_of (addr_of (self.[0]))).
   
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 
@@ -44,18 +44,18 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   Definition Self := try_from_and_try_into.EvenNumber.
   
   Definition eq
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (other : ref try_from_and_try_into.EvenNumber)
-      : M bool :=
+      : M (H := H) bool :=
     (self.[0]).["eq"] (other.[0]).
   
-  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
+  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
   Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{State.Trait} := eq;
+    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 
@@ -65,9 +65,9 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
   Definition Error : Set := unit.
   
   Definition try_from
-      `{State.Trait}
+      `{H : State.Trait}
       (value : i32)
-      : M (core.result.Result Self ImplSelf.Error) :=
+      : M (H := H) (core.result.Result Self ImplSelf.Error) :=
     let* α0 := value.["rem"] 2 in
     let* α1 := α0.["eq"] 0 in
     if (α1 : bool) then
@@ -76,18 +76,18 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
     else
       Pure (core.result.Result.Err tt).
   
-  Global Instance AssociatedFunction_try_from `{State.Trait} :
+  Global Instance AssociatedFunction_try_from `{H : State.Trait} :
     Notation.DoubleColon Self "try_from" := {
     Notation.double_colon := try_from;
   }.
   
   Global Instance I : core.convert.TryFrom.Trait Self (T := i32) := {
-    core.convert.TryFrom.try_from `{State.Trait} := try_from;
+    core.convert.TryFrom.try_from `{H : State.Trait} := try_from;
   }.
 End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
     let* α0 := try_from_and_try_into.EvenNumber::["try_from"] 8 in
     match

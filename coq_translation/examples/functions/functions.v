@@ -2,11 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ := functions.fizzbuzz_to 100 in
   Pure tt.
 
-Definition is_divisible_by `{State.Trait} (lhs : u32) (rhs : u32) : M bool :=
+Definition is_divisible_by
+    `{H : State.Trait}
+    (lhs : u32)
+    (rhs : u32)
+    : M (H := H) bool :=
   let* _ :=
     let* α0 := rhs.["eq"] 0 in
     if (α0 : bool) then
@@ -17,7 +21,7 @@ Definition is_divisible_by `{State.Trait} (lhs : u32) (rhs : u32) : M bool :=
   let* α0 := lhs.["rem"] rhs in
   α0.["eq"] 0.
 
-Definition fizzbuzz `{State.Trait} (n : u32) : M unit :=
+Definition fizzbuzz `{H : State.Trait} (n : u32) : M (H := H) unit :=
   let* α0 := functions.is_divisible_by n 15 in
   if (α0 : bool) then
     let* _ :=
@@ -60,7 +64,7 @@ Definition fizzbuzz `{State.Trait} (n : u32) : M unit :=
           Pure tt in
         Pure tt.
 
-Definition fizzbuzz_to `{State.Trait} (n : u32) : M unit :=
+Definition fizzbuzz_to `{H : State.Trait} (n : u32) : M (H := H) unit :=
   let* α0 := LangItem 1 n in
   let* α1 := LangItem α0 in
   match α1 with

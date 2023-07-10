@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -17,7 +17,7 @@ Definition main `{State.Trait} (_ : unit) : M unit :=
     Pure tt in
   Pure tt.
 
-Definition sum_odd_numbers `{State.Trait} (up_to : u32) : M u32 :=
+Definition sum_odd_numbers `{H : State.Trait} (up_to : u32) : M (H := H) u32 :=
   let acc := 0 in
   let* _ :=
     let* α0 := LangItem Range {| Range.start := 0; Range.end := up_to; |} in

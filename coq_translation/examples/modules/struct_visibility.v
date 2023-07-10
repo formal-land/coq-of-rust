@@ -28,12 +28,12 @@ Module my.
     Definition Self := struct_visibility.my.ClosedBox T.
     
     Definition new
-        `{State.Trait}
+        `{H : State.Trait}
         (contents : T)
-        : M (struct_visibility.my.ClosedBox T) :=
+        : M (H := H) (struct_visibility.my.ClosedBox T) :=
       Pure {| struct_visibility.my.ClosedBox.contents := contents; |}.
     
-    Global Instance AssociatedFunction_new `{State.Trait} :
+    Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
@@ -66,19 +66,19 @@ Module Impl_struct_visibility_my_ClosedBox_T_2.
   Definition Self := struct_visibility.my.ClosedBox T.
   
   Definition new
-      `{State.Trait}
+      `{H : State.Trait}
       (contents : T)
-      : M (struct_visibility.my.ClosedBox T) :=
+      : M (H := H) (struct_visibility.my.ClosedBox T) :=
     Pure {| struct_visibility.my.ClosedBox.contents := contents; |}.
   
-  Global Instance AssociatedFunction_new `{State.Trait} :
+  Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
 End Impl_struct_visibility_my_ClosedBox_T_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let open_box :=
     {| struct_visibility.my.OpenBox.contents := "public information"; |} in
   let* _ :=

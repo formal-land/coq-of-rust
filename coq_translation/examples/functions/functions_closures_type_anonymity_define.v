@@ -2,13 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit := Pure tt.
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit := Pure tt.
 
 Definition apply
-    `{State.Trait}
+    `{H : State.Trait}
     {F : Set}
     `{core.ops.function.FnOnce.Trait unit F}
     (f : F)
-    : M unit :=
+    : M (H := H) unit :=
   let* _ := f tt in
   Pure tt.

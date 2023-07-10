@@ -13,10 +13,10 @@ Definition Null := Null.t.
 
 Module DoubleDrop.
   Class Trait (Self : Set) {T : Set} : Set := {
-    double_drop `{State.Trait} : Self -> T -> (M unit);
+    double_drop `{H : State.Trait} : Self -> T -> (M (H := H) unit);
   }.
   
-  Global Instance Method_double_drop `{State.Trait} `(Trait)
+  Global Instance Method_double_drop `{H : State.Trait} `(Trait)
     : Notation.Dot "double_drop" := {
     Notation.dot := double_drop;
   }.
@@ -28,22 +28,26 @@ Section Impl_generics_traits_DoubleDrop_for_U.
   
   Definition Self := U.
   
-  Definition double_drop `{State.Trait} (self : Self) (Pattern : T) : M unit :=
+  Definition double_drop
+      `{H : State.Trait}
+      (self : Self)
+      (Pattern : T)
+      : M (H := H) unit :=
     Pure tt.
   
-  Global Instance Method_double_drop `{State.Trait} :
+  Global Instance Method_double_drop `{H : State.Trait} :
     Notation.Dot "double_drop" := {
     Notation.dot := double_drop;
   }.
   
   Global Instance I : generics_traits.DoubleDrop.Trait Self (T := T) := {
-    generics_traits.DoubleDrop.double_drop `{State.Trait} := double_drop;
+    generics_traits.DoubleDrop.double_drop `{H : State.Trait} := double_drop;
   }.
 End Impl_generics_traits_DoubleDrop_for_U.
 End Impl_generics_traits_DoubleDrop_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let empty := generics_traits.Empty.Build in
   let null := generics_traits.Null.Build in
   let* _ := empty.["double_drop"] null in

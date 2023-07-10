@@ -18,30 +18,31 @@ Module Contains.
     A := A;
     B := B;
     contains
-      `{State.Trait}
+      `{H : State.Trait}
       :
-      (ref Self) -> (ref ImplSelf.A) -> (ref ImplSelf.B) -> (M bool);
-    first `{State.Trait} : (ref Self) -> (M i32);
-    last `{State.Trait} : (ref Self) -> (M i32);
+      (ref Self) -> (ref ImplSelf.A) -> (ref ImplSelf.B) -> (M (H := H) bool);
+    first `{H : State.Trait} : (ref Self) -> (M (H := H) i32);
+    last `{H : State.Trait} : (ref Self) -> (M (H := H) i32);
   }.
   
-  Global Instance Method_A `{State.Trait} `(Trait)
+  Global Instance Method_A `{H : State.Trait} `(Trait)
     : Notation.DoubleColonType Self "A" := {
     Notation.double_colon_type := A;
   }.
-  Global Instance Method_B `{State.Trait} `(Trait)
+  Global Instance Method_B `{H : State.Trait} `(Trait)
     : Notation.DoubleColonType Self "B" := {
     Notation.double_colon_type := B;
   }.
-  Global Instance Method_contains `{State.Trait} `(Trait)
+  Global Instance Method_contains `{H : State.Trait} `(Trait)
     : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
-  Global Instance Method_first `{State.Trait} `(Trait)
+  Global Instance Method_first `{H : State.Trait} `(Trait)
     : Notation.Dot "first" := {
     Notation.dot := first;
   }.
-  Global Instance Method_last `{State.Trait} `(Trait) : Notation.Dot "last" := {
+  Global Instance Method_last `{H : State.Trait} `(Trait)
+    : Notation.Dot "last" := {
     Notation.dot := last;
   }.
 End Contains.
@@ -55,55 +56,61 @@ Module
   Definition B : Set := i32.
   
   Definition contains
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (number_1 : ref i32)
       (number_2 : ref i32)
-      : M bool :=
+      : M (H := H) bool :=
     let* α0 := (addr_of (self.[0])).["eq"] number_1 in
     let* α1 := (addr_of (self.[1])).["eq"] number_2 in
     α0.["andb"] α1.
   
-  Global Instance Method_contains `{State.Trait} : Notation.Dot "contains" := {
+  Global Instance Method_contains `{H : State.Trait} :
+    Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
-  Definition first `{State.Trait} (self : ref Self) : M i32 := Pure (self.[0]).
+  Definition first `{H : State.Trait} (self : ref Self) : M (H := H) i32 :=
+    Pure (self.[0]).
   
-  Global Instance Method_first `{State.Trait} : Notation.Dot "first" := {
+  Global Instance Method_first `{H : State.Trait} : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
-  Definition last `{State.Trait} (self : ref Self) : M i32 := Pure (self.[1]).
+  Definition last `{H : State.Trait} (self : ref Self) : M (H := H) i32 :=
+    Pure (self.[1]).
   
-  Global Instance Method_last `{State.Trait} : Notation.Dot "last" := {
+  Global Instance Method_last `{H : State.Trait} : Notation.Dot "last" := {
     Notation.dot := last;
   }.
   
   Global Instance I :
       generics_associated_types_solution.Contains.Trait Self := {
     generics_associated_types_solution.Contains.contains
-      `{State.Trait}
+      `{H : State.Trait}
       :=
       contains;
-    generics_associated_types_solution.Contains.first `{State.Trait} := first;
-    generics_associated_types_solution.Contains.last `{State.Trait} := last;
+    generics_associated_types_solution.Contains.first
+      `{H : State.Trait}
+      :=
+      first;
+    generics_associated_types_solution.Contains.last `{H : State.Trait} := last;
   }.
 End
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
 Definition difference
-    `{State.Trait}
+    `{H : State.Trait}
     {C : Set}
     `{generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
-    : M i32 :=
+    : M (H := H) i32 :=
   let* α0 := container.["last"] in
   let* α1 := container.["first"] in
   α0.["sub"] α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let number_1 := 3 in
   let number_2 := 10 in
   let container :=

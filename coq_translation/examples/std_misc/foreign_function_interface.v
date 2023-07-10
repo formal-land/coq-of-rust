@@ -4,13 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Error ForeignMod.
 
 Definition cos
-    `{State.Trait}
+    `{H : State.Trait}
     (z : foreign_function_interface.Complex)
-    : M foreign_function_interface.Complex :=
+    : M (H := H) foreign_function_interface.Complex :=
   foreign_function_interface.ccosf z.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* z :=
     let* α0 := 1 (* 1. *).["neg"] in
     Pure
@@ -63,18 +63,18 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
   Definition clone
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
-      : M foreign_function_interface.Complex :=
+      : M (H := H) foreign_function_interface.Complex :=
     let _ := tt in
     self.["deref"].
   
-  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{State.Trait} := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
@@ -89,10 +89,10 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
   Definition fmt
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     let* α0 := self.["im"].["lt"] 0 (* 0. *) in
     if (α0 : bool) then
       let* α0 := format_argument::["new_display"] (addr_of self.["re"]) in
@@ -112,11 +112,11 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           (addr_of [ α0; α1 ]) in
       f.["write_fmt"] α2.
   
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

@@ -18,22 +18,25 @@ Definition Sheep : Set := Sheep.t.
 
 Module Animal.
   Class Trait (Self : Set) : Set := {
-    new `{State.Trait} : (ref str) -> (M Self);
-    name `{State.Trait} : (ref Self) -> (M (ref str));
-    noise `{State.Trait} : (ref Self) -> (M (ref str));
+    new `{H : State.Trait} : (ref str) -> (M (H := H) Self);
+    name `{H : State.Trait} : (ref Self) -> (M (H := H) (ref str));
+    noise `{H : State.Trait} : (ref Self) -> (M (H := H) (ref str));
   }.
   
-  Global Instance Method_new `{State.Trait} `(Trait) : Notation.Dot "new" := {
+  Global Instance Method_new `{H : State.Trait} `(Trait)
+    : Notation.Dot "new" := {
     Notation.dot := new;
   }.
-  Global Instance Method_name `{State.Trait} `(Trait) : Notation.Dot "name" := {
+  Global Instance Method_name `{H : State.Trait} `(Trait)
+    : Notation.Dot "name" := {
     Notation.dot := name;
   }.
-  Global Instance Method_noise `{State.Trait} `(Trait)
+  Global Instance Method_noise `{H : State.Trait} `(Trait)
     : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
-  Global Instance Method_talk `{State.Trait} `(Trait) : Notation.Dot "talk" := {
+  Global Instance Method_talk `{H : State.Trait} `(Trait)
+    : Notation.Dot "talk" := {
     Notation.dot (self : ref Self) :=
       (let* _ :=
         let* _ :=
@@ -49,17 +52,18 @@ Module Animal.
           std.io.stdio._print α4 in
         Pure tt in
       Pure tt
-      : M unit);
+      : M (H := H) unit);
   }.
 End Animal.
 
 Module Impl_traits_Sheep.
   Definition Self := traits.Sheep.
   
-  Definition is_naked `{State.Trait} (self : ref Self) : M bool :=
+  Definition is_naked `{H : State.Trait} (self : ref Self) : M (H := H) bool :=
     Pure self.["naked"].
   
-  Global Instance Method_is_naked `{State.Trait} : Notation.Dot "is_naked" := {
+  Global Instance Method_is_naked `{H : State.Trait} :
+    Notation.Dot "is_naked" := {
     Notation.dot := is_naked;
   }.
 End Impl_traits_Sheep.
@@ -67,33 +71,39 @@ End Impl_traits_Sheep.
 Module Impl_traits_Animal_for_traits_Sheep.
   Definition Self := traits.Sheep.
   
-  Definition new `{State.Trait} (name : ref str) : M traits.Sheep :=
+  Definition new
+      `{H : State.Trait}
+      (name : ref str)
+      : M (H := H) traits.Sheep :=
     Pure {| traits.Sheep.name := name; traits.Sheep.naked := false; |}.
   
-  Global Instance AssociatedFunction_new `{State.Trait} :
+  Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Definition name `{State.Trait} (self : ref Self) : M (ref str) :=
+  Definition name `{H : State.Trait} (self : ref Self) : M (H := H) (ref str) :=
     Pure self.["name"].
   
-  Global Instance Method_name `{State.Trait} : Notation.Dot "name" := {
+  Global Instance Method_name `{H : State.Trait} : Notation.Dot "name" := {
     Notation.dot := name;
   }.
   
-  Definition noise `{State.Trait} (self : ref Self) : M (ref str) :=
+  Definition noise
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) (ref str) :=
     let* α0 := self.["is_naked"] in
     if (α0 : bool) then
       Pure "baaaaah?"
     else
       Pure "baaaaah!".
   
-  Global Instance Method_noise `{State.Trait} : Notation.Dot "noise" := {
+  Global Instance Method_noise `{H : State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
-  Definition talk `{State.Trait} (self : ref Self) : M unit :=
+  Definition talk `{H : State.Trait} (self : ref Self) : M (H := H) unit :=
     let* _ :=
       let* _ :=
         let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
@@ -108,21 +118,21 @@ Module Impl_traits_Animal_for_traits_Sheep.
       Pure tt in
     Pure tt.
   
-  Global Instance Method_talk `{State.Trait} : Notation.Dot "talk" := {
+  Global Instance Method_talk `{H : State.Trait} : Notation.Dot "talk" := {
     Notation.dot := talk;
   }.
   
   Global Instance I : traits.Animal.Trait Self := {
-    traits.Animal.new `{State.Trait} := new;
-    traits.Animal.name `{State.Trait} := name;
-    traits.Animal.noise `{State.Trait} := noise;
+    traits.Animal.new `{H : State.Trait} := new;
+    traits.Animal.name `{H : State.Trait} := name;
+    traits.Animal.noise `{H : State.Trait} := noise;
   }.
 End Impl_traits_Animal_for_traits_Sheep.
 
 Module Impl_traits_Sheep_2.
   Definition Self := traits.Sheep.
   
-  Definition shear `{State.Trait} (self : mut_ref Self) : M unit :=
+  Definition shear `{H : State.Trait} (self : mut_ref Self) : M (H := H) unit :=
     let* α0 := self.["is_naked"] in
     if (α0 : bool) then
       let* _ :=
@@ -151,13 +161,13 @@ Module Impl_traits_Sheep_2.
       let* _ := assign self.["naked"] true in
       Pure tt.
   
-  Global Instance Method_shear `{State.Trait} : Notation.Dot "shear" := {
+  Global Instance Method_shear `{H : State.Trait} : Notation.Dot "shear" := {
     Notation.dot := shear;
   }.
 End Impl_traits_Sheep_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* dolly :=
     let* α0 := traits.Animal.new "Dolly" in
     Pure (α0 : traits.Sheep) in

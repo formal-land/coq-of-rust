@@ -10,7 +10,7 @@ End Foo.
 Definition Foo := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let a := if_let_match_enum_values.Foo.Bar in
   let b := if_let_match_enum_values.Foo.Baz in
   let c := if_let_match_enum_values.Foo.Qux 100 in

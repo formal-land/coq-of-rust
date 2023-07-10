@@ -15,10 +15,10 @@ Definition Cow : Set := Cow.t.
 
 Module Animal.
   Class Trait (Self : Set) : Set := {
-    noise `{State.Trait} : (ref Self) -> (M (ref str));
+    noise `{H : State.Trait} : (ref Self) -> (M (H := H) (ref str));
   }.
   
-  Global Instance Method_noise `{State.Trait} `(Trait)
+  Global Instance Method_noise `{H : State.Trait} `(Trait)
     : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
@@ -28,37 +28,43 @@ Module
   Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
   Definition Self := returning_traits_with_dyn.Sheep.
   
-  Definition noise `{State.Trait} (self : ref Self) : M (ref str) :=
+  Definition noise
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) (ref str) :=
     Pure "baaaaah!".
   
-  Global Instance Method_noise `{State.Trait} : Notation.Dot "noise" := {
+  Global Instance Method_noise `{H : State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
   Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
-    returning_traits_with_dyn.Animal.noise `{State.Trait} := noise;
+    returning_traits_with_dyn.Animal.noise `{H : State.Trait} := noise;
   }.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Definition Self := returning_traits_with_dyn.Cow.
   
-  Definition noise `{State.Trait} (self : ref Self) : M (ref str) :=
+  Definition noise
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) (ref str) :=
     Pure "moooooo!".
   
-  Global Instance Method_noise `{State.Trait} : Notation.Dot "noise" := {
+  Global Instance Method_noise `{H : State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
   Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
-    returning_traits_with_dyn.Animal.noise `{State.Trait} := noise;
+    returning_traits_with_dyn.Animal.noise `{H : State.Trait} := noise;
   }.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Definition random_animal
-    `{State.Trait}
+    `{H : State.Trait}
     (random_number : f64)
-    : M (alloc.boxed.Box TraitObject) :=
+    : M (H := H) (alloc.boxed.Box TraitObject) :=
   let* α0 := random_number.["lt"] 1 (* 0.5 *) in
   if (α0 : bool) then
     alloc.boxed.Box::["new"] {|  |}
@@ -66,7 +72,7 @@ Definition random_animal
     alloc.boxed.Box::["new"] {|  |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let random_number := 0 (* 0.234 *) in
   let* animal := returning_traits_with_dyn.random_animal random_number in
   let* _ :=

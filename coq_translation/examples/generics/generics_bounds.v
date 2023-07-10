@@ -3,10 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module HasArea.
   Class Trait (Self : Set) : Set := {
-    area `{State.Trait} : (ref Self) -> (M f64);
+    area `{H : State.Trait} : (ref Self) -> (M (H := H) f64);
   }.
   
-  Global Instance Method_area `{State.Trait} `(Trait) : Notation.Dot "area" := {
+  Global Instance Method_area `{H : State.Trait} `(Trait)
+    : Notation.Dot "area" := {
     Notation.dot := area;
   }.
 End HasArea.
@@ -14,15 +15,15 @@ End HasArea.
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
-  Definition area `{State.Trait} (self : ref Self) : M f64 :=
+  Definition area `{H : State.Trait} (self : ref Self) : M (H := H) f64 :=
     self.["length"].["mul"] self.["height"].
   
-  Global Instance Method_area `{State.Trait} : Notation.Dot "area" := {
+  Global Instance Method_area `{H : State.Trait} : Notation.Dot "area" := {
     Notation.dot := area;
   }.
   
   Global Instance I : generics_bounds.HasArea.Trait Self := {
-    generics_bounds.HasArea.area `{State.Trait} := area;
+    generics_bounds.HasArea.area `{H : State.Trait} := area;
   }.
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
@@ -45,10 +46,10 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
   Definition fmt
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Rectangle"
@@ -57,12 +58,12 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       "height"
       (addr_of (addr_of self.["height"])).
   
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
@@ -83,11 +84,11 @@ End Triangle.
 Definition Triangle : Set := Triangle.t.
 
 Definition print_debug
-    `{State.Trait}
+    `{H : State.Trait}
     {T : Set}
     `{core.fmt.Debug.Trait T}
     (t : ref T)
-    : M unit :=
+    : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of t) in
@@ -99,15 +100,15 @@ Definition print_debug
   Pure tt.
 
 Definition area
-    `{State.Trait}
+    `{H : State.Trait}
     {T : Set}
     `{generics_bounds.HasArea.Trait T}
     (t : ref T)
-    : M f64 :=
+    : M (H := H) f64 :=
   t.["area"].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let rectangle :=
     {|
       generics_bounds.Rectangle.length := 3 (* 3.0 *);

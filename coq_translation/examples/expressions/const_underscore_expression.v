@@ -25,10 +25,11 @@ Definition Bar : Set := Bar.t.
 
 Module BarTrait.
   Class Trait (Self : Set) : Set := {
-    show `{State.Trait} : Self -> (M alloc.string.String);
+    show `{H : State.Trait} : Self -> (M (H := H) alloc.string.String);
   }.
   
-  Global Instance Method_show `{State.Trait} `(Trait) : Notation.Dot "show" := {
+  Global Instance Method_show `{H : State.Trait} `(Trait)
+    : Notation.Dot "show" := {
     Notation.dot := show;
   }.
 End BarTrait.
@@ -37,15 +38,18 @@ Module
   Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
   Definition Self := const_underscore_expression.Bar.
   
-  Definition show `{State.Trait} (self : Self) : M alloc.string.String :=
+  Definition show
+      `{H : State.Trait}
+      (self : Self)
+      : M (H := H) alloc.string.String :=
     Pure self.["test"].
   
-  Global Instance Method_show `{State.Trait} : Notation.Dot "show" := {
+  Global Instance Method_show `{H : State.Trait} : Notation.Dot "show" := {
     Notation.dot := show;
   }.
   
   Global Instance I : const_underscore_expression.BarTrait.Trait Self := {
-    const_underscore_expression.BarTrait.show `{State.Trait} := show;
+    const_underscore_expression.BarTrait.show `{H : State.Trait} := show;
   }.
 End
   Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.

@@ -2,11 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition combine_vecs_explicit_return_type
-    `{State.Trait}
+    `{H : State.Trait}
     (v : alloc.vec.Vec i32)
     (u : alloc.vec.Vec i32)
     :
-      M
+      M (H := H)
         (core.iter.adapters.cycle.Cycle
           (core.iter.adapters.chain.Chain
             (alloc.vec.into_iter.IntoIter i32)
@@ -17,10 +17,10 @@ Definition combine_vecs_explicit_return_type
   α2.["cycle"].
 
 Definition combine_vecs
-    `{State.Trait}
+    `{H : State.Trait}
     (v : alloc.vec.Vec i32)
     (u : alloc.vec.Vec i32)
-    : M OpaqueDef :=
+    : M (H := H) OpaqueDef :=
   let* α0 := v.["into_iter"] in
   let* α1 := u.["into_iter"] in
   let* α2 := α0.["chain"] α1 in
@@ -29,7 +29,7 @@ Definition combine_vecs
 Error OpaqueTy.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* v1 :=
     let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
     Slice::["into_vec"] α0 in

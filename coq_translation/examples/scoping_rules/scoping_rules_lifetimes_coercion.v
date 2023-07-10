@@ -2,21 +2,21 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply
-    `{State.Trait}
+    `{H : State.Trait}
     (first : ref i32)
     (second : ref i32)
-    : M i32 :=
+    : M (H := H) i32 :=
   first.["mul"] second.
 
 Definition choose_first
-    `{State.Trait}
+    `{H : State.Trait}
     (first : ref i32)
     (arg : ref i32)
-    : M (ref i32) :=
+    : M (H := H) (ref i32) :=
   Pure first.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let first := 2 in
   let* _ :=
     let second := 3 in

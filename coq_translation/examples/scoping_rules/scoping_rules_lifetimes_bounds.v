@@ -17,31 +17,31 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Definition Self := scoping_rules_lifetimes_bounds.Ref T.
   
   Definition fmt
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Ref"
       (addr_of (addr_of (self.[0]))).
   
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
 Definition print
-    `{State.Trait}
+    `{H : State.Trait}
     {T : Set}
     `{core.fmt.Debug.Trait T}
     (t : T)
-    : M unit :=
+    : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of t) in
@@ -55,11 +55,11 @@ Definition print
   Pure tt.
 
 Definition print_ref
-    `{State.Trait}
+    `{H : State.Trait}
     {T : Set}
     `{core.fmt.Debug.Trait T}
     (t : ref T)
-    : M unit :=
+    : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of t) in
@@ -73,7 +73,7 @@ Definition print_ref
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let x := 7 in
   let ref_x := scoping_rules_lifetimes_bounds.Ref.Build_t (addr_of x) in
   let* _ := scoping_rules_lifetimes_bounds.print_ref (addr_of ref_x) in

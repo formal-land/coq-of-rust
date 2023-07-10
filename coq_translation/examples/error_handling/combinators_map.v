@@ -13,10 +13,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Definition Self := combinators_map.Food.
   
   Definition fmt
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     let* α0 :=
       match self with
       | combinators_map.Food.Apple => Pure "Apple"
@@ -25,12 +25,12 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
       end in
     core.fmt.Formatter::["write_str"] f α0.
   
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
@@ -47,21 +47,21 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Definition Self := combinators_map.Peeled.
   
   Definition fmt
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Peeled"
       (addr_of (addr_of (self.[0]))).
   
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
@@ -78,21 +78,21 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Definition Self := combinators_map.Chopped.
   
   Definition fmt
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Chopped"
       (addr_of (addr_of (self.[0]))).
   
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
@@ -109,28 +109,28 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Definition Self := combinators_map.Cooked.
   
   Definition fmt
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Cooked"
       (addr_of (addr_of (self.[0]))).
   
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 Definition peel
-    `{State.Trait}
+    `{H : State.Trait}
     (food : core.option.Option combinators_map.Food)
-    : M (core.option.Option combinators_map.Peeled) :=
+    : M (H := H) (core.option.Option combinators_map.Peeled) :=
   match food with
   | core.option.Option.Some food =>
     Pure (core.option.Option.Some (combinators_map.Peeled.Build_t food))
@@ -138,9 +138,9 @@ Definition peel
   end.
 
 Definition chop
-    `{State.Trait}
+    `{H : State.Trait}
     (peeled : core.option.Option combinators_map.Peeled)
-    : M (core.option.Option combinators_map.Chopped) :=
+    : M (H := H) (core.option.Option combinators_map.Chopped) :=
   match peeled with
   | core.option.Option.Some combinators_map.Peeled.Build_t food =>
     Pure (core.option.Option.Some (combinators_map.Chopped.Build_t food))
@@ -148,17 +148,17 @@ Definition chop
   end.
 
 Definition cook
-    `{State.Trait}
+    `{H : State.Trait}
     (chopped : core.option.Option combinators_map.Chopped)
-    : M (core.option.Option combinators_map.Cooked) :=
+    : M (H := H) (core.option.Option combinators_map.Cooked) :=
   chopped.["map"]
     (fun combinators_map.Chopped.Build_t food =>
       Pure (combinators_map.Cooked.Build_t food)).
 
 Definition process
-    `{State.Trait}
+    `{H : State.Trait}
     (food : core.option.Option combinators_map.Food)
-    : M (core.option.Option combinators_map.Cooked) :=
+    : M (H := H) (core.option.Option combinators_map.Cooked) :=
   let* α0 := food.["map"] (fun f => Pure (combinators_map.Peeled.Build_t f)) in
   let* α1 :=
     α0.["map"]
@@ -169,9 +169,9 @@ Definition process
       Pure (combinators_map.Cooked.Build_t f)).
 
 Definition eat
-    `{State.Trait}
+    `{H : State.Trait}
     (food : core.option.Option combinators_map.Cooked)
-    : M unit :=
+    : M (H := H) unit :=
   match food with
   | core.option.Option.Some food =>
     let* _ :=
@@ -194,7 +194,7 @@ Definition eat
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let apple := core.option.Option.Some combinators_map.Food.Apple in
   let carrot := core.option.Option.Some combinators_map.Food.Carrot in
   let potato := core.option.Option.None in

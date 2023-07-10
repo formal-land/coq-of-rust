@@ -15,7 +15,7 @@ Definition Droppable : Set := Droppable.t.
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   Definition Self := drop.Droppable.
   
-  Definition drop `{State.Trait} (self : mut_ref Self) : M unit :=
+  Definition drop `{H : State.Trait} (self : mut_ref Self) : M (H := H) unit :=
     let* _ :=
       let* _ :=
         let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
@@ -28,17 +28,17 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
       Pure tt in
     Pure tt.
   
-  Global Instance Method_drop `{State.Trait} : Notation.Dot "drop" := {
+  Global Instance Method_drop `{H : State.Trait} : Notation.Dot "drop" := {
     Notation.dot := drop;
   }.
   
   Global Instance I : core.ops.drop.Drop.Trait Self := {
-    core.ops.drop.Drop.drop `{State.Trait} := drop;
+    core.ops.drop.Drop.drop `{H : State.Trait} := drop;
   }.
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let _a := {| drop.Droppable.name := "a"; |} in
   let* _ :=
     let _b := {| drop.Droppable.name := "b"; |} in

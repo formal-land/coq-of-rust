@@ -22,10 +22,10 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition fmt
-      `{State.Trait}
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Point"
@@ -34,12 +34,12 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
       "y"
       (addr_of (addr_of self.["y"])).
   
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 
@@ -47,16 +47,19 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition clone `{State.Trait} (self : ref Self) : M box_stack_heap.Point :=
+  Definition clone
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) box_stack_heap.Point :=
     let _ := tt in
     self.["deref"].
   
-  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{State.Trait} := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_box_stack_heap_Point.
 
@@ -83,7 +86,10 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
-Definition origin `{State.Trait} (_ : unit) : M box_stack_heap.Point :=
+Definition origin
+    `{H : State.Trait}
+    (_ : unit)
+    : M (H := H) box_stack_heap.Point :=
   Pure
     {|
       box_stack_heap.Point.x := 0 (* 0.0 *);
@@ -91,9 +97,9 @@ Definition origin `{State.Trait} (_ : unit) : M box_stack_heap.Point :=
     |}.
 
 Definition boxed_origin
-    `{State.Trait}
+    `{H : State.Trait}
     (_ : unit)
-    : M (alloc.boxed.Box box_stack_heap.Point) :=
+    : M (H := H) (alloc.boxed.Box box_stack_heap.Point) :=
   alloc.boxed.Box::["new"]
     {|
       box_stack_heap.Point.x := 0 (* 0.0 *);
@@ -101,7 +107,7 @@ Definition boxed_origin
     |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* point := box_stack_heap.origin tt in
   let* rectangle :=
     let* α0 := box_stack_heap.origin tt in
