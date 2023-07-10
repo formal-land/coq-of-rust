@@ -115,3 +115,10 @@ Definition bind `{State.Trait} {R A B : Set}
   | inl v => e2 v fuel s
   | inr e => RawMonad.Pure (inr e, s)
   end).
+
+Definition while `{State.Trait} {R A : Set} (f : A -> Monad R A) (a : A) : Monad R A :=
+  fix F (n : nat) :=
+    match n with
+    | 0 => pure a 0
+    | S n' => bind F f n'
+    end.
