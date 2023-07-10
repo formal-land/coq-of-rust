@@ -5,16 +5,14 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let counter := 0 in
   let* result :=
-    loop
-      let* _ := counter.["add_assign"] 1 in
+    while
+      (let* _ := counter.["add_assign"] 1 in
       let* α0 := counter.["eq"] 10 in
       if (α0 : bool) then
         let _ := Break in
         Pure tt
       else
-        Pure tt
-      from
-      loop in
+        Pure tt) in
   let* _ :=
     match (addr_of result, addr_of 20) with
     | (left_val, right_val) =>

@@ -32,8 +32,8 @@ Module tests.
     let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
     match α0 with
     | iter =>
-      loop
-        let* _ :=
+      while
+        (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
@@ -45,9 +45,7 @@ Module tests.
               α1.["expect"] "Could not write to ferris.txt" in
             Pure tt
           end in
-        Pure tt
-        from
-        for
+        Pure tt)
     end.
   
   Definition test_file_also `{H : State.Trait} (_ : unit) : M (H := H) unit :=
@@ -60,8 +58,8 @@ Module tests.
     let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
     match α0 with
     | iter =>
-      loop
-        let* _ :=
+      while
+        (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
@@ -73,9 +71,7 @@ Module tests.
               α1.["expect"] "Could not write to ferris.txt" in
             Pure tt
           end in
-        Pure tt
-        from
-        for
+        Pure tt)
     end.
 End tests.
 
@@ -89,8 +85,8 @@ Definition test_file `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
   match α0 with
   | iter =>
-    loop
-      let* _ :=
+    while
+      (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with
         | None => Pure Break
@@ -102,9 +98,7 @@ Definition test_file `{H : State.Trait} (_ : unit) : M (H := H) unit :=
             α1.["expect"] "Could not write to ferris.txt" in
           Pure tt
         end in
-      Pure tt
-      from
-      for
+      Pure tt)
   end.
 
 Definition test_file_also `{H : State.Trait} (_ : unit) : M (H := H) unit :=
@@ -117,8 +111,8 @@ Definition test_file_also `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
   match α0 with
   | iter =>
-    loop
-      let* _ :=
+    while
+      (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with
         | None => Pure Break
@@ -130,7 +124,5 @@ Definition test_file_also `{H : State.Trait} (_ : unit) : M (H := H) unit :=
             α1.["expect"] "Could not write to ferris.txt" in
           Pure tt
         end in
-      Pure tt
-      from
-      for
+      Pure tt)
   end.

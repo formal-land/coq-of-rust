@@ -24,8 +24,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* α0 := LangItem lines in
   match α0 with
   | iter =>
-    loop
-      let* _ :=
+    while
+      (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with
         | None => Pure Break
@@ -43,7 +43,5 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
             Pure tt in
           Pure tt
         end in
-      Pure tt
-      from
-      for
+      Pure tt)
   end.

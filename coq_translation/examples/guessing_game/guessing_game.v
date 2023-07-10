@@ -14,8 +14,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α0 := rand.thread_rng tt in
     let* α1 := LangItem 1 100 in
     α0.["gen_range"] α1 in
-  loop
-    let* _ :=
+  while
+    (let* _ :=
       let* _ :=
         let* α0 :=
           format_arguments::["new_const"]
@@ -70,6 +70,4 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         Pure tt in
       let _ := Break in
       Pure tt
-    end
-    from
-    loop.
+    end).

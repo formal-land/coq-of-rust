@@ -12,8 +12,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       LangItem Range {| Range.start := 0; Range.end := channels.NTHREADS; |} in
     match α0 with
     | iter =>
-      loop
-        let* _ :=
+      while
+        (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
@@ -40,9 +40,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
             let* _ := children.["push"] child in
             Pure tt
           end in
-        Pure tt
-        from
-        for
+        Pure tt)
     end in
   let* ids := alloc.vec.Vec::["with_capacity"] (cast channels.NTHREADS usize) in
   let* _ :=
@@ -50,8 +48,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       LangItem Range {| Range.start := 0; Range.end := channels.NTHREADS; |} in
     match α0 with
     | iter =>
-      loop
-        let* _ :=
+      while
+        (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
@@ -61,16 +59,14 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
               ids.["push"] α0 in
             Pure tt
           end in
-        Pure tt
-        from
-        for
+        Pure tt)
     end in
   let* _ :=
     let* α0 := LangItem children in
     match α0 with
     | iter =>
-      loop
-        let* _ :=
+      while
+        (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
@@ -80,9 +76,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
               α0.["expect"] "oops! the child thread panicked" in
             Pure tt
           end in
-        Pure tt
-        from
-        for
+        Pure tt)
     end in
   let* _ :=
     let* _ :=

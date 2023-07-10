@@ -1019,16 +1019,20 @@ impl Expr {
                     nest([text("else"), hardline(), failure.to_doc(false)]),
                 ]),
             ),
-            Expr::Loop { body, loop_source } => paren(
+            Expr::Loop {
+                body, /*loop_source*/
+                ..
+            } => paren(
                 with_paren,
                 nest([
-                    text("loop"),
+                    //text("loop"),
+                    text("while"),
                     line(),
-                    body.to_doc(),
-                    line(),
+                    paren(true, body.to_doc()),
+                    /*line(),
                     text("from"),
                     line(),
-                    text(loop_source),
+                    text(loop_source),*/
                 ]),
             ),
             Expr::Match { scrutinee, arms } => group([

@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let optional := core.option.Option.Some 0 in
-  loop
-    match optional with
+  while
+    (match optional with
     | core.option.Option.Some i =>
       let* α0 := i.["gt"] 9 in
       if (α0 : bool) then
@@ -37,6 +37,4 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     | _ =>
       let _ := Break in
       Pure tt
-    end
-    from
-    loop.
+    end).

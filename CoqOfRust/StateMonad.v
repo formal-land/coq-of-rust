@@ -95,6 +95,7 @@ Module Exception.
   Arguments Continue {_}.
   Arguments Break {_}.
   Arguments Panic {_ _}.
+  Arguments NonTermination {_}.
 End Exception.
 Definition Exception := Exception.t.
 
@@ -116,9 +117,22 @@ Definition bind `{State.Trait} {R A B : Set}
   | inr e => RawMonad.Pure (inr e, s)
   end).
 
-Definition while `{State.Trait} {R A : Set} (f : A -> Monad R A) (a : A) : Monad R A :=
-  fix F (n : nat) :=
+Definition Return `{State.Trait} {R A : Set} (r : R) : Monad R A :=
+  fun _ s => RawMonad.Pure (inr (Exception.Return r), s).
+Definition Continue `{State.Trait} {R A : Set} : Monad R A :=
+  fun _ s => RawMonad.Pure (inr Exception.Continue, s).
+Definition Break `{State.Trait} {R A : Set} : Monad R A :=
+  fun _ s => RawMonad.Pure (inr Exception.Break, s).
+Definition Panic `{State.Trait} {R A B : Set} (a : A) : Monad R B :=
+  fun _ s => RawMonad.Pure (inr (Exception.Panic a), s).
+
+(* TODO: provide proper definition for the while function
+Definition while `{State.Trait} {R A : Set} (f : A -> Monad R A) :
+  A -> Monad R A :=
+  fix F (a : A) (n : nat) :=
     match n with
-    | 0 => pure a 0
-    | S n' => bind F f n'
+    | 0 => fun s => RawMonad.Pure (inr Exception.NonTermination, s)
+    | S n' => bind (f a) F n'
     end.
+*)
+Parameter while : forall `{State.Trait} {R A : Set}, Monad R A -> Monad R A.

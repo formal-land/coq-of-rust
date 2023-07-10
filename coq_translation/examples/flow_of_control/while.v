@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let n := 1 in
-  loop
-    let* α0 := n.["lt"] 101 in
+  while
+    (let* α0 := n.["lt"] 101 in
     if (α0 : bool) then
       let* _ :=
         let* α0 := n.["rem"] 15 in
@@ -59,6 +59,4 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       Pure tt
     else
       let _ := Break in
-      Pure tt
-    from
-    while.
+      Pure tt).

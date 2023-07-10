@@ -23,8 +23,8 @@ Definition sum_odd_numbers `{H : State.Trait} (up_to : u32) : M (H := H) u32 :=
     let* α0 := LangItem Range {| Range.start := 0; Range.end := up_to; |} in
     match α0 with
     | iter =>
-      loop
-        let* _ :=
+      while
+        (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
           | None => Pure Break
@@ -39,8 +39,6 @@ Definition sum_odd_numbers `{H : State.Trait} (up_to : u32) : M (H := H) u32 :=
             let* _ := acc.["add_assign"] addition in
             Pure tt
           end in
-        Pure tt
-        from
-        for
+        Pure tt)
     end in
   Pure acc.
