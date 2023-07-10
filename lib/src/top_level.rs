@@ -717,10 +717,10 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                         text("Notation.double_colon := "),
                         strct_args.body.parameter_name_for_fmt(),
                         text(";"),
+                        line(),
                     ]),
-                    line(),
+                    text("}."),
                 ]),
-                text("}."),
                 hardline(),
                 hardline(),
             ])

@@ -1156,10 +1156,8 @@ impl Expr {
     // get the name and the arg_types of the associated function match step2
     pub fn parameter_for_fmt2(&self) -> Doc {
         match self {
-            Expr::Call { func, args: _ } => nest([
-                func.parameter_for_fmt_print_name(),
-                // intersperse(args.iter().map(|arg| arg.to_type()), [line()]),
-            ]),
+            Expr::Call { func, args: _ } => func.parameter_for_fmt_print_name(),
+            // intersperse(args.iter().map(|arg| arg.to_type()), [line()]),
             _ => nil(),
         }
     }
