@@ -15,7 +15,11 @@ End Color.
 Definition Color := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let color := match_destructuring_enums.Color.RGB 122 17 40 in
   let* _ :=
     let* _ :=

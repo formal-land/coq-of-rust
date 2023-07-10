@@ -48,7 +48,11 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
 End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* long_tuple :=
     let* α0 := 1.["neg"] in
     let* α1 := 2.["neg"] in

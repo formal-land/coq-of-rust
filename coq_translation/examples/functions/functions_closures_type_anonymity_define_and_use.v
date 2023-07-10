@@ -3,14 +3,17 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition apply
     {F : Set}
-    `{core.ops.function.Fn.Trait unit F}
-    (f : F)
+    `{core.ops.function.Fn.Trait unit F}(f : F)
     : M unit :=
   let* _ := f in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let x := 7 in
   let print :=
     fun  =>

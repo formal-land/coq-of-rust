@@ -124,7 +124,11 @@ Module Impl_unpacking_options_via_question_mark_Person.
 End Impl_unpacking_options_via_question_mark_Person.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let p :=
     {|
       unpacking_options_via_question_mark.Person.job :=

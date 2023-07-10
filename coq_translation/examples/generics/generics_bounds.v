@@ -83,8 +83,7 @@ Definition Triangle : Set := Triangle.t.
 
 Definition print_debug
     {T : Set}
-    `{core.fmt.Debug.Trait T}
-    (t : ref T)
+    `{core.fmt.Debug.Trait T}(t : ref T)
     : M unit :=
   let* _ :=
     let* _ :=
@@ -98,13 +97,16 @@ Definition print_debug
 
 Definition area
     {T : Set}
-    `{generics_bounds.HasArea.Trait T}
-    (t : ref T)
+    `{generics_bounds.HasArea.Trait T}(t : ref T)
     : M f64 :=
   t.["area"].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let rectangle :=
     {|
       generics_bounds.Rectangle.length := 3 (* 3.0 *);

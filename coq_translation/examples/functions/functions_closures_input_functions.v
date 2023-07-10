@@ -3,13 +3,16 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition call_me
     {F : Set}
-    `{core.ops.function.Fn.Trait unit F}
-    (f : F)
+    `{core.ops.function.Fn.Trait unit F}(f : F)
     : M unit :=
   let* _ := f in
   Pure tt.
 
+<<<<<<< HEAD
 Definition function : M unit :=
+=======
+Definition function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -20,7 +23,11 @@ Definition function : M unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let closure :=
     fun  =>
       let* _ :=

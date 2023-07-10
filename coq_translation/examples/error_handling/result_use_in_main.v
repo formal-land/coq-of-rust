@@ -2,7 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M (core.result.Result unit core.num.error.ParseIntError) :=
+=======
+Definition main  : M (core.result.Result unit core.num.error.ParseIntError) :=
+>>>>>>> 6ee776e (update snapshot)
   let number_str := "10" in
   let* number :=
     let* α0 := number_str.["parse"] in

@@ -2,7 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* apple := alloc.sync.Arc::["new"] "the same apple" in
   let* _ :=
     let* α0 := LangItem Range {| Range.start := 0; Range.end := 10; |} in

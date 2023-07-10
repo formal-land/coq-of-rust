@@ -2,7 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my_mod.
+<<<<<<< HEAD
   Definition private_function : M unit :=
+=======
+  Definition private_function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -13,7 +17,11 @@ Module my_mod.
       Pure tt in
     Pure tt.
   
+<<<<<<< HEAD
   Definition function : M unit :=
+=======
+  Definition function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -24,7 +32,11 @@ Module my_mod.
       Pure tt in
     Pure tt.
   
+<<<<<<< HEAD
   Definition indirect_access : M unit :=
+=======
+  Definition indirect_access  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -37,7 +49,11 @@ Module my_mod.
     Pure tt.
   
   Module nested.
+<<<<<<< HEAD
     Definition function : M unit :=
+=======
+    Definition function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -49,7 +65,11 @@ Module my_mod.
       Pure tt.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
     Definition private_function : M unit :=
+=======
+    Definition private_function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -60,7 +80,11 @@ Module my_mod.
         Pure tt in
       Pure tt.
     
+<<<<<<< HEAD
     Definition public_function_in_my_mod : M unit :=
+=======
+    Definition public_function_in_my_mod  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -75,7 +99,11 @@ Module my_mod.
       let* _ := visibility.my_mod.nested.public_function_in_nested in
       Pure tt.
     
+<<<<<<< HEAD
     Definition public_function_in_nested : M unit :=
+=======
+    Definition public_function_in_nested  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -87,7 +115,11 @@ Module my_mod.
         Pure tt in
       Pure tt.
     
+<<<<<<< HEAD
     Definition public_function_in_super_mod : M unit :=
+=======
+    Definition public_function_in_super_mod  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -101,7 +133,11 @@ Module my_mod.
       Pure tt.
   End nested.
   
+<<<<<<< HEAD
   Definition call_public_function_in_my_mod : M unit :=
+=======
+  Definition call_public_function_in_my_mod  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -121,7 +157,11 @@ Module my_mod.
     let* _ := visibility.my_mod.nested.public_function_in_super_mod in
     Pure tt.
   
+<<<<<<< HEAD
   Definition public_function_in_crate : M unit :=
+=======
+  Definition public_function_in_crate  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -134,7 +174,11 @@ Module my_mod.
   
   Module private_nested.
     (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
     Definition function : M unit :=
+=======
+    Definition function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -146,7 +190,11 @@ Module my_mod.
       Pure tt.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
     Definition restricted_function : M unit :=
+=======
+    Definition restricted_function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -161,7 +209,11 @@ Module my_mod.
   End private_nested.
 End my_mod.
 
+<<<<<<< HEAD
 Definition private_function : M unit :=
+=======
+Definition private_function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -172,7 +224,11 @@ Definition private_function : M unit :=
     Pure tt in
   Pure tt.
 
+<<<<<<< HEAD
 Definition function : M unit :=
+=======
+Definition function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -183,7 +239,11 @@ Definition function : M unit :=
     Pure tt in
   Pure tt.
 
+<<<<<<< HEAD
 Definition indirect_access : M unit :=
+=======
+Definition indirect_access  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -196,7 +256,11 @@ Definition indirect_access : M unit :=
   Pure tt.
 
 Module nested.
+<<<<<<< HEAD
   Definition function : M unit :=
+=======
+  Definition function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -208,7 +272,11 @@ Module nested.
     Pure tt.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
   Definition private_function : M unit :=
+=======
+  Definition private_function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -219,7 +287,11 @@ Module nested.
       Pure tt in
     Pure tt.
   
+<<<<<<< HEAD
   Definition public_function_in_my_mod : M unit :=
+=======
+  Definition public_function_in_my_mod  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -233,7 +305,11 @@ Module nested.
     let* _ := visibility.my_mod.nested.public_function_in_nested in
     Pure tt.
   
+<<<<<<< HEAD
   Definition public_function_in_nested : M unit :=
+=======
+  Definition public_function_in_nested  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -245,7 +321,11 @@ Module nested.
       Pure tt in
     Pure tt.
   
+<<<<<<< HEAD
   Definition public_function_in_super_mod : M unit :=
+=======
+  Definition public_function_in_super_mod  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -258,7 +338,11 @@ Module nested.
     Pure tt.
 End nested.
 
+<<<<<<< HEAD
 Definition function : M unit :=
+=======
+Definition function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -270,7 +354,11 @@ Definition function : M unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition private_function : M unit :=
+=======
+Definition private_function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -281,7 +369,11 @@ Definition private_function : M unit :=
     Pure tt in
   Pure tt.
 
+<<<<<<< HEAD
 Definition public_function_in_my_mod : M unit :=
+=======
+Definition public_function_in_my_mod  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -295,7 +387,11 @@ Definition public_function_in_my_mod : M unit :=
   let* _ := visibility.my_mod.nested.public_function_in_nested in
   Pure tt.
 
+<<<<<<< HEAD
 Definition public_function_in_nested : M unit :=
+=======
+Definition public_function_in_nested  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -307,7 +403,11 @@ Definition public_function_in_nested : M unit :=
     Pure tt in
   Pure tt.
 
+<<<<<<< HEAD
 Definition public_function_in_super_mod : M unit :=
+=======
+Definition public_function_in_super_mod  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -319,7 +419,11 @@ Definition public_function_in_super_mod : M unit :=
     Pure tt in
   Pure tt.
 
+<<<<<<< HEAD
 Definition call_public_function_in_my_mod : M unit :=
+=======
+Definition call_public_function_in_my_mod  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -338,7 +442,11 @@ Definition call_public_function_in_my_mod : M unit :=
   let* _ := visibility.my_mod.nested.public_function_in_super_mod in
   Pure tt.
 
+<<<<<<< HEAD
 Definition public_function_in_crate : M unit :=
+=======
+Definition public_function_in_crate  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -351,7 +459,11 @@ Definition public_function_in_crate : M unit :=
 
 Module private_nested.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
   Definition function : M unit :=
+=======
+  Definition function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -363,7 +475,11 @@ Module private_nested.
     Pure tt.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
   Definition restricted_function : M unit :=
+=======
+  Definition restricted_function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -377,7 +493,11 @@ Module private_nested.
 End private_nested.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition function : M unit :=
+=======
+Definition function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -389,7 +509,11 @@ Definition function : M unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition restricted_function : M unit :=
+=======
+Definition restricted_function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -401,7 +525,11 @@ Definition restricted_function : M unit :=
     Pure tt in
   Pure tt.
 
+<<<<<<< HEAD
 Definition function : M unit :=
+=======
+Definition function  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -412,6 +540,7 @@ Definition function : M unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
   let* _ := visibility.function in
   let* _ := visibility.my_mod.function in
@@ -419,4 +548,13 @@ Definition main : M unit :=
   let* _ := visibility.my_mod.nested.function in
   let* _ := visibility.my_mod.call_public_function_in_my_mod in
   let* _ := visibility.my_mod.public_function_in_crate in
+=======
+Definition main  : M unit :=
+  let* _ := visibility.function tt in
+  let* _ := visibility.my_mod.function tt in
+  let* _ := visibility.my_mod.indirect_access tt in
+  let* _ := visibility.my_mod.nested.function tt in
+  let* _ := visibility.my_mod.call_public_function_in_my_mod tt in
+  let* _ := visibility.my_mod.public_function_in_crate tt in
+>>>>>>> 6ee776e (update snapshot)
   Pure tt.

@@ -83,15 +83,18 @@ End
 
 Definition difference
     {C : Set}
-    `{generics_associated_types_solution.Contains.Trait C}
-    (container : ref C)
+    `{generics_associated_types_solution.Contains.Trait C}(container : ref C)
     : M i32 :=
   let* α0 := container.["last"] in
   let* α1 := container.["first"] in
   α0.["sub"] α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let number_1 := 3 in
   let number_2 := 10 in
   let container :=

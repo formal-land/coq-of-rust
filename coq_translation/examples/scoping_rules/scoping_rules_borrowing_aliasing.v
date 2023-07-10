@@ -21,7 +21,11 @@ End Point.
 Definition Point : Set := Point.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let point :=
     {|
       scoping_rules_borrowing_aliasing.Point.x := 0;

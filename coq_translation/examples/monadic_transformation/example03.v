@@ -2,7 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let _ := (1, 2, 3, 4) in
   let* _ :=
     let* α0 := alloc.boxed.Box::["new"] [ 5; 6; 7; 8 ] in

@@ -4,8 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Definition NTHREADS : u32 := run (Pure 10).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
   let* children := alloc.vec.Vec::["new"] in
+=======
+Definition main  : M unit :=
+  let* children := alloc.vec.Vec::["new"] tt in
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* α0 :=
       LangItem Range {| Range.start := 0; Range.end := threads.NTHREADS; |} in

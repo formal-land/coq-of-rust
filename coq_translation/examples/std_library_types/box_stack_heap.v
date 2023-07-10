@@ -82,14 +82,22 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
+<<<<<<< HEAD
 Definition origin : M box_stack_heap.Point :=
+=======
+Definition origin  : M box_stack_heap.Point :=
+>>>>>>> 6ee776e (update snapshot)
   Pure
     {|
       box_stack_heap.Point.x := 0 (* 0.0 *);
       box_stack_heap.Point.y := 0 (* 0.0 *);
     |}.
 
+<<<<<<< HEAD
 Definition boxed_origin : M (alloc.boxed.Box box_stack_heap.Point) :=
+=======
+Definition boxed_origin  : M (alloc.boxed.Box box_stack_heap.Point) :=
+>>>>>>> 6ee776e (update snapshot)
   alloc.boxed.Box::["new"]
     {|
       box_stack_heap.Point.x := 0 (* 0.0 *);
@@ -97,8 +105,13 @@ Definition boxed_origin : M (alloc.boxed.Box box_stack_heap.Point) :=
     |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
   let* point := box_stack_heap.origin in
+=======
+Definition main  : M unit :=
+  let* point := box_stack_heap.origin tt in
+>>>>>>> 6ee776e (update snapshot)
   let* rectangle :=
     let* α0 := box_stack_heap.origin in
     let* α1 := 4 (* 4.0 *).["neg"] in

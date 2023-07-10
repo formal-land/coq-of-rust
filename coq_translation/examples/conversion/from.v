@@ -51,7 +51,11 @@ Module Impl_core_convert_From_for_from_Number.
 End Impl_core_convert_From_for_from_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* num := from.Number::["from"] 30 in
   let* _ :=
     let* _ :=

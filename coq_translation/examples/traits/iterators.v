@@ -40,11 +40,19 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   }.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
+<<<<<<< HEAD
 Definition fibonacci : M iterators.Fibonacci :=
   Pure {| iterators.Fibonacci.curr := 0; iterators.Fibonacci.next := 1; |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
+=======
+Definition fibonacci  : M iterators.Fibonacci :=
+  Pure {| iterators.Fibonacci.curr := 0; iterators.Fibonacci.next := 1; |}.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let sequence := Range {| Range.start := 0; Range.end := 3; |} in
   let* _ :=
     let* _ :=

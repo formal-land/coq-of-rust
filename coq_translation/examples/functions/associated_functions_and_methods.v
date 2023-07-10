@@ -19,7 +19,11 @@ Definition Point : Set := Point.t.
 Module Impl_associated_functions_and_methods_Point.
   Definition Self := associated_functions_and_methods.Point.
   
+<<<<<<< HEAD
   Definition origin : M associated_functions_and_methods.Point :=
+=======
+  Definition origin  : M associated_functions_and_methods.Point :=
+>>>>>>> 6ee776e (update snapshot)
     Pure
       {|
         associated_functions_and_methods.Point.y := 0 (* 0.0 *);
@@ -167,7 +171,11 @@ Module Impl_associated_functions_and_methods_Pair.
 End Impl_associated_functions_and_methods_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* rectangle :=
     let* α0 := associated_functions_and_methods.Point::["origin"] in
     let* α1 :=

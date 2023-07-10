@@ -41,7 +41,11 @@ Definition try_division (dividend : i32) (divisor : i32) : M unit :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ := option.try_division 4 2 in
   let* _ := option.try_division 1 0 in
   let none := core.option.Option.None in

@@ -32,7 +32,11 @@ Definition elided_pass (x : ref i32) : M (ref i32) := Pure x.
 Definition annotated_pass (x : ref i32) : M (ref i32) := Pure x.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let x := 3 in
   let* _ := scoping_rules_lifetimes_elision.elided_input (addr_of x) in
   let* _ := scoping_rules_lifetimes_elision.annotated_input (addr_of x) in

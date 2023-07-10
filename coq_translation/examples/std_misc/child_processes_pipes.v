@@ -6,7 +6,11 @@ Definition PANGRAM : ref str :=
 ").
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* process :=
     let* α0 := std.process.Command::["new"] "wc" in
     let* α1 := std.process.Stdio::["piped"] in

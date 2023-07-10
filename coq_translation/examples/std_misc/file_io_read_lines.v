@@ -14,7 +14,11 @@ Definition read_lines
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* lines :=
     let* α0 := "./hosts".["to_string"] in
     file_io_read_lines.read_lines α0 in

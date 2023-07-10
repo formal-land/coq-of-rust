@@ -15,7 +15,11 @@ Definition destroy_box (c : alloc.boxed.Box i32) : M unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let x := 5 in
   let y := x in
   let* _ :=

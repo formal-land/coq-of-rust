@@ -15,8 +15,13 @@ Definition call (number : ref str) : M (ref str) :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
   let* contacts := std.collections.hash.map.HashMap::["new"] in
+=======
+Definition main  : M unit :=
+  let* contacts := std.collections.hash.map.HashMap::["new"] tt in
+>>>>>>> 6ee776e (update snapshot)
   let* _ := contacts.["insert"] "Daniel" "798-1364" in
   let* _ := contacts.["insert"] "Ashley" "645-7689" in
   let* _ := contacts.["insert"] "Katie" "435-8291" in

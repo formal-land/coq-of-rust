@@ -3,21 +3,23 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition apply
     {F : Set}
-    `{core.ops.function.FnOnce.Trait unit F}
-    (f : F)
+    `{core.ops.function.FnOnce.Trait unit F}(f : F)
     : M unit :=
   let* _ := f in
   Pure tt.
 
 Definition apply_to_3
     {F : Set}
-    `{core.ops.function.Fn.Trait (i32) F}
-    (f : F)
+    `{core.ops.function.Fn.Trait (i32) F}(f : F)
     : M i32 :=
   f 3.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let greeting := "hello" in
   let* farewell := "goodbye".["to_owned"] in
   let diary :=

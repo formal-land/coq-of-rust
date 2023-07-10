@@ -51,7 +51,11 @@ Module Impl_core_convert_From_for_into_Number.
 End Impl_core_convert_From_for_into_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let int := 5 in
   let* num := int.["into"] in
   let* _ :=

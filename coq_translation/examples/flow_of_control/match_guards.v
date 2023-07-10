@@ -9,7 +9,11 @@ End Temperature.
 Definition Temperature := Temperature.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let temperature := match_guards.Temperature.Celsius 35 in
   match temperature with
   | match_guards.Temperature.Celsius t =>

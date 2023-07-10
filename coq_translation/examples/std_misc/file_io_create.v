@@ -13,7 +13,11 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 ").
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* path := std.path.Path::["new"] "lorem_ipsum.txt" in
   let* display := path.["display"] in
   let* file :=

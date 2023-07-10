@@ -9,7 +9,11 @@ Definition cos
   foreign_function_interface.ccosf z.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* z :=
     let* α0 := 1 (* 1. *).["neg"] in
     Pure

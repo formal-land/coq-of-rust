@@ -270,7 +270,11 @@ Definition op (x : f64) (y : f64) : M unit :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     result_chaining_with_question_mark.checked.op 1 (* 1.0 *) 10 (* 10.0 *) in
   Pure tt.

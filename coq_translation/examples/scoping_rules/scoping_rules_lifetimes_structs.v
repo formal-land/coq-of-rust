@@ -107,7 +107,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let x := 18 in
   let y := 15 in
   let single := scoping_rules_lifetimes_structs.Borrowed.Build_t (addr_of x) in

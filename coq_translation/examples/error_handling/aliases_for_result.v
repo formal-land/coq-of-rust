@@ -39,7 +39,11 @@ Definition print (result : aliases_for_result.AliasedResult i32) : M unit :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* α0 := aliases_for_result.multiply "10" "2" in
     aliases_for_result.print α0 in

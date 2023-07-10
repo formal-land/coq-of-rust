@@ -76,7 +76,11 @@ End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
 Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
   Definition Self := traits_parms.SomeOtherType.
   
+<<<<<<< HEAD
   Definition some_fn : M unit := Pure tt.
+=======
+  Definition some_fn  : M unit := Pure tt.
+>>>>>>> 6ee776e (update snapshot)
   
   Global Instance AssociatedFunction_some_fn :
     Notation.DoubleColon Self "some_fn" := {

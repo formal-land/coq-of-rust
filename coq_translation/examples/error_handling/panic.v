@@ -22,7 +22,11 @@ Definition drink (beverage : ref str) : M unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ := panic.drink "water" in
   let* _ := panic.drink "lemonade" in
   Pure tt.

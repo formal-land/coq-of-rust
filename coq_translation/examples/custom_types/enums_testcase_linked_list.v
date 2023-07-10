@@ -11,7 +11,11 @@ Definition List := List.t.
 Module Impl_enums_testcase_linked_list_List.
   Definition Self := enums_testcase_linked_list.List.
   
+<<<<<<< HEAD
   Definition new : M enums_testcase_linked_list.List :=
+=======
+  Definition new  : M enums_testcase_linked_list.List :=
+>>>>>>> 6ee776e (update snapshot)
     Pure enums_testcase_linked_list.List.Nil.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
@@ -69,8 +73,13 @@ Module Impl_enums_testcase_linked_list_List.
 End Impl_enums_testcase_linked_list_List.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
   let* list := enums_testcase_linked_list.List::["new"] in
+=======
+Definition main  : M unit :=
+  let* list := enums_testcase_linked_list.List::["new"] tt in
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* α0 := list.["prepend"] 1 in
     assign list α0 in

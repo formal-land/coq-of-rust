@@ -7,7 +7,11 @@ Definition add (a : i32) (b : i32) : M i32 := a.["add"] b.
 Definition bad_add (a : i32) (b : i32) : M i32 := a.["sub"] b.
 
 Module tests.
+<<<<<<< HEAD
   Definition test_add : M unit :=
+=======
+  Definition test_add  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* _ :=
       let* α0 := unit_testing.add 1 2 in
       match (addr_of α0, addr_of 3) with
@@ -32,7 +36,11 @@ Module tests.
       end in
     Pure tt.
   
+<<<<<<< HEAD
   Definition test_bad_add : M unit :=
+=======
+  Definition test_bad_add  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* _ :=
       let* α0 := unit_testing.bad_add 1 2 in
       match (addr_of α0, addr_of 3) with
@@ -58,7 +66,11 @@ Module tests.
     Pure tt.
 End tests.
 
+<<<<<<< HEAD
 Definition test_add : M unit :=
+=======
+Definition test_add  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* α0 := unit_testing.add 1 2 in
     match (addr_of α0, addr_of 3) with
@@ -83,7 +95,11 @@ Definition test_add : M unit :=
     end in
   Pure tt.
 
+<<<<<<< HEAD
 Definition test_bad_add : M unit :=
+=======
+Definition test_bad_add  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* α0 := unit_testing.bad_add 1 2 in
     match (addr_of α0, addr_of 3) with

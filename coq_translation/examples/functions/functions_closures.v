@@ -2,7 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let outer_var := 42 in
   let closure_annotated := fun i => i.["add"] outer_var in
   let closure_inferred := fun i => i.["add"] outer_var in

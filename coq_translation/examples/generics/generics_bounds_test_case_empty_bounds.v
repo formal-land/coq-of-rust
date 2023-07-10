@@ -50,20 +50,22 @@ End
 
 Definition red
     {T : Set}
-    `{generics_bounds_test_case_empty_bounds.Red.Trait T}
-    (arg : ref T)
+    `{generics_bounds_test_case_empty_bounds.Red.Trait T}(arg : ref T)
     : M (ref str) :=
   Pure "red".
 
 Definition blue
     {T : Set}
-    `{generics_bounds_test_case_empty_bounds.Blue.Trait T}
-    (arg : ref T)
+    `{generics_bounds_test_case_empty_bounds.Blue.Trait T}(arg : ref T)
     : M (ref str) :=
   Pure "blue".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let cardinal := generics_bounds_test_case_empty_bounds.Cardinal.Build in
   let blue_jay := generics_bounds_test_case_empty_bounds.BlueJay.Build in
   let _turkey := generics_bounds_test_case_empty_bounds.Turkey.Build in

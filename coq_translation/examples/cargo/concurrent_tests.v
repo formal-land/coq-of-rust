@@ -18,7 +18,11 @@ Definition foo {A : Set} (o : core.option.Option A) : M unit :=
   end.
 
 Module tests.
+<<<<<<< HEAD
   Definition test_file : M unit :=
+=======
+  Definition test_file  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* file :=
       let* α0 := std.fs.OpenOptions::["new"] in
       let* α1 := α0.["append"] true in
@@ -46,7 +50,11 @@ Module tests.
         for
     end.
   
+<<<<<<< HEAD
   Definition test_file_also : M unit :=
+=======
+  Definition test_file_also  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
     let* file :=
       let* α0 := std.fs.OpenOptions::["new"] in
       let* α1 := α0.["append"] true in
@@ -75,7 +83,11 @@ Module tests.
     end.
 End tests.
 
+<<<<<<< HEAD
 Definition test_file : M unit :=
+=======
+Definition test_file  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* file :=
     let* α0 := std.fs.OpenOptions::["new"] in
     let* α1 := α0.["append"] true in
@@ -103,7 +115,11 @@ Definition test_file : M unit :=
       for
   end.
 
+<<<<<<< HEAD
 Definition test_file_also : M unit :=
+=======
+Definition test_file_also  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* file :=
     let* α0 := std.fs.OpenOptions::["new"] in
     let* α1 := α0.["append"] true in

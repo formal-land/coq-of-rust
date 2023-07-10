@@ -22,7 +22,11 @@ Module Impl_example05_Foo.
 End Impl_example05_Foo.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let foo := example05.Foo.Build_t 0 in
   let _ := foo.["plus1"] in
   Pure tt.

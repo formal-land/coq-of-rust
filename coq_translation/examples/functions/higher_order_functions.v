@@ -6,7 +6,11 @@ Definition is_odd (n : u32) : M bool :=
   α0.["eq"] 1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=

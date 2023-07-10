@@ -39,15 +39,18 @@ End Impl_core_hash_Hash_for_hash_Person.
 
 Definition calculate_hash
     {T : Set}
-    `{core.hash.Hash.Trait T}
-    (t : ref T)
+    `{core.hash.Hash.Trait T}(t : ref T)
     : M u64 :=
   let* s := std.collections.hash.map.DefaultHasher::["new"] in
   let* _ := t.["hash"] (addr_of s) in
   s.["finish"].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* person1 :=
     let* α0 := "Janet".["to_string"] in
     Pure

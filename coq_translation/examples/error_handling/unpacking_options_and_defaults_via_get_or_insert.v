@@ -45,7 +45,11 @@ End
   Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let my_fruit := core.option.Option.None in
   let apple := unpacking_options_and_defaults_via_get_or_insert.Fruit.Apple in
   let* first_available_fruit := my_fruit.["get_or_insert"] apple in

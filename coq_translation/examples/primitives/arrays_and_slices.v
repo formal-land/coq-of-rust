@@ -26,7 +26,11 @@ Definition analyze_slice (slice : ref Slice) : M unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let xs := [ 1; 2; 3; 4; 5 ] in
   let* ys := repeat 0 in
   let* _ :=

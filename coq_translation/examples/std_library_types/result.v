@@ -153,7 +153,11 @@ Definition op (x : f64) (y : f64) : M f64 :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 := result.op 1 (* 1.0 *) 10 (* 10.0 *) in

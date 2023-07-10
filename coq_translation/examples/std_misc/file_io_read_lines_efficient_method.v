@@ -2,7 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* α0 := file_io_read_lines_efficient_method.read_lines "./hosts" in
   let* α1 := let_if core.result.Result.Ok lines := α0 in
   if (α1 : bool) then
@@ -40,8 +44,7 @@ Definition main : M unit :=
 
 Definition read_lines
     {P : Set}
-    `{core.convert.AsRef.Trait std.path.Path P}
-    (filename : P)
+    `{core.convert.AsRef.Trait std.path.Path P}(filename : P)
     :
       M
         (std.io.error.Result

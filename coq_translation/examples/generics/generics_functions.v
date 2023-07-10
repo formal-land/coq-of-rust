@@ -37,7 +37,11 @@ Definition generic {T : Set} (_s : generics_functions.SGen T) : M unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     generics_functions.reg_fn
       (generics_functions.S.Build_t generics_functions.A.Build) in

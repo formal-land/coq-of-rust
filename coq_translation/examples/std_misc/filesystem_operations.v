@@ -47,7 +47,11 @@ Definition touch (path : ref std.path.Path) : M (std.io.error.Result unit) :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* _ :=
       let* α0 := format_arguments::["new_const"] (addr_of [ "`mkdir a`

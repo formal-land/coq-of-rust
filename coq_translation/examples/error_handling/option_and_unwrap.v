@@ -51,7 +51,11 @@ Definition drink (drink : core.option.Option (ref str)) : M unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let water := core.option.Option.Some "water" in
   let lemonade := core.option.Option.Some "lemonade" in
   let void := core.option.Option.None in

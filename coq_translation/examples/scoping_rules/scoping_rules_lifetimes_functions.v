@@ -37,7 +37,11 @@ Definition print_multi (x : ref i32) (y : ref i32) : M unit :=
 Definition pass_x (x : ref i32) (arg : ref i32) : M (ref i32) := Pure x.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let x := 7 in
   let y := 9 in
   let* _ := scoping_rules_lifetimes_functions.print_one (addr_of x) in

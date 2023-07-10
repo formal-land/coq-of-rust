@@ -55,7 +55,11 @@ Definition print
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let* α0 :=
       introducing_question_mark_is_an_replacement_for_deprecated_try.multiply

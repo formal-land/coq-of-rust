@@ -7,7 +7,11 @@ Definition coerce_static (arg : ref i32) : M (ref i32) :=
   Pure (addr_of scoping_rules_lifetimes_reference_lifetime_static.NUM).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let* _ :=
     let static_string := "I'm in read-only memory" in
     let* _ :=

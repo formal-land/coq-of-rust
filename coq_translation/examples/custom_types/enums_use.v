@@ -16,7 +16,11 @@ End Work.
 Definition Work := Work.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main : M unit :=
+=======
+Definition main  : M unit :=
+>>>>>>> 6ee776e (update snapshot)
   let status := enums_use.Status.Poor in
   let work := enums_use.Work.Civilian in
   let* _ :=
