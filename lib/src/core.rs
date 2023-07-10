@@ -5,6 +5,12 @@ use std::path::PathBuf;
 use std::{fs, path, process, str};
 use walkdir::WalkDir;
 
+/// CLI options
+pub struct CliOptions {
+    pub path: path::PathBuf,
+    pub axiomatize: bool,
+}
+
 pub const LINE_WIDTH: usize = 80;
 
 fn change_to_coq_extension(path: &path::Path) -> PathBuf {
@@ -13,8 +19,8 @@ fn change_to_coq_extension(path: &path::Path) -> PathBuf {
     new_path
 }
 
-pub fn run(src_path: &path::Path) {
-    // Get the parent folder if it is a file.
+pub fn run(opts: CliOptions) {
+    let src_path = &opts.path;
     let src_folder = if src_path.is_file() {
         src_path.parent().unwrap()
     } else {
@@ -24,7 +30,7 @@ pub fn run(src_path: &path::Path) {
     let unique_folder_name = format!("{}/{}/", basic_folder_name, src_folder.to_str().unwrap(),);
     let dst_folder = path::Path::new(&unique_folder_name);
     if src_path.is_file() {
-        let translation = create_translation_to_coq(PathBuf::from(src_path));
+        let translation = create_translation_to_coq(&opts);
 
         let path_to_write = dst_folder.join(
             change_to_coq_extension(src_path)
@@ -58,7 +64,7 @@ pub fn run(src_path: &path::Path) {
                     continue;
                 }
                 // if the entry is a file, create a Coq version of it and write it to the destination directory
-                let translation = create_translation_to_coq(PathBuf::from(src_path));
+                let translation = create_translation_to_coq(&opts);
                 fs::write(
                     dst_folder.join(change_to_coq_extension(relative_path)),
                     translation,
@@ -69,7 +75,8 @@ pub fn run(src_path: &path::Path) {
     }
 }
 
-fn create_translation_to_coq(input_file_name: PathBuf) -> String {
+fn create_translation_to_coq(opts: &CliOptions) -> String {
+    let input_file_name: PathBuf = PathBuf::from(&opts.path);
     let filename = input_file_name.clone();
     let out = process::Command::new("rustc")
         .arg("--print=sysroot")
@@ -102,10 +109,14 @@ fn create_translation_to_coq(input_file_name: PathBuf) -> String {
     let now = std::time::Instant::now();
     let result = rustc_interface::run_compiler(config, |compiler| {
         compiler.enter(|queries| {
-            queries
-                .global_ctxt()
-                .unwrap()
-                .enter(|ctxt| top_level_to_coq(&ctxt))
+            queries.global_ctxt().unwrap().enter(|ctxt| {
+                top_level_to_coq(
+                    &ctxt,
+                    TopLevelOptions {
+                        axiomatize: opts.axiomatize,
+                    },
+                )
+            })
         })
     });
     println!(
