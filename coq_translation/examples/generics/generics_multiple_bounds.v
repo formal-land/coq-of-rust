@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition compare_prints
     `{H : State.Trait}
     {T : Set}
@@ -75,19 +76,78 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 =======
 Parameter compare_prints : forall
     { T : Set } ,
+=======
+Definition compare_prints
+    {T : Set}
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     `{core.fmt.Debug.Trait T}
     `{core.fmt.Display.Trait T}
-    ref T
-    -> M unit.
+    (t : ref T)
+    : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Debug: `"; "`
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Display: `"; "`
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  Pure tt.
 
-Parameter compare_types : forall
-    { T : Set } { U : Set } ,
+Definition compare_types
+    {T U : Set}
     `{core.fmt.Debug.Trait T}
     `{core.fmt.Debug.Trait U}
-    ref T->
-    ref U
-    -> M unit.
+    (t : ref T)
+    (u : ref U)
+    : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "t: `"; "`
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of u) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "u: `"; "`
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let string := "words" in
+  let array := [ 1; 2; 3 ] in
+  let* vec :=
+    let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
+    Slice::["into_vec"] α0 in
+  let* _ := generics_multiple_bounds.compare_prints (addr_of string) in
+  let* _ :=
+    generics_multiple_bounds.compare_types (addr_of array) (addr_of vec) in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

@@ -16,6 +16,7 @@ Module Impl_core_fmt_Debug_for_into_Number.
   Definition Self := into.Number.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
     string -> i32 -> 
     M (H := H) core.fmt.Result.
@@ -29,14 +30,23 @@ Module Impl_core_fmt_Debug_for_into_Number.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     core.fmt.Formatter::["debug_struct_field1_finish"]
       f
       "Number"
       "value"
       (addr_of (addr_of self.["value"])).
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -51,11 +61,16 @@ Module Impl_core_convert_From_for_into_Number.
   Definition Self := into.Number.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition from `{H : State.Trait} (item : i32) : M (H := H) Self :=
     Pure {| into.Number.value := item; |}.
 =======
   Parameter from : i32 -> M Self.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition from (item : i32) : M Self :=
+    Pure {| into.Number.value := item; |}.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -69,7 +84,11 @@ End Impl_core_convert_From_for_into_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let int := 5 in
   let* num := int.["into"] in
   let* _ :=
@@ -83,6 +102,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

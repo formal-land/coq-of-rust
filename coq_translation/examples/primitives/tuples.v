@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition reverse
     `{H : State.Trait}
     (pair : i32 * bool)
@@ -11,6 +12,11 @@ Definition reverse
 =======
 Parameter reverse : i32 * bool -> M (bool * i32).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition reverse (pair : i32 * bool) : M (bool * i32) :=
+  let '(int_param, bool_param) := pair in
+  Pure (bool_param, int_param).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
 Module Matrix.
   Record t : Set := { _ : f32; _ : f32; _ : f32; _ : f32;}.
@@ -34,11 +40,18 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
   Definition Self := tuples.Matrix.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     core.fmt.Formatter::["debug_tuple_field4_finish"]
       f
       "Matrix"
@@ -46,9 +59,12 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
       (addr_of (self.[1]))
       (addr_of (self.[2]))
       (addr_of (addr_of (self.[3]))).
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -61,7 +77,11 @@ End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* long_tuple :=
     let* α0 := 1.["neg"] in
     let* α1 := 2.["neg"] in
@@ -171,6 +191,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

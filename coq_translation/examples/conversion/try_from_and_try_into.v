@@ -14,18 +14,28 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   Definition Self := try_from_and_try_into.EvenNumber.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "EvenNumber"
       (addr_of (addr_of (self.[0]))).
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -48,6 +58,7 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   Definition Self := try_from_and_try_into.EvenNumber.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition eq
       `{H : State.Trait}
       (self : ref Self)
@@ -57,6 +68,13 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 =======
   Parameter eq : ref Self-> ref try_from_and_try_into.EvenNumber -> M bool.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition eq
+      (self : ref Self)
+      (other : ref try_from_and_try_into.EvenNumber)
+      : M bool :=
+    (self.[0]).["eq"] (other.[0]).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -73,10 +91,16 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
   Definition Error : Set := unit.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition try_from
       `{H : State.Trait}
       (value : i32)
       : M (H := H) (core.result.Result Self ImplSelf.Error) :=
+=======
+  Definition try_from
+      (value : i32)
+      : M (core.result.Result Self ImplSelf.Error) :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 := value.["rem"] 2 in
     let* α1 := α0.["eq"] 0 in
     if (α1 : bool) then
@@ -84,9 +108,12 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
         (core.result.Result.Ok (try_from_and_try_into.EvenNumber.Build_t value))
     else
       Pure (core.result.Result.Err tt).
+<<<<<<< HEAD
 =======
   Parameter try_from : i32 -> M (core.result.Result Self ImplSelf.Error).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_try_from `{H : State.Trait} :
     Notation.DoubleColon Self "try_from" := {
@@ -100,7 +127,11 @@ End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* _ :=
     let* α0 := try_from_and_try_into.EvenNumber::["try_from"] 8 in
     match
@@ -198,6 +229,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         Pure tt
     end in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

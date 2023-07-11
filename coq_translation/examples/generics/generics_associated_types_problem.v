@@ -42,6 +42,7 @@ Module
   Definition Self := generics_associated_types_problem.Container.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition contains
       `{H : State.Trait}
       (self : ref Self)
@@ -54,6 +55,16 @@ Module
 =======
   Parameter contains : ref Self-> ref i32-> ref i32 -> M bool.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition contains
+      (self : ref Self)
+      (number_1 : ref i32)
+      (number_2 : ref i32)
+      : M bool :=
+    let* α0 := (addr_of (self.[0])).["eq"] number_1 in
+    let* α1 := (addr_of (self.[1])).["eq"] number_2 in
+    α0.["andb"] α1.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_contains `{H : State.Trait} :
     Notation.Dot "contains" := {
@@ -61,22 +72,30 @@ Module
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition first `{H : State.Trait} (self : ref Self) : M (H := H) i32 :=
     Pure (self.[0]).
 =======
   Parameter first : ref Self -> M i32.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition first (self : ref Self) : M i32 := Pure (self.[0]).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_first `{H : State.Trait} : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition last `{H : State.Trait} (self : ref Self) : M (H := H) i32 :=
     Pure (self.[1]).
 =======
   Parameter last : ref Self -> M i32.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition last (self : ref Self) : M i32 := Pure (self.[1]).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_last `{H : State.Trait} : Notation.Dot "last" := {
     Notation.dot := last;
@@ -100,6 +119,7 @@ Module
 End
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 Definition difference
     `{H : State.Trait}
@@ -170,10 +190,75 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 =======
 Parameter difference : forall
     { A : Set } { B : Set } { C : Set } ,
+=======
+Definition difference
+    {A B C : Set}
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     `{generics_associated_types_problem.Contains.Trait A B C}
-    ref C
-    -> M i32.
+    (container : ref C)
+    : M i32 :=
+  let* α0 := container.["last"] in
+  let* α1 := container.["first"] in
+  α0.["sub"] α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let number_1 := 3 in
+  let number_2 := 10 in
+  let container :=
+    generics_associated_types_problem.Container.Build_t number_1 number_2 in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_display"] (addr_of (addr_of number_1)) in
+      let* α1 :=
+        format_argument::["new_display"] (addr_of (addr_of number_2)) in
+      let* α2 := container.["contains"] (addr_of number_1) (addr_of number_2) in
+      let* α3 := format_argument::["new_display"] (addr_of α2) in
+      let* α4 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Does container contain "; " and "; ": "; "
+" ])
+          (addr_of [ α0; α1; α3 ]) in
+      std.io.stdio._print α4 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := container.["first"] in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "First number: "; "
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := container.["last"] in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Last number: "; "
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        generics_associated_types_problem.difference (addr_of container) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The difference is: "; "
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

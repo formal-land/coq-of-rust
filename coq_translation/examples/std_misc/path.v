@@ -3,7 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* path := std.path.Path::["new"] "." in
   let* _display := path.["display"] in
   let* new_path :=
@@ -27,6 +31,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt
   end.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

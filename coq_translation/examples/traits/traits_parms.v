@@ -78,10 +78,14 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
   Definition Self := traits_parms.SomeOtherType.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition some_fn `{H : State.Trait} (_ : unit) : M (H := H) unit := Pure tt.
 =======
   Parameter some_fn : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition some_fn (_ : unit) : M unit := Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_some_fn `{H : State.Trait} :
     Notation.DoubleColon Self "some_fn" := {

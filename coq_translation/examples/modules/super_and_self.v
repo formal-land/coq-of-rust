@@ -2,7 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition function `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition function (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -11,6 +15,7 @@ Definition function `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α0 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 
 Module cool.
   Definition function `{H : State.Trait} (_ : unit) : M (H := H) unit :=
@@ -135,33 +140,132 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
 Parameter function : unit -> M unit.
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
 Module cool.
-  Parameter function : unit -> M unit.
+  Definition function (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `cool::function()`
+" ]) in
+        std.io.stdio._print α0 in
+      Pure tt in
+    Pure tt.
 End cool.
 
-Parameter function : unit -> M unit.
+Definition function (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `cool::function()`
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  Pure tt.
 
 Module my.
-  Parameter function : unit -> M unit.
+  Definition function (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `my::function()`
+" ]) in
+        std.io.stdio._print α0 in
+      Pure tt in
+    Pure tt.
   
   Module cool.
-    Parameter function : unit -> M unit.
+    Definition function (_ : unit) : M unit :=
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "called `my::cool::function()`
+" ]) in
+          std.io.stdio._print α0 in
+        Pure tt in
+      Pure tt.
   End cool.
   
-  Parameter indirect_call : unit -> M unit.
+  Definition indirect_call (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `my::indirect_call()`, that
+> " ]) in
+        std.io.stdio._print α0 in
+      Pure tt in
+    let* _ := super_and_self.my.function tt in
+    let* _ := super_and_self.my.function tt in
+    let* _ := super_and_self.my.cool.function tt in
+    let* _ := super_and_self.function tt in
+    let* _ := super_and_self.cool.function tt in
+    Pure tt.
 End my.
 
-Parameter function : unit -> M unit.
+Definition function (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `my::function()`
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  Pure tt.
 
 Module cool.
-  Parameter function : unit -> M unit.
+  Definition function (_ : unit) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "called `my::cool::function()`
+" ]) in
+        std.io.stdio._print α0 in
+      Pure tt in
+    Pure tt.
 End cool.
 
-Parameter function : unit -> M unit.
+Definition function (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `my::cool::function()`
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  Pure tt.
 
-Parameter indirect_call : unit -> M unit.
+Definition indirect_call (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `my::indirect_call()`, that
+> " ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ := super_and_self.my.function tt in
+  let* _ := super_and_self.my.function tt in
+  let* _ := super_and_self.my.cool.function tt in
+  let* _ := super_and_self.function tt in
+  let* _ := super_and_self.cool.function tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let* _ := super_and_self.my.indirect_call tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

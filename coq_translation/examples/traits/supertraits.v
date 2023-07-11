@@ -55,10 +55,16 @@ Module CompSciStudent.
 End CompSciStudent.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition comp_sci_student_greeting
     `{H : State.Trait}
     (student : ref TraitObject)
     : M (H := H) alloc.string.String :=
+=======
+Definition comp_sci_student_greeting
+    (student : ref TraitObject)
+    : M alloc.string.String :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* res :=
     let* α0 := student.["name"] in
     let* α1 := format_argument::["new_display"] (addr_of α0) in
@@ -80,6 +86,7 @@ Definition comp_sci_student_greeting
         (addr_of [ α1; α3; α5; α7 ]) in
     alloc.fmt.format α8 in
   Pure res.
+<<<<<<< HEAD
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit := Pure tt.
@@ -89,3 +96,8 @@ Parameter comp_sci_student_greeting : ref TraitObject -> M alloc.string.String.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Definition main (_ : unit) : M unit := Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

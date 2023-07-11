@@ -27,6 +27,7 @@ Module Impl_generics_implementation_Val.
   Definition Self := generics_implementation.Val.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition value
       `{H : State.Trait}
       (self : ref Self)
@@ -35,6 +36,10 @@ Module Impl_generics_implementation_Val.
 =======
   Parameter value : ref Self -> M (ref f64).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition value (self : ref Self) : M (ref f64) :=
+    Pure (addr_of self.["val"]).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_value `{H : State.Trait} : Notation.Dot "value" := {
     Notation.dot := value;
@@ -45,11 +50,16 @@ Module Impl_generics_implementation_GenVal_T.
   Definition Self := generics_implementation.GenVal T.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition value `{H : State.Trait} (self : ref Self) : M (H := H) (ref T) :=
     Pure (addr_of self.["gen_val"]).
 =======
   Parameter value : ref Self -> M (ref T).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition value (self : ref Self) : M (ref T) :=
+    Pure (addr_of self.["gen_val"]).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_value `{H : State.Trait} : Notation.Dot "value" := {
     Notation.dot := value;
@@ -58,7 +68,11 @@ End Impl_generics_implementation_GenVal_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let x := {| generics_implementation.Val.val := 3 (* 3.0 *); |} in
   let y := {| generics_implementation.GenVal.gen_val := 3; |} in
   let* _ :=
@@ -75,6 +89,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α4 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

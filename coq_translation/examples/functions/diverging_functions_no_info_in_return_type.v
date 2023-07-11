@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition some_fn `{H : State.Trait} (_ : unit) : M (H := H) unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -20,3 +21,17 @@ Parameter some_fn : unit -> M unit.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition some_fn (_ : unit) : M unit := Pure tt.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Definition main (_ : unit) : M unit :=
+  let* a := diverging_functions_no_info_in_return_type.some_fn tt in
+  let* _ :=
+    let* α0 :=
+      format_arguments::["new_const"]
+        (addr_of [ "This function returns and you can see this line.
+" ]) in
+    std.io.stdio._print α0 in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

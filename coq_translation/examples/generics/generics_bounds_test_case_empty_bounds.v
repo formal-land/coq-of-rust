@@ -49,6 +49,7 @@ End
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition red
     `{H : State.Trait}
     {T : Set}
@@ -98,16 +99,54 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 =======
 Parameter red : forall
     { T : Set } ,
+=======
+Definition red
+    {T : Set}
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     `{generics_bounds_test_case_empty_bounds.Red.Trait T}
-    ref T
-    -> M (ref str).
+    (arg : ref T)
+    : M (ref str) :=
+  Pure "red".
 
-Parameter blue : forall
-    { T : Set } ,
+Definition blue
+    {T : Set}
     `{generics_bounds_test_case_empty_bounds.Blue.Trait T}
-    ref T
-    -> M (ref str).
+    (arg : ref T)
+    : M (ref str) :=
+  Pure "blue".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let cardinal := generics_bounds_test_case_empty_bounds.Cardinal.Build in
+  let blue_jay := generics_bounds_test_case_empty_bounds.BlueJay.Build in
+  let _turkey := generics_bounds_test_case_empty_bounds.Turkey.Build in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        generics_bounds_test_case_empty_bounds.red (addr_of cardinal) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "A cardinal is "; "
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        generics_bounds_test_case_empty_bounds.blue (addr_of blue_jay) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "A blue jay is "; "
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

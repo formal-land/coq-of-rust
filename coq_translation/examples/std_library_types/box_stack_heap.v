@@ -22,6 +22,7 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
     string -> f64 -> 
     string -> f64 -> 
@@ -36,6 +37,12 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Point"
@@ -43,9 +50,12 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
       (addr_of self.["x"])
       "y"
       (addr_of (addr_of self.["y"])).
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -61,6 +71,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
@@ -70,6 +81,11 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
 =======
   Parameter clone : ref Self -> M box_stack_heap.Point.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition clone (self : ref Self) : M box_stack_heap.Point :=
+    let _ := tt in
+    self.["deref"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -104,15 +120,20 @@ End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition origin
     `{H : State.Trait}
     (_ : unit)
     : M (H := H) box_stack_heap.Point :=
+=======
+Definition origin (_ : unit) : M box_stack_heap.Point :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   Pure
     {|
       box_stack_heap.Point.x := 0 (* 0.0 *);
       box_stack_heap.Point.y := 0 (* 0.0 *);
     |}.
+<<<<<<< HEAD
 
 Definition boxed_origin
     `{H : State.Trait}
@@ -227,9 +248,119 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
 Parameter origin : unit -> M box_stack_heap.Point.
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter boxed_origin : unit -> M (alloc.boxed.Box box_stack_heap.Point).
+Definition boxed_origin (_ : unit) : M (alloc.boxed.Box box_stack_heap.Point) :=
+  alloc.boxed.Box::["new"]
+    {|
+      box_stack_heap.Point.x := 0 (* 0.0 *);
+      box_stack_heap.Point.y := 0 (* 0.0 *);
+    |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let* point := box_stack_heap.origin tt in
+  let* rectangle :=
+    let* α0 := box_stack_heap.origin tt in
+    let* α1 := 4 (* 4.0 *).["neg"] in
+    Pure
+      {|
+        box_stack_heap.Rectangle.top_left := α0;
+        box_stack_heap.Rectangle.bottom_right :=
+          {|
+            box_stack_heap.Point.x := 3 (* 3.0 *);
+            box_stack_heap.Point.y := α1;
+          |};
+      |} in
+  let* boxed_rectangle :=
+    let* α0 := box_stack_heap.origin tt in
+    let* α1 := 4 (* 4.0 *).["neg"] in
+    alloc.boxed.Box::["new"]
+      {|
+        box_stack_heap.Rectangle.top_left := α0;
+        box_stack_heap.Rectangle.bottom_right :=
+          {|
+            box_stack_heap.Point.x := 3 (* 3.0 *);
+            box_stack_heap.Point.y := α1;
+          |};
+      |} in
+  let* boxed_point :=
+    let* α0 := box_stack_heap.origin tt in
+    alloc.boxed.Box::["new"] α0 in
+  let* box_in_a_box :=
+    let* α0 := box_stack_heap.boxed_origin tt in
+    alloc.boxed.Box::["new"] α0 in
+  let* _ :=
+    let* _ :=
+      let* α0 := core.mem.size_of_val (addr_of point) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Point occupies "; " bytes on the stack
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := core.mem.size_of_val (addr_of rectangle) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Rectangle occupies "; " bytes on the stack
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := core.mem.size_of_val (addr_of boxed_point) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Boxed point occupies "; " bytes on the stack
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := core.mem.size_of_val (addr_of boxed_rectangle) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Boxed rectangle occupies "; " bytes on the stack
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := core.mem.size_of_val (addr_of box_in_a_box) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Boxed box occupies "; " bytes on the stack
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* unboxed_point := boxed_point.["deref"] in
+  let* _ :=
+    let* _ :=
+      let* α0 := core.mem.size_of_val (addr_of unboxed_point) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Unboxed point occupies "; " bytes on the stack
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

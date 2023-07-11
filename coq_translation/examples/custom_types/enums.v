@@ -19,10 +19,14 @@ End WebEvent.
 Definition WebEvent := WebEvent.t.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition inspect
     `{H : State.Trait}
     (event : enums.WebEvent)
     : M (H := H) unit :=
+=======
+Definition inspect (event : enums.WebEvent) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   match event with
   | enums.WebEvent.PageLoad =>
     let* _ :=
@@ -81,6 +85,7 @@ Definition inspect
       Pure tt in
     Pure tt
   end.
+<<<<<<< HEAD
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
@@ -108,3 +113,26 @@ Parameter inspect : enums.WebEvent -> M unit.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Definition main (_ : unit) : M unit :=
+  let pressed := enums.WebEvent.KeyPress "x"%char in
+  let* pasted :=
+    let* α0 := "my text".["to_owned"] in
+    Pure (enums.WebEvent.Paste α0) in
+  let click :=
+    enums.WebEvent.Click
+      {|
+      enums.WebEvent.Click.x := 20;
+      enums.WebEvent.Click.y := 80;
+    |} in
+  let load := enums.WebEvent.PageLoad in
+  let unload := enums.WebEvent.PageUnload in
+  let* _ := enums.inspect pressed in
+  let* _ := enums.inspect pasted in
+  let* _ := enums.inspect click in
+  let* _ := enums.inspect load in
+  let* _ := enums.inspect unload in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

@@ -21,6 +21,7 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
@@ -30,6 +31,11 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
 =======
   Parameter clone : ref Self -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition clone (self : ref Self) : M subtle.Choice :=
+    let _ := tt in
+    self.["deref"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -44,18 +50,28 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Choice"
       (addr_of (addr_of (self.[0]))).
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -70,11 +86,15 @@ Module Impl_subtle_Choice.
   Definition Self := subtle.Choice.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition unwrap_u8 `{H : State.Trait} (self : ref Self) : M (H := H) u8 :=
     Pure (self.[0]).
 =======
   Parameter unwrap_u8 : ref Self -> M u8.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition unwrap_u8 (self : ref Self) : M u8 := Pure (self.[0]).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_unwrap_u8 `{H : State.Trait} :
     Notation.Dot "unwrap_u8" := {
@@ -86,10 +106,14 @@ Module Impl_core_convert_From_for_bool.
   Definition Self := bool.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition from
       `{H : State.Trait}
       (source : subtle.Choice)
       : M (H := H) bool :=
+=======
+  Definition from (source : subtle.Choice) : M bool :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* _ :=
       if (true : bool) then
         let* _ :=
@@ -106,9 +130,12 @@ Module Impl_core_convert_From_for_bool.
       else
         Pure tt in
     (source.[0]).["ne"] 0.
+<<<<<<< HEAD
 =======
   Parameter from : subtle.Choice -> M bool.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -126,6 +153,7 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
   Definition Output : Set := subtle.Choice.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition bitand
       `{H : State.Trait}
       (self : Self)
@@ -136,6 +164,11 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 =======
   Parameter bitand : Self-> subtle.Choice -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition bitand (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
+    let* α0 := (self.[0]).["bitand"] (rhs.[0]) in
+    α0.["into"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_bitand `{H : State.Trait} : Notation.Dot "bitand" := {
     Notation.dot := bitand;
@@ -150,19 +183,29 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition bitand_assign
       `{H : State.Trait}
       (self : mut_ref Self)
       (rhs : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition bitand_assign
+      (self : mut_ref Self)
+      (rhs : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* _ :=
       let* α0 := self.["deref"] in
       let* α1 := α0.["bitand"] rhs in
       assign self.["deref"] α1 in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter bitand_assign : mut_ref Self-> subtle.Choice -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_bitand_assign `{H : State.Trait} :
     Notation.Dot "bitand_assign" := {
@@ -180,6 +223,7 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
   Definition Output : Set := subtle.Choice.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition bitor
       `{H : State.Trait}
       (self : Self)
@@ -190,6 +234,11 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
 =======
   Parameter bitor : Self-> subtle.Choice -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition bitor (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
+    let* α0 := (self.[0]).["bitor"] (rhs.[0]) in
+    α0.["into"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_bitor `{H : State.Trait} : Notation.Dot "bitor" := {
     Notation.dot := bitor;
@@ -204,19 +253,29 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition bitor_assign
       `{H : State.Trait}
       (self : mut_ref Self)
       (rhs : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition bitor_assign
+      (self : mut_ref Self)
+      (rhs : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* _ :=
       let* α0 := self.["deref"] in
       let* α1 := α0.["bitor"] rhs in
       assign self.["deref"] α1 in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter bitor_assign : mut_ref Self-> subtle.Choice -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_bitor_assign `{H : State.Trait} :
     Notation.Dot "bitor_assign" := {
@@ -234,6 +293,7 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
   Definition Output : Set := subtle.Choice.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition bitxor
       `{H : State.Trait}
       (self : Self)
@@ -244,6 +304,11 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
 =======
   Parameter bitxor : Self-> subtle.Choice -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition bitxor (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
+    let* α0 := (self.[0]).["bitxor"] (rhs.[0]) in
+    α0.["into"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_bitxor `{H : State.Trait} : Notation.Dot "bitxor" := {
     Notation.dot := bitxor;
@@ -258,19 +323,29 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition bitxor_assign
       `{H : State.Trait}
       (self : mut_ref Self)
       (rhs : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition bitxor_assign
+      (self : mut_ref Self)
+      (rhs : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* _ :=
       let* α0 := self.["deref"] in
       let* α1 := α0.["bitxor"] rhs in
       assign self.["deref"] α1 in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter bitxor_assign : mut_ref Self-> subtle.Choice -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_bitxor_assign `{H : State.Trait} :
     Notation.Dot "bitxor_assign" := {
@@ -288,6 +363,7 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
   Definition Output : Set := subtle.Choice.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition not `{H : State.Trait} (self : Self) : M (H := H) subtle.Choice :=
     let* α0 := (self.[0]).["not"] in
     let* α1 := 1.["bitand"] α0 in
@@ -295,6 +371,12 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
 =======
   Parameter not : Self -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition not (self : Self) : M subtle.Choice :=
+    let* α0 := (self.[0]).["not"] in
+    let* α1 := 1.["bitand"] α0 in
+    α1.["into"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_not `{H : State.Trait} : Notation.Dot "not" := {
     Notation.dot := not;
@@ -306,7 +388,11 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition black_box `{H : State.Trait} (input : u8) : M (H := H) u8 :=
+=======
+Definition black_box (input : u8) : M u8 :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* _ :=
     if (true : bool) then
       let* _ :=
@@ -323,13 +409,17 @@ Definition black_box `{H : State.Trait} (input : u8) : M (H := H) u8 :=
     else
       Pure tt in
   core.ptr.read_volatile (cast (addr_of input) (ref u8)).
+<<<<<<< HEAD
 =======
 Parameter black_box : u8 -> M u8.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
 Module Impl_core_convert_From_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
+<<<<<<< HEAD
 <<<<<<< HEAD
   Definition from `{H : State.Trait} (input : u8) : M (H := H) subtle.Choice :=
     let* α0 := subtle.black_box input in
@@ -337,6 +427,11 @@ Module Impl_core_convert_From_for_subtle_Choice.
 =======
   Parameter from : u8 -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition from (input : u8) : M subtle.Choice :=
+    let* α0 := subtle.black_box input in
+    Pure (subtle.Choice.Build_t α0).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -376,11 +471,15 @@ Section Impl_subtle_ConstantTimeEq_for_Slice.
   Definition Self := Slice.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
       (_rhs : ref Slice)
       : M (H := H) subtle.Choice :=
+=======
+  Definition ct_eq (self : ref Self) (_rhs : ref Slice) : M subtle.Choice :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* len := self.["len"] in
     let* _ :=
       let* α0 := _rhs.["len"] in
@@ -417,9 +516,12 @@ Section Impl_subtle_ConstantTimeEq_for_Slice.
           for
       end in
     x.["into"].
+<<<<<<< HEAD
 =======
   Parameter ct_eq : ref Self-> ref Slice -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_eq `{H : State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -435,18 +537,28 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
       (rhs : ref subtle.Choice)
       : M (H := H) subtle.Choice :=
+=======
+  Definition ct_eq
+      (self : ref Self)
+      (rhs : ref subtle.Choice)
+      : M subtle.Choice :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 := self.["deref"] in
     let* α1 := rhs.["deref"] in
     let* α2 := α0.["bitxor"] α1 in
     α2.["not"].
+<<<<<<< HEAD
 =======
   Parameter ct_eq : ref Self-> ref subtle.Choice -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_eq `{H : State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -461,11 +573,15 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
   Definition Self := u8.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
       (other : ref u8)
       : M (H := H) subtle.Choice :=
+=======
+  Definition ct_eq (self : ref Self) (other : ref u8) : M subtle.Choice :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* x := self.["bitxor"] other in
     let* y :=
       let* α0 := x.["wrapping_neg"] in
@@ -474,9 +590,12 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
       α1.["shr"] α2 in
     let* α0 := y.["bitxor"] (cast 1 u8) in
     (cast α0 u8).["into"].
+<<<<<<< HEAD
 =======
   Parameter ct_eq : ref Self-> ref u8 -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_eq `{H : State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -491,6 +610,7 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
   Definition Self := i8.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
@@ -502,6 +622,12 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
 =======
   Parameter ct_eq : ref Self-> ref i8 -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition ct_eq (self : ref Self) (other : ref i8) : M subtle.Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 u8).["ct_eq"] (addr_of (cast α1 u8)).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_eq `{H : State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -516,11 +642,15 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
   Definition Self := u16.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
       (other : ref u16)
       : M (H := H) subtle.Choice :=
+=======
+  Definition ct_eq (self : ref Self) (other : ref u16) : M subtle.Choice :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* x := self.["bitxor"] other in
     let* y :=
       let* α0 := x.["wrapping_neg"] in
@@ -529,9 +659,12 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
       α1.["shr"] α2 in
     let* α0 := y.["bitxor"] (cast 1 u16) in
     (cast α0 u8).["into"].
+<<<<<<< HEAD
 =======
   Parameter ct_eq : ref Self-> ref u16 -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_eq `{H : State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -546,6 +679,7 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
   Definition Self := i16.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
@@ -557,6 +691,12 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
 =======
   Parameter ct_eq : ref Self-> ref i16 -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition ct_eq (self : ref Self) (other : ref i16) : M subtle.Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 u16).["ct_eq"] (addr_of (cast α1 u16)).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_eq `{H : State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -571,11 +711,15 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
   Definition Self := u32.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
       (other : ref u32)
       : M (H := H) subtle.Choice :=
+=======
+  Definition ct_eq (self : ref Self) (other : ref u32) : M subtle.Choice :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* x := self.["bitxor"] other in
     let* y :=
       let* α0 := x.["wrapping_neg"] in
@@ -584,9 +728,12 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
       α1.["shr"] α2 in
     let* α0 := y.["bitxor"] (cast 1 u32) in
     (cast α0 u8).["into"].
+<<<<<<< HEAD
 =======
   Parameter ct_eq : ref Self-> ref u32 -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_eq `{H : State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -601,6 +748,7 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
   Definition Self := i32.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
@@ -612,6 +760,12 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
 =======
   Parameter ct_eq : ref Self-> ref i32 -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition ct_eq (self : ref Self) (other : ref i32) : M subtle.Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 u32).["ct_eq"] (addr_of (cast α1 u32)).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_eq `{H : State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -626,11 +780,15 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
   Definition Self := u64.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
       (other : ref u64)
       : M (H := H) subtle.Choice :=
+=======
+  Definition ct_eq (self : ref Self) (other : ref u64) : M subtle.Choice :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* x := self.["bitxor"] other in
     let* y :=
       let* α0 := x.["wrapping_neg"] in
@@ -639,9 +797,12 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
       α1.["shr"] α2 in
     let* α0 := y.["bitxor"] (cast 1 u64) in
     (cast α0 u8).["into"].
+<<<<<<< HEAD
 =======
   Parameter ct_eq : ref Self-> ref u64 -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_eq `{H : State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -656,6 +817,7 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
   Definition Self := i64.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
@@ -667,6 +829,12 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
 =======
   Parameter ct_eq : ref Self-> ref i64 -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition ct_eq (self : ref Self) (other : ref i64) : M subtle.Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 u64).["ct_eq"] (addr_of (cast α1 u64)).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_eq `{H : State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -681,11 +849,15 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
   Definition Self := usize.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
       (other : ref usize)
       : M (H := H) subtle.Choice :=
+=======
+  Definition ct_eq (self : ref Self) (other : ref usize) : M subtle.Choice :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* x := self.["bitxor"] other in
     let* y :=
       let* α0 := x.["wrapping_neg"] in
@@ -696,9 +868,12 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
       α1.["shr"] α4 in
     let* α0 := y.["bitxor"] (cast 1 usize) in
     (cast α0 u8).["into"].
+<<<<<<< HEAD
 =======
   Parameter ct_eq : ref Self-> ref usize -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_eq `{H : State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -713,6 +888,7 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
   Definition Self := isize.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
@@ -724,6 +900,12 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
 =======
   Parameter ct_eq : ref Self-> ref isize -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition ct_eq (self : ref Self) (other : ref isize) : M subtle.Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 usize).["ct_eq"] (addr_of (cast α1 usize)).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_eq `{H : State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -776,12 +958,20 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   Definition Self := u8.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_select
       `{H : State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
       : M (H := H) Self :=
+=======
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i8).["neg"] in
@@ -789,9 +979,12 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
     let* α0 := a.["bitxor"] b in
     let* α1 := mask.["bitand"] α0 in
     a.["bitxor"] α1.
+<<<<<<< HEAD
 =======
   Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_select `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
@@ -799,12 +992,20 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_assign
       `{H : State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i8).["neg"] in
@@ -817,12 +1018,15 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       let* α4 := mask.["bitand"] α3 in
       α0.["bitxor_assign"] α4 in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_assign : mut_ref Self->
       ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_conditional_assign `{H : State.Trait} :
     Notation.Dot "conditional_assign" := {
@@ -830,12 +1034,20 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_swap
       `{H : State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i8).["neg"] in
@@ -852,12 +1064,15 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       let* α0 := b.["deref"] in
       α0.["bitxor_assign"] t in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_swap : mut_ref Self->
       mut_ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_swap `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -876,12 +1091,20 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   Definition Self := i8.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_select
       `{H : State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
       : M (H := H) Self :=
+=======
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i8).["neg"] in
@@ -889,9 +1112,12 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
     let* α0 := a.["bitxor"] b in
     let* α1 := mask.["bitand"] α0 in
     a.["bitxor"] α1.
+<<<<<<< HEAD
 =======
   Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_select `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
@@ -899,12 +1125,20 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_assign
       `{H : State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i8).["neg"] in
@@ -917,12 +1151,15 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       let* α4 := mask.["bitand"] α3 in
       α0.["bitxor_assign"] α4 in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_assign : mut_ref Self->
       ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_conditional_assign `{H : State.Trait} :
     Notation.Dot "conditional_assign" := {
@@ -930,12 +1167,20 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_swap
       `{H : State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i8).["neg"] in
@@ -952,12 +1197,15 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       let* α0 := b.["deref"] in
       α0.["bitxor_assign"] t in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_swap : mut_ref Self->
       mut_ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_swap `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -976,12 +1224,20 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   Definition Self := u16.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_select
       `{H : State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
       : M (H := H) Self :=
+=======
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i16).["neg"] in
@@ -989,9 +1245,12 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
     let* α0 := a.["bitxor"] b in
     let* α1 := mask.["bitand"] α0 in
     a.["bitxor"] α1.
+<<<<<<< HEAD
 =======
   Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_select `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
@@ -999,12 +1258,20 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_assign
       `{H : State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i16).["neg"] in
@@ -1017,12 +1284,15 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       let* α4 := mask.["bitand"] α3 in
       α0.["bitxor_assign"] α4 in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_assign : mut_ref Self->
       ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_conditional_assign `{H : State.Trait} :
     Notation.Dot "conditional_assign" := {
@@ -1030,12 +1300,20 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_swap
       `{H : State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i16).["neg"] in
@@ -1052,12 +1330,15 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       let* α0 := b.["deref"] in
       α0.["bitxor_assign"] t in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_swap : mut_ref Self->
       mut_ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_swap `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -1076,12 +1357,20 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   Definition Self := i16.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_select
       `{H : State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
       : M (H := H) Self :=
+=======
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i16).["neg"] in
@@ -1089,9 +1378,12 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
     let* α0 := a.["bitxor"] b in
     let* α1 := mask.["bitand"] α0 in
     a.["bitxor"] α1.
+<<<<<<< HEAD
 =======
   Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_select `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
@@ -1099,12 +1391,20 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_assign
       `{H : State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i16).["neg"] in
@@ -1117,12 +1417,15 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       let* α4 := mask.["bitand"] α3 in
       α0.["bitxor_assign"] α4 in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_assign : mut_ref Self->
       ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_conditional_assign `{H : State.Trait} :
     Notation.Dot "conditional_assign" := {
@@ -1130,12 +1433,20 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_swap
       `{H : State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i16).["neg"] in
@@ -1152,12 +1463,15 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       let* α0 := b.["deref"] in
       α0.["bitxor_assign"] t in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_swap : mut_ref Self->
       mut_ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_swap `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -1176,12 +1490,20 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   Definition Self := u32.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_select
       `{H : State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
       : M (H := H) Self :=
+=======
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i32).["neg"] in
@@ -1189,9 +1511,12 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
     let* α0 := a.["bitxor"] b in
     let* α1 := mask.["bitand"] α0 in
     a.["bitxor"] α1.
+<<<<<<< HEAD
 =======
   Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_select `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
@@ -1199,12 +1524,20 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_assign
       `{H : State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i32).["neg"] in
@@ -1217,12 +1550,15 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       let* α4 := mask.["bitand"] α3 in
       α0.["bitxor_assign"] α4 in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_assign : mut_ref Self->
       ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_conditional_assign `{H : State.Trait} :
     Notation.Dot "conditional_assign" := {
@@ -1230,12 +1566,20 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_swap
       `{H : State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i32).["neg"] in
@@ -1252,12 +1596,15 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       let* α0 := b.["deref"] in
       α0.["bitxor_assign"] t in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_swap : mut_ref Self->
       mut_ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_swap `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -1276,12 +1623,20 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   Definition Self := i32.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_select
       `{H : State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
       : M (H := H) Self :=
+=======
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i32).["neg"] in
@@ -1289,9 +1644,12 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
     let* α0 := a.["bitxor"] b in
     let* α1 := mask.["bitand"] α0 in
     a.["bitxor"] α1.
+<<<<<<< HEAD
 =======
   Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_select `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
@@ -1299,12 +1657,20 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_assign
       `{H : State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i32).["neg"] in
@@ -1317,12 +1683,15 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       let* α4 := mask.["bitand"] α3 in
       α0.["bitxor_assign"] α4 in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_assign : mut_ref Self->
       ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_conditional_assign `{H : State.Trait} :
     Notation.Dot "conditional_assign" := {
@@ -1330,12 +1699,20 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_swap
       `{H : State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i32).["neg"] in
@@ -1352,12 +1729,15 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       let* α0 := b.["deref"] in
       α0.["bitxor_assign"] t in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_swap : mut_ref Self->
       mut_ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_swap `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -1376,12 +1756,20 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   Definition Self := u64.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_select
       `{H : State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
       : M (H := H) Self :=
+=======
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i64).["neg"] in
@@ -1389,9 +1777,12 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
     let* α0 := a.["bitxor"] b in
     let* α1 := mask.["bitand"] α0 in
     a.["bitxor"] α1.
+<<<<<<< HEAD
 =======
   Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_select `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
@@ -1399,12 +1790,20 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_assign
       `{H : State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i64).["neg"] in
@@ -1417,12 +1816,15 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       let* α4 := mask.["bitand"] α3 in
       α0.["bitxor_assign"] α4 in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_assign : mut_ref Self->
       ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_conditional_assign `{H : State.Trait} :
     Notation.Dot "conditional_assign" := {
@@ -1430,12 +1832,20 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_swap
       `{H : State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i64).["neg"] in
@@ -1452,12 +1862,15 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       let* α0 := b.["deref"] in
       α0.["bitxor_assign"] t in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_swap : mut_ref Self->
       mut_ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_swap `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -1476,12 +1889,20 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   Definition Self := i64.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_select
       `{H : State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
       : M (H := H) Self :=
+=======
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i64).["neg"] in
@@ -1489,9 +1910,12 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
     let* α0 := a.["bitxor"] b in
     let* α1 := mask.["bitand"] α0 in
     a.["bitxor"] α1.
+<<<<<<< HEAD
 =======
   Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_select `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
@@ -1499,12 +1923,20 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_assign
       `{H : State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i64).["neg"] in
@@ -1517,12 +1949,15 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       let* α4 := mask.["bitand"] α3 in
       α0.["bitxor_assign"] α4 in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_assign : mut_ref Self->
       ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_conditional_assign `{H : State.Trait} :
     Notation.Dot "conditional_assign" := {
@@ -1530,12 +1965,20 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_swap
       `{H : State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
       : M (H := H) unit :=
+=======
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* mask :=
       let* α0 := choice.["unwrap_u8"] in
       let* α1 := (cast α0 i64).["neg"] in
@@ -1552,12 +1995,15 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       let* α0 := b.["deref"] in
       α0.["bitxor_assign"] t in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter conditional_swap : mut_ref Self->
       mut_ref Self->
       subtle.Choice
       -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_swap `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -1576,6 +2022,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_select
       `{H : State.Trait}
       (a : ref Self)
@@ -1588,6 +2035,16 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 =======
   Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+    let* α0 :=
+      u8::["conditional_select"] (addr_of (a.[0])) (addr_of (b.[0])) choice in
+    Pure (subtle.Choice.Build_t α0).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_select `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
@@ -1623,6 +2080,7 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
   Definition Self := T.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_negate
       `{H : State.Trait}
       (self : mut_ref Self)
@@ -1634,6 +2092,15 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
 =======
   Parameter conditional_negate : mut_ref Self-> subtle.Choice -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition conditional_negate
+      (self : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* self_neg := (cast self (ref T)).["neg"] in
+    let* _ := self.["conditional_assign"] (addr_of self_neg) choice in
+    Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_conditional_negate `{H : State.Trait} :
     Notation.Dot "conditional_negate" := {
@@ -1671,6 +2138,7 @@ Section Impl_core_clone_Clone_for_subtle_CtOption_T.
   Definition Self := subtle.CtOption T.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
@@ -1681,6 +2149,12 @@ Section Impl_core_clone_Clone_for_subtle_CtOption_T.
 =======
   Parameter clone : ref Self -> M (subtle.CtOption T).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition clone (self : ref Self) : M (subtle.CtOption T) :=
+    let* α0 := core.clone.Clone.clone (addr_of self.["value"]) in
+    let* α1 := core.clone.Clone.clone (addr_of self.["is_some"]) in
+    Pure {| subtle.CtOption.value := α0; subtle.CtOption.is_some := α1; |}.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -1710,11 +2184,18 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
   Definition Self := subtle.CtOption T.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "CtOption"
@@ -1722,9 +2203,12 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
       (addr_of self.["value"])
       "is_some"
       (addr_of (addr_of self.["is_some"])).
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -1743,10 +2227,14 @@ Section Impl_core_convert_From_for_core_option_Option_T.
   Definition Self := core.option.Option T.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition from
       `{H : State.Trait}
       (source : subtle.CtOption T)
       : M (H := H) (core.option.Option T) :=
+=======
+  Definition from (source : subtle.CtOption T) : M (core.option.Option T) :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 := source.["is_some"] in
     let* α1 := α0.["unwrap_u8"] in
     let* α2 := α1.["eq"] 1 in
@@ -1754,9 +2242,12 @@ Section Impl_core_convert_From_for_core_option_Option_T.
       Pure (core.option.Option.Some source.["value"])
     else
       Pure core.option.Option.None.
+<<<<<<< HEAD
 =======
   Parameter from : subtle.CtOption T -> M (core.option.Option T).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -1773,6 +2264,7 @@ Module Impl_subtle_CtOption_T.
   Definition Self := subtle.CtOption T.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition new
       `{H : State.Trait}
       (value : T)
@@ -1783,6 +2275,14 @@ Module Impl_subtle_CtOption_T.
 =======
   Parameter new : T-> subtle.Choice -> M (subtle.CtOption T).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition new
+      (value : T)
+      (is_some : subtle.Choice)
+      : M (subtle.CtOption T) :=
+    Pure
+      {| subtle.CtOption.value := value; subtle.CtOption.is_some := is_some; |}.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -1790,11 +2290,15 @@ Module Impl_subtle_CtOption_T.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition expect
       `{H : State.Trait}
       (self : Self)
       (msg : ref str)
       : M (H := H) T :=
+=======
+  Definition expect (self : Self) (msg : ref str) : M T :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* _ :=
       let* α0 := self.["is_some"].["unwrap_u8"] in
       match (addr_of α0, addr_of 1) with
@@ -1821,16 +2325,23 @@ Module Impl_subtle_CtOption_T.
           Pure tt
       end in
     Pure self.["value"].
+<<<<<<< HEAD
 =======
   Parameter expect : Self-> ref str -> M T.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_expect `{H : State.Trait} : Notation.Dot "expect" := {
     Notation.dot := expect;
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition unwrap `{H : State.Trait} (self : Self) : M (H := H) T :=
+=======
+  Definition unwrap (self : Self) : M T :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* _ :=
       let* α0 := self.["is_some"].["unwrap_u8"] in
       match (addr_of α0, addr_of 1) with
@@ -1854,27 +2365,37 @@ Module Impl_subtle_CtOption_T.
           Pure tt
       end in
     Pure self.["value"].
+<<<<<<< HEAD
 =======
   Parameter unwrap : Self -> M T.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_unwrap `{H : State.Trait} : Notation.Dot "unwrap" := {
     Notation.dot := unwrap;
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition unwrap_or
       `{H : State.Trait}
       (self : Self)
       (def : T)
       : M (H := H) T :=
+=======
+  Definition unwrap_or (self : Self) (def : T) : M T :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     T::["conditional_select"]
       (addr_of def)
       (addr_of self.["value"])
       self.["is_some"].
+<<<<<<< HEAD
 =======
   Parameter unwrap_or : Self-> T -> M T.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_unwrap_or `{H : State.Trait} :
     Notation.Dot "unwrap_or" := {
@@ -1882,25 +2403,33 @@ Module Impl_subtle_CtOption_T.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition unwrap_or_else
       `{H : State.Trait}
       (self : Self)
       (f : F)
       : M (H := H) T :=
+=======
+  Definition unwrap_or_else (self : Self) (f : F) : M T :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 := f tt in
     T::["conditional_select"]
       (addr_of α0)
       (addr_of self.["value"])
       self.["is_some"].
+<<<<<<< HEAD
 =======
   Parameter unwrap_or_else : Self-> F -> M T.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_unwrap_or_else `{H : State.Trait} :
     Notation.Dot "unwrap_or_else" := {
     Notation.dot := unwrap_or_else;
   }.
   
+<<<<<<< HEAD
 <<<<<<< HEAD
   Definition is_some
       `{H : State.Trait}
@@ -1910,12 +2439,17 @@ Module Impl_subtle_CtOption_T.
 =======
   Parameter is_some : ref Self -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition is_some (self : ref Self) : M subtle.Choice :=
+    Pure self.["is_some"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_is_some `{H : State.Trait} :
     Notation.Dot "is_some" := {
     Notation.dot := is_some;
   }.
   
+<<<<<<< HEAD
 <<<<<<< HEAD
   Definition is_none
       `{H : State.Trait}
@@ -1925,6 +2459,10 @@ Module Impl_subtle_CtOption_T.
 =======
   Parameter is_none : ref Self -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition is_none (self : ref Self) : M subtle.Choice :=
+    self.["is_some"].["not"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_is_none `{H : State.Trait} :
     Notation.Dot "is_none" := {
@@ -1932,11 +2470,15 @@ Module Impl_subtle_CtOption_T.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition map
       `{H : State.Trait}
       (self : Self)
       (f : F)
       : M (H := H) (subtle.CtOption U) :=
+=======
+  Definition map (self : Self) (f : F) : M (subtle.CtOption U) :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 := T::["default"] tt in
     let* α1 :=
       T::["conditional_select"]
@@ -1945,20 +2487,27 @@ Module Impl_subtle_CtOption_T.
         self.["is_some"] in
     let* α2 := f α1 in
     subtle.CtOption::["new"] α2 self.["is_some"].
+<<<<<<< HEAD
 =======
   Parameter map : Self-> F -> M (subtle.CtOption U).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_map `{H : State.Trait} : Notation.Dot "map" := {
     Notation.dot := map;
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition and_then
       `{H : State.Trait}
       (self : Self)
       (f : F)
       : M (H := H) (subtle.CtOption U) :=
+=======
+  Definition and_then (self : Self) (f : F) : M (subtle.CtOption U) :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* tmp :=
       let* α0 := T::["default"] tt in
       let* α1 :=
@@ -1969,15 +2518,19 @@ Module Impl_subtle_CtOption_T.
       f α1 in
     let* _ := tmp.["is_some"].["bitand_assign"] self.["is_some"] in
     Pure tmp.
+<<<<<<< HEAD
 =======
   Parameter and_then : Self-> F -> M (subtle.CtOption U).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_and_then `{H : State.Trait} :
     Notation.Dot "and_then" := {
     Notation.dot := and_then;
   }.
   
+<<<<<<< HEAD
 <<<<<<< HEAD
   Definition or_else
       `{H : State.Trait}
@@ -1990,6 +2543,12 @@ Module Impl_subtle_CtOption_T.
 =======
   Parameter or_else : Self-> F -> M (subtle.CtOption T).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition or_else (self : Self) (f : F) : M (subtle.CtOption T) :=
+    let* is_none := self.["is_none"] in
+    let* f := f tt in
+    Self::["conditional_select"] (addr_of self) (addr_of f) is_none.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_or_else `{H : State.Trait} :
     Notation.Dot "or_else" := {
@@ -2004,12 +2563,20 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
   Definition Self := subtle.CtOption T.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition conditional_select
       `{H : State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
       : M (H := H) Self :=
+=======
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 :=
       T::["conditional_select"]
         (addr_of a.["value"])
@@ -2021,9 +2588,12 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
         (addr_of b.["is_some"])
         choice in
     subtle.CtOption::["new"] α0 α1.
+<<<<<<< HEAD
 =======
   Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_conditional_select `{H : State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
@@ -2046,11 +2616,18 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
   Definition Self := subtle.CtOption T.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
       (rhs : ref (subtle.CtOption T))
       : M (H := H) subtle.Choice :=
+=======
+  Definition ct_eq
+      (self : ref Self)
+      (rhs : ref (subtle.CtOption T))
+      : M subtle.Choice :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* a := self.["is_some"] in
     let* b := rhs.["is_some"] in
     let* α0 := a.["bitand"] b in
@@ -2060,9 +2637,12 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
     let* α4 := b.["not"] in
     let* α5 := α3.["bitand"] α4 in
     α2.["bitor"] α5.
+<<<<<<< HEAD
 =======
   Parameter ct_eq : ref Self-> ref (subtle.CtOption T) -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_eq `{H : State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -2092,11 +2672,15 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
   Definition Self := u8.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_gt
       `{H : State.Trait}
       (self : ref Self)
       (other : ref u8)
       : M (H := H) subtle.Choice :=
+=======
+  Definition ct_gt (self : ref Self) (other : ref u8) : M subtle.Choice :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* gtb :=
       let* α0 := other.["not"] in
       self.["bitand"] α0 in
@@ -2138,9 +2722,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
         while in
     let* α0 := bit.["bitand"] 1 in
     subtle.Choice::["from"] (cast α0 u8).
+<<<<<<< HEAD
 =======
   Parameter ct_gt : ref Self-> ref u8 -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_gt `{H : State.Trait} : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
@@ -2155,11 +2742,15 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
   Definition Self := u16.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_gt
       `{H : State.Trait}
       (self : ref Self)
       (other : ref u16)
       : M (H := H) subtle.Choice :=
+=======
+  Definition ct_gt (self : ref Self) (other : ref u16) : M subtle.Choice :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* gtb :=
       let* α0 := other.["not"] in
       self.["bitand"] α0 in
@@ -2201,9 +2792,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
         while in
     let* α0 := bit.["bitand"] 1 in
     subtle.Choice::["from"] (cast α0 u8).
+<<<<<<< HEAD
 =======
   Parameter ct_gt : ref Self-> ref u16 -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_gt `{H : State.Trait} : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
@@ -2218,11 +2812,15 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
   Definition Self := u32.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_gt
       `{H : State.Trait}
       (self : ref Self)
       (other : ref u32)
       : M (H := H) subtle.Choice :=
+=======
+  Definition ct_gt (self : ref Self) (other : ref u32) : M subtle.Choice :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* gtb :=
       let* α0 := other.["not"] in
       self.["bitand"] α0 in
@@ -2264,9 +2862,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
         while in
     let* α0 := bit.["bitand"] 1 in
     subtle.Choice::["from"] (cast α0 u8).
+<<<<<<< HEAD
 =======
   Parameter ct_gt : ref Self-> ref u32 -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_gt `{H : State.Trait} : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
@@ -2281,11 +2882,15 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
   Definition Self := u64.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition ct_gt
       `{H : State.Trait}
       (self : ref Self)
       (other : ref u64)
       : M (H := H) subtle.Choice :=
+=======
+  Definition ct_gt (self : ref Self) (other : ref u64) : M subtle.Choice :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* gtb :=
       let* α0 := other.["not"] in
       self.["bitand"] α0 in
@@ -2327,9 +2932,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
         while in
     let* α0 := bit.["bitand"] 1 in
     subtle.Choice::["from"] (cast α0 u8).
+<<<<<<< HEAD
 =======
   Parameter ct_gt : ref Self-> ref u64 -> M subtle.Choice.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_ct_gt `{H : State.Trait} : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;

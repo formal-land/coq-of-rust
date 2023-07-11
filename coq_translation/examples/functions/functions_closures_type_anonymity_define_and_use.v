@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition apply
     `{H : State.Trait}
     {F : Set}
@@ -28,10 +29,32 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 =======
 Parameter apply : forall
     { F : Set } ,
+=======
+Definition apply
+    {F : Set}
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     `{core.ops.function.Fn.Trait unit F}
-    F
-    -> M unit.
+    (f : F)
+    : M unit :=
+  let* _ := f tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let x := 7 in
+  let print :=
+    fun  =>
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of x) in
+        let* α1 :=
+          format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+        std.io.stdio._print α1 in
+      Pure tt in
+  let* _ := functions_closures_type_anonymity_define_and_use.apply print in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

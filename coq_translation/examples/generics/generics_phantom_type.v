@@ -35,6 +35,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   Definition Self := generics_phantom_type.PhantomTuple A B.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition eq
       `{H : State.Trait}
       (self : ref Self)
@@ -48,6 +49,15 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       ref (generics_phantom_type.PhantomTuple A B)
       -> M bool.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition eq
+      (self : ref Self)
+      (other : ref (generics_phantom_type.PhantomTuple A B))
+      : M bool :=
+    let* α0 := (self.[0]).["eq"] (other.[0]) in
+    let* α1 := (self.[1]).["eq"] (other.[1]) in
+    α0.["andb"] α1.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -96,6 +106,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Definition Self := generics_phantom_type.PhantomStruct A B.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition eq
       `{H : State.Trait}
       (self : ref Self)
@@ -109,6 +120,15 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       ref (generics_phantom_type.PhantomStruct A B)
       -> M bool.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition eq
+      (self : ref Self)
+      (other : ref (generics_phantom_type.PhantomStruct A B))
+      : M bool :=
+    let* α0 := self.["first"].["eq"] other.["first"] in
+    let* α1 := self.["phantom"].["eq"] other.["phantom"] in
+    α0.["andb"] α1.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -122,7 +142,11 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let _tuple1 :=
     generics_phantom_type.PhantomTuple.Build_t
       "Q"%char
@@ -144,6 +168,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         core.marker.PhantomData.Build;
     |} in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

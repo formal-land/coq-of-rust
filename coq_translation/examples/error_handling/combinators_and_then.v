@@ -13,11 +13,18 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Definition Self := combinators_and_then.Food.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 :=
       match self with
       | combinators_and_then.Food.CordonBleu => Pure "CordonBleu"
@@ -25,9 +32,12 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
       | combinators_and_then.Food.Sushi => Pure "Sushi"
       end in
     core.fmt.Formatter::["write_str"] f α0.
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -50,11 +60,18 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Definition Self := combinators_and_then.Day.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 :=
       match self with
       | combinators_and_then.Day.Monday => Pure "Monday"
@@ -62,9 +79,12 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
       | combinators_and_then.Day.Wednesday => Pure "Wednesday"
       end in
     core.fmt.Formatter::["write_str"] f α0.
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -76,14 +96,21 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition have_ingredients
     `{H : State.Trait}
     (food : combinators_and_then.Food)
     : M (H := H) (core.option.Option combinators_and_then.Food) :=
+=======
+Definition have_ingredients
+    (food : combinators_and_then.Food)
+    : M (core.option.Option combinators_and_then.Food) :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   match food with
   | combinators_and_then.Food.Sushi => Pure core.option.Option.None
   | _ => Pure (core.option.Option.Some food)
   end.
+<<<<<<< HEAD
 
 Definition have_recipe
     `{H : State.Trait}
@@ -160,18 +187,79 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 =======
 Parameter have_ingredients : combinators_and_then.Food
     -> M (core.option.Option combinators_and_then.Food).
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter have_recipe : combinators_and_then.Food
-    -> M (core.option.Option combinators_and_then.Food).
+Definition have_recipe
+    (food : combinators_and_then.Food)
+    : M (core.option.Option combinators_and_then.Food) :=
+  match food with
+  | combinators_and_then.Food.CordonBleu => Pure core.option.Option.None
+  | _ => Pure (core.option.Option.Some food)
+  end.
 
-Parameter cookable_v1 : combinators_and_then.Food
-    -> M (core.option.Option combinators_and_then.Food).
+Definition cookable_v1
+    (food : combinators_and_then.Food)
+    : M (core.option.Option combinators_and_then.Food) :=
+  let* α0 := combinators_and_then.have_recipe food in
+  match α0 with
+  | core.option.Option.None => Pure core.option.Option.None
+  | core.option.Option.Some food =>
+    let* α0 := combinators_and_then.have_ingredients food in
+    match α0 with
+    | core.option.Option.None => Pure core.option.Option.None
+    | core.option.Option.Some food => Pure (core.option.Option.Some food)
+    end
+  end.
 
-Parameter cookable_v2 : combinators_and_then.Food
-    -> M (core.option.Option combinators_and_then.Food).
+Definition cookable_v2
+    (food : combinators_and_then.Food)
+    : M (core.option.Option combinators_and_then.Food) :=
+  let* α0 := combinators_and_then.have_recipe food in
+  α0.["and_then"] combinators_and_then.have_ingredients.
 
-Parameter eat : combinators_and_then.Food-> combinators_and_then.Day -> M unit.
+Definition eat
+    (food : combinators_and_then.Food)
+    (day : combinators_and_then.Day)
+    : M unit :=
+  let* α0 := combinators_and_then.cookable_v2 food in
+  match α0 with
+  | core.option.Option.Some food =>
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of day) in
+      let* α1 := format_argument::["new_debug"] (addr_of food) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Yay! On "; " we get to eat "; ".
+" ])
+          (addr_of [ α0; α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt
+  | core.option.Option.None =>
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of day) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Oh no. We don't get to eat on "; "?
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt
+  end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let '(cordon_bleu, steak, sushi) :=
+    (combinators_and_then.Food.CordonBleu,
+      combinators_and_then.Food.Steak,
+      combinators_and_then.Food.Sushi) in
+  let* _ :=
+    combinators_and_then.eat cordon_bleu combinators_and_then.Day.Monday in
+  let* _ := combinators_and_then.eat steak combinators_and_then.Day.Tuesday in
+  let* _ := combinators_and_then.eat sushi combinators_and_then.Day.Wednesday in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

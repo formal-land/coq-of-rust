@@ -2,7 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition drink `{H : State.Trait} (beverage : ref str) : M (H := H) unit :=
+=======
+Definition drink (beverage : ref str) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* _ :=
     let* α0 := beverage.["eq"] "lemonade" in
     if (α0 : bool) then
@@ -21,6 +25,7 @@ Definition drink `{H : State.Trait} (beverage : ref str) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
@@ -33,3 +38,11 @@ Parameter drink : ref str -> M unit.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Definition main (_ : unit) : M unit :=
+  let* _ := panic.drink "water" in
+  let* _ := panic.drink "lemonade" in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

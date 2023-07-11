@@ -2,10 +2,14 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition give_adult
     `{H : State.Trait}
     (drink : core.option.Option (ref str))
     : M (H := H) unit :=
+=======
+Definition give_adult (drink : core.option.Option (ref str)) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   match drink with
   | core.option.Option.Some "lemonade" =>
     let* _ :=
@@ -32,6 +36,7 @@ Definition give_adult
       std.io.stdio._print α0 in
     Pure tt
   end.
+<<<<<<< HEAD
 
 Definition drink
     `{H : State.Trait}
@@ -72,9 +77,45 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
 Parameter give_adult : core.option.Option (ref str) -> M unit.
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter drink : core.option.Option (ref str) -> M unit.
+Definition drink (drink : core.option.Option (ref str)) : M unit :=
+  let* inside := drink.["unwrap"] in
+  let* _ :=
+    let* α0 := inside.["eq"] "lemonade" in
+    if (α0 : bool) then
+      let* _ := std.panicking.begin_panic "AAAaaaaa!!!!" in
+      Pure tt
+    else
+      Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of inside) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "I love "; "s!!!!!
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let water := core.option.Option.Some "water" in
+  let lemonade := core.option.Option.Some "lemonade" in
+  let void := core.option.Option.None in
+  let* _ := option_and_unwrap.give_adult water in
+  let* _ := option_and_unwrap.give_adult lemonade in
+  let* _ := option_and_unwrap.give_adult void in
+  let coffee := core.option.Option.Some "coffee" in
+  let nothing := core.option.Option.None in
+  let* _ := option_and_unwrap.drink coffee in
+  let* _ := option_and_unwrap.drink nothing in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

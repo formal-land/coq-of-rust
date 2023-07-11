@@ -3,10 +3,16 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main
     `{H : State.Trait}
     (_ : unit)
     : M (H := H) (core.result.Result unit core.num.error.ParseIntError) :=
+=======
+Definition main
+    (_ : unit)
+    : M (core.result.Result unit core.num.error.ParseIntError) :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let number_str := "10" in
   let* number :=
     let* α0 := number_str.["parse"] in
@@ -23,7 +29,10 @@ Definition main
       std.io.stdio._print α1 in
     Pure tt in
   Pure (core.result.Result.Ok tt).
+<<<<<<< HEAD
 =======
 Parameter main : unit
     -> M (core.result.Result unit core.num.error.ParseIntError).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

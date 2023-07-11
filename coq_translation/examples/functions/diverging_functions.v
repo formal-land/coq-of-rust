@@ -3,6 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit := Pure tt.
 
 Definition foo `{H : State.Trait} (_ : unit) : M (H := H) Empty_set :=
@@ -13,3 +14,10 @@ Parameter main : unit -> M unit.
 
 Parameter foo : unit -> M Empty_set.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit := Pure tt.
+
+Definition foo (_ : unit) : M Empty_set :=
+  let* _ := std.panicking.begin_panic "This call never returns." in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

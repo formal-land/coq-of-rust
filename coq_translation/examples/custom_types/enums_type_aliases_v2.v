@@ -18,19 +18,26 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
     enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition run
       `{H : State.Trait}
       (self : ref Self)
       (x : i32)
       (y : i32)
       : M (H := H) i32 :=
+=======
+  Definition run (self : ref Self) (x : i32) (y : i32) : M i32 :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     match self with
     | ImplSelf.Add => x.["add"] y
     | ImplSelf.Subtract => x.["sub"] y
     end.
+<<<<<<< HEAD
 =======
   Parameter run : ref Self-> i32-> i32 -> M i32.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_run `{H : State.Trait} : Notation.Dot "run" := {
     Notation.dot := run;

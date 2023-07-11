@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition apply
     `{H : State.Trait}
     {F : Set}
@@ -73,16 +74,76 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 =======
 Parameter apply : forall
     { F : Set } ,
+=======
+Definition apply
+    {F : Set}
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     `{core.ops.function.FnOnce.Trait unit F}
-    F
-    -> M unit.
+    (f : F)
+    : M unit :=
+  let* _ := f tt in
+  Pure tt.
 
-Parameter apply_to_3 : forall
-    { F : Set } ,
+Definition apply_to_3
+    {F : Set}
     `{core.ops.function.Fn.Trait (i32) F}
-    F
-    -> M i32.
+    (f : F)
+    : M i32 :=
+  f 3.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let greeting := "hello" in
+  let* farewell := "goodbye".["to_owned"] in
+  let diary :=
+    fun  =>
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_display"] (addr_of greeting) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "I said "; ".
+" ])
+              (addr_of [ α0 ]) in
+          std.io.stdio._print α1 in
+        Pure tt in
+      let* _ := farewell.["push_str"] "!!!" in
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_display"] (addr_of farewell) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "Then I screamed "; ".
+" ])
+              (addr_of [ α0 ]) in
+          std.io.stdio._print α1 in
+        Pure tt in
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "Now I can sleep. zzzzz
+" ]) in
+          std.io.stdio._print α0 in
+        Pure tt in
+      let* _ := core.mem.drop farewell in
+      Pure tt in
+  let* _ := functions_closures_as_input_parameters.apply diary in
+  let double := fun x => 2.["mul"] x in
+  let* _ :=
+    let* _ :=
+      let* α0 := functions_closures_as_input_parameters.apply_to_3 double in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "3 doubled: "; "
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

@@ -30,6 +30,7 @@ Module
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition eq
       `{H : State.Trait}
       (self : ref Self)
@@ -43,6 +44,15 @@ Module
       ref hash_map_alternate_or_custom_key_types.Account
       -> M bool.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition eq
+      (self : ref Self)
+      (other : ref hash_map_alternate_or_custom_key_types.Account)
+      : M bool :=
+    let* α0 := self.["username"].["eq"] other.["username"] in
+    let* α1 := self.["password"].["eq"] other.["password"] in
+    α0.["andb"] α1.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -66,6 +76,7 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition assert_receiver_is_total_eq
       `{H : State.Trait}
       (self : ref Self)
@@ -76,6 +87,12 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 =======
   Parameter assert_receiver_is_total_eq : ref Self -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    let _ := tt in
+    let _ := tt in
+    Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -90,6 +107,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition hash
       `{H : State.Trait}
       (self : ref Self)
@@ -100,6 +118,11 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 =======
   Parameter hash : ref Self-> mut_ref __H -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition hash (self : ref Self) (state : mut_ref __H) : M unit :=
+    let* _ := core.hash.Hash.hash (addr_of self.["username"]) state in
+    core.hash.Hash.hash (addr_of self.["password"]) state.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_hash `{H : State.Trait} : Notation.Dot "hash" := {
     Notation.dot := hash;
@@ -131,12 +154,20 @@ Definition Accounts : Set :=
     hash_map_alternate_or_custom_key_types.AccountInfo.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition try_logon
     `{H : State.Trait}
     (accounts : ref hash_map_alternate_or_custom_key_types.Accounts)
     (username : ref str)
     (password : ref str)
     : M (H := H) unit :=
+=======
+Definition try_logon
+    (accounts : ref hash_map_alternate_or_custom_key_types.Accounts)
+    (username : ref str)
+    (password : ref str)
+    : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of username) in
@@ -210,6 +241,7 @@ Definition try_logon
       std.io.stdio._print α0 in
     Pure tt
   end.
+<<<<<<< HEAD
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
@@ -247,3 +279,33 @@ Parameter try_logon : ref hash_map_alternate_or_custom_key_types.Accounts->
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Definition main (_ : unit) : M unit :=
+  let* accounts := std.collections.hash.map.HashMap::["new"] tt in
+  let account :=
+    {|
+      hash_map_alternate_or_custom_key_types.Account.username := "j.everyman";
+      hash_map_alternate_or_custom_key_types.Account.password := "password123";
+    |} in
+  let account_info :=
+    {|
+      hash_map_alternate_or_custom_key_types.AccountInfo.name :=
+        "John Everyman";
+      hash_map_alternate_or_custom_key_types.AccountInfo.email :=
+        "j.everyman@email.com";
+    |} in
+  let* _ := accounts.["insert"] account account_info in
+  let* _ :=
+    hash_map_alternate_or_custom_key_types.try_logon
+      (addr_of accounts)
+      "j.everyman"
+      "psasword123" in
+  let* _ :=
+    hash_map_alternate_or_custom_key_types.try_logon
+      (addr_of accounts)
+      "j.everyman"
+      "password123" in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

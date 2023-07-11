@@ -16,7 +16,11 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   Definition Self := drop.Droppable.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition drop `{H : State.Trait} (self : mut_ref Self) : M (H := H) unit :=
+=======
+  Definition drop (self : mut_ref Self) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* _ :=
       let* _ :=
         let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
@@ -28,9 +32,12 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
         std.io.stdio._print α1 in
       Pure tt in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter drop : mut_ref Self -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_drop `{H : State.Trait} : Notation.Dot "drop" := {
     Notation.dot := drop;
@@ -43,7 +50,11 @@ End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let _a := {| drop.Droppable.name := "a"; |} in
   let* _ :=
     let _b := {| drop.Droppable.name := "b"; |} in
@@ -91,6 +102,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α0 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

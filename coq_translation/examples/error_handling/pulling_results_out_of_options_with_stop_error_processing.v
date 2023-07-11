@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition double_first
     `{H : State.Trait}
     (vec : alloc.vec.Vec (ref str))
@@ -10,15 +11,33 @@ Definition double_first
 =======
 Parameter double_first : alloc.vec.Vec (ref str)
     ->
+=======
+Definition double_first
+    (vec : alloc.vec.Vec (ref str))
+    :
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
       M
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
         (core.result.Result
           (core.option.Option i32)
-          core.num.error.ParseIntError).
+          core.num.error.ParseIntError) :=
+  let* opt :=
+    let* α0 := vec.["first"] in
+    α0.["map"]
+      (fun first =>
+        let* α0 := first.["parse"] in
+        α0.["map"] (fun n => 2.["mul"] n)) in
+  opt.["map_or"]
+    (core.result.Result.Ok core.option.Option.None)
+    (fun r => r.["map"] core.option.Option.Some).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* numbers :=
     let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
     Slice::["into_vec"] α0 in
@@ -66,6 +85,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

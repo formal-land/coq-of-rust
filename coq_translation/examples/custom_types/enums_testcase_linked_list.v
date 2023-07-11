@@ -12,6 +12,7 @@ Module Impl_enums_testcase_linked_list_List.
   Definition Self := enums_testcase_linked_list.List.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition new
       `{H : State.Trait}
       (_ : unit)
@@ -20,12 +21,17 @@ Module Impl_enums_testcase_linked_list_List.
 =======
   Parameter new : unit -> M enums_testcase_linked_list.List.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition new (_ : unit) : M enums_testcase_linked_list.List :=
+    Pure enums_testcase_linked_list.List.Nil.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
+<<<<<<< HEAD
 <<<<<<< HEAD
   Definition prepend
       `{H : State.Trait}
@@ -37,6 +43,14 @@ Module Impl_enums_testcase_linked_list_List.
 =======
   Parameter prepend : Self-> u32 -> M enums_testcase_linked_list.List.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition prepend
+      (self : Self)
+      (elem : u32)
+      : M enums_testcase_linked_list.List :=
+    let* α0 := alloc.boxed.Box::["new"] self in
+    Pure (enums_testcase_linked_list.List.Cons elem α0).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_prepend `{H : State.Trait} :
     Notation.Dot "prepend" := {
@@ -44,7 +58,11 @@ Module Impl_enums_testcase_linked_list_List.
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition len `{H : State.Trait} (self : ref Self) : M (H := H) u32 :=
+=======
+  Definition len (self : ref Self) : M u32 :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 := self.["deref"] in
     match α0 with
     | enums_testcase_linked_list.List.Cons _ tail =>
@@ -52,19 +70,26 @@ Module Impl_enums_testcase_linked_list_List.
       1.["add"] α0
     | enums_testcase_linked_list.List.Nil => Pure 0
     end.
+<<<<<<< HEAD
 =======
   Parameter len : ref Self -> M u32.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_len `{H : State.Trait} : Notation.Dot "len" := {
     Notation.dot := len;
   }.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition stringify
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) alloc.string.String :=
+=======
+  Definition stringify (self : ref Self) : M alloc.string.String :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 := self.["deref"] in
     match α0 with
     | enums_testcase_linked_list.List.Cons head tail =>
@@ -84,9 +109,12 @@ Module Impl_enums_testcase_linked_list_List.
         alloc.fmt.format α0 in
       Pure res
     end.
+<<<<<<< HEAD
 =======
   Parameter stringify : ref Self -> M alloc.string.String.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_stringify `{H : State.Trait} :
     Notation.Dot "stringify" := {
@@ -96,7 +124,11 @@ End Impl_enums_testcase_linked_list_List.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* list := enums_testcase_linked_list.List::["new"] tt in
   let* _ :=
     let* α0 := list.["prepend"] 1 in
@@ -128,6 +160,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

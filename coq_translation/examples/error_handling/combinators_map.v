@@ -13,11 +13,18 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Definition Self := combinators_map.Food.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 :=
       match self with
       | combinators_map.Food.Apple => Pure "Apple"
@@ -25,9 +32,12 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
       | combinators_map.Food.Potato => Pure "Potato"
       end in
     core.fmt.Formatter::["write_str"] f α0.
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -51,18 +61,28 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Definition Self := combinators_map.Peeled.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Peeled"
       (addr_of (addr_of (self.[0]))).
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -86,18 +106,28 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Definition Self := combinators_map.Chopped.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Chopped"
       (addr_of (addr_of (self.[0]))).
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -121,18 +151,28 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Definition Self := combinators_map.Cooked.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Cooked"
       (addr_of (addr_of (self.[0]))).
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -144,15 +184,22 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition peel
     `{H : State.Trait}
     (food : core.option.Option combinators_map.Food)
     : M (H := H) (core.option.Option combinators_map.Peeled) :=
+=======
+Definition peel
+    (food : core.option.Option combinators_map.Food)
+    : M (core.option.Option combinators_map.Peeled) :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   match food with
   | core.option.Option.Some food =>
     Pure (core.option.Option.Some (combinators_map.Peeled.Build_t food))
   | core.option.Option.None => Pure core.option.Option.None
   end.
+<<<<<<< HEAD
 
 Definition chop
     `{H : State.Trait}
@@ -231,18 +278,79 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 =======
 Parameter peel : core.option.Option combinators_map.Food
     -> M (core.option.Option combinators_map.Peeled).
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter chop : core.option.Option combinators_map.Peeled
-    -> M (core.option.Option combinators_map.Chopped).
+Definition chop
+    (peeled : core.option.Option combinators_map.Peeled)
+    : M (core.option.Option combinators_map.Chopped) :=
+  match peeled with
+  | core.option.Option.Some combinators_map.Peeled.Build_t food =>
+    Pure (core.option.Option.Some (combinators_map.Chopped.Build_t food))
+  | core.option.Option.None => Pure core.option.Option.None
+  end.
 
-Parameter cook : core.option.Option combinators_map.Chopped
-    -> M (core.option.Option combinators_map.Cooked).
+Definition cook
+    (chopped : core.option.Option combinators_map.Chopped)
+    : M (core.option.Option combinators_map.Cooked) :=
+  chopped.["map"]
+    (fun combinators_map.Chopped.Build_t food =>
+      Pure (combinators_map.Cooked.Build_t food)).
 
-Parameter process : core.option.Option combinators_map.Food
-    -> M (core.option.Option combinators_map.Cooked).
+Definition process
+    (food : core.option.Option combinators_map.Food)
+    : M (core.option.Option combinators_map.Cooked) :=
+  let* α0 := food.["map"] (fun f => Pure (combinators_map.Peeled.Build_t f)) in
+  let* α1 :=
+    α0.["map"]
+      (fun combinators_map.Peeled.Build_t f =>
+        Pure (combinators_map.Chopped.Build_t f)) in
+  α1.["map"]
+    (fun combinators_map.Chopped.Build_t f =>
+      Pure (combinators_map.Cooked.Build_t f)).
 
-Parameter eat : core.option.Option combinators_map.Cooked -> M unit.
+Definition eat (food : core.option.Option combinators_map.Cooked) : M unit :=
+  match food with
+  | core.option.Option.Some food =>
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of food) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Mmm. I love "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt
+  | core.option.Option.None =>
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "Oh no! It wasn't edible.
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt
+  end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let apple := core.option.Option.Some combinators_map.Food.Apple in
+  let carrot := core.option.Option.Some combinators_map.Food.Carrot in
+  let potato := core.option.Option.None in
+  let* cooked_apple :=
+    let* α0 := combinators_map.peel apple in
+    let* α1 := combinators_map.chop α0 in
+    combinators_map.cook α1 in
+  let* cooked_carrot :=
+    let* α0 := combinators_map.peel carrot in
+    let* α1 := combinators_map.chop α0 in
+    combinators_map.cook α1 in
+  let* cooked_potato := combinators_map.process potato in
+  let* _ := combinators_map.eat cooked_apple in
+  let* _ := combinators_map.eat cooked_carrot in
+  let* _ := combinators_map.eat cooked_potato in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

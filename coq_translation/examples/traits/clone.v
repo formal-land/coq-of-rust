@@ -10,6 +10,7 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
   Definition Self := clone.Unit.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -19,6 +20,13 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.fmt.Formatter::["write_str"] f "Unit".
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -33,6 +41,7 @@ Module Impl_core_clone_Clone_for_clone_Unit.
   Definition Self := clone.Unit.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
@@ -41,6 +50,9 @@ Module Impl_core_clone_Clone_for_clone_Unit.
 =======
   Parameter clone : ref Self -> M clone.Unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition clone (self : ref Self) : M clone.Unit := self.["deref"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -74,6 +86,7 @@ Module Impl_core_clone_Clone_for_clone_Pair.
   Definition Self := clone.Pair.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
@@ -84,6 +97,12 @@ Module Impl_core_clone_Clone_for_clone_Pair.
 =======
   Parameter clone : ref Self -> M clone.Pair.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition clone (self : ref Self) : M clone.Pair :=
+    let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
+    let* α1 := core.clone.Clone.clone (addr_of (self.[1])) in
+    Pure (clone.Pair.Build_t α0 α1).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -98,19 +117,29 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
   Definition Self := clone.Pair.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     core.fmt.Formatter::["debug_tuple_field2_finish"]
       f
       "Pair"
       (addr_of (self.[0]))
       (addr_of (addr_of (self.[1]))).
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -123,7 +152,11 @@ End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let unit := clone.Unit.Build in
   let copied_unit := unit in
   let* _ :=
@@ -184,6 +217,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

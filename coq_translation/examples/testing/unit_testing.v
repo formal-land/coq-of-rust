@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition add `{H : State.Trait} (a : i32) (b : i32) : M (H := H) i32 :=
   a.["add"] b.
 
@@ -112,17 +113,116 @@ Definition test_bad_add `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
 Parameter add : i32-> i32 -> M i32.
+=======
+Definition add (a : i32) (b : i32) : M i32 := a.["add"] b.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter bad_add : i32-> i32 -> M i32.
+Definition bad_add (a : i32) (b : i32) : M i32 := a.["sub"] b.
 
 Module tests.
-  Parameter test_add : unit -> M unit.
+  Definition test_add (_ : unit) : M unit :=
+    let* _ :=
+      let* α0 := unit_testing.add 1 2 in
+      match (addr_of α0, addr_of 3) with
+      | (left_val, right_val) =>
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* α2 := α0.["eq"] α1 in
+        let* α3 := α2.["not"] in
+        if (α3 : bool) then
+          let kind := core.panicking.AssertKind.Eq in
+          let* _ :=
+            let* α0 := left_val.["deref"] in
+            let* α1 := right_val.["deref"] in
+            core.panicking.assert_failed
+              kind
+              (addr_of α0)
+              (addr_of α1)
+              core.option.Option.None in
+          Pure tt
+        else
+          Pure tt
+      end in
+    Pure tt.
   
-  Parameter test_bad_add : unit -> M unit.
+  Definition test_bad_add (_ : unit) : M unit :=
+    let* _ :=
+      let* α0 := unit_testing.bad_add 1 2 in
+      match (addr_of α0, addr_of 3) with
+      | (left_val, right_val) =>
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* α2 := α0.["eq"] α1 in
+        let* α3 := α2.["not"] in
+        if (α3 : bool) then
+          let kind := core.panicking.AssertKind.Eq in
+          let* _ :=
+            let* α0 := left_val.["deref"] in
+            let* α1 := right_val.["deref"] in
+            core.panicking.assert_failed
+              kind
+              (addr_of α0)
+              (addr_of α1)
+              core.option.Option.None in
+          Pure tt
+        else
+          Pure tt
+      end in
+    Pure tt.
 End tests.
 
-Parameter test_add : unit -> M unit.
+Definition test_add (_ : unit) : M unit :=
+  let* _ :=
+    let* α0 := unit_testing.add 1 2 in
+    match (addr_of α0, addr_of 3) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := core.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          core.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            core.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  Pure tt.
 
+<<<<<<< HEAD
 Parameter test_bad_add : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition test_bad_add (_ : unit) : M unit :=
+  let* _ :=
+    let* α0 := unit_testing.bad_add 1 2 in
+    match (addr_of α0, addr_of 3) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := core.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          core.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            core.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

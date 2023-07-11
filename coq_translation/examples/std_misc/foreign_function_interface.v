@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Error ForeignMod.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition cos
     `{H : State.Trait}
     (z : foreign_function_interface.Complex)
@@ -51,6 +52,47 @@ Parameter cos : foreign_function_interface.Complex
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition cos
+    (z : foreign_function_interface.Complex)
+    : M foreign_function_interface.Complex :=
+  foreign_function_interface.ccosf z.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Definition main (_ : unit) : M unit :=
+  let* z :=
+    let* α0 := 1 (* 1. *).["neg"] in
+    Pure
+      {|
+        foreign_function_interface.Complex.re := α0;
+        foreign_function_interface.Complex.im := 0 (* 0. *);
+      |} in
+  let* z_sqrt := foreign_function_interface.csqrtf z in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of z) in
+      let* α1 := format_argument::["new_debug"] (addr_of z_sqrt) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "the square root of "; " is "; "
+" ])
+          (addr_of [ α0; α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of z) in
+      let* α1 := foreign_function_interface.cos z in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "cos("; ") = "; "
+" ])
+          (addr_of [ α0; α2 ]) in
+      std.io.stdio._print α3 in
+    Pure tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
 Module Complex.
   Record t : Set := {
@@ -71,6 +113,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
@@ -80,6 +123,11 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 =======
   Parameter clone : ref Self -> M foreign_function_interface.Complex.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition clone (self : ref Self) : M foreign_function_interface.Complex :=
+    let _ := tt in
+    self.["deref"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -101,6 +149,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter struct_parameter_for_fmt : core.fmt.Formatter -> string -> 
     string -> f32 -> 
     string -> f32 -> 
@@ -115,6 +164,12 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 := self.["im"].["lt"] 0 (* 0. *) in
     if (α0 : bool) then
       let* α0 := format_argument::["new_display"] (addr_of self.["re"]) in
@@ -133,9 +188,12 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           (addr_of [ ""; "+"; "i" ])
           (addr_of [ α0; α1 ]) in
       f.["write_fmt"] α2.
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;

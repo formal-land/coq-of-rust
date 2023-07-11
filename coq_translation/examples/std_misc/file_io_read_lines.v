@@ -2,12 +2,18 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition read_lines
     `{H : State.Trait}
     (filename : alloc.string.String)
     :
       M (H := H)
         (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File)) :=
+=======
+Definition read_lines
+    (filename : alloc.string.String)
+    : M (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File)) :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* file :=
     let* α0 := std.fs.File::["open"] filename in
     α0.["unwrap"] in
@@ -16,6 +22,7 @@ Definition read_lines
     let* α1 := α0.["lines"] in
     Return α1 in
   Pure tt.
+<<<<<<< HEAD
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
@@ -55,3 +62,37 @@ Parameter read_lines : alloc.string.String
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Definition main (_ : unit) : M unit :=
+  let* lines :=
+    let* α0 := "./hosts".["to_string"] in
+    file_io_read_lines.read_lines α0 in
+  let* α0 := LangItem lines in
+  match α0 with
+  | iter =>
+    loop
+      let* _ :=
+        let* α0 := LangItem (addr_of iter) in
+        match α0 with
+        | None => Pure Break
+        | Some {| Some.0 := line; |} =>
+          let* _ :=
+            let* _ :=
+              let* α0 := line.["unwrap"] in
+              let* α1 := format_argument::["new_display"] (addr_of α0) in
+              let* α2 :=
+                format_arguments::["new_v1"]
+                  (addr_of [ ""; "
+" ])
+                  (addr_of [ α1 ]) in
+              std.io.stdio._print α2 in
+            Pure tt in
+          Pure tt
+        end in
+      Pure tt
+      from
+      for
+  end.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

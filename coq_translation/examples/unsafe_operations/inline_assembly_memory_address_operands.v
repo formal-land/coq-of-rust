@@ -3,6 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit := Pure tt.
 
 Definition load_fpu_control_word
@@ -16,3 +17,10 @@ Parameter main : unit -> M unit.
 
 Parameter load_fpu_control_word : u16 -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit := Pure tt.
+
+Definition load_fpu_control_word (control : u16) : M unit :=
+  let _ := InlineAsm in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

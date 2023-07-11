@@ -10,7 +10,11 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
   Definition Self := scoping_rules_raii_desctructor.ToDrop.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition drop `{H : State.Trait} (self : mut_ref Self) : M (H := H) unit :=
+=======
+  Definition drop (self : mut_ref Self) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -20,9 +24,12 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
         std.io.stdio._print α0 in
       Pure tt in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter drop : mut_ref Self -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_drop `{H : State.Trait} : Notation.Dot "drop" := {
     Notation.dot := drop;
@@ -35,7 +42,11 @@ End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let x := scoping_rules_raii_desctructor.ToDrop.Build in
   let* _ :=
     let* _ :=
@@ -45,6 +56,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α0 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

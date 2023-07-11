@@ -2,7 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition elided_input `{H : State.Trait} (x : ref i32) : M (H := H) unit :=
+=======
+Definition elided_input (x : ref i32) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of x) in
@@ -14,6 +18,7 @@ Definition elided_input `{H : State.Trait} (x : ref i32) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 
 Definition annotated_input `{H : State.Trait} (x : ref i32) : M (H := H) unit :=
   let* _ :=
@@ -70,13 +75,56 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
 Parameter elided_input : ref i32 -> M unit.
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter annotated_input : ref i32 -> M unit.
+Definition annotated_input (x : ref i32) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of x) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "`annotated_input`: "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  Pure tt.
 
-Parameter elided_pass : ref i32 -> M (ref i32).
+Definition elided_pass (x : ref i32) : M (ref i32) := Pure x.
 
-Parameter annotated_pass : ref i32 -> M (ref i32).
+Definition annotated_pass (x : ref i32) : M (ref i32) := Pure x.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let x := 3 in
+  let* _ := scoping_rules_lifetimes_elision.elided_input (addr_of x) in
+  let* _ := scoping_rules_lifetimes_elision.annotated_input (addr_of x) in
+  let* _ :=
+    let* _ :=
+      let* α0 := scoping_rules_lifetimes_elision.elided_pass (addr_of x) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "`elided_pass`: "; "
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := scoping_rules_lifetimes_elision.annotated_pass (addr_of x) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "`annotated_pass`: "; "
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

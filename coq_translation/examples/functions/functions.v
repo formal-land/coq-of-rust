@@ -3,6 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ := functions.fizzbuzz_to 100 in
   Pure tt.
@@ -85,10 +86,86 @@ Definition fizzbuzz_to `{H : State.Trait} (n : u32) : M (H := H) unit :=
   end.
 =======
 Parameter main : unit -> M unit.
+=======
+Definition main (_ : unit) : M unit :=
+  let* _ := functions.fizzbuzz_to 100 in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter is_divisible_by : u32-> u32 -> M bool.
+Definition is_divisible_by (lhs : u32) (rhs : u32) : M bool :=
+  let* _ :=
+    let* α0 := rhs.["eq"] 0 in
+    if (α0 : bool) then
+      let* _ := Return false in
+      Pure tt
+    else
+      Pure tt in
+  let* α0 := lhs.["rem"] rhs in
+  α0.["eq"] 0.
 
-Parameter fizzbuzz : u32 -> M unit.
+Definition fizzbuzz (n : u32) : M unit :=
+  let* α0 := functions.is_divisible_by n 15 in
+  if (α0 : bool) then
+    let* _ :=
+      let* _ :=
+        let* α0 := format_arguments::["new_const"] (addr_of [ "fizzbuzz
+" ]) in
+        std.io.stdio._print α0 in
+      Pure tt in
+    Pure tt
+  else
+    let* α0 := functions.is_divisible_by n 3 in
+    if (α0 : bool) then
+      let* _ :=
+        let* _ :=
+          let* α0 := format_arguments::["new_const"] (addr_of [ "fizz
+" ]) in
+          std.io.stdio._print α0 in
+        Pure tt in
+      Pure tt
+    else
+      let* α0 := functions.is_divisible_by n 5 in
+      if (α0 : bool) then
+        let* _ :=
+          let* _ :=
+            let* α0 := format_arguments::["new_const"] (addr_of [ "buzz
+" ]) in
+            std.io.stdio._print α0 in
+          Pure tt in
+        Pure tt
+      else
+        let* _ :=
+          let* _ :=
+            let* α0 := format_argument::["new_display"] (addr_of n) in
+            let* α1 :=
+              format_arguments::["new_v1"]
+                (addr_of [ ""; "
+" ])
+                (addr_of [ α0 ]) in
+            std.io.stdio._print α1 in
+          Pure tt in
+        Pure tt.
 
+<<<<<<< HEAD
 Parameter fizzbuzz_to : u32 -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition fizzbuzz_to (n : u32) : M unit :=
+  let* α0 := LangItem 1 n in
+  let* α1 := LangItem α0 in
+  match α1 with
+  | iter =>
+    loop
+      let* _ :=
+        let* α0 := LangItem (addr_of iter) in
+        match α0 with
+        | None => Pure Break
+        | Some {| Some.0 := n; |} =>
+          let* _ := functions.fizzbuzz n in
+          Pure tt
+        end in
+      Pure tt
+      from
+      for
+  end.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

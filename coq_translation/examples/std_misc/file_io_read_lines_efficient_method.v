@@ -3,7 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* α0 := file_io_read_lines_efficient_method.read_lines "./hosts" in
   let* α1 := let_if core.result.Result.Ok lines := α0 in
   if (α1 : bool) then
@@ -38,6 +42,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     end
   else
     Pure tt.
+<<<<<<< HEAD
 
 Definition read_lines
     `{H : State.Trait}
@@ -48,13 +53,27 @@ Definition read_lines
       M (H := H)
 =======
 Parameter main : unit -> M unit.
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter read_lines : forall
-    { P : Set } ,
+Definition read_lines
+    {P : Set}
     `{core.convert.AsRef.Trait std.path.Path P}
-    P
-    ->
+    (filename : P)
+    :
       M
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
         (std.io.error.Result
-          (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))).
+          (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
+  let* file :=
+    let* α0 := std.fs.File::["open"] filename in
+    let* α1 := LangItem α0 in
+    match α1 with
+    | Break {| Break.0 := residual; |} =>
+      let* α0 := LangItem residual in
+      Return α0
+    | Continue {| Continue.0 := val; |} => Pure val
+    end in
+  let* α0 := std.io.buffered.bufreader.BufReader::["new"] file in
+  let* α1 := α0.["lines"] in
+  Pure (core.result.Result.Ok α1).

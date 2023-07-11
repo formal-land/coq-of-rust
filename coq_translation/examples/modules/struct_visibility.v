@@ -28,6 +28,7 @@ Module my.
     Definition Self := struct_visibility.my.ClosedBox T.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Definition new
         `{H : State.Trait}
         (contents : T)
@@ -36,6 +37,10 @@ Module my.
 =======
     Parameter new : T -> M (struct_visibility.my.ClosedBox T).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+    Definition new (contents : T) : M (struct_visibility.my.ClosedBox T) :=
+      Pure {| struct_visibility.my.ClosedBox.contents := contents; |}.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -70,6 +75,7 @@ Module Impl_struct_visibility_my_ClosedBox_T_2.
   Definition Self := struct_visibility.my.ClosedBox T.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition new
       `{H : State.Trait}
       (contents : T)
@@ -78,6 +84,10 @@ Module Impl_struct_visibility_my_ClosedBox_T_2.
 =======
   Parameter new : T -> M (struct_visibility.my.ClosedBox T).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition new (contents : T) : M (struct_visibility.my.ClosedBox T) :=
+    Pure {| struct_visibility.my.ClosedBox.contents := contents; |}.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -87,7 +97,11 @@ End Impl_struct_visibility_my_ClosedBox_T_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let open_box :=
     {| struct_visibility.my.OpenBox.contents := "public information"; |} in
   let* _ :=
@@ -104,6 +118,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _closed_box :=
     struct_visibility.my.ClosedBox::["new"] "classified information" in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

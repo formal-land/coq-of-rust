@@ -14,11 +14,18 @@ Module checked.
     Definition Self := result.checked.MathError.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Definition fmt
         `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M (H := H) core.fmt.Result :=
+=======
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
       let* α0 :=
         match self with
         | result.checked.MathError.DivisionByZero => Pure "DivisionByZero"
@@ -28,9 +35,12 @@ Module checked.
           Pure "NegativeSquareRoot"
         end in
       core.fmt.Formatter::["write_str"] f α0.
+<<<<<<< HEAD
 =======
     Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -45,17 +55,22 @@ Module checked.
     core.result.Result f64 result.checked.MathError.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition div
       `{H : State.Trait}
       (x : f64)
       (y : f64)
       : M (H := H) result.checked.MathResult :=
+=======
+  Definition div (x : f64) (y : f64) : M result.checked.MathResult :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 := y.["eq"] 0 (* 0.0 *) in
     if (α0 : bool) then
       Pure (core.result.Result.Err result.checked.MathError.DivisionByZero)
     else
       let* α0 := x.["div"] y in
       Pure (core.result.Result.Ok α0).
+<<<<<<< HEAD
   
   Definition sqrt
       `{H : State.Trait}
@@ -81,11 +96,30 @@ Module checked.
       Pure (core.result.Result.Ok α0).
 =======
   Parameter div : f64-> f64 -> M result.checked.MathResult.
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
-  Parameter sqrt : f64 -> M result.checked.MathResult.
+  Definition sqrt (x : f64) : M result.checked.MathResult :=
+    let* α0 := x.["lt"] 0 (* 0.0 *) in
+    if (α0 : bool) then
+      Pure (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
+    else
+      let* α0 := x.["sqrt"] in
+      Pure (core.result.Result.Ok α0).
   
+<<<<<<< HEAD
   Parameter ln : f64 -> M result.checked.MathResult.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition ln (x : f64) : M result.checked.MathResult :=
+    let* α0 := x.["le"] 0 (* 0.0 *) in
+    if (α0 : bool) then
+      Pure
+        (core.result.Result.Err result.checked.MathError.NonPositiveLogarithm)
+    else
+      let* α0 := x.["ln"] in
+      Pure (core.result.Result.Ok α0).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 End checked.
 
 Module MathError.
@@ -100,11 +134,18 @@ Module Impl_core_fmt_Debug_for_result_checked_MathError.
   Definition Self := result.checked.MathError.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 :=
       match self with
       | result.checked.MathError.DivisionByZero => Pure "DivisionByZero"
@@ -113,9 +154,12 @@ Module Impl_core_fmt_Debug_for_result_checked_MathError.
       | result.checked.MathError.NegativeSquareRoot => Pure "NegativeSquareRoot"
       end in
     core.fmt.Formatter::["write_str"] f α0.
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -129,17 +173,22 @@ End Impl_core_fmt_Debug_for_result_checked_MathError.
 Definition MathResult : Set := core.result.Result f64 result.checked.MathError.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition div
     `{H : State.Trait}
     (x : f64)
     (y : f64)
     : M (H := H) result.checked.MathResult :=
+=======
+Definition div (x : f64) (y : f64) : M result.checked.MathResult :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* α0 := y.["eq"] 0 (* 0.0 *) in
   if (α0 : bool) then
     Pure (core.result.Result.Err result.checked.MathError.DivisionByZero)
   else
     let* α0 := x.["div"] y in
     Pure (core.result.Result.Ok α0).
+<<<<<<< HEAD
 
 Definition sqrt
     `{H : State.Trait}
@@ -205,13 +254,67 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
 Parameter div : f64-> f64 -> M result.checked.MathResult.
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter sqrt : f64 -> M result.checked.MathResult.
+Definition sqrt (x : f64) : M result.checked.MathResult :=
+  let* α0 := x.["lt"] 0 (* 0.0 *) in
+  if (α0 : bool) then
+    Pure (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
+  else
+    let* α0 := x.["sqrt"] in
+    Pure (core.result.Result.Ok α0).
 
-Parameter ln : f64 -> M result.checked.MathResult.
+Definition ln (x : f64) : M result.checked.MathResult :=
+  let* α0 := x.["le"] 0 (* 0.0 *) in
+  if (α0 : bool) then
+    Pure (core.result.Result.Err result.checked.MathError.NonPositiveLogarithm)
+  else
+    let* α0 := x.["ln"] in
+    Pure (core.result.Result.Ok α0).
 
-Parameter op : f64-> f64 -> M f64.
+Definition op (x : f64) (y : f64) : M f64 :=
+  let* α0 := result.checked.div x y in
+  match α0 with
+  | core.result.Result.Err why =>
+    let* α0 := format_argument::["new_debug"] (addr_of why) in
+    let* α1 := format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
+    core.panicking.panic_fmt α1
+  | core.result.Result.Ok ratio =>
+    let* α0 := result.checked.ln ratio in
+    match α0 with
+    | core.result.Result.Err why =>
+      let* α0 := format_argument::["new_debug"] (addr_of why) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
+      core.panicking.panic_fmt α1
+    | core.result.Result.Ok ln =>
+      let* α0 := result.checked.sqrt ln in
+      match α0 with
+      | core.result.Result.Err why =>
+        let* α0 := format_argument::["new_debug"] (addr_of why) in
+        let* α1 :=
+          format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
+        core.panicking.panic_fmt α1
+      | core.result.Result.Ok sqrt => Pure sqrt
+      end
+    end
+  end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := result.op 1 (* 1.0 *) 10 (* 10.0 *) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

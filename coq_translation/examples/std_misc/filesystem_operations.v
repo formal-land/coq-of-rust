@@ -2,10 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition cat
     `{H : State.Trait}
     (path : ref std.path.Path)
     : M (H := H) (std.io.error.Result alloc.string.String) :=
+=======
+Definition cat
+    (path : ref std.path.Path)
+    : M (std.io.error.Result alloc.string.String) :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* f :=
     let* α0 := std.fs.File::["open"] path in
     let* α1 := LangItem α0 in
@@ -21,6 +27,7 @@ Definition cat
   | core.result.Result.Ok _ => Pure (core.result.Result.Ok s)
   | core.result.Result.Err e => Pure (core.result.Result.Err e)
   end.
+<<<<<<< HEAD
 
 Definition echo
     `{H : State.Trait}
@@ -309,11 +316,291 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 =======
 Parameter cat : ref std.path.Path
     -> M (std.io.error.Result alloc.string.String).
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter echo : ref str-> ref std.path.Path -> M (std.io.error.Result unit).
+Definition echo
+    (s : ref str)
+    (path : ref std.path.Path)
+    : M (std.io.error.Result unit) :=
+  let* f :=
+    let* α0 := std.fs.File::["create"] path in
+    let* α1 := LangItem α0 in
+    match α1 with
+    | Break {| Break.0 := residual; |} =>
+      let* α0 := LangItem residual in
+      Return α0
+    | Continue {| Continue.0 := val; |} => Pure val
+    end in
+  let* α0 := s.["as_bytes"] in
+  f.["write_all"] α0.
 
-Parameter touch : ref std.path.Path -> M (std.io.error.Result unit).
+Definition touch (path : ref std.path.Path) : M (std.io.error.Result unit) :=
+  let* α0 := std.fs.OpenOptions::["new"] tt in
+  let* α1 := α0.["create"] true in
+  let* α2 := α1.["write"] true in
+  let* α3 := α2.["open"] path in
+  match α3 with
+  | core.result.Result.Ok _ => Pure (core.result.Result.Ok tt)
+  | core.result.Result.Err e => Pure (core.result.Result.Err e)
+  end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_arguments::["new_const"] (addr_of [ "`mkdir a`
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := std.fs.create_dir "a" in
+    match α0 with
+    | core.result.Result.Err why =>
+      let* _ :=
+        let* α0 := why.["kind"] in
+        let* α1 := format_argument::["new_debug"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "! "; "
+" ])
+            (addr_of [ α1 ]) in
+        std.io.stdio._print α2 in
+      Pure tt
+    | core.result.Result.Ok _ => Pure tt
+    end in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "`echo hello > a/b.txt`
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := std.path.Path::["new"] "a/b.txt" in
+    let* α1 := filesystem_operations.echo "hello" (addr_of α0) in
+    α1.["unwrap_or_else"]
+      (fun why =>
+        let* _ :=
+          let* _ :=
+            let* α0 := why.["kind"] in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
+            let* α2 :=
+              format_arguments::["new_v1"]
+                (addr_of [ "! "; "
+" ])
+                (addr_of [ α1 ]) in
+            std.io.stdio._print α2 in
+          Pure tt in
+        Pure tt) in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "`mkdir -p a/c/d`
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := std.fs.create_dir_all "a/c/d" in
+    α0.["unwrap_or_else"]
+      (fun why =>
+        let* _ :=
+          let* _ :=
+            let* α0 := why.["kind"] in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
+            let* α2 :=
+              format_arguments::["new_v1"]
+                (addr_of [ "! "; "
+" ])
+                (addr_of [ α1 ]) in
+            std.io.stdio._print α2 in
+          Pure tt in
+        Pure tt) in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "`touch a/c/e.txt`
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := std.path.Path::["new"] "a/c/e.txt" in
+    let* α1 := filesystem_operations.touch (addr_of α0) in
+    α1.["unwrap_or_else"]
+      (fun why =>
+        let* _ :=
+          let* _ :=
+            let* α0 := why.["kind"] in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
+            let* α2 :=
+              format_arguments::["new_v1"]
+                (addr_of [ "! "; "
+" ])
+                (addr_of [ α1 ]) in
+            std.io.stdio._print α2 in
+          Pure tt in
+        Pure tt) in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "`ln -s ../b.txt a/c/b.txt`
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ :=
+    if (true : bool) then
+      let* _ :=
+        let* α0 := std.os.unix.fs.symlink "../b.txt" "a/c/b.txt" in
+        α0.["unwrap_or_else"]
+          (fun why =>
+            let* _ :=
+              let* _ :=
+                let* α0 := why.["kind"] in
+                let* α1 := format_argument::["new_debug"] (addr_of α0) in
+                let* α2 :=
+                  format_arguments::["new_v1"]
+                    (addr_of [ "! "; "
+" ])
+                    (addr_of [ α1 ]) in
+                std.io.stdio._print α2 in
+              Pure tt in
+            Pure tt) in
+      Pure tt
+    else
+      Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "`cat a/c/b.txt`
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := std.path.Path::["new"] "a/c/b.txt" in
+    let* α1 := filesystem_operations.cat (addr_of α0) in
+    match α1 with
+    | core.result.Result.Err why =>
+      let* _ :=
+        let* α0 := why.["kind"] in
+        let* α1 := format_argument::["new_debug"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "! "; "
+" ])
+            (addr_of [ α1 ]) in
+        std.io.stdio._print α2 in
+      Pure tt
+    | core.result.Result.Ok s =>
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of s) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "> "; "
+" ])
+            (addr_of [ α0 ]) in
+        std.io.stdio._print α1 in
+      Pure tt
+    end in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_arguments::["new_const"] (addr_of [ "`ls a`
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := std.fs.read_dir "a" in
+    match α0 with
+    | core.result.Result.Err why =>
+      let* _ :=
+        let* α0 := why.["kind"] in
+        let* α1 := format_argument::["new_debug"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "! "; "
+" ])
+            (addr_of [ α1 ]) in
+        std.io.stdio._print α2 in
+      Pure tt
+    | core.result.Result.Ok paths =>
+      let* α0 := LangItem paths in
+      match α0 with
+      | iter =>
+        loop
+          let* _ :=
+            let* α0 := LangItem (addr_of iter) in
+            match α0 with
+            | None => Pure Break
+            | Some {| Some.0 := path; |} =>
+              let* _ :=
+                let* _ :=
+                  let* α0 := path.["unwrap"] in
+                  let* α1 := α0.["path"] in
+                  let* α2 := format_argument::["new_debug"] (addr_of α1) in
+                  let* α3 :=
+                    format_arguments::["new_v1"]
+                      (addr_of [ "> "; "
+" ])
+                      (addr_of [ α2 ]) in
+                  std.io.stdio._print α3 in
+                Pure tt in
+              Pure tt
+            end in
+          Pure tt
+          from
+          for
+      end
+    end in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "`rm a/c/e.txt`
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := std.fs.remove_file "a/c/e.txt" in
+    α0.["unwrap_or_else"]
+      (fun why =>
+        let* _ :=
+          let* _ :=
+            let* α0 := why.["kind"] in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
+            let* α2 :=
+              format_arguments::["new_v1"]
+                (addr_of [ "! "; "
+" ])
+                (addr_of [ α1 ]) in
+            std.io.stdio._print α2 in
+          Pure tt in
+        Pure tt) in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "`rmdir a/c/d`
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := std.fs.remove_dir "a/c/d" in
+    α0.["unwrap_or_else"]
+      (fun why =>
+        let* _ :=
+          let* _ :=
+            let* α0 := why.["kind"] in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
+            let* α2 :=
+              format_arguments::["new_v1"]
+                (addr_of [ "! "; "
+" ])
+                (addr_of [ α1 ]) in
+            std.io.stdio._print α2 in
+          Pure tt in
+        Pure tt) in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

@@ -2,11 +2,18 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition multiply
     `{H : State.Trait}
     (first_number_str : ref str)
     (second_number_str : ref str)
     : M (H := H) (core.result.Result i32 core.num.error.ParseIntError) :=
+=======
+Definition multiply
+    (first_number_str : ref str)
+    (second_number_str : ref str)
+    : M (core.result.Result i32 core.num.error.ParseIntError) :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* α0 := first_number_str.["parse"] in
   match α0 with
   | core.result.Result.Ok first_number =>
@@ -19,6 +26,7 @@ Definition multiply
     end
   | core.result.Result.Err e => Pure (core.result.Result.Err e)
   end.
+<<<<<<< HEAD
 
 Definition print
     `{H : State.Trait}
@@ -58,9 +66,44 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 Parameter multiply : ref str->
     ref str
     -> M (core.result.Result i32 core.num.error.ParseIntError).
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter print : core.result.Result i32 core.num.error.ParseIntError -> M unit.
+Definition print
+    (result : core.result.Result i32 core.num.error.ParseIntError)
+    : M unit :=
+  match result with
+  | core.result.Result.Ok n =>
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "n is "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt
+  | core.result.Result.Err e =>
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of e) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Error: "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt
+  end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let* twenty := map_in_result_via_match.multiply "10" "2" in
+  let* _ := map_in_result_via_match.print twenty in
+  let* tt := map_in_result_via_match.multiply "t" "2" in
+  let* _ := map_in_result_via_match.print tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

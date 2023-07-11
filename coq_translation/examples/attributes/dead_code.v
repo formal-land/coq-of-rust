@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition used_function `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 
@@ -21,12 +22,21 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
 Parameter used_function : unit -> M unit.
+=======
+Definition used_function (_ : unit) : M unit := Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter unused_function : unit -> M unit.
+Definition unused_function (_ : unit) : M unit := Pure tt.
 
-Parameter noisy_unused_function : unit -> M unit.
+Definition noisy_unused_function (_ : unit) : M unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let* _ := dead_code.used_function tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

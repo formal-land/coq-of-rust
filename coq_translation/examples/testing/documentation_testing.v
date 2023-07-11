@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition add `{H : State.Trait} (a : i32) (b : i32) : M (H := H) i32 :=
   a.["add"] b.
 
@@ -19,3 +20,16 @@ Parameter add : i32-> i32 -> M i32.
 
 Parameter div : i32-> i32 -> M i32.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition add (a : i32) (b : i32) : M i32 := a.["add"] b.
+
+Definition div (a : i32) (b : i32) : M i32 :=
+  let* _ :=
+    let* α0 := b.["eq"] 0 in
+    if (α0 : bool) then
+      let* _ := std.panicking.begin_panic "Divide-by-zero error" in
+      Pure tt
+    else
+      Pure tt in
+  a.["div"] b.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

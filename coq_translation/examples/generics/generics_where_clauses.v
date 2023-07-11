@@ -19,10 +19,14 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
   Definition Self := T.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition print_in_option
       `{H : State.Trait}
       (self : Self)
       : M (H := H) unit :=
+=======
+  Definition print_in_option (self : Self) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -34,9 +38,12 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
         std.io.stdio._print α1 in
       Pure tt in
     Pure tt.
+<<<<<<< HEAD
 =======
   Parameter print_in_option : Self -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_print_in_option `{H : State.Trait} :
     Notation.Dot "print_in_option" := {
@@ -54,12 +61,19 @@ End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* vec :=
     let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
     Slice::["into_vec"] α0 in
   let* _ := vec.["print_in_option"] in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

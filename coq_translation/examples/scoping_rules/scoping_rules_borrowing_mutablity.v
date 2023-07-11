@@ -26,17 +26,26 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) scoping_rules_borrowing_mutablity.Book :=
+=======
+  Definition clone
+      (self : ref Self)
+      : M scoping_rules_borrowing_mutablity.Book :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let _ := tt in
     let _ := tt in
     let _ := tt in
     self.["deref"].
+<<<<<<< HEAD
 =======
   Parameter clone : ref Self -> M scoping_rules_borrowing_mutablity.Book.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -55,10 +64,16 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition borrow_book
     `{H : State.Trait}
     (book : ref scoping_rules_borrowing_mutablity.Book)
     : M (H := H) unit :=
+=======
+Definition borrow_book
+    (book : ref scoping_rules_borrowing_mutablity.Book)
+    : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
@@ -71,6 +86,7 @@ Definition borrow_book
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 
 Definition new_edition
     `{H : State.Trait}
@@ -107,10 +123,43 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
 Parameter borrow_book : ref scoping_rules_borrowing_mutablity.Book -> M unit.
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter new_edition : mut_ref scoping_rules_borrowing_mutablity.Book
-    -> M unit.
+Definition new_edition
+    (book : mut_ref scoping_rules_borrowing_mutablity.Book)
+    : M unit :=
+  let* _ := assign book.["year"] 2014 in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
+      let* α1 := format_argument::["new_display"] (addr_of book.["year"]) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "I mutably borrowed "; " - "; " edition
+" ])
+          (addr_of [ α0; α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let immutabook :=
+    {|
+      scoping_rules_borrowing_mutablity.Book.author := "Douglas Hofstadter";
+      scoping_rules_borrowing_mutablity.Book.title :=
+        "G" ++ String.String "246" "del, Escher, Bach";
+      scoping_rules_borrowing_mutablity.Book.year := 1979;
+    |} in
+  let mutabook := immutabook in
+  let* _ :=
+    scoping_rules_borrowing_mutablity.borrow_book (addr_of immutabook) in
+  let* _ := scoping_rules_borrowing_mutablity.borrow_book (addr_of mutabook) in
+  let* _ := scoping_rules_borrowing_mutablity.new_edition (addr_of mutabook) in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

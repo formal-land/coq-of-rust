@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition call_me
     `{H : State.Trait}
     {F : Set}
@@ -39,12 +40,43 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 =======
 Parameter call_me : forall
     { F : Set } ,
+=======
+Definition call_me
+    {F : Set}
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     `{core.ops.function.Fn.Trait unit F}
-    F
-    -> M unit.
+    (f : F)
+    : M unit :=
+  let* _ := f tt in
+  Pure tt.
 
-Parameter function : unit -> M unit.
+Definition function (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "I'm a function!
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let closure :=
+    fun  =>
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"] (addr_of [ "I'm a closure!
+" ]) in
+        std.io.stdio._print α0 in
+      Pure tt in
+  let* _ := functions_closures_input_functions.call_me closure in
+  let* _ :=
+    functions_closures_input_functions.call_me
+      functions_closures_input_functions.function in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

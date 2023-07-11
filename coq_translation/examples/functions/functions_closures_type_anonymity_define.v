@@ -3,6 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit := Pure tt.
 
 Definition apply
@@ -15,10 +16,20 @@ Definition apply
   Pure tt.
 =======
 Parameter main : unit -> M unit.
+=======
+Definition main (_ : unit) : M unit := Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter apply : forall
-    { F : Set } ,
+Definition apply
+    {F : Set}
     `{core.ops.function.FnOnce.Trait unit F}
+<<<<<<< HEAD
     F
     -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+    (f : F)
+    : M unit :=
+  let* _ := f tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

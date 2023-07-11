@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition some_number
     `{H : State.Trait}
     (_ : unit)
@@ -40,3 +41,34 @@ Parameter some_number : unit -> M (core.option.Option u32).
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition some_number (_ : unit) : M (core.option.Option u32) :=
+  Pure (core.option.Option.Some 42).
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Definition main (_ : unit) : M unit :=
+  let* α0 := match_binding_destructure_enum_variants.some_number tt in
+  match α0 with
+  | core.option.Option.Some (42 as n) =>
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The Answer: "; "!
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt
+  | core.option.Option.Some n =>
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Not interesting... "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt
+  | _ => Pure tt
+  end.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

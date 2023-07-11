@@ -2,7 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition print_one `{H : State.Trait} (x : ref i32) : M (H := H) unit :=
+=======
+Definition print_one (x : ref i32) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of x) in
@@ -14,6 +18,7 @@ Definition print_one `{H : State.Trait} (x : ref i32) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 
 Definition add_one `{H : State.Trait} (x : mut_ref i32) : M (H := H) unit :=
   let* _ :=
@@ -61,13 +66,46 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
 Parameter print_one : ref i32 -> M unit.
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter add_one : mut_ref i32 -> M unit.
+Definition add_one (x : mut_ref i32) : M unit :=
+  let* _ :=
+    let* α0 := x.["deref"] in
+    α0.["add_assign"] 1 in
+  Pure tt.
 
-Parameter print_multi : ref i32-> ref i32 -> M unit.
+Definition print_multi (x : ref i32) (y : ref i32) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of x) in
+      let* α1 := format_argument::["new_display"] (addr_of y) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "`print_multi`: x is "; ", y is "; "
+" ])
+          (addr_of [ α0; α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  Pure tt.
 
-Parameter pass_x : ref i32-> ref i32 -> M (ref i32).
+Definition pass_x (x : ref i32) (arg : ref i32) : M (ref i32) := Pure x.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let x := 7 in
+  let y := 9 in
+  let* _ := scoping_rules_lifetimes_functions.print_one (addr_of x) in
+  let* _ :=
+    scoping_rules_lifetimes_functions.print_multi (addr_of x) (addr_of y) in
+  let* z := scoping_rules_lifetimes_functions.pass_x (addr_of x) (addr_of y) in
+  let* _ := scoping_rules_lifetimes_functions.print_one z in
+  let t := 3 in
+  let* _ := scoping_rules_lifetimes_functions.add_one (addr_of t) in
+  let* _ := scoping_rules_lifetimes_functions.print_one (addr_of t) in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

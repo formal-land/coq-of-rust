@@ -3,7 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* apple := alloc.sync.Arc::["new"] "the same apple" in
   let* _ :=
     let* α0 := LangItem Range {| Range.start := 0; Range.end := 10; |} in
@@ -41,6 +45,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α0 := core.time.Duration::["from_secs"] 1 in
     std.thread.sleep α0 in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

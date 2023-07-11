@@ -16,11 +16,16 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition area `{H : State.Trait} (self : ref Self) : M (H := H) f64 :=
     self.["length"].["mul"] self.["height"].
 =======
   Parameter area : ref Self -> M f64.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition area (self : ref Self) : M f64 :=
+    self.["length"].["mul"] self.["height"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_area `{H : State.Trait} : Notation.Dot "area" := {
     Notation.dot := area;
@@ -50,6 +55,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
     string -> f64 -> 
     string -> f64 -> 
@@ -64,6 +70,12 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Rectangle"
@@ -71,9 +83,12 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       (addr_of self.["length"])
       "height"
       (addr_of (addr_of self.["height"])).
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -100,6 +115,7 @@ Module Triangle.
 End Triangle.
 Definition Triangle : Set := Triangle.t.
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 Definition print_debug
     `{H : State.Trait}
@@ -153,16 +169,57 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 =======
 Parameter print_debug : forall
     { T : Set } ,
+=======
+Definition print_debug
+    {T : Set}
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     `{core.fmt.Debug.Trait T}
-    ref T
-    -> M unit.
+    (t : ref T)
+    : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  Pure tt.
 
-Parameter area : forall
-    { T : Set } ,
+Definition area
+    {T : Set}
     `{generics_bounds.HasArea.Trait T}
-    ref T
-    -> M f64.
+    (t : ref T)
+    : M f64 :=
+  t.["area"].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let rectangle :=
+    {|
+      generics_bounds.Rectangle.length := 3 (* 3.0 *);
+      generics_bounds.Rectangle.height := 4 (* 4.0 *);
+    |} in
+  let _triangle :=
+    {|
+      generics_bounds.Triangle.length := 3 (* 3.0 *);
+      generics_bounds.Triangle.height := 4 (* 4.0 *);
+    |} in
+  let* _ := generics_bounds.print_debug (addr_of rectangle) in
+  let* _ :=
+    let* _ :=
+      let* α0 := rectangle.["area"] in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Area: "; "
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

@@ -43,6 +43,7 @@ Module
   Definition Self := disambiguating_overlapping_traits.Form.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition get
       `{H : State.Trait}
       (self : ref Self)
@@ -51,6 +52,10 @@ Module
 =======
   Parameter get : ref Self -> M alloc.string.String.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition get (self : ref Self) : M alloc.string.String :=
+    self.["username"].["clone"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
     Notation.dot := get;
@@ -71,11 +76,15 @@ Module
   Definition Self := disambiguating_overlapping_traits.Form.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition get `{H : State.Trait} (self : ref Self) : M (H := H) u8 :=
     Pure self.["age"].
 =======
   Parameter get : ref Self -> M u8.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition get (self : ref Self) : M u8 := Pure self.["age"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
     Notation.dot := get;
@@ -90,7 +99,11 @@ End
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* form :=
     let* α0 := "rustacean".["to_owned"] in
     Pure
@@ -145,6 +158,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         Pure tt
     end in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

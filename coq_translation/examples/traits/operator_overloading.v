@@ -20,6 +20,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Definition Self := operator_overloading.FooBar.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -29,6 +30,13 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.fmt.Formatter::["write_str"] f "FooBar".
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -48,6 +56,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Definition Self := operator_overloading.BarFoo.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -57,6 +66,13 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.fmt.Formatter::["write_str"] f "BarFoo".
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -73,11 +89,18 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
   Definition Output : Set := operator_overloading.FooBar.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition add
       `{H : State.Trait}
       (self : Self)
       (_rhs : operator_overloading.Bar)
       : M (H := H) operator_overloading.FooBar :=
+=======
+  Definition add
+      (self : Self)
+      (_rhs : operator_overloading.Bar)
+      : M operator_overloading.FooBar :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -87,11 +110,14 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
         std.io.stdio._print α0 in
       Pure tt in
     Pure operator_overloading.FooBar.Build.
+<<<<<<< HEAD
 =======
   Parameter add : Self->
       operator_overloading.Bar
       -> M operator_overloading.FooBar.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_add `{H : State.Trait} : Notation.Dot "add" := {
     Notation.dot := add;
@@ -111,11 +137,18 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
   Definition Output : Set := operator_overloading.BarFoo.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition add
       `{H : State.Trait}
       (self : Self)
       (_rhs : operator_overloading.Foo)
       : M (H := H) operator_overloading.BarFoo :=
+=======
+  Definition add
+      (self : Self)
+      (_rhs : operator_overloading.Foo)
+      : M operator_overloading.BarFoo :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -125,11 +158,14 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
         std.io.stdio._print α0 in
       Pure tt in
     Pure operator_overloading.BarFoo.Build.
+<<<<<<< HEAD
 =======
   Parameter add : Self->
       operator_overloading.Foo
       -> M operator_overloading.BarFoo.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_add `{H : State.Trait} : Notation.Dot "add" := {
     Notation.dot := add;
@@ -145,7 +181,11 @@ End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -171,6 +211,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

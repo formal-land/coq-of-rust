@@ -2,7 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition foo `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition foo (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of "foo") in
@@ -14,6 +18,7 @@ Definition foo `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 
 Definition bar `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
@@ -65,9 +70,59 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
 Parameter foo : unit -> M unit.
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter bar : unit -> M unit.
+Definition bar (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of "bar") in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "You called "; "()
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let* _ := macro_rules_designators.foo tt in
+  let* _ := macro_rules_designators.bar tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of "1u32 + 1") in
+      let* α1 := 1.["add"] 1 in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; " = "; "
+" ])
+          (addr_of [ α0; α2 ]) in
+      std.io.stdio._print α3 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_debug"]
+          (addr_of "{ let x = 1u32; x * x + 2 * x - 1 }") in
+      let x := 1 in
+      let* α0 := x.["mul"] x in
+      let* α1 := 2.["mul"] x in
+      let* α2 := α0.["add"] α1 in
+      let* α1 := α2.["sub"] 1 in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
+      let* α3 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; " = "; "
+" ])
+          (addr_of [ α0; α2 ]) in
+      std.io.stdio._print α3 in
+    Pure tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

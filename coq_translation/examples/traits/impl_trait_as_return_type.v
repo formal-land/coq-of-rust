@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition combine_vecs_explicit_return_type
     `{H : State.Trait}
     (v : alloc.vec.Vec i32)
@@ -12,32 +13,56 @@ Definition combine_vecs_explicit_return_type
 Parameter combine_vecs_explicit_return_type : alloc.vec.Vec i32->
     alloc.vec.Vec i32
     ->
+=======
+Definition combine_vecs_explicit_return_type
+    (v : alloc.vec.Vec i32)
+    (u : alloc.vec.Vec i32)
+    :
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
       M
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
         (core.iter.adapters.cycle.Cycle
           (core.iter.adapters.chain.Chain
             (alloc.vec.into_iter.IntoIter i32)
-            (alloc.vec.into_iter.IntoIter i32))).
+            (alloc.vec.into_iter.IntoIter i32))) :=
+  let* α0 := v.["into_iter"] in
+  let* α1 := u.["into_iter"] in
+  let* α2 := α0.["chain"] α1 in
+  α2.["cycle"].
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 Definition combine_vecs
     `{H : State.Trait}
     (v : alloc.vec.Vec i32)
     (u : alloc.vec.Vec i32)
     : M (H := H) OpaqueDef :=
+=======
+Definition combine_vecs
+    (v : alloc.vec.Vec i32)
+    (u : alloc.vec.Vec i32)
+    : M OpaqueDef :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* α0 := v.["into_iter"] in
   let* α1 := u.["into_iter"] in
   let* α2 := α0.["chain"] α1 in
   α2.["cycle"].
+<<<<<<< HEAD
 =======
 Parameter combine_vecs : alloc.vec.Vec i32-> alloc.vec.Vec i32 -> M OpaqueDef.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
 Error OpaqueTy.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* v1 :=
     let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
     Slice::["into_vec"] α0 in
@@ -162,6 +187,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α0 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

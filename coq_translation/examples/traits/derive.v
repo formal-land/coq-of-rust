@@ -21,6 +21,7 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   Definition Self := derive.Centimeters.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition eq
       `{H : State.Trait}
       (self : ref Self)
@@ -30,6 +31,10 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
 =======
   Parameter eq : ref Self-> ref derive.Centimeters -> M bool.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition eq (self : ref Self) (other : ref derive.Centimeters) : M bool :=
+    (self.[0]).["eq"] (other.[0]).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -44,6 +49,7 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   Definition Self := derive.Centimeters.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition partial_cmp
       `{H : State.Trait}
       (self : ref Self)
@@ -55,6 +61,13 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
       ref derive.Centimeters
       -> M (core.option.Option core.cmp.Ordering).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition partial_cmp
+      (self : ref Self)
+      (other : ref derive.Centimeters)
+      : M (core.option.Option core.cmp.Ordering) :=
+    core.cmp.PartialOrd.partial_cmp (addr_of (self.[0])) (addr_of (other.[0])).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_partial_cmp `{H : State.Trait} :
     Notation.Dot "partial_cmp" := {
@@ -79,18 +92,28 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
   Definition Self := derive.Inches.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Inches"
       (addr_of (addr_of (self.[0]))).
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -105,6 +128,7 @@ Module Impl_derive_Inches.
   Definition Self := derive.Inches.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition to_centimeters
       `{H : State.Trait}
       (self : ref Self)
@@ -115,6 +139,12 @@ Module Impl_derive_Inches.
 =======
   Parameter to_centimeters : ref Self -> M derive.Centimeters.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition to_centimeters (self : ref Self) : M derive.Centimeters :=
+    let 'derive.Inches.Build_t inches := self in
+    let* α0 := (cast inches f64).["mul"] 3 (* 2.54 *) in
+    Pure (derive.Centimeters.Build_t α0).
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_to_centimeters `{H : State.Trait} :
     Notation.Dot "to_centimeters" := {
@@ -133,7 +163,11 @@ Definition Seconds := Seconds.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let _one_second := derive.Seconds.Build_t 1 in
   let foot := derive.Inches.Build_t 12 in
   let* _ :=
@@ -165,6 +199,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

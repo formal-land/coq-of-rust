@@ -12,6 +12,7 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
   Definition Self := other_uses_of_question_mark.EmptyVec.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -21,6 +22,13 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.fmt.Formatter::["write_str"] f "EmptyVec".
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -35,18 +43,28 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
   Definition Self := other_uses_of_question_mark.EmptyVec.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 :=
       format_arguments::["new_const"]
         (addr_of [ "invalid first item to double" ]) in
     f.["write_fmt"] α0.
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -65,10 +83,16 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition double_first
     `{H : State.Trait}
     (vec : alloc.vec.Vec (ref str))
     : M (H := H) (other_uses_of_question_mark.Result i32) :=
+=======
+Definition double_first
+    (vec : alloc.vec.Vec (ref str))
+    : M (other_uses_of_question_mark.Result i32) :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* first :=
     let* α0 := vec.["first"] in
     let* α1 := α0.["ok_or"] other_uses_of_question_mark.EmptyVec.Build in
@@ -90,6 +114,7 @@ Definition double_first
     end in
   let* α0 := 2.["mul"] parsed in
   Pure (core.result.Result.Ok α0).
+<<<<<<< HEAD
 
 Definition print
     `{H : State.Trait}
@@ -140,9 +165,54 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 =======
 Parameter double_first : alloc.vec.Vec (ref str)
     -> M (other_uses_of_question_mark.Result i32).
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter print : other_uses_of_question_mark.Result i32 -> M unit.
+Definition print (result : other_uses_of_question_mark.Result i32) : M unit :=
+  match result with
+  | core.result.Result.Ok n =>
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The first doubled is "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt
+  | core.result.Result.Err e =>
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of e) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Error: "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt
+  end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let* numbers :=
+    let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
+    Slice::["into_vec"] α0 in
+  let* empty := alloc.vec.Vec::["new"] tt in
+  let* strings :=
+    let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+    Slice::["into_vec"] α0 in
+  let* _ :=
+    let* α0 := other_uses_of_question_mark.double_first numbers in
+    other_uses_of_question_mark.print α0 in
+  let* _ :=
+    let* α0 := other_uses_of_question_mark.double_first empty in
+    other_uses_of_question_mark.print α0 in
+  let* _ :=
+    let* α0 := other_uses_of_question_mark.double_first strings in
+    other_uses_of_question_mark.print α0 in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

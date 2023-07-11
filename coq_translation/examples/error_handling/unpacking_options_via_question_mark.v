@@ -29,6 +29,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Definition Self := unpacking_options_via_question_mark.Job.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
@@ -38,6 +39,13 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 =======
   Parameter clone : ref Self -> M unpacking_options_via_question_mark.Job.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition clone
+      (self : ref Self)
+      : M unpacking_options_via_question_mark.Job :=
+    let _ := tt in
+    self.["deref"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -75,6 +83,7 @@ Module
   Definition Self := unpacking_options_via_question_mark.PhoneNumber.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
@@ -86,6 +95,14 @@ Module
   Parameter clone : ref Self
       -> M unpacking_options_via_question_mark.PhoneNumber.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition clone
+      (self : ref Self)
+      : M unpacking_options_via_question_mark.PhoneNumber :=
+    let _ := tt in
+    let _ := tt in
+    self.["deref"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -108,10 +125,16 @@ Module Impl_unpacking_options_via_question_mark_Person.
   Definition Self := unpacking_options_via_question_mark.Person.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition work_phone_area_code
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) (core.option.Option u8) :=
+=======
+  Definition work_phone_area_code
+      (self : ref Self)
+      : M (core.option.Option u8) :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 := LangItem self.["job"] in
     let* α1 :=
       match α0 with
@@ -129,9 +152,12 @@ Module Impl_unpacking_options_via_question_mark_Person.
       | Continue {| Continue.0 := val; |} => Pure val
       end in
     Pure α3.["area_code"].
+<<<<<<< HEAD
 =======
   Parameter work_phone_area_code : ref Self -> M (core.option.Option u8).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_work_phone_area_code `{H : State.Trait} :
     Notation.Dot "work_phone_area_code" := {
@@ -141,7 +167,11 @@ End Impl_unpacking_options_via_question_mark_Person.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let p :=
     {|
       unpacking_options_via_question_mark.Person.job :=
@@ -180,6 +210,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         Pure tt
     end in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

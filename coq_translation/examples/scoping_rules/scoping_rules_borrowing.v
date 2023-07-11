@@ -2,10 +2,14 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition eat_box_i32
     `{H : State.Trait}
     (boxed_i32 : alloc.boxed.Box i32)
     : M (H := H) unit :=
+=======
+Definition eat_box_i32 (boxed_i32 : alloc.boxed.Box i32) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of boxed_i32) in
@@ -17,6 +21,7 @@ Definition eat_box_i32
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 
 Definition borrow_i32
     `{H : State.Trait}
@@ -48,9 +53,36 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
 Parameter eat_box_i32 : alloc.boxed.Box i32 -> M unit.
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter borrow_i32 : ref i32 -> M unit.
+Definition borrow_i32 (borrowed_i32 : ref i32) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of borrowed_i32) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "This int is: "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let* boxed_i32 := alloc.boxed.Box::["new"] 5 in
+  let stacked_i32 := 6 in
+  let* _ := scoping_rules_borrowing.borrow_i32 (addr_of boxed_i32) in
+  let* _ := scoping_rules_borrowing.borrow_i32 (addr_of stacked_i32) in
+  let* _ :=
+    let _ref_to_i32 := addr_of boxed_i32 in
+    let* _ := scoping_rules_borrowing.borrow_i32 _ref_to_i32 in
+    Pure tt in
+  let* _ := scoping_rules_borrowing.eat_box_i32 boxed_i32 in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

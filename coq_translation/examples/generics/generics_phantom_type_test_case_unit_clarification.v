@@ -12,6 +12,7 @@ Module
   Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -21,6 +22,13 @@ Module
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.intrinsics.unreachable tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -37,6 +45,7 @@ Module
   Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
@@ -46,6 +55,12 @@ Module
   Parameter clone : ref Self
       -> M generics_phantom_type_test_case_unit_clarification.Inch.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition clone
+      (self : ref Self)
+      : M generics_phantom_type_test_case_unit_clarification.Inch :=
+    self.["deref"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -77,6 +92,7 @@ Module
   Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -86,6 +102,13 @@ Module
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.intrinsics.unreachable tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -102,6 +125,7 @@ Module
   Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
@@ -111,6 +135,12 @@ Module
   Parameter clone : ref Self
       -> M generics_phantom_type_test_case_unit_clarification.Mm.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition clone
+      (self : ref Self)
+      : M generics_phantom_type_test_case_unit_clarification.Mm :=
+    self.["deref"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -155,19 +185,29 @@ Section
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     core.fmt.Formatter::["debug_tuple_field2_finish"]
       f
       "Length"
       (addr_of (self.[0]))
       (addr_of (addr_of (self.[1]))).
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -193,20 +233,29 @@ Section
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
       :
         M (H := H)
           (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
+=======
+  Definition clone
+      (self : ref Self)
+      : M (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
     let* α1 := core.clone.Clone.clone (addr_of (self.[1])) in
     Pure
       (generics_phantom_type_test_case_unit_clarification.Length.Build_t α0 α1).
+<<<<<<< HEAD
 =======
   Parameter clone : ref Self
       -> M (generics_phantom_type_test_case_unit_clarification.Length Unit).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -253,6 +302,7 @@ Section
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition add
       `{H : State.Trait}
       (self : Self)
@@ -260,16 +310,25 @@ Section
       :
         M (H := H)
           (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
+=======
+  Definition add
+      (self : Self)
+      (rhs : generics_phantom_type_test_case_unit_clarification.Length Unit)
+      : M (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* α0 := (self.[0]).["add"] (rhs.[0]) in
     Pure
       (generics_phantom_type_test_case_unit_clarification.Length.Build_t
         α0
         core.marker.PhantomData.Build).
+<<<<<<< HEAD
 =======
   Parameter add : Self->
       generics_phantom_type_test_case_unit_clarification.Length Unit
       -> M (generics_phantom_type_test_case_unit_clarification.Length Unit).
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_add `{H : State.Trait} : Notation.Dot "add" := {
     Notation.dot := add;
@@ -285,7 +344,11 @@ End
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let one_foot :=
     generics_phantom_type_test_case_unit_clarification.Length.Build_t
       12 (* 12.0 *)
@@ -317,6 +380,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

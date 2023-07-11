@@ -2,7 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition function `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition function (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -11,6 +15,7 @@ Definition function `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α0 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 
 Module deeply.
   Module nested.
@@ -31,12 +36,31 @@ Module deeply.
   Module nested.
     Parameter function : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+
+Module deeply.
+  Module nested.
+    Definition function (_ : unit) : M unit :=
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "called `deeply::nested::function()`
+" ]) in
+          std.io.stdio._print α0 in
+        Pure tt in
+      Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   End nested.
 End deeply.
 
 Module nested.
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition function `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+  Definition function (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -46,6 +70,7 @@ Module nested.
         std.io.stdio._print α0 in
       Pure tt in
     Pure tt.
+<<<<<<< HEAD
 End nested.
 
 Definition function `{H : State.Trait} (_ : unit) : M (H := H) unit :=
@@ -83,10 +108,45 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
   Parameter function : unit -> M unit.
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 End nested.
 
-Parameter function : unit -> M unit.
+Definition function (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "called `deeply::nested::function()`
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let* _ := the_use_as_declaration.deeply.nested.function tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Entering block
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ :=
+    let* _ := the_use_as_declaration.deeply.nested.function tt in
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"] (addr_of [ "Leaving block
+" ]) in
+        std.io.stdio._print α0 in
+      Pure tt in
+    Pure tt in
+  let* _ := the_use_as_declaration.function tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

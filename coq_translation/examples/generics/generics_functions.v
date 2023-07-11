@@ -25,6 +25,7 @@ End SGen.
 Definition SGen := SGen.t.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition reg_fn
     `{H : State.Trait}
     (_s : generics_functions.S)
@@ -67,13 +68,37 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
 Parameter reg_fn : generics_functions.S -> M unit.
+=======
+Definition reg_fn (_s : generics_functions.S) : M unit := Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter gen_spec_t : generics_functions.SGen generics_functions.A -> M unit.
+Definition gen_spec_t
+    (_s : generics_functions.SGen generics_functions.A)
+    : M unit :=
+  Pure tt.
 
-Parameter gen_spec_i32 : generics_functions.SGen i32 -> M unit.
+Definition gen_spec_i32 (_s : generics_functions.SGen i32) : M unit := Pure tt.
 
-Parameter generic : forall { T : Set } , generics_functions.SGen T -> M unit.
+Definition generic {T : Set} (_s : generics_functions.SGen T) : M unit :=
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let* _ :=
+    generics_functions.reg_fn
+      (generics_functions.S.Build_t generics_functions.A.Build) in
+  let* _ :=
+    generics_functions.gen_spec_t
+      (generics_functions.SGen.Build_t generics_functions.A.Build) in
+  let* _ :=
+    generics_functions.gen_spec_i32 (generics_functions.SGen.Build_t 6) in
+  let* _ :=
+    generics_functions.generic (generics_functions.SGen.Build_t "a"%char) in
+  let* _ :=
+    generics_functions.generic (generics_functions.SGen.Build_t "c"%char) in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

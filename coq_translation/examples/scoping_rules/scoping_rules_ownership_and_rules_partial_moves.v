@@ -3,7 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* person :=
     let* α0 := alloc.string.String::["from"] "Alice" in
     let* α1 := alloc.boxed.Box::["new"] 20 in
@@ -51,9 +55,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
 Module Person.
   Record t : Set := {
@@ -78,6 +85,7 @@ Module
     scoping_rules_ownership_and_rules_partial_moves.main.Person.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
     string -> alloc_string_String -> 
     string -> alloc_boxed_Box_u8 -> 
@@ -92,6 +100,12 @@ Module
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
+=======
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Person"
@@ -99,9 +113,12 @@ Module
       (addr_of self.["name"])
       "age"
       (addr_of (addr_of self.["age"])).
+<<<<<<< HEAD
 =======
   Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;

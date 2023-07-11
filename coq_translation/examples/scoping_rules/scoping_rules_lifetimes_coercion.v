@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition multiply
     `{H : State.Trait}
     (first : ref i32)
@@ -53,9 +54,51 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
 Parameter multiply : ref i32-> ref i32 -> M i32.
+=======
+Definition multiply (first : ref i32) (second : ref i32) : M i32 :=
+  first.["mul"] second.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter choose_first : ref i32-> ref i32 -> M (ref i32).
+Definition choose_first (first : ref i32) (arg : ref i32) : M (ref i32) :=
+  Pure first.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let first := 2 in
+  let* _ :=
+    let second := 3 in
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          scoping_rules_lifetimes_coercion.multiply
+            (addr_of first)
+            (addr_of second) in
+        let* α1 := format_argument::["new_display"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "The product is "; "
+" ])
+            (addr_of [ α1 ]) in
+        std.io.stdio._print α2 in
+      Pure tt in
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          scoping_rules_lifetimes_coercion.choose_first
+            (addr_of first)
+            (addr_of second) in
+        let* α1 := format_argument::["new_display"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ ""; " is the first
+" ])
+            (addr_of [ α1 ]) in
+        std.io.stdio._print α2 in
+      Pure tt in
+    Pure tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

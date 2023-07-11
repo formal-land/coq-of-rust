@@ -2,17 +2,22 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition division
     `{H : State.Trait}
     (dividend : i32)
     (divisor : i32)
     : M (H := H) i32 :=
+=======
+Definition division (dividend : i32) (divisor : i32) : M i32 :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let* α0 := divisor.["eq"] 0 in
   if (α0 : bool) then
     let* _ := std.panicking.begin_panic "division by zero" in
     Pure tt
   else
     dividend.["div"] divisor.
+<<<<<<< HEAD
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
@@ -33,3 +38,19 @@ Parameter division : i32-> i32 -> M i32.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Definition main (_ : unit) : M unit :=
+  let* _x := alloc.boxed.Box::["new"] 0 in
+  let* _ := panic.division 3 0 in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "This point won't be reached!
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

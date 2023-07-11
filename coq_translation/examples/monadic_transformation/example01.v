@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition id `{H : State.Trait} (x : u64) : M (H := H) u64 := Pure x.
 
 Definition tri
@@ -34,9 +35,34 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 =======
 Parameter id : u64 -> M u64.
+=======
+Definition id (x : u64) : M u64 := Pure x.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
 
-Parameter tri : u64-> u64-> u64 -> M unit.
+Definition tri (a : u64) (b : u64) (c : u64) : M unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition main (_ : unit) : M unit :=
+  let* _ := example01.id 0 in
+  let* _ :=
+    let* α0 := example01.id 0 in
+    example01.id α0 in
+  let* _ :=
+    let* α0 := example01.id 0 in
+    let* α1 := example01.id α0 in
+    example01.id α1 in
+  let* _ :=
+    let* α0 := example01.id 0 in
+    let* α1 := example01.id α0 in
+    let* α2 := example01.id α1 in
+    example01.id α2 in
+  let* _ :=
+    let* α0 := example01.id 1 in
+    let* α1 := example01.id 2 in
+    example01.tri α0 α1 3 in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

@@ -6,6 +6,7 @@ Definition LANGUAGE `{H : State.Trait} : ref str := run (Pure "Rust").
 Definition THRESHOLD `{H : State.Trait} : i32 := run (Pure 10).
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition is_big `{H : State.Trait} (n : i32) : M (H := H) bool :=
   n.["gt"] constants.THRESHOLD.
 
@@ -58,3 +59,50 @@ Parameter is_big : i32 -> M bool.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+Definition is_big (n : i32) : M bool := n.["gt"] constants.THRESHOLD.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Definition main (_ : unit) : M unit :=
+  let n := 16 in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_display"] (addr_of constants.LANGUAGE) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "This is "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_display"] (addr_of constants.THRESHOLD) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The threshold is "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α1 := constants.is_big n in
+      let* α2 :=
+        if (α1 : bool) then
+          Pure "big"
+        else
+          Pure "small" in
+      let* α3 := format_argument::["new_display"] (addr_of α2) in
+      let* α4 :=
+        format_arguments::["new_v1"]
+          (addr_of [ ""; " is "; "
+" ])
+          (addr_of [ α0; α3 ]) in
+      std.io.stdio._print α4 in
+    Pure tt in
+  Pure tt.
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

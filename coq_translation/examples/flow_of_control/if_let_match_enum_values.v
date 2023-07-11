@@ -11,7 +11,11 @@ Definition Foo := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+=======
+Definition main (_ : unit) : M unit :=
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   let a := if_let_match_enum_values.Foo.Bar in
   let b := if_let_match_enum_values.Foo.Baz in
   let c := if_let_match_enum_values.Foo.Qux 100 in
@@ -69,6 +73,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     Pure tt
   else
     Pure tt.
+<<<<<<< HEAD
 =======
 Parameter main : unit -> M unit.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)

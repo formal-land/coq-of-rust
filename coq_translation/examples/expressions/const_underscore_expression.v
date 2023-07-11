@@ -39,6 +39,7 @@ Module
   Definition Self := const_underscore_expression.Bar.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition show
       `{H : State.Trait}
       (self : Self)
@@ -47,6 +48,9 @@ Module
 =======
   Parameter show : Self -> M alloc.string.String.
 >>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
+=======
+  Definition show (self : Self) : M alloc.string.String := Pure self.["test"].
+>>>>>>> 0b98590 (Rerun the conversion without the --axiomatize flag)
   
   Global Instance Method_show `{H : State.Trait} : Notation.Dot "show" := {
     Notation.dot := show;
