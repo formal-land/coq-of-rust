@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let _immutable_binding := 1 in
   let mutable_binding := 1 in
@@ -27,3 +28,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

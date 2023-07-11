@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* person :=
     let* α0 := alloc.string.String::["from"] "Alice" in
@@ -50,6 +51,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
 
 Module Person.
   Record t : Set := {
@@ -73,6 +77,7 @@ Module
     :=
     scoping_rules_ownership_and_rules_partial_moves.main.Person.
   
+<<<<<<< HEAD
   Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
     string -> alloc_string_String -> 
     string -> alloc_boxed_Box_u8 -> 
@@ -94,6 +99,9 @@ Module
       (addr_of self.["name"])
       "age"
       (addr_of (addr_of self.["age"])).
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;

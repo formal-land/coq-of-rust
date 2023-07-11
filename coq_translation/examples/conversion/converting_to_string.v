@@ -15,6 +15,7 @@ Definition Circle : Set := Circle.t.
 Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   Definition Self := converting_to_string.Circle.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -26,6 +27,9 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
         (addr_of [ "Circle of radius " ])
         (addr_of [ α0 ]) in
     f.["write_fmt"] α1.
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -37,6 +41,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let circle := {| converting_to_string.Circle.radius := 6; |} in
   let* _ :=
@@ -49,3 +54,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

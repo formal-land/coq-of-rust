@@ -11,6 +11,7 @@ End Years.
 Definition Years := Years.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let years := generics_new_type_idiom_as_base_type.Years.Build_t 42 in
   let years_as_primitive_1 := years.[0] in
@@ -19,3 +20,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         years_as_primitive_2 :=
     years in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

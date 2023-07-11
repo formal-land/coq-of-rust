@@ -12,6 +12,7 @@ Definition Food := Food.t.
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Definition Self := combinators_map.Food.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -24,6 +25,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
       | combinators_map.Food.Potato => Pure "Potato"
       end in
     core.fmt.Formatter::["write_str"] f α0.
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -46,6 +50,7 @@ Definition Peeled := Peeled.t.
 Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Definition Self := combinators_map.Peeled.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -55,6 +60,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
       f
       "Peeled"
       (addr_of (addr_of (self.[0]))).
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -77,6 +85,7 @@ Definition Chopped := Chopped.t.
 Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Definition Self := combinators_map.Chopped.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -86,6 +95,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
       f
       "Chopped"
       (addr_of (addr_of (self.[0]))).
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -108,6 +120,7 @@ Definition Cooked := Cooked.t.
 Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Definition Self := combinators_map.Cooked.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -117,6 +130,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
       f
       "Cooked"
       (addr_of (addr_of (self.[0]))).
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -127,6 +143,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   }.
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
+<<<<<<< HEAD
 Definition peel
     `{H : State.Trait}
     (food : core.option.Option combinators_map.Food)
@@ -211,3 +228,21 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ := combinators_map.eat cooked_carrot in
   let* _ := combinators_map.eat cooked_potato in
   Pure tt.
+=======
+Parameter peel : core.option.Option combinators_map.Food
+    -> M (core.option.Option combinators_map.Peeled).
+
+Parameter chop : core.option.Option combinators_map.Peeled
+    -> M (core.option.Option combinators_map.Chopped).
+
+Parameter cook : core.option.Option combinators_map.Chopped
+    -> M (core.option.Option combinators_map.Cooked).
+
+Parameter process : core.option.Option combinators_map.Food
+    -> M (core.option.Option combinators_map.Cooked).
+
+Parameter eat : core.option.Option combinators_map.Cooked -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

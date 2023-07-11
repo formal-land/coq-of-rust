@@ -42,11 +42,15 @@ Module
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
   Definition Self := disambiguating_overlapping_traits.Form.
   
+<<<<<<< HEAD
   Definition get
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) alloc.string.String :=
     self.["username"].["clone"].
+=======
+  Parameter get : ref Self -> M alloc.string.String.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
     Notation.dot := get;
@@ -66,8 +70,12 @@ Module
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
   Definition Self := disambiguating_overlapping_traits.Form.
   
+<<<<<<< HEAD
   Definition get `{H : State.Trait} (self : ref Self) : M (H := H) u8 :=
     Pure self.["age"].
+=======
+  Parameter get : ref Self -> M u8.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
     Notation.dot := get;
@@ -81,6 +89,7 @@ End
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* form :=
     let* α0 := "rustacean".["to_owned"] in
@@ -136,3 +145,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         Pure tt
     end in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

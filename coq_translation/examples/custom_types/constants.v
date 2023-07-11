@@ -5,6 +5,7 @@ Definition LANGUAGE `{H : State.Trait} : ref str := run (Pure "Rust").
 
 Definition THRESHOLD `{H : State.Trait} : i32 := run (Pure 10).
 
+<<<<<<< HEAD
 Definition is_big `{H : State.Trait} (n : i32) : M (H := H) bool :=
   n.["gt"] constants.THRESHOLD.
 
@@ -51,3 +52,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α4 in
     Pure tt in
   Pure tt.
+=======
+Parameter is_big : i32 -> M bool.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

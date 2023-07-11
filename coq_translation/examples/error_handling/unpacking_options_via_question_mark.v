@@ -28,12 +28,16 @@ Definition Job : Set := Job.t.
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Definition Self := unpacking_options_via_question_mark.Job.
   
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) unpacking_options_via_question_mark.Job :=
     let _ := tt in
     self.["deref"].
+=======
+  Parameter clone : ref Self -> M unpacking_options_via_question_mark.Job.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -70,6 +74,7 @@ Module
   Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
   Definition Self := unpacking_options_via_question_mark.PhoneNumber.
   
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
@@ -77,6 +82,10 @@ Module
     let _ := tt in
     let _ := tt in
     self.["deref"].
+=======
+  Parameter clone : ref Self
+      -> M unpacking_options_via_question_mark.PhoneNumber.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -98,6 +107,7 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 Module Impl_unpacking_options_via_question_mark_Person.
   Definition Self := unpacking_options_via_question_mark.Person.
   
+<<<<<<< HEAD
   Definition work_phone_area_code
       `{H : State.Trait}
       (self : ref Self)
@@ -119,6 +129,9 @@ Module Impl_unpacking_options_via_question_mark_Person.
       | Continue {| Continue.0 := val; |} => Pure val
       end in
     Pure α3.["area_code"].
+=======
+  Parameter work_phone_area_code : ref Self -> M (core.option.Option u8).
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_work_phone_area_code `{H : State.Trait} :
     Notation.Dot "work_phone_area_code" := {
@@ -127,6 +140,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
 End Impl_unpacking_options_via_question_mark_Person.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let p :=
     {|
@@ -166,3 +180,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         Pure tt
     end in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

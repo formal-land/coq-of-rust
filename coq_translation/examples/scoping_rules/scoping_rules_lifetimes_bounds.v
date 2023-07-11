@@ -16,6 +16,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   
   Definition Self := scoping_rules_lifetimes_bounds.Ref T.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -25,6 +26,9 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       f
       "Ref"
       (addr_of (addr_of (self.[0]))).
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -36,6 +40,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
+<<<<<<< HEAD
 Definition print
     `{H : State.Trait}
     {T : Set}
@@ -79,3 +84,15 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ := scoping_rules_lifetimes_bounds.print_ref (addr_of ref_x) in
   let* _ := scoping_rules_lifetimes_bounds.print ref_x in
   Pure tt.
+=======
+Parameter print : forall { T : Set } , `{core.fmt.Debug.Trait T} T -> M unit.
+
+Parameter print_ref : forall
+    { T : Set } ,
+    `{core.fmt.Debug.Trait T}
+    ref T
+    -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

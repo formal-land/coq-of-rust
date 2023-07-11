@@ -13,6 +13,7 @@ Definition Borrowed := Borrowed.t.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
   Definition Self := scoping_rules_lifetimes_structs.Borrowed.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -22,6 +23,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
       f
       "Borrowed"
       (addr_of (addr_of (self.[0]))).
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -50,6 +54,7 @@ Definition NamedBorrowed : Set := NamedBorrowed.t.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
   Definition Self := scoping_rules_lifetimes_structs.NamedBorrowed.
   
+<<<<<<< HEAD
   Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
     string -> StaticRef_i32 -> 
     string -> StaticRef_i32 -> 
@@ -71,6 +76,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
       (addr_of self.["x"])
       "y"
       (addr_of (addr_of self.["y"])).
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -91,6 +99,7 @@ Definition Either := Either.t.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
   Definition Self := scoping_rules_lifetimes_structs.Either.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -108,6 +117,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
         "Ref"
         (addr_of __self_0)
     end.
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -119,6 +131,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let x := 18 in
   let y := 15 in
@@ -171,3 +184,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

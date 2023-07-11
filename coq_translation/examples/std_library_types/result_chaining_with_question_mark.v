@@ -14,6 +14,7 @@ Module checked.
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
     Definition Self := result_chaining_with_question_mark.checked.MathError.
     
+<<<<<<< HEAD
     Definition fmt
         `{H : State.Trait}
         (self : ref Self)
@@ -33,6 +34,9 @@ Module checked.
           Pure "NegativeSquareRoot"
         end in
       core.fmt.Formatter::["write_str"] f α0.
+=======
+    Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -47,6 +51,7 @@ Module checked.
   Definition MathResult : Set :=
     core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
   
+<<<<<<< HEAD
   Definition div
       `{H : State.Trait}
       (x : f64)
@@ -139,6 +144,22 @@ Module checked.
         std.io.stdio._print α1 in
       Pure tt
     end.
+=======
+  Parameter div : f64->
+      f64
+      -> M result_chaining_with_question_mark.checked.MathResult.
+  
+  Parameter sqrt : f64
+      -> M result_chaining_with_question_mark.checked.MathResult.
+  
+  Parameter ln : f64 -> M result_chaining_with_question_mark.checked.MathResult.
+  
+  Parameter op_ : f64->
+      f64
+      -> M result_chaining_with_question_mark.checked.MathResult.
+  
+  Parameter op : f64-> f64 -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
 End checked.
 
 Module MathError.
@@ -153,6 +174,7 @@ Module
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   Definition Self := result_chaining_with_question_mark.checked.MathError.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -172,6 +194,9 @@ Module
         Pure "NegativeSquareRoot"
       end in
     core.fmt.Formatter::["write_str"] f α0.
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -186,6 +211,7 @@ End
 Definition MathResult : Set :=
   core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
 
+<<<<<<< HEAD
 Definition div
     `{H : State.Trait}
     (x : f64)
@@ -284,3 +310,21 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
     result_chaining_with_question_mark.checked.op 1 (* 1.0 *) 10 (* 10.0 *) in
   Pure tt.
+=======
+Parameter div : f64->
+    f64
+    -> M result_chaining_with_question_mark.checked.MathResult.
+
+Parameter sqrt : f64 -> M result_chaining_with_question_mark.checked.MathResult.
+
+Parameter ln : f64 -> M result_chaining_with_question_mark.checked.MathResult.
+
+Parameter op_ : f64->
+    f64
+    -> M result_chaining_with_question_mark.checked.MathResult.
+
+Parameter op : f64-> f64 -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

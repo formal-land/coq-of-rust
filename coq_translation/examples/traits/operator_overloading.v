@@ -19,12 +19,16 @@ Definition FooBar := FooBar.t.
 Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Definition Self := operator_overloading.FooBar.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["write_str"] f "FooBar".
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -43,12 +47,16 @@ Definition BarFoo := BarFoo.t.
 Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Definition Self := operator_overloading.BarFoo.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["write_str"] f "BarFoo".
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -64,6 +72,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
   
   Definition Output : Set := operator_overloading.FooBar.
   
+<<<<<<< HEAD
   Definition add
       `{H : State.Trait}
       (self : Self)
@@ -78,6 +87,11 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
         std.io.stdio._print α0 in
       Pure tt in
     Pure operator_overloading.FooBar.Build.
+=======
+  Parameter add : Self->
+      operator_overloading.Bar
+      -> M operator_overloading.FooBar.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_add `{H : State.Trait} : Notation.Dot "add" := {
     Notation.dot := add;
@@ -96,6 +110,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
   
   Definition Output : Set := operator_overloading.BarFoo.
   
+<<<<<<< HEAD
   Definition add
       `{H : State.Trait}
       (self : Self)
@@ -110,6 +125,11 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
         std.io.stdio._print α0 in
       Pure tt in
     Pure operator_overloading.BarFoo.Build.
+=======
+  Parameter add : Self->
+      operator_overloading.Foo
+      -> M operator_overloading.BarFoo.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_add `{H : State.Trait} : Notation.Dot "add" := {
     Notation.dot := add;
@@ -124,6 +144,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
     let* _ :=
@@ -150,3 +171,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

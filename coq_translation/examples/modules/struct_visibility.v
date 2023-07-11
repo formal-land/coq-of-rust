@@ -27,11 +27,15 @@ Module my.
   Module Impl_struct_visibility_my_ClosedBox_T.
     Definition Self := struct_visibility.my.ClosedBox T.
     
+<<<<<<< HEAD
     Definition new
         `{H : State.Trait}
         (contents : T)
         : M (H := H) (struct_visibility.my.ClosedBox T) :=
       Pure {| struct_visibility.my.ClosedBox.contents := contents; |}.
+=======
+    Parameter new : T -> M (struct_visibility.my.ClosedBox T).
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -65,11 +69,15 @@ Definition ClosedBox : Set := ClosedBox.t.
 Module Impl_struct_visibility_my_ClosedBox_T_2.
   Definition Self := struct_visibility.my.ClosedBox T.
   
+<<<<<<< HEAD
   Definition new
       `{H : State.Trait}
       (contents : T)
       : M (H := H) (struct_visibility.my.ClosedBox T) :=
     Pure {| struct_visibility.my.ClosedBox.contents := contents; |}.
+=======
+  Parameter new : T -> M (struct_visibility.my.ClosedBox T).
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -78,6 +86,7 @@ Module Impl_struct_visibility_my_ClosedBox_T_2.
 End Impl_struct_visibility_my_ClosedBox_T_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let open_box :=
     {| struct_visibility.my.OpenBox.contents := "public information"; |} in
@@ -95,3 +104,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _closed_box :=
     struct_visibility.my.ClosedBox::["new"] "classified information" in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

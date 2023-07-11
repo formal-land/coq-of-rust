@@ -22,12 +22,16 @@ Definition Days := Days.t.
 Module Impl_generics_new_type_idiom_Years.
   Definition Self := generics_new_type_idiom.Years.
   
+<<<<<<< HEAD
   Definition to_days
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) generics_new_type_idiom.Days :=
     let* α0 := (self.[0]).["mul"] 365 in
     Pure (generics_new_type_idiom.Days.Build_t α0).
+=======
+  Parameter to_days : ref Self -> M generics_new_type_idiom.Days.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_to_days `{H : State.Trait} :
     Notation.Dot "to_days" := {
@@ -38,12 +42,16 @@ End Impl_generics_new_type_idiom_Years.
 Module Impl_generics_new_type_idiom_Days.
   Definition Self := generics_new_type_idiom.Days.
   
+<<<<<<< HEAD
   Definition to_years
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) generics_new_type_idiom.Years :=
     let* α0 := (self.[0]).["div"] 365 in
     Pure (generics_new_type_idiom.Years.Build_t α0).
+=======
+  Parameter to_years : ref Self -> M generics_new_type_idiom.Years.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_to_years `{H : State.Trait} :
     Notation.Dot "to_years" := {
@@ -51,6 +59,7 @@ Module Impl_generics_new_type_idiom_Days.
   }.
 End Impl_generics_new_type_idiom_Days.
 
+<<<<<<< HEAD
 Definition old_enough
     `{H : State.Trait}
     (age : ref generics_new_type_idiom.Years)
@@ -85,3 +94,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α3 in
     Pure tt in
   Pure tt.
+=======
+Parameter old_enough : ref generics_new_type_idiom.Years -> M bool.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

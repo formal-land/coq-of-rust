@@ -15,8 +15,12 @@ End HasArea.
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
+<<<<<<< HEAD
   Definition area `{H : State.Trait} (self : ref Self) : M (H := H) f64 :=
     self.["length"].["mul"] self.["height"].
+=======
+  Parameter area : ref Self -> M f64.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_area `{H : State.Trait} : Notation.Dot "area" := {
     Notation.dot := area;
@@ -45,6 +49,7 @@ Definition Rectangle : Set := Rectangle.t.
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
+<<<<<<< HEAD
   Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
     string -> f64 -> 
     string -> f64 -> 
@@ -66,6 +71,9 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       (addr_of self.["length"])
       "height"
       (addr_of (addr_of self.["height"])).
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -92,6 +100,7 @@ Module Triangle.
 End Triangle.
 Definition Triangle : Set := Triangle.t.
 
+<<<<<<< HEAD
 Definition print_debug
     `{H : State.Trait}
     {T : Set}
@@ -141,3 +150,19 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
+=======
+Parameter print_debug : forall
+    { T : Set } ,
+    `{core.fmt.Debug.Trait T}
+    ref T
+    -> M unit.
+
+Parameter area : forall
+    { T : Set } ,
+    `{generics_bounds.HasArea.Trait T}
+    ref T
+    -> M f64.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

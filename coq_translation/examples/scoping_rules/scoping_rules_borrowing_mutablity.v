@@ -25,6 +25,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Definition Self := scoping_rules_borrowing_mutablity.Book.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
@@ -33,6 +34,9 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
     let _ := tt in
     let _ := tt in
     self.["deref"].
+=======
+  Parameter clone : ref Self -> M scoping_rules_borrowing_mutablity.Book.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -50,6 +54,7 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
     core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
+<<<<<<< HEAD
 Definition borrow_book
     `{H : State.Trait}
     (book : ref scoping_rules_borrowing_mutablity.Book)
@@ -100,3 +105,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ := scoping_rules_borrowing_mutablity.borrow_book (addr_of mutabook) in
   let* _ := scoping_rules_borrowing_mutablity.new_edition (addr_of mutabook) in
   Pure tt.
+=======
+Parameter borrow_book : ref scoping_rules_borrowing_mutablity.Book -> M unit.
+
+Parameter new_edition : mut_ref scoping_rules_borrowing_mutablity.Book
+    -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

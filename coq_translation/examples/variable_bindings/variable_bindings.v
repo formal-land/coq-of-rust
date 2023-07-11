@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let an_integer := 1 in
   let a_boolean := true in
@@ -40,3 +41,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let _unused_variable := 3 in
   let _noisy_unused_variable := 2 in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

@@ -9,12 +9,16 @@ Definition Unit := Unit.t.
 Module Impl_core_fmt_Debug_for_clone_Unit.
   Definition Self := clone.Unit.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["write_str"] f "Unit".
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -28,11 +32,15 @@ End Impl_core_fmt_Debug_for_clone_Unit.
 Module Impl_core_clone_Clone_for_clone_Unit.
   Definition Self := clone.Unit.
   
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) clone.Unit :=
     self.["deref"].
+=======
+  Parameter clone : ref Self -> M clone.Unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -65,6 +73,7 @@ Definition Pair := Pair.t.
 Module Impl_core_clone_Clone_for_clone_Pair.
   Definition Self := clone.Pair.
   
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
@@ -72,6 +81,9 @@ Module Impl_core_clone_Clone_for_clone_Pair.
     let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
     let* α1 := core.clone.Clone.clone (addr_of (self.[1])) in
     Pure (clone.Pair.Build_t α0 α1).
+=======
+  Parameter clone : ref Self -> M clone.Pair.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -85,6 +97,7 @@ End Impl_core_clone_Clone_for_clone_Pair.
 Module Impl_core_fmt_Debug_for_clone_Pair.
   Definition Self := clone.Pair.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -95,6 +108,9 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       "Pair"
       (addr_of (self.[0]))
       (addr_of (addr_of (self.[1]))).
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -106,6 +122,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let unit := clone.Unit.Build in
   let copied_unit := unit in
@@ -167,3 +184,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

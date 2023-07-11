@@ -25,6 +25,7 @@ End SingleGen.
 Definition SingleGen := SingleGen.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let _s := generics.Single.Build_t generics.A.Build in
   let _char := generics.SingleGen.Build_t "a"%char in
@@ -32,3 +33,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let _i32 := generics.SingleGen.Build_t 6 in
   let _char := generics.SingleGen.Build_t "a"%char in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

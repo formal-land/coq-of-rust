@@ -19,6 +19,7 @@ Definition Point : Set := Point.t.
 Module Impl_associated_functions_and_methods_Point.
   Definition Self := associated_functions_and_methods.Point.
   
+<<<<<<< HEAD
   Definition origin
       `{H : State.Trait}
       (_ : unit)
@@ -28,12 +29,16 @@ Module Impl_associated_functions_and_methods_Point.
         associated_functions_and_methods.Point.y := 0 (* 0.0 *);
         associated_functions_and_methods.Point.x := 1 (* 1.0 *);
       |}.
+=======
+  Parameter origin : unit -> M associated_functions_and_methods.Point.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance AssociatedFunction_origin `{H : State.Trait} :
     Notation.DoubleColon Self "origin" := {
     Notation.double_colon := origin;
   }.
   
+<<<<<<< HEAD
   Definition new
       `{H : State.Trait}
       (x : f64)
@@ -44,6 +49,9 @@ Module Impl_associated_functions_and_methods_Point.
         associated_functions_and_methods.Point.x := x;
         associated_functions_and_methods.Point.y := y;
       |}.
+=======
+  Parameter new : f64-> f64 -> M associated_functions_and_methods.Point.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -69,16 +77,21 @@ Definition Rectangle : Set := Rectangle.t.
 Module Impl_associated_functions_and_methods_Rectangle.
   Definition Self := associated_functions_and_methods.Rectangle.
   
+<<<<<<< HEAD
   Definition get_p1
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) associated_functions_and_methods.Point :=
     Pure self.["p1"].
+=======
+  Parameter get_p1 : ref Self -> M associated_functions_and_methods.Point.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_get_p1 `{H : State.Trait} : Notation.Dot "get_p1" := {
     Notation.dot := get_p1;
   }.
   
+<<<<<<< HEAD
   Definition area `{H : State.Trait} (self : ref Self) : M (H := H) f64 :=
     let
         '{|
@@ -96,11 +109,15 @@ Module Impl_associated_functions_and_methods_Rectangle.
     let* α1 := y1.["sub"] y2 in
     let* α2 := α0.["mul"] α1 in
     α2.["abs"].
+=======
+  Parameter area : ref Self -> M f64.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_area `{H : State.Trait} : Notation.Dot "area" := {
     Notation.dot := area;
   }.
   
+<<<<<<< HEAD
   Definition perimeter `{H : State.Trait} (self : ref Self) : M (H := H) f64 :=
     let
         '{|
@@ -120,12 +137,16 @@ Module Impl_associated_functions_and_methods_Rectangle.
     let* α3 := α2.["abs"] in
     let* α4 := α1.["add"] α3 in
     2 (* 2.0 *).["mul"] α4.
+=======
+  Parameter perimeter : ref Self -> M f64.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_perimeter `{H : State.Trait} :
     Notation.Dot "perimeter" := {
     Notation.dot := perimeter;
   }.
   
+<<<<<<< HEAD
   Definition translate
       `{H : State.Trait}
       (self : mut_ref Self)
@@ -137,6 +158,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
     let* _ := self.["p1"].["y"].["add_assign"] y in
     let* _ := self.["p2"].["y"].["add_assign"] y in
     Pure tt.
+=======
+  Parameter translate : mut_ref Self-> f64-> f64 -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_translate `{H : State.Trait} :
     Notation.Dot "translate" := {
@@ -159,6 +183,7 @@ Definition Pair := Pair.t.
 Module Impl_associated_functions_and_methods_Pair.
   Definition Self := associated_functions_and_methods.Pair.
   
+<<<<<<< HEAD
   Definition destroy `{H : State.Trait} (self : Self) : M (H := H) unit :=
     let 'associated_functions_and_methods.Pair.Build_t first second := self in
     let* _ :=
@@ -173,6 +198,9 @@ Module Impl_associated_functions_and_methods_Pair.
         std.io.stdio._print α2 in
       Pure tt in
     Pure tt.
+=======
+  Parameter destroy : Self -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_destroy `{H : State.Trait} :
     Notation.Dot "destroy" := {
@@ -181,6 +209,7 @@ Module Impl_associated_functions_and_methods_Pair.
 End Impl_associated_functions_and_methods_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* rectangle :=
     let* α0 := associated_functions_and_methods.Point::["origin"] tt in
@@ -229,3 +258,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     Pure (associated_functions_and_methods.Pair.Build_t α0 α1) in
   let* _ := pair.["destroy"] in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

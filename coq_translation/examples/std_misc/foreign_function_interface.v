@@ -3,6 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error ForeignMod.
 
+<<<<<<< HEAD
 Definition cos
     `{H : State.Trait}
     (z : foreign_function_interface.Complex)
@@ -43,6 +44,13 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α3 in
     Pure tt in
   Pure tt.
+=======
+Parameter cos : foreign_function_interface.Complex
+    -> M foreign_function_interface.Complex.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
 
 Module Complex.
   Record t : Set := {
@@ -62,12 +70,16 @@ Definition Complex : Set := Complex.t.
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) foreign_function_interface.Complex :=
     let _ := tt in
     self.["deref"].
+=======
+  Parameter clone : ref Self -> M foreign_function_interface.Complex.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -88,6 +100,7 @@ End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
+<<<<<<< HEAD
   Parameter struct_parameter_for_fmt : core.fmt.Formatter -> string -> 
     string -> f32 -> 
     string -> f32 -> 
@@ -120,6 +133,9 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           (addr_of [ ""; "+"; "i" ])
           (addr_of [ α0; α1 ]) in
       f.["write_fmt"] α2.
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;

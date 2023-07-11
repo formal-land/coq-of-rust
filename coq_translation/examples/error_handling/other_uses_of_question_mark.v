@@ -11,12 +11,16 @@ Definition EmptyVec := EmptyVec.t.
 Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
   Definition Self := other_uses_of_question_mark.EmptyVec.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["write_str"] f "EmptyVec".
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -30,6 +34,7 @@ End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
   Definition Self := other_uses_of_question_mark.EmptyVec.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -39,6 +44,9 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
       format_arguments::["new_const"]
         (addr_of [ "invalid first item to double" ]) in
     f.["write_fmt"] α0.
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -56,6 +64,7 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
     core.error.Error.Build_Trait _.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
+<<<<<<< HEAD
 Definition double_first
     `{H : State.Trait}
     (vec : alloc.vec.Vec (ref str))
@@ -128,3 +137,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α0 := other_uses_of_question_mark.double_first strings in
     other_uses_of_question_mark.print α0 in
   Pure tt.
+=======
+Parameter double_first : alloc.vec.Vec (ref str)
+    -> M (other_uses_of_question_mark.Result i32).
+
+Parameter print : other_uses_of_question_mark.Result i32 -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

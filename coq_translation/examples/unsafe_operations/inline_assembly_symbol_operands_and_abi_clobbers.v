@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit := Pure tt.
 
 Definition foo `{H : State.Trait} (arg : i32) : M (H := H) i32 :=
@@ -21,3 +22,10 @@ Definition call_foo `{H : State.Trait} (arg : i32) : M (H := H) i32 :=
   let result := tt in
   let _ := InlineAsm in
   Pure result.
+=======
+Parameter main : unit -> M unit.
+
+Parameter foo : i32 -> M i32.
+
+Parameter call_foo : i32 -> M i32.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

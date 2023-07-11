@@ -29,6 +29,7 @@ Module
   Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
+<<<<<<< HEAD
   Definition eq
       `{H : State.Trait}
       (self : ref Self)
@@ -37,6 +38,11 @@ Module
     let* α0 := self.["username"].["eq"] other.["username"] in
     let* α1 := self.["password"].["eq"] other.["password"] in
     α0.["andb"] α1.
+=======
+  Parameter eq : ref Self->
+      ref hash_map_alternate_or_custom_key_types.Account
+      -> M bool.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -59,6 +65,7 @@ End
 Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
+<<<<<<< HEAD
   Definition assert_receiver_is_total_eq
       `{H : State.Trait}
       (self : ref Self)
@@ -66,6 +73,9 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
     let _ := tt in
     let _ := tt in
     Pure tt.
+=======
+  Parameter assert_receiver_is_total_eq : ref Self -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -79,6 +89,7 @@ End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
+<<<<<<< HEAD
   Definition hash
       `{H : State.Trait}
       (self : ref Self)
@@ -86,6 +97,9 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
       : M (H := H) unit :=
     let* _ := core.hash.Hash.hash (addr_of self.["username"]) state in
     core.hash.Hash.hash (addr_of self.["password"]) state.
+=======
+  Parameter hash : ref Self-> mut_ref __H -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_hash `{H : State.Trait} : Notation.Dot "hash" := {
     Notation.dot := hash;
@@ -116,6 +130,7 @@ Definition Accounts : Set :=
     hash_map_alternate_or_custom_key_types.Account
     hash_map_alternate_or_custom_key_types.AccountInfo.
 
+<<<<<<< HEAD
 Definition try_logon
     `{H : State.Trait}
     (accounts : ref hash_map_alternate_or_custom_key_types.Accounts)
@@ -223,3 +238,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       "j.everyman"
       "password123" in
   Pure tt.
+=======
+Parameter try_logon : ref hash_map_alternate_or_custom_key_types.Accounts->
+    ref str->
+    ref str
+    -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

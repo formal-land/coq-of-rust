@@ -17,6 +17,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
     :=
     enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.
   
+<<<<<<< HEAD
   Definition run
       `{H : State.Trait}
       (self : ref Self)
@@ -27,6 +28,9 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
     | ImplSelf.Add => x.["add"] y
     | ImplSelf.Subtract => x.["sub"] y
     end.
+=======
+  Parameter run : ref Self-> i32-> i32 -> M i32.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_run `{H : State.Trait} : Notation.Dot "run" := {
     Notation.dot := run;

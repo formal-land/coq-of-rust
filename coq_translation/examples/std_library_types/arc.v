@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* apple := alloc.sync.Arc::["new"] "the same apple" in
   let* _ :=
@@ -40,3 +41,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α0 := core.time.Duration::["from_secs"] 1 in
     std.thread.sleep α0 in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

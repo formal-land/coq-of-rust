@@ -15,6 +15,7 @@ Definition Number : Set := Number.t.
 Module Impl_core_fmt_Debug_for_into_Number.
   Definition Self := into.Number.
   
+<<<<<<< HEAD
   Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
     string -> i32 -> 
     M (H := H) core.fmt.Result.
@@ -33,6 +34,9 @@ Module Impl_core_fmt_Debug_for_into_Number.
       "Number"
       "value"
       (addr_of (addr_of self.["value"])).
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -46,8 +50,12 @@ End Impl_core_fmt_Debug_for_into_Number.
 Module Impl_core_convert_From_for_into_Number.
   Definition Self := into.Number.
   
+<<<<<<< HEAD
   Definition from `{H : State.Trait} (item : i32) : M (H := H) Self :=
     Pure {| into.Number.value := item; |}.
+=======
+  Parameter from : i32 -> M Self.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -60,6 +68,7 @@ Module Impl_core_convert_From_for_into_Number.
 End Impl_core_convert_From_for_into_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let int := 5 in
   let* num := int.["into"] in
@@ -74,3 +83,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

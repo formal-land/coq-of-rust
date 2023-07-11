@@ -12,6 +12,7 @@ Definition Food := Food.t.
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Definition Self := combinators_and_then.Food.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -24,6 +25,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
       | combinators_and_then.Food.Sushi => Pure "Sushi"
       end in
     core.fmt.Formatter::["write_str"] f α0.
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -45,6 +49,7 @@ Definition Day := Day.t.
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Definition Self := combinators_and_then.Day.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -57,6 +62,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
       | combinators_and_then.Day.Wednesday => Pure "Wednesday"
       end in
     core.fmt.Formatter::["write_str"] f α0.
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -67,6 +75,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   }.
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
+<<<<<<< HEAD
 Definition have_ingredients
     `{H : State.Trait}
     (food : combinators_and_then.Food)
@@ -148,3 +157,21 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ := combinators_and_then.eat steak combinators_and_then.Day.Tuesday in
   let* _ := combinators_and_then.eat sushi combinators_and_then.Day.Wednesday in
   Pure tt.
+=======
+Parameter have_ingredients : combinators_and_then.Food
+    -> M (core.option.Option combinators_and_then.Food).
+
+Parameter have_recipe : combinators_and_then.Food
+    -> M (core.option.Option combinators_and_then.Food).
+
+Parameter cookable_v1 : combinators_and_then.Food
+    -> M (core.option.Option combinators_and_then.Food).
+
+Parameter cookable_v2 : combinators_and_then.Food
+    -> M (core.option.Option combinators_and_then.Food).
+
+Parameter eat : combinators_and_then.Food-> combinators_and_then.Day -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

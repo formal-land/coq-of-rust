@@ -23,6 +23,7 @@ Definition Person : Set := Person.t.
 Module Impl_core_hash_Hash_for_hash_Person.
   Definition Self := hash.Person.
   
+<<<<<<< HEAD
   Definition hash
       `{H : State.Trait}
       (self : ref Self)
@@ -31,6 +32,9 @@ Module Impl_core_hash_Hash_for_hash_Person.
     let* _ := core.hash.Hash.hash (addr_of self.["id"]) state in
     let* _ := core.hash.Hash.hash (addr_of self.["name"]) state in
     core.hash.Hash.hash (addr_of self.["phone"]) state.
+=======
+  Parameter hash : ref Self-> mut_ref __H -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_hash `{H : State.Trait} : Notation.Dot "hash" := {
     Notation.dot := hash;
@@ -41,6 +45,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
   }.
 End Impl_core_hash_Hash_for_hash_Person.
 
+<<<<<<< HEAD
 Definition calculate_hash
     `{H : State.Trait}
     {T : Set}
@@ -80,3 +85,13 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     else
       Pure tt in
   Pure tt.
+=======
+Parameter calculate_hash : forall
+    { T : Set } ,
+    `{core.hash.Hash.Trait T}
+    ref T
+    -> M u64.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

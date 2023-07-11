@@ -13,8 +13,12 @@ Definition Foo := Foo.t.
 Module Impl_example05_Foo.
   Definition Self := example05.Foo.
   
+<<<<<<< HEAD
   Definition plus1 `{H : State.Trait} (s : Self) : M (H := H) u32 :=
     (s.[0]).["add"] 1.
+=======
+  Parameter plus1 : Self -> M u32.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance AssociatedFunction_plus1 `{H : State.Trait} :
     Notation.DoubleColon Self "plus1" := {
@@ -23,7 +27,11 @@ Module Impl_example05_Foo.
 End Impl_example05_Foo.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let foo := example05.Foo.Build_t 0 in
   let _ := foo.["plus1"] in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

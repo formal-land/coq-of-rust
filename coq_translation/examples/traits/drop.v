@@ -15,6 +15,7 @@ Definition Droppable : Set := Droppable.t.
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   Definition Self := drop.Droppable.
   
+<<<<<<< HEAD
   Definition drop `{H : State.Trait} (self : mut_ref Self) : M (H := H) unit :=
     let* _ :=
       let* _ :=
@@ -27,6 +28,9 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
         std.io.stdio._print α1 in
       Pure tt in
     Pure tt.
+=======
+  Parameter drop : mut_ref Self -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_drop `{H : State.Trait} : Notation.Dot "drop" := {
     Notation.dot := drop;
@@ -38,6 +42,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let _a := {| drop.Droppable.name := "a"; |} in
   let* _ :=
@@ -86,3 +91,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α0 in
     Pure tt in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

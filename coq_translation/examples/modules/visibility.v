@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my_mod.
+<<<<<<< HEAD
   Definition private_function `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* _ :=
       let* _ :=
@@ -471,3 +472,89 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ := visibility.my_mod.call_public_function_in_my_mod tt in
   let* _ := visibility.my_mod.public_function_in_crate tt in
   Pure tt.
+=======
+  Parameter private_function : unit -> M unit.
+  
+  Parameter function : unit -> M unit.
+  
+  Parameter indirect_access : unit -> M unit.
+  
+  Module nested.
+    Parameter function : unit -> M unit.
+    
+    (* #[allow(dead_code)] - function was ignored by the compiler *)
+    Parameter private_function : unit -> M unit.
+    
+    Parameter public_function_in_my_mod : unit -> M unit.
+    
+    Parameter public_function_in_nested : unit -> M unit.
+    
+    Parameter public_function_in_super_mod : unit -> M unit.
+  End nested.
+  
+  Parameter call_public_function_in_my_mod : unit -> M unit.
+  
+  Parameter public_function_in_crate : unit -> M unit.
+  
+  Module private_nested.
+    (* #[allow(dead_code)] - function was ignored by the compiler *)
+    Parameter function : unit -> M unit.
+    
+    (* #[allow(dead_code)] - function was ignored by the compiler *)
+    Parameter restricted_function : unit -> M unit.
+  End private_nested.
+End my_mod.
+
+Parameter private_function : unit -> M unit.
+
+Parameter function : unit -> M unit.
+
+Parameter indirect_access : unit -> M unit.
+
+Module nested.
+  Parameter function : unit -> M unit.
+  
+  (* #[allow(dead_code)] - function was ignored by the compiler *)
+  Parameter private_function : unit -> M unit.
+  
+  Parameter public_function_in_my_mod : unit -> M unit.
+  
+  Parameter public_function_in_nested : unit -> M unit.
+  
+  Parameter public_function_in_super_mod : unit -> M unit.
+End nested.
+
+Parameter function : unit -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter private_function : unit -> M unit.
+
+Parameter public_function_in_my_mod : unit -> M unit.
+
+Parameter public_function_in_nested : unit -> M unit.
+
+Parameter public_function_in_super_mod : unit -> M unit.
+
+Parameter call_public_function_in_my_mod : unit -> M unit.
+
+Parameter public_function_in_crate : unit -> M unit.
+
+Module private_nested.
+  (* #[allow(dead_code)] - function was ignored by the compiler *)
+  Parameter function : unit -> M unit.
+  
+  (* #[allow(dead_code)] - function was ignored by the compiler *)
+  Parameter restricted_function : unit -> M unit.
+End private_nested.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter function : unit -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter restricted_function : unit -> M unit.
+
+Parameter function : unit -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

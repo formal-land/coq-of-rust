@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let number := 4 in
   match number with
@@ -20,3 +21,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     Pure tt
   | _ => core.panicking.unreachable_display (addr_of "Should never happen.")
   end.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

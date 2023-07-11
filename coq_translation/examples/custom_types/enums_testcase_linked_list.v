@@ -11,17 +11,22 @@ Definition List := List.t.
 Module Impl_enums_testcase_linked_list_List.
   Definition Self := enums_testcase_linked_list.List.
   
+<<<<<<< HEAD
   Definition new
       `{H : State.Trait}
       (_ : unit)
       : M (H := H) enums_testcase_linked_list.List :=
     Pure enums_testcase_linked_list.List.Nil.
+=======
+  Parameter new : unit -> M enums_testcase_linked_list.List.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
+<<<<<<< HEAD
   Definition prepend
       `{H : State.Trait}
       (self : Self)
@@ -29,12 +34,16 @@ Module Impl_enums_testcase_linked_list_List.
       : M (H := H) enums_testcase_linked_list.List :=
     let* α0 := alloc.boxed.Box::["new"] self in
     Pure (enums_testcase_linked_list.List.Cons elem α0).
+=======
+  Parameter prepend : Self-> u32 -> M enums_testcase_linked_list.List.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_prepend `{H : State.Trait} :
     Notation.Dot "prepend" := {
     Notation.dot := prepend;
   }.
   
+<<<<<<< HEAD
   Definition len `{H : State.Trait} (self : ref Self) : M (H := H) u32 :=
     let* α0 := self.["deref"] in
     match α0 with
@@ -43,11 +52,15 @@ Module Impl_enums_testcase_linked_list_List.
       1.["add"] α0
     | enums_testcase_linked_list.List.Nil => Pure 0
     end.
+=======
+  Parameter len : ref Self -> M u32.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_len `{H : State.Trait} : Notation.Dot "len" := {
     Notation.dot := len;
   }.
   
+<<<<<<< HEAD
   Definition stringify
       `{H : State.Trait}
       (self : ref Self)
@@ -71,6 +84,9 @@ Module Impl_enums_testcase_linked_list_List.
         alloc.fmt.format α0 in
       Pure res
     end.
+=======
+  Parameter stringify : ref Self -> M alloc.string.String.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_stringify `{H : State.Trait} :
     Notation.Dot "stringify" := {
@@ -79,6 +95,7 @@ Module Impl_enums_testcase_linked_list_List.
 End Impl_enums_testcase_linked_list_List.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* list := enums_testcase_linked_list.List::["new"] tt in
   let* _ :=
@@ -111,3 +128,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

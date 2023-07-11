@@ -12,12 +12,16 @@ Definition DoubleError := DoubleError.t.
 Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
   Definition Self := defining_an_error_type.DoubleError.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["write_str"] f "DoubleError".
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -31,11 +35,15 @@ End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   Definition Self := defining_an_error_type.DoubleError.
   
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) defining_an_error_type.DoubleError :=
     Pure defining_an_error_type.DoubleError.Build.
+=======
+  Parameter clone : ref Self -> M defining_an_error_type.DoubleError.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -49,6 +57,7 @@ End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   Definition Self := defining_an_error_type.DoubleError.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -58,6 +67,9 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
       format_arguments::["new_const"]
         (addr_of [ "invalid first item to double" ]) in
     f.["write_fmt"] α0.
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -68,6 +80,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   }.
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
+<<<<<<< HEAD
 Definition double_first
     `{H : State.Trait}
     (vec : alloc.vec.Vec (ref str))
@@ -128,3 +141,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α0 := defining_an_error_type.double_first strings in
     defining_an_error_type.print α0 in
   Pure tt.
+=======
+Parameter double_first : alloc.vec.Vec (ref str)
+    -> M (defining_an_error_type.Result i32).
+
+Parameter print : defining_an_error_type.Result i32 -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

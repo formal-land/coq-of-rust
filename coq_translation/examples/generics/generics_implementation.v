@@ -26,11 +26,15 @@ Definition GenVal : Set := GenVal.t.
 Module Impl_generics_implementation_Val.
   Definition Self := generics_implementation.Val.
   
+<<<<<<< HEAD
   Definition value
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) (ref f64) :=
     Pure (addr_of self.["val"]).
+=======
+  Parameter value : ref Self -> M (ref f64).
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_value `{H : State.Trait} : Notation.Dot "value" := {
     Notation.dot := value;
@@ -40,8 +44,12 @@ End Impl_generics_implementation_Val.
 Module Impl_generics_implementation_GenVal_T.
   Definition Self := generics_implementation.GenVal T.
   
+<<<<<<< HEAD
   Definition value `{H : State.Trait} (self : ref Self) : M (H := H) (ref T) :=
     Pure (addr_of self.["gen_val"]).
+=======
+  Parameter value : ref Self -> M (ref T).
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_value `{H : State.Trait} : Notation.Dot "value" := {
     Notation.dot := value;
@@ -49,6 +57,7 @@ Module Impl_generics_implementation_GenVal_T.
 End Impl_generics_implementation_GenVal_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let x := {| generics_implementation.Val.val := 3 (* 3.0 *); |} in
   let y := {| generics_implementation.GenVal.gen_val := 3; |} in
@@ -66,3 +75,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α4 in
     Pure tt in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

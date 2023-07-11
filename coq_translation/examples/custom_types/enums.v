@@ -18,6 +18,7 @@ Module WebEvent.
 End WebEvent.
 Definition WebEvent := WebEvent.t.
 
+<<<<<<< HEAD
 Definition inspect
     `{H : State.Trait}
     (event : enums.WebEvent)
@@ -101,3 +102,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ := enums.inspect load in
   let* _ := enums.inspect unload in
   Pure tt.
+=======
+Parameter inspect : enums.WebEvent -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

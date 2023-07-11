@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition AliasedResult : Set :=
   core.result.Result T core.num.error.ParseIntError.
 
+<<<<<<< HEAD
 Definition multiply
     `{H : State.Trait}
     (first_number_str : ref str)
@@ -51,3 +52,13 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α0 := aliases_for_result.multiply "t" "2" in
     aliases_for_result.print α0 in
   Pure tt.
+=======
+Parameter multiply : ref str->
+    ref str
+    -> M (aliases_for_result.AliasedResult i32).
+
+Parameter print : aliases_for_result.AliasedResult i32 -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

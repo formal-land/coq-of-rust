@@ -54,6 +54,7 @@ Module CompSciStudent.
   }.
 End CompSciStudent.
 
+<<<<<<< HEAD
 Definition comp_sci_student_greeting
     `{H : State.Trait}
     (student : ref TraitObject)
@@ -82,3 +83,9 @@ Definition comp_sci_student_greeting
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit := Pure tt.
+=======
+Parameter comp_sci_student_greeting : ref TraitObject -> M alloc.string.String.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

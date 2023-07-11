@@ -38,11 +38,15 @@ Module
   Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
   Definition Self := const_underscore_expression.Bar.
   
+<<<<<<< HEAD
   Definition show
       `{H : State.Trait}
       (self : Self)
       : M (H := H) alloc.string.String :=
     Pure self.["test"].
+=======
+  Parameter show : Self -> M alloc.string.String.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_show `{H : State.Trait} : Notation.Dot "show" := {
     Notation.dot := show;

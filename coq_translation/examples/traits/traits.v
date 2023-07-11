@@ -59,8 +59,12 @@ End Animal.
 Module Impl_traits_Sheep.
   Definition Self := traits.Sheep.
   
+<<<<<<< HEAD
   Definition is_naked `{H : State.Trait} (self : ref Self) : M (H := H) bool :=
     Pure self.["naked"].
+=======
+  Parameter is_naked : ref Self -> M bool.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_is_naked `{H : State.Trait} :
     Notation.Dot "is_naked" := {
@@ -71,24 +75,33 @@ End Impl_traits_Sheep.
 Module Impl_traits_Animal_for_traits_Sheep.
   Definition Self := traits.Sheep.
   
+<<<<<<< HEAD
   Definition new
       `{H : State.Trait}
       (name : ref str)
       : M (H := H) traits.Sheep :=
     Pure {| traits.Sheep.name := name; traits.Sheep.naked := false; |}.
+=======
+  Parameter new : ref str -> M traits.Sheep.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
+<<<<<<< HEAD
   Definition name `{H : State.Trait} (self : ref Self) : M (H := H) (ref str) :=
     Pure self.["name"].
+=======
+  Parameter name : ref Self -> M (ref str).
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_name `{H : State.Trait} : Notation.Dot "name" := {
     Notation.dot := name;
   }.
   
+<<<<<<< HEAD
   Definition noise
       `{H : State.Trait}
       (self : ref Self)
@@ -98,11 +111,15 @@ Module Impl_traits_Animal_for_traits_Sheep.
       Pure "baaaaah?"
     else
       Pure "baaaaah!".
+=======
+  Parameter noise : ref Self -> M (ref str).
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_noise `{H : State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
+<<<<<<< HEAD
   Definition talk `{H : State.Trait} (self : ref Self) : M (H := H) unit :=
     let* _ :=
       let* _ :=
@@ -117,6 +134,9 @@ Module Impl_traits_Animal_for_traits_Sheep.
         std.io.stdio._print α3 in
       Pure tt in
     Pure tt.
+=======
+  Parameter talk : ref Self -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_talk `{H : State.Trait} : Notation.Dot "talk" := {
     Notation.dot := talk;
@@ -132,6 +152,7 @@ End Impl_traits_Animal_for_traits_Sheep.
 Module Impl_traits_Sheep_2.
   Definition Self := traits.Sheep.
   
+<<<<<<< HEAD
   Definition shear `{H : State.Trait} (self : mut_ref Self) : M (H := H) unit :=
     let* α0 := self.["is_naked"] in
     if (α0 : bool) then
@@ -160,6 +181,9 @@ Module Impl_traits_Sheep_2.
         Pure tt in
       let* _ := assign self.["naked"] true in
       Pure tt.
+=======
+  Parameter shear : mut_ref Self -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_shear `{H : State.Trait} : Notation.Dot "shear" := {
     Notation.dot := shear;
@@ -167,6 +191,7 @@ Module Impl_traits_Sheep_2.
 End Impl_traits_Sheep_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* dolly :=
     let* α0 := traits.Animal.new "Dolly" in
@@ -175,3 +200,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ := dolly.["shear"] in
   let* _ := dolly.["talk"] in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition NTHREADS `{H : State.Trait} : u32 := run (Pure 10).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* children := alloc.vec.Vec::["new"] tt in
   let* _ :=
@@ -56,3 +57,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       from
       for
   end.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

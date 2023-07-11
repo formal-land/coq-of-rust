@@ -8,6 +8,7 @@ Definition Inch : Set := u64.
 Definition U64 : Set := u64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let nanoseconds := cast 5 aliasing.U64 in
   let inches := cast 2 aliasing.U64 in
@@ -25,3 +26,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α4 in
     Pure tt in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

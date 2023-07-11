@@ -28,12 +28,16 @@ Section Impl_generics_traits_DoubleDrop_for_U.
   
   Definition Self := U.
   
+<<<<<<< HEAD
   Definition double_drop
       `{H : State.Trait}
       (self : Self)
       (Pattern : T)
       : M (H := H) unit :=
     Pure tt.
+=======
+  Parameter double_drop : Self-> T -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_double_drop `{H : State.Trait} :
     Notation.Dot "double_drop" := {
@@ -47,8 +51,12 @@ End Impl_generics_traits_DoubleDrop_for_U.
 End Impl_generics_traits_DoubleDrop_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let empty := generics_traits.Empty.Build in
   let null := generics_traits.Null.Build in
   let* _ := empty.["double_drop"] null in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

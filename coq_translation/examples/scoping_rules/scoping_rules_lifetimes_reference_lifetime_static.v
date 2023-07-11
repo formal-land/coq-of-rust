@@ -3,6 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition NUM `{H : State.Trait} : i32 := run (Pure 18).
 
+<<<<<<< HEAD
 Definition coerce_static
     `{H : State.Trait}
     (arg : ref i32)
@@ -53,3 +54,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+=======
+Parameter coerce_static : ref i32 -> M (ref i32).
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

@@ -48,6 +48,7 @@ Module
 End
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
+<<<<<<< HEAD
 Definition red
     `{H : State.Trait}
     {T : Set}
@@ -94,3 +95,19 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
+=======
+Parameter red : forall
+    { T : Set } ,
+    `{generics_bounds_test_case_empty_bounds.Red.Trait T}
+    ref T
+    -> M (ref str).
+
+Parameter blue : forall
+    { T : Set } ,
+    `{generics_bounds_test_case_empty_bounds.Blue.Trait T}
+    ref T
+    -> M (ref str).
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

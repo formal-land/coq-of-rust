@@ -20,12 +20,16 @@ End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   Definition Self := derive.Centimeters.
   
+<<<<<<< HEAD
   Definition eq
       `{H : State.Trait}
       (self : ref Self)
       (other : ref derive.Centimeters)
       : M (H := H) bool :=
     (self.[0]).["eq"] (other.[0]).
+=======
+  Parameter eq : ref Self-> ref derive.Centimeters -> M bool.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -39,12 +43,18 @@ End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   Definition Self := derive.Centimeters.
   
+<<<<<<< HEAD
   Definition partial_cmp
       `{H : State.Trait}
       (self : ref Self)
       (other : ref derive.Centimeters)
       : M (H := H) (core.option.Option core.cmp.Ordering) :=
     core.cmp.PartialOrd.partial_cmp (addr_of (self.[0])) (addr_of (other.[0])).
+=======
+  Parameter partial_cmp : ref Self->
+      ref derive.Centimeters
+      -> M (core.option.Option core.cmp.Ordering).
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_partial_cmp `{H : State.Trait} :
     Notation.Dot "partial_cmp" := {
@@ -68,6 +78,7 @@ Definition Inches := Inches.t.
 Module Impl_core_fmt_Debug_for_derive_Inches.
   Definition Self := derive.Inches.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -77,6 +88,9 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
       f
       "Inches"
       (addr_of (addr_of (self.[0]))).
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -90,6 +104,7 @@ End Impl_core_fmt_Debug_for_derive_Inches.
 Module Impl_derive_Inches.
   Definition Self := derive.Inches.
   
+<<<<<<< HEAD
   Definition to_centimeters
       `{H : State.Trait}
       (self : ref Self)
@@ -97,6 +112,9 @@ Module Impl_derive_Inches.
     let 'derive.Inches.Build_t inches := self in
     let* α0 := (cast inches f64).["mul"] 3 (* 2.54 *) in
     Pure (derive.Centimeters.Build_t α0).
+=======
+  Parameter to_centimeters : ref Self -> M derive.Centimeters.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_to_centimeters `{H : State.Trait} :
     Notation.Dot "to_centimeters" := {
@@ -114,6 +132,7 @@ End Seconds.
 Definition Seconds := Seconds.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let _one_second := derive.Seconds.Build_t 1 in
   let foot := derive.Inches.Build_t 12 in
@@ -146,3 +165,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

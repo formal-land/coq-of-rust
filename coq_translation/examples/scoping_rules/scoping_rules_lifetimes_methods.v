@@ -13,18 +13,23 @@ Definition Owner := Owner.t.
 Module Impl_scoping_rules_lifetimes_methods_Owner.
   Definition Self := scoping_rules_lifetimes_methods.Owner.
   
+<<<<<<< HEAD
   Definition add_one
       `{H : State.Trait}
       (self : mut_ref Self)
       : M (H := H) unit :=
     let* _ := (self.[0]).["add_assign"] 1 in
     Pure tt.
+=======
+  Parameter add_one : mut_ref Self -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_add_one `{H : State.Trait} :
     Notation.Dot "add_one" := {
     Notation.dot := add_one;
   }.
   
+<<<<<<< HEAD
   Definition print `{H : State.Trait} (self : ref Self) : M (H := H) unit :=
     let* _ :=
       let* _ :=
@@ -37,6 +42,9 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
         std.io.stdio._print α1 in
       Pure tt in
     Pure tt.
+=======
+  Parameter print : ref Self -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_print `{H : State.Trait} : Notation.Dot "print" := {
     Notation.dot := print;
@@ -44,8 +52,12 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let owner := scoping_rules_lifetimes_methods.Owner.Build_t 18 in
   let* _ := owner.["add_one"] in
   let* _ := owner.["print"] in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

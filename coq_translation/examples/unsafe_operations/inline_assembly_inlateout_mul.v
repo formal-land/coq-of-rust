@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit := Pure tt.
 
 Definition mul `{H : State.Trait} (a : u64) (b : u64) : M (H := H) u128 :=
@@ -12,3 +13,8 @@ Definition mul `{H : State.Trait} (a : u64) (b : u64) : M (H := H) u128 :=
     tt in
   let* α0 := (cast hi u128).["shl"] 64 in
   α0.["add"] (cast lo u128).
+=======
+Parameter main : unit -> M unit.
+
+Parameter mul : u64-> u64 -> M u128.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

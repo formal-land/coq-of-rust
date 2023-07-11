@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
     let* _ :=
@@ -44,3 +45,8 @@ Definition sum_odd_numbers `{H : State.Trait} (up_to : u32) : M (H := H) u32 :=
         for
     end in
   Pure acc.
+=======
+Parameter main : unit -> M unit.
+
+Parameter sum_odd_numbers : u32 -> M u32.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

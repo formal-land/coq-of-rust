@@ -13,6 +13,7 @@ Module checked.
   Module Impl_core_fmt_Debug_for_result_checked_MathError.
     Definition Self := result.checked.MathError.
     
+<<<<<<< HEAD
     Definition fmt
         `{H : State.Trait}
         (self : ref Self)
@@ -27,6 +28,9 @@ Module checked.
           Pure "NegativeSquareRoot"
         end in
       core.fmt.Formatter::["write_str"] f α0.
+=======
+    Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -40,6 +44,7 @@ Module checked.
   Definition MathResult : Set :=
     core.result.Result f64 result.checked.MathError.
   
+<<<<<<< HEAD
   Definition div
       `{H : State.Trait}
       (x : f64)
@@ -74,6 +79,13 @@ Module checked.
     else
       let* α0 := x.["ln"] in
       Pure (core.result.Result.Ok α0).
+=======
+  Parameter div : f64-> f64 -> M result.checked.MathResult.
+  
+  Parameter sqrt : f64 -> M result.checked.MathResult.
+  
+  Parameter ln : f64 -> M result.checked.MathResult.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
 End checked.
 
 Module MathError.
@@ -87,6 +99,7 @@ Definition MathError := MathError.t.
 Module Impl_core_fmt_Debug_for_result_checked_MathError.
   Definition Self := result.checked.MathError.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -100,6 +113,9 @@ Module Impl_core_fmt_Debug_for_result_checked_MathError.
       | result.checked.MathError.NegativeSquareRoot => Pure "NegativeSquareRoot"
       end in
     core.fmt.Formatter::["write_str"] f α0.
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -112,6 +128,7 @@ End Impl_core_fmt_Debug_for_result_checked_MathError.
 
 Definition MathResult : Set := core.result.Result f64 result.checked.MathError.
 
+<<<<<<< HEAD
 Definition div
     `{H : State.Trait}
     (x : f64)
@@ -186,3 +203,15 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
+=======
+Parameter div : f64-> f64 -> M result.checked.MathResult.
+
+Parameter sqrt : f64 -> M result.checked.MathResult.
+
+Parameter ln : f64 -> M result.checked.MathResult.
+
+Parameter op : f64-> f64 -> M f64.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

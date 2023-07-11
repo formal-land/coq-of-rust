@@ -24,6 +24,7 @@ Module SGen.
 End SGen.
 Definition SGen := SGen.t.
 
+<<<<<<< HEAD
 Definition reg_fn
     `{H : State.Trait}
     (_s : generics_functions.S)
@@ -64,3 +65,15 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
     generics_functions.generic (generics_functions.SGen.Build_t "c"%char) in
   Pure tt.
+=======
+Parameter reg_fn : generics_functions.S -> M unit.
+
+Parameter gen_spec_t : generics_functions.SGen generics_functions.A -> M unit.
+
+Parameter gen_spec_i32 : generics_functions.SGen i32 -> M unit.
+
+Parameter generic : forall { T : Set } , generics_functions.SGen T -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

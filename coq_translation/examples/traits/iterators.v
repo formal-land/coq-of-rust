@@ -21,6 +21,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   
   Definition Item : Set := u32.
   
+<<<<<<< HEAD
   Definition next
       `{H : State.Trait}
       (self : mut_ref Self)
@@ -31,6 +32,9 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
       let* α0 := current.["add"] self.["next"] in
       assign self.["next"] α0 in
     Pure (core.option.Option.Some current).
+=======
+  Parameter next : mut_ref Self -> M (core.option.Option ImplSelf.Item).
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_next `{H : State.Trait} : Notation.Dot "next" := {
     Notation.dot := next;
@@ -41,6 +45,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   }.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
+<<<<<<< HEAD
 Definition fibonacci
     `{H : State.Trait}
     (_ : unit)
@@ -240,3 +245,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       from
       for
   end.
+=======
+Parameter fibonacci : unit -> M iterators.Fibonacci.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

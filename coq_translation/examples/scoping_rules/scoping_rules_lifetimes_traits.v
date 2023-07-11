@@ -15,6 +15,7 @@ Definition Borrowed : Set := Borrowed.t.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.
   
+<<<<<<< HEAD
   Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
     string -> StaticRef_i32 -> 
     M (H := H) core.fmt.Result.
@@ -33,6 +34,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
       "Borrowed"
       "x"
       (addr_of (addr_of self.["x"])).
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -46,8 +50,12 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.
   
+<<<<<<< HEAD
   Definition default `{H : State.Trait} (_ : unit) : M (H := H) Self :=
     Pure {| Self.x := addr_of 10; |}.
+=======
+  Parameter default : unit -> M Self.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -60,6 +68,7 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* b := core.default.Default.default tt in
   let* _ :=
@@ -73,3 +82,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

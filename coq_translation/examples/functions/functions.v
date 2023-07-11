@@ -2,6 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ := functions.fizzbuzz_to 100 in
   Pure tt.
@@ -82,3 +83,12 @@ Definition fizzbuzz_to `{H : State.Trait} (n : u32) : M (H := H) unit :=
       from
       for
   end.
+=======
+Parameter main : unit -> M unit.
+
+Parameter is_divisible_by : u32-> u32 -> M bool.
+
+Parameter fizzbuzz : u32 -> M unit.
+
+Parameter fizzbuzz_to : u32 -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

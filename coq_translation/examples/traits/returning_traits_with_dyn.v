@@ -28,11 +28,15 @@ Module
   Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
   Definition Self := returning_traits_with_dyn.Sheep.
   
+<<<<<<< HEAD
   Definition noise
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) (ref str) :=
     Pure "baaaaah!".
+=======
+  Parameter noise : ref Self -> M (ref str).
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_noise `{H : State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -46,11 +50,15 @@ End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Definition Self := returning_traits_with_dyn.Cow.
   
+<<<<<<< HEAD
   Definition noise
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) (ref str) :=
     Pure "moooooo!".
+=======
+  Parameter noise : ref Self -> M (ref str).
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_noise `{H : State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -61,6 +69,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   }.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
+<<<<<<< HEAD
 Definition random_animal
     `{H : State.Trait}
     (random_number : f64)
@@ -87,3 +96,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
+=======
+Parameter random_animal : f64 -> M (alloc.boxed.Box TraitObject).
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

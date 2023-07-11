@@ -8,6 +8,7 @@ End Foo.
 Definition Foo := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let a := if_let_challenge.Foo.Bar in
   let* α0 := let_if if_let_challenge.Foo.Bar := a in
@@ -22,3 +23,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     Pure tt
   else
     Pure tt.
+=======
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

@@ -21,6 +21,7 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
   Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
     string -> f64 -> 
     string -> f64 -> 
@@ -42,6 +43,9 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
       (addr_of self.["x"])
       "y"
       (addr_of (addr_of self.["y"])).
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -56,12 +60,16 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
+<<<<<<< HEAD
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) box_stack_heap.Point :=
     let _ := tt in
     self.["deref"].
+=======
+  Parameter clone : ref Self -> M box_stack_heap.Point.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -95,6 +103,7 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
+<<<<<<< HEAD
 Definition origin
     `{H : State.Trait}
     (_ : unit)
@@ -216,3 +225,11 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
+=======
+Parameter origin : unit -> M box_stack_heap.Point.
+
+Parameter boxed_origin : unit -> M (alloc.boxed.Box box_stack_heap.Point).
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

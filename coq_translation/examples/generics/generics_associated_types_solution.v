@@ -55,6 +55,7 @@ Module
   
   Definition B : Set := i32.
   
+<<<<<<< HEAD
   Definition contains
       `{H : State.Trait}
       (self : ref Self)
@@ -64,21 +65,32 @@ Module
     let* α0 := (addr_of (self.[0])).["eq"] number_1 in
     let* α1 := (addr_of (self.[1])).["eq"] number_2 in
     α0.["andb"] α1.
+=======
+  Parameter contains : ref Self-> ref i32-> ref i32 -> M bool.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_contains `{H : State.Trait} :
     Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
+<<<<<<< HEAD
   Definition first `{H : State.Trait} (self : ref Self) : M (H := H) i32 :=
     Pure (self.[0]).
+=======
+  Parameter first : ref Self -> M i32.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_first `{H : State.Trait} : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
+<<<<<<< HEAD
   Definition last `{H : State.Trait} (self : ref Self) : M (H := H) i32 :=
     Pure (self.[1]).
+=======
+  Parameter last : ref Self -> M i32.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_last `{H : State.Trait} : Notation.Dot "last" := {
     Notation.dot := last;
@@ -99,6 +111,7 @@ Module
 End
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
+<<<<<<< HEAD
 Definition difference
     `{H : State.Trait}
     {C : Set}
@@ -165,3 +178,13 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
+=======
+Parameter difference : forall
+    { C : Set } ,
+    `{generics_associated_types_solution.Contains.Trait C}
+    ref C
+    -> M i32.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))

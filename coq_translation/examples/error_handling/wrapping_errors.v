@@ -13,6 +13,7 @@ Definition DoubleError := DoubleError.t.
 Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Definition Self := wrapping_errors.DoubleError.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -27,6 +28,9 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
         "Parse"
         (addr_of __self_0)
     end.
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -40,6 +44,7 @@ End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Definition Self := wrapping_errors.DoubleError.
   
+<<<<<<< HEAD
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -58,6 +63,9 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
           (addr_of [ "the provided string could not be parsed as int" ]) in
       f.["write_fmt"] α0
     end.
+=======
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -71,6 +79,7 @@ End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Definition Self := wrapping_errors.DoubleError.
   
+<<<<<<< HEAD
   Definition source
       `{H : State.Trait}
       (self : ref Self)
@@ -80,6 +89,9 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
     | wrapping_errors.DoubleError.EmptyVec => Pure core.option.Option.None
     | wrapping_errors.DoubleError.Parse e => Pure (core.option.Option.Some e)
     end.
+=======
+  Parameter source : ref Self -> M (core.option.Option (ref TraitObject)).
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance Method_source `{H : State.Trait} : Notation.Dot "source" := {
     Notation.dot := source;
@@ -92,11 +104,16 @@ End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 Module Impl_core_convert_From_for_wrapping_errors_DoubleError.
   Definition Self := wrapping_errors.DoubleError.
   
+<<<<<<< HEAD
   Definition from
       `{H : State.Trait}
       (err : core.num.error.ParseIntError)
       : M (H := H) wrapping_errors.DoubleError :=
     Pure (wrapping_errors.DoubleError.Parse err).
+=======
+  Parameter from : core.num.error.ParseIntError
+      -> M wrapping_errors.DoubleError.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -109,6 +126,7 @@ Module Impl_core_convert_From_for_wrapping_errors_DoubleError.
   }.
 End Impl_core_convert_From_for_wrapping_errors_DoubleError.
 
+<<<<<<< HEAD
 Definition double_first
     `{H : State.Trait}
     (vec : alloc.vec.Vec (ref str))
@@ -198,3 +216,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α0 := wrapping_errors.double_first strings in
     wrapping_errors.print α0 in
   Pure tt.
+=======
+Parameter double_first : alloc.vec.Vec (ref str)
+    -> M (wrapping_errors.Result i32).
+
+Parameter print : wrapping_errors.Result i32 -> M unit.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : unit -> M unit.
+>>>>>>> 39940eb (Update examples with --axiomatize (will be reverted soon))
