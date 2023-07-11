@@ -2,4 +2,42 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let outer_var := 42 in
+  let closure_annotated := fun i => i.["add"] outer_var in
+  let closure_inferred := fun i => i.["add"] outer_var in
+  let* _ :=
+    let* _ :=
+      let* α0 := closure_annotated 1 in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "closure_annotated: "; "
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := closure_inferred 1 in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "closure_inferred: "; "
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let one := fun  => Pure 1 in
+  let* _ :=
+    let* _ :=
+      let* α0 := one tt in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "closure returning one: "; "
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  Pure tt.

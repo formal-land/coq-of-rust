@@ -2,4 +2,66 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let* α0 := LangItem 1 100 in
+  let* α1 := LangItem α0 in
+  match α1 with
+  | iter =>
+    loop
+      let* _ :=
+        let* α0 := LangItem (addr_of iter) in
+        match α0 with
+        | None => Pure Break
+        | Some {| Some.0 := n; |} =>
+          let* α0 := n.["rem"] 15 in
+          let* α1 := α0.["eq"] 0 in
+          if (α1 : bool) then
+            let* _ :=
+              let* _ :=
+                let* α0 :=
+                  format_arguments::["new_const"] (addr_of [ "fizzbuzz
+" ]) in
+                std.io.stdio._print α0 in
+              Pure tt in
+            Pure tt
+          else
+            let* α0 := n.["rem"] 3 in
+            let* α1 := α0.["eq"] 0 in
+            if (α1 : bool) then
+              let* _ :=
+                let* _ :=
+                  let* α0 :=
+                    format_arguments::["new_const"] (addr_of [ "fizz
+" ]) in
+                  std.io.stdio._print α0 in
+                Pure tt in
+              Pure tt
+            else
+              let* α0 := n.["rem"] 5 in
+              let* α1 := α0.["eq"] 0 in
+              if (α1 : bool) then
+                let* _ :=
+                  let* _ :=
+                    let* α0 :=
+                      format_arguments::["new_const"] (addr_of [ "buzz
+" ]) in
+                    std.io.stdio._print α0 in
+                  Pure tt in
+                Pure tt
+              else
+                let* _ :=
+                  let* _ :=
+                    let* α0 := format_argument::["new_display"] (addr_of n) in
+                    let* α1 :=
+                      format_arguments::["new_v1"]
+                        (addr_of [ ""; "
+" ])
+                        (addr_of [ α0 ]) in
+                    std.io.stdio._print α1 in
+                  Pure tt in
+                Pure tt
+        end in
+      Pure tt
+      from
+      for
+  end.

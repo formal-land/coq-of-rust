@@ -2,6 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit := Pure tt.
 
-Parameter load_fpu_control_word : u16 -> M unit.
+Definition load_fpu_control_word (control : u16) : M unit :=
+  let _ := InlineAsm in
+  Pure tt.

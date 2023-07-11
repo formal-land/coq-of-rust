@@ -11,7 +11,11 @@ Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.intrinsics.unreachable tt.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -27,8 +31,10 @@ Module
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
   
-  Parameter clone : ref Self
-      -> M generics_phantom_type_test_case_unit_clarification.Inch.
+  Definition clone
+      (self : ref Self)
+      : M generics_phantom_type_test_case_unit_clarification.Inch :=
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -59,7 +65,11 @@ Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.intrinsics.unreachable tt.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -75,8 +85,10 @@ Module
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
   
-  Parameter clone : ref Self
-      -> M generics_phantom_type_test_case_unit_clarification.Mm.
+  Definition clone
+      (self : ref Self)
+      : M generics_phantom_type_test_case_unit_clarification.Mm :=
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -120,7 +132,15 @@ Section
     :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.fmt.Formatter::["debug_tuple_field2_finish"]
+      f
+      "Length"
+      (addr_of (self.[0]))
+      (addr_of (addr_of (self.[1]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -145,8 +165,13 @@ Section
     :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
-  Parameter clone : ref Self
-      -> M (generics_phantom_type_test_case_unit_clarification.Length Unit).
+  Definition clone
+      (self : ref Self)
+      : M (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
+    let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
+    let* α1 := core.clone.Clone.clone (addr_of (self.[1])) in
+    Pure
+      (generics_phantom_type_test_case_unit_clarification.Length.Build_t α0 α1).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -192,9 +217,15 @@ Section
   Definition Output : Set :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
-  Parameter add : Self->
-      generics_phantom_type_test_case_unit_clarification.Length Unit
-      -> M (generics_phantom_type_test_case_unit_clarification.Length Unit).
+  Definition add
+      (self : Self)
+      (rhs : generics_phantom_type_test_case_unit_clarification.Length Unit)
+      : M (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
+    let* α0 := (self.[0]).["add"] (rhs.[0]) in
+    Pure
+      (generics_phantom_type_test_case_unit_clarification.Length.Build_t
+        α0
+        core.marker.PhantomData.Build).
   
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -209,4 +240,35 @@ End
   Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let one_foot :=
+    generics_phantom_type_test_case_unit_clarification.Length.Build_t
+      12 (* 12.0 *)
+      core.marker.PhantomData.Build in
+  let one_meter :=
+    generics_phantom_type_test_case_unit_clarification.Length.Build_t
+      1000 (* 1000.0 *)
+      core.marker.PhantomData.Build in
+  let* two_feet := one_foot.["add"] one_foot in
+  let* two_meters := one_meter.["add"] one_meter in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of (two_feet.[0])) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "one foot + one_foot = "; " in
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of (two_meters.[0])) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "one meter + one_meter = "; " mm
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  Pure tt.

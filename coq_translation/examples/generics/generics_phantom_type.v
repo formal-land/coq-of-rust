@@ -34,9 +34,13 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   
   Definition Self := generics_phantom_type.PhantomTuple A B.
   
-  Parameter eq : ref Self->
-      ref (generics_phantom_type.PhantomTuple A B)
-      -> M bool.
+  Definition eq
+      (self : ref Self)
+      (other : ref (generics_phantom_type.PhantomTuple A B))
+      : M bool :=
+    let* α0 := (self.[0]).["eq"] (other.[0]) in
+    let* α1 := (self.[1]).["eq"] (other.[1]) in
+    α0.["andb"] α1.
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -84,9 +88,13 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   
   Definition Self := generics_phantom_type.PhantomStruct A B.
   
-  Parameter eq : ref Self->
-      ref (generics_phantom_type.PhantomStruct A B)
-      -> M bool.
+  Definition eq
+      (self : ref Self)
+      (other : ref (generics_phantom_type.PhantomStruct A B))
+      : M bool :=
+    let* α0 := self.["first"].["eq"] other.["first"] in
+    let* α1 := self.["phantom"].["eq"] other.["phantom"] in
+    α0.["andb"] α1.
   
   Global Instance Method_eq : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -99,4 +107,25 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let _tuple1 :=
+    generics_phantom_type.PhantomTuple.Build_t
+      "Q"%char
+      core.marker.PhantomData.Build in
+  let _tuple2 :=
+    generics_phantom_type.PhantomTuple.Build_t
+      "Q"%char
+      core.marker.PhantomData.Build in
+  let _struct1 :=
+    {|
+      generics_phantom_type.PhantomStruct.first := "Q"%char;
+      generics_phantom_type.PhantomStruct.phantom :=
+        core.marker.PhantomData.Build;
+    |} in
+  let _struct2 :=
+    {|
+      generics_phantom_type.PhantomStruct.first := "Q"%char;
+      generics_phantom_type.PhantomStruct.phantom :=
+        core.marker.PhantomData.Build;
+    |} in
+  Pure tt.

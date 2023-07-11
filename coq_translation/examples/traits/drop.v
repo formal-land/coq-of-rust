@@ -15,7 +15,18 @@ Definition Droppable : Set := Droppable.t.
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   Definition Self := drop.Droppable.
   
-  Parameter drop : mut_ref Self -> M unit.
+  Definition drop (self : mut_ref Self) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "> Dropping "; "
+" ])
+            (addr_of [ α0 ]) in
+        std.io.stdio._print α1 in
+      Pure tt in
+    Pure tt.
   
   Global Instance Method_drop : Notation.Dot "drop" := {
     Notation.dot := drop;
@@ -27,4 +38,51 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let _a := {| drop.Droppable.name := "a"; |} in
+  let* _ :=
+    let _b := {| drop.Droppable.name := "b"; |} in
+    let* _ :=
+      let _c := {| drop.Droppable.name := "c"; |} in
+      let _d := {| drop.Droppable.name := "d"; |} in
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"] (addr_of [ "Exiting block B
+" ]) in
+          std.io.stdio._print α0 in
+        Pure tt in
+      Pure tt in
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "Just exited block B
+" ]) in
+        std.io.stdio._print α0 in
+      Pure tt in
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"] (addr_of [ "Exiting block A
+" ]) in
+        std.io.stdio._print α0 in
+      Pure tt in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"] (addr_of [ "Just exited block A
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ := core.mem.drop _a in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "end of the main function
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  Pure tt.

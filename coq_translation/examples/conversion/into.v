@@ -15,7 +15,15 @@ Definition Number : Set := Number.t.
 Module Impl_core_fmt_Debug_for_into_Number.
   Definition Self := into.Number.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.fmt.Formatter::["debug_struct_field1_finish"]
+      f
+      "Number"
+      "value"
+      (addr_of (addr_of self.["value"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -29,7 +37,8 @@ End Impl_core_fmt_Debug_for_into_Number.
 Module Impl_core_convert_From_for_into_Number.
   Definition Self := into.Number.
   
-  Parameter from : i32 -> M Self.
+  Definition from (item : i32) : M Self :=
+    Pure {| into.Number.value := item; |}.
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -42,4 +51,17 @@ Module Impl_core_convert_From_for_into_Number.
 End Impl_core_convert_From_for_into_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let int := 5 in
+  let* num := int.["into"] in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of num) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "My number is "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  Pure tt.

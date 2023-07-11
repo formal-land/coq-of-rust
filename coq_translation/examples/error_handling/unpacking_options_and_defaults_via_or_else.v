@@ -14,7 +14,19 @@ Definition Fruit := Fruit.t.
 Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
   Definition Self := unpacking_options_and_defaults_via_or_else.Fruit.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    let* α0 :=
+      match self with
+      | unpacking_options_and_defaults_via_or_else.Fruit.Apple => Pure "Apple"
+      | unpacking_options_and_defaults_via_or_else.Fruit.Orange => Pure "Orange"
+      | unpacking_options_and_defaults_via_or_else.Fruit.Banana => Pure "Banana"
+      | unpacking_options_and_defaults_via_or_else.Fruit.Kiwi => Pure "Kiwi"
+      | unpacking_options_and_defaults_via_or_else.Fruit.Lemon => Pure "Lemon"
+      end in
+    core.fmt.Formatter::["write_str"] f α0.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -26,4 +38,49 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let apple :=
+    core.option.Option.Some
+      unpacking_options_and_defaults_via_or_else.Fruit.Apple in
+  let no_fruit := core.option.Option.None in
+  let get_kiwi_as_fallback :=
+    fun  =>
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "Providing kiwi as fallback
+" ]) in
+          std.io.stdio._print α0 in
+        Pure tt in
+      Pure
+        (core.option.Option.Some
+          unpacking_options_and_defaults_via_or_else.Fruit.Kiwi) in
+  let get_lemon_as_fallback :=
+    fun  =>
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "Providing lemon as fallback
+" ]) in
+          std.io.stdio._print α0 in
+        Pure tt in
+      Pure
+        (core.option.Option.Some
+          unpacking_options_and_defaults_via_or_else.Fruit.Lemon) in
+  let* first_available_fruit :=
+    let* α0 := no_fruit.["or_else"] get_kiwi_as_fallback in
+    α0.["or_else"] get_lemon_as_fallback in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_argument::["new_debug"] (addr_of first_available_fruit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "first_available_fruit: "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  Pure tt.

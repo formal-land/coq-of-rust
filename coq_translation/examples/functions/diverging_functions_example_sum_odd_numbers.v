@@ -2,6 +2,45 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        diverging_functions_example_sum_odd_numbers.main.sum_odd_numbers 9 in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Sum of odd numbers up to 9 (excluding): "; "
+" ])
+          (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  Pure tt.
 
-Parameter sum_odd_numbers : u32 -> M u32.
+Definition sum_odd_numbers (up_to : u32) : M u32 :=
+  let acc := 0 in
+  let* _ :=
+    let* α0 := LangItem Range {| Range.start := 0; Range.end := up_to; |} in
+    match α0 with
+    | iter =>
+      loop
+        let* _ :=
+          let* α0 := LangItem (addr_of iter) in
+          match α0 with
+          | None => Pure Break
+          | Some {| Some.0 := i; |} =>
+            let* addition :=
+              let* α0 := i.["rem"] 2 in
+              let* α1 := α0.["eq"] 1 in
+              match α1 with
+              | true => Pure i
+              | false => Pure Continue
+              end in
+            let* _ := acc.["add_assign"] addition in
+            Pure tt
+          end in
+        Pure tt
+        from
+        for
+    end in
+  Pure acc.

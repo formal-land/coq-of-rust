@@ -9,7 +9,11 @@ Definition Unit := Unit.t.
 Module Impl_core_fmt_Debug_for_clone_Unit.
   Definition Self := clone.Unit.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.fmt.Formatter::["write_str"] f "Unit".
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -23,7 +27,7 @@ End Impl_core_fmt_Debug_for_clone_Unit.
 Module Impl_core_clone_Clone_for_clone_Unit.
   Definition Self := clone.Unit.
   
-  Parameter clone : ref Self -> M clone.Unit.
+  Definition clone (self : ref Self) : M clone.Unit := self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -56,7 +60,10 @@ Definition Pair := Pair.t.
 Module Impl_core_clone_Clone_for_clone_Pair.
   Definition Self := clone.Pair.
   
-  Parameter clone : ref Self -> M clone.Pair.
+  Definition clone (self : ref Self) : M clone.Pair :=
+    let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
+    let* α1 := core.clone.Clone.clone (addr_of (self.[1])) in
+    Pure (clone.Pair.Build_t α0 α1).
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -70,7 +77,15 @@ End Impl_core_clone_Clone_for_clone_Pair.
 Module Impl_core_fmt_Debug_for_clone_Pair.
   Definition Self := clone.Pair.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.fmt.Formatter::["debug_tuple_field2_finish"]
+      f
+      "Pair"
+      (addr_of (self.[0]))
+      (addr_of (addr_of (self.[1]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -82,4 +97,64 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let unit := clone.Unit.Build in
+  let copied_unit := unit in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of unit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "original: "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of copied_unit) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "copy: "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  let* pair :=
+    let* α0 := alloc.boxed.Box::["new"] 1 in
+    let* α1 := alloc.boxed.Box::["new"] 2 in
+    Pure (clone.Pair.Build_t α0 α1) in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of pair) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "original: "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  let moved_pair := pair in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of moved_pair) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "moved: "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  let* cloned_pair := moved_pair.["clone"] in
+  let* _ := core.mem.drop moved_pair in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of cloned_pair) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "clone: "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  Pure tt.

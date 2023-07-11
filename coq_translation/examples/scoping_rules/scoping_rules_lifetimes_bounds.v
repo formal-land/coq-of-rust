@@ -16,7 +16,14 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   
   Definition Self := scoping_rules_lifetimes_bounds.Ref T.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.fmt.Formatter::["debug_tuple_field1_finish"]
+      f
+      "Ref"
+      (addr_of (addr_of (self.[0]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -28,13 +35,36 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
-Parameter print : forall { T : Set } , `{core.fmt.Debug.Trait T} T -> M unit.
+Definition print {T : Set} `{core.fmt.Debug.Trait T} (t : T) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "`print`: t is "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  Pure tt.
 
-Parameter print_ref : forall
-    { T : Set } ,
-    `{core.fmt.Debug.Trait T}
-    ref T
-    -> M unit.
+Definition print_ref {T : Set} `{core.fmt.Debug.Trait T} (t : ref T) : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of t) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "`print_ref`: t is "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let x := 7 in
+  let ref_x := scoping_rules_lifetimes_bounds.Ref.Build_t (addr_of x) in
+  let* _ := scoping_rules_lifetimes_bounds.print_ref (addr_of ref_x) in
+  let* _ := scoping_rules_lifetimes_bounds.print ref_x in
+  Pure tt.

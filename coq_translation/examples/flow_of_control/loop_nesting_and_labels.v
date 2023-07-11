@@ -2,4 +2,48 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let* _ :=
+    loop
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "Entered the outer loop
+" ]) in
+          std.io.stdio._print α0 in
+        Pure tt in
+      let* _ :=
+        loop
+          let* _ :=
+            let* _ :=
+              let* α0 :=
+                format_arguments::["new_const"]
+                  (addr_of [ "Entered the inner loop
+" ]) in
+              std.io.stdio._print α0 in
+            Pure tt in
+          let _ := Break in
+          Pure tt
+          from
+          loop in
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "This point will never be reached
+" ]) in
+          std.io.stdio._print α0 in
+        Pure tt in
+      Pure tt
+      from
+      loop in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "Exited the outer loop
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  Pure tt.

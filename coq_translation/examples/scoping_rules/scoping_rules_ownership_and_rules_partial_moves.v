@@ -2,7 +2,54 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let* person :=
+    let* α0 := alloc.string.String::["from"] "Alice" in
+    let* α1 := alloc.boxed.Box::["new"] 20 in
+    Pure
+      {|
+        scoping_rules_ownership_and_rules_partial_moves.main.Person.name := α0;
+        scoping_rules_ownership_and_rules_partial_moves.main.Person.age := α1;
+      |} in
+  let
+      '{|
+        scoping_rules_ownership_and_rules_partial_moves.main.Person.name
+          :=
+          name;
+        scoping_rules_ownership_and_rules_partial_moves.main.Person.age := age;
+      |} :=
+    person in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of age) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The person's age is "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of name) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The person's name is "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of person.["age"]) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "The person's age from person struct is "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  Pure tt.
 
 Module Person.
   Record t : Set := {
@@ -26,7 +73,17 @@ Module
     :=
     scoping_rules_ownership_and_rules_partial_moves.main.Person.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.fmt.Formatter::["debug_struct_field2_finish"]
+      f
+      "Person"
+      "name"
+      (addr_of self.["name"])
+      "age"
+      (addr_of (addr_of self.["age"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;

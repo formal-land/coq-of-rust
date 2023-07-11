@@ -2,6 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit := Pure tt.
 
-Parameter mul : u64-> u64 -> M u128.
+Definition mul (a : u64) (b : u64) : M u128 :=
+  let lo := tt in
+  let hi := tt in
+  let _ :=
+    let _ := InlineAsm in
+    tt in
+  let* α0 := (cast hi u128).["shl"] 64 in
+  α0.["add"] (cast lo u128).

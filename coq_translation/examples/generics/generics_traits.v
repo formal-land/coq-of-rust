@@ -27,7 +27,7 @@ Section Impl_generics_traits_DoubleDrop_for_U.
   
   Definition Self := U.
   
-  Parameter double_drop : Self-> T -> M unit.
+  Definition double_drop (self : Self) (Pattern : T) : M unit := Pure tt.
   
   Global Instance Method_double_drop : Notation.Dot "double_drop" := {
     Notation.dot := double_drop;
@@ -40,4 +40,8 @@ End Impl_generics_traits_DoubleDrop_for_U.
 End Impl_generics_traits_DoubleDrop_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let empty := generics_traits.Empty.Build in
+  let null := generics_traits.Null.Build in
+  let* _ := empty.["double_drop"] null in
+  Pure tt.

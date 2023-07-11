@@ -4,4 +4,55 @@ Require Import CoqOfRust.CoqOfRust.
 Definition NTHREADS : u32 := run (Pure 10).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let* children := alloc.vec.Vec::["new"] tt in
+  let* _ :=
+    let* α0 :=
+      LangItem Range {| Range.start := 0; Range.end := threads.NTHREADS; |} in
+    match α0 with
+    | iter =>
+      loop
+        let* _ :=
+          let* α0 := LangItem (addr_of iter) in
+          match α0 with
+          | None => Pure Break
+          | Some {| Some.0 := i; |} =>
+            let* _ :=
+              let* α0 :=
+                std.thread.spawn
+                  (fun  =>
+                    let* _ :=
+                      let* _ :=
+                        let* α0 :=
+                          format_argument::["new_display"] (addr_of i) in
+                        let* α1 :=
+                          format_arguments::["new_v1"]
+                            (addr_of [ "this is thread number "; "
+" ])
+                            (addr_of [ α0 ]) in
+                        std.io.stdio._print α1 in
+                      Pure tt in
+                    Pure tt) in
+              children.["push"] α0 in
+            Pure tt
+          end in
+        Pure tt
+        from
+        for
+    end in
+  let* α0 := LangItem children in
+  match α0 with
+  | iter =>
+    loop
+      let* _ :=
+        let* α0 := LangItem (addr_of iter) in
+        match α0 with
+        | None => Pure Break
+        | Some {| Some.0 := child; |} =>
+          let* _ := child.["join"] in
+          Pure tt
+        end in
+      Pure tt
+      from
+      for
+  end.

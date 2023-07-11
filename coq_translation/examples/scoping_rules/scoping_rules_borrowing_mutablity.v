@@ -25,7 +25,13 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Definition Self := scoping_rules_borrowing_mutablity.Book.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter clone : ref Self -> M scoping_rules_borrowing_mutablity.Book.
+  Definition clone
+      (self : ref Self)
+      : M scoping_rules_borrowing_mutablity.Book :=
+    let _ := tt in
+    let _ := tt in
+    let _ := tt in
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -43,10 +49,51 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
     core.marker.Copy.Build_Trait _.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
-Parameter borrow_book : ref scoping_rules_borrowing_mutablity.Book -> M unit.
+Definition borrow_book
+    (book : ref scoping_rules_borrowing_mutablity.Book)
+    : M unit :=
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
+      let* α1 := format_argument::["new_display"] (addr_of book.["year"]) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "I immutably borrowed "; " - "; " edition
+" ])
+          (addr_of [ α0; α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  Pure tt.
 
-Parameter new_edition : mut_ref scoping_rules_borrowing_mutablity.Book
-    -> M unit.
+Definition new_edition
+    (book : mut_ref scoping_rules_borrowing_mutablity.Book)
+    : M unit :=
+  let* _ := assign book.["year"] 2014 in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
+      let* α1 := format_argument::["new_display"] (addr_of book.["year"]) in
+      let* α2 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "I mutably borrowed "; " - "; " edition
+" ])
+          (addr_of [ α0; α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let immutabook :=
+    {|
+      scoping_rules_borrowing_mutablity.Book.author := "Douglas Hofstadter";
+      scoping_rules_borrowing_mutablity.Book.title :=
+        "G" ++ String.String "246" "del, Escher, Bach";
+      scoping_rules_borrowing_mutablity.Book.year := 1979;
+    |} in
+  let mutabook := immutabook in
+  let* _ :=
+    scoping_rules_borrowing_mutablity.borrow_book (addr_of immutabook) in
+  let* _ := scoping_rules_borrowing_mutablity.borrow_book (addr_of mutabook) in
+  let* _ := scoping_rules_borrowing_mutablity.new_edition (addr_of mutabook) in
+  Pure tt.

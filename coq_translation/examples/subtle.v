@@ -20,7 +20,9 @@ End Impl_core_marker_Copy_for_subtle_Choice.
 Module Impl_core_clone_Clone_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
-  Parameter clone : ref Self -> M subtle.Choice.
+  Definition clone (self : ref Self) : M subtle.Choice :=
+    let _ := tt in
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -34,7 +36,14 @@ End Impl_core_clone_Clone_for_subtle_Choice.
 Module Impl_core_fmt_Debug_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.fmt.Formatter::["debug_tuple_field1_finish"]
+      f
+      "Choice"
+      (addr_of (addr_of (self.[0]))).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -48,7 +57,7 @@ End Impl_core_fmt_Debug_for_subtle_Choice.
 Module Impl_subtle_Choice.
   Definition Self := subtle.Choice.
   
-  Parameter unwrap_u8 : ref Self -> M u8.
+  Definition unwrap_u8 (self : ref Self) : M u8 := Pure (self.[0]).
   
   Global Instance Method_unwrap_u8 : Notation.Dot "unwrap_u8" := {
     Notation.dot := unwrap_u8;
@@ -58,7 +67,23 @@ End Impl_subtle_Choice.
 Module Impl_core_convert_From_for_bool.
   Definition Self := bool.
   
-  Parameter from : subtle.Choice -> M bool.
+  Definition from (source : subtle.Choice) : M bool :=
+    let* _ :=
+      if (true : bool) then
+        let* _ :=
+          let* α0 := (source.[0]).["eq"] 0 in
+          let* α1 := (source.[0]).["eq"] 1 in
+          let* α2 := α0.["bitor"] α1 in
+          let* α3 := α2.["not"] in
+          if (α3 : bool) then
+            core.panicking.panic
+              "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
+          else
+            Pure tt in
+        Pure tt
+      else
+        Pure tt in
+    (source.[0]).["ne"] 0.
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -75,7 +100,9 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
   
   Definition Output : Set := subtle.Choice.
   
-  Parameter bitand : Self-> subtle.Choice -> M subtle.Choice.
+  Definition bitand (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
+    let* α0 := (self.[0]).["bitand"] (rhs.[0]) in
+    α0.["into"].
   
   Global Instance Method_bitand : Notation.Dot "bitand" := {
     Notation.dot := bitand;
@@ -89,7 +116,15 @@ End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
-  Parameter bitand_assign : mut_ref Self-> subtle.Choice -> M unit.
+  Definition bitand_assign
+      (self : mut_ref Self)
+      (rhs : subtle.Choice)
+      : M unit :=
+    let* _ :=
+      let* α0 := self.["deref"] in
+      let* α1 := α0.["bitand"] rhs in
+      assign self.["deref"] α1 in
+    Pure tt.
   
   Global Instance Method_bitand_assign : Notation.Dot "bitand_assign" := {
     Notation.dot := bitand_assign;
@@ -105,7 +140,9 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
   
   Definition Output : Set := subtle.Choice.
   
-  Parameter bitor : Self-> subtle.Choice -> M subtle.Choice.
+  Definition bitor (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
+    let* α0 := (self.[0]).["bitor"] (rhs.[0]) in
+    α0.["into"].
   
   Global Instance Method_bitor : Notation.Dot "bitor" := {
     Notation.dot := bitor;
@@ -119,7 +156,15 @@ End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
-  Parameter bitor_assign : mut_ref Self-> subtle.Choice -> M unit.
+  Definition bitor_assign
+      (self : mut_ref Self)
+      (rhs : subtle.Choice)
+      : M unit :=
+    let* _ :=
+      let* α0 := self.["deref"] in
+      let* α1 := α0.["bitor"] rhs in
+      assign self.["deref"] α1 in
+    Pure tt.
   
   Global Instance Method_bitor_assign : Notation.Dot "bitor_assign" := {
     Notation.dot := bitor_assign;
@@ -135,7 +180,9 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
   
   Definition Output : Set := subtle.Choice.
   
-  Parameter bitxor : Self-> subtle.Choice -> M subtle.Choice.
+  Definition bitxor (self : Self) (rhs : subtle.Choice) : M subtle.Choice :=
+    let* α0 := (self.[0]).["bitxor"] (rhs.[0]) in
+    α0.["into"].
   
   Global Instance Method_bitxor : Notation.Dot "bitxor" := {
     Notation.dot := bitxor;
@@ -149,7 +196,15 @@ End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
-  Parameter bitxor_assign : mut_ref Self-> subtle.Choice -> M unit.
+  Definition bitxor_assign
+      (self : mut_ref Self)
+      (rhs : subtle.Choice)
+      : M unit :=
+    let* _ :=
+      let* α0 := self.["deref"] in
+      let* α1 := α0.["bitxor"] rhs in
+      assign self.["deref"] α1 in
+    Pure tt.
   
   Global Instance Method_bitxor_assign : Notation.Dot "bitxor_assign" := {
     Notation.dot := bitxor_assign;
@@ -165,7 +220,10 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
   
   Definition Output : Set := subtle.Choice.
   
-  Parameter not : Self -> M subtle.Choice.
+  Definition not (self : Self) : M subtle.Choice :=
+    let* α0 := (self.[0]).["not"] in
+    let* α1 := 1.["bitand"] α0 in
+    α1.["into"].
   
   Global Instance Method_not : Notation.Dot "not" := {
     Notation.dot := not;
@@ -176,12 +234,30 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
   }.
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
-Parameter black_box : u8 -> M u8.
+Definition black_box (input : u8) : M u8 :=
+  let* _ :=
+    if (true : bool) then
+      let* _ :=
+        let* α0 := input.["eq"] 0 in
+        let* α1 := input.["eq"] 1 in
+        let* α2 := α0.["bitor"] α1 in
+        let* α3 := α2.["not"] in
+        if (α3 : bool) then
+          core.panicking.panic
+            "assertion failed: (input == 0u8) | (input == 1u8)"
+        else
+          Pure tt in
+      Pure tt
+    else
+      Pure tt in
+  core.ptr.read_volatile (cast (addr_of input) (ref u8)).
 
 Module Impl_core_convert_From_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
-  Parameter from : u8 -> M subtle.Choice.
+  Definition from (input : u8) : M subtle.Choice :=
+    let* α0 := subtle.black_box input in
+    Pure (subtle.Choice.Build_t α0).
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -215,7 +291,43 @@ Section Impl_subtle_ConstantTimeEq_for_Slice.
   
   Definition Self := Slice.
   
-  Parameter ct_eq : ref Self-> ref Slice -> M subtle.Choice.
+  Definition ct_eq (self : ref Self) (_rhs : ref Slice) : M subtle.Choice :=
+    let* len := self.["len"] in
+    let* _ :=
+      let* α0 := _rhs.["len"] in
+      let* α1 := len.["ne"] α0 in
+      if (α1 : bool) then
+        let* _ :=
+          let* α0 := subtle.Choice::["from"] 0 in
+          Return α0 in
+        Pure tt
+      else
+        Pure tt in
+    let x := 1 in
+    let* _ :=
+      let* α0 := self.["iter"] in
+      let* α1 := _rhs.["iter"] in
+      let* α2 := α0.["zip"] α1 in
+      let* α3 := LangItem α2 in
+      match α3 with
+      | iter =>
+        loop
+          let* _ :=
+            let* α0 := LangItem (addr_of iter) in
+            match α0 with
+            | None => Pure Break
+            | Some {| Some.0 := (ai, bi); |} =>
+              let* _ :=
+                let* α0 := ai.["ct_eq"] bi in
+                let* α1 := α0.["unwrap_u8"] in
+                x.["bitand_assign"] α1 in
+              Pure tt
+            end in
+          Pure tt
+          from
+          for
+      end in
+    x.["into"].
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -230,7 +342,14 @@ End Impl_subtle_ConstantTimeEq_for_Slice.
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
-  Parameter ct_eq : ref Self-> ref subtle.Choice -> M subtle.Choice.
+  Definition ct_eq
+      (self : ref Self)
+      (rhs : ref subtle.Choice)
+      : M subtle.Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := rhs.["deref"] in
+    let* α2 := α0.["bitxor"] α1 in
+    α2.["not"].
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -244,7 +363,15 @@ End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
 Module Impl_subtle_ConstantTimeEq_for_u8.
   Definition Self := u8.
   
-  Parameter ct_eq : ref Self-> ref u8 -> M subtle.Choice.
+  Definition ct_eq (self : ref Self) (other : ref u8) : M subtle.Choice :=
+    let* x := self.["bitxor"] other in
+    let* y :=
+      let* α0 := x.["wrapping_neg"] in
+      let* α1 := x.["bitor"] α0 in
+      let* α2 := 8.["sub"] 1 in
+      α1.["shr"] α2 in
+    let* α0 := y.["bitxor"] (cast 1 u8) in
+    (cast α0 u8).["into"].
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -258,7 +385,10 @@ End Impl_subtle_ConstantTimeEq_for_u8.
 Module Impl_subtle_ConstantTimeEq_for_i8.
   Definition Self := i8.
   
-  Parameter ct_eq : ref Self-> ref i8 -> M subtle.Choice.
+  Definition ct_eq (self : ref Self) (other : ref i8) : M subtle.Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 u8).["ct_eq"] (addr_of (cast α1 u8)).
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -272,7 +402,15 @@ End Impl_subtle_ConstantTimeEq_for_i8.
 Module Impl_subtle_ConstantTimeEq_for_u16.
   Definition Self := u16.
   
-  Parameter ct_eq : ref Self-> ref u16 -> M subtle.Choice.
+  Definition ct_eq (self : ref Self) (other : ref u16) : M subtle.Choice :=
+    let* x := self.["bitxor"] other in
+    let* y :=
+      let* α0 := x.["wrapping_neg"] in
+      let* α1 := x.["bitor"] α0 in
+      let* α2 := 16.["sub"] 1 in
+      α1.["shr"] α2 in
+    let* α0 := y.["bitxor"] (cast 1 u16) in
+    (cast α0 u8).["into"].
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -286,7 +424,10 @@ End Impl_subtle_ConstantTimeEq_for_u16.
 Module Impl_subtle_ConstantTimeEq_for_i16.
   Definition Self := i16.
   
-  Parameter ct_eq : ref Self-> ref i16 -> M subtle.Choice.
+  Definition ct_eq (self : ref Self) (other : ref i16) : M subtle.Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 u16).["ct_eq"] (addr_of (cast α1 u16)).
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -300,7 +441,15 @@ End Impl_subtle_ConstantTimeEq_for_i16.
 Module Impl_subtle_ConstantTimeEq_for_u32.
   Definition Self := u32.
   
-  Parameter ct_eq : ref Self-> ref u32 -> M subtle.Choice.
+  Definition ct_eq (self : ref Self) (other : ref u32) : M subtle.Choice :=
+    let* x := self.["bitxor"] other in
+    let* y :=
+      let* α0 := x.["wrapping_neg"] in
+      let* α1 := x.["bitor"] α0 in
+      let* α2 := 32.["sub"] 1 in
+      α1.["shr"] α2 in
+    let* α0 := y.["bitxor"] (cast 1 u32) in
+    (cast α0 u8).["into"].
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -314,7 +463,10 @@ End Impl_subtle_ConstantTimeEq_for_u32.
 Module Impl_subtle_ConstantTimeEq_for_i32.
   Definition Self := i32.
   
-  Parameter ct_eq : ref Self-> ref i32 -> M subtle.Choice.
+  Definition ct_eq (self : ref Self) (other : ref i32) : M subtle.Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 u32).["ct_eq"] (addr_of (cast α1 u32)).
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -328,7 +480,15 @@ End Impl_subtle_ConstantTimeEq_for_i32.
 Module Impl_subtle_ConstantTimeEq_for_u64.
   Definition Self := u64.
   
-  Parameter ct_eq : ref Self-> ref u64 -> M subtle.Choice.
+  Definition ct_eq (self : ref Self) (other : ref u64) : M subtle.Choice :=
+    let* x := self.["bitxor"] other in
+    let* y :=
+      let* α0 := x.["wrapping_neg"] in
+      let* α1 := x.["bitor"] α0 in
+      let* α2 := 64.["sub"] 1 in
+      α1.["shr"] α2 in
+    let* α0 := y.["bitxor"] (cast 1 u64) in
+    (cast α0 u8).["into"].
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -342,7 +502,10 @@ End Impl_subtle_ConstantTimeEq_for_u64.
 Module Impl_subtle_ConstantTimeEq_for_i64.
   Definition Self := i64.
   
-  Parameter ct_eq : ref Self-> ref i64 -> M subtle.Choice.
+  Definition ct_eq (self : ref Self) (other : ref i64) : M subtle.Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 u64).["ct_eq"] (addr_of (cast α1 u64)).
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -356,7 +519,17 @@ End Impl_subtle_ConstantTimeEq_for_i64.
 Module Impl_subtle_ConstantTimeEq_for_usize.
   Definition Self := usize.
   
-  Parameter ct_eq : ref Self-> ref usize -> M subtle.Choice.
+  Definition ct_eq (self : ref Self) (other : ref usize) : M subtle.Choice :=
+    let* x := self.["bitxor"] other in
+    let* y :=
+      let* α0 := x.["wrapping_neg"] in
+      let* α1 := x.["bitor"] α0 in
+      let* α2 := core.mem.size_of tt in
+      let* α3 := α2.["mul"] 8 in
+      let* α4 := α3.["sub"] 1 in
+      α1.["shr"] α4 in
+    let* α0 := y.["bitxor"] (cast 1 usize) in
+    (cast α0 u8).["into"].
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -370,7 +543,10 @@ End Impl_subtle_ConstantTimeEq_for_usize.
 Module Impl_subtle_ConstantTimeEq_for_isize.
   Definition Self := isize.
   
-  Parameter ct_eq : ref Self-> ref isize -> M subtle.Choice.
+  Definition ct_eq (self : ref Self) (other : ref isize) : M subtle.Choice :=
+    let* α0 := self.["deref"] in
+    let* α1 := other.["deref"] in
+    (cast α0 usize).["ct_eq"] (addr_of (cast α1 usize)).
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -419,27 +595,68 @@ End ConditionallySelectable.
 Module Impl_subtle_ConditionallySelectable_for_u8.
   Definition Self := u8.
   
-  Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i8).["neg"] in
+      Pure (cast α1 u8) in
+    let* α0 := a.["bitxor"] b in
+    let* α1 := mask.["bitand"] α0 in
+    a.["bitxor"] α1.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
-  Parameter conditional_assign : mut_ref Self->
-      ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i8).["neg"] in
+      Pure (cast α1 u8) in
+    let* _ :=
+      let* α0 := self.["deref"] in
+      let* α1 := self.["deref"] in
+      let* α2 := other.["deref"] in
+      let* α3 := α1.["bitxor"] α2 in
+      let* α4 := mask.["bitand"] α3 in
+      α0.["bitxor_assign"] α4 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
-  Parameter conditional_swap : mut_ref Self->
-      mut_ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i8).["neg"] in
+      Pure (cast α1 u8) in
+    let* t :=
+      let* α0 := a.["deref"] in
+      let* α1 := b.["deref"] in
+      let* α2 := α0.["bitxor"] α1 in
+      mask.["bitand"] α2 in
+    let* _ :=
+      let* α0 := a.["deref"] in
+      α0.["bitxor_assign"] t in
+    let* _ :=
+      let* α0 := b.["deref"] in
+      α0.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -454,27 +671,68 @@ End Impl_subtle_ConditionallySelectable_for_u8.
 Module Impl_subtle_ConditionallySelectable_for_i8.
   Definition Self := i8.
   
-  Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i8).["neg"] in
+      Pure (cast α1 i8) in
+    let* α0 := a.["bitxor"] b in
+    let* α1 := mask.["bitand"] α0 in
+    a.["bitxor"] α1.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
-  Parameter conditional_assign : mut_ref Self->
-      ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i8).["neg"] in
+      Pure (cast α1 i8) in
+    let* _ :=
+      let* α0 := self.["deref"] in
+      let* α1 := self.["deref"] in
+      let* α2 := other.["deref"] in
+      let* α3 := α1.["bitxor"] α2 in
+      let* α4 := mask.["bitand"] α3 in
+      α0.["bitxor_assign"] α4 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
-  Parameter conditional_swap : mut_ref Self->
-      mut_ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i8).["neg"] in
+      Pure (cast α1 i8) in
+    let* t :=
+      let* α0 := a.["deref"] in
+      let* α1 := b.["deref"] in
+      let* α2 := α0.["bitxor"] α1 in
+      mask.["bitand"] α2 in
+    let* _ :=
+      let* α0 := a.["deref"] in
+      α0.["bitxor_assign"] t in
+    let* _ :=
+      let* α0 := b.["deref"] in
+      α0.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -489,27 +747,68 @@ End Impl_subtle_ConditionallySelectable_for_i8.
 Module Impl_subtle_ConditionallySelectable_for_u16.
   Definition Self := u16.
   
-  Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i16).["neg"] in
+      Pure (cast α1 u16) in
+    let* α0 := a.["bitxor"] b in
+    let* α1 := mask.["bitand"] α0 in
+    a.["bitxor"] α1.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
-  Parameter conditional_assign : mut_ref Self->
-      ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i16).["neg"] in
+      Pure (cast α1 u16) in
+    let* _ :=
+      let* α0 := self.["deref"] in
+      let* α1 := self.["deref"] in
+      let* α2 := other.["deref"] in
+      let* α3 := α1.["bitxor"] α2 in
+      let* α4 := mask.["bitand"] α3 in
+      α0.["bitxor_assign"] α4 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
-  Parameter conditional_swap : mut_ref Self->
-      mut_ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i16).["neg"] in
+      Pure (cast α1 u16) in
+    let* t :=
+      let* α0 := a.["deref"] in
+      let* α1 := b.["deref"] in
+      let* α2 := α0.["bitxor"] α1 in
+      mask.["bitand"] α2 in
+    let* _ :=
+      let* α0 := a.["deref"] in
+      α0.["bitxor_assign"] t in
+    let* _ :=
+      let* α0 := b.["deref"] in
+      α0.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -524,27 +823,68 @@ End Impl_subtle_ConditionallySelectable_for_u16.
 Module Impl_subtle_ConditionallySelectable_for_i16.
   Definition Self := i16.
   
-  Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i16).["neg"] in
+      Pure (cast α1 i16) in
+    let* α0 := a.["bitxor"] b in
+    let* α1 := mask.["bitand"] α0 in
+    a.["bitxor"] α1.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
-  Parameter conditional_assign : mut_ref Self->
-      ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i16).["neg"] in
+      Pure (cast α1 i16) in
+    let* _ :=
+      let* α0 := self.["deref"] in
+      let* α1 := self.["deref"] in
+      let* α2 := other.["deref"] in
+      let* α3 := α1.["bitxor"] α2 in
+      let* α4 := mask.["bitand"] α3 in
+      α0.["bitxor_assign"] α4 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
-  Parameter conditional_swap : mut_ref Self->
-      mut_ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i16).["neg"] in
+      Pure (cast α1 i16) in
+    let* t :=
+      let* α0 := a.["deref"] in
+      let* α1 := b.["deref"] in
+      let* α2 := α0.["bitxor"] α1 in
+      mask.["bitand"] α2 in
+    let* _ :=
+      let* α0 := a.["deref"] in
+      α0.["bitxor_assign"] t in
+    let* _ :=
+      let* α0 := b.["deref"] in
+      α0.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -559,27 +899,68 @@ End Impl_subtle_ConditionallySelectable_for_i16.
 Module Impl_subtle_ConditionallySelectable_for_u32.
   Definition Self := u32.
   
-  Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i32).["neg"] in
+      Pure (cast α1 u32) in
+    let* α0 := a.["bitxor"] b in
+    let* α1 := mask.["bitand"] α0 in
+    a.["bitxor"] α1.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
-  Parameter conditional_assign : mut_ref Self->
-      ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i32).["neg"] in
+      Pure (cast α1 u32) in
+    let* _ :=
+      let* α0 := self.["deref"] in
+      let* α1 := self.["deref"] in
+      let* α2 := other.["deref"] in
+      let* α3 := α1.["bitxor"] α2 in
+      let* α4 := mask.["bitand"] α3 in
+      α0.["bitxor_assign"] α4 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
-  Parameter conditional_swap : mut_ref Self->
-      mut_ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i32).["neg"] in
+      Pure (cast α1 u32) in
+    let* t :=
+      let* α0 := a.["deref"] in
+      let* α1 := b.["deref"] in
+      let* α2 := α0.["bitxor"] α1 in
+      mask.["bitand"] α2 in
+    let* _ :=
+      let* α0 := a.["deref"] in
+      α0.["bitxor_assign"] t in
+    let* _ :=
+      let* α0 := b.["deref"] in
+      α0.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -594,27 +975,68 @@ End Impl_subtle_ConditionallySelectable_for_u32.
 Module Impl_subtle_ConditionallySelectable_for_i32.
   Definition Self := i32.
   
-  Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i32).["neg"] in
+      Pure (cast α1 i32) in
+    let* α0 := a.["bitxor"] b in
+    let* α1 := mask.["bitand"] α0 in
+    a.["bitxor"] α1.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
-  Parameter conditional_assign : mut_ref Self->
-      ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i32).["neg"] in
+      Pure (cast α1 i32) in
+    let* _ :=
+      let* α0 := self.["deref"] in
+      let* α1 := self.["deref"] in
+      let* α2 := other.["deref"] in
+      let* α3 := α1.["bitxor"] α2 in
+      let* α4 := mask.["bitand"] α3 in
+      α0.["bitxor_assign"] α4 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
-  Parameter conditional_swap : mut_ref Self->
-      mut_ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i32).["neg"] in
+      Pure (cast α1 i32) in
+    let* t :=
+      let* α0 := a.["deref"] in
+      let* α1 := b.["deref"] in
+      let* α2 := α0.["bitxor"] α1 in
+      mask.["bitand"] α2 in
+    let* _ :=
+      let* α0 := a.["deref"] in
+      α0.["bitxor_assign"] t in
+    let* _ :=
+      let* α0 := b.["deref"] in
+      α0.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -629,27 +1051,68 @@ End Impl_subtle_ConditionallySelectable_for_i32.
 Module Impl_subtle_ConditionallySelectable_for_u64.
   Definition Self := u64.
   
-  Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i64).["neg"] in
+      Pure (cast α1 u64) in
+    let* α0 := a.["bitxor"] b in
+    let* α1 := mask.["bitand"] α0 in
+    a.["bitxor"] α1.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
-  Parameter conditional_assign : mut_ref Self->
-      ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i64).["neg"] in
+      Pure (cast α1 u64) in
+    let* _ :=
+      let* α0 := self.["deref"] in
+      let* α1 := self.["deref"] in
+      let* α2 := other.["deref"] in
+      let* α3 := α1.["bitxor"] α2 in
+      let* α4 := mask.["bitand"] α3 in
+      α0.["bitxor_assign"] α4 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
-  Parameter conditional_swap : mut_ref Self->
-      mut_ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i64).["neg"] in
+      Pure (cast α1 u64) in
+    let* t :=
+      let* α0 := a.["deref"] in
+      let* α1 := b.["deref"] in
+      let* α2 := α0.["bitxor"] α1 in
+      mask.["bitand"] α2 in
+    let* _ :=
+      let* α0 := a.["deref"] in
+      α0.["bitxor_assign"] t in
+    let* _ :=
+      let* α0 := b.["deref"] in
+      α0.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -664,27 +1127,68 @@ End Impl_subtle_ConditionallySelectable_for_u64.
 Module Impl_subtle_ConditionallySelectable_for_i64.
   Definition Self := i64.
   
-  Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i64).["neg"] in
+      Pure (cast α1 i64) in
+    let* α0 := a.["bitxor"] b in
+    let* α1 := mask.["bitand"] α0 in
+    a.["bitxor"] α1.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
-  Parameter conditional_assign : mut_ref Self->
-      ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_assign
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i64).["neg"] in
+      Pure (cast α1 i64) in
+    let* _ :=
+      let* α0 := self.["deref"] in
+      let* α1 := self.["deref"] in
+      let* α2 := other.["deref"] in
+      let* α3 := α1.["bitxor"] α2 in
+      let* α4 := mask.["bitand"] α3 in
+      α0.["bitxor_assign"] α4 in
+    Pure tt.
   
   Global Instance Method_conditional_assign :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
-  Parameter conditional_swap : mut_ref Self->
-      mut_ref Self->
-      subtle.Choice
-      -> M unit.
+  Definition conditional_swap
+      (a : mut_ref Self)
+      (b : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* mask :=
+      let* α0 := choice.["unwrap_u8"] in
+      let* α1 := (cast α0 i64).["neg"] in
+      Pure (cast α1 i64) in
+    let* t :=
+      let* α0 := a.["deref"] in
+      let* α1 := b.["deref"] in
+      let* α2 := α0.["bitxor"] α1 in
+      mask.["bitand"] α2 in
+    let* _ :=
+      let* α0 := a.["deref"] in
+      α0.["bitxor_assign"] t in
+    let* _ :=
+      let* α0 := b.["deref"] in
+      α0.["bitxor_assign"] t in
+    Pure tt.
   
   Global Instance AssociatedFunction_conditional_swap :
     Notation.DoubleColon Self "conditional_swap" := {
@@ -699,7 +1203,14 @@ End Impl_subtle_ConditionallySelectable_for_i64.
 Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
-  Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+    let* α0 :=
+      u8::["conditional_select"] (addr_of (a.[0])) (addr_of (b.[0])) choice in
+    Pure (subtle.Choice.Build_t α0).
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
@@ -728,7 +1239,13 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
   
   Definition Self := T.
   
-  Parameter conditional_negate : mut_ref Self-> subtle.Choice -> M unit.
+  Definition conditional_negate
+      (self : mut_ref Self)
+      (choice : subtle.Choice)
+      : M unit :=
+    let* self_neg := (cast self (ref T)).["neg"] in
+    let* _ := self.["conditional_assign"] (addr_of self_neg) choice in
+    Pure tt.
   
   Global Instance Method_conditional_negate :
     Notation.Dot "conditional_negate" := {
@@ -762,7 +1279,10 @@ Section Impl_core_clone_Clone_for_subtle_CtOption_T.
   
   Definition Self := subtle.CtOption T.
   
-  Parameter clone : ref Self -> M (subtle.CtOption T).
+  Definition clone (self : ref Self) : M (subtle.CtOption T) :=
+    let* α0 := core.clone.Clone.clone (addr_of self.["value"]) in
+    let* α1 := core.clone.Clone.clone (addr_of self.["is_some"]) in
+    Pure {| subtle.CtOption.value := α0; subtle.CtOption.is_some := α1; |}.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -791,7 +1311,17 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
   
   Definition Self := subtle.CtOption T.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter)
+      : M core.fmt.Result :=
+    core.fmt.Formatter::["debug_struct_field2_finish"]
+      f
+      "CtOption"
+      "value"
+      (addr_of self.["value"])
+      "is_some"
+      (addr_of (addr_of self.["is_some"])).
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -809,7 +1339,14 @@ Section Impl_core_convert_From_for_core_option_Option_T.
   
   Definition Self := core.option.Option T.
   
-  Parameter from : subtle.CtOption T -> M (core.option.Option T).
+  Definition from (source : subtle.CtOption T) : M (core.option.Option T) :=
+    let* α0 := source.["is_some"] in
+    let* α1 := α0.["unwrap_u8"] in
+    let* α2 := α1.["eq"] 1 in
+    if (α2 : bool) then
+      Pure (core.option.Option.Some source.["value"])
+    else
+      Pure core.option.Option.None.
   
   Global Instance AssociatedFunction_from :
     Notation.DoubleColon Self "from" := {
@@ -825,61 +1362,147 @@ End Impl_core_convert_From_for_core_option_Option_T.
 Module Impl_subtle_CtOption_T.
   Definition Self := subtle.CtOption T.
   
-  Parameter new : T-> subtle.Choice -> M (subtle.CtOption T).
+  Definition new
+      (value : T)
+      (is_some : subtle.Choice)
+      : M (subtle.CtOption T) :=
+    Pure
+      {| subtle.CtOption.value := value; subtle.CtOption.is_some := is_some; |}.
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Parameter expect : Self-> ref str -> M T.
+  Definition expect (self : Self) (msg : ref str) : M T :=
+    let* _ :=
+      let* α0 := self.["is_some"].["unwrap_u8"] in
+      match (addr_of α0, addr_of 1) with
+      | (left_val, right_val) =>
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* α2 := α0.["eq"] α1 in
+        let* α3 := α2.["not"] in
+        if (α3 : bool) then
+          let kind := core.panicking.AssertKind.Eq in
+          let* _ :=
+            let* α0 := left_val.["deref"] in
+            let* α1 := right_val.["deref"] in
+            let* α2 := format_argument::["new_display"] (addr_of msg) in
+            let* α3 :=
+              format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α2 ]) in
+            core.panicking.assert_failed
+              kind
+              (addr_of α0)
+              (addr_of α1)
+              (core.option.Option.Some α3) in
+          Pure tt
+        else
+          Pure tt
+      end in
+    Pure self.["value"].
   
   Global Instance Method_expect : Notation.Dot "expect" := {
     Notation.dot := expect;
   }.
   
-  Parameter unwrap : Self -> M T.
+  Definition unwrap (self : Self) : M T :=
+    let* _ :=
+      let* α0 := self.["is_some"].["unwrap_u8"] in
+      match (addr_of α0, addr_of 1) with
+      | (left_val, right_val) =>
+        let* α0 := left_val.["deref"] in
+        let* α1 := right_val.["deref"] in
+        let* α2 := α0.["eq"] α1 in
+        let* α3 := α2.["not"] in
+        if (α3 : bool) then
+          let kind := core.panicking.AssertKind.Eq in
+          let* _ :=
+            let* α0 := left_val.["deref"] in
+            let* α1 := right_val.["deref"] in
+            core.panicking.assert_failed
+              kind
+              (addr_of α0)
+              (addr_of α1)
+              core.option.Option.None in
+          Pure tt
+        else
+          Pure tt
+      end in
+    Pure self.["value"].
   
   Global Instance Method_unwrap : Notation.Dot "unwrap" := {
     Notation.dot := unwrap;
   }.
   
-  Parameter unwrap_or : Self-> T -> M T.
+  Definition unwrap_or (self : Self) (def : T) : M T :=
+    T::["conditional_select"]
+      (addr_of def)
+      (addr_of self.["value"])
+      self.["is_some"].
   
   Global Instance Method_unwrap_or : Notation.Dot "unwrap_or" := {
     Notation.dot := unwrap_or;
   }.
   
-  Parameter unwrap_or_else : Self-> F -> M T.
+  Definition unwrap_or_else (self : Self) (f : F) : M T :=
+    let* α0 := f tt in
+    T::["conditional_select"]
+      (addr_of α0)
+      (addr_of self.["value"])
+      self.["is_some"].
   
   Global Instance Method_unwrap_or_else : Notation.Dot "unwrap_or_else" := {
     Notation.dot := unwrap_or_else;
   }.
   
-  Parameter is_some : ref Self -> M subtle.Choice.
+  Definition is_some (self : ref Self) : M subtle.Choice :=
+    Pure self.["is_some"].
   
   Global Instance Method_is_some : Notation.Dot "is_some" := {
     Notation.dot := is_some;
   }.
   
-  Parameter is_none : ref Self -> M subtle.Choice.
+  Definition is_none (self : ref Self) : M subtle.Choice :=
+    self.["is_some"].["not"].
   
   Global Instance Method_is_none : Notation.Dot "is_none" := {
     Notation.dot := is_none;
   }.
   
-  Parameter map : Self-> F -> M (subtle.CtOption U).
+  Definition map (self : Self) (f : F) : M (subtle.CtOption U) :=
+    let* α0 := T::["default"] tt in
+    let* α1 :=
+      T::["conditional_select"]
+        (addr_of α0)
+        (addr_of self.["value"])
+        self.["is_some"] in
+    let* α2 := f α1 in
+    subtle.CtOption::["new"] α2 self.["is_some"].
   
   Global Instance Method_map : Notation.Dot "map" := {
     Notation.dot := map;
   }.
   
-  Parameter and_then : Self-> F -> M (subtle.CtOption U).
+  Definition and_then (self : Self) (f : F) : M (subtle.CtOption U) :=
+    let* tmp :=
+      let* α0 := T::["default"] tt in
+      let* α1 :=
+        T::["conditional_select"]
+          (addr_of α0)
+          (addr_of self.["value"])
+          self.["is_some"] in
+      f α1 in
+    let* _ := tmp.["is_some"].["bitand_assign"] self.["is_some"] in
+    Pure tmp.
   
   Global Instance Method_and_then : Notation.Dot "and_then" := {
     Notation.dot := and_then;
   }.
   
-  Parameter or_else : Self-> F -> M (subtle.CtOption T).
+  Definition or_else (self : Self) (f : F) : M (subtle.CtOption T) :=
+    let* is_none := self.["is_none"] in
+    let* f := f tt in
+    Self::["conditional_select"] (addr_of self) (addr_of f) is_none.
   
   Global Instance Method_or_else : Notation.Dot "or_else" := {
     Notation.dot := or_else;
@@ -892,7 +1515,22 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
   
   Definition Self := subtle.CtOption T.
   
-  Parameter conditional_select : ref Self-> ref Self-> subtle.Choice -> M Self.
+  Definition conditional_select
+      (a : ref Self)
+      (b : ref Self)
+      (choice : subtle.Choice)
+      : M Self :=
+    let* α0 :=
+      T::["conditional_select"]
+        (addr_of a.["value"])
+        (addr_of b.["value"])
+        choice in
+    let* α1 :=
+      subtle.Choice::["conditional_select"]
+        (addr_of a.["is_some"])
+        (addr_of b.["is_some"])
+        choice in
+    subtle.CtOption::["new"] α0 α1.
   
   Global Instance AssociatedFunction_conditional_select :
     Notation.DoubleColon Self "conditional_select" := {
@@ -911,7 +1549,19 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
   
   Definition Self := subtle.CtOption T.
   
-  Parameter ct_eq : ref Self-> ref (subtle.CtOption T) -> M subtle.Choice.
+  Definition ct_eq
+      (self : ref Self)
+      (rhs : ref (subtle.CtOption T))
+      : M subtle.Choice :=
+    let* a := self.["is_some"] in
+    let* b := rhs.["is_some"] in
+    let* α0 := a.["bitand"] b in
+    let* α1 := self.["value"].["ct_eq"] (addr_of rhs.["value"]) in
+    let* α2 := α0.["bitand"] α1 in
+    let* α3 := a.["not"] in
+    let* α4 := b.["not"] in
+    let* α5 := α3.["bitand"] α4 in
+    α2.["bitor"] α5.
   
   Global Instance Method_ct_eq : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
@@ -936,7 +1586,48 @@ End ConstantTimeGreater.
 Module Impl_subtle_ConstantTimeGreater_for_u8.
   Definition Self := u8.
   
-  Parameter ct_gt : ref Self-> ref u8 -> M subtle.Choice.
+  Definition ct_gt (self : ref Self) (other : ref u8) : M subtle.Choice :=
+    let* gtb :=
+      let* α0 := other.["not"] in
+      self.["bitand"] α0 in
+    let* ltb :=
+      let* α0 := self.["not"] in
+      α0.["bitand"] other in
+    let pow := 1 in
+    let* _ :=
+      loop
+        let* α0 := pow.["lt"] 8 in
+        if (α0 : bool) then
+          let* _ :=
+            let* α0 := ltb.["shr"] pow in
+            ltb.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
+        else
+          let _ := Break in
+          Pure tt
+        from
+        while in
+    let* bit :=
+      let* α0 := ltb.["not"] in
+      gtb.["bitand"] α0 in
+    let pow := 1 in
+    let* _ :=
+      loop
+        let* α0 := pow.["lt"] 8 in
+        if (α0 : bool) then
+          let* _ :=
+            let* α0 := bit.["shr"] pow in
+            bit.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
+        else
+          let _ := Break in
+          Pure tt
+        from
+        while in
+    let* α0 := bit.["bitand"] 1 in
+    subtle.Choice::["from"] (cast α0 u8).
   
   Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
@@ -950,7 +1641,48 @@ End Impl_subtle_ConstantTimeGreater_for_u8.
 Module Impl_subtle_ConstantTimeGreater_for_u16.
   Definition Self := u16.
   
-  Parameter ct_gt : ref Self-> ref u16 -> M subtle.Choice.
+  Definition ct_gt (self : ref Self) (other : ref u16) : M subtle.Choice :=
+    let* gtb :=
+      let* α0 := other.["not"] in
+      self.["bitand"] α0 in
+    let* ltb :=
+      let* α0 := self.["not"] in
+      α0.["bitand"] other in
+    let pow := 1 in
+    let* _ :=
+      loop
+        let* α0 := pow.["lt"] 16 in
+        if (α0 : bool) then
+          let* _ :=
+            let* α0 := ltb.["shr"] pow in
+            ltb.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
+        else
+          let _ := Break in
+          Pure tt
+        from
+        while in
+    let* bit :=
+      let* α0 := ltb.["not"] in
+      gtb.["bitand"] α0 in
+    let pow := 1 in
+    let* _ :=
+      loop
+        let* α0 := pow.["lt"] 16 in
+        if (α0 : bool) then
+          let* _ :=
+            let* α0 := bit.["shr"] pow in
+            bit.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
+        else
+          let _ := Break in
+          Pure tt
+        from
+        while in
+    let* α0 := bit.["bitand"] 1 in
+    subtle.Choice::["from"] (cast α0 u8).
   
   Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
@@ -964,7 +1696,48 @@ End Impl_subtle_ConstantTimeGreater_for_u16.
 Module Impl_subtle_ConstantTimeGreater_for_u32.
   Definition Self := u32.
   
-  Parameter ct_gt : ref Self-> ref u32 -> M subtle.Choice.
+  Definition ct_gt (self : ref Self) (other : ref u32) : M subtle.Choice :=
+    let* gtb :=
+      let* α0 := other.["not"] in
+      self.["bitand"] α0 in
+    let* ltb :=
+      let* α0 := self.["not"] in
+      α0.["bitand"] other in
+    let pow := 1 in
+    let* _ :=
+      loop
+        let* α0 := pow.["lt"] 32 in
+        if (α0 : bool) then
+          let* _ :=
+            let* α0 := ltb.["shr"] pow in
+            ltb.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
+        else
+          let _ := Break in
+          Pure tt
+        from
+        while in
+    let* bit :=
+      let* α0 := ltb.["not"] in
+      gtb.["bitand"] α0 in
+    let pow := 1 in
+    let* _ :=
+      loop
+        let* α0 := pow.["lt"] 32 in
+        if (α0 : bool) then
+          let* _ :=
+            let* α0 := bit.["shr"] pow in
+            bit.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
+        else
+          let _ := Break in
+          Pure tt
+        from
+        while in
+    let* α0 := bit.["bitand"] 1 in
+    subtle.Choice::["from"] (cast α0 u8).
   
   Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
@@ -978,7 +1751,48 @@ End Impl_subtle_ConstantTimeGreater_for_u32.
 Module Impl_subtle_ConstantTimeGreater_for_u64.
   Definition Self := u64.
   
-  Parameter ct_gt : ref Self-> ref u64 -> M subtle.Choice.
+  Definition ct_gt (self : ref Self) (other : ref u64) : M subtle.Choice :=
+    let* gtb :=
+      let* α0 := other.["not"] in
+      self.["bitand"] α0 in
+    let* ltb :=
+      let* α0 := self.["not"] in
+      α0.["bitand"] other in
+    let pow := 1 in
+    let* _ :=
+      loop
+        let* α0 := pow.["lt"] 64 in
+        if (α0 : bool) then
+          let* _ :=
+            let* α0 := ltb.["shr"] pow in
+            ltb.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
+        else
+          let _ := Break in
+          Pure tt
+        from
+        while in
+    let* bit :=
+      let* α0 := ltb.["not"] in
+      gtb.["bitand"] α0 in
+    let pow := 1 in
+    let* _ :=
+      loop
+        let* α0 := pow.["lt"] 64 in
+        if (α0 : bool) then
+          let* _ :=
+            let* α0 := bit.["shr"] pow in
+            bit.["bitor_assign"] α0 in
+          let* _ := pow.["add_assign"] pow in
+          Pure tt
+        else
+          let _ := Break in
+          Pure tt
+        from
+        while in
+    let* α0 := bit.["bitand"] 1 in
+    subtle.Choice::["from"] (cast α0 u8).
   
   Global Instance Method_ct_gt : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;

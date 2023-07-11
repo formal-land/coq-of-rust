@@ -28,7 +28,11 @@ Definition Job : Set := Job.t.
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Definition Self := unpacking_options_via_question_mark.Job.
   
-  Parameter clone : ref Self -> M unpacking_options_via_question_mark.Job.
+  Definition clone
+      (self : ref Self)
+      : M unpacking_options_via_question_mark.Job :=
+    let _ := tt in
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -65,8 +69,12 @@ Module
   Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
   Definition Self := unpacking_options_via_question_mark.PhoneNumber.
   
-  Parameter clone : ref Self
-      -> M unpacking_options_via_question_mark.PhoneNumber.
+  Definition clone
+      (self : ref Self)
+      : M unpacking_options_via_question_mark.PhoneNumber :=
+    let _ := tt in
+    let _ := tt in
+    self.["deref"].
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -88,7 +96,26 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 Module Impl_unpacking_options_via_question_mark_Person.
   Definition Self := unpacking_options_via_question_mark.Person.
   
-  Parameter work_phone_area_code : ref Self -> M (core.option.Option u8).
+  Definition work_phone_area_code
+      (self : ref Self)
+      : M (core.option.Option u8) :=
+    let* α0 := LangItem self.["job"] in
+    let* α1 :=
+      match α0 with
+      | Break {| Break.0 := residual; |} =>
+        let* α0 := LangItem residual in
+        Return α0
+      | Continue {| Continue.0 := val; |} => Pure val
+      end in
+    let* α2 := LangItem α1.["phone_number"] in
+    let* α3 :=
+      match α2 with
+      | Break {| Break.0 := residual; |} =>
+        let* α0 := LangItem residual in
+        Return α0
+      | Continue {| Continue.0 := val; |} => Pure val
+      end in
+    Pure α3.["area_code"].
   
   Global Instance Method_work_phone_area_code :
     Notation.Dot "work_phone_area_code" := {
@@ -97,4 +124,42 @@ Module Impl_unpacking_options_via_question_mark_Person.
 End Impl_unpacking_options_via_question_mark_Person.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let p :=
+    {|
+      unpacking_options_via_question_mark.Person.job :=
+        core.option.Option.Some
+          {|
+            unpacking_options_via_question_mark.Job.phone_number :=
+              core.option.Option.Some
+                {|
+                  unpacking_options_via_question_mark.PhoneNumber.area_code :=
+                    core.option.Option.Some 61;
+                  unpacking_options_via_question_mark.PhoneNumber.number :=
+                    439222222;
+                |};
+          |};
+    |} in
+  let* _ :=
+    let* α0 := p.["work_phone_area_code"] in
+    match (addr_of α0, addr_of (core.option.Option.Some 61)) with
+    | (left_val, right_val) =>
+      let* α0 := left_val.["deref"] in
+      let* α1 := right_val.["deref"] in
+      let* α2 := α0.["eq"] α1 in
+      let* α3 := α2.["not"] in
+      if (α3 : bool) then
+        let kind := core.panicking.AssertKind.Eq in
+        let* _ :=
+          let* α0 := left_val.["deref"] in
+          let* α1 := right_val.["deref"] in
+          core.panicking.assert_failed
+            kind
+            (addr_of α0)
+            (addr_of α1)
+            core.option.Option.None in
+        Pure tt
+      else
+        Pure tt
+    end in
+  Pure tt.

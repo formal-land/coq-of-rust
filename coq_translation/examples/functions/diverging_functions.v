@@ -2,6 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit := Pure tt.
 
-Parameter foo : unit -> M Empty_set.
+Definition foo (_ : unit) : M Empty_set :=
+  let* _ := std.panicking.begin_panic "This call never returns." in
+  Pure tt.

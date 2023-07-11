@@ -21,7 +21,15 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   
   Definition Item : Set := u32.
   
-  Parameter next : mut_ref Self -> M (core.option.Option ImplSelf.Item).
+  Definition next
+      (self : mut_ref Self)
+      : M (core.option.Option ImplSelf.Item) :=
+    let current := self.["curr"] in
+    let* _ := assign self.["curr"] self.["next"] in
+    let* _ :=
+      let* α0 := current.["add"] self.["next"] in
+      assign self.["next"] α0 in
+    Pure (core.option.Option.Some current).
   
   Global Instance Method_next : Notation.Dot "next" := {
     Notation.dot := next;
@@ -32,7 +40,199 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   }.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
-Parameter fibonacci : unit -> M iterators.Fibonacci.
+Definition fibonacci (_ : unit) : M iterators.Fibonacci :=
+  Pure {| iterators.Fibonacci.curr := 0; iterators.Fibonacci.next := 1; |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let sequence := Range {| Range.start := 0; Range.end := 3; |} in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "Four consecutive `next` calls on 0..3
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := sequence.["next"] in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"] (addr_of [ "> "; "
+" ]) (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := sequence.["next"] in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"] (addr_of [ "> "; "
+" ]) (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := sequence.["next"] in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"] (addr_of [ "> "; "
+" ]) (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := sequence.["next"] in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
+      let* α2 :=
+        format_arguments::["new_v1"] (addr_of [ "> "; "
+" ]) (addr_of [ α1 ]) in
+      std.io.stdio._print α2 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of [ "Iterate through 0..3 using `for`
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := LangItem Range {| Range.start := 0; Range.end := 3; |} in
+    match α0 with
+    | iter =>
+      loop
+        let* _ :=
+          let* α0 := LangItem (addr_of iter) in
+          match α0 with
+          | None => Pure Break
+          | Some {| Some.0 := i; |} =>
+            let* _ :=
+              let* _ :=
+                let* α0 := format_argument::["new_display"] (addr_of i) in
+                let* α1 :=
+                  format_arguments::["new_v1"]
+                    (addr_of [ "> "; "
+" ])
+                    (addr_of [ α0 ]) in
+                std.io.stdio._print α1 in
+              Pure tt in
+            Pure tt
+          end in
+        Pure tt
+        from
+        for
+    end in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of
+            [ "The first four terms of the Fibonacci sequence are: 
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := iterators.fibonacci tt in
+    let* α1 := α0.["take"] 4 in
+    let* α2 := LangItem α1 in
+    match α2 with
+    | iter =>
+      loop
+        let* _ :=
+          let* α0 := LangItem (addr_of iter) in
+          match α0 with
+          | None => Pure Break
+          | Some {| Some.0 := i; |} =>
+            let* _ :=
+              let* _ :=
+                let* α0 := format_argument::["new_display"] (addr_of i) in
+                let* α1 :=
+                  format_arguments::["new_v1"]
+                    (addr_of [ "> "; "
+" ])
+                    (addr_of [ α0 ]) in
+                std.io.stdio._print α1 in
+              Pure tt in
+            Pure tt
+          end in
+        Pure tt
+        from
+        for
+    end in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        format_arguments::["new_const"]
+          (addr_of
+            [ "The next four terms of the Fibonacci sequence are: 
+" ]) in
+      std.io.stdio._print α0 in
+    Pure tt in
+  let* _ :=
+    let* α0 := iterators.fibonacci tt in
+    let* α1 := α0.["skip"] 4 in
+    let* α2 := α1.["take"] 4 in
+    let* α3 := LangItem α2 in
+    match α3 with
+    | iter =>
+      loop
+        let* _ :=
+          let* α0 := LangItem (addr_of iter) in
+          match α0 with
+          | None => Pure Break
+          | Some {| Some.0 := i; |} =>
+            let* _ :=
+              let* _ :=
+                let* α0 := format_argument::["new_display"] (addr_of i) in
+                let* α1 :=
+                  format_arguments::["new_v1"]
+                    (addr_of [ "> "; "
+" ])
+                    (addr_of [ α0 ]) in
+                std.io.stdio._print α1 in
+              Pure tt in
+            Pure tt
+          end in
+        Pure tt
+        from
+        for
+    end in
+  let array := [ 1; 3; 3; 7 ] in
+  let* _ :=
+    let* _ :=
+      let* α0 := format_argument::["new_debug"] (addr_of (addr_of array)) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "Iterate the following array "; "
+" ])
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt in
+  let* α0 := array.["iter"] in
+  let* α1 := LangItem α0 in
+  match α1 with
+  | iter =>
+    loop
+      let* _ :=
+        let* α0 := LangItem (addr_of iter) in
+        match α0 with
+        | None => Pure Break
+        | Some {| Some.0 := i; |} =>
+          let* _ :=
+            let* _ :=
+              let* α0 := format_argument::["new_display"] (addr_of i) in
+              let* α1 :=
+                format_arguments::["new_v1"]
+                  (addr_of [ "> "; "
+" ])
+                  (addr_of [ α0 ]) in
+              std.io.stdio._print α1 in
+            Pure tt in
+          Pure tt
+        end in
+      Pure tt
+      from
+      for
+  end.

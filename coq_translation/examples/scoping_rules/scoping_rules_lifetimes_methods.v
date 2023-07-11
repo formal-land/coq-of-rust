@@ -13,13 +13,26 @@ Definition Owner := Owner.t.
 Module Impl_scoping_rules_lifetimes_methods_Owner.
   Definition Self := scoping_rules_lifetimes_methods.Owner.
   
-  Parameter add_one : mut_ref Self -> M unit.
+  Definition add_one (self : mut_ref Self) : M unit :=
+    let* _ := (self.[0]).["add_assign"] 1 in
+    Pure tt.
   
   Global Instance Method_add_one : Notation.Dot "add_one" := {
     Notation.dot := add_one;
   }.
   
-  Parameter print : ref Self -> M unit.
+  Definition print (self : ref Self) : M unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of (self.[0])) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "`print`: "; "
+" ])
+            (addr_of [ α0 ]) in
+        std.io.stdio._print α1 in
+      Pure tt in
+    Pure tt.
   
   Global Instance Method_print : Notation.Dot "print" := {
     Notation.dot := print;
@@ -27,4 +40,8 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let owner := scoping_rules_lifetimes_methods.Owner.Build_t 18 in
+  let* _ := owner.["add_one"] in
+  let* _ := owner.["print"] in
+  Pure tt.

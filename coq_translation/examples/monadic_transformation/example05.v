@@ -13,7 +13,7 @@ Definition Foo := Foo.t.
 Module Impl_example05_Foo.
   Definition Self := example05.Foo.
   
-  Parameter plus1 : Self -> M u32.
+  Definition plus1 (s : Self) : M u32 := (s.[0]).["add"] 1.
   
   Global Instance AssociatedFunction_plus1 :
     Notation.DoubleColon Self "plus1" := {
@@ -22,4 +22,7 @@ Module Impl_example05_Foo.
 End Impl_example05_Foo.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Definition main (_ : unit) : M unit :=
+  let foo := example05.Foo.Build_t 0 in
+  let _ := foo.["plus1"] in
+  Pure tt.
