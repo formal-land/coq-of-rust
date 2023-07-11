@@ -1080,7 +1080,7 @@ impl TopLevelItem {
                                 hardline(),
                                 text("}."),
                                 hardline(),
-                                text("Global Set Primitive Projections.")
+                                text("Global Set Primitive Projections."),
                             ]),
                             hardline(),
                             nest([text("End"), line(), text(name), text(".")]),
@@ -1304,7 +1304,7 @@ impl TopLevelItem {
                         ]),
                         text("."),
                         hardline(),
-                        text("Global Set Primitive Projections.")
+                        text("Global Set Primitive Projections."),
                     ]),
                     hardline(),
                     intersperse(
