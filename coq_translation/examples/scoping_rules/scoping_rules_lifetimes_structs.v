@@ -49,6 +49,15 @@ Definition NamedBorrowed : Set := NamedBorrowed.t.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
   Definition Self := scoping_rules_lifetimes_structs.NamedBorrowed.
   
+  Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
+    string -> StaticRef_i32 -> 
+    string -> StaticRef_i32 -> 
+    M core.fmt.Result.
+  
+  Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
+    core.fmt.Formatter "debug_struct_field2_finish" := {
+    Notation.double_colon := debug_struct_field2_finish; }.
+  
   Definition fmt
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
