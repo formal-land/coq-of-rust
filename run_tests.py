@@ -40,6 +40,9 @@ for index, file in enumerate(rs_files):
     print()
     print(f"Translating file {index + 1}/{len(rs_files)}: {file}")
     base = os.path.splitext(file)[0]
+    os.makedirs(
+        os.path.dirname(os.path.join(get_output_path(), base + ".err")), exist_ok=True
+    )
     # Translate the file, and save the error output if any
     command = (
         "cargo run --quiet --bin coq-of-rust -- translate --path "
