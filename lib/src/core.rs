@@ -8,6 +8,7 @@ use walkdir::WalkDir;
 /// CLI options
 pub struct CliOptions {
     pub path: path::PathBuf,
+    pub output: path::PathBuf,
     pub axiomatize: bool,
 }
 
@@ -26,7 +27,7 @@ pub fn run(opts: CliOptions) {
     } else {
         src_path
     };
-    let basic_folder_name = "coq_translation";
+    let basic_folder_name = opts.output.to_str().unwrap();
     let unique_folder_name = format!("{}/{}/", basic_folder_name, src_folder.to_str().unwrap(),);
     let dst_folder = path::Path::new(&unique_folder_name);
     if src_path.is_file() {
