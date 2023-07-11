@@ -44,10 +44,12 @@ Definition main (_ : unit) : M unit :=
   Pure tt.
 
 Module Complex.
+  Unset Primitive Projections.
   Record t : Set := {
     re : f32;
     im : f32;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_re : Notation.Dot "re" := {
     Notation.dot '(Build_t x0 _) := x0;

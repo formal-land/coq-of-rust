@@ -22,10 +22,12 @@ Module AgeWidget.
 End AgeWidget.
 
 Module Form.
+  Unset Primitive Projections.
   Record t : Set := {
     username : alloc.string.String;
     age : u8;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_username : Notation.Dot "username" := {
     Notation.dot '(Build_t x0 _) := x0;

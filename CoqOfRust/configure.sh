@@ -7,7 +7,18 @@ echo "# !!!" >> _CoqProject
 echo "-R . CoqOfRust" >> _CoqProject
 echo "-arg -impredicative-set" >> _CoqProject
 echo >> _CoqProject
+
+# Generate list of files under `CoqOfRust` folder
 find -L . -name "*.v" | grep -v -f blacklist.txt | sort >> _CoqProject
+
+# echo >> _CoqProject
+
+# # Generate list of files under `coq_translation/examples/` folder
+# cd ../
+# cd coq_translation/
+# find -L . -name "*.v" | grep -v -f ../CoqOfRust/blacklist.txt | sort >> ../CoqOfRust/_CoqProject
+# cd ../
+# cd CoqOfRust/
 
 # Generate the Makefile
 coq_makefile -f _CoqProject -o Makefile

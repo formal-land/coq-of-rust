@@ -2,9 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Val.
+  Unset Primitive Projections.
   Record t : Set := {
     val : f64;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_val : Notation.Dot "val" := {
     Notation.dot '(Build_t x0) := x0;
@@ -13,9 +15,11 @@ End Val.
 Definition Val : Set := Val.t.
 
 Module GenVal.
+  Unset Primitive Projections.
   Record t : Set := {
     gen_val : T;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_gen_val : Notation.Dot "gen_val" := {
     Notation.dot '(Build_t x0) := x0;
