@@ -1,0 +1,18 @@
+warning: Only leading `..` patterns are supported in tuple patterns.
+  --> examples/flow_of_control/match_destructuring_tuples.rs:10:9
+   |
+10 |         (1, ..) => println!("First is `1` and the rest doesn't matter"),
+   |         ^^^^^^^
+   |
+   = help: Use underscore `_` patterns instead.
+
+warning: Only leading `..` patterns are supported in tuple patterns.
+  --> examples/flow_of_control/match_destructuring_tuples.rs:12:9
+   |
+12 |         (3, .., 4) => println!("First is `3`, last is `4`, and the rest doesn't matter"),
+   |         ^^^^^^^^^^
+   |
+   = help: Use underscore `_` patterns instead.
+
+warning: 2 warnings emitted
+
