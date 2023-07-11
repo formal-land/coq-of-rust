@@ -13,41 +13,4 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 ").
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let* path := std.path.Path::["new"] "lorem_ipsum.txt" in
-  let* display := path.["display"] in
-  let* file :=
-    let* α0 := std.fs.File::["create"] (addr_of path) in
-    match α0 with
-    | core.result.Result.Err why =>
-      let* α0 := format_argument::["new_display"] (addr_of display) in
-      let* α1 := format_argument::["new_display"] (addr_of why) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "couldn't create "; ": " ])
-          (addr_of [ α0; α1 ]) in
-      core.panicking.panic_fmt α2
-    | core.result.Result.Ok file => Pure file
-    end in
-  let* α0 := file_io_create.LOREM_IPSUM.["as_bytes"] in
-  let* α1 := file.["write_all"] α0 in
-  match α1 with
-  | core.result.Result.Err why =>
-    let* α0 := format_argument::["new_display"] (addr_of display) in
-    let* α1 := format_argument::["new_display"] (addr_of why) in
-    let* α2 :=
-      format_arguments::["new_v1"]
-        (addr_of [ "couldn't write to "; ": " ])
-        (addr_of [ α0; α1 ]) in
-    core.panicking.panic_fmt α2
-  | core.result.Result.Ok _ =>
-    let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of display) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "successfully wrote to "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt
-  end.
+Parameter main : unit -> M unit.

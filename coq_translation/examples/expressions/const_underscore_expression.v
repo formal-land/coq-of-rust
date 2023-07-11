@@ -37,7 +37,7 @@ Module
   Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
   Definition Self := const_underscore_expression.Bar.
   
-  Definition show (self : Self) : M alloc.string.String := Pure self.["test"].
+  Parameter show : Self -> M alloc.string.String.
   
   Global Instance Method_show : Notation.Dot "show" := {
     Notation.dot := show;

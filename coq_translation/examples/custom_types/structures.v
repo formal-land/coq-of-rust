@@ -19,17 +19,7 @@ Definition Person : Set := Person.t.
 Module Impl_core_fmt_Debug_for_structures_Person.
   Definition Self := structures.Person.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "Person"
-      "name"
-      (addr_of self.["name"])
-      "age"
-      (addr_of (addr_of self.["age"])).
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -88,78 +78,4 @@ End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let* name := alloc.string.String::["from"] "Peter" in
-  let age := 27 in
-  let peter :=
-    {| structures.Person.name := name; structures.Person.age := age; |} in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of peter) in
-      let* α1 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  let point :=
-    {| structures.Point.x := 10 (* 10.3 *); structures.Point.y := 0 (* 0.4 *);
-    |} in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of point.["x"]) in
-      let* α1 := format_argument::["new_display"] (addr_of point.["y"]) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "point coordinates: ("; ", "; ")
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  let bottom_right := {| structures.Point.x := 5 (* 5.2 *); |} with point in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_argument::["new_display"] (addr_of bottom_right.["x"]) in
-      let* α1 :=
-        format_argument::["new_display"] (addr_of bottom_right.["y"]) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "second point: ("; ", "; ")
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  let '{| structures.Point.x := left_edge; structures.Point.y := top_edge; |} :=
-    point in
-  let _rectangle :=
-    {|
-      structures.Rectangle.top_left :=
-        {| structures.Point.x := left_edge; structures.Point.y := top_edge; |};
-      structures.Rectangle.bottom_right := bottom_right;
-    |} in
-  let _unit := structures.Unit.Build in
-  let pair := structures.Pair.Build_t 1 0 (* 0.1 *) in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of (pair.[0])) in
-      let* α1 := format_argument::["new_debug"] (addr_of (pair.[1])) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "pair contains "; " and "; "
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  let 'structures.Pair.Build_t integer decimal := pair in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of integer) in
-      let* α1 := format_argument::["new_debug"] (addr_of decimal) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "pair contains "; " and "; "
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  Pure tt.
+Parameter main : unit -> M unit.

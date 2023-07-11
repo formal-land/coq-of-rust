@@ -15,15 +15,7 @@ Definition Borrowed : Set := Borrowed.t.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field1_finish"]
-      f
-      "Borrowed"
-      "x"
-      (addr_of (addr_of self.["x"])).
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -37,7 +29,7 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.
   
-  Definition default (_ : unit) : M Self := Pure {| Self.x := addr_of 10; |}.
+  Parameter default : unit -> M Self.
   
   Global Instance AssociatedFunction_default :
     Notation.DoubleColon Self "default" := {
@@ -50,16 +42,4 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let* b := core.default.Default.default tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of b) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "b is "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  Pure tt.
+Parameter main : unit -> M unit.

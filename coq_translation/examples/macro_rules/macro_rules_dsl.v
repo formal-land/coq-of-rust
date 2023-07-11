@@ -2,32 +2,4 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let* _ :=
-    let* val := 1.["add"] 2 in
-    let* _ :=
-      let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of val) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "1 + 2 = "; "
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
-      Pure tt in
-    Pure tt in
-  let* val :=
-    let* α0 := 1.["add"] 2 in
-    let* α1 := 3.["div"] 4 in
-    α0.["mul"] α1 in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of val) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "(1 + 2) * (3 / 4) = "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  Pure tt.
+Parameter main : unit -> M unit.

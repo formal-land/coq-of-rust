@@ -11,11 +11,7 @@ Definition EmptyVec := EmptyVec.t.
 Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
   Definition Self := boxing_errors.EmptyVec.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    core.fmt.Formatter::["write_str"] f "EmptyVec".
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -29,8 +25,7 @@ End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
   Definition Self := boxing_errors.EmptyVec.
   
-  Definition clone (self : ref Self) : M boxing_errors.EmptyVec :=
-    Pure boxing_errors.EmptyVec.Build.
+  Parameter clone : ref Self -> M boxing_errors.EmptyVec.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -44,14 +39,7 @@ End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
   Definition Self := boxing_errors.EmptyVec.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 :=
-      format_arguments::["new_const"]
-        (addr_of [ "invalid first item to double" ]) in
-    f.["write_fmt"] α0.
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -69,58 +57,10 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
     core.error.Error.Build_Trait _.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
-Definition double_first
-    (vec : alloc.vec.Vec (ref str))
-    : M (boxing_errors.Result i32) :=
-  let* α0 := vec.["first"] in
-  let* α1 :=
-    α0.["ok_or_else"] (fun  => boxing_errors.EmptyVec.Build.["into"]) in
-  α1.["and_then"]
-    (fun s =>
-      let* α0 := s.["parse"] in
-      let* α1 := α0.["map_err"] (fun e => e.["into"]) in
-      α1.["map"] (fun i => 2.["mul"] i)).
+Parameter double_first : alloc.vec.Vec (ref str)
+    -> M (boxing_errors.Result i32).
 
-Definition print (result : boxing_errors.Result i32) : M unit :=
-  match result with
-  | core.result.Result.Ok n =>
-    let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of n) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "The first doubled is "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt
-  | core.result.Result.Err e =>
-    let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of e) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Error: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt
-  end.
+Parameter print : boxing_errors.Result i32 -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let* numbers :=
-    let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
-    Slice::["into_vec"] α0 in
-  let* empty := alloc.vec.Vec::["new"] tt in
-  let* strings :=
-    let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
-    Slice::["into_vec"] α0 in
-  let* _ :=
-    let* α0 := boxing_errors.double_first numbers in
-    boxing_errors.print α0 in
-  let* _ :=
-    let* α0 := boxing_errors.double_first empty in
-    boxing_errors.print α0 in
-  let* _ :=
-    let* α0 := boxing_errors.double_first strings in
-    boxing_errors.print α0 in
-  Pure tt.
+Parameter main : unit -> M unit.

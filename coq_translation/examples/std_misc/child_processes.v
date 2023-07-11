@@ -2,45 +2,4 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let* output :=
-    let* α0 := std.process.Command::["new"] "rustc" in
-    let* α1 := α0.["arg"] "--version" in
-    let* α2 := α1.["output"] in
-    α2.["unwrap_or_else"]
-      (fun e =>
-        let* α0 := format_argument::["new_display"] (addr_of e) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "failed to execute process: " ])
-            (addr_of [ α0 ]) in
-        core.panicking.panic_fmt α1) in
-  let* α0 := output.["status"].["success"] in
-  if (α0 : bool) then
-    let* s :=
-      alloc.string.String::["from_utf8_lossy"] (addr_of output.["stdout"]) in
-    let* _ :=
-      let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of s) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "rustc succeeded and stdout was:
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
-      Pure tt in
-    Pure tt
-  else
-    let* s :=
-      alloc.string.String::["from_utf8_lossy"] (addr_of output.["stderr"]) in
-    let* _ :=
-      let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of s) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "rustc failed and stderr was:
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
-      Pure tt in
-    Pure tt.
+Parameter main : unit -> M unit.

@@ -2,12 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit := Pure tt.
+Parameter main : unit -> M unit.
 
-Definition apply
-    {F : Set}
+Parameter apply : forall
+    { F : Set } ,
     `{core.ops.function.FnOnce.Trait unit F}
-    (f : F)
-    : M unit :=
-  let* _ := f tt in
-  Pure tt.
+    F
+    -> M unit.

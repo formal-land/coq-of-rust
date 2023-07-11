@@ -14,8 +14,7 @@ End HasArea.
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
-  Definition area (self : ref Self) : M f64 :=
-    self.["length"].["mul"] self.["height"].
+  Parameter area : ref Self -> M f64.
   
   Global Instance Method_area : Notation.Dot "area" := {
     Notation.dot := area;
@@ -44,17 +43,7 @@ Definition Rectangle : Set := Rectangle.t.
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "Rectangle"
-      "length"
-      (addr_of self.["length"])
-      "height"
-      (addr_of (addr_of self.["height"])).
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -81,50 +70,17 @@ Module Triangle.
 End Triangle.
 Definition Triangle : Set := Triangle.t.
 
-Definition print_debug
-    {T : Set}
+Parameter print_debug : forall
+    { T : Set } ,
     `{core.fmt.Debug.Trait T}
-    (t : ref T)
-    : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of t) in
-      let* α1 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  Pure tt.
+    ref T
+    -> M unit.
 
-Definition area
-    {T : Set}
+Parameter area : forall
+    { T : Set } ,
     `{generics_bounds.HasArea.Trait T}
-    (t : ref T)
-    : M f64 :=
-  t.["area"].
+    ref T
+    -> M f64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let rectangle :=
-    {|
-      generics_bounds.Rectangle.length := 3 (* 3.0 *);
-      generics_bounds.Rectangle.height := 4 (* 4.0 *);
-    |} in
-  let _triangle :=
-    {|
-      generics_bounds.Triangle.length := 3 (* 3.0 *);
-      generics_bounds.Triangle.height := 4 (* 4.0 *);
-    |} in
-  let* _ := generics_bounds.print_debug (addr_of rectangle) in
-  let* _ :=
-    let* _ :=
-      let* α0 := rectangle.["area"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Area: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  Pure tt.
+Parameter main : unit -> M unit.

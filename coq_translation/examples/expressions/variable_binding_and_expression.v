@@ -2,9 +2,4 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let x := 5 in
-  let _ := x in
-  let* _ := x.["add"] 1 in
-  let _ := 15 in
-  Pure tt.
+Parameter main : unit -> M unit.

@@ -21,17 +21,7 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "Point"
-      "x"
-      (addr_of self.["x"])
-      "y"
-      (addr_of (addr_of self.["y"])).
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -46,9 +36,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition clone (self : ref Self) : M box_stack_heap.Point :=
-    let _ := tt in
-    self.["deref"].
+  Parameter clone : ref Self -> M box_stack_heap.Point.
   
   Global Instance Method_clone : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -82,118 +70,9 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
-Definition origin (_ : unit) : M box_stack_heap.Point :=
-  Pure
-    {|
-      box_stack_heap.Point.x := 0 (* 0.0 *);
-      box_stack_heap.Point.y := 0 (* 0.0 *);
-    |}.
+Parameter origin : unit -> M box_stack_heap.Point.
 
-Definition boxed_origin (_ : unit) : M (alloc.boxed.Box box_stack_heap.Point) :=
-  alloc.boxed.Box::["new"]
-    {|
-      box_stack_heap.Point.x := 0 (* 0.0 *);
-      box_stack_heap.Point.y := 0 (* 0.0 *);
-    |}.
+Parameter boxed_origin : unit -> M (alloc.boxed.Box box_stack_heap.Point).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let* point := box_stack_heap.origin tt in
-  let* rectangle :=
-    let* α0 := box_stack_heap.origin tt in
-    let* α1 := 4 (* 4.0 *).["neg"] in
-    Pure
-      {|
-        box_stack_heap.Rectangle.top_left := α0;
-        box_stack_heap.Rectangle.bottom_right :=
-          {|
-            box_stack_heap.Point.x := 3 (* 3.0 *);
-            box_stack_heap.Point.y := α1;
-          |};
-      |} in
-  let* boxed_rectangle :=
-    let* α0 := box_stack_heap.origin tt in
-    let* α1 := 4 (* 4.0 *).["neg"] in
-    alloc.boxed.Box::["new"]
-      {|
-        box_stack_heap.Rectangle.top_left := α0;
-        box_stack_heap.Rectangle.bottom_right :=
-          {|
-            box_stack_heap.Point.x := 3 (* 3.0 *);
-            box_stack_heap.Point.y := α1;
-          |};
-      |} in
-  let* boxed_point :=
-    let* α0 := box_stack_heap.origin tt in
-    alloc.boxed.Box::["new"] α0 in
-  let* box_in_a_box :=
-    let* α0 := box_stack_heap.boxed_origin tt in
-    alloc.boxed.Box::["new"] α0 in
-  let* _ :=
-    let* _ :=
-      let* α0 := core.mem.size_of_val (addr_of point) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Point occupies "; " bytes on the stack
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := core.mem.size_of_val (addr_of rectangle) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Rectangle occupies "; " bytes on the stack
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := core.mem.size_of_val (addr_of boxed_point) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Boxed point occupies "; " bytes on the stack
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := core.mem.size_of_val (addr_of boxed_rectangle) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Boxed rectangle occupies "; " bytes on the stack
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := core.mem.size_of_val (addr_of box_in_a_box) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Boxed box occupies "; " bytes on the stack
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  let* unboxed_point := boxed_point.["deref"] in
-  let* _ :=
-    let* _ :=
-      let* α0 := core.mem.size_of_val (addr_of unboxed_point) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Unboxed point occupies "; " bytes on the stack
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  Pure tt.
+Parameter main : unit -> M unit.

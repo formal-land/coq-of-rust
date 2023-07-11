@@ -15,6 +15,4 @@ Definition Operations : Set :=
   enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let x := enums_type_aliases_v1.Operations::["Add"] in
-  Pure tt.
+Parameter main : unit -> M unit.

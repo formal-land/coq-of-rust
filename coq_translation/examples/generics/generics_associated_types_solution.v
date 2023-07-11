@@ -47,26 +47,19 @@ Module
   
   Definition B : Set := i32.
   
-  Definition contains
-      (self : ref Self)
-      (number_1 : ref i32)
-      (number_2 : ref i32)
-      : M bool :=
-    let* α0 := (addr_of (self.[0])).["eq"] number_1 in
-    let* α1 := (addr_of (self.[1])).["eq"] number_2 in
-    α0.["andb"] α1.
+  Parameter contains : ref Self-> ref i32-> ref i32 -> M bool.
   
   Global Instance Method_contains : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
-  Definition first (self : ref Self) : M i32 := Pure (self.[0]).
+  Parameter first : ref Self -> M i32.
   
   Global Instance Method_first : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
-  Definition last (self : ref Self) : M i32 := Pure (self.[1]).
+  Parameter last : ref Self -> M i32.
   
   Global Instance Method_last : Notation.Dot "last" := {
     Notation.dot := last;
@@ -81,68 +74,11 @@ Module
 End
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
-Definition difference
-    {C : Set}
+Parameter difference : forall
+    { C : Set } ,
     `{generics_associated_types_solution.Contains.Trait C}
-    (container : ref C)
-    : M i32 :=
-  let* α0 := container.["last"] in
-  let* α1 := container.["first"] in
-  α0.["sub"] α1.
+    ref C
+    -> M i32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let number_1 := 3 in
-  let number_2 := 10 in
-  let container :=
-    generics_associated_types_solution.Container.Build_t number_1 number_2 in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_argument::["new_display"] (addr_of (addr_of number_1)) in
-      let* α1 :=
-        format_argument::["new_display"] (addr_of (addr_of number_2)) in
-      let* α2 := container.["contains"] (addr_of number_1) (addr_of number_2) in
-      let* α3 := format_argument::["new_display"] (addr_of α2) in
-      let* α4 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Does container contain "; " and "; ": "; "
-" ])
-          (addr_of [ α0; α1; α3 ]) in
-      std.io.stdio._print α4 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := container.["first"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "First number: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := container.["last"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Last number: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        generics_associated_types_solution.difference (addr_of container) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "The difference is: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  Pure tt.
+Parameter main : unit -> M unit.

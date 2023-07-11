@@ -27,7 +27,7 @@ Module
   Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
   Definition Self := returning_traits_with_dyn.Sheep.
   
-  Definition noise (self : ref Self) : M (ref str) := Pure "baaaaah!".
+  Parameter noise : ref Self -> M (ref str).
   
   Global Instance Method_noise : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -41,7 +41,7 @@ End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Definition Self := returning_traits_with_dyn.Cow.
   
-  Definition noise (self : ref Self) : M (ref str) := Pure "moooooo!".
+  Parameter noise : ref Self -> M (ref str).
   
   Global Instance Method_noise : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -52,28 +52,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   }.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
-Definition random_animal
-    (random_number : f64)
-    : M (alloc.boxed.Box TraitObject) :=
-  let* α0 := random_number.["lt"] 1 (* 0.5 *) in
-  if (α0 : bool) then
-    alloc.boxed.Box::["new"] {|  |}
-  else
-    alloc.boxed.Box::["new"] {|  |}.
+Parameter random_animal : f64 -> M (alloc.boxed.Box TraitObject).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let random_number := 0 (* 0.234 *) in
-  let* animal := returning_traits_with_dyn.random_animal random_number in
-  let* _ :=
-    let* _ :=
-      let* α0 := animal.["noise"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "You've randomly chosen an animal, and it says "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  Pure tt.
+Parameter main : unit -> M unit.

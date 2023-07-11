@@ -2,22 +2,4 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let optional := core.option.Option.Some 7 in
-  let* _ :=
-    match optional with
-    | core.option.Option.Some i =>
-      let* _ :=
-        let* _ :=
-          let* α0 := format_argument::["new_debug"] (addr_of i) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "This is a really long string and `"; "`
-" ])
-              (addr_of [ α0 ]) in
-          std.io.stdio._print α1 in
-        Pure tt in
-      Pure tt
-    | _ => Pure tt
-    end in
-  Pure tt.
+Parameter main : unit -> M unit.

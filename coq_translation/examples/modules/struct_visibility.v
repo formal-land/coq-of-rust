@@ -27,8 +27,7 @@ Module my.
   Module Impl_struct_visibility_my_ClosedBox_T.
     Definition Self := struct_visibility.my.ClosedBox T.
     
-    Definition new (contents : T) : M (struct_visibility.my.ClosedBox T) :=
-      Pure {| struct_visibility.my.ClosedBox.contents := contents; |}.
+    Parameter new : T -> M (struct_visibility.my.ClosedBox T).
     
     Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
@@ -62,8 +61,7 @@ Definition ClosedBox : Set := ClosedBox.t.
 Module Impl_struct_visibility_my_ClosedBox_T_2.
   Definition Self := struct_visibility.my.ClosedBox T.
   
-  Definition new (contents : T) : M (struct_visibility.my.ClosedBox T) :=
-    Pure {| struct_visibility.my.ClosedBox.contents := contents; |}.
+  Parameter new : T -> M (struct_visibility.my.ClosedBox T).
   
   Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
@@ -71,20 +69,4 @@ Module Impl_struct_visibility_my_ClosedBox_T_2.
 End Impl_struct_visibility_my_ClosedBox_T_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let open_box :=
-    {| struct_visibility.my.OpenBox.contents := "public information"; |} in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_argument::["new_display"] (addr_of open_box.["contents"]) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "The open box contains: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  let* _closed_box :=
-    struct_visibility.my.ClosedBox::["new"] "classified information" in
-  Pure tt.
+Parameter main : unit -> M unit.

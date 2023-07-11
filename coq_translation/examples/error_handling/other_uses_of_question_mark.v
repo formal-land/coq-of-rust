@@ -11,11 +11,7 @@ Definition EmptyVec := EmptyVec.t.
 Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
   Definition Self := other_uses_of_question_mark.EmptyVec.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    core.fmt.Formatter::["write_str"] f "EmptyVec".
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -29,14 +25,7 @@ End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
   Definition Self := other_uses_of_question_mark.EmptyVec.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 :=
-      format_arguments::["new_const"]
-        (addr_of [ "invalid first item to double" ]) in
-    f.["write_fmt"] α0.
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -54,71 +43,10 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
     core.error.Error.Build_Trait _.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
-Definition double_first
-    (vec : alloc.vec.Vec (ref str))
-    : M (other_uses_of_question_mark.Result i32) :=
-  let* first :=
-    let* α0 := vec.["first"] in
-    let* α1 := α0.["ok_or"] other_uses_of_question_mark.EmptyVec.Build in
-    let* α2 := LangItem α1 in
-    match α2 with
-    | Break {| Break.0 := residual; |} =>
-      let* α0 := LangItem residual in
-      Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
-    end in
-  let* parsed :=
-    let* α0 := first.["parse"] in
-    let* α1 := LangItem α0 in
-    match α1 with
-    | Break {| Break.0 := residual; |} =>
-      let* α0 := LangItem residual in
-      Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
-    end in
-  let* α0 := 2.["mul"] parsed in
-  Pure (core.result.Result.Ok α0).
+Parameter double_first : alloc.vec.Vec (ref str)
+    -> M (other_uses_of_question_mark.Result i32).
 
-Definition print (result : other_uses_of_question_mark.Result i32) : M unit :=
-  match result with
-  | core.result.Result.Ok n =>
-    let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of n) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "The first doubled is "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt
-  | core.result.Result.Err e =>
-    let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of e) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Error: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt
-  end.
+Parameter print : other_uses_of_question_mark.Result i32 -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let* numbers :=
-    let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
-    Slice::["into_vec"] α0 in
-  let* empty := alloc.vec.Vec::["new"] tt in
-  let* strings :=
-    let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
-    Slice::["into_vec"] α0 in
-  let* _ :=
-    let* α0 := other_uses_of_question_mark.double_first numbers in
-    other_uses_of_question_mark.print α0 in
-  let* _ :=
-    let* α0 := other_uses_of_question_mark.double_first empty in
-    other_uses_of_question_mark.print α0 in
-  let* _ :=
-    let* α0 := other_uses_of_question_mark.double_first strings in
-    other_uses_of_question_mark.print α0 in
-  Pure tt.
+Parameter main : unit -> M unit.

@@ -19,11 +19,7 @@ Definition FooBar := FooBar.t.
 Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Definition Self := operator_overloading.FooBar.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    core.fmt.Formatter::["write_str"] f "FooBar".
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -42,11 +38,7 @@ Definition BarFoo := BarFoo.t.
 Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Definition Self := operator_overloading.BarFoo.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    core.fmt.Formatter::["write_str"] f "BarFoo".
+  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -62,19 +54,9 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
   
   Definition Output : Set := operator_overloading.FooBar.
   
-  Definition add
-      (self : Self)
-      (_rhs : operator_overloading.Bar)
-      : M operator_overloading.FooBar :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "> Foo.add(Bar) was called
-" ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    Pure operator_overloading.FooBar.Build.
+  Parameter add : Self->
+      operator_overloading.Bar
+      -> M operator_overloading.FooBar.
   
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -93,19 +75,9 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
   
   Definition Output : Set := operator_overloading.BarFoo.
   
-  Definition add
-      (self : Self)
-      (_rhs : operator_overloading.Foo)
-      : M operator_overloading.BarFoo :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "> Bar.add(Foo) was called
-" ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    Pure operator_overloading.BarFoo.Build.
+  Parameter add : Self->
+      operator_overloading.Foo
+      -> M operator_overloading.BarFoo.
   
   Global Instance Method_add : Notation.Dot "add" := {
     Notation.dot := add;
@@ -120,29 +92,4 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        operator_overloading.Foo.Build.["add"] operator_overloading.Bar.Build in
-      let* α1 := format_argument::["new_debug"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Foo + Bar = "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        operator_overloading.Bar.Build.["add"] operator_overloading.Foo.Build in
-      let* α1 := format_argument::["new_debug"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Bar + Foo = "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
-    Pure tt in
-  Pure tt.
+Parameter main : unit -> M unit.

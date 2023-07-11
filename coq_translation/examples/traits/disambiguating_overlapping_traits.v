@@ -40,8 +40,7 @@ Module
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
   Definition Self := disambiguating_overlapping_traits.Form.
   
-  Definition get (self : ref Self) : M alloc.string.String :=
-    self.["username"].["clone"].
+  Parameter get : ref Self -> M alloc.string.String.
   
   Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
@@ -58,7 +57,7 @@ Module
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
   Definition Self := disambiguating_overlapping_traits.Form.
   
-  Definition get (self : ref Self) : M u8 := Pure self.["age"].
+  Parameter get : ref Self -> M u8.
   
   Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
@@ -72,58 +71,4 @@ End
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let* form :=
-    let* α0 := "rustacean".["to_owned"] in
-    Pure
-      {|
-        disambiguating_overlapping_traits.Form.username := α0;
-        disambiguating_overlapping_traits.Form.age := 28;
-      |} in
-  let* username :=
-    disambiguating_overlapping_traits.UsernameWidget.get (addr_of form) in
-  let* _ :=
-    let* α0 := "rustacean".["to_owned"] in
-    match (addr_of α0, addr_of username) with
-    | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
-        let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
-          core.panicking.assert_failed
-            kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
-      else
-        Pure tt
-    end in
-  let* age := disambiguating_overlapping_traits.AgeWidget.get (addr_of form) in
-  let* _ :=
-    match (addr_of 28, addr_of age) with
-    | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
-        let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
-          core.panicking.assert_failed
-            kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
-      else
-        Pure tt
-    end in
-  Pure tt.
+Parameter main : unit -> M unit.

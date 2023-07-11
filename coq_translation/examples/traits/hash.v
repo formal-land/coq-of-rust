@@ -23,10 +23,7 @@ Definition Person : Set := Person.t.
 Module Impl_core_hash_Hash_for_hash_Person.
   Definition Self := hash.Person.
   
-  Definition hash (self : ref Self) (state : mut_ref __H) : M unit :=
-    let* _ := core.hash.Hash.hash (addr_of self.["id"]) state in
-    let* _ := core.hash.Hash.hash (addr_of self.["name"]) state in
-    core.hash.Hash.hash (addr_of self.["phone"]) state.
+  Parameter hash : ref Self-> mut_ref __H -> M unit.
   
   Global Instance Method_hash : Notation.Dot "hash" := {
     Notation.dot := hash;
@@ -37,41 +34,11 @@ Module Impl_core_hash_Hash_for_hash_Person.
   }.
 End Impl_core_hash_Hash_for_hash_Person.
 
-Definition calculate_hash
-    {T : Set}
+Parameter calculate_hash : forall
+    { T : Set } ,
     `{core.hash.Hash.Trait T}
-    (t : ref T)
-    : M u64 :=
-  let* s := std.collections.hash.map.DefaultHasher::["new"] tt in
-  let* _ := t.["hash"] (addr_of s) in
-  s.["finish"].
+    ref T
+    -> M u64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let* person1 :=
-    let* α0 := "Janet".["to_string"] in
-    Pure
-      {|
-        hash.Person.id := 5;
-        hash.Person.name := α0;
-        hash.Person.phone := 5556667777;
-      |} in
-  let* person2 :=
-    let* α0 := "Bob".["to_string"] in
-    Pure
-      {|
-        hash.Person.id := 5;
-        hash.Person.name := α0;
-        hash.Person.phone := 5556667777;
-      |} in
-  let* _ :=
-    let* α0 := hash.calculate_hash (addr_of person1) in
-    let* α1 := hash.calculate_hash (addr_of person2) in
-    let* α2 := α0.["ne"] α1 in
-    let* α3 := α2.["not"] in
-    if (α3 : bool) then
-      core.panicking.panic
-        "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)"
-    else
-      Pure tt in
-  Pure tt.
+Parameter main : unit -> M unit.

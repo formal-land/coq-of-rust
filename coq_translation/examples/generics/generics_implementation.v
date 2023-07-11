@@ -26,8 +26,7 @@ Definition GenVal : Set := GenVal.t.
 Module Impl_generics_implementation_Val.
   Definition Self := generics_implementation.Val.
   
-  Definition value (self : ref Self) : M (ref f64) :=
-    Pure (addr_of self.["val"]).
+  Parameter value : ref Self -> M (ref f64).
   
   Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
@@ -37,8 +36,7 @@ End Impl_generics_implementation_Val.
 Module Impl_generics_implementation_GenVal_T.
   Definition Self := generics_implementation.GenVal T.
   
-  Definition value (self : ref Self) : M (ref T) :=
-    Pure (addr_of self.["gen_val"]).
+  Parameter value : ref Self -> M (ref T).
   
   Global Instance Method_value : Notation.Dot "value" := {
     Notation.dot := value;
@@ -46,20 +44,4 @@ Module Impl_generics_implementation_GenVal_T.
 End Impl_generics_implementation_GenVal_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let x := {| generics_implementation.Val.val := 3 (* 3.0 *); |} in
-  let y := {| generics_implementation.GenVal.gen_val := 3; |} in
-  let* _ :=
-    let* _ :=
-      let* α0 := x.["value"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 := y.["value"] in
-      let* α3 := format_argument::["new_display"] (addr_of α2) in
-      let* α4 :=
-        format_arguments::["new_v1"]
-          (addr_of [ ""; ", "; "
-" ])
-          (addr_of [ α1; α3 ]) in
-      std.io.stdio._print α4 in
-    Pure tt in
-  Pure tt.
+Parameter main : unit -> M unit.

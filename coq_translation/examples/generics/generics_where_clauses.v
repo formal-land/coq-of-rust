@@ -18,18 +18,7 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
   
   Definition Self := T.
   
-  Definition print_in_option (self : Self) : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_argument::["new_debug"]
-            (addr_of (core.option.Option.Some self)) in
-        let* α1 :=
-          format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
-      Pure tt in
-    Pure tt.
+  Parameter print_in_option : Self -> M unit.
   
   Global Instance Method_print_in_option : Notation.Dot "print_in_option" := {
     Notation.dot := print_in_option;
@@ -42,9 +31,4 @@ End Impl_generics_where_clauses_PrintInOption_for_T.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let* vec :=
-    let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
-    Slice::["into_vec"] α0 in
-  let* _ := vec.["print_in_option"] in
-  Pure tt.
+Parameter main : unit -> M unit.

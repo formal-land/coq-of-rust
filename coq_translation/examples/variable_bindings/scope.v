@@ -2,31 +2,4 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let long_lived_binding := 1 in
-  let* _ :=
-    let short_lived_binding := 2 in
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_argument::["new_display"] (addr_of short_lived_binding) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "inner short: "; "
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
-      Pure tt in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_argument::["new_display"] (addr_of long_lived_binding) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "outer long: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  Pure tt.
+Parameter main : unit -> M unit.

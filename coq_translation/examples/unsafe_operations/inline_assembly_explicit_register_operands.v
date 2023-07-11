@@ -2,7 +2,4 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let cmd := 209 in
-  let _ := InlineAsm in
-  Pure tt.
+Parameter main : unit -> M unit.

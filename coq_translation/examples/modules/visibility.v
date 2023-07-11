@@ -2,421 +2,87 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my_mod.
-  Definition private_function (_ : unit) : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "called `my_mod::private_function()`
-" ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    Pure tt.
+  Parameter private_function : unit -> M unit.
   
-  Definition function (_ : unit) : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "called `my_mod::function()`
-" ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    Pure tt.
+  Parameter function : unit -> M unit.
   
-  Definition indirect_access (_ : unit) : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "called `my_mod::indirect_access()`, that
-> " ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    let* _ := visibility.my_mod.private_function tt in
-    Pure tt.
+  Parameter indirect_access : unit -> M unit.
   
   Module nested.
-    Definition function (_ : unit) : M unit :=
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "called `my_mod::nested::function()`
-" ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      Pure tt.
+    Parameter function : unit -> M unit.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition private_function (_ : unit) : M unit :=
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "called `my_mod::nested::private_function()`
-" ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      Pure tt.
+    Parameter private_function : unit -> M unit.
     
-    Definition public_function_in_my_mod (_ : unit) : M unit :=
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of
-                [
-                  "called `my_mod::nested::public_function_in_my_mod()`, that
-> "
-                ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      let* _ := visibility.my_mod.nested.public_function_in_nested tt in
-      Pure tt.
+    Parameter public_function_in_my_mod : unit -> M unit.
     
-    Definition public_function_in_nested (_ : unit) : M unit :=
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of
-                [ "called `my_mod::nested::public_function_in_nested()`
-" ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      Pure tt.
+    Parameter public_function_in_nested : unit -> M unit.
     
-    Definition public_function_in_super_mod (_ : unit) : M unit :=
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of
-                [ "called `my_mod::nested::public_function_in_super_mod()`
-"
-                ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      Pure tt.
+    Parameter public_function_in_super_mod : unit -> M unit.
   End nested.
   
-  Definition call_public_function_in_my_mod (_ : unit) : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of
-              [ "called `my_mod::call_public_function_in_my_mod()`, that
-> "
-              ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    let* _ := visibility.my_mod.nested.public_function_in_my_mod tt in
-    let* _ :=
-      let* _ :=
-        let* α0 := format_arguments::["new_const"] (addr_of [ "> " ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    let* _ := visibility.my_mod.nested.public_function_in_super_mod tt in
-    Pure tt.
+  Parameter call_public_function_in_my_mod : unit -> M unit.
   
-  Definition public_function_in_crate (_ : unit) : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "called `my_mod::public_function_in_crate()`
-" ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    Pure tt.
+  Parameter public_function_in_crate : unit -> M unit.
   
   Module private_nested.
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition function (_ : unit) : M unit :=
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "called `my_mod::private_nested::function()`
-" ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      Pure tt.
+    Parameter function : unit -> M unit.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition restricted_function (_ : unit) : M unit :=
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of
-                [ "called `my_mod::private_nested::restricted_function()`
-"
-                ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      Pure tt.
+    Parameter restricted_function : unit -> M unit.
   End private_nested.
 End my_mod.
 
-Definition private_function (_ : unit) : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of [ "called `my_mod::private_function()`
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  Pure tt.
+Parameter private_function : unit -> M unit.
 
-Definition function (_ : unit) : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of [ "called `my_mod::function()`
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  Pure tt.
+Parameter function : unit -> M unit.
 
-Definition indirect_access (_ : unit) : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of [ "called `my_mod::indirect_access()`, that
-> " ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  let* _ := visibility.my_mod.private_function tt in
-  Pure tt.
+Parameter indirect_access : unit -> M unit.
 
 Module nested.
-  Definition function (_ : unit) : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "called `my_mod::nested::function()`
-" ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    Pure tt.
+  Parameter function : unit -> M unit.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition private_function (_ : unit) : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "called `my_mod::nested::private_function()`
-" ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    Pure tt.
+  Parameter private_function : unit -> M unit.
   
-  Definition public_function_in_my_mod (_ : unit) : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of
-              [ "called `my_mod::nested::public_function_in_my_mod()`, that
-> "
-              ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    let* _ := visibility.my_mod.nested.public_function_in_nested tt in
-    Pure tt.
+  Parameter public_function_in_my_mod : unit -> M unit.
   
-  Definition public_function_in_nested (_ : unit) : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of
-              [ "called `my_mod::nested::public_function_in_nested()`
-" ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    Pure tt.
+  Parameter public_function_in_nested : unit -> M unit.
   
-  Definition public_function_in_super_mod (_ : unit) : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of
-              [ "called `my_mod::nested::public_function_in_super_mod()`
-" ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    Pure tt.
+  Parameter public_function_in_super_mod : unit -> M unit.
 End nested.
 
-Definition function (_ : unit) : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of [ "called `my_mod::nested::function()`
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  Pure tt.
+Parameter function : unit -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition private_function (_ : unit) : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of [ "called `my_mod::nested::private_function()`
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  Pure tt.
+Parameter private_function : unit -> M unit.
 
-Definition public_function_in_my_mod (_ : unit) : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of
-            [ "called `my_mod::nested::public_function_in_my_mod()`, that
-> "
-            ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  let* _ := visibility.my_mod.nested.public_function_in_nested tt in
-  Pure tt.
+Parameter public_function_in_my_mod : unit -> M unit.
 
-Definition public_function_in_nested (_ : unit) : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of
-            [ "called `my_mod::nested::public_function_in_nested()`
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  Pure tt.
+Parameter public_function_in_nested : unit -> M unit.
 
-Definition public_function_in_super_mod (_ : unit) : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of
-            [ "called `my_mod::nested::public_function_in_super_mod()`
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  Pure tt.
+Parameter public_function_in_super_mod : unit -> M unit.
 
-Definition call_public_function_in_my_mod (_ : unit) : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of
-            [ "called `my_mod::call_public_function_in_my_mod()`, that
-> " ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  let* _ := visibility.my_mod.nested.public_function_in_my_mod tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_arguments::["new_const"] (addr_of [ "> " ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  let* _ := visibility.my_mod.nested.public_function_in_super_mod tt in
-  Pure tt.
+Parameter call_public_function_in_my_mod : unit -> M unit.
 
-Definition public_function_in_crate (_ : unit) : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of [ "called `my_mod::public_function_in_crate()`
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  Pure tt.
+Parameter public_function_in_crate : unit -> M unit.
 
 Module private_nested.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition function (_ : unit) : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "called `my_mod::private_nested::function()`
-" ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    Pure tt.
+  Parameter function : unit -> M unit.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition restricted_function (_ : unit) : M unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of
-              [ "called `my_mod::private_nested::restricted_function()`
-" ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    Pure tt.
+  Parameter restricted_function : unit -> M unit.
 End private_nested.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition function (_ : unit) : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of [ "called `my_mod::private_nested::function()`
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  Pure tt.
+Parameter function : unit -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition restricted_function (_ : unit) : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of
-            [ "called `my_mod::private_nested::restricted_function()`
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  Pure tt.
+Parameter restricted_function : unit -> M unit.
 
-Definition function (_ : unit) : M unit :=
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "called `function()`
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  Pure tt.
+Parameter function : unit -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
-  let* _ := visibility.function tt in
-  let* _ := visibility.my_mod.function tt in
-  let* _ := visibility.my_mod.indirect_access tt in
-  let* _ := visibility.my_mod.nested.function tt in
-  let* _ := visibility.my_mod.call_public_function_in_my_mod tt in
-  let* _ := visibility.my_mod.public_function_in_crate tt in
-  Pure tt.
+Parameter main : unit -> M unit.
