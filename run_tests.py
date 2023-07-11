@@ -16,8 +16,7 @@ test_folder = "examples"
 rs_files = []
 for root, _dirs, files in os.walk(test_folder):
     rs_files += [
-        os.path.join(root, file)
-        for file in files if os.path.splitext(file)[1] == ".rs"
+        os.path.join(root, file) for file in files if os.path.splitext(file)[1] == ".rs"
     ]
 
 for index, file in enumerate(rs_files):
@@ -25,9 +24,14 @@ for index, file in enumerate(rs_files):
     print(f"Translating file {index + 1}/{len(rs_files)}: {file}")
     base = os.path.splitext(file)[0]
     # Translate the file, and save the error output if any
-    command = "cargo run --quiet --bin coq-of-rust -- translate --path " +\
-        file + " 2> " +\
-        os.path.join("coq_translation", base + ".err")
+    command = (
+        "cargo run --quiet --bin coq-of-rust -- translate --path "
+        + file
+        + " "
+        + os.environ.get("COQ_OF_RUST_MORE_OPTS", "")
+        + " 2> "
+        + os.path.join("coq_translation", base + ".err")
+    )
     print(command)
 
     try:
