@@ -14,7 +14,7 @@ test_folder = "examples"
 
 
 def get_output_path() -> str:
-    opts = os.environ.get("COQ_OF_RUST_MORE_OPTS", "").split()
+    opts = sys.argv[1:]
     if not opts:
         return "coq_translation"
 
@@ -45,7 +45,7 @@ for index, file in enumerate(rs_files):
         "cargo run --quiet --bin coq-of-rust -- translate --path "
         + file
         + " "
-        + os.environ.get("COQ_OF_RUST_MORE_OPTS", "")
+        + " ".join(sys.argv[1:])
         + " 2> "
         + os.path.join(get_output_path(), base + ".err")
     )
