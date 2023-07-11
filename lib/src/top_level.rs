@@ -646,6 +646,20 @@ fn types_for_f(extra_data: Option<&TopLevelItem>) -> Doc {
     }
 }
 
+// additional check. can be eliminated when all possible cases will be covered
+fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
+    match extra_data {
+        // @TODO this is support for TypeStructStruct,
+        // add support for more items
+        Some(TopLevelItem::TypeStructStruct {
+            name: _,
+            fields: _,
+            is_dead_code: _,
+        }) => true,
+        _ => false,
+    }
+}
+
 // We can not have more than 7 arguments for the function,
 // so we put all the arguments into the one struct
 struct ArgumentsForFnToDoc<'a> {
@@ -672,7 +686,7 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
         },
         // Printing instance of DoubleColon Class for [f]
         // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
-        if strct_args.name == "fmt" {
+        if (strct_args.name == "fmt") && is_extra(strct_args.extra_data) {
             group([
                 nest([
                     text("Parameter "),
