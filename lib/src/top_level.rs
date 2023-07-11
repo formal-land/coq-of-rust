@@ -43,6 +43,7 @@ enum ImplItem {
         body: Box<Expr>,
         is_method: bool,
         is_dead_code: bool,
+        is_axiomatized: bool,
     },
     Type {
         ty: Box<CoqType>,
@@ -513,6 +514,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 body: Box::new(compile_expr(env, expr)),
                                 is_method,
                                 is_dead_code: if_marked_as_dead_code,
+                                is_axiomatized: env.axiomatize,
                             }
                         }
                         ImplItemKind::Type(ty) => ImplItem::Type {
@@ -613,71 +615,8 @@ pub fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
     top_level.to_pretty(LINE_WIDTH)
 }
 
-/// provides the instance of the Struct.Trait typeclass
-/// for definitions of functions and constants
-/// which types utilize the M monad constructor
-fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
-    // TODO: check whether the name of the parameter is necessary
-    text("`{H : State.Trait}")
-}
-
-fn types_for_f(extra_data: Option<&TopLevelItem>) -> Doc {
-    match extra_data {
-        // @TODO this is support for TypeStructStruct,
-        // add support for more items
-        Some(TopLevelItem::TypeStructStruct {
-            name: _,
-            fields,
-            is_dead_code: _,
-        }) => {
-            concat([
-                text("string"),
-                text(" -> "),
-                line(),
-                intersperse(
-                    fields.iter().map(|(_str, boxed_coq_type)| {
-                        let nm = boxed_coq_type.to_name();
-                        let nn = if nm == *"StaticRef_str" {
-                            String::from("string")
-                        } else {
-                            boxed_coq_type.to_name()
-                        };
-                        group([
-                            // print field name
-                            text("string"),
-                            text(" -> "),
-                            // print field type
-                            text(nn),
-                            text(" -> "),
-                        ])
-                    }),
-                    [line()],
-                ),
-                line(),
-            ])
-        }
-        // @TODO unreachable branch, extend to cover more cases
-        _ => nil(),
-    }
-}
-
-// additional check. can be eliminated when all possible cases will be covered
-fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
-    match extra_data {
-        // @TODO this is support for TypeStructStruct,
-        // add support for more items
-        Some(TopLevelItem::TypeStructStruct {
-            name: _,
-            fields: _,
-            is_dead_code: _,
-        }) => true,
-        _ => false,
-    }
-}
-
-// We can not have more than 7 arguments for the function,
-// so we put all the arguments into one struct
-struct ArgumentsForFnToDoc<'a> {
+#[allow(clippy::too_many_arguments)]
+fn fn_to_doc<'a>(
     name: &'a String,
     ty_params: Option<&'a Vec<String>>,
     where_predicates: Option<&'a Vec<WherePredicate>>,
@@ -696,88 +635,48 @@ struct ArgumentsForFnToDoc<'a> {
         } else {
             nil()
         },
-        // Printing instance of DoubleColon Class for [f]
-        // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
-        if (strct_args.name == "fmt") && is_extra(strct_args.extra_data) {
-            group([
+        if is_axiomatized {
+            nest([nest([
                 nest([
-                    text("Parameter "),
-                    strct_args.body.parameter_name_for_fmt(),
-                    text(" : "),
-                    // get type of argument named f
-                    // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                    concat(strct_args.args.iter().map(|(name, ty)| {
-                        if name == "f" {
-                            ty.to_doc_tuning(false)
-                        } else {
-                            nil()
-                        }
-                    })),
-                    text(" -> "),
-                    types_for_f,
-                    strct_args.ret_ty.to_doc(false),
-                    text("."),
-                ]),
-                hardline(),
-                hardline(),
-                nest([
-                    text("Global Instance Deb_"),
-                    strct_args.body.parameter_name_for_fmt(),
-                    text(" : "),
-                    text("Notation.DoubleColon"),
+                    text("Parameter"),
                     line(),
-                    concat(strct_args.args.iter().map(|(name, ty)| {
-                        if name == "f" {
-                            ty.to_doc_tuning(false)
-                        } else {
-                            nil()
-                        }
-                    })),
-                    text(" \""),
-                    strct_args.body.parameter_name_for_fmt(),
-                    text("\""),
-                    text(" := "),
-                    text("{"),
+                    text(name),
                     line(),
-                    nest([
-                        text("Notation.double_colon := "),
-                        strct_args.body.parameter_name_for_fmt(),
-                        text(";"),
-                        line(),
-                    ]),
-                    text("}."),
+                    text(":"),
+                    line(),
                 ]),
-                hardline(),
-                hardline(),
-            ])
-        } else {
-            nil()
-        },
-        nest([
-            nest([
-                nest([text("Definition"), line(), text(strct_args.name)]),
-                line(),
-                monadic_typeclass_parameter(),
-                match strct_args.ty_params {
+                // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
+                match ty_params {
                     None => nil(),
                     Some(ty_params) => {
                         if ty_params.is_empty() {
                             nil()
                         } else {
                             concat([
+                                text("forall"),
                                 line(),
                                 nest([
-                                    text("{"),
-                                    intersperse(ty_params.iter().map(text), [line()]),
+                                    intersperse(
+                                        ty_params.iter().map(|t| {
+                                            concat([
+                                                text("{ "),
+                                                text(t),
+                                                text(" : "),
+                                                text("Set }"),
+                                            ])
+                                        }),
+                                        [line()],
+                                    ),
                                     line(),
-                                    text(": Set}"),
                                 ]),
+                                text(","),
+                                line(),
                             ])
                         }
                     }
                 },
-                line(),
-                match strct_args.where_predicates {
+                // where predicates types
+                match where_predicates {
                     None => nil(),
                     Some(where_predicates) => concat(where_predicates.iter().map(
                         |WherePredicate {
@@ -804,36 +703,95 @@ struct ArgumentsForFnToDoc<'a> {
                         },
                     )),
                 },
-                if strct_args.args.is_empty() {
-                    text("(_ : unit)")
+                // argument types
+                if args.is_empty() {
+                    text("unit")
                 } else {
                     intersperse(
-                        strct_args.args.iter().map(|(name, ty)| {
-                            nest([
-                                text("("),
-                                text(name),
-                                line(),
-                                text(":"),
-                                line(),
-                                ty.to_doc(false),
-                                text(")"),
-                            ])
-                        }),
-                        [line()],
+                        args.iter().map(|(_, ty)| nest([ty.to_doc(false)])),
+                        [text("->"), line()],
                     )
                 },
                 line(),
+                // return type
+                nest([text("->"), line(), ret_ty.to_doc(false), text(".")]),
+            ])])
+        } else {
+            nest([
                 nest([
-                    text(":"),
+                    nest([text("Definition"), line(), text(name)]),
+                    match ty_params {
+                        None => nil(),
+                        Some(ty_params) => {
+                            if ty_params.is_empty() {
+                                nil()
+                            } else {
+                                concat([
+                                    line(),
+                                    nest([
+                                        text("{"),
+                                        intersperse(ty_params.iter().map(text), [line()]),
+                                        line(),
+                                        text(": Set}"),
+                                    ]),
+                                ])
+                            }
+                        }
+                    },
                     line(),
-                    strct_args.ret_ty.to_doc(false),
-                    text(" :="),
+                    match where_predicates {
+                        None => nil(),
+                        Some(where_predicates) => concat(where_predicates.iter().map(
+                            |WherePredicate {
+                                 name,
+                                 ty_params,
+                                 ty,
+                             }| {
+                                concat([
+                                    nest([
+                                        text("`{"),
+                                        name.to_doc(),
+                                        text(".Trait"),
+                                        line(),
+                                        concat(
+                                            ty_params
+                                                .iter()
+                                                .map(|param| concat([param.to_doc(true), line()])),
+                                        ),
+                                        ty.to_doc(true),
+                                        text("}"),
+                                    ]),
+                                    line(),
+                                ])
+                            },
+                        )),
+                    },
+                    if args.is_empty() {
+                        text("(_ : unit)")
+                    } else {
+                        intersperse(
+                            args.iter().map(|(name, ty)| {
+                                nest([
+                                    text("("),
+                                    text(name),
+                                    line(),
+                                    text(":"),
+                                    line(),
+                                    ty.to_doc(false),
+                                    text(")"),
+                                ])
+                            }),
+                            [line()],
+                        )
+                    },
+                    line(),
+                    nest([text(":"), line(), ret_ty.to_doc(false), text(" :=")]),
                 ]),
-            ]),
-            line(),
-            strct_args.body.to_doc(false),
-            text("."),
-        ]),
+                line(),
+                body.to_doc(false),
+                text("."),
+            ])
+        },
     ])
 }
 
@@ -852,6 +810,7 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
             body,
             is_method,
             is_dead_code,
+            is_axiomatized,
         } => {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             ImplItem::Definition {
@@ -860,6 +819,7 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
                 body: Box::new(Expr::Block(Box::new(body))),
                 is_method,
                 is_dead_code,
+                is_axiomatized,
             }
         }
         ImplItem::Type { .. } => item,
@@ -1067,8 +1027,18 @@ impl ImplItem {
                 body,
                 is_method,
                 is_dead_code,
+                is_axiomatized,
             } => concat([
-                fn_to_doc(name, None, None, args, ret_ty, body, *is_dead_code, false),
+                fn_to_doc(
+                    name,
+                    None,
+                    None,
+                    args,
+                    ret_ty,
+                    body,
+                    *is_dead_code,
+                    *is_axiomatized,
+                ),
                 hardline(),
                 hardline(),
                 if *is_method {
