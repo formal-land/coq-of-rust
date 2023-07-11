@@ -2,10 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Sheep.
+  Unset Primitive Projections.
   Record t : Set := {
     naked : bool;
     name : ref str;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_naked : Notation.Dot "naked" := {
     Notation.dot '(Build_t x0 _) := x0;

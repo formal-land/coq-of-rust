@@ -2,14 +2,17 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Container.
-  Record t : Set := { _ : i32; _ : i32;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_1 : Notation.Dot 1 := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Unset Primitive Projections.
+  Record t : Set :=
+  { _ : i32; _ : i32;}.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0 _) := x0;
+}.
+Global Instance Get_1 : Notation.Dot 1 := {
+  Notation.dot '(Build_t _ x1) := x1;
+}.
 End Container.
 Definition Container := Container.t.
 

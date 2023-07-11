@@ -263,3 +263,6 @@ _std/iter_type.v
 _std/iter.v
 _std/net.v
 _std/os.v
+RecordUpdate.v
+experiments/FunctionNotation.v
+experiments/MonadExperiments.v

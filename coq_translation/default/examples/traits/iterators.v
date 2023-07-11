@@ -2,10 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Fibonacci.
+  Unset Primitive Projections.
   Record t : Set := {
     curr : u32;
     next : u32;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_curr : Notation.Dot "curr" := {
     Notation.dot '(Build_t x0 _) := x0;
