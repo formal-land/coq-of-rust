@@ -32,13 +32,23 @@ pub fn run(opts: CliOptions) {
     if src_path.is_file() {
         let translation = create_translation_to_coq(&opts);
 
-        let path_to_write = dst_folder.join(
+        let mut path_to_write = dst_folder.join(
             change_to_coq_extension(src_path)
                 .file_name()
                 .unwrap()
                 .to_str()
                 .unwrap(),
         );
+        if opts.axiomatize {
+            // replace .v by _axiomatized.v
+            let fname = path_to_write
+                .file_name()
+                .expect("file name")
+                .to_str()
+                .expect("OsStr")
+                .replace(".v", "_axiomatized.v");
+            path_to_write.set_file_name(fname)
+        };
         if !path_to_write.exists() {
             fs::create_dir_all(dst_folder).unwrap();
         }
