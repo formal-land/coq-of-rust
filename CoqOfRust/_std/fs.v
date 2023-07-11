@@ -15,37 +15,37 @@ Require Import CoqOfRust.lib.lib.
 
 (* pub struct FileTimes(_); *)
 Module FileTimes.
-  Record t : Set := { }.
+  Parameter t : Set.
 End FileTimes.
 Definition FileTimes := FileTimes.t.
 
 (* pub struct DirBuilder { /* private fields */ } *)
 Module DirBuilder.
-  Record t : Set := { }.
+  Parameter t : Set.
 End DirBuilder.
 Definition DirBuilder := DirBuilder.t.
 
 (* pub struct DirEntry(_); *)
 Module DirEntry.
-  Record t : Set := { }.
+  Parameter t : Set.
 End DirEntry.
 Definition DirEntry := DirEntry.t.
 
 (* pub struct File { /* private fields */ } *)
 Module File.
-  Record t : Set := { }.
+  Parameter t : Set.
 End File.
 Definition File := File.t.
 
 (* pub struct FileType(_); *)
 Module FileType.
-  Record t : Set := { }.
+  Parameter t : Set.
 End FileType.
 Definition FileType := FileType.t.
 
 (* pub struct Metadata(_); *)
 Module Metadata.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Metadata.
 Definition Metadata := Metadata.t.
 
@@ -57,13 +57,13 @@ Definition t : Set := OpenOptions.t.
 
 (* pub struct Permissions(_); *)
 Module Permissions.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Permissions.
 Definition Permissions := Permissions.t.
 
 (* pub struct ReadDir(_); *)
 Module ReadDir.
-  Record t : Set := { }.
+  Parameter t : Set.
 End ReadDir.
 Definition ReadDir := ReadDir.t.
 

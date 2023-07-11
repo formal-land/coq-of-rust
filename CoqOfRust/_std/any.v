@@ -8,13 +8,13 @@ Require Import CoqOfRust.lib.lib.
 
 (* pub struct Demand<'a>(_); *)
 Module Demand.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Demand.
 Definition Demand := Demand.t.
 
 (* pub struct TypeId { /* private fields */ } *)
 Module TypeId.
-  Record t : Set := { }.
+  Parameter t : Set.
 End TypeId.
 Definition TypeId := TypeId.t.
 

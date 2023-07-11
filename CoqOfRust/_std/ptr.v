@@ -13,7 +13,7 @@ Require Import CoqOfRust._std.hash.
 
 (* pub struct Alignment(_); *)
 Module Alignment.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Alignment.
 Definition Alignment := Alignment.t.
 
@@ -24,7 +24,7 @@ where
 { /* private fields */ } 
 *)
 Module DynMetadata.
-  Record t (Dyn : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End DynMetadata.
 Definition DynMetadata := DynMetadata.t.
 
@@ -35,7 +35,7 @@ where
 { /* private fields */ }
 *)
 Module NonNull.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End NonNull.
 Definition NonNull := NonNull.t.
 
@@ -50,12 +50,14 @@ pub trait Pointee {
 }
 *)
 Module Pointee.
+  Unset Primitive Projections.
   Class Trait (Self : Set) (Metadata : Set) 
-  `{Copy.Trait Metadata}
-  `{Send.Trait Metadata}
-  `{Sync.Trait Metadata}
-  `{Ord.Trait Metadata}
-  `{Hash.Trait Metadata}
-  `{Unpin.Trait Metadata}
-  : Set := { }.
+    `{Copy.Trait Metadata}
+    `{Send.Trait Metadata}
+    `{Sync.Trait Metadata}
+    `{Ord.Trait Metadata}
+    `{Hash.Trait Metadata}
+    `{Unpin.Trait Metadata}
+    : Set := { }.
+  Set Primitive Projections.
 End Pointee.

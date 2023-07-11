@@ -8,7 +8,7 @@ Require Import CoqOfRust._std.marker.
 (* [x] Reverse *)
 (* pub struct Reverse<T>(pub T); *)
 Module Reverse.
-  Record t (T : Set) : Set := { }.
+  Record t (T : Set) : Set := { _1 : T }.
 End Reverse.
 Definition Reverse := Reverse.t.
 
@@ -80,7 +80,9 @@ End PartialOrd.
 pub trait Eq: PartialEq<Self> { }
  *)
 Module Eq.
+  Unset Primitive Projections.
   Class Trait (Self : Set) `{PartialEq.Trait Self} : Set := { }.
+  Set Primitive Projections.
 End Eq.
 
 (* 
@@ -97,7 +99,7 @@ pub trait Ord: Eq + PartialOrd<Self> {
        where Self: Sized + PartialOrd<Self> { ... }
 }
 *)
-Module Ord. 
+Module Ord.
   Class Trait (Self : Set) 
     `{Eq.Trait Self}
     `{PartialOrd.Trait Self (Some Self)} :={
