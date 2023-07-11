@@ -79,6 +79,7 @@ enum TopLevelItem {
         ret_ty: Box<CoqType>,
         body: Box<Expr>,
         is_dead_code: bool,
+        is_axiomatized: bool,
     },
     TypeAlias {
         name: String,
@@ -326,6 +327,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 ret_ty,
                 body,
                 is_dead_code: if_marked_as_dead_code,
+                is_axiomatized: env.axiomatize,
             }]
         }
         ItemKind::Macro(_, _) => vec![],
@@ -585,10 +587,11 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
     }
 }
 
-fn compile_top_level(tcx: &TyCtxt) -> TopLevel {
+fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
     let mut env = Env {
         impl_counter: HashMap::new(),
         tcx: *tcx,
+        axiomatize: opts.axiomatize,
     };
 
     TopLevel(
@@ -604,8 +607,8 @@ fn compile_top_level(tcx: &TyCtxt) -> TopLevel {
 
 const LINE_WIDTH: usize = 80;
 
-pub fn top_level_to_coq(tcx: &TyCtxt, _opts: TopLevelOptions) -> String {
-    let top_level = compile_top_level(tcx);
+pub fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
+    let top_level = compile_top_level(tcx, opts);
     let top_level = mt_top_level(top_level);
     top_level.to_pretty(LINE_WIDTH)
 }
@@ -618,6 +621,7 @@ fn fn_to_doc<'a>(
     ret_ty: &'a CoqType,
     body: &'a Expr,
     is_dead_code: bool,
+    is_axiomatized: bool,
 ) -> Doc<'a> {
     group([
         if is_dead_code {
@@ -781,6 +785,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             ret_ty,
             body,
             is_dead_code,
+            is_axiomatized,
         } => {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             TopLevelItem::Definition {
@@ -791,6 +796,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
                 ret_ty: CoqType::monad(mt_ty(ret_ty)),
                 body: Box::new(Expr::Block(Box::new(body))),
                 is_dead_code,
+                is_axiomatized,
             }
         }
         TopLevelItem::TypeAlias { name, ty } => TopLevelItem::TypeAlias { name, ty },
@@ -932,7 +938,7 @@ impl ImplItem {
                 is_method,
                 is_dead_code,
             } => concat([
-                fn_to_doc(name, None, None, args, ret_ty, body, *is_dead_code),
+                fn_to_doc(name, None, None, args, ret_ty, body, *is_dead_code, false),
                 hardline(),
                 hardline(),
                 if *is_method {
@@ -1004,6 +1010,7 @@ impl TopLevelItem {
                 ret_ty,
                 body,
                 is_dead_code,
+                is_axiomatized,
             } => fn_to_doc(
                 name,
                 Some(ty_params),
@@ -1012,6 +1019,7 @@ impl TopLevelItem {
                 ret_ty,
                 body,
                 *is_dead_code,
+                *is_axiomatized,
             ),
             TopLevelItem::Module {
                 name,
