@@ -1301,6 +1301,8 @@ impl TopLevelItem {
                             nest([text("Module"), line(), text(name), text(".")]),
                             nest([
                                 hardline(),
+                                text("Unset Primitive Projections."),
+                                hardline(),
                                 nest([
                                     text("Record"),
                                     line(),
@@ -1325,6 +1327,8 @@ impl TopLevelItem {
                                 }))]),
                                 hardline(),
                                 text("}."),
+                                hardline(),
+                                text("Global Set Primitive Projections.")
                             ]),
                             hardline(),
                             nest([text("End"), line(), text(name), text(".")]),
@@ -1410,6 +1414,8 @@ impl TopLevelItem {
                 nest([text("Module"), line(), text(name), text(".")]),
                 nest([
                     hardline(),
+                    text("Unset Primitive Projections."),
+                    hardline(),
                     nest([
                         text("Record"),
                         line(),
@@ -1440,6 +1446,8 @@ impl TopLevelItem {
                     })),
                     hardline(),
                     text("}."),
+                    hardline(),
+                    text("Global Set Primitive Projections."),
                     if !fields.is_empty() {
                         hardline()
                     } else {
@@ -1517,9 +1525,12 @@ impl TopLevelItem {
             ]),
             TopLevelItem::TypeStructTuple { name, fields } => group([
                 nest([text("Module"), line(), text(name), text(".")]),
-                nest([
-                    hardline(),
+                concat([
+                    // hardline(),
                     nest([
+                        hardline(),
+                        text("Unset Primitive Projections."),
+                        hardline(),
                         nest([
                             text("Record"),
                             line(),
@@ -1540,6 +1551,8 @@ impl TopLevelItem {
                             text("}"),
                         ]),
                         text("."),
+                        hardline(),
+                        text("Global Set Primitive Projections.")
                     ]),
                     hardline(),
                     intersperse(
