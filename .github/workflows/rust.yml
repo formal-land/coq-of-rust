@@ -33,7 +33,7 @@ jobs:
         python run_tests.py
     - name: Translate Rust examples (axiomatized)
       run: |
-        COQ_OF_RUST_MORE_OPTS="--axiomatized" python run_tests.py
+        COQ_OF_RUST_MORE_OPTS="--axiomatize" python run_tests.py
     - name: Translate Ink! library
       run: |
         cd CoqOfRust
