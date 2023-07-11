@@ -141,6 +141,11 @@ Global Instance Method_Z_abs `{State.Trait} : Notation.Dot "abs" := {
   Notation.dot (z : Z) := Pure (Z.abs z);
 }.
 
+(* TODO: find a better place for this instance *)
+Global Instance Method_Z_lt `{State.Trait} : Notation.Dot "lt" := {
+  Notation.dot (x y : Z) := Pure (Z.ltb x y);
+}.
+
 Global Instance Method_destroy `{State.Trait} (A : Set) :
   Notation.Dot "destroy" := {
   Notation.dot (x : A) := Pure tt;
@@ -866,6 +871,11 @@ Module core.
     End Impl_Deref_for_any.
   End ops.
 End core.
+
+(* (* TODO: find a better place for this *)
+Global Instance Method_Z_rem `{State.Trait} : Notation.Dot "lt" := {
+  Notation.dot (x y : Z) := Pure (Z.ltb x y);
+}. *)
 
 Module alloc.
   Module boxed.
