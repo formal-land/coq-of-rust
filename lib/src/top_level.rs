@@ -43,6 +43,7 @@ enum ImplItem {
         body: Box<Expr>,
         is_method: bool,
         is_dead_code: bool,
+        is_axiomatized: bool,
     },
     Type {
         ty: Box<CoqType>,
@@ -513,6 +514,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 body: Box::new(compile_expr(env, expr)),
                                 is_method,
                                 is_dead_code: if_marked_as_dead_code,
+                                is_axiomatized: env.axiomatize,
                             }
                         }
                         ImplItemKind::Type(ty) => ImplItem::Type {
@@ -613,6 +615,7 @@ pub fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
     top_level.to_pretty(LINE_WIDTH)
 }
 
+#[allow(clippy::too_many_arguments)]
 fn fn_to_doc<'a>(
     name: &'a String,
     ty_params: Option<&'a Vec<String>>,
@@ -632,9 +635,17 @@ fn fn_to_doc<'a>(
         } else {
             nil()
         },
-        nest([
-            nest([
-                nest([text("Definition"), line(), text(name)]),
+        if is_axiomatized {
+            nest([nest([
+                nest([
+                    text("Parameter"),
+                    line(),
+                    text(name),
+                    line(),
+                    text(":"),
+                    line(),
+                ]),
+                // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
                 match ty_params {
                     None => nil(),
                     Some(ty_params) => {
@@ -642,18 +653,29 @@ fn fn_to_doc<'a>(
                             nil()
                         } else {
                             concat([
+                                text("forall"),
                                 line(),
                                 nest([
-                                    text("{"),
-                                    intersperse(ty_params.iter().map(text), [line()]),
+                                    intersperse(
+                                        ty_params.iter().map(|t| {
+                                            concat([
+                                                text("{ "),
+                                                text(t),
+                                                text(" : "),
+                                                text("Set }"),
+                                            ])
+                                        }),
+                                        [line()],
+                                    ),
                                     line(),
-                                    text(": Set}"),
                                 ]),
+                                text(","),
+                                line(),
                             ])
                         }
                     }
                 },
-                line(),
+                // where predicates types
                 match where_predicates {
                     None => nil(),
                     Some(where_predicates) => concat(where_predicates.iter().map(
@@ -681,31 +703,95 @@ fn fn_to_doc<'a>(
                         },
                     )),
                 },
+                // argument types
                 if args.is_empty() {
-                    text("(_ : unit)")
+                    text("unit")
                 } else {
                     intersperse(
-                        args.iter().map(|(name, ty)| {
-                            nest([
-                                text("("),
-                                text(name),
-                                line(),
-                                text(":"),
-                                line(),
-                                ty.to_doc(false),
-                                text(")"),
-                            ])
-                        }),
-                        [line()],
+                        args.iter().map(|(_, ty)| nest([ty.to_doc(false)])),
+                        [text("->"), line()],
                     )
                 },
                 line(),
-                nest([text(":"), line(), ret_ty.to_doc(false), text(" :=")]),
-            ]),
-            line(),
-            body.to_doc(false),
-            text("."),
-        ]),
+                // return type
+                nest([text("->"), line(), ret_ty.to_doc(false), text(".")]),
+            ])])
+        } else {
+            nest([
+                nest([
+                    nest([text("Definition"), line(), text(name)]),
+                    match ty_params {
+                        None => nil(),
+                        Some(ty_params) => {
+                            if ty_params.is_empty() {
+                                nil()
+                            } else {
+                                concat([
+                                    line(),
+                                    nest([
+                                        text("{"),
+                                        intersperse(ty_params.iter().map(text), [line()]),
+                                        line(),
+                                        text(": Set}"),
+                                    ]),
+                                ])
+                            }
+                        }
+                    },
+                    line(),
+                    match where_predicates {
+                        None => nil(),
+                        Some(where_predicates) => concat(where_predicates.iter().map(
+                            |WherePredicate {
+                                 name,
+                                 ty_params,
+                                 ty,
+                             }| {
+                                concat([
+                                    nest([
+                                        text("`{"),
+                                        name.to_doc(),
+                                        text(".Trait"),
+                                        line(),
+                                        concat(
+                                            ty_params
+                                                .iter()
+                                                .map(|param| concat([param.to_doc(true), line()])),
+                                        ),
+                                        ty.to_doc(true),
+                                        text("}"),
+                                    ]),
+                                    line(),
+                                ])
+                            },
+                        )),
+                    },
+                    if args.is_empty() {
+                        text("(_ : unit)")
+                    } else {
+                        intersperse(
+                            args.iter().map(|(name, ty)| {
+                                nest([
+                                    text("("),
+                                    text(name),
+                                    line(),
+                                    text(":"),
+                                    line(),
+                                    ty.to_doc(false),
+                                    text(")"),
+                                ])
+                            }),
+                            [line()],
+                        )
+                    },
+                    line(),
+                    nest([text(":"), line(), ret_ty.to_doc(false), text(" :=")]),
+                ]),
+                line(),
+                body.to_doc(false),
+                text("."),
+            ])
+        },
     ])
 }
 
@@ -724,6 +810,7 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
             body,
             is_method,
             is_dead_code,
+            is_axiomatized,
         } => {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             ImplItem::Definition {
@@ -732,6 +819,7 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
                 body: Box::new(Expr::Block(Box::new(body))),
                 is_method,
                 is_dead_code,
+                is_axiomatized,
             }
         }
         ImplItem::Type { .. } => item,
@@ -937,8 +1025,18 @@ impl ImplItem {
                 body,
                 is_method,
                 is_dead_code,
+                is_axiomatized,
             } => concat([
-                fn_to_doc(name, None, None, args, ret_ty, body, *is_dead_code, false),
+                fn_to_doc(
+                    name,
+                    None,
+                    None,
+                    args,
+                    ret_ty,
+                    body,
+                    *is_dead_code,
+                    *is_axiomatized,
+                ),
                 hardline(),
                 hardline(),
                 if *is_method {
