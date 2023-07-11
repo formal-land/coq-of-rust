@@ -12,6 +12,23 @@ import sys
 
 test_folder = "examples"
 
+
+def get_output_path() -> str:
+    opts = os.environ.get("COQ_OF_RUST_MORE_OPTS", "").split()
+    if not opts:
+        return "coq_translation"
+
+    it = iter(opts)
+    while True:
+        try:
+            arg = next(it)
+            if arg == "--output-path":
+                return next(it)
+        except StopIteration:
+            break
+    return "coq_translation"
+
+
 # For each file recursively in the test folder
 rs_files = []
 for root, _dirs, files in os.walk(test_folder):
@@ -30,7 +47,7 @@ for index, file in enumerate(rs_files):
         + " "
         + os.environ.get("COQ_OF_RUST_MORE_OPTS", "")
         + " 2> "
-        + os.path.join("coq_translation", base + ".err")
+        + os.path.join(get_output_path(), base + ".err")
     )
     print(command)
 
