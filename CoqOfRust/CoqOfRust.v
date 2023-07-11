@@ -146,6 +146,11 @@ Global Instance Method_Z_lt `{State.Trait} : Notation.Dot "lt" := {
   Notation.dot (x y : Z) := Pure (Z.ltb x y);
 }.
 
+(* TODO: find a better place for this instance *)
+Global Instance Method_Z_eq `{State.Trait} : Notation.Dot "eq" := {
+  Notation.dot (x y : Z) := Pure (Z.eqb x y);
+}.
+
 Global Instance Method_destroy `{State.Trait} (A : Set) :
   Notation.Dot "destroy" := {
   Notation.dot (x : A) := Pure tt;
