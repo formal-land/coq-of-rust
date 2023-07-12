@@ -18,8 +18,8 @@ Parameter run : forall `{StateMonad.State.Trait} {A : Set}, M A -> A.
   *)
 Definition Break `{StateMonad.State.Trait} : M unit := StateMonad.Break.
 Definition Continue `{StateMonad.State.Trait} : M unit := StateMonad.Continue.
-Definition while `{StateMonad.State.Trait} {A : Set} : M A -> M A :=
-  StateMonad.while.
+Definition loop `{StateMonad.State.Trait} {A : Set} : M A -> M A :=
+  StateMonad.loop.
 
 Module Notations.
   Notation "'let*' a := b 'in' c" :=

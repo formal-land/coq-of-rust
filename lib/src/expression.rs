@@ -1048,8 +1048,7 @@ impl Expr {
             } => paren(
                 with_paren,
                 nest([
-                    //text("loop"),
-                    text("while"),
+                    text("loop"),
                     line(),
                     paren(true, body.to_doc()),
                     /*line(),

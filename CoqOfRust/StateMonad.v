@@ -140,7 +140,7 @@ End Notations.
 Export Notations.
 
 (** the definition of a function representing the loop construction *)
-Definition while `{State.Trait} {R A : Set} (m : Monad R A) : Monad R A :=
+Definition loop `{State.Trait} {R A : Set} (m : Monad R A) : Monad R A :=
   fix F (fuel : nat) :=
     match fuel with
     | 0 => NonTermination
