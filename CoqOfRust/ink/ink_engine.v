@@ -1886,6 +1886,15 @@ Module test_api.
   Module Impl_core_fmt_Debug_for_ink_engine_test_api_EmittedEvent.
     Definition Self := ink_engine.test_api.EmittedEvent.
     
+    Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
+      string -> alloc_vec_Vec_alloc_vec_Vec_u8 -> 
+      string -> alloc_vec_Vec_u8 -> 
+      M core.fmt.Result.
+    
+    Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
+      core.fmt.Formatter "debug_struct_field2_finish" := {
+      Notation.double_colon := debug_struct_field2_finish; }.
+    
     Definition fmt
         `{H : State.Trait}
         (self : ref Self)
@@ -2535,6 +2544,15 @@ Definition EmittedEvent : Set := EmittedEvent.t.
 
 Module Impl_core_fmt_Debug_for_ink_engine_test_api_EmittedEvent.
   Definition Self := ink_engine.test_api.EmittedEvent.
+  
+  Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
+    string -> alloc_vec_Vec_alloc_vec_Vec_u8 -> 
+    string -> alloc_vec_Vec_u8 -> 
+    M core.fmt.Result.
+  
+  Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
+    core.fmt.Formatter "debug_struct_field2_finish" := {
+    Notation.double_colon := debug_struct_field2_finish; }.
   
   Definition fmt
       `{H : State.Trait}

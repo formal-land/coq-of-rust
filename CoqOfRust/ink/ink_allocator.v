@@ -80,6 +80,15 @@ Module bump.
   Module Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
     Definition Self := ink_allocator.bump.InnerAlloc.
     
+    Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
+      string -> usize -> 
+      string -> usize -> 
+      M core.fmt.Result.
+    
+    Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
+      core.fmt.Formatter "debug_struct_field2_finish" := {
+      Notation.double_colon := debug_struct_field2_finish; }.
+    
     Definition fmt
         `{H : State.Trait}
         (self : ref Self)
@@ -336,6 +345,15 @@ Definition InnerAlloc : Set := InnerAlloc.t.
 
 Module Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
   Definition Self := ink_allocator.bump.InnerAlloc.
+  
+  Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
+    string -> usize -> 
+    string -> usize -> 
+    M core.fmt.Result.
+  
+  Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
+    core.fmt.Formatter "debug_struct_field2_finish" := {
+    Notation.double_colon := debug_struct_field2_finish; }.
   
   Definition fmt
       `{H : State.Trait}
