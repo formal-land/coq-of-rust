@@ -609,7 +609,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
 
 const LINE_WIDTH: usize = 80;
 
-pub fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
+pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
     let top_level = compile_top_level(tcx, opts);
     let top_level = mt_top_level(top_level);
     top_level.to_pretty(LINE_WIDTH)
