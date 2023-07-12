@@ -139,8 +139,16 @@ Module Notations.
 End Notations.
 Export Notations.
 
+(* Definition catch_Continue
+  `{State.Trait} {R A B : Set} (m : Monad R A) (f : A -> Monad R B) :
+  Monad R B :=
+  fun fuel s =>
+    RawMonad.smart_bind (m fuel s) (fun '(v, s) =>
+      match v with
+      | inl v =>
+ *)
 (** the definition of a function representing the loop construction *)
-Definition loop `{State.Trait} {R A : Set} (m : Monad R A) : Monad R A :=
+Definition loop `{State.Trait} {R  : Set} (m : Monad R unit) : Monad R unit :=
   fix F (fuel : nat) :=
     match fuel with
     | 0 => NonTermination

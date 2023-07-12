@@ -18,7 +18,7 @@ Parameter run : forall `{StateMonad.State.Trait} {A : Set}, M A -> A.
   *)
 Definition Break `{StateMonad.State.Trait} : M unit := StateMonad.Break.
 Definition Continue `{StateMonad.State.Trait} : M unit := StateMonad.Continue.
-Definition loop `{StateMonad.State.Trait} {A : Set} : M A -> M A :=
+Definition loop `{StateMonad.State.Trait} (* {A : Set} *) : M unit -> M unit :=
   StateMonad.loop.
 
 Module Notations.
