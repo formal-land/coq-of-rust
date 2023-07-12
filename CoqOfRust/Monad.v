@@ -13,6 +13,10 @@ Definition bind
 (** Used for the definitions of "const". *)
 Parameter run : forall `{StateMonad.State.Trait} {A : Set}, M A -> A.
 
+(** Provide definitions of control flow statements *)
+Definition Break `{State.Trait} {A : Set} : M A := StateMonad.Break.
+Definition Continue `{State.Trait} {A : Set} : M A := StateMonad.Continue.
+
 Module Notations.
   Notation "'let*' a := b 'in' c" :=
     (bind b (fun a => c))
