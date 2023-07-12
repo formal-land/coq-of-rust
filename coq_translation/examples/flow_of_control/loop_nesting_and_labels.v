@@ -23,7 +23,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 " ]) in
               std.io.stdio._print α0 in
             Pure tt in
-          let _ := Break in
+          let* _ := Break in
           Pure tt) in
       let* _ :=
         let* _ :=

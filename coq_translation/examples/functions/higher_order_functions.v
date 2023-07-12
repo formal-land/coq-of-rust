@@ -26,12 +26,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Pure Break
+          | None => Break
           | Some {| Some.0 := n; |} =>
             let* n_squared := n.["mul"] n in
             let* α0 := n_squared.["ge"] upper in
             if (α0 : bool) then
-              let _ := Break in
+              let* _ := Break in
               Pure tt
             else
               let* α0 := higher_order_functions.is_odd n_squared in

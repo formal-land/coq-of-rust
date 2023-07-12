@@ -95,7 +95,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Pure Break
+          | None => Break
           | Some {| Some.0 := x; |} =>
             let* _ :=
               let* _ :=
@@ -121,7 +121,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Pure Break
+          | None => Break
           | Some {| Some.0 := (i, x); |} =>
             let* _ :=
               let* _ :=
@@ -147,7 +147,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Pure Break
+          | None => Break
           | Some {| Some.0 := x; |} =>
             let* _ :=
               let* α0 := x.["deref"] in

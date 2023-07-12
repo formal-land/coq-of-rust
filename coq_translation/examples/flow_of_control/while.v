@@ -58,5 +58,5 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       let* _ := n.["add_assign"] 1 in
       Pure tt
     else
-      let _ := Break in
+      let* _ := Break in
       Pure tt).

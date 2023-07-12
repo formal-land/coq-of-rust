@@ -35,5 +35,5 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           assign optional (core.option.Option.Some α0) in
         Pure tt
     else
-      let _ := Break in
+      let* _ := Break in
       Pure tt).

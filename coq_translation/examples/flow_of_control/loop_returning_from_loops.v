@@ -9,7 +9,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       (let* _ := counter.["add_assign"] 1 in
       let* α0 := counter.["eq"] 10 in
       if (α0 : bool) then
-        let _ := Break in
+        let* _ := Break in
         Pure tt
       else
         Pure tt) in

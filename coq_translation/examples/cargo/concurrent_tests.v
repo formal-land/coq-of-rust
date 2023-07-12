@@ -36,7 +36,7 @@ Module tests.
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Pure Break
+          | None => Break
           | Some {| Some.0 := _; |} =>
             let* _ :=
               let* α0 := "Ferris
@@ -62,7 +62,7 @@ Module tests.
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Pure Break
+          | None => Break
           | Some {| Some.0 := _; |} =>
             let* _ :=
               let* α0 := "Corro
@@ -89,7 +89,7 @@ Definition test_file `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with
-        | None => Pure Break
+        | None => Break
         | Some {| Some.0 := _; |} =>
           let* _ :=
             let* α0 := "Ferris
@@ -115,7 +115,7 @@ Definition test_file_also `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with
-        | None => Pure Break
+        | None => Break
         | Some {| Some.0 := _; |} =>
           let* _ :=
             let* α0 := "Corro
