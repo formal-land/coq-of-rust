@@ -1138,14 +1138,12 @@ impl Expr {
     // get the name and arg_types of the associated function
     // @TODO cover more cases instead of template text("struct_parameter_for_fmt"),
     pub fn parameter_name_for_fmt(&self) -> Doc {
-        // @TODO DELETE THIS FUNC, rewriting it in top_level
         match self {
             Expr::Block(bx) => bx.parameter_for_fmt(),
             _ => text("struct_parameter_for_fmt"),
         }
     }
 
-    // @TODO cover more cases instead of template text("struct_parameter_for_fmt"),
     pub fn parameter_for_fmt_print_name(&self) -> Doc {
         match self {
             Expr::AssociatedFunction { ty: _, func } => text(func),
@@ -1153,7 +1151,6 @@ impl Expr {
         }
     }
 
-    // @TODO cover more cases instead of template text("struct_parameter_for_fmt"),
     // get the name and the arg_types of the associated function match step2
     pub fn parameter_for_fmt2(&self) -> Doc {
         match self {

@@ -669,7 +669,7 @@ fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
 }
 
 // We can not have more than 7 arguments for the function,
-// so we put all the arguments into the one struct
+// so we put all the arguments into one struct
 struct ArgumentsForFnToDoc<'a> {
     name: &'a String,
     ty_params: Option<&'a Vec<String>>,

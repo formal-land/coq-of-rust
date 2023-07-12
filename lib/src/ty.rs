@@ -240,7 +240,7 @@ impl CoqType {
                 let ret = path.last().clone();
                 ret
             }
-            _ => String::from("Not ready for this yet"),
+            _ => String::from("default_name"),
         }
     }
 }
