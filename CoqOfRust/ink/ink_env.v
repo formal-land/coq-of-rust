@@ -2088,6 +2088,17 @@ Module backend.
   Module Impl_core_fmt_Debug_for_ink_env_backend_CallFlags.
     Definition Self := ink_env.backend.CallFlags.
     
+    Parameter debug_struct_field4_finish : core.fmt.Formatter -> string -> 
+      string -> bool -> 
+      string -> bool -> 
+      string -> bool -> 
+      string -> bool -> 
+      M (H := H) core.fmt.Result.
+    
+    Global Instance Deb_debug_struct_field4_finish : Notation.DoubleColon
+      core.fmt.Formatter "debug_struct_field4_finish" := {
+      Notation.double_colon := debug_struct_field4_finish; }.
+    
     Definition fmt
         `{H : State.Trait}
         (self : ref Self)
@@ -2711,6 +2722,17 @@ End Impl_core_clone_Clone_for_ink_env_backend_CallFlags.
 
 Module Impl_core_fmt_Debug_for_ink_env_backend_CallFlags.
   Definition Self := ink_env.backend.CallFlags.
+  
+  Parameter debug_struct_field4_finish : core.fmt.Formatter -> string -> 
+    string -> bool -> 
+    string -> bool -> 
+    string -> bool -> 
+    string -> bool -> 
+    M (H := H) core.fmt.Result.
+  
+  Global Instance Deb_debug_struct_field4_finish : Notation.DoubleColon
+    core.fmt.Formatter "debug_struct_field4_finish" := {
+    Notation.double_colon := debug_struct_field4_finish; }.
   
   Definition fmt
       `{H : State.Trait}
@@ -6395,6 +6417,14 @@ Module call.
     
     Module Impl_core_fmt_Debug_for_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
+      
+      Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
+        string -> Array_u8 -> 
+        M (H := H) core.fmt.Result.
+      
+      Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
+        core.fmt.Formatter "debug_struct_field1_finish" := {
+        Notation.double_colon := debug_struct_field1_finish; }.
       
       Definition fmt
           `{H : State.Trait}
@@ -12767,6 +12797,14 @@ Module selector.
   Module Impl_core_fmt_Debug_for_ink_env_call_selector_Selector.
     Definition Self := ink_env.call.selector.Selector.
     
+    Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
+      string -> Array_u8 -> 
+      M (H := H) core.fmt.Result.
+    
+    Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
+      core.fmt.Formatter "debug_struct_field1_finish" := {
+      Notation.double_colon := debug_struct_field1_finish; }.
+    
     Definition fmt
         `{H : State.Trait}
         (self : ref Self)
@@ -12939,6 +12977,14 @@ End Impl_core_default_Default_for_ink_env_call_selector_Selector.
 
 Module Impl_core_fmt_Debug_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
+  
+  Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
+    string -> Array_u8 -> 
+    M (H := H) core.fmt.Result.
+  
+  Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
+    core.fmt.Formatter "debug_struct_field1_finish" := {
+    Notation.double_colon := debug_struct_field1_finish; }.
   
   Definition fmt
       `{H : State.Trait}
@@ -14217,6 +14263,14 @@ Module engine.
       Module
         Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
+        
+        Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
+          string -> alloc_vec_Vec_u8 -> 
+          M (H := H) core.fmt.Result.
+        
+        Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
+          core.fmt.Formatter "debug_struct_field1_finish" := {
+          Notation.double_colon := debug_struct_field1_finish; }.
         
         Definition fmt
             `{H : State.Trait}
@@ -16916,6 +16970,14 @@ Module off_chain.
     Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
+      Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
+        string -> alloc_vec_Vec_u8 -> 
+        M (H := H) core.fmt.Result.
+      
+      Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
+        core.fmt.Formatter "debug_struct_field1_finish" := {
+        Notation.double_colon := debug_struct_field1_finish; }.
+      
       Definition fmt
           `{H : State.Trait}
           (self : ref Self)
@@ -19426,6 +19488,14 @@ Module call_data.
   Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
+    Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
+      string -> alloc_vec_Vec_u8 -> 
+      M (H := H) core.fmt.Result.
+    
+    Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
+      core.fmt.Formatter "debug_struct_field1_finish" := {
+      Notation.double_colon := debug_struct_field1_finish; }.
+    
     Definition fmt
         `{H : State.Trait}
         (self : ref Self)
@@ -19716,6 +19786,14 @@ Definition CallData : Set := CallData.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
+  
+  Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
+    string -> alloc_vec_Vec_u8 -> 
+    M (H := H) core.fmt.Result.
+  
+  Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
+    core.fmt.Formatter "debug_struct_field1_finish" := {
+    Notation.double_colon := debug_struct_field1_finish; }.
   
   Definition fmt
       `{H : State.Trait}
