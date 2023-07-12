@@ -145,5 +145,5 @@ Definition while `{State.Trait} {R A : Set} (m : Monad R A) : Monad R A :=
   fix F (fuel : nat) :=
     match fuel with
     | 0 => NonTermination
-    | S fuel' => fun s => (* TODO *) F fuel' s
+    | S fuel' => bind m (fun _ => F) fuel'
     end.
