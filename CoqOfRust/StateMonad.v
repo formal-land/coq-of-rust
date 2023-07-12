@@ -120,6 +120,13 @@ Definition bind `{State.Trait} {R A B : Set}
   | inr e => RawMonad.Pure (inr e, s)
   end).
 
+Module Notations.
+  Notation "'let*' a := b 'in' c" :=
+    (bind b (fun a => c))
+      (at level 200, b at level 100, a name).
+End Notations.
+Import Notations.
+
 Definition Return `{State.Trait} {R A : Set} (r : R) : Monad R A :=
   fun _ s => RawMonad.Pure (inr (Exception.Return r), s).
 Definition Continue `{State.Trait} {R A : Set} : Monad R A :=
@@ -131,13 +138,6 @@ Definition Panic `{State.Trait} {R A B : Set} (a : A) : Monad R B :=
 
 Definition NonTermination `{State.Trait} {R A : Set} : StateMonad R A :=
   fun s => RawMonad.Pure (inr Exception.NonTermination, s).
-
-Module Notations.
-  Notation "'let*' a := b 'in' c" :=
-    (bind b (fun a => c))
-      (at level 200, b at level 100, a name).
-End Notations.
-Import Notations.
 
 (* TODO: define for every (A : Set) in (Monad R A) *)
 (** the definition of a function representing the loop construction *)
