@@ -14,10 +14,10 @@ Definition bind
 Parameter run : forall `{StateMonad.State.Trait} {A : Set}, M A -> A.
 
 (** Provide definitions of control flow statements
-  * (A := Empty_set) because they retrun nothing
+  * (A := unit) because they retrun nothing
   *)
-Definition Break `{State.Trait} : M Empty_set := StateMonad.Break.
-Definition Continue `{State.Trait} : M Empty_set := StateMonad.Continue.
+Definition Break `{State.Trait} : M unit := StateMonad.Break.
+Definition Continue `{State.Trait} : M unit := StateMonad.Continue.
 
 Module Notations.
   Notation "'let*' a := b 'in' c" :=
