@@ -49,8 +49,6 @@ examples/flow_of_control/if_else.v
 examples/flow_of_control/if_let_challenge.v
 examples/flow_of_control/if_let_match_enum_values.v
 examples/flow_of_control/if_let.v
-examples/flow_of_control/infinite_loop.v
-examples/flow_of_control/loop_nesting_and_labels.v
 examples/flow_of_control/loop_returning_from_loops.v
 examples/flow_of_control/match_destructuring_arrays_slices.v
 examples/flow_of_control/match_destructuring_pointers_ref.v
@@ -59,7 +57,6 @@ examples/flow_of_control/match_guards_unreachable.v
 examples/flow_of_control/match_guards.v
 examples/flow_of_control/while_let_match_is_weird.v
 examples/flow_of_control/while_let.v
-examples/flow_of_control/while.v
 examples/functions/diverging_functions_example_sum_odd_numbers.v
 examples/functions/diverging_functions.v
 examples/functions/functions_closures_as_input_parameters.v
