@@ -1051,10 +1051,6 @@ impl Expr {
                     text("loop"),
                     line(),
                     paren(true, body.to_doc()),
-                    /*line(),
-                    text("from"),
-                    line(),
-                    text(loop_source),*/
                 ]),
             ),
             Expr::Match { scrutinee, arms } => group([
