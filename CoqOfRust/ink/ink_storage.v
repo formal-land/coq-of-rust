@@ -23,16 +23,15 @@ Module lazy.
       
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
-      Definition default `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-        Self::["new"] tt.
+      Definition default (_ : unit) : M Self := Self::["new"] tt.
       
-      Global Instance AssociatedFunction_default `{H : State.Trait} :
+      Global Instance AssociatedFunction_default :
         Notation.DoubleColon Self "default" := {
         Notation.double_colon := default;
       }.
       
       Global Instance I : core.default.Default.Trait Self := {
-        core.default.Default.default `{H : State.Trait} := default;
+        core.default.Default.default := default;
       }.
     End
       Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -42,10 +41,10 @@ Module lazy.
     Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
-      Definition new `{H : State.Trait} (_ : unit) : M (H := H) Self :=
+      Definition new (_ : unit) : M Self :=
         Pure {| Self._marker := core.marker.PhantomData.Build; |}.
       
-      Global Instance AssociatedFunction_new `{H : State.Trait} :
+      Global Instance AssociatedFunction_new :
         Notation.DoubleColon Self "new" := {
         Notation.double_colon := new;
       }.
@@ -59,20 +58,19 @@ Module lazy.
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
       Definition fmt
-          `{H : State.Trait}
           (self : ref Self)
           (f : mut_ref core.fmt.Formatter)
-          : M (H := H) core.fmt.Result :=
+          : M core.fmt.Result :=
         let* α0 := f.["debug_struct"] "Mapping" in
         let* α1 := α0.["field"] "key" (addr_of KeyType::["KEY"]) in
         α1.["finish"].
       
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+      Global Instance Method_fmt : Notation.Dot "fmt" := {
         Notation.dot := fmt;
       }.
       
       Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+        core.fmt.Debug.fmt := fmt;
       }.
     End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
     End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -81,25 +79,19 @@ Module lazy.
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
       Definition insert
-          `{H : State.Trait}
           (self : mut_ref Self)
           (key : Q)
           (value : ref R)
-          : M (H := H) (core.option.Option u32) :=
+          : M (core.option.Option u32) :=
         ink_env.api.set_contract_storage
           (addr_of (addr_of KeyType::["KEY"], key))
           value.
       
-      Global Instance Method_insert `{H : State.Trait} :
-        Notation.Dot "insert" := {
+      Global Instance Method_insert : Notation.Dot "insert" := {
         Notation.dot := insert;
       }.
       
-      Definition get
-          `{H : State.Trait}
-          (self : ref Self)
-          (key : Q)
-          : M (H := H) (core.option.Option V) :=
+      Definition get (self : ref Self) (key : Q) : M (core.option.Option V) :=
         let* α0 :=
           ink_env.api.get_contract_storage
             (addr_of (addr_of KeyType::["KEY"], key)) in
@@ -112,15 +104,11 @@ Module lazy.
                 (addr_of [ α0 ]) in
             core.panicking.panic_fmt α1).
       
-      Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
+      Global Instance Method_get : Notation.Dot "get" := {
         Notation.dot := get;
       }.
       
-      Definition take
-          `{H : State.Trait}
-          (self : ref Self)
-          (key : Q)
-          : M (H := H) (core.option.Option V) :=
+      Definition take (self : ref Self) (key : Q) : M (core.option.Option V) :=
         let* α0 :=
           ink_env.api.take_contract_storage
             (addr_of (addr_of KeyType::["KEY"], key)) in
@@ -133,49 +121,38 @@ Module lazy.
                 (addr_of [ α0 ]) in
             core.panicking.panic_fmt α1).
       
-      Global Instance Method_take `{H : State.Trait} : Notation.Dot "take" := {
+      Global Instance Method_take : Notation.Dot "take" := {
         Notation.dot := take;
       }.
       
       Definition size
-          `{H : State.Trait}
           (self : ref Self)
           (key : Q)
-          : M (H := H) (core.option.Option u32) :=
+          : M (core.option.Option u32) :=
         ink_env.api.contains_contract_storage
           (addr_of (addr_of KeyType::["KEY"], key)).
       
-      Global Instance Method_size `{H : State.Trait} : Notation.Dot "size" := {
+      Global Instance Method_size : Notation.Dot "size" := {
         Notation.dot := size;
       }.
       
-      Definition contains
-          `{H : State.Trait}
-          (self : ref Self)
-          (key : Q)
-          : M (H := H) bool :=
+      Definition contains (self : ref Self) (key : Q) : M bool :=
         let* α0 :=
           ink_env.api.contains_contract_storage
             (addr_of (addr_of KeyType::["KEY"], key)) in
         α0.["is_some"].
       
-      Global Instance Method_contains `{H : State.Trait} :
-        Notation.Dot "contains" := {
+      Global Instance Method_contains : Notation.Dot "contains" := {
         Notation.dot := contains;
       }.
       
-      Definition remove
-          `{H : State.Trait}
-          (self : ref Self)
-          (key : Q)
-          : M (H := H) unit :=
+      Definition remove (self : ref Self) (key : Q) : M unit :=
         let* _ :=
           ink_env.api.clear_contract_storage
             (addr_of (addr_of KeyType::["KEY"], key)) in
         Pure tt.
       
-      Global Instance Method_remove `{H : State.Trait} :
-        Notation.Dot "remove" := {
+      Global Instance Method_remove : Notation.Dot "remove" := {
         Notation.dot := remove;
       }.
     End Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_2.
@@ -188,35 +165,27 @@ Module lazy.
       
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
-      Definition encode
-          `{H : State.Trait}
-          (self : ref Self)
-          (_dest : mut_ref T)
-          : M (H := H) unit :=
+      Definition encode (self : ref Self) (_dest : mut_ref T) : M unit :=
         Pure tt.
       
-      Global Instance Method_encode `{H : State.Trait} :
-        Notation.Dot "encode" := {
+      Global Instance Method_encode : Notation.Dot "encode" := {
         Notation.dot := encode;
       }.
       
       Definition decode
-          `{H : State.Trait}
           (_input : mut_ref I)
-          :
-            M (H := H)
-              (core.result.Result Self parity_scale_codec.error.Error) :=
+          : M (core.result.Result Self parity_scale_codec.error.Error) :=
         let* α0 := core.default.Default.default tt in
         Pure (core.result.Result.Ok α0).
       
-      Global Instance AssociatedFunction_decode `{H : State.Trait} :
+      Global Instance AssociatedFunction_decode :
         Notation.DoubleColon Self "decode" := {
         Notation.double_colon := decode;
       }.
       
       Global Instance I : ink_storage_traits.storage.Storable.Trait Self := {
-        ink_storage_traits.storage.Storable.encode `{H : State.Trait} := encode;
-        ink_storage_traits.storage.Storable.decode `{H : State.Trait} := decode;
+        ink_storage_traits.storage.Storable.encode := encode;
+        ink_storage_traits.storage.Storable.decode := decode;
       }.
     End
       Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -253,13 +222,13 @@ Module lazy.
       
       Definition KEY := Pure KeyType::["KEY"].
       
-      Global Instance AssociatedFunction_KEY `{H : State.Trait} :
+      Global Instance AssociatedFunction_KEY :
         Notation.DoubleColon Self "KEY" := {
         Notation.double_colon := KEY;
       }.
       
       Global Instance I : ink_storage_traits.storage.StorageKey.Trait Self := {
-        ink_storage_traits.storage.StorageKey.KEY `{H : State.Trait} := KEY;
+        ink_storage_traits.storage.StorageKey.KEY := KEY;
       }.
     End
       Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -284,16 +253,15 @@ Module lazy.
     
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
-    Definition default `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-      Self::["new"] tt.
+    Definition default (_ : unit) : M Self := Self::["new"] tt.
     
-    Global Instance AssociatedFunction_default `{H : State.Trait} :
+    Global Instance AssociatedFunction_default :
       Notation.DoubleColon Self "default" := {
       Notation.double_colon := default;
     }.
     
     Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{H : State.Trait} := default;
+      core.default.Default.default := default;
     }.
   End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
   End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -301,10 +269,10 @@ Module lazy.
   Module Impl_ink_storage_lazy_Lazy_V_KeyType.
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
-    Definition new `{H : State.Trait} (_ : unit) : M (H := H) Self :=
+    Definition new (_ : unit) : M Self :=
       Pure {| Self._marker := core.marker.PhantomData.Build; |}.
     
-    Global Instance AssociatedFunction_new `{H : State.Trait} :
+    Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
@@ -317,20 +285,19 @@ Module lazy.
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
     Definition fmt
-        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
+        : M core.fmt.Result :=
       let* α0 := f.["debug_struct"] "Lazy" in
       let* α1 := α0.["field"] "key" (addr_of KeyType::["KEY"]) in
       α1.["finish"].
     
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+      core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
   End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -338,10 +305,7 @@ Module lazy.
   Module Impl_ink_storage_lazy_Lazy_V_KeyType_2.
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
-    Definition get
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) (core.option.Option V) :=
+    Definition get (self : ref Self) : M (core.option.Option V) :=
       let* α0 := ink_env.api.get_contract_storage (addr_of KeyType::["KEY"]) in
       match α0 with
       | core.result.Result.Ok core.option.Option.Some value =>
@@ -349,20 +313,16 @@ Module lazy.
       | _ => Pure core.option.Option.None
       end.
     
-    Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
+    Global Instance Method_get : Notation.Dot "get" := {
       Notation.dot := get;
     }.
     
-    Definition set
-        `{H : State.Trait}
-        (self : mut_ref Self)
-        (value : ref V)
-        : M (H := H) unit :=
+    Definition set (self : mut_ref Self) (value : ref V) : M unit :=
       let* _ :=
         ink_env.api.set_contract_storage (addr_of KeyType::["KEY"]) value in
       Pure tt.
     
-    Global Instance Method_set `{H : State.Trait} : Notation.Dot "set" := {
+    Global Instance Method_set : Notation.Dot "set" := {
       Notation.dot := set;
     }.
   End Impl_ink_storage_lazy_Lazy_V_KeyType_2.
@@ -370,18 +330,14 @@ Module lazy.
   Module Impl_ink_storage_lazy_Lazy_V_KeyType_3.
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
-    Definition get_or_default
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) V :=
+    Definition get_or_default (self : ref Self) : M V :=
       let* α0 := ink_env.api.get_contract_storage (addr_of KeyType::["KEY"]) in
       match α0 with
       | core.result.Result.Ok core.option.Option.Some value => Pure value
       | _ => core.default.Default.default tt
       end.
     
-    Global Instance Method_get_or_default `{H : State.Trait} :
-      Notation.Dot "get_or_default" := {
+    Global Instance Method_get_or_default : Notation.Dot "get_or_default" := {
       Notation.dot := get_or_default;
     }.
   End Impl_ink_storage_lazy_Lazy_V_KeyType_3.
@@ -394,33 +350,26 @@ Module lazy.
     
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
-    Definition encode
-        `{H : State.Trait}
-        (self : ref Self)
-        (_dest : mut_ref T)
-        : M (H := H) unit :=
-      Pure tt.
+    Definition encode (self : ref Self) (_dest : mut_ref T) : M unit := Pure tt.
     
-    Global Instance Method_encode `{H : State.Trait} :
-      Notation.Dot "encode" := {
+    Global Instance Method_encode : Notation.Dot "encode" := {
       Notation.dot := encode;
     }.
     
     Definition decode
-        `{H : State.Trait}
         (_input : mut_ref I)
-        : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
+        : M (core.result.Result Self parity_scale_codec.error.Error) :=
       let* α0 := core.default.Default.default tt in
       Pure (core.result.Result.Ok α0).
     
-    Global Instance AssociatedFunction_decode `{H : State.Trait} :
+    Global Instance AssociatedFunction_decode :
       Notation.DoubleColon Self "decode" := {
       Notation.double_colon := decode;
     }.
     
     Global Instance I : ink_storage_traits.storage.Storable.Trait Self := {
-      ink_storage_traits.storage.Storable.encode `{H : State.Trait} := encode;
-      ink_storage_traits.storage.Storable.decode `{H : State.Trait} := decode;
+      ink_storage_traits.storage.Storable.encode := encode;
+      ink_storage_traits.storage.Storable.decode := decode;
     }.
   End
     Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -457,13 +406,13 @@ Module lazy.
     
     Definition KEY := Pure KeyType::["KEY"].
     
-    Global Instance AssociatedFunction_KEY `{H : State.Trait} :
+    Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
       Notation.double_colon := KEY;
     }.
     
     Global Instance I : ink_storage_traits.storage.StorageKey.Trait Self := {
-      ink_storage_traits.storage.StorageKey.KEY `{H : State.Trait} := KEY;
+      ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
   End
     Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -491,16 +440,15 @@ Module mapping.
     
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
-    Definition default `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-      Self::["new"] tt.
+    Definition default (_ : unit) : M Self := Self::["new"] tt.
     
-    Global Instance AssociatedFunction_default `{H : State.Trait} :
+    Global Instance AssociatedFunction_default :
       Notation.DoubleColon Self "default" := {
       Notation.double_colon := default;
     }.
     
     Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{H : State.Trait} := default;
+      core.default.Default.default := default;
     }.
   End
     Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -510,10 +458,10 @@ Module mapping.
   Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_3.
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
-    Definition new `{H : State.Trait} (_ : unit) : M (H := H) Self :=
+    Definition new (_ : unit) : M Self :=
       Pure {| Self._marker := core.marker.PhantomData.Build; |}.
     
-    Global Instance AssociatedFunction_new `{H : State.Trait} :
+    Global Instance AssociatedFunction_new :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
@@ -526,20 +474,19 @@ Module mapping.
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
     Definition fmt
-        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
+        : M core.fmt.Result :=
       let* α0 := f.["debug_struct"] "Mapping" in
       let* α1 := α0.["field"] "key" (addr_of KeyType::["KEY"]) in
       α1.["finish"].
     
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+      core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
   End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -548,25 +495,19 @@ Module mapping.
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
     Definition insert
-        `{H : State.Trait}
         (self : mut_ref Self)
         (key : Q)
         (value : ref R)
-        : M (H := H) (core.option.Option u32) :=
+        : M (core.option.Option u32) :=
       ink_env.api.set_contract_storage
         (addr_of (addr_of KeyType::["KEY"], key))
         value.
     
-    Global Instance Method_insert `{H : State.Trait} :
-      Notation.Dot "insert" := {
+    Global Instance Method_insert : Notation.Dot "insert" := {
       Notation.dot := insert;
     }.
     
-    Definition get
-        `{H : State.Trait}
-        (self : ref Self)
-        (key : Q)
-        : M (H := H) (core.option.Option V) :=
+    Definition get (self : ref Self) (key : Q) : M (core.option.Option V) :=
       let* α0 :=
         ink_env.api.get_contract_storage
           (addr_of (addr_of KeyType::["KEY"], key)) in
@@ -579,15 +520,11 @@ Module mapping.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
+    Global Instance Method_get : Notation.Dot "get" := {
       Notation.dot := get;
     }.
     
-    Definition take
-        `{H : State.Trait}
-        (self : ref Self)
-        (key : Q)
-        : M (H := H) (core.option.Option V) :=
+    Definition take (self : ref Self) (key : Q) : M (core.option.Option V) :=
       let* α0 :=
         ink_env.api.take_contract_storage
           (addr_of (addr_of KeyType::["KEY"], key)) in
@@ -600,49 +537,35 @@ Module mapping.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_take `{H : State.Trait} : Notation.Dot "take" := {
+    Global Instance Method_take : Notation.Dot "take" := {
       Notation.dot := take;
     }.
     
-    Definition size
-        `{H : State.Trait}
-        (self : ref Self)
-        (key : Q)
-        : M (H := H) (core.option.Option u32) :=
+    Definition size (self : ref Self) (key : Q) : M (core.option.Option u32) :=
       ink_env.api.contains_contract_storage
         (addr_of (addr_of KeyType::["KEY"], key)).
     
-    Global Instance Method_size `{H : State.Trait} : Notation.Dot "size" := {
+    Global Instance Method_size : Notation.Dot "size" := {
       Notation.dot := size;
     }.
     
-    Definition contains
-        `{H : State.Trait}
-        (self : ref Self)
-        (key : Q)
-        : M (H := H) bool :=
+    Definition contains (self : ref Self) (key : Q) : M bool :=
       let* α0 :=
         ink_env.api.contains_contract_storage
           (addr_of (addr_of KeyType::["KEY"], key)) in
       α0.["is_some"].
     
-    Global Instance Method_contains `{H : State.Trait} :
-      Notation.Dot "contains" := {
+    Global Instance Method_contains : Notation.Dot "contains" := {
       Notation.dot := contains;
     }.
     
-    Definition remove
-        `{H : State.Trait}
-        (self : ref Self)
-        (key : Q)
-        : M (H := H) unit :=
+    Definition remove (self : ref Self) (key : Q) : M unit :=
       let* _ :=
         ink_env.api.clear_contract_storage
           (addr_of (addr_of KeyType::["KEY"], key)) in
       Pure tt.
     
-    Global Instance Method_remove `{H : State.Trait} :
-      Notation.Dot "remove" := {
+    Global Instance Method_remove : Notation.Dot "remove" := {
       Notation.dot := remove;
     }.
   End Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_4.
@@ -655,33 +578,26 @@ Module mapping.
     
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
-    Definition encode
-        `{H : State.Trait}
-        (self : ref Self)
-        (_dest : mut_ref T)
-        : M (H := H) unit :=
-      Pure tt.
+    Definition encode (self : ref Self) (_dest : mut_ref T) : M unit := Pure tt.
     
-    Global Instance Method_encode `{H : State.Trait} :
-      Notation.Dot "encode" := {
+    Global Instance Method_encode : Notation.Dot "encode" := {
       Notation.dot := encode;
     }.
     
     Definition decode
-        `{H : State.Trait}
         (_input : mut_ref I)
-        : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
+        : M (core.result.Result Self parity_scale_codec.error.Error) :=
       let* α0 := core.default.Default.default tt in
       Pure (core.result.Result.Ok α0).
     
-    Global Instance AssociatedFunction_decode `{H : State.Trait} :
+    Global Instance AssociatedFunction_decode :
       Notation.DoubleColon Self "decode" := {
       Notation.double_colon := decode;
     }.
     
     Global Instance I : ink_storage_traits.storage.Storable.Trait Self := {
-      ink_storage_traits.storage.Storable.encode `{H : State.Trait} := encode;
-      ink_storage_traits.storage.Storable.decode `{H : State.Trait} := decode;
+      ink_storage_traits.storage.Storable.encode := encode;
+      ink_storage_traits.storage.Storable.decode := decode;
     }.
   End
     Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -718,13 +634,13 @@ Module mapping.
     
     Definition KEY := Pure KeyType::["KEY"].
     
-    Global Instance AssociatedFunction_KEY `{H : State.Trait} :
+    Global Instance AssociatedFunction_KEY :
       Notation.DoubleColon Self "KEY" := {
       Notation.double_colon := KEY;
     }.
     
     Global Instance I : ink_storage_traits.storage.StorageKey.Trait Self := {
-      ink_storage_traits.storage.StorageKey.KEY `{H : State.Trait} := KEY;
+      ink_storage_traits.storage.StorageKey.KEY := KEY;
     }.
   End
     Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -753,10 +669,7 @@ Section
   
   Definition Identity : Set := Self.
   
-  Definition type_info
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) scale_info.ty.Type :=
+  Definition type_info (_ : unit) : M scale_info.ty.Type :=
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 :=
       scale_info.ty.path.Path::["new"] "Mapping" "ink_storage::lazy::mapping" in
@@ -838,13 +751,13 @@ Section
           α1.["type_name"] "PhantomData<fn() ->(K, V, KeyType)>") in
     α12.["composite"] α14.
   
-  Global Instance AssociatedFunction_type_info `{H : State.Trait} :
+  Global Instance AssociatedFunction_type_info :
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
   
   Global Instance I : scale_info.TypeInfo.Trait Self := {
-    scale_info.TypeInfo.type_info `{H : State.Trait} := type_info;
+    scale_info.TypeInfo.type_info := type_info;
   }.
 End Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 End Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -857,16 +770,15 @@ Section
   
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
-  Definition default `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-    Self::["new"] tt.
+  Definition default (_ : unit) : M Self := Self::["new"] tt.
   
-  Global Instance AssociatedFunction_default `{H : State.Trait} :
+  Global Instance AssociatedFunction_default :
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.
   
   Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H : State.Trait} := default;
+    core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 End Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -874,11 +786,10 @@ End Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_5.
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
-  Definition new `{H : State.Trait} (_ : unit) : M (H := H) Self :=
+  Definition new (_ : unit) : M Self :=
     Pure {| Self._marker := core.marker.PhantomData.Build; |}.
   
-  Global Instance AssociatedFunction_new `{H : State.Trait} :
-    Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
 End Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_5.
@@ -890,20 +801,19 @@ Section Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
   Definition fmt
-      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
+      : M core.fmt.Result :=
     let* α0 := f.["debug_struct"] "Mapping" in
     let* α1 := α0.["field"] "key" (addr_of KeyType::["KEY"]) in
     α1.["finish"].
   
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+    core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -912,24 +822,19 @@ Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_6.
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
   Definition insert
-      `{H : State.Trait}
       (self : mut_ref Self)
       (key : Q)
       (value : ref R)
-      : M (H := H) (core.option.Option u32) :=
+      : M (core.option.Option u32) :=
     ink_env.api.set_contract_storage
       (addr_of (addr_of KeyType::["KEY"], key))
       value.
   
-  Global Instance Method_insert `{H : State.Trait} : Notation.Dot "insert" := {
+  Global Instance Method_insert : Notation.Dot "insert" := {
     Notation.dot := insert;
   }.
   
-  Definition get
-      `{H : State.Trait}
-      (self : ref Self)
-      (key : Q)
-      : M (H := H) (core.option.Option V) :=
+  Definition get (self : ref Self) (key : Q) : M (core.option.Option V) :=
     let* α0 :=
       ink_env.api.get_contract_storage
         (addr_of (addr_of KeyType::["KEY"], key)) in
@@ -942,15 +847,11 @@ Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_6.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
+  Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
   }.
   
-  Definition take
-      `{H : State.Trait}
-      (self : ref Self)
-      (key : Q)
-      : M (H := H) (core.option.Option V) :=
+  Definition take (self : ref Self) (key : Q) : M (core.option.Option V) :=
     let* α0 :=
       ink_env.api.take_contract_storage
         (addr_of (addr_of KeyType::["KEY"], key)) in
@@ -963,48 +864,35 @@ Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_6.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_take `{H : State.Trait} : Notation.Dot "take" := {
+  Global Instance Method_take : Notation.Dot "take" := {
     Notation.dot := take;
   }.
   
-  Definition size
-      `{H : State.Trait}
-      (self : ref Self)
-      (key : Q)
-      : M (H := H) (core.option.Option u32) :=
+  Definition size (self : ref Self) (key : Q) : M (core.option.Option u32) :=
     ink_env.api.contains_contract_storage
       (addr_of (addr_of KeyType::["KEY"], key)).
   
-  Global Instance Method_size `{H : State.Trait} : Notation.Dot "size" := {
+  Global Instance Method_size : Notation.Dot "size" := {
     Notation.dot := size;
   }.
   
-  Definition contains
-      `{H : State.Trait}
-      (self : ref Self)
-      (key : Q)
-      : M (H := H) bool :=
+  Definition contains (self : ref Self) (key : Q) : M bool :=
     let* α0 :=
       ink_env.api.contains_contract_storage
         (addr_of (addr_of KeyType::["KEY"], key)) in
     α0.["is_some"].
   
-  Global Instance Method_contains `{H : State.Trait} :
-    Notation.Dot "contains" := {
+  Global Instance Method_contains : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
-  Definition remove
-      `{H : State.Trait}
-      (self : ref Self)
-      (key : Q)
-      : M (H := H) unit :=
+  Definition remove (self : ref Self) (key : Q) : M unit :=
     let* _ :=
       ink_env.api.clear_contract_storage
         (addr_of (addr_of KeyType::["KEY"], key)) in
     Pure tt.
   
-  Global Instance Method_remove `{H : State.Trait} : Notation.Dot "remove" := {
+  Global Instance Method_remove : Notation.Dot "remove" := {
     Notation.dot := remove;
   }.
 End Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_6.
@@ -1017,32 +905,26 @@ Section
   
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
-  Definition encode
-      `{H : State.Trait}
-      (self : ref Self)
-      (_dest : mut_ref T)
-      : M (H := H) unit :=
-    Pure tt.
+  Definition encode (self : ref Self) (_dest : mut_ref T) : M unit := Pure tt.
   
-  Global Instance Method_encode `{H : State.Trait} : Notation.Dot "encode" := {
+  Global Instance Method_encode : Notation.Dot "encode" := {
     Notation.dot := encode;
   }.
   
   Definition decode
-      `{H : State.Trait}
       (_input : mut_ref I)
-      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := core.default.Default.default tt in
     Pure (core.result.Result.Ok α0).
   
-  Global Instance AssociatedFunction_decode `{H : State.Trait} :
+  Global Instance AssociatedFunction_decode :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : ink_storage_traits.storage.Storable.Trait Self := {
-    ink_storage_traits.storage.Storable.encode `{H : State.Trait} := encode;
-    ink_storage_traits.storage.Storable.decode `{H : State.Trait} := decode;
+    ink_storage_traits.storage.Storable.encode := encode;
+    ink_storage_traits.storage.Storable.decode := decode;
   }.
 End
   Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -1079,13 +961,12 @@ Section
   
   Definition KEY := Pure KeyType::["KEY"].
   
-  Global Instance AssociatedFunction_KEY `{H : State.Trait} :
-    Notation.DoubleColon Self "KEY" := {
+  Global Instance AssociatedFunction_KEY : Notation.DoubleColon Self "KEY" := {
     Notation.double_colon := KEY;
   }.
   
   Global Instance I : ink_storage_traits.storage.StorageKey.Trait Self := {
-    ink_storage_traits.storage.StorageKey.KEY `{H : State.Trait} := KEY;
+    ink_storage_traits.storage.StorageKey.KEY := KEY;
   }.
 End
   Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -1101,9 +982,8 @@ Section
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
   Definition layout
-      `{H : State.Trait}
       (Pattern : ref ink_primitives.key.Key)
-      : M (H := H) ink_metadata.layout.Layout :=
+      : M ink_metadata.layout.Layout :=
     let* α0 :=
       ink_metadata.layout.LayoutKey::["from"] (addr_of KeyType::["KEY"]) in
     let* α1 :=
@@ -1112,13 +992,13 @@ Section
     let* α2 := ink_metadata.layout.RootLayout::["new"] α0 α1 in
     Pure (ink_metadata.layout.Layout.Root α2).
   
-  Global Instance AssociatedFunction_layout `{H : State.Trait} :
+  Global Instance AssociatedFunction_layout :
     Notation.DoubleColon Self "layout" := {
     Notation.double_colon := layout;
   }.
   
   Global Instance I : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H : State.Trait} := layout;
+    ink_storage_traits.layout.StorageLayout.layout := layout;
   }.
 End
   Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -1144,10 +1024,7 @@ Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
   
   Definition Identity : Set := Self.
   
-  Definition type_info
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) scale_info.ty.Type :=
+  Definition type_info (_ : unit) : M scale_info.ty.Type :=
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Lazy" "ink_storage::lazy" in
     let* α2 := α0.["path"] α1 in
@@ -1232,13 +1109,13 @@ Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
           α1.["type_name"] "PhantomData<fn() ->(V, KeyType)>") in
     α10.["composite"] α12.
   
-  Global Instance AssociatedFunction_type_info `{H : State.Trait} :
+  Global Instance AssociatedFunction_type_info :
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
   
   Global Instance I : scale_info.TypeInfo.Trait Self := {
-    scale_info.TypeInfo.type_info `{H : State.Trait} := type_info;
+    scale_info.TypeInfo.type_info := type_info;
   }.
 End Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
 End Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -1249,16 +1126,15 @@ Section Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
   
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
-  Definition default `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-    Self::["new"] tt.
+  Definition default (_ : unit) : M Self := Self::["new"] tt.
   
-  Global Instance AssociatedFunction_default `{H : State.Trait} :
+  Global Instance AssociatedFunction_default :
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.
   
   Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H : State.Trait} := default;
+    core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
 End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -1266,11 +1142,10 @@ End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
 Module Impl_ink_storage_lazy_Lazy_V_KeyType_4.
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
-  Definition new `{H : State.Trait} (_ : unit) : M (H := H) Self :=
+  Definition new (_ : unit) : M Self :=
     Pure {| Self._marker := core.marker.PhantomData.Build; |}.
   
-  Global Instance AssociatedFunction_new `{H : State.Trait} :
-    Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
 End Impl_ink_storage_lazy_Lazy_V_KeyType_4.
@@ -1282,20 +1157,19 @@ Section Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
   Definition fmt
-      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
+      : M core.fmt.Result :=
     let* α0 := f.["debug_struct"] "Lazy" in
     let* α1 := α0.["field"] "key" (addr_of KeyType::["KEY"]) in
     α1.["finish"].
   
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+    core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
 End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -1303,10 +1177,7 @@ End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
 Module Impl_ink_storage_lazy_Lazy_V_KeyType_5.
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
-  Definition get
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) (core.option.Option V) :=
+  Definition get (self : ref Self) : M (core.option.Option V) :=
     let* α0 := ink_env.api.get_contract_storage (addr_of KeyType::["KEY"]) in
     match α0 with
     | core.result.Result.Ok core.option.Option.Some value =>
@@ -1314,20 +1185,16 @@ Module Impl_ink_storage_lazy_Lazy_V_KeyType_5.
     | _ => Pure core.option.Option.None
     end.
   
-  Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
+  Global Instance Method_get : Notation.Dot "get" := {
     Notation.dot := get;
   }.
   
-  Definition set
-      `{H : State.Trait}
-      (self : mut_ref Self)
-      (value : ref V)
-      : M (H := H) unit :=
+  Definition set (self : mut_ref Self) (value : ref V) : M unit :=
     let* _ :=
       ink_env.api.set_contract_storage (addr_of KeyType::["KEY"]) value in
     Pure tt.
   
-  Global Instance Method_set `{H : State.Trait} : Notation.Dot "set" := {
+  Global Instance Method_set : Notation.Dot "set" := {
     Notation.dot := set;
   }.
 End Impl_ink_storage_lazy_Lazy_V_KeyType_5.
@@ -1335,18 +1202,14 @@ End Impl_ink_storage_lazy_Lazy_V_KeyType_5.
 Module Impl_ink_storage_lazy_Lazy_V_KeyType_6.
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
-  Definition get_or_default
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) V :=
+  Definition get_or_default (self : ref Self) : M V :=
     let* α0 := ink_env.api.get_contract_storage (addr_of KeyType::["KEY"]) in
     match α0 with
     | core.result.Result.Ok core.option.Option.Some value => Pure value
     | _ => core.default.Default.default tt
     end.
   
-  Global Instance Method_get_or_default `{H : State.Trait} :
-    Notation.Dot "get_or_default" := {
+  Global Instance Method_get_or_default : Notation.Dot "get_or_default" := {
     Notation.dot := get_or_default;
   }.
 End Impl_ink_storage_lazy_Lazy_V_KeyType_6.
@@ -1359,32 +1222,26 @@ Section
   
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
-  Definition encode
-      `{H : State.Trait}
-      (self : ref Self)
-      (_dest : mut_ref T)
-      : M (H := H) unit :=
-    Pure tt.
+  Definition encode (self : ref Self) (_dest : mut_ref T) : M unit := Pure tt.
   
-  Global Instance Method_encode `{H : State.Trait} : Notation.Dot "encode" := {
+  Global Instance Method_encode : Notation.Dot "encode" := {
     Notation.dot := encode;
   }.
   
   Definition decode
-      `{H : State.Trait}
       (_input : mut_ref I)
-      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := core.default.Default.default tt in
     Pure (core.result.Result.Ok α0).
   
-  Global Instance AssociatedFunction_decode `{H : State.Trait} :
+  Global Instance AssociatedFunction_decode :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : ink_storage_traits.storage.Storable.Trait Self := {
-    ink_storage_traits.storage.Storable.encode `{H : State.Trait} := encode;
-    ink_storage_traits.storage.Storable.decode `{H : State.Trait} := decode;
+    ink_storage_traits.storage.Storable.encode := encode;
+    ink_storage_traits.storage.Storable.decode := decode;
   }.
 End
   Impl_ink_storage_traits_storage_Storable_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -1421,13 +1278,12 @@ Section
   
   Definition KEY := Pure KeyType::["KEY"].
   
-  Global Instance AssociatedFunction_KEY `{H : State.Trait} :
-    Notation.DoubleColon Self "KEY" := {
+  Global Instance AssociatedFunction_KEY : Notation.DoubleColon Self "KEY" := {
     Notation.double_colon := KEY;
   }.
   
   Global Instance I : ink_storage_traits.storage.StorageKey.Trait Self := {
-    ink_storage_traits.storage.StorageKey.KEY `{H : State.Trait} := KEY;
+    ink_storage_traits.storage.StorageKey.KEY := KEY;
   }.
 End
   Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -1443,9 +1299,8 @@ Section
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
   Definition layout
-      `{H : State.Trait}
       (Pattern : ref ink_primitives.key.Key)
-      : M (H := H) ink_metadata.layout.Layout :=
+      : M ink_metadata.layout.Layout :=
     let* α0 :=
       ink_metadata.layout.LayoutKey::["from"] (addr_of KeyType::["KEY"]) in
     let* α1 :=
@@ -1454,13 +1309,13 @@ Section
     let* α2 := ink_metadata.layout.RootLayout::["new"] α0 α1 in
     Pure (ink_metadata.layout.Layout.Root α2).
   
-  Global Instance AssociatedFunction_layout `{H : State.Trait} :
+  Global Instance AssociatedFunction_layout :
     Notation.DoubleColon Self "layout" := {
     Notation.double_colon := layout;
   }.
   
   Global Instance I : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout `{H : State.Trait} := layout;
+    ink_storage_traits.layout.StorageLayout.layout := layout;
   }.
 End
   Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_Lazy_V_KeyType.

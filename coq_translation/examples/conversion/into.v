@@ -17,7 +17,7 @@ Module Impl_core_fmt_Debug_for_into_Number.
   
   Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
     string -> i32 -> 
-    M core.fmt.Result.
+    M (H := H) core.fmt.Result.
   
   Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
     core.fmt.Formatter "debug_struct_field1_finish" := {
