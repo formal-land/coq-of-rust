@@ -472,7 +472,10 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
             )
         }),
         // control flow expressions are responsible for side effects, so they are monadic already
-        Expr::ControlFlow(lcf_expression) => (Stmt::Expr(Box::new(Expr::ControlFlow(lcf_expression))), fresh_vars),
+        Expr::ControlFlow(lcf_expression) => (
+            Stmt::Expr(Box::new(Expr::ControlFlow(lcf_expression))),
+            fresh_vars,
+        ),
         Expr::StructStruct {
             path,
             fields,
