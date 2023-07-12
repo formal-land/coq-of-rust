@@ -28,10 +28,10 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
-Parameter print : forall { T : Set } , `{core.fmt.Debug.Trait T} T -> M unit.
+Parameter print : forall {T : Set}, `{core.fmt.Debug.Trait T} T -> M unit.
 
 Parameter print_ref : forall
-    { T : Set } ,
+    {T : Set},
     `{core.fmt.Debug.Trait T}
     ref T
     -> M unit.

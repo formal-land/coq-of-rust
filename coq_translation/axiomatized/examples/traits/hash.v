@@ -35,7 +35,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
 End Impl_core_hash_Hash_for_hash_Person.
 
 Parameter calculate_hash : forall
-    { T : Set } ,
+    {T : Set},
     `{core.hash.Hash.Trait T}
     ref T
     -> M u64.

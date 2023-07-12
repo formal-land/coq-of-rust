@@ -2,14 +2,14 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter compare_prints : forall
-    { T : Set } ,
+    {T : Set},
     `{core.fmt.Debug.Trait T}
     `{core.fmt.Display.Trait T}
     ref T
     -> M unit.
 
 Parameter compare_types : forall
-    { T : Set } { U : Set } ,
+    {T : Set} {U : Set},
     `{core.fmt.Debug.Trait T}
     `{core.fmt.Debug.Trait U}
     ref T->

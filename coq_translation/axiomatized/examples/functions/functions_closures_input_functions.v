@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter call_me : forall
-    { F : Set } ,
+    {F : Set},
     `{core.ops.function.Fn.Trait unit F}
     F
     -> M unit.

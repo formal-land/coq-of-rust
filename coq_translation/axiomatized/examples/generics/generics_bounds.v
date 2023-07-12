@@ -71,13 +71,13 @@ End Triangle.
 Definition Triangle : Set := Triangle.t.
 
 Parameter print_debug : forall
-    { T : Set } ,
+    {T : Set},
     `{core.fmt.Debug.Trait T}
     ref T
     -> M unit.
 
 Parameter area : forall
-    { T : Set } ,
+    {T : Set},
     `{generics_bounds.HasArea.Trait T}
     ref T
     -> M f64.

@@ -30,7 +30,7 @@ Parameter gen_spec_t : generics_functions.SGen generics_functions.A -> M unit.
 
 Parameter gen_spec_i32 : generics_functions.SGen i32 -> M unit.
 
-Parameter generic : forall { T : Set } , generics_functions.SGen T -> M unit.
+Parameter generic : forall {T : Set}, generics_functions.SGen T -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : unit -> M unit.
