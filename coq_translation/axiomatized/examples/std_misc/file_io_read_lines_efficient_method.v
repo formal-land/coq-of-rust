@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : unit -> M unit.
 
 Parameter read_lines : forall
-    { P : Set } ,
+    {P : Set},
     `{core.convert.AsRef.Trait std.path.Path P}
     P
     ->

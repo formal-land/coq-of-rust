@@ -49,13 +49,13 @@ End
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
 Parameter red : forall
-    { T : Set } ,
+    {T : Set},
     `{generics_bounds_test_case_empty_bounds.Red.Trait T}
     ref T
     -> M (ref str).
 
 Parameter blue : forall
-    { T : Set } ,
+    {T : Set},
     `{generics_bounds_test_case_empty_bounds.Blue.Trait T}
     ref T
     -> M (ref str).

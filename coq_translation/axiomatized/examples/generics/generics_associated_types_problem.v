@@ -66,7 +66,7 @@ End
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
 
 Parameter difference : forall
-    { A : Set } { B : Set } { C : Set } ,
+    {A : Set} {B : Set} {C : Set},
     `{generics_associated_types_problem.Contains.Trait A B C}
     ref C
     -> M i32.

@@ -2,13 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter apply : forall
-    { F : Set } ,
+    {F : Set},
     `{core.ops.function.FnOnce.Trait unit F}
     F
     -> M unit.
 
 Parameter apply_to_3 : forall
-    { F : Set } ,
+    {F : Set},
     `{core.ops.function.Fn.Trait (i32) F}
     F
     -> M i32.
