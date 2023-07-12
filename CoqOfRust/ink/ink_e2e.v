@@ -903,21 +903,19 @@ Module client.
           let* α2 :=
             match α1 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           Pure {| Self.api := α2; Self.contracts := contracts; |}).
     
@@ -951,21 +949,19 @@ Module client.
             let* α3 :=
               match α2 with
               | __awaitee =>
-                loop
-                  let* _ :=
+                while
+                  (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
+                    | {| Ready.0 := result; |} => Break
                     |  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
                     assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
+                  Pure tt)
               end in
             α3.["unwrap_or_else"]
               (fun err =>
@@ -1028,21 +1024,19 @@ Module client.
             let* α2 :=
               match α1 with
               | __awaitee =>
-                loop
-                  let* _ :=
+                while
+                  (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
+                    | {| Ready.0 := result; |} => Break
                     |  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
                     assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
+                  Pure tt)
               end in
             let* α3 := LangItem α2 in
             match α3 with
@@ -1099,21 +1093,19 @@ Module client.
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end).
     
     Global Instance Method_instantiate_dry_run `{H : State.Trait} :
@@ -1215,21 +1207,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α4 := LangItem α3 in
             match α4 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let* _ :=
             let* res :=
@@ -1276,21 +1266,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α3 := LangItem α2 in
             match α3 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let account_id := core.option.Option.None in
           let* _ :=
@@ -1298,11 +1286,11 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α1 := LangItem α0 in
             match α1 with
             | iter =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of iter) in
                   match α0 with
-                  | None => Pure Break
+                  | None => Break
                   | Some {| Some.0 := evt; |} =>
                     let* evt :=
                       evt.["unwrap_or_else"]
@@ -1391,9 +1379,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                       else
                         Pure tt
                   end in
-                Pure tt
-                from
-                for
+                Pure tt)
             end in
           let* account_id :=
             account_id.["expect"] "cannot extract `account_id` from events" in
@@ -1455,21 +1441,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α2 :=
               match α1 with
               | __awaitee =>
-                loop
-                  let* _ :=
+                while
+                  (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
+                    | {| Ready.0 := result; |} => Break
                     |  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
                     assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
+                  Pure tt)
               end in
             let* α3 := LangItem α2 in
             match α3 with
@@ -1515,21 +1499,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α2 := LangItem α1 in
             match α2 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let* _ :=
             let* res :=
@@ -1554,21 +1536,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α1 := LangItem α0 in
             match α1 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let hash := core.option.Option.None in
           let* _ :=
@@ -1576,11 +1556,11 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α1 := LangItem α0 in
             match α1 with
             | iter =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of iter) in
                   match α0 with
-                  | None => Pure Break
+                  | None => Break
                   | Some {| Some.0 := evt; |} =>
                     let* evt :=
                       evt.["unwrap_or_else"]
@@ -1625,7 +1605,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                         assign
                           hash
                           (core.option.Option.Some uploaded.["code_hash"]) in
-                      Pure Break
+                      Break
                     else
                       let* α0 :=
                         ink_e2e.client.is_extrinsic_failed_event
@@ -1665,9 +1645,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                       else
                         Pure tt
                   end in
-                Pure tt
-                from
-                for
+                Pure tt)
             end in
           let* code_hash :=
             match hash with
@@ -1754,21 +1732,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α1 := LangItem α0 in
             match α1 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let* _ :=
             let* α0 := dry_run.["exec_result"].["result"].["is_err"] in
@@ -1792,32 +1768,30 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α3 := LangItem α2 in
             match α3 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let* _ :=
             let* α0 := tx_events.["iter"] in
             let* α1 := LangItem α0 in
             match α1 with
             | iter =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of iter) in
                   match α0 with
-                  | None => Pure Break
+                  | None => Break
                   | Some {| Some.0 := evt; |} =>
                     let* evt :=
                       evt.["unwrap_or_else"]
@@ -1867,9 +1841,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                     else
                       Pure tt
                   end in
-                Pure tt
-                from
-                for
+                Pure tt)
             end in
           Pure
             (core.result.Result.Ok
@@ -1907,32 +1879,30 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α1 := LangItem α0 in
             match α1 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let* _ :=
             let* α0 := tx_events.["iter"] in
             let* α1 := LangItem α0 in
             match α1 with
             | iter =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of iter) in
                   match α0 with
-                  | None => Pure Break
+                  | None => Break
                   | Some {| Some.0 := evt; |} =>
                     let* evt :=
                       evt.["unwrap_or_else"]
@@ -1982,9 +1952,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                     else
                       Pure tt
                   end in
-                Pure tt
-                from
-                for
+                Pure tt)
             end in
           Pure (core.result.Result.Ok tx_events)).
     
@@ -2031,21 +1999,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α3 := LangItem α2 in
             match α3 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let* _ :=
             let* res :=
@@ -2104,21 +2070,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α3 :=
               match α2 with
               | __awaitee =>
-                loop
-                  let* _ :=
+                while
+                  (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
+                    | {| Ready.0 := result; |} => Break
                     |  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
                     assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
+                  Pure tt)
               end in
             let* α4 :=
               α3.["unwrap_or_else"]
@@ -2136,21 +2100,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α7 :=
               match α6 with
               | __awaitee =>
-                loop
-                  let* _ :=
+                while
+                  (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
+                    | {| Ready.0 := result; |} => Break
                     |  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
                     assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
+                  Pure tt)
               end in
             let* α8 :=
               α7.["unwrap_or_else"]
@@ -3863,21 +3825,19 @@ Module Impl_ink_e2e_client_Client_C_E_2.
         let* α2 :=
           match α1 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end in
         Pure {| Self.api := α2; Self.contracts := contracts; |}).
   
@@ -3911,21 +3871,19 @@ Module Impl_ink_e2e_client_Client_C_E_2.
           let* α3 :=
             match α2 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           α3.["unwrap_or_else"]
             (fun err =>
@@ -3987,21 +3945,19 @@ Module Impl_ink_e2e_client_Client_C_E_2.
           let* α2 :=
             match α1 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let* α3 := LangItem α2 in
           match α3 with
@@ -4058,21 +4014,19 @@ Module Impl_ink_e2e_client_Client_C_E_2.
         let* α1 := LangItem α0 in
         match α1 with
         | __awaitee =>
-          loop
-            let* _ :=
+          while
+            (let* _ :=
               let* α0 := LangItem (addr_of __awaitee) in
               let* α1 := LangItem _task_context in
               let* α0 := LangItem α0 α1 in
               match α0 with
-              | {| Ready.0 := result; |} => Pure Break
+              | {| Ready.0 := result; |} => Break
               |  => Pure tt
               end in
             let* _ :=
               let* α0 := yield tt in
               assign _task_context α0 in
-            Pure tt
-            from
-            loop
+            Pure tt)
         end).
   
   Global Instance Method_instantiate_dry_run `{H : State.Trait} :
@@ -4174,21 +4128,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α4 := LangItem α3 in
           match α4 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end in
         let* _ :=
           let* res :=
@@ -4235,21 +4187,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α3 := LangItem α2 in
           match α3 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end in
         let account_id := core.option.Option.None in
         let* _ :=
@@ -4257,11 +4207,11 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α1 := LangItem α0 in
           match α1 with
           | iter =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of iter) in
                 match α0 with
-                | None => Pure Break
+                | None => Break
                 | Some {| Some.0 := evt; |} =>
                   let* evt :=
                     evt.["unwrap_or_else"]
@@ -4347,9 +4297,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                     else
                       Pure tt
                 end in
-              Pure tt
-              from
-              for
+              Pure tt)
           end in
         let* account_id :=
           account_id.["expect"] "cannot extract `account_id` from events" in
@@ -4411,21 +4359,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α2 :=
             match α1 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let* α3 := LangItem α2 in
           match α3 with
@@ -4470,21 +4416,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α2 := LangItem α1 in
           match α2 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end in
         let* _ :=
           let* res :=
@@ -4509,21 +4453,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end in
         let hash := core.option.Option.None in
         let* _ :=
@@ -4531,11 +4473,11 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α1 := LangItem α0 in
           match α1 with
           | iter =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of iter) in
                 match α0 with
-                | None => Pure Break
+                | None => Break
                 | Some {| Some.0 := evt; |} =>
                   let* evt :=
                     evt.["unwrap_or_else"]
@@ -4580,7 +4522,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                       assign
                         hash
                         (core.option.Option.Some uploaded.["code_hash"]) in
-                    Pure Break
+                    Break
                   else
                     let* α0 :=
                       ink_e2e.client.is_extrinsic_failed_event (addr_of evt) in
@@ -4618,9 +4560,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                     else
                       Pure tt
                 end in
-              Pure tt
-              from
-              for
+              Pure tt)
           end in
         let* code_hash :=
           match hash with
@@ -4707,21 +4647,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end in
         let* _ :=
           let* α0 := dry_run.["exec_result"].["result"].["is_err"] in
@@ -4745,32 +4683,30 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α3 := LangItem α2 in
           match α3 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end in
         let* _ :=
           let* α0 := tx_events.["iter"] in
           let* α1 := LangItem α0 in
           match α1 with
           | iter =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of iter) in
                 match α0 with
-                | None => Pure Break
+                | None => Break
                 | Some {| Some.0 := evt; |} =>
                   let* evt :=
                     evt.["unwrap_or_else"]
@@ -4819,9 +4755,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   else
                     Pure tt
                 end in
-              Pure tt
-              from
-              for
+              Pure tt)
           end in
         Pure
           (core.result.Result.Ok
@@ -4859,32 +4793,30 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end in
         let* _ :=
           let* α0 := tx_events.["iter"] in
           let* α1 := LangItem α0 in
           match α1 with
           | iter =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of iter) in
                 match α0 with
-                | None => Pure Break
+                | None => Break
                 | Some {| Some.0 := evt; |} =>
                   let* evt :=
                     evt.["unwrap_or_else"]
@@ -4933,9 +4865,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   else
                     Pure tt
                 end in
-              Pure tt
-              from
-              for
+              Pure tt)
           end in
         Pure (core.result.Result.Ok tx_events)).
   
@@ -4982,21 +4912,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α3 := LangItem α2 in
           match α3 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end in
         let* _ :=
           let* res :=
@@ -5055,21 +4983,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α3 :=
             match α2 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let* α4 :=
             α3.["unwrap_or_else"]
@@ -5087,21 +5013,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α7 :=
             match α6 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let* α8 :=
             α7.["unwrap_or_else"]
@@ -5843,21 +5767,19 @@ Module node_proc.
             let* α2 := LangItem α1 in
             match α2 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           match client with
           | core.result.Result.Ok client =>
@@ -6406,21 +6328,19 @@ Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
           let* α2 := LangItem α1 in
           match α2 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end in
         match client with
         | core.result.Result.Ok client =>
@@ -7842,21 +7762,19 @@ Module xts.
             let* α3 :=
               match α2 with
               | __awaitee =>
-                loop
-                  let* _ :=
+                while
+                  (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
+                    | {| Ready.0 := result; |} => Break
                     |  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
                     assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
+                  Pure tt)
               end in
             let* α4 := LangItem α3 in
             match α4 with
@@ -7871,21 +7789,19 @@ Module xts.
             let* α2 :=
               match α1 with
               | __awaitee =>
-                loop
-                  let* _ :=
+                while
+                  (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
+                    | {| Ready.0 := result; |} => Break
                     |  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
                     assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
+                  Pure tt)
               end in
             α2.["unwrap_or_else"]
               (fun err =>
@@ -7960,21 +7876,19 @@ Module xts.
             let* α3 :=
               match α2 with
               | __awaitee =>
-                loop
-                  let* _ :=
+                while
+                  (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
+                    | {| Ready.0 := result; |} => Break
                     |  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
                     assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
+                  Pure tt)
               end in
             α3.["unwrap_or_else"]
               (fun err =>
@@ -8020,21 +7934,19 @@ Module xts.
           let* α3 :=
             match α2 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let* α4 :=
             α3.["map"]
@@ -8068,21 +7980,19 @@ Module xts.
           let* α8 :=
             match α7 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let* α9 :=
             α8.["unwrap_or_else"]
@@ -8100,21 +8010,19 @@ Module xts.
           let* α12 :=
             match α11 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           α12.["unwrap_or_else"]
             (fun err =>
@@ -8172,21 +8080,19 @@ Module xts.
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end).
     
     Global Instance Method_instantiate_with_code `{H : State.Trait} :
@@ -8240,21 +8146,19 @@ Module xts.
             let* α3 :=
               match α2 with
               | __awaitee =>
-                loop
-                  let* _ :=
+                while
+                  (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
+                    | {| Ready.0 := result; |} => Break
                     |  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
                     assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
+                  Pure tt)
               end in
             α3.["unwrap_or_else"]
               (fun err =>
@@ -8312,21 +8216,19 @@ Module xts.
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end).
     
     Global Instance Method_upload `{H : State.Trait} :
@@ -8382,21 +8284,19 @@ Module xts.
             let* α3 :=
               match α2 with
               | __awaitee =>
-                loop
-                  let* _ :=
+                while
+                  (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
+                    | {| Ready.0 := result; |} => Break
                     |  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
                     assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
+                  Pure tt)
               end in
             α3.["unwrap_or_else"]
               (fun err =>
@@ -8461,21 +8361,19 @@ Module xts.
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end).
     
     Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
@@ -8503,21 +8401,19 @@ Module xts.
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end).
     
     Global Instance Method_runtime_call `{H : State.Trait} :
@@ -9155,8 +9051,8 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
     let __field0 := core.option.Option.None in
     let __field1 := core.option.Option.None in
     let* _ :=
-      loop
-        let* α0 := serde.de.MapAccess.next_key (addr_of __map) in
+      while
+        (let* α0 := serde.de.MapAccess.next_key (addr_of __map) in
         let* α1 :=
           match α0 with
           | core.result.Result.Ok __val => Pure __val
@@ -9221,10 +9117,8 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
             Pure tt
           end
         else
-          let _ := Break in
-          Pure tt
-        from
-        while in
+          let* _ := Break in
+          Pure tt) in
     let* __field0 :=
       match __field0 with
       | core.option.Option.Some __field0 => Pure __field0
@@ -11488,21 +11382,19 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
           let* α3 :=
             match α2 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           let* α4 := LangItem α3 in
           match α4 with
@@ -11517,21 +11409,19 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
           let* α2 :=
             match α1 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           α2.["unwrap_or_else"]
             (fun err =>
@@ -11606,21 +11496,19 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
           let* α3 :=
             match α2 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           α3.["unwrap_or_else"]
             (fun err =>
@@ -11666,21 +11554,19 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* α3 :=
           match α2 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end in
         let* α4 :=
           α3.["map"]
@@ -11714,21 +11600,19 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* α8 :=
           match α7 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end in
         let* α9 :=
           α8.["unwrap_or_else"]
@@ -11746,21 +11630,19 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* α12 :=
           match α11 with
           | __awaitee =>
-            loop
-              let* _ :=
+            while
+              (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Pure Break
+                | {| Ready.0 := result; |} => Break
                 |  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
                 assign _task_context α0 in
-              Pure tt
-              from
-              loop
+              Pure tt)
           end in
         α12.["unwrap_or_else"]
           (fun err =>
@@ -11818,21 +11700,19 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* α1 := LangItem α0 in
         match α1 with
         | __awaitee =>
-          loop
-            let* _ :=
+          while
+            (let* _ :=
               let* α0 := LangItem (addr_of __awaitee) in
               let* α1 := LangItem _task_context in
               let* α0 := LangItem α0 α1 in
               match α0 with
-              | {| Ready.0 := result; |} => Pure Break
+              | {| Ready.0 := result; |} => Break
               |  => Pure tt
               end in
             let* _ :=
               let* α0 := yield tt in
               assign _task_context α0 in
-            Pure tt
-            from
-            loop
+            Pure tt)
         end).
   
   Global Instance Method_instantiate_with_code `{H : State.Trait} :
@@ -11886,21 +11766,19 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
           let* α3 :=
             match α2 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           α3.["unwrap_or_else"]
             (fun err =>
@@ -11958,21 +11836,19 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* α1 := LangItem α0 in
         match α1 with
         | __awaitee =>
-          loop
-            let* _ :=
+          while
+            (let* _ :=
               let* α0 := LangItem (addr_of __awaitee) in
               let* α1 := LangItem _task_context in
               let* α0 := LangItem α0 α1 in
               match α0 with
-              | {| Ready.0 := result; |} => Pure Break
+              | {| Ready.0 := result; |} => Break
               |  => Pure tt
               end in
             let* _ :=
               let* α0 := yield tt in
               assign _task_context α0 in
-            Pure tt
-            from
-            loop
+            Pure tt)
         end).
   
   Global Instance Method_upload `{H : State.Trait} : Notation.Dot "upload" := {
@@ -12027,21 +11903,19 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
           let* α3 :=
             match α2 with
             | __awaitee =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
+                  | {| Ready.0 := result; |} => Break
                   |  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
                   assign _task_context α0 in
-                Pure tt
-                from
-                loop
+                Pure tt)
             end in
           α3.["unwrap_or_else"]
             (fun err =>
@@ -12105,21 +11979,19 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* α1 := LangItem α0 in
         match α1 with
         | __awaitee =>
-          loop
-            let* _ :=
+          while
+            (let* _ :=
               let* α0 := LangItem (addr_of __awaitee) in
               let* α1 := LangItem _task_context in
               let* α0 := LangItem α0 α1 in
               match α0 with
-              | {| Ready.0 := result; |} => Pure Break
+              | {| Ready.0 := result; |} => Break
               |  => Pure tt
               end in
             let* _ :=
               let* α0 := yield tt in
               assign _task_context α0 in
-            Pure tt
-            from
-            loop
+            Pure tt)
         end).
   
   Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
@@ -12147,21 +12019,19 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* α1 := LangItem α0 in
         match α1 with
         | __awaitee =>
-          loop
-            let* _ :=
+          while
+            (let* _ :=
               let* α0 := LangItem (addr_of __awaitee) in
               let* α1 := LangItem _task_context in
               let* α0 := LangItem α0 α1 in
               match α0 with
-              | {| Ready.0 := result; |} => Pure Break
+              | {| Ready.0 := result; |} => Break
               |  => Pure tt
               end in
             let* _ :=
               let* α0 := yield tt in
               assign _task_context α0 in
-            Pure tt
-            from
-            loop
+            Pure tt)
         end).
   
   Global Instance Method_runtime_call `{H : State.Trait} :

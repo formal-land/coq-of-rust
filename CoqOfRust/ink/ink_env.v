@@ -14466,17 +14466,15 @@ Module engine.
             α1.["unwrap_or"] 0 in
           let* bytes := alloc.vec.Vec::["with_capacity"] remaining_len in
           let* _ :=
-            loop
-              let* α0 := input.["read_byte"] in
+            while
+              (let* α0 := input.["read_byte"] in
               let* α1 := let_if core.result.Result.Ok byte := α0 in
               if (α1 : bool) then
                 let* _ := bytes.["push"] byte in
                 Pure tt
               else
-                let _ := Break in
-                Pure tt
-              from
-              while in
+                let* _ := Break in
+                Pure tt) in
           let* _ :=
             let* α0 := bytes.["len"] in
             let* α1 := α0.["lt"] 4 in
@@ -17162,17 +17160,15 @@ Module off_chain.
           α1.["unwrap_or"] 0 in
         let* bytes := alloc.vec.Vec::["with_capacity"] remaining_len in
         let* _ :=
-          loop
-            let* α0 := input.["read_byte"] in
+          while
+            (let* α0 := input.["read_byte"] in
             let* α1 := let_if core.result.Result.Ok byte := α0 in
             if (α1 : bool) then
               let* _ := bytes.["push"] byte in
               Pure tt
             else
-              let _ := Break in
-              Pure tt
-            from
-            while in
+              let* _ := Break in
+              Pure tt) in
         let* _ :=
           let* α0 := bytes.["len"] in
           let* α1 := α0.["lt"] 4 in
@@ -19668,17 +19664,15 @@ Module call_data.
         α1.["unwrap_or"] 0 in
       let* bytes := alloc.vec.Vec::["with_capacity"] remaining_len in
       let* _ :=
-        loop
-          let* α0 := input.["read_byte"] in
+        while
+          (let* α0 := input.["read_byte"] in
           let* α1 := let_if core.result.Result.Ok byte := α0 in
           if (α1 : bool) then
             let* _ := bytes.["push"] byte in
             Pure tt
           else
-            let _ := Break in
-            Pure tt
-          from
-          while in
+            let* _ := Break in
+            Pure tt) in
       let* _ :=
         let* α0 := bytes.["len"] in
         let* α1 := α0.["lt"] 4 in
@@ -19957,17 +19951,15 @@ Module
       α1.["unwrap_or"] 0 in
     let* bytes := alloc.vec.Vec::["with_capacity"] remaining_len in
     let* _ :=
-      loop
-        let* α0 := input.["read_byte"] in
+      while
+        (let* α0 := input.["read_byte"] in
         let* α1 := let_if core.result.Result.Ok byte := α0 in
         if (α1 : bool) then
           let* _ := bytes.["push"] byte in
           Pure tt
         else
-          let _ := Break in
-          Pure tt
-        from
-        while in
+          let* _ := Break in
+          Pure tt) in
     let* _ :=
       let* α0 := bytes.["len"] in
       let* α1 := α0.["lt"] 4 in

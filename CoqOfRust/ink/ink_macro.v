@@ -938,14 +938,14 @@ Module storage.
                 let* '(fields, i) := fields.["quote_into_iter"] in
                 let* has_iter := has_iter.["bitor"] i in
                 let _ := has_iter in
-                loop
-                  if (true : bool) then
+                while
+                  (if (true : bool) then
                     let* fields :=
                       let* α0 := fields.["next"] in
                       match α0 with
                       | core.option.Option.Some _x =>
                         Pure (quote.__private.RepInterp.Build_t _x)
-                      | core.option.Option.None => Pure Break
+                      | core.option.Option.None => Break
                       end in
                     let* _ :=
                       let* _s := proc_macro2.TokenStream::["new"] tt in
@@ -959,10 +959,8 @@ Module storage.
                         _s in
                     Pure tt
                   else
-                    let _ := Break in
-                    Pure tt
-                  from
-                  while in
+                    let* _ := Break in
+                    Pure tt) in
               quote.__private.push_group
                 (addr_of _s)
                 proc_macro2.Delimiter.Brace
@@ -1199,14 +1197,14 @@ Module storage.
               let* '(encode_body, i) := encode_body.["quote_into_iter"] in
               let* has_iter := has_iter.["bitor"] i in
               let _ := has_iter in
-              loop
-                if (true : bool) then
+              while
+                (if (true : bool) then
                   let* encode_body :=
                     let* α0 := encode_body.["next"] in
                     match α0 with
                     | core.option.Option.Some _x =>
                       Pure (quote.__private.RepInterp.Build_t _x)
-                    | core.option.Option.None => Pure Break
+                    | core.option.Option.None => Break
                     end in
                   let* _ :=
                     quote.to_tokens.ToTokens.to_tokens
@@ -1214,10 +1212,8 @@ Module storage.
                       (addr_of _s) in
                   Pure tt
                 else
-                  let _ := Break in
-                  Pure tt
-                from
-                while in
+                  let* _ := Break in
+                  Pure tt) in
             quote.__private.push_group
               (addr_of _s)
               proc_macro2.Delimiter.Brace
@@ -1376,14 +1372,14 @@ Module storage.
             let* '(ty_generics, i) := ty_generics.["quote_into_iter"] in
             let* has_iter := has_iter.["bitor"] i in
             let _ := has_iter in
-            loop
-              if (true : bool) then
+            while
+              (if (true : bool) then
                 let* ty_generics :=
                   let* α0 := ty_generics.["next"] in
                   match α0 with
                   | core.option.Option.Some _x =>
                     Pure (quote.__private.RepInterp.Build_t _x)
-                  | core.option.Option.None => Pure Break
+                  | core.option.Option.None => Break
                   end in
                 let* _ :=
                   let* α0 := _i.["gt"] 0 in
@@ -1399,10 +1395,8 @@ Module storage.
                     (addr_of _s) in
                 Pure tt
               else
-                let _ := Break in
-                Pure tt
-              from
-              while in
+                let* _ := Break in
+                Pure tt) in
           let* _ := quote.__private.push_gt (addr_of _s) in
           let* _ := quote.__private.push_semi (addr_of _s) in
           let* _ := quote.__private.push_ident (addr_of _s) "type" in
@@ -1788,14 +1782,14 @@ Module storage.
                     field_layouts.["quote_into_iter"] in
                   let* has_iter := has_iter.["bitor"] i in
                   let _ := has_iter in
-                  loop
-                    if (true : bool) then
+                  while
+                    (if (true : bool) then
                       let* field_layouts :=
                         let* α0 := field_layouts.["next"] in
                         match α0 with
                         | core.option.Option.Some _x =>
                           Pure (quote.__private.RepInterp.Build_t _x)
-                        | core.option.Option.None => Pure Break
+                        | core.option.Option.None => Break
                         end in
                       let* _ :=
                         quote.to_tokens.ToTokens.to_tokens
@@ -1804,10 +1798,8 @@ Module storage.
                       let* _ := quote.__private.push_comma (addr_of _s) in
                       Pure tt
                     else
-                      let _ := Break in
-                      Pure tt
-                    from
-                    while in
+                      let* _ := Break in
+                      Pure tt) in
                 quote.__private.push_group
                   (addr_of _s)
                   proc_macro2.Delimiter.Bracket
@@ -1961,14 +1953,14 @@ Module storage.
                         field_layouts.["quote_into_iter"] in
                       let* has_iter := has_iter.["bitor"] i in
                       let _ := has_iter in
-                      loop
-                        if (true : bool) then
+                      while
+                        (if (true : bool) then
                           let* field_layouts :=
                             let* α0 := field_layouts.["next"] in
                             match α0 with
                             | core.option.Option.Some _x =>
                               Pure (quote.__private.RepInterp.Build_t _x)
-                            | core.option.Option.None => Pure Break
+                            | core.option.Option.None => Break
                             end in
                           let* _ :=
                             quote.to_tokens.ToTokens.to_tokens
@@ -1977,10 +1969,8 @@ Module storage.
                           let* _ := quote.__private.push_comma (addr_of _s) in
                           Pure tt
                         else
-                          let _ := Break in
-                          Pure tt
-                        from
-                        while in
+                          let* _ := Break in
+                          Pure tt) in
                     quote.__private.push_group
                       (addr_of _s)
                       proc_macro2.Delimiter.Bracket
@@ -2113,14 +2103,14 @@ Module storage.
                     variant_layouts.["quote_into_iter"] in
                   let* has_iter := has_iter.["bitor"] i in
                   let _ := has_iter in
-                  loop
-                    if (true : bool) then
+                  while
+                    (if (true : bool) then
                       let* variant_layouts :=
                         let* α0 := variant_layouts.["next"] in
                         match α0 with
                         | core.option.Option.Some _x =>
                           Pure (quote.__private.RepInterp.Build_t _x)
-                        | core.option.Option.None => Pure Break
+                        | core.option.Option.None => Break
                         end in
                       let* _ :=
                         quote.to_tokens.ToTokens.to_tokens
@@ -2129,10 +2119,8 @@ Module storage.
                       let* _ := quote.__private.push_comma (addr_of _s) in
                       Pure tt
                     else
-                      let _ := Break in
-                      Pure tt
-                    from
-                    while in
+                      let* _ := Break in
+                      Pure tt) in
                 quote.__private.push_group
                   (addr_of _s)
                   proc_macro2.Delimiter.Bracket
@@ -2741,14 +2729,14 @@ Module storable.
               let* '(fields, i) := fields.["quote_into_iter"] in
               let* has_iter := has_iter.["bitor"] i in
               let _ := has_iter in
-              loop
-                if (true : bool) then
+              while
+                (if (true : bool) then
                   let* fields :=
                     let* α0 := fields.["next"] in
                     match α0 with
                     | core.option.Option.Some _x =>
                       Pure (quote.__private.RepInterp.Build_t _x)
-                    | core.option.Option.None => Pure Break
+                    | core.option.Option.None => Break
                     end in
                   let* _ :=
                     let* _s := proc_macro2.TokenStream::["new"] tt in
@@ -2762,10 +2750,8 @@ Module storable.
                       _s in
                   Pure tt
                 else
-                  let _ := Break in
-                  Pure tt
-                from
-                while in
+                  let* _ := Break in
+                  Pure tt) in
             quote.__private.push_group
               (addr_of _s)
               proc_macro2.Delimiter.Brace
@@ -3002,14 +2988,14 @@ Module storable.
             let* '(encode_body, i) := encode_body.["quote_into_iter"] in
             let* has_iter := has_iter.["bitor"] i in
             let _ := has_iter in
-            loop
-              if (true : bool) then
+            while
+              (if (true : bool) then
                 let* encode_body :=
                   let* α0 := encode_body.["next"] in
                   match α0 with
                   | core.option.Option.Some _x =>
                     Pure (quote.__private.RepInterp.Build_t _x)
-                  | core.option.Option.None => Pure Break
+                  | core.option.Option.None => Break
                   end in
                 let* _ :=
                   quote.to_tokens.ToTokens.to_tokens
@@ -3017,10 +3003,8 @@ Module storable.
                     (addr_of _s) in
                 Pure tt
               else
-                let _ := Break in
-                Pure tt
-              from
-              while in
+                let* _ := Break in
+                Pure tt) in
           quote.__private.push_group
             (addr_of _s)
             proc_macro2.Delimiter.Brace
@@ -3600,14 +3584,14 @@ Definition storable_enum_derive
             let* '(fields, i) := fields.["quote_into_iter"] in
             let* has_iter := has_iter.["bitor"] i in
             let _ := has_iter in
-            loop
-              if (true : bool) then
+            while
+              (if (true : bool) then
                 let* fields :=
                   let* α0 := fields.["next"] in
                   match α0 with
                   | core.option.Option.Some _x =>
                     Pure (quote.__private.RepInterp.Build_t _x)
-                  | core.option.Option.None => Pure Break
+                  | core.option.Option.None => Break
                   end in
                 let* _ :=
                   let* _s := proc_macro2.TokenStream::["new"] tt in
@@ -3621,10 +3605,8 @@ Definition storable_enum_derive
                     _s in
                 Pure tt
               else
-                let _ := Break in
-                Pure tt
-              from
-              while in
+                let* _ := Break in
+                Pure tt) in
           quote.__private.push_group
             (addr_of _s)
             proc_macro2.Delimiter.Brace
@@ -3857,14 +3839,14 @@ Definition storable_enum_derive
           let* '(encode_body, i) := encode_body.["quote_into_iter"] in
           let* has_iter := has_iter.["bitor"] i in
           let _ := has_iter in
-          loop
-            if (true : bool) then
+          while
+            (if (true : bool) then
               let* encode_body :=
                 let* α0 := encode_body.["next"] in
                 match α0 with
                 | core.option.Option.Some _x =>
                   Pure (quote.__private.RepInterp.Build_t _x)
-                | core.option.Option.None => Pure Break
+                | core.option.Option.None => Break
                 end in
               let* _ :=
                 quote.to_tokens.ToTokens.to_tokens
@@ -3872,10 +3854,8 @@ Definition storable_enum_derive
                   (addr_of _s) in
               Pure tt
             else
-              let _ := Break in
-              Pure tt
-            from
-            while in
+              let* _ := Break in
+              Pure tt) in
         quote.__private.push_group
           (addr_of _s)
           proc_macro2.Delimiter.Brace
@@ -4019,14 +3999,14 @@ Module storable_hint.
           let* '(ty_generics, i) := ty_generics.["quote_into_iter"] in
           let* has_iter := has_iter.["bitor"] i in
           let _ := has_iter in
-          loop
-            if (true : bool) then
+          while
+            (if (true : bool) then
               let* ty_generics :=
                 let* α0 := ty_generics.["next"] in
                 match α0 with
                 | core.option.Option.Some _x =>
                   Pure (quote.__private.RepInterp.Build_t _x)
-                | core.option.Option.None => Pure Break
+                | core.option.Option.None => Break
                 end in
               let* _ :=
                 let* α0 := _i.["gt"] 0 in
@@ -4042,10 +4022,8 @@ Module storable_hint.
                   (addr_of _s) in
               Pure tt
             else
-              let _ := Break in
-              Pure tt
-            from
-            while in
+              let* _ := Break in
+              Pure tt) in
         let* _ := quote.__private.push_gt (addr_of _s) in
         let* _ := quote.__private.push_semi (addr_of _s) in
         let* _ := quote.__private.push_ident (addr_of _s) "type" in
@@ -4254,14 +4232,14 @@ Definition storable_hint_inner
         let* '(ty_generics, i) := ty_generics.["quote_into_iter"] in
         let* has_iter := has_iter.["bitor"] i in
         let _ := has_iter in
-        loop
-          if (true : bool) then
+        while
+          (if (true : bool) then
             let* ty_generics :=
               let* α0 := ty_generics.["next"] in
               match α0 with
               | core.option.Option.Some _x =>
                 Pure (quote.__private.RepInterp.Build_t _x)
-              | core.option.Option.None => Pure Break
+              | core.option.Option.None => Break
               end in
             let* _ :=
               let* α0 := _i.["gt"] 0 in
@@ -4277,10 +4255,8 @@ Definition storable_hint_inner
                 (addr_of _s) in
             Pure tt
           else
-            let _ := Break in
-            Pure tt
-          from
-          while in
+            let* _ := Break in
+            Pure tt) in
       let* _ := quote.__private.push_gt (addr_of _s) in
       let* _ := quote.__private.push_semi (addr_of _s) in
       let* _ := quote.__private.push_ident (addr_of _s) "type" in
@@ -4709,14 +4685,14 @@ Module storage_layout.
                 let* '(field_layouts, i) := field_layouts.["quote_into_iter"] in
                 let* has_iter := has_iter.["bitor"] i in
                 let _ := has_iter in
-                loop
-                  if (true : bool) then
+                while
+                  (if (true : bool) then
                     let* field_layouts :=
                       let* α0 := field_layouts.["next"] in
                       match α0 with
                       | core.option.Option.Some _x =>
                         Pure (quote.__private.RepInterp.Build_t _x)
-                      | core.option.Option.None => Pure Break
+                      | core.option.Option.None => Break
                       end in
                     let* _ :=
                       quote.to_tokens.ToTokens.to_tokens
@@ -4725,10 +4701,8 @@ Module storage_layout.
                     let* _ := quote.__private.push_comma (addr_of _s) in
                     Pure tt
                   else
-                    let _ := Break in
-                    Pure tt
-                  from
-                  while in
+                    let* _ := Break in
+                    Pure tt) in
               quote.__private.push_group
                 (addr_of _s)
                 proc_macro2.Delimiter.Bracket
@@ -4876,14 +4850,14 @@ Module storage_layout.
                       field_layouts.["quote_into_iter"] in
                     let* has_iter := has_iter.["bitor"] i in
                     let _ := has_iter in
-                    loop
-                      if (true : bool) then
+                    while
+                      (if (true : bool) then
                         let* field_layouts :=
                           let* α0 := field_layouts.["next"] in
                           match α0 with
                           | core.option.Option.Some _x =>
                             Pure (quote.__private.RepInterp.Build_t _x)
-                          | core.option.Option.None => Pure Break
+                          | core.option.Option.None => Break
                           end in
                         let* _ :=
                           quote.to_tokens.ToTokens.to_tokens
@@ -4892,10 +4866,8 @@ Module storage_layout.
                         let* _ := quote.__private.push_comma (addr_of _s) in
                         Pure tt
                       else
-                        let _ := Break in
-                        Pure tt
-                      from
-                      while in
+                        let* _ := Break in
+                        Pure tt) in
                   quote.__private.push_group
                     (addr_of _s)
                     proc_macro2.Delimiter.Bracket
@@ -5028,14 +5000,14 @@ Module storage_layout.
                   variant_layouts.["quote_into_iter"] in
                 let* has_iter := has_iter.["bitor"] i in
                 let _ := has_iter in
-                loop
-                  if (true : bool) then
+                while
+                  (if (true : bool) then
                     let* variant_layouts :=
                       let* α0 := variant_layouts.["next"] in
                       match α0 with
                       | core.option.Option.Some _x =>
                         Pure (quote.__private.RepInterp.Build_t _x)
-                      | core.option.Option.None => Pure Break
+                      | core.option.Option.None => Break
                       end in
                     let* _ :=
                       quote.to_tokens.ToTokens.to_tokens
@@ -5044,10 +5016,8 @@ Module storage_layout.
                     let* _ := quote.__private.push_comma (addr_of _s) in
                     Pure tt
                   else
-                    let _ := Break in
-                    Pure tt
-                  from
-                  while in
+                    let* _ := Break in
+                    Pure tt) in
               quote.__private.push_group
                 (addr_of _s)
                 proc_macro2.Delimiter.Bracket
@@ -5295,14 +5265,14 @@ Definition storage_layout_struct
               let* '(field_layouts, i) := field_layouts.["quote_into_iter"] in
               let* has_iter := has_iter.["bitor"] i in
               let _ := has_iter in
-              loop
-                if (true : bool) then
+              while
+                (if (true : bool) then
                   let* field_layouts :=
                     let* α0 := field_layouts.["next"] in
                     match α0 with
                     | core.option.Option.Some _x =>
                       Pure (quote.__private.RepInterp.Build_t _x)
-                    | core.option.Option.None => Pure Break
+                    | core.option.Option.None => Break
                     end in
                   let* _ :=
                     quote.to_tokens.ToTokens.to_tokens
@@ -5311,10 +5281,8 @@ Definition storage_layout_struct
                   let* _ := quote.__private.push_comma (addr_of _s) in
                   Pure tt
                 else
-                  let _ := Break in
-                  Pure tt
-                from
-                while in
+                  let* _ := Break in
+                  Pure tt) in
             quote.__private.push_group
               (addr_of _s)
               proc_macro2.Delimiter.Bracket
@@ -5457,14 +5425,14 @@ Definition storage_layout_enum
                     field_layouts.["quote_into_iter"] in
                   let* has_iter := has_iter.["bitor"] i in
                   let _ := has_iter in
-                  loop
-                    if (true : bool) then
+                  while
+                    (if (true : bool) then
                       let* field_layouts :=
                         let* α0 := field_layouts.["next"] in
                         match α0 with
                         | core.option.Option.Some _x =>
                           Pure (quote.__private.RepInterp.Build_t _x)
-                        | core.option.Option.None => Pure Break
+                        | core.option.Option.None => Break
                         end in
                       let* _ :=
                         quote.to_tokens.ToTokens.to_tokens
@@ -5473,10 +5441,8 @@ Definition storage_layout_enum
                       let* _ := quote.__private.push_comma (addr_of _s) in
                       Pure tt
                     else
-                      let _ := Break in
-                      Pure tt
-                    from
-                    while in
+                      let* _ := Break in
+                      Pure tt) in
                 quote.__private.push_group
                   (addr_of _s)
                   proc_macro2.Delimiter.Bracket
@@ -5609,14 +5575,14 @@ Definition storage_layout_enum
                 variant_layouts.["quote_into_iter"] in
               let* has_iter := has_iter.["bitor"] i in
               let _ := has_iter in
-              loop
-                if (true : bool) then
+              while
+                (if (true : bool) then
                   let* variant_layouts :=
                     let* α0 := variant_layouts.["next"] in
                     match α0 with
                     | core.option.Option.Some _x =>
                       Pure (quote.__private.RepInterp.Build_t _x)
-                    | core.option.Option.None => Pure Break
+                    | core.option.Option.None => Break
                     end in
                   let* _ :=
                     quote.to_tokens.ToTokens.to_tokens
@@ -5625,10 +5591,8 @@ Definition storage_layout_enum
                   let* _ := quote.__private.push_comma (addr_of _s) in
                   Pure tt
                 else
-                  let _ := Break in
-                  Pure tt
-                from
-                while in
+                  let* _ := Break in
+                  Pure tt) in
             quote.__private.push_group
               (addr_of _s)
               proc_macro2.Delimiter.Bracket

@@ -146,11 +146,11 @@ Module codegen.
                   let* α0 := LangItem contracts_to_build_and_import in
                   match α0 with
                   | iter =>
-                    loop
-                      let* _ :=
+                    while
+                      (let* _ :=
                         let* α0 := LangItem (addr_of iter) in
                         match α0 with
-                        | None => Pure Break
+                        | None => Break
                         | Some {| Some.0 := manifest_path; |} =>
                           let* dest_wasm :=
                             ink_e2e_macro.codegen.build_contract
@@ -161,9 +161,7 @@ Module codegen.
                               dest_wasm in
                           Pure tt
                         end in
-                      Pure tt
-                      from
-                      for
+                      Pure tt)
                   end in
                 let* _ :=
                   let* α0 := already_built_contracts.["clone"] in
@@ -178,11 +176,11 @@ Module codegen.
               let* α0 := LangItem contracts_to_build_and_import in
               match α0 with
               | iter =>
-                loop
-                  let* _ :=
+                while
+                  (let* _ :=
                     let* α0 := LangItem (addr_of iter) in
                     match α0 with
-                    | None => Pure Break
+                    | None => Break
                     | Some {| Some.0 := manifest_path; |} =>
                       let* α0 :=
                         already_built_contracts.["get"]
@@ -200,9 +198,7 @@ Module codegen.
                       else
                         Pure tt
                     end in
-                  Pure tt
-                  from
-                  for
+                  Pure tt)
               end in
             let* _ :=
               let* α0 := already_built_contracts.["clone"] in
@@ -292,23 +288,21 @@ Module codegen.
         let* '(attrs, i) := attrs.["quote_into_iter"] in
         let* has_iter := has_iter.["bitor"] i in
         let _ := has_iter in
-        loop
-          if (true : bool) then
+        while
+          (if (true : bool) then
             let* attrs :=
               let* α0 := attrs.["next"] in
               match α0 with
               | core.option.Option.Some _x =>
                 Pure (quote.__private.RepInterp.Build_t _x)
-              | core.option.Option.None => Pure Break
+              | core.option.Option.None => Break
               end in
             let* _ :=
               quote.to_tokens.ToTokens.to_tokens (addr_of attrs) (addr_of _s) in
             Pure tt
           else
-            let _ := Break in
-            Pure tt
-          from
-          while in
+            let* _ := Break in
+            Pure tt) in
       let* _ := quote.__private.push_pound (addr_of _s) in
       let* _ :=
         let* _s := proc_macro2.TokenStream::["new"] tt in
@@ -576,14 +570,14 @@ Module codegen.
                 let* '(contracts, i) := contracts.["quote_into_iter"] in
                 let* has_iter := has_iter.["bitor"] i in
                 let _ := has_iter in
-                loop
-                  if (true : bool) then
+                while
+                  (if (true : bool) then
                     let* contracts :=
                       let* α0 := contracts.["next"] in
                       match α0 with
                       | core.option.Option.Some _x =>
                         Pure (quote.__private.RepInterp.Build_t _x)
-                      | core.option.Option.None => Pure Break
+                      | core.option.Option.None => Break
                       end in
                     let* _ :=
                       let* α0 := _i.["gt"] 0 in
@@ -599,10 +593,8 @@ Module codegen.
                         (addr_of _s) in
                     Pure tt
                   else
-                    let _ := Break in
-                    Pure tt
-                  from
-                  while in
+                    let* _ := Break in
+                    Pure tt) in
               quote.__private.push_group
                 (addr_of _s)
                 proc_macro2.Delimiter.Bracket
@@ -1108,11 +1100,11 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
                 let* α0 := LangItem contracts_to_build_and_import in
                 match α0 with
                 | iter =>
-                  loop
-                    let* _ :=
+                  while
+                    (let* _ :=
                       let* α0 := LangItem (addr_of iter) in
                       match α0 with
-                      | None => Pure Break
+                      | None => Break
                       | Some {| Some.0 := manifest_path; |} =>
                         let* dest_wasm :=
                           ink_e2e_macro.codegen.build_contract
@@ -1123,9 +1115,7 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
                             dest_wasm in
                         Pure tt
                       end in
-                    Pure tt
-                    from
-                    for
+                    Pure tt)
                 end in
               let* _ :=
                 let* α0 := already_built_contracts.["clone"] in
@@ -1140,11 +1130,11 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
             let* α0 := LangItem contracts_to_build_and_import in
             match α0 with
             | iter =>
-              loop
-                let* _ :=
+              while
+                (let* _ :=
                   let* α0 := LangItem (addr_of iter) in
                   match α0 with
-                  | None => Pure Break
+                  | None => Break
                   | Some {| Some.0 := manifest_path; |} =>
                     let* α0 :=
                       already_built_contracts.["get"] (addr_of manifest_path) in
@@ -1161,9 +1151,7 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
                     else
                       Pure tt
                   end in
-                Pure tt
-                from
-                for
+                Pure tt)
             end in
           let* _ :=
             let* α0 := already_built_contracts.["clone"] in
@@ -1253,23 +1241,21 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
       let* '(attrs, i) := attrs.["quote_into_iter"] in
       let* has_iter := has_iter.["bitor"] i in
       let _ := has_iter in
-      loop
-        if (true : bool) then
+      while
+        (if (true : bool) then
           let* attrs :=
             let* α0 := attrs.["next"] in
             match α0 with
             | core.option.Option.Some _x =>
               Pure (quote.__private.RepInterp.Build_t _x)
-            | core.option.Option.None => Pure Break
+            | core.option.Option.None => Break
             end in
           let* _ :=
             quote.to_tokens.ToTokens.to_tokens (addr_of attrs) (addr_of _s) in
           Pure tt
         else
-          let _ := Break in
-          Pure tt
-        from
-        while in
+          let* _ := Break in
+          Pure tt) in
     let* _ := quote.__private.push_pound (addr_of _s) in
     let* _ :=
       let* _s := proc_macro2.TokenStream::["new"] tt in
@@ -1535,14 +1521,14 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
               let* '(contracts, i) := contracts.["quote_into_iter"] in
               let* has_iter := has_iter.["bitor"] i in
               let _ := has_iter in
-              loop
-                if (true : bool) then
+              while
+                (if (true : bool) then
                   let* contracts :=
                     let* α0 := contracts.["next"] in
                     match α0 with
                     | core.option.Option.Some _x =>
                       Pure (quote.__private.RepInterp.Build_t _x)
-                    | core.option.Option.None => Pure Break
+                    | core.option.Option.None => Break
                     end in
                   let* _ :=
                     let* α0 := _i.["gt"] 0 in
@@ -1558,10 +1544,8 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
                       (addr_of _s) in
                   Pure tt
                 else
-                  let _ := Break in
-                  Pure tt
-                from
-                while in
+                  let* _ := Break in
+                  Pure tt) in
             quote.__private.push_group
               (addr_of _s)
               proc_macro2.Delimiter.Bracket
@@ -2013,11 +1997,11 @@ Module config.
         let* α1 := LangItem α0 in
         match α1 with
         | iter =>
-          loop
-            let* _ :=
+          while
+            (let* _ :=
               let* α0 := LangItem (addr_of iter) in
               match α0 with
-              | None => Pure Break
+              | None => Break
               | Some {| Some.0 := arg; |} =>
                 let* α0 := arg.["name"].["is_ident"] "keep_attr" in
                 if (α0 : bool) then
@@ -2120,9 +2104,7 @@ Module config.
                         syn.error.Error::["new_spanned"] (addr_of arg) α0 in
                       Return (core.result.Result.Err α1)
               end in
-            Pure tt
-            from
-            for
+            Pure tt)
         end in
       let* additional_contracts :=
         let* α0 :=
@@ -2337,11 +2319,11 @@ Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
       let* α1 := LangItem α0 in
       match α1 with
       | iter =>
-        loop
-          let* _ :=
+        while
+          (let* _ :=
             let* α0 := LangItem (addr_of iter) in
             match α0 with
-            | None => Pure Break
+            | None => Break
             | Some {| Some.0 := arg; |} =>
               let* α0 := arg.["name"].["is_ident"] "keep_attr" in
               if (α0 : bool) then
@@ -2443,9 +2425,7 @@ Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
                       syn.error.Error::["new_spanned"] (addr_of arg) α0 in
                     Return (core.result.Result.Err α1)
             end in
-          Pure tt
-          from
-          for
+          Pure tt)
       end in
     let* additional_contracts :=
       let* α0 :=
