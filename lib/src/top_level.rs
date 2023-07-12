@@ -655,20 +655,12 @@ fn fn_to_doc<'a>(
                             concat([
                                 text("forall"),
                                 line(),
-                                nest([
-                                    intersperse(
-                                        ty_params.iter().map(|t| {
-                                            concat([
-                                                text("{ "),
-                                                text(t),
-                                                text(" : "),
-                                                text("Set }"),
-                                            ])
-                                        }),
-                                        [line()],
-                                    ),
-                                    line(),
-                                ]),
+                                nest([intersperse(
+                                    ty_params.iter().map(|t| {
+                                        concat([text("{"), text(t), text(" : "), text("Set}")])
+                                    }),
+                                    [line()],
+                                )]),
                                 text(","),
                                 line(),
                             ])
