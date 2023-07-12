@@ -58,10 +58,12 @@ Module bump.
   End Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
   
   Module InnerAlloc.
+    Unset Primitive Projections.
     Record t : Set := {
       next : usize;
       upper_limit : usize;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_next : Notation.Dot "next" := {
       Notation.dot '(Build_t x0 _) := x0;
@@ -298,10 +300,12 @@ Module Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
 End Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
 
 Module InnerAlloc.
+  Unset Primitive Projections.
   Record t : Set := {
     next : usize;
     upper_limit : usize;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_next : Notation.Dot "next" := {
     Notation.dot '(Build_t x0 _) := x0;

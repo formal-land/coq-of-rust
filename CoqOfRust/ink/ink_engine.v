@@ -88,11 +88,14 @@ Module ext.
   End Impl_core_convert_From_for_ink_engine_ext_Result.
   
   Module ReturnCode.
-    Record t : Set := { _ : u32;}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Unset Primitive Projections.
+    Record t : Set :=
+    { _ : u32;}.
+    Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
   End ReturnCode.
   Definition ReturnCode := ReturnCode.t.
   
@@ -107,6 +110,7 @@ Module ext.
   End Impl_ink_engine_ext_ReturnCode.
   
   Module Engine.
+    Unset Primitive Projections.
     Record t : Set := {
       database : ink_engine.database.Database;
       exec_context : ink_engine.exec_context.ExecContext;
@@ -116,6 +120,7 @@ Module ext.
         :
         ink_engine.chain_extension.ChainExtensionHandler;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_database : Notation.Dot "database" := {
       Notation.dot '(Build_t x0 _ _ _ _) := x0;
@@ -137,11 +142,13 @@ Module ext.
   Definition Engine : Set := Engine.t.
   
   Module ChainSpec.
+    Unset Primitive Projections.
     Record t : Set := {
       gas_price : ink_engine.types.Balance;
       minimum_balance : ink_engine.types.Balance;
       block_time : ink_engine.types.BlockTimestamp;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_gas_price : Notation.Dot "gas_price" := {
       Notation.dot '(Build_t x0 _ _) := x0;
@@ -971,11 +978,14 @@ Module Impl_core_convert_From_for_ink_engine_ext_Result.
 End Impl_core_convert_From_for_ink_engine_ext_Result.
 
 Module ReturnCode.
-  Record t : Set := { _ : u32;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Unset Primitive Projections.
+  Record t : Set :=
+  { _ : u32;}.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End ReturnCode.
 Definition ReturnCode := ReturnCode.t.
 
@@ -990,6 +1000,7 @@ Module Impl_ink_engine_ext_ReturnCode_2.
 End Impl_ink_engine_ext_ReturnCode_2.
 
 Module Engine.
+  Unset Primitive Projections.
   Record t : Set := {
     database : ink_engine.database.Database;
     exec_context : ink_engine.exec_context.ExecContext;
@@ -997,6 +1008,7 @@ Module Engine.
     chain_spec : ink_engine.ext.ChainSpec;
     chain_extension_handler : ink_engine.chain_extension.ChainExtensionHandler;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_database : Notation.Dot "database" := {
     Notation.dot '(Build_t x0 _ _ _ _) := x0;
@@ -1018,11 +1030,13 @@ End Engine.
 Definition Engine : Set := Engine.t.
 
 Module ChainSpec.
+  Unset Primitive Projections.
   Record t : Set := {
     gas_price : ink_engine.types.Balance;
     minimum_balance : ink_engine.types.Balance;
     block_time : ink_engine.types.BlockTimestamp;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_gas_price : Notation.Dot "gas_price" := {
     Notation.dot '(Build_t x0 _ _) := x0;
@@ -1761,10 +1775,12 @@ Definition set_output
 
 Module test_api.
   Module EmittedEvent.
+    Unset Primitive Projections.
     Record t : Set := {
       topics : alloc.vec.Vec (alloc.vec.Vec u8);
       data : alloc.vec.Vec u8;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_topics : Notation.Dot "topics" := {
       Notation.dot '(Build_t x0 _) := x0;
@@ -1821,9 +1837,11 @@ Module test_api.
   End Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
   
   Module RecordedDebugMessages.
+    Unset Primitive Projections.
     Record t : Set := {
       debug_messages : alloc.vec.Vec alloc.string.String;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_debug_messages : Notation.Dot "debug_messages" := {
       Notation.dot '(Build_t x0) := x0;
@@ -1920,6 +1938,7 @@ Module test_api.
     Impl_core_iter_traits_collect_IntoIterator_for_ink_engine_test_api_RecordedDebugMessages.
   
   Module DebugInfo.
+    Unset Primitive Projections.
     Record t : Set := {
       emitted_events : alloc.vec.Vec ink_engine.test_api.EmittedEvent;
       emitted_debug_messages : ink_engine.test_api.RecordedDebugMessages;
@@ -1935,6 +1954,7 @@ Module test_api.
           ink_engine.types.AccountId
           (std.collections.hash.map.HashMap (alloc.vec.Vec u8) bool);
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_emitted_events : Notation.Dot "emitted_events" := {
       Notation.dot '(Build_t x0 _ _ _ _) := x0;
@@ -2338,10 +2358,12 @@ Module test_api.
 End test_api.
 
 Module EmittedEvent.
+  Unset Primitive Projections.
   Record t : Set := {
     topics : alloc.vec.Vec (alloc.vec.Vec u8);
     data : alloc.vec.Vec u8;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_topics : Notation.Dot "topics" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -2398,9 +2420,11 @@ Module Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
 End Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
 
 Module RecordedDebugMessages.
+  Unset Primitive Projections.
   Record t : Set := {
     debug_messages : alloc.vec.Vec alloc.string.String;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_debug_messages : Notation.Dot "debug_messages" := {
     Notation.dot '(Build_t x0) := x0;
@@ -2494,6 +2518,7 @@ End
   Impl_core_iter_traits_collect_IntoIterator_for_ink_engine_test_api_RecordedDebugMessages.
 
 Module DebugInfo.
+  Unset Primitive Projections.
   Record t : Set := {
     emitted_events : alloc.vec.Vec ink_engine.test_api.EmittedEvent;
     emitted_debug_messages : ink_engine.test_api.RecordedDebugMessages;
@@ -2509,6 +2534,7 @@ Module DebugInfo.
         ink_engine.types.AccountId
         (std.collections.hash.map.HashMap (alloc.vec.Vec u8) bool);
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_emitted_events : Notation.Dot "emitted_events" := {
     Notation.dot '(Build_t x0 _ _ _ _) := x0;
@@ -2910,6 +2936,7 @@ Error OpaqueTy.
 
 Module chain_extension.
   Module ChainExtensionHandler.
+    Unset Primitive Projections.
     Record t : Set := {
       registered
         :
@@ -2918,6 +2945,7 @@ Module chain_extension.
           (alloc.boxed.Box TraitObject);
       output : alloc.vec.Vec u8;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_registered : Notation.Dot "registered" := {
       Notation.dot '(Build_t x0 _) := x0;
@@ -2929,11 +2957,14 @@ Module chain_extension.
   Definition ChainExtensionHandler : Set := ChainExtensionHandler.t.
   
   Module ExtensionId.
-    Record t : Set := { _ : u32;}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Unset Primitive Projections.
+    Record t : Set :=
+    { _ : u32;}.
+    Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
   End ExtensionId.
   Definition ExtensionId := ExtensionId.t.
   
@@ -3180,6 +3211,7 @@ Module chain_extension.
 End chain_extension.
 
 Module ChainExtensionHandler.
+  Unset Primitive Projections.
   Record t : Set := {
     registered
       :
@@ -3188,6 +3220,7 @@ Module ChainExtensionHandler.
         (alloc.boxed.Box TraitObject);
     output : alloc.vec.Vec u8;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_registered : Notation.Dot "registered" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -3199,11 +3232,14 @@ End ChainExtensionHandler.
 Definition ChainExtensionHandler : Set := ChainExtensionHandler.t.
 
 Module ExtensionId.
-  Record t : Set := { _ : u32;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Unset Primitive Projections.
+  Record t : Set :=
+  { _ : u32;}.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End ExtensionId.
 Definition ExtensionId := ExtensionId.t.
 
@@ -3553,11 +3589,13 @@ Module database.
     Pure hashed_key.
   
   Module Database.
+    Unset Primitive Projections.
     Record t : Set := {
       hmap
         :
         std.collections.hash.map.HashMap (alloc.vec.Vec u8) (alloc.vec.Vec u8);
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_hmap : Notation.Dot "hmap" := {
       Notation.dot '(Build_t x0) := x0;
@@ -3756,11 +3794,13 @@ Definition storage_of_contract_key
   Pure hashed_key.
 
 Module Database.
+  Unset Primitive Projections.
   Record t : Set := {
     hmap
       :
       std.collections.hash.map.HashMap (alloc.vec.Vec u8) (alloc.vec.Vec u8);
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_hmap : Notation.Dot "hmap" := {
     Notation.dot '(Build_t x0) := x0;
@@ -3924,6 +3964,7 @@ End Impl_ink_engine_database_Database_2.
 
 Module exec_context.
   Module ExecContext.
+    Unset Primitive Projections.
     Record t : Set := {
       caller : core.option.Option ink_engine.types.AccountId;
       callee : core.option.Option ink_engine.types.AccountId;
@@ -3932,6 +3973,7 @@ Module exec_context.
       block_timestamp : ink_engine.types.BlockTimestamp;
       contracts : alloc.vec.Vec (alloc.vec.Vec u8);
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_caller : Notation.Dot "caller" := {
       Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
@@ -4040,6 +4082,7 @@ Module exec_context.
 End exec_context.
 
 Module ExecContext.
+  Unset Primitive Projections.
   Record t : Set := {
     caller : core.option.Option ink_engine.types.AccountId;
     callee : core.option.Option ink_engine.types.AccountId;
@@ -4048,6 +4091,7 @@ Module ExecContext.
     block_timestamp : ink_engine.types.BlockTimestamp;
     contracts : alloc.vec.Vec (alloc.vec.Vec u8);
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_caller : Notation.Dot "caller" := {
     Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
@@ -4248,11 +4292,14 @@ Module types.
   Definition Balance : Set := u128.
   
   Module AccountId.
-    Record t : Set := { _ : alloc.vec.Vec u8;}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Unset Primitive Projections.
+    Record t : Set :=
+    { _ : alloc.vec.Vec u8;}.
+    Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
   End AccountId.
   Definition AccountId := AccountId.t.
   
@@ -4434,11 +4481,14 @@ Module types.
   End Impl_ink_engine_types_AccountId.
   
   Module Key.
-    Record t : Set := { _ : alloc.vec.Vec u8;}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Unset Primitive Projections.
+    Record t : Set :=
+    { _ : alloc.vec.Vec u8;}.
+    Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
   End Key.
   Definition Key := Key.t.
   
@@ -4766,11 +4816,14 @@ Definition BlockTimestamp : Set := u64.
 Definition Balance : Set := u128.
 
 Module AccountId.
-  Record t : Set := { _ : alloc.vec.Vec u8;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Unset Primitive Projections.
+  Record t : Set :=
+  { _ : alloc.vec.Vec u8;}.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End AccountId.
 Definition AccountId := AccountId.t.
 
@@ -4949,11 +5002,14 @@ Module Impl_ink_engine_types_AccountId_2.
 End Impl_ink_engine_types_AccountId_2.
 
 Module Key.
-  Record t : Set := { _ : alloc.vec.Vec u8;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Unset Primitive Projections.
+  Record t : Set :=
+  { _ : alloc.vec.Vec u8;}.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End Key.
 Definition Key := Key.t.
 
