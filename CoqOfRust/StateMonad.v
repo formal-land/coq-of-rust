@@ -137,20 +137,25 @@ Module Notations.
     (bind b (fun a => c))
       (at level 200, b at level 100, a name).
 End Notations.
-Export Notations.
+Import Notations.
 
-(* Definition catch_Continue
-  `{State.Trait} {R A B : Set} (m : Monad R A) (f : A -> Monad R B) :
-  Monad R B :=
-  fun fuel s =>
-    RawMonad.smart_bind (m fuel s) (fun '(v, s) =>
-      match v with
-      | inl v =>
- *)
+(* TODO: define for every (A : Set) in (Monad R A) *)
 (** the definition of a function representing the loop construction *)
 Definition loop `{State.Trait} {R  : Set} (m : Monad R unit) : Monad R unit :=
   fix F (fuel : nat) :=
     match fuel with
     | 0 => NonTermination
-    | S fuel' => (let* _ := m in F) fuel'
+    | S fuel' => fun s =>
+      RawMonad.smart_bind (m fuel s) (fun '(v, s) =>
+        match v with
+        (* only Break ends the loop *)
+        | inl tt                 => F fuel' s
+        | inr Exception.Continue => F fuel' s
+        | inr Exception.Break    => RawMonad.Pure (inl tt, s)
+        (* every other exception is kept *)
+        | inr (Exception.Return _)
+        | inr (Exception.Panic _)
+        | inr Exception.NonTermination => RawMonad.Pure (v, s)
+        end
+      )
     end.
