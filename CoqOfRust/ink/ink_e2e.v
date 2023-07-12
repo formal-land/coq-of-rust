@@ -15,11 +15,12 @@ Module builders.
       (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
   
   Definition constructor_exec_input
+      `{H : State.Trait}
       {E ContractRef Args R : Set}
       `{parity_scale_codec.codec.Encode.Trait Args}
       `{ink_env.types.Environment.Trait E}
       (builder : ink_e2e.builders.CreateBuilderPartial E ContractRef Args R)
-      : M (alloc.vec.Vec u8) :=
+      : M (H := H) (alloc.vec.Vec u8) :=
     let* α0 := 0.["into"] in
     let* α1 := builder.["endowment"] α0 in
     let* α2 := α1.["code_hash"] ink_primitives.types.Clear.CLEAR_HASH in
@@ -42,11 +43,12 @@ Definition CreateBuilderPartial : Set :=
     (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
 
 Definition constructor_exec_input
+    `{H : State.Trait}
     {E ContractRef Args R : Set}
     `{parity_scale_codec.codec.Encode.Trait Args}
     `{ink_env.types.Environment.Trait E}
     (builder : ink_e2e.builders.CreateBuilderPartial E ContractRef Args R)
-    : M (alloc.vec.Vec u8) :=
+    : M (H := H) (alloc.vec.Vec u8) :=
   let* α0 := 0.["into"] in
   let* α1 := builder.["endowment"] α0 in
   let* α2 := α1.["code_hash"] ink_primitives.types.Clear.CLEAR_HASH in
@@ -92,12 +94,13 @@ Module client.
     Definition Self := ink_e2e.client.InstantiationResult C E.
     
     Definition call
+        `{H : State.Trait}
         (self : ref Self)
-        : M ink.codegen.dispatch.info.ContractCallBuilder.Type :=
+        : M (H := H) ink.codegen.dispatch.info.ContractCallBuilder.Type :=
       let* α0 := self.["account_id"].["clone"] in
       ink_env.call.create_builder.FromAccountId.from_account_id α0.
     
-    Global Instance Method_call : Notation.Dot "call" := {
+    Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
       Notation.dot := call;
     }.
   End Impl_ink_e2e_client_InstantiationResult_C_E.
@@ -130,21 +133,22 @@ Module client.
     Definition Self := ink_e2e.client.UploadResult C E.
     
     Definition fmt
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       let* α0 := f.["debug_struct"] "UploadResult" in
       let* α1 := α0.["field"] "code_hash" (addr_of self.["code_hash"]) in
       let* α2 := α1.["field"] "dry_run" (addr_of self.["dry_run"]) in
       let* α3 := α2.["field"] "events" (addr_of self.["events"]) in
       α3.["finish"].
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
   End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
@@ -156,21 +160,22 @@ Module client.
     Definition Self := ink_e2e.client.InstantiationResult C E.
     
     Definition fmt
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       let* α0 := f.["debug_struct"] "InstantiationResult" in
       let* α1 := α0.["field"] "account_id" (addr_of self.["account_id"]) in
       let* α2 := α1.["field"] "dry_run" (addr_of self.["dry_run"]) in
       let* α3 := α2.["field"] "events" (addr_of self.["events"]) in
       α3.["finish"].
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
   End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
@@ -194,41 +199,53 @@ Module client.
     Definition Self := ink_e2e.client.CallResult C E V.
     
     Definition message_result
+        `{H : State.Trait}
         (self : ref Self)
-        : M (ink_primitives.MessageResult V) :=
+        : M (H := H) (ink_primitives.MessageResult V) :=
       self.["dry_run"].["message_result"].
     
-    Global Instance Method_message_result : Notation.Dot "message_result" := {
+    Global Instance Method_message_result `{H : State.Trait} :
+      Notation.Dot "message_result" := {
       Notation.dot := message_result;
     }.
     
-    Definition return_value (self : Self) : M V :=
+    Definition return_value `{H : State.Trait} (self : Self) : M (H := H) V :=
       self.["dry_run"].["return_value"].
     
-    Global Instance Method_return_value : Notation.Dot "return_value" := {
+    Global Instance Method_return_value `{H : State.Trait} :
+      Notation.Dot "return_value" := {
       Notation.dot := return_value;
     }.
     
-    Definition return_data (self : ref Self) : M (ref Slice) :=
+    Definition return_data
+        `{H : State.Trait}
+        (self : ref Self)
+        : M (H := H) (ref Slice) :=
       let* α0 := self.["dry_run"].["exec_return_value"] in
       Pure (addr_of α0.["data"]).
     
-    Global Instance Method_return_data : Notation.Dot "return_data" := {
+    Global Instance Method_return_data `{H : State.Trait} :
+      Notation.Dot "return_data" := {
       Notation.dot := return_data;
     }.
     
-    Definition debug_message (self : ref Self) : M alloc.string.String :=
+    Definition debug_message
+        `{H : State.Trait}
+        (self : ref Self)
+        : M (H := H) alloc.string.String :=
       self.["dry_run"].["debug_message"].
     
-    Global Instance Method_debug_message : Notation.Dot "debug_message" := {
+    Global Instance Method_debug_message `{H : State.Trait} :
+      Notation.Dot "debug_message" := {
       Notation.dot := debug_message;
     }.
     
     Definition contains_event
+        `{H : State.Trait}
         (self : ref Self)
         (pallet_name : ref str)
         (variant_name : ref str)
-        : M bool :=
+        : M (H := H) bool :=
       let* α0 := self.["events"].["iter"] in
       α0.["any"]
         (fun event =>
@@ -239,7 +256,8 @@ Module client.
           let* α3 := α2.["eq"] variant_name in
           α1.["andb"] α3).
     
-    Global Instance Method_contains_event : Notation.Dot "contains_event" := {
+    Global Instance Method_contains_event `{H : State.Trait} :
+      Notation.Dot "contains_event" := {
       Notation.dot := contains_event;
     }.
   End Impl_ink_e2e_client_CallResult_C_E_V.
@@ -251,20 +269,21 @@ Module client.
     Definition Self := ink_e2e.client.CallResult C E V.
     
     Definition fmt
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       let* α0 := f.["debug_struct"] "CallResult" in
       let* α1 := α0.["field"] "dry_run" (addr_of self.["dry_run"]) in
       let* α2 := α1.["field"] "events" (addr_of self.["events"]) in
       α2.["finish"].
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
@@ -293,9 +312,10 @@ Module client.
     Definition Self := ink_e2e.client.CallDryRunResult E V.
     
     Definition fmt
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       core.fmt.Formatter::["debug_struct_field2_finish"]
         f
         "CallDryRunResult"
@@ -304,12 +324,12 @@ Module client.
         "_marker"
         (addr_of (addr_of self.["_marker"])).
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
@@ -317,16 +337,18 @@ Module client.
   Module Impl_ink_e2e_client_CallDryRunResult_E_V.
     Definition Self := ink_e2e.client.CallDryRunResult E V.
     
-    Definition is_err (self : ref Self) : M bool :=
+    Definition is_err `{H : State.Trait} (self : ref Self) : M (H := H) bool :=
       self.["exec_result"].["result"].["is_err"].
     
-    Global Instance Method_is_err : Notation.Dot "is_err" := {
+    Global Instance Method_is_err `{H : State.Trait} :
+      Notation.Dot "is_err" := {
       Notation.dot := is_err;
     }.
     
     Definition exec_return_value
+        `{H : State.Trait}
         (self : ref Self)
-        : M (ref pallet_contracts_primitives.ExecReturnValue) :=
+        : M (H := H) (ref pallet_contracts_primitives.ExecReturnValue) :=
       let* α0 := self.["exec_result"].["result"].["as_ref"] in
       α0.["unwrap_or_else"]
         (fun call_err =>
@@ -337,14 +359,15 @@ Module client.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_exec_return_value :
+    Global Instance Method_exec_return_value `{H : State.Trait} :
       Notation.Dot "exec_return_value" := {
       Notation.dot := exec_return_value;
     }.
     
     Definition message_result
+        `{H : State.Trait}
         (self : ref Self)
-        : M (ink_primitives.MessageResult V) :=
+        : M (H := H) (ink_primitives.MessageResult V) :=
       let* data :=
         let* α0 := self.["exec_return_value"] in
         Pure (addr_of α0.["data"]) in
@@ -361,11 +384,12 @@ Module client.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_message_result : Notation.Dot "message_result" := {
+    Global Instance Method_message_result `{H : State.Trait} :
+      Notation.Dot "message_result" := {
       Notation.dot := message_result;
     }.
     
-    Definition return_value (self : Self) : M V :=
+    Definition return_value `{H : State.Trait} (self : Self) : M (H := H) V :=
       let* α0 := self.["message_result"] in
       α0.["unwrap_or_else"]
         (fun lang_err =>
@@ -379,25 +403,34 @@ Module client.
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
     
-    Global Instance Method_return_value : Notation.Dot "return_value" := {
+    Global Instance Method_return_value `{H : State.Trait} :
+      Notation.Dot "return_value" := {
       Notation.dot := return_value;
     }.
     
-    Definition return_data (self : ref Self) : M (ref Slice) :=
+    Definition return_data
+        `{H : State.Trait}
+        (self : ref Self)
+        : M (H := H) (ref Slice) :=
       let* α0 := self.["exec_return_value"] in
       Pure (addr_of α0.["data"]).
     
-    Global Instance Method_return_data : Notation.Dot "return_data" := {
+    Global Instance Method_return_data `{H : State.Trait} :
+      Notation.Dot "return_data" := {
       Notation.dot := return_data;
     }.
     
-    Definition debug_message (self : ref Self) : M alloc.string.String :=
+    Definition debug_message
+        `{H : State.Trait}
+        (self : ref Self)
+        : M (H := H) alloc.string.String :=
       let* α0 :=
         alloc.string.String::["from_utf8_lossy"]
           (addr_of self.["exec_result"].["debug_message"]) in
       α0.["into"].
     
-    Global Instance Method_debug_message : Notation.Dot "debug_message" := {
+    Global Instance Method_debug_message `{H : State.Trait} :
+      Notation.Dot "debug_message" := {
       Notation.dot := debug_message;
     }.
   End Impl_ink_e2e_client_CallDryRunResult_E_V.
@@ -435,9 +468,10 @@ Module client.
     Definition Self := ink_e2e.client.Error C E.
     
     Definition fmt
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       match addr_of self with
       | ink_e2e.client.Error.ContractNotFound name =>
         let* res :=
@@ -483,12 +517,12 @@ Module client.
         f.["write_fmt"] α1
       end.
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
   End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
@@ -515,9 +549,10 @@ Module client.
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
     Definition fmt
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       core.fmt.Formatter::["debug_struct_field2_finish"]
         f
         "ContractInstantiatedEvent"
@@ -526,12 +561,12 @@ Module client.
         "contract"
         (addr_of (addr_of self.["contract"])).
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
   End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -545,11 +580,12 @@ Module client.
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
     Definition encode_as_type_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_type_id : u32)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       let
           '{|
             ink_e2e.client.ContractInstantiatedEvent.deployer := deployer;
@@ -568,13 +604,16 @@ Module client.
         __encode_as_type_types
         __encode_as_type_out.
     
-    Global Instance Method_encode_as_type_to :
+    Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
       Notation.dot := encode_as_type_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-      scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type_to
+        `{H : State.Trait}
+        :=
+        encode_as_type_to;
     }.
   End
     Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -590,11 +629,12 @@ Module client.
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
     Definition encode_as_fields_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_fields : ref Slice)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       let
           '{|
             ink_e2e.client.ContractInstantiatedEvent.deployer := deployer;
@@ -614,13 +654,16 @@ Module client.
         __encode_as_type_types
         __encode_as_type_out.
     
-    Global Instance Method_encode_as_fields_to :
+    Global Instance Method_encode_as_fields_to `{H : State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
       Notation.dot := encode_as_fields_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-      scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      scale_encode.EncodeAsFields.encode_as_fields_to
+        `{H : State.Trait}
+        :=
+        encode_as_fields_to;
     }.
   End
     Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -637,21 +680,21 @@ Module client.
     
     Definition PALLET := Pure "Contracts".
     
-    Global Instance AssociatedFunction_PALLET :
+    Global Instance AssociatedFunction_PALLET `{H : State.Trait} :
       Notation.DoubleColon Self "PALLET" := {
       Notation.double_colon := PALLET;
     }.
     
     Definition EVENT := Pure "Instantiated".
     
-    Global Instance AssociatedFunction_EVENT :
+    Global Instance AssociatedFunction_EVENT `{H : State.Trait} :
       Notation.DoubleColon Self "EVENT" := {
       Notation.double_colon := EVENT;
     }.
     
     Global Instance I : subxt.events.StaticEvent.Trait Self := {
-      subxt.events.StaticEvent.PALLET := PALLET;
-      subxt.events.StaticEvent.EVENT := EVENT;
+      subxt.events.StaticEvent.PALLET `{H : State.Trait} := PALLET;
+      subxt.events.StaticEvent.EVENT `{H : State.Trait} := EVENT;
     }.
   End
     Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -676,21 +719,22 @@ Module client.
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
     Definition fmt
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       core.fmt.Formatter::["debug_struct_field1_finish"]
         f
         "CodeStoredEvent"
         "code_hash"
         (addr_of (addr_of self.["code_hash"])).
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
@@ -702,11 +746,12 @@ Module client.
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
     Definition encode_as_type_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_type_id : u32)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       let '{| ink_e2e.client.CodeStoredEvent.code_hash := code_hash; |} :=
         self in
       let* α0 :=
@@ -719,13 +764,16 @@ Module client.
         __encode_as_type_types
         __encode_as_type_out.
     
-    Global Instance Method_encode_as_type_to :
+    Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
       Notation.dot := encode_as_type_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-      scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type_to
+        `{H : State.Trait}
+        :=
+        encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
@@ -737,11 +785,12 @@ Module client.
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
     Definition encode_as_fields_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_fields : ref Slice)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       let '{| ink_e2e.client.CodeStoredEvent.code_hash := code_hash; |} :=
         self in
       let* α0 :=
@@ -755,13 +804,16 @@ Module client.
         __encode_as_type_types
         __encode_as_type_out.
     
-    Global Instance Method_encode_as_fields_to :
+    Global Instance Method_encode_as_fields_to `{H : State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
       Notation.dot := encode_as_fields_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-      scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      scale_encode.EncodeAsFields.encode_as_fields_to
+        `{H : State.Trait}
+        :=
+        encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
@@ -774,21 +826,21 @@ Module client.
     
     Definition PALLET := Pure "Contracts".
     
-    Global Instance AssociatedFunction_PALLET :
+    Global Instance AssociatedFunction_PALLET `{H : State.Trait} :
       Notation.DoubleColon Self "PALLET" := {
       Notation.double_colon := PALLET;
     }.
     
     Definition EVENT := Pure "CodeStored".
     
-    Global Instance AssociatedFunction_EVENT :
+    Global Instance AssociatedFunction_EVENT `{H : State.Trait} :
       Notation.DoubleColon Self "EVENT" := {
       Notation.double_colon := EVENT;
     }.
     
     Global Instance I : subxt.events.StaticEvent.Trait Self := {
-      subxt.events.StaticEvent.PALLET := PALLET;
-      subxt.events.StaticEvent.EVENT := EVENT;
+      subxt.events.StaticEvent.PALLET `{H : State.Trait} := PALLET;
+      subxt.events.StaticEvent.EVENT `{H : State.Trait} := EVENT;
     }.
   End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
   End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
@@ -816,9 +868,10 @@ Module client.
     Definition Self := ink_e2e.client.Client C E.
     
     Definition new
+        `{H : State.Trait}
         (client : subxt.client.online_client.OnlineClient C)
         (contracts : impl IntoIterator<Item = &str>)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let client := client in
@@ -868,16 +921,17 @@ Module client.
             end in
           Pure {| Self.api := α2; Self.contracts := contracts; |}).
     
-    Global Instance AssociatedFunction_new :
+    Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
     
     Definition create_and_fund_account
+        `{H : State.Trait}
         (self : ref Self)
         (origin : ref (ink_e2e.Signer C))
         (amount : ImplE.Balance)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -939,19 +993,20 @@ Module client.
             ink_e2e.log_info (addr_of res) in
           Pure pair_signer).
     
-    Global Instance Method_create_and_fund_account :
+    Global Instance Method_create_and_fund_account `{H : State.Trait} :
       Notation.Dot "create_and_fund_account" := {
       Notation.dot := create_and_fund_account;
     }.
     
     Definition instantiate
+        `{H : State.Trait}
         (self : mut_ref Self)
         (contract_name : ref str)
         (signer : ref (ink_e2e.Signer C))
         (constructor : ink_e2e.builders.CreateBuilderPartial E Contract Args R)
         (value : ImplE.Balance)
         (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -1008,18 +1063,20 @@ Module client.
             ink_e2e.log_info (addr_of res) in
           Pure (core.result.Result.Ok ret)).
     
-    Global Instance Method_instantiate : Notation.Dot "instantiate" := {
+    Global Instance Method_instantiate `{H : State.Trait} :
+      Notation.Dot "instantiate" := {
       Notation.dot := instantiate;
     }.
     
     Definition instantiate_dry_run
+        `{H : State.Trait}
         (self : mut_ref Self)
         (contract_name : ref str)
         (signer : ref (ink_e2e.Signer C))
         (constructor : ink_e2e.builders.CreateBuilderPartial E Contract Args R)
         (value : ImplE.Balance)
         (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -1059,15 +1116,16 @@ Module client.
               loop
           end).
     
-    Global Instance Method_instantiate_dry_run :
+    Global Instance Method_instantiate_dry_run `{H : State.Trait} :
       Notation.Dot "instantiate_dry_run" := {
       Notation.dot := instantiate_dry_run;
     }.
     
     Definition load_code
+        `{H : State.Trait}
         (self : ref Self)
         (contract : ref str)
-        : M (alloc.vec.Vec u8) :=
+        : M (H := H) (alloc.vec.Vec u8) :=
       let* wasm_path :=
         let* α0 := contract.["replace"] "-"%char "_" in
         let* α1 := self.["contracts"].["get"] (addr_of α0) in
@@ -1118,18 +1176,20 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
         ink_e2e.log_info (addr_of res) in
       Pure code.
     
-    Global Instance Method_load_code : Notation.Dot "load_code" := {
+    Global Instance Method_load_code `{H : State.Trait} :
+      Notation.Dot "load_code" := {
       Notation.dot := load_code;
     }.
     
     Definition exec_instantiate
+        `{H : State.Trait}
         (self : mut_ref Self)
         (signer : ref (ink_e2e.Signer C))
         (code : alloc.vec.Vec u8)
         (constructor : ink_e2e.builders.CreateBuilderPartial E Contract Args R)
         (value : ImplE.Balance)
         (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -1345,12 +1405,15 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 ink_e2e.client.InstantiationResult.events := tx_events;
               |})).
     
-    Global Instance Method_exec_instantiate :
+    Global Instance Method_exec_instantiate `{H : State.Trait} :
       Notation.Dot "exec_instantiate" := {
       Notation.dot := exec_instantiate;
     }.
     
-    Definition salt (_ : unit) : M (alloc.vec.Vec u8) :=
+    Definition salt
+        `{H : State.Trait}
+        (_ : unit)
+        : M (H := H) (alloc.vec.Vec u8) :=
       let* α0 := std.time.SystemTime::["now"] tt in
       let* α1 := α0.["duration_since"] std.time.UNIX_EPOCH in
       let* α2 :=
@@ -1367,17 +1430,18 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
       let* α5 := α4.["to_le_bytes"] in
       α5.["to_vec"].
     
-    Global Instance AssociatedFunction_salt :
+    Global Instance AssociatedFunction_salt `{H : State.Trait} :
       Notation.DoubleColon Self "salt" := {
       Notation.double_colon := salt;
     }.
     
     Definition upload
+        `{H : State.Trait}
         (self : mut_ref Self)
         (contract_name : ref str)
         (signer : ref (ink_e2e.Signer C))
         (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -1426,16 +1490,18 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             ink_e2e.log_info (addr_of res) in
           Pure (core.result.Result.Ok ret)).
     
-    Global Instance Method_upload : Notation.Dot "upload" := {
+    Global Instance Method_upload `{H : State.Trait} :
+      Notation.Dot "upload" := {
       Notation.dot := upload;
     }.
     
     Definition exec_upload
+        `{H : State.Trait}
         (self : mut_ref Self)
         (signer : ref (ink_e2e.Signer C))
         (code : alloc.vec.Vec u8)
         (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -1627,17 +1693,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 ink_e2e.client.UploadResult.events := tx_events;
               |})).
     
-    Global Instance Method_exec_upload : Notation.Dot "exec_upload" := {
+    Global Instance Method_exec_upload `{H : State.Trait} :
+      Notation.Dot "exec_upload" := {
       Notation.dot := exec_upload;
     }.
     
     Definition call
+        `{H : State.Trait}
         (self : mut_ref Self)
         (signer : ref (ink_e2e.Signer C))
         (message : ref (ink_e2e.client.CallBuilderFinal E Args RetType))
         (value : ImplE.Balance)
         (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -1810,17 +1878,18 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 ink_e2e.client.CallResult.events := tx_events;
               |})).
     
-    Global Instance Method_call : Notation.Dot "call" := {
+    Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
       Notation.dot := call;
     }.
     
     Definition runtime_call
+        `{H : State.Trait}
         (self : mut_ref Self)
         (signer : ref (ink_e2e.Signer C))
         (pallet_name : ref str)
         (call_name : ref str)
         (call_data : alloc.vec.Vec scale_value.value.Value)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -1919,17 +1988,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             end in
           Pure (core.result.Result.Ok tx_events)).
     
-    Global Instance Method_runtime_call : Notation.Dot "runtime_call" := {
+    Global Instance Method_runtime_call `{H : State.Trait} :
+      Notation.Dot "runtime_call" := {
       Notation.dot := runtime_call;
     }.
     
     Definition call_dry_run
+        `{H : State.Trait}
         (self : mut_ref Self)
         (signer : ref (ink_e2e.Signer C))
         (message : ref (ink_e2e.client.CallBuilderFinal E Args RetType))
         (value : ImplE.Balance)
         (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -2006,14 +2077,16 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               ink_e2e.client.CallDryRunResult._marker := α0;
             |}).
     
-    Global Instance Method_call_dry_run : Notation.Dot "call_dry_run" := {
+    Global Instance Method_call_dry_run `{H : State.Trait} :
+      Notation.Dot "call_dry_run" := {
       Notation.dot := call_dry_run;
     }.
     
     Definition balance
+        `{H : State.Trait}
         (self : ref Self)
         (account_id : ImplE.AccountId)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -2177,12 +2250,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             ink_e2e.log_info (addr_of res) in
           Pure (core.result.Result.Ok balance)).
     
-    Global Instance Method_balance : Notation.Dot "balance" := {
+    Global Instance Method_balance `{H : State.Trait} :
+      Notation.Dot "balance" := {
       Notation.dot := balance;
     }.
   End Impl_ink_e2e_client_Client_C_E.
   
   Definition get_composite_field_value
+      `{H : State.Trait}
       {T C E : Set}
       `{subxt.config.Config.Trait C}
       `{ink_env.types.Environment.Trait E}
@@ -2190,7 +2265,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
       (value : ref (scale_value.value.Value T))
       (field_name : ref str)
       :
-        M
+        M (H := H)
           (core.result.Result
             (ref (scale_value.value.Value T))
             (ink_e2e.client.Error C E)) :=
@@ -2229,8 +2304,9 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
       Pure (core.result.Result.Err (ink_e2e.client.Error.Balance α0)).
   
   Definition is_extrinsic_failed_event
+      `{H : State.Trait}
       (event : ref subxt.events.events_type.EventDetails)
-      : M bool :=
+      : M (H := H) bool :=
     let* α0 := event.["pallet_name"] in
     let* α1 := α0.["eq"] "System" in
     let* α2 := event.["variant_name"] in
@@ -2272,12 +2348,13 @@ Module Impl_ink_e2e_client_InstantiationResult_C_E_2.
   Definition Self := ink_e2e.client.InstantiationResult C E.
   
   Definition call
+      `{H : State.Trait}
       (self : ref Self)
-      : M ink.codegen.dispatch.info.ContractCallBuilder.Type :=
+      : M (H := H) ink.codegen.dispatch.info.ContractCallBuilder.Type :=
     let* α0 := self.["account_id"].["clone"] in
     ink_env.call.create_builder.FromAccountId.from_account_id α0.
   
-  Global Instance Method_call : Notation.Dot "call" := {
+  Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
     Notation.dot := call;
   }.
 End Impl_ink_e2e_client_InstantiationResult_C_E_2.
@@ -2310,21 +2387,22 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
   Definition Self := ink_e2e.client.UploadResult C E.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     let* α0 := f.["debug_struct"] "UploadResult" in
     let* α1 := α0.["field"] "code_hash" (addr_of self.["code_hash"]) in
     let* α2 := α1.["field"] "dry_run" (addr_of self.["dry_run"]) in
     let* α3 := α2.["field"] "events" (addr_of self.["events"]) in
     α3.["finish"].
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
 End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
@@ -2336,21 +2414,22 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
   Definition Self := ink_e2e.client.InstantiationResult C E.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     let* α0 := f.["debug_struct"] "InstantiationResult" in
     let* α1 := α0.["field"] "account_id" (addr_of self.["account_id"]) in
     let* α2 := α1.["field"] "dry_run" (addr_of self.["dry_run"]) in
     let* α3 := α2.["field"] "events" (addr_of self.["events"]) in
     α3.["finish"].
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
 End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
@@ -2374,41 +2453,53 @@ Module Impl_ink_e2e_client_CallResult_C_E_V_2.
   Definition Self := ink_e2e.client.CallResult C E V.
   
   Definition message_result
+      `{H : State.Trait}
       (self : ref Self)
-      : M (ink_primitives.MessageResult V) :=
+      : M (H := H) (ink_primitives.MessageResult V) :=
     self.["dry_run"].["message_result"].
   
-  Global Instance Method_message_result : Notation.Dot "message_result" := {
+  Global Instance Method_message_result `{H : State.Trait} :
+    Notation.Dot "message_result" := {
     Notation.dot := message_result;
   }.
   
-  Definition return_value (self : Self) : M V :=
+  Definition return_value `{H : State.Trait} (self : Self) : M (H := H) V :=
     self.["dry_run"].["return_value"].
   
-  Global Instance Method_return_value : Notation.Dot "return_value" := {
+  Global Instance Method_return_value `{H : State.Trait} :
+    Notation.Dot "return_value" := {
     Notation.dot := return_value;
   }.
   
-  Definition return_data (self : ref Self) : M (ref Slice) :=
+  Definition return_data
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) (ref Slice) :=
     let* α0 := self.["dry_run"].["exec_return_value"] in
     Pure (addr_of α0.["data"]).
   
-  Global Instance Method_return_data : Notation.Dot "return_data" := {
+  Global Instance Method_return_data `{H : State.Trait} :
+    Notation.Dot "return_data" := {
     Notation.dot := return_data;
   }.
   
-  Definition debug_message (self : ref Self) : M alloc.string.String :=
+  Definition debug_message
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) alloc.string.String :=
     self.["dry_run"].["debug_message"].
   
-  Global Instance Method_debug_message : Notation.Dot "debug_message" := {
+  Global Instance Method_debug_message `{H : State.Trait} :
+    Notation.Dot "debug_message" := {
     Notation.dot := debug_message;
   }.
   
   Definition contains_event
+      `{H : State.Trait}
       (self : ref Self)
       (pallet_name : ref str)
       (variant_name : ref str)
-      : M bool :=
+      : M (H := H) bool :=
     let* α0 := self.["events"].["iter"] in
     α0.["any"]
       (fun event =>
@@ -2419,7 +2510,8 @@ Module Impl_ink_e2e_client_CallResult_C_E_V_2.
         let* α3 := α2.["eq"] variant_name in
         α1.["andb"] α3).
   
-  Global Instance Method_contains_event : Notation.Dot "contains_event" := {
+  Global Instance Method_contains_event `{H : State.Trait} :
+    Notation.Dot "contains_event" := {
     Notation.dot := contains_event;
   }.
 End Impl_ink_e2e_client_CallResult_C_E_V_2.
@@ -2431,20 +2523,21 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
   Definition Self := ink_e2e.client.CallResult C E V.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     let* α0 := f.["debug_struct"] "CallResult" in
     let* α1 := α0.["field"] "dry_run" (addr_of self.["dry_run"]) in
     let* α2 := α1.["field"] "events" (addr_of self.["events"]) in
     α2.["finish"].
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
@@ -2471,9 +2564,10 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
   Definition Self := ink_e2e.client.CallDryRunResult E V.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "CallDryRunResult"
@@ -2482,12 +2576,12 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
       "_marker"
       (addr_of (addr_of self.["_marker"])).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
@@ -2495,16 +2589,17 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
 Module Impl_ink_e2e_client_CallDryRunResult_E_V_2.
   Definition Self := ink_e2e.client.CallDryRunResult E V.
   
-  Definition is_err (self : ref Self) : M bool :=
+  Definition is_err `{H : State.Trait} (self : ref Self) : M (H := H) bool :=
     self.["exec_result"].["result"].["is_err"].
   
-  Global Instance Method_is_err : Notation.Dot "is_err" := {
+  Global Instance Method_is_err `{H : State.Trait} : Notation.Dot "is_err" := {
     Notation.dot := is_err;
   }.
   
   Definition exec_return_value
+      `{H : State.Trait}
       (self : ref Self)
-      : M (ref pallet_contracts_primitives.ExecReturnValue) :=
+      : M (H := H) (ref pallet_contracts_primitives.ExecReturnValue) :=
     let* α0 := self.["exec_result"].["result"].["as_ref"] in
     α0.["unwrap_or_else"]
       (fun call_err =>
@@ -2515,14 +2610,15 @@ Module Impl_ink_e2e_client_CallDryRunResult_E_V_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_exec_return_value :
+  Global Instance Method_exec_return_value `{H : State.Trait} :
     Notation.Dot "exec_return_value" := {
     Notation.dot := exec_return_value;
   }.
   
   Definition message_result
+      `{H : State.Trait}
       (self : ref Self)
-      : M (ink_primitives.MessageResult V) :=
+      : M (H := H) (ink_primitives.MessageResult V) :=
     let* data :=
       let* α0 := self.["exec_return_value"] in
       Pure (addr_of α0.["data"]) in
@@ -2539,11 +2635,12 @@ Module Impl_ink_e2e_client_CallDryRunResult_E_V_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_message_result : Notation.Dot "message_result" := {
+  Global Instance Method_message_result `{H : State.Trait} :
+    Notation.Dot "message_result" := {
     Notation.dot := message_result;
   }.
   
-  Definition return_value (self : Self) : M V :=
+  Definition return_value `{H : State.Trait} (self : Self) : M (H := H) V :=
     let* α0 := self.["message_result"] in
     α0.["unwrap_or_else"]
       (fun lang_err =>
@@ -2557,25 +2654,34 @@ Module Impl_ink_e2e_client_CallDryRunResult_E_V_2.
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
   
-  Global Instance Method_return_value : Notation.Dot "return_value" := {
+  Global Instance Method_return_value `{H : State.Trait} :
+    Notation.Dot "return_value" := {
     Notation.dot := return_value;
   }.
   
-  Definition return_data (self : ref Self) : M (ref Slice) :=
+  Definition return_data
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) (ref Slice) :=
     let* α0 := self.["exec_return_value"] in
     Pure (addr_of α0.["data"]).
   
-  Global Instance Method_return_data : Notation.Dot "return_data" := {
+  Global Instance Method_return_data `{H : State.Trait} :
+    Notation.Dot "return_data" := {
     Notation.dot := return_data;
   }.
   
-  Definition debug_message (self : ref Self) : M alloc.string.String :=
+  Definition debug_message
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) alloc.string.String :=
     let* α0 :=
       alloc.string.String::["from_utf8_lossy"]
         (addr_of self.["exec_result"].["debug_message"]) in
     α0.["into"].
   
-  Global Instance Method_debug_message : Notation.Dot "debug_message" := {
+  Global Instance Method_debug_message `{H : State.Trait} :
+    Notation.Dot "debug_message" := {
     Notation.dot := debug_message;
   }.
 End Impl_ink_e2e_client_CallDryRunResult_E_V_2.
@@ -2611,9 +2717,10 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
   Definition Self := ink_e2e.client.Error C E.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     match addr_of self with
     | ink_e2e.client.Error.ContractNotFound name =>
       let* res :=
@@ -2659,12 +2766,12 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
       f.["write_fmt"] α1
     end.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
 End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
@@ -2691,9 +2798,10 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
   Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "ContractInstantiatedEvent"
@@ -2702,12 +2810,12 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
       "contract"
       (addr_of (addr_of self.["contract"])).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
 End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -2721,8 +2829,9 @@ Section
   Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
   
   Definition decode
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
       parity_scale_codec.codec.Decode.decode __codec_input_edqy in
     let* α0 :=
@@ -2752,13 +2861,13 @@ Section
           ink_e2e.client.ContractInstantiatedEvent.contract := α1;
         |}).
   
-  Global Instance AssociatedFunction_decode :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End
   Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -2774,9 +2883,10 @@ Section
   Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
   
   Definition encode_to
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* _ :=
       parity_scale_codec.codec.Encode.encode_to
         (addr_of self.["deployer"])
@@ -2787,7 +2897,8 @@ Section
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to : Notation.Dot "encode_to" := {
+  Global Instance Method_encode_to `{H : State.Trait} :
+    Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
@@ -2832,16 +2943,19 @@ Section
   
   Definition Visitor : Set := ink_e2e.client._.Visitor E.
   
-  Definition into_visitor (_ : unit) : M ImplSelf.Visitor :=
+  Definition into_visitor
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) ImplSelf.Visitor :=
     Pure (ink_e2e.client._.Visitor.Build_t core.marker.PhantomData.Build).
   
-  Global Instance AssociatedFunction_into_visitor :
+  Global Instance AssociatedFunction_into_visitor `{H : State.Trait} :
     Notation.DoubleColon Self "into_visitor" := {
     Notation.double_colon := into_visitor;
   }.
   
   Global Instance I : scale_decode.IntoVisitor.Trait Self := {
-    scale_decode.IntoVisitor.into_visitor := into_visitor;
+    scale_decode.IntoVisitor.into_visitor `{H : State.Trait} := into_visitor;
   }.
 End
   Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -2859,10 +2973,11 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
   Definition Value : Set := ink_e2e.client.ContractInstantiatedEvent E.
   
   Definition visit_composite
+      `{H : State.Trait}
       (self : Self)
       (value : mut_ref scale_decode.visitor.types.composite.Composite)
       (type_id : scale_decode.visitor.TypeId)
-      : M (core.result.Result ImplSelf.Value ImplSelf.Error) :=
+      : M (H := H) (core.result.Result ImplSelf.Value ImplSelf.Error) :=
     let* _ :=
       let* α0 := value.["has_unnamed_fields"] in
       if (α0 : bool) then
@@ -2954,15 +3069,17 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
           ink_e2e.client.ContractInstantiatedEvent.contract := α1;
         |}).
   
-  Global Instance Method_visit_composite : Notation.Dot "visit_composite" := {
+  Global Instance Method_visit_composite `{H : State.Trait} :
+    Notation.Dot "visit_composite" := {
     Notation.dot := visit_composite;
   }.
   
   Definition visit_tuple
+      `{H : State.Trait}
       (self : Self)
       (value : mut_ref scale_decode.visitor.types.tuple.Tuple)
       (type_id : scale_decode.visitor.TypeId)
-      : M (core.result.Result ImplSelf.Value ImplSelf.Error) :=
+      : M (H := H) (core.result.Result ImplSelf.Value ImplSelf.Error) :=
     let* _ :=
       let* α0 := value.["remaining"] in
       let* α1 := α0.["ne"] 2 in
@@ -3032,7 +3149,8 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
           ink_e2e.client.ContractInstantiatedEvent.contract := α1;
         |}).
   
-  Global Instance Method_visit_tuple : Notation.Dot "visit_tuple" := {
+  Global Instance Method_visit_tuple `{H : State.Trait} :
+    Notation.Dot "visit_tuple" := {
     Notation.dot := visit_tuple;
   }.
   
@@ -3050,10 +3168,11 @@ Section
   Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
   
   Definition decode_as_fields
+      `{H : State.Trait}
       (input : mut_ref (ref Slice))
       (fields : ref Slice)
       (types : ref scale_info.portable.PortableRegistry)
-      : M (core.result.Result Self scale_decode.error.Error) :=
+      : M (H := H) (core.result.Result Self scale_decode.error.Error) :=
     let* path := core.default.Default.default tt in
     let* composite :=
       scale_decode.visitor.types.composite.Composite::["new"]
@@ -3081,13 +3200,16 @@ Section
       assign input.["deref"] α0 in
     val.["map_err"] core.convert.From.from.
   
-  Global Instance AssociatedFunction_decode_as_fields :
+  Global Instance AssociatedFunction_decode_as_fields `{H : State.Trait} :
     Notation.DoubleColon Self "decode_as_fields" := {
     Notation.double_colon := decode_as_fields;
   }.
   
   Global Instance I : scale_decode.DecodeAsFields.Trait Self := {
-    scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
+    scale_decode.DecodeAsFields.decode_as_fields
+      `{H : State.Trait}
+      :=
+      decode_as_fields;
   }.
 End
   Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -3103,11 +3225,12 @@ Section
   Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
   
   Definition encode_as_type_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_type_id : u32)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     let
         '{|
           ink_e2e.client.ContractInstantiatedEvent.deployer := deployer;
@@ -3124,13 +3247,16 @@ Section
       __encode_as_type_types
       __encode_as_type_out.
   
-  Global Instance Method_encode_as_type_to :
+  Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
     Notation.dot := encode_as_type_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-    scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+    scale_encode.EncodeAsType.encode_as_type_to
+      `{H : State.Trait}
+      :=
+      encode_as_type_to;
   }.
 End
   Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -3146,11 +3272,12 @@ Section
   Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
   
   Definition encode_as_fields_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_fields : ref Slice)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     let
         '{|
           ink_e2e.client.ContractInstantiatedEvent.deployer := deployer;
@@ -3167,13 +3294,16 @@ Section
       __encode_as_type_types
       __encode_as_type_out.
   
-  Global Instance Method_encode_as_fields_to :
+  Global Instance Method_encode_as_fields_to `{H : State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
     Notation.dot := encode_as_fields_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-    scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+    scale_encode.EncodeAsFields.encode_as_fields_to
+      `{H : State.Trait}
+      :=
+      encode_as_fields_to;
   }.
 End
   Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -3190,21 +3320,21 @@ Section
   
   Definition PALLET := Pure "Contracts".
   
-  Global Instance AssociatedFunction_PALLET :
+  Global Instance AssociatedFunction_PALLET `{H : State.Trait} :
     Notation.DoubleColon Self "PALLET" := {
     Notation.double_colon := PALLET;
   }.
   
   Definition EVENT := Pure "Instantiated".
   
-  Global Instance AssociatedFunction_EVENT :
+  Global Instance AssociatedFunction_EVENT `{H : State.Trait} :
     Notation.DoubleColon Self "EVENT" := {
     Notation.double_colon := EVENT;
   }.
   
   Global Instance I : subxt.events.StaticEvent.Trait Self := {
-    subxt.events.StaticEvent.PALLET := PALLET;
-    subxt.events.StaticEvent.EVENT := EVENT;
+    subxt.events.StaticEvent.PALLET `{H : State.Trait} := PALLET;
+    subxt.events.StaticEvent.EVENT `{H : State.Trait} := EVENT;
   }.
 End
   Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -3229,21 +3359,22 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
   Definition Self := ink_e2e.client.CodeStoredEvent E.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field1_finish"]
       f
       "CodeStoredEvent"
       "code_hash"
       (addr_of (addr_of self.["code_hash"])).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
@@ -3257,8 +3388,9 @@ Section
   Definition Self := ink_e2e.client.CodeStoredEvent E.
   
   Definition decode
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
       parity_scale_codec.codec.Decode.decode __codec_input_edqy in
     let* α0 :=
@@ -3273,13 +3405,13 @@ Section
       (core.result.Result.Ok
         {| ink_e2e.client.CodeStoredEvent.code_hash := α0; |}).
   
-  Global Instance AssociatedFunction_decode :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
@@ -3293,33 +3425,41 @@ Section
   Definition Self := ink_e2e.client.CodeStoredEvent E.
   
   Definition encode_to
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     parity_scale_codec.codec.Encode.encode_to
       (addr_of (addr_of self.["code_hash"]))
       __codec_dest_edqy.
   
-  Global Instance Method_encode_to : Notation.Dot "encode_to" := {
+  Global Instance Method_encode_to `{H : State.Trait} :
+    Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
   Definition encode
+      `{H : State.Trait}
       (self : ref Self)
-      : M (alloc.vec.Vec Root.core.primitive.u8) :=
+      : M (H := H) (alloc.vec.Vec Root.core.primitive.u8) :=
     parity_scale_codec.codec.Encode.encode
       (addr_of (addr_of self.["code_hash"])).
   
-  Global Instance Method_encode : Notation.Dot "encode" := {
+  Global Instance Method_encode `{H : State.Trait} : Notation.Dot "encode" := {
     Notation.dot := encode;
   }.
   
-  Definition using_encoded (self : ref Self) (f : F) : M R :=
+  Definition using_encoded
+      `{H : State.Trait}
+      (self : ref Self)
+      (f : F)
+      : M (H := H) R :=
     parity_scale_codec.codec.Encode.using_encoded
       (addr_of (addr_of self.["code_hash"]))
       f.
   
-  Global Instance Method_using_encoded : Notation.Dot "using_encoded" := {
+  Global Instance Method_using_encoded `{H : State.Trait} :
+    Notation.Dot "using_encoded" := {
     Notation.dot := using_encoded;
   }.
   
@@ -3360,16 +3500,19 @@ Section Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
   
   Definition Visitor : Set := ink_e2e.client._.Visitor E.
   
-  Definition into_visitor (_ : unit) : M ImplSelf.Visitor :=
+  Definition into_visitor
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) ImplSelf.Visitor :=
     Pure (ink_e2e.client._.Visitor.Build_t core.marker.PhantomData.Build).
   
-  Global Instance AssociatedFunction_into_visitor :
+  Global Instance AssociatedFunction_into_visitor `{H : State.Trait} :
     Notation.DoubleColon Self "into_visitor" := {
     Notation.double_colon := into_visitor;
   }.
   
   Global Instance I : scale_decode.IntoVisitor.Trait Self := {
-    scale_decode.IntoVisitor.into_visitor := into_visitor;
+    scale_decode.IntoVisitor.into_visitor `{H : State.Trait} := into_visitor;
   }.
 End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
@@ -3385,10 +3528,11 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
   Definition Value : Set := ink_e2e.client.CodeStoredEvent E.
   
   Definition visit_composite
+      `{H : State.Trait}
       (self : Self)
       (value : mut_ref scale_decode.visitor.types.composite.Composite)
       (type_id : scale_decode.visitor.TypeId)
-      : M (core.result.Result ImplSelf.Value ImplSelf.Error) :=
+      : M (H := H) (core.result.Result ImplSelf.Value ImplSelf.Error) :=
     let* _ :=
       let* α0 := value.["has_unnamed_fields"] in
       if (α0 : bool) then
@@ -3447,15 +3591,17 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
       (core.result.Result.Ok
         {| ink_e2e.client.CodeStoredEvent.code_hash := α0; |}).
   
-  Global Instance Method_visit_composite : Notation.Dot "visit_composite" := {
+  Global Instance Method_visit_composite `{H : State.Trait} :
+    Notation.Dot "visit_composite" := {
     Notation.dot := visit_composite;
   }.
   
   Definition visit_tuple
+      `{H : State.Trait}
       (self : Self)
       (value : mut_ref scale_decode.visitor.types.tuple.Tuple)
       (type_id : scale_decode.visitor.TypeId)
-      : M (core.result.Result ImplSelf.Value ImplSelf.Error) :=
+      : M (H := H) (core.result.Result ImplSelf.Value ImplSelf.Error) :=
     let* _ :=
       let* α0 := value.["remaining"] in
       let* α1 := α0.["ne"] 1 in
@@ -3500,7 +3646,8 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
       (core.result.Result.Ok
         {| ink_e2e.client.CodeStoredEvent.code_hash := α0; |}).
   
-  Global Instance Method_visit_tuple : Notation.Dot "visit_tuple" := {
+  Global Instance Method_visit_tuple `{H : State.Trait} :
+    Notation.Dot "visit_tuple" := {
     Notation.dot := visit_tuple;
   }.
   
@@ -3516,10 +3663,11 @@ Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   Definition Self := ink_e2e.client.CodeStoredEvent E.
   
   Definition decode_as_fields
+      `{H : State.Trait}
       (input : mut_ref (ref Slice))
       (fields : ref Slice)
       (types : ref scale_info.portable.PortableRegistry)
-      : M (core.result.Result Self scale_decode.error.Error) :=
+      : M (H := H) (core.result.Result Self scale_decode.error.Error) :=
     let* path := core.default.Default.default tt in
     let* composite :=
       scale_decode.visitor.types.composite.Composite::["new"]
@@ -3546,13 +3694,16 @@ Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
       assign input.["deref"] α0 in
     val.["map_err"] core.convert.From.from.
   
-  Global Instance AssociatedFunction_decode_as_fields :
+  Global Instance AssociatedFunction_decode_as_fields `{H : State.Trait} :
     Notation.DoubleColon Self "decode_as_fields" := {
     Notation.double_colon := decode_as_fields;
   }.
   
   Global Instance I : scale_decode.DecodeAsFields.Trait Self := {
-    scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
+    scale_decode.DecodeAsFields.decode_as_fields
+      `{H : State.Trait}
+      :=
+      decode_as_fields;
   }.
 End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
@@ -3564,11 +3715,12 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
   Definition Self := ink_e2e.client.CodeStoredEvent E.
   
   Definition encode_as_type_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_type_id : u32)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     let '{| ink_e2e.client.CodeStoredEvent.code_hash := code_hash; |} := self in
     let* α0 :=
       [ (core.option.Option.Some "code_hash", cast code_hash (ref TraitObject))
@@ -3578,13 +3730,16 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
       __encode_as_type_types
       __encode_as_type_out.
   
-  Global Instance Method_encode_as_type_to :
+  Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
     Notation.dot := encode_as_type_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-    scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+    scale_encode.EncodeAsType.encode_as_type_to
+      `{H : State.Trait}
+      :=
+      encode_as_type_to;
   }.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
@@ -3596,11 +3751,12 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   Definition Self := ink_e2e.client.CodeStoredEvent E.
   
   Definition encode_as_fields_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_fields : ref Slice)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     let '{| ink_e2e.client.CodeStoredEvent.code_hash := code_hash; |} := self in
     let* α0 :=
       [ (core.option.Option.Some "code_hash", cast code_hash (ref TraitObject))
@@ -3610,13 +3766,16 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
       __encode_as_type_types
       __encode_as_type_out.
   
-  Global Instance Method_encode_as_fields_to :
+  Global Instance Method_encode_as_fields_to `{H : State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
     Notation.dot := encode_as_fields_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-    scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+    scale_encode.EncodeAsFields.encode_as_fields_to
+      `{H : State.Trait}
+      :=
+      encode_as_fields_to;
   }.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
@@ -3629,21 +3788,21 @@ Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
   
   Definition PALLET := Pure "Contracts".
   
-  Global Instance AssociatedFunction_PALLET :
+  Global Instance AssociatedFunction_PALLET `{H : State.Trait} :
     Notation.DoubleColon Self "PALLET" := {
     Notation.double_colon := PALLET;
   }.
   
   Definition EVENT := Pure "CodeStored".
   
-  Global Instance AssociatedFunction_EVENT :
+  Global Instance AssociatedFunction_EVENT `{H : State.Trait} :
     Notation.DoubleColon Self "EVENT" := {
     Notation.double_colon := EVENT;
   }.
   
   Global Instance I : subxt.events.StaticEvent.Trait Self := {
-    subxt.events.StaticEvent.PALLET := PALLET;
-    subxt.events.StaticEvent.EVENT := EVENT;
+    subxt.events.StaticEvent.PALLET `{H : State.Trait} := PALLET;
+    subxt.events.StaticEvent.EVENT `{H : State.Trait} := EVENT;
   }.
 End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
@@ -3669,9 +3828,10 @@ Module Impl_ink_e2e_client_Client_C_E_2.
   Definition Self := ink_e2e.client.Client C E.
   
   Definition new
+      `{H : State.Trait}
       (client : subxt.client.online_client.OnlineClient C)
       (contracts : impl IntoIterator<Item = &str>)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let client := client in
@@ -3721,15 +3881,17 @@ Module Impl_ink_e2e_client_Client_C_E_2.
           end in
         Pure {| Self.api := α2; Self.contracts := contracts; |}).
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new `{H : State.Trait} :
+    Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
   Definition create_and_fund_account
+      `{H : State.Trait}
       (self : ref Self)
       (origin : ref (ink_e2e.Signer C))
       (amount : ImplE.Balance)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -3790,19 +3952,20 @@ Module Impl_ink_e2e_client_Client_C_E_2.
           ink_e2e.log_info (addr_of res) in
         Pure pair_signer).
   
-  Global Instance Method_create_and_fund_account :
+  Global Instance Method_create_and_fund_account `{H : State.Trait} :
     Notation.Dot "create_and_fund_account" := {
     Notation.dot := create_and_fund_account;
   }.
   
   Definition instantiate
+      `{H : State.Trait}
       (self : mut_ref Self)
       (contract_name : ref str)
       (signer : ref (ink_e2e.Signer C))
       (constructor : ink_e2e.builders.CreateBuilderPartial E Contract Args R)
       (value : ImplE.Balance)
       (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -3859,18 +4022,20 @@ Module Impl_ink_e2e_client_Client_C_E_2.
           ink_e2e.log_info (addr_of res) in
         Pure (core.result.Result.Ok ret)).
   
-  Global Instance Method_instantiate : Notation.Dot "instantiate" := {
+  Global Instance Method_instantiate `{H : State.Trait} :
+    Notation.Dot "instantiate" := {
     Notation.dot := instantiate;
   }.
   
   Definition instantiate_dry_run
+      `{H : State.Trait}
       (self : mut_ref Self)
       (contract_name : ref str)
       (signer : ref (ink_e2e.Signer C))
       (constructor : ink_e2e.builders.CreateBuilderPartial E Contract Args R)
       (value : ImplE.Balance)
       (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -3910,15 +4075,16 @@ Module Impl_ink_e2e_client_Client_C_E_2.
             loop
         end).
   
-  Global Instance Method_instantiate_dry_run :
+  Global Instance Method_instantiate_dry_run `{H : State.Trait} :
     Notation.Dot "instantiate_dry_run" := {
     Notation.dot := instantiate_dry_run;
   }.
   
   Definition load_code
+      `{H : State.Trait}
       (self : ref Self)
       (contract : ref str)
-      : M (alloc.vec.Vec u8) :=
+      : M (H := H) (alloc.vec.Vec u8) :=
     let* wasm_path :=
       let* α0 := contract.["replace"] "-"%char "_" in
       let* α1 := self.["contracts"].["get"] (addr_of α0) in
@@ -3969,18 +4135,20 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
       ink_e2e.log_info (addr_of res) in
     Pure code.
   
-  Global Instance Method_load_code : Notation.Dot "load_code" := {
+  Global Instance Method_load_code `{H : State.Trait} :
+    Notation.Dot "load_code" := {
     Notation.dot := load_code;
   }.
   
   Definition exec_instantiate
+      `{H : State.Trait}
       (self : mut_ref Self)
       (signer : ref (ink_e2e.Signer C))
       (code : alloc.vec.Vec u8)
       (constructor : ink_e2e.builders.CreateBuilderPartial E Contract Args R)
       (value : ImplE.Balance)
       (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -4193,11 +4361,15 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               ink_e2e.client.InstantiationResult.events := tx_events;
             |})).
   
-  Global Instance Method_exec_instantiate : Notation.Dot "exec_instantiate" := {
+  Global Instance Method_exec_instantiate `{H : State.Trait} :
+    Notation.Dot "exec_instantiate" := {
     Notation.dot := exec_instantiate;
   }.
   
-  Definition salt (_ : unit) : M (alloc.vec.Vec u8) :=
+  Definition salt
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) (alloc.vec.Vec u8) :=
     let* α0 := std.time.SystemTime::["now"] tt in
     let* α1 := α0.["duration_since"] std.time.UNIX_EPOCH in
     let* α2 :=
@@ -4214,17 +4386,18 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
     let* α5 := α4.["to_le_bytes"] in
     α5.["to_vec"].
   
-  Global Instance AssociatedFunction_salt :
+  Global Instance AssociatedFunction_salt `{H : State.Trait} :
     Notation.DoubleColon Self "salt" := {
     Notation.double_colon := salt;
   }.
   
   Definition upload
+      `{H : State.Trait}
       (self : mut_ref Self)
       (contract_name : ref str)
       (signer : ref (ink_e2e.Signer C))
       (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -4273,16 +4446,17 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           ink_e2e.log_info (addr_of res) in
         Pure (core.result.Result.Ok ret)).
   
-  Global Instance Method_upload : Notation.Dot "upload" := {
+  Global Instance Method_upload `{H : State.Trait} : Notation.Dot "upload" := {
     Notation.dot := upload;
   }.
   
   Definition exec_upload
+      `{H : State.Trait}
       (self : mut_ref Self)
       (signer : ref (ink_e2e.Signer C))
       (code : alloc.vec.Vec u8)
       (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -4472,17 +4646,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               ink_e2e.client.UploadResult.events := tx_events;
             |})).
   
-  Global Instance Method_exec_upload : Notation.Dot "exec_upload" := {
+  Global Instance Method_exec_upload `{H : State.Trait} :
+    Notation.Dot "exec_upload" := {
     Notation.dot := exec_upload;
   }.
   
   Definition call
+      `{H : State.Trait}
       (self : mut_ref Self)
       (signer : ref (ink_e2e.Signer C))
       (message : ref (ink_e2e.client.CallBuilderFinal E Args RetType))
       (value : ImplE.Balance)
       (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -4654,17 +4830,18 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               ink_e2e.client.CallResult.events := tx_events;
             |})).
   
-  Global Instance Method_call : Notation.Dot "call" := {
+  Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
     Notation.dot := call;
   }.
   
   Definition runtime_call
+      `{H : State.Trait}
       (self : mut_ref Self)
       (signer : ref (ink_e2e.Signer C))
       (pallet_name : ref str)
       (call_name : ref str)
       (call_data : alloc.vec.Vec scale_value.value.Value)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -4762,17 +4939,19 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           end in
         Pure (core.result.Result.Ok tx_events)).
   
-  Global Instance Method_runtime_call : Notation.Dot "runtime_call" := {
+  Global Instance Method_runtime_call `{H : State.Trait} :
+    Notation.Dot "runtime_call" := {
     Notation.dot := runtime_call;
   }.
   
   Definition call_dry_run
+      `{H : State.Trait}
       (self : mut_ref Self)
       (signer : ref (ink_e2e.Signer C))
       (message : ref (ink_e2e.client.CallBuilderFinal E Args RetType))
       (value : ImplE.Balance)
       (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -4849,14 +5028,16 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             ink_e2e.client.CallDryRunResult._marker := α0;
           |}).
   
-  Global Instance Method_call_dry_run : Notation.Dot "call_dry_run" := {
+  Global Instance Method_call_dry_run `{H : State.Trait} :
+    Notation.Dot "call_dry_run" := {
     Notation.dot := call_dry_run;
   }.
   
   Definition balance
+      `{H : State.Trait}
       (self : ref Self)
       (account_id : ImplE.AccountId)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -5016,7 +5197,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           ink_e2e.log_info (addr_of res) in
         Pure (core.result.Result.Ok balance)).
   
-  Global Instance Method_balance : Notation.Dot "balance" := {
+  Global Instance Method_balance `{H : State.Trait} :
+    Notation.Dot "balance" := {
     Notation.dot := balance;
   }.
 End Impl_ink_e2e_client_Client_C_E_2.
@@ -5044,6 +5226,7 @@ Error OpaqueTy.
 Error OpaqueTy.
 
 Definition get_composite_field_value
+    `{H : State.Trait}
     {T C E : Set}
     `{subxt.config.Config.Trait C}
     `{ink_env.types.Environment.Trait E}
@@ -5051,7 +5234,7 @@ Definition get_composite_field_value
     (value : ref (scale_value.value.Value T))
     (field_name : ref str)
     :
-      M
+      M (H := H)
         (core.result.Result
           (ref (scale_value.value.Value T))
           (ink_e2e.client.Error C E)) :=
@@ -5090,8 +5273,9 @@ Definition get_composite_field_value
     Pure (core.result.Result.Err (ink_e2e.client.Error.Balance α0)).
 
 Definition is_extrinsic_failed_event
+    `{H : State.Trait}
     (event : ref subxt.events.events_type.EventDetails)
-    : M bool :=
+    : M (H := H) bool :=
   let* α0 := event.["pallet_name"] in
   let* α1 := α0.["eq"] "System" in
   let* α2 := event.["variant_name"] in
@@ -5100,163 +5284,211 @@ Definition is_extrinsic_failed_event
 
 Module default_accounts.
   Definition alice
+      `{H : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
       (_ : unit)
-      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+      :
+        M (H := H)
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
     let* α0 := sp_keyring.sr25519.Keyring.Alice.["pair"] in
     subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
   
   Definition bob
+      `{H : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
       (_ : unit)
-      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+      :
+        M (H := H)
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
     let* α0 := sp_keyring.sr25519.Keyring.Bob.["pair"] in
     subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
   
   Definition charlie
+      `{H : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
       (_ : unit)
-      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+      :
+        M (H := H)
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
     let* α0 := sp_keyring.sr25519.Keyring.Charlie.["pair"] in
     subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
   
   Definition dave
+      `{H : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
       (_ : unit)
-      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+      :
+        M (H := H)
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
     let* α0 := sp_keyring.sr25519.Keyring.Dave.["pair"] in
     subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
   
   Definition eve
+      `{H : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
       (_ : unit)
-      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+      :
+        M (H := H)
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
     let* α0 := sp_keyring.sr25519.Keyring.Eve.["pair"] in
     subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
   
   Definition ferdie
+      `{H : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
       (_ : unit)
-      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+      :
+        M (H := H)
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
     let* α0 := sp_keyring.sr25519.Keyring.Ferdie.["pair"] in
     subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
   
   Definition one
+      `{H : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
       (_ : unit)
-      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+      :
+        M (H := H)
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
     let* α0 := sp_keyring.sr25519.Keyring.One.["pair"] in
     subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
   
   Definition two
+      `{H : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
       (_ : unit)
-      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+      :
+        M (H := H)
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
     let* α0 := sp_keyring.sr25519.Keyring.Two.["pair"] in
     subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
 End default_accounts.
 
 Definition alice
+    `{H : State.Trait}
     {C : Set}
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
     (_ : unit)
-    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    :
+      M (H := H)
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
   let* α0 := sp_keyring.sr25519.Keyring.Alice.["pair"] in
   subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
 
 Definition bob
+    `{H : State.Trait}
     {C : Set}
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
     (_ : unit)
-    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    :
+      M (H := H)
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
   let* α0 := sp_keyring.sr25519.Keyring.Bob.["pair"] in
   subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
 
 Definition charlie
+    `{H : State.Trait}
     {C : Set}
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
     (_ : unit)
-    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    :
+      M (H := H)
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
   let* α0 := sp_keyring.sr25519.Keyring.Charlie.["pair"] in
   subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
 
 Definition dave
+    `{H : State.Trait}
     {C : Set}
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
     (_ : unit)
-    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    :
+      M (H := H)
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
   let* α0 := sp_keyring.sr25519.Keyring.Dave.["pair"] in
   subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
 
 Definition eve
+    `{H : State.Trait}
     {C : Set}
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
     (_ : unit)
-    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    :
+      M (H := H)
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
   let* α0 := sp_keyring.sr25519.Keyring.Eve.["pair"] in
   subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
 
 Definition ferdie
+    `{H : State.Trait}
     {C : Set}
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
     (_ : unit)
-    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    :
+      M (H := H)
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
   let* α0 := sp_keyring.sr25519.Keyring.Ferdie.["pair"] in
   subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
 
 Definition one
+    `{H : State.Trait}
     {C : Set}
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
     (_ : unit)
-    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    :
+      M (H := H)
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
   let* α0 := sp_keyring.sr25519.Keyring.One.["pair"] in
   subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
 
 Definition two
+    `{H : State.Trait}
     {C : Set}
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
     (_ : unit)
-    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    :
+      M (H := H)
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
   let* α0 := sp_keyring.sr25519.Keyring.Two.["pair"] in
   subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
 
@@ -5286,16 +5518,19 @@ Module node_proc.
     
     Definition Self := ink_e2e.node_proc.TestNodeProcess R.
     
-    Definition drop (self : mut_ref Self) : M unit :=
+    Definition drop
+        `{H : State.Trait}
+        (self : mut_ref Self)
+        : M (H := H) unit :=
       let* _ := self.["kill"] in
       Pure tt.
     
-    Global Instance Method_drop : Notation.Dot "drop" := {
+    Global Instance Method_drop `{H : State.Trait} : Notation.Dot "drop" := {
       Notation.dot := drop;
     }.
     
     Global Instance I : core.ops.drop.Drop.Trait Self := {
-      core.ops.drop.Drop.drop := drop;
+      core.ops.drop.Drop.drop `{H : State.Trait} := drop;
     }.
   End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
   End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
@@ -5304,18 +5539,20 @@ Module node_proc.
     Definition Self := ink_e2e.node_proc.TestNodeProcess R.
     
     Definition build
+        `{H : State.Trait}
         (program : S)
-        : M (ink_e2e.node_proc.TestNodeProcessBuilder R) :=
+        : M (H := H) (ink_e2e.node_proc.TestNodeProcessBuilder R) :=
       ink_e2e.node_proc.TestNodeProcessBuilder::["new"] program.
     
-    Global Instance AssociatedFunction_build :
+    Global Instance AssociatedFunction_build `{H : State.Trait} :
       Notation.DoubleColon Self "build" := {
       Notation.double_colon := build;
     }.
     
     Definition kill
+        `{H : State.Trait}
         (self : mut_ref Self)
-        : M (core.result.Result unit alloc.string.String) :=
+        : M (H := H) (core.result.Result unit alloc.string.String) :=
       let* _ :=
         let* enabled :=
           let* α0 :=
@@ -5435,23 +5672,28 @@ Module node_proc.
           Pure tt in
       Pure (core.result.Result.Ok tt).
     
-    Global Instance Method_kill : Notation.Dot "kill" := {
+    Global Instance Method_kill `{H : State.Trait} : Notation.Dot "kill" := {
       Notation.dot := kill;
     }.
     
     Definition client
+        `{H : State.Trait}
         (self : ref Self)
-        : M (subxt.client.online_client.OnlineClient R) :=
+        : M (H := H) (subxt.client.online_client.OnlineClient R) :=
       self.["client"].["clone"].
     
-    Global Instance Method_client : Notation.Dot "client" := {
+    Global Instance Method_client `{H : State.Trait} :
+      Notation.Dot "client" := {
       Notation.dot := client;
     }.
     
-    Definition url (self : ref Self) : M (ref str) :=
+    Definition url
+        `{H : State.Trait}
+        (self : ref Self)
+        : M (H := H) (ref str) :=
       Pure (addr_of self.["url"]).
     
-    Global Instance Method_url : Notation.Dot "url" := {
+    Global Instance Method_url `{H : State.Trait} : Notation.Dot "url" := {
       Notation.dot := url;
     }.
   End Impl_ink_e2e_node_proc_TestNodeProcess_R.
@@ -5479,8 +5721,9 @@ Module node_proc.
     Definition Self := ink_e2e.node_proc.TestNodeProcessBuilder R.
     
     Definition new
+        `{H : State.Trait}
         (node_path : P)
-        : M (ink_e2e.node_proc.TestNodeProcessBuilder R) :=
+        : M (H := H) (ink_e2e.node_proc.TestNodeProcessBuilder R) :=
       let* α0 := node_path.["as_ref"] in
       let* α1 := α0.["into"] in
       let* α2 := core.default.Default.default tt in
@@ -5491,23 +5734,28 @@ Module node_proc.
           Self.marker := α2;
         |}.
     
-    Global Instance AssociatedFunction_new :
+    Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
     
     Definition with_authority
+        `{H : State.Trait}
         (self : mut_ref Self)
         (account : sp_keyring.sr25519.Keyring)
-        : M (mut_ref Self) :=
+        : M (H := H) (mut_ref Self) :=
       let* _ := assign self.["authority"] (core.option.Option.Some account) in
       Pure self.
     
-    Global Instance Method_with_authority : Notation.Dot "with_authority" := {
+    Global Instance Method_with_authority `{H : State.Trait} :
+      Notation.Dot "with_authority" := {
       Notation.dot := with_authority;
     }.
     
-    Definition spawn (self : ref Self) : M OpaqueDef :=
+    Definition spawn
+        `{H : State.Trait}
+        (self : ref Self)
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -5711,17 +5959,18 @@ Module node_proc.
             Pure (core.result.Result.Err err)
           end).
     
-    Global Instance Method_spawn : Notation.Dot "spawn" := {
+    Global Instance Method_spawn `{H : State.Trait} : Notation.Dot "spawn" := {
       Notation.dot := spawn;
     }.
   End Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R.
   
   Definition find_substrate_port_from_output
+      `{H : State.Trait}
       {impl Read + Send + 'static : Set}
       `{std.io.Read.Trait impl Read + Send + 'static}
       `{core.marker.Send.Trait impl Read + Send + 'static}
       (r : impl Read + Send + 'static)
-      : M u16 :=
+      : M (H := H) u16 :=
     let* α0 := std.io.buffered.bufreader.BufReader::["new"] r in
     let* α1 := α0.["lines"] in
     let* α2 :=
@@ -5792,16 +6041,16 @@ Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
   
   Definition Self := ink_e2e.node_proc.TestNodeProcess R.
   
-  Definition drop (self : mut_ref Self) : M unit :=
+  Definition drop `{H : State.Trait} (self : mut_ref Self) : M (H := H) unit :=
     let* _ := self.["kill"] in
     Pure tt.
   
-  Global Instance Method_drop : Notation.Dot "drop" := {
+  Global Instance Method_drop `{H : State.Trait} : Notation.Dot "drop" := {
     Notation.dot := drop;
   }.
   
   Global Instance I : core.ops.drop.Drop.Trait Self := {
-    core.ops.drop.Drop.drop := drop;
+    core.ops.drop.Drop.drop `{H : State.Trait} := drop;
   }.
 End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
 End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
@@ -5810,18 +6059,20 @@ Module Impl_ink_e2e_node_proc_TestNodeProcess_R_2.
   Definition Self := ink_e2e.node_proc.TestNodeProcess R.
   
   Definition build
+      `{H : State.Trait}
       (program : S)
-      : M (ink_e2e.node_proc.TestNodeProcessBuilder R) :=
+      : M (H := H) (ink_e2e.node_proc.TestNodeProcessBuilder R) :=
     ink_e2e.node_proc.TestNodeProcessBuilder::["new"] program.
   
-  Global Instance AssociatedFunction_build :
+  Global Instance AssociatedFunction_build `{H : State.Trait} :
     Notation.DoubleColon Self "build" := {
     Notation.double_colon := build;
   }.
   
   Definition kill
+      `{H : State.Trait}
       (self : mut_ref Self)
-      : M (core.result.Result unit alloc.string.String) :=
+      : M (H := H) (core.result.Result unit alloc.string.String) :=
     let* _ :=
       let* enabled :=
         let* α0 :=
@@ -5941,32 +6192,37 @@ Module Impl_ink_e2e_node_proc_TestNodeProcess_R_2.
         Pure tt in
     Pure (core.result.Result.Ok tt).
   
-  Global Instance Method_kill : Notation.Dot "kill" := {
+  Global Instance Method_kill `{H : State.Trait} : Notation.Dot "kill" := {
     Notation.dot := kill;
   }.
   
   Definition client
+      `{H : State.Trait}
       (self : ref Self)
-      : M (subxt.client.online_client.OnlineClient R) :=
+      : M (H := H) (subxt.client.online_client.OnlineClient R) :=
     self.["client"].["clone"].
   
-  Global Instance Method_client : Notation.Dot "client" := {
+  Global Instance Method_client `{H : State.Trait} : Notation.Dot "client" := {
     Notation.dot := client;
   }.
   
-  Definition url (self : ref Self) : M (ref str) := Pure (addr_of self.["url"]).
+  Definition url `{H : State.Trait} (self : ref Self) : M (H := H) (ref str) :=
+    Pure (addr_of self.["url"]).
   
-  Global Instance Method_url : Notation.Dot "url" := {
+  Global Instance Method_url `{H : State.Trait} : Notation.Dot "url" := {
     Notation.dot := url;
   }.
 End Impl_ink_e2e_node_proc_TestNodeProcess_R_2.
 
-Definition CALLSITE : tracing_core.callsite.DefaultCallsite :=
+Definition
+    CALLSITE
+    `{H : State.Trait} :
+    tracing_core.callsite.DefaultCallsite :=
   run
     (tracing_core.callsite.DefaultCallsite::["new"]
       (addr_of ink_e2e.node_proc.kill.CALLSITE.META)).
 
-Definition META : tracing_core.metadata.Metadata :=
+Definition META `{H : State.Trait} : tracing_core.metadata.Metadata :=
   run
     (let* α0 :=
       tracing_core.field.FieldSet::["new"]
@@ -5983,12 +6239,15 @@ Definition META : tracing_core.metadata.Metadata :=
       α0
       tracing_core.metadata.Kind::["EVENT"]).
 
-Definition CALLSITE : tracing_core.callsite.DefaultCallsite :=
+Definition
+    CALLSITE
+    `{H : State.Trait} :
+    tracing_core.callsite.DefaultCallsite :=
   run
     (tracing_core.callsite.DefaultCallsite::["new"]
       (addr_of ink_e2e.node_proc.kill.CALLSITE.META)).
 
-Definition META : tracing_core.metadata.Metadata :=
+Definition META `{H : State.Trait} : tracing_core.metadata.Metadata :=
   run
     (let* α0 :=
       tracing_core.field.FieldSet::["new"]
@@ -6028,8 +6287,9 @@ Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
   Definition Self := ink_e2e.node_proc.TestNodeProcessBuilder R.
   
   Definition new
+      `{H : State.Trait}
       (node_path : P)
-      : M (ink_e2e.node_proc.TestNodeProcessBuilder R) :=
+      : M (H := H) (ink_e2e.node_proc.TestNodeProcessBuilder R) :=
     let* α0 := node_path.["as_ref"] in
     let* α1 := α0.["into"] in
     let* α2 := core.default.Default.default tt in
@@ -6040,22 +6300,28 @@ Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
         Self.marker := α2;
       |}.
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new `{H : State.Trait} :
+    Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
   Definition with_authority
+      `{H : State.Trait}
       (self : mut_ref Self)
       (account : sp_keyring.sr25519.Keyring)
-      : M (mut_ref Self) :=
+      : M (H := H) (mut_ref Self) :=
     let* _ := assign self.["authority"] (core.option.Option.Some account) in
     Pure self.
   
-  Global Instance Method_with_authority : Notation.Dot "with_authority" := {
+  Global Instance Method_with_authority `{H : State.Trait} :
+    Notation.Dot "with_authority" := {
     Notation.dot := with_authority;
   }.
   
-  Definition spawn (self : ref Self) : M OpaqueDef :=
+  Definition spawn
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -6252,19 +6518,22 @@ Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
           Pure (core.result.Result.Err err)
         end).
   
-  Global Instance Method_spawn : Notation.Dot "spawn" := {
+  Global Instance Method_spawn `{H : State.Trait} : Notation.Dot "spawn" := {
     Notation.dot := spawn;
   }.
 End Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
 
 Error OpaqueTy.
 
-Definition CALLSITE : tracing_core.callsite.DefaultCallsite :=
+Definition
+    CALLSITE
+    `{H : State.Trait} :
+    tracing_core.callsite.DefaultCallsite :=
   run
     (tracing_core.callsite.DefaultCallsite::["new"]
       (addr_of ink_e2e.node_proc.spawn.CALLSITE.META)).
 
-Definition META : tracing_core.metadata.Metadata :=
+Definition META `{H : State.Trait} : tracing_core.metadata.Metadata :=
   run
     (let* α0 :=
       tracing_core.field.FieldSet::["new"]
@@ -6282,11 +6551,12 @@ Definition META : tracing_core.metadata.Metadata :=
       tracing_core.metadata.Kind::["EVENT"]).
 
 Definition find_substrate_port_from_output
+    `{H : State.Trait}
     {impl Read + Send + 'static : Set}
     `{std.io.Read.Trait impl Read + Send + 'static}
     `{core.marker.Send.Trait impl Read + Send + 'static}
     (r : impl Read + Send + 'static)
-    : M u16 :=
+    : M (H := H) u16 :=
   let* α0 := std.io.buffered.bufreader.BufReader::["new"] r in
   let* α1 := α0.["lines"] in
   let* α2 :=
@@ -6356,16 +6626,19 @@ Module xts.
   Module Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
-    Definition clone (self : ref Self) : M ink_e2e.xts.Weight :=
+    Definition clone
+        `{H : State.Trait}
+        (self : ref Self)
+        : M (H := H) ink_e2e.xts.Weight :=
       let _ := tt in
       self.["deref"].
     
-    Global Instance Method_clone : Notation.Dot "clone" := {
+    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
     }.
     
     Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone := clone;
+      core.clone.Clone.clone `{H : State.Trait} := clone;
     }.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
   
@@ -6379,11 +6652,14 @@ Module xts.
   Module Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    Definition assert_receiver_is_total_eq
+        `{H : State.Trait}
+        (self : ref Self)
+        : M (H := H) unit :=
       let _ := tt in
       Pure tt.
     
-    Global Instance Method_assert_receiver_is_total_eq :
+    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
       Notation.dot := assert_receiver_is_total_eq;
     }.
@@ -6402,17 +6678,21 @@ Module xts.
   Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
-    Definition eq (self : ref Self) (other : ref ink_e2e.xts.Weight) : M bool :=
+    Definition eq
+        `{H : State.Trait}
+        (self : ref Self)
+        (other : ref ink_e2e.xts.Weight)
+        : M (H := H) bool :=
       let* α0 := self.["ref_time"].["eq"] other.["ref_time"] in
       let* α1 := self.["proof_size"].["eq"] other.["proof_size"] in
       α0.["andb"] α1.
     
-    Global Instance Method_eq : Notation.Dot "eq" := {
+    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
     }.
     
     Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
   
@@ -6420,9 +6700,10 @@ Module xts.
     Definition Self := ink_e2e.xts.Weight.
     
     Definition fmt
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       core.fmt.Formatter::["debug_struct_field2_finish"]
         f
         "Weight"
@@ -6431,19 +6712,22 @@ Module xts.
         "proof_size"
         (addr_of (addr_of self.["proof_size"])).
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
   
   Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
-    Definition default (_ : unit) : M ink_e2e.xts.Weight :=
+    Definition default
+        `{H : State.Trait}
+        (_ : unit)
+        : M (H := H) ink_e2e.xts.Weight :=
       let* α0 := core.default.Default.default tt in
       let* α1 := core.default.Default.default tt in
       Pure
@@ -6452,13 +6736,13 @@ Module xts.
           ink_e2e.xts.Weight.proof_size := α1;
         |}.
     
-    Global Instance AssociatedFunction_default :
+    Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
       Notation.double_colon := default;
     }.
     
     Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default := default;
+      core.default.Default.default `{H : State.Trait} := default;
     }.
   End Impl_core_default_Default_for_ink_e2e_xts_Weight.
   
@@ -6466,11 +6750,12 @@ Module xts.
     Definition Self := ink_e2e.xts.Weight.
     
     Definition encode_as_type_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_type_id : u32)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       let
           '{|
             ink_e2e.xts.Weight.ref_time := ref_time;
@@ -6489,13 +6774,16 @@ Module xts.
         __encode_as_type_types
         __encode_as_type_out.
     
-    Global Instance Method_encode_as_type_to :
+    Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
       Notation.dot := encode_as_type_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-      scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type_to
+        `{H : State.Trait}
+        :=
+        encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
   
@@ -6503,11 +6791,12 @@ Module xts.
     Definition Self := ink_e2e.xts.Weight.
     
     Definition encode_as_fields_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_fields : ref Slice)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       let
           '{|
             ink_e2e.xts.Weight.ref_time := ref_time;
@@ -6527,51 +6816,60 @@ Module xts.
         __encode_as_type_types
         __encode_as_type_out.
     
-    Global Instance Method_encode_as_fields_to :
+    Global Instance Method_encode_as_fields_to `{H : State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
       Notation.dot := encode_as_fields_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-      scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      scale_encode.EncodeAsFields.encode_as_fields_to
+        `{H : State.Trait}
+        :=
+        encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
   
   Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
-    Definition from (weight : sp_weights.weight_v2.Weight) : M Self :=
+    Definition from
+        `{H : State.Trait}
+        (weight : sp_weights.weight_v2.Weight)
+        : M (H := H) Self :=
       let* α0 := weight.["ref_time"] in
       let* α1 := weight.["proof_size"] in
       Pure {| Self.ref_time := α0; Self.proof_size := α1; |}.
     
-    Global Instance AssociatedFunction_from :
+    Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
       Notation.double_colon := from;
     }.
     
     Global Instance I :
         core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
-      core.convert.From.from := from;
+      core.convert.From.from `{H : State.Trait} := from;
     }.
   End Impl_core_convert_From_for_ink_e2e_xts_Weight.
   
   Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
     Definition Self := sp_weights.weight_v2.Weight.
     
-    Definition from (weight : ink_e2e.xts.Weight) : M Self :=
+    Definition from
+        `{H : State.Trait}
+        (weight : ink_e2e.xts.Weight)
+        : M (H := H) Self :=
       sp_weights.weight_v2.Weight::["from_parts"]
         weight.["ref_time"]
         weight.["proof_size"].
     
-    Global Instance AssociatedFunction_from :
+    Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
       Notation.double_colon := from;
     }.
     
     Global Instance I :
         core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
-      core.convert.From.from := from;
+      core.convert.From.from `{H : State.Trait} := from;
     }.
   End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
   
@@ -6614,9 +6912,10 @@ Module xts.
     Definition Self := ink_e2e.xts.InstantiateWithCode E.
     
     Definition fmt
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       let names :=
         addr_of
           [
@@ -6643,12 +6942,12 @@ Module xts.
         names
         values.
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -6660,11 +6959,12 @@ Module xts.
     Definition Self := ink_e2e.xts.InstantiateWithCode E.
     
     Definition encode_as_type_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_type_id : u32)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       let
           '{|
             ink_e2e.xts.InstantiateWithCode.value := value;
@@ -6693,13 +6993,16 @@ Module xts.
         __encode_as_type_types
         __encode_as_type_out.
     
-    Global Instance Method_encode_as_type_to :
+    Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
       Notation.dot := encode_as_type_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-      scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type_to
+        `{H : State.Trait}
+        :=
+        encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -6712,11 +7015,12 @@ Module xts.
     Definition Self := ink_e2e.xts.InstantiateWithCode E.
     
     Definition encode_as_fields_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_fields : ref Slice)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       let
           '{|
             ink_e2e.xts.InstantiateWithCode.value := value;
@@ -6746,13 +7050,16 @@ Module xts.
         __encode_as_type_types
         __encode_as_type_out.
     
-    Global Instance Method_encode_as_fields_to :
+    Global Instance Method_encode_as_fields_to `{H : State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
       Notation.dot := encode_as_fields_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-      scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      scale_encode.EncodeAsFields.encode_as_fields_to
+        `{H : State.Trait}
+        :=
+        encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -6792,9 +7099,10 @@ Module xts.
     Definition Self := ink_e2e.xts.Call E.
     
     Definition fmt
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       core.fmt.Formatter::["debug_struct_field5_finish"]
         f
         "Call"
@@ -6809,12 +7117,12 @@ Module xts.
         "data"
         (addr_of (addr_of self.["data"])).
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
@@ -6826,11 +7134,12 @@ Module xts.
     Definition Self := ink_e2e.xts.Call E.
     
     Definition encode_as_type_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_type_id : u32)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       let
           '{|
             ink_e2e.xts.Call.dest := dest;
@@ -6855,13 +7164,16 @@ Module xts.
         __encode_as_type_types
         __encode_as_type_out.
     
-    Global Instance Method_encode_as_type_to :
+    Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
       Notation.dot := encode_as_type_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-      scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type_to
+        `{H : State.Trait}
+        :=
+        encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
@@ -6873,11 +7185,12 @@ Module xts.
     Definition Self := ink_e2e.xts.Call E.
     
     Definition encode_as_fields_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_fields : ref Slice)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       let
           '{|
             ink_e2e.xts.Call.dest := dest;
@@ -6903,13 +7216,16 @@ Module xts.
         __encode_as_type_types
         __encode_as_type_out.
     
-    Global Instance Method_encode_as_fields_to :
+    Global Instance Method_encode_as_fields_to `{H : State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
       Notation.dot := encode_as_fields_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-      scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      scale_encode.EncodeAsFields.encode_as_fields_to
+        `{H : State.Trait}
+        :=
+        encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
@@ -6936,9 +7252,10 @@ Module xts.
     Definition Self := ink_e2e.xts.Transfer E C.
     
     Definition fmt
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       core.fmt.Formatter::["debug_struct_field2_finish"]
         f
         "Transfer"
@@ -6947,12 +7264,12 @@ Module xts.
         "value"
         (addr_of (addr_of self.["value"])).
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
@@ -6964,11 +7281,12 @@ Module xts.
     Definition Self := ink_e2e.xts.Transfer E C.
     
     Definition encode_as_type_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_type_id : u32)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       let
           '{|
             ink_e2e.xts.Transfer.dest := dest;
@@ -6985,13 +7303,16 @@ Module xts.
         __encode_as_type_types
         __encode_as_type_out.
     
-    Global Instance Method_encode_as_type_to :
+    Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
       Notation.dot := encode_as_type_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-      scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type_to
+        `{H : State.Trait}
+        :=
+        encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
@@ -7003,11 +7324,12 @@ Module xts.
     Definition Self := ink_e2e.xts.Transfer E C.
     
     Definition encode_as_fields_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_fields : ref Slice)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       let
           '{|
             ink_e2e.xts.Transfer.dest := dest;
@@ -7025,13 +7347,16 @@ Module xts.
         __encode_as_type_types
         __encode_as_type_out.
     
-    Global Instance Method_encode_as_fields_to :
+    Global Instance Method_encode_as_fields_to `{H : State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
       Notation.dot := encode_as_fields_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-      scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      scale_encode.EncodeAsFields.encode_as_fields_to
+        `{H : State.Trait}
+        :=
+        encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
@@ -7047,9 +7372,10 @@ Module xts.
     Definition Self := ink_e2e.xts.Determinism.
     
     Definition fmt
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       let* α0 :=
         match self with
         | ink_e2e.xts.Determinism.Enforced => Pure "Enforced"
@@ -7057,27 +7383,30 @@ Module xts.
         end in
       core.fmt.Formatter::["write_str"] f α0.
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
   
   Module Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
     Definition Self := ink_e2e.xts.Determinism.
     
-    Definition clone (self : ref Self) : M ink_e2e.xts.Determinism :=
+    Definition clone
+        `{H : State.Trait}
+        (self : ref Self)
+        : M (H := H) ink_e2e.xts.Determinism :=
       self.["deref"].
     
-    Global Instance Method_clone : Notation.Dot "clone" := {
+    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
     }.
     
     Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone := clone;
+      core.clone.Clone.clone `{H : State.Trait} := clone;
     }.
   End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
   
@@ -7099,19 +7428,20 @@ Module xts.
     Definition Self := ink_e2e.xts.Determinism.
     
     Definition eq
+        `{H : State.Trait}
         (self : ref Self)
         (other : ref ink_e2e.xts.Determinism)
-        : M bool :=
+        : M (H := H) bool :=
       let* __self_tag := core.intrinsics.discriminant_value self in
       let* __arg1_tag := core.intrinsics.discriminant_value other in
       __self_tag.["eq"] __arg1_tag.
     
-    Global Instance Method_eq : Notation.Dot "eq" := {
+    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
     }.
     
     Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
   
@@ -7125,10 +7455,13 @@ Module xts.
   Module Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
     Definition Self := ink_e2e.xts.Determinism.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    Definition assert_receiver_is_total_eq
+        `{H : State.Trait}
+        (self : ref Self)
+        : M (H := H) unit :=
       Pure tt.
     
-    Global Instance Method_assert_receiver_is_total_eq :
+    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
       Notation.dot := assert_receiver_is_total_eq;
     }.
@@ -7141,11 +7474,12 @@ Module xts.
     Definition Self := ink_e2e.xts.Determinism.
     
     Definition encode_as_type_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_type_id : u32)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       match self with
       | ImplSelf.Enforced =>
         let* α0 :=
@@ -7180,13 +7514,16 @@ Module xts.
       | _ => core.panicking.panic "internal error: entered unreachable code"
       end.
     
-    Global Instance Method_encode_as_type_to :
+    Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
       Notation.dot := encode_as_type_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-      scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type_to
+        `{H : State.Trait}
+        :=
+        encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
   
@@ -7217,9 +7554,10 @@ Module xts.
     Definition Self := ink_e2e.xts.UploadCode E.
     
     Definition fmt
+        `{H : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
+        : M (H := H) core.fmt.Result :=
       core.fmt.Formatter::["debug_struct_field3_finish"]
         f
         "UploadCode"
@@ -7230,12 +7568,12 @@ Module xts.
         "determinism"
         (addr_of (addr_of self.["determinism"])).
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
   End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
@@ -7247,11 +7585,12 @@ Module xts.
     Definition Self := ink_e2e.xts.UploadCode E.
     
     Definition encode_as_type_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_type_id : u32)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       let
           '{|
             ink_e2e.xts.UploadCode.code := code;
@@ -7274,13 +7613,16 @@ Module xts.
         __encode_as_type_types
         __encode_as_type_out.
     
-    Global Instance Method_encode_as_type_to :
+    Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
       Notation.dot := encode_as_type_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-      scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+      scale_encode.EncodeAsType.encode_as_type_to
+        `{H : State.Trait}
+        :=
+        encode_as_type_to;
     }.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
@@ -7292,11 +7634,12 @@ Module xts.
     Definition Self := ink_e2e.xts.UploadCode E.
     
     Definition encode_as_fields_to
+        `{H : State.Trait}
         (self : ref Self)
         (__encode_as_type_fields : ref Slice)
         (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
         (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (core.result.Result unit scale_encode.error.Error) :=
+        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
       let
           '{|
             ink_e2e.xts.UploadCode.code := code;
@@ -7320,13 +7663,16 @@ Module xts.
         __encode_as_type_types
         __encode_as_type_out.
     
-    Global Instance Method_encode_as_fields_to :
+    Global Instance Method_encode_as_fields_to `{H : State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
       Notation.dot := encode_as_fields_to;
     }.
     
     Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-      scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+      scale_encode.EncodeAsFields.encode_as_fields_to
+        `{H : State.Trait}
+        :=
+        encode_as_fields_to;
     }.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
@@ -7449,25 +7795,27 @@ Module xts.
     Definition Self := ink_e2e.xts.ContractsApi C E.
     
     Definition new
+        `{H : State.Trait}
         (client : subxt.client.online_client.OnlineClient C)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let client := client in
           let* α0 := core.default.Default.default tt in
           Pure {| Self.client := client; Self._phantom := α0; |}).
     
-    Global Instance AssociatedFunction_new :
+    Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
     
     Definition try_transfer_balance
+        `{H : State.Trait}
         (self : ref Self)
         (origin : ref (ink_e2e.Signer C))
         (dest : ImplC.AccountId)
         (value : ImplE.Balance)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -7551,12 +7899,13 @@ Module xts.
                 Pure tt) in
           Pure (core.result.Result.Ok tt)).
     
-    Global Instance Method_try_transfer_balance :
+    Global Instance Method_try_transfer_balance `{H : State.Trait} :
       Notation.Dot "try_transfer_balance" := {
       Notation.dot := try_transfer_balance;
     }.
     
     Definition instantiate_with_code_dry_run
+        `{H : State.Trait}
         (self : ref Self)
         (value : ImplE.Balance)
         (storage_deposit_limit : core.option.Option ImplE.Balance)
@@ -7564,7 +7913,7 @@ Module xts.
         (data : alloc.vec.Vec u8)
         (salt : alloc.vec.Vec u8)
         (signer : ref (ink_e2e.Signer C))
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -7649,16 +7998,17 @@ Module xts.
                   (addr_of [ α0 ]) in
               core.panicking.panic_fmt α1)).
     
-    Global Instance Method_instantiate_with_code_dry_run :
+    Global Instance Method_instantiate_with_code_dry_run `{H : State.Trait} :
       Notation.Dot "instantiate_with_code_dry_run" := {
       Notation.dot := instantiate_with_code_dry_run;
     }.
     
     Definition submit_extrinsic
+        `{H : State.Trait}
         (self : ref Self)
         (call : ref Call)
         (signer : ref (ink_e2e.Signer C))
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -7777,12 +8127,13 @@ Module xts.
                 core.panicking.panic_fmt α1 in
               Pure tt)).
     
-    Global Instance Method_submit_extrinsic :
+    Global Instance Method_submit_extrinsic `{H : State.Trait} :
       Notation.Dot "submit_extrinsic" := {
       Notation.dot := submit_extrinsic;
     }.
     
     Definition instantiate_with_code
+        `{H : State.Trait}
         (self : ref Self)
         (value : ImplE.Balance)
         (gas_limit : ink_e2e.xts.Weight)
@@ -7791,7 +8142,7 @@ Module xts.
         (data : alloc.vec.Vec u8)
         (salt : alloc.vec.Vec u8)
         (signer : ref (ink_e2e.Signer C))
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -7838,17 +8189,18 @@ Module xts.
               loop
           end).
     
-    Global Instance Method_instantiate_with_code :
+    Global Instance Method_instantiate_with_code `{H : State.Trait} :
       Notation.Dot "instantiate_with_code" := {
       Notation.dot := instantiate_with_code;
     }.
     
     Definition upload_dry_run
+        `{H : State.Trait}
         (self : ref Self)
         (signer : ref (ink_e2e.Signer C))
         (code : alloc.vec.Vec u8)
         (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -7925,16 +8277,18 @@ Module xts.
                   (addr_of [ α0 ]) in
               core.panicking.panic_fmt α1)).
     
-    Global Instance Method_upload_dry_run : Notation.Dot "upload_dry_run" := {
+    Global Instance Method_upload_dry_run `{H : State.Trait} :
+      Notation.Dot "upload_dry_run" := {
       Notation.dot := upload_dry_run;
     }.
     
     Definition upload
+        `{H : State.Trait}
         (self : ref Self)
         (signer : ref (ink_e2e.Signer C))
         (code : alloc.vec.Vec u8)
         (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -7975,18 +8329,20 @@ Module xts.
               loop
           end).
     
-    Global Instance Method_upload : Notation.Dot "upload" := {
+    Global Instance Method_upload `{H : State.Trait} :
+      Notation.Dot "upload" := {
       Notation.dot := upload;
     }.
     
     Definition call_dry_run
+        `{H : State.Trait}
         (self : ref Self)
         (origin : ImplC.AccountId)
         (dest : ImplE.AccountId)
         (input_data : alloc.vec.Vec u8)
         (value : ImplE.Balance)
         (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -8063,11 +8419,13 @@ Module xts.
                   (addr_of [ α0 ]) in
               core.panicking.panic_fmt α1)).
     
-    Global Instance Method_call_dry_run : Notation.Dot "call_dry_run" := {
+    Global Instance Method_call_dry_run `{H : State.Trait} :
+      Notation.Dot "call_dry_run" := {
       Notation.dot := call_dry_run;
     }.
     
     Definition call
+        `{H : State.Trait}
         (self : ref Self)
         (contract : subxt.utils.multi_address.MultiAddress ImplE.AccountId unit)
         (value : ImplE.Balance)
@@ -8075,7 +8433,7 @@ Module xts.
         (storage_deposit_limit : core.option.Option ImplE.Balance)
         (data : alloc.vec.Vec u8)
         (signer : ref (ink_e2e.Signer C))
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -8120,17 +8478,18 @@ Module xts.
               loop
           end).
     
-    Global Instance Method_call : Notation.Dot "call" := {
+    Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
       Notation.dot := call;
     }.
     
     Definition runtime_call
+        `{H : State.Trait}
         (self : ref Self)
         (signer : ref (ink_e2e.Signer C))
         (pallet_name : ref str)
         (call_name : ref str)
         (call_data : alloc.vec.Vec scale_value.value.Value)
-        : M OpaqueDef :=
+        : M (H := H) OpaqueDef :=
       Pure
         (fun _task_context =>
           let self := self in
@@ -8161,7 +8520,8 @@ Module xts.
               loop
           end).
     
-    Global Instance Method_runtime_call : Notation.Dot "runtime_call" := {
+    Global Instance Method_runtime_call `{H : State.Trait} :
+      Notation.Dot "runtime_call" := {
       Notation.dot := runtime_call;
     }.
   End Impl_ink_e2e_xts_ContractsApi_C_E.
@@ -8192,16 +8552,19 @@ End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
 Module Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition clone (self : ref Self) : M ink_e2e.xts.Weight :=
+  Definition clone
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) ink_e2e.xts.Weight :=
     let _ := tt in
     self.["deref"].
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
 
@@ -8215,11 +8578,14 @@ End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
 Module Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+  Definition assert_receiver_is_total_eq
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) unit :=
     let _ := tt in
     Pure tt.
   
-  Global Instance Method_assert_receiver_is_total_eq :
+  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
   }.
@@ -8238,17 +8604,21 @@ End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
 Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition eq (self : ref Self) (other : ref ink_e2e.xts.Weight) : M bool :=
+  Definition eq
+      `{H : State.Trait}
+      (self : ref Self)
+      (other : ref ink_e2e.xts.Weight)
+      : M (H := H) bool :=
     let* α0 := self.["ref_time"].["eq"] other.["ref_time"] in
     let* α1 := self.["proof_size"].["eq"] other.["proof_size"] in
     α0.["andb"] α1.
   
-  Global Instance Method_eq : Notation.Dot "eq" := {
+  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
   Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq := eq;
+    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
 
@@ -8256,9 +8626,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Weight"
@@ -8267,32 +8638,35 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
       "proof_size"
       (addr_of (addr_of self.["proof_size"])).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
 
 Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition default (_ : unit) : M ink_e2e.xts.Weight :=
+  Definition default
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) ink_e2e.xts.Weight :=
     let* α0 := core.default.Default.default tt in
     let* α1 := core.default.Default.default tt in
     Pure
       {| ink_e2e.xts.Weight.ref_time := α0; ink_e2e.xts.Weight.proof_size := α1;
       |}.
   
-  Global Instance AssociatedFunction_default :
+  Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.
   
   Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default := default;
+    core.default.Default.default `{H : State.Trait} := default;
   }.
 End Impl_core_default_Default_for_ink_e2e_xts_Weight.
 
@@ -8300,9 +8674,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
   Definition encode_to
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -8321,7 +8696,8 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to : Notation.Dot "encode_to" := {
+  Global Instance Method_encode_to `{H : State.Trait} :
+    Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
@@ -8340,8 +8716,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
   Definition decode
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
       parity_scale_codec.codec.Decode.decode __codec_input_edqy in
     let* α0 :=
@@ -8367,13 +8744,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
           ink_e2e.xts.Weight.proof_size := α1;
         |}).
   
-  Global Instance AssociatedFunction_decode :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
 
@@ -8381,13 +8758,16 @@ Module
   Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition max_encoded_len (_ : unit) : M Root.core.primitive.usize :=
+  Definition max_encoded_len
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) Root.core.primitive.usize :=
     let* α0 := u64::["max_encoded_len"] tt in
     let* α1 := 0.["saturating_add"] α0 in
     let* α2 := u64::["max_encoded_len"] tt in
     α1.["saturating_add"] α2.
   
-  Global Instance AssociatedFunction_max_encoded_len :
+  Global Instance AssociatedFunction_max_encoded_len `{H : State.Trait} :
     Notation.DoubleColon Self "max_encoded_len" := {
     Notation.double_colon := max_encoded_len;
   }.
@@ -8395,6 +8775,7 @@ Module
   Global Instance I :
       parity_scale_codec.max_encoded_len.MaxEncodedLen.Trait Self := {
     parity_scale_codec.max_encoded_len.MaxEncodedLen.max_encoded_len
+      `{H : State.Trait}
       :=
       max_encoded_len;
   }.
@@ -8405,11 +8786,12 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
   Definition encode_as_type_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_type_id : u32)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     let
         '{|
           ink_e2e.xts.Weight.ref_time := ref_time;
@@ -8427,13 +8809,16 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
       __encode_as_type_types
       __encode_as_type_out.
   
-  Global Instance Method_encode_as_type_to :
+  Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
     Notation.dot := encode_as_type_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-    scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+    scale_encode.EncodeAsType.encode_as_type_to
+      `{H : State.Trait}
+      :=
+      encode_as_type_to;
   }.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
 
@@ -8441,11 +8826,12 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
   Definition encode_as_fields_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_fields : ref Slice)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     let
         '{|
           ink_e2e.xts.Weight.ref_time := ref_time;
@@ -8463,13 +8849,16 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
       __encode_as_type_types
       __encode_as_type_out.
   
-  Global Instance Method_encode_as_fields_to :
+  Global Instance Method_encode_as_fields_to `{H : State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
     Notation.dot := encode_as_fields_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-    scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+    scale_encode.EncodeAsFields.encode_as_fields_to
+      `{H : State.Trait}
+      :=
+      encode_as_fields_to;
   }.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
 
@@ -8477,9 +8866,10 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
   Definition serialize
+      `{H : State.Trait}
       (self : ref Self)
       (__serializer : __S)
-      : M (core.result.Result Impl__S.Ok Impl__S.Error) :=
+      : M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error) :=
     let* __serde_state :=
       let* α0 := (cast false usize).["add"] 1 in
       let* α1 := α0.["add"] 1 in
@@ -8517,12 +8907,13 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
       end in
     serde.ser.SerializeStruct.end __serde_state.
   
-  Global Instance Method_serialize : Notation.Dot "serialize" := {
+  Global Instance Method_serialize `{H : State.Trait} :
+    Notation.Dot "serialize" := {
     Notation.dot := serialize;
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize := serialize;
+    serde.ser.Serialize.serialize `{H : State.Trait} := serialize;
   }.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
 
@@ -8530,8 +8921,9 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
   Definition deserialize
+      `{H : State.Trait}
       (__deserializer : __D)
-      : M (core.result.Result Self Impl__D.Error) :=
+      : M (H := H) (core.result.Result Self Impl__D.Error) :=
     serde.de.Deserializer.deserialize_struct
       __deserializer
       "Weight"
@@ -8543,13 +8935,13 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
           core.marker.PhantomData.Build;
       |}.
   
-  Global Instance AssociatedFunction_deserialize :
+  Global Instance AssociatedFunction_deserialize `{H : State.Trait} :
     Notation.DoubleColon Self "deserialize" := {
     Notation.double_colon := deserialize;
   }.
   
   Global Instance I : serde.de.Deserialize.Trait Self := {
-    serde.de.Deserialize.deserialize := deserialize;
+    serde.de.Deserialize.deserialize `{H : State.Trait} := deserialize;
   }.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
 
@@ -8572,19 +8964,22 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
   Definition Value : Set := ink_e2e.xts._.deserialize.__Field.
   
   Definition expecting
+      `{H : State.Trait}
       (self : ref Self)
       (__formatter : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["write_str"] __formatter "field identifier".
   
-  Global Instance Method_expecting : Notation.Dot "expecting" := {
+  Global Instance Method_expecting `{H : State.Trait} :
+    Notation.Dot "expecting" := {
     Notation.dot := expecting;
   }.
   
   Definition visit_u64
+      `{H : State.Trait}
       (self : Self)
       (__value : u64)
-      : M (core.result.Result ImplSelf.Value __E) :=
+      : M (H := H) (core.result.Result ImplSelf.Value __E) :=
     match __value with
     | 0 =>
       Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__field0)
@@ -8594,14 +8989,16 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
       Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__ignore)
     end.
   
-  Global Instance Method_visit_u64 : Notation.Dot "visit_u64" := {
+  Global Instance Method_visit_u64 `{H : State.Trait} :
+    Notation.Dot "visit_u64" := {
     Notation.dot := visit_u64;
   }.
   
   Definition visit_str
+      `{H : State.Trait}
       (self : Self)
       (__value : ref str)
-      : M (core.result.Result ImplSelf.Value __E) :=
+      : M (H := H) (core.result.Result ImplSelf.Value __E) :=
     match __value with
     | "ref_time" =>
       Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__field0)
@@ -8611,14 +9008,16 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
       Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__ignore)
     end.
   
-  Global Instance Method_visit_str : Notation.Dot "visit_str" := {
+  Global Instance Method_visit_str `{H : State.Trait} :
+    Notation.Dot "visit_str" := {
     Notation.dot := visit_str;
   }.
   
   Definition visit_bytes
+      `{H : State.Trait}
       (self : Self)
       (__value : ref Slice)
-      : M (core.result.Result ImplSelf.Value __E) :=
+      : M (H := H) (core.result.Result ImplSelf.Value __E) :=
     match __value with
     | [114, 101, 102, 95, 116, 105, 109, 101] =>
       Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__field0)
@@ -8628,12 +9027,13 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
       Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__ignore)
     end.
   
-  Global Instance Method_visit_bytes : Notation.Dot "visit_bytes" := {
+  Global Instance Method_visit_bytes `{H : State.Trait} :
+    Notation.Dot "visit_bytes" := {
     Notation.dot := visit_bytes;
   }.
   
   Global Instance I : serde.de.Visitor.Trait Self := {
-    serde.de.Visitor.expecting := expecting;
+    serde.de.Visitor.expecting `{H : State.Trait} := expecting;
   }.
 End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
 
@@ -8641,19 +9041,20 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
   Definition Self := ink_e2e.xts._.deserialize.__Field.
   
   Definition deserialize
+      `{H : State.Trait}
       (__deserializer : __D)
-      : M (core.result.Result Self Impl__D.Error) :=
+      : M (H := H) (core.result.Result Self Impl__D.Error) :=
     serde.de.Deserializer.deserialize_identifier
       __deserializer
       ink_e2e.xts._.deserialize.__FieldVisitor.Build.
   
-  Global Instance AssociatedFunction_deserialize :
+  Global Instance AssociatedFunction_deserialize `{H : State.Trait} :
     Notation.DoubleColon Self "deserialize" := {
     Notation.double_colon := deserialize;
   }.
   
   Global Instance I : serde.de.Deserialize.Trait Self := {
-    serde.de.Deserialize.deserialize := deserialize;
+    serde.de.Deserialize.deserialize `{H : State.Trait} := deserialize;
   }.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
 
@@ -8678,19 +9079,22 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
   Definition Value : Set := ink_e2e.xts.Weight.
   
   Definition expecting
+      `{H : State.Trait}
       (self : ref Self)
       (__formatter : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["write_str"] __formatter "struct Weight".
   
-  Global Instance Method_expecting : Notation.Dot "expecting" := {
+  Global Instance Method_expecting `{H : State.Trait} :
+    Notation.Dot "expecting" := {
     Notation.dot := expecting;
   }.
   
   Definition visit_seq
+      `{H : State.Trait}
       (self : Self)
       (__seq : __A)
-      : M (core.result.Result ImplSelf.Value Impl__A.Error) :=
+      : M (H := H) (core.result.Result ImplSelf.Value Impl__A.Error) :=
     let* __field0 :=
       let* α0 := serde.de.SeqAccess.next_element (addr_of __seq) in
       let* α1 :=
@@ -8738,14 +9142,16 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
           ink_e2e.xts.Weight.proof_size := __field1;
         |}).
   
-  Global Instance Method_visit_seq : Notation.Dot "visit_seq" := {
+  Global Instance Method_visit_seq `{H : State.Trait} :
+    Notation.Dot "visit_seq" := {
     Notation.dot := visit_seq;
   }.
   
   Definition visit_map
+      `{H : State.Trait}
       (self : Self)
       (__map : __A)
-      : M (core.result.Result ImplSelf.Value Impl__A.Error) :=
+      : M (H := H) (core.result.Result ImplSelf.Value Impl__A.Error) :=
     let __field0 := core.option.Option.None in
     let __field1 := core.option.Option.None in
     let* _ :=
@@ -8850,53 +9256,60 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
           ink_e2e.xts.Weight.proof_size := __field1;
         |}).
   
-  Global Instance Method_visit_map : Notation.Dot "visit_map" := {
+  Global Instance Method_visit_map `{H : State.Trait} :
+    Notation.Dot "visit_map" := {
     Notation.dot := visit_map;
   }.
   
   Global Instance I : serde.de.Visitor.Trait Self := {
-    serde.de.Visitor.expecting := expecting;
+    serde.de.Visitor.expecting `{H : State.Trait} := expecting;
   }.
 End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
 
-Definition FIELDS : ref Slice :=
+Definition FIELDS `{H : State.Trait} : ref Slice :=
   run (Pure (addr_of [ "ref_time"; "proof_size" ])).
 
 Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition from (weight : sp_weights.weight_v2.Weight) : M Self :=
+  Definition from
+      `{H : State.Trait}
+      (weight : sp_weights.weight_v2.Weight)
+      : M (H := H) Self :=
     let* α0 := weight.["ref_time"] in
     let* α1 := weight.["proof_size"] in
     Pure {| Self.ref_time := α0; Self.proof_size := α1; |}.
   
-  Global Instance AssociatedFunction_from :
+  Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
   Global Instance I :
       core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
-    core.convert.From.from := from;
+    core.convert.From.from `{H : State.Trait} := from;
   }.
 End Impl_core_convert_From_for_ink_e2e_xts_Weight.
 
 Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
   Definition Self := sp_weights.weight_v2.Weight.
   
-  Definition from (weight : ink_e2e.xts.Weight) : M Self :=
+  Definition from
+      `{H : State.Trait}
+      (weight : ink_e2e.xts.Weight)
+      : M (H := H) Self :=
     sp_weights.weight_v2.Weight::["from_parts"]
       weight.["ref_time"]
       weight.["proof_size"].
   
-  Global Instance AssociatedFunction_from :
+  Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
   Global Instance I :
       core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
-    core.convert.From.from := from;
+    core.convert.From.from `{H : State.Trait} := from;
   }.
 End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
 
@@ -8939,9 +9352,10 @@ Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
   Definition Self := ink_e2e.xts.InstantiateWithCode E.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     let names :=
       addr_of
         [ "value"; "gas_limit"; "storage_deposit_limit"; "code"; "data"; "salt"
@@ -8962,12 +9376,12 @@ Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
       names
       values.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -8981,9 +9395,10 @@ Section
   Definition Self := ink_e2e.xts.InstantiateWithCode E.
   
   Definition encode_to
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -9015,7 +9430,8 @@ Section
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to : Notation.Dot "encode_to" := {
+  Global Instance Method_encode_to `{H : State.Trait} :
+    Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
@@ -9048,8 +9464,9 @@ Section
   Definition Self := ink_e2e.xts.InstantiateWithCode E.
   
   Definition decode
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
       parity_scale_codec.codec.Decode.decode __codec_input_edqy in
     let* α0 :=
@@ -9119,13 +9536,13 @@ Section
           ink_e2e.xts.InstantiateWithCode.salt := α5;
         |}).
   
-  Global Instance AssociatedFunction_decode :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -9137,11 +9554,12 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
   Definition Self := ink_e2e.xts.InstantiateWithCode E.
   
   Definition encode_as_type_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_type_id : u32)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     let
         '{|
           ink_e2e.xts.InstantiateWithCode.value := value;
@@ -9170,13 +9588,16 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
       __encode_as_type_types
       __encode_as_type_out.
   
-  Global Instance Method_encode_as_type_to :
+  Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
     Notation.dot := encode_as_type_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-    scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+    scale_encode.EncodeAsType.encode_as_type_to
+      `{H : State.Trait}
+      :=
+      encode_as_type_to;
   }.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -9188,11 +9609,12 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
   Definition Self := ink_e2e.xts.InstantiateWithCode E.
   
   Definition encode_as_fields_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_fields : ref Slice)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     let
         '{|
           ink_e2e.xts.InstantiateWithCode.value := value;
@@ -9221,13 +9643,16 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
       __encode_as_type_types
       __encode_as_type_out.
   
-  Global Instance Method_encode_as_fields_to :
+  Global Instance Method_encode_as_fields_to `{H : State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
     Notation.dot := encode_as_fields_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-    scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+    scale_encode.EncodeAsFields.encode_as_fields_to
+      `{H : State.Trait}
+      :=
+      encode_as_fields_to;
   }.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -9267,9 +9692,10 @@ Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
   Definition Self := ink_e2e.xts.Call E.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field5_finish"]
       f
       "Call"
@@ -9284,12 +9710,12 @@ Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
       "data"
       (addr_of (addr_of self.["data"])).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
@@ -9301,8 +9727,9 @@ Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
   Definition Self := ink_e2e.xts.Call E.
   
   Definition decode
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
       parity_scale_codec.codec.Decode.decode __codec_input_edqy in
     let* α0 :=
@@ -9359,13 +9786,13 @@ Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
           ink_e2e.xts.Call.data := α4;
         |}).
   
-  Global Instance AssociatedFunction_decode :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
@@ -9377,9 +9804,10 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
   Definition Self := ink_e2e.xts.Call E.
   
   Definition encode_to
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* _ :=
       parity_scale_codec.codec.Encode.encode_to
         (addr_of self.["dest"])
@@ -9407,7 +9835,8 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to : Notation.Dot "encode_to" := {
+  Global Instance Method_encode_to `{H : State.Trait} :
+    Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
@@ -9434,11 +9863,12 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
   Definition Self := ink_e2e.xts.Call E.
   
   Definition encode_as_type_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_type_id : u32)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     let
         '{|
           ink_e2e.xts.Call.dest := dest;
@@ -9463,13 +9893,16 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
       __encode_as_type_types
       __encode_as_type_out.
   
-  Global Instance Method_encode_as_type_to :
+  Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
     Notation.dot := encode_as_type_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-    scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+    scale_encode.EncodeAsType.encode_as_type_to
+      `{H : State.Trait}
+      :=
+      encode_as_type_to;
   }.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
@@ -9481,11 +9914,12 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
   Definition Self := ink_e2e.xts.Call E.
   
   Definition encode_as_fields_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_fields : ref Slice)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     let
         '{|
           ink_e2e.xts.Call.dest := dest;
@@ -9510,13 +9944,16 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
       __encode_as_type_types
       __encode_as_type_out.
   
-  Global Instance Method_encode_as_fields_to :
+  Global Instance Method_encode_as_fields_to `{H : State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
     Notation.dot := encode_as_fields_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-    scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+    scale_encode.EncodeAsFields.encode_as_fields_to
+      `{H : State.Trait}
+      :=
+      encode_as_fields_to;
   }.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
@@ -9543,9 +9980,10 @@ Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
   Definition Self := ink_e2e.xts.Transfer E C.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Transfer"
@@ -9554,12 +9992,12 @@ Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
       "value"
       (addr_of (addr_of self.["value"])).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
@@ -9571,8 +10009,9 @@ Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
   Definition Self := ink_e2e.xts.Transfer E C.
   
   Definition decode
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
       parity_scale_codec.codec.Decode.decode __codec_input_edqy in
     let* α0 :=
@@ -9596,13 +10035,13 @@ Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
         {| ink_e2e.xts.Transfer.dest := α0; ink_e2e.xts.Transfer.value := α1;
         |}).
   
-  Global Instance AssociatedFunction_decode :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
@@ -9614,9 +10053,10 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
   Definition Self := ink_e2e.xts.Transfer E C.
   
   Definition encode_to
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* _ :=
       parity_scale_codec.codec.Encode.encode_to
         (addr_of self.["dest"])
@@ -9630,7 +10070,8 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to : Notation.Dot "encode_to" := {
+  Global Instance Method_encode_to `{H : State.Trait} :
+    Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
@@ -9659,11 +10100,12 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
   Definition Self := ink_e2e.xts.Transfer E C.
   
   Definition encode_as_type_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_type_id : u32)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     let
         '{|
           ink_e2e.xts.Transfer.dest := dest;
@@ -9680,13 +10122,16 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
       __encode_as_type_types
       __encode_as_type_out.
   
-  Global Instance Method_encode_as_type_to :
+  Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
     Notation.dot := encode_as_type_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-    scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+    scale_encode.EncodeAsType.encode_as_type_to
+      `{H : State.Trait}
+      :=
+      encode_as_type_to;
   }.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
@@ -9698,11 +10143,12 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
   Definition Self := ink_e2e.xts.Transfer E C.
   
   Definition encode_as_fields_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_fields : ref Slice)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     let
         '{|
           ink_e2e.xts.Transfer.dest := dest;
@@ -9719,13 +10165,16 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
       __encode_as_type_types
       __encode_as_type_out.
   
-  Global Instance Method_encode_as_fields_to :
+  Global Instance Method_encode_as_fields_to `{H : State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
     Notation.dot := encode_as_fields_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-    scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+    scale_encode.EncodeAsFields.encode_as_fields_to
+      `{H : State.Trait}
+      :=
+      encode_as_fields_to;
   }.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
@@ -9741,9 +10190,10 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     let* α0 :=
       match self with
       | ink_e2e.xts.Determinism.Enforced => Pure "Enforced"
@@ -9751,27 +10201,30 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
       end in
     core.fmt.Formatter::["write_str"] f α0.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
 
 Module Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
-  Definition clone (self : ref Self) : M ink_e2e.xts.Determinism :=
+  Definition clone
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) ink_e2e.xts.Determinism :=
     self.["deref"].
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
 
@@ -9793,19 +10246,20 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
   Definition eq
+      `{H : State.Trait}
       (self : ref Self)
       (other : ref ink_e2e.xts.Determinism)
-      : M bool :=
+      : M (H := H) bool :=
     let* __self_tag := core.intrinsics.discriminant_value self in
     let* __arg1_tag := core.intrinsics.discriminant_value other in
     __self_tag.["eq"] __arg1_tag.
   
-  Global Instance Method_eq : Notation.Dot "eq" := {
+  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
   Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq := eq;
+    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
 
@@ -9819,9 +10273,13 @@ End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
 Module Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit := Pure tt.
+  Definition assert_receiver_is_total_eq
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) unit :=
+    Pure tt.
   
-  Global Instance Method_assert_receiver_is_total_eq :
+  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
   }.
@@ -9834,9 +10292,10 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
   Definition serialize
+      `{H : State.Trait}
       (self : ref Self)
       (__serializer : __S)
-      : M (core.result.Result Impl__S.Ok Impl__S.Error) :=
+      : M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error) :=
     let* α0 := self.["deref"] in
     match α0 with
     | ink_e2e.xts.Determinism.Enforced =>
@@ -9853,12 +10312,13 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
         "Relaxed"
     end.
   
-  Global Instance Method_serialize : Notation.Dot "serialize" := {
+  Global Instance Method_serialize `{H : State.Trait} :
+    Notation.Dot "serialize" := {
     Notation.dot := serialize;
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize := serialize;
+    serde.ser.Serialize.serialize `{H : State.Trait} := serialize;
   }.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
 
@@ -9866,8 +10326,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
   Definition decode
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := __codec_input_edqy.["read_byte"] in
     let* α1 :=
       α0.["map_err"]
@@ -9911,13 +10372,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
       Pure tt
     end.
   
-  Global Instance AssociatedFunction_decode :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
 
@@ -9925,9 +10386,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
   Definition encode_to
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* α0 := self.["deref"] in
     match α0 with
     | ink_e2e.xts.Determinism.Enforced =>
@@ -9941,7 +10403,8 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
     | _ => Pure tt
     end.
   
-  Global Instance Method_encode_to : Notation.Dot "encode_to" := {
+  Global Instance Method_encode_to `{H : State.Trait} :
+    Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
@@ -9961,11 +10424,12 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
   Definition encode_as_type_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_type_id : u32)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     match self with
     | ImplSelf.Enforced =>
       let* α0 :=
@@ -10000,13 +10464,16 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
     | _ => core.panicking.panic "internal error: entered unreachable code"
     end.
   
-  Global Instance Method_encode_as_type_to :
+  Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
     Notation.dot := encode_as_type_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-    scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+    scale_encode.EncodeAsType.encode_as_type_to
+      `{H : State.Trait}
+      :=
+      encode_as_type_to;
   }.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
 
@@ -10037,9 +10504,10 @@ Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
   Definition Self := ink_e2e.xts.UploadCode E.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field3_finish"]
       f
       "UploadCode"
@@ -10050,12 +10518,12 @@ Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
       "determinism"
       (addr_of (addr_of self.["determinism"])).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
 End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
@@ -10067,9 +10535,10 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
   Definition Self := ink_e2e.xts.UploadCode E.
   
   Definition encode_to
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* _ :=
       parity_scale_codec.codec.Encode.encode_to
         (addr_of self.["code"])
@@ -10084,7 +10553,8 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to : Notation.Dot "encode_to" := {
+  Global Instance Method_encode_to `{H : State.Trait} :
+    Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
@@ -10113,8 +10583,9 @@ Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
   Definition Self := ink_e2e.xts.UploadCode E.
   
   Definition decode
+      `{H : State.Trait}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (core.result.Result Self parity_scale_codec.error.Error) :=
+      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
       parity_scale_codec.codec.Decode.decode __codec_input_edqy in
     let* α0 :=
@@ -10151,13 +10622,13 @@ Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
           ink_e2e.xts.UploadCode.determinism := α2;
         |}).
   
-  Global Instance AssociatedFunction_decode :
+  Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode;
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode := decode;
+    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
   }.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
@@ -10169,11 +10640,12 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
   Definition Self := ink_e2e.xts.UploadCode E.
   
   Definition encode_as_type_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_type_id : u32)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     let
         '{|
           ink_e2e.xts.UploadCode.code := code;
@@ -10194,13 +10666,16 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
       __encode_as_type_types
       __encode_as_type_out.
   
-  Global Instance Method_encode_as_type_to :
+  Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
     Notation.dot := encode_as_type_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-    scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
+    scale_encode.EncodeAsType.encode_as_type_to
+      `{H : State.Trait}
+      :=
+      encode_as_type_to;
   }.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
@@ -10212,11 +10687,12 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   Definition Self := ink_e2e.xts.UploadCode E.
   
   Definition encode_as_fields_to
+      `{H : State.Trait}
       (self : ref Self)
       (__encode_as_type_fields : ref Slice)
       (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
       (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (core.result.Result unit scale_encode.error.Error) :=
+      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
     let
         '{|
           ink_e2e.xts.UploadCode.code := code;
@@ -10237,13 +10713,16 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
       __encode_as_type_types
       __encode_as_type_out.
   
-  Global Instance Method_encode_as_fields_to :
+  Global Instance Method_encode_as_fields_to `{H : State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
     Notation.dot := encode_as_fields_to;
   }.
   
   Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-    scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
+    scale_encode.EncodeAsFields.encode_as_fields_to
+      `{H : State.Trait}
+      :=
+      encode_as_fields_to;
   }.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
@@ -10291,9 +10770,10 @@ Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
   Definition Self := ink_e2e.xts.RpcInstantiateRequest C E.
   
   Definition serialize
+      `{H : State.Trait}
       (self : ref Self)
       (__serializer : __S)
-      : M (core.result.Result Impl__S.Ok Impl__S.Error) :=
+      : M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error) :=
     let* __serde_state :=
       let* α0 := (cast false usize).["add"] 1 in
       let* α1 := α0.["add"] 1 in
@@ -10399,12 +10879,13 @@ Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
       end in
     serde.ser.SerializeStruct.end __serde_state.
   
-  Global Instance Method_serialize : Notation.Dot "serialize" := {
+  Global Instance Method_serialize `{H : State.Trait} :
+    Notation.Dot "serialize" := {
     Notation.dot := serialize;
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize := serialize;
+    serde.ser.Serialize.serialize `{H : State.Trait} := serialize;
   }.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
@@ -10418,9 +10899,10 @@ Section
   Definition Self := ink_e2e.xts.RpcInstantiateRequest C E.
   
   Definition encode_to
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* _ :=
       parity_scale_codec.codec.Encode.encode_to
         (addr_of self.["origin"])
@@ -10451,7 +10933,8 @@ Section
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to : Notation.Dot "encode_to" := {
+  Global Instance Method_encode_to `{H : State.Trait} :
+    Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
@@ -10508,9 +10991,10 @@ Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
   Definition Self := ink_e2e.xts.RpcCodeUploadRequest C E.
   
   Definition serialize
+      `{H : State.Trait}
       (self : ref Self)
       (__serializer : __S)
-      : M (core.result.Result Impl__S.Ok Impl__S.Error) :=
+      : M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error) :=
     let* __serde_state :=
       let* α0 := (cast false usize).["add"] 1 in
       let* α1 := α0.["add"] 1 in
@@ -10577,12 +11061,13 @@ Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
       end in
     serde.ser.SerializeStruct.end __serde_state.
   
-  Global Instance Method_serialize : Notation.Dot "serialize" := {
+  Global Instance Method_serialize `{H : State.Trait} :
+    Notation.Dot "serialize" := {
     Notation.dot := serialize;
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize := serialize;
+    serde.ser.Serialize.serialize `{H : State.Trait} := serialize;
   }.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
@@ -10596,9 +11081,10 @@ Section
   Definition Self := ink_e2e.xts.RpcCodeUploadRequest C E.
   
   Definition encode_to
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* _ :=
       parity_scale_codec.codec.Encode.encode_to
         (addr_of self.["origin"])
@@ -10617,7 +11103,8 @@ Section
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to : Notation.Dot "encode_to" := {
+  Global Instance Method_encode_to `{H : State.Trait} :
+    Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
@@ -10682,9 +11169,10 @@ Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
   Definition Self := ink_e2e.xts.RpcCallRequest C E.
   
   Definition serialize
+      `{H : State.Trait}
       (self : ref Self)
       (__serializer : __S)
-      : M (core.result.Result Impl__S.Ok Impl__S.Error) :=
+      : M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error) :=
     let* __serde_state :=
       let* α0 := (cast false usize).["add"] 1 in
       let* α1 := α0.["add"] 1 in
@@ -10777,12 +11265,13 @@ Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
       end in
     serde.ser.SerializeStruct.end __serde_state.
   
-  Global Instance Method_serialize : Notation.Dot "serialize" := {
+  Global Instance Method_serialize `{H : State.Trait} :
+    Notation.Dot "serialize" := {
     Notation.dot := serialize;
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize := serialize;
+    serde.ser.Serialize.serialize `{H : State.Trait} := serialize;
   }.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
@@ -10794,9 +11283,10 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
   Definition Self := ink_e2e.xts.RpcCallRequest C E.
   
   Definition encode_to
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* _ :=
       parity_scale_codec.codec.Encode.encode_to
         (addr_of self.["origin"])
@@ -10823,7 +11313,8 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to : Notation.Dot "encode_to" := {
+  Global Instance Method_encode_to `{H : State.Trait} :
+    Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
@@ -10858,9 +11349,10 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
   Definition Self := ink_e2e.xts.Code.
   
   Definition serialize
+      `{H : State.Trait}
       (self : ref Self)
       (__serializer : __S)
-      : M (core.result.Result Impl__S.Ok Impl__S.Error) :=
+      : M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error) :=
     let* α0 := self.["deref"] in
     match α0 with
     | ink_e2e.xts.Code.Upload __field0 =>
@@ -10879,12 +11371,13 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
         __field0
     end.
   
-  Global Instance Method_serialize : Notation.Dot "serialize" := {
+  Global Instance Method_serialize `{H : State.Trait} :
+    Notation.Dot "serialize" := {
     Notation.dot := serialize;
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize := serialize;
+    serde.ser.Serialize.serialize `{H : State.Trait} := serialize;
   }.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
 
@@ -10892,9 +11385,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
   Definition Self := ink_e2e.xts.Code.
   
   Definition encode_to
+      `{H : State.Trait}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M unit :=
+      : M (H := H) unit :=
     let* α0 := self.["deref"] in
     match α0 with
     | ink_e2e.xts.Code.Upload aa =>
@@ -10912,7 +11406,8 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
     | _ => Pure tt
     end.
   
-  Global Instance Method_encode_to : Notation.Dot "encode_to" := {
+  Global Instance Method_encode_to `{H : State.Trait} :
+    Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
@@ -10946,24 +11441,27 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
   Definition Self := ink_e2e.xts.ContractsApi C E.
   
   Definition new
+      `{H : State.Trait}
       (client : subxt.client.online_client.OnlineClient C)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let client := client in
         let* α0 := core.default.Default.default tt in
         Pure {| Self.client := client; Self._phantom := α0; |}).
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new `{H : State.Trait} :
+    Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
   Definition try_transfer_balance
+      `{H : State.Trait}
       (self : ref Self)
       (origin : ref (ink_e2e.Signer C))
       (dest : ImplC.AccountId)
       (value : ImplE.Balance)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -11047,12 +11545,13 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
               Pure tt) in
         Pure (core.result.Result.Ok tt)).
   
-  Global Instance Method_try_transfer_balance :
+  Global Instance Method_try_transfer_balance `{H : State.Trait} :
     Notation.Dot "try_transfer_balance" := {
     Notation.dot := try_transfer_balance;
   }.
   
   Definition instantiate_with_code_dry_run
+      `{H : State.Trait}
       (self : ref Self)
       (value : ImplE.Balance)
       (storage_deposit_limit : core.option.Option ImplE.Balance)
@@ -11060,7 +11559,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
       (data : alloc.vec.Vec u8)
       (salt : alloc.vec.Vec u8)
       (signer : ref (ink_e2e.Signer C))
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -11145,16 +11644,17 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
                 (addr_of [ α0 ]) in
             core.panicking.panic_fmt α1)).
   
-  Global Instance Method_instantiate_with_code_dry_run :
+  Global Instance Method_instantiate_with_code_dry_run `{H : State.Trait} :
     Notation.Dot "instantiate_with_code_dry_run" := {
     Notation.dot := instantiate_with_code_dry_run;
   }.
   
   Definition submit_extrinsic
+      `{H : State.Trait}
       (self : ref Self)
       (call : ref Call)
       (signer : ref (ink_e2e.Signer C))
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -11273,11 +11773,13 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
               core.panicking.panic_fmt α1 in
             Pure tt)).
   
-  Global Instance Method_submit_extrinsic : Notation.Dot "submit_extrinsic" := {
+  Global Instance Method_submit_extrinsic `{H : State.Trait} :
+    Notation.Dot "submit_extrinsic" := {
     Notation.dot := submit_extrinsic;
   }.
   
   Definition instantiate_with_code
+      `{H : State.Trait}
       (self : ref Self)
       (value : ImplE.Balance)
       (gas_limit : ink_e2e.xts.Weight)
@@ -11286,7 +11788,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
       (data : alloc.vec.Vec u8)
       (salt : alloc.vec.Vec u8)
       (signer : ref (ink_e2e.Signer C))
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -11333,17 +11835,18 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
             loop
         end).
   
-  Global Instance Method_instantiate_with_code :
+  Global Instance Method_instantiate_with_code `{H : State.Trait} :
     Notation.Dot "instantiate_with_code" := {
     Notation.dot := instantiate_with_code;
   }.
   
   Definition upload_dry_run
+      `{H : State.Trait}
       (self : ref Self)
       (signer : ref (ink_e2e.Signer C))
       (code : alloc.vec.Vec u8)
       (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -11420,16 +11923,18 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
                 (addr_of [ α0 ]) in
             core.panicking.panic_fmt α1)).
   
-  Global Instance Method_upload_dry_run : Notation.Dot "upload_dry_run" := {
+  Global Instance Method_upload_dry_run `{H : State.Trait} :
+    Notation.Dot "upload_dry_run" := {
     Notation.dot := upload_dry_run;
   }.
   
   Definition upload
+      `{H : State.Trait}
       (self : ref Self)
       (signer : ref (ink_e2e.Signer C))
       (code : alloc.vec.Vec u8)
       (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -11470,18 +11975,19 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
             loop
         end).
   
-  Global Instance Method_upload : Notation.Dot "upload" := {
+  Global Instance Method_upload `{H : State.Trait} : Notation.Dot "upload" := {
     Notation.dot := upload;
   }.
   
   Definition call_dry_run
+      `{H : State.Trait}
       (self : ref Self)
       (origin : ImplC.AccountId)
       (dest : ImplE.AccountId)
       (input_data : alloc.vec.Vec u8)
       (value : ImplE.Balance)
       (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -11558,11 +12064,13 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
                 (addr_of [ α0 ]) in
             core.panicking.panic_fmt α1)).
   
-  Global Instance Method_call_dry_run : Notation.Dot "call_dry_run" := {
+  Global Instance Method_call_dry_run `{H : State.Trait} :
+    Notation.Dot "call_dry_run" := {
     Notation.dot := call_dry_run;
   }.
   
   Definition call
+      `{H : State.Trait}
       (self : ref Self)
       (contract : subxt.utils.multi_address.MultiAddress ImplE.AccountId unit)
       (value : ImplE.Balance)
@@ -11570,7 +12078,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
       (storage_deposit_limit : core.option.Option ImplE.Balance)
       (data : alloc.vec.Vec u8)
       (signer : ref (ink_e2e.Signer C))
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -11614,17 +12122,18 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
             loop
         end).
   
-  Global Instance Method_call : Notation.Dot "call" := {
+  Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
     Notation.dot := call;
   }.
   
   Definition runtime_call
+      `{H : State.Trait}
       (self : ref Self)
       (signer : ref (ink_e2e.Signer C))
       (pallet_name : ref str)
       (call_name : ref str)
       (call_data : alloc.vec.Vec scale_value.value.Value)
-      : M OpaqueDef :=
+      : M (H := H) OpaqueDef :=
     Pure
       (fun _task_context =>
         let self := self in
@@ -11655,7 +12164,8 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
             loop
         end).
   
-  Global Instance Method_runtime_call : Notation.Dot "runtime_call" := {
+  Global Instance Method_runtime_call `{H : State.Trait} :
+    Notation.Dot "runtime_call" := {
     Notation.dot := runtime_call;
   }.
 End Impl_ink_e2e_xts_ContractsApi_C_E_2.
@@ -11722,23 +12232,31 @@ Definition PolkadotConfig : Set :=
 Definition Signer : Set :=
   subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair.
 
-Definition INIT : std.sync.once.Once := run (std.sync.once.Once::["new"] tt).
+Definition INIT `{H : State.Trait} : std.sync.once.Once :=
+  run (std.sync.once.Once::["new"] tt).
 
 Definition
-    LOG_PREFIX :
+    LOG_PREFIX
+    `{H : State.Trait} :
     std.thread.local.LocalKey (core.cell.RefCell alloc.string.String) :=
   run (std.thread.local.LocalKey::["new"] ink_e2e.LOG_PREFIX.__getit).
 
-Definition __init (_ : unit) : M (core.cell.RefCell alloc.string.String) :=
+Definition __init
+    `{H : State.Trait}
+    (_ : unit)
+    : M (H := H) (core.cell.RefCell alloc.string.String) :=
   let* α0 := alloc.string.String::["from"] "no prefix set" in
   core.cell.RefCell::["new"] α0.
 
 Definition __getit
+    `{H : State.Trait}
     (init
       :
       core.option.Option
         (mut_ref (core.option.Option (core.cell.RefCell alloc.string.String))))
-    : M (core.option.Option (ref (core.cell.RefCell alloc.string.String))) :=
+    :
+      M (H := H)
+        (core.option.Option (ref (core.cell.RefCell alloc.string.String))) :=
   ink_e2e.LOG_PREFIX.__getit.__KEY.["get"]
     (fun  =>
       let* _ :=
@@ -11768,7 +12286,8 @@ Definition __getit
       ink_e2e.LOG_PREFIX.__init tt).
 
 Definition
-    __KEY :
+    __KEY
+    `{H : State.Trait} :
     std.sys.common.thread_local.fast_local.Key
       (core.cell.RefCell alloc.string.String) :=
   run
@@ -11776,13 +12295,16 @@ Definition
           (core.cell.RefCell alloc.string.String))::["new"]
       tt).
 
-Definition log_prefix (_ : unit) : M alloc.string.String :=
+Definition log_prefix
+    `{H : State.Trait}
+    (_ : unit)
+    : M (H := H) alloc.string.String :=
   ink_e2e.LOG_PREFIX.["with"]
     (fun log_prefix =>
       let* α0 := log_prefix.["borrow"] in
       α0.["clone"]).
 
-Definition log_info (msg : ref str) : M unit :=
+Definition log_info `{H : State.Trait} (msg : ref str) : M (H := H) unit :=
   let* _ :=
     let* enabled :=
       let* α0 :=
@@ -11833,12 +12355,15 @@ Definition log_info (msg : ref str) : M unit :=
       Pure tt in
   Pure tt.
 
-Definition CALLSITE : tracing_core.callsite.DefaultCallsite :=
+Definition
+    CALLSITE
+    `{H : State.Trait} :
+    tracing_core.callsite.DefaultCallsite :=
   run
     (tracing_core.callsite.DefaultCallsite::["new"]
       (addr_of ink_e2e.log_info.CALLSITE.META)).
 
-Definition META : tracing_core.metadata.Metadata :=
+Definition META `{H : State.Trait} : tracing_core.metadata.Metadata :=
   run
     (let* α0 :=
       tracing_core.field.FieldSet::["new"]
@@ -11855,7 +12380,7 @@ Definition META : tracing_core.metadata.Metadata :=
       α0
       tracing_core.metadata.Kind::["EVENT"]).
 
-Definition log_error (msg : ref str) : M unit :=
+Definition log_error `{H : State.Trait} (msg : ref str) : M (H := H) unit :=
   let* _ :=
     let* enabled :=
       let* α0 :=
@@ -11906,12 +12431,15 @@ Definition log_error (msg : ref str) : M unit :=
       Pure tt in
   Pure tt.
 
-Definition CALLSITE : tracing_core.callsite.DefaultCallsite :=
+Definition
+    CALLSITE
+    `{H : State.Trait} :
+    tracing_core.callsite.DefaultCallsite :=
   run
     (tracing_core.callsite.DefaultCallsite::["new"]
       (addr_of ink_e2e.log_error.CALLSITE.META)).
 
-Definition META : tracing_core.metadata.Metadata :=
+Definition META `{H : State.Trait} : tracing_core.metadata.Metadata :=
   run
     (let* α0 :=
       tracing_core.field.FieldSet::["new"]
@@ -11929,8 +12457,9 @@ Definition META : tracing_core.metadata.Metadata :=
       tracing_core.metadata.Kind::["EVENT"]).
 
 Definition account_id
+    `{H : State.Trait}
     (account : sp_keyring.sr25519.Keyring)
-    : M ink_primitives.types.AccountId :=
+    : M (H := H) ink_primitives.types.AccountId :=
   let* α0 := account.["to_account_id"] in
   let* α1 := α0.["as_ref"] in
   let* α2 := ink_primitives.types.AccountId::["try_from"] α1 in

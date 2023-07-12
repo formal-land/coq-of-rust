@@ -14,9 +14,10 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Definition Self := wrapping_errors.DoubleError.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     match self with
     | wrapping_errors.DoubleError.EmptyVec =>
       core.fmt.Formatter::["write_str"] f "EmptyVec"
@@ -27,12 +28,12 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
         (addr_of __self_0)
     end.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
@@ -40,9 +41,10 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Definition Self := wrapping_errors.DoubleError.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     let* α0 := self.["deref"] in
     match α0 with
     | wrapping_errors.DoubleError.EmptyVec =>
@@ -57,12 +59,12 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
       f.["write_fmt"] α0
     end.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt := fmt;
+    core.fmt.Display.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 
@@ -70,15 +72,16 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Definition Self := wrapping_errors.DoubleError.
   
   Definition source
+      `{H : State.Trait}
       (self : ref Self)
-      : M (core.option.Option (ref TraitObject)) :=
+      : M (H := H) (core.option.Option (ref TraitObject)) :=
     let* α0 := self.["deref"] in
     match α0 with
     | wrapping_errors.DoubleError.EmptyVec => Pure core.option.Option.None
     | wrapping_errors.DoubleError.Parse e => Pure (core.option.Option.Some e)
     end.
   
-  Global Instance Method_source : Notation.Dot "source" := {
+  Global Instance Method_source `{H : State.Trait} : Notation.Dot "source" := {
     Notation.dot := source;
   }.
   
@@ -90,24 +93,26 @@ Module Impl_core_convert_From_for_wrapping_errors_DoubleError.
   Definition Self := wrapping_errors.DoubleError.
   
   Definition from
+      `{H : State.Trait}
       (err : core.num.error.ParseIntError)
-      : M wrapping_errors.DoubleError :=
+      : M (H := H) wrapping_errors.DoubleError :=
     Pure (wrapping_errors.DoubleError.Parse err).
   
-  Global Instance AssociatedFunction_from :
+  Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
   Global Instance I :
       core.convert.From.Trait Self (T := core.num.error.ParseIntError) := {
-    core.convert.From.from := from;
+    core.convert.From.from `{H : State.Trait} := from;
   }.
 End Impl_core_convert_From_for_wrapping_errors_DoubleError.
 
 Definition double_first
+    `{H : State.Trait}
     (vec : alloc.vec.Vec (ref str))
-    : M (wrapping_errors.Result i32) :=
+    : M (H := H) (wrapping_errors.Result i32) :=
   let* first :=
     let* α0 := vec.["first"] in
     let* α1 := α0.["ok_or"] wrapping_errors.DoubleError.EmptyVec in
@@ -130,7 +135,10 @@ Definition double_first
   let* α0 := 2.["mul"] parsed in
   Pure (core.result.Result.Ok α0).
 
-Definition print (result : wrapping_errors.Result i32) : M unit :=
+Definition print
+    `{H : State.Trait}
+    (result : wrapping_errors.Result i32)
+    : M (H := H) unit :=
   match result with
   | core.result.Result.Ok n =>
     let* _ :=
@@ -172,7 +180,7 @@ Definition print (result : wrapping_errors.Result i32) : M unit :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* numbers :=
     let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
     Slice::["into_vec"] α0 in

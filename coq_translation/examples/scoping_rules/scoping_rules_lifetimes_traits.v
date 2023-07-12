@@ -16,41 +16,43 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field1_finish"]
       f
       "Borrowed"
       "x"
       (addr_of (addr_of self.["x"])).
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.
   
-  Definition default (_ : unit) : M Self := Pure {| Self.x := addr_of 10; |}.
+  Definition default `{H : State.Trait} (_ : unit) : M (H := H) Self :=
+    Pure {| Self.x := addr_of 10; |}.
   
-  Global Instance AssociatedFunction_default :
+  Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.
   
   Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default := default;
+    core.default.Default.default `{H : State.Trait} := default;
   }.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* b := core.default.Default.default tt in
   let* _ :=
     let* _ :=

@@ -30,19 +30,20 @@ Module
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
   Definition eq
+      `{H : State.Trait}
       (self : ref Self)
       (other : ref hash_map_alternate_or_custom_key_types.Account)
-      : M bool :=
+      : M (H := H) bool :=
     let* α0 := self.["username"].["eq"] other.["username"] in
     let* α1 := self.["password"].["eq"] other.["password"] in
     α0.["andb"] α1.
   
-  Global Instance Method_eq : Notation.Dot "eq" := {
+  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
   Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq := eq;
+    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
@@ -58,12 +59,15 @@ End
 Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+  Definition assert_receiver_is_total_eq
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) unit :=
     let _ := tt in
     let _ := tt in
     Pure tt.
   
-  Global Instance Method_assert_receiver_is_total_eq :
+  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
   }.
@@ -75,16 +79,20 @@ End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
-  Definition hash (self : ref Self) (state : mut_ref __H) : M unit :=
+  Definition hash
+      `{H : State.Trait}
+      (self : ref Self)
+      (state : mut_ref __H)
+      : M (H := H) unit :=
     let* _ := core.hash.Hash.hash (addr_of self.["username"]) state in
     core.hash.Hash.hash (addr_of self.["password"]) state.
   
-  Global Instance Method_hash : Notation.Dot "hash" := {
+  Global Instance Method_hash `{H : State.Trait} : Notation.Dot "hash" := {
     Notation.dot := hash;
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash := hash;
+    core.hash.Hash.hash `{H : State.Trait} := hash;
   }.
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 
@@ -109,10 +117,11 @@ Definition Accounts : Set :=
     hash_map_alternate_or_custom_key_types.AccountInfo.
 
 Definition try_logon
+    `{H : State.Trait}
     (accounts : ref hash_map_alternate_or_custom_key_types.Accounts)
     (username : ref str)
     (password : ref str)
-    : M unit :=
+    : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of username) in
@@ -188,7 +197,7 @@ Definition try_logon
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* accounts := std.collections.hash.map.HashMap::["new"] tt in
   let account :=
     {|

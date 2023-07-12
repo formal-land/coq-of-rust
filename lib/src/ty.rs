@@ -32,7 +32,8 @@ impl CoqType {
 
     pub(crate) fn monad(ty: Box<CoqType>) -> Box<CoqType> {
         Box::new(CoqType::Application {
-            func: Box::new(Path::local("M".to_string())),
+            // TODO: try to remove the explicit parameter
+            func: Box::new(Path::local("M (H := H)".to_string())),
             args: vec![ty],
         })
     }

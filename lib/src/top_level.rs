@@ -606,6 +606,14 @@ pub fn top_level_to_coq(tcx: &TyCtxt) -> String {
     top_level.to_pretty(LINE_WIDTH)
 }
 
+/// provides the instance of the Struct.Trait typeclass
+/// for definitions of functions and constants
+/// which types utilize the M monad constructor
+fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
+    // TODO: check whether the name of the parameter is necessary
+    text("`{H : State.Trait}")
+}
+
 fn fn_to_doc<'a>(
     name: &'a String,
     ty_params: Option<&'a Vec<String>>,
@@ -627,6 +635,8 @@ fn fn_to_doc<'a>(
         nest([
             nest([
                 nest([text("Definition"), line(), text(name)]),
+                line(),
+                monadic_typeclass_parameter(),
                 match ty_params {
                     None => nil(),
                     Some(ty_params) => {
@@ -867,6 +877,8 @@ impl ImplItem {
                     text("Global Instance"),
                     line(),
                     text(format!("{instance_prefix}_{name}")),
+                    line(),
+                    monadic_typeclass_parameter(),
                     text(" :"),
                 ]),
                 line(),
@@ -975,6 +987,8 @@ impl TopLevelItem {
                     text("Definition"),
                     line(),
                     text(name),
+                    line(),
+                    monadic_typeclass_parameter(),
                     text(" :"),
                     line(),
                     ty.to_doc(false),
@@ -1518,6 +1532,8 @@ impl TopLevelItem {
                                     nest([
                                         text(name),
                                         line(),
+                                        monadic_typeclass_parameter(),
+                                        line(),
                                         text(":"),
                                         line(),
                                         ty.to_doc(false),
@@ -1555,6 +1571,8 @@ impl TopLevelItem {
                                     text("Global Instance"),
                                     line(),
                                     text(format!("Method_{name}")),
+                                    line(),
+                                    monadic_typeclass_parameter(),
                                     line(),
                                     text("`(Trait)"),
                                 ]),
@@ -1764,6 +1782,8 @@ impl TopLevelItem {
                                     of_trait.to_doc(),
                                     text("."),
                                     text(name),
+                                    line(),
+                                    monadic_typeclass_parameter(),
                                     line(),
                                     text(":="),
                                     line(),

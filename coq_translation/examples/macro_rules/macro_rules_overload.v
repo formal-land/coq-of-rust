@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of "1i32 + 1 == 2i32") in
