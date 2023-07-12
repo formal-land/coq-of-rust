@@ -29,11 +29,13 @@ Module erc20.
     run (Pure ink_env.types.Environment.MAX_EVENT_TOPICS).
   
   Module Erc20.
+    Unset Primitive Projections.
     Record t : Set := {
       total_supply : ink_storage_traits.storage.AutoStorableHint.Type;
       balances : ink_storage_traits.storage.AutoStorableHint.Type;
       allowances : ink_storage_traits.storage.AutoStorableHint.Type;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_total_supply : Notation.Dot "total_supply" := {
       Notation.dot '(Build_t x0 _ _) := x0;
@@ -97,11 +99,13 @@ Module erc20.
   End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
   
   Module Transfer.
+    Unset Primitive Projections.
     Record t : Set := {
       from : core.option.Option erc20.erc20.AccountId;
       to : core.option.Option erc20.erc20.AccountId;
       value : erc20.erc20.Balance;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_from : Notation.Dot "from" := {
       Notation.dot '(Build_t x0 _ _) := x0;
@@ -116,11 +120,13 @@ Module erc20.
   Definition Transfer : Set := Transfer.t.
   
   Module Approval.
+    Unset Primitive Projections.
     Record t : Set := {
       owner : erc20.erc20.AccountId;
       spender : erc20.erc20.AccountId;
       value : erc20.erc20.Balance;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_owner : Notation.Dot "owner" := {
       Notation.dot '(Build_t x0 _ _) := x0;
@@ -557,9 +563,11 @@ Module erc20.
   End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
   Module Erc20Ref.
+    Unset Primitive Projections.
     Record t : Set := {
       inner : ink.codegen.dispatch.info.ContractCallBuilder.Type;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_inner : Notation.Dot "inner" := {
       Notation.dot '(Build_t x0) := x0;
@@ -1134,6 +1142,7 @@ Definition MAX_EVENT_TOPICS : usize :=
   run (Pure ink_env.types.Environment.MAX_EVENT_TOPICS).
 
 Module Check.
+  Unset Primitive Projections.
   Record t : Set := {
     salt : unit;
     field_0 : erc20.erc20.Balance;
@@ -1148,6 +1157,7 @@ Module Check.
         (erc20.erc20.AccountId * erc20.erc20.AccountId)
         erc20.erc20.Balance;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_salt : Notation.Dot "salt" := {
     Notation.dot '(Build_t x0 _ _ _) := x0;
@@ -1165,11 +1175,13 @@ End Check.
 Definition Check : Set := Check.t.
 
 Module Erc20.
+  Unset Primitive Projections.
   Record t : Set := {
     total_supply : ink_storage_traits.storage.AutoStorableHint.Type;
     balances : ink_storage_traits.storage.AutoStorableHint.Type;
     allowances : ink_storage_traits.storage.AutoStorableHint.Type;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_total_supply : Notation.Dot "total_supply" := {
     Notation.dot '(Build_t x0 _ _) := x0;
@@ -1728,11 +1740,13 @@ Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
 End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
 
 Module Transfer.
+  Unset Primitive Projections.
   Record t : Set := {
     from : core.option.Option erc20.erc20.AccountId;
     to : core.option.Option erc20.erc20.AccountId;
     value : erc20.erc20.Balance;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_from : Notation.Dot "from" := {
     Notation.dot '(Build_t x0 _ _) := x0;
@@ -1834,11 +1848,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
 
 Module Approval.
+  Unset Primitive Projections.
   Record t : Set := {
     owner : erc20.erc20.AccountId;
     spender : erc20.erc20.AccountId;
     value : erc20.erc20.Balance;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_owner : Notation.Dot "owner" := {
     Notation.dot '(Build_t x0 _ _) := x0;
@@ -3447,9 +3463,11 @@ Module Impl_erc20_erc20_Erc20.
 End Impl_erc20_erc20_Erc20.
 
 Module CallBuilder.
+  Unset Primitive Projections.
   Record t : Set := {
     account_id : erc20.erc20.AccountId;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_account_id : Notation.Dot "account_id" := {
     Notation.dot '(Build_t x0) := x0;
@@ -4060,9 +4078,11 @@ Module Impl_erc20_erc20___CallBuilder.
 End Impl_erc20_erc20___CallBuilder.
 
 Module Erc20Ref.
+  Unset Primitive Projections.
   Record t : Set := {
     inner : ink.codegen.dispatch.info.ContractCallBuilder.Type;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_inner : Notation.Dot "inner" := {
     Notation.dot '(Build_t x0) := x0;
