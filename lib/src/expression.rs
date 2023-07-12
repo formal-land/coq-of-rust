@@ -1047,11 +1047,7 @@ impl Expr {
                 ..
             } => paren(
                 with_paren,
-                nest([
-                    text("loop"),
-                    line(),
-                    paren(true, body.to_doc()),
-                ]),
+                nest([text("loop"), line(), paren(true, body.to_doc())]),
             ),
             Expr::Match { scrutinee, arms } => group([
                 group([
