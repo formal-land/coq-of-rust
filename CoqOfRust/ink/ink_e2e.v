@@ -52,6 +52,7 @@ Module client.
       (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
   
   Module InstantiationResult.
+    Unset Primitive Projections.
     Record t : Set := {
       account_id : ImplE.AccountId;
       dry_run
@@ -61,6 +62,7 @@ Module client.
           ImplE.Balance;
       events : subxt.blocks.block_types.ExtrinsicEvents C;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_account_id : Notation.Dot "account_id" := {
       Notation.dot '(Build_t x0 _ _) := x0;
@@ -87,6 +89,7 @@ Module client.
   End Impl_ink_e2e_client_InstantiationResult_C_E.
   
   Module UploadResult.
+    Unset Primitive Projections.
     Record t : Set := {
       code_hash : ImplE.Hash;
       dry_run
@@ -94,6 +97,7 @@ Module client.
         pallet_contracts_primitives.CodeUploadResult ImplE.Hash ImplE.Balance;
       events : subxt.blocks.block_types.ExtrinsicEvents C;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
       Notation.dot '(Build_t x0 _ _) := x0;
@@ -150,10 +154,12 @@ Module client.
   End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
   
   Module CallResult.
+    Unset Primitive Projections.
     Record t : Set := {
       dry_run : ink_e2e.client.CallDryRunResult E V;
       events : subxt.blocks.block_types.ExtrinsicEvents C;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_dry_run : Notation.Dot "dry_run" := {
       Notation.dot '(Build_t x0 _) := x0;
@@ -235,12 +241,14 @@ Module client.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
   
   Module CallDryRunResult.
+    Unset Primitive Projections.
     Record t : Set := {
       exec_result
         :
         pallet_contracts_primitives.ContractExecResult ImplE.Balance;
       _marker : core.marker.PhantomData V;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_exec_result : Notation.Dot "exec_result" := {
       Notation.dot '(Build_t x0 _) := x0;
@@ -374,10 +382,12 @@ Module client.
   End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
   
   Module ContractInstantiatedEvent.
+    Unset Primitive Projections.
     Record t : Set := {
       deployer : ImplE.AccountId;
       contract : ImplE.AccountId;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_deployer : Notation.Dot "deployer" := {
       Notation.dot '(Build_t x0 _) := x0;
@@ -503,9 +513,11 @@ Module client.
     Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
   
   Module CodeStoredEvent.
+    Unset Primitive Projections.
     Record t : Set := {
       code_hash : ImplE.Hash;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
       Notation.dot '(Build_t x0) := x0;
@@ -616,6 +628,7 @@ Module client.
   End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
   
   Module Client.
+    Unset Primitive Projections.
     Record t : Set := {
       api : ink_e2e.xts.ContractsApi C E;
       contracts
@@ -624,6 +637,7 @@ Module client.
           alloc.string.String
           std.path.PathBuf;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_api : Notation.Dot "api" := {
       Notation.dot '(Build_t x0 _) := x0;
@@ -816,6 +830,7 @@ Definition CallBuilderFinal : Set :=
     (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
 
 Module InstantiationResult.
+  Unset Primitive Projections.
   Record t : Set := {
     account_id : ImplE.AccountId;
     dry_run
@@ -825,6 +840,7 @@ Module InstantiationResult.
         ImplE.Balance;
     events : subxt.blocks.block_types.ExtrinsicEvents C;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_account_id : Notation.Dot "account_id" := {
     Notation.dot '(Build_t x0 _ _) := x0;
@@ -851,6 +867,7 @@ Module Impl_ink_e2e_client_InstantiationResult_C_E_2.
 End Impl_ink_e2e_client_InstantiationResult_C_E_2.
 
 Module UploadResult.
+  Unset Primitive Projections.
   Record t : Set := {
     code_hash : ImplE.Hash;
     dry_run
@@ -858,6 +875,7 @@ Module UploadResult.
       pallet_contracts_primitives.CodeUploadResult ImplE.Hash ImplE.Balance;
     events : subxt.blocks.block_types.ExtrinsicEvents C;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_code_hash : Notation.Dot "code_hash" := {
     Notation.dot '(Build_t x0 _ _) := x0;
@@ -914,10 +932,12 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
 End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
 
 Module CallResult.
+  Unset Primitive Projections.
   Record t : Set := {
     dry_run : ink_e2e.client.CallDryRunResult E V;
     events : subxt.blocks.block_types.ExtrinsicEvents C;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_dry_run : Notation.Dot "dry_run" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -999,10 +1019,12 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
 
 Module CallDryRunResult.
+  Unset Primitive Projections.
   Record t : Set := {
     exec_result : pallet_contracts_primitives.ContractExecResult ImplE.Balance;
     _marker : core.marker.PhantomData V;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_exec_result : Notation.Dot "exec_result" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -1133,10 +1155,12 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
 End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
 
 Module ContractInstantiatedEvent.
+  Unset Primitive Projections.
   Record t : Set := {
     deployer : ImplE.AccountId;
     contract : ImplE.AccountId;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_deployer : Notation.Dot "deployer" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -1234,11 +1258,14 @@ End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
 
 Module Visitor.
-  Record t : Set := { _ : core.marker.PhantomData (E);}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Unset Primitive Projections.
+  Record t : Set :=
+  { _ : core.marker.PhantomData (E);}.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End Visitor.
 Definition Visitor := Visitor.t.
 
@@ -1429,9 +1456,11 @@ End
   Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
 
 Module CodeStoredEvent.
+  Unset Primitive Projections.
   Record t : Set := {
     code_hash : ImplE.Hash;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_code_hash : Notation.Dot "code_hash" := {
     Notation.dot '(Build_t x0) := x0;
@@ -1540,11 +1569,14 @@ End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
 
 Module Visitor.
-  Record t : Set := { _ : core.marker.PhantomData (E);}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Unset Primitive Projections.
+  Record t : Set :=
+  { _ : core.marker.PhantomData (E);}.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End Visitor.
 Definition Visitor := Visitor.t.
 
@@ -1715,12 +1747,14 @@ End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
 
 Module Client.
+  Unset Primitive Projections.
   Record t : Set := {
     api : ink_e2e.xts.ContractsApi C E;
     contracts
       :
       alloc.collections.btree.map.BTreeMap alloc.string.String std.path.PathBuf;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_api : Notation.Dot "api" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -2065,11 +2099,13 @@ Parameter two : forall `{H : State.Trait},
 
 Module node_proc.
   Module TestNodeProcess.
+    Unset Primitive Projections.
     Record t : Set := {
       proc : std.process.Child;
       client : subxt.client.online_client.OnlineClient R;
       url : alloc.string.String;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_proc : Notation.Dot "proc" := {
       Notation.dot '(Build_t x0 _ _) := x0;
@@ -2138,11 +2174,13 @@ Module node_proc.
   End Impl_ink_e2e_node_proc_TestNodeProcess_R.
   
   Module TestNodeProcessBuilder.
+    Unset Primitive Projections.
     Record t : Set := {
       node_path : std.ffi.os_str.OsString;
       authority : core.option.Option sp_keyring.sr25519.Keyring;
       marker : core.marker.PhantomData R;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_node_path : Notation.Dot "node_path" := {
       Notation.dot '(Build_t x0 _ _) := x0;
@@ -2197,11 +2235,13 @@ Module node_proc.
 End node_proc.
 
 Module TestNodeProcess.
+  Unset Primitive Projections.
   Record t : Set := {
     proc : std.process.Child;
     client : subxt.client.online_client.OnlineClient R;
     url : alloc.string.String;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_proc : Notation.Dot "proc" := {
     Notation.dot '(Build_t x0 _ _) := x0;
@@ -2319,11 +2359,13 @@ Definition META `{H : State.Trait} : tracing_core.metadata.Metadata :=
       tracing_core.metadata.Kind::["EVENT"]).
 
 Module TestNodeProcessBuilder.
+  Unset Primitive Projections.
   Record t : Set := {
     node_path : std.ffi.os_str.OsString;
     authority : core.option.Option sp_keyring.sr25519.Keyring;
     marker : core.marker.PhantomData R;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_node_path : Notation.Dot "node_path" := {
     Notation.dot '(Build_t x0 _ _) := x0;
@@ -2403,10 +2445,12 @@ Parameter find_substrate_port_from_output : forall `{H : State.Trait},
 
 Module xts.
   Module Weight.
+    Unset Primitive Projections.
     Record t : Set := {
       ref_time : u64;
       proof_size : u64;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_ref_time : Notation.Dot "ref_time" := {
       Notation.dot '(Build_t x0 _) := x0;
@@ -2612,6 +2656,7 @@ Module xts.
   End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
   
   Module InstantiateWithCode.
+    Unset Primitive Projections.
     Record t : Set := {
       value : ImplE.Balance;
       gas_limit : ink_e2e.xts.Weight;
@@ -2620,6 +2665,7 @@ Module xts.
       data : alloc.vec.Vec u8;
       salt : alloc.vec.Vec u8;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
@@ -2720,6 +2766,7 @@ Module xts.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
   
   Module Call.
+    Unset Primitive Projections.
     Record t : Set := {
       dest : subxt.utils.multi_address.MultiAddress ImplE.AccountId unit;
       value : ImplE.Balance;
@@ -2727,6 +2774,7 @@ Module xts.
       storage_deposit_limit : core.option.Option ImplE.Balance;
       data : alloc.vec.Vec u8;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_dest : Notation.Dot "dest" := {
       Notation.dot '(Build_t x0 _ _ _ _) := x0;
@@ -2823,10 +2871,12 @@ Module xts.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
   
   Module Transfer.
+    Unset Primitive Projections.
     Record t : Set := {
       dest : subxt.utils.static_type.Static ImplC.Address;
       value : ImplE.Balance;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_dest : Notation.Dot "dest" := {
       Notation.dot '(Build_t x0 _) := x0;
@@ -3030,11 +3080,13 @@ Module xts.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
   
   Module UploadCode.
+    Unset Primitive Projections.
     Record t : Set := {
       code : alloc.vec.Vec u8;
       storage_deposit_limit : core.option.Option ImplE.Balance;
       determinism : ink_e2e.xts.Determinism;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_code : Notation.Dot "code" := {
       Notation.dot '(Build_t x0 _ _) := x0;
@@ -3125,6 +3177,7 @@ Module xts.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   
   Module RpcInstantiateRequest.
+    Unset Primitive Projections.
     Record t : Set := {
       origin : ImplC.AccountId;
       value : ImplE.Balance;
@@ -3134,6 +3187,7 @@ Module xts.
       data : alloc.vec.Vec u8;
       salt : alloc.vec.Vec u8;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_origin : Notation.Dot "origin" := {
       Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
@@ -3161,12 +3215,14 @@ Module xts.
   Definition RpcInstantiateRequest : Set := RpcInstantiateRequest.t.
   
   Module RpcCodeUploadRequest.
+    Unset Primitive Projections.
     Record t : Set := {
       origin : ImplC.AccountId;
       code : alloc.vec.Vec u8;
       storage_deposit_limit : core.option.Option ImplE.Balance;
       determinism : ink_e2e.xts.Determinism;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_origin : Notation.Dot "origin" := {
       Notation.dot '(Build_t x0 _ _ _) := x0;
@@ -3185,6 +3241,7 @@ Module xts.
   Definition RpcCodeUploadRequest : Set := RpcCodeUploadRequest.t.
   
   Module RpcCallRequest.
+    Unset Primitive Projections.
     Record t : Set := {
       origin : ImplC.AccountId;
       dest : ImplE.AccountId;
@@ -3193,6 +3250,7 @@ Module xts.
       storage_deposit_limit : core.option.Option ImplE.Balance;
       input_data : alloc.vec.Vec u8;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_origin : Notation.Dot "origin" := {
       Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
@@ -3224,10 +3282,12 @@ Module xts.
   Definition Code := Code.t.
   
   Module ContractsApi.
+    Unset Primitive Projections.
     Record t : Set := {
       client : subxt.client.online_client.OnlineClient C;
       _phantom : core.marker.PhantomData ((C * E));
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_client : Notation.Dot "client" := {
       Notation.dot '(Build_t x0 _) := x0;
@@ -3372,10 +3432,12 @@ Module xts.
 End xts.
 
 Module Weight.
+  Unset Primitive Projections.
   Record t : Set := {
     ref_time : u64;
     proof_size : u64;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_ref_time : Notation.Dot "ref_time" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -3722,10 +3784,12 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
 
 Module __Visitor.
+  Unset Primitive Projections.
   Record t : Set := {
     marker : core.marker.PhantomData ink_e2e.xts.Weight;
     lifetime : core.marker.PhantomData (ref unit);
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_marker : Notation.Dot "marker" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -3816,6 +3880,7 @@ Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
 End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
 
 Module InstantiateWithCode.
+  Unset Primitive Projections.
   Record t : Set := {
     value : ImplE.Balance;
     gas_limit : ink_e2e.xts.Weight;
@@ -3824,6 +3889,7 @@ Module InstantiateWithCode.
     data : alloc.vec.Vec u8;
     salt : alloc.vec.Vec u8;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_value : Notation.Dot "value" := {
     Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
@@ -3984,6 +4050,7 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
 
 Module Call.
+  Unset Primitive Projections.
   Record t : Set := {
     dest : subxt.utils.multi_address.MultiAddress ImplE.AccountId unit;
     value : ImplE.Balance;
@@ -3991,6 +4058,7 @@ Module Call.
     storage_deposit_limit : core.option.Option ImplE.Balance;
     data : alloc.vec.Vec u8;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_dest : Notation.Dot "dest" := {
     Notation.dot '(Build_t x0 _ _ _ _) := x0;
@@ -4140,10 +4208,12 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
 
 Module Transfer.
+  Unset Primitive Projections.
   Record t : Set := {
     dest : subxt.utils.static_type.Static ImplC.Address;
     value : ImplE.Balance;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_dest : Notation.Dot "dest" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -4462,11 +4532,13 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
 
 Module UploadCode.
+  Unset Primitive Projections.
   Record t : Set := {
     code : alloc.vec.Vec u8;
     storage_deposit_limit : core.option.Option ImplE.Balance;
     determinism : ink_e2e.xts.Determinism;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_code : Notation.Dot "code" := {
     Notation.dot '(Build_t x0 _ _) := x0;
@@ -4612,6 +4684,7 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
 
 Module RpcInstantiateRequest.
+  Unset Primitive Projections.
   Record t : Set := {
     origin : ImplC.AccountId;
     value : ImplE.Balance;
@@ -4621,6 +4694,7 @@ Module RpcInstantiateRequest.
     data : alloc.vec.Vec u8;
     salt : alloc.vec.Vec u8;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_origin : Notation.Dot "origin" := {
     Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
@@ -4710,12 +4784,14 @@ End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
 
 Module RpcCodeUploadRequest.
+  Unset Primitive Projections.
   Record t : Set := {
     origin : ImplC.AccountId;
     code : alloc.vec.Vec u8;
     storage_deposit_limit : core.option.Option ImplE.Balance;
     determinism : ink_e2e.xts.Determinism;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_origin : Notation.Dot "origin" := {
     Notation.dot '(Build_t x0 _ _ _) := x0;
@@ -4796,6 +4872,7 @@ End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
 
 Module RpcCallRequest.
+  Unset Primitive Projections.
   Record t : Set := {
     origin : ImplC.AccountId;
     dest : ImplE.AccountId;
@@ -4804,6 +4881,7 @@ Module RpcCallRequest.
     storage_deposit_limit : core.option.Option ImplE.Balance;
     input_data : alloc.vec.Vec u8;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_origin : Notation.Dot "origin" := {
     Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
@@ -4935,10 +5013,12 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
 
 Module ContractsApi.
+  Unset Primitive Projections.
   Record t : Set := {
     client : subxt.client.online_client.OnlineClient C;
     _phantom : core.marker.PhantomData ((C * E));
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_client : Notation.Dot "client" := {
     Notation.dot '(Build_t x0 _) := x0;

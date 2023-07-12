@@ -253,11 +253,14 @@ End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
 
 Module types.
   Module AccountId.
-    Record t : Set := { _ : list u8;}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Unset Primitive Projections.
+    Record t : Set :=
+    { _ : list u8;}.
+    Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
   End AccountId.
   Definition AccountId := AccountId.t.
   
@@ -552,11 +555,14 @@ Module types.
   End Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
   
   Module Hash.
-    Record t : Set := { _ : list u8;}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Unset Primitive Projections.
+    Record t : Set :=
+    { _ : list u8;}.
+    Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
   End Hash.
   Definition Hash := Hash.t.
   
@@ -913,11 +919,14 @@ Module types.
 End types.
 
 Module AccountId.
-  Record t : Set := { _ : list u8;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Unset Primitive Projections.
+  Record t : Set :=
+  { _ : list u8;}.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End AccountId.
 Definition AccountId := AccountId.t.
 
@@ -940,11 +949,14 @@ Module Impl_scale_info_TypeInfo_for_ink_primitives_types_AccountId.
 End Impl_scale_info_TypeInfo_for_ink_primitives_types_AccountId.
 
 Module Visitor.
-  Record t : Set := { _ : core.marker.PhantomData unit;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Unset Primitive Projections.
+  Record t : Set :=
+  { _ : core.marker.PhantomData unit;}.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End Visitor.
 Definition Visitor := Visitor.t.
 
@@ -1368,11 +1380,14 @@ Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
 End Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
 
 Module Hash.
-  Record t : Set := { _ : list u8;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Unset Primitive Projections.
+  Record t : Set :=
+  { _ : list u8;}.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End Hash.
 Definition Hash := Hash.t.
 
@@ -1395,11 +1410,14 @@ Module Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.
 End Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.
 
 Module Visitor.
-  Record t : Set := { _ : core.marker.PhantomData unit;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Unset Primitive Projections.
+  Record t : Set :=
+  { _ : core.marker.PhantomData unit;}.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End Visitor.
 Definition Visitor := Visitor.t.
 
