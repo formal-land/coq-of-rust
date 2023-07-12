@@ -9,7 +9,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α0 := LangItem lines in
     match α0 with
     | iter =>
-      while
+      loop
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with

@@ -14466,7 +14466,7 @@ Module engine.
             α1.["unwrap_or"] 0 in
           let* bytes := alloc.vec.Vec::["with_capacity"] remaining_len in
           let* _ :=
-            while
+            loop
               (let* α0 := input.["read_byte"] in
               let* α1 := let_if core.result.Result.Ok byte := α0 in
               if (α1 : bool) then
@@ -17160,7 +17160,7 @@ Module off_chain.
           α1.["unwrap_or"] 0 in
         let* bytes := alloc.vec.Vec::["with_capacity"] remaining_len in
         let* _ :=
-          while
+          loop
             (let* α0 := input.["read_byte"] in
             let* α1 := let_if core.result.Result.Ok byte := α0 in
             if (α1 : bool) then
@@ -19664,7 +19664,7 @@ Module call_data.
         α1.["unwrap_or"] 0 in
       let* bytes := alloc.vec.Vec::["with_capacity"] remaining_len in
       let* _ :=
-        while
+        loop
           (let* α0 := input.["read_byte"] in
           let* α1 := let_if core.result.Result.Ok byte := α0 in
           if (α1 : bool) then
@@ -19951,7 +19951,7 @@ Module
       α1.["unwrap_or"] 0 in
     let* bytes := alloc.vec.Vec::["with_capacity"] remaining_len in
     let* _ :=
-      while
+      loop
         (let* α0 := input.["read_byte"] in
         let* α1 := let_if core.result.Result.Ok byte := α0 in
         if (α1 : bool) then

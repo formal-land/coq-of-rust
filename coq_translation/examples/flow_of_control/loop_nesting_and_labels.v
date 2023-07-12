@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
-    while
+    loop
       (let* _ :=
         let* _ :=
           let* α0 :=
@@ -14,7 +14,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           std.io.stdio._print α0 in
         Pure tt in
       let* _ :=
-        while
+        loop
           (let* _ :=
             let* _ :=
               let* α0 :=

@@ -938,7 +938,7 @@ Module storage.
                 let* '(fields, i) := fields.["quote_into_iter"] in
                 let* has_iter := has_iter.["bitor"] i in
                 let _ := has_iter in
-                while
+                loop
                   (if (true : bool) then
                     let* fields :=
                       let* α0 := fields.["next"] in
@@ -1197,7 +1197,7 @@ Module storage.
               let* '(encode_body, i) := encode_body.["quote_into_iter"] in
               let* has_iter := has_iter.["bitor"] i in
               let _ := has_iter in
-              while
+              loop
                 (if (true : bool) then
                   let* encode_body :=
                     let* α0 := encode_body.["next"] in
@@ -1372,7 +1372,7 @@ Module storage.
             let* '(ty_generics, i) := ty_generics.["quote_into_iter"] in
             let* has_iter := has_iter.["bitor"] i in
             let _ := has_iter in
-            while
+            loop
               (if (true : bool) then
                 let* ty_generics :=
                   let* α0 := ty_generics.["next"] in
@@ -1782,7 +1782,7 @@ Module storage.
                     field_layouts.["quote_into_iter"] in
                   let* has_iter := has_iter.["bitor"] i in
                   let _ := has_iter in
-                  while
+                  loop
                     (if (true : bool) then
                       let* field_layouts :=
                         let* α0 := field_layouts.["next"] in
@@ -1953,7 +1953,7 @@ Module storage.
                         field_layouts.["quote_into_iter"] in
                       let* has_iter := has_iter.["bitor"] i in
                       let _ := has_iter in
-                      while
+                      loop
                         (if (true : bool) then
                           let* field_layouts :=
                             let* α0 := field_layouts.["next"] in
@@ -2103,7 +2103,7 @@ Module storage.
                     variant_layouts.["quote_into_iter"] in
                   let* has_iter := has_iter.["bitor"] i in
                   let _ := has_iter in
-                  while
+                  loop
                     (if (true : bool) then
                       let* variant_layouts :=
                         let* α0 := variant_layouts.["next"] in
@@ -2729,7 +2729,7 @@ Module storable.
               let* '(fields, i) := fields.["quote_into_iter"] in
               let* has_iter := has_iter.["bitor"] i in
               let _ := has_iter in
-              while
+              loop
                 (if (true : bool) then
                   let* fields :=
                     let* α0 := fields.["next"] in
@@ -2988,7 +2988,7 @@ Module storable.
             let* '(encode_body, i) := encode_body.["quote_into_iter"] in
             let* has_iter := has_iter.["bitor"] i in
             let _ := has_iter in
-            while
+            loop
               (if (true : bool) then
                 let* encode_body :=
                   let* α0 := encode_body.["next"] in
@@ -3584,7 +3584,7 @@ Definition storable_enum_derive
             let* '(fields, i) := fields.["quote_into_iter"] in
             let* has_iter := has_iter.["bitor"] i in
             let _ := has_iter in
-            while
+            loop
               (if (true : bool) then
                 let* fields :=
                   let* α0 := fields.["next"] in
@@ -3839,7 +3839,7 @@ Definition storable_enum_derive
           let* '(encode_body, i) := encode_body.["quote_into_iter"] in
           let* has_iter := has_iter.["bitor"] i in
           let _ := has_iter in
-          while
+          loop
             (if (true : bool) then
               let* encode_body :=
                 let* α0 := encode_body.["next"] in
@@ -3999,7 +3999,7 @@ Module storable_hint.
           let* '(ty_generics, i) := ty_generics.["quote_into_iter"] in
           let* has_iter := has_iter.["bitor"] i in
           let _ := has_iter in
-          while
+          loop
             (if (true : bool) then
               let* ty_generics :=
                 let* α0 := ty_generics.["next"] in
@@ -4232,7 +4232,7 @@ Definition storable_hint_inner
         let* '(ty_generics, i) := ty_generics.["quote_into_iter"] in
         let* has_iter := has_iter.["bitor"] i in
         let _ := has_iter in
-        while
+        loop
           (if (true : bool) then
             let* ty_generics :=
               let* α0 := ty_generics.["next"] in
@@ -4685,7 +4685,7 @@ Module storage_layout.
                 let* '(field_layouts, i) := field_layouts.["quote_into_iter"] in
                 let* has_iter := has_iter.["bitor"] i in
                 let _ := has_iter in
-                while
+                loop
                   (if (true : bool) then
                     let* field_layouts :=
                       let* α0 := field_layouts.["next"] in
@@ -4850,7 +4850,7 @@ Module storage_layout.
                       field_layouts.["quote_into_iter"] in
                     let* has_iter := has_iter.["bitor"] i in
                     let _ := has_iter in
-                    while
+                    loop
                       (if (true : bool) then
                         let* field_layouts :=
                           let* α0 := field_layouts.["next"] in
@@ -5000,7 +5000,7 @@ Module storage_layout.
                   variant_layouts.["quote_into_iter"] in
                 let* has_iter := has_iter.["bitor"] i in
                 let _ := has_iter in
-                while
+                loop
                   (if (true : bool) then
                     let* variant_layouts :=
                       let* α0 := variant_layouts.["next"] in
@@ -5265,7 +5265,7 @@ Definition storage_layout_struct
               let* '(field_layouts, i) := field_layouts.["quote_into_iter"] in
               let* has_iter := has_iter.["bitor"] i in
               let _ := has_iter in
-              while
+              loop
                 (if (true : bool) then
                   let* field_layouts :=
                     let* α0 := field_layouts.["next"] in
@@ -5425,7 +5425,7 @@ Definition storage_layout_enum
                     field_layouts.["quote_into_iter"] in
                   let* has_iter := has_iter.["bitor"] i in
                   let _ := has_iter in
-                  while
+                  loop
                     (if (true : bool) then
                       let* field_layouts :=
                         let* α0 := field_layouts.["next"] in
@@ -5575,7 +5575,7 @@ Definition storage_layout_enum
                 variant_layouts.["quote_into_iter"] in
               let* has_iter := has_iter.["bitor"] i in
               let _ := has_iter in
-              while
+              loop
                 (if (true : bool) then
                   let* variant_layouts :=
                     let* α0 := variant_layouts.["next"] in

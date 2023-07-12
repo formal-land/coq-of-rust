@@ -14,7 +14,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α0 := rand.thread_rng tt in
     let* α1 := LangItem 1 100 in
     α0.["gen_range"] α1 in
-  while
+  loop
     (let* _ :=
       let* _ :=
         let* α0 :=

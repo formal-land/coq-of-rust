@@ -23,7 +23,7 @@ Definition sum_odd_numbers `{H : State.Trait} (up_to : u32) : M (H := H) u32 :=
     let* α0 := LangItem Range {| Range.start := 0; Range.end := up_to; |} in
     match α0 with
     | iter =>
-      while
+      loop
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with

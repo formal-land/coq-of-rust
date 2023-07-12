@@ -347,7 +347,7 @@ Section Impl_subtle_ConstantTimeEq_for_Slice.
       let* α3 := LangItem α2 in
       match α3 with
       | iter =>
-        while
+        loop
           (let* _ :=
             let* α0 := LangItem (addr_of iter) in
             match α0 with
@@ -1790,7 +1790,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
       α0.["bitand"] other in
     let pow := 1 in
     let* _ :=
-      while
+      loop
         (let* α0 := pow.["lt"] 8 in
         if (α0 : bool) then
           let* _ :=
@@ -1806,7 +1806,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
       gtb.["bitand"] α0 in
     let pow := 1 in
     let* _ :=
-      while
+      loop
         (let* α0 := pow.["lt"] 8 in
         if (α0 : bool) then
           let* _ :=
@@ -1845,7 +1845,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
       α0.["bitand"] other in
     let pow := 1 in
     let* _ :=
-      while
+      loop
         (let* α0 := pow.["lt"] 16 in
         if (α0 : bool) then
           let* _ :=
@@ -1861,7 +1861,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
       gtb.["bitand"] α0 in
     let pow := 1 in
     let* _ :=
-      while
+      loop
         (let* α0 := pow.["lt"] 16 in
         if (α0 : bool) then
           let* _ :=
@@ -1900,7 +1900,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
       α0.["bitand"] other in
     let pow := 1 in
     let* _ :=
-      while
+      loop
         (let* α0 := pow.["lt"] 32 in
         if (α0 : bool) then
           let* _ :=
@@ -1916,7 +1916,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
       gtb.["bitand"] α0 in
     let pow := 1 in
     let* _ :=
-      while
+      loop
         (let* α0 := pow.["lt"] 32 in
         if (α0 : bool) then
           let* _ :=
@@ -1955,7 +1955,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
       α0.["bitand"] other in
     let pow := 1 in
     let* _ :=
-      while
+      loop
         (let* α0 := pow.["lt"] 64 in
         if (α0 : bool) then
           let* _ :=
@@ -1971,7 +1971,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
       gtb.["bitand"] α0 in
     let pow := 1 in
     let* _ :=
-      while
+      loop
         (let* α0 := pow.["lt"] 64 in
         if (α0 : bool) then
           let* _ :=

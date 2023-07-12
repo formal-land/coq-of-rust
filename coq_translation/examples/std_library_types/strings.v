@@ -27,7 +27,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α2 := LangItem α1 in
     match α2 with
     | iter =>
-      while
+      loop
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
@@ -57,7 +57,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α0 := LangItem chars in
     match α0 with
     | iter =>
-      while
+      loop
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with

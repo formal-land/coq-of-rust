@@ -146,7 +146,7 @@ Module codegen.
                   let* α0 := LangItem contracts_to_build_and_import in
                   match α0 with
                   | iter =>
-                    while
+                    loop
                       (let* _ :=
                         let* α0 := LangItem (addr_of iter) in
                         match α0 with
@@ -176,7 +176,7 @@ Module codegen.
               let* α0 := LangItem contracts_to_build_and_import in
               match α0 with
               | iter =>
-                while
+                loop
                   (let* _ :=
                     let* α0 := LangItem (addr_of iter) in
                     match α0 with
@@ -288,7 +288,7 @@ Module codegen.
         let* '(attrs, i) := attrs.["quote_into_iter"] in
         let* has_iter := has_iter.["bitor"] i in
         let _ := has_iter in
-        while
+        loop
           (if (true : bool) then
             let* attrs :=
               let* α0 := attrs.["next"] in
@@ -570,7 +570,7 @@ Module codegen.
                 let* '(contracts, i) := contracts.["quote_into_iter"] in
                 let* has_iter := has_iter.["bitor"] i in
                 let _ := has_iter in
-                while
+                loop
                   (if (true : bool) then
                     let* contracts :=
                       let* α0 := contracts.["next"] in
@@ -1100,7 +1100,7 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
                 let* α0 := LangItem contracts_to_build_and_import in
                 match α0 with
                 | iter =>
-                  while
+                  loop
                     (let* _ :=
                       let* α0 := LangItem (addr_of iter) in
                       match α0 with
@@ -1130,7 +1130,7 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
             let* α0 := LangItem contracts_to_build_and_import in
             match α0 with
             | iter =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of iter) in
                   match α0 with
@@ -1241,7 +1241,7 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
       let* '(attrs, i) := attrs.["quote_into_iter"] in
       let* has_iter := has_iter.["bitor"] i in
       let _ := has_iter in
-      while
+      loop
         (if (true : bool) then
           let* attrs :=
             let* α0 := attrs.["next"] in
@@ -1521,7 +1521,7 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
               let* '(contracts, i) := contracts.["quote_into_iter"] in
               let* has_iter := has_iter.["bitor"] i in
               let _ := has_iter in
-              while
+              loop
                 (if (true : bool) then
                   let* contracts :=
                     let* α0 := contracts.["next"] in
@@ -1997,7 +1997,7 @@ Module config.
         let* α1 := LangItem α0 in
         match α1 with
         | iter =>
-          while
+          loop
             (let* _ :=
               let* α0 := LangItem (addr_of iter) in
               match α0 with
@@ -2319,7 +2319,7 @@ Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
       let* α1 := LangItem α0 in
       match α1 with
       | iter =>
-        while
+        loop
           (let* _ :=
             let* α0 := LangItem (addr_of iter) in
             match α0 with

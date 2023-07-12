@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let counter := 0 in
   let* result :=
-    while
+    loop
       (let* _ := counter.["add_assign"] 1 in
       let* α0 := counter.["eq"] 10 in
       if (α0 : bool) then

@@ -12,7 +12,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
-  while
+  loop
     (let* _ := count.["add_assign"] 1 in
     let* _ :=
       let* α0 := count.["eq"] 3 in

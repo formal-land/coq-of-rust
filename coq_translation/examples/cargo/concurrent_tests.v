@@ -32,7 +32,7 @@ Module tests.
     let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
     match α0 with
     | iter =>
-      while
+      loop
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
@@ -58,7 +58,7 @@ Module tests.
     let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
     match α0 with
     | iter =>
-      while
+      loop
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
@@ -85,7 +85,7 @@ Definition test_file `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
   match α0 with
   | iter =>
-    while
+    loop
       (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with
@@ -111,7 +111,7 @@ Definition test_file_also `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
   match α0 with
   | iter =>
-    while
+    loop
       (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with

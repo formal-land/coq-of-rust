@@ -144,7 +144,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* α2 := LangItem Range {| Range.start := 0; Range.end := α1; |} in
   match α2 with
   | iter =>
-    while
+    loop
       (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with

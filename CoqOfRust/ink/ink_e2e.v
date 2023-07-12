@@ -903,7 +903,7 @@ Module client.
           let* α2 :=
             match α1 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -949,7 +949,7 @@ Module client.
             let* α3 :=
               match α2 with
               | __awaitee =>
-                while
+                loop
                   (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
@@ -1024,7 +1024,7 @@ Module client.
             let* α2 :=
               match α1 with
               | __awaitee =>
-                while
+                loop
                   (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
@@ -1093,7 +1093,7 @@ Module client.
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -1207,7 +1207,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α4 := LangItem α3 in
             match α4 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -1266,7 +1266,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α3 := LangItem α2 in
             match α3 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -1286,7 +1286,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α1 := LangItem α0 in
             match α1 with
             | iter =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of iter) in
                   match α0 with
@@ -1441,7 +1441,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α2 :=
               match α1 with
               | __awaitee =>
-                while
+                loop
                   (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
@@ -1499,7 +1499,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α2 := LangItem α1 in
             match α2 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -1536,7 +1536,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α1 := LangItem α0 in
             match α1 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -1556,7 +1556,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α1 := LangItem α0 in
             match α1 with
             | iter =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of iter) in
                   match α0 with
@@ -1732,7 +1732,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α1 := LangItem α0 in
             match α1 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -1768,7 +1768,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α3 := LangItem α2 in
             match α3 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -1787,7 +1787,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α1 := LangItem α0 in
             match α1 with
             | iter =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of iter) in
                   match α0 with
@@ -1879,7 +1879,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α1 := LangItem α0 in
             match α1 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -1898,7 +1898,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α1 := LangItem α0 in
             match α1 with
             | iter =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of iter) in
                   match α0 with
@@ -1999,7 +1999,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α3 := LangItem α2 in
             match α3 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -2070,7 +2070,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α3 :=
               match α2 with
               | __awaitee =>
-                while
+                loop
                   (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
@@ -2100,7 +2100,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α7 :=
               match α6 with
               | __awaitee =>
-                while
+                loop
                   (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
@@ -3825,7 +3825,7 @@ Module Impl_ink_e2e_client_Client_C_E_2.
         let* α2 :=
           match α1 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -3871,7 +3871,7 @@ Module Impl_ink_e2e_client_Client_C_E_2.
           let* α3 :=
             match α2 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -3945,7 +3945,7 @@ Module Impl_ink_e2e_client_Client_C_E_2.
           let* α2 :=
             match α1 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -4014,7 +4014,7 @@ Module Impl_ink_e2e_client_Client_C_E_2.
         let* α1 := LangItem α0 in
         match α1 with
         | __awaitee =>
-          while
+          loop
             (let* _ :=
               let* α0 := LangItem (addr_of __awaitee) in
               let* α1 := LangItem _task_context in
@@ -4128,7 +4128,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α4 := LangItem α3 in
           match α4 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -4187,7 +4187,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α3 := LangItem α2 in
           match α3 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -4207,7 +4207,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α1 := LangItem α0 in
           match α1 with
           | iter =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of iter) in
                 match α0 with
@@ -4359,7 +4359,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α2 :=
             match α1 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -4416,7 +4416,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α2 := LangItem α1 in
           match α2 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -4453,7 +4453,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -4473,7 +4473,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α1 := LangItem α0 in
           match α1 with
           | iter =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of iter) in
                 match α0 with
@@ -4647,7 +4647,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -4683,7 +4683,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α3 := LangItem α2 in
           match α3 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -4702,7 +4702,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α1 := LangItem α0 in
           match α1 with
           | iter =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of iter) in
                 match α0 with
@@ -4793,7 +4793,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -4812,7 +4812,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α1 := LangItem α0 in
           match α1 with
           | iter =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of iter) in
                 match α0 with
@@ -4912,7 +4912,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α3 := LangItem α2 in
           match α3 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -4983,7 +4983,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α3 :=
             match α2 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -5013,7 +5013,7 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α7 :=
             match α6 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -5767,7 +5767,7 @@ Module node_proc.
             let* α2 := LangItem α1 in
             match α2 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -6328,7 +6328,7 @@ Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
           let* α2 := LangItem α1 in
           match α2 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -7762,7 +7762,7 @@ Module xts.
             let* α3 :=
               match α2 with
               | __awaitee =>
-                while
+                loop
                   (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
@@ -7789,7 +7789,7 @@ Module xts.
             let* α2 :=
               match α1 with
               | __awaitee =>
-                while
+                loop
                   (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
@@ -7876,7 +7876,7 @@ Module xts.
             let* α3 :=
               match α2 with
               | __awaitee =>
-                while
+                loop
                   (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
@@ -7934,7 +7934,7 @@ Module xts.
           let* α3 :=
             match α2 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -7980,7 +7980,7 @@ Module xts.
           let* α8 :=
             match α7 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -8010,7 +8010,7 @@ Module xts.
           let* α12 :=
             match α11 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -8080,7 +8080,7 @@ Module xts.
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -8146,7 +8146,7 @@ Module xts.
             let* α3 :=
               match α2 with
               | __awaitee =>
-                while
+                loop
                   (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
@@ -8216,7 +8216,7 @@ Module xts.
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -8284,7 +8284,7 @@ Module xts.
             let* α3 :=
               match α2 with
               | __awaitee =>
-                while
+                loop
                   (let* _ :=
                     let* α0 := LangItem (addr_of __awaitee) in
                     let* α1 := LangItem _task_context in
@@ -8361,7 +8361,7 @@ Module xts.
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -8401,7 +8401,7 @@ Module xts.
           let* α1 := LangItem α0 in
           match α1 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -9051,7 +9051,7 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
     let __field0 := core.option.Option.None in
     let __field1 := core.option.Option.None in
     let* _ :=
-      while
+      loop
         (let* α0 := serde.de.MapAccess.next_key (addr_of __map) in
         let* α1 :=
           match α0 with
@@ -11382,7 +11382,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
           let* α3 :=
             match α2 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -11409,7 +11409,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
           let* α2 :=
             match α1 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -11496,7 +11496,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
           let* α3 :=
             match α2 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -11554,7 +11554,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* α3 :=
           match α2 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -11600,7 +11600,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* α8 :=
           match α7 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -11630,7 +11630,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* α12 :=
           match α11 with
           | __awaitee =>
-            while
+            loop
               (let* _ :=
                 let* α0 := LangItem (addr_of __awaitee) in
                 let* α1 := LangItem _task_context in
@@ -11700,7 +11700,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* α1 := LangItem α0 in
         match α1 with
         | __awaitee =>
-          while
+          loop
             (let* _ :=
               let* α0 := LangItem (addr_of __awaitee) in
               let* α1 := LangItem _task_context in
@@ -11766,7 +11766,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
           let* α3 :=
             match α2 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -11836,7 +11836,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* α1 := LangItem α0 in
         match α1 with
         | __awaitee =>
-          while
+          loop
             (let* _ :=
               let* α0 := LangItem (addr_of __awaitee) in
               let* α1 := LangItem _task_context in
@@ -11903,7 +11903,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
           let* α3 :=
             match α2 with
             | __awaitee =>
-              while
+              loop
                 (let* _ :=
                   let* α0 := LangItem (addr_of __awaitee) in
                   let* α1 := LangItem _task_context in
@@ -11979,7 +11979,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* α1 := LangItem α0 in
         match α1 with
         | __awaitee =>
-          while
+          loop
             (let* _ :=
               let* α0 := LangItem (addr_of __awaitee) in
               let* α1 := LangItem _task_context in
@@ -12019,7 +12019,7 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* α1 := LangItem α0 in
         match α1 with
         | __awaitee =>
-          while
+          loop
             (let* _ :=
               let* α0 := LangItem (addr_of __awaitee) in
               let* α1 := LangItem _task_context in
