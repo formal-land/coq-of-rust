@@ -125,7 +125,17 @@ Module ext.
   Module Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
     Definition Self := ink_engine.ext.ChainSpec.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition default  : M Self :=
+      Pure
+        {|
+          Self.gas_price := 100;
+          Self.minimum_balance := 1000000;
+          Self.block_time := 6;
+        |}.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -140,9 +150,28 @@ Module ext.
   Module Impl_ink_engine_ext_Engine.
     Definition Self := ink_engine.ext.Engine.
     
+<<<<<<< HEAD
     Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
+=======
+    Definition new  : M Self :=
+      let* α0 := ink_engine.database.Database::["new"] tt in
+      let* α1 := ink_engine.exec_context.ExecContext::["new"] tt in
+      let* α2 := ink_engine.test_api.DebugInfo::["new"] tt in
+      let* α3 := ink_engine.ext.ChainSpec::["default"] tt in
+      let* α4 := ink_engine.chain_extension.ChainExtensionHandler::["new"] tt in
+      Pure
+        {|
+          Self.database := α0;
+          Self.exec_context := α1;
+          Self.debug_info := α2;
+          Self.chain_spec := α3;
+          Self.chain_extension_handler := α4;
+        |}.
+    
+    Global Instance AssociatedFunction_new :
+>>>>>>> fa97985 (Update ink submodule)
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
@@ -151,7 +180,11 @@ Module ext.
   Module Impl_core_default_Default_for_ink_engine_ext_Engine.
     Definition Self := ink_engine.ext.Engine.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition default  : M Self := Self::["new"] tt.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -546,7 +579,17 @@ Definition ChainSpec : Set := ChainSpec.t.
 Module Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
   Definition Self := ink_engine.ext.ChainSpec.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition default  : M Self :=
+    Pure
+      {|
+        Self.gas_price := 100;
+        Self.minimum_balance := 1000000;
+        Self.block_time := 6;
+      |}.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -561,10 +604,29 @@ End Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
 Module Impl_ink_engine_ext_Engine_3.
   Definition Self := ink_engine.ext.Engine.
   
+<<<<<<< HEAD
   Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
+=======
+  Definition new  : M Self :=
+    let* α0 := ink_engine.database.Database::["new"] tt in
+    let* α1 := ink_engine.exec_context.ExecContext::["new"] tt in
+    let* α2 := ink_engine.test_api.DebugInfo::["new"] tt in
+    let* α3 := ink_engine.ext.ChainSpec::["default"] tt in
+    let* α4 := ink_engine.chain_extension.ChainExtensionHandler::["new"] tt in
+    Pure
+      {|
+        Self.database := α0;
+        Self.exec_context := α1;
+        Self.debug_info := α2;
+        Self.chain_spec := α3;
+        Self.chain_extension_handler := α4;
+      |}.
+  
+  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+>>>>>>> fa97985 (Update ink submodule)
     Notation.double_colon := new;
   }.
 End Impl_ink_engine_ext_Engine_3.
@@ -572,7 +634,11 @@ End Impl_ink_engine_ext_Engine_3.
 Module Impl_core_default_Default_for_ink_engine_ext_Engine.
   Definition Self := ink_engine.ext.Engine.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition default  : M Self := Self::["new"] tt.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -929,7 +995,13 @@ Module test_api.
   Module Impl_ink_engine_test_api_RecordedDebugMessages.
     Definition Self := ink_engine.test_api.RecordedDebugMessages.
     
+<<<<<<< HEAD
     Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition new  : M Self :=
+      let* α0 := alloc.vec.Vec::["new"] tt in
+      Pure {| Self.debug_messages := α0; |}.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -957,7 +1029,11 @@ Module test_api.
     Impl_core_default_Default_for_ink_engine_test_api_RecordedDebugMessages.
     Definition Self := ink_engine.test_api.RecordedDebugMessages.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition default  : M Self := Self::["new"] tt.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -1034,7 +1110,11 @@ Module test_api.
   Module Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
     Definition Self := ink_engine.test_api.DebugInfo.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition default  : M Self := Self::["new"] tt.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -1049,9 +1129,28 @@ Module test_api.
   Module Impl_ink_engine_test_api_DebugInfo.
     Definition Self := ink_engine.test_api.DebugInfo.
     
+<<<<<<< HEAD
     Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
+=======
+    Definition new  : M Self :=
+      let* α0 := alloc.vec.Vec::["new"] tt in
+      let* α1 := ink_engine.test_api.RecordedDebugMessages::["new"] tt in
+      let* α2 := std.collections.hash.map.HashMap::["new"] tt in
+      let* α3 := std.collections.hash.map.HashMap::["new"] tt in
+      let* α4 := std.collections.hash.map.HashMap::["new"] tt in
+      Pure
+        {|
+          Self.emitted_events := α0;
+          Self.emitted_debug_messages := α1;
+          Self.count_reads := α2;
+          Self.count_writes := α3;
+          Self.cells_per_account := α4;
+        |}.
+    
+    Global Instance AssociatedFunction_new :
+>>>>>>> fa97985 (Update ink submodule)
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
@@ -1369,7 +1468,13 @@ End Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
 Module Impl_ink_engine_test_api_RecordedDebugMessages_2.
   Definition Self := ink_engine.test_api.RecordedDebugMessages.
   
+<<<<<<< HEAD
   Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition new  : M Self :=
+    let* α0 := alloc.vec.Vec::["new"] tt in
+    Pure {| Self.debug_messages := α0; |}.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -1394,7 +1499,11 @@ End Impl_ink_engine_test_api_RecordedDebugMessages_2.
 Module Impl_core_default_Default_for_ink_engine_test_api_RecordedDebugMessages.
   Definition Self := ink_engine.test_api.RecordedDebugMessages.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition default  : M Self := Self::["new"] tt.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -1470,7 +1579,11 @@ Definition DebugInfo : Set := DebugInfo.t.
 Module Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
   Definition Self := ink_engine.test_api.DebugInfo.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition default  : M Self := Self::["new"] tt.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -1485,10 +1598,29 @@ End Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
 Module Impl_ink_engine_test_api_DebugInfo_2.
   Definition Self := ink_engine.test_api.DebugInfo.
   
+<<<<<<< HEAD
   Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
+=======
+  Definition new  : M Self :=
+    let* α0 := alloc.vec.Vec::["new"] tt in
+    let* α1 := ink_engine.test_api.RecordedDebugMessages::["new"] tt in
+    let* α2 := std.collections.hash.map.HashMap::["new"] tt in
+    let* α3 := std.collections.hash.map.HashMap::["new"] tt in
+    let* α4 := std.collections.hash.map.HashMap::["new"] tt in
+    Pure
+      {|
+        Self.emitted_events := α0;
+        Self.emitted_debug_messages := α1;
+        Self.count_reads := α2;
+        Self.count_writes := α3;
+        Self.cells_per_account := α4;
+      |}.
+  
+  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+>>>>>>> fa97985 (Update ink submodule)
     Notation.double_colon := new;
   }.
   
@@ -1903,7 +2035,12 @@ Module chain_extension.
     Impl_core_default_Default_for_ink_engine_chain_extension_ChainExtensionHandler.
     Definition Self := ink_engine.chain_extension.ChainExtensionHandler.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition default  : M Self :=
+      ink_engine.chain_extension.ChainExtensionHandler::["new"] tt.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -1919,7 +2056,14 @@ Module chain_extension.
   Module Impl_ink_engine_chain_extension_ChainExtensionHandler.
     Definition Self := ink_engine.chain_extension.ChainExtensionHandler.
     
+<<<<<<< HEAD
     Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition new  : M Self :=
+      let* α0 := std.collections.hash.map.HashMap::["new"] tt in
+      let* α1 := alloc.vec.Vec::["new"] tt in
+      Pure {| Self.registered := α0; Self.output := α1; |}.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -2196,7 +2340,12 @@ Module
   Impl_core_default_Default_for_ink_engine_chain_extension_ChainExtensionHandler.
   Definition Self := ink_engine.chain_extension.ChainExtensionHandler.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition default  : M Self :=
+    ink_engine.chain_extension.ChainExtensionHandler::["new"] tt.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -2212,7 +2361,14 @@ End
 Module Impl_ink_engine_chain_extension_ChainExtensionHandler_2.
   Definition Self := ink_engine.chain_extension.ChainExtensionHandler.
   
+<<<<<<< HEAD
   Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition new  : M Self :=
+    let* α0 := std.collections.hash.map.HashMap::["new"] tt in
+    let* α1 := alloc.vec.Vec::["new"] tt in
+    Pure {| Self.registered := α0; Self.output := α1; |}.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -2276,8 +2432,14 @@ Module database.
   Module Impl_core_default_Default_for_ink_engine_database_Database.
     Definition Self := ink_engine.database.Database.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_engine.database.Database.
+=======
+    Definition default  : M ink_engine.database.Database :=
+      let* α0 := core.default.Default.default tt in
+      Pure {| ink_engine.database.Database.hmap := α0; |}.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -2292,7 +2454,13 @@ Module database.
   Module Impl_ink_engine_database_Database.
     Definition Self := ink_engine.database.Database.
     
+<<<<<<< HEAD
     Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition new  : M Self :=
+      let* α0 := std.collections.hash.map.HashMap::["new"] tt in
+      Pure {| ink_engine.database.Database.hmap := α0; |}.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -2418,8 +2586,14 @@ Definition Database : Set := Database.t.
 Module Impl_core_default_Default_for_ink_engine_database_Database.
   Definition Self := ink_engine.database.Database.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_engine.database.Database.
+=======
+  Definition default  : M ink_engine.database.Database :=
+    let* α0 := core.default.Default.default tt in
+    Pure {| ink_engine.database.Database.hmap := α0; |}.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -2434,7 +2608,13 @@ End Impl_core_default_Default_for_ink_engine_database_Database.
 Module Impl_ink_engine_database_Database_2.
   Definition Self := ink_engine.database.Database.
   
+<<<<<<< HEAD
   Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition new  : M Self :=
+    let* α0 := std.collections.hash.map.HashMap::["new"] tt in
+    Pure {| ink_engine.database.Database.hmap := α0; |}.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -2560,10 +2740,31 @@ Module exec_context.
   Module Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
     Definition Self := ink_engine.exec_context.ExecContext.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_engine.exec_context.ExecContext.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
+=======
+    Definition default  : M ink_engine.exec_context.ExecContext :=
+      let* α0 := core.default.Default.default tt in
+      let* α1 := core.default.Default.default tt in
+      let* α2 := core.default.Default.default tt in
+      let* α3 := core.default.Default.default tt in
+      let* α4 := core.default.Default.default tt in
+      let* α5 := core.default.Default.default tt in
+      Pure
+        {|
+          ink_engine.exec_context.ExecContext.caller := α0;
+          ink_engine.exec_context.ExecContext.callee := α1;
+          ink_engine.exec_context.ExecContext.value_transferred := α2;
+          ink_engine.exec_context.ExecContext.block_number := α3;
+          ink_engine.exec_context.ExecContext.block_timestamp := α4;
+          ink_engine.exec_context.ExecContext.contracts := α5;
+        |}.
+    
+    Global Instance AssociatedFunction_default :
+>>>>>>> fa97985 (Update ink submodule)
       Notation.DoubleColon Self "default" := {
       Notation.double_colon := default;
     }.
@@ -2576,7 +2777,11 @@ Module exec_context.
   Module Impl_ink_engine_exec_context_ExecContext.
     Definition Self := ink_engine.exec_context.ExecContext.
     
+<<<<<<< HEAD
     Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition new  : M Self := core.default.Default.default tt.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -2652,10 +2857,31 @@ Definition ExecContext : Set := ExecContext.t.
 Module Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
   Definition Self := ink_engine.exec_context.ExecContext.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_engine.exec_context.ExecContext.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
+=======
+  Definition default  : M ink_engine.exec_context.ExecContext :=
+    let* α0 := core.default.Default.default tt in
+    let* α1 := core.default.Default.default tt in
+    let* α2 := core.default.Default.default tt in
+    let* α3 := core.default.Default.default tt in
+    let* α4 := core.default.Default.default tt in
+    let* α5 := core.default.Default.default tt in
+    Pure
+      {|
+        ink_engine.exec_context.ExecContext.caller := α0;
+        ink_engine.exec_context.ExecContext.callee := α1;
+        ink_engine.exec_context.ExecContext.value_transferred := α2;
+        ink_engine.exec_context.ExecContext.block_number := α3;
+        ink_engine.exec_context.ExecContext.block_timestamp := α4;
+        ink_engine.exec_context.ExecContext.contracts := α5;
+      |}.
+  
+  Global Instance AssociatedFunction_default :
+>>>>>>> fa97985 (Update ink submodule)
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.
@@ -2668,7 +2894,11 @@ End Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
 Module Impl_ink_engine_exec_context_ExecContext_2.
   Definition Self := ink_engine.exec_context.ExecContext.
   
+<<<<<<< HEAD
   Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition new  : M Self := core.default.Default.default tt.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -2935,8 +3165,14 @@ Module types.
   Module Impl_core_default_Default_for_ink_engine_types_Key.
     Definition Self := ink_engine.types.Key.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_engine.types.Key.
+=======
+    Definition default  : M ink_engine.types.Key :=
+      let* α0 := core.default.Default.default tt in
+      Pure (ink_engine.types.Key.Build_t α0).
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -3376,8 +3612,14 @@ Definition Key := Key.t.
 Module Impl_core_default_Default_for_ink_engine_types_Key.
   Definition Self := ink_engine.types.Key.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_engine.types.Key.
+=======
+  Definition default  : M ink_engine.types.Key :=
+    let* α0 := core.default.Default.default tt in
+    Pure (ink_engine.types.Key.Build_t α0).
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {

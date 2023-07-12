@@ -17,9 +17,16 @@ Module codegen.
       (std.thread.local.LocalKey::["new"]
         ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.__getit).
   
+<<<<<<< HEAD
   Parameter already_built_contracts : forall `{H : State.Trait}, unit
       ->
         M (H := H)
+=======
+  Definition already_built_contracts
+      
+      :
+        M
+>>>>>>> fa97985 (Update ink submodule)
           (std.collections.hash.map.HashMap
             alloc.string.String
             alloc.string.String).
@@ -113,8 +120,47 @@ Module codegen.
   Module Impl_ink_e2e_macro_codegen_ContractManifests.
     Definition Self := ink_e2e_macro.codegen.ContractManifests.
     
+<<<<<<< HEAD
     Parameter from_cargo_metadata : forall `{H : State.Trait}, unit
         -> M (H := H) Self.
+=======
+    Definition from_cargo_metadata  : M Self :=
+      let* cmd := cargo_metadata.MetadataCommand::["new"] tt in
+      let* metadata :=
+        let* α0 := cmd.["exec"] in
+        α0.["unwrap_or_else"]
+          (fun err =>
+            let* α0 := format_argument::["new_display"] (addr_of err) in
+            let* α1 :=
+              format_arguments::["new_v1"]
+                (addr_of [ "Error invoking `cargo metadata`: " ])
+                (addr_of [ α0 ]) in
+            core.panicking.panic_fmt α1) in
+      let* root_package :=
+        let* α0 := metadata.["resolve"].["as_ref"] in
+        let* α1 :=
+          α0.["and_then"] (fun resolve => resolve.["root"].["as_ref"]) in
+        let* α2 :=
+          α1.["and_then"]
+            (fun root_package_id =>
+              let* α0 := metadata.["packages"].["iter"] in
+              α0.["find"]
+                (fun package =>
+                  (addr_of package.["id"]).["eq"] root_package_id)) in
+        α2.["and_then"]
+          ink_e2e_macro.codegen.from_cargo_metadata.maybe_contract_package in
+      let* contract_dependencies :=
+        let* α0 := metadata.["packages"].["iter"] in
+        let* α1 :=
+          α0.["filter_map"]
+            ink_e2e_macro.codegen.from_cargo_metadata.maybe_contract_package in
+        α1.["collect"] in
+      Pure
+        {|
+          Self.root_package := root_package;
+          Self.contract_dependencies := contract_dependencies;
+        |}.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_from_cargo_metadata `{H : State.Trait} :
       Notation.DoubleColon Self "from_cargo_metadata" := {
@@ -149,9 +195,16 @@ Definition
     (std.thread.local.LocalKey::["new"]
       ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.__getit).
 
+<<<<<<< HEAD
 Parameter __init : forall `{H : State.Trait}, unit
     ->
       M (H := H)
+=======
+Definition __init
+    
+    :
+      M
+>>>>>>> fa97985 (Update ink submodule)
         (core.cell.RefCell
           (std.collections.hash.map.HashMap
             alloc.string.String
@@ -189,9 +242,16 @@ Definition
               alloc.string.String)))::["new"]
       tt).
 
+<<<<<<< HEAD
 Parameter already_built_contracts : forall `{H : State.Trait}, unit
     ->
       M (H := H)
+=======
+Definition already_built_contracts
+    
+    :
+      M
+>>>>>>> fa97985 (Update ink submodule)
         (std.collections.hash.map.HashMap
           alloc.string.String
           alloc.string.String).
@@ -288,10 +348,50 @@ End Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
 Module Impl_ink_e2e_macro_codegen_ContractManifests_2.
   Definition Self := ink_e2e_macro.codegen.ContractManifests.
   
+<<<<<<< HEAD
   Parameter from_cargo_metadata : forall `{H : State.Trait}, unit
       -> M (H := H) Self.
   
   Global Instance AssociatedFunction_from_cargo_metadata `{H : State.Trait} :
+=======
+  Definition from_cargo_metadata  : M Self :=
+    let* cmd := cargo_metadata.MetadataCommand::["new"] tt in
+    let* metadata :=
+      let* α0 := cmd.["exec"] in
+      α0.["unwrap_or_else"]
+        (fun err =>
+          let* α0 := format_argument::["new_display"] (addr_of err) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "Error invoking `cargo metadata`: " ])
+              (addr_of [ α0 ]) in
+          core.panicking.panic_fmt α1) in
+    let* root_package :=
+      let* α0 := metadata.["resolve"].["as_ref"] in
+      let* α1 := α0.["and_then"] (fun resolve => resolve.["root"].["as_ref"]) in
+      let* α2 :=
+        α1.["and_then"]
+          (fun root_package_id =>
+            let* α0 := metadata.["packages"].["iter"] in
+            α0.["find"]
+              (fun package =>
+                (addr_of package.["id"]).["eq"] root_package_id)) in
+      α2.["and_then"]
+        ink_e2e_macro.codegen.from_cargo_metadata.maybe_contract_package in
+    let* contract_dependencies :=
+      let* α0 := metadata.["packages"].["iter"] in
+      let* α1 :=
+        α0.["filter_map"]
+          ink_e2e_macro.codegen.from_cargo_metadata.maybe_contract_package in
+      α1.["collect"] in
+    Pure
+      {|
+        Self.root_package := root_package;
+        Self.contract_dependencies := contract_dependencies;
+      |}.
+  
+  Global Instance AssociatedFunction_from_cargo_metadata :
+>>>>>>> fa97985 (Update ink submodule)
     Notation.DoubleColon Self "from_cargo_metadata" := {
     Notation.double_colon := from_cargo_metadata;
   }.
@@ -363,8 +463,21 @@ Module config.
   Module Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
     Definition Self := ink_e2e_macro.config.E2EConfig.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_e2e_macro.config.E2EConfig.
+=======
+    Definition default  : M ink_e2e_macro.config.E2EConfig :=
+      let* α0 := core.default.Default.default tt in
+      let* α1 := core.default.Default.default tt in
+      let* α2 := core.default.Default.default tt in
+      Pure
+        {|
+          ink_e2e_macro.config.E2EConfig.whitelisted_attributes := α0;
+          ink_e2e_macro.config.E2EConfig.additional_contracts := α1;
+          ink_e2e_macro.config.E2EConfig.environment := α2;
+        |}.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -516,10 +629,25 @@ End Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
 Module Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
   Definition Self := ink_e2e_macro.config.E2EConfig.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_e2e_macro.config.E2EConfig.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
+=======
+  Definition default  : M ink_e2e_macro.config.E2EConfig :=
+    let* α0 := core.default.Default.default tt in
+    let* α1 := core.default.Default.default tt in
+    let* α2 := core.default.Default.default tt in
+    Pure
+      {|
+        ink_e2e_macro.config.E2EConfig.whitelisted_attributes := α0;
+        ink_e2e_macro.config.E2EConfig.additional_contracts := α1;
+        ink_e2e_macro.config.E2EConfig.environment := α2;
+      |}.
+  
+  Global Instance AssociatedFunction_default :
+>>>>>>> fa97985 (Update ink submodule)
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.

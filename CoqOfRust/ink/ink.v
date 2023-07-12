@@ -191,10 +191,26 @@ Module codegen.
       Parameter deny_payment : forall `{H : State.Trait}, forall
           {E : Set},
           `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
           unit
           ->
             M (H := H)
               (core.result.Result unit ink.reflect.dispatch.DispatchError).
+=======
+          
+          : M (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
+        let* transferred := ink_env.api.transferred_value tt in
+        let* _ :=
+          let* α0 := ink_env.types.Environment.Balance::["from"] 0 in
+          let* α1 := transferred.["ne"] α0 in
+          if (α1 : bool) then
+            Return
+              (core.result.Result.Err
+                ink.reflect.dispatch.DispatchError.PaidUnpayableMessage)
+          else
+            Pure tt in
+        Pure (core.result.Result.Ok tt).
+>>>>>>> fa97985 (Update ink submodule)
     End execution.
     
     Module info.
@@ -1410,10 +1426,14 @@ Module codegen.
   
   Module utils.
     Module identity_type.
+<<<<<<< HEAD
       Parameter consume_type : forall `{H : State.Trait}, forall
           {T : Set},
           unit
           -> M (H := H) unit.
+=======
+      Definition consume_type {T : Set}  : M unit := Pure tt.
+>>>>>>> fa97985 (Update ink submodule)
     End identity_type.
     
     Module same_type.
@@ -1431,7 +1451,12 @@ Module codegen.
       Module Impl_ink_codegen_utils_same_type_IsSameType_T.
         Definition Self := ink.codegen.utils.same_type.IsSameType T.
         
+<<<<<<< HEAD
         Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+        Definition new  : M Self :=
+          Pure {| Self._marker := core.marker.PhantomData.Build; |}.
+>>>>>>> fa97985 (Update ink submodule)
         
         Global Instance AssociatedFunction_new `{H : State.Trait} :
           Notation.DoubleColon Self "new" := {
@@ -1447,10 +1472,26 @@ Module dispatch.
     Parameter deny_payment : forall `{H : State.Trait}, forall
         {E : Set},
         `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
         unit
         ->
           M (H := H)
             (core.result.Result unit ink.reflect.dispatch.DispatchError).
+=======
+        
+        : M (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
+      let* transferred := ink_env.api.transferred_value tt in
+      let* _ :=
+        let* α0 := ink_env.types.Environment.Balance::["from"] 0 in
+        let* α1 := transferred.["ne"] α0 in
+        if (α1 : bool) then
+          Return
+            (core.result.Result.Err
+              ink.reflect.dispatch.DispatchError.PaidUnpayableMessage)
+        else
+          Pure tt in
+      Pure (core.result.Result.Ok tt).
+>>>>>>> fa97985 (Update ink submodule)
   End execution.
   
   Module info.
@@ -1491,16 +1532,48 @@ Module execution.
   Parameter deny_payment : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
       unit
       ->
         M (H := H) (core.result.Result unit ink.reflect.dispatch.DispatchError).
+=======
+      
+      : M (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
+    let* transferred := ink_env.api.transferred_value tt in
+    let* _ :=
+      let* α0 := ink_env.types.Environment.Balance::["from"] 0 in
+      let* α1 := transferred.["ne"] α0 in
+      if (α1 : bool) then
+        Return
+          (core.result.Result.Err
+            ink.reflect.dispatch.DispatchError.PaidUnpayableMessage)
+      else
+        Pure tt in
+    Pure (core.result.Result.Ok tt).
+>>>>>>> fa97985 (Update ink submodule)
 End execution.
 
 Parameter deny_payment : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
     unit
     -> M (H := H) (core.result.Result unit ink.reflect.dispatch.DispatchError).
+=======
+    
+    : M (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
+  let* transferred := ink_env.api.transferred_value tt in
+  let* _ :=
+    let* α0 := ink_env.types.Environment.Balance::["from"] 0 in
+    let* α1 := transferred.["ne"] α0 in
+    if (α1 : bool) then
+      Return
+        (core.result.Result.Err
+          ink.reflect.dispatch.DispatchError.PaidUnpayableMessage)
+    else
+      Pure tt in
+  Pure (core.result.Result.Ok tt).
+>>>>>>> fa97985 (Update ink submodule)
 
 Module info.
   Module ContractCallBuilder.
@@ -4781,10 +4854,14 @@ Definition TraitMessageSelector := TraitMessageSelector.t.
 
 Module utils.
   Module identity_type.
+<<<<<<< HEAD
     Parameter consume_type : forall `{H : State.Trait}, forall
         {T : Set},
         unit
         -> M (H := H) unit.
+=======
+    Definition consume_type {T : Set}  : M unit := Pure tt.
+>>>>>>> fa97985 (Update ink submodule)
   End identity_type.
   
   Module same_type.
@@ -4802,7 +4879,12 @@ Module utils.
     Module Impl_ink_codegen_utils_same_type_IsSameType_T_2.
       Definition Self := ink.codegen.utils.same_type.IsSameType T.
       
+<<<<<<< HEAD
       Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+      Definition new  : M Self :=
+        Pure {| Self._marker := core.marker.PhantomData.Build; |}.
+>>>>>>> fa97985 (Update ink submodule)
       
       Global Instance AssociatedFunction_new `{H : State.Trait} :
         Notation.DoubleColon Self "new" := {
@@ -4813,6 +4895,7 @@ Module utils.
 End utils.
 
 Module identity_type.
+<<<<<<< HEAD
   Parameter consume_type : forall `{H : State.Trait}, forall
       {T : Set},
       unit
@@ -4823,6 +4906,12 @@ Parameter consume_type : forall `{H : State.Trait}, forall
     {T : Set},
     unit
     -> M (H := H) unit.
+=======
+  Definition consume_type {T : Set}  : M unit := Pure tt.
+End identity_type.
+
+Definition consume_type {T : Set}  : M unit := Pure tt.
+>>>>>>> fa97985 (Update ink submodule)
 
 Module same_type.
   Module IsSameType.
@@ -4839,7 +4928,12 @@ Module same_type.
   Module Impl_ink_codegen_utils_same_type_IsSameType_T_3.
     Definition Self := ink.codegen.utils.same_type.IsSameType T.
     
+<<<<<<< HEAD
     Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition new  : M Self :=
+      Pure {| Self._marker := core.marker.PhantomData.Build; |}.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -4862,7 +4956,12 @@ Definition IsSameType : Set := IsSameType.t.
 Module Impl_ink_codegen_utils_same_type_IsSameType_T_4.
   Definition Self := ink.codegen.utils.same_type.IsSameType T.
   
+<<<<<<< HEAD
   Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition new  : M Self :=
+    Pure {| Self._marker := core.marker.PhantomData.Build; |}.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -7069,7 +7168,13 @@ Module env_access.
     
     Definition Self := ink.env_access.EnvAccess E.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition default  : M Self :=
+      let* α0 := core.default.Default.default tt in
+      Pure {| Self.marker := α0; |}.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -7387,7 +7492,13 @@ Section Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
   
   Definition Self := ink.env_access.EnvAccess E.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition default  : M Self :=
+    let* α0 := core.default.Default.default tt in
+    Pure {| Self.marker := α0; |}.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {

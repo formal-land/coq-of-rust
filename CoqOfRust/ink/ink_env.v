@@ -642,12 +642,16 @@ Module Impl_scale_info_TypeInfo_for_ink_env_types_NoChainExtension.
   Definition Identity : Set := Self.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter type_info : forall `{H : State.Trait}, unit
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
 =======
   Definition type_info : M scale_info.ty.Type :=
+=======
+  Definition type_info  : M scale_info.ty.Type :=
+>>>>>>> fa97985 (Update ink submodule)
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 :=
       scale_info.ty.path.Path::["new"] "NoChainExtension" "ink_env::types" in
@@ -684,12 +688,16 @@ Module Impl_scale_info_TypeInfo_for_ink_env_types_DefaultEnvironment.
   Definition Identity : Set := Self.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter type_info : forall `{H : State.Trait}, unit
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
 =======
   Definition type_info : M scale_info.ty.Type :=
+=======
+  Definition type_info  : M scale_info.ty.Type :=
+>>>>>>> fa97985 (Update ink submodule)
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 :=
       scale_info.ty.path.Path::["new"] "DefaultEnvironment" "ink_env::types" in
@@ -833,9 +841,13 @@ Module api.
       {E : Set},
       `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
       unit
       -> M (H := H) ImplE.AccountId.
 =======
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M ImplE.AccountId :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => ink_env.backend.TypedEnvBackend.caller instance).
@@ -845,12 +857,16 @@ Module api.
       {E : Set},
       `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
       unit
       -> M (H := H) ImplE.Balance.
   
   Parameter weight_to_fee : forall `{H : State.Trait}, forall
       {E : Set},
 =======
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M ImplE.Balance :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -867,9 +883,13 @@ Module api.
       {E : Set},
       `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
       unit
       -> M (H := H) ink_env.types.Gas.
 =======
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M ink_env.types.Gas :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => ink_env.backend.TypedEnvBackend.gas_left instance).
@@ -878,6 +898,7 @@ Module api.
   Parameter block_timestamp : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
 <<<<<<< HEAD
       unit
       -> M (H := H) ImplE.Timestamp.
@@ -888,6 +909,9 @@ Module api.
       unit
       -> M (H := H) ImplE.AccountId.
 =======
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M ImplE.Timestamp :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -896,6 +920,10 @@ Module api.
   Definition account_id
       {E : Set}
       `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M ImplE.AccountId :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => ink_env.backend.TypedEnvBackend.account_id instance).
@@ -905,9 +933,13 @@ Module api.
       {E : Set},
       `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
       unit
       -> M (H := H) ImplE.Balance.
 =======
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M ImplE.Balance :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => ink_env.backend.TypedEnvBackend.balance instance).
@@ -917,9 +949,13 @@ Module api.
       {E : Set},
       `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
       unit
       -> M (H := H) ImplE.BlockNumber.
 =======
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M ImplE.BlockNumber :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => ink_env.backend.TypedEnvBackend.block_number instance).
@@ -929,12 +965,16 @@ Module api.
       {E : Set},
       `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
       unit
       -> M (H := H) ImplE.Balance.
   
   Parameter emit_event : forall `{H : State.Trait}, forall
       {E : Set} {Event : Set},
 =======
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M ImplE.Balance :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -1040,9 +1080,13 @@ Module api.
       {T : Set},
       `{parity_scale_codec.codec.Decode.Trait T}
 <<<<<<< HEAD
+<<<<<<< HEAD
       unit
       -> M (H := H) (ink_env.error.Result T).
 =======
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M (ink_env.error.Result T) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => ink_env.backend.EnvBackend.decode_input instance).
@@ -1098,9 +1142,13 @@ Module api.
       {E : Set},
       `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
       unit
       -> M (H := H) (ink_env.error.Result ImplE.Hash).
 =======
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M (ink_env.error.Result ImplE.Hash) :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => ink_env.backend.TypedEnvBackend.own_code_hash instance).
@@ -1109,6 +1157,7 @@ Module api.
   Parameter caller_is_origin : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
 <<<<<<< HEAD
       unit
       -> M (H := H) bool.
@@ -1119,6 +1168,9 @@ Module api.
   Parameter set_code_hash2 : forall `{H : State.Trait}, forall
       {E : Set},
 =======
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M bool :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -1149,9 +1201,13 @@ Parameter caller : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplE.AccountId.
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M ImplE.AccountId :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.caller instance).
@@ -1161,12 +1217,16 @@ Parameter transferred_value : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplE.Balance.
 
 Parameter weight_to_fee : forall `{H : State.Trait}, forall
     {E : Set},
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M ImplE.Balance :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -1183,9 +1243,13 @@ Parameter gas_left : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) ink_env.types.Gas.
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M ink_env.types.Gas :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.gas_left instance).
@@ -1195,9 +1259,13 @@ Parameter block_timestamp : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplE.Timestamp.
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M ImplE.Timestamp :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.block_timestamp instance).
@@ -1207,9 +1275,13 @@ Parameter account_id : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplE.AccountId.
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M ImplE.AccountId :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.account_id instance).
@@ -1219,9 +1291,13 @@ Parameter balance : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplE.Balance.
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M ImplE.Balance :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.balance instance).
@@ -1231,9 +1307,13 @@ Parameter block_number : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplE.BlockNumber.
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M ImplE.BlockNumber :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.block_number instance).
@@ -1243,9 +1323,13 @@ Parameter minimum_balance : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplE.Balance.
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M ImplE.Balance :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.minimum_balance instance).
@@ -1350,9 +1434,13 @@ Parameter decode_input : forall `{H : State.Trait}, forall
     {T : Set},
     `{parity_scale_codec.codec.Decode.Trait T}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) (ink_env.error.Result T).
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M (ink_env.error.Result T) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.EnvBackend.decode_input instance).
@@ -1407,9 +1495,13 @@ Parameter own_code_hash : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) (ink_env.error.Result ImplE.Hash).
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M (ink_env.error.Result ImplE.Hash) :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.own_code_hash instance).
@@ -1418,6 +1510,7 @@ Parameter own_code_hash : forall `{H : State.Trait}, forall
 Parameter caller_is_origin : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
+<<<<<<< HEAD
 <<<<<<< HEAD
     unit
     -> M (H := H) bool.
@@ -1428,6 +1521,9 @@ Parameter set_code_hash : forall `{H : State.Trait}, ref list u8
 Parameter set_code_hash2 : forall `{H : State.Trait}, forall
     {E : Set},
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M bool :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => ink_env.backend.TypedEnvBackend.caller_is_origin instance).
@@ -1756,10 +1852,14 @@ Module backend.
     Definition Self := ink_env.backend.ReturnFlags.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_env.backend.ReturnFlags.
 =======
     Definition default : M ink_env.backend.ReturnFlags :=
+=======
+    Definition default  : M ink_env.backend.ReturnFlags :=
+>>>>>>> fa97985 (Update ink submodule)
       let* α0 := core.default.Default.default tt in
       Pure {| ink_env.backend.ReturnFlags.value := α0; |}.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -1871,12 +1971,16 @@ Module backend.
     Definition Self := ink_env.backend.CallFlags.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_env.backend.CallFlags.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
 =======
     Definition default : M ink_env.backend.CallFlags :=
+=======
+    Definition default  : M ink_env.backend.CallFlags :=
+>>>>>>> fa97985 (Update ink submodule)
       let* α0 := core.default.Default.default tt in
       let* α1 := core.default.Default.default tt in
       let* α2 := core.default.Default.default tt in
@@ -2332,10 +2436,14 @@ Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
   Definition Self := ink_env.backend.ReturnFlags.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_env.backend.ReturnFlags.
 =======
   Definition default : M ink_env.backend.ReturnFlags :=
+=======
+  Definition default  : M ink_env.backend.ReturnFlags :=
+>>>>>>> fa97985 (Update ink submodule)
     let* α0 := core.default.Default.default tt in
     Pure {| ink_env.backend.ReturnFlags.value := α0; |}.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -2447,12 +2555,16 @@ Module Impl_core_default_Default_for_ink_env_backend_CallFlags.
   Definition Self := ink_env.backend.CallFlags.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_env.backend.CallFlags.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
 =======
   Definition default : M ink_env.backend.CallFlags :=
+=======
+  Definition default  : M ink_env.backend.CallFlags :=
+>>>>>>> fa97985 (Update ink submodule)
     let* α0 := core.default.Default.default tt in
     let* α1 := core.default.Default.default tt in
     let* α2 := core.default.Default.default tt in
@@ -3079,10 +3191,14 @@ Module call.
         {E : Set},
         `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
         unit
         ->
           M (H := H)
 =======
+=======
+        
+>>>>>>> fa97985 (Update ink submodule)
         :
           M
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -3776,9 +3892,13 @@ Module call.
       Definition Self := ink_env.call.common.ReturnType T.
       
 <<<<<<< HEAD
+<<<<<<< HEAD
       Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
 =======
       Definition default : M Self :=
+=======
+      Definition default  : M Self :=
+>>>>>>> fa97985 (Update ink submodule)
         let* α0 := core.default.Default.default tt in
         Self α0.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -3931,9 +4051,13 @@ Module call.
       Definition Self := ink_env.call.common.Unset T.
       
 <<<<<<< HEAD
+<<<<<<< HEAD
       Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
 =======
       Definition default : M Self :=
+=======
+      Definition default  : M Self :=
+>>>>>>> fa97985 (Update ink submodule)
         let* α0 := core.default.Default.default tt in
         Self α0.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -4357,10 +4481,14 @@ Module call.
         {ContractRef : Set},
         `{ink_env.contract.ContractEnv.Trait ContractRef}
 <<<<<<< HEAD
+<<<<<<< HEAD
         unit
         ->
           M (H := H)
 =======
+=======
+        
+>>>>>>> fa97985 (Update ink submodule)
         :
           M
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -4724,6 +4852,10 @@ Module call.
       Global Instance AssociatedFunction_default `{H : State.Trait} :
 =======
       Definition default
+<<<<<<< HEAD
+=======
+          
+>>>>>>> fa97985 (Update ink submodule)
           : M (ink_env.call.execution_input.ExecutionInput Args) :=
         let* α0 := core.default.Default.default tt in
         let* α1 := core.default.Default.default tt in
@@ -4896,6 +5028,10 @@ Module call.
       Global Instance AssociatedFunction_default `{H : State.Trait} :
 =======
       Definition default
+<<<<<<< HEAD
+=======
+          
+>>>>>>> fa97985 (Update ink submodule)
           : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
         let* α0 := core.default.Default.default tt in
         let* α1 := core.default.Default.default tt in
@@ -5037,10 +5173,14 @@ Module call.
       Definition Self := ink_env.call.execution_input.ArgumentListEnd.
       
 <<<<<<< HEAD
+<<<<<<< HEAD
       Parameter default : forall `{H : State.Trait}, unit
           -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
 =======
       Definition default : M ink_env.call.execution_input.ArgumentListEnd :=
+=======
+      Definition default  : M ink_env.call.execution_input.ArgumentListEnd :=
+>>>>>>> fa97985 (Update ink submodule)
         Pure {|  |}.
 >>>>>>> b389ac0 (ci: update the snapshots)
       
@@ -5080,12 +5220,16 @@ Module call.
       Definition Self := ink_env.call.execution_input.EmptyArgumentList.
       
 <<<<<<< HEAD
+<<<<<<< HEAD
       Parameter empty : forall `{H : State.Trait}, unit
           -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
       
       Global Instance AssociatedFunction_empty `{H : State.Trait} :
 =======
       Definition empty : M ink_env.call.execution_input.EmptyArgumentList :=
+=======
+      Definition empty  : M ink_env.call.execution_input.EmptyArgumentList :=
+>>>>>>> fa97985 (Update ink submodule)
         Pure
           {|
             ink_env.call.execution_input.ArgumentList.head :=
@@ -5282,10 +5426,14 @@ Module call.
       Definition Self := ink_env.call.selector.Selector.
       
 <<<<<<< HEAD
+<<<<<<< HEAD
       Parameter default : forall `{H : State.Trait}, unit
           -> M (H := H) ink_env.call.selector.Selector.
 =======
       Definition default : M ink_env.call.selector.Selector :=
+=======
+      Definition default  : M ink_env.call.selector.Selector :=
+>>>>>>> fa97985 (Update ink submodule)
         let* α0 := core.default.Default.default tt in
         Pure {| ink_env.call.selector.Selector.bytes := α0; |}.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -5633,10 +5781,14 @@ Module call_builder.
       {E : Set},
       `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
       unit
       ->
         M (H := H)
 =======
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       :
         M
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -6454,10 +6606,14 @@ Parameter build_call : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     ->
       M (H := H)
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     :
       M
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -7135,9 +7291,13 @@ Module common.
     Definition Self := ink_env.call.common.ReturnType T.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
 =======
     Definition default : M Self :=
+=======
+    Definition default  : M Self :=
+>>>>>>> fa97985 (Update ink submodule)
       let* α0 := core.default.Default.default tt in
       Self α0.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -7287,9 +7447,13 @@ Module common.
     Definition Self := ink_env.call.common.Unset T.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
 =======
     Definition default : M Self :=
+=======
+    Definition default  : M Self :=
+>>>>>>> fa97985 (Update ink submodule)
       let* α0 := core.default.Default.default tt in
       Self α0.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -7442,9 +7606,13 @@ Section Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
   Definition Self := ink_env.call.common.ReturnType T.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
 =======
   Definition default : M Self :=
+=======
+  Definition default  : M Self :=
+>>>>>>> fa97985 (Update ink submodule)
     let* α0 := core.default.Default.default tt in
     Self α0.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -7594,9 +7762,13 @@ Section Impl_core_default_Default_for_ink_env_call_common_Unset_T.
   Definition Self := ink_env.call.common.Unset T.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
 =======
   Definition default : M Self :=
+=======
+  Definition default  : M Self :=
+>>>>>>> fa97985 (Update ink submodule)
     let* α0 := core.default.Default.default tt in
     Self α0.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -8014,10 +8186,14 @@ Module create_builder.
       {ContractRef : Set},
       `{ink_env.contract.ContractEnv.Trait ContractRef}
 <<<<<<< HEAD
+<<<<<<< HEAD
       unit
       ->
         M (H := H)
 =======
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       :
         M
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -8655,10 +8831,14 @@ Parameter build_create : forall `{H : State.Trait}, forall
     {ContractRef : Set},
     `{ink_env.contract.ContractEnv.Trait ContractRef}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     ->
       M (H := H)
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     :
       M
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -9011,12 +9191,18 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
 =======
     Definition default : M (ink_env.call.execution_input.ExecutionInput Args) :=
+=======
+    Definition default
+        
+        : M (ink_env.call.execution_input.ExecutionInput Args) :=
+>>>>>>> fa97985 (Update ink submodule)
       let* α0 := core.default.Default.default tt in
       let* α1 := core.default.Default.default tt in
       Pure
@@ -9185,6 +9371,10 @@ Module execution_input.
     Global Instance AssociatedFunction_default `{H : State.Trait} :
 =======
     Definition default
+<<<<<<< HEAD
+=======
+        
+>>>>>>> fa97985 (Update ink submodule)
         : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
       let* α0 := core.default.Default.default tt in
       let* α1 := core.default.Default.default tt in
@@ -9323,10 +9513,14 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ArgumentListEnd.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
 =======
     Definition default : M ink_env.call.execution_input.ArgumentListEnd :=
+=======
+    Definition default  : M ink_env.call.execution_input.ArgumentListEnd :=
+>>>>>>> fa97985 (Update ink submodule)
       Pure {|  |}.
 >>>>>>> b389ac0 (ci: update the snapshots)
     
@@ -9366,12 +9560,16 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.EmptyArgumentList.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Parameter empty : forall `{H : State.Trait}, unit
         -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
     
     Global Instance AssociatedFunction_empty `{H : State.Trait} :
 =======
     Definition empty : M ink_env.call.execution_input.EmptyArgumentList :=
+=======
+    Definition empty  : M ink_env.call.execution_input.EmptyArgumentList :=
+>>>>>>> fa97985 (Update ink submodule)
       Pure
         {|
           ink_env.call.execution_input.ArgumentList.head :=
@@ -9597,12 +9795,16 @@ Section
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
 =======
   Definition default : M (ink_env.call.execution_input.ExecutionInput Args) :=
+=======
+  Definition default  : M (ink_env.call.execution_input.ExecutionInput Args) :=
+>>>>>>> fa97985 (Update ink submodule)
     let* α0 := core.default.Default.default tt in
     let* α1 := core.default.Default.default tt in
     Pure
@@ -9770,6 +9972,10 @@ Section
   Global Instance AssociatedFunction_default `{H : State.Trait} :
 =======
   Definition default
+<<<<<<< HEAD
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M (ink_env.call.execution_input.ArgumentList Head Rest) :=
     let* α0 := core.default.Default.default tt in
     let* α1 := core.default.Default.default tt in
@@ -9906,10 +10112,14 @@ Module
   Definition Self := ink_env.call.execution_input.ArgumentListEnd.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
 =======
   Definition default : M ink_env.call.execution_input.ArgumentListEnd :=
+=======
+  Definition default  : M ink_env.call.execution_input.ArgumentListEnd :=
+>>>>>>> fa97985 (Update ink submodule)
     Pure {|  |}.
 >>>>>>> b389ac0 (ci: update the snapshots)
   
@@ -9948,12 +10158,16 @@ Module Impl_ink_env_call_execution_input_EmptyArgumentList_3.
   Definition Self := ink_env.call.execution_input.EmptyArgumentList.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter empty : forall `{H : State.Trait}, unit
       -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
   
   Global Instance AssociatedFunction_empty `{H : State.Trait} :
 =======
   Definition empty : M ink_env.call.execution_input.EmptyArgumentList :=
+=======
+  Definition empty  : M ink_env.call.execution_input.EmptyArgumentList :=
+>>>>>>> fa97985 (Update ink submodule)
     Pure
       {|
         ink_env.call.execution_input.ArgumentList.head :=
@@ -10145,10 +10359,14 @@ Module selector.
     Definition Self := ink_env.call.selector.Selector.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_env.call.selector.Selector.
 =======
     Definition default : M ink_env.call.selector.Selector :=
+=======
+    Definition default  : M ink_env.call.selector.Selector :=
+>>>>>>> fa97985 (Update ink submodule)
       let* α0 := core.default.Default.default tt in
       Pure {| ink_env.call.selector.Selector.bytes := α0; |}.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -10305,10 +10523,14 @@ Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_env.call.selector.Selector.
 =======
   Definition default : M ink_env.call.selector.Selector :=
+=======
+  Definition default  : M ink_env.call.selector.Selector :=
+>>>>>>> fa97985 (Update ink submodule)
     let* α0 := core.default.Default.default tt in
     Pure {| ink_env.call.selector.Selector.bytes := α0; |}.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -11601,10 +11823,14 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
         
 <<<<<<< HEAD
+<<<<<<< HEAD
         Parameter default : forall `{H : State.Trait}, unit
             -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
 =======
         Definition default : M ink_env.engine.off_chain.impls.TopicsBuilder :=
+=======
+        Definition default  : M ink_env.engine.off_chain.impls.TopicsBuilder :=
+>>>>>>> fa97985 (Update ink submodule)
           let* α0 := core.default.Default.default tt in
           Pure {| ink_env.engine.off_chain.impls.TopicsBuilder.topics := α0; |}.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -12256,6 +12482,10 @@ Module engine.
             Pure tt).
       
       Definition recorded_debug_messages
+<<<<<<< HEAD
+=======
+          
+>>>>>>> fa97985 (Update ink submodule)
           : M ink_engine.test_api.RecordedDebugMessages :=
         ink_env.engine.OnInstance.on_instance
           (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
@@ -12275,6 +12505,10 @@ Module engine.
       Definition advance_block
           {T : Set}
           `{ink_env.types.Environment.Trait T}
+<<<<<<< HEAD
+=======
+          
+>>>>>>> fa97985 (Update ink submodule)
           : M unit :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
@@ -12314,12 +12548,16 @@ Module engine.
           {T : Set},
           `{ink_env.types.Environment.Trait T}
 <<<<<<< HEAD
+<<<<<<< HEAD
           unit
           -> M (H := H) ImplT.AccountId.
       
       Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
           {T : Set},
 =======
+=======
+          
+>>>>>>> fa97985 (Update ink submodule)
           : M ImplT.AccountId :=
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
@@ -12388,9 +12626,13 @@ Module engine.
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
 <<<<<<< HEAD
+<<<<<<< HEAD
           unit
           -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
 =======
+=======
+          
+>>>>>>> fa97985 (Update ink submodule)
           : M (ink_env.engine.off_chain.test_api.DefaultAccounts T) :=
         let* α0 := repeat 1 in
         let* α1 := ImplT.AccountId::["from"] α0 in
@@ -12447,10 +12689,14 @@ Module engine.
       Definition DefaultAccounts : Set := DefaultAccounts.t.
       
 <<<<<<< HEAD
+<<<<<<< HEAD
       Parameter recorded_events : forall `{H : State.Trait}, unit
           -> M (H := H) OpaqueDef.
 =======
       Definition recorded_events : M OpaqueDef :=
+=======
+      Definition recorded_events  : M OpaqueDef :=
+>>>>>>> fa97985 (Update ink submodule)
         ink_env.engine.OnInstance.on_instance
           (fun instance =>
             let* α0 := instance.["engine"].["get_emitted_events"] in
@@ -13112,10 +13358,14 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
       
 <<<<<<< HEAD
+<<<<<<< HEAD
       Parameter default : forall `{H : State.Trait}, unit
           -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
 =======
       Definition default : M ink_env.engine.off_chain.impls.TopicsBuilder :=
+=======
+      Definition default  : M ink_env.engine.off_chain.impls.TopicsBuilder :=
+>>>>>>> fa97985 (Update ink submodule)
         let* α0 := core.default.Default.default tt in
         Pure {| ink_env.engine.off_chain.impls.TopicsBuilder.topics := α0; |}.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -13743,6 +13993,10 @@ Module off_chain.
           Pure tt).
     
     Definition recorded_debug_messages
+<<<<<<< HEAD
+=======
+        
+>>>>>>> fa97985 (Update ink submodule)
         : M ink_engine.test_api.RecordedDebugMessages :=
       ink_env.engine.OnInstance.on_instance
         (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
@@ -13762,6 +14016,10 @@ Module off_chain.
     Definition advance_block
         {T : Set}
         `{ink_env.types.Environment.Trait T}
+<<<<<<< HEAD
+=======
+        
+>>>>>>> fa97985 (Update ink submodule)
         : M unit :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
@@ -13801,12 +14059,16 @@ Module off_chain.
         {T : Set},
         `{ink_env.types.Environment.Trait T}
 <<<<<<< HEAD
+<<<<<<< HEAD
         unit
         -> M (H := H) ImplT.AccountId.
     
     Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
         {T : Set},
 =======
+=======
+        
+>>>>>>> fa97985 (Update ink submodule)
         : M ImplT.AccountId :=
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
@@ -13875,9 +14137,13 @@ Module off_chain.
         `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
 <<<<<<< HEAD
+<<<<<<< HEAD
         unit
         -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
 =======
+=======
+        
+>>>>>>> fa97985 (Update ink submodule)
         : M (ink_env.engine.off_chain.test_api.DefaultAccounts T) :=
       let* α0 := repeat 1 in
       let* α1 := ImplT.AccountId::["from"] α0 in
@@ -13934,10 +14200,14 @@ Module off_chain.
     Definition DefaultAccounts : Set := DefaultAccounts.t.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Parameter recorded_events : forall `{H : State.Trait}, unit
         -> M (H := H) OpaqueDef.
 =======
     Definition recorded_events : M OpaqueDef :=
+=======
+    Definition recorded_events  : M OpaqueDef :=
+>>>>>>> fa97985 (Update ink submodule)
       ink_env.engine.OnInstance.on_instance
         (fun instance =>
           let* α0 := instance.["engine"].["get_emitted_events"] in
@@ -14725,10 +14995,14 @@ Module impls.
     Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
 =======
     Definition default : M ink_env.engine.off_chain.impls.TopicsBuilder :=
+=======
+    Definition default  : M ink_env.engine.off_chain.impls.TopicsBuilder :=
+>>>>>>> fa97985 (Update ink submodule)
       let* α0 := core.default.Default.default tt in
       Pure {| ink_env.engine.off_chain.impls.TopicsBuilder.topics := α0; |}.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -15328,9 +15602,13 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) unit.
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M unit :=
   Pure tt.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -15401,9 +15679,13 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) unit.
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M unit :=
   Pure tt.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -15474,9 +15756,13 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) unit.
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M unit :=
   Pure tt.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -15547,9 +15833,13 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) unit.
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M unit :=
   Pure tt.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -15592,10 +15882,14 @@ Module
   Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
 =======
   Definition default : M ink_env.engine.off_chain.impls.TopicsBuilder :=
+=======
+  Definition default  : M ink_env.engine.off_chain.impls.TopicsBuilder :=
+>>>>>>> fa97985 (Update ink submodule)
     let* α0 := core.default.Default.default tt in
     Pure {| ink_env.engine.off_chain.impls.TopicsBuilder.topics := α0; |}.
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -16187,6 +16481,10 @@ Module test_api.
         Pure tt).
   
   Definition recorded_debug_messages
+<<<<<<< HEAD
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M ink_engine.test_api.RecordedDebugMessages :=
     ink_env.engine.OnInstance.on_instance
       (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
@@ -16206,6 +16504,10 @@ Module test_api.
   Definition advance_block
       {T : Set}
       `{ink_env.types.Environment.Trait T}
+<<<<<<< HEAD
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M unit :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -16245,12 +16547,16 @@ Module test_api.
       {T : Set},
       `{ink_env.types.Environment.Trait T}
 <<<<<<< HEAD
+<<<<<<< HEAD
       unit
       -> M (H := H) ImplT.AccountId.
   
   Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
       {T : Set},
 =======
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M ImplT.AccountId :=
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
@@ -16319,9 +16625,13 @@ Module test_api.
       `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
 <<<<<<< HEAD
+<<<<<<< HEAD
       unit
       -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
 =======
+=======
+      
+>>>>>>> fa97985 (Update ink submodule)
       : M (ink_env.engine.off_chain.test_api.DefaultAccounts T) :=
     let* α0 := repeat 1 in
     let* α1 := ImplT.AccountId::["from"] α0 in
@@ -16378,10 +16688,14 @@ Module test_api.
   Definition DefaultAccounts : Set := DefaultAccounts.t.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Parameter recorded_events : forall `{H : State.Trait}, unit
       -> M (H := H) OpaqueDef.
 =======
   Definition recorded_events : M OpaqueDef :=
+=======
+  Definition recorded_events  : M OpaqueDef :=
+>>>>>>> fa97985 (Update ink submodule)
     ink_env.engine.OnInstance.on_instance
       (fun instance =>
         let* α0 := instance.["engine"].["get_emitted_events"] in
@@ -16476,6 +16790,10 @@ Parameter set_caller : forall `{H : State.Trait}, forall
       Pure tt).
 
 Definition recorded_debug_messages
+<<<<<<< HEAD
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M ink_engine.test_api.RecordedDebugMessages :=
   ink_env.engine.OnInstance.on_instance
     (fun instance => instance.["engine"].["get_emitted_debug_messages"]).
@@ -16495,6 +16813,10 @@ Definition set_clear_storage_disabled (_disable : bool) : M unit :=
 Definition advance_block
     {T : Set}
     `{ink_env.types.Environment.Trait T}
+<<<<<<< HEAD
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M unit :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -16534,12 +16856,16 @@ Parameter callee : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) ImplT.AccountId.
 
 Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
     {T : Set},
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M ImplT.AccountId :=
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
@@ -16608,9 +16934,13 @@ Parameter default_accounts : forall `{H : State.Trait}, forall
     `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
 <<<<<<< HEAD
+<<<<<<< HEAD
     unit
     -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
 =======
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M (ink_env.engine.off_chain.test_api.DefaultAccounts T) :=
   let* α0 := repeat 1 in
   let* α1 := ImplT.AccountId::["from"] α0 in
@@ -16667,10 +16997,14 @@ End DefaultAccounts.
 Definition DefaultAccounts : Set := DefaultAccounts.t.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Parameter recorded_events : forall `{H : State.Trait}, unit
     -> M (H := H) OpaqueDef.
 =======
 Definition recorded_events : M OpaqueDef :=
+=======
+Definition recorded_events  : M OpaqueDef :=
+>>>>>>> fa97985 (Update ink submodule)
   ink_env.engine.OnInstance.on_instance
     (fun instance =>
       let* α0 := instance.["engine"].["get_emitted_events"] in
@@ -16872,6 +17206,10 @@ Parameter __init : forall `{H : State.Trait}, unit
     -> M (H := H) (core.cell.RefCell ink_env.engine.off_chain.EnvInstance).
 =======
 Definition __init
+<<<<<<< HEAD
+=======
+    
+>>>>>>> fa97985 (Update ink submodule)
     : M (core.cell.RefCell ink_env.engine.off_chain.EnvInstance) :=
   let* α0 := ink_engine.ext.Engine::["new"] tt in
   core.cell.RefCell::["new"]

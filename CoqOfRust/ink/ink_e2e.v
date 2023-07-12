@@ -684,10 +684,31 @@ Module client.
       Notation.dot := exec_instantiate;
     }.
     
+<<<<<<< HEAD
     Parameter salt : forall `{H : State.Trait}, unit
         -> M (H := H) (alloc.vec.Vec u8).
     
     Global Instance AssociatedFunction_salt `{H : State.Trait} :
+=======
+    Definition salt  : M (alloc.vec.Vec u8) :=
+      let* α0 := std.time.SystemTime::["now"] tt in
+      let* α1 := α0.["duration_since"] std.time.UNIX_EPOCH in
+      let* α2 :=
+        α1.["unwrap_or_else"]
+          (fun err =>
+            let* α0 := format_argument::["new_display"] (addr_of err) in
+            let* α1 :=
+              format_arguments::["new_v1"]
+                (addr_of [ "unable to get unix time: " ])
+                (addr_of [ α0 ]) in
+            core.panicking.panic_fmt α1) in
+      let* α3 := α2.["as_millis"] in
+      let* α4 := α3.["as_u128"] in
+      let* α5 := α4.["to_le_bytes"] in
+      α5.["to_vec"].
+    
+    Global Instance AssociatedFunction_salt :
+>>>>>>> fa97985 (Update ink submodule)
       Notation.DoubleColon Self "salt" := {
       Notation.double_colon := salt;
     }.
@@ -1204,8 +1225,13 @@ Section
   
   Definition Visitor : Set := ink_e2e.client._.Visitor E.
   
+<<<<<<< HEAD
   Parameter into_visitor : forall `{H : State.Trait}, unit
       -> M (H := H) ImplSelf.Visitor.
+=======
+  Definition into_visitor  : M ImplSelf.Visitor :=
+    Pure (ink_e2e.client._.Visitor.Build_t core.marker.PhantomData.Build).
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_into_visitor `{H : State.Trait} :
     Notation.DoubleColon Self "into_visitor" := {
@@ -1498,8 +1524,13 @@ Section Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
   
   Definition Visitor : Set := ink_e2e.client._.Visitor E.
   
+<<<<<<< HEAD
   Parameter into_visitor : forall `{H : State.Trait}, unit
       -> M (H := H) ImplSelf.Visitor.
+=======
+  Definition into_visitor  : M ImplSelf.Visitor :=
+    Pure (ink_e2e.client._.Visitor.Build_t core.marker.PhantomData.Build).
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_into_visitor `{H : State.Trait} :
     Notation.DoubleColon Self "into_visitor" := {
@@ -1740,10 +1771,31 @@ Module Impl_ink_e2e_client_Client_C_E_2.
     Notation.dot := exec_instantiate;
   }.
   
+<<<<<<< HEAD
   Parameter salt : forall `{H : State.Trait}, unit
       -> M (H := H) (alloc.vec.Vec u8).
   
   Global Instance AssociatedFunction_salt `{H : State.Trait} :
+=======
+  Definition salt  : M (alloc.vec.Vec u8) :=
+    let* α0 := std.time.SystemTime::["now"] tt in
+    let* α1 := α0.["duration_since"] std.time.UNIX_EPOCH in
+    let* α2 :=
+      α1.["unwrap_or_else"]
+        (fun err =>
+          let* α0 := format_argument::["new_display"] (addr_of err) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "unable to get unix time: " ])
+              (addr_of [ α0 ]) in
+          core.panicking.panic_fmt α1) in
+    let* α3 := α2.["as_millis"] in
+    let* α4 := α3.["as_u128"] in
+    let* α5 := α4.["to_le_bytes"] in
+    α5.["to_vec"].
+  
+  Global Instance AssociatedFunction_salt :
+>>>>>>> fa97985 (Update ink submodule)
     Notation.DoubleColon Self "salt" := {
     Notation.double_colon := salt;
   }.
@@ -1859,80 +1911,136 @@ Module default_accounts.
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
       unit
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+      
+      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    let* α0 := sp_keyring.sr25519.Keyring.Alice.["pair"] in
+    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
   
   Parameter bob : forall `{H : State.Trait}, forall
       {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
       unit
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+      
+      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    let* α0 := sp_keyring.sr25519.Keyring.Bob.["pair"] in
+    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
   
   Parameter charlie : forall `{H : State.Trait}, forall
       {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
       unit
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+      
+      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    let* α0 := sp_keyring.sr25519.Keyring.Charlie.["pair"] in
+    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
   
   Parameter dave : forall `{H : State.Trait}, forall
       {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
       unit
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+      
+      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    let* α0 := sp_keyring.sr25519.Keyring.Dave.["pair"] in
+    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
   
   Parameter eve : forall `{H : State.Trait}, forall
       {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
       unit
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+      
+      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    let* α0 := sp_keyring.sr25519.Keyring.Eve.["pair"] in
+    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
   
   Parameter ferdie : forall `{H : State.Trait}, forall
       {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
       unit
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+      
+      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    let* α0 := sp_keyring.sr25519.Keyring.Ferdie.["pair"] in
+    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
   
   Parameter one : forall `{H : State.Trait}, forall
       {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
       unit
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+      
+      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    let* α0 := sp_keyring.sr25519.Keyring.One.["pair"] in
+    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
   
   Parameter two : forall `{H : State.Trait}, forall
       {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
       unit
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+      
+      : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+    let* α0 := sp_keyring.sr25519.Keyring.Two.["pair"] in
+    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
 End default_accounts.
 
 Parameter alice : forall `{H : State.Trait}, forall
@@ -1940,80 +2048,136 @@ Parameter alice : forall `{H : State.Trait}, forall
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
     unit
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+    
+    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+  let* α0 := sp_keyring.sr25519.Keyring.Alice.["pair"] in
+  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
 
 Parameter bob : forall `{H : State.Trait}, forall
     {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
     unit
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+    
+    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+  let* α0 := sp_keyring.sr25519.Keyring.Bob.["pair"] in
+  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
 
 Parameter charlie : forall `{H : State.Trait}, forall
     {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
     unit
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+    
+    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+  let* α0 := sp_keyring.sr25519.Keyring.Charlie.["pair"] in
+  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
 
 Parameter dave : forall `{H : State.Trait}, forall
     {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
     unit
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+    
+    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+  let* α0 := sp_keyring.sr25519.Keyring.Dave.["pair"] in
+  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
 
 Parameter eve : forall `{H : State.Trait}, forall
     {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
     unit
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+    
+    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+  let* α0 := sp_keyring.sr25519.Keyring.Eve.["pair"] in
+  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
 
 Parameter ferdie : forall `{H : State.Trait}, forall
     {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
     unit
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+    
+    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+  let* α0 := sp_keyring.sr25519.Keyring.Ferdie.["pair"] in
+  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
 
 Parameter one : forall `{H : State.Trait}, forall
     {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
     unit
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+    
+    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+  let* α0 := sp_keyring.sr25519.Keyring.One.["pair"] in
+  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
 
 Parameter two : forall `{H : State.Trait}, forall
     {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
+<<<<<<< HEAD
     unit
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+=======
+    
+    : M (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
+  let* α0 := sp_keyring.sr25519.Keyring.Two.["pair"] in
+  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
 
 Module node_proc.
   Module TestNodeProcess.
@@ -2451,8 +2615,19 @@ Module xts.
   Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_e2e.xts.Weight.
+=======
+    Definition default  : M ink_e2e.xts.Weight :=
+      let* α0 := core.default.Default.default tt in
+      let* α1 := core.default.Default.default tt in
+      Pure
+        {|
+          ink_e2e.xts.Weight.ref_time := α0;
+          ink_e2e.xts.Weight.proof_size := α1;
+        |}.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -3388,8 +3563,17 @@ End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
 Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_e2e.xts.Weight.
+=======
+  Definition default  : M ink_e2e.xts.Weight :=
+    let* α0 := core.default.Default.default tt in
+    let* α1 := core.default.Default.default tt in
+    Pure
+      {| ink_e2e.xts.Weight.ref_time := α0; ink_e2e.xts.Weight.proof_size := α1;
+      |}.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -3444,8 +3628,16 @@ Module
   Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
+<<<<<<< HEAD
   Parameter max_encoded_len : forall `{H : State.Trait}, unit
       -> M (H := H) Root.core.primitive.usize.
+=======
+  Definition max_encoded_len  : M Root.core.primitive.usize :=
+    let* α0 := u64::["max_encoded_len"] tt in
+    let* α1 := 0.["saturating_add"] α0 in
+    let* α2 := u64::["max_encoded_len"] tt in
+    α1.["saturating_add"] α2.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_max_encoded_len `{H : State.Trait} :
     Notation.DoubleColon Self "max_encoded_len" := {
@@ -4996,8 +5188,14 @@ Definition
     std.thread.local.LocalKey (core.cell.RefCell alloc.string.String) :=
   run (std.thread.local.LocalKey::["new"] ink_e2e.LOG_PREFIX.__getit).
 
+<<<<<<< HEAD
 Parameter __init : forall `{H : State.Trait}, unit
     -> M (H := H) (core.cell.RefCell alloc.string.String).
+=======
+Definition __init  : M (core.cell.RefCell alloc.string.String) :=
+  let* α0 := alloc.string.String::["from"] "no prefix set" in
+  core.cell.RefCell::["new"] α0.
+>>>>>>> fa97985 (Update ink submodule)
 
 Parameter __getit : forall `{H : State.Trait}, core.option.Option
         (mut_ref (core.option.Option (core.cell.RefCell alloc.string.String)))
@@ -5015,6 +5213,7 @@ Definition
           (core.cell.RefCell alloc.string.String))::["new"]
       tt).
 
+<<<<<<< HEAD
 Parameter log_prefix : forall `{H : State.Trait}, unit
     -> M (H := H) alloc.string.String.
 
@@ -5024,6 +5223,66 @@ Definition
     CALLSITE
     `{H : State.Trait} :
     tracing_core.callsite.DefaultCallsite :=
+=======
+Definition log_prefix  : M alloc.string.String :=
+  ink_e2e.LOG_PREFIX.["with"]
+    (fun log_prefix =>
+      let* α0 := log_prefix.["borrow"] in
+      α0.["clone"]).
+
+Definition log_info (msg : ref str) : M unit :=
+  let* _ :=
+    let* enabled :=
+      let* α0 :=
+        tracing_core.metadata.Level::["INFO"].["le"]
+          tracing.level_filters.STATIC_MAX_LEVEL in
+      let* α1 := tracing_core.metadata.LevelFilter::["current"] tt in
+      let* α2 := tracing_core.metadata.Level::["INFO"].["le"] α1 in
+      let* α3 := α0.["andb"] α2 in
+      let* interest := ink_e2e.log_info.CALLSITE.["interest"] in
+      let* α0 := interest.["is_never"] in
+      let* α1 := α0.["not"] in
+      let* α2 := ink_e2e.log_info.CALLSITE.["metadata"] in
+      let* α3 := tracing.__macro_support.__is_enabled α2 interest in
+      let* α4 := α1.["andb"] α3 in
+      α3.["andb"] α4 in
+    if (enabled : bool) then
+      let* _ :=
+        let* iter :=
+          let* α0 := ink_e2e.log_info.CALLSITE.["metadata"] in
+          let* α1 := α0.["fields"] in
+          α1.["iter"] in
+        let* α0 := ink_e2e.log_info.CALLSITE.["metadata"] in
+        let* α1 := α0.["fields"] in
+        let* α2 := iter.["next"] in
+        let* α3 := α2.["expect"] "FieldSet corrupted (this is a bug)" in
+        let* α4 := ink_e2e.log_prefix tt in
+        let* α5 := format_argument::["new_display"] (addr_of α4) in
+        let* α6 := format_argument::["new_display"] (addr_of msg) in
+        let* α7 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "["; "] " ])
+            (addr_of [ α5; α6 ]) in
+        let* α0 :=
+          α1.["value_set"]
+            (addr_of
+              [
+                (addr_of α3,
+                  core.option.Option.Some (cast (addr_of α7) (ref TraitObject)))
+              ]) in
+        (fun value_set =>
+            let* meta := ink_e2e.log_info.CALLSITE.["metadata"] in
+            let* _ :=
+              tracing_core.event.Event::["dispatch"] meta (addr_of value_set) in
+            Pure tt)
+          α0 in
+      Pure tt
+    else
+      Pure tt in
+  Pure tt.
+
+Definition CALLSITE : tracing_core.callsite.DefaultCallsite :=
+>>>>>>> fa97985 (Update ink submodule)
   run
     (tracing_core.callsite.DefaultCallsite::["new"]
       (addr_of ink_e2e.log_info.CALLSITE.META)).

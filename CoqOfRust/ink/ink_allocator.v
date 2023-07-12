@@ -114,21 +114,36 @@ Module bump.
   Module Impl_ink_allocator_bump_InnerAlloc.
     Definition Self := ink_allocator.bump.InnerAlloc.
     
+<<<<<<< HEAD
     Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition new  : M Self :=
+      let* α0 := Self::["heap_start"] tt in
+      let* α1 := Self::["heap_end"] tt in
+      Pure {| Self.next := α0; Self.upper_limit := α1; |}.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
     
+<<<<<<< HEAD
     Parameter heap_start : forall `{H : State.Trait}, unit -> M (H := H) usize.
+=======
+    Definition heap_start  : M usize := Pure 0.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_heap_start `{H : State.Trait} :
       Notation.DoubleColon Self "heap_start" := {
       Notation.double_colon := heap_start;
     }.
     
+<<<<<<< HEAD
     Parameter heap_end : forall `{H : State.Trait}, unit -> M (H := H) usize.
+=======
+    Definition heap_end  : M usize := Pure 0.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_heap_end `{H : State.Trait} :
       Notation.DoubleColon Self "heap_end" := {
@@ -268,21 +283,36 @@ End Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
 Module Impl_ink_allocator_bump_InnerAlloc_2.
   Definition Self := ink_allocator.bump.InnerAlloc.
   
+<<<<<<< HEAD
   Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition new  : M Self :=
+    let* α0 := Self::["heap_start"] tt in
+    let* α1 := Self::["heap_end"] tt in
+    Pure {| Self.next := α0; Self.upper_limit := α1; |}.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
+<<<<<<< HEAD
   Parameter heap_start : forall `{H : State.Trait}, unit -> M (H := H) usize.
+=======
+  Definition heap_start  : M usize := Pure 0.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_heap_start `{H : State.Trait} :
     Notation.DoubleColon Self "heap_start" := {
     Notation.double_colon := heap_start;
   }.
   
+<<<<<<< HEAD
   Parameter heap_end : forall `{H : State.Trait}, unit -> M (H := H) usize.
+=======
+  Definition heap_end  : M usize := Pure 0.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_heap_end `{H : State.Trait} :
     Notation.DoubleColon Self "heap_end" := {

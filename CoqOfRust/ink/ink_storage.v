@@ -23,7 +23,11 @@ Module lazy.
       
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
+<<<<<<< HEAD
       Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+      Definition default  : M Self := Self::["new"] tt.
+>>>>>>> fa97985 (Update ink submodule)
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -41,7 +45,12 @@ Module lazy.
     Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
+<<<<<<< HEAD
       Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+      Definition new  : M Self :=
+        Pure {| Self._marker := core.marker.PhantomData.Build; |}.
+>>>>>>> fa97985 (Update ink submodule)
       
       Global Instance AssociatedFunction_new `{H : State.Trait} :
         Notation.DoubleColon Self "new" := {
@@ -222,7 +231,11 @@ Module lazy.
     
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition default  : M Self := Self::["new"] tt.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -238,7 +251,12 @@ Module lazy.
   Module Impl_ink_storage_lazy_Lazy_V_KeyType.
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
+<<<<<<< HEAD
     Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition new  : M Self :=
+      Pure {| Self._marker := core.marker.PhantomData.Build; |}.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -395,7 +413,11 @@ Module mapping.
     
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition default  : M Self := Self::["new"] tt.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -413,7 +435,12 @@ Module mapping.
   Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_3.
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
+<<<<<<< HEAD
     Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+    Definition new  : M Self :=
+      Pure {| Self._marker := core.marker.PhantomData.Build; |}.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -596,10 +623,96 @@ Section
   
   Definition Identity : Set := Self.
   
+<<<<<<< HEAD
   Parameter type_info : forall `{H : State.Trait}, unit
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
+=======
+  Definition type_info  : M scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] tt in
+    let* α1 :=
+      scale_info.ty.path.Path::["new"] "Mapping" "ink_storage::lazy::mapping" in
+    let* α2 := α0.["path"] α1 in
+    let* α3 := scale_info.meta_type tt in
+    let* α4 :=
+      scale_info.ty.TypeParameter::["new"] "K" (core.option.Option.Some α3) in
+    let* α5 := scale_info.meta_type tt in
+    let* α6 :=
+      scale_info.ty.TypeParameter::["new"] "V" (core.option.Option.Some α5) in
+    let* α7 := scale_info.meta_type tt in
+    let* α8 :=
+      scale_info.ty.TypeParameter::["new"]
+        "KeyType"
+        (core.option.Option.Some α7) in
+    let* α9 := alloc.boxed.Box::["new"] [ α4; α6; α8 ] in
+    let* α10 := Slice::["into_vec"] α9 in
+    let* α11 := α2.["type_params"] α10 in
+    let* α12 :=
+      α11.["docs"]
+        (addr_of
+          [
+            "A mapping of key-value pairs directly into contract storage.";
+            "";
+            "# Important";
+            "";
+            "The mapping requires its own pre-defined storage key where to store values. By";
+            "default, the is automatically calculated using [`AutoKey`](crate::traits::AutoKey)";
+            "during compilation. However, anyone can specify a storage key using";
+            "[`ManualKey`](crate::traits::ManualKey). Specifying the storage key can be helpful for";
+            "upgradeable contracts or you want to be resistant to future changes of storage key";
+            "calculation strategy.";
+            "";
+            "This is an example of how you can do this:";
+            "```rust";
+            "# use ink::env::{";
+            "#     Environment,";
+            "#     DefaultEnvironment,";
+            "# };";
+            "# type AccountId = <DefaultEnvironment as Environment>::AccountId;";
+            "";
+            "# #[ink::contract]";
+            "# mod my_module {";
+            "use ink::storage::{";
+            "    traits::ManualKey,";
+            "    Mapping,";
+            "};";
+            "";
+            "#[ink(storage)]";
+            "#[derive(Default)]";
+            "pub struct MyContract {";
+            "    balances: Mapping<AccountId, Balance, ManualKey<123>>,";
+            "}";
+            "";
+            "impl MyContract {";
+            "    #[ink(constructor)]";
+            "    pub fn new() -> Self {";
+            "        let mut instance = Self::default();";
+            "        let caller = Self::env().caller();";
+            "        let value: Balance = Default::default();";
+            "        instance.balances.insert(&caller, &value);";
+            "        instance";
+            "    }";
+            "";
+            "#   #[ink(message)]";
+            "#   pub fn my_message(&self) { }";
+            "}";
+            "# }";
+            "```";
+            "";
+            "More usage examples can be found [in the ink! examples](https://github.com/paritytech/ink-examples)."
+          ]) in
+    let* α13 := scale_info.build.Fields::["named"] tt in
+    let* α14 :=
+      α13.["field"]
+        (fun f =>
+          let* α0 := f.["ty"] in
+          let* α1 := α0.["name"] "_marker" in
+          α1.["type_name"] "PhantomData<fn() ->(K, V, KeyType)>") in
+    α12.["composite"] α14.
+  
+  Global Instance AssociatedFunction_type_info :
+>>>>>>> fa97985 (Update ink submodule)
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
@@ -618,7 +731,11 @@ Section
   
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition default  : M Self := Self::["new"] tt.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -634,7 +751,12 @@ End Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_5.
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
+<<<<<<< HEAD
   Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition new  : M Self :=
+    Pure {| Self._marker := core.marker.PhantomData.Build; |}.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -833,10 +955,99 @@ Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
   
   Definition Identity : Set := Self.
   
+<<<<<<< HEAD
   Parameter type_info : forall `{H : State.Trait}, unit
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
+=======
+  Definition type_info  : M scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] tt in
+    let* α1 := scale_info.ty.path.Path::["new"] "Lazy" "ink_storage::lazy" in
+    let* α2 := α0.["path"] α1 in
+    let* α3 := scale_info.meta_type tt in
+    let* α4 :=
+      scale_info.ty.TypeParameter::["new"] "V" (core.option.Option.Some α3) in
+    let* α5 := scale_info.meta_type tt in
+    let* α6 :=
+      scale_info.ty.TypeParameter::["new"]
+        "KeyType"
+        (core.option.Option.Some α5) in
+    let* α7 := alloc.boxed.Box::["new"] [ α4; α6 ] in
+    let* α8 := Slice::["into_vec"] α7 in
+    let* α9 := α2.["type_params"] α8 in
+    let* α10 :=
+      α9.["docs"]
+        (addr_of
+          [
+            "A simple wrapper around a type to store it in a separate storage cell under its own";
+            "storage key. If you want to update the value, first you need to";
+            "[`get`](crate::Lazy::get) it, update the value, and then call";
+            "[`set`](crate::Lazy::set) with the new value.";
+            "";
+            "# Important";
+            "";
+            "The wrapper requires its own pre-defined storage key in order to determine where it";
+            "stores value. By default, the is automatically calculated using";
+            "[`AutoKey`](crate::traits::AutoKey) during compilation. However, anyone can specify a";
+            "storage key using [`ManualKey`](crate::traits::ManualKey). Specifying the storage key";
+            "can be helpful for upgradeable contracts or you want to be resistant to future changes";
+            "of storage key calculation strategy.";
+            "";
+            "# Note";
+            "";
+            "If the contract has two or more `Lazy` with the same storage key, modifying the value";
+            "of one of them will modify others.";
+            "";
+            "This is an example of how you can do this:";
+            "```rust";
+            "# use ink::env::{";
+            "#     Environment,";
+            "#     DefaultEnvironment,";
+            "# };";
+            "# type AccountId = <DefaultEnvironment as Environment>::AccountId;";
+            "";
+            "# #[ink::contract]";
+            "# mod my_module {";
+            "use ink::storage::{";
+            "    traits::ManualKey,";
+            "    Lazy,";
+            "};";
+            "";
+            "#[ink(storage)]";
+            "#[derive(Default)]";
+            "pub struct MyContract {";
+            "    owner: Lazy<AccountId>,";
+            "    balance: Lazy<Balance, ManualKey<123>>,";
+            "}";
+            "";
+            "impl MyContract {";
+            "    #[ink(constructor)]";
+            "    pub fn new() -> Self {";
+            "        let mut instance = Self::default();";
+            "        let caller = Self::env().caller();";
+            "        instance.owner.set(&caller);";
+            "        instance.balance.set(&123456);";
+            "        instance";
+            "    }";
+            "";
+            "#   #[ink(message)]";
+            "#   pub fn my_message(&self) { }";
+            "}";
+            "# }";
+            "```"
+          ]) in
+    let* α11 := scale_info.build.Fields::["named"] tt in
+    let* α12 :=
+      α11.["field"]
+        (fun f =>
+          let* α0 := f.["ty"] in
+          let* α1 := α0.["name"] "_marker" in
+          α1.["type_name"] "PhantomData<fn() ->(V, KeyType)>") in
+    α10.["composite"] α12.
+  
+  Global Instance AssociatedFunction_type_info :
+>>>>>>> fa97985 (Update ink submodule)
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
@@ -853,7 +1064,11 @@ Section Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
   
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition default  : M Self := Self::["new"] tt.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -869,7 +1084,12 @@ End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
 Module Impl_ink_storage_lazy_Lazy_V_KeyType_4.
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
+<<<<<<< HEAD
   Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+=======
+  Definition new  : M Self :=
+    Pure {| Self._marker := core.marker.PhantomData.Build; |}.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {

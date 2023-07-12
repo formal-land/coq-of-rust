@@ -21,8 +21,12 @@ Module impls.
   Module Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
     Definition Self := ink_storage_traits.impls.AutoKey.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_storage_traits.impls.AutoKey.
+=======
+    Definition default  : M ink_storage_traits.impls.AutoKey := Pure {|  |}.
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -189,8 +193,14 @@ Module impls.
     
     Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) (ink_storage_traits.impls.ManualKey ParentKey).
+=======
+    Definition default  : M (ink_storage_traits.impls.ManualKey ParentKey) :=
+      let* α0 := core.default.Default.default tt in
+      Pure (ink_storage_traits.impls.ManualKey.Build_t α0).
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -419,8 +429,14 @@ Module impls.
     
     Definition Self := ink_storage_traits.impls.ResolverKey L R.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) (ink_storage_traits.impls.ResolverKey L R).
+=======
+    Definition default  : M (ink_storage_traits.impls.ResolverKey L R) :=
+      let* α0 := core.default.Default.default tt in
+      Pure (ink_storage_traits.impls.ResolverKey.Build_t α0).
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -726,10 +742,30 @@ Module Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_AutoKey.
   
   Definition Identity : Set := Self.
   
+<<<<<<< HEAD
   Parameter type_info : forall `{H : State.Trait}, unit
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
+=======
+  Definition type_info  : M scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] tt in
+    let* α1 :=
+      scale_info.ty.path.Path::["new"] "AutoKey" "ink_storage_traits::impls" in
+    let* α2 := α0.["path"] α1 in
+    let* α3 := alloc.vec.Vec::["new"] tt in
+    let* α4 := α2.["type_params"] α3 in
+    let* α5 :=
+      α4.["docs"]
+        (addr_of
+          [
+            "Auto key type means that the storage key should be calculated automatically."
+          ]) in
+    let* α6 := scale_info.build.Fields::["unit"] tt in
+    α5.["composite"] α6.
+  
+  Global Instance AssociatedFunction_type_info :
+>>>>>>> fa97985 (Update ink submodule)
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
@@ -742,8 +778,12 @@ End Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_AutoKey.
 Module Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
   Definition Self := ink_storage_traits.impls.AutoKey.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_storage_traits.impls.AutoKey.
+=======
+  Definition default  : M ink_storage_traits.impls.AutoKey := Pure {|  |}.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -911,10 +951,39 @@ Section
   
   Definition Identity : Set := Self.
   
+<<<<<<< HEAD
   Parameter type_info : forall `{H : State.Trait}, unit
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
+=======
+  Definition type_info  : M scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] tt in
+    let* α1 :=
+      scale_info.ty.path.Path::["new"]
+        "ManualKey"
+        "ink_storage_traits::impls" in
+    let* α2 := α0.["path"] α1 in
+    let* α3 := scale_info.meta_type tt in
+    let* α4 :=
+      scale_info.ty.TypeParameter::["new"]
+        "ParentKey"
+        (core.option.Option.Some α3) in
+    let* α5 := alloc.boxed.Box::["new"] [ α4 ] in
+    let* α6 := Slice::["into_vec"] α5 in
+    let* α7 := α2.["type_params"] α6 in
+    let* α8 :=
+      α7.["docs"] (addr_of [ "Manual key type specifies the storage key." ]) in
+    let* α9 := scale_info.build.Fields::["unnamed"] tt in
+    let* α10 :=
+      α9.["field"]
+        (fun f =>
+          let* α0 := f.["ty"] in
+          α0.["type_name"] "PhantomData<fn() -> ParentKey>") in
+    α8.["composite"] α10.
+  
+  Global Instance AssociatedFunction_type_info :
+>>>>>>> fa97985 (Update ink submodule)
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
@@ -933,8 +1002,14 @@ Section
   
   Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) (ink_storage_traits.impls.ManualKey ParentKey).
+=======
+  Definition default  : M (ink_storage_traits.impls.ManualKey ParentKey) :=
+    let* α0 := core.default.Default.default tt in
+    Pure (ink_storage_traits.impls.ManualKey.Build_t α0).
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -1159,10 +1234,45 @@ Section Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
   
   Definition Identity : Set := Self.
   
+<<<<<<< HEAD
   Parameter type_info : forall `{H : State.Trait}, unit
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
+=======
+  Definition type_info  : M scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] tt in
+    let* α1 :=
+      scale_info.ty.path.Path::["new"]
+        "ResolverKey"
+        "ink_storage_traits::impls" in
+    let* α2 := α0.["path"] α1 in
+    let* α3 := scale_info.meta_type tt in
+    let* α4 :=
+      scale_info.ty.TypeParameter::["new"] "L" (core.option.Option.Some α3) in
+    let* α5 := scale_info.meta_type tt in
+    let* α6 :=
+      scale_info.ty.TypeParameter::["new"] "R" (core.option.Option.Some α5) in
+    let* α7 := alloc.boxed.Box::["new"] [ α4; α6 ] in
+    let* α8 := Slice::["into_vec"] α7 in
+    let* α9 := α2.["type_params"] α8 in
+    let* α10 :=
+      α9.["docs"]
+        (addr_of
+          [
+            "Resolver key type selects between preferred key and autogenerated key.";
+            "If the `L` type is `AutoKey` it returns auto-generated `R` else `L`."
+          ]) in
+    let* α11 := scale_info.build.Fields::["unnamed"] tt in
+    let* α12 :=
+      α11.["field"]
+        (fun f =>
+          let* α0 := f.["ty"] in
+          α0.["type_name"] "PhantomData<fn() ->(L, R)>") in
+    α10.["composite"] α12.
+  
+  Global Instance AssociatedFunction_type_info :
+>>>>>>> fa97985 (Update ink submodule)
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
@@ -1179,8 +1289,14 @@ Section Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
   
   Definition Self := ink_storage_traits.impls.ResolverKey L R.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) (ink_storage_traits.impls.ResolverKey L R).
+=======
+  Definition default  : M (ink_storage_traits.impls.ResolverKey L R) :=
+    let* α0 := core.default.Default.default tt in
+    Pure (ink_storage_traits.impls.ResolverKey.Build_t α0).
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {

@@ -51,6 +51,7 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20.
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     Definition default
         `{H : State.Trait}
         (_ : unit)
@@ -58,6 +59,9 @@ Module erc20.
 =======
     Definition default : M erc20.erc20.Erc20 :=
 >>>>>>> b389ac0 (ci: update the snapshots)
+=======
+    Definition default  : M erc20.erc20.Erc20 :=
+>>>>>>> fa97985 (Update ink submodule)
       let* α0 := core.default.Default.default tt in
       let* α1 := core.default.Default.default tt in
       let* α2 := core.default.Default.default tt in
@@ -1486,6 +1490,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
   Definition Identity : Set := Self.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition type_info
       `{H : State.Trait}
       (_ : unit)
@@ -1493,6 +1498,9 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
 =======
   Definition type_info : M scale_info.ty.Type :=
 >>>>>>> b389ac0 (ci: update the snapshots)
+=======
+  Definition type_info  : M scale_info.ty.Type :=
+>>>>>>> fa97985 (Update ink submodule)
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Erc20" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
@@ -1581,6 +1589,7 @@ Module Impl_core_default_Default_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition default
       `{H : State.Trait}
       (_ : unit)
@@ -1588,6 +1597,9 @@ Module Impl_core_default_Default_for_erc20_erc20_Erc20.
 =======
   Definition default : M erc20.erc20.Erc20 :=
 >>>>>>> b389ac0 (ci: update the snapshots)
+=======
+  Definition default  : M erc20.erc20.Erc20 :=
+>>>>>>> fa97985 (Update ink submodule)
     let* α0 := core.default.Default.default tt in
     let* α1 := core.default.Default.default tt in
     let* α2 := core.default.Default.default tt in
@@ -1651,6 +1663,7 @@ Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
     ink.env_access.EnvAccess ink_env.contract.ContractEnv.Env.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition env
       `{H : State.Trait}
       (_ : unit)
@@ -1659,6 +1672,9 @@ Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
 =======
   Definition env : M ImplSelf.EnvAccess := core.default.Default.default tt.
 >>>>>>> b389ac0 (ci: update the snapshots)
+=======
+  Definition env  : M ImplSelf.EnvAccess := core.default.Default.default tt.
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_env `{H : State.Trait} :
     Notation.DoubleColon Self "env" := {
@@ -4138,6 +4154,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
   Definition Identity : Set := Self.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition type_info
       `{H : State.Trait}
       (_ : unit)
@@ -4145,6 +4162,9 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
 =======
   Definition type_info : M scale_info.ty.Type :=
 >>>>>>> b389ac0 (ci: update the snapshots)
+=======
+  Definition type_info  : M scale_info.ty.Type :=
+>>>>>>> fa97985 (Update ink submodule)
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "CallBuilder" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
@@ -4739,6 +4759,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
   Definition Identity : Set := Self.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition type_info
       `{H : State.Trait}
       (_ : unit)
@@ -4746,6 +4767,9 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
 =======
   Definition type_info : M scale_info.ty.Type :=
 >>>>>>> b389ac0 (ci: update the snapshots)
+=======
+  Definition type_info  : M scale_info.ty.Type :=
+>>>>>>> fa97985 (Update ink submodule)
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Erc20Ref" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
@@ -5332,6 +5356,7 @@ Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
 End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Definition __ink_generate_metadata
     `{H : State.Trait}
     (_ : unit)
@@ -5339,6 +5364,9 @@ Definition __ink_generate_metadata
 =======
 Definition __ink_generate_metadata : M ink_metadata.InkProject :=
 >>>>>>> b389ac0 (ci: update the snapshots)
+=======
+Definition __ink_generate_metadata  : M ink_metadata.InkProject :=
+>>>>>>> fa97985 (Update ink submodule)
   let* layout :=
     let* α0 :=
       core.convert.From.from ink_storage_traits.storage.StorageKey.KEY in
@@ -5742,6 +5770,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
   Definition Identity : Set := Self.
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   Definition type_info
       `{H : State.Trait}
       (_ : unit)
@@ -5749,6 +5778,9 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
 =======
   Definition type_info : M scale_info.ty.Type :=
 >>>>>>> b389ac0 (ci: update the snapshots)
+=======
+  Definition type_info  : M scale_info.ty.Type :=
+>>>>>>> fa97985 (Update ink submodule)
     let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Error" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in

@@ -730,8 +730,14 @@ Module types.
   Module Impl_core_default_Default_for_ink_primitives_types_Hash.
     Definition Self := ink_primitives.types.Hash.
     
+<<<<<<< HEAD
     Parameter default : forall `{H : State.Trait}, unit
         -> M (H := H) ink_primitives.types.Hash.
+=======
+    Definition default  : M ink_primitives.types.Hash :=
+      let* α0 := core.default.Default.default tt in
+      Pure (ink_primitives.types.Hash.Build_t α0).
+>>>>>>> fa97985 (Update ink submodule)
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -887,10 +893,40 @@ Module Impl_scale_info_TypeInfo_for_ink_primitives_types_AccountId.
   
   Definition Identity : Set := Self.
   
+<<<<<<< HEAD
   Parameter type_info : forall `{H : State.Trait}, unit
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
+=======
+  Definition type_info  : M scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] tt in
+    let* α1 :=
+      scale_info.ty.path.Path::["new"] "AccountId" "ink_primitives::types" in
+    let* α2 := α0.["path"] α1 in
+    let* α3 := alloc.vec.Vec::["new"] tt in
+    let* α4 := α2.["type_params"] α3 in
+    let* α5 :=
+      α4.["docs"]
+        (addr_of
+          [
+            "The default environment `AccountId` type.";
+            "";
+            "# Note";
+            "";
+            "This is a mirror of the `AccountId` type used in the default configuration";
+            "of PALLET contracts."
+          ]) in
+    let* α6 := scale_info.build.Fields::["unnamed"] tt in
+    let* α7 :=
+      α6.["field"]
+        (fun f =>
+          let* α0 := f.["ty"] in
+          α0.["type_name"] "[u8; 32]") in
+    α5.["composite"] α7.
+  
+  Global Instance AssociatedFunction_type_info :
+>>>>>>> fa97985 (Update ink submodule)
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
@@ -914,8 +950,13 @@ Module Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId.
   
   Definition Visitor : Set := ink_primitives.types._.Visitor.
   
+<<<<<<< HEAD
   Parameter into_visitor : forall `{H : State.Trait}, unit
       -> M (H := H) ImplSelf.Visitor.
+=======
+  Definition into_visitor  : M ImplSelf.Visitor :=
+    Pure (ink_primitives.types._.Visitor.Build_t core.marker.PhantomData.Build).
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_into_visitor `{H : State.Trait} :
     Notation.DoubleColon Self "into_visitor" := {
@@ -1320,10 +1361,40 @@ Module Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.
   
   Definition Identity : Set := Self.
   
+<<<<<<< HEAD
   Parameter type_info : forall `{H : State.Trait}, unit
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
+=======
+  Definition type_info  : M scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] tt in
+    let* α1 :=
+      scale_info.ty.path.Path::["new"] "Hash" "ink_primitives::types" in
+    let* α2 := α0.["path"] α1 in
+    let* α3 := alloc.vec.Vec::["new"] tt in
+    let* α4 := α2.["type_params"] α3 in
+    let* α5 :=
+      α4.["docs"]
+        (addr_of
+          [
+            "The default environment `Hash` type.";
+            "";
+            "# Note";
+            "";
+            "This is a mirror of the `Hash` type used in the default configuration";
+            "of PALLET contracts."
+          ]) in
+    let* α6 := scale_info.build.Fields::["unnamed"] tt in
+    let* α7 :=
+      α6.["field"]
+        (fun f =>
+          let* α0 := f.["ty"] in
+          α0.["type_name"] "[u8; 32]") in
+    α5.["composite"] α7.
+  
+  Global Instance AssociatedFunction_type_info :
+>>>>>>> fa97985 (Update ink submodule)
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
@@ -1347,8 +1418,13 @@ Module Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash.
   
   Definition Visitor : Set := ink_primitives.types._.Visitor.
   
+<<<<<<< HEAD
   Parameter into_visitor : forall `{H : State.Trait}, unit
       -> M (H := H) ImplSelf.Visitor.
+=======
+  Definition into_visitor  : M ImplSelf.Visitor :=
+    Pure (ink_primitives.types._.Visitor.Build_t core.marker.PhantomData.Build).
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_into_visitor `{H : State.Trait} :
     Notation.DoubleColon Self "into_visitor" := {
@@ -1664,8 +1740,14 @@ End Impl_core_convert_From_for_ink_primitives_types_Hash.
 Module Impl_core_default_Default_for_ink_primitives_types_Hash.
   Definition Self := ink_primitives.types.Hash.
   
+<<<<<<< HEAD
   Parameter default : forall `{H : State.Trait}, unit
       -> M (H := H) ink_primitives.types.Hash.
+=======
+  Definition default  : M ink_primitives.types.Hash :=
+    let* α0 := core.default.Default.default tt in
+    Pure (ink_primitives.types.Hash.Build_t α0).
+>>>>>>> fa97985 (Update ink submodule)
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -1815,10 +1897,41 @@ Module Impl_scale_info_TypeInfo_for_ink_primitives_LangError.
   
   Definition Identity : Set := Self.
   
+<<<<<<< HEAD
   Parameter type_info : forall `{H : State.Trait}, unit
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
+=======
+  Definition type_info  : M scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] tt in
+    let* α1 := scale_info.ty.path.Path::["new"] "LangError" "ink_primitives" in
+    let* α2 := α0.["path"] α1 in
+    let* α3 := alloc.vec.Vec::["new"] tt in
+    let* α4 := α2.["type_params"] α3 in
+    let* α5 :=
+      α4.["docs"]
+        (addr_of
+          [
+            "An error emitted by the smart contracting language.";
+            "";
+            "This is different than errors from:";
+            "- Errors from the contract, which are programmer defined";
+            "- Errors from the underlying execution environment (e.g `pallet-contracts`)"
+          ]) in
+    let* α6 := scale_info.build.Variants::["new"] tt in
+    let* α7 :=
+      α6.["variant"]
+        "CouldNotReadInput"
+        (fun v =>
+          let* α0 := v.["index"] (cast 1 Root.core.primitive.u8) in
+          α0.["docs"]
+            (addr_of
+              [ "Failed to read execution input for the dispatchable." ])) in
+    α5.["variant"] α7.
+  
+  Global Instance AssociatedFunction_type_info :
+>>>>>>> fa97985 (Update ink submodule)
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
