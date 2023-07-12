@@ -132,18 +132,17 @@ Definition Panic `{State.Trait} {R A B : Set} (a : A) : Monad R B :=
 Definition NonTermination `{State.Trait} {R A : Set} : StateMonad R A :=
   fun s => RawMonad.Pure (inr Exception.NonTermination, s).
 
-(* TODO: provide proper definition for the while function
-Definition while `{State.Trait} {R A : Set} (f : A -> Monad R A) :
-  A -> Monad R A :=
-  fix F (a : A) (n : nat) :=
-    match n with
-    | 0 => fun s => RawMonad.Pure (inr Exception.NonTermination, s)
-    | S n' => bind (f a) F n'
-    end.
-*)
+Module Notations.
+  Notation "'let*' a := b 'in' c" :=
+    (bind b (fun a => c))
+      (at level 200, b at level 100, a name).
+End Notations.
+Export Notations.
+
+(** the definition of a function representing the loop construction *)
 Definition while `{State.Trait} {R A : Set} (m : Monad R A) : Monad R A :=
   fix F (fuel : nat) :=
     match fuel with
     | 0 => NonTermination
-    | S fuel' => bind m (fun _ => F) fuel'
+    | S fuel' => (let* _ := m in F) fuel'
     end.
