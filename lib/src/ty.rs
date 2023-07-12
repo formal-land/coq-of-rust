@@ -179,6 +179,14 @@ impl CoqType {
         }
     }
 
+    // we need this function to fix aligning
+    pub(crate) fn to_doc_tuning(&self, with_paren: bool) -> Doc {
+        match self {
+            CoqType::Ref(ty, _) => paren(with_paren, ty.to_doc(true)),
+            _ => self.to_doc(with_paren),
+        }
+    }
+
     // We use this function when we need a quick and recognizable name for a type
     pub(crate) fn to_name(&self) -> String {
         match self {
@@ -221,6 +229,18 @@ impl CoqType {
                 name.push_str(&ty.to_name());
                 name
             }
+        }
+    }
+
+    // To get cleared name out of path
+    // @TODO extend to cover more cases
+    pub(crate) fn to_item_name(&self) -> String {
+        match self {
+            CoqType::Var(path) => {
+                let ret = path.last().clone();
+                ret
+            }
+            _ => String::from("Not ready for this yet"),
         }
     }
 }

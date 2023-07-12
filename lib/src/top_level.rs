@@ -614,7 +614,63 @@ fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
     text("`{H : State.Trait}")
 }
 
-fn fn_to_doc<'a>(
+fn types_for_f(extra_data: Option<&TopLevelItem>) -> Doc {
+    match extra_data {
+        // @TODO this is support for TypeStructStruct,
+        // add support for more items
+        Some(TopLevelItem::TypeStructStruct {
+            name: _,
+            fields,
+            is_dead_code: _,
+        }) => {
+            concat([
+                text("string"),
+                text(" -> "),
+                line(),
+                intersperse(
+                    fields.iter().map(|(_str, boxed_coq_type)| {
+                        let nm = boxed_coq_type.to_name();
+                        let nn = if nm == *"StaticRef_str" {
+                            String::from("string")
+                        } else {
+                            boxed_coq_type.to_name()
+                        };
+                        group([
+                            // print field name
+                            text("string"),
+                            text(" -> "),
+                            // print field type
+                            text(nn),
+                            text(" -> "),
+                        ])
+                    }),
+                    [line()],
+                ),
+                line(),
+            ])
+        }
+        // @TODO unreachable branch, extend to cover more cases
+        _ => nil(),
+    }
+}
+
+// additional check. can be eliminated when all possible cases will be covered
+fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
+    match extra_data {
+        // @TODO this is support for TypeStructStruct,
+        // add support for more items
+        Some(TopLevelItem::TypeStructStruct {
+            name: _,
+            fields: _,
+            is_dead_code: _,
+        }) => true,
+        _ => false,
+    }
+}
+
+// We can not have more than 7 arguments for the function,
+// so we put all the arguments into the one struct
+struct ArgumentsForFnToDoc<'a> {
     name: &'a String,
     ty_params: Option<&'a Vec<String>>,
     where_predicates: Option<&'a Vec<WherePredicate>>,
@@ -622,9 +678,13 @@ fn fn_to_doc<'a>(
     ret_ty: &'a CoqType,
     body: &'a Expr,
     is_dead_code: bool,
-) -> Doc<'a> {
+    extra_data: Option<&'a TopLevelItem>,
+}
+
+fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
+    let types_for_f = types_for_f(strct_args.extra_data);
     group([
-        if is_dead_code {
+        if strct_args.is_dead_code {
             concat([
                 text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
                 hardline(),
@@ -632,12 +692,69 @@ fn fn_to_doc<'a>(
         } else {
             nil()
         },
+        // Printing instance of DoubleColon Class for [f]
+        // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
+        if (strct_args.name == "fmt") && is_extra(strct_args.extra_data) {
+            group([
+                nest([
+                    text("Parameter "),
+                    strct_args.body.parameter_name_for_fmt(),
+                    text(" : "),
+                    // get type of argument named f
+                    // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
+                    concat(strct_args.args.iter().map(|(name, ty)| {
+                        if name == "f" {
+                            ty.to_doc_tuning(false)
+                        } else {
+                            nil()
+                        }
+                    })),
+                    text(" -> "),
+                    types_for_f,
+                    strct_args.ret_ty.to_doc(false),
+                    text("."),
+                ]),
+                hardline(),
+                hardline(),
+                nest([
+                    text("Global Instance Deb_"),
+                    strct_args.body.parameter_name_for_fmt(),
+                    text(" : "),
+                    text("Notation.DoubleColon"),
+                    line(),
+                    concat(strct_args.args.iter().map(|(name, ty)| {
+                        if name == "f" {
+                            ty.to_doc_tuning(false)
+                        } else {
+                            nil()
+                        }
+                    })),
+                    text(" \""),
+                    strct_args.body.parameter_name_for_fmt(),
+                    text("\""),
+                    text(" := "),
+                    text("{"),
+                    line(),
+                    nest([
+                        text("Notation.double_colon := "),
+                        strct_args.body.parameter_name_for_fmt(),
+                        text(";"),
+                        line(),
+                    ]),
+                    text("}."),
+                ]),
+                hardline(),
+                hardline(),
+            ])
+        } else {
+            nil()
+        },
         nest([
             nest([
-                nest([text("Definition"), line(), text(name)]),
+                nest([text("Definition"), line(), text(strct_args.name)]),
                 line(),
                 monadic_typeclass_parameter(),
-                match ty_params {
+                match strct_args.ty_params {
                     None => nil(),
                     Some(ty_params) => {
                         if ty_params.is_empty() {
@@ -656,7 +773,7 @@ fn fn_to_doc<'a>(
                     }
                 },
                 line(),
-                match where_predicates {
+                match strct_args.where_predicates {
                     None => nil(),
                     Some(where_predicates) => concat(where_predicates.iter().map(
                         |WherePredicate {
@@ -683,11 +800,11 @@ fn fn_to_doc<'a>(
                         },
                     )),
                 },
-                if args.is_empty() {
+                if strct_args.args.is_empty() {
                     text("(_ : unit)")
                 } else {
                     intersperse(
-                        args.iter().map(|(name, ty)| {
+                        strct_args.args.iter().map(|(name, ty)| {
                             nest([
                                 text("("),
                                 text(name),
@@ -702,10 +819,15 @@ fn fn_to_doc<'a>(
                     )
                 },
                 line(),
-                nest([text(":"), line(), ret_ty.to_doc(false), text(" :=")]),
+                nest([
+                    text(":"),
+                    line(),
+                    strct_args.ret_ty.to_doc(false),
+                    text(" :="),
+                ]),
             ]),
             line(),
-            body.to_doc(false),
+            strct_args.body.to_doc(false),
             text("."),
         ]),
     ])
@@ -905,7 +1027,7 @@ impl ImplItem {
         ])
     }
 
-    fn to_doc<'a>(&'a self, name: &'a String) -> Doc<'a> {
+    fn to_doc<'a>(&'a self, name: &'a String, extra_data: &Option<&'a TopLevelItem>) -> Doc<'a> {
         match self {
             ImplItem::Const { body, is_dead_code } => concat([
                 if *is_dead_code {
@@ -939,26 +1061,38 @@ impl ImplItem {
                 body,
                 is_method,
                 is_dead_code,
-            } => concat([
-                fn_to_doc(name, None, None, args, ret_ty, body, *is_dead_code),
-                hardline(),
-                hardline(),
-                if *is_method {
-                    concat([Self::class_instance_to_doc(
-                        "Method",
-                        name,
-                        "Notation.Dot",
-                        "Notation.dot",
-                    )])
-                } else {
-                    Self::class_instance_to_doc(
-                        "AssociatedFunction",
-                        name,
-                        "Notation.DoubleColon Self",
-                        "Notation.double_colon",
-                    )
-                },
-            ]),
+            } => {
+                let afftd = ArgumentsForFnToDoc {
+                    name,
+                    ty_params: None,
+                    where_predicates: None,
+                    args,
+                    ret_ty,
+                    body,
+                    is_dead_code: *is_dead_code,
+                    extra_data: *extra_data,
+                };
+                concat([
+                    fn_to_doc(afftd),
+                    hardline(),
+                    hardline(),
+                    if *is_method {
+                        concat([Self::class_instance_to_doc(
+                            "Method",
+                            name,
+                            "Notation.Dot",
+                            "Notation.dot",
+                        )])
+                    } else {
+                        Self::class_instance_to_doc(
+                            "AssociatedFunction",
+                            name,
+                            "Notation.DoubleColon Self",
+                            "Notation.double_colon",
+                        )
+                    },
+                ])
+            }
             ImplItem::Type { ty } => nest([
                 nest([
                     text("Definition"),
@@ -980,7 +1114,7 @@ impl ImplItem {
 }
 
 impl TopLevelItem {
-    fn to_doc(&self) -> Doc {
+    fn to_doc<'a>(&'a self, extra_data: &Option<&'a TopLevelItem>) -> Doc {
         match self {
             TopLevelItem::Const { name, ty, value } => nest([
                 nest([
@@ -1014,15 +1148,19 @@ impl TopLevelItem {
                 ret_ty,
                 body,
                 is_dead_code,
-            } => fn_to_doc(
-                name,
-                Some(ty_params),
-                Some(where_predicates),
-                args,
-                ret_ty,
-                body,
-                *is_dead_code,
-            ),
+            } => {
+                let afftd = ArgumentsForFnToDoc {
+                    name,
+                    ty_params: Some(ty_params),
+                    where_predicates: Some(where_predicates),
+                    args,
+                    ret_ty,
+                    body,
+                    is_dead_code: *is_dead_code,
+                    extra_data: *extra_data,
+                };
+                fn_to_doc(afftd)
+            }
             TopLevelItem::Module {
                 name,
                 body,
@@ -1439,7 +1577,7 @@ impl TopLevelItem {
                             text("."),
                         ]),
                         concat(items.iter().map(|(name, item)| {
-                            concat([hardline(), hardline(), item.to_doc(name)])
+                            concat([hardline(), hardline(), item.to_doc(name, extra_data)])
                         })),
                     ]),
                     hardline(),
@@ -1724,7 +1862,7 @@ impl TopLevelItem {
                         hardline(),
                         hardline(),
                         concat(items.iter().map(|(name, item)| {
-                            concat([item.to_doc(name), hardline(), hardline()])
+                            concat([item.to_doc(name, extra_data), hardline(), hardline()])
                         })),
                         nest([
                             nest([
@@ -1816,9 +1954,62 @@ impl TopLevelItem {
 }
 
 impl TopLevel {
+    // function returns TopLevelItem::TypeStructStruct (comparing name)
+    fn find_tli_by_name(&self, self_ty: &CoqType) -> Option<&TopLevelItem> {
+        //Option<TopLevelItem> {
+        self.0.iter().find(|item_ins| match item_ins {
+            TopLevelItem::TypeStructStruct {
+                name,
+                fields: _,
+                is_dead_code: _,
+            } => {
+                // check if it is the struct we are looking for
+                *name == self_ty.to_item_name()
+            }
+            _ => false,
+        })
+    }
+
     fn to_doc(&self) -> Doc {
+        // check if there is a Debug Trait implementation in the code (#[derive(Debug)])
+        // for a TopLevelItem::TypeStructStruct (@TODO extend to cover more cases)
+        // if "yes" - get both TopLevelItems (Struct itself and TraitImpl for it)
+        // in order to have all required data for printing instance for DoubleColon Class
+
+        // We go through whole tree and if we face TraitImpl, we need to save previous item too
+        // (the one for which Impl is being printed), in order to have all the extra_data
         intersperse(
-            self.0.iter().map(|item| item.to_doc()),
+            self.0.iter().map(|item| {
+                // if item is DeriveDebug, get struct's fields
+                match item {
+                    TopLevelItem::TraitImpl {
+                        generic_tys: _,
+                        ty_params: _,
+                        self_ty,
+                        of_trait,
+                        items: _,
+                        trait_non_default_items: _,
+                    } =>
+                    // if item is DeriveDebug we are getting missing datatypes for Struct, and
+                    // printing DoubleColon instance for fmt function
+                    {
+                        // @TODO. below is support for deriveDebug (add code to support more traits)
+                        if of_trait.to_name() == "core_fmt_Debug" {
+                            let strct = self.find_tli_by_name(self_ty); // self.get_struct_types(self_ty);
+                                                                        // add structs types here (for printing)
+                            item.to_doc(&strct)
+                        } else {
+                            // @TODO add more cases (only Derive debug for Struct supported)");
+                            // if no DeriveDebug - we just convert item to doc, no extra data required.
+                            item.to_doc(&None)
+                        }
+                    }
+                    _ => {
+                        // if item is not TopLevelItem::TraitImpl - we just convert item to doc, no extra data required.
+                        item.to_doc(&None)
+                    }
+                }
+            }),
             [hardline(), hardline()],
         )
     }
