@@ -1,7 +1,6 @@
 use clap::*;
 use serde::{Deserialize, Serialize};
 
-/// There are no options for now.
 #[derive(Parser, Serialize, Deserialize)]
 pub struct CoqOfRustArgs {
     /// Axiomatize the definitions
