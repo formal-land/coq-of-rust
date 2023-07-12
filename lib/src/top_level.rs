@@ -14,7 +14,7 @@ use rustc_span::symbol::sym;
 use std::collections::HashMap;
 use std::string::ToString;
 
-pub struct TopLevelOptions {
+pub(crate) struct TopLevelOptions {
     pub axiomatize: bool,
 }
 
