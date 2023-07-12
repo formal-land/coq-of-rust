@@ -126,6 +126,9 @@ Definition Break `{State.Trait} {R A : Set} : Monad R A :=
 Definition Panic `{State.Trait} {R A B : Set} (a : A) : Monad R B :=
   fun _ s => RawMonad.Pure (inr (Exception.Panic a), s).
 
+Definition NonTermination `{State.Trait} {R A : Set} : Monad R A :=
+  fun _ s => RawMonad.Pure (inr Exception.NonTermination, s).
+
 (* TODO: provide proper definition for the while function
 Definition while `{State.Trait} {R A : Set} (f : A -> Monad R A) :
   A -> Monad R A :=
@@ -135,4 +138,9 @@ Definition while `{State.Trait} {R A : Set} (f : A -> Monad R A) :
     | S n' => bind (f a) F n'
     end.
 *)
-Parameter while : forall `{State.Trait} {R A : Set}, Monad R A -> Monad R A.
+Definition while `{State.Trait} {R A : Set} (m : Monad R A) : Monad R A :=
+  fix F (n : nat) :=
+    match n with
+    | 0 => NonTermination 0
+    | S n' => fun s => (* TODO *) F n' s
+    end.
