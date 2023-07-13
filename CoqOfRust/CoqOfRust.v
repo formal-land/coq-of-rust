@@ -877,11 +877,6 @@ Module core.
   End ops.
 End core.
 
-(* (* TODO: find a better place for this *)
-Global Instance Method_Z_rem `{State.Trait} : Notation.Dot "lt" := {
-  Notation.dot (x y : Z) := Pure (Z.ltb x y);
-}. *)
-
 Module alloc.
   Module boxed.
     Definition Box (A : Set) : Set := A.
