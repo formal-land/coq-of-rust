@@ -187,16 +187,6 @@ Module core.
     Definition Option := Option.t.
   End option.
 
-  Module panicking.
-    Module AssertKind.
-      Inductive t : Set :=
-      | Eq : t
-      | Ne : t
-      | Match.
-    End AssertKind.
-    Definition AssertKind := AssertKind.t.
-  End panicking.
-
   Module result.
     Module Result.
       Inductive t (T E : Set) : Set :=
@@ -428,6 +418,26 @@ Module core.
     Global Instance Write_for_Formatter : Write.Trait Formatter.
     Admitted.
   End fmt.
+
+  Module panicking.
+    Module AssertKind.
+      Inductive t : Set :=
+      | Eq : t
+      | Ne : t
+      | Match.
+    End AssertKind.
+    Definition AssertKind := AssertKind.t.
+
+    Parameter assert_failed :
+      forall {T U : Set} `{fmt.Debug.Trait T} `{fmt.Debug.Trait U},
+      AssertKind -> ref T -> ref U -> option.Option fmt.Arguments -> Empty_set.
+
+(*     Definition assert_failed
+      {T U : Set} `{fmt.Debug.Trait T} `{fmt.Debug.Trait U}
+      (kind : AssertKind) (left : ref T) (right : ref U)
+      (args : option.Option fmt.Arguments) : Empty_set :=
+        assert_failed_inner kind left right args. *)
+  End panicking.
 
   Module ops.
     Module arith.
