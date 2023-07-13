@@ -187,6 +187,16 @@ Module core.
     Definition Option := Option.t.
   End option.
 
+  Module panicking.
+    Module AssertKind.
+      Inductive t : Set :=
+      | Eq : t
+      | Ne : t
+      | Match.
+    End AssertKind.
+    Definition AssertKind := AssertKind.t.
+  End panicking.
+
   Module result.
     Module Result.
       Inductive t (T E : Set) : Set :=
