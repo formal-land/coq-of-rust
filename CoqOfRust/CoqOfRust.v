@@ -429,8 +429,8 @@ Module core.
     Definition AssertKind := AssertKind.t.
 
     Parameter assert_failed :
-      forall {T U : Set} `{fmt.Debug.Trait T} `{fmt.Debug.Trait U},
-      AssertKind -> ref T -> ref U -> option.Option fmt.Arguments -> Empty_set.
+      forall `{State.Trait} {T U : Set} `{fmt.Debug.Trait T} `{fmt.Debug.Trait U},
+      AssertKind -> ref T -> ref U -> option.Option fmt.Arguments -> M Empty_set.
 
 (*     Definition assert_failed
       {T U : Set} `{fmt.Debug.Trait T} `{fmt.Debug.Trait U}
@@ -892,6 +892,10 @@ Module core.
       Global Instance Method_deref `{State.Trait} (A : Set) :
         Notation.Dot "deref" := {
         Notation.dot := deref (A := A);
+      }.
+
+      Global Instance Deref_for_any (A : Set) : Deref.Trait A := {
+        deref `{State.Trait} := deref;
       }.
     End Impl_Deref_for_any.
   End ops.
