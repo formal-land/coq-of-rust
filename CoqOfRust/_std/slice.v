@@ -1,6 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust._std.option.
+Require Import CoqOfRust._std.vec.
 
 Definition Slice := slice.
 
@@ -8,16 +9,15 @@ Module hack.
   Parameter t : Set.
 
   Parameter into_vec : forall {T A : Set} `{core.alloc.Allocator.Trait A}
-    {(* TODO: use (Box (Slice T) A) instead of X *) X : Set} (b : X)
-    {(* TODO: use (Vec T A) instead of Y *) Y : Set}, Y.
+    {(* TODO: use (Box (Slice T) A) instead of X *) X : Set} (b : X),
+      Vec T (Some A).
 End hack.
 Definition hack := hack.t.
 
 Module hack_notations.
   Global Instance hack_into_vec {T A : Set} `{core.alloc.Allocator.Trait A}
-    {X Y : Set} :
-    Notation.DoubleColon hack "into_vec" := {
-    Notation.double_colon (b : X) := hack.into_vec (T := T) (A := A) b (Y := Y);
+    {X : Set} : Notation.DoubleColon hack "into_vec" := {
+    Notation.double_colon (b : X) := hack.into_vec (T := T) (A := A) b;
   }.
 End hack_notations.
 
@@ -446,3 +446,15 @@ End SliceIndex.
 [ ] from_raw_parts_mut
 [ ] from_ref
 *)
+
+(* *****IMPLEMENTATIONS***** *)
+Module Impl_Slice.
+  Section Impl_Slice.
+    Parameter T : Set.
+    Definition Self := slice T.
+
+    Definition into_vec {A : Set} `{core.alloc.Allocator.Trait A}
+      (self : ref Self) (alloc : A) : Vec T (Some A) :=
+        hack::["into_vec"] self.
+  End Impl_Slice.
+End Impl_Slice.
