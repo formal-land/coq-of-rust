@@ -28,14 +28,14 @@ where
 { /* private fields */ }
 *)
 Module Exclusive.
-  Record t (T : Set): Set := { }.
+  Parameter t : Set -> Set.
 End Exclusive.
 Definition Exclusive := Exclusive.t.
 
 (* BUGGED: monad function dependency *)
 (* pub struct LazyLock<T, F = fn() -> T> { /* private fields */ } *)
 Module LazyLock.
-  Record t (T F : Set) : Set := { }.
+  Parameter t : Set -> Set -> Set.
 End LazyLock.
 Definition LazyLock := LazyLock.t.
 
@@ -46,85 +46,85 @@ where
 { /* private fields */ }
 *)
 Module Arc.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End Arc.
 Definition Arc := Arc.t.
 
 (* pub struct Barrier { /* private fields */ } *)
 Module Barrier.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Barrier.
 Definition Barrier := Barrier.t.
 
 (* pub struct BarrierWaitResult(_); *)
 Module BarrierWaitResult.
-  Record t : Set := { }.
+  Parameter t : Set.
 End BarrierWaitResult.
 Definition BarrierWaitResult := BarrierWaitResult.t.
 
 (* pub struct Condvar { /* private fields */ } *)
 Module Condvar.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Condvar.
 Definition Condvar := Condvar.t.
 
 (* pub struct Mutex<T: ?Sized> { /* private fields */ } *)
 Module Mutex.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End Mutex.
 Definition Mutex := Mutex.t.
 
 (* pub struct MutexGuard<'a, T: ?Sized + 'a> { /* private fields */ } *)
 Module MutexGuard.
-  Record t (T : Set) : Set := { }.
+Parameter t : Set -> Set.
 End MutexGuard.
 Definition MutexGuard := MutexGuard.t.
 
 (* pub struct Once { /* private fields */ } *)
 Module Once.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Once.
 Definition Once := Once.t.
 
 (* pub struct OnceLock<T> { /* private fields */ } *)
 Module OnceLock.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End OnceLock.
 Definition OnceLock := OnceLock.t.
 
 (* pub struct OnceState { /* private fields */ } *)
 Module OnceState.
-  Record t : Set := { }.
+  Parameter t : Set.
 End OnceState.
 Definition OnceState := OnceState.t.
 
 (* pub struct PoisonError<T> { /* private fields */ } *)
 Module PoisonError.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End PoisonError.
 Definition PoisonError := PoisonError.t.
 
 (* pub struct RwLock<T: ?Sized> { /* private fields */ } *)
 Module RwLock.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End RwLock.
 Definition RwLock := RwLock.t.
 
 (* pub struct RwLockReadGuard<'a, T: ?Sized + 'a> { /* private fields */ } *)
 Module RwLockReadGuard.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End RwLockReadGuard.
 Definition RwLockReadGuard := RwLockReadGuard.t.
 
 (* pub struct RwLockWriteGuard<'a, T: ?Sized + 'a> { /* private fields */ } *)
 Module RwLockWriteGuard.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End RwLockWriteGuard.
 Definition RwLockWriteGuard := RwLockWriteGuard.t.
 
 (* pub struct WaitTimeoutResult(_); *)
 Module WaitTimeoutResult.
-  Record t : Set := { }.
+  Parameter t : Set.
 End WaitTimeoutResult.
 Definition WaitTimeoutResult := WaitTimeoutResult.t.
 
@@ -135,7 +135,7 @@ where
 { /* private fields */ }
 *)
 Module Weak.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End Weak.
 Definition Weak := Weak.t.
 

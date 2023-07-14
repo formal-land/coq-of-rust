@@ -57,7 +57,7 @@ where
 { /* private fields */ }
 *)
 Module ArrayChunks.
-  Record t (T : Set) (N : usize) : Set := { }.
+  Parameter t : Set -> usize -> Set.
 End ArrayChunks.
 Definition ArrayChunks := ArrayChunks.t.
 
@@ -68,7 +68,7 @@ where
 { /* private fields */ }
 *)
 Module ArrayChunksMut.
-  Record t (T : Set) (N : usize) : Set := { }.
+  Parameter t : Set -> usize -> Set.
 End ArrayChunksMut.
 Definition ArrayChunksMut := ArrayChunksMut.t.
 
@@ -79,7 +79,7 @@ where
 { /* private fields */ }
 *)
 Module ArrayWindows.
-  Record t (T : Set) (N : usize) : Set := { }.
+  Parameter t : Set -> usize -> Set.
 End ArrayWindows.
 Definition ArrayWindows := ArrayWindows.t.
 
@@ -90,7 +90,7 @@ where
 { /* private fields */ }
 *)
 Module GroupBy.
-  Record t (T P : Set): Set := { }.
+  Parameter t : Set -> Set -> Set.
 End GroupBy.
 Definition GroupBy := GroupBy.t.
 
@@ -101,7 +101,7 @@ where
 { /* private fields */ }
 *)
 Module GroupByMut.
-  Record t (T P : Set): Set := { }.
+  Parameter t : Set -> Set -> Set.
 End GroupByMut.
 Definition GroupByMut := GroupByMut.t.
 
@@ -112,7 +112,7 @@ where
 { /* private fields */ }
 *)
 Module Chunks.
-  Record t (T : Set): Set := { }.
+  Parameter t : Set -> Set.
 End Chunks.
 Definition Chunks := Chunks.t.
 
@@ -123,7 +123,7 @@ where
 { /* private fields */ }
 *)
 Module ChunksExact.
-  Record t (T : Set): Set := { }.
+  Parameter t : Set -> Set.
 End ChunksExact.
 Definition ChunksExact := ChunksExact.t.
 
@@ -134,7 +134,7 @@ where
 { /* private fields */ }
 *)
 Module ChunksExactMut.
-  Record t (T : Set): Set := { }.
+  Parameter t : Set -> Set.
 End ChunksExactMut.
 Definition ChunksExactMut := ChunksExactMut.t.
 
@@ -145,13 +145,13 @@ where
 { /* private fields */ }
 *)
 Module ChunksMut.
-  Record t (T : Set): Set := { }.
+  Parameter t : Set -> Set.
 End ChunksMut.
 Definition ChunksMut := ChunksMut.t.
 
 (* pub struct EscapeAscii<'a> { /* private fields */ } *)
 Module EscapeAscii.
-  Record t : Set := { }.
+  Parameter t : Set.
 End EscapeAscii.
 Definition EscapeAscii := EscapeAscii.t.
 
@@ -162,7 +162,7 @@ where
 { /* private fields */ }
 *)
 Module Iter.
-  Record t (T : Set): Set := { }.
+  Parameter t : Set -> Set.
 End Iter.
 Definition Iter := Iter.t.
 
@@ -173,7 +173,7 @@ where
 { /* private fields */ }
 *)
 Module IterMut.
-  Record t (T : Set): Set := { }.
+  Parameter t : Set -> Set.
 End IterMut.
 Definition IterMut := IterMut.t.
 
@@ -184,7 +184,7 @@ where
 { /* private fields */ }
 *)
 Module RChunks.
-  Record t (T : Set): Set := { }.
+  Parameter t : Set -> Set.
 End RChunks.
 Definition RChunks := RChunks.t.
 
@@ -195,7 +195,7 @@ where
 { /* private fields */ }
 *)
 Module RChunksExact.
-  Record t (T : Set): Set := { }.
+  Parameter t : Set -> Set.
 End RChunksExact.
 Definition RChunksExact := RChunksExact.t.
 
@@ -206,7 +206,7 @@ where
 { /* private fields */ }
 *)
 Module RChunksExactMut.
-  Record t (T : Set): Set := { }.
+  Parameter t : Set -> Set.
 End RChunksExactMut.
 Definition RChunksExactMut := RChunksExactMut.t.
 
@@ -217,7 +217,7 @@ where
 { /* private fields */ }
 *)
 Module RChunksMut.
-  Record t (T : Set): Set := { }.
+  Parameter t : Set -> Set.
 End RChunksMut.
 Definition RChunksMut := RChunksMut.t.
 
@@ -230,7 +230,7 @@ where
 { /* private fields */ }
 *)
 Module RSplit.
-  Record t (T P : Set): Set := { }.
+  Parameter t : Set -> Set -> Set.
 End RSplit.
 Definition RSplit := RSplit.t.
 
@@ -243,7 +243,7 @@ where
 { /* private fields */ }
 *)
 Module RSplitMut.
-  Record t (T P : Set): Set := { }.
+  Parameter t : Set -> Set -> Set.
 End RSplitMut.
 Definition RSplitMut := RSplitMut.t.
 
@@ -256,7 +256,7 @@ where
 { /* private fields */ }
 *)
 Module RSplitN.
-  Record t (T P : Set): Set := { }.
+  Parameter t : Set -> Set -> Set.
 End RSplitN.
 Definition RSplitN := RSplitN.t.
 
@@ -269,7 +269,7 @@ where
 { /* private fields */ }
 *)
 Module RSplitNMut.
-  Record t (T P : Set): Set := { }.
+  Parameter t : Set -> Set -> Set.
 End RSplitNMut.
 Definition RSplitNMut := RSplitNMut.t.
 
@@ -282,7 +282,7 @@ where
 { /* private fields */ }
 *)
 Module Split.
-  Record t (T P : Set): Set := { }.
+  Parameter t : Set -> Set -> Set.
 End Split.
 Definition Split := Split.t.
 
@@ -295,7 +295,7 @@ where
 { /* private fields */ }
 *)
 Module SplitInclusive.
-  Record t (T P : Set): Set := { }.
+  Parameter t : Set -> Set -> Set.
 End SplitInclusive.
 Definition SplitInclusive := SplitInclusive.t.
 
@@ -308,7 +308,7 @@ where
 { /* private fields */ }
 *)
 Module SplitInclusiveMut.
-  Record t (T P : Set): Set := { }.
+  Parameter t : Set -> Set -> Set.
 End SplitInclusiveMut.
 Definition SplitInclusiveMut := SplitInclusiveMut.t.
 
@@ -321,7 +321,7 @@ where
 { /* private fields */ }
 *)
 Module SplitMut.
-  Record t (T P : Set) : Set := { }.
+  Parameter t : Set -> Set -> Set.
 End SplitMut.
 Definition SplitMut := SplitMut.t.
 
@@ -334,7 +334,7 @@ where
 { /* private fields */ }
 *)
 Module SplitN.
-  Record t (T P : Set): Set := { }.
+  Parameter t : Set -> Set -> Set.
 End SplitN.
 Definition SplitN := SplitN.t.
 
@@ -347,7 +347,7 @@ where
 { /* private fields */ }
 *)
 Module SplitNMut.
-  Record t (T P : Set): Set := { }.
+  Parameter t : Set -> Set -> Set.
 End SplitNMut.
 Definition SplitNMut := SplitNMut.t.
 
@@ -358,7 +358,7 @@ where
 { /* private fields */ }
 *)
 Module Windows.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End Windows.
 Definition Windows := Windows.t.
 

@@ -9,7 +9,7 @@ Require Import CoqOfRust.lib.lib.
 
 (* pub struct IntoIter<A> { /* private fields */ } *)
 Module IntoIter.
-  Record t (A : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End IntoIter.
 Definition IntoIter := IntoIter.t.
 
@@ -20,7 +20,7 @@ where
 { /* private fields */ }
 *)
 Module Iter.
-  Record t (A : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End Iter. 
 Definition Iter := Iter.t.
 
@@ -29,7 +29,7 @@ where
     A: 'a,
 { /* private fields */ } *)
 Module IterMut. 
-  Record t (A : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End IterMut.
 Definition IterMut := IterMut.t.
 

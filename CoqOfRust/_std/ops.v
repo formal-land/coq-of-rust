@@ -69,7 +69,7 @@ Definition ControlFlow (B : Set) (C : option Set) :=
 
 (* pub struct Yeet<T>(pub T); *)
 Module Yeet.
-  Record t (t : Set) : Set := { }.
+  Record t (T : Set) : Set := { _1 : T }.
 End Yeet.
 Definition Yeet := Yeet.t.
 
@@ -101,13 +101,13 @@ Definition RangeFrom := RangeFrom.t.
 
 (* pub struct RangeFull; *)
 Module RangeFull.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End RangeFull.
 Definition RangeFull := RangeFull.t.
 
 (* pub struct RangeInclusive<Idx> { /* private fields */ } *)
 Module RangeInclusive.
-  Record t (Idx : Set): Set := { }.
+  Parameter t : forall (Idx : Set), Set.
 End RangeInclusive.
 Definition RangeInclusive := RangeInclusive.t.
 
@@ -184,12 +184,16 @@ where
 { }
 *)
 Module CoerseUnsized.
+  Unset Primitive Projections.
   Class Trait (Self : Set) (T : Set) : Set := { }.
+  Set Primitive Projections.
 End CoerseUnsized.
 
 (* pub trait DispatchFromDyn<T> { } *)
 Module DispatchFromDyn.
+  Unset Primitive Projections.
   Class Trait (Self : Set) (T : Set) : Set := { }.
+  Set Primitive Projections.
 End DispatchFromDyn.
 
 (* BUGGED: Mutual reference of FromResidual and Try *)
@@ -204,7 +208,9 @@ pub trait Try: FromResidual<Self::Residual> {
 }
 *)
 Module Try.
+  Unset Primitive Projections.
   Class Trait (Self : Set) : Set := { }.
+  Set Primitive Projections.
 End Try.
 
 (* BUGGED: Same as above *)
@@ -215,7 +221,9 @@ pub trait FromResidual<R = <Self as Try>::Residual> {
 }
 *)
 Module FromResidual.
+  Unset Primitive Projections.
   Class Trait (Self : Set) : Set := { }.
+  Set Primitive Projections.
 End FromResidual.
 
 (* 
@@ -273,9 +281,11 @@ where
 { }
 *)
 Module OneSidedRange.
+  Unset Primitive Projections.
   Class Trait (Self : Set) (T : Set)
     `{RangeBounds.Trait Self T}
   : Set := { }.
+  Set Primitive Projections.
 End OneSidedRange.
 
 (* 

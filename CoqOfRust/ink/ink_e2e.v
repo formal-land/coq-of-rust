@@ -6619,6 +6619,15 @@ Module xts.
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
+    Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
+      string -> u64 -> 
+      string -> u64 -> 
+      M (H := H) core.fmt.Result.
+    
+    Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
+      core.fmt.Formatter "debug_struct_field2_finish" := {
+      Notation.double_colon := debug_struct_field2_finish; }.
+    
     Definition fmt
         `{H : State.Trait}
         (self : ref Self)
@@ -8520,6 +8529,15 @@ End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
+  
+  Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
+    string -> u64 -> 
+    string -> u64 -> 
+    M (H := H) core.fmt.Result.
+  
+  Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
+    core.fmt.Formatter "debug_struct_field2_finish" := {
+    Notation.double_colon := debug_struct_field2_finish; }.
   
   Definition fmt
       `{H : State.Trait}

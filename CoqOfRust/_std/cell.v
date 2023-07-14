@@ -17,7 +17,7 @@ Require Import CoqOfRust.lib.lib.
 (* BUGGED: How to translate this one? *)
 (* pub struct LazyCell<T, F = fn() -> T> { /* private fields */ } *)
 Module LazyCell.
-  Record t (T F : Set) : Set := { }.
+  Parameter t : Set -> Set -> Set.
 End LazyCell.
 Definition LazyCell (T : Set) (F : option Set) : Set :=
   LazyCell.t T (defaultType F (unit -> T)).
@@ -29,19 +29,19 @@ where
 { /* private fields */ }
 *)
 Module SyncUnsafeCell.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End SyncUnsafeCell.
 Definition SyncUnsafeCell := SyncUnsafeCell.t.
 
 (* pub struct BorrowError {} *)
 Module BorrowError.
-  Record t : Set := { }.
+  Parameter t : Set.
 End BorrowError.
 Definition BorrowError := BorrowError.t.
 
 (* pub struct BorrowMutError {} *)
 Module BorrowMutError.
-  Record t : Set := { }.
+  Parameter t : Set.
 End BorrowMutError.
 Definition BorrowMutError := BorrowMutError.t.
 
@@ -52,13 +52,13 @@ where
 { /* private fields */ }
 *)
 Module Cell.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End Cell.
 Definition Cell := Cell.t.
 
 (* pub struct OnceCell<T> { /* private fields */ } *)
 Module OnceCell.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End OnceCell.
 Definition OnceCell := OnceCell.t.
 
@@ -69,7 +69,7 @@ where
 { /* private fields */ }
 *)
 Module Ref.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End Ref.
 Definition Ref := Ref.t.
 
@@ -80,7 +80,7 @@ where
 { /* private fields */ }
 *)
 Module RefCell.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End RefCell.
 Definition RefCell := RefCell.t.
 
@@ -91,7 +91,7 @@ where
 { /* private fields */ }
 *)
 Module RefMut.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End RefMut.
 Definition RefMut := RefMut.t.
 
@@ -102,7 +102,6 @@ where
 { /* private fields */ }
 *)
 Module UnsafeCell.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End UnsafeCell.
 Definition UnsafeCell := UnsafeCell.t.
-

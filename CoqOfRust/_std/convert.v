@@ -25,7 +25,9 @@ Definition Infallible := Infallible.t.
 
 (* pub trait FloatToInt<Int>: Sealed + Sized { } *)
 Module FloatToInt.
+  Unset Primitive Projections.
   Class Trait (Self Int : Set) : Set := { }.
+  Set Primitive Projections.
 End FloatToInt.
 
 (* 
