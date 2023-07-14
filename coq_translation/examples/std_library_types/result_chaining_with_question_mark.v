@@ -96,19 +96,19 @@ Module checked.
       let* α0 := result_chaining_with_question_mark.checked.div x y in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* ln :=
       let* α0 := result_chaining_with_question_mark.checked.ln ratio in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     result_chaining_with_question_mark.checked.sqrt ln.
   
@@ -235,19 +235,19 @@ Definition op_
     let* α0 := result_chaining_with_question_mark.checked.div x y in
     let* α1 := LangItem α0 in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
+    | Break residual =>
       let* α0 := LangItem residual in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | Continue val => Pure val
     end in
   let* ln :=
     let* α0 := result_chaining_with_question_mark.checked.ln ratio in
     let* α1 := LangItem α0 in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
+    | Break residual =>
       let* α0 := LangItem residual in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | Continue val => Pure val
     end in
   result_chaining_with_question_mark.checked.sqrt ln.
 

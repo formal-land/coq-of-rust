@@ -10,19 +10,19 @@ Definition multiply
     let* α0 := first_number_str.["parse"] in
     let* α1 := LangItem α0 in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
+    | Break residual =>
       let* α0 := LangItem residual in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | Continue val => Pure val
     end in
   let* second_number :=
     let* α0 := second_number_str.["parse"] in
     let* α1 := LangItem α0 in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
+    | Break residual =>
       let* α0 := LangItem residual in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | Continue val => Pure val
     end in
   let* α0 := first_number.["mul"] second_number in
   Pure (core.result.Result.Ok α0).

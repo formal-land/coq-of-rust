@@ -351,8 +351,8 @@ Section Impl_subtle_ConstantTimeEq_for_Slice.
           (let* _ :=
             let* α0 := LangItem (addr_of iter) in
             match α0 with
-            | None => Break
-            | Some {| Some.0 := (ai, bi); |} =>
+            | None  => Break
+            | Some (ai, bi) =>
               let* _ :=
                 let* α0 := ai.["ct_eq"] bi in
                 let* α1 := α0.["unwrap_u8"] in

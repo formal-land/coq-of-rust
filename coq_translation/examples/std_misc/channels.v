@@ -16,8 +16,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := id; |} =>
+          | None  => Break
+          | Some id =>
             let* thread_tx := tx.["clone"] in
             let* child :=
               std.thread.spawn
@@ -52,8 +52,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := _; |} =>
+          | None  => Break
+          | Some _ =>
             let* _ :=
               let* α0 := rx.["recv"] in
               ids.["push"] α0 in
@@ -69,8 +69,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := child; |} =>
+          | None  => Break
+          | Some child =>
             let* _ :=
               let* α0 := child.["join"] in
               α0.["expect"] "oops! the child thread panicked" in

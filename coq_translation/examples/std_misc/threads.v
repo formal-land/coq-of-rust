@@ -15,8 +15,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := i; |} =>
+          | None  => Break
+          | Some i =>
             let* _ :=
               let* α0 :=
                 std.thread.spawn
@@ -45,8 +45,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with
-        | None => Break
-        | Some {| Some.0 := child; |} =>
+        | None  => Break
+        | Some child =>
           let* _ := child.["join"] in
           Pure tt
         end in

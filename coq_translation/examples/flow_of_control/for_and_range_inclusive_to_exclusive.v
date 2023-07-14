@@ -10,8 +10,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with
-        | None => Break
-        | Some {| Some.0 := n; |} =>
+        | None  => Break
+        | Some n =>
           let* α0 := n.["rem"] 15 in
           let* α1 := α0.["eq"] 0 in
           if (α1 : bool) then

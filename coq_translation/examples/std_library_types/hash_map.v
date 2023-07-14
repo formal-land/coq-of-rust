@@ -77,8 +77,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with
-        | None => Break
-        | Some {| Some.0 := (contact, number); |} =>
+        | None  => Break
+        | Some (contact, number) =>
           let* _ :=
             let* _ :=
               let* α0 := format_argument::["new_display"] (addr_of contact) in

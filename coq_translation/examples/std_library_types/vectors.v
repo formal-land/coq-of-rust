@@ -95,8 +95,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := x; |} =>
+          | None  => Break
+          | Some x =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of x) in
@@ -121,8 +121,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := (i, x); |} =>
+          | None  => Break
+          | Some (i, x) =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of i) in
@@ -147,8 +147,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := x; |} =>
+          | None  => Break
+          | Some x =>
             let* _ :=
               let* α0 := x.["deref"] in
               α0.["mul_assign"] 3 in

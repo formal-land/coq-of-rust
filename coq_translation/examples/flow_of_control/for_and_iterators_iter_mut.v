@@ -15,8 +15,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := name; |} =>
+          | None  => Break
+          | Some name =>
             let* α0 :=
               match name with
               | "Ferris" => Pure "There is a rustacean among us!"

@@ -13,8 +13,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := line; |} =>
+          | None  => Break
+          | Some line =>
             let* α0 := let_if core.result.Result.Ok ip := line in
             if (α0 : bool) then
               let* _ :=
@@ -49,10 +49,10 @@ Definition read_lines
     let* α0 := std.fs.File::["open"] filename in
     let* α1 := LangItem α0 in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
+    | Break residual =>
       let* α0 := LangItem residual in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | Continue val => Pure val
     end in
   let* α0 := std.io.buffered.bufreader.BufReader::["new"] file in
   let* α1 := α0.["lines"] in

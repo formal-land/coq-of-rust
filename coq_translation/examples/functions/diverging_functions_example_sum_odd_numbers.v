@@ -27,8 +27,8 @@ Definition sum_odd_numbers `{H : State.Trait} (up_to : u32) : M (H := H) u32 :=
         (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := i; |} =>
+          | None  => Break
+          | Some i =>
             let* addition :=
               let* α0 := i.["rem"] 2 in
               let* α1 := α0.["eq"] 1 in
