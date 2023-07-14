@@ -237,10 +237,10 @@ Module ext.
           α0.["map_err"] (fun _ => Pure ink_engine.ext.Error.TransferFailed) in
         let* α2 := LangItem α1 in
         match α2 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* dest := account_id.["to_vec"] in
       let* dest_old_balance :=
@@ -255,10 +255,10 @@ Module ext.
           α1.["map_err"] (fun _ => Pure ink_engine.ext.Error.TransferFailed) in
         let* α3 := LangItem α2 in
         match α3 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* _ :=
         let* α0 := contract_old_balance.["sub"] increment in
@@ -1170,10 +1170,10 @@ Module Impl_ink_engine_ext_Engine_4.
         α0.["map_err"] (fun _ => Pure ink_engine.ext.Error.TransferFailed) in
       let* α2 := LangItem α1 in
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* dest := account_id.["to_vec"] in
     let* dest_old_balance :=
@@ -1188,10 +1188,10 @@ Module Impl_ink_engine_ext_Engine_4.
         α1.["map_err"] (fun _ => Pure ink_engine.ext.Error.TransferFailed) in
       let* α3 := LangItem α2 in
       match α3 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* _ :=
       let* α0 := contract_old_balance.["sub"] increment in
@@ -2369,10 +2369,10 @@ Module test_api.
                   (ink_engine.types.AccountError.NoAccountForId α0))) in
         let* α4 := LangItem α3 in
         match α4 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* α0 := cells.["len"] in
       Pure (core.result.Result.Ok α0).
@@ -3009,10 +3009,10 @@ Module Impl_ink_engine_ext_Engine_6.
                 (ink_engine.types.AccountError.NoAccountForId α0))) in
       let* α4 := LangItem α3 in
       match α4 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := cells.["len"] in
     Pure (core.result.Result.Ok α0).

@@ -1397,28 +1397,28 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
     let* α1 := LangItem α0 in
     let* α2 :=
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α3 := ink_storage_traits.storage.Storable.decode __input in
     let* α4 := LangItem α3 in
     let* α5 :=
       match α4 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α6 := ink_storage_traits.storage.Storable.decode __input in
     let* α7 := LangItem α6 in
     let* α8 :=
       match α7 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     Pure
       (core.result.Result.Ok
@@ -1741,10 +1741,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
     let* α2 := LangItem α1 in
     let* α3 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     match α3 with
     | __codec_x_edqy =>
@@ -2786,10 +2786,10 @@ Module
     let* α2 := LangItem α1 in
     let* α3 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     match α3 with
     | erc20.erc20._.decode_dispatch.CONSTRUCTOR_0 =>
@@ -2801,10 +2801,10 @@ Module
       let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* α4 := Self::["Constructor0"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -2878,10 +2878,10 @@ Module
             let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
             let* α1 := LangItem α0 in
             match α1 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           Pure tt
         else
@@ -2966,10 +2966,10 @@ Module
     let* α2 := LangItem α1 in
     let* α3 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     match α3 with
     | erc20.erc20._.decode_dispatch.MESSAGE_0 =>
@@ -2981,10 +2981,10 @@ Module
       let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* α4 := Self::["Message0"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -2997,10 +2997,10 @@ Module
       let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* α4 := Self::["Message1"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3013,10 +3013,10 @@ Module
       let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* α4 := Self::["Message2"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3029,10 +3029,10 @@ Module
       let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* α4 := Self::["Message3"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3045,10 +3045,10 @@ Module
       let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* α4 := Self::["Message4"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3061,10 +3061,10 @@ Module
       let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* α4 := Self::["Message5"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3205,10 +3205,10 @@ Module
               let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
               let* α1 := LangItem α0 in
               match α1 with
-              | Break {| Break.0 := residual; |} =>
+              | Break residual =>
                 let* α0 := LangItem residual in
                 Return α0
-              | Continue {| Continue.0 := val; |} => Pure val
+              | Continue val => Pure val
               end in
             Pure tt
           else
@@ -3271,10 +3271,10 @@ Module
               let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
               let* α1 := LangItem α0 in
               match α1 with
-              | Break {| Break.0 := residual; |} =>
+              | Break residual =>
                 let* α0 := LangItem residual in
                 Return α0
-              | Continue {| Continue.0 := val; |} => Pure val
+              | Continue val => Pure val
               end in
             Pure tt
           else
@@ -3337,10 +3337,10 @@ Module
               let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
               let* α1 := LangItem α0 in
               match α1 with
-              | Break {| Break.0 := residual; |} =>
+              | Break residual =>
                 let* α0 := LangItem residual in
                 Return α0
-              | Continue {| Continue.0 := val; |} => Pure val
+              | Continue val => Pure val
               end in
             Pure tt
           else
@@ -3403,10 +3403,10 @@ Module
               let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
               let* α1 := LangItem α0 in
               match α1 with
-              | Break {| Break.0 := residual; |} =>
+              | Break residual =>
                 let* α0 := LangItem residual in
                 Return α0
-              | Continue {| Continue.0 := val; |} => Pure val
+              | Continue val => Pure val
               end in
             Pure tt
           else
@@ -3469,10 +3469,10 @@ Module
               let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
               let* α1 := LangItem α0 in
               match α1 with
-              | Break {| Break.0 := residual; |} =>
+              | Break residual =>
                 let* α0 := LangItem residual in
                 Return α0
-              | Continue {| Continue.0 := val; |} => Pure val
+              | Continue val => Pure val
               end in
             Pure tt
           else
@@ -3535,10 +3535,10 @@ Module
               let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
               let* α1 := LangItem α0 in
               match α1 with
-              | Break {| Break.0 := residual; |} =>
+              | Break residual =>
                 let* α0 := LangItem residual in
                 Return α0
-              | Continue {| Continue.0 := val; |} => Pure val
+              | Continue val => Pure val
               end in
             Pure tt
           else
@@ -3734,10 +3734,10 @@ Module Impl_erc20_erc20_Erc20.
       let* α0 := self.["transfer_from_to"] (addr_of from) (addr_of to) value in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* _ :=
       let* α0 := allowance.["sub"] value in
@@ -3989,10 +3989,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
           parity_scale_codec.codec.Decode.decode_into __codec_input_edqy dst_ in
         let* α1 := LangItem α0 in
         match α1 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       Pure tt in
     let* α0 :=
@@ -5862,10 +5862,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
     let* α2 := LangItem α1 in
     let* α3 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     match α3 with
     | __codec_x_edqy =>

@@ -14907,10 +14907,10 @@ Module engine.
                 (addr_of (addr_of output[RangeFull {|  |}])) in
             let* α1 := LangItem α0 in
             match α1 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           Pure (core.result.Result.Ok (core.option.Option.Some decoded)).
         
@@ -14947,10 +14947,10 @@ Module engine.
                 (addr_of (addr_of output[RangeFull {|  |}])) in
             let* α1 := LangItem α0 in
             match α1 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           Pure (core.result.Result.Ok (core.option.Option.Some decoded)).
         
@@ -15146,10 +15146,10 @@ Module engine.
                 (fun _ => Pure ink_env.error.Error.EcdsaRecoveryFailed) in
             let* α2 := LangItem α1 in
             match α2 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           let* uncompressed := pk.["serialize_uncompressed"] in
           let* hash := ink_env.hash.HashOutput.Type::["default"] tt in
@@ -15202,19 +15202,19 @@ Module engine.
             let* α0 := status_to_result status in
             let* α1 := LangItem α0 in
             match α1 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           let* decoded :=
             let* α0 := decode_to_result (addr_of out[RangeFull {|  |}]) in
             let* α1 := LangItem α0 in
             match α1 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           Pure (core.result.Result.Ok decoded).
         
@@ -16770,10 +16770,10 @@ Module engine.
         let* α0 := parity_scale_codec.codec.Decode.decode out_address in
         let* α1 := LangItem α0 in
         match α1 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* contract_ref :=
         ink_env.call.create_builder.FromAccountId.from_account_id account_id in
@@ -16804,10 +16804,10 @@ Module engine.
       let* α0 := out_return_value.["read_byte"] in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     match constructor_result_variant with
     | 0 =>
@@ -16817,10 +16817,10 @@ Module engine.
           let* α0 := out_return_value.["read_byte"] in
           let* α1 := LangItem α0 in
           match α1 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         match result_variant with
         | 0 =>
@@ -16837,10 +16837,10 @@ Module engine.
               parity_scale_codec.codec.Decode.decode out_return_value in
             let* α1 := LangItem α0 in
             match α1 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           let* err :=
             let* α0 :=
@@ -16874,10 +16874,10 @@ Module engine.
         let* α0 := parity_scale_codec.codec.Decode.decode out_return_value in
         let* α1 := LangItem α0 in
         match α1 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       Pure (core.result.Result.Ok (core.result.Result.Err lang_err))
     | _ =>
@@ -17589,10 +17589,10 @@ Module off_chain.
               (addr_of (addr_of output[RangeFull {|  |}])) in
           let* α1 := LangItem α0 in
           match α1 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         Pure (core.result.Result.Ok (core.option.Option.Some decoded)).
       
@@ -17629,10 +17629,10 @@ Module off_chain.
               (addr_of (addr_of output[RangeFull {|  |}])) in
           let* α1 := LangItem α0 in
           match α1 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         Pure (core.result.Result.Ok (core.option.Option.Some decoded)).
       
@@ -17826,10 +17826,10 @@ Module off_chain.
               (fun _ => Pure ink_env.error.Error.EcdsaRecoveryFailed) in
           let* α2 := LangItem α1 in
           match α2 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         let* uncompressed := pk.["serialize_uncompressed"] in
         let* hash := ink_env.hash.HashOutput.Type::["default"] tt in
@@ -17882,19 +17882,19 @@ Module off_chain.
           let* α0 := status_to_result status in
           let* α1 := LangItem α0 in
           match α1 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         let* decoded :=
           let* α0 := decode_to_result (addr_of out[RangeFull {|  |}]) in
           let* α1 := LangItem α0 in
           match α1 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         Pure (core.result.Result.Ok decoded).
       
@@ -20376,10 +20376,10 @@ Module impls.
             (addr_of (addr_of output[RangeFull {|  |}])) in
         let* α1 := LangItem α0 in
         match α1 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       Pure (core.result.Result.Ok (core.option.Option.Some decoded)).
     
@@ -20416,10 +20416,10 @@ Module impls.
             (addr_of (addr_of output[RangeFull {|  |}])) in
         let* α1 := LangItem α0 in
         match α1 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       Pure (core.result.Result.Ok (core.option.Option.Some decoded)).
     
@@ -20611,10 +20611,10 @@ Module impls.
             (fun _ => Pure ink_env.error.Error.EcdsaRecoveryFailed) in
         let* α2 := LangItem α1 in
         match α2 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* uncompressed := pk.["serialize_uncompressed"] in
       let* hash := ink_env.hash.HashOutput.Type::["default"] tt in
@@ -20666,19 +20666,19 @@ Module impls.
         let* α0 := status_to_result status in
         let* α1 := LangItem α0 in
         match α1 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* decoded :=
         let* α0 := decode_to_result (addr_of out[RangeFull {|  |}]) in
         let* α1 := LangItem α0 in
         match α1 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       Pure (core.result.Result.Ok decoded).
     
@@ -21864,10 +21864,10 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
           (addr_of (addr_of output[RangeFull {|  |}])) in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     Pure (core.result.Result.Ok (core.option.Option.Some decoded)).
   
@@ -21904,10 +21904,10 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
           (addr_of (addr_of output[RangeFull {|  |}])) in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     Pure (core.result.Result.Ok (core.option.Option.Some decoded)).
   
@@ -22099,10 +22099,10 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
           (fun _ => Pure ink_env.error.Error.EcdsaRecoveryFailed) in
       let* α2 := LangItem α1 in
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* uncompressed := pk.["serialize_uncompressed"] in
     let* hash := ink_env.hash.HashOutput.Type::["default"] tt in
@@ -22154,19 +22154,19 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
       let* α0 := status_to_result status in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* decoded :=
       let* α0 := decode_to_result (addr_of out[RangeFull {|  |}]) in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     Pure (core.result.Result.Ok decoded).
   
@@ -24327,10 +24327,10 @@ Definition decode_instantiate_result
       let* α0 := parity_scale_codec.codec.Decode.decode out_address in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* contract_ref :=
       ink_env.call.create_builder.FromAccountId.from_account_id account_id in
@@ -24361,10 +24361,10 @@ Definition decode_instantiate_err
     let* α0 := out_return_value.["read_byte"] in
     let* α1 := LangItem α0 in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
+    | Break residual =>
       let* α0 := LangItem residual in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | Continue val => Pure val
     end in
   match constructor_result_variant with
   | 0 =>
@@ -24373,10 +24373,10 @@ Definition decode_instantiate_err
         let* α0 := out_return_value.["read_byte"] in
         let* α1 := LangItem α0 in
         match α1 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       match result_variant with
       | 0 =>
@@ -24392,10 +24392,10 @@ Definition decode_instantiate_err
           let* α0 := parity_scale_codec.codec.Decode.decode out_return_value in
           let* α1 := LangItem α0 in
           match α1 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         let* err :=
           let* α0 :=
@@ -24429,10 +24429,10 @@ Definition decode_instantiate_err
       let* α0 := parity_scale_codec.codec.Decode.decode out_return_value in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     Pure (core.result.Result.Ok (core.result.Result.Err lang_err))
   | _ =>

@@ -20,10 +20,10 @@ Module blake2b.
       let* α0 := ink_ir.ir.blake2.Blake2x256Macro::["try_from"] input in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := ink_codegen.generate_code (addr_of hash) in
     Pure (core.result.Result.Ok α0).
@@ -47,10 +47,10 @@ Definition generate_blake2x256_hash_or_err
     let* α0 := ink_ir.ir.blake2.Blake2x256Macro::["try_from"] input in
     let* α1 := LangItem α0 in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
+    | Break residual =>
       let* α0 := LangItem residual in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | Continue val => Pure val
     end in
   let* α0 := ink_codegen.generate_code (addr_of hash) in
   Pure (core.result.Result.Ok α0).
@@ -76,10 +76,10 @@ Module chain_extension.
       let* α0 := ink_ir.ir.chain_extension.ChainExtension::["new"] attr input in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := ink_codegen.generate_code (addr_of chain_extension) in
     Pure (core.result.Result.Ok α0).
@@ -105,10 +105,10 @@ Definition generate_or_err
     let* α0 := ink_ir.ir.chain_extension.ChainExtension::["new"] attr input in
     let* α1 := LangItem α0 in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
+    | Break residual =>
       let* α0 := LangItem residual in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | Continue val => Pure val
     end in
   let* α0 := ink_codegen.generate_code (addr_of chain_extension) in
   Pure (core.result.Result.Ok α0).
@@ -134,10 +134,10 @@ Module contract.
       let* α0 := ink_ir.ir.contract.Contract::["new"] attr input in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := ink_codegen.generate_code (addr_of contract) in
     Pure (core.result.Result.Ok α0).
@@ -163,10 +163,10 @@ Definition generate_or_err
     let* α0 := ink_ir.ir.contract.Contract::["new"] attr input in
     let* α1 := LangItem α0 in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
+    | Break residual =>
       let* α0 := LangItem residual in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | Continue val => Pure val
     end in
   let* α0 := ink_codegen.generate_code (addr_of contract) in
   Pure (core.result.Result.Ok α0).
@@ -192,10 +192,10 @@ Module ink_test.
       let* α0 := ink_ir.ir.ink_test.InkTest::["new"] attr input in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := ink_codegen.generate_code (addr_of test_definition) in
     Pure (core.result.Result.Ok α0).
@@ -221,10 +221,10 @@ Definition generate_or_err
     let* α0 := ink_ir.ir.ink_test.InkTest::["new"] attr input in
     let* α1 := LangItem α0 in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
+    | Break residual =>
       let* α0 := LangItem residual in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | Continue val => Pure val
     end in
   let* α0 := ink_codegen.generate_code (addr_of test_definition) in
   Pure (core.result.Result.Ok α0).
@@ -251,10 +251,10 @@ Module selector.
           input in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := ink_codegen.generate_code (addr_of selector) in
     Pure (core.result.Result.Ok α0).
@@ -280,10 +280,10 @@ Module selector.
           input in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := ink_codegen.generate_code (addr_of selector) in
     Pure (core.result.Result.Ok α0).
@@ -310,10 +310,10 @@ Definition generate_selector_id_or_err
         input in
     let* α1 := LangItem α0 in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
+    | Break residual =>
       let* α0 := LangItem residual in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | Continue val => Pure val
     end in
   let* α0 := ink_codegen.generate_code (addr_of selector) in
   Pure (core.result.Result.Ok α0).
@@ -339,10 +339,10 @@ Definition generate_selector_bytes_or_err
         input in
     let* α1 := LangItem α0 in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
+    | Break residual =>
       let* α0 := LangItem residual in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | Continue val => Pure val
     end in
   let* α0 := ink_codegen.generate_code (addr_of selector) in
   Pure (core.result.Result.Ok α0).
@@ -5651,10 +5651,10 @@ Module storage_item.
       let* α0 := ink_ir.ir.storage_item.StorageItem::["new"] config input in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := ink_codegen.generate_code (addr_of storage_item) in
     Pure (core.result.Result.Ok α0).
@@ -5680,10 +5680,10 @@ Definition generate_or_err
     let* α0 := ink_ir.ir.storage_item.StorageItem::["new"] config input in
     let* α1 := LangItem α0 in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
+    | Break residual =>
       let* α0 := LangItem residual in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | Continue val => Pure val
     end in
   let* α0 := ink_codegen.generate_code (addr_of storage_item) in
   Pure (core.result.Result.Ok α0).
@@ -5709,10 +5709,10 @@ Module trait_def.
       let* α0 := ink_ir.ir.trait_def.InkTraitDefinition::["new"] config input in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := ink_codegen.generate_code (addr_of trait_definition) in
     Pure (core.result.Result.Ok α0).
@@ -5738,10 +5738,10 @@ Definition analyze_or_err
     let* α0 := ink_ir.ir.trait_def.InkTraitDefinition::["new"] config input in
     let* α1 := LangItem α0 in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
+    | Break residual =>
       let* α0 := LangItem residual in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | Continue val => Pure val
     end in
   let* α0 := ink_codegen.generate_code (addr_of trait_definition) in
   Pure (core.result.Result.Ok α0).

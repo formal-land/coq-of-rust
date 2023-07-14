@@ -190,10 +190,10 @@ Module bump.
         let* α0 := alloc_start.["checked_add"] aligned_size in
         let* α1 := LangItem α0 in
         match α1 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* α0 := alloc_end.["gt"] self.["upper_limit"] in
       if (α0 : bool) then
@@ -201,19 +201,19 @@ Module bump.
           let* α0 := ink_allocator.bump.required_pages aligned_size in
           let* α1 := LangItem α0 in
           match α1 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         let* page_start :=
           let* α0 := self.["request_pages"] required_pages in
           let* α1 := LangItem α0 in
           match α1 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         let* _ :=
           let* α0 :=
@@ -223,10 +223,10 @@ Module bump.
           let* α2 := LangItem α1 in
           let* α3 :=
             match α2 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           assign self.["upper_limit"] α3 in
         let* _ :=
@@ -234,10 +234,10 @@ Module bump.
           let* α1 := LangItem α0 in
           let* α2 :=
             match α1 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           assign self.["next"] α2 in
         Pure (core.option.Option.Some page_start)
@@ -447,10 +447,10 @@ Module Impl_ink_allocator_bump_InnerAlloc_2.
       let* α0 := alloc_start.["checked_add"] aligned_size in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := alloc_end.["gt"] self.["upper_limit"] in
     if (α0 : bool) then
@@ -458,19 +458,19 @@ Module Impl_ink_allocator_bump_InnerAlloc_2.
         let* α0 := ink_allocator.bump.required_pages aligned_size in
         let* α1 := LangItem α0 in
         match α1 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* page_start :=
         let* α0 := self.["request_pages"] required_pages in
         let* α1 := LangItem α0 in
         match α1 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* _ :=
         let* α0 :=
@@ -480,10 +480,10 @@ Module Impl_ink_allocator_bump_InnerAlloc_2.
         let* α2 := LangItem α1 in
         let* α3 :=
           match α2 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         assign self.["upper_limit"] α3 in
       let* _ :=
@@ -491,10 +491,10 @@ Module Impl_ink_allocator_bump_InnerAlloc_2.
         let* α1 := LangItem α0 in
         let* α2 :=
           match α1 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         assign self.["next"] α2 in
       Pure (core.option.Option.Some page_start)

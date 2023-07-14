@@ -909,8 +909,8 @@ Module client.
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -955,8 +955,8 @@ Module client.
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Break
-                    |  => Pure tt
+                    | Ready.Build_t result => Break
+                    | Pending.Build_t  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
@@ -1030,8 +1030,8 @@ Module client.
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Break
-                    |  => Pure tt
+                    | Ready.Build_t result => Break
+                    | Pending.Build_t  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
@@ -1040,10 +1040,10 @@ Module client.
               end in
             let* α3 := LangItem α2 in
             match α3 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           let* _ :=
             let* res :=
@@ -1099,8 +1099,8 @@ Module client.
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -1213,8 +1213,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -1272,8 +1272,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -1290,8 +1290,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 (let* _ :=
                   let* α0 := LangItem (addr_of iter) in
                   match α0 with
-                  | None => Break
-                  | Some {| Some.0 := evt; |} =>
+                  | None  => Break
+                  | Some evt =>
                     let* evt :=
                       evt.["unwrap_or_else"]
                         (fun err =>
@@ -1355,10 +1355,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                             α1.["map_err"] ink_e2e.client.Error.Decoding in
                           let* α3 := LangItem α2 in
                           match α3 with
-                          | Break {| Break.0 := residual; |} =>
+                          | Break residual =>
                             let* α0 := LangItem residual in
                             Return α0
-                          | Continue {| Continue.0 := val; |} => Pure val
+                          | Continue val => Pure val
                           end in
                         let* _ :=
                           let* res :=
@@ -1447,8 +1447,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Break
-                    |  => Pure tt
+                    | Ready.Build_t result => Break
+                    | Pending.Build_t  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
@@ -1457,10 +1457,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               end in
             let* α3 := LangItem α2 in
             match α3 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           let* _ :=
             let* res :=
@@ -1505,8 +1505,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -1542,8 +1542,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -1560,8 +1560,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 (let* _ :=
                   let* α0 := LangItem (addr_of iter) in
                   match α0 with
-                  | None => Break
-                  | Some {| Some.0 := evt; |} =>
+                  | None  => Break
+                  | Some evt =>
                     let* evt :=
                       evt.["unwrap_or_else"]
                         (fun err =>
@@ -1622,10 +1622,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                             α1.["map_err"] ink_e2e.client.Error.Decoding in
                           let* α3 := LangItem α2 in
                           match α3 with
-                          | Break {| Break.0 := residual; |} =>
+                          | Break residual =>
                             let* α0 := LangItem residual in
                             Return α0
-                          | Continue {| Continue.0 := val; |} => Pure val
+                          | Continue val => Pure val
                           end in
                         let* _ :=
                           let* res :=
@@ -1738,8 +1738,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -1774,8 +1774,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -1791,8 +1791,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 (let* _ :=
                   let* α0 := LangItem (addr_of iter) in
                   match α0 with
-                  | None => Break
-                  | Some {| Some.0 := evt; |} =>
+                  | None  => Break
+                  | Some evt =>
                     let* evt :=
                       evt.["unwrap_or_else"]
                         (fun err =>
@@ -1819,10 +1819,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                           α1.["map_err"] ink_e2e.client.Error.Decoding in
                         let* α3 := LangItem α2 in
                         match α3 with
-                        | Break {| Break.0 := residual; |} =>
+                        | Break residual =>
                           let* α0 := LangItem residual in
                           Return α0
-                        | Continue {| Continue.0 := val; |} => Pure val
+                        | Continue val => Pure val
                         end in
                       let* _ :=
                         let* res :=
@@ -1885,8 +1885,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -1902,8 +1902,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 (let* _ :=
                   let* α0 := LangItem (addr_of iter) in
                   match α0 with
-                  | None => Break
-                  | Some {| Some.0 := evt; |} =>
+                  | None  => Break
+                  | Some evt =>
                     let* evt :=
                       evt.["unwrap_or_else"]
                         (fun err =>
@@ -1930,10 +1930,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                           α1.["map_err"] ink_e2e.client.Error.Decoding in
                         let* α3 := LangItem α2 in
                         match α3 with
-                        | Break {| Break.0 := residual; |} =>
+                        | Break residual =>
                           let* α0 := LangItem residual in
                           Return α0
-                        | Continue {| Continue.0 := val; |} => Pure val
+                        | Continue val => Pure val
                         end in
                       let* _ :=
                         let* res :=
@@ -2005,8 +2005,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -2076,8 +2076,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Break
-                    |  => Pure tt
+                    | Ready.Build_t result => Break
+                    | Pending.Build_t  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
@@ -2106,8 +2106,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Break
-                    |  => Pure tt
+                    | Ready.Build_t result => Break
+                    | Pending.Build_t  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
@@ -2143,20 +2143,20 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 "data" in
             let* α1 := LangItem α0 in
             match α1 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           let* balance :=
             let* α0 :=
               ink_e2e.client.get_composite_field_value account_data "free" in
             let* α1 := LangItem α0 in
             match α1 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           let* balance :=
             let* α0 := balance.["as_u128"] in
@@ -2174,10 +2174,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   Pure (ink_e2e.client.Error.Balance res)) in
             let* α2 := LangItem α1 in
             match α2 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           let* balance :=
             let* α0 := ImplE.Balance::["try_from"] balance in
@@ -2195,10 +2195,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   Pure (ink_e2e.client.Error.Balance res)) in
             let* α2 := LangItem α1 in
             match α2 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           let* _ :=
             let* res :=
@@ -2255,10 +2255,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               Pure (ink_e2e.client.Error.Balance res)) in
         let* α3 := LangItem α2 in
         match α3 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       Pure (core.result.Result.Ok field)
     else
@@ -2959,10 +2959,10 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
       let* α1 := α0.["collect"] in
       let* α2 := LangItem α1 in
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* val :=
       let* α0 := vals.["get"] (addr_of (core.option.Option.Some "deployer")) in
@@ -2978,10 +2978,10 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
       let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       α3.["deref"] in
     let* α0 := val.["decode_as_type"] in
@@ -2989,10 +2989,10 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
     let* α2 := LangItem α1 in
     let* α0 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* val :=
       let* α0 := vals.["get"] (addr_of (core.option.Option.Some "contract")) in
@@ -3008,10 +3008,10 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
       let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       α3.["deref"] in
     let* α0 := val.["decode_as_type"] in
@@ -3019,10 +3019,10 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
     let* α2 := LangItem α1 in
     let* α1 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     Pure
       (core.result.Result.Ok
@@ -3067,20 +3067,20 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
           "field count should have been checked already on tuple type; please file a bug report" in
       let* α2 := LangItem α1 in
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := val.["decode_as_type"] in
     let* α1 := α0.["map_err"] (fun e => e.["at_field"] "deployer") in
     let* α2 := LangItem α1 in
     let* α0 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* val :=
       let* α0 := vals.["next"] in
@@ -3089,20 +3089,20 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
           "field count should have been checked already on tuple type; please file a bug report" in
       let* α2 := LangItem α1 in
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := val.["decode_as_type"] in
     let* α1 := α0.["map_err"] (fun e => e.["at_field"] "contract") in
     let* α2 := LangItem α1 in
     let* α1 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     Pure
       (core.result.Result.Ok
@@ -3152,10 +3152,10 @@ Section
       let* α0 := composite.["skip_decoding"] in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* _ :=
       let* α0 := composite.["bytes_from_undecoded"] in
@@ -3514,10 +3514,10 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
       let* α1 := α0.["collect"] in
       let* α2 := LangItem α1 in
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* val :=
       let* α0 := vals.["get"] (addr_of (core.option.Option.Some "code_hash")) in
@@ -3533,10 +3533,10 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
       let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       α3.["deref"] in
     let* α0 := val.["decode_as_type"] in
@@ -3544,10 +3544,10 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
     let* α2 := LangItem α1 in
     let* α0 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     Pure
       (core.result.Result.Ok
@@ -3589,20 +3589,20 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
           "field count should have been checked already on tuple type; please file a bug report" in
       let* α2 := LangItem α1 in
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := val.["decode_as_type"] in
     let* α1 := α0.["map_err"] (fun e => e.["at_field"] "code_hash") in
     let* α2 := LangItem α1 in
     let* α0 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     Pure
       (core.result.Result.Ok
@@ -3646,10 +3646,10 @@ Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
       let* α0 := composite.["skip_decoding"] in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* _ :=
       let* α0 := composite.["bytes_from_undecoded"] in
@@ -3831,8 +3831,8 @@ Module Impl_ink_e2e_client_Client_C_E_2.
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -3877,8 +3877,8 @@ Module Impl_ink_e2e_client_Client_C_E_2.
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -3951,8 +3951,8 @@ Module Impl_ink_e2e_client_Client_C_E_2.
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -3961,10 +3961,10 @@ Module Impl_ink_e2e_client_Client_C_E_2.
             end in
           let* α3 := LangItem α2 in
           match α3 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         let* _ :=
           let* res :=
@@ -4020,8 +4020,8 @@ Module Impl_ink_e2e_client_Client_C_E_2.
               let* α1 := LangItem _task_context in
               let* α0 := LangItem α0 α1 in
               match α0 with
-              | {| Ready.0 := result; |} => Break
-              |  => Pure tt
+              | Ready.Build_t result => Break
+              | Pending.Build_t  => Pure tt
               end in
             let* _ :=
               let* α0 := yield tt in
@@ -4134,8 +4134,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -4193,8 +4193,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -4211,8 +4211,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               (let* _ :=
                 let* α0 := LangItem (addr_of iter) in
                 match α0 with
-                | None => Break
-                | Some {| Some.0 := evt; |} =>
+                | None  => Break
+                | Some evt =>
                   let* evt :=
                     evt.["unwrap_or_else"]
                       (fun err =>
@@ -4274,10 +4274,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                           α1.["map_err"] ink_e2e.client.Error.Decoding in
                         let* α3 := LangItem α2 in
                         match α3 with
-                        | Break {| Break.0 := residual; |} =>
+                        | Break residual =>
                           let* α0 := LangItem residual in
                           Return α0
-                        | Continue {| Continue.0 := val; |} => Pure val
+                        | Continue val => Pure val
                         end in
                       let* _ :=
                         let* res :=
@@ -4365,8 +4365,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -4375,10 +4375,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             end in
           let* α3 := LangItem α2 in
           match α3 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         let* _ :=
           let* res :=
@@ -4422,8 +4422,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -4459,8 +4459,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -4477,8 +4477,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               (let* _ :=
                 let* α0 := LangItem (addr_of iter) in
                 match α0 with
-                | None => Break
-                | Some {| Some.0 := evt; |} =>
+                | None  => Break
+                | Some evt =>
                   let* evt :=
                     evt.["unwrap_or_else"]
                       (fun err =>
@@ -4538,10 +4538,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                           α1.["map_err"] ink_e2e.client.Error.Decoding in
                         let* α3 := LangItem α2 in
                         match α3 with
-                        | Break {| Break.0 := residual; |} =>
+                        | Break residual =>
                           let* α0 := LangItem residual in
                           Return α0
-                        | Continue {| Continue.0 := val; |} => Pure val
+                        | Continue val => Pure val
                         end in
                       let* _ :=
                         let* res :=
@@ -4653,8 +4653,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -4689,8 +4689,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -4706,8 +4706,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               (let* _ :=
                 let* α0 := LangItem (addr_of iter) in
                 match α0 with
-                | None => Break
-                | Some {| Some.0 := evt; |} =>
+                | None  => Break
+                | Some evt =>
                   let* evt :=
                     evt.["unwrap_or_else"]
                       (fun err =>
@@ -4733,10 +4733,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                       let* α2 := α1.["map_err"] ink_e2e.client.Error.Decoding in
                       let* α3 := LangItem α2 in
                       match α3 with
-                      | Break {| Break.0 := residual; |} =>
+                      | Break residual =>
                         let* α0 := LangItem residual in
                         Return α0
-                      | Continue {| Continue.0 := val; |} => Pure val
+                      | Continue val => Pure val
                       end in
                     let* _ :=
                       let* res :=
@@ -4799,8 +4799,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -4816,8 +4816,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               (let* _ :=
                 let* α0 := LangItem (addr_of iter) in
                 match α0 with
-                | None => Break
-                | Some {| Some.0 := evt; |} =>
+                | None  => Break
+                | Some evt =>
                   let* evt :=
                     evt.["unwrap_or_else"]
                       (fun err =>
@@ -4843,10 +4843,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                       let* α2 := α1.["map_err"] ink_e2e.client.Error.Decoding in
                       let* α3 := LangItem α2 in
                       match α3 with
-                      | Break {| Break.0 := residual; |} =>
+                      | Break residual =>
                         let* α0 := LangItem residual in
                         Return α0
-                      | Continue {| Continue.0 := val; |} => Pure val
+                      | Continue val => Pure val
                       end in
                     let* _ :=
                       let* res :=
@@ -4918,8 +4918,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -4989,8 +4989,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -5019,8 +5019,8 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -5054,20 +5054,20 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             ink_e2e.client.get_composite_field_value (addr_of account) "data" in
           let* α1 := LangItem α0 in
           match α1 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         let* balance :=
           let* α0 :=
             ink_e2e.client.get_composite_field_value account_data "free" in
           let* α1 := LangItem α0 in
           match α1 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         let* balance :=
           let* α0 := balance.["as_u128"] in
@@ -5084,10 +5084,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 Pure (ink_e2e.client.Error.Balance res)) in
           let* α2 := LangItem α1 in
           match α2 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         let* balance :=
           let* α0 := ImplE.Balance::["try_from"] balance in
@@ -5104,10 +5104,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 Pure (ink_e2e.client.Error.Balance res)) in
           let* α2 := LangItem α1 in
           match α2 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         let* _ :=
           let* res :=
@@ -5186,10 +5186,10 @@ Definition get_composite_field_value
             Pure (ink_e2e.client.Error.Balance res)) in
       let* α3 := LangItem α2 in
       match α3 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     Pure (core.result.Result.Ok field)
   else
@@ -5741,10 +5741,10 @@ Module node_proc.
                   Pure res) in
             let* α2 := LangItem α1 in
             match α2 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           let* stderr :=
             let* α0 := proc.["stderr"].["take"] in
@@ -5773,8 +5773,8 @@ Module node_proc.
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -5873,10 +5873,10 @@ Module node_proc.
                     Pure res) in
               let* α2 := LangItem α1 in
               match α2 with
-              | Break {| Break.0 := residual; |} =>
+              | Break residual =>
                 let* α0 := LangItem residual in
                 Return α0
-              | Continue {| Continue.0 := val; |} => Pure val
+              | Continue val => Pure val
               end in
             Pure (core.result.Result.Err err)
           end).
@@ -5913,10 +5913,10 @@ Module node_proc.
             let* α2 := α1.["map"] (fun (_, port_str) => Pure port_str) in
             let* α3 := LangItem α2 in
             match α3 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           let* port_str :=
             line_end.["trim_end_matches"]
@@ -6303,10 +6303,10 @@ Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
                 Pure res) in
           let* α2 := LangItem α1 in
           match α2 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         let* stderr :=
           let* α0 := proc.["stderr"].["take"] in
@@ -6334,8 +6334,8 @@ Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -6430,10 +6430,10 @@ Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
                   Pure res) in
             let* α2 := LangItem α1 in
             match α2 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           Pure (core.result.Result.Err err)
         end).
@@ -6497,10 +6497,10 @@ Definition find_substrate_port_from_output
           let* α2 := α1.["map"] (fun (_, port_str) => Pure port_str) in
           let* α3 := LangItem α2 in
           match α3 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         let* port_str :=
           line_end.["trim_end_matches"]
@@ -7768,8 +7768,8 @@ Module xts.
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Break
-                    |  => Pure tt
+                    | Ready.Build_t result => Break
+                    | Pending.Build_t  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
@@ -7778,10 +7778,10 @@ Module xts.
               end in
             let* α4 := LangItem α3 in
             match α4 with
-            | Break {| Break.0 := residual; |} =>
+            | Break residual =>
               let* α0 := LangItem residual in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | Continue val => Pure val
             end in
           let* _ :=
             let* α0 := tx_progress.["wait_for_in_block"] in
@@ -7795,8 +7795,8 @@ Module xts.
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Break
-                    |  => Pure tt
+                    | Ready.Build_t result => Break
+                    | Pending.Build_t  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
@@ -7882,8 +7882,8 @@ Module xts.
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Break
-                    |  => Pure tt
+                    | Ready.Build_t result => Break
+                    | Pending.Build_t  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
@@ -7940,8 +7940,8 @@ Module xts.
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -7986,8 +7986,8 @@ Module xts.
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -8016,8 +8016,8 @@ Module xts.
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -8086,8 +8086,8 @@ Module xts.
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -8152,8 +8152,8 @@ Module xts.
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Break
-                    |  => Pure tt
+                    | Ready.Build_t result => Break
+                    | Pending.Build_t  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
@@ -8222,8 +8222,8 @@ Module xts.
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -8290,8 +8290,8 @@ Module xts.
                     let* α1 := LangItem _task_context in
                     let* α0 := LangItem α0 α1 in
                     match α0 with
-                    | {| Ready.0 := result; |} => Break
-                    |  => Pure tt
+                    | Ready.Build_t result => Break
+                    | Pending.Build_t  => Pure tt
                     end in
                   let* _ :=
                     let* α0 := yield tt in
@@ -8367,8 +8367,8 @@ Module xts.
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -8407,8 +8407,8 @@ Module xts.
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -10232,10 +10232,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
     let* α2 := LangItem α1 in
     let* α3 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     match α3 with
     | __codec_x_edqy =>
@@ -11388,8 +11388,8 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -11398,10 +11398,10 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
             end in
           let* α4 := LangItem α3 in
           match α4 with
-          | Break {| Break.0 := residual; |} =>
+          | Break residual =>
             let* α0 := LangItem residual in
             Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
+          | Continue val => Pure val
           end in
         let* _ :=
           let* α0 := tx_progress.["wait_for_in_block"] in
@@ -11415,8 +11415,8 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -11502,8 +11502,8 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -11560,8 +11560,8 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -11606,8 +11606,8 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -11636,8 +11636,8 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
                 let* α1 := LangItem _task_context in
                 let* α0 := LangItem α0 α1 in
                 match α0 with
-                | {| Ready.0 := result; |} => Break
-                |  => Pure tt
+                | Ready.Build_t result => Break
+                | Pending.Build_t  => Pure tt
                 end in
               let* _ :=
                 let* α0 := yield tt in
@@ -11706,8 +11706,8 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
               let* α1 := LangItem _task_context in
               let* α0 := LangItem α0 α1 in
               match α0 with
-              | {| Ready.0 := result; |} => Break
-              |  => Pure tt
+              | Ready.Build_t result => Break
+              | Pending.Build_t  => Pure tt
               end in
             let* _ :=
               let* α0 := yield tt in
@@ -11772,8 +11772,8 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -11842,8 +11842,8 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
               let* α1 := LangItem _task_context in
               let* α0 := LangItem α0 α1 in
               match α0 with
-              | {| Ready.0 := result; |} => Break
-              |  => Pure tt
+              | Ready.Build_t result => Break
+              | Pending.Build_t  => Pure tt
               end in
             let* _ :=
               let* α0 := yield tt in
@@ -11909,8 +11909,8 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
                   let* α1 := LangItem _task_context in
                   let* α0 := LangItem α0 α1 in
                   match α0 with
-                  | {| Ready.0 := result; |} => Break
-                  |  => Pure tt
+                  | Ready.Build_t result => Break
+                  | Pending.Build_t  => Pure tt
                   end in
                 let* _ :=
                   let* α0 := yield tt in
@@ -11985,8 +11985,8 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
               let* α1 := LangItem _task_context in
               let* α0 := LangItem α0 α1 in
               match α0 with
-              | {| Ready.0 := result; |} => Break
-              |  => Pure tt
+              | Ready.Build_t result => Break
+              | Pending.Build_t  => Pure tt
               end in
             let* _ :=
               let* α0 := yield tt in
@@ -12025,8 +12025,8 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
               let* α1 := LangItem _task_context in
               let* α0 := LangItem α0 α1 in
               match α0 with
-              | {| Ready.0 := result; |} => Break
-              |  => Pure tt
+              | Ready.Build_t result => Break
+              | Pending.Build_t  => Pure tt
               end in
             let* _ :=
               let* α0 := yield tt in

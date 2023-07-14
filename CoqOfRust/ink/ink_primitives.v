@@ -743,10 +743,10 @@ Module types.
         let* α0 := list u8::["try_from"] bytes in
         let* α1 := LangItem α0 in
         match α1 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* α0 := Self address in
       Pure (core.result.Result.Ok α0).
@@ -1051,10 +1051,10 @@ Module types.
         let* α0 := list u8::["try_from"] bytes in
         let* α1 := LangItem α0 in
         match α1 with
-        | Break {| Break.0 := residual; |} =>
+        | Break residual =>
           let* α0 := LangItem residual in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | Continue val => Pure val
         end in
       let* α0 := Self hash in
       Pure (core.result.Result.Ok α0).
@@ -1333,20 +1333,20 @@ Module Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor.
           "field count should have been checked already on tuple type; please file a bug report" in
       let* α2 := LangItem α1 in
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := val.["decode_as_type"] in
     let* α1 := α0.["map_err"] (fun e => e.["at_idx"] 0) in
     let* α2 := LangItem α1 in
     let* α0 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     Pure (core.result.Result.Ok (ink_primitives.types.AccountId.Build_t α0)).
   
@@ -1384,10 +1384,10 @@ Module Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_AccountId.
       let* α0 := composite.["skip_decoding"] in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* _ :=
       let* α0 := composite.["bytes_from_undecoded"] in
@@ -1819,10 +1819,10 @@ Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
       let* α0 := list u8::["try_from"] bytes in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := Self address in
     Pure (core.result.Result.Ok α0).
@@ -1972,20 +1972,20 @@ Module Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor.
           "field count should have been checked already on tuple type; please file a bug report" in
       let* α2 := LangItem α1 in
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := val.["decode_as_type"] in
     let* α1 := α0.["map_err"] (fun e => e.["at_idx"] 0) in
     let* α2 := LangItem α1 in
     let* α0 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     Pure (core.result.Result.Ok (ink_primitives.types.Hash.Build_t α0)).
   
@@ -2023,10 +2023,10 @@ Module Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_Hash.
       let* α0 := composite.["skip_decoding"] in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* _ :=
       let* α0 := composite.["bytes_from_undecoded"] in
@@ -2406,10 +2406,10 @@ Module Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
       let* α0 := list u8::["try_from"] bytes in
       let* α1 := LangItem α0 in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     let* α0 := Self hash in
     Pure (core.result.Result.Ok α0).
@@ -2740,10 +2740,10 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError.
     let* α2 := LangItem α1 in
     let* α3 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
+      | Break residual =>
         let* α0 := LangItem residual in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | Continue val => Pure val
       end in
     match α3 with
     | __codec_x_edqy =>
