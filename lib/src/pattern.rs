@@ -33,12 +33,24 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
         }
         PatKind::Struct(qpath, pats, _) => {
             let path = compile_qpath(env, qpath);
-            let pats = pats
+            let pats: Vec<(String, Pattern)> = pats
                 .iter()
                 .map(|pat| (pat.ident.name.to_string(), compile_pattern(env, pat.pat)))
                 .collect();
             let struct_or_variant = StructOrVariant::of_qpath(env, qpath);
-            Pattern::StructStruct(path, pats, struct_or_variant)
+            // here we check whether we got a variant that is a TupleStruct (it can happen when parsing a for loop)
+            // to avoid errors in the translation we create a tuple only if names of all the fields start with a digit
+            // (note that it is incorrect in Coq)
+            let is_a_tuple = pats
+                .iter()
+                .all(|(name, _)| name.starts_with(|c: char| c.is_ascii_digit()));
+
+            if is_a_tuple {
+                let pats = pats.into_iter().map(|(_, pat)| pat).collect();
+                Pattern::StructTuple(path, pats, struct_or_variant)
+            } else {
+                Pattern::StructStruct(path, pats, struct_or_variant)
+            }
         }
         PatKind::TupleStruct(qpath, pats, _) => {
             let path = compile_qpath(env, qpath);
