@@ -14,21 +14,12 @@ Module builders.
       (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
       (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
   
-  Definition constructor_exec_input
-      `{H : State.Trait}
-      {E ContractRef Args R : Set}
+  Parameter constructor_exec_input : forall `{H : State.Trait}, forall
+      {E : Set} {ContractRef : Set} {Args : Set} {R : Set},
       `{parity_scale_codec.codec.Encode.Trait Args}
       `{ink_env.types.Environment.Trait E}
-      (builder : ink_e2e.builders.CreateBuilderPartial E ContractRef Args R)
-      : M (H := H) (alloc.vec.Vec u8) :=
-    let* α0 := 0.["into"] in
-    let* α1 := builder.["endowment"] α0 in
-    let* α2 := α1.["code_hash"] ink_primitives.types.Clear.CLEAR_HASH in
-    let* α3 := alloc.vec.Vec::["new"] tt in
-    let* α4 := α2.["salt_bytes"] α3 in
-    let* α5 := α4.["params"] in
-    let* α6 := α5.["exec_input"] in
-    α6.["encode"].
+      ink_e2e.builders.CreateBuilderPartial E ContractRef Args R
+      -> M (H := H) (alloc.vec.Vec u8).
 End builders.
 
 Definition CreateBuilderPartial : Set :=
@@ -42,21 +33,12 @@ Definition CreateBuilderPartial : Set :=
     (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
     (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
 
-Definition constructor_exec_input
-    `{H : State.Trait}
-    {E ContractRef Args R : Set}
+Parameter constructor_exec_input : forall `{H : State.Trait}, forall
+    {E : Set} {ContractRef : Set} {Args : Set} {R : Set},
     `{parity_scale_codec.codec.Encode.Trait Args}
     `{ink_env.types.Environment.Trait E}
-    (builder : ink_e2e.builders.CreateBuilderPartial E ContractRef Args R)
-    : M (H := H) (alloc.vec.Vec u8) :=
-  let* α0 := 0.["into"] in
-  let* α1 := builder.["endowment"] α0 in
-  let* α2 := α1.["code_hash"] ink_primitives.types.Clear.CLEAR_HASH in
-  let* α3 := alloc.vec.Vec::["new"] tt in
-  let* α4 := α2.["salt_bytes"] α3 in
-  let* α5 := α4.["params"] in
-  let* α6 := α5.["exec_input"] in
-  α6.["encode"].
+    ink_e2e.builders.CreateBuilderPartial E ContractRef Args R
+    -> M (H := H) (alloc.vec.Vec u8).
 
 Module client.
   Definition CallBuilderFinal : Set :=
@@ -93,12 +75,8 @@ Module client.
   Module Impl_ink_e2e_client_InstantiationResult_C_E.
     Definition Self := ink_e2e.client.InstantiationResult C E.
     
-    Definition call
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) ink.codegen.dispatch.info.ContractCallBuilder.Type :=
-      let* α0 := self.["account_id"].["clone"] in
-      ink_env.call.create_builder.FromAccountId.from_account_id α0.
+    Parameter call : forall `{H : State.Trait}, ref Self
+        -> M (H := H) ink.codegen.dispatch.info.ContractCallBuilder.Type.
     
     Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
       Notation.dot := call;
@@ -132,16 +110,9 @@ Module client.
     
     Definition Self := ink_e2e.client.UploadResult C E.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      let* α0 := f.["debug_struct"] "UploadResult" in
-      let* α1 := α0.["field"] "code_hash" (addr_of self.["code_hash"]) in
-      let* α2 := α1.["field"] "dry_run" (addr_of self.["dry_run"]) in
-      let* α3 := α2.["field"] "events" (addr_of self.["events"]) in
-      α3.["finish"].
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -159,16 +130,9 @@ Module client.
     
     Definition Self := ink_e2e.client.InstantiationResult C E.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      let* α0 := f.["debug_struct"] "InstantiationResult" in
-      let* α1 := α0.["field"] "account_id" (addr_of self.["account_id"]) in
-      let* α2 := α1.["field"] "dry_run" (addr_of self.["dry_run"]) in
-      let* α3 := α2.["field"] "events" (addr_of self.["events"]) in
-      α3.["finish"].
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -198,63 +162,41 @@ Module client.
   Module Impl_ink_e2e_client_CallResult_C_E_V.
     Definition Self := ink_e2e.client.CallResult C E V.
     
-    Definition message_result
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) (ink_primitives.MessageResult V) :=
-      self.["dry_run"].["message_result"].
+    Parameter message_result : forall `{H : State.Trait}, ref Self
+        -> M (H := H) (ink_primitives.MessageResult V).
     
     Global Instance Method_message_result `{H : State.Trait} :
       Notation.Dot "message_result" := {
       Notation.dot := message_result;
     }.
     
-    Definition return_value `{H : State.Trait} (self : Self) : M (H := H) V :=
-      self.["dry_run"].["return_value"].
+    Parameter return_value : forall `{H : State.Trait}, Self -> M (H := H) V.
     
     Global Instance Method_return_value `{H : State.Trait} :
       Notation.Dot "return_value" := {
       Notation.dot := return_value;
     }.
     
-    Definition return_data
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) (ref Slice) :=
-      let* α0 := self.["dry_run"].["exec_return_value"] in
-      Pure (addr_of α0.["data"]).
+    Parameter return_data : forall `{H : State.Trait}, ref Self
+        -> M (H := H) (ref Slice).
     
     Global Instance Method_return_data `{H : State.Trait} :
       Notation.Dot "return_data" := {
       Notation.dot := return_data;
     }.
     
-    Definition debug_message
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) alloc.string.String :=
-      self.["dry_run"].["debug_message"].
+    Parameter debug_message : forall `{H : State.Trait}, ref Self
+        -> M (H := H) alloc.string.String.
     
     Global Instance Method_debug_message `{H : State.Trait} :
       Notation.Dot "debug_message" := {
       Notation.dot := debug_message;
     }.
     
-    Definition contains_event
-        `{H : State.Trait}
-        (self : ref Self)
-        (pallet_name : ref str)
-        (variant_name : ref str)
-        : M (H := H) bool :=
-      let* α0 := self.["events"].["iter"] in
-      α0.["any"]
-        (fun event =>
-          let* event := event.["unwrap"] in
-          let* α0 := event.["pallet_name"] in
-          let* α1 := α0.["eq"] pallet_name in
-          let* α2 := event.["variant_name"] in
-          let* α3 := α2.["eq"] variant_name in
-          α1.["andb"] α3).
+    Parameter contains_event : forall `{H : State.Trait}, ref Self->
+        ref str->
+        ref str
+        -> M (H := H) bool.
     
     Global Instance Method_contains_event `{H : State.Trait} :
       Notation.Dot "contains_event" := {
@@ -268,15 +210,9 @@ Module client.
     
     Definition Self := ink_e2e.client.CallResult C E V.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      let* α0 := f.["debug_struct"] "CallResult" in
-      let* α1 := α0.["field"] "dry_run" (addr_of self.["dry_run"]) in
-      let* α2 := α1.["field"] "events" (addr_of self.["events"]) in
-      α2.["finish"].
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -311,18 +247,9 @@ Module client.
     
     Definition Self := ink_e2e.client.CallDryRunResult E V.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      core.fmt.Formatter::["debug_struct_field2_finish"]
-        f
-        "CallDryRunResult"
-        "exec_result"
-        (addr_of self.["exec_result"])
-        "_marker"
-        (addr_of (addr_of self.["_marker"])).
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -337,97 +264,46 @@ Module client.
   Module Impl_ink_e2e_client_CallDryRunResult_E_V.
     Definition Self := ink_e2e.client.CallDryRunResult E V.
     
-    Definition is_err `{H : State.Trait} (self : ref Self) : M (H := H) bool :=
-      self.["exec_result"].["result"].["is_err"].
+    Parameter is_err : forall `{H : State.Trait}, ref Self -> M (H := H) bool.
     
     Global Instance Method_is_err `{H : State.Trait} :
       Notation.Dot "is_err" := {
       Notation.dot := is_err;
     }.
     
-    Definition exec_return_value
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) (ref pallet_contracts_primitives.ExecReturnValue) :=
-      let* α0 := self.["exec_result"].["result"].["as_ref"] in
-      α0.["unwrap_or_else"]
-        (fun call_err =>
-          let* α0 := format_argument::["new_debug"] (addr_of call_err) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "Call dry-run failed: " ])
-              (addr_of [ α0 ]) in
-          core.panicking.panic_fmt α1).
+    Parameter exec_return_value : forall `{H : State.Trait}, ref Self
+        -> M (H := H) (ref pallet_contracts_primitives.ExecReturnValue).
     
     Global Instance Method_exec_return_value `{H : State.Trait} :
       Notation.Dot "exec_return_value" := {
       Notation.dot := exec_return_value;
     }.
     
-    Definition message_result
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) (ink_primitives.MessageResult V) :=
-      let* data :=
-        let* α0 := self.["exec_return_value"] in
-        Pure (addr_of α0.["data"]) in
-      let* α0 := data.["as_ref"] in
-      let* α1 := parity_scale_codec.codec.Decode.decode (addr_of α0) in
-      α1.["unwrap_or_else"]
-        (fun env_err =>
-          let* α0 := format_argument::["new_display"] (addr_of env_err) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of
-                [ "Decoding dry run result to ink! message return type failed: "
-                ])
-              (addr_of [ α0 ]) in
-          core.panicking.panic_fmt α1).
+    Parameter message_result : forall `{H : State.Trait}, ref Self
+        -> M (H := H) (ink_primitives.MessageResult V).
     
     Global Instance Method_message_result `{H : State.Trait} :
       Notation.Dot "message_result" := {
       Notation.dot := message_result;
     }.
     
-    Definition return_value `{H : State.Trait} (self : Self) : M (H := H) V :=
-      let* α0 := self.["message_result"] in
-      α0.["unwrap_or_else"]
-        (fun lang_err =>
-          let* α0 := format_argument::["new_debug"] (addr_of lang_err) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of
-                [
-                  "Encountered a `LangError` while decoding dry run result to ink! message: "
-                ])
-              (addr_of [ α0 ]) in
-          core.panicking.panic_fmt α1).
+    Parameter return_value : forall `{H : State.Trait}, Self -> M (H := H) V.
     
     Global Instance Method_return_value `{H : State.Trait} :
       Notation.Dot "return_value" := {
       Notation.dot := return_value;
     }.
     
-    Definition return_data
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) (ref Slice) :=
-      let* α0 := self.["exec_return_value"] in
-      Pure (addr_of α0.["data"]).
+    Parameter return_data : forall `{H : State.Trait}, ref Self
+        -> M (H := H) (ref Slice).
     
     Global Instance Method_return_data `{H : State.Trait} :
       Notation.Dot "return_data" := {
       Notation.dot := return_data;
     }.
     
-    Definition debug_message
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) alloc.string.String :=
-      let* α0 :=
-        alloc.string.String::["from_utf8_lossy"]
-          (addr_of self.["exec_result"].["debug_message"]) in
-      α0.["into"].
+    Parameter debug_message : forall `{H : State.Trait}, ref Self
+        -> M (H := H) alloc.string.String.
     
     Global Instance Method_debug_message `{H : State.Trait} :
       Notation.Dot "debug_message" := {
@@ -467,55 +343,9 @@ Module client.
     
     Definition Self := ink_e2e.client.Error C E.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      match addr_of self with
-      | ink_e2e.client.Error.ContractNotFound name =>
-        let* res :=
-          let* α0 := format_argument::["new_display"] (addr_of name) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "ContractNotFound: " ])
-              (addr_of [ α0 ]) in
-          alloc.fmt.format α1 in
-        f.["write_str"] (addr_of res)
-      | ink_e2e.client.Error.InstantiateDryRun res =>
-        let* res :=
-          let* α0 :=
-            alloc.string.String::["from_utf8_lossy"]
-              (addr_of res.["debug_message"]) in
-          let* α1 := format_argument::["new_display"] (addr_of (addr_of α0)) in
-          let* α2 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "InstantiateDryRun: " ])
-              (addr_of [ α1 ]) in
-          alloc.fmt.format α2 in
-        f.["write_str"] (addr_of res)
-      | ink_e2e.client.Error.InstantiateExtrinsic _ =>
-        f.["write_str"] "InstantiateExtrinsic"
-      | ink_e2e.client.Error.UploadDryRun _ => f.["write_str"] "UploadDryRun"
-      | ink_e2e.client.Error.UploadExtrinsic _ =>
-        f.["write_str"] "UploadExtrinsic"
-      | ink_e2e.client.Error.CallDryRun _ => f.["write_str"] "CallDryRun"
-      | ink_e2e.client.Error.CallExtrinsic _ => f.["write_str"] "CallExtrinsic"
-      | ink_e2e.client.Error.Balance msg =>
-        let* α0 := format_argument::["new_display"] (addr_of msg) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "Balance: " ])
-            (addr_of [ α0 ]) in
-        f.["write_fmt"] α1
-      | ink_e2e.client.Error.Decoding err =>
-        let* α0 := format_argument::["new_display"] (addr_of err) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "Decoding: " ])
-            (addr_of [ α0 ]) in
-        f.["write_fmt"] α1
-      end.
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -548,18 +378,9 @@ Module client.
     
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      core.fmt.Formatter::["debug_struct_field2_finish"]
-        f
-        "ContractInstantiatedEvent"
-        "deployer"
-        (addr_of self.["deployer"])
-        "contract"
-        (addr_of (addr_of self.["contract"])).
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -579,30 +400,11 @@ Module client.
     
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
-    Definition encode_as_type_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_type_id : u32)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      let
-          '{|
-            ink_e2e.client.ContractInstantiatedEvent.deployer := deployer;
-            ink_e2e.client.ContractInstantiatedEvent.contract := contract;
-          |} :=
-        self in
-      let* α0 :=
-        [
-            (core.option.Option.Some "deployer",
-              cast deployer (ref TraitObject));
-            (core.option.Option.Some "contract",
-              cast contract (ref TraitObject))
-          ].["into_iter"] in
-      (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_type_to"]
-        __encode_as_type_type_id
-        __encode_as_type_types
-        __encode_as_type_out.
+    Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+        u32->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
@@ -628,31 +430,11 @@ Module client.
     
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
-    Definition encode_as_fields_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_fields : ref Slice)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      let
-          '{|
-            ink_e2e.client.ContractInstantiatedEvent.deployer := deployer;
-            ink_e2e.client.ContractInstantiatedEvent.contract := contract;
-          |} :=
-        self in
-      let* α0 :=
-        [
-            (core.option.Option.Some "deployer",
-              cast deployer (ref TraitObject));
-            (core.option.Option.Some "contract",
-              cast contract (ref TraitObject))
-          ].["into_iter"] in
-      (scale_encode.impls.composite.Composite.Build_t
-          α0).["encode_as_fields_to"]
-        __encode_as_type_fields
-        __encode_as_type_types
-        __encode_as_type_out.
+    Parameter encode_as_fields_to : forall `{H : State.Trait}, ref Self->
+        ref Slice->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H : State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
@@ -718,16 +500,9 @@ Module client.
     
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      core.fmt.Formatter::["debug_struct_field1_finish"]
-        f
-        "CodeStoredEvent"
-        "code_hash"
-        (addr_of (addr_of self.["code_hash"])).
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -745,24 +520,11 @@ Module client.
     
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
-    Definition encode_as_type_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_type_id : u32)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      let '{| ink_e2e.client.CodeStoredEvent.code_hash := code_hash; |} :=
-        self in
-      let* α0 :=
-        [
-            (core.option.Option.Some "code_hash",
-              cast code_hash (ref TraitObject))
-          ].["into_iter"] in
-      (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_type_to"]
-        __encode_as_type_type_id
-        __encode_as_type_types
-        __encode_as_type_out.
+    Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+        u32->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
@@ -784,25 +546,11 @@ Module client.
     
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
-    Definition encode_as_fields_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_fields : ref Slice)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      let '{| ink_e2e.client.CodeStoredEvent.code_hash := code_hash; |} :=
-        self in
-      let* α0 :=
-        [
-            (core.option.Option.Some "code_hash",
-              cast code_hash (ref TraitObject))
-          ].["into_iter"] in
-      (scale_encode.impls.composite.Composite.Build_t
-          α0).["encode_as_fields_to"]
-        __encode_as_type_fields
-        __encode_as_type_types
-        __encode_as_type_out.
+    Parameter encode_as_fields_to : forall `{H : State.Trait}, ref Self->
+        ref Slice->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H : State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
@@ -867,1388 +615,143 @@ Module client.
   Module Impl_ink_e2e_client_Client_C_E.
     Definition Self := ink_e2e.client.Client C E.
     
-    Definition new
-        `{H : State.Trait}
-        (client : subxt.client.online_client.OnlineClient C)
-        (contracts : impl IntoIterator<Item = &str>)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let client := client in
-          let contracts := contracts in
-          let* contracts :=
-            let* α0 := contracts.["into_iter"] in
-            let* α1 :=
-              α0.["map"]
-                (fun path =>
-                  let* wasm_path := std.path.PathBuf::["from"] path in
-                  let* contract_name :=
-                    let* α0 := wasm_path.["file_stem"] in
-                    α0.["unwrap_or_else"]
-                      (fun  =>
-                        let* α0 := wasm_path.["display"] in
-                        let* α1 :=
-                          format_argument::["new_display"] (addr_of α0) in
-                        let* α2 :=
-                          format_arguments::["new_v1"]
-                            (addr_of [ "Invalid contract wasm path '"; "'" ])
-                            (addr_of [ α1 ]) in
-                        core.panicking.panic_fmt α2) in
-                  let* α0 := contract_name.["to_string_lossy"] in
-                  let* α1 := α0.["to_string"] in
-                  Pure (α1, wasm_path)) in
-            α1.["collect"] in
-          let* α0 := ink_e2e.xts.ContractsApi::["new"] client in
-          let* α1 := LangItem α0 in
-          let* α2 :=
-            match α1 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          Pure {| Self.api := α2; Self.contracts := contracts; |}).
+    Parameter new : forall
+          `{H : State.Trait},
+          subxt.client.online_client.OnlineClient C->
+        impl IntoIterator<Item = &str>
+        -> M (H := H) OpaqueDef.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
     
-    Definition create_and_fund_account
-        `{H : State.Trait}
-        (self : ref Self)
-        (origin : ref (ink_e2e.Signer C))
-        (amount : ImplE.Balance)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let origin := origin in
-          let amount := amount in
-          let* '(pair, _, _) :=
-            sp_core.crypto.Pair.generate_with_phrase core.option.Option.None in
-          let* pair_signer :=
-            (subxt.tx.signer.pair_signer.PairSigner C _)::["new"] pair in
-          let* account_id :=
-            let* α0 := pair_signer.["account_id"] in
-            α0.["to_owned"] in
-          let* _ :=
-            let* α0 := account_id.["clone"] in
-            let* α1 := self.["api"].["try_transfer_balance"] origin α0 amount in
-            let* α2 := LangItem α1 in
-            let* α3 :=
-              match α2 with
-              | __awaitee =>
-                loop
-                  let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
-                    match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
-                    |  => Pure tt
-                    end in
-                  let* _ :=
-                    let* α0 := yield tt in
-                    assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
-              end in
-            α3.["unwrap_or_else"]
-              (fun err =>
-                let* α0 := origin.["account_id"] in
-                let* α1 := format_argument::["new_display"] (addr_of α0) in
-                let* α2 :=
-                  format_argument::["new_display"] (addr_of account_id) in
-                let* α3 := format_argument::["new_debug"] (addr_of err) in
-                let* α4 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "transfer from "; " to "; " failed with " ])
-                    (addr_of [ α1; α2; α3 ]) in
-                core.panicking.panic_fmt α4) in
-          let* _ :=
-            let* res :=
-              let* α0 := origin.["account_id"] in
-              let* α1 := format_argument::["new_display"] (addr_of α0) in
-              let* α2 :=
-                format_argument::["new_display"] (addr_of account_id) in
-              let* α3 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "transfer from "; " to "; " succeeded" ])
-                  (addr_of [ α1; α2 ]) in
-              alloc.fmt.format α3 in
-            ink_e2e.log_info (addr_of res) in
-          Pure pair_signer).
+    Parameter create_and_fund_account : forall `{H : State.Trait}, ref Self->
+        ref (ink_e2e.Signer C)->
+        ImplE.Balance
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_create_and_fund_account `{H : State.Trait} :
       Notation.Dot "create_and_fund_account" := {
       Notation.dot := create_and_fund_account;
     }.
     
-    Definition instantiate
-        `{H : State.Trait}
-        (self : mut_ref Self)
-        (contract_name : ref str)
-        (signer : ref (ink_e2e.Signer C))
-        (constructor : ink_e2e.builders.CreateBuilderPartial E Contract Args R)
-        (value : ImplE.Balance)
-        (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let contract_name := contract_name in
-          let signer := signer in
-          let constructor := constructor in
-          let value := value in
-          let storage_deposit_limit := storage_deposit_limit in
-          let* code := self.["load_code"] contract_name in
-          let* ret :=
-            let* α0 :=
-              self.["exec_instantiate"]
-                signer
-                code
-                constructor
-                value
-                storage_deposit_limit in
-            let* α1 := LangItem α0 in
-            let* α2 :=
-              match α1 with
-              | __awaitee =>
-                loop
-                  let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
-                    match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
-                    |  => Pure tt
-                    end in
-                  let* _ :=
-                    let* α0 := yield tt in
-                    assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
-              end in
-            let* α3 := LangItem α2 in
-            match α3 with
-            | Break {| Break.0 := residual; |} =>
-              let* α0 := LangItem residual in
-              Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
-            end in
-          let* _ :=
-            let* res :=
-              let* α0 :=
-                format_argument::["new_debug"] (addr_of ret.["account_id"]) in
-              let* α1 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "instantiated contract at " ])
-                  (addr_of [ α0 ]) in
-              alloc.fmt.format α1 in
-            ink_e2e.log_info (addr_of res) in
-          Pure (core.result.Result.Ok ret)).
+    Parameter instantiate : forall `{H : State.Trait}, mut_ref Self->
+        ref str->
+        ref (ink_e2e.Signer C)->
+        ink_e2e.builders.CreateBuilderPartial E Contract Args R->
+        ImplE.Balance->
+        core.option.Option ImplE.Balance
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_instantiate `{H : State.Trait} :
       Notation.Dot "instantiate" := {
       Notation.dot := instantiate;
     }.
     
-    Definition instantiate_dry_run
-        `{H : State.Trait}
-        (self : mut_ref Self)
-        (contract_name : ref str)
-        (signer : ref (ink_e2e.Signer C))
-        (constructor : ink_e2e.builders.CreateBuilderPartial E Contract Args R)
-        (value : ImplE.Balance)
-        (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let contract_name := contract_name in
-          let signer := signer in
-          let constructor := constructor in
-          let value := value in
-          let storage_deposit_limit := storage_deposit_limit in
-          let* code := self.["load_code"] contract_name in
-          let* data := ink_e2e.builders.constructor_exec_input constructor in
-          let* salt := Self::["salt"] tt in
-          let* α0 :=
-            self.["api"].["instantiate_with_code_dry_run"]
-              value
-              storage_deposit_limit
-              code
-              data
-              salt
-              signer in
-          let* α1 := LangItem α0 in
-          match α1 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end).
+    Parameter instantiate_dry_run : forall `{H : State.Trait}, mut_ref Self->
+        ref str->
+        ref (ink_e2e.Signer C)->
+        ink_e2e.builders.CreateBuilderPartial E Contract Args R->
+        ImplE.Balance->
+        core.option.Option ImplE.Balance
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_instantiate_dry_run `{H : State.Trait} :
       Notation.Dot "instantiate_dry_run" := {
       Notation.dot := instantiate_dry_run;
     }.
     
-    Definition load_code
-        `{H : State.Trait}
-        (self : ref Self)
-        (contract : ref str)
-        : M (H := H) (alloc.vec.Vec u8) :=
-      let* wasm_path :=
-        let* α0 := contract.["replace"] "-"%char "_" in
-        let* α1 := self.["contracts"].["get"] (addr_of α0) in
-        α1.["unwrap_or_else"]
-          (fun  =>
-            let* α0 := self.["contracts"].["keys"] in
-            let* α1 :=
-              match (addr_of α0, addr_of contract) with
-              | args =>
-                let* α0 := format_argument::["new_display"] (args.[1]) in
-                let* α1 := format_argument::["new_debug"] (args.[0]) in
-                Pure [ α0; α1 ]
-              end in
-            let* α2 :=
-              format_arguments::["new_v1"]
-                (addr_of
-                  [
-                    "Unknown contract ";
-                    ". Available contracts: ";
-                    ".
-For a contract to be built, add it as a dependency to the `Cargo.toml`, or add the manifest path to `#[ink_e2e::test(additional_contracts = ..)]`"
-                  ])
-                (addr_of α1) in
-            core.panicking.panic_fmt α2) in
-      let* code :=
-        let* α0 := std.fs.read wasm_path in
-        α0.["unwrap_or_else"]
-          (fun err =>
-            let* α0 := wasm_path.["display"] in
-            let* α1 := format_argument::["new_display"] (addr_of α0) in
-            let* α2 := format_argument::["new_debug"] (addr_of err) in
-            let* α3 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "Error loading '"; "': " ])
-                (addr_of [ α1; α2 ]) in
-            core.panicking.panic_fmt α3) in
-      let* _ :=
-        let* res :=
-          let* α0 := format_argument::["new_debug"] (addr_of contract) in
-          let* α1 := code.["len"] in
-          let* α2 := α1.["div"] 1024 in
-          let* α3 := format_argument::["new_display"] (addr_of α2) in
-          let* α4 :=
-            format_arguments::["new_v1"]
-              (addr_of [ ""; " has "; " KiB" ])
-              (addr_of [ α0; α3 ]) in
-          alloc.fmt.format α4 in
-        ink_e2e.log_info (addr_of res) in
-      Pure code.
+    Parameter load_code : forall `{H : State.Trait}, ref Self->
+        ref str
+        -> M (H := H) (alloc.vec.Vec u8).
     
     Global Instance Method_load_code `{H : State.Trait} :
       Notation.Dot "load_code" := {
       Notation.dot := load_code;
     }.
     
-    Definition exec_instantiate
-        `{H : State.Trait}
-        (self : mut_ref Self)
-        (signer : ref (ink_e2e.Signer C))
-        (code : alloc.vec.Vec u8)
-        (constructor : ink_e2e.builders.CreateBuilderPartial E Contract Args R)
-        (value : ImplE.Balance)
-        (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let signer := signer in
-          let code := code in
-          let constructor := constructor in
-          let value := value in
-          let storage_deposit_limit := storage_deposit_limit in
-          let* salt := Self::["salt"] tt in
-          let* data := ink_e2e.builders.constructor_exec_input constructor in
-          let* dry_run :=
-            let* α0 := code.["clone"] in
-            let* α1 := data.["clone"] in
-            let* α2 := salt.["clone"] in
-            let* α3 :=
-              self.["api"].["instantiate_with_code_dry_run"]
-                value
-                storage_deposit_limit
-                α0
-                α1
-                α2
-                signer in
-            let* α4 := LangItem α3 in
-            match α4 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let* _ :=
-            let* res :=
-              let* α0 :=
-                alloc.string.String::["from_utf8_lossy"]
-                  (addr_of dry_run.["debug_message"]) in
-              let* α1 := format_argument::["new_debug"] (addr_of α0) in
-              let* α2 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "instantiate dry run debug message: " ])
-                  (addr_of [ α1 ]) in
-              alloc.fmt.format α2 in
-            ink_e2e.log_info (addr_of res) in
-          let* _ :=
-            let* res :=
-              let* α0 :=
-                format_argument::["new_debug"] (addr_of dry_run.["result"]) in
-              let* α1 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "instantiate dry run result: " ])
-                  (addr_of [ α0 ]) in
-              alloc.fmt.format α1 in
-            ink_e2e.log_info (addr_of res) in
-          let* _ :=
-            let* α0 := dry_run.["result"].["is_err"] in
-            if (α0 : bool) then
-              Return
-                (core.result.Result.Err
-                  (ink_e2e.client.Error.InstantiateDryRun dry_run))
-            else
-              Pure tt in
-          let* tx_events :=
-            let* α0 := dry_run.["gas_required"].["into"] in
-            let* α1 := data.["clone"] in
-            let* α2 :=
-              self.["api"].["instantiate_with_code"]
-                value
-                α0
-                storage_deposit_limit
-                code
-                α1
-                salt
-                signer in
-            let* α3 := LangItem α2 in
-            match α3 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let account_id := core.option.Option.None in
-          let* _ :=
-            let* α0 := tx_events.["iter"] in
-            let* α1 := LangItem α0 in
-            match α1 with
-            | iter =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of iter) in
-                  match α0 with
-                  | None => Pure Break
-                  | Some {| Some.0 := evt; |} =>
-                    let* evt :=
-                      evt.["unwrap_or_else"]
-                        (fun err =>
-                          let* _ :=
-                            let* α0 :=
-                              format_argument::["new_debug"] (addr_of err) in
-                            let* α1 :=
-                              format_arguments::["new_v1"]
-                                (addr_of [ "unable to unwrap event: " ])
-                                (addr_of [ α0 ]) in
-                            core.panicking.panic_fmt α1 in
-                          Pure tt) in
-                    let* α0 := evt.["as_event"] in
-                    let* α1 :=
-                      α0.["unwrap_or_else"]
-                        (fun err =>
-                          let* _ :=
-                            let* α0 :=
-                              format_argument::["new_debug"] (addr_of err) in
-                            let* α1 :=
-                              format_arguments::["new_v1"]
-                                (addr_of
-                                  [
-                                    "event conversion to `Instantiated` failed: "
-                                  ])
-                                (addr_of [ α0 ]) in
-                            core.panicking.panic_fmt α1 in
-                          Pure tt) in
-                    let* α2 :=
-                      let_if core.option.Option.Some instantiated := α1 in
-                    if (α2 : bool) then
-                      let* _ :=
-                        let* res :=
-                          let* α0 :=
-                            format_argument::["new_debug"]
-                              (addr_of instantiated.["contract"]) in
-                          let* α1 :=
-                            format_arguments::["new_v1"]
-                              (addr_of [ "contract was instantiated at " ])
-                              (addr_of [ α0 ]) in
-                          alloc.fmt.format α1 in
-                        ink_e2e.log_info (addr_of res) in
-                      let* _ :=
-                        assign
-                          account_id
-                          (core.option.Option.Some instantiated.["contract"]) in
-                      Pure tt
-                    else
-                      let* α0 :=
-                        ink_e2e.client.is_extrinsic_failed_event
-                          (addr_of evt) in
-                      if (α0 : bool) then
-                        let* metadata := self.["api"].["client"].["metadata"] in
-                        let* dispatch_error :=
-                          let* α0 := evt.["field_bytes"] in
-                          let* α1 :=
-                            subxt.error.dispatch_error.DispatchError::["decode_from"]
-                              α0
-                              metadata in
-                          let* α2 :=
-                            α1.["map_err"] ink_e2e.client.Error.Decoding in
-                          let* α3 := LangItem α2 in
-                          match α3 with
-                          | Break {| Break.0 := residual; |} =>
-                            let* α0 := LangItem residual in
-                            Return α0
-                          | Continue {| Continue.0 := val; |} => Pure val
-                          end in
-                        let* _ :=
-                          let* res :=
-                            let* α0 :=
-                              format_argument::["new_display"]
-                                (addr_of dispatch_error) in
-                            let* α1 :=
-                              format_arguments::["new_v1"]
-                                (addr_of
-                                  [ "extrinsic for instantiate failed: " ])
-                                (addr_of [ α0 ]) in
-                            alloc.fmt.format α1 in
-                          ink_e2e.log_error (addr_of res) in
-                        Return
-                          (core.result.Result.Err
-                            (ink_e2e.client.Error.InstantiateExtrinsic
-                              dispatch_error))
-                      else
-                        Pure tt
-                  end in
-                Pure tt
-                from
-                for
-            end in
-          let* account_id :=
-            account_id.["expect"] "cannot extract `account_id` from events" in
-          Pure
-            (core.result.Result.Ok
-              {|
-                ink_e2e.client.InstantiationResult.dry_run := dry_run;
-                ink_e2e.client.InstantiationResult.account_id := account_id;
-                ink_e2e.client.InstantiationResult.events := tx_events;
-              |})).
+    Parameter exec_instantiate : forall `{H : State.Trait}, mut_ref Self->
+        ref (ink_e2e.Signer C)->
+        alloc.vec.Vec u8->
+        ink_e2e.builders.CreateBuilderPartial E Contract Args R->
+        ImplE.Balance->
+        core.option.Option ImplE.Balance
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_exec_instantiate `{H : State.Trait} :
       Notation.Dot "exec_instantiate" := {
       Notation.dot := exec_instantiate;
     }.
     
-    Definition salt
-        `{H : State.Trait}
-        (_ : unit)
-        : M (H := H) (alloc.vec.Vec u8) :=
-      let* α0 := std.time.SystemTime::["now"] tt in
-      let* α1 := α0.["duration_since"] std.time.UNIX_EPOCH in
-      let* α2 :=
-        α1.["unwrap_or_else"]
-          (fun err =>
-            let* α0 := format_argument::["new_display"] (addr_of err) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "unable to get unix time: " ])
-                (addr_of [ α0 ]) in
-            core.panicking.panic_fmt α1) in
-      let* α3 := α2.["as_millis"] in
-      let* α4 := α3.["as_u128"] in
-      let* α5 := α4.["to_le_bytes"] in
-      α5.["to_vec"].
+    Parameter salt : forall `{H : State.Trait}, unit
+        -> M (H := H) (alloc.vec.Vec u8).
     
     Global Instance AssociatedFunction_salt `{H : State.Trait} :
       Notation.DoubleColon Self "salt" := {
       Notation.double_colon := salt;
     }.
     
-    Definition upload
-        `{H : State.Trait}
-        (self : mut_ref Self)
-        (contract_name : ref str)
-        (signer : ref (ink_e2e.Signer C))
-        (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let contract_name := contract_name in
-          let signer := signer in
-          let storage_deposit_limit := storage_deposit_limit in
-          let* code := self.["load_code"] contract_name in
-          let* ret :=
-            let* α0 := self.["exec_upload"] signer code storage_deposit_limit in
-            let* α1 := LangItem α0 in
-            let* α2 :=
-              match α1 with
-              | __awaitee =>
-                loop
-                  let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
-                    match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
-                    |  => Pure tt
-                    end in
-                  let* _ :=
-                    let* α0 := yield tt in
-                    assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
-              end in
-            let* α3 := LangItem α2 in
-            match α3 with
-            | Break {| Break.0 := residual; |} =>
-              let* α0 := LangItem residual in
-              Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
-            end in
-          let* _ :=
-            let* res :=
-              let* α0 :=
-                format_argument::["new_debug"] (addr_of ret.["code_hash"]) in
-              let* α1 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "contract stored with hash " ])
-                  (addr_of [ α0 ]) in
-              alloc.fmt.format α1 in
-            ink_e2e.log_info (addr_of res) in
-          Pure (core.result.Result.Ok ret)).
+    Parameter upload : forall `{H : State.Trait}, mut_ref Self->
+        ref str->
+        ref (ink_e2e.Signer C)->
+        core.option.Option ImplE.Balance
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_upload `{H : State.Trait} :
       Notation.Dot "upload" := {
       Notation.dot := upload;
     }.
     
-    Definition exec_upload
-        `{H : State.Trait}
-        (self : mut_ref Self)
-        (signer : ref (ink_e2e.Signer C))
-        (code : alloc.vec.Vec u8)
-        (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let signer := signer in
-          let code := code in
-          let storage_deposit_limit := storage_deposit_limit in
-          let* dry_run :=
-            let* α0 := code.["clone"] in
-            let* α1 :=
-              self.["api"].["upload_dry_run"] signer α0 storage_deposit_limit in
-            let* α2 := LangItem α1 in
-            match α2 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let* _ :=
-            let* res :=
-              let* α0 := format_argument::["new_debug"] (addr_of dry_run) in
-              let* α1 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "upload dry run: " ])
-                  (addr_of [ α0 ]) in
-              alloc.fmt.format α1 in
-            ink_e2e.log_info (addr_of res) in
-          let* _ :=
-            let* α0 := dry_run.["is_err"] in
-            if (α0 : bool) then
-              Return
-                (core.result.Result.Err
-                  (ink_e2e.client.Error.UploadDryRun dry_run))
-            else
-              Pure tt in
-          let* tx_events :=
-            let* α0 :=
-              self.["api"].["upload"] signer code storage_deposit_limit in
-            let* α1 := LangItem α0 in
-            match α1 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let hash := core.option.Option.None in
-          let* _ :=
-            let* α0 := tx_events.["iter"] in
-            let* α1 := LangItem α0 in
-            match α1 with
-            | iter =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of iter) in
-                  match α0 with
-                  | None => Pure Break
-                  | Some {| Some.0 := evt; |} =>
-                    let* evt :=
-                      evt.["unwrap_or_else"]
-                        (fun err =>
-                          let* _ :=
-                            let* α0 :=
-                              format_argument::["new_debug"] (addr_of err) in
-                            let* α1 :=
-                              format_arguments::["new_v1"]
-                                (addr_of [ "unable to unwrap event: " ])
-                                (addr_of [ α0 ]) in
-                            core.panicking.panic_fmt α1 in
-                          Pure tt) in
-                    let* α0 := evt.["as_event"] in
-                    let* α1 :=
-                      α0.["unwrap_or_else"]
-                        (fun err =>
-                          let* _ :=
-                            let* α0 :=
-                              format_argument::["new_debug"] (addr_of err) in
-                            let* α1 :=
-                              format_arguments::["new_v1"]
-                                (addr_of
-                                  [ "event conversion to `Uploaded` failed: " ])
-                                (addr_of [ α0 ]) in
-                            core.panicking.panic_fmt α1 in
-                          Pure tt) in
-                    let* α2 := let_if core.option.Option.Some uploaded := α1 in
-                    if (α2 : bool) then
-                      let* _ :=
-                        let* res :=
-                          let* α0 :=
-                            format_argument::["new_debug"]
-                              (addr_of uploaded.["code_hash"]) in
-                          let* α1 :=
-                            format_arguments::["new_v1"]
-                              (addr_of [ "contract was uploaded with hash " ])
-                              (addr_of [ α0 ]) in
-                          alloc.fmt.format α1 in
-                        ink_e2e.log_info (addr_of res) in
-                      let* _ :=
-                        assign
-                          hash
-                          (core.option.Option.Some uploaded.["code_hash"]) in
-                      Pure Break
-                    else
-                      let* α0 :=
-                        ink_e2e.client.is_extrinsic_failed_event
-                          (addr_of evt) in
-                      if (α0 : bool) then
-                        let* metadata := self.["api"].["client"].["metadata"] in
-                        let* dispatch_error :=
-                          let* α0 := evt.["field_bytes"] in
-                          let* α1 :=
-                            subxt.error.dispatch_error.DispatchError::["decode_from"]
-                              α0
-                              metadata in
-                          let* α2 :=
-                            α1.["map_err"] ink_e2e.client.Error.Decoding in
-                          let* α3 := LangItem α2 in
-                          match α3 with
-                          | Break {| Break.0 := residual; |} =>
-                            let* α0 := LangItem residual in
-                            Return α0
-                          | Continue {| Continue.0 := val; |} => Pure val
-                          end in
-                        let* _ :=
-                          let* res :=
-                            let* α0 :=
-                              format_argument::["new_display"]
-                                (addr_of dispatch_error) in
-                            let* α1 :=
-                              format_arguments::["new_v1"]
-                                (addr_of [ "extrinsic for upload failed: " ])
-                                (addr_of [ α0 ]) in
-                            alloc.fmt.format α1 in
-                          ink_e2e.log_error (addr_of res) in
-                        Return
-                          (core.result.Result.Err
-                            (ink_e2e.client.Error.UploadExtrinsic
-                              dispatch_error))
-                      else
-                        Pure tt
-                  end in
-                Pure tt
-                from
-                for
-            end in
-          let* code_hash :=
-            match hash with
-            | core.option.Option.Some hash => Pure hash
-            | core.option.Option.None =>
-              let* α0 := dry_run.["as_ref"] in
-              let* α1 :=
-                α0.["unwrap_or_else"]
-                  (fun err =>
-                    let* α0 := format_argument::["new_debug"] (addr_of err) in
-                    let* α1 :=
-                      format_arguments::["new_v1"]
-                        (addr_of [ "must have worked: " ])
-                        (addr_of [ α0 ]) in
-                    core.panicking.panic_fmt α1) in
-              Pure α1.["code_hash"]
-            end in
-          Pure
-            (core.result.Result.Ok
-              {|
-                ink_e2e.client.UploadResult.dry_run := dry_run;
-                ink_e2e.client.UploadResult.code_hash := code_hash;
-                ink_e2e.client.UploadResult.events := tx_events;
-              |})).
+    Parameter exec_upload : forall `{H : State.Trait}, mut_ref Self->
+        ref (ink_e2e.Signer C)->
+        alloc.vec.Vec u8->
+        core.option.Option ImplE.Balance
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_exec_upload `{H : State.Trait} :
       Notation.Dot "exec_upload" := {
       Notation.dot := exec_upload;
     }.
     
-    Definition call
-        `{H : State.Trait}
-        (self : mut_ref Self)
-        (signer : ref (ink_e2e.Signer C))
-        (message : ref (ink_e2e.client.CallBuilderFinal E Args RetType))
-        (value : ImplE.Balance)
-        (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let signer := signer in
-          let message := message in
-          let value := value in
-          let storage_deposit_limit := storage_deposit_limit in
-          let* account_id :=
-            let* α0 := message.["clone"] in
-            let* α1 := α0.["params"] in
-            let* α2 := α1.["callee"] in
-            α2.["clone"] in
-          let* exec_input :=
-            let* α0 := message.["clone"] in
-            let* α1 := α0.["params"] in
-            let* α2 := α1.["exec_input"] in
-            parity_scale_codec.codec.Encode.encode α2 in
-          let* _ :=
-            let* res :=
-              let* α0 := format_argument::["new_debug"] (addr_of exec_input) in
-              let* α1 := format_count::["Is"] 2 in
-              let* α2 :=
-                format_placeholder::["new"]
-                  0
-                  " "%char
-                  format_alignment::["Unknown"]
-                  40
-                  format_count::["Implied"]
-                  α1 in
-              let* α3 := format_unsafe_arg::["new"] tt in
-              let* α4 :=
-                format_arguments::["new_v1_formatted"]
-                  (addr_of [ "call: " ])
-                  (addr_of [ α0 ])
-                  (addr_of [ α2 ])
-                  α3 in
-              alloc.fmt.format α4 in
-            ink_e2e.log_info (addr_of res) in
-          let* dry_run :=
-            let* α0 :=
-              self.["call_dry_run"]
-                signer
-                message
-                value
-                core.option.Option.None in
-            let* α1 := LangItem α0 in
-            match α1 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let* _ :=
-            let* α0 := dry_run.["exec_result"].["result"].["is_err"] in
-            if (α0 : bool) then
-              Return
-                (core.result.Result.Err
-                  (ink_e2e.client.Error.CallDryRun dry_run.["exec_result"]))
-            else
-              Pure tt in
-          let* tx_events :=
-            let* α0 := account_id.["clone"] in
-            let* α1 := dry_run.["exec_result"].["gas_required"].["into"] in
-            let* α2 :=
-              self.["api"].["call"]
-                (subxt.utils.multi_address.MultiAddress.Id α0)
-                value
-                α1
-                storage_deposit_limit
-                exec_input
-                signer in
-            let* α3 := LangItem α2 in
-            match α3 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let* _ :=
-            let* α0 := tx_events.["iter"] in
-            let* α1 := LangItem α0 in
-            match α1 with
-            | iter =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of iter) in
-                  match α0 with
-                  | None => Pure Break
-                  | Some {| Some.0 := evt; |} =>
-                    let* evt :=
-                      evt.["unwrap_or_else"]
-                        (fun err =>
-                          let* _ :=
-                            let* α0 :=
-                              format_argument::["new_debug"] (addr_of err) in
-                            let* α1 :=
-                              format_arguments::["new_v1"]
-                                (addr_of [ "unable to unwrap event: " ])
-                                (addr_of [ α0 ]) in
-                            core.panicking.panic_fmt α1 in
-                          Pure tt) in
-                    let* α0 :=
-                      ink_e2e.client.is_extrinsic_failed_event (addr_of evt) in
-                    if (α0 : bool) then
-                      let* metadata := self.["api"].["client"].["metadata"] in
-                      let* dispatch_error :=
-                        let* α0 := evt.["field_bytes"] in
-                        let* α1 :=
-                          subxt.error.dispatch_error.DispatchError::["decode_from"]
-                            α0
-                            metadata in
-                        let* α2 :=
-                          α1.["map_err"] ink_e2e.client.Error.Decoding in
-                        let* α3 := LangItem α2 in
-                        match α3 with
-                        | Break {| Break.0 := residual; |} =>
-                          let* α0 := LangItem residual in
-                          Return α0
-                        | Continue {| Continue.0 := val; |} => Pure val
-                        end in
-                      let* _ :=
-                        let* res :=
-                          let* α0 :=
-                            format_argument::["new_display"]
-                              (addr_of dispatch_error) in
-                          let* α1 :=
-                            format_arguments::["new_v1"]
-                              (addr_of [ "extrinsic for call failed: " ])
-                              (addr_of [ α0 ]) in
-                          alloc.fmt.format α1 in
-                        ink_e2e.log_error (addr_of res) in
-                      Return
-                        (core.result.Result.Err
-                          (ink_e2e.client.Error.CallExtrinsic dispatch_error))
-                    else
-                      Pure tt
-                  end in
-                Pure tt
-                from
-                for
-            end in
-          Pure
-            (core.result.Result.Ok
-              {|
-                ink_e2e.client.CallResult.dry_run := dry_run;
-                ink_e2e.client.CallResult.events := tx_events;
-              |})).
+    Parameter call : forall `{H : State.Trait}, mut_ref Self->
+        ref (ink_e2e.Signer C)->
+        ref (ink_e2e.client.CallBuilderFinal E Args RetType)->
+        ImplE.Balance->
+        core.option.Option ImplE.Balance
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
       Notation.dot := call;
     }.
     
-    Definition runtime_call
-        `{H : State.Trait}
-        (self : mut_ref Self)
-        (signer : ref (ink_e2e.Signer C))
-        (pallet_name : ref str)
-        (call_name : ref str)
-        (call_data : alloc.vec.Vec scale_value.value.Value)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let signer := signer in
-          let pallet_name := pallet_name in
-          let call_name := call_name in
-          let call_data := call_data in
-          let* tx_events :=
-            let* α0 :=
-              self.["api"].["runtime_call"]
-                signer
-                pallet_name
-                call_name
-                call_data in
-            let* α1 := LangItem α0 in
-            match α1 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let* _ :=
-            let* α0 := tx_events.["iter"] in
-            let* α1 := LangItem α0 in
-            match α1 with
-            | iter =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of iter) in
-                  match α0 with
-                  | None => Pure Break
-                  | Some {| Some.0 := evt; |} =>
-                    let* evt :=
-                      evt.["unwrap_or_else"]
-                        (fun err =>
-                          let* _ :=
-                            let* α0 :=
-                              format_argument::["new_debug"] (addr_of err) in
-                            let* α1 :=
-                              format_arguments::["new_v1"]
-                                (addr_of [ "unable to unwrap event: " ])
-                                (addr_of [ α0 ]) in
-                            core.panicking.panic_fmt α1 in
-                          Pure tt) in
-                    let* α0 :=
-                      ink_e2e.client.is_extrinsic_failed_event (addr_of evt) in
-                    if (α0 : bool) then
-                      let* metadata := self.["api"].["client"].["metadata"] in
-                      let* dispatch_error :=
-                        let* α0 := evt.["field_bytes"] in
-                        let* α1 :=
-                          subxt.error.dispatch_error.DispatchError::["decode_from"]
-                            α0
-                            metadata in
-                        let* α2 :=
-                          α1.["map_err"] ink_e2e.client.Error.Decoding in
-                        let* α3 := LangItem α2 in
-                        match α3 with
-                        | Break {| Break.0 := residual; |} =>
-                          let* α0 := LangItem residual in
-                          Return α0
-                        | Continue {| Continue.0 := val; |} => Pure val
-                        end in
-                      let* _ :=
-                        let* res :=
-                          let* α0 :=
-                            format_argument::["new_display"]
-                              (addr_of dispatch_error) in
-                          let* α1 :=
-                            format_arguments::["new_v1"]
-                              (addr_of [ "extrinsic for call failed: " ])
-                              (addr_of [ α0 ]) in
-                          alloc.fmt.format α1 in
-                        ink_e2e.log_error (addr_of res) in
-                      Return
-                        (core.result.Result.Err
-                          (ink_e2e.client.Error.CallExtrinsic dispatch_error))
-                    else
-                      Pure tt
-                  end in
-                Pure tt
-                from
-                for
-            end in
-          Pure (core.result.Result.Ok tx_events)).
+    Parameter runtime_call : forall `{H : State.Trait}, mut_ref Self->
+        ref (ink_e2e.Signer C)->
+        ref str->
+        ref str->
+        alloc.vec.Vec scale_value.value.Value
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_runtime_call `{H : State.Trait} :
       Notation.Dot "runtime_call" := {
       Notation.dot := runtime_call;
     }.
     
-    Definition call_dry_run
-        `{H : State.Trait}
-        (self : mut_ref Self)
-        (signer : ref (ink_e2e.Signer C))
-        (message : ref (ink_e2e.client.CallBuilderFinal E Args RetType))
-        (value : ImplE.Balance)
-        (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let signer := signer in
-          let message := message in
-          let value := value in
-          let storage_deposit_limit := storage_deposit_limit in
-          let* dest :=
-            let* α0 := message.["clone"] in
-            let* α1 := α0.["params"] in
-            let* α2 := α1.["callee"] in
-            α2.["clone"] in
-          let* exec_input :=
-            let* α0 := message.["clone"] in
-            let* α1 := α0.["params"] in
-            let* α2 := α1.["exec_input"] in
-            parity_scale_codec.codec.Encode.encode α2 in
-          let* exec_result :=
-            let* α0 := ink_e2e.Signer::["account_id"] signer in
-            let* α1 := α0.["clone"] in
-            let* α2 :=
-              self.["api"].["call_dry_run"]
-                α1
-                dest
-                exec_input
-                value
-                storage_deposit_limit in
-            let* α3 := LangItem α2 in
-            match α3 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let* _ :=
-            let* res :=
-              let* α0 :=
-                format_argument::["new_debug"]
-                  (addr_of (addr_of exec_result.["result"])) in
-              let* α1 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "call dry run: " ])
-                  (addr_of [ α0 ]) in
-              alloc.fmt.format α1 in
-            ink_e2e.log_info (addr_of res) in
-          let* _ :=
-            let* res :=
-              let* α0 :=
-                alloc.string.String::["from_utf8_lossy"]
-                  (addr_of exec_result.["debug_message"]) in
-              let* α1 := format_argument::["new_display"] (addr_of α0) in
-              let* α2 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "call dry run debug message: " ])
-                  (addr_of [ α1 ]) in
-              alloc.fmt.format α2 in
-            ink_e2e.log_info (addr_of res) in
-          let* α0 := core.default.Default.default tt in
-          Pure
-            {|
-              ink_e2e.client.CallDryRunResult.exec_result := exec_result;
-              ink_e2e.client.CallDryRunResult._marker := α0;
-            |}).
+    Parameter call_dry_run : forall `{H : State.Trait}, mut_ref Self->
+        ref (ink_e2e.Signer C)->
+        ref (ink_e2e.client.CallBuilderFinal E Args RetType)->
+        ImplE.Balance->
+        core.option.Option ImplE.Balance
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_call_dry_run `{H : State.Trait} :
       Notation.Dot "call_dry_run" := {
       Notation.dot := call_dry_run;
     }.
     
-    Definition balance
-        `{H : State.Trait}
-        (self : ref Self)
-        (account_id : ImplE.AccountId)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let account_id := account_id in
-          let* account_addr :=
-            let* α0 :=
-              scale_value.value.Value::["from_bytes"] (addr_of account_id) in
-            let* α1 := alloc.boxed.Box::["new"] [ α0 ] in
-            let* α2 := Slice::["into_vec"] α1 in
-            subxt.storage.storage_address.dynamic "System" "Account" α2 in
-          let* account :=
-            let* α0 := self.["api"].["client"].["storage"] in
-            let* α1 := α0.["at_latest"] in
-            let* α2 := LangItem α1 in
-            let* α3 :=
-              match α2 with
-              | __awaitee =>
-                loop
-                  let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
-                    match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
-                    |  => Pure tt
-                    end in
-                  let* _ :=
-                    let* α0 := yield tt in
-                    assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
-              end in
-            let* α4 :=
-              α3.["unwrap_or_else"]
-                (fun err =>
-                  let* _ :=
-                    let* α0 := format_argument::["new_debug"] (addr_of err) in
-                    let* α1 :=
-                      format_arguments::["new_v1"]
-                        (addr_of [ "unable to fetch balance: " ])
-                        (addr_of [ α0 ]) in
-                    core.panicking.panic_fmt α1 in
-                  Pure tt) in
-            let* α5 := α4.["fetch_or_default"] (addr_of account_addr) in
-            let* α6 := LangItem α5 in
-            let* α7 :=
-              match α6 with
-              | __awaitee =>
-                loop
-                  let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
-                    match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
-                    |  => Pure tt
-                    end in
-                  let* _ :=
-                    let* α0 := yield tt in
-                    assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
-              end in
-            let* α8 :=
-              α7.["unwrap_or_else"]
-                (fun err =>
-                  let* _ :=
-                    let* α0 := format_argument::["new_debug"] (addr_of err) in
-                    let* α1 :=
-                      format_arguments::["new_v1"]
-                        (addr_of [ "unable to fetch balance: " ])
-                        (addr_of [ α0 ]) in
-                    core.panicking.panic_fmt α1 in
-                  Pure tt) in
-            let* α9 := α8.["to_value"] in
-            α9.["unwrap_or_else"]
-              (fun err =>
-                let* _ :=
-                  let* α0 := format_argument::["new_debug"] (addr_of err) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ "unable to decode account info: " ])
-                      (addr_of [ α0 ]) in
-                  core.panicking.panic_fmt α1 in
-                Pure tt) in
-          let* account_data :=
-            let* α0 :=
-              ink_e2e.client.get_composite_field_value
-                (addr_of account)
-                "data" in
-            let* α1 := LangItem α0 in
-            match α1 with
-            | Break {| Break.0 := residual; |} =>
-              let* α0 := LangItem residual in
-              Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
-            end in
-          let* balance :=
-            let* α0 :=
-              ink_e2e.client.get_composite_field_value account_data "free" in
-            let* α1 := LangItem α0 in
-            match α1 with
-            | Break {| Break.0 := residual; |} =>
-              let* α0 := LangItem residual in
-              Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
-            end in
-          let* balance :=
-            let* α0 := balance.["as_u128"] in
-            let* α1 :=
-              α0.["ok_or_else"]
-                (fun  =>
-                  let* res :=
-                    let* α0 :=
-                      format_argument::["new_debug"] (addr_of balance) in
-                    let* α1 :=
-                      format_arguments::["new_v1"]
-                        (addr_of [ ""; " should convert to u128" ])
-                        (addr_of [ α0 ]) in
-                    alloc.fmt.format α1 in
-                  Pure (ink_e2e.client.Error.Balance res)) in
-            let* α2 := LangItem α1 in
-            match α2 with
-            | Break {| Break.0 := residual; |} =>
-              let* α0 := LangItem residual in
-              Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
-            end in
-          let* balance :=
-            let* α0 := ImplE.Balance::["try_from"] balance in
-            let* α1 :=
-              α0.["map_err"]
-                (fun _ =>
-                  let* res :=
-                    let* α0 :=
-                      format_argument::["new_debug"] (addr_of balance) in
-                    let* α1 :=
-                      format_arguments::["new_v1"]
-                        (addr_of [ ""; " failed to convert from u128" ])
-                        (addr_of [ α0 ]) in
-                    alloc.fmt.format α1 in
-                  Pure (ink_e2e.client.Error.Balance res)) in
-            let* α2 := LangItem α1 in
-            match α2 with
-            | Break {| Break.0 := residual; |} =>
-              let* α0 := LangItem residual in
-              Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
-            end in
-          let* _ :=
-            let* res :=
-              let* α0 := format_argument::["new_debug"] (addr_of account_id) in
-              let* α1 := format_argument::["new_debug"] (addr_of balance) in
-              let* α2 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "balance of contract "; " is " ])
-                  (addr_of [ α0; α1 ]) in
-              alloc.fmt.format α2 in
-            ink_e2e.log_info (addr_of res) in
-          Pure (core.result.Result.Ok balance)).
+    Parameter balance : forall `{H : State.Trait}, ref Self->
+        ImplE.AccountId
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_balance `{H : State.Trait} :
       Notation.Dot "balance" := {
@@ -2256,62 +759,22 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
     }.
   End Impl_ink_e2e_client_Client_C_E.
   
-  Definition get_composite_field_value
-      `{H : State.Trait}
-      {T C E : Set}
+  Parameter get_composite_field_value : forall `{H : State.Trait}, forall
+      {T : Set} {C : Set} {E : Set},
       `{subxt.config.Config.Trait C}
       `{ink_env.types.Environment.Trait E}
       `{core.fmt.Debug.Trait ImplE.Balance}
-      (value : ref (scale_value.value.Value T))
-      (field_name : ref str)
-      :
+      ref (scale_value.value.Value T)->
+      ref str
+      ->
         M (H := H)
           (core.result.Result
             (ref (scale_value.value.Value T))
-            (ink_e2e.client.Error C E)) :=
-    let* α0 :=
-      let_if
-      scale_value.value.ValueDef.Composite
-        scale_value.value.Composite.Named fields
-      :=
-      addr_of value.["value"] in
-    if (α0 : bool) then
-      let* '(_, field) :=
-        let* α0 := fields.["iter"] in
-        let* α1 := α0.["find"] (fun (name, _) => name.["eq"] field_name) in
-        let* α2 :=
-          α1.["ok_or_else"]
-            (fun  =>
-              let* res :=
-                let* α0 :=
-                  format_argument::["new_display"] (addr_of field_name) in
-                let* α1 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "No field named '"; "' found" ])
-                    (addr_of [ α0 ]) in
-                alloc.fmt.format α1 in
-              Pure (ink_e2e.client.Error.Balance res)) in
-        let* α3 := LangItem α2 in
-        match α3 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
-          Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
-        end in
-      Pure (core.result.Result.Ok field)
-    else
-      let* α0 := "Expected a composite type with named fields".["into"] in
-      Pure (core.result.Result.Err (ink_e2e.client.Error.Balance α0)).
+            (ink_e2e.client.Error C E)).
   
-  Definition is_extrinsic_failed_event
-      `{H : State.Trait}
-      (event : ref subxt.events.events_type.EventDetails)
-      : M (H := H) bool :=
-    let* α0 := event.["pallet_name"] in
-    let* α1 := α0.["eq"] "System" in
-    let* α2 := event.["variant_name"] in
-    let* α3 := α2.["eq"] "ExtrinsicFailed" in
-    α1.["andb"] α3.
+  Parameter is_extrinsic_failed_event : forall `{H : State.Trait}, ref
+          subxt.events.events_type.EventDetails
+      -> M (H := H) bool.
 End client.
 
 Definition CallBuilderFinal : Set :=
@@ -2347,12 +810,8 @@ Definition InstantiationResult : Set := InstantiationResult.t.
 Module Impl_ink_e2e_client_InstantiationResult_C_E_2.
   Definition Self := ink_e2e.client.InstantiationResult C E.
   
-  Definition call
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) ink.codegen.dispatch.info.ContractCallBuilder.Type :=
-    let* α0 := self.["account_id"].["clone"] in
-    ink_env.call.create_builder.FromAccountId.from_account_id α0.
+  Parameter call : forall `{H : State.Trait}, ref Self
+      -> M (H := H) ink.codegen.dispatch.info.ContractCallBuilder.Type.
   
   Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
     Notation.dot := call;
@@ -2386,16 +845,9 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
   
   Definition Self := ink_e2e.client.UploadResult C E.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    let* α0 := f.["debug_struct"] "UploadResult" in
-    let* α1 := α0.["field"] "code_hash" (addr_of self.["code_hash"]) in
-    let* α2 := α1.["field"] "dry_run" (addr_of self.["dry_run"]) in
-    let* α3 := α2.["field"] "events" (addr_of self.["events"]) in
-    α3.["finish"].
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -2413,16 +865,9 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
   
   Definition Self := ink_e2e.client.InstantiationResult C E.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    let* α0 := f.["debug_struct"] "InstantiationResult" in
-    let* α1 := α0.["field"] "account_id" (addr_of self.["account_id"]) in
-    let* α2 := α1.["field"] "dry_run" (addr_of self.["dry_run"]) in
-    let* α3 := α2.["field"] "events" (addr_of self.["events"]) in
-    α3.["finish"].
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -2452,63 +897,41 @@ Definition CallResult : Set := CallResult.t.
 Module Impl_ink_e2e_client_CallResult_C_E_V_2.
   Definition Self := ink_e2e.client.CallResult C E V.
   
-  Definition message_result
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) (ink_primitives.MessageResult V) :=
-    self.["dry_run"].["message_result"].
+  Parameter message_result : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (ink_primitives.MessageResult V).
   
   Global Instance Method_message_result `{H : State.Trait} :
     Notation.Dot "message_result" := {
     Notation.dot := message_result;
   }.
   
-  Definition return_value `{H : State.Trait} (self : Self) : M (H := H) V :=
-    self.["dry_run"].["return_value"].
+  Parameter return_value : forall `{H : State.Trait}, Self -> M (H := H) V.
   
   Global Instance Method_return_value `{H : State.Trait} :
     Notation.Dot "return_value" := {
     Notation.dot := return_value;
   }.
   
-  Definition return_data
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) (ref Slice) :=
-    let* α0 := self.["dry_run"].["exec_return_value"] in
-    Pure (addr_of α0.["data"]).
+  Parameter return_data : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (ref Slice).
   
   Global Instance Method_return_data `{H : State.Trait} :
     Notation.Dot "return_data" := {
     Notation.dot := return_data;
   }.
   
-  Definition debug_message
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) alloc.string.String :=
-    self.["dry_run"].["debug_message"].
+  Parameter debug_message : forall `{H : State.Trait}, ref Self
+      -> M (H := H) alloc.string.String.
   
   Global Instance Method_debug_message `{H : State.Trait} :
     Notation.Dot "debug_message" := {
     Notation.dot := debug_message;
   }.
   
-  Definition contains_event
-      `{H : State.Trait}
-      (self : ref Self)
-      (pallet_name : ref str)
-      (variant_name : ref str)
-      : M (H := H) bool :=
-    let* α0 := self.["events"].["iter"] in
-    α0.["any"]
-      (fun event =>
-        let* event := event.["unwrap"] in
-        let* α0 := event.["pallet_name"] in
-        let* α1 := α0.["eq"] pallet_name in
-        let* α2 := event.["variant_name"] in
-        let* α3 := α2.["eq"] variant_name in
-        α1.["andb"] α3).
+  Parameter contains_event : forall `{H : State.Trait}, ref Self->
+      ref str->
+      ref str
+      -> M (H := H) bool.
   
   Global Instance Method_contains_event `{H : State.Trait} :
     Notation.Dot "contains_event" := {
@@ -2522,15 +945,9 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
   
   Definition Self := ink_e2e.client.CallResult C E V.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    let* α0 := f.["debug_struct"] "CallResult" in
-    let* α1 := α0.["field"] "dry_run" (addr_of self.["dry_run"]) in
-    let* α2 := α1.["field"] "events" (addr_of self.["events"]) in
-    α2.["finish"].
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -2563,18 +980,9 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
   
   Definition Self := ink_e2e.client.CallDryRunResult E V.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "CallDryRunResult"
-      "exec_result"
-      (addr_of self.["exec_result"])
-      "_marker"
-      (addr_of (addr_of self.["_marker"])).
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -2589,96 +997,45 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
 Module Impl_ink_e2e_client_CallDryRunResult_E_V_2.
   Definition Self := ink_e2e.client.CallDryRunResult E V.
   
-  Definition is_err `{H : State.Trait} (self : ref Self) : M (H := H) bool :=
-    self.["exec_result"].["result"].["is_err"].
+  Parameter is_err : forall `{H : State.Trait}, ref Self -> M (H := H) bool.
   
   Global Instance Method_is_err `{H : State.Trait} : Notation.Dot "is_err" := {
     Notation.dot := is_err;
   }.
   
-  Definition exec_return_value
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) (ref pallet_contracts_primitives.ExecReturnValue) :=
-    let* α0 := self.["exec_result"].["result"].["as_ref"] in
-    α0.["unwrap_or_else"]
-      (fun call_err =>
-        let* α0 := format_argument::["new_debug"] (addr_of call_err) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "Call dry-run failed: " ])
-            (addr_of [ α0 ]) in
-        core.panicking.panic_fmt α1).
+  Parameter exec_return_value : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (ref pallet_contracts_primitives.ExecReturnValue).
   
   Global Instance Method_exec_return_value `{H : State.Trait} :
     Notation.Dot "exec_return_value" := {
     Notation.dot := exec_return_value;
   }.
   
-  Definition message_result
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) (ink_primitives.MessageResult V) :=
-    let* data :=
-      let* α0 := self.["exec_return_value"] in
-      Pure (addr_of α0.["data"]) in
-    let* α0 := data.["as_ref"] in
-    let* α1 := parity_scale_codec.codec.Decode.decode (addr_of α0) in
-    α1.["unwrap_or_else"]
-      (fun env_err =>
-        let* α0 := format_argument::["new_display"] (addr_of env_err) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of
-              [ "Decoding dry run result to ink! message return type failed: "
-              ])
-            (addr_of [ α0 ]) in
-        core.panicking.panic_fmt α1).
+  Parameter message_result : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (ink_primitives.MessageResult V).
   
   Global Instance Method_message_result `{H : State.Trait} :
     Notation.Dot "message_result" := {
     Notation.dot := message_result;
   }.
   
-  Definition return_value `{H : State.Trait} (self : Self) : M (H := H) V :=
-    let* α0 := self.["message_result"] in
-    α0.["unwrap_or_else"]
-      (fun lang_err =>
-        let* α0 := format_argument::["new_debug"] (addr_of lang_err) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of
-              [
-                "Encountered a `LangError` while decoding dry run result to ink! message: "
-              ])
-            (addr_of [ α0 ]) in
-        core.panicking.panic_fmt α1).
+  Parameter return_value : forall `{H : State.Trait}, Self -> M (H := H) V.
   
   Global Instance Method_return_value `{H : State.Trait} :
     Notation.Dot "return_value" := {
     Notation.dot := return_value;
   }.
   
-  Definition return_data
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) (ref Slice) :=
-    let* α0 := self.["exec_return_value"] in
-    Pure (addr_of α0.["data"]).
+  Parameter return_data : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (ref Slice).
   
   Global Instance Method_return_data `{H : State.Trait} :
     Notation.Dot "return_data" := {
     Notation.dot := return_data;
   }.
   
-  Definition debug_message
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) alloc.string.String :=
-    let* α0 :=
-      alloc.string.String::["from_utf8_lossy"]
-        (addr_of self.["exec_result"].["debug_message"]) in
-    α0.["into"].
+  Parameter debug_message : forall `{H : State.Trait}, ref Self
+      -> M (H := H) alloc.string.String.
   
   Global Instance Method_debug_message `{H : State.Trait} :
     Notation.Dot "debug_message" := {
@@ -2716,55 +1073,9 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
   
   Definition Self := ink_e2e.client.Error C E.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    match addr_of self with
-    | ink_e2e.client.Error.ContractNotFound name =>
-      let* res :=
-        let* α0 := format_argument::["new_display"] (addr_of name) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "ContractNotFound: " ])
-            (addr_of [ α0 ]) in
-        alloc.fmt.format α1 in
-      f.["write_str"] (addr_of res)
-    | ink_e2e.client.Error.InstantiateDryRun res =>
-      let* res :=
-        let* α0 :=
-          alloc.string.String::["from_utf8_lossy"]
-            (addr_of res.["debug_message"]) in
-        let* α1 := format_argument::["new_display"] (addr_of (addr_of α0)) in
-        let* α2 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "InstantiateDryRun: " ])
-            (addr_of [ α1 ]) in
-        alloc.fmt.format α2 in
-      f.["write_str"] (addr_of res)
-    | ink_e2e.client.Error.InstantiateExtrinsic _ =>
-      f.["write_str"] "InstantiateExtrinsic"
-    | ink_e2e.client.Error.UploadDryRun _ => f.["write_str"] "UploadDryRun"
-    | ink_e2e.client.Error.UploadExtrinsic _ =>
-      f.["write_str"] "UploadExtrinsic"
-    | ink_e2e.client.Error.CallDryRun _ => f.["write_str"] "CallDryRun"
-    | ink_e2e.client.Error.CallExtrinsic _ => f.["write_str"] "CallExtrinsic"
-    | ink_e2e.client.Error.Balance msg =>
-      let* α0 := format_argument::["new_display"] (addr_of msg) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Balance: " ])
-          (addr_of [ α0 ]) in
-      f.["write_fmt"] α1
-    | ink_e2e.client.Error.Decoding err =>
-      let* α0 := format_argument::["new_display"] (addr_of err) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Decoding: " ])
-          (addr_of [ α0 ]) in
-      f.["write_fmt"] α1
-    end.
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -2797,18 +1108,9 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
   
   Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "ContractInstantiatedEvent"
-      "deployer"
-      (addr_of self.["deployer"])
-      "contract"
-      (addr_of (addr_of self.["contract"])).
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -2828,38 +1130,8 @@ Section
   
   Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
   
-  Definition decode
-      `{H : State.Trait}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α0 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 :=
-          e.["chain"]
-            "Could not decode `ContractInstantiatedEvent::deployer`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α1 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 :=
-          e.["chain"]
-            "Could not decode `ContractInstantiatedEvent::contract`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    Pure
-      (core.result.Result.Ok
-        {|
-          ink_e2e.client.ContractInstantiatedEvent.deployer := α0;
-          ink_e2e.client.ContractInstantiatedEvent.contract := α1;
-        |}).
+  Parameter decode : forall `{H : State.Trait}, mut_ref __CodecInputEdqy
+      -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
@@ -2882,20 +1154,9 @@ Section
   
   Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
   
-  Definition encode_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M (H := H) unit :=
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["deployer"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["contract"])
-        __codec_dest_edqy in
-    Pure tt.
+  Parameter encode_to : forall `{H : State.Trait}, ref Self->
+      mut_ref __CodecOutputEdqy
+      -> M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -2943,11 +1204,8 @@ Section
   
   Definition Visitor : Set := ink_e2e.client._.Visitor E.
   
-  Definition into_visitor
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) ImplSelf.Visitor :=
-    Pure (ink_e2e.client._.Visitor.Build_t core.marker.PhantomData.Build).
+  Parameter into_visitor : forall `{H : State.Trait}, unit
+      -> M (H := H) ImplSelf.Visitor.
   
   Global Instance AssociatedFunction_into_visitor `{H : State.Trait} :
     Notation.DoubleColon Self "into_visitor" := {
@@ -2972,182 +1230,20 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
   
   Definition Value : Set := ink_e2e.client.ContractInstantiatedEvent E.
   
-  Definition visit_composite
-      `{H : State.Trait}
-      (self : Self)
-      (value : mut_ref scale_decode.visitor.types.composite.Composite)
-      (type_id : scale_decode.visitor.TypeId)
-      : M (H := H) (core.result.Result ImplSelf.Value ImplSelf.Error) :=
-    let* _ :=
-      let* α0 := value.["has_unnamed_fields"] in
-      if (α0 : bool) then
-        let* α0 := value.["as_tuple"] in
-        let* α1 := self.["visit_tuple"] (addr_of α0) type_id in
-        Return α1
-      else
-        Pure tt in
-    let* vals :=
-      let* α0 :=
-        value.["map"]
-          (fun res =>
-            res.["map"]
-              (fun item =>
-                let* α0 := item.["name"] in
-                Pure (α0, item))) in
-      let* α1 := α0.["collect"] in
-      let* α2 := LangItem α1 in
-      match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    let* val :=
-      let* α0 := vals.["get"] (addr_of (core.option.Option.Some "deployer")) in
-      let* α1 :=
-        α0.["ok_or_else"]
-          (fun  =>
-            let* α0 := "deployer".["to_owned"] in
-            scale_decode.error.Error::["new"]
-              scale_decode.error.ErrorKind.CannotFindField
-                {|
-                scale_decode.error.ErrorKind.CannotFindField.name := α0;
-              |}) in
-      let* α2 := LangItem α1 in
-      let* α3 :=
-        match α2 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
-          Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
-        end in
-      α3.["deref"] in
-    let* α0 := val.["decode_as_type"] in
-    let* α1 := α0.["map_err"] (fun e => e.["at_field"] "deployer") in
-    let* α2 := LangItem α1 in
-    let* α0 :=
-      match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    let* val :=
-      let* α0 := vals.["get"] (addr_of (core.option.Option.Some "contract")) in
-      let* α1 :=
-        α0.["ok_or_else"]
-          (fun  =>
-            let* α0 := "contract".["to_owned"] in
-            scale_decode.error.Error::["new"]
-              scale_decode.error.ErrorKind.CannotFindField
-                {|
-                scale_decode.error.ErrorKind.CannotFindField.name := α0;
-              |}) in
-      let* α2 := LangItem α1 in
-      let* α3 :=
-        match α2 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
-          Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
-        end in
-      α3.["deref"] in
-    let* α0 := val.["decode_as_type"] in
-    let* α1 := α0.["map_err"] (fun e => e.["at_field"] "contract") in
-    let* α2 := LangItem α1 in
-    let* α1 :=
-      match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    Pure
-      (core.result.Result.Ok
-        {|
-          ink_e2e.client.ContractInstantiatedEvent.deployer := α0;
-          ink_e2e.client.ContractInstantiatedEvent.contract := α1;
-        |}).
+  Parameter visit_composite : forall `{H : State.Trait}, Self->
+      mut_ref scale_decode.visitor.types.composite.Composite->
+      scale_decode.visitor.TypeId
+      -> M (H := H) (core.result.Result ImplSelf.Value ImplSelf.Error).
   
   Global Instance Method_visit_composite `{H : State.Trait} :
     Notation.Dot "visit_composite" := {
     Notation.dot := visit_composite;
   }.
   
-  Definition visit_tuple
-      `{H : State.Trait}
-      (self : Self)
-      (value : mut_ref scale_decode.visitor.types.tuple.Tuple)
-      (type_id : scale_decode.visitor.TypeId)
-      : M (H := H) (core.result.Result ImplSelf.Value ImplSelf.Error) :=
-    let* _ :=
-      let* α0 := value.["remaining"] in
-      let* α1 := α0.["ne"] 2 in
-      if (α1 : bool) then
-        let* _ :=
-          let* α0 := value.["remaining"] in
-          let* α1 :=
-            scale_decode.error.Error::["new"]
-              scale_decode.error.ErrorKind.WrongLength
-                {|
-                scale_decode.error.ErrorKind.WrongLength.actual_len := α0;
-                scale_decode.error.ErrorKind.WrongLength.expected_len := 2;
-              |} in
-          Return (core.result.Result.Err α1) in
-        Pure tt
-      else
-        Pure tt in
-    let vals := value in
-    let* val :=
-      let* α0 := vals.["next"] in
-      let* α1 :=
-        α0.["expect"]
-          "field count should have been checked already on tuple type; please file a bug report" in
-      let* α2 := LangItem α1 in
-      match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    let* α0 := val.["decode_as_type"] in
-    let* α1 := α0.["map_err"] (fun e => e.["at_field"] "deployer") in
-    let* α2 := LangItem α1 in
-    let* α0 :=
-      match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    let* val :=
-      let* α0 := vals.["next"] in
-      let* α1 :=
-        α0.["expect"]
-          "field count should have been checked already on tuple type; please file a bug report" in
-      let* α2 := LangItem α1 in
-      match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    let* α0 := val.["decode_as_type"] in
-    let* α1 := α0.["map_err"] (fun e => e.["at_field"] "contract") in
-    let* α2 := LangItem α1 in
-    let* α1 :=
-      match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    Pure
-      (core.result.Result.Ok
-        {|
-          ink_e2e.client.ContractInstantiatedEvent.deployer := α0;
-          ink_e2e.client.ContractInstantiatedEvent.contract := α1;
-        |}).
+  Parameter visit_tuple : forall `{H : State.Trait}, Self->
+      mut_ref scale_decode.visitor.types.tuple.Tuple->
+      scale_decode.visitor.TypeId
+      -> M (H := H) (core.result.Result ImplSelf.Value ImplSelf.Error).
   
   Global Instance Method_visit_tuple `{H : State.Trait} :
     Notation.Dot "visit_tuple" := {
@@ -3167,38 +1263,10 @@ Section
   
   Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
   
-  Definition decode_as_fields
-      `{H : State.Trait}
-      (input : mut_ref (ref Slice))
-      (fields : ref Slice)
-      (types : ref scale_info.portable.PortableRegistry)
-      : M (H := H) (core.result.Result Self scale_decode.error.Error) :=
-    let* path := core.default.Default.default tt in
-    let* composite :=
-      scale_decode.visitor.types.composite.Composite::["new"]
-        input
-        (addr_of path)
-        fields
-        types in
-    let* val :=
-      let* α0 :=
-        (ink_e2e.client.ContractInstantiatedEvent E)::["into_visitor"] tt in
-      α0.["visit_composite"]
-        (addr_of composite)
-        (scale_decode.visitor.TypeId.Build_t 0) in
-    let* _ :=
-      let* α0 := composite.["skip_decoding"] in
-      let* α1 := LangItem α0 in
-      match α1 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    let* _ :=
-      let* α0 := composite.["bytes_from_undecoded"] in
-      assign input.["deref"] α0 in
-    val.["map_err"] core.convert.From.from.
+  Parameter decode_as_fields : forall `{H : State.Trait}, mut_ref (ref Slice)->
+      ref Slice->
+      ref scale_info.portable.PortableRegistry
+      -> M (H := H) (core.result.Result Self scale_decode.error.Error).
   
   Global Instance AssociatedFunction_decode_as_fields `{H : State.Trait} :
     Notation.DoubleColon Self "decode_as_fields" := {
@@ -3224,28 +1292,11 @@ Section
   
   Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
   
-  Definition encode_as_type_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_type_id : u32)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    let
-        '{|
-          ink_e2e.client.ContractInstantiatedEvent.deployer := deployer;
-          ink_e2e.client.ContractInstantiatedEvent.contract := contract;
-        |} :=
-      self in
-    let* α0 :=
-      [
-          (core.option.Option.Some "deployer", cast deployer (ref TraitObject));
-          (core.option.Option.Some "contract", cast contract (ref TraitObject))
-        ].["into_iter"] in
-    (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_type_to"]
-      __encode_as_type_type_id
-      __encode_as_type_types
-      __encode_as_type_out.
+  Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+      u32->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
@@ -3271,28 +1322,11 @@ Section
   
   Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
   
-  Definition encode_as_fields_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_fields : ref Slice)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    let
-        '{|
-          ink_e2e.client.ContractInstantiatedEvent.deployer := deployer;
-          ink_e2e.client.ContractInstantiatedEvent.contract := contract;
-        |} :=
-      self in
-    let* α0 :=
-      [
-          (core.option.Option.Some "deployer", cast deployer (ref TraitObject));
-          (core.option.Option.Some "contract", cast contract (ref TraitObject))
-        ].["into_iter"] in
-    (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_fields_to"]
-      __encode_as_type_fields
-      __encode_as_type_types
-      __encode_as_type_out.
+  Parameter encode_as_fields_to : forall `{H : State.Trait}, ref Self->
+      ref Slice->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_fields_to `{H : State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
@@ -3358,16 +1392,9 @@ Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
   
   Definition Self := ink_e2e.client.CodeStoredEvent E.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field1_finish"]
-      f
-      "CodeStoredEvent"
-      "code_hash"
-      (addr_of (addr_of self.["code_hash"])).
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -3387,23 +1414,8 @@ Section
   
   Definition Self := ink_e2e.client.CodeStoredEvent E.
   
-  Definition decode
-      `{H : State.Trait}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α0 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 :=
-          e.["chain"] "Could not decode `CodeStoredEvent::code_hash`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    Pure
-      (core.result.Result.Ok
-        {| ink_e2e.client.CodeStoredEvent.code_hash := α0; |}).
+  Parameter decode : forall `{H : State.Trait}, mut_ref __CodecInputEdqy
+      -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
@@ -3424,39 +1436,25 @@ Section
   
   Definition Self := ink_e2e.client.CodeStoredEvent E.
   
-  Definition encode_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M (H := H) unit :=
-    parity_scale_codec.codec.Encode.encode_to
-      (addr_of (addr_of self.["code_hash"]))
-      __codec_dest_edqy.
+  Parameter encode_to : forall `{H : State.Trait}, ref Self->
+      mut_ref __CodecOutputEdqy
+      -> M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
-  Definition encode
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) (alloc.vec.Vec Root.core.primitive.u8) :=
-    parity_scale_codec.codec.Encode.encode
-      (addr_of (addr_of self.["code_hash"])).
+  Parameter encode : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (alloc.vec.Vec Root.core.primitive.u8).
   
   Global Instance Method_encode `{H : State.Trait} : Notation.Dot "encode" := {
     Notation.dot := encode;
   }.
   
-  Definition using_encoded
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : F)
-      : M (H := H) R :=
-    parity_scale_codec.codec.Encode.using_encoded
-      (addr_of (addr_of self.["code_hash"]))
-      f.
+  Parameter using_encoded : forall `{H : State.Trait}, ref Self->
+      F
+      -> M (H := H) R.
   
   Global Instance Method_using_encoded `{H : State.Trait} :
     Notation.Dot "using_encoded" := {
@@ -3500,11 +1498,8 @@ Section Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
   
   Definition Visitor : Set := ink_e2e.client._.Visitor E.
   
-  Definition into_visitor
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) ImplSelf.Visitor :=
-    Pure (ink_e2e.client._.Visitor.Build_t core.marker.PhantomData.Build).
+  Parameter into_visitor : forall `{H : State.Trait}, unit
+      -> M (H := H) ImplSelf.Visitor.
   
   Global Instance AssociatedFunction_into_visitor `{H : State.Trait} :
     Notation.DoubleColon Self "into_visitor" := {
@@ -3527,124 +1522,20 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
   
   Definition Value : Set := ink_e2e.client.CodeStoredEvent E.
   
-  Definition visit_composite
-      `{H : State.Trait}
-      (self : Self)
-      (value : mut_ref scale_decode.visitor.types.composite.Composite)
-      (type_id : scale_decode.visitor.TypeId)
-      : M (H := H) (core.result.Result ImplSelf.Value ImplSelf.Error) :=
-    let* _ :=
-      let* α0 := value.["has_unnamed_fields"] in
-      if (α0 : bool) then
-        let* α0 := value.["as_tuple"] in
-        let* α1 := self.["visit_tuple"] (addr_of α0) type_id in
-        Return α1
-      else
-        Pure tt in
-    let* vals :=
-      let* α0 :=
-        value.["map"]
-          (fun res =>
-            res.["map"]
-              (fun item =>
-                let* α0 := item.["name"] in
-                Pure (α0, item))) in
-      let* α1 := α0.["collect"] in
-      let* α2 := LangItem α1 in
-      match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    let* val :=
-      let* α0 := vals.["get"] (addr_of (core.option.Option.Some "code_hash")) in
-      let* α1 :=
-        α0.["ok_or_else"]
-          (fun  =>
-            let* α0 := "code_hash".["to_owned"] in
-            scale_decode.error.Error::["new"]
-              scale_decode.error.ErrorKind.CannotFindField
-                {|
-                scale_decode.error.ErrorKind.CannotFindField.name := α0;
-              |}) in
-      let* α2 := LangItem α1 in
-      let* α3 :=
-        match α2 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
-          Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
-        end in
-      α3.["deref"] in
-    let* α0 := val.["decode_as_type"] in
-    let* α1 := α0.["map_err"] (fun e => e.["at_field"] "code_hash") in
-    let* α2 := LangItem α1 in
-    let* α0 :=
-      match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    Pure
-      (core.result.Result.Ok
-        {| ink_e2e.client.CodeStoredEvent.code_hash := α0; |}).
+  Parameter visit_composite : forall `{H : State.Trait}, Self->
+      mut_ref scale_decode.visitor.types.composite.Composite->
+      scale_decode.visitor.TypeId
+      -> M (H := H) (core.result.Result ImplSelf.Value ImplSelf.Error).
   
   Global Instance Method_visit_composite `{H : State.Trait} :
     Notation.Dot "visit_composite" := {
     Notation.dot := visit_composite;
   }.
   
-  Definition visit_tuple
-      `{H : State.Trait}
-      (self : Self)
-      (value : mut_ref scale_decode.visitor.types.tuple.Tuple)
-      (type_id : scale_decode.visitor.TypeId)
-      : M (H := H) (core.result.Result ImplSelf.Value ImplSelf.Error) :=
-    let* _ :=
-      let* α0 := value.["remaining"] in
-      let* α1 := α0.["ne"] 1 in
-      if (α1 : bool) then
-        let* _ :=
-          let* α0 := value.["remaining"] in
-          let* α1 :=
-            scale_decode.error.Error::["new"]
-              scale_decode.error.ErrorKind.WrongLength
-                {|
-                scale_decode.error.ErrorKind.WrongLength.actual_len := α0;
-                scale_decode.error.ErrorKind.WrongLength.expected_len := 1;
-              |} in
-          Return (core.result.Result.Err α1) in
-        Pure tt
-      else
-        Pure tt in
-    let vals := value in
-    let* val :=
-      let* α0 := vals.["next"] in
-      let* α1 :=
-        α0.["expect"]
-          "field count should have been checked already on tuple type; please file a bug report" in
-      let* α2 := LangItem α1 in
-      match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    let* α0 := val.["decode_as_type"] in
-    let* α1 := α0.["map_err"] (fun e => e.["at_field"] "code_hash") in
-    let* α2 := LangItem α1 in
-    let* α0 :=
-      match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    Pure
-      (core.result.Result.Ok
-        {| ink_e2e.client.CodeStoredEvent.code_hash := α0; |}).
+  Parameter visit_tuple : forall `{H : State.Trait}, Self->
+      mut_ref scale_decode.visitor.types.tuple.Tuple->
+      scale_decode.visitor.TypeId
+      -> M (H := H) (core.result.Result ImplSelf.Value ImplSelf.Error).
   
   Global Instance Method_visit_tuple `{H : State.Trait} :
     Notation.Dot "visit_tuple" := {
@@ -3662,37 +1553,10 @@ Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   
   Definition Self := ink_e2e.client.CodeStoredEvent E.
   
-  Definition decode_as_fields
-      `{H : State.Trait}
-      (input : mut_ref (ref Slice))
-      (fields : ref Slice)
-      (types : ref scale_info.portable.PortableRegistry)
-      : M (H := H) (core.result.Result Self scale_decode.error.Error) :=
-    let* path := core.default.Default.default tt in
-    let* composite :=
-      scale_decode.visitor.types.composite.Composite::["new"]
-        input
-        (addr_of path)
-        fields
-        types in
-    let* val :=
-      let* α0 := (ink_e2e.client.CodeStoredEvent E)::["into_visitor"] tt in
-      α0.["visit_composite"]
-        (addr_of composite)
-        (scale_decode.visitor.TypeId.Build_t 0) in
-    let* _ :=
-      let* α0 := composite.["skip_decoding"] in
-      let* α1 := LangItem α0 in
-      match α1 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    let* _ :=
-      let* α0 := composite.["bytes_from_undecoded"] in
-      assign input.["deref"] α0 in
-    val.["map_err"] core.convert.From.from.
+  Parameter decode_as_fields : forall `{H : State.Trait}, mut_ref (ref Slice)->
+      ref Slice->
+      ref scale_info.portable.PortableRegistry
+      -> M (H := H) (core.result.Result Self scale_decode.error.Error).
   
   Global Instance AssociatedFunction_decode_as_fields `{H : State.Trait} :
     Notation.DoubleColon Self "decode_as_fields" := {
@@ -3714,21 +1578,11 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
   
   Definition Self := ink_e2e.client.CodeStoredEvent E.
   
-  Definition encode_as_type_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_type_id : u32)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    let '{| ink_e2e.client.CodeStoredEvent.code_hash := code_hash; |} := self in
-    let* α0 :=
-      [ (core.option.Option.Some "code_hash", cast code_hash (ref TraitObject))
-        ].["into_iter"] in
-    (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_type_to"]
-      __encode_as_type_type_id
-      __encode_as_type_types
-      __encode_as_type_out.
+  Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+      u32->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
@@ -3750,21 +1604,11 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   
   Definition Self := ink_e2e.client.CodeStoredEvent E.
   
-  Definition encode_as_fields_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_fields : ref Slice)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    let '{| ink_e2e.client.CodeStoredEvent.code_hash := code_hash; |} := self in
-    let* α0 :=
-      [ (core.option.Option.Some "code_hash", cast code_hash (ref TraitObject))
-        ].["into_iter"] in
-    (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_fields_to"]
-      __encode_as_type_fields
-      __encode_as_type_types
-      __encode_as_type_out.
+  Parameter encode_as_fields_to : forall `{H : State.Trait}, ref Self->
+      ref Slice->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_fields_to `{H : State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
@@ -3827,1375 +1671,142 @@ Definition Client : Set := Client.t.
 Module Impl_ink_e2e_client_Client_C_E_2.
   Definition Self := ink_e2e.client.Client C E.
   
-  Definition new
-      `{H : State.Trait}
-      (client : subxt.client.online_client.OnlineClient C)
-      (contracts : impl IntoIterator<Item = &str>)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let client := client in
-        let contracts := contracts in
-        let* contracts :=
-          let* α0 := contracts.["into_iter"] in
-          let* α1 :=
-            α0.["map"]
-              (fun path =>
-                let* wasm_path := std.path.PathBuf::["from"] path in
-                let* contract_name :=
-                  let* α0 := wasm_path.["file_stem"] in
-                  α0.["unwrap_or_else"]
-                    (fun  =>
-                      let* α0 := wasm_path.["display"] in
-                      let* α1 :=
-                        format_argument::["new_display"] (addr_of α0) in
-                      let* α2 :=
-                        format_arguments::["new_v1"]
-                          (addr_of [ "Invalid contract wasm path '"; "'" ])
-                          (addr_of [ α1 ]) in
-                      core.panicking.panic_fmt α2) in
-                let* α0 := contract_name.["to_string_lossy"] in
-                let* α1 := α0.["to_string"] in
-                Pure (α1, wasm_path)) in
-          α1.["collect"] in
-        let* α0 := ink_e2e.xts.ContractsApi::["new"] client in
-        let* α1 := LangItem α0 in
-        let* α2 :=
-          match α1 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end in
-        Pure {| Self.api := α2; Self.contracts := contracts; |}).
+  Parameter new : forall
+        `{H : State.Trait},
+        subxt.client.online_client.OnlineClient C->
+      impl IntoIterator<Item = &str>
+      -> M (H := H) OpaqueDef.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Definition create_and_fund_account
-      `{H : State.Trait}
-      (self : ref Self)
-      (origin : ref (ink_e2e.Signer C))
-      (amount : ImplE.Balance)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let origin := origin in
-        let amount := amount in
-        let* '(pair, _, _) :=
-          sp_core.crypto.Pair.generate_with_phrase core.option.Option.None in
-        let* pair_signer :=
-          (subxt.tx.signer.pair_signer.PairSigner C _)::["new"] pair in
-        let* account_id :=
-          let* α0 := pair_signer.["account_id"] in
-          α0.["to_owned"] in
-        let* _ :=
-          let* α0 := account_id.["clone"] in
-          let* α1 := self.["api"].["try_transfer_balance"] origin α0 amount in
-          let* α2 := LangItem α1 in
-          let* α3 :=
-            match α2 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          α3.["unwrap_or_else"]
-            (fun err =>
-              let* α0 := origin.["account_id"] in
-              let* α1 := format_argument::["new_display"] (addr_of α0) in
-              let* α2 :=
-                format_argument::["new_display"] (addr_of account_id) in
-              let* α3 := format_argument::["new_debug"] (addr_of err) in
-              let* α4 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "transfer from "; " to "; " failed with " ])
-                  (addr_of [ α1; α2; α3 ]) in
-              core.panicking.panic_fmt α4) in
-        let* _ :=
-          let* res :=
-            let* α0 := origin.["account_id"] in
-            let* α1 := format_argument::["new_display"] (addr_of α0) in
-            let* α2 := format_argument::["new_display"] (addr_of account_id) in
-            let* α3 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "transfer from "; " to "; " succeeded" ])
-                (addr_of [ α1; α2 ]) in
-            alloc.fmt.format α3 in
-          ink_e2e.log_info (addr_of res) in
-        Pure pair_signer).
+  Parameter create_and_fund_account : forall `{H : State.Trait}, ref Self->
+      ref (ink_e2e.Signer C)->
+      ImplE.Balance
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_create_and_fund_account `{H : State.Trait} :
     Notation.Dot "create_and_fund_account" := {
     Notation.dot := create_and_fund_account;
   }.
   
-  Definition instantiate
-      `{H : State.Trait}
-      (self : mut_ref Self)
-      (contract_name : ref str)
-      (signer : ref (ink_e2e.Signer C))
-      (constructor : ink_e2e.builders.CreateBuilderPartial E Contract Args R)
-      (value : ImplE.Balance)
-      (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let contract_name := contract_name in
-        let signer := signer in
-        let constructor := constructor in
-        let value := value in
-        let storage_deposit_limit := storage_deposit_limit in
-        let* code := self.["load_code"] contract_name in
-        let* ret :=
-          let* α0 :=
-            self.["exec_instantiate"]
-              signer
-              code
-              constructor
-              value
-              storage_deposit_limit in
-          let* α1 := LangItem α0 in
-          let* α2 :=
-            match α1 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let* α3 := LangItem α2 in
-          match α3 with
-          | Break {| Break.0 := residual; |} =>
-            let* α0 := LangItem residual in
-            Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
-          end in
-        let* _ :=
-          let* res :=
-            let* α0 :=
-              format_argument::["new_debug"] (addr_of ret.["account_id"]) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "instantiated contract at " ])
-                (addr_of [ α0 ]) in
-            alloc.fmt.format α1 in
-          ink_e2e.log_info (addr_of res) in
-        Pure (core.result.Result.Ok ret)).
+  Parameter instantiate : forall `{H : State.Trait}, mut_ref Self->
+      ref str->
+      ref (ink_e2e.Signer C)->
+      ink_e2e.builders.CreateBuilderPartial E Contract Args R->
+      ImplE.Balance->
+      core.option.Option ImplE.Balance
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_instantiate `{H : State.Trait} :
     Notation.Dot "instantiate" := {
     Notation.dot := instantiate;
   }.
   
-  Definition instantiate_dry_run
-      `{H : State.Trait}
-      (self : mut_ref Self)
-      (contract_name : ref str)
-      (signer : ref (ink_e2e.Signer C))
-      (constructor : ink_e2e.builders.CreateBuilderPartial E Contract Args R)
-      (value : ImplE.Balance)
-      (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let contract_name := contract_name in
-        let signer := signer in
-        let constructor := constructor in
-        let value := value in
-        let storage_deposit_limit := storage_deposit_limit in
-        let* code := self.["load_code"] contract_name in
-        let* data := ink_e2e.builders.constructor_exec_input constructor in
-        let* salt := Self::["salt"] tt in
-        let* α0 :=
-          self.["api"].["instantiate_with_code_dry_run"]
-            value
-            storage_deposit_limit
-            code
-            data
-            salt
-            signer in
-        let* α1 := LangItem α0 in
-        match α1 with
-        | __awaitee =>
-          loop
-            let* _ :=
-              let* α0 := LangItem (addr_of __awaitee) in
-              let* α1 := LangItem _task_context in
-              let* α0 := LangItem α0 α1 in
-              match α0 with
-              | {| Ready.0 := result; |} => Pure Break
-              |  => Pure tt
-              end in
-            let* _ :=
-              let* α0 := yield tt in
-              assign _task_context α0 in
-            Pure tt
-            from
-            loop
-        end).
+  Parameter instantiate_dry_run : forall `{H : State.Trait}, mut_ref Self->
+      ref str->
+      ref (ink_e2e.Signer C)->
+      ink_e2e.builders.CreateBuilderPartial E Contract Args R->
+      ImplE.Balance->
+      core.option.Option ImplE.Balance
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_instantiate_dry_run `{H : State.Trait} :
     Notation.Dot "instantiate_dry_run" := {
     Notation.dot := instantiate_dry_run;
   }.
   
-  Definition load_code
-      `{H : State.Trait}
-      (self : ref Self)
-      (contract : ref str)
-      : M (H := H) (alloc.vec.Vec u8) :=
-    let* wasm_path :=
-      let* α0 := contract.["replace"] "-"%char "_" in
-      let* α1 := self.["contracts"].["get"] (addr_of α0) in
-      α1.["unwrap_or_else"]
-        (fun  =>
-          let* α0 := self.["contracts"].["keys"] in
-          let* α1 :=
-            match (addr_of α0, addr_of contract) with
-            | args =>
-              let* α0 := format_argument::["new_display"] (args.[1]) in
-              let* α1 := format_argument::["new_debug"] (args.[0]) in
-              Pure [ α0; α1 ]
-            end in
-          let* α2 :=
-            format_arguments::["new_v1"]
-              (addr_of
-                [
-                  "Unknown contract ";
-                  ". Available contracts: ";
-                  ".
-For a contract to be built, add it as a dependency to the `Cargo.toml`, or add the manifest path to `#[ink_e2e::test(additional_contracts = ..)]`"
-                ])
-              (addr_of α1) in
-          core.panicking.panic_fmt α2) in
-    let* code :=
-      let* α0 := std.fs.read wasm_path in
-      α0.["unwrap_or_else"]
-        (fun err =>
-          let* α0 := wasm_path.["display"] in
-          let* α1 := format_argument::["new_display"] (addr_of α0) in
-          let* α2 := format_argument::["new_debug"] (addr_of err) in
-          let* α3 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "Error loading '"; "': " ])
-              (addr_of [ α1; α2 ]) in
-          core.panicking.panic_fmt α3) in
-    let* _ :=
-      let* res :=
-        let* α0 := format_argument::["new_debug"] (addr_of contract) in
-        let* α1 := code.["len"] in
-        let* α2 := α1.["div"] 1024 in
-        let* α3 := format_argument::["new_display"] (addr_of α2) in
-        let* α4 :=
-          format_arguments::["new_v1"]
-            (addr_of [ ""; " has "; " KiB" ])
-            (addr_of [ α0; α3 ]) in
-        alloc.fmt.format α4 in
-      ink_e2e.log_info (addr_of res) in
-    Pure code.
+  Parameter load_code : forall `{H : State.Trait}, ref Self->
+      ref str
+      -> M (H := H) (alloc.vec.Vec u8).
   
   Global Instance Method_load_code `{H : State.Trait} :
     Notation.Dot "load_code" := {
     Notation.dot := load_code;
   }.
   
-  Definition exec_instantiate
-      `{H : State.Trait}
-      (self : mut_ref Self)
-      (signer : ref (ink_e2e.Signer C))
-      (code : alloc.vec.Vec u8)
-      (constructor : ink_e2e.builders.CreateBuilderPartial E Contract Args R)
-      (value : ImplE.Balance)
-      (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let signer := signer in
-        let code := code in
-        let constructor := constructor in
-        let value := value in
-        let storage_deposit_limit := storage_deposit_limit in
-        let* salt := Self::["salt"] tt in
-        let* data := ink_e2e.builders.constructor_exec_input constructor in
-        let* dry_run :=
-          let* α0 := code.["clone"] in
-          let* α1 := data.["clone"] in
-          let* α2 := salt.["clone"] in
-          let* α3 :=
-            self.["api"].["instantiate_with_code_dry_run"]
-              value
-              storage_deposit_limit
-              α0
-              α1
-              α2
-              signer in
-          let* α4 := LangItem α3 in
-          match α4 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end in
-        let* _ :=
-          let* res :=
-            let* α0 :=
-              alloc.string.String::["from_utf8_lossy"]
-                (addr_of dry_run.["debug_message"]) in
-            let* α1 := format_argument::["new_debug"] (addr_of α0) in
-            let* α2 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "instantiate dry run debug message: " ])
-                (addr_of [ α1 ]) in
-            alloc.fmt.format α2 in
-          ink_e2e.log_info (addr_of res) in
-        let* _ :=
-          let* res :=
-            let* α0 :=
-              format_argument::["new_debug"] (addr_of dry_run.["result"]) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "instantiate dry run result: " ])
-                (addr_of [ α0 ]) in
-            alloc.fmt.format α1 in
-          ink_e2e.log_info (addr_of res) in
-        let* _ :=
-          let* α0 := dry_run.["result"].["is_err"] in
-          if (α0 : bool) then
-            Return
-              (core.result.Result.Err
-                (ink_e2e.client.Error.InstantiateDryRun dry_run))
-          else
-            Pure tt in
-        let* tx_events :=
-          let* α0 := dry_run.["gas_required"].["into"] in
-          let* α1 := data.["clone"] in
-          let* α2 :=
-            self.["api"].["instantiate_with_code"]
-              value
-              α0
-              storage_deposit_limit
-              code
-              α1
-              salt
-              signer in
-          let* α3 := LangItem α2 in
-          match α3 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end in
-        let account_id := core.option.Option.None in
-        let* _ :=
-          let* α0 := tx_events.["iter"] in
-          let* α1 := LangItem α0 in
-          match α1 with
-          | iter =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of iter) in
-                match α0 with
-                | None => Pure Break
-                | Some {| Some.0 := evt; |} =>
-                  let* evt :=
-                    evt.["unwrap_or_else"]
-                      (fun err =>
-                        let* _ :=
-                          let* α0 :=
-                            format_argument::["new_debug"] (addr_of err) in
-                          let* α1 :=
-                            format_arguments::["new_v1"]
-                              (addr_of [ "unable to unwrap event: " ])
-                              (addr_of [ α0 ]) in
-                          core.panicking.panic_fmt α1 in
-                        Pure tt) in
-                  let* α0 := evt.["as_event"] in
-                  let* α1 :=
-                    α0.["unwrap_or_else"]
-                      (fun err =>
-                        let* _ :=
-                          let* α0 :=
-                            format_argument::["new_debug"] (addr_of err) in
-                          let* α1 :=
-                            format_arguments::["new_v1"]
-                              (addr_of
-                                [ "event conversion to `Instantiated` failed: "
-                                ])
-                              (addr_of [ α0 ]) in
-                          core.panicking.panic_fmt α1 in
-                        Pure tt) in
-                  let* α2 :=
-                    let_if core.option.Option.Some instantiated := α1 in
-                  if (α2 : bool) then
-                    let* _ :=
-                      let* res :=
-                        let* α0 :=
-                          format_argument::["new_debug"]
-                            (addr_of instantiated.["contract"]) in
-                        let* α1 :=
-                          format_arguments::["new_v1"]
-                            (addr_of [ "contract was instantiated at " ])
-                            (addr_of [ α0 ]) in
-                        alloc.fmt.format α1 in
-                      ink_e2e.log_info (addr_of res) in
-                    let* _ :=
-                      assign
-                        account_id
-                        (core.option.Option.Some instantiated.["contract"]) in
-                    Pure tt
-                  else
-                    let* α0 :=
-                      ink_e2e.client.is_extrinsic_failed_event (addr_of evt) in
-                    if (α0 : bool) then
-                      let* metadata := self.["api"].["client"].["metadata"] in
-                      let* dispatch_error :=
-                        let* α0 := evt.["field_bytes"] in
-                        let* α1 :=
-                          subxt.error.dispatch_error.DispatchError::["decode_from"]
-                            α0
-                            metadata in
-                        let* α2 :=
-                          α1.["map_err"] ink_e2e.client.Error.Decoding in
-                        let* α3 := LangItem α2 in
-                        match α3 with
-                        | Break {| Break.0 := residual; |} =>
-                          let* α0 := LangItem residual in
-                          Return α0
-                        | Continue {| Continue.0 := val; |} => Pure val
-                        end in
-                      let* _ :=
-                        let* res :=
-                          let* α0 :=
-                            format_argument::["new_display"]
-                              (addr_of dispatch_error) in
-                          let* α1 :=
-                            format_arguments::["new_v1"]
-                              (addr_of [ "extrinsic for instantiate failed: " ])
-                              (addr_of [ α0 ]) in
-                          alloc.fmt.format α1 in
-                        ink_e2e.log_error (addr_of res) in
-                      Return
-                        (core.result.Result.Err
-                          (ink_e2e.client.Error.InstantiateExtrinsic
-                            dispatch_error))
-                    else
-                      Pure tt
-                end in
-              Pure tt
-              from
-              for
-          end in
-        let* account_id :=
-          account_id.["expect"] "cannot extract `account_id` from events" in
-        Pure
-          (core.result.Result.Ok
-            {|
-              ink_e2e.client.InstantiationResult.dry_run := dry_run;
-              ink_e2e.client.InstantiationResult.account_id := account_id;
-              ink_e2e.client.InstantiationResult.events := tx_events;
-            |})).
+  Parameter exec_instantiate : forall `{H : State.Trait}, mut_ref Self->
+      ref (ink_e2e.Signer C)->
+      alloc.vec.Vec u8->
+      ink_e2e.builders.CreateBuilderPartial E Contract Args R->
+      ImplE.Balance->
+      core.option.Option ImplE.Balance
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_exec_instantiate `{H : State.Trait} :
     Notation.Dot "exec_instantiate" := {
     Notation.dot := exec_instantiate;
   }.
   
-  Definition salt
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) (alloc.vec.Vec u8) :=
-    let* α0 := std.time.SystemTime::["now"] tt in
-    let* α1 := α0.["duration_since"] std.time.UNIX_EPOCH in
-    let* α2 :=
-      α1.["unwrap_or_else"]
-        (fun err =>
-          let* α0 := format_argument::["new_display"] (addr_of err) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "unable to get unix time: " ])
-              (addr_of [ α0 ]) in
-          core.panicking.panic_fmt α1) in
-    let* α3 := α2.["as_millis"] in
-    let* α4 := α3.["as_u128"] in
-    let* α5 := α4.["to_le_bytes"] in
-    α5.["to_vec"].
+  Parameter salt : forall `{H : State.Trait}, unit
+      -> M (H := H) (alloc.vec.Vec u8).
   
   Global Instance AssociatedFunction_salt `{H : State.Trait} :
     Notation.DoubleColon Self "salt" := {
     Notation.double_colon := salt;
   }.
   
-  Definition upload
-      `{H : State.Trait}
-      (self : mut_ref Self)
-      (contract_name : ref str)
-      (signer : ref (ink_e2e.Signer C))
-      (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let contract_name := contract_name in
-        let signer := signer in
-        let storage_deposit_limit := storage_deposit_limit in
-        let* code := self.["load_code"] contract_name in
-        let* ret :=
-          let* α0 := self.["exec_upload"] signer code storage_deposit_limit in
-          let* α1 := LangItem α0 in
-          let* α2 :=
-            match α1 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let* α3 := LangItem α2 in
-          match α3 with
-          | Break {| Break.0 := residual; |} =>
-            let* α0 := LangItem residual in
-            Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
-          end in
-        let* _ :=
-          let* res :=
-            let* α0 :=
-              format_argument::["new_debug"] (addr_of ret.["code_hash"]) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "contract stored with hash " ])
-                (addr_of [ α0 ]) in
-            alloc.fmt.format α1 in
-          ink_e2e.log_info (addr_of res) in
-        Pure (core.result.Result.Ok ret)).
+  Parameter upload : forall `{H : State.Trait}, mut_ref Self->
+      ref str->
+      ref (ink_e2e.Signer C)->
+      core.option.Option ImplE.Balance
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_upload `{H : State.Trait} : Notation.Dot "upload" := {
     Notation.dot := upload;
   }.
   
-  Definition exec_upload
-      `{H : State.Trait}
-      (self : mut_ref Self)
-      (signer : ref (ink_e2e.Signer C))
-      (code : alloc.vec.Vec u8)
-      (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let signer := signer in
-        let code := code in
-        let storage_deposit_limit := storage_deposit_limit in
-        let* dry_run :=
-          let* α0 := code.["clone"] in
-          let* α1 :=
-            self.["api"].["upload_dry_run"] signer α0 storage_deposit_limit in
-          let* α2 := LangItem α1 in
-          match α2 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end in
-        let* _ :=
-          let* res :=
-            let* α0 := format_argument::["new_debug"] (addr_of dry_run) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "upload dry run: " ])
-                (addr_of [ α0 ]) in
-            alloc.fmt.format α1 in
-          ink_e2e.log_info (addr_of res) in
-        let* _ :=
-          let* α0 := dry_run.["is_err"] in
-          if (α0 : bool) then
-            Return
-              (core.result.Result.Err
-                (ink_e2e.client.Error.UploadDryRun dry_run))
-          else
-            Pure tt in
-        let* tx_events :=
-          let* α0 :=
-            self.["api"].["upload"] signer code storage_deposit_limit in
-          let* α1 := LangItem α0 in
-          match α1 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end in
-        let hash := core.option.Option.None in
-        let* _ :=
-          let* α0 := tx_events.["iter"] in
-          let* α1 := LangItem α0 in
-          match α1 with
-          | iter =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of iter) in
-                match α0 with
-                | None => Pure Break
-                | Some {| Some.0 := evt; |} =>
-                  let* evt :=
-                    evt.["unwrap_or_else"]
-                      (fun err =>
-                        let* _ :=
-                          let* α0 :=
-                            format_argument::["new_debug"] (addr_of err) in
-                          let* α1 :=
-                            format_arguments::["new_v1"]
-                              (addr_of [ "unable to unwrap event: " ])
-                              (addr_of [ α0 ]) in
-                          core.panicking.panic_fmt α1 in
-                        Pure tt) in
-                  let* α0 := evt.["as_event"] in
-                  let* α1 :=
-                    α0.["unwrap_or_else"]
-                      (fun err =>
-                        let* _ :=
-                          let* α0 :=
-                            format_argument::["new_debug"] (addr_of err) in
-                          let* α1 :=
-                            format_arguments::["new_v1"]
-                              (addr_of
-                                [ "event conversion to `Uploaded` failed: " ])
-                              (addr_of [ α0 ]) in
-                          core.panicking.panic_fmt α1 in
-                        Pure tt) in
-                  let* α2 := let_if core.option.Option.Some uploaded := α1 in
-                  if (α2 : bool) then
-                    let* _ :=
-                      let* res :=
-                        let* α0 :=
-                          format_argument::["new_debug"]
-                            (addr_of uploaded.["code_hash"]) in
-                        let* α1 :=
-                          format_arguments::["new_v1"]
-                            (addr_of [ "contract was uploaded with hash " ])
-                            (addr_of [ α0 ]) in
-                        alloc.fmt.format α1 in
-                      ink_e2e.log_info (addr_of res) in
-                    let* _ :=
-                      assign
-                        hash
-                        (core.option.Option.Some uploaded.["code_hash"]) in
-                    Pure Break
-                  else
-                    let* α0 :=
-                      ink_e2e.client.is_extrinsic_failed_event (addr_of evt) in
-                    if (α0 : bool) then
-                      let* metadata := self.["api"].["client"].["metadata"] in
-                      let* dispatch_error :=
-                        let* α0 := evt.["field_bytes"] in
-                        let* α1 :=
-                          subxt.error.dispatch_error.DispatchError::["decode_from"]
-                            α0
-                            metadata in
-                        let* α2 :=
-                          α1.["map_err"] ink_e2e.client.Error.Decoding in
-                        let* α3 := LangItem α2 in
-                        match α3 with
-                        | Break {| Break.0 := residual; |} =>
-                          let* α0 := LangItem residual in
-                          Return α0
-                        | Continue {| Continue.0 := val; |} => Pure val
-                        end in
-                      let* _ :=
-                        let* res :=
-                          let* α0 :=
-                            format_argument::["new_display"]
-                              (addr_of dispatch_error) in
-                          let* α1 :=
-                            format_arguments::["new_v1"]
-                              (addr_of [ "extrinsic for upload failed: " ])
-                              (addr_of [ α0 ]) in
-                          alloc.fmt.format α1 in
-                        ink_e2e.log_error (addr_of res) in
-                      Return
-                        (core.result.Result.Err
-                          (ink_e2e.client.Error.UploadExtrinsic dispatch_error))
-                    else
-                      Pure tt
-                end in
-              Pure tt
-              from
-              for
-          end in
-        let* code_hash :=
-          match hash with
-          | core.option.Option.Some hash => Pure hash
-          | core.option.Option.None =>
-            let* α0 := dry_run.["as_ref"] in
-            let* α1 :=
-              α0.["unwrap_or_else"]
-                (fun err =>
-                  let* α0 := format_argument::["new_debug"] (addr_of err) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ "must have worked: " ])
-                      (addr_of [ α0 ]) in
-                  core.panicking.panic_fmt α1) in
-            Pure α1.["code_hash"]
-          end in
-        Pure
-          (core.result.Result.Ok
-            {|
-              ink_e2e.client.UploadResult.dry_run := dry_run;
-              ink_e2e.client.UploadResult.code_hash := code_hash;
-              ink_e2e.client.UploadResult.events := tx_events;
-            |})).
+  Parameter exec_upload : forall `{H : State.Trait}, mut_ref Self->
+      ref (ink_e2e.Signer C)->
+      alloc.vec.Vec u8->
+      core.option.Option ImplE.Balance
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_exec_upload `{H : State.Trait} :
     Notation.Dot "exec_upload" := {
     Notation.dot := exec_upload;
   }.
   
-  Definition call
-      `{H : State.Trait}
-      (self : mut_ref Self)
-      (signer : ref (ink_e2e.Signer C))
-      (message : ref (ink_e2e.client.CallBuilderFinal E Args RetType))
-      (value : ImplE.Balance)
-      (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let signer := signer in
-        let message := message in
-        let value := value in
-        let storage_deposit_limit := storage_deposit_limit in
-        let* account_id :=
-          let* α0 := message.["clone"] in
-          let* α1 := α0.["params"] in
-          let* α2 := α1.["callee"] in
-          α2.["clone"] in
-        let* exec_input :=
-          let* α0 := message.["clone"] in
-          let* α1 := α0.["params"] in
-          let* α2 := α1.["exec_input"] in
-          parity_scale_codec.codec.Encode.encode α2 in
-        let* _ :=
-          let* res :=
-            let* α0 := format_argument::["new_debug"] (addr_of exec_input) in
-            let* α1 := format_count::["Is"] 2 in
-            let* α2 :=
-              format_placeholder::["new"]
-                0
-                " "%char
-                format_alignment::["Unknown"]
-                40
-                format_count::["Implied"]
-                α1 in
-            let* α3 := format_unsafe_arg::["new"] tt in
-            let* α4 :=
-              format_arguments::["new_v1_formatted"]
-                (addr_of [ "call: " ])
-                (addr_of [ α0 ])
-                (addr_of [ α2 ])
-                α3 in
-            alloc.fmt.format α4 in
-          ink_e2e.log_info (addr_of res) in
-        let* dry_run :=
-          let* α0 :=
-            self.["call_dry_run"]
-              signer
-              message
-              value
-              core.option.Option.None in
-          let* α1 := LangItem α0 in
-          match α1 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end in
-        let* _ :=
-          let* α0 := dry_run.["exec_result"].["result"].["is_err"] in
-          if (α0 : bool) then
-            Return
-              (core.result.Result.Err
-                (ink_e2e.client.Error.CallDryRun dry_run.["exec_result"]))
-          else
-            Pure tt in
-        let* tx_events :=
-          let* α0 := account_id.["clone"] in
-          let* α1 := dry_run.["exec_result"].["gas_required"].["into"] in
-          let* α2 :=
-            self.["api"].["call"]
-              (subxt.utils.multi_address.MultiAddress.Id α0)
-              value
-              α1
-              storage_deposit_limit
-              exec_input
-              signer in
-          let* α3 := LangItem α2 in
-          match α3 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end in
-        let* _ :=
-          let* α0 := tx_events.["iter"] in
-          let* α1 := LangItem α0 in
-          match α1 with
-          | iter =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of iter) in
-                match α0 with
-                | None => Pure Break
-                | Some {| Some.0 := evt; |} =>
-                  let* evt :=
-                    evt.["unwrap_or_else"]
-                      (fun err =>
-                        let* _ :=
-                          let* α0 :=
-                            format_argument::["new_debug"] (addr_of err) in
-                          let* α1 :=
-                            format_arguments::["new_v1"]
-                              (addr_of [ "unable to unwrap event: " ])
-                              (addr_of [ α0 ]) in
-                          core.panicking.panic_fmt α1 in
-                        Pure tt) in
-                  let* α0 :=
-                    ink_e2e.client.is_extrinsic_failed_event (addr_of evt) in
-                  if (α0 : bool) then
-                    let* metadata := self.["api"].["client"].["metadata"] in
-                    let* dispatch_error :=
-                      let* α0 := evt.["field_bytes"] in
-                      let* α1 :=
-                        subxt.error.dispatch_error.DispatchError::["decode_from"]
-                          α0
-                          metadata in
-                      let* α2 := α1.["map_err"] ink_e2e.client.Error.Decoding in
-                      let* α3 := LangItem α2 in
-                      match α3 with
-                      | Break {| Break.0 := residual; |} =>
-                        let* α0 := LangItem residual in
-                        Return α0
-                      | Continue {| Continue.0 := val; |} => Pure val
-                      end in
-                    let* _ :=
-                      let* res :=
-                        let* α0 :=
-                          format_argument::["new_display"]
-                            (addr_of dispatch_error) in
-                        let* α1 :=
-                          format_arguments::["new_v1"]
-                            (addr_of [ "extrinsic for call failed: " ])
-                            (addr_of [ α0 ]) in
-                        alloc.fmt.format α1 in
-                      ink_e2e.log_error (addr_of res) in
-                    Return
-                      (core.result.Result.Err
-                        (ink_e2e.client.Error.CallExtrinsic dispatch_error))
-                  else
-                    Pure tt
-                end in
-              Pure tt
-              from
-              for
-          end in
-        Pure
-          (core.result.Result.Ok
-            {|
-              ink_e2e.client.CallResult.dry_run := dry_run;
-              ink_e2e.client.CallResult.events := tx_events;
-            |})).
+  Parameter call : forall `{H : State.Trait}, mut_ref Self->
+      ref (ink_e2e.Signer C)->
+      ref (ink_e2e.client.CallBuilderFinal E Args RetType)->
+      ImplE.Balance->
+      core.option.Option ImplE.Balance
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
     Notation.dot := call;
   }.
   
-  Definition runtime_call
-      `{H : State.Trait}
-      (self : mut_ref Self)
-      (signer : ref (ink_e2e.Signer C))
-      (pallet_name : ref str)
-      (call_name : ref str)
-      (call_data : alloc.vec.Vec scale_value.value.Value)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let signer := signer in
-        let pallet_name := pallet_name in
-        let call_name := call_name in
-        let call_data := call_data in
-        let* tx_events :=
-          let* α0 :=
-            self.["api"].["runtime_call"]
-              signer
-              pallet_name
-              call_name
-              call_data in
-          let* α1 := LangItem α0 in
-          match α1 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end in
-        let* _ :=
-          let* α0 := tx_events.["iter"] in
-          let* α1 := LangItem α0 in
-          match α1 with
-          | iter =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of iter) in
-                match α0 with
-                | None => Pure Break
-                | Some {| Some.0 := evt; |} =>
-                  let* evt :=
-                    evt.["unwrap_or_else"]
-                      (fun err =>
-                        let* _ :=
-                          let* α0 :=
-                            format_argument::["new_debug"] (addr_of err) in
-                          let* α1 :=
-                            format_arguments::["new_v1"]
-                              (addr_of [ "unable to unwrap event: " ])
-                              (addr_of [ α0 ]) in
-                          core.panicking.panic_fmt α1 in
-                        Pure tt) in
-                  let* α0 :=
-                    ink_e2e.client.is_extrinsic_failed_event (addr_of evt) in
-                  if (α0 : bool) then
-                    let* metadata := self.["api"].["client"].["metadata"] in
-                    let* dispatch_error :=
-                      let* α0 := evt.["field_bytes"] in
-                      let* α1 :=
-                        subxt.error.dispatch_error.DispatchError::["decode_from"]
-                          α0
-                          metadata in
-                      let* α2 := α1.["map_err"] ink_e2e.client.Error.Decoding in
-                      let* α3 := LangItem α2 in
-                      match α3 with
-                      | Break {| Break.0 := residual; |} =>
-                        let* α0 := LangItem residual in
-                        Return α0
-                      | Continue {| Continue.0 := val; |} => Pure val
-                      end in
-                    let* _ :=
-                      let* res :=
-                        let* α0 :=
-                          format_argument::["new_display"]
-                            (addr_of dispatch_error) in
-                        let* α1 :=
-                          format_arguments::["new_v1"]
-                            (addr_of [ "extrinsic for call failed: " ])
-                            (addr_of [ α0 ]) in
-                        alloc.fmt.format α1 in
-                      ink_e2e.log_error (addr_of res) in
-                    Return
-                      (core.result.Result.Err
-                        (ink_e2e.client.Error.CallExtrinsic dispatch_error))
-                  else
-                    Pure tt
-                end in
-              Pure tt
-              from
-              for
-          end in
-        Pure (core.result.Result.Ok tx_events)).
+  Parameter runtime_call : forall `{H : State.Trait}, mut_ref Self->
+      ref (ink_e2e.Signer C)->
+      ref str->
+      ref str->
+      alloc.vec.Vec scale_value.value.Value
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_runtime_call `{H : State.Trait} :
     Notation.Dot "runtime_call" := {
     Notation.dot := runtime_call;
   }.
   
-  Definition call_dry_run
-      `{H : State.Trait}
-      (self : mut_ref Self)
-      (signer : ref (ink_e2e.Signer C))
-      (message : ref (ink_e2e.client.CallBuilderFinal E Args RetType))
-      (value : ImplE.Balance)
-      (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let signer := signer in
-        let message := message in
-        let value := value in
-        let storage_deposit_limit := storage_deposit_limit in
-        let* dest :=
-          let* α0 := message.["clone"] in
-          let* α1 := α0.["params"] in
-          let* α2 := α1.["callee"] in
-          α2.["clone"] in
-        let* exec_input :=
-          let* α0 := message.["clone"] in
-          let* α1 := α0.["params"] in
-          let* α2 := α1.["exec_input"] in
-          parity_scale_codec.codec.Encode.encode α2 in
-        let* exec_result :=
-          let* α0 := ink_e2e.Signer::["account_id"] signer in
-          let* α1 := α0.["clone"] in
-          let* α2 :=
-            self.["api"].["call_dry_run"]
-              α1
-              dest
-              exec_input
-              value
-              storage_deposit_limit in
-          let* α3 := LangItem α2 in
-          match α3 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end in
-        let* _ :=
-          let* res :=
-            let* α0 :=
-              format_argument::["new_debug"]
-                (addr_of (addr_of exec_result.["result"])) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "call dry run: " ])
-                (addr_of [ α0 ]) in
-            alloc.fmt.format α1 in
-          ink_e2e.log_info (addr_of res) in
-        let* _ :=
-          let* res :=
-            let* α0 :=
-              alloc.string.String::["from_utf8_lossy"]
-                (addr_of exec_result.["debug_message"]) in
-            let* α1 := format_argument::["new_display"] (addr_of α0) in
-            let* α2 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "call dry run debug message: " ])
-                (addr_of [ α1 ]) in
-            alloc.fmt.format α2 in
-          ink_e2e.log_info (addr_of res) in
-        let* α0 := core.default.Default.default tt in
-        Pure
-          {|
-            ink_e2e.client.CallDryRunResult.exec_result := exec_result;
-            ink_e2e.client.CallDryRunResult._marker := α0;
-          |}).
+  Parameter call_dry_run : forall `{H : State.Trait}, mut_ref Self->
+      ref (ink_e2e.Signer C)->
+      ref (ink_e2e.client.CallBuilderFinal E Args RetType)->
+      ImplE.Balance->
+      core.option.Option ImplE.Balance
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_call_dry_run `{H : State.Trait} :
     Notation.Dot "call_dry_run" := {
     Notation.dot := call_dry_run;
   }.
   
-  Definition balance
-      `{H : State.Trait}
-      (self : ref Self)
-      (account_id : ImplE.AccountId)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let account_id := account_id in
-        let* account_addr :=
-          let* α0 :=
-            scale_value.value.Value::["from_bytes"] (addr_of account_id) in
-          let* α1 := alloc.boxed.Box::["new"] [ α0 ] in
-          let* α2 := Slice::["into_vec"] α1 in
-          subxt.storage.storage_address.dynamic "System" "Account" α2 in
-        let* account :=
-          let* α0 := self.["api"].["client"].["storage"] in
-          let* α1 := α0.["at_latest"] in
-          let* α2 := LangItem α1 in
-          let* α3 :=
-            match α2 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let* α4 :=
-            α3.["unwrap_or_else"]
-              (fun err =>
-                let* _ :=
-                  let* α0 := format_argument::["new_debug"] (addr_of err) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ "unable to fetch balance: " ])
-                      (addr_of [ α0 ]) in
-                  core.panicking.panic_fmt α1 in
-                Pure tt) in
-          let* α5 := α4.["fetch_or_default"] (addr_of account_addr) in
-          let* α6 := LangItem α5 in
-          let* α7 :=
-            match α6 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let* α8 :=
-            α7.["unwrap_or_else"]
-              (fun err =>
-                let* _ :=
-                  let* α0 := format_argument::["new_debug"] (addr_of err) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ "unable to fetch balance: " ])
-                      (addr_of [ α0 ]) in
-                  core.panicking.panic_fmt α1 in
-                Pure tt) in
-          let* α9 := α8.["to_value"] in
-          α9.["unwrap_or_else"]
-            (fun err =>
-              let* _ :=
-                let* α0 := format_argument::["new_debug"] (addr_of err) in
-                let* α1 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "unable to decode account info: " ])
-                    (addr_of [ α0 ]) in
-                core.panicking.panic_fmt α1 in
-              Pure tt) in
-        let* account_data :=
-          let* α0 :=
-            ink_e2e.client.get_composite_field_value (addr_of account) "data" in
-          let* α1 := LangItem α0 in
-          match α1 with
-          | Break {| Break.0 := residual; |} =>
-            let* α0 := LangItem residual in
-            Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
-          end in
-        let* balance :=
-          let* α0 :=
-            ink_e2e.client.get_composite_field_value account_data "free" in
-          let* α1 := LangItem α0 in
-          match α1 with
-          | Break {| Break.0 := residual; |} =>
-            let* α0 := LangItem residual in
-            Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
-          end in
-        let* balance :=
-          let* α0 := balance.["as_u128"] in
-          let* α1 :=
-            α0.["ok_or_else"]
-              (fun  =>
-                let* res :=
-                  let* α0 := format_argument::["new_debug"] (addr_of balance) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ ""; " should convert to u128" ])
-                      (addr_of [ α0 ]) in
-                  alloc.fmt.format α1 in
-                Pure (ink_e2e.client.Error.Balance res)) in
-          let* α2 := LangItem α1 in
-          match α2 with
-          | Break {| Break.0 := residual; |} =>
-            let* α0 := LangItem residual in
-            Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
-          end in
-        let* balance :=
-          let* α0 := ImplE.Balance::["try_from"] balance in
-          let* α1 :=
-            α0.["map_err"]
-              (fun _ =>
-                let* res :=
-                  let* α0 := format_argument::["new_debug"] (addr_of balance) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ ""; " failed to convert from u128" ])
-                      (addr_of [ α0 ]) in
-                  alloc.fmt.format α1 in
-                Pure (ink_e2e.client.Error.Balance res)) in
-          let* α2 := LangItem α1 in
-          match α2 with
-          | Break {| Break.0 := residual; |} =>
-            let* α0 := LangItem residual in
-            Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
-          end in
-        let* _ :=
-          let* res :=
-            let* α0 := format_argument::["new_debug"] (addr_of account_id) in
-            let* α1 := format_argument::["new_debug"] (addr_of balance) in
-            let* α2 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "balance of contract "; " is " ])
-                (addr_of [ α0; α1 ]) in
-            alloc.fmt.format α2 in
-          ink_e2e.log_info (addr_of res) in
-        Pure (core.result.Result.Ok balance)).
+  Parameter balance : forall `{H : State.Trait}, ref Self->
+      ImplE.AccountId
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_balance `{H : State.Trait} :
     Notation.Dot "balance" := {
@@ -5225,272 +1836,184 @@ Error OpaqueTy.
 
 Error OpaqueTy.
 
-Definition get_composite_field_value
-    `{H : State.Trait}
-    {T C E : Set}
+Parameter get_composite_field_value : forall `{H : State.Trait}, forall
+    {T : Set} {C : Set} {E : Set},
     `{subxt.config.Config.Trait C}
     `{ink_env.types.Environment.Trait E}
     `{core.fmt.Debug.Trait ImplE.Balance}
-    (value : ref (scale_value.value.Value T))
-    (field_name : ref str)
-    :
+    ref (scale_value.value.Value T)->
+    ref str
+    ->
       M (H := H)
         (core.result.Result
           (ref (scale_value.value.Value T))
-          (ink_e2e.client.Error C E)) :=
-  let* α0 :=
-    let_if
-    scale_value.value.ValueDef.Composite
-      scale_value.value.Composite.Named fields
-    :=
-    addr_of value.["value"] in
-  if (α0 : bool) then
-    let* '(_, field) :=
-      let* α0 := fields.["iter"] in
-      let* α1 := α0.["find"] (fun (name, _) => name.["eq"] field_name) in
-      let* α2 :=
-        α1.["ok_or_else"]
-          (fun  =>
-            let* res :=
-              let* α0 :=
-                format_argument::["new_display"] (addr_of field_name) in
-              let* α1 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "No field named '"; "' found" ])
-                  (addr_of [ α0 ]) in
-              alloc.fmt.format α1 in
-            Pure (ink_e2e.client.Error.Balance res)) in
-      let* α3 := LangItem α2 in
-      match α3 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    Pure (core.result.Result.Ok field)
-  else
-    let* α0 := "Expected a composite type with named fields".["into"] in
-    Pure (core.result.Result.Err (ink_e2e.client.Error.Balance α0)).
+          (ink_e2e.client.Error C E)).
 
-Definition is_extrinsic_failed_event
-    `{H : State.Trait}
-    (event : ref subxt.events.events_type.EventDetails)
-    : M (H := H) bool :=
-  let* α0 := event.["pallet_name"] in
-  let* α1 := α0.["eq"] "System" in
-  let* α2 := event.["variant_name"] in
-  let* α3 := α2.["eq"] "ExtrinsicFailed" in
-  α1.["andb"] α3.
+Parameter is_extrinsic_failed_event : forall `{H : State.Trait}, ref
+        subxt.events.events_type.EventDetails
+    -> M (H := H) bool.
 
 Module default_accounts.
-  Definition alice
-      `{H : State.Trait}
-      {C : Set}
+  Parameter alice : forall `{H : State.Trait}, forall
+      {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      (_ : unit)
-      :
+      unit
+      ->
         M (H := H)
-          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-    let* α0 := sp_keyring.sr25519.Keyring.Alice.["pair"] in
-    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
-  Definition bob
-      `{H : State.Trait}
-      {C : Set}
+  Parameter bob : forall `{H : State.Trait}, forall
+      {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      (_ : unit)
-      :
+      unit
+      ->
         M (H := H)
-          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-    let* α0 := sp_keyring.sr25519.Keyring.Bob.["pair"] in
-    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
-  Definition charlie
-      `{H : State.Trait}
-      {C : Set}
+  Parameter charlie : forall `{H : State.Trait}, forall
+      {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      (_ : unit)
-      :
+      unit
+      ->
         M (H := H)
-          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-    let* α0 := sp_keyring.sr25519.Keyring.Charlie.["pair"] in
-    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
-  Definition dave
-      `{H : State.Trait}
-      {C : Set}
+  Parameter dave : forall `{H : State.Trait}, forall
+      {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      (_ : unit)
-      :
+      unit
+      ->
         M (H := H)
-          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-    let* α0 := sp_keyring.sr25519.Keyring.Dave.["pair"] in
-    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
-  Definition eve
-      `{H : State.Trait}
-      {C : Set}
+  Parameter eve : forall `{H : State.Trait}, forall
+      {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      (_ : unit)
-      :
+      unit
+      ->
         M (H := H)
-          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-    let* α0 := sp_keyring.sr25519.Keyring.Eve.["pair"] in
-    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
-  Definition ferdie
-      `{H : State.Trait}
-      {C : Set}
+  Parameter ferdie : forall `{H : State.Trait}, forall
+      {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      (_ : unit)
-      :
+      unit
+      ->
         M (H := H)
-          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-    let* α0 := sp_keyring.sr25519.Keyring.Ferdie.["pair"] in
-    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
-  Definition one
-      `{H : State.Trait}
-      {C : Set}
+  Parameter one : forall `{H : State.Trait}, forall
+      {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      (_ : unit)
-      :
+      unit
+      ->
         M (H := H)
-          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-    let* α0 := sp_keyring.sr25519.Keyring.One.["pair"] in
-    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
-  Definition two
-      `{H : State.Trait}
-      {C : Set}
+  Parameter two : forall `{H : State.Trait}, forall
+      {C : Set},
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      (_ : unit)
-      :
+      unit
+      ->
         M (H := H)
-          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-    let* α0 := sp_keyring.sr25519.Keyring.Two.["pair"] in
-    subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+          (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 End default_accounts.
 
-Definition alice
-    `{H : State.Trait}
-    {C : Set}
+Parameter alice : forall `{H : State.Trait}, forall
+    {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    (_ : unit)
-    :
+    unit
+    ->
       M (H := H)
-        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-  let* α0 := sp_keyring.sr25519.Keyring.Alice.["pair"] in
-  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
-Definition bob
-    `{H : State.Trait}
-    {C : Set}
+Parameter bob : forall `{H : State.Trait}, forall
+    {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    (_ : unit)
-    :
+    unit
+    ->
       M (H := H)
-        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-  let* α0 := sp_keyring.sr25519.Keyring.Bob.["pair"] in
-  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
-Definition charlie
-    `{H : State.Trait}
-    {C : Set}
+Parameter charlie : forall `{H : State.Trait}, forall
+    {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    (_ : unit)
-    :
+    unit
+    ->
       M (H := H)
-        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-  let* α0 := sp_keyring.sr25519.Keyring.Charlie.["pair"] in
-  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
-Definition dave
-    `{H : State.Trait}
-    {C : Set}
+Parameter dave : forall `{H : State.Trait}, forall
+    {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    (_ : unit)
-    :
+    unit
+    ->
       M (H := H)
-        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-  let* α0 := sp_keyring.sr25519.Keyring.Dave.["pair"] in
-  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
-Definition eve
-    `{H : State.Trait}
-    {C : Set}
+Parameter eve : forall `{H : State.Trait}, forall
+    {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    (_ : unit)
-    :
+    unit
+    ->
       M (H := H)
-        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-  let* α0 := sp_keyring.sr25519.Keyring.Eve.["pair"] in
-  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
-Definition ferdie
-    `{H : State.Trait}
-    {C : Set}
+Parameter ferdie : forall `{H : State.Trait}, forall
+    {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    (_ : unit)
-    :
+    unit
+    ->
       M (H := H)
-        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-  let* α0 := sp_keyring.sr25519.Keyring.Ferdie.["pair"] in
-  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
-Definition one
-    `{H : State.Trait}
-    {C : Set}
+Parameter one : forall `{H : State.Trait}, forall
+    {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    (_ : unit)
-    :
+    unit
+    ->
       M (H := H)
-        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-  let* α0 := sp_keyring.sr25519.Keyring.One.["pair"] in
-  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
-Definition two
-    `{H : State.Trait}
-    {C : Set}
+Parameter two : forall `{H : State.Trait}, forall
+    {C : Set},
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    (_ : unit)
-    :
+    unit
+    ->
       M (H := H)
-        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair) :=
-  let* α0 := sp_keyring.sr25519.Keyring.Two.["pair"] in
-  subxt.tx.signer.pair_signer.PairSigner::["new"] α0.
+        (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Module node_proc.
   Module TestNodeProcess.
@@ -5518,12 +2041,7 @@ Module node_proc.
     
     Definition Self := ink_e2e.node_proc.TestNodeProcess R.
     
-    Definition drop
-        `{H : State.Trait}
-        (self : mut_ref Self)
-        : M (H := H) unit :=
-      let* _ := self.["kill"] in
-      Pure tt.
+    Parameter drop : forall `{H : State.Trait}, mut_ref Self -> M (H := H) unit.
     
     Global Instance Method_drop `{H : State.Trait} : Notation.Dot "drop" := {
       Notation.dot := drop;
@@ -5538,160 +2056,30 @@ Module node_proc.
   Module Impl_ink_e2e_node_proc_TestNodeProcess_R.
     Definition Self := ink_e2e.node_proc.TestNodeProcess R.
     
-    Definition build
-        `{H : State.Trait}
-        (program : S)
-        : M (H := H) (ink_e2e.node_proc.TestNodeProcessBuilder R) :=
-      ink_e2e.node_proc.TestNodeProcessBuilder::["new"] program.
+    Parameter build : forall `{H : State.Trait}, S
+        -> M (H := H) (ink_e2e.node_proc.TestNodeProcessBuilder R).
     
     Global Instance AssociatedFunction_build `{H : State.Trait} :
       Notation.DoubleColon Self "build" := {
       Notation.double_colon := build;
     }.
     
-    Definition kill
-        `{H : State.Trait}
-        (self : mut_ref Self)
-        : M (H := H) (core.result.Result unit alloc.string.String) :=
-      let* _ :=
-        let* enabled :=
-          let* α0 :=
-            tracing_core.metadata.Level::["INFO"].["le"]
-              tracing.level_filters.STATIC_MAX_LEVEL in
-          let* α1 := tracing_core.metadata.LevelFilter::["current"] tt in
-          let* α2 := tracing_core.metadata.Level::["INFO"].["le"] α1 in
-          let* α3 := α0.["andb"] α2 in
-          let* interest := ink_e2e.node_proc.kill.CALLSITE.["interest"] in
-          let* α0 := interest.["is_never"] in
-          let* α1 := α0.["not"] in
-          let* α2 := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-          let* α3 := tracing.__macro_support.__is_enabled α2 interest in
-          let* α4 := α1.["andb"] α3 in
-          α3.["andb"] α4 in
-        if (enabled : bool) then
-          let* _ :=
-            let* iter :=
-              let* α0 := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-              let* α1 := α0.["fields"] in
-              α1.["iter"] in
-            let* α0 := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-            let* α1 := α0.["fields"] in
-            let* α2 := iter.["next"] in
-            let* α3 := α2.["expect"] "FieldSet corrupted (this is a bug)" in
-            let* α4 := self.["proc"].["id"] in
-            let* α5 := format_argument::["new_display"] (addr_of α4) in
-            let* α6 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "Killing node process " ])
-                (addr_of [ α5 ]) in
-            let* α0 :=
-              α1.["value_set"]
-                (addr_of
-                  [
-                    (addr_of α3,
-                      core.option.Option.Some
-                        (cast (addr_of α6) (ref TraitObject)))
-                  ]) in
-            (fun value_set =>
-                let* meta := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-                let* _ :=
-                  tracing_core.event.Event::["dispatch"]
-                    meta
-                    (addr_of value_set) in
-                Pure tt)
-              α0 in
-          Pure tt
-        else
-          Pure tt in
-      let* _ :=
-        let* α0 := self.["proc"].["kill"] in
-        let* α1 := let_if core.result.Result.Err err := α0 in
-        if (α1 : bool) then
-          let* err :=
-            let* res :=
-              let* α0 := self.["proc"].["id"] in
-              let* α1 := format_argument::["new_display"] (addr_of α0) in
-              let* α2 := format_argument::["new_display"] (addr_of err) in
-              let* α3 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "Error killing node process "; ": " ])
-                  (addr_of [ α1; α2 ]) in
-              alloc.fmt.format α3 in
-            Pure res in
-          let* _ :=
-            let* enabled :=
-              let* α0 :=
-                tracing_core.metadata.Level::["ERROR"].["le"]
-                  tracing.level_filters.STATIC_MAX_LEVEL in
-              let* α1 := tracing_core.metadata.LevelFilter::["current"] tt in
-              let* α2 := tracing_core.metadata.Level::["ERROR"].["le"] α1 in
-              let* α3 := α0.["andb"] α2 in
-              let* interest := ink_e2e.node_proc.kill.CALLSITE.["interest"] in
-              let* α0 := interest.["is_never"] in
-              let* α1 := α0.["not"] in
-              let* α2 := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-              let* α3 := tracing.__macro_support.__is_enabled α2 interest in
-              let* α4 := α1.["andb"] α3 in
-              α3.["andb"] α4 in
-            if (enabled : bool) then
-              let* _ :=
-                let* iter :=
-                  let* α0 := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-                  let* α1 := α0.["fields"] in
-                  α1.["iter"] in
-                let* α0 := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-                let* α1 := α0.["fields"] in
-                let* α2 := iter.["next"] in
-                let* α3 := α2.["expect"] "FieldSet corrupted (this is a bug)" in
-                let* α4 := format_argument::["new_display"] (addr_of err) in
-                let* α5 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "" ])
-                    (addr_of [ α4 ]) in
-                let* α0 :=
-                  α1.["value_set"]
-                    (addr_of
-                      [
-                        (addr_of α3,
-                          core.option.Option.Some
-                            (cast (addr_of α5) (ref TraitObject)))
-                      ]) in
-                (fun value_set =>
-                    let* meta := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-                    let* _ :=
-                      tracing_core.event.Event::["dispatch"]
-                        meta
-                        (addr_of value_set) in
-                    Pure tt)
-                  α0 in
-              Pure tt
-            else
-              Pure tt in
-          Return (core.result.Result.Err err)
-        else
-          Pure tt in
-      Pure (core.result.Result.Ok tt).
+    Parameter kill : forall `{H : State.Trait}, mut_ref Self
+        -> M (H := H) (core.result.Result unit alloc.string.String).
     
     Global Instance Method_kill `{H : State.Trait} : Notation.Dot "kill" := {
       Notation.dot := kill;
     }.
     
-    Definition client
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) (subxt.client.online_client.OnlineClient R) :=
-      self.["client"].["clone"].
+    Parameter client : forall `{H : State.Trait}, ref Self
+        -> M (H := H) (subxt.client.online_client.OnlineClient R).
     
     Global Instance Method_client `{H : State.Trait} :
       Notation.Dot "client" := {
       Notation.dot := client;
     }.
     
-    Definition url
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) (ref str) :=
-      Pure (addr_of self.["url"]).
+    Parameter url : forall `{H : State.Trait}, ref Self -> M (H := H) (ref str).
     
     Global Instance Method_url `{H : State.Trait} : Notation.Dot "url" := {
       Notation.dot := url;
@@ -5720,300 +2108,37 @@ Module node_proc.
   Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R.
     Definition Self := ink_e2e.node_proc.TestNodeProcessBuilder R.
     
-    Definition new
-        `{H : State.Trait}
-        (node_path : P)
-        : M (H := H) (ink_e2e.node_proc.TestNodeProcessBuilder R) :=
-      let* α0 := node_path.["as_ref"] in
-      let* α1 := α0.["into"] in
-      let* α2 := core.default.Default.default tt in
-      Pure
-        {|
-          Self.node_path := α1;
-          Self.authority := core.option.Option.None;
-          Self.marker := α2;
-        |}.
+    Parameter new : forall `{H : State.Trait}, P
+        -> M (H := H) (ink_e2e.node_proc.TestNodeProcessBuilder R).
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
     
-    Definition with_authority
-        `{H : State.Trait}
-        (self : mut_ref Self)
-        (account : sp_keyring.sr25519.Keyring)
-        : M (H := H) (mut_ref Self) :=
-      let* _ := assign self.["authority"] (core.option.Option.Some account) in
-      Pure self.
+    Parameter with_authority : forall `{H : State.Trait}, mut_ref Self->
+        sp_keyring.sr25519.Keyring
+        -> M (H := H) (mut_ref Self).
     
     Global Instance Method_with_authority `{H : State.Trait} :
       Notation.Dot "with_authority" := {
       Notation.dot := with_authority;
     }.
     
-    Definition spawn
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let* cmd :=
-            std.process.Command::["new"] (addr_of self.["node_path"]) in
-          let* _ :=
-            let* α0 := cmd.["env"] "RUST_LOG" "info" in
-            let* α1 := α0.["arg"] "--dev" in
-            let* α2 := std.process.Stdio::["piped"] tt in
-            let* α3 := α1.["stdout"] α2 in
-            let* α4 := std.process.Stdio::["piped"] tt in
-            let* α5 := α3.["stderr"] α4 in
-            let* α6 := α5.["arg"] "--port=0" in
-            let* α7 := α6.["arg"] "--rpc-port=0" in
-            α7.["arg"] "--ws-port=0" in
-          let* _ :=
-            let* α0 :=
-              let_if core.option.Option.Some authority := self.["authority"] in
-            if (α0 : bool) then
-              let* authority :=
-                let* res :=
-                  let* α0 :=
-                    format_argument::["new_debug"] (addr_of authority) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ "" ])
-                      (addr_of [ α0 ]) in
-                  alloc.fmt.format α1 in
-                Pure res in
-              let* arg :=
-                let* res :=
-                  let* α0 := authority.["as_str"] in
-                  let* α1 := α0.["to_lowercase"] in
-                  let* α2 := format_argument::["new_display"] (addr_of α1) in
-                  let* α3 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ "--" ])
-                      (addr_of [ α2 ]) in
-                  alloc.fmt.format α3 in
-                Pure res in
-              let* _ := cmd.["arg"] arg in
-              Pure tt
-            else
-              Pure tt in
-          let* proc :=
-            let* α0 := cmd.["spawn"] in
-            let* α1 :=
-              α0.["map_err"]
-                (fun e =>
-                  let* res :=
-                    let* α0 := self.["node_path"].["to_string_lossy"] in
-                    let* α1 := format_argument::["new_display"] (addr_of α0) in
-                    let* α2 := format_argument::["new_display"] (addr_of e) in
-                    let* α3 :=
-                      format_arguments::["new_v1"]
-                        (addr_of [ "Error spawning substrate node '"; "': " ])
-                        (addr_of [ α1; α2 ]) in
-                    alloc.fmt.format α3 in
-                  Pure res) in
-            let* α2 := LangItem α1 in
-            match α2 with
-            | Break {| Break.0 := residual; |} =>
-              let* α0 := LangItem residual in
-              Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
-            end in
-          let* stderr :=
-            let* α0 := proc.["stderr"].["take"] in
-            α0.["unwrap"] in
-          let* ws_port :=
-            ink_e2e.node_proc.find_substrate_port_from_output stderr in
-          let* ws_url :=
-            let* res :=
-              let* α0 := format_argument::["new_display"] (addr_of ws_port) in
-              let* α1 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "ws://127.0.0.1:" ])
-                  (addr_of [ α0 ]) in
-              alloc.fmt.format α1 in
-            Pure res in
-          let* client :=
-            let* α0 := ws_url.["clone"] in
-            let* α1 :=
-              subxt.client.online_client.OnlineClient::["from_url"] α0 in
-            let* α2 := LangItem α1 in
-            match α2 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          match client with
-          | core.result.Result.Ok client =>
-            let* α0 := ws_url.["clone"] in
-            Pure
-              (core.result.Result.Ok
-                {|
-                  ink_e2e.node_proc.TestNodeProcess.proc := proc;
-                  ink_e2e.node_proc.TestNodeProcess.client := client;
-                  ink_e2e.node_proc.TestNodeProcess.url := α0;
-                |})
-          | core.result.Result.Err err =>
-            let* err :=
-              let* res :=
-                let* α0 := format_argument::["new_display"] (addr_of ws_url) in
-                let* α1 := format_argument::["new_display"] (addr_of err) in
-                let* α2 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "Failed to connect to node rpc at "; ": " ])
-                    (addr_of [ α0; α1 ]) in
-                alloc.fmt.format α2 in
-              Pure res in
-            let* _ :=
-              let* enabled :=
-                let* α0 :=
-                  tracing_core.metadata.Level::["ERROR"].["le"]
-                    tracing.level_filters.STATIC_MAX_LEVEL in
-                let* α1 := tracing_core.metadata.LevelFilter::["current"] tt in
-                let* α2 := tracing_core.metadata.Level::["ERROR"].["le"] α1 in
-                let* α3 := α0.["andb"] α2 in
-                let* interest :=
-                  ink_e2e.node_proc.spawn.CALLSITE.["interest"] in
-                let* α0 := interest.["is_never"] in
-                let* α1 := α0.["not"] in
-                let* α2 := ink_e2e.node_proc.spawn.CALLSITE.["metadata"] in
-                let* α3 := tracing.__macro_support.__is_enabled α2 interest in
-                let* α4 := α1.["andb"] α3 in
-                α3.["andb"] α4 in
-              if (enabled : bool) then
-                let* _ :=
-                  let* iter :=
-                    let* α0 := ink_e2e.node_proc.spawn.CALLSITE.["metadata"] in
-                    let* α1 := α0.["fields"] in
-                    α1.["iter"] in
-                  let* α0 := ink_e2e.node_proc.spawn.CALLSITE.["metadata"] in
-                  let* α1 := α0.["fields"] in
-                  let* α2 := iter.["next"] in
-                  let* α3 :=
-                    α2.["expect"] "FieldSet corrupted (this is a bug)" in
-                  let* α4 := format_argument::["new_display"] (addr_of err) in
-                  let* α5 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ "" ])
-                      (addr_of [ α4 ]) in
-                  let* α0 :=
-                    α1.["value_set"]
-                      (addr_of
-                        [
-                          (addr_of α3,
-                            core.option.Option.Some
-                              (cast (addr_of α5) (ref TraitObject)))
-                        ]) in
-                  (fun value_set =>
-                      let* meta :=
-                        ink_e2e.node_proc.spawn.CALLSITE.["metadata"] in
-                      let* _ :=
-                        tracing_core.event.Event::["dispatch"]
-                          meta
-                          (addr_of value_set) in
-                      Pure tt)
-                    α0 in
-                Pure tt
-              else
-                Pure tt in
-            let* _ :=
-              let* α0 := proc.["kill"] in
-              let* α1 :=
-                α0.["map_err"]
-                  (fun e =>
-                    let* res :=
-                      let* α0 := proc.["id"] in
-                      let* α1 :=
-                        format_argument::["new_display"] (addr_of α0) in
-                      let* α2 := format_argument::["new_display"] (addr_of e) in
-                      let* α3 :=
-                        format_arguments::["new_v1"]
-                          (addr_of
-                            [ "Error killing substrate process '"; "': " ])
-                          (addr_of [ α1; α2 ]) in
-                      alloc.fmt.format α3 in
-                    Pure res) in
-              let* α2 := LangItem α1 in
-              match α2 with
-              | Break {| Break.0 := residual; |} =>
-                let* α0 := LangItem residual in
-                Return α0
-              | Continue {| Continue.0 := val; |} => Pure val
-              end in
-            Pure (core.result.Result.Err err)
-          end).
+    Parameter spawn : forall `{H : State.Trait}, ref Self
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_spawn `{H : State.Trait} : Notation.Dot "spawn" := {
       Notation.dot := spawn;
     }.
   End Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R.
   
-  Definition find_substrate_port_from_output
-      `{H : State.Trait}
-      {impl Read + Send + 'static : Set}
+  Parameter find_substrate_port_from_output : forall `{H : State.Trait}, forall
+      {impl Read + Send + 'static : Set},
       `{std.io.Read.Trait impl Read + Send + 'static}
       `{core.marker.Send.Trait impl Read + Send + 'static}
-      (r : impl Read + Send + 'static)
-      : M (H := H) u16 :=
-    let* α0 := std.io.buffered.bufreader.BufReader::["new"] r in
-    let* α1 := α0.["lines"] in
-    let* α2 :=
-      α1.["find_map"]
-        (fun line =>
-          let* line :=
-            line.["expect"]
-              "failed to obtain next line from stdout for port discovery" in
-          let* line_end :=
-            let* α0 :=
-              line.["rsplit_once"]
-                "Listening for new connections on 127.0.0.1:" in
-            let* α1 :=
-              α0.["or_else"]
-                (fun  =>
-                  line.["rsplit_once"]
-                    "Running JSON-RPC WS server: addr=127.0.0.1:") in
-            let* α2 := α1.["map"] (fun (_, port_str) => Pure port_str) in
-            let* α3 := LangItem α2 in
-            match α3 with
-            | Break {| Break.0 := residual; |} =>
-              let* α0 := LangItem residual in
-              Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
-            end in
-          let* port_str :=
-            line_end.["trim_end_matches"]
-              (fun b =>
-                let* α0 := b.["is_ascii_digit"] in
-                α0.["not"]) in
-          let* port_num :=
-            let* α0 := port_str.["parse"] in
-            α0.["unwrap_or_else"]
-              (fun _ =>
-                let* α0 :=
-                  format_argument::["new_display"] (addr_of port_str) in
-                let* α1 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "valid port expected for log line, got '"; "'" ])
-                    (addr_of [ α0 ]) in
-                core.panicking.panic_fmt α1) in
-          Pure (core.option.Option.Some port_num)) in
-    α2.["expect"] "We should find a port before the reader ends".
+      impl Read + Send + 'static
+      -> M (H := H) u16.
 End node_proc.
 
 Module TestNodeProcess.
@@ -6041,9 +2166,7 @@ Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
   
   Definition Self := ink_e2e.node_proc.TestNodeProcess R.
   
-  Definition drop `{H : State.Trait} (self : mut_ref Self) : M (H := H) unit :=
-    let* _ := self.["kill"] in
-    Pure tt.
+  Parameter drop : forall `{H : State.Trait}, mut_ref Self -> M (H := H) unit.
   
   Global Instance Method_drop `{H : State.Trait} : Notation.Dot "drop" := {
     Notation.dot := drop;
@@ -6058,156 +2181,29 @@ End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
 Module Impl_ink_e2e_node_proc_TestNodeProcess_R_2.
   Definition Self := ink_e2e.node_proc.TestNodeProcess R.
   
-  Definition build
-      `{H : State.Trait}
-      (program : S)
-      : M (H := H) (ink_e2e.node_proc.TestNodeProcessBuilder R) :=
-    ink_e2e.node_proc.TestNodeProcessBuilder::["new"] program.
+  Parameter build : forall `{H : State.Trait}, S
+      -> M (H := H) (ink_e2e.node_proc.TestNodeProcessBuilder R).
   
   Global Instance AssociatedFunction_build `{H : State.Trait} :
     Notation.DoubleColon Self "build" := {
     Notation.double_colon := build;
   }.
   
-  Definition kill
-      `{H : State.Trait}
-      (self : mut_ref Self)
-      : M (H := H) (core.result.Result unit alloc.string.String) :=
-    let* _ :=
-      let* enabled :=
-        let* α0 :=
-          tracing_core.metadata.Level::["INFO"].["le"]
-            tracing.level_filters.STATIC_MAX_LEVEL in
-        let* α1 := tracing_core.metadata.LevelFilter::["current"] tt in
-        let* α2 := tracing_core.metadata.Level::["INFO"].["le"] α1 in
-        let* α3 := α0.["andb"] α2 in
-        let* interest := ink_e2e.node_proc.kill.CALLSITE.["interest"] in
-        let* α0 := interest.["is_never"] in
-        let* α1 := α0.["not"] in
-        let* α2 := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-        let* α3 := tracing.__macro_support.__is_enabled α2 interest in
-        let* α4 := α1.["andb"] α3 in
-        α3.["andb"] α4 in
-      if (enabled : bool) then
-        let* _ :=
-          let* iter :=
-            let* α0 := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-            let* α1 := α0.["fields"] in
-            α1.["iter"] in
-          let* α0 := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-          let* α1 := α0.["fields"] in
-          let* α2 := iter.["next"] in
-          let* α3 := α2.["expect"] "FieldSet corrupted (this is a bug)" in
-          let* α4 := self.["proc"].["id"] in
-          let* α5 := format_argument::["new_display"] (addr_of α4) in
-          let* α6 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "Killing node process " ])
-              (addr_of [ α5 ]) in
-          let* α0 :=
-            α1.["value_set"]
-              (addr_of
-                [
-                  (addr_of α3,
-                    core.option.Option.Some
-                      (cast (addr_of α6) (ref TraitObject)))
-                ]) in
-          (fun value_set =>
-              let* meta := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-              let* _ :=
-                tracing_core.event.Event::["dispatch"]
-                  meta
-                  (addr_of value_set) in
-              Pure tt)
-            α0 in
-        Pure tt
-      else
-        Pure tt in
-    let* _ :=
-      let* α0 := self.["proc"].["kill"] in
-      let* α1 := let_if core.result.Result.Err err := α0 in
-      if (α1 : bool) then
-        let* err :=
-          let* res :=
-            let* α0 := self.["proc"].["id"] in
-            let* α1 := format_argument::["new_display"] (addr_of α0) in
-            let* α2 := format_argument::["new_display"] (addr_of err) in
-            let* α3 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "Error killing node process "; ": " ])
-                (addr_of [ α1; α2 ]) in
-            alloc.fmt.format α3 in
-          Pure res in
-        let* _ :=
-          let* enabled :=
-            let* α0 :=
-              tracing_core.metadata.Level::["ERROR"].["le"]
-                tracing.level_filters.STATIC_MAX_LEVEL in
-            let* α1 := tracing_core.metadata.LevelFilter::["current"] tt in
-            let* α2 := tracing_core.metadata.Level::["ERROR"].["le"] α1 in
-            let* α3 := α0.["andb"] α2 in
-            let* interest := ink_e2e.node_proc.kill.CALLSITE.["interest"] in
-            let* α0 := interest.["is_never"] in
-            let* α1 := α0.["not"] in
-            let* α2 := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-            let* α3 := tracing.__macro_support.__is_enabled α2 interest in
-            let* α4 := α1.["andb"] α3 in
-            α3.["andb"] α4 in
-          if (enabled : bool) then
-            let* _ :=
-              let* iter :=
-                let* α0 := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-                let* α1 := α0.["fields"] in
-                α1.["iter"] in
-              let* α0 := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-              let* α1 := α0.["fields"] in
-              let* α2 := iter.["next"] in
-              let* α3 := α2.["expect"] "FieldSet corrupted (this is a bug)" in
-              let* α4 := format_argument::["new_display"] (addr_of err) in
-              let* α5 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "" ])
-                  (addr_of [ α4 ]) in
-              let* α0 :=
-                α1.["value_set"]
-                  (addr_of
-                    [
-                      (addr_of α3,
-                        core.option.Option.Some
-                          (cast (addr_of α5) (ref TraitObject)))
-                    ]) in
-              (fun value_set =>
-                  let* meta := ink_e2e.node_proc.kill.CALLSITE.["metadata"] in
-                  let* _ :=
-                    tracing_core.event.Event::["dispatch"]
-                      meta
-                      (addr_of value_set) in
-                  Pure tt)
-                α0 in
-            Pure tt
-          else
-            Pure tt in
-        Return (core.result.Result.Err err)
-      else
-        Pure tt in
-    Pure (core.result.Result.Ok tt).
+  Parameter kill : forall `{H : State.Trait}, mut_ref Self
+      -> M (H := H) (core.result.Result unit alloc.string.String).
   
   Global Instance Method_kill `{H : State.Trait} : Notation.Dot "kill" := {
     Notation.dot := kill;
   }.
   
-  Definition client
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) (subxt.client.online_client.OnlineClient R) :=
-    self.["client"].["clone"].
+  Parameter client : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (subxt.client.online_client.OnlineClient R).
   
   Global Instance Method_client `{H : State.Trait} : Notation.Dot "client" := {
     Notation.dot := client;
   }.
   
-  Definition url `{H : State.Trait} (self : ref Self) : M (H := H) (ref str) :=
-    Pure (addr_of self.["url"]).
+  Parameter url : forall `{H : State.Trait}, ref Self -> M (H := H) (ref str).
   
   Global Instance Method_url `{H : State.Trait} : Notation.Dot "url" := {
     Notation.dot := url;
@@ -6286,237 +2282,24 @@ Definition TestNodeProcessBuilder : Set := TestNodeProcessBuilder.t.
 Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
   Definition Self := ink_e2e.node_proc.TestNodeProcessBuilder R.
   
-  Definition new
-      `{H : State.Trait}
-      (node_path : P)
-      : M (H := H) (ink_e2e.node_proc.TestNodeProcessBuilder R) :=
-    let* α0 := node_path.["as_ref"] in
-    let* α1 := α0.["into"] in
-    let* α2 := core.default.Default.default tt in
-    Pure
-      {|
-        Self.node_path := α1;
-        Self.authority := core.option.Option.None;
-        Self.marker := α2;
-      |}.
+  Parameter new : forall `{H : State.Trait}, P
+      -> M (H := H) (ink_e2e.node_proc.TestNodeProcessBuilder R).
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Definition with_authority
-      `{H : State.Trait}
-      (self : mut_ref Self)
-      (account : sp_keyring.sr25519.Keyring)
-      : M (H := H) (mut_ref Self) :=
-    let* _ := assign self.["authority"] (core.option.Option.Some account) in
-    Pure self.
+  Parameter with_authority : forall `{H : State.Trait}, mut_ref Self->
+      sp_keyring.sr25519.Keyring
+      -> M (H := H) (mut_ref Self).
   
   Global Instance Method_with_authority `{H : State.Trait} :
     Notation.Dot "with_authority" := {
     Notation.dot := with_authority;
   }.
   
-  Definition spawn
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let* cmd := std.process.Command::["new"] (addr_of self.["node_path"]) in
-        let* _ :=
-          let* α0 := cmd.["env"] "RUST_LOG" "info" in
-          let* α1 := α0.["arg"] "--dev" in
-          let* α2 := std.process.Stdio::["piped"] tt in
-          let* α3 := α1.["stdout"] α2 in
-          let* α4 := std.process.Stdio::["piped"] tt in
-          let* α5 := α3.["stderr"] α4 in
-          let* α6 := α5.["arg"] "--port=0" in
-          let* α7 := α6.["arg"] "--rpc-port=0" in
-          α7.["arg"] "--ws-port=0" in
-        let* _ :=
-          let* α0 :=
-            let_if core.option.Option.Some authority := self.["authority"] in
-          if (α0 : bool) then
-            let* authority :=
-              let* res :=
-                let* α0 := format_argument::["new_debug"] (addr_of authority) in
-                let* α1 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "" ])
-                    (addr_of [ α0 ]) in
-                alloc.fmt.format α1 in
-              Pure res in
-            let* arg :=
-              let* res :=
-                let* α0 := authority.["as_str"] in
-                let* α1 := α0.["to_lowercase"] in
-                let* α2 := format_argument::["new_display"] (addr_of α1) in
-                let* α3 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "--" ])
-                    (addr_of [ α2 ]) in
-                alloc.fmt.format α3 in
-              Pure res in
-            let* _ := cmd.["arg"] arg in
-            Pure tt
-          else
-            Pure tt in
-        let* proc :=
-          let* α0 := cmd.["spawn"] in
-          let* α1 :=
-            α0.["map_err"]
-              (fun e =>
-                let* res :=
-                  let* α0 := self.["node_path"].["to_string_lossy"] in
-                  let* α1 := format_argument::["new_display"] (addr_of α0) in
-                  let* α2 := format_argument::["new_display"] (addr_of e) in
-                  let* α3 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ "Error spawning substrate node '"; "': " ])
-                      (addr_of [ α1; α2 ]) in
-                  alloc.fmt.format α3 in
-                Pure res) in
-          let* α2 := LangItem α1 in
-          match α2 with
-          | Break {| Break.0 := residual; |} =>
-            let* α0 := LangItem residual in
-            Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
-          end in
-        let* stderr :=
-          let* α0 := proc.["stderr"].["take"] in
-          α0.["unwrap"] in
-        let* ws_port :=
-          ink_e2e.node_proc.find_substrate_port_from_output stderr in
-        let* ws_url :=
-          let* res :=
-            let* α0 := format_argument::["new_display"] (addr_of ws_port) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "ws://127.0.0.1:" ])
-                (addr_of [ α0 ]) in
-            alloc.fmt.format α1 in
-          Pure res in
-        let* client :=
-          let* α0 := ws_url.["clone"] in
-          let* α1 := subxt.client.online_client.OnlineClient::["from_url"] α0 in
-          let* α2 := LangItem α1 in
-          match α2 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end in
-        match client with
-        | core.result.Result.Ok client =>
-          let* α0 := ws_url.["clone"] in
-          Pure
-            (core.result.Result.Ok
-              {|
-                ink_e2e.node_proc.TestNodeProcess.proc := proc;
-                ink_e2e.node_proc.TestNodeProcess.client := client;
-                ink_e2e.node_proc.TestNodeProcess.url := α0;
-              |})
-        | core.result.Result.Err err =>
-          let* err :=
-            let* res :=
-              let* α0 := format_argument::["new_display"] (addr_of ws_url) in
-              let* α1 := format_argument::["new_display"] (addr_of err) in
-              let* α2 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "Failed to connect to node rpc at "; ": " ])
-                  (addr_of [ α0; α1 ]) in
-              alloc.fmt.format α2 in
-            Pure res in
-          let* _ :=
-            let* enabled :=
-              let* α0 :=
-                tracing_core.metadata.Level::["ERROR"].["le"]
-                  tracing.level_filters.STATIC_MAX_LEVEL in
-              let* α1 := tracing_core.metadata.LevelFilter::["current"] tt in
-              let* α2 := tracing_core.metadata.Level::["ERROR"].["le"] α1 in
-              let* α3 := α0.["andb"] α2 in
-              let* interest := ink_e2e.node_proc.spawn.CALLSITE.["interest"] in
-              let* α0 := interest.["is_never"] in
-              let* α1 := α0.["not"] in
-              let* α2 := ink_e2e.node_proc.spawn.CALLSITE.["metadata"] in
-              let* α3 := tracing.__macro_support.__is_enabled α2 interest in
-              let* α4 := α1.["andb"] α3 in
-              α3.["andb"] α4 in
-            if (enabled : bool) then
-              let* _ :=
-                let* iter :=
-                  let* α0 := ink_e2e.node_proc.spawn.CALLSITE.["metadata"] in
-                  let* α1 := α0.["fields"] in
-                  α1.["iter"] in
-                let* α0 := ink_e2e.node_proc.spawn.CALLSITE.["metadata"] in
-                let* α1 := α0.["fields"] in
-                let* α2 := iter.["next"] in
-                let* α3 := α2.["expect"] "FieldSet corrupted (this is a bug)" in
-                let* α4 := format_argument::["new_display"] (addr_of err) in
-                let* α5 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "" ])
-                    (addr_of [ α4 ]) in
-                let* α0 :=
-                  α1.["value_set"]
-                    (addr_of
-                      [
-                        (addr_of α3,
-                          core.option.Option.Some
-                            (cast (addr_of α5) (ref TraitObject)))
-                      ]) in
-                (fun value_set =>
-                    let* meta :=
-                      ink_e2e.node_proc.spawn.CALLSITE.["metadata"] in
-                    let* _ :=
-                      tracing_core.event.Event::["dispatch"]
-                        meta
-                        (addr_of value_set) in
-                    Pure tt)
-                  α0 in
-              Pure tt
-            else
-              Pure tt in
-          let* _ :=
-            let* α0 := proc.["kill"] in
-            let* α1 :=
-              α0.["map_err"]
-                (fun e =>
-                  let* res :=
-                    let* α0 := proc.["id"] in
-                    let* α1 := format_argument::["new_display"] (addr_of α0) in
-                    let* α2 := format_argument::["new_display"] (addr_of e) in
-                    let* α3 :=
-                      format_arguments::["new_v1"]
-                        (addr_of [ "Error killing substrate process '"; "': " ])
-                        (addr_of [ α1; α2 ]) in
-                    alloc.fmt.format α3 in
-                  Pure res) in
-            let* α2 := LangItem α1 in
-            match α2 with
-            | Break {| Break.0 := residual; |} =>
-              let* α0 := LangItem residual in
-              Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
-            end in
-          Pure (core.result.Result.Err err)
-        end).
+  Parameter spawn : forall `{H : State.Trait}, ref Self -> M (H := H) OpaqueDef.
   
   Global Instance Method_spawn `{H : State.Trait} : Notation.Dot "spawn" := {
     Notation.dot := spawn;
@@ -6550,55 +2333,12 @@ Definition META `{H : State.Trait} : tracing_core.metadata.Metadata :=
       α0
       tracing_core.metadata.Kind::["EVENT"]).
 
-Definition find_substrate_port_from_output
-    `{H : State.Trait}
-    {impl Read + Send + 'static : Set}
+Parameter find_substrate_port_from_output : forall `{H : State.Trait}, forall
+    {impl Read + Send + 'static : Set},
     `{std.io.Read.Trait impl Read + Send + 'static}
     `{core.marker.Send.Trait impl Read + Send + 'static}
-    (r : impl Read + Send + 'static)
-    : M (H := H) u16 :=
-  let* α0 := std.io.buffered.bufreader.BufReader::["new"] r in
-  let* α1 := α0.["lines"] in
-  let* α2 :=
-    α1.["find_map"]
-      (fun line =>
-        let* line :=
-          line.["expect"]
-            "failed to obtain next line from stdout for port discovery" in
-        let* line_end :=
-          let* α0 :=
-            line.["rsplit_once"]
-              "Listening for new connections on 127.0.0.1:" in
-          let* α1 :=
-            α0.["or_else"]
-              (fun  =>
-                line.["rsplit_once"]
-                  "Running JSON-RPC WS server: addr=127.0.0.1:") in
-          let* α2 := α1.["map"] (fun (_, port_str) => Pure port_str) in
-          let* α3 := LangItem α2 in
-          match α3 with
-          | Break {| Break.0 := residual; |} =>
-            let* α0 := LangItem residual in
-            Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
-          end in
-        let* port_str :=
-          line_end.["trim_end_matches"]
-            (fun b =>
-              let* α0 := b.["is_ascii_digit"] in
-              α0.["not"]) in
-        let* port_num :=
-          let* α0 := port_str.["parse"] in
-          α0.["unwrap_or_else"]
-            (fun _ =>
-              let* α0 := format_argument::["new_display"] (addr_of port_str) in
-              let* α1 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "valid port expected for log line, got '"; "'" ])
-                  (addr_of [ α0 ]) in
-              core.panicking.panic_fmt α1) in
-        Pure (core.option.Option.Some port_num)) in
-  α2.["expect"] "We should find a port before the reader ends".
+    impl Read + Send + 'static
+    -> M (H := H) u16.
 
 Module xts.
   Module Weight.
@@ -6626,12 +2366,8 @@ Module xts.
   Module Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
-    Definition clone
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) ink_e2e.xts.Weight :=
-      let _ := tt in
-      self.["deref"].
+    Parameter clone : forall `{H : State.Trait}, ref Self
+        -> M (H := H) ink_e2e.xts.Weight.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -6652,12 +2388,8 @@ Module xts.
   Module Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
-    Definition assert_receiver_is_total_eq
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) unit :=
-      let _ := tt in
-      Pure tt.
+    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
+        -> M (H := H) unit.
     
     Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
@@ -6678,14 +2410,9 @@ Module xts.
   Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
-    Definition eq
-        `{H : State.Trait}
-        (self : ref Self)
-        (other : ref ink_e2e.xts.Weight)
-        : M (H := H) bool :=
-      let* α0 := self.["ref_time"].["eq"] other.["ref_time"] in
-      let* α1 := self.["proof_size"].["eq"] other.["proof_size"] in
-      α0.["andb"] α1.
+    Parameter eq : forall `{H : State.Trait}, ref Self->
+        ref ink_e2e.xts.Weight
+        -> M (H := H) bool.
     
     Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
@@ -6708,18 +2435,9 @@ Module xts.
       core.fmt.Formatter "debug_struct_field2_finish" := {
       Notation.double_colon := debug_struct_field2_finish; }.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      core.fmt.Formatter::["debug_struct_field2_finish"]
-        f
-        "Weight"
-        "ref_time"
-        (addr_of self.["ref_time"])
-        "proof_size"
-        (addr_of (addr_of self.["proof_size"])).
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -6733,17 +2451,8 @@ Module xts.
   Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
-    Definition default
-        `{H : State.Trait}
-        (_ : unit)
-        : M (H := H) ink_e2e.xts.Weight :=
-      let* α0 := core.default.Default.default tt in
-      let* α1 := core.default.Default.default tt in
-      Pure
-        {|
-          ink_e2e.xts.Weight.ref_time := α0;
-          ink_e2e.xts.Weight.proof_size := α1;
-        |}.
+    Parameter default : forall `{H : State.Trait}, unit
+        -> M (H := H) ink_e2e.xts.Weight.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -6758,30 +2467,11 @@ Module xts.
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
-    Definition encode_as_type_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_type_id : u32)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      let
-          '{|
-            ink_e2e.xts.Weight.ref_time := ref_time;
-            ink_e2e.xts.Weight.proof_size := proof_size;
-          |} :=
-        self in
-      let* α0 :=
-        [
-            (core.option.Option.Some "ref_time",
-              cast ref_time (ref TraitObject));
-            (core.option.Option.Some "proof_size",
-              cast proof_size (ref TraitObject))
-          ].["into_iter"] in
-      (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_type_to"]
-        __encode_as_type_type_id
-        __encode_as_type_types
-        __encode_as_type_out.
+    Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+        u32->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
@@ -6799,31 +2489,11 @@ Module xts.
   Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
-    Definition encode_as_fields_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_fields : ref Slice)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      let
-          '{|
-            ink_e2e.xts.Weight.ref_time := ref_time;
-            ink_e2e.xts.Weight.proof_size := proof_size;
-          |} :=
-        self in
-      let* α0 :=
-        [
-            (core.option.Option.Some "ref_time",
-              cast ref_time (ref TraitObject));
-            (core.option.Option.Some "proof_size",
-              cast proof_size (ref TraitObject))
-          ].["into_iter"] in
-      (scale_encode.impls.composite.Composite.Build_t
-          α0).["encode_as_fields_to"]
-        __encode_as_type_fields
-        __encode_as_type_types
-        __encode_as_type_out.
+    Parameter encode_as_fields_to : forall `{H : State.Trait}, ref Self->
+        ref Slice->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H : State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
@@ -6841,13 +2511,8 @@ Module xts.
   Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
-    Definition from
-        `{H : State.Trait}
-        (weight : sp_weights.weight_v2.Weight)
-        : M (H := H) Self :=
-      let* α0 := weight.["ref_time"] in
-      let* α1 := weight.["proof_size"] in
-      Pure {| Self.ref_time := α0; Self.proof_size := α1; |}.
+    Parameter from : forall `{H : State.Trait}, sp_weights.weight_v2.Weight
+        -> M (H := H) Self.
     
     Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -6863,13 +2528,8 @@ Module xts.
   Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
     Definition Self := sp_weights.weight_v2.Weight.
     
-    Definition from
-        `{H : State.Trait}
-        (weight : ink_e2e.xts.Weight)
-        : M (H := H) Self :=
-      sp_weights.weight_v2.Weight::["from_parts"]
-        weight.["ref_time"]
-        weight.["proof_size"].
+    Parameter from : forall `{H : State.Trait}, ink_e2e.xts.Weight
+        -> M (H := H) Self.
     
     Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -6920,36 +2580,9 @@ Module xts.
     
     Definition Self := ink_e2e.xts.InstantiateWithCode E.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      let names :=
-        addr_of
-          [
-            "value";
-            "gas_limit";
-            "storage_deposit_limit";
-            "code";
-            "data";
-            "salt"
-          ] in
-      let values :=
-        addr_of
-          [
-            addr_of self.["value"];
-            addr_of self.["gas_limit"];
-            addr_of self.["storage_deposit_limit"];
-            addr_of self.["code"];
-            addr_of self.["data"];
-            addr_of (addr_of self.["salt"])
-          ] in
-      core.fmt.Formatter::["debug_struct_fields_finish"]
-        f
-        "InstantiateWithCode"
-        names
-        values.
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -6967,40 +2600,11 @@ Module xts.
     
     Definition Self := ink_e2e.xts.InstantiateWithCode E.
     
-    Definition encode_as_type_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_type_id : u32)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      let
-          '{|
-            ink_e2e.xts.InstantiateWithCode.value := value;
-            ink_e2e.xts.InstantiateWithCode.gas_limit := gas_limit;
-            ink_e2e.xts.InstantiateWithCode.storage_deposit_limit
-              :=
-              storage_deposit_limit;
-            ink_e2e.xts.InstantiateWithCode.code := code;
-            ink_e2e.xts.InstantiateWithCode.data := data;
-            ink_e2e.xts.InstantiateWithCode.salt := salt;
-          |} :=
-        self in
-      let* α0 :=
-        [
-            (core.option.Option.Some "value", cast value (ref TraitObject));
-            (core.option.Option.Some "gas_limit",
-              cast gas_limit (ref TraitObject));
-            (core.option.Option.Some "storage_deposit_limit",
-              cast storage_deposit_limit (ref TraitObject));
-            (core.option.Option.Some "code", cast code (ref TraitObject));
-            (core.option.Option.Some "data", cast data (ref TraitObject));
-            (core.option.Option.Some "salt", cast salt (ref TraitObject))
-          ].["into_iter"] in
-      (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_type_to"]
-        __encode_as_type_type_id
-        __encode_as_type_types
-        __encode_as_type_out.
+    Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+        u32->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
@@ -7023,41 +2627,11 @@ Module xts.
     
     Definition Self := ink_e2e.xts.InstantiateWithCode E.
     
-    Definition encode_as_fields_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_fields : ref Slice)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      let
-          '{|
-            ink_e2e.xts.InstantiateWithCode.value := value;
-            ink_e2e.xts.InstantiateWithCode.gas_limit := gas_limit;
-            ink_e2e.xts.InstantiateWithCode.storage_deposit_limit
-              :=
-              storage_deposit_limit;
-            ink_e2e.xts.InstantiateWithCode.code := code;
-            ink_e2e.xts.InstantiateWithCode.data := data;
-            ink_e2e.xts.InstantiateWithCode.salt := salt;
-          |} :=
-        self in
-      let* α0 :=
-        [
-            (core.option.Option.Some "value", cast value (ref TraitObject));
-            (core.option.Option.Some "gas_limit",
-              cast gas_limit (ref TraitObject));
-            (core.option.Option.Some "storage_deposit_limit",
-              cast storage_deposit_limit (ref TraitObject));
-            (core.option.Option.Some "code", cast code (ref TraitObject));
-            (core.option.Option.Some "data", cast data (ref TraitObject));
-            (core.option.Option.Some "salt", cast salt (ref TraitObject))
-          ].["into_iter"] in
-      (scale_encode.impls.composite.Composite.Build_t
-          α0).["encode_as_fields_to"]
-        __encode_as_type_fields
-        __encode_as_type_types
-        __encode_as_type_out.
+    Parameter encode_as_fields_to : forall `{H : State.Trait}, ref Self->
+        ref Slice->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H : State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
@@ -7107,24 +2681,9 @@ Module xts.
     
     Definition Self := ink_e2e.xts.Call E.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      core.fmt.Formatter::["debug_struct_field5_finish"]
-        f
-        "Call"
-        "dest"
-        (addr_of self.["dest"])
-        "value"
-        (addr_of self.["value"])
-        "gas_limit"
-        (addr_of self.["gas_limit"])
-        "storage_deposit_limit"
-        (addr_of self.["storage_deposit_limit"])
-        "data"
-        (addr_of (addr_of self.["data"])).
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -7142,36 +2701,11 @@ Module xts.
     
     Definition Self := ink_e2e.xts.Call E.
     
-    Definition encode_as_type_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_type_id : u32)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      let
-          '{|
-            ink_e2e.xts.Call.dest := dest;
-            ink_e2e.xts.Call.value := value;
-            ink_e2e.xts.Call.gas_limit := gas_limit;
-            ink_e2e.xts.Call.storage_deposit_limit := storage_deposit_limit;
-            ink_e2e.xts.Call.data := data;
-          |} :=
-        self in
-      let* α0 :=
-        [
-            (core.option.Option.Some "dest", cast dest (ref TraitObject));
-            (core.option.Option.Some "value", cast value (ref TraitObject));
-            (core.option.Option.Some "gas_limit",
-              cast gas_limit (ref TraitObject));
-            (core.option.Option.Some "storage_deposit_limit",
-              cast storage_deposit_limit (ref TraitObject));
-            (core.option.Option.Some "data", cast data (ref TraitObject))
-          ].["into_iter"] in
-      (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_type_to"]
-        __encode_as_type_type_id
-        __encode_as_type_types
-        __encode_as_type_out.
+    Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+        u32->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
@@ -7193,37 +2727,11 @@ Module xts.
     
     Definition Self := ink_e2e.xts.Call E.
     
-    Definition encode_as_fields_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_fields : ref Slice)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      let
-          '{|
-            ink_e2e.xts.Call.dest := dest;
-            ink_e2e.xts.Call.value := value;
-            ink_e2e.xts.Call.gas_limit := gas_limit;
-            ink_e2e.xts.Call.storage_deposit_limit := storage_deposit_limit;
-            ink_e2e.xts.Call.data := data;
-          |} :=
-        self in
-      let* α0 :=
-        [
-            (core.option.Option.Some "dest", cast dest (ref TraitObject));
-            (core.option.Option.Some "value", cast value (ref TraitObject));
-            (core.option.Option.Some "gas_limit",
-              cast gas_limit (ref TraitObject));
-            (core.option.Option.Some "storage_deposit_limit",
-              cast storage_deposit_limit (ref TraitObject));
-            (core.option.Option.Some "data", cast data (ref TraitObject))
-          ].["into_iter"] in
-      (scale_encode.impls.composite.Composite.Build_t
-          α0).["encode_as_fields_to"]
-        __encode_as_type_fields
-        __encode_as_type_types
-        __encode_as_type_out.
+    Parameter encode_as_fields_to : forall `{H : State.Trait}, ref Self->
+        ref Slice->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H : State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
@@ -7260,18 +2768,9 @@ Module xts.
     
     Definition Self := ink_e2e.xts.Transfer E C.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      core.fmt.Formatter::["debug_struct_field2_finish"]
-        f
-        "Transfer"
-        "dest"
-        (addr_of self.["dest"])
-        "value"
-        (addr_of (addr_of self.["value"])).
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -7289,28 +2788,11 @@ Module xts.
     
     Definition Self := ink_e2e.xts.Transfer E C.
     
-    Definition encode_as_type_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_type_id : u32)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      let
-          '{|
-            ink_e2e.xts.Transfer.dest := dest;
-            ink_e2e.xts.Transfer.value := value;
-          |} :=
-        self in
-      let* α0 :=
-        [
-            (core.option.Option.Some "dest", cast dest (ref TraitObject));
-            (core.option.Option.Some "value", cast value (ref TraitObject))
-          ].["into_iter"] in
-      (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_type_to"]
-        __encode_as_type_type_id
-        __encode_as_type_types
-        __encode_as_type_out.
+    Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+        u32->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
@@ -7332,29 +2814,11 @@ Module xts.
     
     Definition Self := ink_e2e.xts.Transfer E C.
     
-    Definition encode_as_fields_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_fields : ref Slice)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      let
-          '{|
-            ink_e2e.xts.Transfer.dest := dest;
-            ink_e2e.xts.Transfer.value := value;
-          |} :=
-        self in
-      let* α0 :=
-        [
-            (core.option.Option.Some "dest", cast dest (ref TraitObject));
-            (core.option.Option.Some "value", cast value (ref TraitObject))
-          ].["into_iter"] in
-      (scale_encode.impls.composite.Composite.Build_t
-          α0).["encode_as_fields_to"]
-        __encode_as_type_fields
-        __encode_as_type_types
-        __encode_as_type_out.
+    Parameter encode_as_fields_to : forall `{H : State.Trait}, ref Self->
+        ref Slice->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H : State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
@@ -7380,17 +2844,9 @@ Module xts.
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
     Definition Self := ink_e2e.xts.Determinism.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      let* α0 :=
-        match self with
-        | ink_e2e.xts.Determinism.Enforced => Pure "Enforced"
-        | ink_e2e.xts.Determinism.Relaxed => Pure "Relaxed"
-        end in
-      core.fmt.Formatter::["write_str"] f α0.
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -7404,11 +2860,8 @@ Module xts.
   Module Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
     Definition Self := ink_e2e.xts.Determinism.
     
-    Definition clone
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) ink_e2e.xts.Determinism :=
-      self.["deref"].
+    Parameter clone : forall `{H : State.Trait}, ref Self
+        -> M (H := H) ink_e2e.xts.Determinism.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -7436,14 +2889,9 @@ Module xts.
   Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
     Definition Self := ink_e2e.xts.Determinism.
     
-    Definition eq
-        `{H : State.Trait}
-        (self : ref Self)
-        (other : ref ink_e2e.xts.Determinism)
-        : M (H := H) bool :=
-      let* __self_tag := core.intrinsics.discriminant_value self in
-      let* __arg1_tag := core.intrinsics.discriminant_value other in
-      __self_tag.["eq"] __arg1_tag.
+    Parameter eq : forall `{H : State.Trait}, ref Self->
+        ref ink_e2e.xts.Determinism
+        -> M (H := H) bool.
     
     Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
@@ -7464,11 +2912,8 @@ Module xts.
   Module Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
     Definition Self := ink_e2e.xts.Determinism.
     
-    Definition assert_receiver_is_total_eq
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) unit :=
-      Pure tt.
+    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
+        -> M (H := H) unit.
     
     Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
@@ -7482,46 +2927,11 @@ Module xts.
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
     Definition Self := ink_e2e.xts.Determinism.
     
-    Definition encode_as_type_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_type_id : u32)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      match self with
-      | ImplSelf.Enforced =>
-        let* α0 :=
-          (cast
-              [ ]
-              list
-                ((core.option.Option (ref str)) *
-                  (ref TraitObject))).["into_iter"] in
-        {|
-            scale_encode.impls.variant.Variant.name := "Enforced";
-            scale_encode.impls.variant.Variant.fields :=
-              scale_encode.impls.composite.Composite.Build_t α0;
-          |}.["encode_as_type_to"]
-          __encode_as_type_type_id
-          __encode_as_type_types
-          __encode_as_type_out
-      | ImplSelf.Relaxed =>
-        let* α0 :=
-          (cast
-              [ ]
-              list
-                ((core.option.Option (ref str)) *
-                  (ref TraitObject))).["into_iter"] in
-        {|
-            scale_encode.impls.variant.Variant.name := "Relaxed";
-            scale_encode.impls.variant.Variant.fields :=
-              scale_encode.impls.composite.Composite.Build_t α0;
-          |}.["encode_as_type_to"]
-          __encode_as_type_type_id
-          __encode_as_type_types
-          __encode_as_type_out
-      | _ => core.panicking.panic "internal error: entered unreachable code"
-      end.
+    Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+        u32->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
@@ -7562,20 +2972,9 @@ Module xts.
     
     Definition Self := ink_e2e.xts.UploadCode E.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      core.fmt.Formatter::["debug_struct_field3_finish"]
-        f
-        "UploadCode"
-        "code"
-        (addr_of self.["code"])
-        "storage_deposit_limit"
-        (addr_of self.["storage_deposit_limit"])
-        "determinism"
-        (addr_of (addr_of self.["determinism"])).
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -7593,34 +2992,11 @@ Module xts.
     
     Definition Self := ink_e2e.xts.UploadCode E.
     
-    Definition encode_as_type_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_type_id : u32)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      let
-          '{|
-            ink_e2e.xts.UploadCode.code := code;
-            ink_e2e.xts.UploadCode.storage_deposit_limit
-              :=
-              storage_deposit_limit;
-            ink_e2e.xts.UploadCode.determinism := determinism;
-          |} :=
-        self in
-      let* α0 :=
-        [
-            (core.option.Option.Some "code", cast code (ref TraitObject));
-            (core.option.Option.Some "storage_deposit_limit",
-              cast storage_deposit_limit (ref TraitObject));
-            (core.option.Option.Some "determinism",
-              cast determinism (ref TraitObject))
-          ].["into_iter"] in
-      (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_type_to"]
-        __encode_as_type_type_id
-        __encode_as_type_types
-        __encode_as_type_out.
+    Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+        u32->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H : State.Trait} :
       Notation.Dot "encode_as_type_to" := {
@@ -7642,35 +3018,11 @@ Module xts.
     
     Definition Self := ink_e2e.xts.UploadCode E.
     
-    Definition encode_as_fields_to
-        `{H : State.Trait}
-        (self : ref Self)
-        (__encode_as_type_fields : ref Slice)
-        (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-        (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-        : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-      let
-          '{|
-            ink_e2e.xts.UploadCode.code := code;
-            ink_e2e.xts.UploadCode.storage_deposit_limit
-              :=
-              storage_deposit_limit;
-            ink_e2e.xts.UploadCode.determinism := determinism;
-          |} :=
-        self in
-      let* α0 :=
-        [
-            (core.option.Option.Some "code", cast code (ref TraitObject));
-            (core.option.Option.Some "storage_deposit_limit",
-              cast storage_deposit_limit (ref TraitObject));
-            (core.option.Option.Some "determinism",
-              cast determinism (ref TraitObject))
-          ].["into_iter"] in
-      (scale_encode.impls.composite.Composite.Build_t
-          α0).["encode_as_fields_to"]
-        __encode_as_type_fields
-        __encode_as_type_types
-        __encode_as_type_out.
+    Parameter encode_as_fields_to : forall `{H : State.Trait}, ref Self->
+        ref Slice->
+        ref scale_info.portable.PortableRegistry->
+        mut_ref (alloc.vec.Vec u8)
+        -> M (H := H) (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H : State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
@@ -7803,731 +3155,121 @@ Module xts.
   Module Impl_ink_e2e_xts_ContractsApi_C_E.
     Definition Self := ink_e2e.xts.ContractsApi C E.
     
-    Definition new
-        `{H : State.Trait}
-        (client : subxt.client.online_client.OnlineClient C)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let client := client in
-          let* α0 := core.default.Default.default tt in
-          Pure {| Self.client := client; Self._phantom := α0; |}).
+    Parameter new : forall
+          `{H : State.Trait},
+          subxt.client.online_client.OnlineClient C
+        -> M (H := H) OpaqueDef.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
     
-    Definition try_transfer_balance
-        `{H : State.Trait}
-        (self : ref Self)
-        (origin : ref (ink_e2e.Signer C))
-        (dest : ImplC.AccountId)
-        (value : ImplE.Balance)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let origin := origin in
-          let dest := dest in
-          let value := value in
-          let* call :=
-            let* α0 := dest.["into"] in
-            let* α1 :=
-              subxt.tx.tx_payload.Payload::["new"]
-                "Balances"
-                "transfer"
-                {|
-                  ink_e2e.xts.Transfer.dest :=
-                    subxt.utils.static_type.Static.Build_t α0;
-                  ink_e2e.xts.Transfer.value := value;
-                |} in
-            α1.["unvalidated"] in
-          let* tx_progress :=
-            let* α0 := self.["client"].["tx"] in
-            let* α1 :=
-              α0.["sign_and_submit_then_watch_default"] (addr_of call) origin in
-            let* α2 := LangItem α1 in
-            let* α3 :=
-              match α2 with
-              | __awaitee =>
-                loop
-                  let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
-                    match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
-                    |  => Pure tt
-                    end in
-                  let* _ :=
-                    let* α0 := yield tt in
-                    assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
-              end in
-            let* α4 := LangItem α3 in
-            match α4 with
-            | Break {| Break.0 := residual; |} =>
-              let* α0 := LangItem residual in
-              Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
-            end in
-          let* _ :=
-            let* α0 := tx_progress.["wait_for_in_block"] in
-            let* α1 := LangItem α0 in
-            let* α2 :=
-              match α1 with
-              | __awaitee =>
-                loop
-                  let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
-                    match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
-                    |  => Pure tt
-                    end in
-                  let* _ :=
-                    let* α0 := yield tt in
-                    assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
-              end in
-            α2.["unwrap_or_else"]
-              (fun err =>
-                let* _ :=
-                  let* α0 := format_argument::["new_debug"] (addr_of err) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ "error on call `wait_for_in_block`: " ])
-                      (addr_of [ α0 ]) in
-                  core.panicking.panic_fmt α1 in
-                Pure tt) in
-          Pure (core.result.Result.Ok tt)).
+    Parameter try_transfer_balance : forall `{H : State.Trait}, ref Self->
+        ref (ink_e2e.Signer C)->
+        ImplC.AccountId->
+        ImplE.Balance
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_try_transfer_balance `{H : State.Trait} :
       Notation.Dot "try_transfer_balance" := {
       Notation.dot := try_transfer_balance;
     }.
     
-    Definition instantiate_with_code_dry_run
-        `{H : State.Trait}
-        (self : ref Self)
-        (value : ImplE.Balance)
-        (storage_deposit_limit : core.option.Option ImplE.Balance)
-        (code : alloc.vec.Vec u8)
-        (data : alloc.vec.Vec u8)
-        (salt : alloc.vec.Vec u8)
-        (signer : ref (ink_e2e.Signer C))
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let value := value in
-          let storage_deposit_limit := storage_deposit_limit in
-          let code := code in
-          let data := data in
-          let salt := salt in
-          let signer := signer in
-          let code := ink_e2e.xts.Code.Upload code in
-          let* call_request :=
-            let* α0 := subxt.tx.signer.Signer.account_id signer in
-            let* α1 := α0.["clone"] in
-            Pure
-              {|
-                ink_e2e.xts.RpcInstantiateRequest.origin := α1;
-                ink_e2e.xts.RpcInstantiateRequest.value := value;
-                ink_e2e.xts.RpcInstantiateRequest.gas_limit :=
-                  core.option.Option.None;
-                ink_e2e.xts.RpcInstantiateRequest.storage_deposit_limit :=
-                  storage_deposit_limit;
-                ink_e2e.xts.RpcInstantiateRequest.code := code;
-                ink_e2e.xts.RpcInstantiateRequest.data := data;
-                ink_e2e.xts.RpcInstantiateRequest.salt := salt;
-              |} in
-          let func := "ContractsApi_instantiate" in
-          let* params :=
-            let* params := subxt.rpc.rpc_client.RpcParams::["new"] tt in
-            let* _ :=
-              let* α0 := params.["push"] func in
-              α0.["expect"]
-                "values passed to rpc_params! must be serializable to JSON" in
-            let* _ :=
-              let* α0 :=
-                parity_scale_codec.codec.Encode.encode (addr_of call_request) in
-              let* α1 := params.["push"] (sp_core.Bytes.Build_t α0) in
-              α1.["expect"]
-                "values passed to rpc_params! must be serializable to JSON" in
-            Pure params in
-          let* bytes :=
-            let* α0 := self.["client"].["rpc"] in
-            let* α1 := α0.["request"] "state_call" params in
-            let* α2 := LangItem α1 in
-            let* α3 :=
-              match α2 with
-              | __awaitee =>
-                loop
-                  let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
-                    match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
-                    |  => Pure tt
-                    end in
-                  let* _ :=
-                    let* α0 := yield tt in
-                    assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
-              end in
-            α3.["unwrap_or_else"]
-              (fun err =>
-                let* _ :=
-                  let* α0 := format_argument::["new_debug"] (addr_of err) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (addr_of
-                        [ "error on ws request `contracts_instantiate`: " ])
-                      (addr_of [ α0 ]) in
-                  core.panicking.panic_fmt α1 in
-                Pure tt) in
-          let* α0 := bytes.["as_ref"] in
-          let* α1 := parity_scale_codec.codec.Decode.decode (addr_of α0) in
-          α1.["unwrap_or_else"]
-            (fun err =>
-              let* α0 := format_argument::["new_display"] (addr_of err) in
-              let* α1 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "decoding ContractInstantiateResult failed: " ])
-                  (addr_of [ α0 ]) in
-              core.panicking.panic_fmt α1)).
+    Parameter instantiate_with_code_dry_run : forall `{H : State.Trait}, ref
+            Self->
+        ImplE.Balance->
+        core.option.Option ImplE.Balance->
+        alloc.vec.Vec u8->
+        alloc.vec.Vec u8->
+        alloc.vec.Vec u8->
+        ref (ink_e2e.Signer C)
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_instantiate_with_code_dry_run `{H : State.Trait} :
       Notation.Dot "instantiate_with_code_dry_run" := {
       Notation.dot := instantiate_with_code_dry_run;
     }.
     
-    Definition submit_extrinsic
-        `{H : State.Trait}
-        (self : ref Self)
-        (call : ref Call)
-        (signer : ref (ink_e2e.Signer C))
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let call := call in
-          let signer := signer in
-          let* α0 := self.["client"].["tx"] in
-          let* α1 := α0.["sign_and_submit_then_watch_default"] call signer in
-          let* α2 := LangItem α1 in
-          let* α3 :=
-            match α2 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let* α4 :=
-            α3.["map"]
-              (fun tx_progress =>
-                let* _ :=
-                  let* res :=
-                    let* α0 := tx_progress.["extrinsic_hash"] in
-                    let* α1 := format_argument::["new_debug"] (addr_of α0) in
-                    let* α2 :=
-                      format_arguments::["new_v1"]
-                        (addr_of [ "signed and submitted tx with hash " ])
-                        (addr_of [ α1 ]) in
-                    alloc.fmt.format α2 in
-                  ink_e2e.log_info (addr_of res) in
-                Pure tx_progress) in
-          let* α5 :=
-            α4.["unwrap_or_else"]
-              (fun err =>
-                let* _ :=
-                  let* α0 := format_argument::["new_debug"] (addr_of err) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (addr_of
-                        [ "error on call `sign_and_submit_then_watch_default`: "
-                        ])
-                      (addr_of [ α0 ]) in
-                  core.panicking.panic_fmt α1 in
-                Pure tt) in
-          let* α6 := α5.["wait_for_in_block"] in
-          let* α7 := LangItem α6 in
-          let* α8 :=
-            match α7 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let* α9 :=
-            α8.["unwrap_or_else"]
-              (fun err =>
-                let* _ :=
-                  let* α0 := format_argument::["new_debug"] (addr_of err) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ "error on call `wait_for_in_block`: " ])
-                      (addr_of [ α0 ]) in
-                  core.panicking.panic_fmt α1 in
-                Pure tt) in
-          let* α10 := α9.["fetch_events"] in
-          let* α11 := LangItem α10 in
-          let* α12 :=
-            match α11 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          α12.["unwrap_or_else"]
-            (fun err =>
-              let* _ :=
-                let* α0 := format_argument::["new_debug"] (addr_of err) in
-                let* α1 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "error on call `fetch_events`: " ])
-                    (addr_of [ α0 ]) in
-                core.panicking.panic_fmt α1 in
-              Pure tt)).
+    Parameter submit_extrinsic : forall `{H : State.Trait}, ref Self->
+        ref Call->
+        ref (ink_e2e.Signer C)
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_submit_extrinsic `{H : State.Trait} :
       Notation.Dot "submit_extrinsic" := {
       Notation.dot := submit_extrinsic;
     }.
     
-    Definition instantiate_with_code
-        `{H : State.Trait}
-        (self : ref Self)
-        (value : ImplE.Balance)
-        (gas_limit : ink_e2e.xts.Weight)
-        (storage_deposit_limit : core.option.Option ImplE.Balance)
-        (code : alloc.vec.Vec u8)
-        (data : alloc.vec.Vec u8)
-        (salt : alloc.vec.Vec u8)
-        (signer : ref (ink_e2e.Signer C))
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let value := value in
-          let gas_limit := gas_limit in
-          let storage_deposit_limit := storage_deposit_limit in
-          let code := code in
-          let data := data in
-          let salt := salt in
-          let signer := signer in
-          let* call :=
-            let* α0 :=
-              subxt.tx.tx_payload.Payload::["new"]
-                "Contracts"
-                "instantiate_with_code"
-                {|
-                  ink_e2e.xts.InstantiateWithCode.value := value;
-                  ink_e2e.xts.InstantiateWithCode.gas_limit := gas_limit;
-                  ink_e2e.xts.InstantiateWithCode.storage_deposit_limit :=
-                    storage_deposit_limit;
-                  ink_e2e.xts.InstantiateWithCode.code := code;
-                  ink_e2e.xts.InstantiateWithCode.data := data;
-                  ink_e2e.xts.InstantiateWithCode.salt := salt;
-                |} in
-            α0.["unvalidated"] in
-          let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-          let* α1 := LangItem α0 in
-          match α1 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end).
+    Parameter instantiate_with_code : forall `{H : State.Trait}, ref Self->
+        ImplE.Balance->
+        ink_e2e.xts.Weight->
+        core.option.Option ImplE.Balance->
+        alloc.vec.Vec u8->
+        alloc.vec.Vec u8->
+        alloc.vec.Vec u8->
+        ref (ink_e2e.Signer C)
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_instantiate_with_code `{H : State.Trait} :
       Notation.Dot "instantiate_with_code" := {
       Notation.dot := instantiate_with_code;
     }.
     
-    Definition upload_dry_run
-        `{H : State.Trait}
-        (self : ref Self)
-        (signer : ref (ink_e2e.Signer C))
-        (code : alloc.vec.Vec u8)
-        (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let signer := signer in
-          let code := code in
-          let storage_deposit_limit := storage_deposit_limit in
-          let* call_request :=
-            let* α0 := subxt.tx.signer.Signer.account_id signer in
-            let* α1 := α0.["clone"] in
-            Pure
-              {|
-                ink_e2e.xts.RpcCodeUploadRequest.origin := α1;
-                ink_e2e.xts.RpcCodeUploadRequest.code := code;
-                ink_e2e.xts.RpcCodeUploadRequest.storage_deposit_limit :=
-                  storage_deposit_limit;
-                ink_e2e.xts.RpcCodeUploadRequest.determinism :=
-                  ink_e2e.xts.Determinism.Enforced;
-              |} in
-          let func := "ContractsApi_upload_code" in
-          let* params :=
-            let* params := subxt.rpc.rpc_client.RpcParams::["new"] tt in
-            let* _ :=
-              let* α0 := params.["push"] func in
-              α0.["expect"]
-                "values passed to rpc_params! must be serializable to JSON" in
-            let* _ :=
-              let* α0 :=
-                parity_scale_codec.codec.Encode.encode (addr_of call_request) in
-              let* α1 := params.["push"] (sp_core.Bytes.Build_t α0) in
-              α1.["expect"]
-                "values passed to rpc_params! must be serializable to JSON" in
-            Pure params in
-          let* bytes :=
-            let* α0 := self.["client"].["rpc"] in
-            let* α1 := α0.["request"] "state_call" params in
-            let* α2 := LangItem α1 in
-            let* α3 :=
-              match α2 with
-              | __awaitee =>
-                loop
-                  let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
-                    match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
-                    |  => Pure tt
-                    end in
-                  let* _ :=
-                    let* α0 := yield tt in
-                    assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
-              end in
-            α3.["unwrap_or_else"]
-              (fun err =>
-                let* _ :=
-                  let* α0 := format_argument::["new_debug"] (addr_of err) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ "error on ws request `upload_code`: " ])
-                      (addr_of [ α0 ]) in
-                  core.panicking.panic_fmt α1 in
-                Pure tt) in
-          let* α0 := bytes.["as_ref"] in
-          let* α1 := parity_scale_codec.codec.Decode.decode (addr_of α0) in
-          α1.["unwrap_or_else"]
-            (fun err =>
-              let* α0 := format_argument::["new_display"] (addr_of err) in
-              let* α1 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "decoding CodeUploadResult failed: " ])
-                  (addr_of [ α0 ]) in
-              core.panicking.panic_fmt α1)).
+    Parameter upload_dry_run : forall `{H : State.Trait}, ref Self->
+        ref (ink_e2e.Signer C)->
+        alloc.vec.Vec u8->
+        core.option.Option ImplE.Balance
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_upload_dry_run `{H : State.Trait} :
       Notation.Dot "upload_dry_run" := {
       Notation.dot := upload_dry_run;
     }.
     
-    Definition upload
-        `{H : State.Trait}
-        (self : ref Self)
-        (signer : ref (ink_e2e.Signer C))
-        (code : alloc.vec.Vec u8)
-        (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let signer := signer in
-          let code := code in
-          let storage_deposit_limit := storage_deposit_limit in
-          let* call :=
-            let* α0 :=
-              subxt.tx.tx_payload.Payload::["new"]
-                "Contracts"
-                "upload_code"
-                {|
-                  ink_e2e.xts.UploadCode.code := code;
-                  ink_e2e.xts.UploadCode.storage_deposit_limit :=
-                    storage_deposit_limit;
-                  ink_e2e.xts.UploadCode.determinism :=
-                    ink_e2e.xts.Determinism.Enforced;
-                |} in
-            α0.["unvalidated"] in
-          let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-          let* α1 := LangItem α0 in
-          match α1 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end).
+    Parameter upload : forall `{H : State.Trait}, ref Self->
+        ref (ink_e2e.Signer C)->
+        alloc.vec.Vec u8->
+        core.option.Option ImplE.Balance
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_upload `{H : State.Trait} :
       Notation.Dot "upload" := {
       Notation.dot := upload;
     }.
     
-    Definition call_dry_run
-        `{H : State.Trait}
-        (self : ref Self)
-        (origin : ImplC.AccountId)
-        (dest : ImplE.AccountId)
-        (input_data : alloc.vec.Vec u8)
-        (value : ImplE.Balance)
-        (storage_deposit_limit : core.option.Option ImplE.Balance)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let origin := origin in
-          let dest := dest in
-          let input_data := input_data in
-          let value := value in
-          let storage_deposit_limit := storage_deposit_limit in
-          let call_request :=
-            {|
-              ink_e2e.xts.RpcCallRequest.origin := origin;
-              ink_e2e.xts.RpcCallRequest.dest := dest;
-              ink_e2e.xts.RpcCallRequest.value := value;
-              ink_e2e.xts.RpcCallRequest.gas_limit := core.option.Option.None;
-              ink_e2e.xts.RpcCallRequest.storage_deposit_limit :=
-                storage_deposit_limit;
-              ink_e2e.xts.RpcCallRequest.input_data := input_data;
-            |} in
-          let func := "ContractsApi_call" in
-          let* params :=
-            let* params := subxt.rpc.rpc_client.RpcParams::["new"] tt in
-            let* _ :=
-              let* α0 := params.["push"] func in
-              α0.["expect"]
-                "values passed to rpc_params! must be serializable to JSON" in
-            let* _ :=
-              let* α0 :=
-                parity_scale_codec.codec.Encode.encode (addr_of call_request) in
-              let* α1 := params.["push"] (sp_core.Bytes.Build_t α0) in
-              α1.["expect"]
-                "values passed to rpc_params! must be serializable to JSON" in
-            Pure params in
-          let* bytes :=
-            let* α0 := self.["client"].["rpc"] in
-            let* α1 := α0.["request"] "state_call" params in
-            let* α2 := LangItem α1 in
-            let* α3 :=
-              match α2 with
-              | __awaitee =>
-                loop
-                  let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
-                    match α0 with
-                    | {| Ready.0 := result; |} => Pure Break
-                    |  => Pure tt
-                    end in
-                  let* _ :=
-                    let* α0 := yield tt in
-                    assign _task_context α0 in
-                  Pure tt
-                  from
-                  loop
-              end in
-            α3.["unwrap_or_else"]
-              (fun err =>
-                let* _ :=
-                  let* α0 := format_argument::["new_debug"] (addr_of err) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ "error on ws request `contracts_call`: " ])
-                      (addr_of [ α0 ]) in
-                  core.panicking.panic_fmt α1 in
-                Pure tt) in
-          let* α0 := bytes.["as_ref"] in
-          let* α1 := parity_scale_codec.codec.Decode.decode (addr_of α0) in
-          α1.["unwrap_or_else"]
-            (fun err =>
-              let* α0 := format_argument::["new_display"] (addr_of err) in
-              let* α1 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "decoding ContractExecResult failed: " ])
-                  (addr_of [ α0 ]) in
-              core.panicking.panic_fmt α1)).
+    Parameter call_dry_run : forall `{H : State.Trait}, ref Self->
+        ImplC.AccountId->
+        ImplE.AccountId->
+        alloc.vec.Vec u8->
+        ImplE.Balance->
+        core.option.Option ImplE.Balance
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_call_dry_run `{H : State.Trait} :
       Notation.Dot "call_dry_run" := {
       Notation.dot := call_dry_run;
     }.
     
-    Definition call
-        `{H : State.Trait}
-        (self : ref Self)
-        (contract : subxt.utils.multi_address.MultiAddress ImplE.AccountId unit)
-        (value : ImplE.Balance)
-        (gas_limit : ink_e2e.xts.Weight)
-        (storage_deposit_limit : core.option.Option ImplE.Balance)
-        (data : alloc.vec.Vec u8)
-        (signer : ref (ink_e2e.Signer C))
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let contract := contract in
-          let value := value in
-          let gas_limit := gas_limit in
-          let storage_deposit_limit := storage_deposit_limit in
-          let data := data in
-          let signer := signer in
-          let* call :=
-            let* α0 :=
-              subxt.tx.tx_payload.Payload::["new"]
-                "Contracts"
-                "call"
-                {|
-                  ink_e2e.xts.Call.dest := contract;
-                  ink_e2e.xts.Call.value := value;
-                  ink_e2e.xts.Call.gas_limit := gas_limit;
-                  ink_e2e.xts.Call.storage_deposit_limit :=
-                    storage_deposit_limit;
-                  ink_e2e.xts.Call.data := data;
-                |} in
-            α0.["unvalidated"] in
-          let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-          let* α1 := LangItem α0 in
-          match α1 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end).
+    Parameter call : forall `{H : State.Trait}, ref Self->
+        subxt.utils.multi_address.MultiAddress ImplE.AccountId unit->
+        ImplE.Balance->
+        ink_e2e.xts.Weight->
+        core.option.Option ImplE.Balance->
+        alloc.vec.Vec u8->
+        ref (ink_e2e.Signer C)
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
       Notation.dot := call;
     }.
     
-    Definition runtime_call
-        `{H : State.Trait}
-        (self : ref Self)
-        (signer : ref (ink_e2e.Signer C))
-        (pallet_name : ref str)
-        (call_name : ref str)
-        (call_data : alloc.vec.Vec scale_value.value.Value)
-        : M (H := H) OpaqueDef :=
-      Pure
-        (fun _task_context =>
-          let self := self in
-          let signer := signer in
-          let pallet_name := pallet_name in
-          let call_name := call_name in
-          let call_data := call_data in
-          let* call :=
-            subxt.tx.tx_payload.dynamic pallet_name call_name call_data in
-          let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-          let* α1 := LangItem α0 in
-          match α1 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end).
+    Parameter runtime_call : forall `{H : State.Trait}, ref Self->
+        ref (ink_e2e.Signer C)->
+        ref str->
+        ref str->
+        alloc.vec.Vec scale_value.value.Value
+        -> M (H := H) OpaqueDef.
     
     Global Instance Method_runtime_call `{H : State.Trait} :
       Notation.Dot "runtime_call" := {
@@ -8561,12 +3303,8 @@ End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
 Module Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition clone
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) ink_e2e.xts.Weight :=
-    let _ := tt in
-    self.["deref"].
+  Parameter clone : forall `{H : State.Trait}, ref Self
+      -> M (H := H) ink_e2e.xts.Weight.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -8587,12 +3325,8 @@ End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
 Module Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition assert_receiver_is_total_eq
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) unit :=
-    let _ := tt in
-    Pure tt.
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
+      -> M (H := H) unit.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -8613,14 +3347,9 @@ End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
 Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition eq
-      `{H : State.Trait}
-      (self : ref Self)
-      (other : ref ink_e2e.xts.Weight)
-      : M (H := H) bool :=
-    let* α0 := self.["ref_time"].["eq"] other.["ref_time"] in
-    let* α1 := self.["proof_size"].["eq"] other.["proof_size"] in
-    α0.["andb"] α1.
+  Parameter eq : forall `{H : State.Trait}, ref Self->
+      ref ink_e2e.xts.Weight
+      -> M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -8643,18 +3372,9 @@ Module Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
     core.fmt.Formatter "debug_struct_field2_finish" := {
     Notation.double_colon := debug_struct_field2_finish; }.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "Weight"
-      "ref_time"
-      (addr_of self.["ref_time"])
-      "proof_size"
-      (addr_of (addr_of self.["proof_size"])).
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -8668,15 +3388,8 @@ End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
 Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition default
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) ink_e2e.xts.Weight :=
-    let* α0 := core.default.Default.default tt in
-    let* α1 := core.default.Default.default tt in
-    Pure
-      {| ink_e2e.xts.Weight.ref_time := α0; ink_e2e.xts.Weight.proof_size := α1;
-      |}.
+  Parameter default : forall `{H : State.Trait}, unit
+      -> M (H := H) ink_e2e.xts.Weight.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -8691,28 +3404,9 @@ End Impl_core_default_Default_for_ink_e2e_xts_Weight.
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition encode_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M (H := H) unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          parity_scale_codec.codec.EncodeAsRef.RefType::["from"]
-            (addr_of self.["ref_time"]) in
-        parity_scale_codec.codec.Encode.encode_to
-          (addr_of α0)
-          __codec_dest_edqy in
-      Pure tt in
-    let* _ :=
-      let* α0 :=
-        parity_scale_codec.codec.EncodeAsRef.RefType::["from"]
-          (addr_of self.["proof_size"]) in
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of α0)
-        __codec_dest_edqy in
-    Pure tt.
+  Parameter encode_to : forall `{H : State.Trait}, ref Self->
+      mut_ref __CodecOutputEdqy
+      -> M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -8733,34 +3427,8 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition decode
-      `{H : State.Trait}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α0 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 := e.["chain"] "Could not decode `Weight::ref_time`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => __codec_res_edqy.["into"]
-      end in
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α1 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 := e.["chain"] "Could not decode `Weight::proof_size`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => __codec_res_edqy.["into"]
-      end in
-    Pure
-      (core.result.Result.Ok
-        {|
-          ink_e2e.xts.Weight.ref_time := α0;
-          ink_e2e.xts.Weight.proof_size := α1;
-        |}).
+  Parameter decode : forall `{H : State.Trait}, mut_ref __CodecInputEdqy
+      -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
@@ -8776,14 +3444,8 @@ Module
   Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition max_encoded_len
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) Root.core.primitive.usize :=
-    let* α0 := u64::["max_encoded_len"] tt in
-    let* α1 := 0.["saturating_add"] α0 in
-    let* α2 := u64::["max_encoded_len"] tt in
-    α1.["saturating_add"] α2.
+  Parameter max_encoded_len : forall `{H : State.Trait}, unit
+      -> M (H := H) Root.core.primitive.usize.
   
   Global Instance AssociatedFunction_max_encoded_len `{H : State.Trait} :
     Notation.DoubleColon Self "max_encoded_len" := {
@@ -8803,29 +3465,11 @@ End
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition encode_as_type_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_type_id : u32)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    let
-        '{|
-          ink_e2e.xts.Weight.ref_time := ref_time;
-          ink_e2e.xts.Weight.proof_size := proof_size;
-        |} :=
-      self in
-    let* α0 :=
-      [
-          (core.option.Option.Some "ref_time", cast ref_time (ref TraitObject));
-          (core.option.Option.Some "proof_size",
-            cast proof_size (ref TraitObject))
-        ].["into_iter"] in
-    (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_type_to"]
-      __encode_as_type_type_id
-      __encode_as_type_types
-      __encode_as_type_out.
+  Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+      u32->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
@@ -8843,29 +3487,11 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
 Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition encode_as_fields_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_fields : ref Slice)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    let
-        '{|
-          ink_e2e.xts.Weight.ref_time := ref_time;
-          ink_e2e.xts.Weight.proof_size := proof_size;
-        |} :=
-      self in
-    let* α0 :=
-      [
-          (core.option.Option.Some "ref_time", cast ref_time (ref TraitObject));
-          (core.option.Option.Some "proof_size",
-            cast proof_size (ref TraitObject))
-        ].["into_iter"] in
-    (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_fields_to"]
-      __encode_as_type_fields
-      __encode_as_type_types
-      __encode_as_type_out.
+  Parameter encode_as_fields_to : forall `{H : State.Trait}, ref Self->
+      ref Slice->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_fields_to `{H : State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
@@ -8883,47 +3509,9 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
 Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition serialize
-      `{H : State.Trait}
-      (self : ref Self)
-      (__serializer : __S)
-      : M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error) :=
-    let* __serde_state :=
-      let* α0 := (cast false usize).["add"] 1 in
-      let* α1 := α0.["add"] 1 in
-      let* α2 :=
-        serde.ser.Serializer.serialize_struct __serializer "Weight" α1 in
-      match α2 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "ref_time"
-          (addr_of self.["ref_time"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "proof_size"
-          (addr_of self.["proof_size"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    serde.ser.SerializeStruct.end __serde_state.
+  Parameter serialize : forall `{H : State.Trait}, ref Self->
+      __S
+      -> M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error).
   
   Global Instance Method_serialize `{H : State.Trait} :
     Notation.Dot "serialize" := {
@@ -8938,20 +3526,8 @@ End Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
 Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition deserialize
-      `{H : State.Trait}
-      (__deserializer : __D)
-      : M (H := H) (core.result.Result Self Impl__D.Error) :=
-    serde.de.Deserializer.deserialize_struct
-      __deserializer
-      "Weight"
-      ink_e2e.xts._.deserialize.FIELDS
-      {|
-        ink_e2e.xts._.deserialize.__Visitor.marker :=
-          core.marker.PhantomData.Build;
-        ink_e2e.xts._.deserialize.__Visitor.lifetime :=
-          core.marker.PhantomData.Build;
-      |}.
+  Parameter deserialize : forall `{H : State.Trait}, __D
+      -> M (H := H) (core.result.Result Self Impl__D.Error).
   
   Global Instance AssociatedFunction_deserialize `{H : State.Trait} :
     Notation.DoubleColon Self "deserialize" := {
@@ -8981,69 +3557,36 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
   
   Definition Value : Set := ink_e2e.xts._.deserialize.__Field.
   
-  Definition expecting
-      `{H : State.Trait}
-      (self : ref Self)
-      (__formatter : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    core.fmt.Formatter::["write_str"] __formatter "field identifier".
+  Parameter expecting : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_expecting `{H : State.Trait} :
     Notation.Dot "expecting" := {
     Notation.dot := expecting;
   }.
   
-  Definition visit_u64
-      `{H : State.Trait}
-      (self : Self)
-      (__value : u64)
-      : M (H := H) (core.result.Result ImplSelf.Value __E) :=
-    match __value with
-    | 0 =>
-      Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__field0)
-    | 1 =>
-      Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__field1)
-    | _ =>
-      Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__ignore)
-    end.
+  Parameter visit_u64 : forall `{H : State.Trait}, Self->
+      u64
+      -> M (H := H) (core.result.Result ImplSelf.Value __E).
   
   Global Instance Method_visit_u64 `{H : State.Trait} :
     Notation.Dot "visit_u64" := {
     Notation.dot := visit_u64;
   }.
   
-  Definition visit_str
-      `{H : State.Trait}
-      (self : Self)
-      (__value : ref str)
-      : M (H := H) (core.result.Result ImplSelf.Value __E) :=
-    match __value with
-    | "ref_time" =>
-      Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__field0)
-    | "proof_size" =>
-      Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__field1)
-    | _ =>
-      Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__ignore)
-    end.
+  Parameter visit_str : forall `{H : State.Trait}, Self->
+      ref str
+      -> M (H := H) (core.result.Result ImplSelf.Value __E).
   
   Global Instance Method_visit_str `{H : State.Trait} :
     Notation.Dot "visit_str" := {
     Notation.dot := visit_str;
   }.
   
-  Definition visit_bytes
-      `{H : State.Trait}
-      (self : Self)
-      (__value : ref Slice)
-      : M (H := H) (core.result.Result ImplSelf.Value __E) :=
-    match __value with
-    | [114, 101, 102, 95, 116, 105, 109, 101] =>
-      Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__field0)
-    | [112, 114, 111, 111, 102, 95, 115, 105, 122, 101] =>
-      Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__field1)
-    | _ =>
-      Pure (core.result.Result.Ok ink_e2e.xts._.deserialize.__Field.__ignore)
-    end.
+  Parameter visit_bytes : forall `{H : State.Trait}, Self->
+      ref Slice
+      -> M (H := H) (core.result.Result ImplSelf.Value __E).
   
   Global Instance Method_visit_bytes `{H : State.Trait} :
     Notation.Dot "visit_bytes" := {
@@ -9058,13 +3601,8 @@ End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
 Module Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
   Definition Self := ink_e2e.xts._.deserialize.__Field.
   
-  Definition deserialize
-      `{H : State.Trait}
-      (__deserializer : __D)
-      : M (H := H) (core.result.Result Self Impl__D.Error) :=
-    serde.de.Deserializer.deserialize_identifier
-      __deserializer
-      ink_e2e.xts._.deserialize.__FieldVisitor.Build.
+  Parameter deserialize : forall `{H : State.Trait}, __D
+      -> M (H := H) (core.result.Result Self Impl__D.Error).
   
   Global Instance AssociatedFunction_deserialize `{H : State.Trait} :
     Notation.DoubleColon Self "deserialize" := {
@@ -9096,183 +3634,27 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
   
   Definition Value : Set := ink_e2e.xts.Weight.
   
-  Definition expecting
-      `{H : State.Trait}
-      (self : ref Self)
-      (__formatter : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    core.fmt.Formatter::["write_str"] __formatter "struct Weight".
+  Parameter expecting : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_expecting `{H : State.Trait} :
     Notation.Dot "expecting" := {
     Notation.dot := expecting;
   }.
   
-  Definition visit_seq
-      `{H : State.Trait}
-      (self : Self)
-      (__seq : __A)
-      : M (H := H) (core.result.Result ImplSelf.Value Impl__A.Error) :=
-    let* __field0 :=
-      let* α0 := serde.de.SeqAccess.next_element (addr_of __seq) in
-      let* α1 :=
-        match α0 with
-        | core.result.Result.Ok __val => Pure __val
-        | core.result.Result.Err __err =>
-          let* _ := Return (core.result.Result.Err __err) in
-          Pure tt
-        end in
-      match α1 with
-      | core.option.Option.Some __value => Pure __value
-      | core.option.Option.None =>
-        let* _ :=
-          let* α0 :=
-            serde.de.Error.invalid_length
-              0
-              (addr_of "struct Weight with 2 elements") in
-          Return (core.result.Result.Err α0) in
-        Pure tt
-      end in
-    let* __field1 :=
-      let* α0 := serde.de.SeqAccess.next_element (addr_of __seq) in
-      let* α1 :=
-        match α0 with
-        | core.result.Result.Ok __val => Pure __val
-        | core.result.Result.Err __err =>
-          let* _ := Return (core.result.Result.Err __err) in
-          Pure tt
-        end in
-      match α1 with
-      | core.option.Option.Some __value => Pure __value
-      | core.option.Option.None =>
-        let* _ :=
-          let* α0 :=
-            serde.de.Error.invalid_length
-              1
-              (addr_of "struct Weight with 2 elements") in
-          Return (core.result.Result.Err α0) in
-        Pure tt
-      end in
-    Pure
-      (core.result.Result.Ok
-        {|
-          ink_e2e.xts.Weight.ref_time := __field0;
-          ink_e2e.xts.Weight.proof_size := __field1;
-        |}).
+  Parameter visit_seq : forall `{H : State.Trait}, Self->
+      __A
+      -> M (H := H) (core.result.Result ImplSelf.Value Impl__A.Error).
   
   Global Instance Method_visit_seq `{H : State.Trait} :
     Notation.Dot "visit_seq" := {
     Notation.dot := visit_seq;
   }.
   
-  Definition visit_map
-      `{H : State.Trait}
-      (self : Self)
-      (__map : __A)
-      : M (H := H) (core.result.Result ImplSelf.Value Impl__A.Error) :=
-    let __field0 := core.option.Option.None in
-    let __field1 := core.option.Option.None in
-    let* _ :=
-      loop
-        let* α0 := serde.de.MapAccess.next_key (addr_of __map) in
-        let* α1 :=
-          match α0 with
-          | core.result.Result.Ok __val => Pure __val
-          | core.result.Result.Err __err =>
-            let* _ := Return (core.result.Result.Err __err) in
-            Pure tt
-          end in
-        let* α2 := let_if core.option.Option.Some __key := α1 in
-        if (α2 : bool) then
-          match __key with
-          | ink_e2e.xts._.deserialize.__Field.__field0 =>
-            let* _ :=
-              let* α0 := core.option.Option::["is_some"] (addr_of __field0) in
-              if (α0 : bool) then
-                let* _ :=
-                  let* α0 := serde.de.Error.duplicate_field "ref_time" in
-                  Return (core.result.Result.Err α0) in
-                Pure tt
-              else
-                Pure tt in
-            let* _ :=
-              let* α0 := serde.de.MapAccess.next_value (addr_of __map) in
-              let* α1 :=
-                match α0 with
-                | core.result.Result.Ok __val => Pure __val
-                | core.result.Result.Err __err =>
-                  let* _ := Return (core.result.Result.Err __err) in
-                  Pure tt
-                end in
-              assign __field0 (core.option.Option.Some α1) in
-            Pure tt
-          | ink_e2e.xts._.deserialize.__Field.__field1 =>
-            let* _ :=
-              let* α0 := core.option.Option::["is_some"] (addr_of __field1) in
-              if (α0 : bool) then
-                let* _ :=
-                  let* α0 := serde.de.Error.duplicate_field "proof_size" in
-                  Return (core.result.Result.Err α0) in
-                Pure tt
-              else
-                Pure tt in
-            let* _ :=
-              let* α0 := serde.de.MapAccess.next_value (addr_of __map) in
-              let* α1 :=
-                match α0 with
-                | core.result.Result.Ok __val => Pure __val
-                | core.result.Result.Err __err =>
-                  let* _ := Return (core.result.Result.Err __err) in
-                  Pure tt
-                end in
-              assign __field1 (core.option.Option.Some α1) in
-            Pure tt
-          | _ =>
-            let* _ :=
-              let* α0 := serde.de.MapAccess.next_value (addr_of __map) in
-              match α0 with
-              | core.result.Result.Ok __val => Pure __val
-              | core.result.Result.Err __err =>
-                let* _ := Return (core.result.Result.Err __err) in
-                Pure tt
-              end in
-            Pure tt
-          end
-        else
-          let _ := Break in
-          Pure tt
-        from
-        while in
-    let* __field0 :=
-      match __field0 with
-      | core.option.Option.Some __field0 => Pure __field0
-      | core.option.Option.None =>
-        let* α0 := serde.__private.de.missing_field "ref_time" in
-        match α0 with
-        | core.result.Result.Ok __val => Pure __val
-        | core.result.Result.Err __err =>
-          let* _ := Return (core.result.Result.Err __err) in
-          Pure tt
-        end
-      end in
-    let* __field1 :=
-      match __field1 with
-      | core.option.Option.Some __field1 => Pure __field1
-      | core.option.Option.None =>
-        let* α0 := serde.__private.de.missing_field "proof_size" in
-        match α0 with
-        | core.result.Result.Ok __val => Pure __val
-        | core.result.Result.Err __err =>
-          let* _ := Return (core.result.Result.Err __err) in
-          Pure tt
-        end
-      end in
-    Pure
-      (core.result.Result.Ok
-        {|
-          ink_e2e.xts.Weight.ref_time := __field0;
-          ink_e2e.xts.Weight.proof_size := __field1;
-        |}).
+  Parameter visit_map : forall `{H : State.Trait}, Self->
+      __A
+      -> M (H := H) (core.result.Result ImplSelf.Value Impl__A.Error).
   
   Global Instance Method_visit_map `{H : State.Trait} :
     Notation.Dot "visit_map" := {
@@ -9290,13 +3672,8 @@ Definition FIELDS `{H : State.Trait} : ref Slice :=
 Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Definition from
-      `{H : State.Trait}
-      (weight : sp_weights.weight_v2.Weight)
-      : M (H := H) Self :=
-    let* α0 := weight.["ref_time"] in
-    let* α1 := weight.["proof_size"] in
-    Pure {| Self.ref_time := α0; Self.proof_size := α1; |}.
+  Parameter from : forall `{H : State.Trait}, sp_weights.weight_v2.Weight
+      -> M (H := H) Self.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -9312,13 +3689,8 @@ End Impl_core_convert_From_for_ink_e2e_xts_Weight.
 Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
   Definition Self := sp_weights.weight_v2.Weight.
   
-  Definition from
-      `{H : State.Trait}
-      (weight : ink_e2e.xts.Weight)
-      : M (H := H) Self :=
-    sp_weights.weight_v2.Weight::["from_parts"]
-      weight.["ref_time"]
-      weight.["proof_size"].
+  Parameter from : forall `{H : State.Trait}, ink_e2e.xts.Weight
+      -> M (H := H) Self.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -9369,30 +3741,9 @@ Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
   
   Definition Self := ink_e2e.xts.InstantiateWithCode E.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    let names :=
-      addr_of
-        [ "value"; "gas_limit"; "storage_deposit_limit"; "code"; "data"; "salt"
-        ] in
-    let values :=
-      addr_of
-        [
-          addr_of self.["value"];
-          addr_of self.["gas_limit"];
-          addr_of self.["storage_deposit_limit"];
-          addr_of self.["code"];
-          addr_of self.["data"];
-          addr_of (addr_of self.["salt"])
-        ] in
-    core.fmt.Formatter::["debug_struct_fields_finish"]
-      f
-      "InstantiateWithCode"
-      names
-      values.
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -9412,41 +3763,9 @@ Section
   
   Definition Self := ink_e2e.xts.InstantiateWithCode E.
   
-  Definition encode_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M (H := H) unit :=
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          parity_scale_codec.codec.EncodeAsRef.RefType::["from"]
-            (addr_of self.["value"]) in
-        parity_scale_codec.codec.Encode.encode_to
-          (addr_of α0)
-          __codec_dest_edqy in
-      Pure tt in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["gas_limit"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["storage_deposit_limit"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["code"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["data"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["salt"])
-        __codec_dest_edqy in
-    Pure tt.
+  Parameter encode_to : forall `{H : State.Trait}, ref Self->
+      mut_ref __CodecOutputEdqy
+      -> M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -9481,78 +3800,8 @@ Section
   
   Definition Self := ink_e2e.xts.InstantiateWithCode E.
   
-  Definition decode
-      `{H : State.Trait}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α0 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 :=
-          e.["chain"] "Could not decode `InstantiateWithCode::value`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => __codec_res_edqy.["into"]
-      end in
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α1 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 :=
-          e.["chain"] "Could not decode `InstantiateWithCode::gas_limit`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α2 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 :=
-          e.["chain"]
-            "Could not decode `InstantiateWithCode::storage_deposit_limit`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α3 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 := e.["chain"] "Could not decode `InstantiateWithCode::code`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α4 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 := e.["chain"] "Could not decode `InstantiateWithCode::data`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α5 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 := e.["chain"] "Could not decode `InstantiateWithCode::salt`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    Pure
-      (core.result.Result.Ok
-        {|
-          ink_e2e.xts.InstantiateWithCode.value := α0;
-          ink_e2e.xts.InstantiateWithCode.gas_limit := α1;
-          ink_e2e.xts.InstantiateWithCode.storage_deposit_limit := α2;
-          ink_e2e.xts.InstantiateWithCode.code := α3;
-          ink_e2e.xts.InstantiateWithCode.data := α4;
-          ink_e2e.xts.InstantiateWithCode.salt := α5;
-        |}).
+  Parameter decode : forall `{H : State.Trait}, mut_ref __CodecInputEdqy
+      -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
@@ -9571,40 +3820,11 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
   
   Definition Self := ink_e2e.xts.InstantiateWithCode E.
   
-  Definition encode_as_type_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_type_id : u32)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    let
-        '{|
-          ink_e2e.xts.InstantiateWithCode.value := value;
-          ink_e2e.xts.InstantiateWithCode.gas_limit := gas_limit;
-          ink_e2e.xts.InstantiateWithCode.storage_deposit_limit
-            :=
-            storage_deposit_limit;
-          ink_e2e.xts.InstantiateWithCode.code := code;
-          ink_e2e.xts.InstantiateWithCode.data := data;
-          ink_e2e.xts.InstantiateWithCode.salt := salt;
-        |} :=
-      self in
-    let* α0 :=
-      [
-          (core.option.Option.Some "value", cast value (ref TraitObject));
-          (core.option.Option.Some "gas_limit",
-            cast gas_limit (ref TraitObject));
-          (core.option.Option.Some "storage_deposit_limit",
-            cast storage_deposit_limit (ref TraitObject));
-          (core.option.Option.Some "code", cast code (ref TraitObject));
-          (core.option.Option.Some "data", cast data (ref TraitObject));
-          (core.option.Option.Some "salt", cast salt (ref TraitObject))
-        ].["into_iter"] in
-    (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_type_to"]
-      __encode_as_type_type_id
-      __encode_as_type_types
-      __encode_as_type_out.
+  Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+      u32->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
@@ -9626,40 +3846,11 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
   
   Definition Self := ink_e2e.xts.InstantiateWithCode E.
   
-  Definition encode_as_fields_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_fields : ref Slice)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    let
-        '{|
-          ink_e2e.xts.InstantiateWithCode.value := value;
-          ink_e2e.xts.InstantiateWithCode.gas_limit := gas_limit;
-          ink_e2e.xts.InstantiateWithCode.storage_deposit_limit
-            :=
-            storage_deposit_limit;
-          ink_e2e.xts.InstantiateWithCode.code := code;
-          ink_e2e.xts.InstantiateWithCode.data := data;
-          ink_e2e.xts.InstantiateWithCode.salt := salt;
-        |} :=
-      self in
-    let* α0 :=
-      [
-          (core.option.Option.Some "value", cast value (ref TraitObject));
-          (core.option.Option.Some "gas_limit",
-            cast gas_limit (ref TraitObject));
-          (core.option.Option.Some "storage_deposit_limit",
-            cast storage_deposit_limit (ref TraitObject));
-          (core.option.Option.Some "code", cast code (ref TraitObject));
-          (core.option.Option.Some "data", cast data (ref TraitObject));
-          (core.option.Option.Some "salt", cast salt (ref TraitObject))
-        ].["into_iter"] in
-    (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_fields_to"]
-      __encode_as_type_fields
-      __encode_as_type_types
-      __encode_as_type_out.
+  Parameter encode_as_fields_to : forall `{H : State.Trait}, ref Self->
+      ref Slice->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_fields_to `{H : State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
@@ -9709,24 +3900,9 @@ Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
   
   Definition Self := ink_e2e.xts.Call E.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field5_finish"]
-      f
-      "Call"
-      "dest"
-      (addr_of self.["dest"])
-      "value"
-      (addr_of self.["value"])
-      "gas_limit"
-      (addr_of self.["gas_limit"])
-      "storage_deposit_limit"
-      (addr_of self.["storage_deposit_limit"])
-      "data"
-      (addr_of (addr_of self.["data"])).
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -9744,65 +3920,8 @@ Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
   
   Definition Self := ink_e2e.xts.Call E.
   
-  Definition decode
-      `{H : State.Trait}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α0 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 := e.["chain"] "Could not decode `Call::dest`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α1 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 := e.["chain"] "Could not decode `Call::value`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => __codec_res_edqy.["into"]
-      end in
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α2 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 := e.["chain"] "Could not decode `Call::gas_limit`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α3 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 :=
-          e.["chain"] "Could not decode `Call::storage_deposit_limit`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α4 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 := e.["chain"] "Could not decode `Call::data`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    Pure
-      (core.result.Result.Ok
-        {|
-          ink_e2e.xts.Call.dest := α0;
-          ink_e2e.xts.Call.value := α1;
-          ink_e2e.xts.Call.gas_limit := α2;
-          ink_e2e.xts.Call.storage_deposit_limit := α3;
-          ink_e2e.xts.Call.data := α4;
-        |}).
+  Parameter decode : forall `{H : State.Trait}, mut_ref __CodecInputEdqy
+      -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
@@ -9821,37 +3940,9 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
   
   Definition Self := ink_e2e.xts.Call E.
   
-  Definition encode_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M (H := H) unit :=
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["dest"])
-        __codec_dest_edqy in
-    let* _ :=
-      let* _ :=
-        let* α0 :=
-          parity_scale_codec.codec.EncodeAsRef.RefType::["from"]
-            (addr_of self.["value"]) in
-        parity_scale_codec.codec.Encode.encode_to
-          (addr_of α0)
-          __codec_dest_edqy in
-      Pure tt in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["gas_limit"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["storage_deposit_limit"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["data"])
-        __codec_dest_edqy in
-    Pure tt.
+  Parameter encode_to : forall `{H : State.Trait}, ref Self->
+      mut_ref __CodecOutputEdqy
+      -> M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -9880,36 +3971,11 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
   
   Definition Self := ink_e2e.xts.Call E.
   
-  Definition encode_as_type_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_type_id : u32)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    let
-        '{|
-          ink_e2e.xts.Call.dest := dest;
-          ink_e2e.xts.Call.value := value;
-          ink_e2e.xts.Call.gas_limit := gas_limit;
-          ink_e2e.xts.Call.storage_deposit_limit := storage_deposit_limit;
-          ink_e2e.xts.Call.data := data;
-        |} :=
-      self in
-    let* α0 :=
-      [
-          (core.option.Option.Some "dest", cast dest (ref TraitObject));
-          (core.option.Option.Some "value", cast value (ref TraitObject));
-          (core.option.Option.Some "gas_limit",
-            cast gas_limit (ref TraitObject));
-          (core.option.Option.Some "storage_deposit_limit",
-            cast storage_deposit_limit (ref TraitObject));
-          (core.option.Option.Some "data", cast data (ref TraitObject))
-        ].["into_iter"] in
-    (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_type_to"]
-      __encode_as_type_type_id
-      __encode_as_type_types
-      __encode_as_type_out.
+  Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+      u32->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
@@ -9931,36 +3997,11 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
   
   Definition Self := ink_e2e.xts.Call E.
   
-  Definition encode_as_fields_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_fields : ref Slice)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    let
-        '{|
-          ink_e2e.xts.Call.dest := dest;
-          ink_e2e.xts.Call.value := value;
-          ink_e2e.xts.Call.gas_limit := gas_limit;
-          ink_e2e.xts.Call.storage_deposit_limit := storage_deposit_limit;
-          ink_e2e.xts.Call.data := data;
-        |} :=
-      self in
-    let* α0 :=
-      [
-          (core.option.Option.Some "dest", cast dest (ref TraitObject));
-          (core.option.Option.Some "value", cast value (ref TraitObject));
-          (core.option.Option.Some "gas_limit",
-            cast gas_limit (ref TraitObject));
-          (core.option.Option.Some "storage_deposit_limit",
-            cast storage_deposit_limit (ref TraitObject));
-          (core.option.Option.Some "data", cast data (ref TraitObject))
-        ].["into_iter"] in
-    (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_fields_to"]
-      __encode_as_type_fields
-      __encode_as_type_types
-      __encode_as_type_out.
+  Parameter encode_as_fields_to : forall `{H : State.Trait}, ref Self->
+      ref Slice->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_fields_to `{H : State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
@@ -9997,18 +4038,9 @@ Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
   
   Definition Self := ink_e2e.xts.Transfer E C.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "Transfer"
-      "dest"
-      (addr_of self.["dest"])
-      "value"
-      (addr_of (addr_of self.["value"])).
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -10026,32 +4058,8 @@ Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
   
   Definition Self := ink_e2e.xts.Transfer E C.
   
-  Definition decode
-      `{H : State.Trait}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α0 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 := e.["chain"] "Could not decode `Transfer::dest`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α1 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 := e.["chain"] "Could not decode `Transfer::value`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => __codec_res_edqy.["into"]
-      end in
-    Pure
-      (core.result.Result.Ok
-        {| ink_e2e.xts.Transfer.dest := α0; ink_e2e.xts.Transfer.value := α1;
-        |}).
+  Parameter decode : forall `{H : State.Trait}, mut_ref __CodecInputEdqy
+      -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
@@ -10070,23 +4078,9 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
   
   Definition Self := ink_e2e.xts.Transfer E C.
   
-  Definition encode_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M (H := H) unit :=
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["dest"])
-        __codec_dest_edqy in
-    let* _ :=
-      let* α0 :=
-        parity_scale_codec.codec.EncodeAsRef.RefType::["from"]
-          (addr_of self.["value"]) in
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of α0)
-        __codec_dest_edqy in
-    Pure tt.
+  Parameter encode_to : forall `{H : State.Trait}, ref Self->
+      mut_ref __CodecOutputEdqy
+      -> M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -10117,28 +4111,11 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
   
   Definition Self := ink_e2e.xts.Transfer E C.
   
-  Definition encode_as_type_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_type_id : u32)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    let
-        '{|
-          ink_e2e.xts.Transfer.dest := dest;
-          ink_e2e.xts.Transfer.value := value;
-        |} :=
-      self in
-    let* α0 :=
-      [
-          (core.option.Option.Some "dest", cast dest (ref TraitObject));
-          (core.option.Option.Some "value", cast value (ref TraitObject))
-        ].["into_iter"] in
-    (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_type_to"]
-      __encode_as_type_type_id
-      __encode_as_type_types
-      __encode_as_type_out.
+  Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+      u32->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
@@ -10160,28 +4137,11 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
   
   Definition Self := ink_e2e.xts.Transfer E C.
   
-  Definition encode_as_fields_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_fields : ref Slice)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    let
-        '{|
-          ink_e2e.xts.Transfer.dest := dest;
-          ink_e2e.xts.Transfer.value := value;
-        |} :=
-      self in
-    let* α0 :=
-      [
-          (core.option.Option.Some "dest", cast dest (ref TraitObject));
-          (core.option.Option.Some "value", cast value (ref TraitObject))
-        ].["into_iter"] in
-    (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_fields_to"]
-      __encode_as_type_fields
-      __encode_as_type_types
-      __encode_as_type_out.
+  Parameter encode_as_fields_to : forall `{H : State.Trait}, ref Self->
+      ref Slice->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_fields_to `{H : State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
@@ -10207,17 +4167,9 @@ Definition Determinism := Determinism.t.
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    let* α0 :=
-      match self with
-      | ink_e2e.xts.Determinism.Enforced => Pure "Enforced"
-      | ink_e2e.xts.Determinism.Relaxed => Pure "Relaxed"
-      end in
-    core.fmt.Formatter::["write_str"] f α0.
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -10231,11 +4183,8 @@ End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
 Module Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
-  Definition clone
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) ink_e2e.xts.Determinism :=
-    self.["deref"].
+  Parameter clone : forall `{H : State.Trait}, ref Self
+      -> M (H := H) ink_e2e.xts.Determinism.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -10263,14 +4212,9 @@ End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
 Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
-  Definition eq
-      `{H : State.Trait}
-      (self : ref Self)
-      (other : ref ink_e2e.xts.Determinism)
-      : M (H := H) bool :=
-    let* __self_tag := core.intrinsics.discriminant_value self in
-    let* __arg1_tag := core.intrinsics.discriminant_value other in
-    __self_tag.["eq"] __arg1_tag.
+  Parameter eq : forall `{H : State.Trait}, ref Self->
+      ref ink_e2e.xts.Determinism
+      -> M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -10291,11 +4235,8 @@ End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
 Module Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
-  Definition assert_receiver_is_total_eq
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) unit :=
-    Pure tt.
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
+      -> M (H := H) unit.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -10309,26 +4250,9 @@ End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
 Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
-  Definition serialize
-      `{H : State.Trait}
-      (self : ref Self)
-      (__serializer : __S)
-      : M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error) :=
-    let* α0 := self.["deref"] in
-    match α0 with
-    | ink_e2e.xts.Determinism.Enforced =>
-      serde.ser.Serializer.serialize_unit_variant
-        __serializer
-        "Determinism"
-        0
-        "Enforced"
-    | ink_e2e.xts.Determinism.Relaxed =>
-      serde.ser.Serializer.serialize_unit_variant
-        __serializer
-        "Determinism"
-        1
-        "Relaxed"
-    end.
+  Parameter serialize : forall `{H : State.Trait}, ref Self->
+      __S
+      -> M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error).
   
   Global Instance Method_serialize `{H : State.Trait} :
     Notation.Dot "serialize" := {
@@ -10343,52 +4267,8 @@ End Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
-  Definition decode
-      `{H : State.Trait}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* α0 := __codec_input_edqy.["read_byte"] in
-    let* α1 :=
-      α0.["map_err"]
-        (fun e =>
-          e.["chain"]
-            "Could not decode `Determinism`, failed to read variant byte") in
-    let* α2 := LangItem α1 in
-    let* α3 :=
-      match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    match α3 with
-    | __codec_x_edqy =>
-      let* _ :=
-        let* α0 :=
-          (fun  =>
-              Pure (core.result.Result.Ok ink_e2e.xts.Determinism.Enforced))
-            tt in
-        Return α0 in
-      Pure tt
-    | __codec_x_edqy =>
-      let* _ :=
-        let* α0 :=
-          (fun  => Pure (core.result.Result.Ok ink_e2e.xts.Determinism.Relaxed))
-            tt in
-        Return α0 in
-      Pure tt
-    | _ =>
-      let* _ :=
-        let* α0 :=
-          (fun  =>
-              let* α0 :=
-                core.convert.Into.into
-                  "Could not decode `Determinism`, variant doesn't exist" in
-              Pure (core.result.Result.Err α0))
-            tt in
-        Return α0 in
-      Pure tt
-    end.
+  Parameter decode : forall `{H : State.Trait}, mut_ref __CodecInputEdqy
+      -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
@@ -10403,23 +4283,9 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
-  Definition encode_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M (H := H) unit :=
-    let* α0 := self.["deref"] in
-    match α0 with
-    | ink_e2e.xts.Determinism.Enforced =>
-      let* _ :=
-        __codec_dest_edqy.["push_byte"] (cast 0 Root.core.primitive.u8) in
-      Pure tt
-    | ink_e2e.xts.Determinism.Relaxed =>
-      let* _ :=
-        __codec_dest_edqy.["push_byte"] (cast 1 Root.core.primitive.u8) in
-      Pure tt
-    | _ => Pure tt
-    end.
+  Parameter encode_to : forall `{H : State.Trait}, ref Self->
+      mut_ref __CodecOutputEdqy
+      -> M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -10441,46 +4307,11 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
-  Definition encode_as_type_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_type_id : u32)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    match self with
-    | ImplSelf.Enforced =>
-      let* α0 :=
-        (cast
-            [ ]
-            list
-              ((core.option.Option (ref str)) *
-                (ref TraitObject))).["into_iter"] in
-      {|
-          scale_encode.impls.variant.Variant.name := "Enforced";
-          scale_encode.impls.variant.Variant.fields :=
-            scale_encode.impls.composite.Composite.Build_t α0;
-        |}.["encode_as_type_to"]
-        __encode_as_type_type_id
-        __encode_as_type_types
-        __encode_as_type_out
-    | ImplSelf.Relaxed =>
-      let* α0 :=
-        (cast
-            [ ]
-            list
-              ((core.option.Option (ref str)) *
-                (ref TraitObject))).["into_iter"] in
-      {|
-          scale_encode.impls.variant.Variant.name := "Relaxed";
-          scale_encode.impls.variant.Variant.fields :=
-            scale_encode.impls.composite.Composite.Build_t α0;
-        |}.["encode_as_type_to"]
-        __encode_as_type_type_id
-        __encode_as_type_types
-        __encode_as_type_out
-    | _ => core.panicking.panic "internal error: entered unreachable code"
-    end.
+  Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+      u32->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
@@ -10521,20 +4352,9 @@ Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
   
   Definition Self := ink_e2e.xts.UploadCode E.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field3_finish"]
-      f
-      "UploadCode"
-      "code"
-      (addr_of self.["code"])
-      "storage_deposit_limit"
-      (addr_of self.["storage_deposit_limit"])
-      "determinism"
-      (addr_of (addr_of self.["determinism"])).
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -10552,24 +4372,9 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
   
   Definition Self := ink_e2e.xts.UploadCode E.
   
-  Definition encode_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M (H := H) unit :=
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["code"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["storage_deposit_limit"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["determinism"])
-        __codec_dest_edqy in
-    Pure tt.
+  Parameter encode_to : forall `{H : State.Trait}, ref Self->
+      mut_ref __CodecOutputEdqy
+      -> M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -10600,45 +4405,8 @@ Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
   
   Definition Self := ink_e2e.xts.UploadCode E.
   
-  Definition decode
-      `{H : State.Trait}
-      (__codec_input_edqy : mut_ref __CodecInputEdqy)
-      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α0 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 := e.["chain"] "Could not decode `UploadCode::code`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α1 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 :=
-          e.["chain"] "Could not decode `UploadCode::storage_deposit_limit`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    let* __codec_res_edqy :=
-      parity_scale_codec.codec.Decode.decode __codec_input_edqy in
-    let* α2 :=
-      match __codec_res_edqy with
-      | core.result.Result.Err e =>
-        let* α0 := e.["chain"] "Could not decode `UploadCode::determinism`" in
-        Return (core.result.Result.Err α0)
-      | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
-      end in
-    Pure
-      (core.result.Result.Ok
-        {|
-          ink_e2e.xts.UploadCode.code := α0;
-          ink_e2e.xts.UploadCode.storage_deposit_limit := α1;
-          ink_e2e.xts.UploadCode.determinism := α2;
-        |}).
+  Parameter decode : forall `{H : State.Trait}, mut_ref __CodecInputEdqy
+      -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
@@ -10657,32 +4425,11 @@ Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
   
   Definition Self := ink_e2e.xts.UploadCode E.
   
-  Definition encode_as_type_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_type_id : u32)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    let
-        '{|
-          ink_e2e.xts.UploadCode.code := code;
-          ink_e2e.xts.UploadCode.storage_deposit_limit := storage_deposit_limit;
-          ink_e2e.xts.UploadCode.determinism := determinism;
-        |} :=
-      self in
-    let* α0 :=
-      [
-          (core.option.Option.Some "code", cast code (ref TraitObject));
-          (core.option.Option.Some "storage_deposit_limit",
-            cast storage_deposit_limit (ref TraitObject));
-          (core.option.Option.Some "determinism",
-            cast determinism (ref TraitObject))
-        ].["into_iter"] in
-    (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_type_to"]
-      __encode_as_type_type_id
-      __encode_as_type_types
-      __encode_as_type_out.
+  Parameter encode_as_type_to : forall `{H : State.Trait}, ref Self->
+      u32->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_type_to `{H : State.Trait} :
     Notation.Dot "encode_as_type_to" := {
@@ -10704,32 +4451,11 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   
   Definition Self := ink_e2e.xts.UploadCode E.
   
-  Definition encode_as_fields_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__encode_as_type_fields : ref Slice)
-      (__encode_as_type_types : ref scale_info.portable.PortableRegistry)
-      (__encode_as_type_out : mut_ref (alloc.vec.Vec u8))
-      : M (H := H) (core.result.Result unit scale_encode.error.Error) :=
-    let
-        '{|
-          ink_e2e.xts.UploadCode.code := code;
-          ink_e2e.xts.UploadCode.storage_deposit_limit := storage_deposit_limit;
-          ink_e2e.xts.UploadCode.determinism := determinism;
-        |} :=
-      self in
-    let* α0 :=
-      [
-          (core.option.Option.Some "code", cast code (ref TraitObject));
-          (core.option.Option.Some "storage_deposit_limit",
-            cast storage_deposit_limit (ref TraitObject));
-          (core.option.Option.Some "determinism",
-            cast determinism (ref TraitObject))
-        ].["into_iter"] in
-    (scale_encode.impls.composite.Composite.Build_t α0).["encode_as_fields_to"]
-      __encode_as_type_fields
-      __encode_as_type_types
-      __encode_as_type_out.
+  Parameter encode_as_fields_to : forall `{H : State.Trait}, ref Self->
+      ref Slice->
+      ref scale_info.portable.PortableRegistry->
+      mut_ref (alloc.vec.Vec u8)
+      -> M (H := H) (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_fields_to `{H : State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
@@ -10787,115 +4513,9 @@ Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
   
   Definition Self := ink_e2e.xts.RpcInstantiateRequest C E.
   
-  Definition serialize
-      `{H : State.Trait}
-      (self : ref Self)
-      (__serializer : __S)
-      : M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error) :=
-    let* __serde_state :=
-      let* α0 := (cast false usize).["add"] 1 in
-      let* α1 := α0.["add"] 1 in
-      let* α2 := α1.["add"] 1 in
-      let* α3 := α2.["add"] 1 in
-      let* α4 := α3.["add"] 1 in
-      let* α5 := α4.["add"] 1 in
-      let* α6 := α5.["add"] 1 in
-      let* α7 :=
-        serde.ser.Serializer.serialize_struct
-          __serializer
-          "RpcInstantiateRequest"
-          α6 in
-      match α7 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "origin"
-          (addr_of self.["origin"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "value"
-          (addr_of self.["value"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "gasLimit"
-          (addr_of self.["gas_limit"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "storageDepositLimit"
-          (addr_of self.["storage_deposit_limit"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "code"
-          (addr_of self.["code"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "data"
-          (addr_of self.["data"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "salt"
-          (addr_of self.["salt"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    serde.ser.SerializeStruct.end __serde_state.
+  Parameter serialize : forall `{H : State.Trait}, ref Self->
+      __S
+      -> M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error).
   
   Global Instance Method_serialize `{H : State.Trait} :
     Notation.Dot "serialize" := {
@@ -10916,40 +4536,9 @@ Section
   
   Definition Self := ink_e2e.xts.RpcInstantiateRequest C E.
   
-  Definition encode_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M (H := H) unit :=
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["origin"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["value"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["gas_limit"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["storage_deposit_limit"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["code"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["data"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["salt"])
-        __codec_dest_edqy in
-    Pure tt.
+  Parameter encode_to : forall `{H : State.Trait}, ref Self->
+      mut_ref __CodecOutputEdqy
+      -> M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -11008,76 +4597,9 @@ Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
   
   Definition Self := ink_e2e.xts.RpcCodeUploadRequest C E.
   
-  Definition serialize
-      `{H : State.Trait}
-      (self : ref Self)
-      (__serializer : __S)
-      : M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error) :=
-    let* __serde_state :=
-      let* α0 := (cast false usize).["add"] 1 in
-      let* α1 := α0.["add"] 1 in
-      let* α2 := α1.["add"] 1 in
-      let* α3 := α2.["add"] 1 in
-      let* α4 :=
-        serde.ser.Serializer.serialize_struct
-          __serializer
-          "RpcCodeUploadRequest"
-          α3 in
-      match α4 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "origin"
-          (addr_of self.["origin"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "code"
-          (addr_of self.["code"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "storageDepositLimit"
-          (addr_of self.["storage_deposit_limit"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "determinism"
-          (addr_of self.["determinism"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    serde.ser.SerializeStruct.end __serde_state.
+  Parameter serialize : forall `{H : State.Trait}, ref Self->
+      __S
+      -> M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error).
   
   Global Instance Method_serialize `{H : State.Trait} :
     Notation.Dot "serialize" := {
@@ -11098,28 +4620,9 @@ Section
   
   Definition Self := ink_e2e.xts.RpcCodeUploadRequest C E.
   
-  Definition encode_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M (H := H) unit :=
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["origin"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["code"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["storage_deposit_limit"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["determinism"])
-        __codec_dest_edqy in
-    Pure tt.
+  Parameter encode_to : forall `{H : State.Trait}, ref Self->
+      mut_ref __CodecOutputEdqy
+      -> M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -11186,102 +4689,9 @@ Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
   
   Definition Self := ink_e2e.xts.RpcCallRequest C E.
   
-  Definition serialize
-      `{H : State.Trait}
-      (self : ref Self)
-      (__serializer : __S)
-      : M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error) :=
-    let* __serde_state :=
-      let* α0 := (cast false usize).["add"] 1 in
-      let* α1 := α0.["add"] 1 in
-      let* α2 := α1.["add"] 1 in
-      let* α3 := α2.["add"] 1 in
-      let* α4 := α3.["add"] 1 in
-      let* α5 := α4.["add"] 1 in
-      let* α6 :=
-        serde.ser.Serializer.serialize_struct
-          __serializer
-          "RpcCallRequest"
-          α5 in
-      match α6 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "origin"
-          (addr_of self.["origin"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "dest"
-          (addr_of self.["dest"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "value"
-          (addr_of self.["value"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "gasLimit"
-          (addr_of self.["gas_limit"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "storageDepositLimit"
-          (addr_of self.["storage_deposit_limit"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    let* _ :=
-      let* α0 :=
-        serde.ser.SerializeStruct.serialize_field
-          (addr_of __serde_state)
-          "inputData"
-          (addr_of self.["input_data"]) in
-      match α0 with
-      | core.result.Result.Ok __val => Pure __val
-      | core.result.Result.Err __err =>
-        let* _ := Return (core.result.Result.Err __err) in
-        Pure tt
-      end in
-    serde.ser.SerializeStruct.end __serde_state.
+  Parameter serialize : forall `{H : State.Trait}, ref Self->
+      __S
+      -> M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error).
   
   Global Instance Method_serialize `{H : State.Trait} :
     Notation.Dot "serialize" := {
@@ -11300,36 +4710,9 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
   
   Definition Self := ink_e2e.xts.RpcCallRequest C E.
   
-  Definition encode_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M (H := H) unit :=
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["origin"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["dest"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["value"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["gas_limit"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["storage_deposit_limit"])
-        __codec_dest_edqy in
-    let* _ :=
-      parity_scale_codec.codec.Encode.encode_to
-        (addr_of self.["input_data"])
-        __codec_dest_edqy in
-    Pure tt.
+  Parameter encode_to : forall `{H : State.Trait}, ref Self->
+      mut_ref __CodecOutputEdqy
+      -> M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -11366,28 +4749,9 @@ Definition Code := Code.t.
 Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
   Definition Self := ink_e2e.xts.Code.
   
-  Definition serialize
-      `{H : State.Trait}
-      (self : ref Self)
-      (__serializer : __S)
-      : M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error) :=
-    let* α0 := self.["deref"] in
-    match α0 with
-    | ink_e2e.xts.Code.Upload __field0 =>
-      serde.ser.Serializer.serialize_newtype_variant
-        __serializer
-        "Code"
-        0
-        "upload"
-        __field0
-    | ink_e2e.xts.Code.Existing __field0 =>
-      serde.ser.Serializer.serialize_newtype_variant
-        __serializer
-        "Code"
-        1
-        "existing"
-        __field0
-    end.
+  Parameter serialize : forall `{H : State.Trait}, ref Self->
+      __S
+      -> M (H := H) (core.result.Result Impl__S.Ok Impl__S.Error).
   
   Global Instance Method_serialize `{H : State.Trait} :
     Notation.Dot "serialize" := {
@@ -11402,27 +4766,9 @@ End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
   Definition Self := ink_e2e.xts.Code.
   
-  Definition encode_to
-      `{H : State.Trait}
-      (self : ref Self)
-      (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
-      : M (H := H) unit :=
-    let* α0 := self.["deref"] in
-    match α0 with
-    | ink_e2e.xts.Code.Upload aa =>
-      let* _ :=
-        __codec_dest_edqy.["push_byte"] (cast 0 Root.core.primitive.u8) in
-      let* _ :=
-        parity_scale_codec.codec.Encode.encode_to aa __codec_dest_edqy in
-      Pure tt
-    | ink_e2e.xts.Code.Existing aa =>
-      let* _ :=
-        __codec_dest_edqy.["push_byte"] (cast 1 Root.core.primitive.u8) in
-      let* _ :=
-        parity_scale_codec.codec.Encode.encode_to aa __codec_dest_edqy in
-      Pure tt
-    | _ => Pure tt
-    end.
+  Parameter encode_to : forall `{H : State.Trait}, ref Self->
+      mut_ref __CodecOutputEdqy
+      -> M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -11458,729 +4804,120 @@ Definition ContractsApi : Set := ContractsApi.t.
 Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
   Definition Self := ink_e2e.xts.ContractsApi C E.
   
-  Definition new
-      `{H : State.Trait}
-      (client : subxt.client.online_client.OnlineClient C)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let client := client in
-        let* α0 := core.default.Default.default tt in
-        Pure {| Self.client := client; Self._phantom := α0; |}).
+  Parameter new : forall
+        `{H : State.Trait},
+        subxt.client.online_client.OnlineClient C
+      -> M (H := H) OpaqueDef.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Definition try_transfer_balance
-      `{H : State.Trait}
-      (self : ref Self)
-      (origin : ref (ink_e2e.Signer C))
-      (dest : ImplC.AccountId)
-      (value : ImplE.Balance)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let origin := origin in
-        let dest := dest in
-        let value := value in
-        let* call :=
-          let* α0 := dest.["into"] in
-          let* α1 :=
-            subxt.tx.tx_payload.Payload::["new"]
-              "Balances"
-              "transfer"
-              {|
-                ink_e2e.xts.Transfer.dest :=
-                  subxt.utils.static_type.Static.Build_t α0;
-                ink_e2e.xts.Transfer.value := value;
-              |} in
-          α1.["unvalidated"] in
-        let* tx_progress :=
-          let* α0 := self.["client"].["tx"] in
-          let* α1 :=
-            α0.["sign_and_submit_then_watch_default"] (addr_of call) origin in
-          let* α2 := LangItem α1 in
-          let* α3 :=
-            match α2 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          let* α4 := LangItem α3 in
-          match α4 with
-          | Break {| Break.0 := residual; |} =>
-            let* α0 := LangItem residual in
-            Return α0
-          | Continue {| Continue.0 := val; |} => Pure val
-          end in
-        let* _ :=
-          let* α0 := tx_progress.["wait_for_in_block"] in
-          let* α1 := LangItem α0 in
-          let* α2 :=
-            match α1 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          α2.["unwrap_or_else"]
-            (fun err =>
-              let* _ :=
-                let* α0 := format_argument::["new_debug"] (addr_of err) in
-                let* α1 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "error on call `wait_for_in_block`: " ])
-                    (addr_of [ α0 ]) in
-                core.panicking.panic_fmt α1 in
-              Pure tt) in
-        Pure (core.result.Result.Ok tt)).
+  Parameter try_transfer_balance : forall `{H : State.Trait}, ref Self->
+      ref (ink_e2e.Signer C)->
+      ImplC.AccountId->
+      ImplE.Balance
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_try_transfer_balance `{H : State.Trait} :
     Notation.Dot "try_transfer_balance" := {
     Notation.dot := try_transfer_balance;
   }.
   
-  Definition instantiate_with_code_dry_run
-      `{H : State.Trait}
-      (self : ref Self)
-      (value : ImplE.Balance)
-      (storage_deposit_limit : core.option.Option ImplE.Balance)
-      (code : alloc.vec.Vec u8)
-      (data : alloc.vec.Vec u8)
-      (salt : alloc.vec.Vec u8)
-      (signer : ref (ink_e2e.Signer C))
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let value := value in
-        let storage_deposit_limit := storage_deposit_limit in
-        let code := code in
-        let data := data in
-        let salt := salt in
-        let signer := signer in
-        let code := ink_e2e.xts.Code.Upload code in
-        let* call_request :=
-          let* α0 := subxt.tx.signer.Signer.account_id signer in
-          let* α1 := α0.["clone"] in
-          Pure
-            {|
-              ink_e2e.xts.RpcInstantiateRequest.origin := α1;
-              ink_e2e.xts.RpcInstantiateRequest.value := value;
-              ink_e2e.xts.RpcInstantiateRequest.gas_limit :=
-                core.option.Option.None;
-              ink_e2e.xts.RpcInstantiateRequest.storage_deposit_limit :=
-                storage_deposit_limit;
-              ink_e2e.xts.RpcInstantiateRequest.code := code;
-              ink_e2e.xts.RpcInstantiateRequest.data := data;
-              ink_e2e.xts.RpcInstantiateRequest.salt := salt;
-            |} in
-        let func := "ContractsApi_instantiate" in
-        let* params :=
-          let* params := subxt.rpc.rpc_client.RpcParams::["new"] tt in
-          let* _ :=
-            let* α0 := params.["push"] func in
-            α0.["expect"]
-              "values passed to rpc_params! must be serializable to JSON" in
-          let* _ :=
-            let* α0 :=
-              parity_scale_codec.codec.Encode.encode (addr_of call_request) in
-            let* α1 := params.["push"] (sp_core.Bytes.Build_t α0) in
-            α1.["expect"]
-              "values passed to rpc_params! must be serializable to JSON" in
-          Pure params in
-        let* bytes :=
-          let* α0 := self.["client"].["rpc"] in
-          let* α1 := α0.["request"] "state_call" params in
-          let* α2 := LangItem α1 in
-          let* α3 :=
-            match α2 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          α3.["unwrap_or_else"]
-            (fun err =>
-              let* _ :=
-                let* α0 := format_argument::["new_debug"] (addr_of err) in
-                let* α1 :=
-                  format_arguments::["new_v1"]
-                    (addr_of
-                      [ "error on ws request `contracts_instantiate`: " ])
-                    (addr_of [ α0 ]) in
-                core.panicking.panic_fmt α1 in
-              Pure tt) in
-        let* α0 := bytes.["as_ref"] in
-        let* α1 := parity_scale_codec.codec.Decode.decode (addr_of α0) in
-        α1.["unwrap_or_else"]
-          (fun err =>
-            let* α0 := format_argument::["new_display"] (addr_of err) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "decoding ContractInstantiateResult failed: " ])
-                (addr_of [ α0 ]) in
-            core.panicking.panic_fmt α1)).
+  Parameter instantiate_with_code_dry_run : forall `{H : State.Trait}, ref
+          Self->
+      ImplE.Balance->
+      core.option.Option ImplE.Balance->
+      alloc.vec.Vec u8->
+      alloc.vec.Vec u8->
+      alloc.vec.Vec u8->
+      ref (ink_e2e.Signer C)
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_instantiate_with_code_dry_run `{H : State.Trait} :
     Notation.Dot "instantiate_with_code_dry_run" := {
     Notation.dot := instantiate_with_code_dry_run;
   }.
   
-  Definition submit_extrinsic
-      `{H : State.Trait}
-      (self : ref Self)
-      (call : ref Call)
-      (signer : ref (ink_e2e.Signer C))
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let call := call in
-        let signer := signer in
-        let* α0 := self.["client"].["tx"] in
-        let* α1 := α0.["sign_and_submit_then_watch_default"] call signer in
-        let* α2 := LangItem α1 in
-        let* α3 :=
-          match α2 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end in
-        let* α4 :=
-          α3.["map"]
-            (fun tx_progress =>
-              let* _ :=
-                let* res :=
-                  let* α0 := tx_progress.["extrinsic_hash"] in
-                  let* α1 := format_argument::["new_debug"] (addr_of α0) in
-                  let* α2 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ "signed and submitted tx with hash " ])
-                      (addr_of [ α1 ]) in
-                  alloc.fmt.format α2 in
-                ink_e2e.log_info (addr_of res) in
-              Pure tx_progress) in
-        let* α5 :=
-          α4.["unwrap_or_else"]
-            (fun err =>
-              let* _ :=
-                let* α0 := format_argument::["new_debug"] (addr_of err) in
-                let* α1 :=
-                  format_arguments::["new_v1"]
-                    (addr_of
-                      [ "error on call `sign_and_submit_then_watch_default`: "
-                      ])
-                    (addr_of [ α0 ]) in
-                core.panicking.panic_fmt α1 in
-              Pure tt) in
-        let* α6 := α5.["wait_for_in_block"] in
-        let* α7 := LangItem α6 in
-        let* α8 :=
-          match α7 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end in
-        let* α9 :=
-          α8.["unwrap_or_else"]
-            (fun err =>
-              let* _ :=
-                let* α0 := format_argument::["new_debug"] (addr_of err) in
-                let* α1 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "error on call `wait_for_in_block`: " ])
-                    (addr_of [ α0 ]) in
-                core.panicking.panic_fmt α1 in
-              Pure tt) in
-        let* α10 := α9.["fetch_events"] in
-        let* α11 := LangItem α10 in
-        let* α12 :=
-          match α11 with
-          | __awaitee =>
-            loop
-              let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
-                match α0 with
-                | {| Ready.0 := result; |} => Pure Break
-                |  => Pure tt
-                end in
-              let* _ :=
-                let* α0 := yield tt in
-                assign _task_context α0 in
-              Pure tt
-              from
-              loop
-          end in
-        α12.["unwrap_or_else"]
-          (fun err =>
-            let* _ :=
-              let* α0 := format_argument::["new_debug"] (addr_of err) in
-              let* α1 :=
-                format_arguments::["new_v1"]
-                  (addr_of [ "error on call `fetch_events`: " ])
-                  (addr_of [ α0 ]) in
-              core.panicking.panic_fmt α1 in
-            Pure tt)).
+  Parameter submit_extrinsic : forall `{H : State.Trait}, ref Self->
+      ref Call->
+      ref (ink_e2e.Signer C)
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_submit_extrinsic `{H : State.Trait} :
     Notation.Dot "submit_extrinsic" := {
     Notation.dot := submit_extrinsic;
   }.
   
-  Definition instantiate_with_code
-      `{H : State.Trait}
-      (self : ref Self)
-      (value : ImplE.Balance)
-      (gas_limit : ink_e2e.xts.Weight)
-      (storage_deposit_limit : core.option.Option ImplE.Balance)
-      (code : alloc.vec.Vec u8)
-      (data : alloc.vec.Vec u8)
-      (salt : alloc.vec.Vec u8)
-      (signer : ref (ink_e2e.Signer C))
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let value := value in
-        let gas_limit := gas_limit in
-        let storage_deposit_limit := storage_deposit_limit in
-        let code := code in
-        let data := data in
-        let salt := salt in
-        let signer := signer in
-        let* call :=
-          let* α0 :=
-            subxt.tx.tx_payload.Payload::["new"]
-              "Contracts"
-              "instantiate_with_code"
-              {|
-                ink_e2e.xts.InstantiateWithCode.value := value;
-                ink_e2e.xts.InstantiateWithCode.gas_limit := gas_limit;
-                ink_e2e.xts.InstantiateWithCode.storage_deposit_limit :=
-                  storage_deposit_limit;
-                ink_e2e.xts.InstantiateWithCode.code := code;
-                ink_e2e.xts.InstantiateWithCode.data := data;
-                ink_e2e.xts.InstantiateWithCode.salt := salt;
-              |} in
-          α0.["unvalidated"] in
-        let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-        let* α1 := LangItem α0 in
-        match α1 with
-        | __awaitee =>
-          loop
-            let* _ :=
-              let* α0 := LangItem (addr_of __awaitee) in
-              let* α1 := LangItem _task_context in
-              let* α0 := LangItem α0 α1 in
-              match α0 with
-              | {| Ready.0 := result; |} => Pure Break
-              |  => Pure tt
-              end in
-            let* _ :=
-              let* α0 := yield tt in
-              assign _task_context α0 in
-            Pure tt
-            from
-            loop
-        end).
+  Parameter instantiate_with_code : forall `{H : State.Trait}, ref Self->
+      ImplE.Balance->
+      ink_e2e.xts.Weight->
+      core.option.Option ImplE.Balance->
+      alloc.vec.Vec u8->
+      alloc.vec.Vec u8->
+      alloc.vec.Vec u8->
+      ref (ink_e2e.Signer C)
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_instantiate_with_code `{H : State.Trait} :
     Notation.Dot "instantiate_with_code" := {
     Notation.dot := instantiate_with_code;
   }.
   
-  Definition upload_dry_run
-      `{H : State.Trait}
-      (self : ref Self)
-      (signer : ref (ink_e2e.Signer C))
-      (code : alloc.vec.Vec u8)
-      (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let signer := signer in
-        let code := code in
-        let storage_deposit_limit := storage_deposit_limit in
-        let* call_request :=
-          let* α0 := subxt.tx.signer.Signer.account_id signer in
-          let* α1 := α0.["clone"] in
-          Pure
-            {|
-              ink_e2e.xts.RpcCodeUploadRequest.origin := α1;
-              ink_e2e.xts.RpcCodeUploadRequest.code := code;
-              ink_e2e.xts.RpcCodeUploadRequest.storage_deposit_limit :=
-                storage_deposit_limit;
-              ink_e2e.xts.RpcCodeUploadRequest.determinism :=
-                ink_e2e.xts.Determinism.Enforced;
-            |} in
-        let func := "ContractsApi_upload_code" in
-        let* params :=
-          let* params := subxt.rpc.rpc_client.RpcParams::["new"] tt in
-          let* _ :=
-            let* α0 := params.["push"] func in
-            α0.["expect"]
-              "values passed to rpc_params! must be serializable to JSON" in
-          let* _ :=
-            let* α0 :=
-              parity_scale_codec.codec.Encode.encode (addr_of call_request) in
-            let* α1 := params.["push"] (sp_core.Bytes.Build_t α0) in
-            α1.["expect"]
-              "values passed to rpc_params! must be serializable to JSON" in
-          Pure params in
-        let* bytes :=
-          let* α0 := self.["client"].["rpc"] in
-          let* α1 := α0.["request"] "state_call" params in
-          let* α2 := LangItem α1 in
-          let* α3 :=
-            match α2 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          α3.["unwrap_or_else"]
-            (fun err =>
-              let* _ :=
-                let* α0 := format_argument::["new_debug"] (addr_of err) in
-                let* α1 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "error on ws request `upload_code`: " ])
-                    (addr_of [ α0 ]) in
-                core.panicking.panic_fmt α1 in
-              Pure tt) in
-        let* α0 := bytes.["as_ref"] in
-        let* α1 := parity_scale_codec.codec.Decode.decode (addr_of α0) in
-        α1.["unwrap_or_else"]
-          (fun err =>
-            let* α0 := format_argument::["new_display"] (addr_of err) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "decoding CodeUploadResult failed: " ])
-                (addr_of [ α0 ]) in
-            core.panicking.panic_fmt α1)).
+  Parameter upload_dry_run : forall `{H : State.Trait}, ref Self->
+      ref (ink_e2e.Signer C)->
+      alloc.vec.Vec u8->
+      core.option.Option ImplE.Balance
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_upload_dry_run `{H : State.Trait} :
     Notation.Dot "upload_dry_run" := {
     Notation.dot := upload_dry_run;
   }.
   
-  Definition upload
-      `{H : State.Trait}
-      (self : ref Self)
-      (signer : ref (ink_e2e.Signer C))
-      (code : alloc.vec.Vec u8)
-      (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let signer := signer in
-        let code := code in
-        let storage_deposit_limit := storage_deposit_limit in
-        let* call :=
-          let* α0 :=
-            subxt.tx.tx_payload.Payload::["new"]
-              "Contracts"
-              "upload_code"
-              {|
-                ink_e2e.xts.UploadCode.code := code;
-                ink_e2e.xts.UploadCode.storage_deposit_limit :=
-                  storage_deposit_limit;
-                ink_e2e.xts.UploadCode.determinism :=
-                  ink_e2e.xts.Determinism.Enforced;
-              |} in
-          α0.["unvalidated"] in
-        let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-        let* α1 := LangItem α0 in
-        match α1 with
-        | __awaitee =>
-          loop
-            let* _ :=
-              let* α0 := LangItem (addr_of __awaitee) in
-              let* α1 := LangItem _task_context in
-              let* α0 := LangItem α0 α1 in
-              match α0 with
-              | {| Ready.0 := result; |} => Pure Break
-              |  => Pure tt
-              end in
-            let* _ :=
-              let* α0 := yield tt in
-              assign _task_context α0 in
-            Pure tt
-            from
-            loop
-        end).
+  Parameter upload : forall `{H : State.Trait}, ref Self->
+      ref (ink_e2e.Signer C)->
+      alloc.vec.Vec u8->
+      core.option.Option ImplE.Balance
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_upload `{H : State.Trait} : Notation.Dot "upload" := {
     Notation.dot := upload;
   }.
   
-  Definition call_dry_run
-      `{H : State.Trait}
-      (self : ref Self)
-      (origin : ImplC.AccountId)
-      (dest : ImplE.AccountId)
-      (input_data : alloc.vec.Vec u8)
-      (value : ImplE.Balance)
-      (storage_deposit_limit : core.option.Option ImplE.Balance)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let origin := origin in
-        let dest := dest in
-        let input_data := input_data in
-        let value := value in
-        let storage_deposit_limit := storage_deposit_limit in
-        let call_request :=
-          {|
-            ink_e2e.xts.RpcCallRequest.origin := origin;
-            ink_e2e.xts.RpcCallRequest.dest := dest;
-            ink_e2e.xts.RpcCallRequest.value := value;
-            ink_e2e.xts.RpcCallRequest.gas_limit := core.option.Option.None;
-            ink_e2e.xts.RpcCallRequest.storage_deposit_limit :=
-              storage_deposit_limit;
-            ink_e2e.xts.RpcCallRequest.input_data := input_data;
-          |} in
-        let func := "ContractsApi_call" in
-        let* params :=
-          let* params := subxt.rpc.rpc_client.RpcParams::["new"] tt in
-          let* _ :=
-            let* α0 := params.["push"] func in
-            α0.["expect"]
-              "values passed to rpc_params! must be serializable to JSON" in
-          let* _ :=
-            let* α0 :=
-              parity_scale_codec.codec.Encode.encode (addr_of call_request) in
-            let* α1 := params.["push"] (sp_core.Bytes.Build_t α0) in
-            α1.["expect"]
-              "values passed to rpc_params! must be serializable to JSON" in
-          Pure params in
-        let* bytes :=
-          let* α0 := self.["client"].["rpc"] in
-          let* α1 := α0.["request"] "state_call" params in
-          let* α2 := LangItem α1 in
-          let* α3 :=
-            match α2 with
-            | __awaitee =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
-                  match α0 with
-                  | {| Ready.0 := result; |} => Pure Break
-                  |  => Pure tt
-                  end in
-                let* _ :=
-                  let* α0 := yield tt in
-                  assign _task_context α0 in
-                Pure tt
-                from
-                loop
-            end in
-          α3.["unwrap_or_else"]
-            (fun err =>
-              let* _ :=
-                let* α0 := format_argument::["new_debug"] (addr_of err) in
-                let* α1 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "error on ws request `contracts_call`: " ])
-                    (addr_of [ α0 ]) in
-                core.panicking.panic_fmt α1 in
-              Pure tt) in
-        let* α0 := bytes.["as_ref"] in
-        let* α1 := parity_scale_codec.codec.Decode.decode (addr_of α0) in
-        α1.["unwrap_or_else"]
-          (fun err =>
-            let* α0 := format_argument::["new_display"] (addr_of err) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "decoding ContractExecResult failed: " ])
-                (addr_of [ α0 ]) in
-            core.panicking.panic_fmt α1)).
+  Parameter call_dry_run : forall `{H : State.Trait}, ref Self->
+      ImplC.AccountId->
+      ImplE.AccountId->
+      alloc.vec.Vec u8->
+      ImplE.Balance->
+      core.option.Option ImplE.Balance
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_call_dry_run `{H : State.Trait} :
     Notation.Dot "call_dry_run" := {
     Notation.dot := call_dry_run;
   }.
   
-  Definition call
-      `{H : State.Trait}
-      (self : ref Self)
-      (contract : subxt.utils.multi_address.MultiAddress ImplE.AccountId unit)
-      (value : ImplE.Balance)
-      (gas_limit : ink_e2e.xts.Weight)
-      (storage_deposit_limit : core.option.Option ImplE.Balance)
-      (data : alloc.vec.Vec u8)
-      (signer : ref (ink_e2e.Signer C))
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let contract := contract in
-        let value := value in
-        let gas_limit := gas_limit in
-        let storage_deposit_limit := storage_deposit_limit in
-        let data := data in
-        let signer := signer in
-        let* call :=
-          let* α0 :=
-            subxt.tx.tx_payload.Payload::["new"]
-              "Contracts"
-              "call"
-              {|
-                ink_e2e.xts.Call.dest := contract;
-                ink_e2e.xts.Call.value := value;
-                ink_e2e.xts.Call.gas_limit := gas_limit;
-                ink_e2e.xts.Call.storage_deposit_limit := storage_deposit_limit;
-                ink_e2e.xts.Call.data := data;
-              |} in
-          α0.["unvalidated"] in
-        let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-        let* α1 := LangItem α0 in
-        match α1 with
-        | __awaitee =>
-          loop
-            let* _ :=
-              let* α0 := LangItem (addr_of __awaitee) in
-              let* α1 := LangItem _task_context in
-              let* α0 := LangItem α0 α1 in
-              match α0 with
-              | {| Ready.0 := result; |} => Pure Break
-              |  => Pure tt
-              end in
-            let* _ :=
-              let* α0 := yield tt in
-              assign _task_context α0 in
-            Pure tt
-            from
-            loop
-        end).
+  Parameter call : forall `{H : State.Trait}, ref Self->
+      subxt.utils.multi_address.MultiAddress ImplE.AccountId unit->
+      ImplE.Balance->
+      ink_e2e.xts.Weight->
+      core.option.Option ImplE.Balance->
+      alloc.vec.Vec u8->
+      ref (ink_e2e.Signer C)
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
     Notation.dot := call;
   }.
   
-  Definition runtime_call
-      `{H : State.Trait}
-      (self : ref Self)
-      (signer : ref (ink_e2e.Signer C))
-      (pallet_name : ref str)
-      (call_name : ref str)
-      (call_data : alloc.vec.Vec scale_value.value.Value)
-      : M (H := H) OpaqueDef :=
-    Pure
-      (fun _task_context =>
-        let self := self in
-        let signer := signer in
-        let pallet_name := pallet_name in
-        let call_name := call_name in
-        let call_data := call_data in
-        let* call :=
-          subxt.tx.tx_payload.dynamic pallet_name call_name call_data in
-        let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-        let* α1 := LangItem α0 in
-        match α1 with
-        | __awaitee =>
-          loop
-            let* _ :=
-              let* α0 := LangItem (addr_of __awaitee) in
-              let* α1 := LangItem _task_context in
-              let* α0 := LangItem α0 α1 in
-              match α0 with
-              | {| Ready.0 := result; |} => Pure Break
-              |  => Pure tt
-              end in
-            let* _ :=
-              let* α0 := yield tt in
-              assign _task_context α0 in
-            Pure tt
-            from
-            loop
-        end).
+  Parameter runtime_call : forall `{H : State.Trait}, ref Self->
+      ref (ink_e2e.Signer C)->
+      ref str->
+      ref str->
+      alloc.vec.Vec scale_value.value.Value
+      -> M (H := H) OpaqueDef.
   
   Global Instance Method_runtime_call `{H : State.Trait} :
     Notation.Dot "runtime_call" := {
@@ -12259,49 +4996,14 @@ Definition
     std.thread.local.LocalKey (core.cell.RefCell alloc.string.String) :=
   run (std.thread.local.LocalKey::["new"] ink_e2e.LOG_PREFIX.__getit).
 
-Definition __init
-    `{H : State.Trait}
-    (_ : unit)
-    : M (H := H) (core.cell.RefCell alloc.string.String) :=
-  let* α0 := alloc.string.String::["from"] "no prefix set" in
-  core.cell.RefCell::["new"] α0.
+Parameter __init : forall `{H : State.Trait}, unit
+    -> M (H := H) (core.cell.RefCell alloc.string.String).
 
-Definition __getit
-    `{H : State.Trait}
-    (init
-      :
-      core.option.Option
-        (mut_ref (core.option.Option (core.cell.RefCell alloc.string.String))))
-    :
+Parameter __getit : forall `{H : State.Trait}, core.option.Option
+        (mut_ref (core.option.Option (core.cell.RefCell alloc.string.String)))
+    ->
       M (H := H)
-        (core.option.Option (ref (core.cell.RefCell alloc.string.String))) :=
-  ink_e2e.LOG_PREFIX.__getit.__KEY.["get"]
-    (fun  =>
-      let* _ :=
-        let* α0 := let_if core.option.Option.Some init := init in
-        if (α0 : bool) then
-          let* α0 := init.["take"] in
-          let* α1 := let_if core.option.Option.Some value := α0 in
-          if (α1 : bool) then
-            let* _ := Return value in
-            Pure tt
-          else
-            if (true : bool) then
-              let* _ :=
-                let* α0 :=
-                  format_arguments::["new_v1"]
-                    (addr_of
-                      [
-                        "internal error: entered unreachable code: missing default value"
-                      ])
-                    (addr_of [ ]) in
-                core.panicking.panic_fmt α0 in
-              Pure tt
-            else
-              Pure tt
-        else
-          Pure tt in
-      ink_e2e.LOG_PREFIX.__init tt).
+        (core.option.Option (ref (core.cell.RefCell alloc.string.String))).
 
 Definition
     __KEY
@@ -12313,65 +5015,10 @@ Definition
           (core.cell.RefCell alloc.string.String))::["new"]
       tt).
 
-Definition log_prefix
-    `{H : State.Trait}
-    (_ : unit)
-    : M (H := H) alloc.string.String :=
-  ink_e2e.LOG_PREFIX.["with"]
-    (fun log_prefix =>
-      let* α0 := log_prefix.["borrow"] in
-      α0.["clone"]).
+Parameter log_prefix : forall `{H : State.Trait}, unit
+    -> M (H := H) alloc.string.String.
 
-Definition log_info `{H : State.Trait} (msg : ref str) : M (H := H) unit :=
-  let* _ :=
-    let* enabled :=
-      let* α0 :=
-        tracing_core.metadata.Level::["INFO"].["le"]
-          tracing.level_filters.STATIC_MAX_LEVEL in
-      let* α1 := tracing_core.metadata.LevelFilter::["current"] tt in
-      let* α2 := tracing_core.metadata.Level::["INFO"].["le"] α1 in
-      let* α3 := α0.["andb"] α2 in
-      let* interest := ink_e2e.log_info.CALLSITE.["interest"] in
-      let* α0 := interest.["is_never"] in
-      let* α1 := α0.["not"] in
-      let* α2 := ink_e2e.log_info.CALLSITE.["metadata"] in
-      let* α3 := tracing.__macro_support.__is_enabled α2 interest in
-      let* α4 := α1.["andb"] α3 in
-      α3.["andb"] α4 in
-    if (enabled : bool) then
-      let* _ :=
-        let* iter :=
-          let* α0 := ink_e2e.log_info.CALLSITE.["metadata"] in
-          let* α1 := α0.["fields"] in
-          α1.["iter"] in
-        let* α0 := ink_e2e.log_info.CALLSITE.["metadata"] in
-        let* α1 := α0.["fields"] in
-        let* α2 := iter.["next"] in
-        let* α3 := α2.["expect"] "FieldSet corrupted (this is a bug)" in
-        let* α4 := ink_e2e.log_prefix tt in
-        let* α5 := format_argument::["new_display"] (addr_of α4) in
-        let* α6 := format_argument::["new_display"] (addr_of msg) in
-        let* α7 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "["; "] " ])
-            (addr_of [ α5; α6 ]) in
-        let* α0 :=
-          α1.["value_set"]
-            (addr_of
-              [
-                (addr_of α3,
-                  core.option.Option.Some (cast (addr_of α7) (ref TraitObject)))
-              ]) in
-        (fun value_set =>
-            let* meta := ink_e2e.log_info.CALLSITE.["metadata"] in
-            let* _ :=
-              tracing_core.event.Event::["dispatch"] meta (addr_of value_set) in
-            Pure tt)
-          α0 in
-      Pure tt
-    else
-      Pure tt in
-  Pure tt.
+Parameter log_info : forall `{H : State.Trait}, ref str -> M (H := H) unit.
 
 Definition
     CALLSITE
@@ -12398,56 +5045,7 @@ Definition META `{H : State.Trait} : tracing_core.metadata.Metadata :=
       α0
       tracing_core.metadata.Kind::["EVENT"]).
 
-Definition log_error `{H : State.Trait} (msg : ref str) : M (H := H) unit :=
-  let* _ :=
-    let* enabled :=
-      let* α0 :=
-        tracing_core.metadata.Level::["ERROR"].["le"]
-          tracing.level_filters.STATIC_MAX_LEVEL in
-      let* α1 := tracing_core.metadata.LevelFilter::["current"] tt in
-      let* α2 := tracing_core.metadata.Level::["ERROR"].["le"] α1 in
-      let* α3 := α0.["andb"] α2 in
-      let* interest := ink_e2e.log_error.CALLSITE.["interest"] in
-      let* α0 := interest.["is_never"] in
-      let* α1 := α0.["not"] in
-      let* α2 := ink_e2e.log_error.CALLSITE.["metadata"] in
-      let* α3 := tracing.__macro_support.__is_enabled α2 interest in
-      let* α4 := α1.["andb"] α3 in
-      α3.["andb"] α4 in
-    if (enabled : bool) then
-      let* _ :=
-        let* iter :=
-          let* α0 := ink_e2e.log_error.CALLSITE.["metadata"] in
-          let* α1 := α0.["fields"] in
-          α1.["iter"] in
-        let* α0 := ink_e2e.log_error.CALLSITE.["metadata"] in
-        let* α1 := α0.["fields"] in
-        let* α2 := iter.["next"] in
-        let* α3 := α2.["expect"] "FieldSet corrupted (this is a bug)" in
-        let* α4 := ink_e2e.log_prefix tt in
-        let* α5 := format_argument::["new_display"] (addr_of α4) in
-        let* α6 := format_argument::["new_display"] (addr_of msg) in
-        let* α7 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "["; "] " ])
-            (addr_of [ α5; α6 ]) in
-        let* α0 :=
-          α1.["value_set"]
-            (addr_of
-              [
-                (addr_of α3,
-                  core.option.Option.Some (cast (addr_of α7) (ref TraitObject)))
-              ]) in
-        (fun value_set =>
-            let* meta := ink_e2e.log_error.CALLSITE.["metadata"] in
-            let* _ :=
-              tracing_core.event.Event::["dispatch"] meta (addr_of value_set) in
-            Pure tt)
-          α0 in
-      Pure tt
-    else
-      Pure tt in
-  Pure tt.
+Parameter log_error : forall `{H : State.Trait}, ref str -> M (H := H) unit.
 
 Definition
     CALLSITE
@@ -12474,11 +5072,5 @@ Definition META `{H : State.Trait} : tracing_core.metadata.Metadata :=
       α0
       tracing_core.metadata.Kind::["EVENT"]).
 
-Definition account_id
-    `{H : State.Trait}
-    (account : sp_keyring.sr25519.Keyring)
-    : M (H := H) ink_primitives.types.AccountId :=
-  let* α0 := account.["to_account_id"] in
-  let* α1 := α0.["as_ref"] in
-  let* α2 := ink_primitives.types.AccountId::["try_from"] α1 in
-  α2.["expect"] "account keyring has a valid account id".
+Parameter account_id : forall `{H : State.Trait}, sp_keyring.sr25519.Keyring
+    -> M (H := H) ink_primitives.types.AccountId.
