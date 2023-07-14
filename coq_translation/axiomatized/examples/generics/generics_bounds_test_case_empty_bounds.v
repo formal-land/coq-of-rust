@@ -48,17 +48,17 @@ Module
 End
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
-Parameter red : forall
+Parameter red : forall `{H : State.Trait}, forall
     {T : Set},
     `{generics_bounds_test_case_empty_bounds.Red.Trait T}
     ref T
-    -> M (ref str).
+    -> M (H := H) (ref str).
 
-Parameter blue : forall
+Parameter blue : forall `{H : State.Trait}, forall
     {T : Set},
     `{generics_bounds_test_case_empty_bounds.Blue.Trait T}
     ref T
-    -> M (ref str).
+    -> M (H := H) (ref str).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

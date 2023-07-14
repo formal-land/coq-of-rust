@@ -12,31 +12,31 @@ Require Import CoqOfRust._std.sync.
 
 (* pub struct Ready<T>(_); *)
 Module Ready.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End Ready.
 Definition Ready := Ready.t.
 
 (* pub struct Context<'a> { /* private fields */ } *)
 Module Context.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Context.
 Definition Context := Context.t.
 
 (* pub struct RawWaker { /* private fields */ } *)
 Module RawWaker.
-  Record t : Set := { }.
+  Parameter t : Set.
 End RawWaker.
 Definition RawWaker := RawWaker.t.
 
 (* pub struct RawWakerVTable { /* private fields */ } *)
 Module RawWakerVTable.
-  Record t : Set := { }.
+  Parameter t : Set.
 End RawWakerVTable.
 Definition RawWakerVTable := RawWakerVTable.t.
 
 (* pub struct Waker { /* private fields */ } *)
 Module Waker.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Waker.
 Definition Waker := Waker.t.
 
@@ -52,8 +52,7 @@ pub enum Poll<T> {
 Module Poll.
   Inductive t (T : Set) : Set := 
   | Ready : T -> t T
-  | Pending : t T
-  .
+  | Pending : t T.
 End Poll.
 Definition Poll := Poll.t.
 

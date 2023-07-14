@@ -21,14 +21,25 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
+    string -> f64 -> 
+    string -> f64 -> 
+    M (H := H) core.fmt.Result.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
+    core.fmt.Formatter "debug_struct_field2_finish" := {
+    Notation.double_colon := debug_struct_field2_finish; }.
+  
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
+  
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 
@@ -36,14 +47,15 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter clone : ref Self -> M box_stack_heap.Point.
+  Parameter clone : forall `{H : State.Trait}, ref Self
+      -> M (H := H) box_stack_heap.Point.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_box_stack_heap_Point.
 
@@ -70,9 +82,11 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
-Parameter origin : unit -> M box_stack_heap.Point.
+Parameter origin : forall `{H : State.Trait}, unit
+    -> M (H := H) box_stack_heap.Point.
 
-Parameter boxed_origin : unit -> M (alloc.boxed.Box box_stack_heap.Point).
+Parameter boxed_origin : forall `{H : State.Trait}, unit
+    -> M (H := H) (alloc.boxed.Box box_stack_heap.Point).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

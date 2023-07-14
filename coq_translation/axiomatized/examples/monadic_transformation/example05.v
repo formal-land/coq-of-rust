@@ -13,13 +13,13 @@ Definition Foo := Foo.t.
 Module Impl_example05_Foo.
   Definition Self := example05.Foo.
   
-  Parameter plus1 : Self -> M u32.
+  Parameter plus1 : forall `{H : State.Trait}, Self -> M (H := H) u32.
   
-  Global Instance AssociatedFunction_plus1 :
+  Global Instance AssociatedFunction_plus1 `{H : State.Trait} :
     Notation.DoubleColon Self "plus1" := {
     Notation.double_colon := plus1;
   }.
 End Impl_example05_Foo.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

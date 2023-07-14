@@ -11,7 +11,7 @@ Require Import CoqOfRust._std.marker.
 
 (* pub struct BuildHasherDefault<H>(_); *)
 Module BuildHasherDefault.
-  Record t (H : Set) : Set := { }.
+  Parameter t : forall (H : Set), Set.
 End BuildHasherDefault.
 Definition BuildHasherDefault := BuildHasherDefault.t.
 
@@ -94,7 +94,7 @@ pub trait Hash {
 *)
 Module Hash.
   Class Trait (Self : Set) : Set := {
-    hash {H : Set}
+    hash `{State.Trait} {H : Set}
       `{Hasher : Hasher.Trait H}
       : ref Self -> mut_ref H -> M unit;
 

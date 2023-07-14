@@ -19,14 +19,15 @@ Definition Point : Set := Point.t.
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
   Definition Self := scoping_rules_borrowing_the_ref_pattern.Point.
   
-  Parameter clone : ref Self -> M scoping_rules_borrowing_the_ref_pattern.Point.
+  Parameter clone : forall `{H : State.Trait}, ref Self
+      -> M (H := H) scoping_rules_borrowing_the_ref_pattern.Point.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
@@ -38,4 +39,4 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

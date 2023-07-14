@@ -21,25 +21,25 @@ Require Import CoqOfRust._std.vec.
 
 (* pub struct ExitStatusError(_); *)
 Module ExitStatusError.
-  Record t : Set := { }.
+  Parameter t : Set.
 End ExitStatusError.
 Definition ExitStatusError := ExitStatusError.t.
 
 (* pub struct ChildStdin { /* private fields */ } *)
 Module ChildStdin.
-  Record t : Set := { }.
+  Parameter t : Set.
 End ChildStdin.
 Definition ChildStdin := ChildStdin.t.
 
 (* pub struct ChildStdout { /* private fields */ } *)
 Module ChildStdout.
-  Record t : Set := { }.
+  Parameter t : Set.
 End ChildStdout.
 Definition ChildStdout := ChildStdout.t.
 
 (* pub struct ChildStderr { /* private fields */ } *)
 Module ChildStderr.
-  Record t : Set := { }.
+  Parameter t : Set.
 End ChildStderr.
 Definition ChildStderr := ChildStderr.t.
 
@@ -62,31 +62,31 @@ Definition Child := Child.t.
 
 (* pub struct ExitCode(_); *)
 Module ExitCode.
-  Record t : Set := { }.
+  Parameter t : Set.
 End ExitCode.
 Definition ExitCode := ExitCode.t.
 
 (* pub struct Command { /* private fields */ } *)
 Module Command.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Command.
 Definition Command := Command.t.
 
 (* pub struct CommandArgs<'a> { /* private fields */ } *)
 Module CommandArgs.
-  Record t : Set := { }.
+  Parameter t : Set.
 End CommandArgs.
 Definition CommandArgs := CommandArgs.t.
 
 (* pub struct CommandEnvs<'a> { /* private fields */ } *)
 Module CommandEnvs.
-  Record t : Set := { }.
+  Parameter t : Set.
 End CommandEnvs.
 Definition CommandEnvs := CommandEnvs.t.
 
 (* pub struct ExitStatus(_); *)
 Module ExitStatus.
-  Record t : Set := { }.
+  Parameter t : Set.
 End ExitStatus.
 Definition ExitStatus := ExitStatus.t.
 
@@ -108,7 +108,7 @@ Definition Output := Output.t.
 
 (* pub struct Stdio(_); *)
 Module Stdio.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Stdio.
 Definition Stdio := Stdio.t.
  

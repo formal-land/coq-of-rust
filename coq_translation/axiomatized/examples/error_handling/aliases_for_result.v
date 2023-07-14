@@ -4,11 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Definition AliasedResult : Set :=
   core.result.Result T core.num.error.ParseIntError.
 
-Parameter multiply : ref str->
+Parameter multiply : forall `{H : State.Trait}, ref str->
     ref str
-    -> M (aliases_for_result.AliasedResult i32).
+    -> M (H := H) (aliases_for_result.AliasedResult i32).
 
-Parameter print : aliases_for_result.AliasedResult i32 -> M unit.
+Parameter print : forall `{H : State.Trait}, aliases_for_result.AliasedResult
+        i32
+    -> M (H := H) unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

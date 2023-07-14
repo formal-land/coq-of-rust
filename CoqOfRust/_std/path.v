@@ -16,49 +16,49 @@ Require Import CoqOfRust._std.ffi.
 
 (* pub struct Ancestors<'a> { /* private fields */ } *)
 Module Ancestors.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Ancestors.
 Definition Ancestors := Ancestors.t.
 
 (* pub struct Components<'a> { /* private fields */ } *)
 Module Components.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Components.
 Definition Components := Components.t.
 
 (* pub struct Display<'a> { /* private fields */ } *)
 Module Display.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Display.
 Definition Display := Display.t.
 
 (* pub struct Iter<'a> { /* private fields */ } *)
 Module Iter.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Iter.
 Definition Iter := Iter.t.
 
 (* pub struct Path { /* private fields */ } *)
 Module Path.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Path.
 Definition Path := Path.t.
 
 (* pub struct PathBuf { /* private fields */ } *)
 Module PathBuf.
-  Record t : Set := { }.
+  Parameter t : Set.
 End PathBuf.
 Definition PathBuf := PathBuf.t.
 
 (* pub struct PrefixComponent<'a> { /* private fields */ } *)
 Module PrefixComponent.
-  Record t : Set := { }.
+  Parameter t : Set.
 End PrefixComponent.
 Definition PrefixComponent := PrefixComponent.t.
 
 (* pub struct StripPrefixError(_); *)
 Module StripPrefixError.
-  Record t : Set := { }.
+  Parameter t : Set.
 End StripPrefixError.
 Definition StripPrefixError := StripPrefixError.t.
 

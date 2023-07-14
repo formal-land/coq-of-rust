@@ -23,22 +23,24 @@ Definition Person : Set := Person.t.
 Module Impl_core_hash_Hash_for_hash_Person.
   Definition Self := hash.Person.
   
-  Parameter hash : ref Self-> mut_ref __H -> M unit.
+  Parameter hash : forall `{H : State.Trait}, ref Self->
+      mut_ref __H
+      -> M (H := H) unit.
   
-  Global Instance Method_hash : Notation.Dot "hash" := {
+  Global Instance Method_hash `{H : State.Trait} : Notation.Dot "hash" := {
     Notation.dot := hash;
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash := hash;
+    core.hash.Hash.hash `{H : State.Trait} := hash;
   }.
 End Impl_core_hash_Hash_for_hash_Person.
 
-Parameter calculate_hash : forall
+Parameter calculate_hash : forall `{H : State.Trait}, forall
     {T : Set},
     `{core.hash.Hash.Trait T}
     ref T
-    -> M u64.
+    -> M (H := H) u64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

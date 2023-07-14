@@ -29,17 +29,18 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Definition Self := unpacking_options_via_question_mark.Job.
   
   Definition clone
+      `{H : State.Trait}
       (self : ref Self)
-      : M unpacking_options_via_question_mark.Job :=
+      : M (H := H) unpacking_options_via_question_mark.Job :=
     let _ := tt in
     self.["deref"].
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 
@@ -70,18 +71,19 @@ Module
   Definition Self := unpacking_options_via_question_mark.PhoneNumber.
   
   Definition clone
+      `{H : State.Trait}
       (self : ref Self)
-      : M unpacking_options_via_question_mark.PhoneNumber :=
+      : M (H := H) unpacking_options_via_question_mark.PhoneNumber :=
     let _ := tt in
     let _ := tt in
     self.["deref"].
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
@@ -97,8 +99,9 @@ Module Impl_unpacking_options_via_question_mark_Person.
   Definition Self := unpacking_options_via_question_mark.Person.
   
   Definition work_phone_area_code
+      `{H : State.Trait}
       (self : ref Self)
-      : M (core.option.Option u8) :=
+      : M (H := H) (core.option.Option u8) :=
     let* α0 := LangItem self.["job"] in
     let* α1 :=
       match α0 with
@@ -117,14 +120,14 @@ Module Impl_unpacking_options_via_question_mark_Person.
       end in
     Pure α3.["area_code"].
   
-  Global Instance Method_work_phone_area_code :
+  Global Instance Method_work_phone_area_code `{H : State.Trait} :
     Notation.Dot "work_phone_area_code" := {
     Notation.dot := work_phone_area_code;
   }.
 End Impl_unpacking_options_via_question_mark_Person.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let p :=
     {|
       unpacking_options_via_question_mark.Person.job :=

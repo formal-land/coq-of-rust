@@ -13,25 +13,31 @@ Module checked.
   Module Impl_core_fmt_Debug_for_result_checked_MathError.
     Definition Self := result.checked.MathError.
     
-    Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Definition MathResult : Set :=
     core.result.Result f64 result.checked.MathError.
   
-  Parameter div : f64-> f64 -> M result.checked.MathResult.
+  Parameter div : forall `{H : State.Trait}, f64->
+      f64
+      -> M (H := H) result.checked.MathResult.
   
-  Parameter sqrt : f64 -> M result.checked.MathResult.
+  Parameter sqrt : forall `{H : State.Trait}, f64
+      -> M (H := H) result.checked.MathResult.
   
-  Parameter ln : f64 -> M result.checked.MathResult.
+  Parameter ln : forall `{H : State.Trait}, f64
+      -> M (H := H) result.checked.MathResult.
 End checked.
 
 Module MathError.
@@ -45,26 +51,32 @@ Definition MathError := MathError.t.
 Module Impl_core_fmt_Debug_for_result_checked_MathError.
   Definition Self := result.checked.MathError.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_result_checked_MathError.
 
 Definition MathResult : Set := core.result.Result f64 result.checked.MathError.
 
-Parameter div : f64-> f64 -> M result.checked.MathResult.
+Parameter div : forall `{H : State.Trait}, f64->
+    f64
+    -> M (H := H) result.checked.MathResult.
 
-Parameter sqrt : f64 -> M result.checked.MathResult.
+Parameter sqrt : forall `{H : State.Trait}, f64
+    -> M (H := H) result.checked.MathResult.
 
-Parameter ln : f64 -> M result.checked.MathResult.
+Parameter ln : forall `{H : State.Trait}, f64
+    -> M (H := H) result.checked.MathResult.
 
-Parameter op : f64-> f64 -> M f64.
+Parameter op : forall `{H : State.Trait}, f64-> f64 -> M (H := H) f64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

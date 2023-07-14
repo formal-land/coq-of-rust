@@ -4,12 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Error ForeignMod.
 
 Definition cos
+    `{H : State.Trait}
     (z : foreign_function_interface.Complex)
-    : M foreign_function_interface.Complex :=
+    : M (H := H) foreign_function_interface.Complex :=
   foreign_function_interface.ccosf z.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* z :=
     let* α0 := 1 (* 1. *).["neg"] in
     Pure
@@ -61,16 +62,19 @@ Definition Complex : Set := Complex.t.
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
-  Definition clone (self : ref Self) : M foreign_function_interface.Complex :=
+  Definition clone
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) foreign_function_interface.Complex :=
     let _ := tt in
     self.["deref"].
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
@@ -84,10 +88,20 @@ End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
+  Parameter struct_parameter_for_fmt : core.fmt.Formatter -> string -> 
+    string -> f32 -> 
+    string -> f32 -> 
+    M (H := H) core.fmt.Result.
+  
+  Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
+    core.fmt.Formatter "struct_parameter_for_fmt" := {
+    Notation.double_colon := struct_parameter_for_fmt; }.
+  
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     let* α0 := self.["im"].["lt"] 0 (* 0. *) in
     if (α0 : bool) then
       let* α0 := format_argument::["new_display"] (addr_of self.["re"]) in
@@ -107,11 +121,11 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           (addr_of [ α0; α1 ]) in
       f.["write_fmt"] α2.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

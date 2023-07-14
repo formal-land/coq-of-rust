@@ -15,18 +15,24 @@ Definition Container := Container.t.
 
 Module Contains.
   Class Trait (Self : Set) {A B : Set} : Set := {
-    contains : (ref Self) -> (ref A) -> (ref B) -> (M bool);
-    first : (ref Self) -> (M i32);
-    last : (ref Self) -> (M i32);
+    contains
+      `{H : State.Trait}
+      :
+      (ref Self) -> (ref A) -> (ref B) -> (M (H := H) bool);
+    first `{H : State.Trait} : (ref Self) -> (M (H := H) i32);
+    last `{H : State.Trait} : (ref Self) -> (M (H := H) i32);
   }.
   
-  Global Instance Method_contains `(Trait) : Notation.Dot "contains" := {
+  Global Instance Method_contains `{H : State.Trait} `(Trait)
+    : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
-  Global Instance Method_first `(Trait) : Notation.Dot "first" := {
+  Global Instance Method_first `{H : State.Trait} `(Trait)
+    : Notation.Dot "first" := {
     Notation.dot := first;
   }.
-  Global Instance Method_last `(Trait) : Notation.Dot "last" := {
+  Global Instance Method_last `{H : State.Trait} `(Trait)
+    : Notation.Dot "last" := {
     Notation.dot := last;
   }.
 End Contains.
@@ -35,21 +41,25 @@ Module
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
   Definition Self := generics_associated_types_problem.Container.
   
-  Parameter contains : ref Self-> ref i32-> ref i32 -> M bool.
+  Parameter contains : forall `{H : State.Trait}, ref Self->
+      ref i32->
+      ref i32
+      -> M (H := H) bool.
   
-  Global Instance Method_contains : Notation.Dot "contains" := {
+  Global Instance Method_contains `{H : State.Trait} :
+    Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
-  Parameter first : ref Self -> M i32.
+  Parameter first : forall `{H : State.Trait}, ref Self -> M (H := H) i32.
   
-  Global Instance Method_first : Notation.Dot "first" := {
+  Global Instance Method_first `{H : State.Trait} : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
-  Parameter last : ref Self -> M i32.
+  Parameter last : forall `{H : State.Trait}, ref Self -> M (H := H) i32.
   
-  Global Instance Method_last : Notation.Dot "last" := {
+  Global Instance Method_last `{H : State.Trait} : Notation.Dot "last" := {
     Notation.dot := last;
   }.
   
@@ -58,18 +68,24 @@ Module
         Self
         (A := i32)
         (B := i32) := {
-    generics_associated_types_problem.Contains.contains := contains;
-    generics_associated_types_problem.Contains.first := first;
-    generics_associated_types_problem.Contains.last := last;
+    generics_associated_types_problem.Contains.contains
+      `{H : State.Trait}
+      :=
+      contains;
+    generics_associated_types_problem.Contains.first
+      `{H : State.Trait}
+      :=
+      first;
+    generics_associated_types_problem.Contains.last `{H : State.Trait} := last;
   }.
 End
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
 
-Parameter difference : forall
+Parameter difference : forall `{H : State.Trait}, forall
     {A : Set} {B : Set} {C : Set},
     `{generics_associated_types_problem.Contains.Trait A B C}
     ref C
-    -> M i32.
+    -> M (H := H) i32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

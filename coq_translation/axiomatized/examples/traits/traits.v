@@ -18,21 +18,25 @@ Definition Sheep : Set := Sheep.t.
 
 Module Animal.
   Class Trait (Self : Set) : Set := {
-    new : (ref str) -> (M Self);
-    name : (ref Self) -> (M (ref str));
-    noise : (ref Self) -> (M (ref str));
+    new `{H : State.Trait} : (ref str) -> (M (H := H) Self);
+    name `{H : State.Trait} : (ref Self) -> (M (H := H) (ref str));
+    noise `{H : State.Trait} : (ref Self) -> (M (H := H) (ref str));
   }.
   
-  Global Instance Method_new `(Trait) : Notation.Dot "new" := {
+  Global Instance Method_new `{H : State.Trait} `(Trait)
+    : Notation.Dot "new" := {
     Notation.dot := new;
   }.
-  Global Instance Method_name `(Trait) : Notation.Dot "name" := {
+  Global Instance Method_name `{H : State.Trait} `(Trait)
+    : Notation.Dot "name" := {
     Notation.dot := name;
   }.
-  Global Instance Method_noise `(Trait) : Notation.Dot "noise" := {
+  Global Instance Method_noise `{H : State.Trait} `(Trait)
+    : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
-  Global Instance Method_talk `(Trait) : Notation.Dot "talk" := {
+  Global Instance Method_talk `{H : State.Trait} `(Trait)
+    : Notation.Dot "talk" := {
     Notation.dot (self : ref Self) :=
       (let* _ :=
         let* _ :=
@@ -48,16 +52,17 @@ Module Animal.
           std.io.stdio._print α4 in
         Pure tt in
       Pure tt
-      : M unit);
+      : M (H := H) unit);
   }.
 End Animal.
 
 Module Impl_traits_Sheep.
   Definition Self := traits.Sheep.
   
-  Parameter is_naked : ref Self -> M bool.
+  Parameter is_naked : forall `{H : State.Trait}, ref Self -> M (H := H) bool.
   
-  Global Instance Method_is_naked : Notation.Dot "is_naked" := {
+  Global Instance Method_is_naked `{H : State.Trait} :
+    Notation.Dot "is_naked" := {
     Notation.dot := is_naked;
   }.
 End Impl_traits_Sheep.
@@ -65,46 +70,47 @@ End Impl_traits_Sheep.
 Module Impl_traits_Animal_for_traits_Sheep.
   Definition Self := traits.Sheep.
   
-  Parameter new : ref str -> M traits.Sheep.
+  Parameter new : forall `{H : State.Trait}, ref str -> M (H := H) traits.Sheep.
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new `{H : State.Trait} :
+    Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Parameter name : ref Self -> M (ref str).
+  Parameter name : forall `{H : State.Trait}, ref Self -> M (H := H) (ref str).
   
-  Global Instance Method_name : Notation.Dot "name" := {
+  Global Instance Method_name `{H : State.Trait} : Notation.Dot "name" := {
     Notation.dot := name;
   }.
   
-  Parameter noise : ref Self -> M (ref str).
+  Parameter noise : forall `{H : State.Trait}, ref Self -> M (H := H) (ref str).
   
-  Global Instance Method_noise : Notation.Dot "noise" := {
+  Global Instance Method_noise `{H : State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
-  Parameter talk : ref Self -> M unit.
+  Parameter talk : forall `{H : State.Trait}, ref Self -> M (H := H) unit.
   
-  Global Instance Method_talk : Notation.Dot "talk" := {
+  Global Instance Method_talk `{H : State.Trait} : Notation.Dot "talk" := {
     Notation.dot := talk;
   }.
   
   Global Instance I : traits.Animal.Trait Self := {
-    traits.Animal.new := new;
-    traits.Animal.name := name;
-    traits.Animal.noise := noise;
+    traits.Animal.new `{H : State.Trait} := new;
+    traits.Animal.name `{H : State.Trait} := name;
+    traits.Animal.noise `{H : State.Trait} := noise;
   }.
 End Impl_traits_Animal_for_traits_Sheep.
 
 Module Impl_traits_Sheep_2.
   Definition Self := traits.Sheep.
   
-  Parameter shear : mut_ref Self -> M unit.
+  Parameter shear : forall `{H : State.Trait}, mut_ref Self -> M (H := H) unit.
   
-  Global Instance Method_shear : Notation.Dot "shear" := {
+  Global Instance Method_shear `{H : State.Trait} : Notation.Dot "shear" := {
     Notation.dot := shear;
   }.
 End Impl_traits_Sheep_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

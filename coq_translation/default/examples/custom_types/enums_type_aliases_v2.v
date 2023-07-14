@@ -17,13 +17,18 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
     :=
     enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.
   
-  Definition run (self : ref Self) (x : i32) (y : i32) : M i32 :=
+  Definition run
+      `{H : State.Trait}
+      (self : ref Self)
+      (x : i32)
+      (y : i32)
+      : M (H := H) i32 :=
     match self with
     | ImplSelf.Add => x.["add"] y
     | ImplSelf.Subtract => x.["sub"] y
     end.
   
-  Global Instance Method_run : Notation.Dot "run" := {
+  Global Instance Method_run `{H : State.Trait} : Notation.Dot "run" := {
     Notation.dot := run;
   }.
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.

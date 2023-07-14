@@ -21,18 +21,20 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   
   Definition Item : Set := u32.
   
-  Parameter next : mut_ref Self -> M (core.option.Option ImplSelf.Item).
+  Parameter next : forall `{H : State.Trait}, mut_ref Self
+      -> M (H := H) (core.option.Option ImplSelf.Item).
   
-  Global Instance Method_next : Notation.Dot "next" := {
+  Global Instance Method_next `{H : State.Trait} : Notation.Dot "next" := {
     Notation.dot := next;
   }.
   
   Global Instance I : core.iter.traits.iterator.Iterator.Trait Self := {
-    core.iter.traits.iterator.Iterator.next := next;
+    core.iter.traits.iterator.Iterator.next `{H : State.Trait} := next;
   }.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
-Parameter fibonacci : unit -> M iterators.Fibonacci.
+Parameter fibonacci : forall `{H : State.Trait}, unit
+    -> M (H := H) iterators.Fibonacci.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

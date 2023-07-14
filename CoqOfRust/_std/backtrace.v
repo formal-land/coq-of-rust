@@ -7,13 +7,13 @@ Require Import CoqOfRust.lib.lib.
 *)
 (* pub struct BacktraceFrame { /* private fields */ } *)
 Module BacktraceFrame.
-  Record t : Set := { }.
+  Parameter t : Set.
 End BacktraceFrame.
 Definition BacktraceFrame := BacktraceFrame.t.
 
 (* pub struct Backtrace { /* private fields */ } *)
 Module Backtrace.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Backtrace.
 Definition Backtrace := Backtrace.t.
 

@@ -19,29 +19,34 @@ Definition Point : Set := Point.t.
 Module Impl_associated_functions_and_methods_Point.
   Definition Self := associated_functions_and_methods.Point.
   
-  Definition origin (_ : unit) : M associated_functions_and_methods.Point :=
+  Definition origin
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) associated_functions_and_methods.Point :=
     Pure
       {|
         associated_functions_and_methods.Point.y := 0 (* 0.0 *);
         associated_functions_and_methods.Point.x := 1 (* 1.0 *);
       |}.
   
-  Global Instance AssociatedFunction_origin :
+  Global Instance AssociatedFunction_origin `{H : State.Trait} :
     Notation.DoubleColon Self "origin" := {
     Notation.double_colon := origin;
   }.
   
   Definition new
+      `{H : State.Trait}
       (x : f64)
       (y : f64)
-      : M associated_functions_and_methods.Point :=
+      : M (H := H) associated_functions_and_methods.Point :=
     Pure
       {|
         associated_functions_and_methods.Point.x := x;
         associated_functions_and_methods.Point.y := y;
       |}.
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new `{H : State.Trait} :
+    Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
 End Impl_associated_functions_and_methods_Point.
@@ -65,15 +70,16 @@ Module Impl_associated_functions_and_methods_Rectangle.
   Definition Self := associated_functions_and_methods.Rectangle.
   
   Definition get_p1
+      `{H : State.Trait}
       (self : ref Self)
-      : M associated_functions_and_methods.Point :=
+      : M (H := H) associated_functions_and_methods.Point :=
     Pure self.["p1"].
   
-  Global Instance Method_get_p1 : Notation.Dot "get_p1" := {
+  Global Instance Method_get_p1 `{H : State.Trait} : Notation.Dot "get_p1" := {
     Notation.dot := get_p1;
   }.
   
-  Definition area (self : ref Self) : M f64 :=
+  Definition area `{H : State.Trait} (self : ref Self) : M (H := H) f64 :=
     let
         '{|
           associated_functions_and_methods.Point.x := x1;
@@ -91,11 +97,11 @@ Module Impl_associated_functions_and_methods_Rectangle.
     let* α2 := α0.["mul"] α1 in
     α2.["abs"].
   
-  Global Instance Method_area : Notation.Dot "area" := {
+  Global Instance Method_area `{H : State.Trait} : Notation.Dot "area" := {
     Notation.dot := area;
   }.
   
-  Definition perimeter (self : ref Self) : M f64 :=
+  Definition perimeter `{H : State.Trait} (self : ref Self) : M (H := H) f64 :=
     let
         '{|
           associated_functions_and_methods.Point.x := x1;
@@ -115,18 +121,25 @@ Module Impl_associated_functions_and_methods_Rectangle.
     let* α4 := α1.["add"] α3 in
     2 (* 2.0 *).["mul"] α4.
   
-  Global Instance Method_perimeter : Notation.Dot "perimeter" := {
+  Global Instance Method_perimeter `{H : State.Trait} :
+    Notation.Dot "perimeter" := {
     Notation.dot := perimeter;
   }.
   
-  Definition translate (self : mut_ref Self) (x : f64) (y : f64) : M unit :=
+  Definition translate
+      `{H : State.Trait}
+      (self : mut_ref Self)
+      (x : f64)
+      (y : f64)
+      : M (H := H) unit :=
     let* _ := self.["p1"].["x"].["add_assign"] x in
     let* _ := self.["p2"].["x"].["add_assign"] x in
     let* _ := self.["p1"].["y"].["add_assign"] y in
     let* _ := self.["p2"].["y"].["add_assign"] y in
     Pure tt.
   
-  Global Instance Method_translate : Notation.Dot "translate" := {
+  Global Instance Method_translate `{H : State.Trait} :
+    Notation.Dot "translate" := {
     Notation.dot := translate;
   }.
 End Impl_associated_functions_and_methods_Rectangle.
@@ -146,7 +159,7 @@ Definition Pair := Pair.t.
 Module Impl_associated_functions_and_methods_Pair.
   Definition Self := associated_functions_and_methods.Pair.
   
-  Definition destroy (self : Self) : M unit :=
+  Definition destroy `{H : State.Trait} (self : Self) : M (H := H) unit :=
     let 'associated_functions_and_methods.Pair.Build_t first second := self in
     let* _ :=
       let* _ :=
@@ -161,13 +174,14 @@ Module Impl_associated_functions_and_methods_Pair.
       Pure tt in
     Pure tt.
   
-  Global Instance Method_destroy : Notation.Dot "destroy" := {
+  Global Instance Method_destroy `{H : State.Trait} :
+    Notation.Dot "destroy" := {
     Notation.dot := destroy;
   }.
 End Impl_associated_functions_and_methods_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* rectangle :=
     let* α0 := associated_functions_and_methods.Point::["origin"] tt in
     let* α1 :=

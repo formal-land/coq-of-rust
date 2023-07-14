@@ -9,4 +9,4 @@ End Temperature.
 Definition Temperature := Temperature.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

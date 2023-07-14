@@ -24,20 +24,33 @@ Module SGen.
 End SGen.
 Definition SGen := SGen.t.
 
-Definition reg_fn (_s : generics_functions.S) : M unit := Pure tt.
-
-Definition gen_spec_t
-    (_s : generics_functions.SGen generics_functions.A)
-    : M unit :=
+Definition reg_fn
+    `{H : State.Trait}
+    (_s : generics_functions.S)
+    : M (H := H) unit :=
   Pure tt.
 
-Definition gen_spec_i32 (_s : generics_functions.SGen i32) : M unit := Pure tt.
+Definition gen_spec_t
+    `{H : State.Trait}
+    (_s : generics_functions.SGen generics_functions.A)
+    : M (H := H) unit :=
+  Pure tt.
 
-Definition generic {T : Set} (_s : generics_functions.SGen T) : M unit :=
+Definition gen_spec_i32
+    `{H : State.Trait}
+    (_s : generics_functions.SGen i32)
+    : M (H := H) unit :=
+  Pure tt.
+
+Definition generic
+    `{H : State.Trait}
+    {T : Set}
+    (_s : generics_functions.SGen T)
+    : M (H := H) unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
     generics_functions.reg_fn
       (generics_functions.S.Build_t generics_functions.A.Build) in

@@ -12,17 +12,18 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
   Definition Self := other_uses_of_question_mark.EmptyVec.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["write_str"] f "EmptyVec".
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
@@ -30,20 +31,21 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
   Definition Self := other_uses_of_question_mark.EmptyVec.
   
   Definition fmt
+      `{H : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
+      : M (H := H) core.fmt.Result :=
     let* α0 :=
       format_arguments::["new_const"]
         (addr_of [ "invalid first item to double" ]) in
     f.["write_fmt"] α0.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt := fmt;
+    core.fmt.Display.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
@@ -55,8 +57,9 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 Definition double_first
+    `{H : State.Trait}
     (vec : alloc.vec.Vec (ref str))
-    : M (other_uses_of_question_mark.Result i32) :=
+    : M (H := H) (other_uses_of_question_mark.Result i32) :=
   let* first :=
     let* α0 := vec.["first"] in
     let* α1 := α0.["ok_or"] other_uses_of_question_mark.EmptyVec.Build in
@@ -79,7 +82,10 @@ Definition double_first
   let* α0 := 2.["mul"] parsed in
   Pure (core.result.Result.Ok α0).
 
-Definition print (result : other_uses_of_question_mark.Result i32) : M unit :=
+Definition print
+    `{H : State.Trait}
+    (result : other_uses_of_question_mark.Result i32)
+    : M (H := H) unit :=
   match result with
   | core.result.Result.Ok n =>
     let* _ :=
@@ -104,7 +110,7 @@ Definition print (result : other_uses_of_question_mark.Result i32) : M unit :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* numbers :=
     let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
     Slice::["into_vec"] α0 in

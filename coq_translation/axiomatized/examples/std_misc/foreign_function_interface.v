@@ -3,11 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error ForeignMod.
 
-Parameter cos : foreign_function_interface.Complex
-    -> M foreign_function_interface.Complex.
+Parameter cos : forall `{H : State.Trait}, foreign_function_interface.Complex
+    -> M (H := H) foreign_function_interface.Complex.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
 
 Module Complex.
   Record t : Set := {
@@ -27,14 +27,15 @@ Definition Complex : Set := Complex.t.
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
-  Parameter clone : ref Self -> M foreign_function_interface.Complex.
+  Parameter clone : forall `{H : State.Trait}, ref Self
+      -> M (H := H) foreign_function_interface.Complex.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
@@ -48,13 +49,24 @@ End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Parameter struct_parameter_for_fmt : core.fmt.Formatter -> string -> 
+    string -> f32 -> 
+    string -> f32 -> 
+    M (H := H) core.fmt.Result.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
+    core.fmt.Formatter "struct_parameter_for_fmt" := {
+    Notation.double_colon := struct_parameter_for_fmt; }.
+  
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
+  
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

@@ -28,14 +28,15 @@ Definition Job : Set := Job.t.
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Definition Self := unpacking_options_via_question_mark.Job.
   
-  Parameter clone : ref Self -> M unpacking_options_via_question_mark.Job.
+  Parameter clone : forall `{H : State.Trait}, ref Self
+      -> M (H := H) unpacking_options_via_question_mark.Job.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 
@@ -65,15 +66,15 @@ Module
   Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
   Definition Self := unpacking_options_via_question_mark.PhoneNumber.
   
-  Parameter clone : ref Self
-      -> M unpacking_options_via_question_mark.PhoneNumber.
+  Parameter clone : forall `{H : State.Trait}, ref Self
+      -> M (H := H) unpacking_options_via_question_mark.PhoneNumber.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
@@ -88,13 +89,14 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 Module Impl_unpacking_options_via_question_mark_Person.
   Definition Self := unpacking_options_via_question_mark.Person.
   
-  Parameter work_phone_area_code : ref Self -> M (core.option.Option u8).
+  Parameter work_phone_area_code : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (core.option.Option u8).
   
-  Global Instance Method_work_phone_area_code :
+  Global Instance Method_work_phone_area_code `{H : State.Trait} :
     Notation.Dot "work_phone_area_code" := {
     Notation.dot := work_phone_area_code;
   }.
 End Impl_unpacking_options_via_question_mark_Person.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

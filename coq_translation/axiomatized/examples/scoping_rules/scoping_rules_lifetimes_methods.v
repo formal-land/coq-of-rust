@@ -13,18 +13,20 @@ Definition Owner := Owner.t.
 Module Impl_scoping_rules_lifetimes_methods_Owner.
   Definition Self := scoping_rules_lifetimes_methods.Owner.
   
-  Parameter add_one : mut_ref Self -> M unit.
+  Parameter add_one : forall `{H : State.Trait}, mut_ref Self
+      -> M (H := H) unit.
   
-  Global Instance Method_add_one : Notation.Dot "add_one" := {
+  Global Instance Method_add_one `{H : State.Trait} :
+    Notation.Dot "add_one" := {
     Notation.dot := add_one;
   }.
   
-  Parameter print : ref Self -> M unit.
+  Parameter print : forall `{H : State.Trait}, ref Self -> M (H := H) unit.
   
-  Global Instance Method_print : Notation.Dot "print" := {
+  Global Instance Method_print `{H : State.Trait} : Notation.Dot "print" := {
     Notation.dot := print;
   }.
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

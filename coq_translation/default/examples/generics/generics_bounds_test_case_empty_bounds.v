@@ -49,21 +49,23 @@ End
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
 Definition red
+    `{H : State.Trait}
     {T : Set}
     `{generics_bounds_test_case_empty_bounds.Red.Trait T}
     (arg : ref T)
-    : M (ref str) :=
+    : M (H := H) (ref str) :=
   Pure "red".
 
 Definition blue
+    `{H : State.Trait}
     {T : Set}
     `{generics_bounds_test_case_empty_bounds.Blue.Trait T}
     (arg : ref T)
-    : M (ref str) :=
+    : M (H := H) (ref str) :=
   Pure "blue".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let cardinal := generics_bounds_test_case_empty_bounds.Cardinal.Build in
   let blue_jay := generics_bounds_test_case_empty_bounds.BlueJay.Build in
   let _turkey := generics_bounds_test_case_empty_bounds.Turkey.Build in

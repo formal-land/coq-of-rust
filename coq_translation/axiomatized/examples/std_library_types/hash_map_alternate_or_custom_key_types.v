@@ -29,16 +29,16 @@ Module
   Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
-  Parameter eq : ref Self->
+  Parameter eq : forall `{H : State.Trait}, ref Self->
       ref hash_map_alternate_or_custom_key_types.Account
-      -> M bool.
+      -> M (H := H) bool.
   
-  Global Instance Method_eq : Notation.Dot "eq" := {
+  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
   Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq := eq;
+    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
@@ -54,9 +54,10 @@ End
 Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
-  Parameter assert_receiver_is_total_eq : ref Self -> M unit.
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
+      -> M (H := H) unit.
   
-  Global Instance Method_assert_receiver_is_total_eq :
+  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
   }.
@@ -68,14 +69,16 @@ End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
-  Parameter hash : ref Self-> mut_ref __H -> M unit.
+  Parameter hash : forall `{H : State.Trait}, ref Self->
+      mut_ref __H
+      -> M (H := H) unit.
   
-  Global Instance Method_hash : Notation.Dot "hash" := {
+  Global Instance Method_hash `{H : State.Trait} : Notation.Dot "hash" := {
     Notation.dot := hash;
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash := hash;
+    core.hash.Hash.hash `{H : State.Trait} := hash;
   }.
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 
@@ -99,10 +102,11 @@ Definition Accounts : Set :=
     hash_map_alternate_or_custom_key_types.Account
     hash_map_alternate_or_custom_key_types.AccountInfo.
 
-Parameter try_logon : ref hash_map_alternate_or_custom_key_types.Accounts->
+Parameter try_logon : forall `{H : State.Trait}, ref
+        hash_map_alternate_or_custom_key_types.Accounts->
     ref str->
     ref str
-    -> M unit.
+    -> M (H := H) unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

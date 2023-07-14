@@ -1,10 +1,17 @@
+(* Imports monad-related definitions *)
+Require Export StateMonad.
+
 (** A sketch of the [M] monad *)
-Parameter M : Set -> Set.
-Parameter Pure : forall {a : Set}, a -> M a.
-Parameter bind : forall {a b : Set}, M a -> (a -> M b) -> M b.
+Definition M `{StateMonad.State.Trait} := StateMonad.M : Set -> Set.
+Definition Pure
+  `{StateMonad.State.Trait} {a : Set} :=
+  StateMonad.pure : a -> M a.
+Definition bind
+  `{StateMonad.State.Trait} {a b : Set} :=
+  StateMonad.bind : M a -> (a -> M b) -> M b.
 
 (** Used for the definitions of "const". *)
-Parameter run : forall {A : Set}, M A -> A.
+Parameter run : forall `{StateMonad.State.Trait} {A : Set}, M A -> A.
 
 Module Notations.
   Notation "'let*' a := b 'in' c" :=

@@ -15,10 +15,11 @@ Definition Cow : Set := Cow.t.
 
 Module Animal.
   Class Trait (Self : Set) : Set := {
-    noise : (ref Self) -> (M (ref str));
+    noise `{H : State.Trait} : (ref Self) -> (M (H := H) (ref str));
   }.
   
-  Global Instance Method_noise `(Trait) : Notation.Dot "noise" := {
+  Global Instance Method_noise `{H : State.Trait} `(Trait)
+    : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
 End Animal.
@@ -27,32 +28,33 @@ Module
   Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
   Definition Self := returning_traits_with_dyn.Sheep.
   
-  Parameter noise : ref Self -> M (ref str).
+  Parameter noise : forall `{H : State.Trait}, ref Self -> M (H := H) (ref str).
   
-  Global Instance Method_noise : Notation.Dot "noise" := {
+  Global Instance Method_noise `{H : State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
   Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
-    returning_traits_with_dyn.Animal.noise := noise;
+    returning_traits_with_dyn.Animal.noise `{H : State.Trait} := noise;
   }.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Definition Self := returning_traits_with_dyn.Cow.
   
-  Parameter noise : ref Self -> M (ref str).
+  Parameter noise : forall `{H : State.Trait}, ref Self -> M (H := H) (ref str).
   
-  Global Instance Method_noise : Notation.Dot "noise" := {
+  Global Instance Method_noise `{H : State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
   Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
-    returning_traits_with_dyn.Animal.noise := noise;
+    returning_traits_with_dyn.Animal.noise `{H : State.Trait} := noise;
   }.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
-Parameter random_animal : f64 -> M (alloc.boxed.Box TraitObject).
+Parameter random_animal : forall `{H : State.Trait}, f64
+    -> M (H := H) (alloc.boxed.Box TraitObject).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

@@ -15,18 +15,24 @@ Definition Container := Container.t.
 
 Module Contains.
   Class Trait (Self : Set) {A B : Set} : Set := {
-    contains : (ref Self) -> (ref A) -> (ref B) -> (M bool);
-    first : (ref Self) -> (M i32);
-    last : (ref Self) -> (M i32);
+    contains
+      `{H : State.Trait}
+      :
+      (ref Self) -> (ref A) -> (ref B) -> (M (H := H) bool);
+    first `{H : State.Trait} : (ref Self) -> (M (H := H) i32);
+    last `{H : State.Trait} : (ref Self) -> (M (H := H) i32);
   }.
   
-  Global Instance Method_contains `(Trait) : Notation.Dot "contains" := {
+  Global Instance Method_contains `{H : State.Trait} `(Trait)
+    : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
-  Global Instance Method_first `(Trait) : Notation.Dot "first" := {
+  Global Instance Method_first `{H : State.Trait} `(Trait)
+    : Notation.Dot "first" := {
     Notation.dot := first;
   }.
-  Global Instance Method_last `(Trait) : Notation.Dot "last" := {
+  Global Instance Method_last `{H : State.Trait} `(Trait)
+    : Notation.Dot "last" := {
     Notation.dot := last;
   }.
 End Contains.
@@ -36,27 +42,31 @@ Module
   Definition Self := generics_associated_types_problem.Container.
   
   Definition contains
+      `{H : State.Trait}
       (self : ref Self)
       (number_1 : ref i32)
       (number_2 : ref i32)
-      : M bool :=
+      : M (H := H) bool :=
     let* α0 := (addr_of (self.[0])).["eq"] number_1 in
     let* α1 := (addr_of (self.[1])).["eq"] number_2 in
     α0.["andb"] α1.
   
-  Global Instance Method_contains : Notation.Dot "contains" := {
+  Global Instance Method_contains `{H : State.Trait} :
+    Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
-  Definition first (self : ref Self) : M i32 := Pure (self.[0]).
+  Definition first `{H : State.Trait} (self : ref Self) : M (H := H) i32 :=
+    Pure (self.[0]).
   
-  Global Instance Method_first : Notation.Dot "first" := {
+  Global Instance Method_first `{H : State.Trait} : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
-  Definition last (self : ref Self) : M i32 := Pure (self.[1]).
+  Definition last `{H : State.Trait} (self : ref Self) : M (H := H) i32 :=
+    Pure (self.[1]).
   
-  Global Instance Method_last : Notation.Dot "last" := {
+  Global Instance Method_last `{H : State.Trait} : Notation.Dot "last" := {
     Notation.dot := last;
   }.
   
@@ -65,24 +75,31 @@ Module
         Self
         (A := i32)
         (B := i32) := {
-    generics_associated_types_problem.Contains.contains := contains;
-    generics_associated_types_problem.Contains.first := first;
-    generics_associated_types_problem.Contains.last := last;
+    generics_associated_types_problem.Contains.contains
+      `{H : State.Trait}
+      :=
+      contains;
+    generics_associated_types_problem.Contains.first
+      `{H : State.Trait}
+      :=
+      first;
+    generics_associated_types_problem.Contains.last `{H : State.Trait} := last;
   }.
 End
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
 
 Definition difference
+    `{H : State.Trait}
     {A B C : Set}
     `{generics_associated_types_problem.Contains.Trait A B C}
     (container : ref C)
-    : M i32 :=
+    : M (H := H) i32 :=
   let* α0 := container.["last"] in
   let* α1 := container.["first"] in
   α0.["sub"] α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let number_1 := 3 in
   let number_2 := 10 in
   let container :=

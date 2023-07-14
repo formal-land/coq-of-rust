@@ -12,14 +12,16 @@ Definition Food := Food.t.
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Definition Self := combinators_map.Food.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
@@ -35,14 +37,16 @@ Definition Peeled := Peeled.t.
 Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Definition Self := combinators_map.Peeled.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
@@ -58,14 +62,16 @@ Definition Chopped := Chopped.t.
 Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Definition Self := combinators_map.Chopped.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
@@ -81,30 +87,38 @@ Definition Cooked := Cooked.t.
 Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Definition Self := combinators_map.Cooked.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
-Parameter peel : core.option.Option combinators_map.Food
-    -> M (core.option.Option combinators_map.Peeled).
+Parameter peel : forall `{H : State.Trait}, core.option.Option
+        combinators_map.Food
+    -> M (H := H) (core.option.Option combinators_map.Peeled).
 
-Parameter chop : core.option.Option combinators_map.Peeled
-    -> M (core.option.Option combinators_map.Chopped).
+Parameter chop : forall `{H : State.Trait}, core.option.Option
+        combinators_map.Peeled
+    -> M (H := H) (core.option.Option combinators_map.Chopped).
 
-Parameter cook : core.option.Option combinators_map.Chopped
-    -> M (core.option.Option combinators_map.Cooked).
+Parameter cook : forall `{H : State.Trait}, core.option.Option
+        combinators_map.Chopped
+    -> M (H := H) (core.option.Option combinators_map.Cooked).
 
-Parameter process : core.option.Option combinators_map.Food
-    -> M (core.option.Option combinators_map.Cooked).
+Parameter process : forall `{H : State.Trait}, core.option.Option
+        combinators_map.Food
+    -> M (H := H) (core.option.Option combinators_map.Cooked).
 
-Parameter eat : core.option.Option combinators_map.Cooked -> M unit.
+Parameter eat : forall `{H : State.Trait}, core.option.Option
+        combinators_map.Cooked
+    -> M (H := H) unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

@@ -11,14 +11,16 @@ Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -27,15 +29,15 @@ Module
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
   
-  Parameter clone : ref Self
-      -> M generics_phantom_type_test_case_unit_clarification.Inch.
+  Parameter clone : forall `{H : State.Trait}, ref Self
+      -> M (H := H) generics_phantom_type_test_case_unit_clarification.Inch.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -59,14 +61,16 @@ Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
@@ -75,15 +79,15 @@ Module
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
   
-  Parameter clone : ref Self
-      -> M generics_phantom_type_test_case_unit_clarification.Mm.
+  Parameter clone : forall `{H : State.Trait}, ref Self
+      -> M (H := H) generics_phantom_type_test_case_unit_clarification.Mm.
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
@@ -120,14 +124,16 @@ Section
     :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
-  Parameter fmt : ref Self-> mut_ref core.fmt.Formatter -> M core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
@@ -145,15 +151,17 @@ Section
     :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
-  Parameter clone : ref Self
-      -> M (generics_phantom_type_test_case_unit_clarification.Length Unit).
+  Parameter clone : forall `{H : State.Trait}, ref Self
+      ->
+        M (H := H)
+          (generics_phantom_type_test_case_unit_clarification.Length Unit).
   
-  Global Instance Method_clone : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
+    core.clone.Clone.clone `{H : State.Trait} := clone;
   }.
 End
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
@@ -192,16 +200,18 @@ Section
   Definition Output : Set :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
-  Parameter add : Self->
+  Parameter add : forall `{H : State.Trait}, Self->
       generics_phantom_type_test_case_unit_clarification.Length Unit
-      -> M (generics_phantom_type_test_case_unit_clarification.Length Unit).
+      ->
+        M (H := H)
+          (generics_phantom_type_test_case_unit_clarification.Length Unit).
   
-  Global Instance Method_add : Notation.Dot "add" := {
+  Global Instance Method_add `{H : State.Trait} : Notation.Dot "add" := {
     Notation.dot := add;
   }.
   
   Global Instance I : core.ops.arith.Add.Trait Self := {
-    core.ops.arith.Add.add := add;
+    core.ops.arith.Add.add `{H : State.Trait} := add;
   }.
 End
   Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
@@ -209,4 +219,4 @@ End
   Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : unit -> M unit.
+Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.

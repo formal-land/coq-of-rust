@@ -11,25 +11,31 @@ Definition List := List.t.
 Module Impl_enums_testcase_linked_list_List.
   Definition Self := enums_testcase_linked_list.List.
   
-  Definition new (_ : unit) : M enums_testcase_linked_list.List :=
+  Definition new
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) enums_testcase_linked_list.List :=
     Pure enums_testcase_linked_list.List.Nil.
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new `{H : State.Trait} :
+    Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
   Definition prepend
+      `{H : State.Trait}
       (self : Self)
       (elem : u32)
-      : M enums_testcase_linked_list.List :=
+      : M (H := H) enums_testcase_linked_list.List :=
     let* α0 := alloc.boxed.Box::["new"] self in
     Pure (enums_testcase_linked_list.List.Cons elem α0).
   
-  Global Instance Method_prepend : Notation.Dot "prepend" := {
+  Global Instance Method_prepend `{H : State.Trait} :
+    Notation.Dot "prepend" := {
     Notation.dot := prepend;
   }.
   
-  Definition len (self : ref Self) : M u32 :=
+  Definition len `{H : State.Trait} (self : ref Self) : M (H := H) u32 :=
     let* α0 := self.["deref"] in
     match α0 with
     | enums_testcase_linked_list.List.Cons _ tail =>
@@ -38,11 +44,14 @@ Module Impl_enums_testcase_linked_list_List.
     | enums_testcase_linked_list.List.Nil => Pure 0
     end.
   
-  Global Instance Method_len : Notation.Dot "len" := {
+  Global Instance Method_len `{H : State.Trait} : Notation.Dot "len" := {
     Notation.dot := len;
   }.
   
-  Definition stringify (self : ref Self) : M alloc.string.String :=
+  Definition stringify
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) alloc.string.String :=
     let* α0 := self.["deref"] in
     match α0 with
     | enums_testcase_linked_list.List.Cons head tail =>
@@ -63,13 +72,14 @@ Module Impl_enums_testcase_linked_list_List.
       Pure res
     end.
   
-  Global Instance Method_stringify : Notation.Dot "stringify" := {
+  Global Instance Method_stringify `{H : State.Trait} :
+    Notation.Dot "stringify" := {
     Notation.dot := stringify;
   }.
 End Impl_enums_testcase_linked_list_List.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* list := enums_testcase_linked_list.List::["new"] tt in
   let* _ :=
     let* α0 := list.["prepend"] 1 in

@@ -17,7 +17,7 @@ End Foo.
 Definition Foo : Set := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main (_ : unit) : M unit :=
+Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let foo :=
     {|
       match_destructuring_structs.Foo.x := (1, 2);
