@@ -3,8 +3,6 @@ Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust._std.option.
 Require Import CoqOfRust._std.vec.
 
-Definition Slice := slice.
-
 Module hack.
   Parameter t : Set.
 
