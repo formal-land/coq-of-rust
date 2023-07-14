@@ -2,6 +2,25 @@ Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust._std.option.
 
+Definition Slice := slice.
+
+Module hack.
+  Parameter t : Set.
+
+  Parameter into_vec : forall {T A : Set} `{core.alloc.Allocator.Trait A}
+    {(* TODO: use (Box (Slice T) A) instead of X *) X : Set} (b : X)
+    {(* TODO: use (Vec T A) instead of Y *) Y : Set}, Y.
+End hack.
+Definition hack := hack.t.
+
+Module hack_notations.
+  Global Instance hack_into_vec {T A : Set} `{core.alloc.Allocator.Trait A}
+    {X Y : Set} :
+    Notation.DoubleColon hack "into_vec" := {
+    Notation.double_colon (b : X) := hack.into_vec (T := T) (A := A) b (Y := Y);
+  }.
+End hack_notations.
+
 (* ********STRUCTS******** *)
 (*
 [x] ArrayChunks
@@ -32,25 +51,6 @@ Require Import CoqOfRust._std.option.
 [?] SplitNMut
 [x] Windows
 *)
-
-Definition Slice := slice.
-
-Module hack.
-  Parameter t : Set.
-
-  Parameter into_vec : forall {T A : Set} `{core.alloc.Allocator.Trait A}
-    {(* TODO: use (Box (Slice T) A) instead of X *) X : Set} (b : X)
-    {(* TODO: use (Vec T A) instead of Y *) Y : Set}, Y.
-End hack.
-Definition hack := hack.t.
-
-Module hack_notations.
-  Global Instance hack_into_vec {T A : Set} `{core.alloc.Allocator.Trait A}
-    {X Y : Set} :
-    Notation.DoubleColon hack "into_vec" := {
-    Notation.double_colon (b : X) := hack.into_vec (T := T) (A := A) b (Y := Y);
-  }.
-End hack_notations.
 
 (* 
 pub struct ArrayChunks<'a, T, const N: usize>
