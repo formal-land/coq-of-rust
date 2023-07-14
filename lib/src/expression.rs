@@ -185,16 +185,19 @@ fn compile_loop_source(loop_source: &rustc_hir::LoopSource) -> String {
     }
 }
 
-fn compile_qpath(env: &mut Env, qpath: &QPath) -> Expr {
+// if qpath is a LangItem, it means it is a method call
+// we have too little information to return that value here
+// it must be done in the calling function
+fn compile_qpath(env: &mut Env, qpath: &QPath) -> Result<Expr, rustc_hir::LangItem> {
     match qpath {
-        QPath::Resolved(_, path) => Expr::Var(compile_path(env, path)),
+        QPath::Resolved(_, path) => Ok(Expr::Var(compile_path(env, path))),
         QPath::TypeRelative(ty, segment) => {
             let ty = compile_type(env, ty);
             let func = segment.ident.to_string();
-            Expr::AssociatedFunction { ty, func }
+            Ok(Expr::AssociatedFunction { ty, func })
         }
         QPath::LangItem(lang_item, _, _) => {
-            Expr::LocalVar(to_valid_coq_name(lang_item.name().to_string()))
+            Err(*lang_item)
         }
     }
 }
@@ -594,15 +597,15 @@ fn mt_stmt(stmt: Stmt) -> Stmt {
     }
 }
 
-pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
+pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Result<Expr, rustc_hir::LangItem> {
     match &expr.kind {
-        ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
+        ExprKind::ConstBlock(_anon_const) => Ok(Expr::LocalVar("ConstBlock".to_string())),
         ExprKind::Array(elements) => {
             let elements = elements
                 .iter()
                 .map(|expr| compile_expr(env, expr))
                 .collect();
-            Expr::Array { elements }
+            Ok(Expr::Array { elements })
         }
         ExprKind::Call(func, args) => {
             let args = args.iter().map(|expr| compile_expr(env, expr)).collect();
@@ -624,14 +627,14 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                             ..
                         },
                     ),
-                ) => Expr::StructTuple {
+                ) => Ok(Expr::StructTuple {
                     path: compile_path(env, path),
                     fields: args,
                     struct_or_variant: StructOrVariant::of_qpath(env, &qpath),
-                },
+                }),
                 _ => {
                     let func = Box::new(compile_expr(env, func));
-                    Expr::Call { func, args }
+                    Ok(Expr::Call { func, args })
                 }
             }
         }
@@ -639,52 +642,52 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
             let object = compile_expr(env, object);
             let func = path_segment.ident.to_string();
             let args: Vec<_> = args.iter().map(|expr| compile_expr(env, expr)).collect();
-            Expr::MethodCall {
+            Ok(Expr::MethodCall {
                 object: Box::new(object),
                 func,
                 args,
-            }
+            })
         }
         ExprKind::Tup(elements) => {
             let elements = elements
                 .iter()
                 .map(|expr| compile_expr(env, expr))
                 .collect();
-            Expr::Tuple { elements }
+            Ok(Expr::Tuple { elements })
         }
         ExprKind::Binary(bin_op, expr_left, expr_right) => {
             let expr_left = compile_expr(env, expr_left);
             let expr_right = compile_expr(env, expr_right);
             let func = compile_bin_op(bin_op);
-            Expr::MethodCall {
+            Ok(Expr::MethodCall {
                 object: Box::new(expr_left),
                 func,
                 args: vec![expr_right],
-            }
+            })
         }
         ExprKind::Unary(un_op, expr) => {
             let expr = compile_expr(env, expr);
             let func = compile_un_op(un_op);
-            Expr::MethodCall {
+            Ok(Expr::MethodCall {
                 object: Box::new(expr),
                 func,
                 args: vec![],
-            }
+            })
         }
-        ExprKind::Lit(lit) => Expr::Literal(lit.node.clone()),
-        ExprKind::Cast(expr, ty) => Expr::Cast {
+        ExprKind::Lit(lit) => Ok(Expr::Literal(lit.node.clone())),
+        ExprKind::Cast(expr, ty) => Ok(Expr::Cast {
             expr: Box::new(compile_expr(env, expr)),
             ty: compile_type(env, ty),
-        },
-        ExprKind::Type(expr, ty) => Expr::Type {
+        }),
+        ExprKind::Type(expr, ty) => Ok(Expr::Type {
             expr: Box::new(compile_expr(env, expr)),
             ty: compile_type(env, ty),
-        },
+        }),
         ExprKind::DropTemps(expr) => compile_expr(env, expr),
         ExprKind::Let(rustc_hir::Let { pat, init, .. }) => {
             let pat = compile_pattern(env, pat);
             let init = Box::new(compile_expr(env, init));
-            Expr::LetIf { pat, init }
+            Ok(Expr::LetIf { pat, init })
         }
         ExprKind::If(condition, success, failure) => {
             let condition = Box::new(compile_expr(env, condition));
@@ -694,11 +697,11 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 Some(expr) => Box::new(compile_expr(env, expr)),
                 None => Box::new(tt()),
             };
-            Expr::If {
+            Ok(Expr::If {
                 condition,
                 success,
                 failure,
-            }
+            })
         }
         ExprKind::Loop(block, label, loop_source, _) => {
             if let Some(label) = label {
@@ -709,7 +712,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
             }
             let body = Box::new(compile_block(env, block));
             let loop_source = compile_loop_source(loop_source);
-            Expr::Loop { body, loop_source }
+            Ok(Expr::Loop { body, loop_source })
         }
         ExprKind::Match(scrutinee, arms, _) => {
             let scrutinee = Box::new(compile_expr(env, scrutinee));
@@ -731,7 +734,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                     MatchArm { pat, body }
                 })
                 .collect();
-            Expr::Match { scrutinee, arms }
+            Ok(Expr::Match { scrutinee, arms })
         }
         ExprKind::Closure(rustc_hir::Closure { body, .. }) => {
             let body = env.tcx.hir().body(*body);
@@ -741,7 +744,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 .map(|rustc_hir::Param { pat, .. }| compile_pattern(env, pat))
                 .collect();
             let body = Box::new(compile_expr(env, body.value));
-            Expr::Lambda { args, body }
+            Ok(Expr::Lambda { args, body })
         }
         ExprKind::Block(block, label) => {
             if let Some(label) = label {
@@ -750,36 +753,36 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                     .struct_span_warn(label.ident.span, "Labeled blocks are not supported.")
                     .emit();
             }
-            Expr::Block(Box::new(compile_block(env, block)))
+            Ok(Expr::Block(Box::new(compile_block(env, block))))
         }
         ExprKind::Assign(left, right, _) => {
             let left = Box::new(compile_expr(env, left));
             let right = Box::new(compile_expr(env, right));
-            Expr::Assign { left, right }
+            Ok(Expr::Assign { left, right })
         }
         ExprKind::AssignOp(bin_op, left, right) => {
             let func = compile_assign_bin_op(bin_op);
             let left = compile_expr(env, left);
             let right = compile_expr(env, right);
-            Expr::MethodCall {
+            Ok(Expr::MethodCall {
                 object: Box::new(left),
                 func,
                 args: vec![right],
-            }
+            })
         }
         ExprKind::Field(base, ident) => {
             let base = Box::new(compile_expr(env, base));
             let name = ident.name.to_string();
             let index = name.parse::<u32>();
             match index {
-                Ok(index) => Expr::IndexedField { base, index },
-                Err(_) => Expr::NamedField { base, name },
+                Ok(index) => Ok(Expr::IndexedField { base, index }),
+                Err(_) => Ok(Expr::NamedField { base, name }),
             }
         }
         ExprKind::Index(base, index) => {
             let base = Box::new(compile_expr(env, base));
             let index = Box::new(compile_expr(env, index));
-            Expr::Index { base, index }
+            Ok(Expr::Index { base, index })
         }
         ExprKind::Path(qpath) => {
             // Check if the path is a constructor.
@@ -791,25 +794,25 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 {
                     // We consider the constructor to be a unit struct,
                     // otherwise it would be in a Call expression.
-                    return Expr::StructUnit {
+                    return Ok(Expr::StructUnit {
                         path: compile_path(env, path),
-                    };
+                    });
                 }
             }
             compile_qpath(env, qpath)
         }
-        ExprKind::AddrOf(_, _, expr) => Expr::AddrOf(Box::new(compile_expr(env, expr))),
-        ExprKind::Break(_, _) => Expr::ControlFlow(LoopControlFlow::Break),
-        ExprKind::Continue(_) => Expr::ControlFlow(LoopControlFlow::Continue),
+        ExprKind::AddrOf(_, _, expr) => Ok(Expr::AddrOf(Box::new(compile_expr(env, expr)))),
+        ExprKind::Break(_, _) => Ok(Expr::ControlFlow(LoopControlFlow::Break)),
+        ExprKind::Continue(_) => Ok(Expr::ControlFlow(LoopControlFlow::Continue)),
         ExprKind::Ret(expr) => {
             let func = Box::new(Expr::LocalVar("Return".to_string()));
             let args = match expr {
                 Some(expr) => vec![compile_expr(env, expr)],
                 None => vec![],
             };
-            Expr::Call { func, args }
+            Ok(Expr::Call { func, args })
         }
-        ExprKind::InlineAsm(_) => Expr::LocalVar("InlineAsm".to_string()),
+        ExprKind::InlineAsm(_) => Ok(Expr::LocalVar("InlineAsm".to_string())),
         ExprKind::Struct(qpath, fields, base) => {
             let path = crate::path::compile_qpath(env, qpath);
             let fields = fields
@@ -822,29 +825,29 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 .collect();
             let base = base.map(|expr| Box::new(compile_expr(env, expr)));
             let struct_or_variant = StructOrVariant::of_qpath(env, qpath);
-            Expr::StructStruct {
+            Ok(Expr::StructStruct {
                 path,
                 fields,
                 base,
                 struct_or_variant,
-            }
+            })
         }
         ExprKind::Repeat(expr, _) => {
             let expr = compile_expr(env, expr);
-            Expr::Call {
+            Ok(Expr::Call {
                 func: Box::new(Expr::LocalVar("repeat".to_string())),
                 args: vec![expr],
-            }
+            })
         }
         ExprKind::Yield(expr, _) => {
             let expr = compile_expr(env, expr);
-            Expr::Call {
+            Ok(Expr::Call {
                 func: Box::new(Expr::LocalVar("yield".to_string())),
                 args: vec![expr],
-            }
+            })
         }
         ExprKind::OffsetOf(_, _) => todo!(),
-        ExprKind::Err(_) => Expr::LocalVar("Err".to_string()),
+        ExprKind::Err(_) => Ok(Expr::LocalVar("Err".to_string())),
     }
 }
 
