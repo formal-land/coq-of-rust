@@ -10,7 +10,7 @@ Module mir.
   *)
   (* pub struct BasicBlock; *)
   Module BasicBlock.
-    Record t : Set := { }.
+    Inductive t : Set := Build.
   End BasicBlock.
   Definition BasicBlock := BasicBlock.t.
 

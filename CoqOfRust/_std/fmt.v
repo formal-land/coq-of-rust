@@ -14,7 +14,7 @@ Require Import CoqOfRust._std.result.
 *)
 (* pub struct Arguments<'a> { /* private fields */ } *)
 Module Arguments.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Arguments.
 Definition Arguments := Arguments.t.
 
@@ -25,7 +25,7 @@ where
 { /* private fields */ }
 *)
 Module DebugList.
-  Record t : Set := { }.
+  Parameter t : Set.
 End DebugList.
 Definition DebugList := DebugList.t.
 
@@ -36,7 +36,7 @@ where
 { /* private fields */ }
 *)
 Module DebugMap.
-  Record t : Set := { }.
+  Parameter t : Set.
 End DebugMap.
 Definition DebugMap := DebugMap.t.
 
@@ -47,7 +47,7 @@ where
 { /* private fields */ }
 *)
 Module DebugSet.
-  Record t : Set := { }.
+  Parameter t : Set.
 End DebugSet.
 Definition DebugSet := DebugSet.t.
 
@@ -58,7 +58,7 @@ where
 { /* private fields */ }
 *)
 Module DebugStruct.
-  Record t : Set := { }.
+  Parameter t : Set.
 End DebugStruct.
 Definition DebugStruct := DebugStruct.t.
 
@@ -69,19 +69,19 @@ where
 { /* private fields */ }
 *)
 Module DebugTuple.
-  Record t : Set := { }.
+  Parameter t : Set.
 End DebugTuple.
 Definition DebugTuple := DebugTuple.t.
 
 (* pub struct Error; *)
 Module Error.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End Error.
 Definition Error := Error.t.
 
 (* pub struct Formatter<'a> { /* private fields */ } *)
 Module Formatter.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Formatter.
 Definition Formatter := Formatter.t.
 

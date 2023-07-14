@@ -36,7 +36,7 @@ Require Import CoqOfRust._std.result.
 
 (* pub struct Error { /* private fields */ } *)
 Module Error.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Error.
 Definition Error := Error.t.
 
@@ -44,25 +44,25 @@ Definition Result (T : Set) := _std.result.Result T Error.t.
 
 (* pub struct BorrowedBuf<'data> { /* private fields */ } *)
 Module BorrowedBuf.
-  Record t : Set := { }.
+  Parameter t : Set.
 End BorrowedBuf.
 Definition BorrowedBuf := BorrowedBuf.t.
 
 (* pub struct BorrowedCursor<'a> { /* private fields */ } *)
 Module BorrowedCursor.
-  Record t : Set := { }.
+  Parameter t : Set.
 End BorrowedCursor.
 Definition BorrowedCursor := BorrowedCursor.t.
 
 (* pub struct BufReader<R> { /* private fields */ } *)
 Module BufReader.
-  Record t (R : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End BufReader.
 Definition BufReader := BufReader.t.
 
 (* pub struct IoSlice<'a>(_); *)
 Module IoSlice.
-  Record t : Set := { }.
+  Parameter t : Set.
 End IoSlice.
 Definition IoSlice := IoSlice.t.
 
@@ -98,121 +98,121 @@ End Write.
 
 (* pub struct BufWriter<W: Write> { /* private fields */ } *)
 Module BufWriter.
-  Record t (W : Set) `{Write.Trait W} : Set := { }.
+  Parameter t : forall (W : Set) `{Write.Trait W}, Set.
 End BufWriter.
 Definition BufWriter := BufWriter.t.
 
 (* pub struct Bytes<R> { /* private fields */ } *)
 Module Bytes.
-  Record t (R : Set) : Set := { }.
+  Parameter t : forall (R : Set), Set.
 End Bytes.
 Definition Bytes := Bytes.t.
 
 (* pub struct Chain<T, U> { /* private fields */ } *)
 Module Chain.
-  Record t (T U : Set) : Set := { }.
+  Parameter t : forall (T U : Set), Set.
 End Chain.
 Definition Chain := Chain.t.
 
 (* pub struct Cursor<T> { /* private fields */ } *)
 Module Cursor.
-  Record t (T : Set) : Set := { }.
+  Parameter t : forall (T : Set), Set.
 End Cursor.
 Definition Cursor := Cursor.t.
 
 (* pub struct Empty; *)
 Module Empty.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Empty.
 Definition Empty := Empty.t.
 
 (* pub struct IntoInnerError<W>(_, _); *)
 Module IntoInnerError.
-  Record t (W : Set) : Set := { }.
+  Parameter t : forall (W : Set), Set.
 End IntoInnerError.
 Definition IntoInnerError := IntoInnerError.t.
 
 (* pub struct IoSliceMut<'a>(_); *)
 Module IoSliceMut.
-  Record t : Set := { }.
+  Parameter t : Set.
 End IoSliceMut.
 Definition IoSliceMut := IoSliceMut.t.
 
 (* pub struct LineWriter<W: Write> { /* private fields */ } *)
 Module LineWriter.
-  Record t (W : Set) `{Write.Trait W} : Set := { }.
+  Parameter t : forall (W : Set) `{Write.Trait W}, Set.
 End LineWriter.
 Definition LineWriter := LineWriter.t.
 
 (* pub struct Lines<B> { /* private fields */ } *)
 Module Lines.
-  Record t (B : Set) : Set := { }.
+  Parameter t : forall (B : Set), Set.
 End Lines.
 Definition Lines := Lines.t.
 
 (* pub struct Repeat { /* private fields */ } *)
 Module Repeat.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Repeat.
 Definition Repeat := Repeat.t.
 
 (* pub struct Sink; *)
 Module Sink.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Sink.
 Definition Sink := Sink.t.
 
 (* pub struct Split<B> { /* private fields */ } *)
 Module Split.
-  Record t (B : Set) : Set := { }.
+  Parameter t : forall (B : Set), Set.
 End Split.
 Definition Split := Split.t.
 
 (* pub struct Stderr { /* private fields */ } *)
 Module Stderr.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Stderr.
 Definition Stderr := Stderr.t.
 
 (* pub struct StderrLock<'a> { /* private fields */ } *)
 Module StderrLock.
-  Record t : Set := { }.
+  Parameter t : Set.
 End StderrLock.
 Definition StderrLock := StderrLock.t.
 
 (* pub struct Stdin { /* private fields */ } *)
 Module Stdin.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Stdin.
 Definition Stdin := Stdin.t.
 
 (* pub struct StdinLock<'a> { /* private fields */ } *)
 Module StdinLock.
-  Record t : Set := { }.
+  Parameter t : Set.
 End StdinLock.
 Definition StdinLock := StdinLock.t.
 
 (* pub struct Stdout { /* private fields */ } *)
 Module Stdout.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Stdout.
 Definition Stdout := Stdout.t.
 
 (* pub struct StdoutLock<'a> { /* private fields */ } *)
 Module StdoutLock.
-  Record t : Set := { }.
+  Parameter t : Set.
 End StdoutLock.
 Definition StdoutLock := StdoutLock.t.
 
 (* pub struct Take<T> { /* private fields */ } *)
 Module Take.
-  Record t (T : Set) : Set := { }.
+  Parameter t : forall (T : Set), Set.
 End Take.
 Definition Take := Take.t.
 
 (* pub struct WriterPanicked { /* private fields */ } *)
 Module WriterPanicked.
-  Record t : Set := { }.
+  Parameter t : Set.
 End WriterPanicked.
 Definition WriterPanicked := WriterPanicked.t.
 

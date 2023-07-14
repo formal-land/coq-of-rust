@@ -32,19 +32,23 @@ pub unsafe trait SimdElement: Sealed + Copy {
 }
 *)
 Module SimdElement.
+  Unset Primitive Projections.
   Class Trait (Self Mask : Set) 
     `{Copy.Trait Self}
   : Set := { 
     Mask := Mask;
   }.
+  Set Primitive Projections.
 End SimdElement.
 
 (* NOTE: Sealed trait ignored *)
 (* pub unsafe trait MaskElement: SimdElement + Sealed { } *)
 Module MaskElement.
+  Unset Primitive Projections.
   Class Trait (Self : Set) 
     `{SimdElement.Trait Self}
   : Set := { }.
+  Set Primitive Projections.
 End MaskElement.
 
 (* 
@@ -301,12 +305,14 @@ End StdFloat.
 (* NOTE: Sealed trait ignored *)
 (* pub trait SupportedLaneCount: Sealed { } *)
 Module SupportedLaneCount.
+  Unset Primitive Projections.
   Class Trait (Self : Set) : Set := { }.
+  Set Primitive Projections.
 End SupportedLaneCount.
 
 (* pub struct LaneCount<const LANES: usize>; *)
 Module LaneCount.
-  Record t (LANES : usize) : Set := { }.
+  Parameter t : forall (LANES : usize), Set.
 End LaneCount.
 Definition LaneCount := LaneCount.t.
 
@@ -317,10 +323,10 @@ where
          LaneCount<LANES>: SupportedLaneCount;
 *)
 Module Simd.
-  Record t (T : Set) (LANES : usize) 
+  Parameter t : forall (T : Set) (LANES : usize) 
     `{SimdElement.Trait T}
-    `{SupportedLaneCount.Trait (LaneCount LANES)}
-  : Set := { }.
+    `{SupportedLaneCount.Trait (LaneCount LANES)},
+    Set.
 End Simd.
 Definition Simd (T : Set) (LANES : usize)
   `{SimdElement.Trait T}
@@ -412,10 +418,10 @@ where
          LaneCount<LANES>: SupportedLaneCount;
 *)
 Module Mask.
-  Record t (T : Set) (LANES : usize) 
+  Parameter t : forall (T : Set) (LANES : usize)
     `{MaskElement.Trait T}
-    `{SupportedLaneCount.Trait (LaneCount LANES)}
-  : Set := { }.
+    `{SupportedLaneCount.Trait (LaneCount LANES)},
+    Set.
 End Mask.
 Definition Mask := Mask.t.
 

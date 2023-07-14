@@ -730,6 +730,15 @@ Module codegen.
   Module Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
     Definition Self := ink_e2e_macro.codegen.ContractManifests.
     
+    Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
+      string -> core_option_Option_alloc_string_String -> 
+      string -> alloc_vec_Vec_alloc_string_String -> 
+      M (H := H) core.fmt.Result.
+    
+    Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
+      core.fmt.Formatter "debug_struct_field2_finish" := {
+      Notation.double_colon := debug_struct_field2_finish; }.
+    
     Definition fmt
         `{H : State.Trait}
         (self : ref Self)
@@ -1681,6 +1690,15 @@ Definition ContractManifests : Set := ContractManifests.t.
 Module Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
   Definition Self := ink_e2e_macro.codegen.ContractManifests.
   
+  Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
+    string -> core_option_Option_alloc_string_String -> 
+    string -> alloc_vec_Vec_alloc_string_String -> 
+    M (H := H) core.fmt.Result.
+  
+  Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
+    core.fmt.Formatter "debug_struct_field2_finish" := {
+    Notation.double_colon := debug_struct_field2_finish; }.
+  
   Definition fmt
       `{H : State.Trait}
       (self : ref Self)
@@ -1865,6 +1883,16 @@ Module config.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
     Definition Self := ink_e2e_macro.config.E2EConfig.
+    
+    Parameter debug_struct_field3_finish : core.fmt.Formatter -> string -> 
+      string -> ink_ir_ir_utils_WhitelistedAttributes -> 
+      string -> alloc_vec_Vec_alloc_string_String -> 
+      string -> core_option_Option_syn_path_Path -> 
+      M (H := H) core.fmt.Result.
+    
+    Global Instance Deb_debug_struct_field3_finish : Notation.DoubleColon
+      core.fmt.Formatter "debug_struct_field3_finish" := {
+      Notation.double_colon := debug_struct_field3_finish; }.
     
     Definition fmt
         `{H : State.Trait}
@@ -2189,6 +2217,16 @@ Definition E2EConfig : Set := E2EConfig.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
   Definition Self := ink_e2e_macro.config.E2EConfig.
+  
+  Parameter debug_struct_field3_finish : core.fmt.Formatter -> string -> 
+    string -> ink_ir_ir_utils_WhitelistedAttributes -> 
+    string -> alloc_vec_Vec_alloc_string_String -> 
+    string -> core_option_Option_syn_path_Path -> 
+    M (H := H) core.fmt.Result.
+  
+  Global Instance Deb_debug_struct_field3_finish : Notation.DoubleColon
+    core.fmt.Formatter "debug_struct_field3_finish" := {
+    Notation.double_colon := debug_struct_field3_finish; }.
   
   Definition fmt
       `{H : State.Trait}

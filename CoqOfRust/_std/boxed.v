@@ -13,7 +13,7 @@ where
          T: ?Sized;
 *)
 Module Box.
-  Record t (T A : Set) : Set := { }.
+  Parameter t : forall (T A : Set), Set.
 End Box.
 Definition Box (T : Set) (A : option Set) 
   `{Allocator.Trait (defaultType A Global)}

@@ -1,9 +1,12 @@
 use clap::*;
 use serde::{Deserialize, Serialize};
 
-/// There are no options for now.
 #[derive(Parser, Serialize, Deserialize)]
-pub struct CoqOfRustArgs {}
+pub struct CoqOfRustArgs {
+    /// Axiomatize the definitions
+    #[arg(long)]
+    axiomatize: bool,
+}
 
 #[derive(Parser)]
 pub struct Args {
@@ -16,14 +19,16 @@ pub struct Args {
 #[derive(Clone)]
 pub struct Options {
     pub(crate) in_cargo: bool,
+    pub(crate) axiomatize: bool,
 }
 
 impl Options {
-    pub fn from_args(_args: CoqOfRustArgs) -> Self {
+    pub fn from_args(coq_of_rust: CoqOfRustArgs) -> Self {
         let cargo_coq_of_rust = std::env::var("CARGO_COQ_OF_RUST").is_ok();
 
         Options {
             in_cargo: cargo_coq_of_rust,
+            axiomatize: coq_of_rust.axiomatize,
         }
     }
 }

@@ -11,7 +11,7 @@ Require Import CoqOfRust._std.task.
 
 (* pub struct FromIter<I> { /* private fields */ } *)
 Module FromIter.
-  Record t (I : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End FromIter.
 Definition FromIter := FromIter.t.
 

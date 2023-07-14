@@ -41,7 +41,7 @@ End Error.
 
 (* pub struct Report<E = Box<dyn Error>> { /* private fields */ } *)
 Module Report.
-  Record t (E : Set) : Set := { }.
+  Parameter t : forall (E : Set), Set.
 End Report.
 Definition Report (E : option Set) `{alloc.Allocator.Trait (defaultType None alloc.Global)} : Set :=
   Report.t (defaultType E (Box Error None)).

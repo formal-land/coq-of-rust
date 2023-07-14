@@ -20,7 +20,7 @@ Module pattern.
 
   (* pub struct CharArraySearcher<'a, const N: usize>(_); *)
   Module CharArraySearcher.
-    Record t (N : usize) : Set := { }.
+    Parameter t : usize -> Set.
   End CharArraySearcher.
   Definition CharArraySearcher := CharArraySearcher.t.
 
@@ -31,25 +31,25 @@ Module pattern.
           F: FnMut(char) -> bool;
   *)
   Module CharPredicateSearcher.
-    Record t (F : Set) : Set := { }.
+    Parameter t : Set -> Set.
   End CharPredicateSearcher.
   Definition CharPredicateSearcher := CharPredicateSearcher.t.
   
   (* pub struct CharSearcher<'a> { /* private fields */ } *)
   Module CharSearcher.
-    Record t : Set := { }.
+    Parameter t : Set.
   End CharSearcher.
   Definition CharSearcher := CharSearcher.t.
 
   (* pub struct CharSliceSearcher<'a, 'b>(_); *)
   Module CharSliceSearcher.
-    Record t : Set := { }.
+    Parameter t : Set.
   End CharSliceSearcher.
   Definition CharSliceSearcher := CharSliceSearcher.t.
   
   (* pub struct StrSearcher<'a, 'b> { /* private fields */ } *)
   Module StrSearcher.
-    Record t : Set := { }.
+    Parameter t : Set.
   End StrSearcher.
   Definition StrSearcher := StrSearcher.t.
   
@@ -155,7 +155,9 @@ Module pattern.
 
   (* pub trait DoubleEndedSearcher<'a>: ReverseSearcher<'a> { } *)
   Module DoubleEndedSearcher.
+    Unset Primitive Projections.
     Class Trait (Self : Set) `{ReverseSearcher.Trait Self} : Set := { }.
+    Set Primitive Projections.
   End DoubleEndedSearcher.
   
 End pattern.
@@ -194,61 +196,61 @@ Import pattern.
 
 (* pub struct Utf8Chunk<'a> { /* private fields */ } *)
 Module Utf8Chunk.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Utf8Chunk.
 Definition Utf8Chunk := Utf8Chunk.t.
 
 (* pub struct Utf8Chunks<'a> { /* private fields */ } *)
 Module Utf8Chunks.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Utf8Chunks.
 Definition Utf8Chunks := Utf8Chunks.t.
 
 (* pub struct Bytes<'a>(_); *)
 Module Bytes.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Bytes.
 Definition Bytes := Bytes.t.
 
 (* pub struct CharIndices<'a> { /* private fields */ } *)
 Module CharIndices.
-  Record t : Set := { }.
+  Parameter t : Set.
 End CharIndices.
 Definition CharIndices := CharIndices.t.
 
 (* pub struct Chars<'a> { /* private fields */ } *)
 Module Chars.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Chars.
 Definition Chars := Chars.t.
 
 (* pub struct EncodeUtf16<'a> { /* private fields */ } *)
 Module EncodeUtf16.
-  Record t : Set := { }.
+  Parameter t : Set.
 End EncodeUtf16.
 Definition EncodeUtf16 := EncodeUtf16.t.
 
 (* pub struct EscapeDebug<'a> { /* private fields */ } *)
 Module EscapeDebug.
-  Record t : Set := { }.
+  Parameter t : Set.
 End EscapeDebug.
 Definition EscapeDebug := EscapeDebug.t.
 
 (* pub struct EscapeDefault<'a> { /* private fields */ } *)
 Module EscapeDefault.
-  Record t : Set := { }.
+  Parameter t : Set.
 End EscapeDefault.
 Definition EscapeDefault := EscapeDefault.t.
 
 (* pub struct EscapeUnicode<'a> { /* private fields */ } *)
 Module EscapeUnicode.
-  Record t : Set := { }.
+  Parameter t : Set.
 End EscapeUnicode.
 Definition EscapeUnicode := EscapeUnicode.t.
 
 (* pub struct Lines<'a>(_); *)
 Module Lines.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Lines.
 Definition Lines := Lines.t.
 
@@ -260,7 +262,7 @@ where
          P: Pattern<'a>;
 *)
 Module MatchIndices.
-  Record t (P : Set) `{Pattern.Trait P} : Set := { }.
+  Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End MatchIndices.
 Definition MatchIndices := MatchIndices.t.
 
@@ -270,13 +272,13 @@ where
          P: Pattern<'a>;
 *)
 Module Matches.
-  Record t (P : Set) `{Pattern.Trait P} : Set := { }.
+  Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End Matches.
 Definition Matches := Matches.t.
 
 (* pub struct ParseBoolError; *)
 Module ParseBoolError.
-  Record t : Set := { }.
+  Parameter t : Set.
 End ParseBoolError.
 Definition ParseBoolError := ParseBoolError.t.
 
@@ -286,7 +288,7 @@ where
          P: Pattern<'a>;
 *)
 Module RMatchIndices.
-  Record t (P : Set) `{Pattern.Trait P} : Set := { }.
+  Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End RMatchIndices.
 Definition RMatchIndices := RMatchIndices.t.
 
@@ -296,7 +298,7 @@ where
          P: Pattern<'a>;
 *)
 Module RMatches.
-  Record t (P : Set) `{Pattern.Trait P} : Set := { }.
+  Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End RMatches.
 Definition RMatches := RMatches.t.
 
@@ -306,7 +308,7 @@ where
          P: Pattern<'a>;
 *)
 Module RSplit.
-  Record t (P : Set) `{Pattern.Trait P} : Set := { }.
+  Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End RSplit.
 Definition RSplit := RSplit.t.
 
@@ -316,7 +318,7 @@ where
          P: Pattern<'a>;
 *)
 Module RSplitN.
-  Record t (P : Set) `{Pattern.Trait P} : Set := { }.
+  Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End RSplitN.
 Definition RSplitN := RSplitN.t.
 
@@ -326,7 +328,7 @@ where
          P: Pattern<'a>;
 *)
 Module RSplitTerminator.
-  Record t (P : Set) `{Pattern.Trait P} : Set := { }.
+  Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End RSplitTerminator.
 Definition RSplitTerminator := RSplitTerminator.t.
 
@@ -336,13 +338,13 @@ where
          P: Pattern<'a>;
 *)
 Module Split.
-  Record t (P : Set) `{Pattern.Trait P} : Set := { }.
+  Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End Split.
 Definition Split := Split.t.
 
 (* pub struct SplitAsciiWhitespace<'a> { /* private fields */ } *)
 Module SplitAsciiWhitespace.
-  Record t : Set := { }.
+  Parameter t : Set.
 End SplitAsciiWhitespace.
 Definition SplitAsciiWhitespace := SplitAsciiWhitespace.t.
 
@@ -352,7 +354,7 @@ where
          P: Pattern<'a>;
 *)
 Module SplitInclusive.
-  Record t (P : Set) `{Pattern.Trait P} : Set := { }.
+  Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End SplitInclusive.
 Definition SplitInclusive := SplitInclusive.t.
 
@@ -362,7 +364,7 @@ where
          P: Pattern<'a>;
 *)
 Module SplitN.
-  Record t (P : Set) `{Pattern.Trait P} : Set := { }.
+  Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End SplitN.
 Definition SplitN := SplitN.t.
 
@@ -373,20 +375,20 @@ where
          P: Pattern<'a>;
 *)
 Module SplitTerminator.
-  Record t (P : Set) `{Pattern.Trait P} : Set := { }.
+  Parameter t : forall (P : Set) `{Pattern.Trait P}, Set.
 End SplitTerminator.
 Definition SplitTerminator := SplitTerminator.t.
 
 
 (* pub struct SplitWhitespace<'a> { /* private fields */ } *)
 Module SplitWhitespace.
-  Record t : Set := { }.
+  Parameter t : Set.
 End SplitWhitespace.
 Definition SplitWhitespace := SplitWhitespace.t.
 
 (* pub struct Utf8Error { /* private fields */ } *)
 Module Utf8Error.
-  Record t : Set := { }.
+  Parameter t : Set.
 End Utf8Error.
 Definition Utf8Error := Utf8Error.t.
 

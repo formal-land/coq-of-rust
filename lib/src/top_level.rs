@@ -14,6 +14,10 @@ use rustc_span::symbol::sym;
 use std::collections::HashMap;
 use std::string::ToString;
 
+pub(crate) struct TopLevelOptions {
+    pub axiomatize: bool,
+}
+
 #[derive(Debug)]
 enum TraitItem {
     Definition {
@@ -39,6 +43,7 @@ enum ImplItem {
         body: Box<Expr>,
         is_method: bool,
         is_dead_code: bool,
+        is_axiomatized: bool,
     },
     Type {
         ty: Box<CoqType>,
@@ -75,6 +80,7 @@ enum TopLevelItem {
         ret_ty: Box<CoqType>,
         body: Box<Expr>,
         is_dead_code: bool,
+        is_axiomatized: bool,
     },
     TypeAlias {
         name: String,
@@ -322,6 +328,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 ret_ty,
                 body,
                 is_dead_code: if_marked_as_dead_code,
+                is_axiomatized: env.axiomatize,
             }]
         }
         ItemKind::Macro(_, _) => vec![],
@@ -507,6 +514,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 body: Box::new(compile_expr(env, expr)),
                                 is_method,
                                 is_dead_code: if_marked_as_dead_code,
+                                is_axiomatized: env.axiomatize,
                             }
                         }
                         ImplItemKind::Type(ty) => ImplItem::Type {
@@ -581,10 +589,11 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
     }
 }
 
-fn compile_top_level(tcx: &TyCtxt) -> TopLevel {
+fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
     let mut env = Env {
         impl_counter: HashMap::new(),
         tcx: *tcx,
+        axiomatize: opts.axiomatize,
     };
 
     TopLevel(
@@ -600,8 +609,8 @@ fn compile_top_level(tcx: &TyCtxt) -> TopLevel {
 
 const LINE_WIDTH: usize = 80;
 
-pub fn top_level_to_coq(tcx: &TyCtxt) -> String {
-    let top_level = compile_top_level(tcx);
+pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
+    let top_level = compile_top_level(tcx, opts);
     let top_level = mt_top_level(top_level);
     top_level.to_pretty(LINE_WIDTH)
 }
@@ -614,7 +623,63 @@ fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
     text("`{H : State.Trait}")
 }
 
-fn fn_to_doc<'a>(
+fn types_for_f(extra_data: Option<&TopLevelItem>) -> Doc {
+    match extra_data {
+        // @TODO this is support for TypeStructStruct,
+        // add support for more items
+        Some(TopLevelItem::TypeStructStruct {
+            name: _,
+            fields,
+            is_dead_code: _,
+        }) => {
+            concat([
+                text("string"),
+                text(" -> "),
+                line(),
+                intersperse(
+                    fields.iter().map(|(_str, boxed_coq_type)| {
+                        let nm = boxed_coq_type.to_name();
+                        let nn = if nm == *"StaticRef_str" {
+                            String::from("string")
+                        } else {
+                            boxed_coq_type.to_name()
+                        };
+                        group([
+                            // print field name
+                            text("string"),
+                            text(" -> "),
+                            // print field type
+                            text(nn),
+                            text(" -> "),
+                        ])
+                    }),
+                    [line()],
+                ),
+                line(),
+            ])
+        }
+        // @TODO unreachable branch, extend to cover more cases
+        _ => nil(),
+    }
+}
+
+// additional check. can be eliminated when all possible cases will be covered
+fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
+    match extra_data {
+        // @TODO this is support for TypeStructStruct,
+        // add support for more items
+        Some(TopLevelItem::TypeStructStruct {
+            name: _,
+            fields: _,
+            is_dead_code: _,
+        }) => true,
+        _ => false,
+    }
+}
+
+// We can not have more than 7 arguments for the function,
+// so we put all the arguments into one struct
+struct ArgumentsForFnToDoc<'a> {
     name: &'a String,
     ty_params: Option<&'a Vec<String>>,
     where_predicates: Option<&'a Vec<WherePredicate>>,
@@ -622,9 +687,15 @@ fn fn_to_doc<'a>(
     ret_ty: &'a CoqType,
     body: &'a Expr,
     is_dead_code: bool,
-) -> Doc<'a> {
+    is_axiomatized: bool,
+    extra_data: Option<&'a TopLevelItem>,
+}
+
+fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
+    let types_for_f = types_for_f(strct_args.extra_data);
+
     group([
-        if is_dead_code {
+        if strct_args.is_dead_code {
             concat([
                 text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
                 hardline(),
@@ -632,31 +703,104 @@ fn fn_to_doc<'a>(
         } else {
             nil()
         },
-        nest([
-            nest([
-                nest([text("Definition"), line(), text(name)]),
-                line(),
-                monadic_typeclass_parameter(),
-                match ty_params {
+        // Printing instance of DoubleColon Class for [f]
+        // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
+        if (strct_args.name == "fmt") && is_extra(strct_args.extra_data) {
+            group([
+                nest([
+                    text("Parameter "),
+                    strct_args.body.parameter_name_for_fmt(),
+                    text(" : "),
+                    // get type of argument named f
+                    // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
+                    concat(strct_args.args.iter().map(|(name, ty)| {
+                        if name == "f" {
+                            ty.to_doc_tuning(false)
+                        } else {
+                            nil()
+                        }
+                    })),
+                    text(" -> "),
+                    types_for_f,
+                    strct_args.ret_ty.to_doc(false),
+                    text("."),
+                ]),
+                hardline(),
+                hardline(),
+                nest([
+                    text("Global Instance Deb_"),
+                    strct_args.body.parameter_name_for_fmt(),
+                    text(" : "),
+                    text("Notation.DoubleColon"),
+                    line(),
+                    concat(strct_args.args.iter().map(|(name, ty)| {
+                        if name == "f" {
+                            ty.to_doc_tuning(false)
+                        } else {
+                            nil()
+                        }
+                    })),
+                    text(" \""),
+                    strct_args.body.parameter_name_for_fmt(),
+                    text("\""),
+                    text(" := "),
+                    text("{"),
+                    line(),
+                    nest([
+                        text("Notation.double_colon := "),
+                        strct_args.body.parameter_name_for_fmt(),
+                        text(";"),
+                        line(),
+                    ]),
+                    text("}."),
+                ]),
+                hardline(),
+                hardline(),
+            ])
+        } else {
+            nil()
+        },
+        if strct_args.is_axiomatized {
+            nest([nest([
+                nest([
+                    text("Parameter"),
+                    line(),
+                    text(strct_args.name),
+                    line(),
+                    text(":"),
+                    line(),
+                ]),
+                nest([
+                    text("forall"),
+                    line(),
+                    monadic_typeclass_parameter(),
+                    text(","),
+                    line(),
+                ]),
+                // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
+                match strct_args.ty_params {
                     None => nil(),
                     Some(ty_params) => {
                         if ty_params.is_empty() {
                             nil()
                         } else {
                             concat([
+                                text("forall"),
                                 line(),
-                                nest([
-                                    text("{"),
-                                    intersperse(ty_params.iter().map(text), [line()]),
-                                    line(),
-                                    text(": Set}"),
-                                ]),
+                                nest([intersperse(
+                                    ty_params.iter().map(|t| {
+                                        concat([text("{"), text(t), text(" : "), text("Set}")])
+                                    }),
+                                    [line()],
+                                )]),
+                                text(","),
+                                line(),
                             ])
                         }
                     }
                 },
-                line(),
-                match where_predicates {
+                // where predicates types
+                match strct_args.where_predicates {
                     None => nil(),
                     Some(where_predicates) => concat(where_predicates.iter().map(
                         |WherePredicate {
@@ -683,31 +827,110 @@ fn fn_to_doc<'a>(
                         },
                     )),
                 },
-                if args.is_empty() {
-                    text("(_ : unit)")
+                // argument types
+                if strct_args.args.is_empty() {
+                    text("unit")
                 } else {
                     intersperse(
-                        args.iter().map(|(name, ty)| {
-                            nest([
-                                text("("),
-                                text(name),
-                                line(),
-                                text(":"),
-                                line(),
-                                ty.to_doc(false),
-                                text(")"),
-                            ])
-                        }),
-                        [line()],
+                        strct_args
+                            .args
+                            .iter()
+                            .map(|(_, ty)| nest([ty.to_doc(false)])),
+                        [text("->"), line()],
                     )
                 },
                 line(),
-                nest([text(":"), line(), ret_ty.to_doc(false), text(" :=")]),
-            ]),
-            line(),
-            body.to_doc(false),
-            text("."),
-        ]),
+                // return type
+                nest([
+                    text("->"),
+                    line(),
+                    strct_args.ret_ty.to_doc(false),
+                    text("."),
+                ]),
+            ])])
+        } else {
+            nest([
+                nest([
+                    nest([text("Definition"), line(), text(strct_args.name)]),
+                    line(),
+                    monadic_typeclass_parameter(),
+                    match strct_args.ty_params {
+                        None => nil(),
+                        Some(ty_params) => {
+                            if ty_params.is_empty() {
+                                nil()
+                            } else {
+                                concat([
+                                    line(),
+                                    nest([
+                                        text("{"),
+                                        intersperse(ty_params.iter().map(text), [line()]),
+                                        line(),
+                                        text(": Set}"),
+                                    ]),
+                                ])
+                            }
+                        }
+                    },
+                    line(),
+                    match strct_args.where_predicates {
+                        None => nil(),
+                        Some(where_predicates) => concat(where_predicates.iter().map(
+                            |WherePredicate {
+                                 name,
+                                 ty_params,
+                                 ty,
+                             }| {
+                                concat([
+                                    nest([
+                                        text("`{"),
+                                        name.to_doc(),
+                                        text(".Trait"),
+                                        line(),
+                                        concat(
+                                            ty_params
+                                                .iter()
+                                                .map(|param| concat([param.to_doc(true), line()])),
+                                        ),
+                                        ty.to_doc(true),
+                                        text("}"),
+                                    ]),
+                                    line(),
+                                ])
+                            },
+                        )),
+                    },
+                    if strct_args.args.is_empty() {
+                        text("(_ : unit)")
+                    } else {
+                        intersperse(
+                            strct_args.args.iter().map(|(name, ty)| {
+                                nest([
+                                    text("("),
+                                    text(name),
+                                    line(),
+                                    text(":"),
+                                    line(),
+                                    ty.to_doc(false),
+                                    text(")"),
+                                ])
+                            }),
+                            [line()],
+                        )
+                    },
+                    line(),
+                    nest([
+                        text(":"),
+                        line(),
+                        strct_args.ret_ty.to_doc(false),
+                        text(" :="),
+                    ]),
+                ]),
+                line(),
+                strct_args.body.to_doc(false),
+                text("."),
+            ])
+        },
     ])
 }
 
@@ -726,6 +949,7 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
             body,
             is_method,
             is_dead_code,
+            is_axiomatized,
         } => {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             ImplItem::Definition {
@@ -734,6 +958,7 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
                 body: Box::new(Expr::Block(Box::new(body))),
                 is_method,
                 is_dead_code,
+                is_axiomatized,
             }
         }
         ImplItem::Type { .. } => item,
@@ -787,6 +1012,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             ret_ty,
             body,
             is_dead_code,
+            is_axiomatized,
         } => {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             TopLevelItem::Definition {
@@ -797,6 +1023,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
                 ret_ty: CoqType::monad(mt_ty(ret_ty)),
                 body: Box::new(Expr::Block(Box::new(body))),
                 is_dead_code,
+                is_axiomatized,
             }
         }
         TopLevelItem::TypeAlias { name, ty } => TopLevelItem::TypeAlias { name, ty },
@@ -905,7 +1132,7 @@ impl ImplItem {
         ])
     }
 
-    fn to_doc<'a>(&'a self, name: &'a String) -> Doc<'a> {
+    fn to_doc<'a>(&'a self, name: &'a String, extra_data: &Option<&'a TopLevelItem>) -> Doc<'a> {
         match self {
             ImplItem::Const { body, is_dead_code } => concat([
                 if *is_dead_code {
@@ -939,26 +1166,41 @@ impl ImplItem {
                 body,
                 is_method,
                 is_dead_code,
-            } => concat([
-                fn_to_doc(name, None, None, args, ret_ty, body, *is_dead_code),
-                hardline(),
-                hardline(),
-                if *is_method {
-                    concat([Self::class_instance_to_doc(
-                        "Method",
-                        name,
-                        "Notation.Dot",
-                        "Notation.dot",
-                    )])
-                } else {
-                    Self::class_instance_to_doc(
-                        "AssociatedFunction",
-                        name,
-                        "Notation.DoubleColon Self",
-                        "Notation.double_colon",
-                    )
-                },
-            ]),
+                is_axiomatized,
+            } => {
+                let afftd = ArgumentsForFnToDoc {
+                    name,
+                    ty_params: None,
+                    where_predicates: None,
+                    args,
+                    ret_ty,
+                    body,
+                    is_dead_code: *is_dead_code,
+                    is_axiomatized: *is_axiomatized,
+                    extra_data: *extra_data,
+                };
+
+                concat([
+                    fn_to_doc(afftd),
+                    hardline(),
+                    hardline(),
+                    if *is_method {
+                        concat([Self::class_instance_to_doc(
+                            "Method",
+                            name,
+                            "Notation.Dot",
+                            "Notation.dot",
+                        )])
+                    } else {
+                        Self::class_instance_to_doc(
+                            "AssociatedFunction",
+                            name,
+                            "Notation.DoubleColon Self",
+                            "Notation.double_colon",
+                        )
+                    },
+                ])
+            }
             ImplItem::Type { ty } => nest([
                 nest([
                     text("Definition"),
@@ -980,7 +1222,7 @@ impl ImplItem {
 }
 
 impl TopLevelItem {
-    fn to_doc(&self) -> Doc {
+    fn to_doc<'a>(&'a self, extra_data: &Option<&'a TopLevelItem>) -> Doc {
         match self {
             TopLevelItem::Const { name, ty, value } => nest([
                 nest([
@@ -1014,15 +1256,22 @@ impl TopLevelItem {
                 ret_ty,
                 body,
                 is_dead_code,
-            } => fn_to_doc(
-                name,
-                Some(ty_params),
-                Some(where_predicates),
-                args,
-                ret_ty,
-                body,
-                *is_dead_code,
-            ),
+                is_axiomatized,
+            } => {
+                let afftd = ArgumentsForFnToDoc {
+                    name,
+                    ty_params: Some(ty_params),
+                    where_predicates: Some(where_predicates),
+                    args,
+                    ret_ty,
+                    body,
+                    is_dead_code: *is_dead_code,
+                    is_axiomatized: *is_axiomatized,
+                    extra_data: *extra_data,
+                };
+
+                fn_to_doc(afftd)
+            }
             TopLevelItem::Module {
                 name,
                 body,
@@ -1439,7 +1688,7 @@ impl TopLevelItem {
                             text("."),
                         ]),
                         concat(items.iter().map(|(name, item)| {
-                            concat([hardline(), hardline(), item.to_doc(name)])
+                            concat([hardline(), hardline(), item.to_doc(name, extra_data)])
                         })),
                     ]),
                     hardline(),
@@ -1724,7 +1973,7 @@ impl TopLevelItem {
                         hardline(),
                         hardline(),
                         concat(items.iter().map(|(name, item)| {
-                            concat([item.to_doc(name), hardline(), hardline()])
+                            concat([item.to_doc(name, extra_data), hardline(), hardline()])
                         })),
                         nest([
                             nest([
@@ -1816,9 +2065,62 @@ impl TopLevelItem {
 }
 
 impl TopLevel {
+    // function returns TopLevelItem::TypeStructStruct (comparing name)
+    fn find_tli_by_name(&self, self_ty: &CoqType) -> Option<&TopLevelItem> {
+        //Option<TopLevelItem> {
+        self.0.iter().find(|item_ins| match item_ins {
+            TopLevelItem::TypeStructStruct {
+                name,
+                fields: _,
+                is_dead_code: _,
+            } => {
+                // check if it is the struct we are looking for
+                *name == self_ty.to_item_name()
+            }
+            _ => false,
+        })
+    }
+
     fn to_doc(&self) -> Doc {
+        // check if there is a Debug Trait implementation in the code (#[derive(Debug)])
+        // for a TopLevelItem::TypeStructStruct (@TODO extend to cover more cases)
+        // if "yes" - get both TopLevelItems (Struct itself and TraitImpl for it)
+        // in order to have all required data for printing instance for DoubleColon Class
+
+        // We go through whole tree and if we face TraitImpl, we need to save previous item too
+        // (the one for which Impl is being printed), in order to have all the extra_data
         intersperse(
-            self.0.iter().map(|item| item.to_doc()),
+            self.0.iter().map(|item| {
+                // if item is DeriveDebug, get struct's fields
+                match item {
+                    TopLevelItem::TraitImpl {
+                        generic_tys: _,
+                        ty_params: _,
+                        self_ty,
+                        of_trait,
+                        items: _,
+                        trait_non_default_items: _,
+                    } =>
+                    // if item is DeriveDebug we are getting missing datatypes for Struct, and
+                    // printing DoubleColon instance for fmt function
+                    {
+                        // @TODO. below is support for deriveDebug (add code to support more traits)
+                        if of_trait.to_name() == "core_fmt_Debug" {
+                            let strct = self.find_tli_by_name(self_ty); // self.get_struct_types(self_ty);
+                                                                        // add structs types here (for printing)
+                            item.to_doc(&strct)
+                        } else {
+                            // @TODO add more cases (only Derive debug for Struct supported)");
+                            // if no DeriveDebug - we just convert item to doc, no extra data required.
+                            item.to_doc(&None)
+                        }
+                    }
+                    _ => {
+                        // if item is not TopLevelItem::TraitImpl - we just convert item to doc, no extra data required.
+                        item.to_doc(&None)
+                    }
+                }
+            }),
             [hardline(), hardline()],
         )
     }

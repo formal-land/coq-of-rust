@@ -10,19 +10,19 @@ Require Import CoqOfRust._std.pin.
 *)
 (* pub struct Pending<T> { /* private fields */ } *)
 Module Pending.
-  Record t (T : Set) : Set := { }.
+  Parameter t : forall (T : Set), Set.
 End Pending.
 Definition Pending := Pending.t.
 
 (* pub struct PollFn<F> { /* private fields */ } *)
 Module PollFn.
-  Record t (F : Set) : Set := { }.
+  Parameter t : forall (F : Set), Set.
 End PollFn.
 Definition PollFn := PollFn.t.
 
 (* pub struct Ready<T>(_); *)
 Module Ready.
-  Record t (T : Set): Set := { }.
+  Parameter t : forall (T : Set),Set.
 End Ready.
 Definition Ready := Ready.t.
 

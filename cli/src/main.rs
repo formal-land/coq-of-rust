@@ -10,6 +10,12 @@ struct Translate {
     /// Sets a path to rust project
     #[arg(short, long, value_name = "PATH", value_parser = is_valid_path)]
     path: PathBuf,
+    /// Axiomatize the definitions
+    #[arg(long, value_name = "axiomatize", default_value_t = false)]
+    axiomatize: bool,
+    /// Output path where to place the translation
+    #[arg(long, value_name = "output_path", value_parser = is_valid_path, default_value = "coq_translation")]
+    output_path: PathBuf,
 }
 
 fn is_valid_path(path: &str) -> Result<PathBuf, String> {
@@ -39,12 +45,17 @@ struct Cli {
 }
 
 fn main() {
+    use coq_of_rust_lib::core;
     let cli = Cli::parse();
 
-    match &cli.command {
-        Commands::Translate(path) => {
-            println!("Translating: {}", &path.path.display());
-            coq_of_rust_lib::core::run(&path.path);
+    match cli.command {
+        Commands::Translate(t) => {
+            println!("Translating: {}", &t.path.display());
+            core::run(core::CliOptions {
+                path: t.path,
+                output: t.output_path,
+                axiomatize: t.axiomatize,
+            });
             println!("Finished.");
         }
     }

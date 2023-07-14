@@ -8,7 +8,7 @@ Require Import CoqOfRust.lib.lib.
 *)
 (* pub struct IntoIter<T> *)
 Module IntoIter.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End IntoIter.
 Definition IntoIter := IntoIter.t.
 
@@ -18,7 +18,7 @@ where
     T: 'a, 
 *)
 Module Iter.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End Iter.
 Definition Iter := Iter.t.
 
@@ -29,7 +29,7 @@ where
 { /* private fields */ }
 *)
 Module IterMut.
-  Record t (T : Set) : Set := { }.
+  Parameter t : Set -> Set.
 End IterMut.
 Definition IterMut := IterMut.t.
 
