@@ -30,7 +30,10 @@ jobs:
       run: cargo clippy --all-targets --all-features -- -D warnings
     - name: Translate Rust examples
       run: |
-        python run_tests.py
+        python run_tests.py --output-path ./coq_translation/default/
+    - name: Translate Rust examples (axiomatized)
+      run: |
+        python run_tests.py --axiomatize --output-path ./coq_translation/axiomatized/
     - name: Translate Ink! library
       run: |
         cd CoqOfRust

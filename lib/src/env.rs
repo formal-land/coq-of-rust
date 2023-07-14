@@ -10,4 +10,5 @@ pub(crate) struct Env<'a> {
     /// type
     pub(crate) impl_counter: HashMap<CoqType, u64>,
     pub(crate) tcx: TyCtxt<'a>,
+    pub(crate) axiomatize: bool,
 }
