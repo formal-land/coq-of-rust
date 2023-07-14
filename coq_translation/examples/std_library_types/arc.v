@@ -5,12 +5,12 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* apple := alloc.sync.Arc::["new"] "the same apple" in
   let* _ :=
-    let* α0 := LangItem Range {| Range.start := 0; Range.end := 10; |} in
+    let* α0 := into_iter Range {| Range.start := 0; Range.end := 10; |} in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := next (addr_of iter) in
           match α0 with
           | None  => Break
           | Some _ =>

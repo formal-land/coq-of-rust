@@ -24,12 +24,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
     let* α0 := pangram.["split_whitespace"] in
     let* α1 := α0.["rev"] in
-    let* α2 := LangItem α1 in
+    let* α2 := into_iter α1 in
     match α2 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := next (addr_of iter) in
           match α0 with
           | None  => Break
           | Some word =>
@@ -54,12 +54,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ := chars.["dedup"] in
   let* string := alloc.string.String::["new"] tt in
   let* _ :=
-    let* α0 := LangItem chars in
+    let* α0 := into_iter chars in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := next (addr_of iter) in
           match α0 with
           | None  => Break
           | Some c =>

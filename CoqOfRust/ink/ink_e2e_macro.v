@@ -143,12 +143,12 @@ Module codegen.
               (fun  =>
                 let* _ := tracing_subscriber.fmt.init tt in
                 let* _ :=
-                  let* α0 := LangItem contracts_to_build_and_import in
+                  let* α0 := into_iter contracts_to_build_and_import in
                   match α0 with
                   | iter =>
                     loop
                       (let* _ :=
-                        let* α0 := LangItem (addr_of iter) in
+                        let* α0 := next (addr_of iter) in
                         match α0 with
                         | None  => Break
                         | Some manifest_path =>
@@ -173,12 +173,12 @@ Module codegen.
           let* α1 := α0.["not"] in
           if (α1 : bool) then
             let* _ :=
-              let* α0 := LangItem contracts_to_build_and_import in
+              let* α0 := into_iter contracts_to_build_and_import in
               match α0 with
               | iter =>
                 loop
                   (let* _ :=
-                    let* α0 := LangItem (addr_of iter) in
+                    let* α0 := next (addr_of iter) in
                     match α0 with
                     | None  => Break
                     | Some manifest_path =>
@@ -1097,12 +1097,12 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
             (fun  =>
               let* _ := tracing_subscriber.fmt.init tt in
               let* _ :=
-                let* α0 := LangItem contracts_to_build_and_import in
+                let* α0 := into_iter contracts_to_build_and_import in
                 match α0 with
                 | iter =>
                   loop
                     (let* _ :=
-                      let* α0 := LangItem (addr_of iter) in
+                      let* α0 := next (addr_of iter) in
                       match α0 with
                       | None  => Break
                       | Some manifest_path =>
@@ -1127,12 +1127,12 @@ Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
         let* α1 := α0.["not"] in
         if (α1 : bool) then
           let* _ :=
-            let* α0 := LangItem contracts_to_build_and_import in
+            let* α0 := into_iter contracts_to_build_and_import in
             match α0 with
             | iter =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of iter) in
+                  let* α0 := next (addr_of iter) in
                   match α0 with
                   | None  => Break
                   | Some manifest_path =>
@@ -1994,12 +1994,12 @@ Module config.
       let environment := core.option.Option.None in
       let* _ :=
         let* α0 := args.["into_iter"] in
-        let* α1 := LangItem α0 in
+        let* α1 := into_iter α0 in
         match α1 with
         | iter =>
           loop
             (let* _ :=
-              let* α0 := LangItem (addr_of iter) in
+              let* α0 := next (addr_of iter) in
               match α0 with
               | None  => Break
               | Some arg =>
@@ -2009,10 +2009,10 @@ Module config.
                     let* α0 :=
                       whitelisted_attributes.["parse_arg_value"]
                         (addr_of arg) in
-                    let* α1 := LangItem α0 in
+                    let* α1 := branch α0 in
                     match α1 with
                     | Break residual =>
-                      let* α0 := LangItem residual in
+                      let* α0 := from_residual residual in
                       Return α0
                     | Continue val => Pure val
                     end in
@@ -2316,12 +2316,12 @@ Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
     let environment := core.option.Option.None in
     let* _ :=
       let* α0 := args.["into_iter"] in
-      let* α1 := LangItem α0 in
+      let* α1 := into_iter α0 in
       match α1 with
       | iter =>
         loop
           (let* _ :=
-            let* α0 := LangItem (addr_of iter) in
+            let* α0 := next (addr_of iter) in
             match α0 with
             | None  => Break
             | Some arg =>
@@ -2330,10 +2330,10 @@ Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
                 let* _ :=
                   let* α0 :=
                     whitelisted_attributes.["parse_arg_value"] (addr_of arg) in
-                  let* α1 := LangItem α0 in
+                  let* α1 := branch α0 in
                   match α1 with
                   | Break residual =>
-                    let* α0 := LangItem residual in
+                    let* α0 := from_residual residual in
                     Return α0
                   | Continue val => Pure val
                   end in
@@ -2542,28 +2542,28 @@ Module ir.
         : M (H := H) (core.result.Result Self syn.error.Error) :=
       let* config :=
         let* α0 := syn.parse2 attrs in
-        let* α1 := LangItem α0 in
+        let* α1 := branch α0 in
         match α1 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
       let* e2e_config :=
         let* α0 := ink_e2e_macro.config.E2EConfig::["try_from"] config in
-        let* α1 := LangItem α0 in
+        let* α1 := branch α0 in
         match α1 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
       let* item_fn :=
         let* α0 := syn.parse2 input in
-        let* α1 := LangItem α0 in
+        let* α1 := branch α0 in
         match α1 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
@@ -2634,28 +2634,28 @@ Module Impl_ink_e2e_macro_ir_InkE2ETest_2.
       : M (H := H) (core.result.Result Self syn.error.Error) :=
     let* config :=
       let* α0 := syn.parse2 attrs in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
     let* e2e_config :=
       let* α0 := ink_e2e_macro.config.E2EConfig::["try_from"] config in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
     let* item_fn :=
       let* α0 := syn.parse2 input in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -2698,10 +2698,10 @@ Definition generate_or_err
     : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* test_definition :=
     let* α0 := ink_e2e_macro.ir.InkE2ETest::["new"] attr input in
-    let* α1 := LangItem α0 in
+    let* α1 := branch α0 in
     match α1 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in

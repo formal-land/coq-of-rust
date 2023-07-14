@@ -63,19 +63,19 @@ Definition double_first
   let* first :=
     let* α0 := vec.["first"] in
     let* α1 := α0.["ok_or"] other_uses_of_question_mark.EmptyVec.Build in
-    let* α2 := LangItem α1 in
+    let* α2 := branch α1 in
     match α2 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in
   let* parsed :=
     let* α0 := first.["parse"] in
-    let* α1 := LangItem α0 in
+    let* α1 := branch α0 in
     match α1 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in

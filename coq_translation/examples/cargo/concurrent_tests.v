@@ -29,12 +29,12 @@ Module tests.
       let* α2 := α1.["create"] true in
       let* α3 := α2.["open"] "ferris.txt" in
       α3.["expect"] "Failed to open ferris.txt" in
-    let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
+    let* α0 := into_iter Range {| Range.start := 0; Range.end := 5; |} in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := next (addr_of iter) in
           match α0 with
           | None  => Break
           | Some _ =>
@@ -55,12 +55,12 @@ Module tests.
       let* α2 := α1.["create"] true in
       let* α3 := α2.["open"] "ferris.txt" in
       α3.["expect"] "Failed to open ferris.txt" in
-    let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
+    let* α0 := into_iter Range {| Range.start := 0; Range.end := 5; |} in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := next (addr_of iter) in
           match α0 with
           | None  => Break
           | Some _ =>
@@ -82,12 +82,12 @@ Definition test_file `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α2 := α1.["create"] true in
     let* α3 := α2.["open"] "ferris.txt" in
     α3.["expect"] "Failed to open ferris.txt" in
-  let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
+  let* α0 := into_iter Range {| Range.start := 0; Range.end := 5; |} in
   match α0 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := LangItem (addr_of iter) in
+        let* α0 := next (addr_of iter) in
         match α0 with
         | None  => Break
         | Some _ =>
@@ -108,12 +108,12 @@ Definition test_file_also `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α2 := α1.["create"] true in
     let* α3 := α2.["open"] "ferris.txt" in
     α3.["expect"] "Failed to open ferris.txt" in
-  let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
+  let* α0 := into_iter Range {| Range.start := 0; Range.end := 5; |} in
   match α0 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := LangItem (addr_of iter) in
+        let* α0 := next (addr_of iter) in
         match α0 with
         | None  => Break
         | Some _ =>

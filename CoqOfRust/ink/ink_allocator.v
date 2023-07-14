@@ -188,10 +188,10 @@ Module bump.
         α0.["size"] in
       let* alloc_end :=
         let* α0 := alloc_start.["checked_add"] aligned_size in
-        let* α1 := LangItem α0 in
+        let* α1 := branch α0 in
         match α1 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
@@ -199,19 +199,19 @@ Module bump.
       if (α0 : bool) then
         let* required_pages :=
           let* α0 := ink_allocator.bump.required_pages aligned_size in
-          let* α1 := LangItem α0 in
+          let* α1 := branch α0 in
           match α1 with
           | Break residual =>
-            let* α0 := LangItem residual in
+            let* α0 := from_residual residual in
             Return α0
           | Continue val => Pure val
           end in
         let* page_start :=
           let* α0 := self.["request_pages"] required_pages in
-          let* α1 := LangItem α0 in
+          let* α1 := branch α0 in
           match α1 with
           | Break residual =>
-            let* α0 := LangItem residual in
+            let* α0 := from_residual residual in
             Return α0
           | Continue val => Pure val
           end in
@@ -220,22 +220,22 @@ Module bump.
             required_pages.["checked_mul"] ink_allocator.bump.PAGE_SIZE in
           let* α1 :=
             α0.["and_then"] (fun pages => page_start.["checked_add"] pages) in
-          let* α2 := LangItem α1 in
+          let* α2 := branch α1 in
           let* α3 :=
             match α2 with
             | Break residual =>
-              let* α0 := LangItem residual in
+              let* α0 := from_residual residual in
               Return α0
             | Continue val => Pure val
             end in
           assign self.["upper_limit"] α3 in
         let* _ :=
           let* α0 := page_start.["checked_add"] aligned_size in
-          let* α1 := LangItem α0 in
+          let* α1 := branch α0 in
           let* α2 :=
             match α1 with
             | Break residual =>
-              let* α0 := LangItem residual in
+              let* α0 := from_residual residual in
               Return α0
             | Continue val => Pure val
             end in
@@ -445,10 +445,10 @@ Module Impl_ink_allocator_bump_InnerAlloc_2.
       α0.["size"] in
     let* alloc_end :=
       let* α0 := alloc_start.["checked_add"] aligned_size in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -456,19 +456,19 @@ Module Impl_ink_allocator_bump_InnerAlloc_2.
     if (α0 : bool) then
       let* required_pages :=
         let* α0 := ink_allocator.bump.required_pages aligned_size in
-        let* α1 := LangItem α0 in
+        let* α1 := branch α0 in
         match α1 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
       let* page_start :=
         let* α0 := self.["request_pages"] required_pages in
-        let* α1 := LangItem α0 in
+        let* α1 := branch α0 in
         match α1 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
@@ -477,22 +477,22 @@ Module Impl_ink_allocator_bump_InnerAlloc_2.
           required_pages.["checked_mul"] ink_allocator.bump.PAGE_SIZE in
         let* α1 :=
           α0.["and_then"] (fun pages => page_start.["checked_add"] pages) in
-        let* α2 := LangItem α1 in
+        let* α2 := branch α1 in
         let* α3 :=
           match α2 with
           | Break residual =>
-            let* α0 := LangItem residual in
+            let* α0 := from_residual residual in
             Return α0
           | Continue val => Pure val
           end in
         assign self.["upper_limit"] α3 in
       let* _ :=
         let* α0 := page_start.["checked_add"] aligned_size in
-        let* α1 := LangItem α0 in
+        let* α1 := branch α0 in
         let* α2 :=
           match α1 with
           | Break residual =>
-            let* α0 := LangItem residual in
+            let* α0 := from_residual residual in
             Return α0
           | Continue val => Pure val
           end in

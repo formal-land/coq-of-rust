@@ -741,10 +741,10 @@ Module types.
         : M (H := H) (core.result.Result Self core.array.TryFromSliceError) :=
       let* address :=
         let* α0 := list u8::["try_from"] bytes in
-        let* α1 := LangItem α0 in
+        let* α1 := branch α0 in
         match α1 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
@@ -1049,10 +1049,10 @@ Module types.
         : M (H := H) (core.result.Result Self core.array.TryFromSliceError) :=
       let* hash :=
         let* α0 := list u8::["try_from"] bytes in
-        let* α1 := LangItem α0 in
+        let* α1 := branch α0 in
         match α1 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
@@ -1331,20 +1331,20 @@ Module Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor.
       let* α1 :=
         α0.["expect"]
           "field count should have been checked already on tuple type; please file a bug report" in
-      let* α2 := LangItem α1 in
+      let* α2 := branch α1 in
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
     let* α0 := val.["decode_as_type"] in
     let* α1 := α0.["map_err"] (fun e => e.["at_idx"] 0) in
-    let* α2 := LangItem α1 in
+    let* α2 := branch α1 in
     let* α0 :=
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -1382,10 +1382,10 @@ Module Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_AccountId.
         (scale_decode.visitor.TypeId.Build_t 0) in
     let* _ :=
       let* α0 := composite.["skip_decoding"] in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -1817,10 +1817,10 @@ Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
       : M (H := H) (core.result.Result Self core.array.TryFromSliceError) :=
     let* address :=
       let* α0 := list u8::["try_from"] bytes in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -1970,20 +1970,20 @@ Module Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor.
       let* α1 :=
         α0.["expect"]
           "field count should have been checked already on tuple type; please file a bug report" in
-      let* α2 := LangItem α1 in
+      let* α2 := branch α1 in
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
     let* α0 := val.["decode_as_type"] in
     let* α1 := α0.["map_err"] (fun e => e.["at_idx"] 0) in
-    let* α2 := LangItem α1 in
+    let* α2 := branch α1 in
     let* α0 :=
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -2021,10 +2021,10 @@ Module Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_Hash.
         (scale_decode.visitor.TypeId.Build_t 0) in
     let* _ :=
       let* α0 := composite.["skip_decoding"] in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -2404,10 +2404,10 @@ Module Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
       : M (H := H) (core.result.Result Self core.array.TryFromSliceError) :=
     let* hash :=
       let* α0 := list u8::["try_from"] bytes in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -2737,11 +2737,11 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError.
         (fun e =>
           e.["chain"]
             "Could not decode `LangError`, failed to read variant byte") in
-    let* α2 := LangItem α1 in
+    let* α2 := branch α1 in
     let* α3 :=
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in

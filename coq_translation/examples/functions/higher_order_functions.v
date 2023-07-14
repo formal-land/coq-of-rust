@@ -19,12 +19,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let upper := 1000 in
   let acc := 0 in
   let* _ :=
-    let* α0 := LangItem RangeFrom {| RangeFrom.start := 0; |} in
+    let* α0 := into_iter RangeFrom {| RangeFrom.start := 0; |} in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := next (addr_of iter) in
           match α0 with
           | None  => Break
           | Some n =>

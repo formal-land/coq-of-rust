@@ -102,19 +102,19 @@ Module Impl_unpacking_options_via_question_mark_Person.
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) (core.option.Option u8) :=
-    let* α0 := LangItem self.["job"] in
+    let* α0 := branch self.["job"] in
     let* α1 :=
       match α0 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
-    let* α2 := LangItem α1.["phone_number"] in
+    let* α2 := branch α1.["phone_number"] in
     let* α3 :=
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in

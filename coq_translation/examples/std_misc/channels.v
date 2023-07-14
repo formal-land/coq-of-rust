@@ -9,12 +9,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* children := alloc.vec.Vec::["new"] tt in
   let* _ :=
     let* α0 :=
-      LangItem Range {| Range.start := 0; Range.end := channels.NTHREADS; |} in
+      into_iter Range {| Range.start := 0; Range.end := channels.NTHREADS; |} in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := next (addr_of iter) in
           match α0 with
           | None  => Break
           | Some id =>
@@ -45,12 +45,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* ids := alloc.vec.Vec::["with_capacity"] (cast channels.NTHREADS usize) in
   let* _ :=
     let* α0 :=
-      LangItem Range {| Range.start := 0; Range.end := channels.NTHREADS; |} in
+      into_iter Range {| Range.start := 0; Range.end := channels.NTHREADS; |} in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := next (addr_of iter) in
           match α0 with
           | None  => Break
           | Some _ =>
@@ -62,12 +62,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         Pure tt)
     end in
   let* _ :=
-    let* α0 := LangItem children in
+    let* α0 := into_iter children in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := next (addr_of iter) in
           match α0 with
           | None  => Break
           | Some child =>

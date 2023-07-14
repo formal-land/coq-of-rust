@@ -94,19 +94,19 @@ Module checked.
       : M (H := H) result_chaining_with_question_mark.checked.MathResult :=
     let* ratio :=
       let* α0 := result_chaining_with_question_mark.checked.div x y in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
     let* ln :=
       let* α0 := result_chaining_with_question_mark.checked.ln ratio in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -233,19 +233,19 @@ Definition op_
     : M (H := H) result_chaining_with_question_mark.checked.MathResult :=
   let* ratio :=
     let* α0 := result_chaining_with_question_mark.checked.div x y in
-    let* α1 := LangItem α0 in
+    let* α1 := branch α0 in
     match α1 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in
   let* ln :=
     let* α0 := result_chaining_with_question_mark.checked.ln ratio in
-    let* α1 := LangItem α0 in
+    let* α1 := branch α0 in
     match α1 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in

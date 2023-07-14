@@ -65,13 +65,13 @@ Definition fizzbuzz `{H : State.Trait} (n : u32) : M (H := H) unit :=
         Pure tt.
 
 Definition fizzbuzz_to `{H : State.Trait} (n : u32) : M (H := H) unit :=
-  let* α0 := LangItem 1 n in
-  let* α1 := LangItem α0 in
+  let* α0 := range_inclusive_new 1 n in
+  let* α1 := into_iter α0 in
   match α1 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := LangItem (addr_of iter) in
+        let* α0 := next (addr_of iter) in
         match α0 with
         | None  => Break
         | Some n =>

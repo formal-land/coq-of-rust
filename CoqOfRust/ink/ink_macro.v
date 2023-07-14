@@ -18,10 +18,10 @@ Module blake2b.
       : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
     let* hash :=
       let* α0 := ink_ir.ir.blake2.Blake2x256Macro::["try_from"] input in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -45,10 +45,10 @@ Definition generate_blake2x256_hash_or_err
     : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* hash :=
     let* α0 := ink_ir.ir.blake2.Blake2x256Macro::["try_from"] input in
-    let* α1 := LangItem α0 in
+    let* α1 := branch α0 in
     match α1 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in
@@ -74,10 +74,10 @@ Module chain_extension.
       : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
     let* chain_extension :=
       let* α0 := ink_ir.ir.chain_extension.ChainExtension::["new"] attr input in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -103,10 +103,10 @@ Definition generate_or_err
     : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* chain_extension :=
     let* α0 := ink_ir.ir.chain_extension.ChainExtension::["new"] attr input in
-    let* α1 := LangItem α0 in
+    let* α1 := branch α0 in
     match α1 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in
@@ -132,10 +132,10 @@ Module contract.
       : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
     let* contract :=
       let* α0 := ink_ir.ir.contract.Contract::["new"] attr input in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -161,10 +161,10 @@ Definition generate_or_err
     : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* contract :=
     let* α0 := ink_ir.ir.contract.Contract::["new"] attr input in
-    let* α1 := LangItem α0 in
+    let* α1 := branch α0 in
     match α1 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in
@@ -190,10 +190,10 @@ Module ink_test.
       : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
     let* test_definition :=
       let* α0 := ink_ir.ir.ink_test.InkTest::["new"] attr input in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -219,10 +219,10 @@ Definition generate_or_err
     : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* test_definition :=
     let* α0 := ink_ir.ir.ink_test.InkTest::["new"] attr input in
-    let* α1 := LangItem α0 in
+    let* α1 := branch α0 in
     match α1 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in
@@ -249,10 +249,10 @@ Module selector.
         (ink_ir.ir.selector.SelectorMacro
               ink_ir.ir.selector.SelectorId)::["try_from"]
           input in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -278,10 +278,10 @@ Module selector.
         (ink_ir.ir.selector.SelectorMacro
               ink_ir.ir.selector.SelectorBytes)::["try_from"]
           input in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -308,10 +308,10 @@ Definition generate_selector_id_or_err
       (ink_ir.ir.selector.SelectorMacro
             ink_ir.ir.selector.SelectorId)::["try_from"]
         input in
-    let* α1 := LangItem α0 in
+    let* α1 := branch α0 in
     match α1 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in
@@ -337,10 +337,10 @@ Definition generate_selector_bytes_or_err
       (ink_ir.ir.selector.SelectorMacro
             ink_ir.ir.selector.SelectorBytes)::["try_from"]
         input in
-    let* α1 := LangItem α0 in
+    let* α1 := branch α0 in
     match α1 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in
@@ -5649,10 +5649,10 @@ Module storage_item.
       : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
     let* storage_item :=
       let* α0 := ink_ir.ir.storage_item.StorageItem::["new"] config input in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -5678,10 +5678,10 @@ Definition generate_or_err
     : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* storage_item :=
     let* α0 := ink_ir.ir.storage_item.StorageItem::["new"] config input in
-    let* α1 := LangItem α0 in
+    let* α1 := branch α0 in
     match α1 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in
@@ -5707,10 +5707,10 @@ Module trait_def.
       : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
     let* trait_definition :=
       let* α0 := ink_ir.ir.trait_def.InkTraitDefinition::["new"] config input in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -5736,10 +5736,10 @@ Definition analyze_or_err
     : M (H := H) (syn.error.Result proc_macro2.TokenStream) :=
   let* trait_definition :=
     let* α0 := ink_ir.ir.trait_def.InkTraitDefinition::["new"] config input in
-    let* α1 := LangItem α0 in
+    let* α1 := branch α0 in
     match α1 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in

@@ -8,12 +8,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* children := alloc.vec.Vec::["new"] tt in
   let* _ :=
     let* α0 :=
-      LangItem Range {| Range.start := 0; Range.end := threads.NTHREADS; |} in
+      into_iter Range {| Range.start := 0; Range.end := threads.NTHREADS; |} in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := next (addr_of iter) in
           match α0 with
           | None  => Break
           | Some i =>
@@ -38,12 +38,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           end in
         Pure tt)
     end in
-  let* α0 := LangItem children in
+  let* α0 := into_iter children in
   match α0 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := LangItem (addr_of iter) in
+        let* α0 := next (addr_of iter) in
         match α0 with
         | None  => Break
         | Some child =>

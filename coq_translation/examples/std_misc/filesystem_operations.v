@@ -7,10 +7,10 @@ Definition cat
     : M (H := H) (std.io.error.Result alloc.string.String) :=
   let* f :=
     let* α0 := std.fs.File::["open"] path in
-    let* α1 := LangItem α0 in
+    let* α1 := branch α0 in
     match α1 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in
@@ -28,10 +28,10 @@ Definition echo
     : M (H := H) (std.io.error.Result unit) :=
   let* f :=
     let* α0 := std.fs.File::["create"] path in
-    let* α1 := LangItem α0 in
+    let* α1 := branch α0 in
     match α1 with
     | Break residual =>
-      let* α0 := LangItem residual in
+      let* α0 := from_residual residual in
       Return α0
     | Continue val => Pure val
     end in
@@ -230,12 +230,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         std.io.stdio._print α2 in
       Pure tt
     | core.result.Result.Ok paths =>
-      let* α0 := LangItem paths in
+      let* α0 := into_iter paths in
       match α0 with
       | iter =>
         loop
           (let* _ :=
-            let* α0 := LangItem (addr_of iter) in
+            let* α0 := next (addr_of iter) in
             match α0 with
             | None  => Break
             | Some path =>

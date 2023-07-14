@@ -141,12 +141,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     end in
   let* α0 := xs.["len"] in
   let* α1 := α0.["add"] 1 in
-  let* α2 := LangItem Range {| Range.start := 0; Range.end := α1; |} in
+  let* α2 := into_iter Range {| Range.start := 0; Range.end := α1; |} in
   match α2 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := LangItem (addr_of iter) in
+        let* α0 := next (addr_of iter) in
         match α0 with
         | None  => Break
         | Some i =>

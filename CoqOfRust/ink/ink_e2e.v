@@ -899,15 +899,15 @@ Module client.
                   Pure (α1, wasm_path)) in
             α1.["collect"] in
           let* α0 := ink_e2e.xts.ContractsApi::["new"] client in
-          let* α1 := LangItem α0 in
+          let* α1 := into_future α0 in
           let* α2 :=
             match α1 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -945,15 +945,15 @@ Module client.
           let* _ :=
             let* α0 := account_id.["clone"] in
             let* α1 := self.["api"].["try_transfer_balance"] origin α0 amount in
-            let* α2 := LangItem α1 in
+            let* α2 := into_future α1 in
             let* α3 :=
               match α2 with
               | __awaitee =>
                 loop
                   (let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
+                    let* α0 := new_unchecked (addr_of __awaitee) in
+                    let* α1 := get_context _task_context in
+                    let* α0 := poll α0 α1 in
                     match α0 with
                     | Ready.Build_t result => Break
                     | Pending.Build_t  => Pure tt
@@ -1020,15 +1020,15 @@ Module client.
                 constructor
                 value
                 storage_deposit_limit in
-            let* α1 := LangItem α0 in
+            let* α1 := into_future α0 in
             let* α2 :=
               match α1 with
               | __awaitee =>
                 loop
                   (let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
+                    let* α0 := new_unchecked (addr_of __awaitee) in
+                    let* α1 := get_context _task_context in
+                    let* α0 := poll α0 α1 in
                     match α0 with
                     | Ready.Build_t result => Break
                     | Pending.Build_t  => Pure tt
@@ -1038,10 +1038,10 @@ Module client.
                     assign _task_context α0 in
                   Pure tt)
               end in
-            let* α3 := LangItem α2 in
+            let* α3 := branch α2 in
             match α3 with
             | Break residual =>
-              let* α0 := LangItem residual in
+              let* α0 := from_residual residual in
               Return α0
             | Continue val => Pure val
             end in
@@ -1090,14 +1090,14 @@ Module client.
               data
               salt
               signer in
-          let* α1 := LangItem α0 in
+          let* α1 := into_future α0 in
           match α1 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -1204,14 +1204,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 α1
                 α2
                 signer in
-            let* α4 := LangItem α3 in
+            let* α4 := into_future α3 in
             match α4 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -1263,14 +1263,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 α1
                 salt
                 signer in
-            let* α3 := LangItem α2 in
+            let* α3 := into_future α2 in
             match α3 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -1283,12 +1283,12 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let account_id := core.option.Option.None in
           let* _ :=
             let* α0 := tx_events.["iter"] in
-            let* α1 := LangItem α0 in
+            let* α1 := into_iter α0 in
             match α1 with
             | iter =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of iter) in
+                  let* α0 := next (addr_of iter) in
                   match α0 with
                   | None  => Break
                   | Some evt =>
@@ -1353,10 +1353,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                               metadata in
                           let* α2 :=
                             α1.["map_err"] ink_e2e.client.Error.Decoding in
-                          let* α3 := LangItem α2 in
+                          let* α3 := branch α2 in
                           match α3 with
                           | Break residual =>
-                            let* α0 := LangItem residual in
+                            let* α0 := from_residual residual in
                             Return α0
                           | Continue val => Pure val
                           end in
@@ -1437,15 +1437,15 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* code := self.["load_code"] contract_name in
           let* ret :=
             let* α0 := self.["exec_upload"] signer code storage_deposit_limit in
-            let* α1 := LangItem α0 in
+            let* α1 := into_future α0 in
             let* α2 :=
               match α1 with
               | __awaitee =>
                 loop
                   (let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
+                    let* α0 := new_unchecked (addr_of __awaitee) in
+                    let* α1 := get_context _task_context in
+                    let* α0 := poll α0 α1 in
                     match α0 with
                     | Ready.Build_t result => Break
                     | Pending.Build_t  => Pure tt
@@ -1455,10 +1455,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                     assign _task_context α0 in
                   Pure tt)
               end in
-            let* α3 := LangItem α2 in
+            let* α3 := branch α2 in
             match α3 with
             | Break residual =>
-              let* α0 := LangItem residual in
+              let* α0 := from_residual residual in
               Return α0
             | Continue val => Pure val
             end in
@@ -1496,14 +1496,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             let* α0 := code.["clone"] in
             let* α1 :=
               self.["api"].["upload_dry_run"] signer α0 storage_deposit_limit in
-            let* α2 := LangItem α1 in
+            let* α2 := into_future α1 in
             match α2 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -1533,14 +1533,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* tx_events :=
             let* α0 :=
               self.["api"].["upload"] signer code storage_deposit_limit in
-            let* α1 := LangItem α0 in
+            let* α1 := into_future α0 in
             match α1 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -1553,12 +1553,12 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let hash := core.option.Option.None in
           let* _ :=
             let* α0 := tx_events.["iter"] in
-            let* α1 := LangItem α0 in
+            let* α1 := into_iter α0 in
             match α1 with
             | iter =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of iter) in
+                  let* α0 := next (addr_of iter) in
                   match α0 with
                   | None  => Break
                   | Some evt =>
@@ -1620,10 +1620,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                               metadata in
                           let* α2 :=
                             α1.["map_err"] ink_e2e.client.Error.Decoding in
-                          let* α3 := LangItem α2 in
+                          let* α3 := branch α2 in
                           match α3 with
                           | Break residual =>
-                            let* α0 := LangItem residual in
+                            let* α0 := from_residual residual in
                             Return α0
                           | Continue val => Pure val
                           end in
@@ -1729,14 +1729,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 message
                 value
                 core.option.Option.None in
-            let* α1 := LangItem α0 in
+            let* α1 := into_future α0 in
             match α1 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -1765,14 +1765,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 storage_deposit_limit
                 exec_input
                 signer in
-            let* α3 := LangItem α2 in
+            let* α3 := into_future α2 in
             match α3 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -1784,12 +1784,12 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             end in
           let* _ :=
             let* α0 := tx_events.["iter"] in
-            let* α1 := LangItem α0 in
+            let* α1 := into_iter α0 in
             match α1 with
             | iter =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of iter) in
+                  let* α0 := next (addr_of iter) in
                   match α0 with
                   | None  => Break
                   | Some evt =>
@@ -1817,10 +1817,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                             metadata in
                         let* α2 :=
                           α1.["map_err"] ink_e2e.client.Error.Decoding in
-                        let* α3 := LangItem α2 in
+                        let* α3 := branch α2 in
                         match α3 with
                         | Break residual =>
-                          let* α0 := LangItem residual in
+                          let* α0 := from_residual residual in
                           Return α0
                         | Continue val => Pure val
                         end in
@@ -1876,14 +1876,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 pallet_name
                 call_name
                 call_data in
-            let* α1 := LangItem α0 in
+            let* α1 := into_future α0 in
             match α1 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -1895,12 +1895,12 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
             end in
           let* _ :=
             let* α0 := tx_events.["iter"] in
-            let* α1 := LangItem α0 in
+            let* α1 := into_iter α0 in
             match α1 with
             | iter =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of iter) in
+                  let* α0 := next (addr_of iter) in
                   match α0 with
                   | None  => Break
                   | Some evt =>
@@ -1928,10 +1928,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                             metadata in
                         let* α2 :=
                           α1.["map_err"] ink_e2e.client.Error.Decoding in
-                        let* α3 := LangItem α2 in
+                        let* α3 := branch α2 in
                         match α3 with
                         | Break residual =>
-                          let* α0 := LangItem residual in
+                          let* α0 := from_residual residual in
                           Return α0
                         | Continue val => Pure val
                         end in
@@ -1996,14 +1996,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                 exec_input
                 value
                 storage_deposit_limit in
-            let* α3 := LangItem α2 in
+            let* α3 := into_future α2 in
             match α3 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -2066,15 +2066,15 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* account :=
             let* α0 := self.["api"].["client"].["storage"] in
             let* α1 := α0.["at_latest"] in
-            let* α2 := LangItem α1 in
+            let* α2 := into_future α1 in
             let* α3 :=
               match α2 with
               | __awaitee =>
                 loop
                   (let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
+                    let* α0 := new_unchecked (addr_of __awaitee) in
+                    let* α1 := get_context _task_context in
+                    let* α0 := poll α0 α1 in
                     match α0 with
                     | Ready.Build_t result => Break
                     | Pending.Build_t  => Pure tt
@@ -2096,15 +2096,15 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                     core.panicking.panic_fmt α1 in
                   Pure tt) in
             let* α5 := α4.["fetch_or_default"] (addr_of account_addr) in
-            let* α6 := LangItem α5 in
+            let* α6 := into_future α5 in
             let* α7 :=
               match α6 with
               | __awaitee =>
                 loop
                   (let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
+                    let* α0 := new_unchecked (addr_of __awaitee) in
+                    let* α1 := get_context _task_context in
+                    let* α0 := poll α0 α1 in
                     match α0 with
                     | Ready.Build_t result => Break
                     | Pending.Build_t  => Pure tt
@@ -2141,20 +2141,20 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               ink_e2e.client.get_composite_field_value
                 (addr_of account)
                 "data" in
-            let* α1 := LangItem α0 in
+            let* α1 := branch α0 in
             match α1 with
             | Break residual =>
-              let* α0 := LangItem residual in
+              let* α0 := from_residual residual in
               Return α0
             | Continue val => Pure val
             end in
           let* balance :=
             let* α0 :=
               ink_e2e.client.get_composite_field_value account_data "free" in
-            let* α1 := LangItem α0 in
+            let* α1 := branch α0 in
             match α1 with
             | Break residual =>
-              let* α0 := LangItem residual in
+              let* α0 := from_residual residual in
               Return α0
             | Continue val => Pure val
             end in
@@ -2172,10 +2172,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                         (addr_of [ α0 ]) in
                     alloc.fmt.format α1 in
                   Pure (ink_e2e.client.Error.Balance res)) in
-            let* α2 := LangItem α1 in
+            let* α2 := branch α1 in
             match α2 with
             | Break residual =>
-              let* α0 := LangItem residual in
+              let* α0 := from_residual residual in
               Return α0
             | Continue val => Pure val
             end in
@@ -2193,10 +2193,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                         (addr_of [ α0 ]) in
                     alloc.fmt.format α1 in
                   Pure (ink_e2e.client.Error.Balance res)) in
-            let* α2 := LangItem α1 in
+            let* α2 := branch α1 in
             match α2 with
             | Break residual =>
-              let* α0 := LangItem residual in
+              let* α0 := from_residual residual in
               Return α0
             | Continue val => Pure val
             end in
@@ -2253,10 +2253,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                     (addr_of [ α0 ]) in
                 alloc.fmt.format α1 in
               Pure (ink_e2e.client.Error.Balance res)) in
-        let* α3 := LangItem α2 in
+        let* α3 := branch α2 in
         match α3 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
@@ -2957,10 +2957,10 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
                 let* α0 := item.["name"] in
                 Pure (α0, item))) in
       let* α1 := α0.["collect"] in
-      let* α2 := LangItem α1 in
+      let* α2 := branch α1 in
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -2975,22 +2975,22 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
                 {|
                 scale_decode.error.ErrorKind.CannotFindField.name := α0;
               |}) in
-      let* α2 := LangItem α1 in
+      let* α2 := branch α1 in
       let* α3 :=
         match α2 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
       α3.["deref"] in
     let* α0 := val.["decode_as_type"] in
     let* α1 := α0.["map_err"] (fun e => e.["at_field"] "deployer") in
-    let* α2 := LangItem α1 in
+    let* α2 := branch α1 in
     let* α0 :=
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -3005,22 +3005,22 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
                 {|
                 scale_decode.error.ErrorKind.CannotFindField.name := α0;
               |}) in
-      let* α2 := LangItem α1 in
+      let* α2 := branch α1 in
       let* α3 :=
         match α2 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
       α3.["deref"] in
     let* α0 := val.["decode_as_type"] in
     let* α1 := α0.["map_err"] (fun e => e.["at_field"] "contract") in
-    let* α2 := LangItem α1 in
+    let* α2 := branch α1 in
     let* α1 :=
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -3065,20 +3065,20 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
       let* α1 :=
         α0.["expect"]
           "field count should have been checked already on tuple type; please file a bug report" in
-      let* α2 := LangItem α1 in
+      let* α2 := branch α1 in
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
     let* α0 := val.["decode_as_type"] in
     let* α1 := α0.["map_err"] (fun e => e.["at_field"] "deployer") in
-    let* α2 := LangItem α1 in
+    let* α2 := branch α1 in
     let* α0 :=
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -3087,20 +3087,20 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
       let* α1 :=
         α0.["expect"]
           "field count should have been checked already on tuple type; please file a bug report" in
-      let* α2 := LangItem α1 in
+      let* α2 := branch α1 in
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
     let* α0 := val.["decode_as_type"] in
     let* α1 := α0.["map_err"] (fun e => e.["at_field"] "contract") in
-    let* α2 := LangItem α1 in
+    let* α2 := branch α1 in
     let* α1 :=
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -3150,10 +3150,10 @@ Section
         (scale_decode.visitor.TypeId.Build_t 0) in
     let* _ :=
       let* α0 := composite.["skip_decoding"] in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -3512,10 +3512,10 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
                 let* α0 := item.["name"] in
                 Pure (α0, item))) in
       let* α1 := α0.["collect"] in
-      let* α2 := LangItem α1 in
+      let* α2 := branch α1 in
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -3530,22 +3530,22 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
                 {|
                 scale_decode.error.ErrorKind.CannotFindField.name := α0;
               |}) in
-      let* α2 := LangItem α1 in
+      let* α2 := branch α1 in
       let* α3 :=
         match α2 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
       α3.["deref"] in
     let* α0 := val.["decode_as_type"] in
     let* α1 := α0.["map_err"] (fun e => e.["at_field"] "code_hash") in
-    let* α2 := LangItem α1 in
+    let* α2 := branch α1 in
     let* α0 :=
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -3587,20 +3587,20 @@ Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
       let* α1 :=
         α0.["expect"]
           "field count should have been checked already on tuple type; please file a bug report" in
-      let* α2 := LangItem α1 in
+      let* α2 := branch α1 in
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
     let* α0 := val.["decode_as_type"] in
     let* α1 := α0.["map_err"] (fun e => e.["at_field"] "code_hash") in
-    let* α2 := LangItem α1 in
+    let* α2 := branch α1 in
     let* α0 :=
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -3644,10 +3644,10 @@ Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
         (scale_decode.visitor.TypeId.Build_t 0) in
     let* _ :=
       let* α0 := composite.["skip_decoding"] in
-      let* α1 := LangItem α0 in
+      let* α1 := branch α0 in
       match α1 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -3821,15 +3821,15 @@ Module Impl_ink_e2e_client_Client_C_E_2.
                 Pure (α1, wasm_path)) in
           α1.["collect"] in
         let* α0 := ink_e2e.xts.ContractsApi::["new"] client in
-        let* α1 := LangItem α0 in
+        let* α1 := into_future α0 in
         let* α2 :=
           match α1 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -3867,15 +3867,15 @@ Module Impl_ink_e2e_client_Client_C_E_2.
         let* _ :=
           let* α0 := account_id.["clone"] in
           let* α1 := self.["api"].["try_transfer_balance"] origin α0 amount in
-          let* α2 := LangItem α1 in
+          let* α2 := into_future α1 in
           let* α3 :=
             match α2 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -3941,15 +3941,15 @@ Module Impl_ink_e2e_client_Client_C_E_2.
               constructor
               value
               storage_deposit_limit in
-          let* α1 := LangItem α0 in
+          let* α1 := into_future α0 in
           let* α2 :=
             match α1 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -3959,10 +3959,10 @@ Module Impl_ink_e2e_client_Client_C_E_2.
                   assign _task_context α0 in
                 Pure tt)
             end in
-          let* α3 := LangItem α2 in
+          let* α3 := branch α2 in
           match α3 with
           | Break residual =>
-            let* α0 := LangItem residual in
+            let* α0 := from_residual residual in
             Return α0
           | Continue val => Pure val
           end in
@@ -4011,14 +4011,14 @@ Module Impl_ink_e2e_client_Client_C_E_2.
             data
             salt
             signer in
-        let* α1 := LangItem α0 in
+        let* α1 := into_future α0 in
         match α1 with
         | __awaitee =>
           loop
             (let* _ :=
-              let* α0 := LangItem (addr_of __awaitee) in
-              let* α1 := LangItem _task_context in
-              let* α0 := LangItem α0 α1 in
+              let* α0 := new_unchecked (addr_of __awaitee) in
+              let* α1 := get_context _task_context in
+              let* α0 := poll α0 α1 in
               match α0 with
               | Ready.Build_t result => Break
               | Pending.Build_t  => Pure tt
@@ -4125,14 +4125,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               α1
               α2
               signer in
-          let* α4 := LangItem α3 in
+          let* α4 := into_future α3 in
           match α4 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -4184,14 +4184,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               α1
               salt
               signer in
-          let* α3 := LangItem α2 in
+          let* α3 := into_future α2 in
           match α3 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -4204,12 +4204,12 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
         let account_id := core.option.Option.None in
         let* _ :=
           let* α0 := tx_events.["iter"] in
-          let* α1 := LangItem α0 in
+          let* α1 := into_iter α0 in
           match α1 with
           | iter =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of iter) in
+                let* α0 := next (addr_of iter) in
                 match α0 with
                 | None  => Break
                 | Some evt =>
@@ -4272,10 +4272,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                             metadata in
                         let* α2 :=
                           α1.["map_err"] ink_e2e.client.Error.Decoding in
-                        let* α3 := LangItem α2 in
+                        let* α3 := branch α2 in
                         match α3 with
                         | Break residual =>
-                          let* α0 := LangItem residual in
+                          let* α0 := from_residual residual in
                           Return α0
                         | Continue val => Pure val
                         end in
@@ -4355,15 +4355,15 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
         let* code := self.["load_code"] contract_name in
         let* ret :=
           let* α0 := self.["exec_upload"] signer code storage_deposit_limit in
-          let* α1 := LangItem α0 in
+          let* α1 := into_future α0 in
           let* α2 :=
             match α1 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -4373,10 +4373,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   assign _task_context α0 in
                 Pure tt)
             end in
-          let* α3 := LangItem α2 in
+          let* α3 := branch α2 in
           match α3 with
           | Break residual =>
-            let* α0 := LangItem residual in
+            let* α0 := from_residual residual in
             Return α0
           | Continue val => Pure val
           end in
@@ -4413,14 +4413,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           let* α0 := code.["clone"] in
           let* α1 :=
             self.["api"].["upload_dry_run"] signer α0 storage_deposit_limit in
-          let* α2 := LangItem α1 in
+          let* α2 := into_future α1 in
           match α2 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -4450,14 +4450,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
         let* tx_events :=
           let* α0 :=
             self.["api"].["upload"] signer code storage_deposit_limit in
-          let* α1 := LangItem α0 in
+          let* α1 := into_future α0 in
           match α1 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -4470,12 +4470,12 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
         let hash := core.option.Option.None in
         let* _ :=
           let* α0 := tx_events.["iter"] in
-          let* α1 := LangItem α0 in
+          let* α1 := into_iter α0 in
           match α1 with
           | iter =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of iter) in
+                let* α0 := next (addr_of iter) in
                 match α0 with
                 | None  => Break
                 | Some evt =>
@@ -4536,10 +4536,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                             metadata in
                         let* α2 :=
                           α1.["map_err"] ink_e2e.client.Error.Decoding in
-                        let* α3 := LangItem α2 in
+                        let* α3 := branch α2 in
                         match α3 with
                         | Break residual =>
-                          let* α0 := LangItem residual in
+                          let* α0 := from_residual residual in
                           Return α0
                         | Continue val => Pure val
                         end in
@@ -4644,14 +4644,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               message
               value
               core.option.Option.None in
-          let* α1 := LangItem α0 in
+          let* α1 := into_future α0 in
           match α1 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -4680,14 +4680,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               storage_deposit_limit
               exec_input
               signer in
-          let* α3 := LangItem α2 in
+          let* α3 := into_future α2 in
           match α3 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -4699,12 +4699,12 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           end in
         let* _ :=
           let* α0 := tx_events.["iter"] in
-          let* α1 := LangItem α0 in
+          let* α1 := into_iter α0 in
           match α1 with
           | iter =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of iter) in
+                let* α0 := next (addr_of iter) in
                 match α0 with
                 | None  => Break
                 | Some evt =>
@@ -4731,10 +4731,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                           α0
                           metadata in
                       let* α2 := α1.["map_err"] ink_e2e.client.Error.Decoding in
-                      let* α3 := LangItem α2 in
+                      let* α3 := branch α2 in
                       match α3 with
                       | Break residual =>
-                        let* α0 := LangItem residual in
+                        let* α0 := from_residual residual in
                         Return α0
                       | Continue val => Pure val
                       end in
@@ -4790,14 +4790,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               pallet_name
               call_name
               call_data in
-          let* α1 := LangItem α0 in
+          let* α1 := into_future α0 in
           match α1 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -4809,12 +4809,12 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
           end in
         let* _ :=
           let* α0 := tx_events.["iter"] in
-          let* α1 := LangItem α0 in
+          let* α1 := into_iter α0 in
           match α1 with
           | iter =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of iter) in
+                let* α0 := next (addr_of iter) in
                 match α0 with
                 | None  => Break
                 | Some evt =>
@@ -4841,10 +4841,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                           α0
                           metadata in
                       let* α2 := α1.["map_err"] ink_e2e.client.Error.Decoding in
-                      let* α3 := LangItem α2 in
+                      let* α3 := branch α2 in
                       match α3 with
                       | Break residual =>
-                        let* α0 := LangItem residual in
+                        let* α0 := from_residual residual in
                         Return α0
                       | Continue val => Pure val
                       end in
@@ -4909,14 +4909,14 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
               exec_input
               value
               storage_deposit_limit in
-          let* α3 := LangItem α2 in
+          let* α3 := into_future α2 in
           match α3 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -4979,15 +4979,15 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
         let* account :=
           let* α0 := self.["api"].["client"].["storage"] in
           let* α1 := α0.["at_latest"] in
-          let* α2 := LangItem α1 in
+          let* α2 := into_future α1 in
           let* α3 :=
             match α2 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -5009,15 +5009,15 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                   core.panicking.panic_fmt α1 in
                 Pure tt) in
           let* α5 := α4.["fetch_or_default"] (addr_of account_addr) in
-          let* α6 := LangItem α5 in
+          let* α6 := into_future α5 in
           let* α7 :=
             match α6 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -5052,20 +5052,20 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
         let* account_data :=
           let* α0 :=
             ink_e2e.client.get_composite_field_value (addr_of account) "data" in
-          let* α1 := LangItem α0 in
+          let* α1 := branch α0 in
           match α1 with
           | Break residual =>
-            let* α0 := LangItem residual in
+            let* α0 := from_residual residual in
             Return α0
           | Continue val => Pure val
           end in
         let* balance :=
           let* α0 :=
             ink_e2e.client.get_composite_field_value account_data "free" in
-          let* α1 := LangItem α0 in
+          let* α1 := branch α0 in
           match α1 with
           | Break residual =>
-            let* α0 := LangItem residual in
+            let* α0 := from_residual residual in
             Return α0
           | Continue val => Pure val
           end in
@@ -5082,10 +5082,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                       (addr_of [ α0 ]) in
                   alloc.fmt.format α1 in
                 Pure (ink_e2e.client.Error.Balance res)) in
-          let* α2 := LangItem α1 in
+          let* α2 := branch α1 in
           match α2 with
           | Break residual =>
-            let* α0 := LangItem residual in
+            let* α0 := from_residual residual in
             Return α0
           | Continue val => Pure val
           end in
@@ -5102,10 +5102,10 @@ For a contract to be built, add it as a dependency to the `Cargo.toml`, or add t
                       (addr_of [ α0 ]) in
                   alloc.fmt.format α1 in
                 Pure (ink_e2e.client.Error.Balance res)) in
-          let* α2 := LangItem α1 in
+          let* α2 := branch α1 in
           match α2 with
           | Break residual =>
-            let* α0 := LangItem residual in
+            let* α0 := from_residual residual in
             Return α0
           | Continue val => Pure val
           end in
@@ -5184,10 +5184,10 @@ Definition get_composite_field_value
                   (addr_of [ α0 ]) in
               alloc.fmt.format α1 in
             Pure (ink_e2e.client.Error.Balance res)) in
-      let* α3 := LangItem α2 in
+      let* α3 := branch α2 in
       match α3 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -5739,10 +5739,10 @@ Module node_proc.
                         (addr_of [ α1; α2 ]) in
                     alloc.fmt.format α3 in
                   Pure res) in
-            let* α2 := LangItem α1 in
+            let* α2 := branch α1 in
             match α2 with
             | Break residual =>
-              let* α0 := LangItem residual in
+              let* α0 := from_residual residual in
               Return α0
             | Continue val => Pure val
             end in
@@ -5764,14 +5764,14 @@ Module node_proc.
             let* α0 := ws_url.["clone"] in
             let* α1 :=
               subxt.client.online_client.OnlineClient::["from_url"] α0 in
-            let* α2 := LangItem α1 in
+            let* α2 := into_future α1 in
             match α2 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -5871,10 +5871,10 @@ Module node_proc.
                           (addr_of [ α1; α2 ]) in
                       alloc.fmt.format α3 in
                     Pure res) in
-              let* α2 := LangItem α1 in
+              let* α2 := branch α1 in
               match α2 with
               | Break residual =>
-                let* α0 := LangItem residual in
+                let* α0 := from_residual residual in
                 Return α0
               | Continue val => Pure val
               end in
@@ -5911,10 +5911,10 @@ Module node_proc.
                   line.["rsplit_once"]
                     "Running JSON-RPC WS server: addr=127.0.0.1:") in
             let* α2 := α1.["map"] (fun (_, port_str) => Pure port_str) in
-            let* α3 := LangItem α2 in
+            let* α3 := branch α2 in
             match α3 with
             | Break residual =>
-              let* α0 := LangItem residual in
+              let* α0 := from_residual residual in
               Return α0
             | Continue val => Pure val
             end in
@@ -6301,10 +6301,10 @@ Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
                       (addr_of [ α1; α2 ]) in
                   alloc.fmt.format α3 in
                 Pure res) in
-          let* α2 := LangItem α1 in
+          let* α2 := branch α1 in
           match α2 with
           | Break residual =>
-            let* α0 := LangItem residual in
+            let* α0 := from_residual residual in
             Return α0
           | Continue val => Pure val
           end in
@@ -6325,14 +6325,14 @@ Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
         let* client :=
           let* α0 := ws_url.["clone"] in
           let* α1 := subxt.client.online_client.OnlineClient::["from_url"] α0 in
-          let* α2 := LangItem α1 in
+          let* α2 := into_future α1 in
           match α2 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -6428,10 +6428,10 @@ Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
                         (addr_of [ α1; α2 ]) in
                     alloc.fmt.format α3 in
                   Pure res) in
-            let* α2 := LangItem α1 in
+            let* α2 := branch α1 in
             match α2 with
             | Break residual =>
-              let* α0 := LangItem residual in
+              let* α0 := from_residual residual in
               Return α0
             | Continue val => Pure val
             end in
@@ -6495,10 +6495,10 @@ Definition find_substrate_port_from_output
                 line.["rsplit_once"]
                   "Running JSON-RPC WS server: addr=127.0.0.1:") in
           let* α2 := α1.["map"] (fun (_, port_str) => Pure port_str) in
-          let* α3 := LangItem α2 in
+          let* α3 := branch α2 in
           match α3 with
           | Break residual =>
-            let* α0 := LangItem residual in
+            let* α0 := from_residual residual in
             Return α0
           | Continue val => Pure val
           end in
@@ -7758,15 +7758,15 @@ Module xts.
             let* α0 := self.["client"].["tx"] in
             let* α1 :=
               α0.["sign_and_submit_then_watch_default"] (addr_of call) origin in
-            let* α2 := LangItem α1 in
+            let* α2 := into_future α1 in
             let* α3 :=
               match α2 with
               | __awaitee =>
                 loop
                   (let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
+                    let* α0 := new_unchecked (addr_of __awaitee) in
+                    let* α1 := get_context _task_context in
+                    let* α0 := poll α0 α1 in
                     match α0 with
                     | Ready.Build_t result => Break
                     | Pending.Build_t  => Pure tt
@@ -7776,24 +7776,24 @@ Module xts.
                     assign _task_context α0 in
                   Pure tt)
               end in
-            let* α4 := LangItem α3 in
+            let* α4 := branch α3 in
             match α4 with
             | Break residual =>
-              let* α0 := LangItem residual in
+              let* α0 := from_residual residual in
               Return α0
             | Continue val => Pure val
             end in
           let* _ :=
             let* α0 := tx_progress.["wait_for_in_block"] in
-            let* α1 := LangItem α0 in
+            let* α1 := into_future α0 in
             let* α2 :=
               match α1 with
               | __awaitee =>
                 loop
                   (let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
+                    let* α0 := new_unchecked (addr_of __awaitee) in
+                    let* α1 := get_context _task_context in
+                    let* α0 := poll α0 α1 in
                     match α0 with
                     | Ready.Build_t result => Break
                     | Pending.Build_t  => Pure tt
@@ -7872,15 +7872,15 @@ Module xts.
           let* bytes :=
             let* α0 := self.["client"].["rpc"] in
             let* α1 := α0.["request"] "state_call" params in
-            let* α2 := LangItem α1 in
+            let* α2 := into_future α1 in
             let* α3 :=
               match α2 with
               | __awaitee =>
                 loop
                   (let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
+                    let* α0 := new_unchecked (addr_of __awaitee) in
+                    let* α1 := get_context _task_context in
+                    let* α0 := poll α0 α1 in
                     match α0 with
                     | Ready.Build_t result => Break
                     | Pending.Build_t  => Pure tt
@@ -7930,15 +7930,15 @@ Module xts.
           let signer := signer in
           let* α0 := self.["client"].["tx"] in
           let* α1 := α0.["sign_and_submit_then_watch_default"] call signer in
-          let* α2 := LangItem α1 in
+          let* α2 := into_future α1 in
           let* α3 :=
             match α2 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -7976,15 +7976,15 @@ Module xts.
                   core.panicking.panic_fmt α1 in
                 Pure tt) in
           let* α6 := α5.["wait_for_in_block"] in
-          let* α7 := LangItem α6 in
+          let* α7 := into_future α6 in
           let* α8 :=
             match α7 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -8006,15 +8006,15 @@ Module xts.
                   core.panicking.panic_fmt α1 in
                 Pure tt) in
           let* α10 := α9.["fetch_events"] in
-          let* α11 := LangItem α10 in
+          let* α11 := into_future α10 in
           let* α12 :=
             match α11 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -8077,14 +8077,14 @@ Module xts.
                 |} in
             α0.["unvalidated"] in
           let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-          let* α1 := LangItem α0 in
+          let* α1 := into_future α0 in
           match α1 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -8142,15 +8142,15 @@ Module xts.
           let* bytes :=
             let* α0 := self.["client"].["rpc"] in
             let* α1 := α0.["request"] "state_call" params in
-            let* α2 := LangItem α1 in
+            let* α2 := into_future α1 in
             let* α3 :=
               match α2 with
               | __awaitee =>
                 loop
                   (let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
+                    let* α0 := new_unchecked (addr_of __awaitee) in
+                    let* α1 := get_context _task_context in
+                    let* α0 := poll α0 α1 in
                     match α0 with
                     | Ready.Build_t result => Break
                     | Pending.Build_t  => Pure tt
@@ -8213,14 +8213,14 @@ Module xts.
                 |} in
             α0.["unvalidated"] in
           let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-          let* α1 := LangItem α0 in
+          let* α1 := into_future α0 in
           match α1 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -8280,15 +8280,15 @@ Module xts.
           let* bytes :=
             let* α0 := self.["client"].["rpc"] in
             let* α1 := α0.["request"] "state_call" params in
-            let* α2 := LangItem α1 in
+            let* α2 := into_future α1 in
             let* α3 :=
               match α2 with
               | __awaitee =>
                 loop
                   (let* _ :=
-                    let* α0 := LangItem (addr_of __awaitee) in
-                    let* α1 := LangItem _task_context in
-                    let* α0 := LangItem α0 α1 in
+                    let* α0 := new_unchecked (addr_of __awaitee) in
+                    let* α1 := get_context _task_context in
+                    let* α0 := poll α0 α1 in
                     match α0 with
                     | Ready.Build_t result => Break
                     | Pending.Build_t  => Pure tt
@@ -8358,14 +8358,14 @@ Module xts.
                 |} in
             α0.["unvalidated"] in
           let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-          let* α1 := LangItem α0 in
+          let* α1 := into_future α0 in
           match α1 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -8398,14 +8398,14 @@ Module xts.
           let* call :=
             subxt.tx.tx_payload.dynamic pallet_name call_name call_data in
           let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-          let* α1 := LangItem α0 in
+          let* α1 := into_future α0 in
           match α1 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -10229,11 +10229,11 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
         (fun e =>
           e.["chain"]
             "Could not decode `Determinism`, failed to read variant byte") in
-    let* α2 := LangItem α1 in
+    let* α2 := branch α1 in
     let* α3 :=
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -11378,15 +11378,15 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
           let* α0 := self.["client"].["tx"] in
           let* α1 :=
             α0.["sign_and_submit_then_watch_default"] (addr_of call) origin in
-          let* α2 := LangItem α1 in
+          let* α2 := into_future α1 in
           let* α3 :=
             match α2 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -11396,24 +11396,24 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
                   assign _task_context α0 in
                 Pure tt)
             end in
-          let* α4 := LangItem α3 in
+          let* α4 := branch α3 in
           match α4 with
           | Break residual =>
-            let* α0 := LangItem residual in
+            let* α0 := from_residual residual in
             Return α0
           | Continue val => Pure val
           end in
         let* _ :=
           let* α0 := tx_progress.["wait_for_in_block"] in
-          let* α1 := LangItem α0 in
+          let* α1 := into_future α0 in
           let* α2 :=
             match α1 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -11492,15 +11492,15 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* bytes :=
           let* α0 := self.["client"].["rpc"] in
           let* α1 := α0.["request"] "state_call" params in
-          let* α2 := LangItem α1 in
+          let* α2 := into_future α1 in
           let* α3 :=
             match α2 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -11550,15 +11550,15 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let signer := signer in
         let* α0 := self.["client"].["tx"] in
         let* α1 := α0.["sign_and_submit_then_watch_default"] call signer in
-        let* α2 := LangItem α1 in
+        let* α2 := into_future α1 in
         let* α3 :=
           match α2 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -11596,15 +11596,15 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
                 core.panicking.panic_fmt α1 in
               Pure tt) in
         let* α6 := α5.["wait_for_in_block"] in
-        let* α7 := LangItem α6 in
+        let* α7 := into_future α6 in
         let* α8 :=
           match α7 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -11626,15 +11626,15 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
                 core.panicking.panic_fmt α1 in
               Pure tt) in
         let* α10 := α9.["fetch_events"] in
-        let* α11 := LangItem α10 in
+        let* α11 := into_future α10 in
         let* α12 :=
           match α11 with
           | __awaitee =>
             loop
               (let* _ :=
-                let* α0 := LangItem (addr_of __awaitee) in
-                let* α1 := LangItem _task_context in
-                let* α0 := LangItem α0 α1 in
+                let* α0 := new_unchecked (addr_of __awaitee) in
+                let* α1 := get_context _task_context in
+                let* α0 := poll α0 α1 in
                 match α0 with
                 | Ready.Build_t result => Break
                 | Pending.Build_t  => Pure tt
@@ -11697,14 +11697,14 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
               |} in
           α0.["unvalidated"] in
         let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-        let* α1 := LangItem α0 in
+        let* α1 := into_future α0 in
         match α1 with
         | __awaitee =>
           loop
             (let* _ :=
-              let* α0 := LangItem (addr_of __awaitee) in
-              let* α1 := LangItem _task_context in
-              let* α0 := LangItem α0 α1 in
+              let* α0 := new_unchecked (addr_of __awaitee) in
+              let* α1 := get_context _task_context in
+              let* α0 := poll α0 α1 in
               match α0 with
               | Ready.Build_t result => Break
               | Pending.Build_t  => Pure tt
@@ -11762,15 +11762,15 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* bytes :=
           let* α0 := self.["client"].["rpc"] in
           let* α1 := α0.["request"] "state_call" params in
-          let* α2 := LangItem α1 in
+          let* α2 := into_future α1 in
           let* α3 :=
             match α2 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -11833,14 +11833,14 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
               |} in
           α0.["unvalidated"] in
         let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-        let* α1 := LangItem α0 in
+        let* α1 := into_future α0 in
         match α1 with
         | __awaitee =>
           loop
             (let* _ :=
-              let* α0 := LangItem (addr_of __awaitee) in
-              let* α1 := LangItem _task_context in
-              let* α0 := LangItem α0 α1 in
+              let* α0 := new_unchecked (addr_of __awaitee) in
+              let* α1 := get_context _task_context in
+              let* α0 := poll α0 α1 in
               match α0 with
               | Ready.Build_t result => Break
               | Pending.Build_t  => Pure tt
@@ -11899,15 +11899,15 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* bytes :=
           let* α0 := self.["client"].["rpc"] in
           let* α1 := α0.["request"] "state_call" params in
-          let* α2 := LangItem α1 in
+          let* α2 := into_future α1 in
           let* α3 :=
             match α2 with
             | __awaitee =>
               loop
                 (let* _ :=
-                  let* α0 := LangItem (addr_of __awaitee) in
-                  let* α1 := LangItem _task_context in
-                  let* α0 := LangItem α0 α1 in
+                  let* α0 := new_unchecked (addr_of __awaitee) in
+                  let* α1 := get_context _task_context in
+                  let* α0 := poll α0 α1 in
                   match α0 with
                   | Ready.Build_t result => Break
                   | Pending.Build_t  => Pure tt
@@ -11976,14 +11976,14 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
               |} in
           α0.["unvalidated"] in
         let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-        let* α1 := LangItem α0 in
+        let* α1 := into_future α0 in
         match α1 with
         | __awaitee =>
           loop
             (let* _ :=
-              let* α0 := LangItem (addr_of __awaitee) in
-              let* α1 := LangItem _task_context in
-              let* α0 := LangItem α0 α1 in
+              let* α0 := new_unchecked (addr_of __awaitee) in
+              let* α1 := get_context _task_context in
+              let* α0 := poll α0 α1 in
               match α0 with
               | Ready.Build_t result => Break
               | Pending.Build_t  => Pure tt
@@ -12016,14 +12016,14 @@ Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
         let* call :=
           subxt.tx.tx_payload.dynamic pallet_name call_name call_data in
         let* α0 := self.["submit_extrinsic"] (addr_of call) signer in
-        let* α1 := LangItem α0 in
+        let* α1 := into_future α0 in
         match α1 with
         | __awaitee =>
           loop
             (let* _ :=
-              let* α0 := LangItem (addr_of __awaitee) in
-              let* α1 := LangItem _task_context in
-              let* α0 := LangItem α0 α1 in
+              let* α0 := new_unchecked (addr_of __awaitee) in
+              let* α1 := get_context _task_context in
+              let* α0 := poll α0 α1 in
               match α0 with
               | Ready.Build_t result => Break
               | Pending.Build_t  => Pure tt

@@ -235,10 +235,10 @@ Module ext.
         let* α0 := parity_scale_codec.codec.Decode.decode (addr_of value) in
         let* α1 :=
           α0.["map_err"] (fun _ => Pure ink_engine.ext.Error.TransferFailed) in
-        let* α2 := LangItem α1 in
+        let* α2 := branch α1 in
         match α2 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
@@ -253,10 +253,10 @@ Module ext.
         let* α1 := self.["get_balance"] α0 in
         let* α2 :=
           α1.["map_err"] (fun _ => Pure ink_engine.ext.Error.TransferFailed) in
-        let* α3 := LangItem α2 in
+        let* α3 := branch α2 in
         match α3 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
@@ -1168,10 +1168,10 @@ Module Impl_ink_engine_ext_Engine_4.
       let* α0 := parity_scale_codec.codec.Decode.decode (addr_of value) in
       let* α1 :=
         α0.["map_err"] (fun _ => Pure ink_engine.ext.Error.TransferFailed) in
-      let* α2 := LangItem α1 in
+      let* α2 := branch α1 in
       match α2 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -1186,10 +1186,10 @@ Module Impl_ink_engine_ext_Engine_4.
       let* α1 := self.["get_balance"] α0 in
       let* α2 :=
         α1.["map_err"] (fun _ => Pure ink_engine.ext.Error.TransferFailed) in
-      let* α3 := LangItem α2 in
+      let* α3 := branch α2 in
       match α3 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
@@ -2367,10 +2367,10 @@ Module test_api.
               Pure
                 (ink_engine.Error.Account
                   (ink_engine.types.AccountError.NoAccountForId α0))) in
-        let* α4 := LangItem α3 in
+        let* α4 := branch α3 in
         match α4 with
         | Break residual =>
-          let* α0 := LangItem residual in
+          let* α0 := from_residual residual in
           Return α0
         | Continue val => Pure val
         end in
@@ -3007,10 +3007,10 @@ Module Impl_ink_engine_ext_Engine_6.
             Pure
               (ink_engine.Error.Account
                 (ink_engine.types.AccountError.NoAccountForId α0))) in
-      let* α4 := LangItem α3 in
+      let* α4 := branch α3 in
       match α4 with
       | Break residual =>
-        let* α0 := LangItem residual in
+        let* α0 := from_residual residual in
         Return α0
       | Continue val => Pure val
       end in
