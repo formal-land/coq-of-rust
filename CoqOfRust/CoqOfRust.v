@@ -1371,3 +1371,34 @@ Definition format_argument : Set := core.fmt.ArgumentV1.
 Definition format_arguments : Set := core.fmt.Arguments.
 
 Definition Slice := lib.slice.
+
+(* TODO: remove *)
+(** temporary copy of the definitions from iter_type.v *)
+Module temp.
+  (* NOTE: The Iterator trait has to be put at the first place because most structs depend on this trait. *)
+  Module Iterator.
+    Class Trait (Self : Set) (Item : Set) := {
+      Item := Item;
+
+      (* fn next(&mut self) -> Option<Self::Item>; *)
+      next : mut_ref Self -> Option Item;
+    }.
+  End Iterator.
+
+
+  (* pub trait IntoIterator {
+      type Item;
+      type IntoIter: Iterator<Item = Self::Item>;
+
+      // Required method
+      fn into_iter(self) -> Self::IntoIter;
+  } 
+  *)
+  Module IntoIterator.
+    Class Trait (Self Item IntoIter : Set) `{Iterator.Trait IntoIter Item} : Set := {
+      Item := Item;
+      IntoIter := IntoIter;
+      into_iter : Self -> IntoIter;
+    }.
+  End IntoIterator.
+End temp.
