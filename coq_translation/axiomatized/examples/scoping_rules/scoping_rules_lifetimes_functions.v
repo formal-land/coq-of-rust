@@ -5,13 +5,15 @@ Parameter print_one : forall `{H : State.Trait}, ref i32 -> M (H := H) unit.
 
 Parameter add_one : forall `{H : State.Trait}, mut_ref i32 -> M (H := H) unit.
 
-Parameter print_multi : forall `{H : State.Trait}, ref i32->
-    ref i32
-    -> M (H := H) unit.
+Parameter print_multi : forall `{H : State.Trait},
+    ref i32 ->
+    ref i32 ->
+    M (H := H) unit.
 
-Parameter pass_x : forall `{H : State.Trait}, ref i32->
-    ref i32
-    -> M (H := H) (ref i32).
+Parameter pass_x : forall `{H : State.Trait},
+    ref i32 ->
+    ref i32 ->
+    M (H := H) (ref i32).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

@@ -775,8 +775,8 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                     line(),
                     monadic_typeclass_parameter(),
                     text(","),
-                    line(),
                 ]),
+                line(),
                 // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
                 match strct_args.ty_params {
                     None => nil(),
@@ -828,25 +828,15 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                     )),
                 },
                 // argument types
-                if strct_args.args.is_empty() {
-                    text("unit")
-                } else {
-                    intersperse(
-                        strct_args
-                            .args
-                            .iter()
-                            .map(|(_, ty)| nest([ty.to_doc(false)])),
-                        [text("->"), line()],
-                    )
-                },
-                line(),
+                concat(
+                    strct_args
+                        .args
+                        .iter()
+                        .map(|(_, ty)| concat([ty.to_doc(false), text(" ->"), line()])),
+                ),
                 // return type
-                nest([
-                    text("->"),
-                    line(),
-                    strct_args.ret_ty.to_doc(false),
-                    text("."),
-                ]),
+                strct_args.ret_ty.to_doc(false),
+                text("."),
             ])])
         } else {
             nest([

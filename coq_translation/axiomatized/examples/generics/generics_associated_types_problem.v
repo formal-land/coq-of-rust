@@ -41,10 +41,11 @@ Module
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
   Definition Self := generics_associated_types_problem.Container.
   
-  Parameter contains : forall `{H : State.Trait}, ref Self->
-      ref i32->
-      ref i32
-      -> M (H := H) bool.
+  Parameter contains : forall `{H : State.Trait},
+      ref Self ->
+      ref i32 ->
+      ref i32 ->
+      M (H := H) bool.
   
   Global Instance Method_contains `{H : State.Trait} :
     Notation.Dot "contains" := {
@@ -81,11 +82,12 @@ Module
 End
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
 
-Parameter difference : forall `{H : State.Trait}, forall
+Parameter difference : forall `{H : State.Trait},
+    forall
     {A : Set} {B : Set} {C : Set},
     `{generics_associated_types_problem.Contains.Trait A B C}
-    ref C
-    -> M (H := H) i32.
+    ref C ->
+    M (H := H) i32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

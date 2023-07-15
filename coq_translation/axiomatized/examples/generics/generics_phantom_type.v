@@ -34,9 +34,10 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   
   Definition Self := generics_phantom_type.PhantomTuple A B.
   
-  Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref (generics_phantom_type.PhantomTuple A B)
-      -> M (H := H) bool.
+  Parameter eq : forall `{H : State.Trait},
+      ref Self ->
+      ref (generics_phantom_type.PhantomTuple A B) ->
+      M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -84,9 +85,10 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   
   Definition Self := generics_phantom_type.PhantomStruct A B.
   
-  Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref (generics_phantom_type.PhantomStruct A B)
-      -> M (H := H) bool.
+  Parameter eq : forall `{H : State.Trait},
+      ref Self ->
+      ref (generics_phantom_type.PhantomStruct A B) ->
+      M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -99,4 +101,4 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

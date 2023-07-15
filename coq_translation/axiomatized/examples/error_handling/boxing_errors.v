@@ -11,9 +11,10 @@ Definition EmptyVec := EmptyVec.t.
 Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
   Definition Self := boxing_errors.EmptyVec.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -27,8 +28,9 @@ End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
   Definition Self := boxing_errors.EmptyVec.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) boxing_errors.EmptyVec.
+  Parameter clone : forall `{H : State.Trait},
+      ref Self ->
+      M (H := H) boxing_errors.EmptyVec.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -42,9 +44,10 @@ End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
   Definition Self := boxing_errors.EmptyVec.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -62,11 +65,13 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
     core.error.Error.Build_Trait _.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
-Parameter double_first : forall `{H : State.Trait}, alloc.vec.Vec (ref str)
-    -> M (H := H) (boxing_errors.Result i32).
+Parameter double_first : forall `{H : State.Trait},
+    alloc.vec.Vec (ref str) ->
+    M (H := H) (boxing_errors.Result i32).
 
-Parameter print : forall `{H : State.Trait}, boxing_errors.Result i32
-    -> M (H := H) unit.
+Parameter print : forall `{H : State.Trait},
+    boxing_errors.Result i32 ->
+    M (H := H) unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

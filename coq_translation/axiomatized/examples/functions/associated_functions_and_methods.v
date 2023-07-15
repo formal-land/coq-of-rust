@@ -19,17 +19,18 @@ Definition Point : Set := Point.t.
 Module Impl_associated_functions_and_methods_Point.
   Definition Self := associated_functions_and_methods.Point.
   
-  Parameter origin : forall `{H : State.Trait}, unit
-      -> M (H := H) associated_functions_and_methods.Point.
+  Parameter origin : forall `{H : State.Trait},
+      M (H := H) associated_functions_and_methods.Point.
   
   Global Instance AssociatedFunction_origin `{H : State.Trait} :
     Notation.DoubleColon Self "origin" := {
     Notation.double_colon := origin;
   }.
   
-  Parameter new : forall `{H : State.Trait}, f64->
-      f64
-      -> M (H := H) associated_functions_and_methods.Point.
+  Parameter new : forall `{H : State.Trait},
+      f64 ->
+      f64 ->
+      M (H := H) associated_functions_and_methods.Point.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -55,8 +56,9 @@ Definition Rectangle : Set := Rectangle.t.
 Module Impl_associated_functions_and_methods_Rectangle.
   Definition Self := associated_functions_and_methods.Rectangle.
   
-  Parameter get_p1 : forall `{H : State.Trait}, ref Self
-      -> M (H := H) associated_functions_and_methods.Point.
+  Parameter get_p1 : forall `{H : State.Trait},
+      ref Self ->
+      M (H := H) associated_functions_and_methods.Point.
   
   Global Instance Method_get_p1 `{H : State.Trait} : Notation.Dot "get_p1" := {
     Notation.dot := get_p1;
@@ -75,10 +77,11 @@ Module Impl_associated_functions_and_methods_Rectangle.
     Notation.dot := perimeter;
   }.
   
-  Parameter translate : forall `{H : State.Trait}, mut_ref Self->
-      f64->
-      f64
-      -> M (H := H) unit.
+  Parameter translate : forall `{H : State.Trait},
+      mut_ref Self ->
+      f64 ->
+      f64 ->
+      M (H := H) unit.
   
   Global Instance Method_translate `{H : State.Trait} :
     Notation.Dot "translate" := {
@@ -110,4 +113,4 @@ Module Impl_associated_functions_and_methods_Pair.
 End Impl_associated_functions_and_methods_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

@@ -77,7 +77,7 @@ End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
 Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
   Definition Self := traits_parms.SomeOtherType.
   
-  Parameter some_fn : forall `{H : State.Trait}, unit -> M (H := H) unit.
+  Parameter some_fn : forall `{H : State.Trait}, M (H := H) unit.
   
   Global Instance AssociatedFunction_some_fn `{H : State.Trait} :
     Notation.DoubleColon Self "some_fn" := {

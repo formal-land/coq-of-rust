@@ -15,6 +15,6 @@ pub trait Default: Sized {
 *)
 Module Default.
   Class Trait (Self : Set) : Set := { 
-    default : Self;
+    default `{H : State.Trait} : M Self;
   }.
 End Default.

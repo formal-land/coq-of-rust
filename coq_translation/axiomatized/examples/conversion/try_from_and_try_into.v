@@ -13,9 +13,10 @@ Definition EvenNumber := EvenNumber.t.
 Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   Definition Self := try_from_and_try_into.EvenNumber.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -37,9 +38,10 @@ End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
 Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   Definition Self := try_from_and_try_into.EvenNumber.
   
-  Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref try_from_and_try_into.EvenNumber
-      -> M (H := H) bool.
+  Parameter eq : forall `{H : State.Trait},
+      ref Self ->
+      ref try_from_and_try_into.EvenNumber ->
+      M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -55,8 +57,9 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
   
   Definition Error : Set := unit.
   
-  Parameter try_from : forall `{H : State.Trait}, i32
-      -> M (H := H) (core.result.Result Self ImplSelf.Error).
+  Parameter try_from : forall `{H : State.Trait},
+      i32 ->
+      M (H := H) (core.result.Result Self ImplSelf.Error).
   
   Global Instance AssociatedFunction_try_from `{H : State.Trait} :
     Notation.DoubleColon Self "try_from" := {
@@ -69,4 +72,4 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

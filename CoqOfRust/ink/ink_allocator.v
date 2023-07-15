@@ -16,27 +16,30 @@ Module bump.
     Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
     Definition Self := ink_allocator.bump.BumpAllocator.
     
-    Parameter alloc : forall `{H : State.Trait}, ref Self->
-        core.alloc.layout.Layout
-        -> M (H := H) (mut_ref u8).
+    Parameter alloc : forall `{H : State.Trait},
+        ref Self ->
+        core.alloc.layout.Layout ->
+        M (H := H) (mut_ref u8).
     
     Global Instance Method_alloc `{H : State.Trait} : Notation.Dot "alloc" := {
       Notation.dot := alloc;
     }.
     
-    Parameter alloc_zeroed : forall `{H : State.Trait}, ref Self->
-        core.alloc.layout.Layout
-        -> M (H := H) (mut_ref u8).
+    Parameter alloc_zeroed : forall `{H : State.Trait},
+        ref Self ->
+        core.alloc.layout.Layout ->
+        M (H := H) (mut_ref u8).
     
     Global Instance Method_alloc_zeroed `{H : State.Trait} :
       Notation.Dot "alloc_zeroed" := {
       Notation.dot := alloc_zeroed;
     }.
     
-    Parameter dealloc : forall `{H : State.Trait}, ref Self->
-        mut_ref u8->
-        core.alloc.layout.Layout
-        -> M (H := H) unit.
+    Parameter dealloc : forall `{H : State.Trait},
+        ref Self ->
+        mut_ref u8 ->
+        core.alloc.layout.Layout ->
+        M (H := H) unit.
     
     Global Instance Method_dealloc `{H : State.Trait} :
       Notation.Dot "dealloc" := {
@@ -76,9 +79,10 @@ Module bump.
       core.fmt.Formatter "debug_struct_field2_finish" := {
       Notation.double_colon := debug_struct_field2_finish; }.
     
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+    Parameter fmt : forall `{H : State.Trait},
+        ref Self ->
+        mut_ref core.fmt.Formatter ->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -99,8 +103,9 @@ Module bump.
   Module Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
     Definition Self := ink_allocator.bump.InnerAlloc.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_allocator.bump.InnerAlloc.
+    Parameter clone : forall `{H : State.Trait},
+        ref Self ->
+        M (H := H) ink_allocator.bump.InnerAlloc.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -114,47 +119,50 @@ Module bump.
   Module Impl_ink_allocator_bump_InnerAlloc.
     Definition Self := ink_allocator.bump.InnerAlloc.
     
-    Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait}, M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
     
-    Parameter heap_start : forall `{H : State.Trait}, unit -> M (H := H) usize.
+    Parameter heap_start : forall `{H : State.Trait}, M (H := H) usize.
     
     Global Instance AssociatedFunction_heap_start `{H : State.Trait} :
       Notation.DoubleColon Self "heap_start" := {
       Notation.double_colon := heap_start;
     }.
     
-    Parameter heap_end : forall `{H : State.Trait}, unit -> M (H := H) usize.
+    Parameter heap_end : forall `{H : State.Trait}, M (H := H) usize.
     
     Global Instance AssociatedFunction_heap_end `{H : State.Trait} :
       Notation.DoubleColon Self "heap_end" := {
       Notation.double_colon := heap_end;
     }.
     
-    Parameter request_pages : forall `{H : State.Trait}, mut_ref Self->
-        usize
-        -> M (H := H) (core.option.Option usize).
+    Parameter request_pages : forall `{H : State.Trait},
+        mut_ref Self ->
+        usize ->
+        M (H := H) (core.option.Option usize).
     
     Global Instance Method_request_pages `{H : State.Trait} :
       Notation.Dot "request_pages" := {
       Notation.dot := request_pages;
     }.
     
-    Parameter alloc : forall `{H : State.Trait}, mut_ref Self->
-        core.alloc.layout.Layout
-        -> M (H := H) (core.option.Option usize).
+    Parameter alloc : forall `{H : State.Trait},
+        mut_ref Self ->
+        core.alloc.layout.Layout ->
+        M (H := H) (core.option.Option usize).
     
     Global Instance Method_alloc `{H : State.Trait} : Notation.Dot "alloc" := {
       Notation.dot := alloc;
     }.
   End Impl_ink_allocator_bump_InnerAlloc.
   
-  Parameter required_pages : forall `{H : State.Trait}, usize
-      -> M (H := H) (core.option.Option usize).
+  Parameter required_pages : forall `{H : State.Trait},
+      usize ->
+      M (H := H) (core.option.Option usize).
 End bump.
 
 Definition PAGE_SIZE `{H : State.Trait} : usize := run (64.["mul"] 1024).
@@ -170,27 +178,30 @@ Definition BumpAllocator := BumpAllocator.t.
 Module Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
   Definition Self := ink_allocator.bump.BumpAllocator.
   
-  Parameter alloc : forall `{H : State.Trait}, ref Self->
-      core.alloc.layout.Layout
-      -> M (H := H) (mut_ref u8).
+  Parameter alloc : forall `{H : State.Trait},
+      ref Self ->
+      core.alloc.layout.Layout ->
+      M (H := H) (mut_ref u8).
   
   Global Instance Method_alloc `{H : State.Trait} : Notation.Dot "alloc" := {
     Notation.dot := alloc;
   }.
   
-  Parameter alloc_zeroed : forall `{H : State.Trait}, ref Self->
-      core.alloc.layout.Layout
-      -> M (H := H) (mut_ref u8).
+  Parameter alloc_zeroed : forall `{H : State.Trait},
+      ref Self ->
+      core.alloc.layout.Layout ->
+      M (H := H) (mut_ref u8).
   
   Global Instance Method_alloc_zeroed `{H : State.Trait} :
     Notation.Dot "alloc_zeroed" := {
     Notation.dot := alloc_zeroed;
   }.
   
-  Parameter dealloc : forall `{H : State.Trait}, ref Self->
-      mut_ref u8->
-      core.alloc.layout.Layout
-      -> M (H := H) unit.
+  Parameter dealloc : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref u8 ->
+      core.alloc.layout.Layout ->
+      M (H := H) unit.
   
   Global Instance Method_dealloc `{H : State.Trait} :
     Notation.Dot "dealloc" := {
@@ -230,9 +241,10 @@ Module Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
     core.fmt.Formatter "debug_struct_field2_finish" := {
     Notation.double_colon := debug_struct_field2_finish; }.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -253,8 +265,9 @@ End Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc.
 Module Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
   Definition Self := ink_allocator.bump.InnerAlloc.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_allocator.bump.InnerAlloc.
+  Parameter clone : forall `{H : State.Trait},
+      ref Self ->
+      M (H := H) ink_allocator.bump.InnerAlloc.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -268,44 +281,47 @@ End Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
 Module Impl_ink_allocator_bump_InnerAlloc_2.
   Definition Self := ink_allocator.bump.InnerAlloc.
   
-  Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait}, M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Parameter heap_start : forall `{H : State.Trait}, unit -> M (H := H) usize.
+  Parameter heap_start : forall `{H : State.Trait}, M (H := H) usize.
   
   Global Instance AssociatedFunction_heap_start `{H : State.Trait} :
     Notation.DoubleColon Self "heap_start" := {
     Notation.double_colon := heap_start;
   }.
   
-  Parameter heap_end : forall `{H : State.Trait}, unit -> M (H := H) usize.
+  Parameter heap_end : forall `{H : State.Trait}, M (H := H) usize.
   
   Global Instance AssociatedFunction_heap_end `{H : State.Trait} :
     Notation.DoubleColon Self "heap_end" := {
     Notation.double_colon := heap_end;
   }.
   
-  Parameter request_pages : forall `{H : State.Trait}, mut_ref Self->
-      usize
-      -> M (H := H) (core.option.Option usize).
+  Parameter request_pages : forall `{H : State.Trait},
+      mut_ref Self ->
+      usize ->
+      M (H := H) (core.option.Option usize).
   
   Global Instance Method_request_pages `{H : State.Trait} :
     Notation.Dot "request_pages" := {
     Notation.dot := request_pages;
   }.
   
-  Parameter alloc : forall `{H : State.Trait}, mut_ref Self->
-      core.alloc.layout.Layout
-      -> M (H := H) (core.option.Option usize).
+  Parameter alloc : forall `{H : State.Trait},
+      mut_ref Self ->
+      core.alloc.layout.Layout ->
+      M (H := H) (core.option.Option usize).
   
   Global Instance Method_alloc `{H : State.Trait} : Notation.Dot "alloc" := {
     Notation.dot := alloc;
   }.
 End Impl_ink_allocator_bump_InnerAlloc_2.
 
-Parameter required_pages : forall `{H : State.Trait}, usize
-    -> M (H := H) (core.option.Option usize).
+Parameter required_pages : forall `{H : State.Trait},
+    usize ->
+    M (H := H) (core.option.Option usize).

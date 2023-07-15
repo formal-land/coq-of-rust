@@ -176,6 +176,8 @@ Global Instance Method_ne_u64 `{State.Trait} :
    this case).
 *)
 Module core.
+  Require Export CoqOfRust.core.default.
+
   Module option.
     Module Option.
       Inductive t (T : Set) : Set :=
@@ -908,7 +910,6 @@ Require CoqOfRust._std.clone.
 Require CoqOfRust._std.cmp.
 Require CoqOfRust._std.collections.
 Require CoqOfRust._std.convert.
-Require CoqOfRust._std.default.
 Require CoqOfRust._std.env.
 Require CoqOfRust._std.error.
 Require CoqOfRust._std.ffi.
@@ -963,7 +964,6 @@ Module std.
   Module cmp := _std.cmp.
   Module collections := _std.collections.
   Module convert := _std.convert.
-  Module default := _std.default.
   Module env := _std.env.
   Module error := _std.error.
   Module ffi := _std.ffi.
