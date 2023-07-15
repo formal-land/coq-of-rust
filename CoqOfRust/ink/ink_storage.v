@@ -23,8 +23,7 @@ Module lazy.
       
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
-      Definition default `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-        Self::["new"] tt.
+      Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -42,8 +41,7 @@ Module lazy.
     Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
-      Definition new `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-        Pure {| Self._marker := core.marker.PhantomData.Build; |}.
+      Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
       
       Global Instance AssociatedFunction_new `{H : State.Trait} :
         Notation.DoubleColon Self "new" := {
@@ -58,14 +56,9 @@ Module lazy.
       
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
-      Definition fmt
-          `{H : State.Trait}
-          (self : ref Self)
-          (f : mut_ref core.fmt.Formatter)
-          : M (H := H) core.fmt.Result :=
-        let* α0 := f.["debug_struct"] "Mapping" in
-        let* α1 := α0.["field"] "key" (addr_of KeyType::["KEY"]) in
-        α1.["finish"].
+      Parameter fmt : forall `{H : State.Trait}, ref Self->
+          mut_ref core.fmt.Formatter
+          -> M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -80,99 +73,52 @@ Module lazy.
     Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_2.
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
-      Definition insert
-          `{H : State.Trait}
-          (self : mut_ref Self)
-          (key : Q)
-          (value : ref R)
-          : M (H := H) (core.option.Option u32) :=
-        ink_env.api.set_contract_storage
-          (addr_of (addr_of KeyType::["KEY"], key))
-          value.
+      Parameter insert : forall `{H : State.Trait}, mut_ref Self->
+          Q->
+          ref R
+          -> M (H := H) (core.option.Option u32).
       
       Global Instance Method_insert `{H : State.Trait} :
         Notation.Dot "insert" := {
         Notation.dot := insert;
       }.
       
-      Definition get
-          `{H : State.Trait}
-          (self : ref Self)
-          (key : Q)
-          : M (H := H) (core.option.Option V) :=
-        let* α0 :=
-          ink_env.api.get_contract_storage
-            (addr_of (addr_of KeyType::["KEY"], key)) in
-        α0.["unwrap_or_else"]
-          (fun error =>
-            let* α0 := format_argument::["new_debug"] (addr_of error) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "Failed to get value in Mapping: " ])
-                (addr_of [ α0 ]) in
-            core.panicking.panic_fmt α1).
+      Parameter get : forall `{H : State.Trait}, ref Self->
+          Q
+          -> M (H := H) (core.option.Option V).
       
       Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
         Notation.dot := get;
       }.
       
-      Definition take
-          `{H : State.Trait}
-          (self : ref Self)
-          (key : Q)
-          : M (H := H) (core.option.Option V) :=
-        let* α0 :=
-          ink_env.api.take_contract_storage
-            (addr_of (addr_of KeyType::["KEY"], key)) in
-        α0.["unwrap_or_else"]
-          (fun error =>
-            let* α0 := format_argument::["new_debug"] (addr_of error) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "Failed to take value in Mapping: " ])
-                (addr_of [ α0 ]) in
-            core.panicking.panic_fmt α1).
+      Parameter take : forall `{H : State.Trait}, ref Self->
+          Q
+          -> M (H := H) (core.option.Option V).
       
       Global Instance Method_take `{H : State.Trait} : Notation.Dot "take" := {
         Notation.dot := take;
       }.
       
-      Definition size
-          `{H : State.Trait}
-          (self : ref Self)
-          (key : Q)
-          : M (H := H) (core.option.Option u32) :=
-        ink_env.api.contains_contract_storage
-          (addr_of (addr_of KeyType::["KEY"], key)).
+      Parameter size : forall `{H : State.Trait}, ref Self->
+          Q
+          -> M (H := H) (core.option.Option u32).
       
       Global Instance Method_size `{H : State.Trait} : Notation.Dot "size" := {
         Notation.dot := size;
       }.
       
-      Definition contains
-          `{H : State.Trait}
-          (self : ref Self)
-          (key : Q)
-          : M (H := H) bool :=
-        let* α0 :=
-          ink_env.api.contains_contract_storage
-            (addr_of (addr_of KeyType::["KEY"], key)) in
-        α0.["is_some"].
+      Parameter contains : forall `{H : State.Trait}, ref Self->
+          Q
+          -> M (H := H) bool.
       
       Global Instance Method_contains `{H : State.Trait} :
         Notation.Dot "contains" := {
         Notation.dot := contains;
       }.
       
-      Definition remove
-          `{H : State.Trait}
-          (self : ref Self)
-          (key : Q)
-          : M (H := H) unit :=
-        let* _ :=
-          ink_env.api.clear_contract_storage
-            (addr_of (addr_of KeyType::["KEY"], key)) in
-        Pure tt.
+      Parameter remove : forall `{H : State.Trait}, ref Self->
+          Q
+          -> M (H := H) unit.
       
       Global Instance Method_remove `{H : State.Trait} :
         Notation.Dot "remove" := {
@@ -188,26 +134,18 @@ Module lazy.
       
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
-      Definition encode
-          `{H : State.Trait}
-          (self : ref Self)
-          (_dest : mut_ref T)
-          : M (H := H) unit :=
-        Pure tt.
+      Parameter encode : forall `{H : State.Trait}, ref Self->
+          mut_ref T
+          -> M (H := H) unit.
       
       Global Instance Method_encode `{H : State.Trait} :
         Notation.Dot "encode" := {
         Notation.dot := encode;
       }.
       
-      Definition decode
-          `{H : State.Trait}
-          (_input : mut_ref I)
-          :
-            M (H := H)
-              (core.result.Result Self parity_scale_codec.error.Error) :=
-        let* α0 := core.default.Default.default tt in
-        Pure (core.result.Result.Ok α0).
+      Parameter decode : forall `{H : State.Trait}, mut_ref I
+          ->
+            M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
       
       Global Instance AssociatedFunction_decode `{H : State.Trait} :
         Notation.DoubleColon Self "decode" := {
@@ -284,8 +222,7 @@ Module lazy.
     
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
-    Definition default `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-      Self::["new"] tt.
+    Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -301,8 +238,7 @@ Module lazy.
   Module Impl_ink_storage_lazy_Lazy_V_KeyType.
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
-    Definition new `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-      Pure {| Self._marker := core.marker.PhantomData.Build; |}.
+    Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -316,14 +252,9 @@ Module lazy.
     
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      let* α0 := f.["debug_struct"] "Lazy" in
-      let* α1 := α0.["field"] "key" (addr_of KeyType::["KEY"]) in
-      α1.["finish"].
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -338,29 +269,16 @@ Module lazy.
   Module Impl_ink_storage_lazy_Lazy_V_KeyType_2.
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
-    Definition get
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) (core.option.Option V) :=
-      let* α0 := ink_env.api.get_contract_storage (addr_of KeyType::["KEY"]) in
-      match α0 with
-      | core.result.Result.Ok core.option.Option.Some value =>
-        Pure (core.option.Option.Some value)
-      | _ => Pure core.option.Option.None
-      end.
+    Parameter get : forall `{H : State.Trait}, ref Self
+        -> M (H := H) (core.option.Option V).
     
     Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
       Notation.dot := get;
     }.
     
-    Definition set
-        `{H : State.Trait}
-        (self : mut_ref Self)
-        (value : ref V)
-        : M (H := H) unit :=
-      let* _ :=
-        ink_env.api.set_contract_storage (addr_of KeyType::["KEY"]) value in
-      Pure tt.
+    Parameter set : forall `{H : State.Trait}, mut_ref Self->
+        ref V
+        -> M (H := H) unit.
     
     Global Instance Method_set `{H : State.Trait} : Notation.Dot "set" := {
       Notation.dot := set;
@@ -370,15 +288,8 @@ Module lazy.
   Module Impl_ink_storage_lazy_Lazy_V_KeyType_3.
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
-    Definition get_or_default
-        `{H : State.Trait}
-        (self : ref Self)
-        : M (H := H) V :=
-      let* α0 := ink_env.api.get_contract_storage (addr_of KeyType::["KEY"]) in
-      match α0 with
-      | core.result.Result.Ok core.option.Option.Some value => Pure value
-      | _ => core.default.Default.default tt
-      end.
+    Parameter get_or_default : forall `{H : State.Trait}, ref Self
+        -> M (H := H) V.
     
     Global Instance Method_get_or_default `{H : State.Trait} :
       Notation.Dot "get_or_default" := {
@@ -394,24 +305,17 @@ Module lazy.
     
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
-    Definition encode
-        `{H : State.Trait}
-        (self : ref Self)
-        (_dest : mut_ref T)
-        : M (H := H) unit :=
-      Pure tt.
+    Parameter encode : forall `{H : State.Trait}, ref Self->
+        mut_ref T
+        -> M (H := H) unit.
     
     Global Instance Method_encode `{H : State.Trait} :
       Notation.Dot "encode" := {
       Notation.dot := encode;
     }.
     
-    Definition decode
-        `{H : State.Trait}
-        (_input : mut_ref I)
-        : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
-      let* α0 := core.default.Default.default tt in
-      Pure (core.result.Result.Ok α0).
+    Parameter decode : forall `{H : State.Trait}, mut_ref I
+        -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
     
     Global Instance AssociatedFunction_decode `{H : State.Trait} :
       Notation.DoubleColon Self "decode" := {
@@ -491,8 +395,7 @@ Module mapping.
     
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
-    Definition default `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-      Self::["new"] tt.
+    Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -510,8 +413,7 @@ Module mapping.
   Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_3.
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
-    Definition new `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-      Pure {| Self._marker := core.marker.PhantomData.Build; |}.
+    Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -525,14 +427,9 @@ Module mapping.
     
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
-    Definition fmt
-        `{H : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
-      let* α0 := f.["debug_struct"] "Mapping" in
-      let* α1 := α0.["field"] "key" (addr_of KeyType::["KEY"]) in
-      α1.["finish"].
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -547,99 +444,52 @@ Module mapping.
   Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_4.
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
-    Definition insert
-        `{H : State.Trait}
-        (self : mut_ref Self)
-        (key : Q)
-        (value : ref R)
-        : M (H := H) (core.option.Option u32) :=
-      ink_env.api.set_contract_storage
-        (addr_of (addr_of KeyType::["KEY"], key))
-        value.
+    Parameter insert : forall `{H : State.Trait}, mut_ref Self->
+        Q->
+        ref R
+        -> M (H := H) (core.option.Option u32).
     
     Global Instance Method_insert `{H : State.Trait} :
       Notation.Dot "insert" := {
       Notation.dot := insert;
     }.
     
-    Definition get
-        `{H : State.Trait}
-        (self : ref Self)
-        (key : Q)
-        : M (H := H) (core.option.Option V) :=
-      let* α0 :=
-        ink_env.api.get_contract_storage
-          (addr_of (addr_of KeyType::["KEY"], key)) in
-      α0.["unwrap_or_else"]
-        (fun error =>
-          let* α0 := format_argument::["new_debug"] (addr_of error) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "Failed to get value in Mapping: " ])
-              (addr_of [ α0 ]) in
-          core.panicking.panic_fmt α1).
+    Parameter get : forall `{H : State.Trait}, ref Self->
+        Q
+        -> M (H := H) (core.option.Option V).
     
     Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
       Notation.dot := get;
     }.
     
-    Definition take
-        `{H : State.Trait}
-        (self : ref Self)
-        (key : Q)
-        : M (H := H) (core.option.Option V) :=
-      let* α0 :=
-        ink_env.api.take_contract_storage
-          (addr_of (addr_of KeyType::["KEY"], key)) in
-      α0.["unwrap_or_else"]
-        (fun error =>
-          let* α0 := format_argument::["new_debug"] (addr_of error) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "Failed to take value in Mapping: " ])
-              (addr_of [ α0 ]) in
-          core.panicking.panic_fmt α1).
+    Parameter take : forall `{H : State.Trait}, ref Self->
+        Q
+        -> M (H := H) (core.option.Option V).
     
     Global Instance Method_take `{H : State.Trait} : Notation.Dot "take" := {
       Notation.dot := take;
     }.
     
-    Definition size
-        `{H : State.Trait}
-        (self : ref Self)
-        (key : Q)
-        : M (H := H) (core.option.Option u32) :=
-      ink_env.api.contains_contract_storage
-        (addr_of (addr_of KeyType::["KEY"], key)).
+    Parameter size : forall `{H : State.Trait}, ref Self->
+        Q
+        -> M (H := H) (core.option.Option u32).
     
     Global Instance Method_size `{H : State.Trait} : Notation.Dot "size" := {
       Notation.dot := size;
     }.
     
-    Definition contains
-        `{H : State.Trait}
-        (self : ref Self)
-        (key : Q)
-        : M (H := H) bool :=
-      let* α0 :=
-        ink_env.api.contains_contract_storage
-          (addr_of (addr_of KeyType::["KEY"], key)) in
-      α0.["is_some"].
+    Parameter contains : forall `{H : State.Trait}, ref Self->
+        Q
+        -> M (H := H) bool.
     
     Global Instance Method_contains `{H : State.Trait} :
       Notation.Dot "contains" := {
       Notation.dot := contains;
     }.
     
-    Definition remove
-        `{H : State.Trait}
-        (self : ref Self)
-        (key : Q)
-        : M (H := H) unit :=
-      let* _ :=
-        ink_env.api.clear_contract_storage
-          (addr_of (addr_of KeyType::["KEY"], key)) in
-      Pure tt.
+    Parameter remove : forall `{H : State.Trait}, ref Self->
+        Q
+        -> M (H := H) unit.
     
     Global Instance Method_remove `{H : State.Trait} :
       Notation.Dot "remove" := {
@@ -655,24 +505,17 @@ Module mapping.
     
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
-    Definition encode
-        `{H : State.Trait}
-        (self : ref Self)
-        (_dest : mut_ref T)
-        : M (H := H) unit :=
-      Pure tt.
+    Parameter encode : forall `{H : State.Trait}, ref Self->
+        mut_ref T
+        -> M (H := H) unit.
     
     Global Instance Method_encode `{H : State.Trait} :
       Notation.Dot "encode" := {
       Notation.dot := encode;
     }.
     
-    Definition decode
-        `{H : State.Trait}
-        (_input : mut_ref I)
-        : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
-      let* α0 := core.default.Default.default tt in
-      Pure (core.result.Result.Ok α0).
+    Parameter decode : forall `{H : State.Trait}, mut_ref I
+        -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
     
     Global Instance AssociatedFunction_decode `{H : State.Trait} :
       Notation.DoubleColon Self "decode" := {
@@ -753,90 +596,8 @@ Section
   
   Definition Identity : Set := Self.
   
-  Definition type_info
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) scale_info.ty.Type :=
-    let* α0 := scale_info.ty.Type::["builder"] tt in
-    let* α1 :=
-      scale_info.ty.path.Path::["new"] "Mapping" "ink_storage::lazy::mapping" in
-    let* α2 := α0.["path"] α1 in
-    let* α3 := scale_info.meta_type tt in
-    let* α4 :=
-      scale_info.ty.TypeParameter::["new"] "K" (core.option.Option.Some α3) in
-    let* α5 := scale_info.meta_type tt in
-    let* α6 :=
-      scale_info.ty.TypeParameter::["new"] "V" (core.option.Option.Some α5) in
-    let* α7 := scale_info.meta_type tt in
-    let* α8 :=
-      scale_info.ty.TypeParameter::["new"]
-        "KeyType"
-        (core.option.Option.Some α7) in
-    let* α9 := alloc.boxed.Box::["new"] [ α4; α6; α8 ] in
-    let* α10 := Slice::["into_vec"] α9 in
-    let* α11 := α2.["type_params"] α10 in
-    let* α12 :=
-      α11.["docs"]
-        (addr_of
-          [
-            "A mapping of key-value pairs directly into contract storage.";
-            "";
-            "# Important";
-            "";
-            "The mapping requires its own pre-defined storage key where to store values. By";
-            "default, the is automatically calculated using [`AutoKey`](crate::traits::AutoKey)";
-            "during compilation. However, anyone can specify a storage key using";
-            "[`ManualKey`](crate::traits::ManualKey). Specifying the storage key can be helpful for";
-            "upgradeable contracts or you want to be resistant to future changes of storage key";
-            "calculation strategy.";
-            "";
-            "This is an example of how you can do this:";
-            "```rust";
-            "# use ink::env::{";
-            "#     Environment,";
-            "#     DefaultEnvironment,";
-            "# };";
-            "# type AccountId = <DefaultEnvironment as Environment>::AccountId;";
-            "";
-            "# #[ink::contract]";
-            "# mod my_module {";
-            "use ink::storage::{";
-            "    traits::ManualKey,";
-            "    Mapping,";
-            "};";
-            "";
-            "#[ink(storage)]";
-            "#[derive(Default)]";
-            "pub struct MyContract {";
-            "    balances: Mapping<AccountId, Balance, ManualKey<123>>,";
-            "}";
-            "";
-            "impl MyContract {";
-            "    #[ink(constructor)]";
-            "    pub fn new() -> Self {";
-            "        let mut instance = Self::default();";
-            "        let caller = Self::env().caller();";
-            "        let value: Balance = Default::default();";
-            "        instance.balances.insert(&caller, &value);";
-            "        instance";
-            "    }";
-            "";
-            "#   #[ink(message)]";
-            "#   pub fn my_message(&self) { }";
-            "}";
-            "# }";
-            "```";
-            "";
-            "More usage examples can be found [in the ink! examples](https://github.com/paritytech/ink-examples)."
-          ]) in
-    let* α13 := scale_info.build.Fields::["named"] tt in
-    let* α14 :=
-      α13.["field"]
-        (fun f =>
-          let* α0 := f.["ty"] in
-          let* α1 := α0.["name"] "_marker" in
-          α1.["type_name"] "PhantomData<fn() ->(K, V, KeyType)>") in
-    α12.["composite"] α14.
+  Parameter type_info : forall `{H : State.Trait}, unit
+      -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
     Notation.DoubleColon Self "type_info" := {
@@ -857,8 +618,7 @@ Section
   
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
-  Definition default `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-    Self::["new"] tt.
+  Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -874,8 +634,7 @@ End Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_5.
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
-  Definition new `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-    Pure {| Self._marker := core.marker.PhantomData.Build; |}.
+  Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -889,14 +648,9 @@ Section Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
   
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    let* α0 := f.["debug_struct"] "Mapping" in
-    let* α1 := α0.["field"] "key" (addr_of KeyType::["KEY"]) in
-    α1.["finish"].
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -911,98 +665,49 @@ End Impl_core_fmt_Debug_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_6.
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
-  Definition insert
-      `{H : State.Trait}
-      (self : mut_ref Self)
-      (key : Q)
-      (value : ref R)
-      : M (H := H) (core.option.Option u32) :=
-    ink_env.api.set_contract_storage
-      (addr_of (addr_of KeyType::["KEY"], key))
-      value.
+  Parameter insert : forall `{H : State.Trait}, mut_ref Self->
+      Q->
+      ref R
+      -> M (H := H) (core.option.Option u32).
   
   Global Instance Method_insert `{H : State.Trait} : Notation.Dot "insert" := {
     Notation.dot := insert;
   }.
   
-  Definition get
-      `{H : State.Trait}
-      (self : ref Self)
-      (key : Q)
-      : M (H := H) (core.option.Option V) :=
-    let* α0 :=
-      ink_env.api.get_contract_storage
-        (addr_of (addr_of KeyType::["KEY"], key)) in
-    α0.["unwrap_or_else"]
-      (fun error =>
-        let* α0 := format_argument::["new_debug"] (addr_of error) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "Failed to get value in Mapping: " ])
-            (addr_of [ α0 ]) in
-        core.panicking.panic_fmt α1).
+  Parameter get : forall `{H : State.Trait}, ref Self->
+      Q
+      -> M (H := H) (core.option.Option V).
   
   Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
     Notation.dot := get;
   }.
   
-  Definition take
-      `{H : State.Trait}
-      (self : ref Self)
-      (key : Q)
-      : M (H := H) (core.option.Option V) :=
-    let* α0 :=
-      ink_env.api.take_contract_storage
-        (addr_of (addr_of KeyType::["KEY"], key)) in
-    α0.["unwrap_or_else"]
-      (fun error =>
-        let* α0 := format_argument::["new_debug"] (addr_of error) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "Failed to take value in Mapping: " ])
-            (addr_of [ α0 ]) in
-        core.panicking.panic_fmt α1).
+  Parameter take : forall `{H : State.Trait}, ref Self->
+      Q
+      -> M (H := H) (core.option.Option V).
   
   Global Instance Method_take `{H : State.Trait} : Notation.Dot "take" := {
     Notation.dot := take;
   }.
   
-  Definition size
-      `{H : State.Trait}
-      (self : ref Self)
-      (key : Q)
-      : M (H := H) (core.option.Option u32) :=
-    ink_env.api.contains_contract_storage
-      (addr_of (addr_of KeyType::["KEY"], key)).
+  Parameter size : forall `{H : State.Trait}, ref Self->
+      Q
+      -> M (H := H) (core.option.Option u32).
   
   Global Instance Method_size `{H : State.Trait} : Notation.Dot "size" := {
     Notation.dot := size;
   }.
   
-  Definition contains
-      `{H : State.Trait}
-      (self : ref Self)
-      (key : Q)
-      : M (H := H) bool :=
-    let* α0 :=
-      ink_env.api.contains_contract_storage
-        (addr_of (addr_of KeyType::["KEY"], key)) in
-    α0.["is_some"].
+  Parameter contains : forall `{H : State.Trait}, ref Self->
+      Q
+      -> M (H := H) bool.
   
   Global Instance Method_contains `{H : State.Trait} :
     Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
-  Definition remove
-      `{H : State.Trait}
-      (self : ref Self)
-      (key : Q)
-      : M (H := H) unit :=
-    let* _ :=
-      ink_env.api.clear_contract_storage
-        (addr_of (addr_of KeyType::["KEY"], key)) in
-    Pure tt.
+  Parameter remove : forall `{H : State.Trait}, ref Self-> Q -> M (H := H) unit.
   
   Global Instance Method_remove `{H : State.Trait} : Notation.Dot "remove" := {
     Notation.dot := remove;
@@ -1017,23 +722,16 @@ Section
   
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
-  Definition encode
-      `{H : State.Trait}
-      (self : ref Self)
-      (_dest : mut_ref T)
-      : M (H := H) unit :=
-    Pure tt.
+  Parameter encode : forall `{H : State.Trait}, ref Self->
+      mut_ref T
+      -> M (H := H) unit.
   
   Global Instance Method_encode `{H : State.Trait} : Notation.Dot "encode" := {
     Notation.dot := encode;
   }.
   
-  Definition decode
-      `{H : State.Trait}
-      (_input : mut_ref I)
-      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* α0 := core.default.Default.default tt in
-    Pure (core.result.Result.Ok α0).
+  Parameter decode : forall `{H : State.Trait}, mut_ref I
+      -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
@@ -1100,17 +798,8 @@ Section
   
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
-  Definition layout
-      `{H : State.Trait}
-      (Pattern : ref ink_primitives.key.Key)
-      : M (H := H) ink_metadata.layout.Layout :=
-    let* α0 :=
-      ink_metadata.layout.LayoutKey::["from"] (addr_of KeyType::["KEY"]) in
-    let* α1 :=
-      ink_storage_traits.layout.StorageLayout.layout
-        (addr_of KeyType::["KEY"]) in
-    let* α2 := ink_metadata.layout.RootLayout::["new"] α0 α1 in
-    Pure (ink_metadata.layout.Layout.Root α2).
+  Parameter layout : forall `{H : State.Trait}, ref ink_primitives.key.Key
+      -> M (H := H) ink_metadata.layout.Layout.
   
   Global Instance AssociatedFunction_layout `{H : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -1144,93 +833,8 @@ Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
   
   Definition Identity : Set := Self.
   
-  Definition type_info
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) scale_info.ty.Type :=
-    let* α0 := scale_info.ty.Type::["builder"] tt in
-    let* α1 := scale_info.ty.path.Path::["new"] "Lazy" "ink_storage::lazy" in
-    let* α2 := α0.["path"] α1 in
-    let* α3 := scale_info.meta_type tt in
-    let* α4 :=
-      scale_info.ty.TypeParameter::["new"] "V" (core.option.Option.Some α3) in
-    let* α5 := scale_info.meta_type tt in
-    let* α6 :=
-      scale_info.ty.TypeParameter::["new"]
-        "KeyType"
-        (core.option.Option.Some α5) in
-    let* α7 := alloc.boxed.Box::["new"] [ α4; α6 ] in
-    let* α8 := Slice::["into_vec"] α7 in
-    let* α9 := α2.["type_params"] α8 in
-    let* α10 :=
-      α9.["docs"]
-        (addr_of
-          [
-            "A simple wrapper around a type to store it in a separate storage cell under its own";
-            "storage key. If you want to update the value, first you need to";
-            "[`get`](crate::Lazy::get) it, update the value, and then call";
-            "[`set`](crate::Lazy::set) with the new value.";
-            "";
-            "# Important";
-            "";
-            "The wrapper requires its own pre-defined storage key in order to determine where it";
-            "stores value. By default, the is automatically calculated using";
-            "[`AutoKey`](crate::traits::AutoKey) during compilation. However, anyone can specify a";
-            "storage key using [`ManualKey`](crate::traits::ManualKey). Specifying the storage key";
-            "can be helpful for upgradeable contracts or you want to be resistant to future changes";
-            "of storage key calculation strategy.";
-            "";
-            "# Note";
-            "";
-            "If the contract has two or more `Lazy` with the same storage key, modifying the value";
-            "of one of them will modify others.";
-            "";
-            "This is an example of how you can do this:";
-            "```rust";
-            "# use ink::env::{";
-            "#     Environment,";
-            "#     DefaultEnvironment,";
-            "# };";
-            "# type AccountId = <DefaultEnvironment as Environment>::AccountId;";
-            "";
-            "# #[ink::contract]";
-            "# mod my_module {";
-            "use ink::storage::{";
-            "    traits::ManualKey,";
-            "    Lazy,";
-            "};";
-            "";
-            "#[ink(storage)]";
-            "#[derive(Default)]";
-            "pub struct MyContract {";
-            "    owner: Lazy<AccountId>,";
-            "    balance: Lazy<Balance, ManualKey<123>>,";
-            "}";
-            "";
-            "impl MyContract {";
-            "    #[ink(constructor)]";
-            "    pub fn new() -> Self {";
-            "        let mut instance = Self::default();";
-            "        let caller = Self::env().caller();";
-            "        instance.owner.set(&caller);";
-            "        instance.balance.set(&123456);";
-            "        instance";
-            "    }";
-            "";
-            "#   #[ink(message)]";
-            "#   pub fn my_message(&self) { }";
-            "}";
-            "# }";
-            "```"
-          ]) in
-    let* α11 := scale_info.build.Fields::["named"] tt in
-    let* α12 :=
-      α11.["field"]
-        (fun f =>
-          let* α0 := f.["ty"] in
-          let* α1 := α0.["name"] "_marker" in
-          α1.["type_name"] "PhantomData<fn() ->(V, KeyType)>") in
-    α10.["composite"] α12.
+  Parameter type_info : forall `{H : State.Trait}, unit
+      -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
     Notation.DoubleColon Self "type_info" := {
@@ -1249,8 +853,7 @@ Section Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
   
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
-  Definition default `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-    Self::["new"] tt.
+  Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -1266,8 +869,7 @@ End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
 Module Impl_ink_storage_lazy_Lazy_V_KeyType_4.
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
-  Definition new `{H : State.Trait} (_ : unit) : M (H := H) Self :=
-    Pure {| Self._marker := core.marker.PhantomData.Build; |}.
+  Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -1281,14 +883,9 @@ Section Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
   
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    let* α0 := f.["debug_struct"] "Lazy" in
-    let* α1 := α0.["field"] "key" (addr_of KeyType::["KEY"]) in
-    α1.["finish"].
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -1303,29 +900,16 @@ End Impl_core_fmt_Debug_for_ink_storage_lazy_Lazy_V_KeyType.
 Module Impl_ink_storage_lazy_Lazy_V_KeyType_5.
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
-  Definition get
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) (core.option.Option V) :=
-    let* α0 := ink_env.api.get_contract_storage (addr_of KeyType::["KEY"]) in
-    match α0 with
-    | core.result.Result.Ok core.option.Option.Some value =>
-      Pure (core.option.Option.Some value)
-    | _ => Pure core.option.Option.None
-    end.
+  Parameter get : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (core.option.Option V).
   
   Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
     Notation.dot := get;
   }.
   
-  Definition set
-      `{H : State.Trait}
-      (self : mut_ref Self)
-      (value : ref V)
-      : M (H := H) unit :=
-    let* _ :=
-      ink_env.api.set_contract_storage (addr_of KeyType::["KEY"]) value in
-    Pure tt.
+  Parameter set : forall `{H : State.Trait}, mut_ref Self->
+      ref V
+      -> M (H := H) unit.
   
   Global Instance Method_set `{H : State.Trait} : Notation.Dot "set" := {
     Notation.dot := set;
@@ -1335,15 +919,8 @@ End Impl_ink_storage_lazy_Lazy_V_KeyType_5.
 Module Impl_ink_storage_lazy_Lazy_V_KeyType_6.
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
-  Definition get_or_default
-      `{H : State.Trait}
-      (self : ref Self)
-      : M (H := H) V :=
-    let* α0 := ink_env.api.get_contract_storage (addr_of KeyType::["KEY"]) in
-    match α0 with
-    | core.result.Result.Ok core.option.Option.Some value => Pure value
-    | _ => core.default.Default.default tt
-    end.
+  Parameter get_or_default : forall `{H : State.Trait}, ref Self
+      -> M (H := H) V.
   
   Global Instance Method_get_or_default `{H : State.Trait} :
     Notation.Dot "get_or_default" := {
@@ -1359,23 +936,16 @@ Section
   
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
-  Definition encode
-      `{H : State.Trait}
-      (self : ref Self)
-      (_dest : mut_ref T)
-      : M (H := H) unit :=
-    Pure tt.
+  Parameter encode : forall `{H : State.Trait}, ref Self->
+      mut_ref T
+      -> M (H := H) unit.
   
   Global Instance Method_encode `{H : State.Trait} : Notation.Dot "encode" := {
     Notation.dot := encode;
   }.
   
-  Definition decode
-      `{H : State.Trait}
-      (_input : mut_ref I)
-      : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
-    let* α0 := core.default.Default.default tt in
-    Pure (core.result.Result.Ok α0).
+  Parameter decode : forall `{H : State.Trait}, mut_ref I
+      -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
@@ -1442,17 +1012,8 @@ Section
   
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
-  Definition layout
-      `{H : State.Trait}
-      (Pattern : ref ink_primitives.key.Key)
-      : M (H := H) ink_metadata.layout.Layout :=
-    let* α0 :=
-      ink_metadata.layout.LayoutKey::["from"] (addr_of KeyType::["KEY"]) in
-    let* α1 :=
-      ink_storage_traits.layout.StorageLayout.layout
-        (addr_of KeyType::["KEY"]) in
-    let* α2 := ink_metadata.layout.RootLayout::["new"] α0 α1 in
-    Pure (ink_metadata.layout.Layout.Root α2).
+  Parameter layout : forall `{H : State.Trait}, ref ink_primitives.key.Key
+      -> M (H := H) ink_metadata.layout.Layout.
   
   Global Instance AssociatedFunction_layout `{H : State.Trait} :
     Notation.DoubleColon Self "layout" := {
