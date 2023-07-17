@@ -3,13 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
-  let* α0 := range_inclusive_new 1 100 in
-  let* α1 := into_iter α0 in
+  let* α0 := LocalVar 1 100 in
+  let* α1 := LocalVar α0 in
   match α1 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := next (addr_of iter) in
+        let* α0 := LocalVar (addr_of iter) in
         match α0 with
         | None  => Break
         | Some n =>

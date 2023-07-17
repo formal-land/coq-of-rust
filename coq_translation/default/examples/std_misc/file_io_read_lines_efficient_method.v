@@ -6,12 +6,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* α0 := file_io_read_lines_efficient_method.read_lines "./hosts" in
   let* α1 := let_if core.result.Result.Ok lines := α0 in
   if (α1 : bool) then
-    let* α0 := into_iter lines in
+    let* α0 := LocalVar lines in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := next (addr_of iter) in
+          let* α0 := LocalVar (addr_of iter) in
           match α0 with
           | None  => Break
           | Some line =>
@@ -47,10 +47,10 @@ Definition read_lines
           (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
   let* file :=
     let* α0 := std.fs.File::["open"] filename in
-    let* α1 := branch α0 in
+    let* α1 := LocalVar α0 in
     match α1 with
     | Break residual =>
-      let* α0 := from_residual residual in
+      let* α0 := LocalVar residual in
       Return α0
     | Continue val => Pure val
     end in

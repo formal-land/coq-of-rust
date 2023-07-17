@@ -88,12 +88,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     Pure tt in
   let* _ :=
     let* α0 := xs.["iter"] in
-    let* α1 := into_iter α0 in
+    let* α1 := LocalVar α0 in
     match α1 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := next (addr_of iter) in
+          let* α0 := LocalVar (addr_of iter) in
           match α0 with
           | None  => Break
           | Some x =>
@@ -114,12 +114,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
     let* α0 := xs.["iter"] in
     let* α1 := α0.["enumerate"] in
-    let* α2 := into_iter α1 in
+    let* α2 := LocalVar α1 in
     match α2 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := next (addr_of iter) in
+          let* α0 := LocalVar (addr_of iter) in
           match α0 with
           | None  => Break
           | Some (i, x) =>
@@ -140,12 +140,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     end in
   let* _ :=
     let* α0 := xs.["iter_mut"] in
-    let* α1 := into_iter α0 in
+    let* α1 := LocalVar α0 in
     match α1 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := next (addr_of iter) in
+          let* α0 := LocalVar (addr_of iter) in
           match α0 with
           | None  => Break
           | Some x =>

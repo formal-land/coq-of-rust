@@ -193,8 +193,8 @@ fn compile_qpath(env: &mut Env, qpath: &QPath) -> Expr {
             let func = segment.ident.to_string();
             Expr::AssociatedFunction { ty, func }
         }
-        QPath::LangItem(lang_item, _, _) => {
-            Expr::LocalVar(to_valid_coq_name(lang_item.name().to_string()))
+        QPath::LangItem(..) => { // lang_item, _, _) => {
+            Expr::LocalVar("LocalVar".to_string()) // to_valid_coq_name(lang_item.name().to_string()))
         }
     }
 }

@@ -21,12 +21,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* lines :=
     let* α0 := "./hosts".["to_string"] in
     file_io_read_lines.read_lines α0 in
-  let* α0 := into_iter lines in
+  let* α0 := LocalVar lines in
   match α0 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := next (addr_of iter) in
+        let* α0 := LocalVar (addr_of iter) in
         match α0 with
         | None  => Break
         | Some line =>
