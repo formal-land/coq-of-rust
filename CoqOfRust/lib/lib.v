@@ -93,15 +93,3 @@ Definition mut_deref {A : Set} (r : mut_ref A) : A := r.
 Parameter eqb : forall {A : Set}, A -> A -> bool.
 
 Definition slice (A : Set) : Set := list A.
-
-(* TODO: move to its own file *)
-(** this module is necessary for the module hack in slice.v *)
-Module core.
-  Module alloc.
-    Module Allocator.
-      Class Trait (Self : Set) : Set := {
-        (* TODO *)
-      }.
-    End Allocator.
-  End alloc.
-End core.

@@ -901,11 +901,6 @@ Module core.
   End ops.
 End core.
 
-(* (* TODO: find a better place for this *)
-Global Instance Method_Z_rem `{State.Trait} : Notation.Dot "lt" := {
-  Notation.dot (x y : Z) := Pure (Z.ltb x y);
-}. *)
-
 Module alloc.
   Module boxed.
     Definition Box (A : Set) : Set := A.
@@ -919,6 +914,12 @@ Module alloc.
   Module string.
     Definition String : Set := string.
   End string.
+
+  Module Allocator.
+    Class Trait (Self : Set) : Set := {
+      (* TODO *)
+    }.
+  End Allocator.
 End alloc.
 
 Require CoqOfRust._std.alloc.
@@ -1372,33 +1373,35 @@ Definition format_arguments : Set := core.fmt.Arguments.
 
 Definition Slice := lib.slice.
 
-(* TODO: remove *)
-(** temporary copy of the definitions from iter_type.v *)
-Module temp.
-  (* NOTE: The Iterator trait has to be put at the first place because most structs depend on this trait. *)
-  Module Iterator.
-    Class Trait (Self : Set) (Item : Set) := {
-      Item := Item;
+Module Impl_Slice.
+  (* TODO: is it the right place for this module? *)
+  Module hack.
+    Parameter t : Set.
 
-      (* fn next(&mut self) -> Option<Self::Item>; *)
-      next : mut_ref Self -> Option Item;
+    Parameter into_vec : forall {T A : Set} `{(* core. *) alloc.Allocator.Trait A}
+      {(* TODO: use (Box (Slice T) A) instead of X *) X : Set} (b : X),
+        Vec T (Some A).
+  End hack.
+  Definition hack := hack.t.
+
+  Module hack_notations.
+    Global Instance hack_into_vec {T A : Set} `{(* core. *) alloc.Allocator.Trait A}
+      {X : Set} : Notation.DoubleColon hack "into_vec" := {
+      Notation.double_colon (b : X) := hack.into_vec (T := T) (A := A) b;
     }.
-  End Iterator.
+  End hack_notations.
 
+  Section Impl_Slice.
+    Parameter T : Set.
+    Definition Self := Slice T.
 
-  (* pub trait IntoIterator {
-      type Item;
-      type IntoIter: Iterator<Item = Self::Item>;
+    Definition into_vec {A : Set} `{(* core. *) alloc.Allocator.Trait A}
+      (self : ref Self) (alloc : A) : Vec T (Some A) :=
+        hack::["into_vec"] self.
 
-      // Required method
-      fn into_iter(self) -> Self::IntoIter;
-  } 
-  *)
-  Module IntoIterator.
-    Class Trait (Self Item IntoIter : Set) `{Iterator.Trait IntoIter Item} : Set := {
-      Item := Item;
-      IntoIter := IntoIter;
-      into_iter : Self -> IntoIter;
-    }.
-  End IntoIterator.
-End temp.
+    Global Instance Method_into_vec {A : Set} `{(* core. *) alloc.Allocator.Trait A} :
+      Notation.DoubleColon Slice "into_vec" := {
+        Notation.double_colon (self : ref Self) (alloc : A) := into_vec self alloc;
+      }.
+  End Impl_Slice.
+End Impl_Slice.
