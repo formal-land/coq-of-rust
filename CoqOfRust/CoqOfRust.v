@@ -905,9 +905,11 @@ Module alloc.
   Module boxed.
     Definition Box (A : Set) : Set := A.
 
+    Definition new `{State.Trait} {A : Set} (x : A) : M (Box A) := Pure x.
+
     Global Instance Method_Box_new `{State.Trait} (A : Set) :
       Notation.DoubleColon Box "new" := {
-      Notation.double_colon (x : A) := Pure x;
+      Notation.double_colon (x : A) := new x;
     }.
   End boxed.
 
@@ -1378,30 +1380,100 @@ Module Impl_Slice.
   Module hack.
     Parameter t : Set.
 
-    Parameter into_vec : forall {T A : Set} `{(* core. *) alloc.Allocator.Trait A}
-      {(* TODO: use (Box (Slice T) A) instead of X *) X : Set} (b : X),
-        Vec T (Some A).
+    (* defined only for A = Global *)
+    Parameter into_vec :
+      forall `{State.Trait} {T (* A *) : Set}
+      (* `{(* core. *) alloc.Allocator.Trait A} *)
+      (b : alloc.boxed.Box (Slice T) (* A *)),
+        M (Vec T None (* (Some A) *)).
   End hack.
   Definition hack := hack.t.
 
   Module hack_notations.
-    Global Instance hack_into_vec {T A : Set} `{(* core. *) alloc.Allocator.Trait A}
-      {X : Set} : Notation.DoubleColon hack "into_vec" := {
-      Notation.double_colon (b : X) := hack.into_vec (T := T) (A := A) b;
+    Global Instance hack_into_vec `{State.Trait}
+      {T (* A *) : Set} (* `{(* core. *) alloc.Allocator.Trait A} *) :
+      Notation.DoubleColon hack "into_vec" := {
+      Notation.double_colon (b : alloc.boxed.Box (Slice T) (* A *)) :=
+        hack.into_vec (T := T) (* (A := A) *) b;
     }.
   End hack_notations.
 
   Section Impl_Slice.
-    Parameter T : Set.
+    Variable T : Set.
     Definition Self := Slice T.
 
-    Definition into_vec {A : Set} `{(* core. *) alloc.Allocator.Trait A}
-      (self : ref Self) (alloc : A) : Vec T (Some A) :=
+    Definition into_vec `{State.Trait}
+      (* {A : Set} `{(* core. *) alloc.Allocator.Trait A} *)
+      (self : ref Self) (* (alloc : A) *) : M (Vec T None (* (Some A) *)) :=
         hack::["into_vec"] self.
 
-    Global Instance Method_into_vec {A : Set} `{(* core. *) alloc.Allocator.Trait A} :
+    Global Instance Method_into_vec `{State.Trait}
+      (* {A : Set} `{(* core. *) alloc.Allocator.Trait A} *) :
       Notation.DoubleColon Slice "into_vec" := {
-        Notation.double_colon (self : ref Self) (alloc : A) := into_vec self alloc;
+        Notation.double_colon (self : ref Self) (* (alloc : A) *) :=
+          into_vec self (* alloc *);
       }.
   End Impl_Slice.
 End Impl_Slice.
+
+Module Impl_IntoIter_for_Vec.
+  Section Impl_IntoIter_for_Vec.
+  Context {T (* A *) : Set}.
+(*   Context `{alloc.Allocator.Trait A}. *)
+  Definition Self := Vec T None (* (Some A) *).
+
+  Definition Item := T.
+  Definition IntoIter := std.vec.IntoIter T None (* (Some A) *).
+
+  Parameter into_iter :
+    forall `{State.Trait}, Self -> M IntoIter.
+
+(* TODO: uncomment after fixing iter_type.v *)
+(*   Global Instance IntoIter_for_Vec `{State.Trait} :
+    std.iter_type.IntoIterator Self Item IntoIter := {
+    into_iter := into_iter;
+  }. *)
+  Global Instance Method_into_iter `{State.Trait} :
+    Notation.Dot "into_iter" := {
+    Notation.dot := into_iter;
+  }.
+  End Impl_IntoIter_for_Vec.
+End Impl_IntoIter_for_Vec.
+
+(* TODO: this is only a temporary implementation,
+         it needs to be rewritten properly when all std files will be fixed *)
+Module Impl_Iterator_for_Vec_IntoIter.
+  Section Impl_Iterator_for_Vec_IntoIter.
+  Context {T (* A *) : Set}.
+(*   Context `{alloc.Allocator.Trait A}. *)
+  Definition Self := std.vec.IntoIter T None (* (Some A) *).
+
+  Definition Item := T.
+
+  Parameter next : forall `{State.Trait} (self : mut_ref Self), M (option T).
+
+  Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
+    Notation.dot := next;
+  }.
+  End Impl_Iterator_for_Vec_IntoIter.
+End Impl_Iterator_for_Vec_IntoIter.
+
+(* TODO: this is only a temporary implementation,
+         it needs to be rewritten properly when all std files will be fixed *)
+Module Impl_IntoIter_for_Vec_IntoIter.
+  Section Impl_IntoIter_for_Vec_IntoIter.
+  Context {T (* A *) : Set}.
+(*   Context `{alloc.Allocator.Trait A}. *)
+  Definition Self := std.vec.IntoIter T None (* (Some A) *).
+
+  Definition Item := T.
+  Definition IntoIter := std.vec.IntoIter T None (* (Some A) *).
+
+  Definition into_iter `{State.Trait} (self : Self) : M IntoIter := Pure self.
+
+  Global Instance Method_into_iter `{State.Trait} :
+    Notation.Dot "into_iter" := {
+    Notation.dot := into_iter;
+  }.
+  End Impl_IntoIter_for_Vec_IntoIter.
+End Impl_IntoIter_for_Vec_IntoIter.

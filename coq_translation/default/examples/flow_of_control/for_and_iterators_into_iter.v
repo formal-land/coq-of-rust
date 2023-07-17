@@ -4,15 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* names :=
-    let* α0 := alloc.boxed.Box::["new"] [ "Bob"; "Frank"; "Ferris" ] in
-    Slice::["into_vec"] α0 in
-  let* α0 := names.["into_iter"] in
-  let* α1 := α0.["into_iter"] in
+    let* α0 := @Notation.double_colon _ alloc.boxed.Box "new" _ (alloc.boxed.Method_Box_new (list string)) [ "Bob"; "Frank"; "Ferris" ] in
+    (Impl_Slice.Method_into_vec _).(@Notation.double_colon _ Slice "into_vec" _) α0 in
+  let* α0 := Impl_IntoIter_for_Vec.Method_into_iter.(@Notation.dot _ "into_iter" _) names in
+  let* α1 := Impl_IntoIter_for_Vec_IntoIter.Method_into_iter.(@Notation.dot _ "into_iter" _) α0 in
   match α1 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := (addr_of iter).["next"] in
+        let* α0 := Impl_Iterator_for_Vec_IntoIter.Method_next.(@Notation.dot _ "next" _) (addr_of iter) in
         match α0 with
         | None  => Break
         | Some name =>
