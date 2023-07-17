@@ -36,7 +36,11 @@ Definition main : M unit :=
         match α0 with
         | None => Pure Break
         | Some {| Some.0 := _; |} =>
+<<<<<<< HEAD
           let* _ := scoping_rules_raii.create_box in
+=======
+          let* _ := scoping_rules_raii.create_box  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
           Pure tt
         end in
       Pure tt

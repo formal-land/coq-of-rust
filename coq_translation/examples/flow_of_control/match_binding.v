@@ -26,7 +26,11 @@ Definition main  : M unit :=
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
+<<<<<<< HEAD
   let* α0 := match_binding.age in
+=======
+  let* α0 := match_binding.age  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   match α0 with
   | 0 =>
     let* _ :=

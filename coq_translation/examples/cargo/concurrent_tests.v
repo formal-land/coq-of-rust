@@ -28,7 +28,11 @@ Module tests.
   Definition test_file : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
     let* file :=
+<<<<<<< HEAD
       let* α0 := std.fs.OpenOptions::["new"] in
+=======
+      let* α0 := std.fs.OpenOptions::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
       let* α1 := α0.["append"] true in
       let* α2 := α1.["create"] true in
       let* α3 := α2.["open"] "ferris.txt" in
@@ -64,7 +68,11 @@ Module tests.
   Definition test_file_also : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
     let* file :=
+<<<<<<< HEAD
       let* α0 := std.fs.OpenOptions::["new"] in
+=======
+      let* α0 := std.fs.OpenOptions::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
       let* α1 := α0.["append"] true in
       let* α2 := α1.["create"] true in
       let* α3 := α2.["open"] "ferris.txt" in
@@ -101,7 +109,11 @@ Definition test_file  : M unit :=
 Definition test_file : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
   let* file :=
+<<<<<<< HEAD
     let* α0 := std.fs.OpenOptions::["new"] in
+=======
+    let* α0 := std.fs.OpenOptions::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     let* α1 := α0.["append"] true in
     let* α2 := α1.["create"] true in
     let* α3 := α2.["open"] "ferris.txt" in
@@ -137,7 +149,11 @@ Definition test_file_also  : M unit :=
 Definition test_file_also : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
   let* file :=
+<<<<<<< HEAD
     let* α0 := std.fs.OpenOptions::["new"] in
+=======
+    let* α0 := std.fs.OpenOptions::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     let* α1 := α0.["append"] true in
     let* α2 := α1.["create"] true in
     let* α3 := α2.["open"] "ferris.txt" in

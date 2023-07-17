@@ -20,7 +20,11 @@ Definition main : M unit :=
 58495327135744041048897885734297812
 69920216438980873548808413720956532
 16278424637452589860345374828574668" in
+<<<<<<< HEAD
   let* children := alloc.vec.Vec::["new"] in
+=======
+  let* children := alloc.vec.Vec::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* chunked_data := data.["split_whitespace"] in
   let* _ :=
     let* α0 := chunked_data.["enumerate"] in

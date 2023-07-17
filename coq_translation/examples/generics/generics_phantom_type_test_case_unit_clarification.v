@@ -15,7 +15,11 @@ Module
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
+<<<<<<< HEAD
     core.intrinsics.unreachable.
+=======
+    core.intrinsics.unreachable .
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -69,7 +73,11 @@ Module
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M core.fmt.Result :=
+<<<<<<< HEAD
     core.intrinsics.unreachable.
+=======
+    core.intrinsics.unreachable .
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   
   Global Instance Method_fmt : Notation.Dot "fmt" := {
     Notation.dot := fmt;

@@ -26,7 +26,11 @@ Definition main : M unit :=
       core.panicking.panic_fmt α2
     | core.result.Result.Ok file => Pure file
     end in
+<<<<<<< HEAD
   let* s := alloc.string.String::["new"] in
+=======
+  let* s := alloc.string.String::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* α0 := file.["read_to_string"] (addr_of s) in
   match α0 with
   | core.result.Result.Err why =>

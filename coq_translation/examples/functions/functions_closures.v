@@ -39,7 +39,11 @@ Definition main : M unit :=
   let one := fun  => Pure 1 in
   let* _ :=
     let* _ :=
+<<<<<<< HEAD
       let* α0 := one in
+=======
+      let* α0 := one  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
       let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
         format_arguments::["new_v1"]

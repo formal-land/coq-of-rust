@@ -10,11 +10,15 @@ Definition main : M unit :=
   let* children := alloc.vec.Vec::["new"] in
 =======
 Definition main  : M unit :=
+<<<<<<< HEAD
 =======
 Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
   let* children := alloc.vec.Vec::["new"] tt in
 >>>>>>> 6ee776e (update snapshot)
+=======
+  let* children := alloc.vec.Vec::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* _ :=
     let* α0 :=
       LangItem Range {| Range.start := 0; Range.end := threads.NTHREADS; |} in

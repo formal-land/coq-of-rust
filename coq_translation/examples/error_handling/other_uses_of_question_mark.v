@@ -116,7 +116,11 @@ Definition main : M unit :=
   let* numbers :=
     let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
     Slice::["into_vec"] α0 in
+<<<<<<< HEAD
   let* empty := alloc.vec.Vec::["new"] in
+=======
+  let* empty := alloc.vec.Vec::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* strings :=
     let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
     Slice::["into_vec"] α0 in

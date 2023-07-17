@@ -57,7 +57,11 @@ Module my_mod.
 > " ]) in
         std.io.stdio._print α0 in
       Pure tt in
+<<<<<<< HEAD
     let* _ := visibility.my_mod.private_function in
+=======
+    let* _ := visibility.my_mod.private_function  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     Pure tt.
   
   Module nested.
@@ -120,7 +124,11 @@ Module my_mod.
                 ]) in
           std.io.stdio._print α0 in
         Pure tt in
+<<<<<<< HEAD
       let* _ := visibility.my_mod.nested.public_function_in_nested in
+=======
+      let* _ := visibility.my_mod.nested.public_function_in_nested  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
       Pure tt.
     
 <<<<<<< HEAD
@@ -184,13 +192,21 @@ Module my_mod.
               ]) in
         std.io.stdio._print α0 in
       Pure tt in
+<<<<<<< HEAD
     let* _ := visibility.my_mod.nested.public_function_in_my_mod in
+=======
+    let* _ := visibility.my_mod.nested.public_function_in_my_mod  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     let* _ :=
       let* _ :=
         let* α0 := format_arguments::["new_const"] (addr_of [ "> " ]) in
         std.io.stdio._print α0 in
       Pure tt in
+<<<<<<< HEAD
     let* _ := visibility.my_mod.nested.public_function_in_super_mod in
+=======
+    let* _ := visibility.my_mod.nested.public_function_in_super_mod  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     Pure tt.
   
 <<<<<<< HEAD
@@ -312,7 +328,11 @@ Definition indirect_access : M unit :=
 > " ]) in
       std.io.stdio._print α0 in
     Pure tt in
+<<<<<<< HEAD
   let* _ := visibility.my_mod.private_function in
+=======
+  let* _ := visibility.my_mod.private_function  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   Pure tt.
 
 Module nested.
@@ -374,7 +394,11 @@ Module nested.
               ]) in
         std.io.stdio._print α0 in
       Pure tt in
+<<<<<<< HEAD
     let* _ := visibility.my_mod.nested.public_function_in_nested in
+=======
+    let* _ := visibility.my_mod.nested.public_function_in_nested  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     Pure tt.
   
 <<<<<<< HEAD
@@ -476,7 +500,11 @@ Definition public_function_in_my_mod : M unit :=
             ]) in
       std.io.stdio._print α0 in
     Pure tt in
+<<<<<<< HEAD
   let* _ := visibility.my_mod.nested.public_function_in_nested in
+=======
+  let* _ := visibility.my_mod.nested.public_function_in_nested  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   Pure tt.
 
 <<<<<<< HEAD
@@ -537,13 +565,21 @@ Definition call_public_function_in_my_mod : M unit :=
 > " ]) in
       std.io.stdio._print α0 in
     Pure tt in
+<<<<<<< HEAD
   let* _ := visibility.my_mod.nested.public_function_in_my_mod in
+=======
+  let* _ := visibility.my_mod.nested.public_function_in_my_mod  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* _ :=
     let* _ :=
       let* α0 := format_arguments::["new_const"] (addr_of [ "> " ]) in
       std.io.stdio._print α0 in
     Pure tt in
+<<<<<<< HEAD
   let* _ := visibility.my_mod.nested.public_function_in_super_mod in
+=======
+  let* _ := visibility.my_mod.nested.public_function_in_super_mod  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   Pure tt.
 
 <<<<<<< HEAD
@@ -679,6 +715,7 @@ Definition main : M unit :=
   let* _ := visibility.my_mod.public_function_in_crate in
 =======
 Definition main  : M unit :=
+<<<<<<< HEAD
 =======
 Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -689,4 +726,12 @@ Definition main : M unit :=
   let* _ := visibility.my_mod.call_public_function_in_my_mod tt in
   let* _ := visibility.my_mod.public_function_in_crate tt in
 >>>>>>> 6ee776e (update snapshot)
+=======
+  let* _ := visibility.function  in
+  let* _ := visibility.my_mod.function  in
+  let* _ := visibility.my_mod.indirect_access  in
+  let* _ := visibility.my_mod.nested.function  in
+  let* _ := visibility.my_mod.call_public_function_in_my_mod  in
+  let* _ := visibility.my_mod.public_function_in_crate  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   Pure tt.

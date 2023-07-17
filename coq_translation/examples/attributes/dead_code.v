@@ -26,8 +26,12 @@ Definition noisy_unused_function  : M unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main  : M unit :=
+<<<<<<< HEAD
 =======
 >>>>>>> b389ac0 (ci: update the snapshots)
   let* _ := dead_code.used_function tt in
 >>>>>>> 6ee776e (update snapshot)
+=======
+  let* _ := dead_code.used_function  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   Pure tt.

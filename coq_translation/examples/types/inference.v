@@ -12,7 +12,11 @@ Definition main  : M unit :=
 Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
   let elem := 5 in
+<<<<<<< HEAD
   let* vec := alloc.vec.Vec::["new"] in
+=======
+  let* vec := alloc.vec.Vec::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* _ := vec.["push"] elem in
   let* _ :=
     let* _ :=

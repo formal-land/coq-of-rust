@@ -89,11 +89,15 @@ Definition main : M unit :=
   let* _ := the_use_as_declaration.deeply.nested.function in
 =======
 Definition main  : M unit :=
+<<<<<<< HEAD
 =======
 Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
   let* _ := the_use_as_declaration.deeply.nested.function tt in
 >>>>>>> 6ee776e (update snapshot)
+=======
+  let* _ := the_use_as_declaration.deeply.nested.function  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -102,7 +106,11 @@ Definition main : M unit :=
       std.io.stdio._print α0 in
     Pure tt in
   let* _ :=
+<<<<<<< HEAD
     let* _ := the_use_as_declaration.deeply.nested.function in
+=======
+    let* _ := the_use_as_declaration.deeply.nested.function  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -111,5 +119,9 @@ Definition main : M unit :=
         std.io.stdio._print α0 in
       Pure tt in
     Pure tt in
+<<<<<<< HEAD
   let* _ := the_use_as_declaration.function in
+=======
+  let* _ := the_use_as_declaration.function  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   Pure tt.

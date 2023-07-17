@@ -524,7 +524,11 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
     let* y :=
       let* α0 := x.["wrapping_neg"] in
       let* α1 := x.["bitor"] α0 in
+<<<<<<< HEAD
       let* α2 := core.mem.size_of in
+=======
+      let* α2 := core.mem.size_of  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
       let* α3 := α2.["mul"] 8 in
       let* α4 := α3.["sub"] 1 in
       α1.["shr"] α4 in
@@ -1445,7 +1449,11 @@ Module Impl_subtle_CtOption_T.
   }.
   
   Definition unwrap_or_else (self : Self) (f : F) : M T :=
+<<<<<<< HEAD
     let* α0 := f in
+=======
+    let* α0 := f  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     T::["conditional_select"]
       (addr_of α0)
       (addr_of self.["value"])
@@ -1470,7 +1478,11 @@ Module Impl_subtle_CtOption_T.
   }.
   
   Definition map (self : Self) (f : F) : M (subtle.CtOption U) :=
+<<<<<<< HEAD
     let* α0 := T::["default"] in
+=======
+    let* α0 := T::["default"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     let* α1 :=
       T::["conditional_select"]
         (addr_of α0)
@@ -1485,7 +1497,11 @@ Module Impl_subtle_CtOption_T.
   
   Definition and_then (self : Self) (f : F) : M (subtle.CtOption U) :=
     let* tmp :=
+<<<<<<< HEAD
       let* α0 := T::["default"] in
+=======
+      let* α0 := T::["default"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
       let* α1 :=
         T::["conditional_select"]
           (addr_of α0)
@@ -1501,7 +1517,11 @@ Module Impl_subtle_CtOption_T.
   
   Definition or_else (self : Self) (f : F) : M (subtle.CtOption T) :=
     let* is_none := self.["is_none"] in
+<<<<<<< HEAD
     let* f := f in
+=======
+    let* f := f  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     Self::["conditional_select"] (addr_of self) (addr_of f) is_none.
   
   Global Instance Method_or_else : Notation.Dot "or_else" := {

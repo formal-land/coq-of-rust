@@ -5,7 +5,11 @@ Definition call_me
     {F : Set}
     `{core.ops.function.Fn.Trait unit F}(f : F)
     : M unit :=
+<<<<<<< HEAD
   let* _ := f in
+=======
+  let* _ := f  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   Pure tt.
 
 <<<<<<< HEAD

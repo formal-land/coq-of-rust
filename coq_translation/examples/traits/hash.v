@@ -41,7 +41,11 @@ Definition calculate_hash
     {T : Set}
     `{core.hash.Hash.Trait T}(t : ref T)
     : M u64 :=
+<<<<<<< HEAD
   let* s := std.collections.hash.map.DefaultHasher::["new"] in
+=======
+  let* s := std.collections.hash.map.DefaultHasher::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* _ := t.["hash"] (addr_of s) in
   s.["finish"].
 

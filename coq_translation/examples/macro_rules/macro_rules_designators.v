@@ -51,12 +51,17 @@ Definition main : M unit :=
   let* _ := macro_rules_designators.bar in
 =======
 Definition main  : M unit :=
+<<<<<<< HEAD
 =======
 Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
   let* _ := macro_rules_designators.foo tt in
   let* _ := macro_rules_designators.bar tt in
 >>>>>>> 6ee776e (update snapshot)
+=======
+  let* _ := macro_rules_designators.foo  in
+  let* _ := macro_rules_designators.bar  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of "1u32 + 1") in

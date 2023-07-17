@@ -13,7 +13,11 @@ Definition cat
       Return α0
     | Continue {| Continue.0 := val; |} => Pure val
     end in
+<<<<<<< HEAD
   let* s := alloc.string.String::["new"] in
+=======
+  let* s := alloc.string.String::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* α0 := f.["read_to_string"] (addr_of s) in
   match α0 with
   | core.result.Result.Ok _ => Pure (core.result.Result.Ok s)
@@ -37,7 +41,11 @@ Definition echo
   f.["write_all"] α0.
 
 Definition touch (path : ref std.path.Path) : M (std.io.error.Result unit) :=
+<<<<<<< HEAD
   let* α0 := std.fs.OpenOptions::["new"] in
+=======
+  let* α0 := std.fs.OpenOptions::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* α1 := α0.["create"] true in
   let* α2 := α1.["write"] true in
   let* α3 := α2.["open"] path in

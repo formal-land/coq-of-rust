@@ -62,7 +62,11 @@ Definition main  : M unit :=
 Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
   let* args :=
+<<<<<<< HEAD
     let* α0 := std.env.args in
+=======
+    let* α0 := std.env.args  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     α0.["collect"] in
   let* α0 := args.["len"] in
   match α0 with
@@ -113,8 +117,13 @@ Definition main : M unit :=
 " ]) in
             std.io.stdio._eprint α0 in
           Pure tt in
+<<<<<<< HEAD
         let* _ := program_arguments_parsing.help in
         let* _ := Return in
+=======
+        let* _ := program_arguments_parsing.help  in
+        let* _ := Return  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
         Pure tt
       end in
     match addr_of cmd[RangeFull {|  |}] with
@@ -129,10 +138,18 @@ Definition main : M unit :=
 " ]) in
           std.io.stdio._eprint α0 in
         Pure tt in
+<<<<<<< HEAD
       let* _ := program_arguments_parsing.help in
       Pure tt
     end
   | _ =>
     let* _ := program_arguments_parsing.help in
+=======
+      let* _ := program_arguments_parsing.help  in
+      Pure tt
+    end
+  | _ =>
+    let* _ := program_arguments_parsing.help  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     Pure tt
   end.

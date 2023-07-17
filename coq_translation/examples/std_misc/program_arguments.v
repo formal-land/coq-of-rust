@@ -12,7 +12,11 @@ Definition main  : M unit :=
 Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
   let* args :=
+<<<<<<< HEAD
     let* α0 := std.env.args in
+=======
+    let* α0 := std.env.args  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     α0.["collect"] in
   let* _ :=
     let* _ :=

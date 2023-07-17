@@ -19,7 +19,11 @@ Definition main : M unit :=
       std.io.stdio._print α0 in
     Pure tt in
   let* secret_number :=
+<<<<<<< HEAD
     let* α0 := rand.thread_rng in
+=======
+    let* α0 := rand.thread_rng  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     let* α1 := LangItem 1 100 in
     α0.["gen_range"] α1 in
   loop
@@ -31,9 +35,15 @@ Definition main : M unit :=
 " ]) in
         std.io.stdio._print α0 in
       Pure tt in
+<<<<<<< HEAD
     let* guess := alloc.string.String::["new"] in
     let* _ :=
       let* α0 := std.io.stdio.stdin in
+=======
+    let* guess := alloc.string.String::["new"]  in
+    let* _ :=
+      let* α0 := std.io.stdio.stdin  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
       let* α1 := α0.["read_line"] (addr_of guess) in
       α1.["expect"] "Failed to read line" in
     let* guess :=

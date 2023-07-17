@@ -148,7 +148,11 @@ Definition main  : M unit :=
       std.io.stdio._print α0 in
     Pure tt in
   let* _ :=
+<<<<<<< HEAD
     let* α0 := iterators.fibonacci in
+=======
+    let* α0 := iterators.fibonacci  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     let* α1 := α0.["take"] 4 in
     let* α2 := LangItem α1 in
     match α2 with
@@ -185,7 +189,11 @@ Definition main  : M unit :=
       std.io.stdio._print α0 in
     Pure tt in
   let* _ :=
+<<<<<<< HEAD
     let* α0 := iterators.fibonacci in
+=======
+    let* α0 := iterators.fibonacci  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     let* α1 := α0.["skip"] 4 in
     let* α2 := α1.["take"] 4 in
     let* α3 := LangItem α2 in

@@ -23,9 +23,15 @@ Definition main : M unit :=
             (addr_of [ α0 ]) in
         std.io.stdio._print α1 in
       Pure tt in
+<<<<<<< HEAD
   let* _ := print in
   let _reborrow := addr_of color in
   let* _ := print in
+=======
+  let* _ := print  in
+  let _reborrow := addr_of color in
+  let* _ := print  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let _color_moved := color in
   let count := 0 in
   let inc :=
@@ -42,8 +48,13 @@ Definition main : M unit :=
           std.io.stdio._print α1 in
         Pure tt in
       Pure tt in
+<<<<<<< HEAD
   let* _ := inc in
   let* _ := inc in
+=======
+  let* _ := inc  in
+  let* _ := inc  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let _count_reborrowed := addr_of count in
   let* movable := alloc.boxed.Box::["new"] 3 in
   let consume :=
@@ -60,5 +71,9 @@ Definition main : M unit :=
         Pure tt in
       let* _ := core.mem.drop movable in
       Pure tt in
+<<<<<<< HEAD
   let* _ := consume in
+=======
+  let* _ := consume  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   Pure tt.

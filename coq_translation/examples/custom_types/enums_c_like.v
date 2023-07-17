@@ -65,7 +65,11 @@ Definition main : M unit :=
           8
           format_count::["Implied"]
           α1 in
+<<<<<<< HEAD
       let* α3 := format_unsafe_arg::["new"] in
+=======
+      let* α3 := format_unsafe_arg::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
       let* α4 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "roses are #"; "
@@ -89,7 +93,11 @@ Definition main : M unit :=
           8
           format_count::["Implied"]
           α1 in
+<<<<<<< HEAD
       let* α3 := format_unsafe_arg::["new"] in
+=======
+      let* α3 := format_unsafe_arg::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
       let* α4 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "violets are #"; "

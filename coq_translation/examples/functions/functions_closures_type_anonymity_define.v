@@ -16,5 +16,9 @@ Definition apply
     {F : Set}
     `{core.ops.function.FnOnce.Trait unit F}(f : F)
     : M unit :=
+<<<<<<< HEAD
   let* _ := f in
+=======
+  let* _ := f  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   Pure tt.

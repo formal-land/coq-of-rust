@@ -64,11 +64,15 @@ Definition main : M unit :=
   let* b := core.default.Default.default in
 =======
 Definition main  : M unit :=
+<<<<<<< HEAD
 =======
 Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
   let* b := core.default.Default.default tt in
 >>>>>>> 6ee776e (update snapshot)
+=======
+  let* b := core.default.Default.default  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of b) in

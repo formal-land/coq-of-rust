@@ -83,11 +83,15 @@ Definition main : M unit :=
   let* list := enums_testcase_linked_list.List::["new"] in
 =======
 Definition main  : M unit :=
+<<<<<<< HEAD
 =======
 Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
   let* list := enums_testcase_linked_list.List::["new"] tt in
 >>>>>>> 6ee776e (update snapshot)
+=======
+  let* list := enums_testcase_linked_list.List::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* _ :=
     let* α0 := list.["prepend"] 1 in
     assign list α0 in

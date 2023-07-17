@@ -62,7 +62,11 @@ Definition main : M unit :=
     α0.["collect"] in
   let* _ := chars.["sort"] in
   let* _ := chars.["dedup"] in
+<<<<<<< HEAD
   let* string := alloc.string.String::["new"] in
+=======
+  let* string := alloc.string.String::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* _ :=
     let* α0 := LangItem chars in
     match α0 with

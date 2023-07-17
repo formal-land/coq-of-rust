@@ -85,6 +85,7 @@ Definition main : M unit :=
   let* _ := fn_once in
 =======
 Definition main  : M unit :=
+<<<<<<< HEAD
 =======
 Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -95,4 +96,12 @@ Definition main : M unit :=
   let* _ := fn_mut tt in
   let* _ := fn_once tt in
 >>>>>>> 6ee776e (update snapshot)
+=======
+  let* fn_plain := functions_closures_as_output_parameters.create_fn  in
+  let* fn_mut := functions_closures_as_output_parameters.create_fnmut  in
+  let* fn_once := functions_closures_as_output_parameters.create_fnonce  in
+  let* _ := fn_plain  in
+  let* _ := fn_mut  in
+  let* _ := fn_once  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   Pure tt.

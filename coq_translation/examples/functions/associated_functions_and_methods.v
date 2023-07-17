@@ -185,7 +185,11 @@ Definition main  : M unit :=
 Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
   let* rectangle :=
+<<<<<<< HEAD
     let* α0 := associated_functions_and_methods.Point::["origin"] in
+=======
+    let* α0 := associated_functions_and_methods.Point::["origin"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     let* α1 :=
       associated_functions_and_methods.Point::["new"] 3 (* 3.0 *) 4 (* 4.0 *) in
     Pure
@@ -216,7 +220,11 @@ Definition main : M unit :=
       std.io.stdio._print α2 in
     Pure tt in
   let* square :=
+<<<<<<< HEAD
     let* α0 := associated_functions_and_methods.Point::["origin"] in
+=======
+    let* α0 := associated_functions_and_methods.Point::["origin"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     let* α1 :=
       associated_functions_and_methods.Point::["new"] 1 (* 1.0 *) 1 (* 1.0 *) in
     Pure

@@ -117,11 +117,19 @@ Module my.
 > " ]) in
         std.io.stdio._print α0 in
       Pure tt in
+<<<<<<< HEAD
     let* _ := super_and_self.my.function in
     let* _ := super_and_self.my.function in
     let* _ := super_and_self.my.cool.function in
     let* _ := super_and_self.function in
     let* _ := super_and_self.cool.function in
+=======
+    let* _ := super_and_self.my.function  in
+    let* _ := super_and_self.my.function  in
+    let* _ := super_and_self.my.cool.function  in
+    let* _ := super_and_self.function  in
+    let* _ := super_and_self.cool.function  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     Pure tt.
 End my.
 
@@ -201,11 +209,19 @@ Definition indirect_call : M unit :=
 > " ]) in
       std.io.stdio._print α0 in
     Pure tt in
+<<<<<<< HEAD
   let* _ := super_and_self.my.function in
   let* _ := super_and_self.my.function in
   let* _ := super_and_self.my.cool.function in
   let* _ := super_and_self.function in
   let* _ := super_and_self.cool.function in
+=======
+  let* _ := super_and_self.my.function  in
+  let* _ := super_and_self.my.function  in
+  let* _ := super_and_self.my.cool.function  in
+  let* _ := super_and_self.function  in
+  let* _ := super_and_self.cool.function  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -215,9 +231,13 @@ Definition main : M unit :=
   let* _ := super_and_self.my.indirect_call in
 =======
 Definition main  : M unit :=
+<<<<<<< HEAD
 =======
 Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
   let* _ := super_and_self.my.indirect_call tt in
 >>>>>>> 6ee776e (update snapshot)
+=======
+  let* _ := super_and_self.my.indirect_call  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   Pure tt.

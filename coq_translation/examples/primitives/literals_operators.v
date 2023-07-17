@@ -79,7 +79,11 @@ Definition main : M unit :=
           8
           format_count::["Implied"]
           α2 in
+<<<<<<< HEAD
       let* α4 := format_unsafe_arg::["new"] in
+=======
+      let* α4 := format_unsafe_arg::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
       let* α5 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "0011 AND 0101 is "; "
@@ -102,7 +106,11 @@ Definition main : M unit :=
           8
           format_count::["Implied"]
           α2 in
+<<<<<<< HEAD
       let* α4 := format_unsafe_arg::["new"] in
+=======
+      let* α4 := format_unsafe_arg::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
       let* α5 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "0011 OR 0101 is "; "
@@ -125,7 +133,11 @@ Definition main : M unit :=
           8
           format_count::["Implied"]
           α2 in
+<<<<<<< HEAD
       let* α4 := format_unsafe_arg::["new"] in
+=======
+      let* α4 := format_unsafe_arg::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
       let* α5 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "0011 XOR 0101 is "; "

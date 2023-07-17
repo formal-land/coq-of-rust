@@ -17,9 +17,15 @@ Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
   let* process :=
     let* α0 := std.process.Command::["new"] "wc" in
+<<<<<<< HEAD
     let* α1 := std.process.Stdio::["piped"] in
     let* α2 := α0.["stdin"] α1 in
     let* α3 := std.process.Stdio::["piped"] in
+=======
+    let* α1 := std.process.Stdio::["piped"]  in
+    let* α2 := α0.["stdin"] α1 in
+    let* α3 := std.process.Stdio::["piped"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     let* α4 := α2.["stdout"] α3 in
     let* α5 := α4.["spawn"] in
     match α5 with
@@ -52,7 +58,11 @@ Definition main : M unit :=
         std.io.stdio._print α0 in
       Pure tt
     end in
+<<<<<<< HEAD
   let* s := alloc.string.String::["new"] in
+=======
+  let* s := alloc.string.String::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let* α0 := process.["stdout"].["unwrap"] in
   let* α1 := α0.["read_to_string"] (addr_of s) in
   match α1 with

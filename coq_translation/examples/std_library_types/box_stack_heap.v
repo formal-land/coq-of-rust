@@ -119,6 +119,7 @@ Definition main : M unit :=
   let* point := box_stack_heap.origin in
 =======
 Definition main  : M unit :=
+<<<<<<< HEAD
 =======
 Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
@@ -126,6 +127,11 @@ Definition main : M unit :=
 >>>>>>> 6ee776e (update snapshot)
   let* rectangle :=
     let* α0 := box_stack_heap.origin in
+=======
+  let* point := box_stack_heap.origin  in
+  let* rectangle :=
+    let* α0 := box_stack_heap.origin  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     let* α1 := 4 (* 4.0 *).["neg"] in
     Pure
       {|
@@ -137,7 +143,11 @@ Definition main : M unit :=
           |};
       |} in
   let* boxed_rectangle :=
+<<<<<<< HEAD
     let* α0 := box_stack_heap.origin in
+=======
+    let* α0 := box_stack_heap.origin  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     let* α1 := 4 (* 4.0 *).["neg"] in
     alloc.boxed.Box::["new"]
       {|
@@ -149,10 +159,17 @@ Definition main : M unit :=
           |};
       |} in
   let* boxed_point :=
+<<<<<<< HEAD
     let* α0 := box_stack_heap.origin in
     alloc.boxed.Box::["new"] α0 in
   let* box_in_a_box :=
     let* α0 := box_stack_heap.boxed_origin in
+=======
+    let* α0 := box_stack_heap.origin  in
+    alloc.boxed.Box::["new"] α0 in
+  let* box_in_a_box :=
+    let* α0 := box_stack_heap.boxed_origin  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
     alloc.boxed.Box::["new"] α0 in
   let* _ :=
     let* _ :=

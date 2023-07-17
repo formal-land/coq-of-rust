@@ -194,11 +194,15 @@ Definition main : M unit :=
   let* accounts := std.collections.hash.map.HashMap::["new"] in
 =======
 Definition main  : M unit :=
+<<<<<<< HEAD
 =======
 Definition main : M unit :=
 >>>>>>> b389ac0 (ci: update the snapshots)
   let* accounts := std.collections.hash.map.HashMap::["new"] tt in
 >>>>>>> 6ee776e (update snapshot)
+=======
+  let* accounts := std.collections.hash.map.HashMap::["new"]  in
+>>>>>>> 1abfb9d (Eliminate redundant tt & update snapshot)
   let account :=
     {|
       hash_map_alternate_or_custom_key_types.Account.username := "j.everyman";
