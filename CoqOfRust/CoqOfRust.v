@@ -1399,7 +1399,7 @@ Module Impl_Slice.
   End hack_notations.
 
   Section Impl_Slice.
-    Variable T : Set.
+    Context {T : Set}.
     Definition Self := Slice T.
 
     Definition into_vec `{State.Trait}

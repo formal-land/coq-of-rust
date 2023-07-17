@@ -5,9 +5,9 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* names :=
 (* TODO: fix alloc.boxed.Box::["new"] *)
-    let* α0 := (alloc.boxed.Method_Box_new).(@Notation.double_colon _ alloc.boxed.Box "new" _) [ "Bob"; "Frank"; "Ferris" ] in
+    let* α0 := alloc.boxed.Method_Box_new.(@Notation.double_colon _ alloc.boxed.Box "new" _) [ "Bob"; "Frank"; "Ferris" ] in
 (* TODO: fix Slice::["into_vec"] *)
-    (Impl_Slice.Method_into_vec _).(@Notation.double_colon _ Slice "into_vec" _) α0 in
+    Impl_Slice.Method_into_vec.(@Notation.double_colon _ Slice "into_vec" _) α0 in
   let* α0 := names.["into_iter"] in
   let* α1 := α0.["into_iter"] in
   match α1 with
