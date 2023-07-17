@@ -634,7 +634,8 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 ExprKind::Path(rustc_hir::QPath::LangItem(lang_item, _, _)) => {
                     let object = Box::new(args[0].clone());
                     let func = lang_item.name().to_string();
-                    let args = (&args).get(1..)
+                    let args = args
+                        .get(1..)
                         .expect("Expected at least one argument of a function call, \
                             while compiling rustc_hir::QPath::LangItem in ExprKind::Path in ExprKind::Call")
                         .to_vec();
