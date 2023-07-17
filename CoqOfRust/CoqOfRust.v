@@ -907,7 +907,7 @@ Module alloc.
 
     Definition new `{State.Trait} {A : Set} (x : A) : M (Box A) := Pure x.
 
-    Global Instance Method_Box_new `{State.Trait} (A : Set) :
+    Global Instance Method_Box_new `{State.Trait} {A : Set} :
       Notation.DoubleColon Box "new" := {
       Notation.double_colon (x : A) := new x;
     }.
