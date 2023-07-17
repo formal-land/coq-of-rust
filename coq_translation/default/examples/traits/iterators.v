@@ -103,12 +103,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α0 in
     Pure tt in
   let* _ :=
-    let* α0 := LocalVar Range {| Range.start := 0; Range.end := 3; |} in
+    let* α0 := Range {| Range.start := 0; Range.end := 3; |}.["into_iter"] in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LocalVar (addr_of iter) in
+          let* α0 := (addr_of iter).["next"] in
           match α0 with
           | None  => Break
           | Some i =>
@@ -138,12 +138,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
     let* α0 := iterators.fibonacci tt in
     let* α1 := α0.["take"] 4 in
-    let* α2 := LocalVar α1 in
+    let* α2 := α1.["into_iter"] in
     match α2 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LocalVar (addr_of iter) in
+          let* α0 := (addr_of iter).["next"] in
           match α0 with
           | None  => Break
           | Some i =>
@@ -174,12 +174,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α0 := iterators.fibonacci tt in
     let* α1 := α0.["skip"] 4 in
     let* α2 := α1.["take"] 4 in
-    let* α3 := LocalVar α2 in
+    let* α3 := α2.["into_iter"] in
     match α3 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LocalVar (addr_of iter) in
+          let* α0 := (addr_of iter).["next"] in
           match α0 with
           | None  => Break
           | Some i =>
@@ -209,12 +209,12 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   let* α0 := array.["iter"] in
-  let* α1 := LocalVar α0 in
+  let* α1 := α0.["into_iter"] in
   match α1 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := LocalVar (addr_of iter) in
+        let* α0 := (addr_of iter).["next"] in
         match α0 with
         | None  => Break
         | Some i =>

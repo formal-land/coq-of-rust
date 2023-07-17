@@ -344,12 +344,12 @@ Section Impl_subtle_ConstantTimeEq_for_Slice.
       let* α0 := self.["iter"] in
       let* α1 := _rhs.["iter"] in
       let* α2 := α0.["zip"] α1 in
-      let* α3 := LocalVar α2 in
+      let* α3 := α2.["into_iter"] in
       match α3 with
       | iter =>
         loop
           (let* _ :=
-            let* α0 := LocalVar (addr_of iter) in
+            let* α0 := (addr_of iter).["next"] in
             match α0 with
             | None  => Break
             | Some (ai, bi) =>

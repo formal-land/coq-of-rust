@@ -116,19 +116,19 @@ Definition double_first
   let* first :=
     let* α0 := vec.["first"] in
     let* α1 := α0.["ok_or"] wrapping_errors.DoubleError.EmptyVec in
-    let* α2 := LocalVar α1 in
+    let* α2 := α1.["branch"] in
     match α2 with
     | Break residual =>
-      let* α0 := LocalVar residual in
+      let* α0 := residual.["from_residual"] in
       Return α0
     | Continue val => Pure val
     end in
   let* parsed :=
     let* α0 := first.["parse"] in
-    let* α1 := LocalVar α0 in
+    let* α1 := α0.["branch"] in
     match α1 with
     | Break residual =>
-      let* α0 := LocalVar residual in
+      let* α0 := residual.["from_residual"] in
       Return α0
     | Continue val => Pure val
     end in
