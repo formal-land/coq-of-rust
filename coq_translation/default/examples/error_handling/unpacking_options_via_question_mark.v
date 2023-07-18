@@ -105,18 +105,18 @@ Module Impl_unpacking_options_via_question_mark_Person.
     let* α0 := self.["job"].["branch"] in
     let* α1 :=
       match α0 with
-      | Break residual =>
+      | LanguageItem.Break residual =>
         let* α0 := residual.["from_residual"] in
         Return α0
-      | Continue val => Pure val
+      | LanguageItem.Continue val => Pure val
       end in
     let* α2 := α1.["phone_number"].["branch"] in
     let* α3 :=
       match α2 with
-      | Break residual =>
+      | LanguageItem.Break residual =>
         let* α0 := residual.["from_residual"] in
         Return α0
-      | Continue val => Pure val
+      | LanguageItem.Continue val => Pure val
       end in
     Pure α3.["area_code"].
   

@@ -96,19 +96,19 @@ Module checked.
       let* α0 := result_chaining_with_question_mark.checked.div x y in
       let* α1 := α0.["branch"] in
       match α1 with
-      | Break residual =>
+      | LanguageItem.Break residual =>
         let* α0 := residual.["from_residual"] in
         Return α0
-      | Continue val => Pure val
+      | LanguageItem.Continue val => Pure val
       end in
     let* ln :=
       let* α0 := result_chaining_with_question_mark.checked.ln ratio in
       let* α1 := α0.["branch"] in
       match α1 with
-      | Break residual =>
+      | LanguageItem.Break residual =>
         let* α0 := residual.["from_residual"] in
         Return α0
-      | Continue val => Pure val
+      | LanguageItem.Continue val => Pure val
       end in
     result_chaining_with_question_mark.checked.sqrt ln.
   
@@ -235,19 +235,19 @@ Definition op_
     let* α0 := result_chaining_with_question_mark.checked.div x y in
     let* α1 := α0.["branch"] in
     match α1 with
-    | Break residual =>
+    | LanguageItem.Break residual =>
       let* α0 := residual.["from_residual"] in
       Return α0
-    | Continue val => Pure val
+    | LanguageItem.Continue val => Pure val
     end in
   let* ln :=
     let* α0 := result_chaining_with_question_mark.checked.ln ratio in
     let* α1 := α0.["branch"] in
     match α1 with
-    | Break residual =>
+    | LanguageItem.Break residual =>
       let* α0 := residual.["from_residual"] in
       Return α0
-    | Continue val => Pure val
+    | LanguageItem.Continue val => Pure val
     end in
   result_chaining_with_question_mark.checked.sqrt ln.
 

@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* collected_iterator :=
-    Range {| Range.start := 0; Range.end := 10; |}.["collect"] in
+    {| std.ops.Range.start := 0; std.ops.Range.end := 10; |}.["collect"] in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of collected_iterator) in
@@ -95,8 +95,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some x =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some x =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of x) in
@@ -121,8 +121,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some (i, x) =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some (i, x) =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of i) in
@@ -147,8 +147,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some x =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some x =>
             let* _ :=
               let* α0 := x.["deref"] in
               α0.["mul_assign"] 3 in

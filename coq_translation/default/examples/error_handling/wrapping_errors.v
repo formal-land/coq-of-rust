@@ -118,19 +118,19 @@ Definition double_first
     let* α1 := α0.["ok_or"] wrapping_errors.DoubleError.EmptyVec in
     let* α2 := α1.["branch"] in
     match α2 with
-    | Break residual =>
+    | LanguageItem.Break residual =>
       let* α0 := residual.["from_residual"] in
       Return α0
-    | Continue val => Pure val
+    | LanguageItem.Continue val => Pure val
     end in
   let* parsed :=
     let* α0 := first.["parse"] in
     let* α1 := α0.["branch"] in
     match α1 with
-    | Break residual =>
+    | LanguageItem.Break residual =>
       let* α0 := residual.["from_residual"] in
       Return α0
-    | Continue val => Pure val
+    | LanguageItem.Continue val => Pure val
     end in
   let* α0 := 2.["mul"] parsed in
   Pure (core.result.Result.Ok α0).

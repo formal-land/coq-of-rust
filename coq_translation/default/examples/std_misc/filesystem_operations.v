@@ -9,10 +9,10 @@ Definition cat
     let* α0 := std.fs.File::["open"] path in
     let* α1 := α0.["branch"] in
     match α1 with
-    | Break residual =>
+    | LanguageItem.Break residual =>
       let* α0 := residual.["from_residual"] in
       Return α0
-    | Continue val => Pure val
+    | LanguageItem.Continue val => Pure val
     end in
   let* s := alloc.string.String::["new"] tt in
   let* α0 := f.["read_to_string"] (addr_of s) in
@@ -30,10 +30,10 @@ Definition echo
     let* α0 := std.fs.File::["create"] path in
     let* α1 := α0.["branch"] in
     match α1 with
-    | Break residual =>
+    | LanguageItem.Break residual =>
       let* α0 := residual.["from_residual"] in
       Return α0
-    | Continue val => Pure val
+    | LanguageItem.Continue val => Pure val
     end in
   let* α0 := s.["as_bytes"] in
   f.["write_all"] α0.
@@ -237,8 +237,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           (let* _ :=
             let* α0 := (addr_of iter).["next"] in
             match α0 with
-            | None  => Break
-            | Some path =>
+            | std.option.Option.None  => Break
+            | std.option.Option.Some path =>
               let* _ :=
                 let* _ :=
                   let* α0 := path.["unwrap"] in

@@ -4,10 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* names :=
-(* TODO: fix alloc.boxed.Box::["new"] *)
-    let* α0 := alloc.boxed.Method_Box_new.(@Notation.double_colon _ alloc.boxed.Box "new" _) [ "Bob"; "Frank"; "Ferris" ] in
-(* TODO: fix Slice::["into_vec"] *)
-    Impl_Slice.Method_into_vec.(@Notation.double_colon _ Slice "into_vec" _) α0 in
+    let* α0 := alloc.boxed.Box::["new"] [ "Bob"; "Frank"; "Ferris" ] in
+    Slice::["into_vec"] α0 in
   let* α0 := names.["into_iter"] in
   let* α1 := α0.["into_iter"] in
   match α1 with
@@ -16,8 +14,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       (let* _ :=
         let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | None  => Break
-        | Some name =>
+        | std.option.Option.None  => Break
+        | std.option.Option.Some name =>
           match name with
           | "Ferris" =>
             let* _ :=

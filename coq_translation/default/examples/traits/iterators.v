@@ -49,7 +49,7 @@ Definition fibonacci
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
-  let sequence := Range {| Range.start := 0; Range.end := 3; |} in
+  let sequence := {| std.ops.Range.start := 0; std.ops.Range.end := 3; |} in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -103,15 +103,16 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α0 in
     Pure tt in
   let* _ :=
-    let* α0 := Range {| Range.start := 0; Range.end := 3; |}.["into_iter"] in
+    let* α0 :=
+      {| std.ops.Range.start := 0; std.ops.Range.end := 3; |}.["into_iter"] in
     match α0 with
     | iter =>
       loop
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some i =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some i =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of i) in
@@ -145,8 +146,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some i =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some i =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of i) in
@@ -181,8 +182,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some i =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some i =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of i) in
@@ -216,8 +217,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       (let* _ :=
         let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | None  => Break
-        | Some i =>
+        | std.option.Option.None  => Break
+        | std.option.Option.Some i =>
           let* _ :=
             let* _ :=
               let* α0 := format_argument::["new_display"] (addr_of i) in

@@ -21,15 +21,16 @@ Definition sum_odd_numbers `{H : State.Trait} (up_to : u32) : M (H := H) u32 :=
   let acc := 0 in
   let* _ :=
     let* α0 :=
-      Range {| Range.start := 0; Range.end := up_to; |}.["into_iter"] in
+      {| std.ops.Range.start := 0; std.ops.Range.end := up_to;
+        |}.["into_iter"] in
     match α0 with
     | iter =>
       loop
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some i =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some i =>
             let* addition :=
               let* α0 := i.["rem"] 2 in
               let* α1 := α0.["eq"] 1 in

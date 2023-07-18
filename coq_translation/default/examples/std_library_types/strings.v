@@ -31,8 +31,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some word =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some word =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of word) in
@@ -61,8 +61,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some c =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some c =>
             let* _ := string.["push"] c in
             let* _ := string.["push_str"] ", " in
             Pure tt

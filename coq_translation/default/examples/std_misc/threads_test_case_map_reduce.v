@@ -23,8 +23,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some (i, data_segment) =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some (i, data_segment) =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of i) in

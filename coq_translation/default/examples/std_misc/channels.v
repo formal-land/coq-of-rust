@@ -9,7 +9,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* children := alloc.vec.Vec::["new"] tt in
   let* _ :=
     let* α0 :=
-      Range {| Range.start := 0; Range.end := channels.NTHREADS;
+      {| std.ops.Range.start := 0; std.ops.Range.end := channels.NTHREADS;
         |}.["into_iter"] in
     match α0 with
     | iter =>
@@ -17,8 +17,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some id =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some id =>
             let* thread_tx := tx.["clone"] in
             let* child :=
               std.thread.spawn
@@ -46,7 +46,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* ids := alloc.vec.Vec::["with_capacity"] (cast channels.NTHREADS usize) in
   let* _ :=
     let* α0 :=
-      Range {| Range.start := 0; Range.end := channels.NTHREADS;
+      {| std.ops.Range.start := 0; std.ops.Range.end := channels.NTHREADS;
         |}.["into_iter"] in
     match α0 with
     | iter =>
@@ -54,8 +54,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some _ =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some _ =>
             let* _ :=
               let* α0 := rx.["recv"] in
               ids.["push"] α0 in
@@ -71,8 +71,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some child =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some child =>
             let* _ :=
               let* α0 := child.["join"] in
               α0.["expect"] "oops! the child thread panicked" in

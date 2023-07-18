@@ -8,7 +8,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* children := alloc.vec.Vec::["new"] tt in
   let* _ :=
     let* α0 :=
-      Range {| Range.start := 0; Range.end := threads.NTHREADS;
+      {| std.ops.Range.start := 0; std.ops.Range.end := threads.NTHREADS;
         |}.["into_iter"] in
     match α0 with
     | iter =>
@@ -16,8 +16,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some i =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some i =>
             let* _ :=
               let* α0 :=
                 std.thread.spawn
@@ -46,8 +46,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       (let* _ :=
         let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | None  => Break
-        | Some child =>
+        | std.option.Option.None  => Break
+        | std.option.Option.Some child =>
           let* _ := child.["join"] in
           Pure tt
         end in

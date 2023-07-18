@@ -48,16 +48,16 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       let* α0 :=
         format_argument::["new_lower_hex"]
           (addr_of (cast enums_c_like.Color.Red i32)) in
-      let* α1 := format_count::["Is"] 6 in
+      let* α1 := LanguageItem.format_count::["Is"] 6 in
       let* α2 :=
-        format_placeholder::["new"]
+        LanguageItem.format_placeholder::["new"]
           0
           " "%char
-          format_alignment::["Unknown"]
+          LanguageItem.format_alignment::["Unknown"]
           8
-          format_count::["Implied"]
+          LanguageItem.format_count::["Implied"]
           α1 in
-      let* α3 := format_unsafe_arg::["new"] tt in
+      let* α3 := LanguageItem.format_unsafe_arg::["new"] tt in
       let* α4 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "roses are #"; "
@@ -72,16 +72,16 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       let* α0 :=
         format_argument::["new_lower_hex"]
           (addr_of (cast enums_c_like.Color.Blue i32)) in
-      let* α1 := format_count::["Is"] 6 in
+      let* α1 := LanguageItem.format_count::["Is"] 6 in
       let* α2 :=
-        format_placeholder::["new"]
+        LanguageItem.format_placeholder::["new"]
           0
           " "%char
-          format_alignment::["Unknown"]
+          LanguageItem.format_alignment::["Unknown"]
           8
-          format_count::["Implied"]
+          LanguageItem.format_count::["Implied"]
           α1 in
-      let* α3 := format_unsafe_arg::["new"] tt in
+      let* α3 := LanguageItem.format_unsafe_arg::["new"] tt in
       let* α4 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "violets are #"; "

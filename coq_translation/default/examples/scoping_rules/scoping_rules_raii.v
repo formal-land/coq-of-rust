@@ -11,15 +11,16 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
     let* _box3 := alloc.boxed.Box::["new"] 4 in
     Pure tt in
-  let* α0 := Range {| Range.start := 0; Range.end := 1000; |}.["into_iter"] in
+  let* α0 :=
+    {| std.ops.Range.start := 0; std.ops.Range.end := 1000; |}.["into_iter"] in
   match α0 with
   | iter =>
     loop
       (let* _ :=
         let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | None  => Break
-        | Some _ =>
+        | std.option.Option.None  => Break
+        | std.option.Option.Some _ =>
           let* _ := scoping_rules_raii.create_box tt in
           Pure tt
         end in

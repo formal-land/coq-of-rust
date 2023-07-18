@@ -23,7 +23,10 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       let* α2 := format_argument::["new_debug"] (addr_of α1) in
       let* α3 :=
         format_argument::["new_debug"]
-          (addr_of (addr_of args[RangeFrom {| RangeFrom.start := 1; |}])) in
+          (addr_of
+            (addr_of
+              args[LanguageItem.RangeFrom {| LanguageItem.RangeFrom.start := 1;
+                |}])) in
       let* α4 :=
         format_arguments::["new_v1"]
           (addr_of [ "I got "; " arguments: "; ".

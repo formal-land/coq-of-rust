@@ -15,8 +15,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None  => Break
-          | Some name =>
+          | std.option.Option.None  => Break
+          | std.option.Option.Some name =>
             let* α0 :=
               match name with
               | "Ferris" => Pure "There is a rustacean among us!"
