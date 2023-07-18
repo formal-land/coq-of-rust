@@ -912,11 +912,13 @@ impl Expr {
                 with_paren,
                 nest([
                     func.to_doc(true),
-                    line(),
                     if args.is_empty() {
-                        text("tt")
+                        nil()
                     } else {
-                        intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()])
+                        concat([
+                            line(),
+                            intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()]),
+                        ])
                     },
                 ]),
             ),
