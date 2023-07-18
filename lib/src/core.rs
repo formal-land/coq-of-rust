@@ -10,6 +10,7 @@ pub struct CliOptions {
     pub path: path::PathBuf,
     pub output: path::PathBuf,
     pub axiomatize: bool,
+    pub defsorder: Vec<String>,
 }
 
 pub const LINE_WIDTH: usize = 80;

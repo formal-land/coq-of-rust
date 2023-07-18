@@ -55,6 +55,7 @@ fn main() {
                 path: t.path,
                 output: t.output_path,
                 axiomatize: t.axiomatize,
+		defsorder: vec![],
             });
             println!("Finished.");
         }
